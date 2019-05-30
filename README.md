@@ -6,7 +6,7 @@ dazl
 <img src="https://circleci.com/gh/DACH-NY/dazl.svg?style=svg&circle-token=db89890646f1ac65e0b8bb682222599964196b01">
 </a>
 
-Rich Python bindings for accessing Ledger API-based applications.
+Rich Python bindings for accessing Ledger API-based applications. 
 
 Requirements
 ------------
