@@ -21,14 +21,11 @@ clean:
 
 .PHONY: deps
 deps:
-	pipenv sync --dev
+	poetry install -E prometheus -E pygments
 
 .PHONY: package
-package: deps package-wheel package-docs
-
-.PHONY: package-wheel
-package-wheel:
-	pipenv run pip3 wheel . --no-deps -w dist
+package:
+	poetry build
 
 .PHONY: package-docs
 package-docs:
@@ -40,13 +37,30 @@ package-docs:
 ## TEST TARGETS                                                                                   ##
 ####################################################################################################
 
+.PHONY: mypy
+mypy:
+	poetry run python3 -m mypy -p dazl
+
 .PHONY: test
 test: deps unit-test integration-test
 
 .PHONY: unit-test
 unit-test:
-	export PYTHONPATH=. && pipenv run test
+	poetry run pytest --log-cli-level=INFO --junitxml=test-results/junit.xml
 
 .PHONY: integration-test
 integration-test:
-	pipenv run python3 _template/integration-test.py
+	poetry run python3 _template/integration-test.py
+
+
+####################################################################################################
+## TEST TARGETS                                                                                   ##
+####################################################################################################
+
+.PHONY: docs
+docs:
+	poetry run python3 scripts/docs.py build
+
+.PHONY: docs-server
+docs-server:
+	poetry run python3 scripts/docs.py server

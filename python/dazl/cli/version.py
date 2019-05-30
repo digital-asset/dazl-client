@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from argparse import ArgumentParser
-from .._version import __version__ as version
+from .. import __version__ as version
 from ._base import CliCommand
 
 

@@ -6,6 +6,7 @@ This module contains the Python API for interacting with the Ledger API.
 """
 
 
+import pkg_resources as _pkg_resources
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -54,4 +55,6 @@ from .model.writing import CreateCommand, ExerciseCommand, create, exercise  # n
 from .util.logging import setup_default_logger  # noqa
 from .util.prim_types import frozendict  # noqa
 from .plugins.capture.plugin_capture import write_acs  # noqa
-from ._version import __version__  # noqa
+
+
+__version__ = _pkg_resources.require('dazl')[0].version
