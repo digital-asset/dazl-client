@@ -1,0 +1,19 @@
+daml 1.2
+
+module AllParty where
+
+
+template PrivateContract
+  with
+    someParty : Party
+  where
+    signatory someParty
+
+
+template PublicContract
+  with
+    publisher : Party
+    allParty  : Party
+  where
+    signatory publisher
+    observer allParty

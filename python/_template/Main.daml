@@ -1,0 +1,202 @@
+daml 1.2
+module Main where
+
+
+-- Roles -----------------------------------------------------------------------
+
+template PostmanRole
+  with
+    postman : Party
+  where
+    signatory postman
+    controller postman can
+      nonconsuming InviteParticipant : ()
+        with
+          party : Party; address: Text
+        do
+          create InviteAuthorRole with postman; author = party
+          create InviteReceiverRole with postman; receiver = party; address
+          return ()
+
+template AuthorRole
+  with
+    postman : Party
+    author: Party
+  where
+    signatory postman
+    controller author can
+      nonconsuming CreateLetter : ContractId UnsortedLetter
+        with
+          address : Text
+          content : Text
+        do
+          create UnsortedLetter
+            with
+              postman
+              sender = author
+              address
+              content
+
+      nonconsuming CreateIntegerLetter : ContractId UnsortedLetter
+        with
+          address : Text
+          content : Integer
+        do
+          create UnsortedLetter
+            with
+              postman
+              sender = author
+              address
+              content = (show content)
+
+      nonconsuming CreateDecimalLetter : ContractId UnsortedLetter
+        with
+          address : Text
+          content : Decimal
+        do
+          create UnsortedLetter
+            with
+              postman
+              sender = author
+              address
+              content = (show content)
+
+      nonconsuming CreateTimeLetter : ContractId UnsortedLetter
+        with
+          address : Text
+          content : Time
+        do
+          create UnsortedLetter
+            with
+              postman
+              sender = author
+              address
+              content = (show content)
+
+      nonconsuming CreateListIntegerLetter : ContractId UnsortedLetter
+        with
+          address : Text
+          content : [Integer]
+        do
+          create UnsortedLetter
+            with
+              postman
+              sender = author
+              address
+              content = (show content)
+
+template ReceiverRole
+  with
+    postman : Party
+    receiver : Party
+    address : Text
+  where
+    signatory postman
+    controller receiver can
+      AcceptLetter : ContractId AcknowlegedLetter
+        with
+          sentLetterCid : ContractId SentLetter
+        do
+          sentLetterCid2 <- fetch sentLetterCid
+          assert $ sentLetterCid2.receiver == receiver
+          assert $ sentLetterCid2.receiverAddress == address
+
+          create AcknowlegedLetter
+            with
+              sender = sentLetterCid2.sender
+              receiver
+              receiverAddress = address
+              content = sentLetterCid2.content
+
+    controller postman can
+      Deactivate : ()
+        do
+          assert $ postman == postman
+
+template InviteAuthorRole
+  with
+    postman : Party
+    author : Party
+  where
+    signatory postman
+    controller author can
+      AcceptInviteAuthorRole : ContractId AuthorRole
+        do
+          create AuthorRole with postman; author
+
+template InviteReceiverRole
+  with
+    postman : Party
+    receiver : Party
+    address : Text
+  where
+    signatory postman
+    controller receiver can
+      AcceptInviteReceiverRole : ContractId ReceiverRole
+        do
+          create ReceiverRole with postman; receiver; address
+
+-- Letters ---------------------------------------------------------------------
+
+template UnsortedLetter
+  with
+    postman : Party
+    sender : Party
+    address : Text
+    content : Text
+  where
+    signatory sender
+    controller postman can
+      Sort : ContractId SortedLetter
+        with
+          receiverCid : ContractId ReceiverRole
+        do
+          receiverCid2 <- fetch receiverCid
+          assert $ receiverCid2.address == address
+          assert $ receiverCid2.postman == postman
+
+          create SortedLetter
+            with
+              postman
+              sender
+              receiver = receiverCid2.receiver
+              receiverAddress = receiverCid2.address
+              content
+
+template SortedLetter
+  with
+    postman : Party
+    sender : Party
+    receiver : Party
+    receiverAddress : Text
+    content : Text
+  where
+    signatory sender
+    controller postman can
+      Deliver : ContractId SentLetter
+        do
+          create SentLetter with sender; receiver; receiverAddress; content
+
+template SentLetter
+  with
+    sender : Party
+    receiver : Party
+    receiverAddress : Text
+    content : Text
+  where
+    signatory sender
+    controller receiver can
+      AcceptSentLetter : ContractId AcknowlegedLetter
+        do
+          create AcknowlegedLetter with sender; receiver; receiverAddress; content
+
+template AcknowlegedLetter
+  with
+    sender : Party
+    receiver : Party
+    receiverAddress : Text
+    content : Text
+  where
+    signatory receiver
+
+    agreement (show sender) <> " sent" <> content <> " to " <> (show receiver) <> " at " <> (show receiverAddress)

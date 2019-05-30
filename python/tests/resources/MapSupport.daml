@@ -1,0 +1,42 @@
+daml 1.2
+
+module MapSupport where
+
+import DA.Map
+
+
+data Point a = Point with
+    x: a
+    y: a
+  deriving (Eq, Show)
+
+
+data IntPoint = IntPoint with
+    x: Int
+    y: Int
+  deriving (Eq, Show)
+
+
+data Fruit = Apple | Orange | Banana
+  deriving (Eq, Show)
+
+
+template Sample
+  with
+    party: Party
+    mappings: Map Int Text
+    text: Optional Text
+  where
+    signatory party
+
+
+template ComplicatedSample
+  with
+    party: Party
+    keyIsMap: Map (Map Text Text) Text
+    keyIsRecord: Map IntPoint Text
+    keyIsRecordWithTypeParam: Map (Point Int) Text
+    keyIsVariant: Map Fruit Text
+  where
+    signatory party
+

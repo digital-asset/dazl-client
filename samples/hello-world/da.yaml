@@ -1,0 +1,8 @@
+project:
+    sdk-version: '0.12.1'
+    name: hello-world
+    source: src/daml/Sample.daml
+    parties:
+    - Alice
+    - Bob
+version: 2

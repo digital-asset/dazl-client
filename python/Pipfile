@@ -1,0 +1,43 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+dazl = {editable = true,path = "."}
+aiohttp = "*"
+dataclasses = {version = "*",python_version = "<'3.7'"}
+google-auth = "*"
+grpcio = ">=1.20.1"
+oauthlib = "*"
+protobuf = ">=3.7.1"
+pygments = "*"
+pyyaml = "*"
+requests = "*"
+semver = "*"
+setuptools = "*"
+toposort = "*"
+
+[dev-packages]
+flask = "*"
+grpcio-tools = ">=1.20.1"
+mypy = "*"
+prometheus_client = "*"
+pympler = "*"
+pytest = "*"
+setuptools = "==40.8.0"
+sphinx = "*"
+twine = "*"
+watchdog = "*"
+wheel = "*"
+
+[requires]
+python_version = "3.6"
+
+[scripts]
+package = "pipenv run pip3 wheel . --no-deps -w dist"
+docs = "pipenv run python3 scripts/docs.py build"
+docs-server = "pipenv run python3 scripts/docs.py server"
+mypy = "pipenv run python3 -m mypy -p dazl"
+test = "bash -c \"mkdir test-results; pipenv run pytest --log-cli-level=INFO --junitxml=test-results/junit.xml\""
+integration-test = "pipenv run python3 _template/integration-test.py"

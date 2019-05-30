@@ -1,0 +1,62 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/dazl
+    docker:
+      - image: rappdw/docker-java-python
+        environment:
+          PIPENV_COLORBLIND: true
+          PIPENV_HIDE_EMOJIS: true
+          PIPENV_NOSPIN: true
+          PIPENV_VENV_IN_PROJECT: true
+    steps:
+      - run:
+          name: Install jq
+          command: |
+            curl -LO https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && \
+            chmod 755 jq-linux64 && \
+            mv jq-linux64 /usr/bin/jq
+      - checkout
+      #- run: sudo chown -R circleci:circleci /usr/local/bin
+      #- run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+      - restore_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "python/Pipfile.lock" }}
+      - run:
+          command: |
+            pip install pipenv
+            cd python && pipenv clean && pipenv sync --dev
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "python/Pipfile.lock" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.6/site-packages"
+      - run:
+          name: Python unit tests
+          command: |
+            cd python && pipenv run test
+      - run:
+          name: Python integration tests
+          command: |
+            cd python && pipenv run integration-test
+      - run:
+          name: Python packaging
+          command: |
+            cd python && pipenv run package
+      - run:
+          name: Run Blackduck Detect
+          command: |
+            bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) ci-build digitalasset_dazl master --logging.level.com.synopsys.integration=DEBUG --detect.python.python3=true
+      - store_test_results:
+          path: python/test-results
+      - persist_to_workspace:
+          root: ~/dazl
+          paths:
+            - python/dist
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build:
+          context: blackduck

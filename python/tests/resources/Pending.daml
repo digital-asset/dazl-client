@@ -1,0 +1,39 @@
+daml 1.2
+
+module Pending where
+
+
+template Counter
+  with
+    owner: Party
+    value: Int
+  where
+    signatory [owner]
+    agreement (toText owner) <> " has counter value " <> (toText value)
+    controller owner can
+      Increment: ContractId Counter
+        do
+          create Counter with owner; value = value + 1
+
+
+template AccountRequest
+  with
+    owner: Party
+  where
+    signatory [owner]
+    controller owner can
+      CreateAccount: ContractId Account
+        with
+          accountId : Int
+        do
+          create Account with owner; accountId
+
+
+template Account
+  with
+    owner: Party
+    accountId: Int
+  where
+    signatory [owner]
+    agreement (show owner) <> " has the account " <> (show accountId)
+

@@ -1,0 +1,47 @@
+daml 1.2
+
+module Simple where
+
+template OperatorRole
+  with
+    operator: Party
+  where
+    signatory operator
+    controller operator can
+      nonconsuming Publish: ContractId OperatorNotification
+        with
+          text : Text
+        do
+          create OperatorNotification with
+            operator
+            theObservers = []
+            text
+
+      nonconsuming PublishMany: [ContractId OperatorNotification]
+        with
+          count : Int
+        do
+          mapA (\i -> create OperatorNotification with
+            operator
+            theObservers = []
+            text = (show i)) [1..count]
+
+
+template OperatorNotification
+  with
+    operator: Party
+    theObservers: [Party]
+    text: Text
+  where
+    signatory operator
+    observer theObservers
+
+    controller operator can
+      Share: ContractId OperatorNotification
+        with
+          sharingParty: Party
+        do
+          create OperatorNotification with
+            operator
+            theObservers = sharingParty :: theObservers
+            text

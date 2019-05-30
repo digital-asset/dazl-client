@@ -1,0 +1,27 @@
+# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Mapping of simple names of artifacts to specific paths on Bintray where these resources can be
+# downloaded.
+rootUrl: https://digitalassetsdk.bintray.com/DigitalAssetSDK
+artifacts:
+  damlc:
+    groupId: com.digitalasset
+    artifact: damlc
+    defaultVersion: 100.12.21
+    packaging: tar.gz
+    native: true
+  sandbox:
+    groupId: com.digitalasset
+    artifact: sandbox
+    defaultVersion: 100.12.21
+    packaging: tar.gz
+  daml-lf-archive:
+    groupId: com.digitalasset
+    artifact: daml-lf-archive
+    defaultVersion: 100.12.21
+  ledger-api-protos:
+    groupId: com.digitalasset
+    artifact: ledger-api-protos
+    defaultVersion: 100.12.21
+    packaging: tar.gz

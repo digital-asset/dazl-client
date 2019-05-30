@@ -1,0 +1,12 @@
+# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+project:
+  sdk-version: '0.6.2'
+  scenario: Main.example
+  name: workflow_state
+  source: daml/WorkflowStateExample.daml
+  parties:
+  - Alice
+  - Bob
+  - Operator
+version: 2

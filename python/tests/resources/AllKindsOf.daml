@@ -1,0 +1,49 @@
+daml 1.2
+
+module AllKindsOf
+
+where
+
+import DA.Map
+
+type Measurement = Decimal
+
+
+data MyPair a = MyPair with left: a; right: a
+    deriving (Eq, Show)
+
+data VPair a = Left a | Right a | Both (VPair a)
+    deriving (Eq, Show)
+
+template OneOfEverything
+  with
+    operator: Party
+    someBoolean: Bool
+    someInteger: Int
+    someDecimal: Decimal
+    someMaybe: Optional Int
+    someMaybeNot: Optional Int
+    someText: Text
+    someDate: Date
+    someDatetime: Datetime
+    someSimpleList: [Int]
+    someSimplePair: MyPair Int
+    someNestedPair: MyPair (MyPair Int)
+    someUglyNesting: VPair (MyPair (MyPair Int))
+    someMeasurement: Measurement
+    theUnit: ()
+  where
+    signatory operator
+
+    controller operator can
+        Accept: ()
+            do return ()
+
+
+template MappyContract
+  with
+    operator: Party
+    value: Map Text Text
+  where
+    signatory operator
+

@@ -1,0 +1,37 @@
+daml 1.2
+
+module DottedFields where
+
+data Address = US USAddress | UK UKAddress
+  deriving (Eq, Show)
+
+data USAddress = USAddress
+  with
+    address: [Text]
+    city: Text
+    state: Text
+    zip: Integer
+  deriving (Eq, Show)
+
+data UKAddress = UKAddress
+  with
+    address: [Text]
+    locality: Optional Text
+    city: Text
+    state: Text
+    postcode: Text
+  deriving (Eq, Show)
+
+template American
+  with
+    person: Party
+    address: USAddress
+   where
+    signatory person
+
+template Person
+  with
+    person: Party
+    address: Address
+   where
+    signatory person

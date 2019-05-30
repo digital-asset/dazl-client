@@ -1,0 +1,40 @@
+daml 1.2
+
+module Sample where
+
+
+template HelloRole
+  with
+    party: Party
+  where
+    signatory party
+
+    controller party can
+      nonconsuming SayHello : ContractId HelloMessage
+        with
+          to : Party
+          message: Text
+        do
+          create HelloMessage with
+            sender = party
+            recipient = to
+            message
+
+
+template HelloMessage
+  with
+    sender: Party
+    recipient: Party
+    message: Text
+  where
+    signatory sender
+    observer recipient
+
+    controller recipient can
+      AcceptMessage : ()
+        do
+          return ()
+
+      RejectMessage : ()
+        do
+          return ()

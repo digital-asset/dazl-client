@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Template activation script for Dazl
+# Run when the user does 'da project add dazl'
+
+SELF="${BASH_SOURCE[0]}"
+# Canonicalize.
+SELF="$(cd ${SELF%/*} && echo $PWD/${SELF##*/})"
+BASE="$(dirname $SELF)"
+ACTUAL_PROJ_DIR=$(pwd)
+
+# Test that we have python installed
+which python3 &> /dev/null
+if [ $? -ne 0 ]; then
+  echo "ERROR: 'python3' not found. Please install it first and then manually"
+  echo "run '$SELF' to continue activation."
+  exit 1
+fi
+
+set -eu
+
+# Set up the virtual environment
+echo "Setting up Python Virtual Environment..."
+python3 -m venv venv
+
+# Install the wheel into the virtual environment
+echo "Installing Dazl..."
+venv/bin/pip3 install ${BASE}/dazl*.whl

@@ -1,0 +1,97 @@
+daml 1.2 module Calculator where
+
+import DA.Either
+
+
+data Expr a =
+  Num a
+  | Product (Expr a) (Expr a)
+  | Sum (Expr a) (Expr a)
+  deriving (Eq)
+
+
+data Relationship = Relationship
+  with
+    client: Party
+    processor: Party
+  deriving (Eq)
+  
+----------------------------------------------------------------------------------------------------
+-- "Message" Contracts
+----------------------------------------------------------------------------------------------------
+
+template CalculateRequest
+  with
+    relationship: Relationship
+    text: Text
+  where
+    signatory relationship.client
+    observer relationship.processor
+ 
+    controller relationship.processor can
+      Validate: ContractId ValidatedCalculateRequest
+        with expression: Expr Decimal
+        do create ValidatedCalculateRequest with relationship; expression
+      RejectRequest: ContractId CalculateResponse
+        with reason: Text
+        do create CalculateResponse with relationship; value = (Left reason)
+  
+
+template ValidatedCalculateRequest
+  with
+    relationship: Relationship
+    expression: Expr Decimal
+  where
+    signatory relationship.client
+    controller relationship.processor can
+      Calculate: ContractId CalculateResponse
+        with value: Decimal
+        do create CalculateResponse with relationship; value = (Right value)
+      RejectValidatedRequest: ContractId CalculateResponse
+        with reason: Text
+        do create CalculateResponse with relationship; value = (Left reason)
+
+
+template CalculateResponse
+  with
+    relationship: Relationship
+    value: Either Text Decimal
+  where
+    signatory relationship.client
+    observer relationship.processor
+
+----------------------------------------------------------------------------------------------------
+-- Participant (role) Contracts
+----------------------------------------------------------------------------------------------------
+
+template ClientRole
+  with
+    client: Party
+  where
+    signatory client
+    controller client can
+      nonconsuming RequestRelationshipWithProcessor: ContractId RelationshipWithProcessorRequest
+        with processor: Party
+        do create RelationshipWithProcessorRequest with relationship = Relationship with client; processor
+
+
+template RelationshipWithProcessorRequest
+  with
+    relationship: Relationship
+  where
+    signatory relationship.client
+    observer relationship.processor
+
+    controller relationship.processor can
+      AcceptRequest: ContractId ClientProcessorRelationship
+        do create ClientProcessorRelationship with relationship
+
+
+template ClientProcessorRelationship
+  with
+    relationship: Relationship
+  where
+    controller relationship.processor can
+      nonconsuming RequestCalculation: ContractId CalculateRequest
+        with text: Text
+        do create CalculateRequest with relationship; text

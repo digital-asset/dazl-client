@@ -1,0 +1,68 @@
+daml 1.2
+
+module Complicated where
+
+data Formula t
+  = Tautology
+  | Contradiction
+  | Proposition t
+  | Negation (Formula t)
+  | Conjunction [Formula t]
+  | Disjunction [Formula t]
+  | Wacky [Formula [t]]
+  | HolyCanoli (MoreContrived t)
+  deriving (Eq, Show)
+
+
+data MoreContrived b = Blank | NotBlank (Formula b)
+  deriving (Eq, Show)
+
+
+data Crazy a b = Left a | Right b | Reversed (Crazy b a) | HardCoded (Crazy Int a) | Silly { field1: (Crazy b Text) ; field2: a } | Other { field1x: a, field2x: a }
+  deriving (Eq, Show)
+
+
+template OperatorRole
+  with
+    operator: Party
+  where
+    signatory operator
+    controller operator can
+      nonconsuming PublishEmpty : ContractId OperatorEmptyNotification
+        do
+          create OperatorEmptyNotification with operator
+
+      nonconsuming PublishFormula : ContractId OperatorFormulaNotification
+        with
+          formula : Formula Text
+        do
+          create OperatorFormulaNotification with operator; formula
+
+      nonconsuming PublishMoreContrived : ContractId OperatorContrivedNotification
+        with
+          contrived : MoreContrived [Int]
+        do
+          create OperatorContrivedNotification with operator; contrived
+
+
+template OperatorEmptyNotification
+  with
+    operator: Party
+  where
+    signatory operator
+
+
+template OperatorFormulaNotification
+  with
+    operator: Party
+    formula : Formula Text
+  where
+    signatory operator
+
+
+template OperatorContrivedNotification
+  with
+    operator: Party
+    contrived : MoreContrived [Int]
+  where
+    signatory operator
