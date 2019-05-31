@@ -9,3 +9,7 @@ deps:  ## Fetch all dependencies.
 .PHONY:
 test:  ## Run all tests.
 	make -C python test
+
+.PHONY:
+local-ci:  ## Run the build as if it were running on CI.
+	circleci local execute
