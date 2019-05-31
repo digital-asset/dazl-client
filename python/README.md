@@ -1,10 +1,14 @@
 dazl
 ====
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/digital-asset/daml/blob/master/LICENSE)
-<a href="https://circleci.com/gh/DACH-NY/dazl">
-<img src="https://circleci.com/gh/DACH-NY/dazl.svg?style=svg&circle-token=db89890646f1ac65e0b8bb682222599964196b01">
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/digital-asset/dazl-client/blob/master/LICENSE)
+<a href="https://circleci.com/gh/digital-asset/dazl-client">
+<img src="https://circleci.com/gh/digital-asset/dazl-client.svg?style=svg">
 </a>
+
+Copyright 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All Rights Reserved.
+SPDX-License-Identifier: Apache-2.0
+
 
 Rich Python bindings for accessing Ledger API-based applications.
 
@@ -74,7 +78,3 @@ Tests
 ```sh
 cd python && pipenv run test
 ```
-
-License
--------
-Copyright 2014-2019 Digital Asset
