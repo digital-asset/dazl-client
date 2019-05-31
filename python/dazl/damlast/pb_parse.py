@@ -375,8 +375,12 @@ class ProtobufParser:
             return Update(get_time=self.parse_Unit(pb.get_time))
         elif sum_name == 'embed_expr':
             return Update(embed_expr=self.parse_Update_EmbedExpr(pb.embed_expr))
+        elif sum_name == 'lookup_by_key':
+            return Update(embed_expr=self.parse_Update_RetrieveByKey(pb.lookup_by_key))
+        elif sum_name == 'fetch_by_key':
+            return Update(embed_expr=self.parse_Update_RetrieveByKey(pb.fetch_by_key))
         else:
-            raise ValueError('unknown Sum value')
+            raise ValueError(f'unknown Sum value: {sum_name!r}')
 
     def parse_Update_Create(self, pb) -> 'Update.Create':
         return Update.Create(
@@ -400,6 +404,11 @@ class ProtobufParser:
         return Update.EmbedExpr(
             type=self.parse_Type(pb.type),
             body=self.parse_Expr(pb.body))
+
+    def parse_Update_RetrieveByKey(self, pb) -> 'Update.RetrieveByKey':
+        return Update.RetrieveByKey(
+            template=self.parse_TypeConName(pb.template),
+            key=self.parse_Expr(pb.key))
 
     def parse_Scenario(self, pb) -> 'Scenario':
         sum_name = pb.WhichOneof('Sum')
