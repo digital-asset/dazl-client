@@ -1015,6 +1015,14 @@ class Update:
             self.type = type
             self.body = body
 
+    class RetrieveByKey:
+        template: 'TypeConName'
+        key: 'Expr'
+
+        def __init__(self, template: 'TypeConName', key: 'Expr'):
+            self.template = template
+            self.key = key
+
     __slots__ = '_Sum_name', '_Sum_value'
 
     def __init__(
@@ -1025,6 +1033,8 @@ class Update:
             exercise: 'Exercise' = MISSING,
             fetch: 'Fetch' = MISSING,
             get_time: 'Unit' = MISSING,
+            lookup_by_key: 'RetrieveByKey' = MISSING,
+            fetch_by_key: 'RetrieveByKey' = MISSING,
             embed_expr: 'EmbedExpr' = MISSING):
         if pure is not MISSING:
             object.__setattr__(self, '_Sum_name', 'pure')
@@ -1047,6 +1057,12 @@ class Update:
         elif embed_expr is not MISSING:
             object.__setattr__(self, '_Sum_name', 'embed_expr')
             object.__setattr__(self, '_Sum_value', embed_expr)
+        elif lookup_by_key is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'lookup_by_key')
+            object.__setattr__(self, '_Sum_value', lookup_by_key)
+        elif fetch_by_key is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'fetch_by_key')
+            object.__setattr__(self, '_Sum_value', fetch_by_key)
 
     @property
     def pure(self) -> 'Optional[Pure]':
