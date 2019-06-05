@@ -25,7 +25,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.digitalasset.ledger.api.v1',
   syntax='proto3',
   serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\017ValueOuterClass'),
-  serialized_pb=_b('\n*com/digitalasset/ledger/api/v1/value.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"\xed\x03\n\x05Value\x12\x38\n\x06record\x18\x01 \x01(\x0b\x32&.com.digitalasset.ledger.api.v1.RecordH\x00\x12:\n\x07variant\x18\x02 \x01(\x0b\x32\'.com.digitalasset.ledger.api.v1.VariantH\x00\x12\x15\n\x0b\x63ontract_id\x18\x03 \x01(\tH\x00\x12\x34\n\x04list\x18\x04 \x01(\x0b\x32$.com.digitalasset.ledger.api.v1.ListH\x00\x12\x13\n\x05int64\x18\x05 \x01(\x12\x42\x02\x30\x01H\x00\x12\x11\n\x07\x64\x65\x63imal\x18\x06 \x01(\tH\x00\x12\x0e\n\x04text\x18\x08 \x01(\tH\x00\x12\x17\n\ttimestamp\x18\t \x01(\x10\x42\x02\x30\x01H\x00\x12\x0f\n\x05party\x18\x0b \x01(\tH\x00\x12\x0e\n\x04\x62ool\x18\x0c \x01(\x08H\x00\x12&\n\x04unit\x18\r \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12\x0e\n\x04\x64\x61te\x18\x0e \x01(\x05H\x00\x12<\n\x08optional\x18\x0f \x01(\x0b\x32(.com.digitalasset.ledger.api.v1.OptionalH\x00\x12\x32\n\x03map\x18\x10 \x01(\x0b\x32#.com.digitalasset.ledger.api.v1.MapH\x00\x42\x05\n\x03Sum\"\x84\x01\n\x06Record\x12=\n\trecord_id\x18\x01 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12;\n\x06\x66ields\x18\x02 \x03(\x0b\x32+.com.digitalasset.ledger.api.v1.RecordField\"R\n\x0bRecordField\x12\r\n\x05label\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\"\\\n\nIdentifier\x12\x12\n\npackage_id\x18\x01 \x01(\t\x12\x10\n\x04name\x18\x02 \x01(\tB\x02\x18\x01\x12\x13\n\x0bmodule_name\x18\x03 \x01(\t\x12\x13\n\x0b\x65ntity_name\x18\x04 \x01(\t\"\x94\x01\n\x07Variant\x12>\n\nvariant_id\x18\x01 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12\x13\n\x0b\x63onstructor\x18\x02 \x01(\t\x12\x34\n\x05value\x18\x03 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\"?\n\x04List\x12\x37\n\x08\x65lements\x18\x01 \x03(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\"@\n\x08Optional\x12\x34\n\x05value\x18\x01 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\"\x8d\x01\n\x03Map\x12:\n\x07\x65ntries\x18\x01 \x03(\x0b\x32).com.digitalasset.ledger.api.v1.Map.Entry\x1aJ\n\x05\x45ntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.ValueB1\n\x1e\x63om.digitalasset.ledger.api.v1B\x0fValueOuterClassb\x06proto3')
+  serialized_pb=_b('\n*com/digitalasset/ledger/api/v1/value.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"\xa3\x04\n\x05Value\x12\x38\n\x06record\x18\x01 \x01(\x0b\x32&.com.digitalasset.ledger.api.v1.RecordH\x00\x12:\n\x07variant\x18\x02 \x01(\x0b\x32\'.com.digitalasset.ledger.api.v1.VariantH\x00\x12\x15\n\x0b\x63ontract_id\x18\x03 \x01(\tH\x00\x12\x34\n\x04list\x18\x04 \x01(\x0b\x32$.com.digitalasset.ledger.api.v1.ListH\x00\x12\x13\n\x05int64\x18\x05 \x01(\x12\x42\x02\x30\x01H\x00\x12\x11\n\x07\x64\x65\x63imal\x18\x06 \x01(\tH\x00\x12\x0e\n\x04text\x18\x08 \x01(\tH\x00\x12\x17\n\ttimestamp\x18\t \x01(\x10\x42\x02\x30\x01H\x00\x12\x0f\n\x05party\x18\x0b \x01(\tH\x00\x12\x0e\n\x04\x62ool\x18\x0c \x01(\x08H\x00\x12&\n\x04unit\x18\r \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12\x0e\n\x04\x64\x61te\x18\x0e \x01(\x05H\x00\x12<\n\x08optional\x18\x0f \x01(\x0b\x32(.com.digitalasset.ledger.api.v1.OptionalH\x00\x12\x32\n\x03map\x18\x10 \x01(\x0b\x32#.com.digitalasset.ledger.api.v1.MapH\x00\x12\x34\n\x04\x65num\x18\x11 \x01(\x0b\x32$.com.digitalasset.ledger.api.v1.EnumH\x00\x42\x05\n\x03Sum\"\x84\x01\n\x06Record\x12=\n\trecord_id\x18\x01 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12;\n\x06\x66ields\x18\x02 \x03(\x0b\x32+.com.digitalasset.ledger.api.v1.RecordField\"R\n\x0bRecordField\x12\r\n\x05label\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\"\\\n\nIdentifier\x12\x12\n\npackage_id\x18\x01 \x01(\t\x12\x10\n\x04name\x18\x02 \x01(\tB\x02\x18\x01\x12\x13\n\x0bmodule_name\x18\x03 \x01(\t\x12\x13\n\x0b\x65ntity_name\x18\x04 \x01(\t\"\x94\x01\n\x07Variant\x12>\n\nvariant_id\x18\x01 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12\x13\n\x0b\x63onstructor\x18\x02 \x01(\t\x12\x34\n\x05value\x18\x03 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\"X\n\x04\x45num\x12;\n\x07\x65num_id\x18\x01 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12\x13\n\x0b\x63onstructor\x18\x02 \x01(\t\"?\n\x04List\x12\x37\n\x08\x65lements\x18\x01 \x03(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\"@\n\x08Optional\x12\x34\n\x05value\x18\x01 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\"\x8d\x01\n\x03Map\x12:\n\x07\x65ntries\x18\x01 \x03(\x0b\x32).com.digitalasset.ledger.api.v1.Map.Entry\x1aJ\n\x05\x45ntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.ValueB1\n\x1e\x63om.digitalasset.ledger.api.v1B\x0fValueOuterClassb\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,])
 
@@ -137,6 +137,13 @@ _VALUE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='enum', full_name='com.digitalasset.ledger.api.v1.Value.enum', index=14,
+      number=17, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -153,7 +160,7 @@ _VALUE = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=173,
-  serialized_end=666,
+  serialized_end=720,
 )
 
 
@@ -190,8 +197,8 @@ _RECORD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=669,
-  serialized_end=801,
+  serialized_start=723,
+  serialized_end=855,
 )
 
 
@@ -228,8 +235,8 @@ _RECORDFIELD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=803,
-  serialized_end=885,
+  serialized_start=857,
+  serialized_end=939,
 )
 
 
@@ -280,8 +287,8 @@ _IDENTIFIER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=887,
-  serialized_end=979,
+  serialized_start=941,
+  serialized_end=1033,
 )
 
 
@@ -325,8 +332,46 @@ _VARIANT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=982,
-  serialized_end=1130,
+  serialized_start=1036,
+  serialized_end=1184,
+)
+
+
+_ENUM = _descriptor.Descriptor(
+  name='Enum',
+  full_name='com.digitalasset.ledger.api.v1.Enum',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='enum_id', full_name='com.digitalasset.ledger.api.v1.Enum.enum_id', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='constructor', full_name='com.digitalasset.ledger.api.v1.Enum.constructor', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1186,
+  serialized_end=1274,
 )
 
 
@@ -356,8 +401,8 @@ _LIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1132,
-  serialized_end=1195,
+  serialized_start=1276,
+  serialized_end=1339,
 )
 
 
@@ -387,8 +432,8 @@ _OPTIONAL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1197,
-  serialized_end=1261,
+  serialized_start=1341,
+  serialized_end=1405,
 )
 
 
@@ -425,8 +470,8 @@ _MAP_ENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1331,
-  serialized_end=1405,
+  serialized_start=1475,
+  serialized_end=1549,
 )
 
 _MAP = _descriptor.Descriptor(
@@ -455,8 +500,8 @@ _MAP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1264,
-  serialized_end=1405,
+  serialized_start=1408,
+  serialized_end=1549,
 )
 
 _VALUE.fields_by_name['record'].message_type = _RECORD
@@ -465,6 +510,7 @@ _VALUE.fields_by_name['list'].message_type = _LIST
 _VALUE.fields_by_name['unit'].message_type = google_dot_protobuf_dot_empty__pb2._EMPTY
 _VALUE.fields_by_name['optional'].message_type = _OPTIONAL
 _VALUE.fields_by_name['map'].message_type = _MAP
+_VALUE.fields_by_name['enum'].message_type = _ENUM
 _VALUE.oneofs_by_name['Sum'].fields.append(
   _VALUE.fields_by_name['record'])
 _VALUE.fields_by_name['record'].containing_oneof = _VALUE.oneofs_by_name['Sum']
@@ -507,11 +553,15 @@ _VALUE.fields_by_name['optional'].containing_oneof = _VALUE.oneofs_by_name['Sum'
 _VALUE.oneofs_by_name['Sum'].fields.append(
   _VALUE.fields_by_name['map'])
 _VALUE.fields_by_name['map'].containing_oneof = _VALUE.oneofs_by_name['Sum']
+_VALUE.oneofs_by_name['Sum'].fields.append(
+  _VALUE.fields_by_name['enum'])
+_VALUE.fields_by_name['enum'].containing_oneof = _VALUE.oneofs_by_name['Sum']
 _RECORD.fields_by_name['record_id'].message_type = _IDENTIFIER
 _RECORD.fields_by_name['fields'].message_type = _RECORDFIELD
 _RECORDFIELD.fields_by_name['value'].message_type = _VALUE
 _VARIANT.fields_by_name['variant_id'].message_type = _IDENTIFIER
 _VARIANT.fields_by_name['value'].message_type = _VALUE
+_ENUM.fields_by_name['enum_id'].message_type = _IDENTIFIER
 _LIST.fields_by_name['elements'].message_type = _VALUE
 _OPTIONAL.fields_by_name['value'].message_type = _VALUE
 _MAP_ENTRY.fields_by_name['value'].message_type = _VALUE
@@ -522,6 +572,7 @@ DESCRIPTOR.message_types_by_name['Record'] = _RECORD
 DESCRIPTOR.message_types_by_name['RecordField'] = _RECORDFIELD
 DESCRIPTOR.message_types_by_name['Identifier'] = _IDENTIFIER
 DESCRIPTOR.message_types_by_name['Variant'] = _VARIANT
+DESCRIPTOR.message_types_by_name['Enum'] = _ENUM
 DESCRIPTOR.message_types_by_name['List'] = _LIST
 DESCRIPTOR.message_types_by_name['Optional'] = _OPTIONAL
 DESCRIPTOR.message_types_by_name['Map'] = _MAP
@@ -561,6 +612,13 @@ Variant = _reflection.GeneratedProtocolMessageType('Variant', (_message.Message,
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.Variant)
   ))
 _sym_db.RegisterMessage(Variant)
+
+Enum = _reflection.GeneratedProtocolMessageType('Enum', (_message.Message,), dict(
+  DESCRIPTOR = _ENUM,
+  __module__ = 'com.digitalasset.ledger.api.v1.value_pb2'
+  # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.Enum)
+  ))
+_sym_db.RegisterMessage(Enum)
 
 List = _reflection.GeneratedProtocolMessageType('List', (_message.Message,), dict(
   DESCRIPTOR = _LIST,

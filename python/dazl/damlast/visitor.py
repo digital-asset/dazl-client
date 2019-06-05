@@ -35,6 +35,7 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_rec_con,
             self.visit_expr_rec_proj,
             self.visit_expr_variant_con,
+            self.visit_expr_enum_con,
             self.visit_expr_tuple_con,
             self.visit_expr_tuple_proj,
             self.visit_expr_app,
@@ -74,6 +75,9 @@ class ExprVisitor(Generic[RE]):
         raise NotImplementedError
 
     def visit_expr_variant_con(self, variant_con: 'Expr.VariantCon') -> 'RE':
+        raise NotImplementedError
+
+    def visit_expr_enum_con(self, tuple_con: 'Expr.EnumCon') -> 'RE':
         raise NotImplementedError
 
     def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'RE':
@@ -230,6 +234,10 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
         new_variant_arg = self.visit_expr(variant_con.variant_arg)
         return Expr(variant_con=Expr.VariantCon(
             tycon=new_type_con, variant_con=variant_con.variant_con, variant_arg=new_variant_arg))
+
+    def visit_expr_enum_con(self, enum_con: 'Expr.EnumCon') -> 'Expr':
+        new_type_con = self.visit_type_con(enum_con.tycon).con
+        return Expr(enum_con=Expr.EnumCon(tycon=new_type_con, enum_con=enum_con.enum_con))
 
     def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'Expr':
         new_fields = tuple([FieldWithExpr(fwt.field, self.visit_expr(fwt.expr))
