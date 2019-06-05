@@ -27,12 +27,12 @@ class PrometheusMetricEvents(MetricEvents):
             return PrometheusMetricEvents._DEFAULT
 
     def __init__(self, registry: 'Optional[CollectorRegistry]' = None):
-        from prometheus_client import Gauge, Histogram, REGISTRY
+        from prometheus_client import Gauge, REGISTRY
 
         if registry is None:
             registry = REGISTRY
 
-        self._loop_responsiveness_seconds = Histogram(
+        self._loop_responsiveness_seconds = Gauge(
             'dazl_network_loop_responsiveness_seconds',
             'Number of seconds to immediately schedule and execute a no-op on the event loop',
             registry=registry)
@@ -43,7 +43,7 @@ class PrometheusMetricEvents(MetricEvents):
             registry=registry)
 
     def loop_responsiveness(self, responsiveness: 'timedelta') -> None:
-        self._loop_responsiveness_seconds.observe(responsiveness.total_seconds())
+        self._loop_responsiveness_seconds.set(responsiveness.total_seconds())
 
     def party_offset(self, party: 'Party', offset: str) -> None:
         self._offset.labels(party).set(offset)
