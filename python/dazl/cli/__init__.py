@@ -7,7 +7,7 @@ Simple command-line handlers.
 
 import logging
 import sys
-from typing import List
+from typing import List, Sequence
 
 from .. import setup_default_logger
 from ..model.core import ConfigurationError
@@ -35,22 +35,28 @@ def main():
     """
     Executes one of the known commands.
     """
-    if len(sys.argv) > 1:
-        command = sys.argv[1]
-        command_args = sys.argv[2:]
+    from sys import argv, exit
+    exit(_main(argv))
+
+
+def _main(argv: 'Sequence[str]') -> int:
+    if len(argv) > 1:
+        command = argv[1]
+        command_args = argv[2:]
 
         for cmd in COMMANDS:
             if cmd.name == command:
                 try:
-                    sys.exit(run(cmd, command_args))
+                    return run(cmd, command_args)
                 except ConfigurationError as error:
                     for reason in error.reasons:
                         print(reason)
-                    sys.exit(-1)
+                    return -1
 
         print("Unknown command: " + command)
 
     print_cmd_help()
+    return -2
 
 
 def run(cmd, args) -> int:

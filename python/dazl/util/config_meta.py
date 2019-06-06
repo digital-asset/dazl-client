@@ -75,6 +75,8 @@ def add_argument(
             if config_param.environment_variable is not None:
                 import os
                 default_value = os.getenv(config_param.environment_variable)
+            if not default_value:
+                default_value = config_param.default_value
 
             parser.add_argument(
                 *aliases,

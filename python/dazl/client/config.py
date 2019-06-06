@@ -212,9 +212,12 @@ def configure_parser(arg_parser, config_file_support=False):
         group = arg_parser.add_argument_group('Configuration Settings')
         group.add_argument('--config', help='path to a YAML config file', default=default_config)
 
+    party_config_fields = [fld.name for fld, _ in config_fields(_PartyConfig)]
+
     group = arg_parser.add_argument_group('Overall Settings')
-    for fld, param in config_fields(_NetworkConfig):
-        add_argument(group, fld.name, param)
+    for fld, param in config_fields(_FlatConfig):
+        if fld.name not in party_config_fields:
+            add_argument(group, fld.name, param)
 
     group = arg_parser.add_argument_group('Per-Party Settings')
     for fld, param in config_fields(_PartyConfig):
@@ -227,7 +230,7 @@ def unflatten_config(config: '_FlatConfig') -> 'NetworkConfig':
     """
     Convert a :class:`_FlatConfig` to a :class:`NetworkConfig`.
     """
-    config_dict = asdict(config)
+    config_dict = {k: v for k, v in asdict(config).items() if v is not None}
     network_dict = {fld.name: config_dict.get(fld.name) for fld in fields(_NetworkConfig)}
     party_dict = {fld.name: config_dict.get(fld.name) for fld in fields(_PartyConfig)}
     parties = tuple(PartyConfig(party=party, **party_dict) for party in config.parties)
