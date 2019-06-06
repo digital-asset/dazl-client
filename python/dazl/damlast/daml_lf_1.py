@@ -450,6 +450,11 @@ class Expr:
             self.variant_arg = variant_arg
 
     @dataclass(frozen=True)
+    class EnumCon:
+        tycon: 'Type.Con'  # Always fully applied
+        enum_con: str
+
+    @dataclass(frozen=True)
     class TupleCon:
         fields: 'Sequence[FieldWithExpr]'  # length > 0
 
@@ -566,6 +571,7 @@ class Expr:
             rec_con: 'RecCon' = MISSING,
             rec_proj: 'RecProj' = MISSING,
             variant_con: 'VariantCon' = MISSING,
+            enum_con: 'EnumCon' = MISSING,
             tuple_con: 'TupleCon' = MISSING,
             tuple_proj: 'TupleProj' = MISSING,
             app: 'App' = MISSING,
@@ -608,6 +614,9 @@ class Expr:
         elif variant_con is not MISSING:
             object.__setattr__(self, '_Sum_name', 'variant_con')
             object.__setattr__(self, '_Sum_value', variant_con)
+        elif enum_con is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'enum_con')
+            object.__setattr__(self, '_Sum_value', enum_con)
         elif tuple_con is not MISSING:
             object.__setattr__(self, '_Sum_name', 'tuple_con')
             object.__setattr__(self, '_Sum_value', tuple_con)
@@ -695,6 +704,10 @@ class Expr:
         return self._Sum_value if self._Sum_name == 'variant_con' else None
 
     @property
+    def enum_con(self) -> 'Optional[EnumCon]':
+        return self._Sum_value if self._Sum_name == 'enum_con' else None
+
+    @property
     def tuple_con(self) -> 'Optional[TupleCon]':
         return self._Sum_value if self._Sum_name == 'tuple_con' else None
 
@@ -769,6 +782,7 @@ class Expr:
             rec_con: 'Callable[[RecCon], T]',
             rec_proj: 'Callable[[RecProj], T]',
             variant_con: 'Callable[[VariantCon], T]',
+            enum_con: 'Callable[[EnumCon], T]',
             tuple_con: 'Callable[[TupleCon], T]',
             tuple_proj: 'Callable[[TupleProj], T]',
             app: 'Callable[[App], T]',
@@ -801,6 +815,8 @@ class Expr:
             return rec_proj(self.rec_proj)
         elif self._Sum_name == 'variant_con':
             return variant_con(self.variant_con)
+        elif self._Sum_name == 'enum_con':
+            return enum_con(self.enum_con)
         elif self._Sum_name == 'tuple_con':
             return tuple_con(self.tuple_con)
         elif self._Sum_name == 'tuple_proj':
@@ -1267,9 +1283,11 @@ class BuiltinFunction(Enum):
     TO_TEXT_DATE = 71
     TO_QUOTED_TEXT_PARTY = 63  # legacy, remove in next major version
     TO_TEXT_PARTY = 94  # Available Since version 1.2
+    TO_TEXT_CODE_POINTS = 105
     FROM_TEXT_PARTY = 95  # Available Since version 1.2
     FROM_TEXT_INT64 = 103  # Available Since version 1.5
     FROM_TEXT_DECIMAL = 104  # Available Since version 1.5
+    FROM_TEXT_CODE_POINTS = 106
     SHA256_TEXT = 93  # Available Since version 1.2
 
     DATE_TO_UNIX_DAYS = 72  # Date -> Int64

@@ -79,6 +79,7 @@ class Evaluator:
             self.eval_rec_con,
             self.eval_rec_proj,
             self.eval_variant_con,
+            self.eval_enum_con,
             self.eval_tuple_con,
             self.eval_tuple_proj,
             self.eval_app,
@@ -169,6 +170,9 @@ class Evaluator:
         ctor = variant_con.variant_con
         value = self.eval_Expr(variant_con.variant_arg)
         return frozendict({ctor: value})
+
+    def eval_enum_con(self, enum_con: 'Expr.EnumCon') -> 'Any':
+        return enum_con.enum_con
 
     def eval_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'Any':
         return frozendict({fwt.field: self.eval_Expr(fwt.expr) for fwt in tuple_con.fields})
