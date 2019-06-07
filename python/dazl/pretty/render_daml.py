@@ -9,7 +9,7 @@ from .util import maybe_parentheses
 from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, Module, PrimCon, PrimType, \
     Type as NewType
 from ..model.types import Type as OldType, ScalarType, ContractIdType, ListType, OptionalType, \
-    MapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, \
+    MapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, EnumType, \
     type_dispatch_table, SCALAR_TYPE_UNIT, SCALAR_TYPE_BOOL, SCALAR_TYPE_CHAR, \
     SCALAR_TYPE_INTEGER, SCALAR_TYPE_DECIMAL, SCALAR_TYPE_TEXT, SCALAR_TYPE_PARTY, \
     SCALAR_TYPE_RELTIME, SCALAR_TYPE_DATE, SCALAR_TYPE_TIME, ForAllType
@@ -218,6 +218,7 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 on_map=self.visit_type_prim,
                 on_record=self.visit_type_con,
                 on_variant=self.visit_type_con,
+                on_enum=self.visit_type_con,
                 on_type_app=self._visit_type_app,
                 on_unsupported=repr)(type)
         else:
@@ -235,12 +236,12 @@ class DamlPrettyPrinter(PrettyPrintBase):
         else:
             raise TypeError(f'A DAML Type variable is required here (got {var!r} instead')
 
-    def visit_type_con(self, con: 'Union[TypeReference, RecordType, VariantType, NewType.Con]') -> str:
+    def visit_type_con(self, con: 'Union[TypeReference, RecordType, VariantType, EnumType, NewType.Con]') -> str:
         if isinstance(con, TypeReference):
             return con.full_name_unambiguous
-        elif isinstance(con, (RecordType, VariantType)):
+        elif isinstance(con, (RecordType, VariantType, EnumType)):
             if con.name is None:
-                raise ValueError('A named Record or Variant type is required here')
+                raise ValueError('A named Record, Variant, or Enum type is required here')
             return con.name.full_name_unambiguous
         elif isinstance(con, NewType.Con):
             return self._visit_type_app((con.tycon.full_name_unambiguous, *con.args))

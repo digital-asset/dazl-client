@@ -9,7 +9,9 @@ from ..model.types import ModuleRef, TypeReference
 # noinspection PyPep8Naming,PyMethodMayBeStatic
 class ProtobufParser:
     def __init__(self, current_package: str):
+        from typing import List
         self.current_package = current_package
+        self.interned_packages = []  # type: List[str]
 
     # noinspection PyUnusedLocal
     def parse_Unit(self, pb) -> 'Unit':
@@ -23,6 +25,8 @@ class ProtobufParser:
             return ModuleRef(self.current_package, pb.module_name.segments)
         elif sum_name == 'package_id':
             return ModuleRef(pb.package_ref.package_id, pb.module_name.segments)
+        elif sum_name == 'interned_id':
+            return ModuleRef(self.interned_packages[pb.package_ref.interned_id], pb.module_name.segments)
         else:
             raise ValueError(f'unknown sum type value: {sum_name!r}')
 
@@ -203,6 +207,8 @@ class ProtobufParser:
             args['variant_con'] = self.parse_Expr_VariantCon(pb.variant_con)
         elif sum_name == 'tuple_con':
             args['tuple_con'] = self.parse_Expr_TupleCon(pb.tuple_con)
+        elif sum_name == 'enum_con':
+            args['enum_con'] = self.parse_Expr_EnumCon(pb.enum_con)
         elif sum_name == 'tuple_proj':
             args['tuple_proj'] = self.parse_Expr_TupleProj(pb.tuple_proj)
         elif sum_name == 'app':
@@ -266,6 +272,11 @@ class ProtobufParser:
     def parse_Expr_TupleCon(self, pb) -> 'Expr.TupleCon':
         return Expr.TupleCon(
             tuple(self.parse_FieldWithExpr(field) for field in pb.fields))  # length > 0
+
+    def parse_Expr_EnumCon(self, pb) -> 'Expr.EnumCon':
+        return Expr.EnumCon(
+            self.parse_TypeConName(pb.tycon),
+            pb.enum_con)
 
     def parse_Expr_TupleProj(self, pb) -> 'Expr.TupleProj':
         return Expr.TupleProj(
@@ -335,11 +346,16 @@ class ProtobufParser:
             return CaseAlt(optional_none=self.parse_Unit(pb.optional_none), body=body)
         elif sum_name == 'optional_some':
             return CaseAlt(optional_some=self.parse_CaseAlt_OptionalSome(pb.optional_some), body=body)
+        elif sum_name == 'enum':
+            return CaseAlt(enum=self.parse_CaseAlt_Enum(pb.enum), body=body)
         else:
-            raise ValueError('unknown Sum value')
+            raise ValueError(f'unknown Sum value: {sum_name!r}')
 
     def parse_CaseAlt_Variant(self, pb) -> 'CaseAlt.Variant':
         return CaseAlt.Variant(self.parse_TypeConName(pb.con), pb.variant, pb.binder)
+
+    def parse_CaseAlt_Enum(self, pb) -> 'CaseAlt.Enum':
+        return CaseAlt.Enum(self.parse_TypeConName(pb.con), pb.constructor)
 
     def parse_CaseAlt_Cons(self, pb) -> 'CaseAlt.Cons':
         return CaseAlt.Cons(pb.var_head, pb.var_tail)
@@ -505,11 +521,18 @@ class ProtobufParser:
             kwargs['record'] = self.parse_DefDataType_Fields(pb.record)
         elif DataCons_name == 'variant':
             kwargs['variant'] = self.parse_DefDataType_Fields(pb.variant)
+        elif DataCons_name == 'enum':
+            kwargs['enum'] = self.parse_DefDataType_EnumConstructors(pb.enum)
+        else:
+            raise ValueError(f'unknown DataCons value: {DataCons_name!r}')
         return DefDataType(**kwargs)
 
     def parse_DefDataType_Fields(self, pb) -> 'DefDataType.Fields':
         return DefDataType.Fields(
             fields=tuple(self.parse_FieldWithType(field) for field in pb.fields))
+
+    def parse_DefDataType_EnumConstructors(self, pb) -> 'DefDataType.EnumConstructors':
+        return DefDataType.EnumConstructors(constructors=tuple(pb.constructors))
 
     def parse_DefValue(self, pb) -> 'DefValue':
         return DefValue(
@@ -539,4 +562,9 @@ class ProtobufParser:
             templates=tuple(self.parse_DefTemplate(template) for template in pb.templates))
 
     def parse_Package(self, pb) -> 'Package':
+        # TODO: this modifies state in a parser which is less than ideal; a better pattern would be
+        #  to create a sub-parser with the contextual state required to understand interned package
+        #  IDs
+        self.interned_packages.extend(pb.interned_package_ids)
+
         return Package(modules=tuple(self.parse_Module(module) for module in pb.modules))
