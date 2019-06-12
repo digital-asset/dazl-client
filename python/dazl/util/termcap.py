@@ -9,13 +9,16 @@ from subprocess import Popen, DEVNULL, PIPE
 from typing import Optional, Tuple
 
 
-def termsize() -> Tuple[Optional[int], Optional[int]]:
+def termsize() -> 'Tuple[Optional[int], Optional[int]]':
     """
     Return the current size of the terminal. If the current terminal is not a tty, then
     ``(None, None)`` is returned.
     """
-    with Popen(['stty', 'size'], stdout=PIPE, stderr=DEVNULL) as proc:
-        term_size_str = proc.stdout.read().decode('utf8')
+    try:
+        with Popen(['stty', 'size'], stdout=PIPE, stderr=DEVNULL) as proc:
+            term_size_str = proc.stdout.read().decode('utf8')
+    except FileNotFoundError:
+        term_size_str = None
     if term_size_str is not None:
         dimensions = term_size_str.split()
         if len(dimensions) >= 2:

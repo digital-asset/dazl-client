@@ -216,11 +216,11 @@ class Network:
         run_state = RunState(RunLevel.RUN_FOREVER)
         if install_signal_handlers:
             # the main loop will be run from a background thread, so do NOT use asyncio directly
-            signal.signal(signal.SIGINT, lambda *_: self._impl.shutdown())
             try:
-                signal.signal(signal.SIGINT, lambda *_: self._impl.abort())
-            except ValueError:
-                # SIGQUIT is not supported on Windows.
+                signal.signal(signal.SIGINT, lambda *_: self._impl.shutdown())
+                signal.signal(signal.SIGQUIT, lambda *_: self._impl.abort())
+            except (NotImplementedError, AttributeError, ValueError):
+                # SIGINIT and SIGQUIT handlers are not supported on Windows.
                 pass
 
         return self._impl.start(run_state, daemon)
@@ -259,11 +259,11 @@ class Network:
         run_state = RunState(initial_run_level)
         loop = get_event_loop()
         if install_signal_handlers:
-            loop.add_signal_handler(signal.SIGINT, run_state.handle_sigint)
             try:
+                loop.add_signal_handler(signal.SIGINT, run_state.handle_sigint)
                 loop.add_signal_handler(signal.SIGQUIT, run_state.handle_sigquit)
-            except ValueError:
-                # SIGQUIT is not supported on Windows.
+            except (NotImplementedError, AttributeError, ValueError):
+                # SIGINT and SIGQUIT are not supported on Windows.
                 pass
 
         loop.run_until_complete(self.aio_run(*coroutines, run_state=run_state))
