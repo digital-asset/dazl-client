@@ -4,7 +4,7 @@
 """
 Support for the gRPC-based Ledger API.
 """
-from asyncio import gather
+from asyncio import gather, get_event_loop
 from datetime import datetime
 from threading import Thread, Event
 from typing import Awaitable, Iterable, Optional, Sequence
@@ -15,8 +15,8 @@ from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credenti
 from ... import LOG
 from .._base import LedgerClient, _LedgerConnection, _LedgerConnectionContext
 from .grpc_time import maybe_grpc_time_stream
-from .pb_parse_event import serialize_request, to_transaction_events, \
-    BaseEventDeserializationContext
+from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
+    to_acs_events, to_transaction_events, BaseEventDeserializationContext
 from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, find_dependencies
 from ...model.core import Party
 from ...model.ledger import LedgerMetadata, StaticTimeModel, RealTimeModel
@@ -32,7 +32,7 @@ class GRPCv1LedgerClient(LedgerClient):
     def __init__(self, connection: 'GRPCv1Connection', ledger: LedgerMetadata, party: Party):
         self.connection = safe_cast(GRPCv1Connection, connection)
         self.ledger = safe_cast(LedgerMetadata, ledger)
-        self.party = safe_cast(str, party)  # type: Party
+        self.party = Party(safe_cast(str, party))
 
     def commands(self, commands: CommandPayload) -> None:
         serializer = self.ledger.serializer
@@ -40,12 +40,30 @@ class GRPCv1LedgerClient(LedgerClient):
         return self.connection.context.run_in_background(
             lambda: self.connection.command_service.SubmitAndWait(request))
 
+    def active_contracts(self) -> 'Awaitable[Sequence[BaseEvent]]':
+        results_future = get_event_loop().create_future()
+        request = serialize_acs_request(self.ledger.ledger_id, self.party)
+
+        context = BaseEventDeserializationContext(
+            None, self.ledger.store, self.party, self.ledger.ledger_id)
+
+        def on_acs_done(fut):
+            try:
+                acs_stream = fut.result()
+                events = to_acs_events(context, acs_stream)
+                results_future.set_result(events)
+            except Exception as ex:
+                results_future.set_exception(ex)
+
+        acs_future = self.connection.context.run_in_background(
+            lambda: self.connection.active_contract_set_service.GetActiveContracts(request))
+        acs_future.add_done_callback(on_acs_done)
+        return results_future
+
     def events(self, transaction_filter: TransactionFilter) \
             -> Awaitable[Sequence[BaseEvent]]:
-        request = serialize_request(transaction_filter, self.party)
-
-        import asyncio
-        results_future = asyncio.get_event_loop().create_future()
+        results_future = get_event_loop().create_future()
+        request = serialize_transactions_request(transaction_filter, self.party)
 
         context = BaseEventDeserializationContext(
             None, self.ledger.store, self.party, transaction_filter.ledger_id)
@@ -244,6 +262,7 @@ class GRPCv1Connection(_LedgerConnection):
 
         self._closed = Event()
         self._channel = grpc_create_channel(settings)
+        self.active_contract_set_service = G.ActiveContractsServiceStub(self._channel)
         self.command_service = G.CommandServiceStub(self._channel)
         self.transaction_service = G.TransactionServiceStub(self._channel)
         self.package_service = G.PackageServiceStub(self._channel)

@@ -92,7 +92,13 @@ class LedgerClient:
         """
         raise NotImplementedError('commands must be implemented')
 
-    async def events(self, transaction_filter: TransactionFilter) -> Sequence[BaseEvent]:
+    async def active_contracts(self) -> 'Sequence[BaseEvent]':
+        """
+        Return the current active contract set.
+        """
+        raise NotImplementedError('active contract set fetch must be implemented')
+
+    async def events(self, transaction_filter: TransactionFilter) -> 'Sequence[BaseEvent]':
         """
         Return events from a certain offset in the ledger. The number of blocks
         returned is implementation-defined.

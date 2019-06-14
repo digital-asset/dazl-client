@@ -188,7 +188,7 @@ def parse_daml_metadata_pb(package_id: str, metadata_pb: Any) -> 'PackageStore':
                     'The template %s was of type %s; only records are supported for templates',
                     tt, data_type)
 
-    LOG.debug('Fully registered all types.')
+    LOG.debug('Fully registered all types for package ID %r', package_id)
     return psb.build()
 
 
