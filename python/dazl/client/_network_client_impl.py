@@ -420,7 +420,7 @@ class _NetworkRunner:
         LOG.info('Reading current ledger state...')
         # Bring all clients up to the reported head.
         if party_impls and first_offset or (metadata.offset and metadata.offset != '1-'):
-            await gather(*[party_impl.read_transactions(first_offset or metadata.offset, False)
+            await gather(*[party_impl.read_acs(first_offset or metadata.offset, False)
                            for party_impl in party_impls])
 
         LOG.debug('Preparing to raise the "ready" event...')

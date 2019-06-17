@@ -1,6 +1,9 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from ...._gen.com.digitalasset.ledger.api.v1.active_contracts_service_pb2 import \
+    GetActiveContractsRequest, GetActiveContractsResponse
+from ...._gen.com.digitalasset.ledger.api.v1.active_contracts_service_pb2_grpc import ActiveContractsServiceStub
 from ...._gen.com.digitalasset.ledger.api.v1.commands_pb2 import Command, CreateCommand, ExerciseCommand
 from ...._gen.com.digitalasset.ledger.api.v1.command_service_pb2_grpc import CommandServiceStub
 from ...._gen.com.digitalasset.ledger.api.v1.command_submission_service_pb2 import SubmitRequest

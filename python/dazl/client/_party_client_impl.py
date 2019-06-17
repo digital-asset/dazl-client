@@ -23,7 +23,7 @@ from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEvent, OffsetEvent, \
     TransactionFilter, EventKey, ContractCreateEvent, ContractArchiveEvent, \
-    sortable_offset_height, InitEvent
+    sortable_offset_height, InitEvent, ActiveContractSetEvent
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, \
     EventHandlerResponse, Command
 from ..protocols import LedgerNetwork, LedgerClient
@@ -165,11 +165,38 @@ class _PartyClientImpl:
 
     # region Read Path
 
-    async def read_transactions(self, until_offset: Optional[str], raise_events: bool) \
-            -> Tuple[str, Future]:
+    async def read_acs(self, until_offset: 'Optional[str]', raise_events: bool) \
+            -> 'Tuple[str, Future]':
+        """
+        Initial bootstrap of events from the read side. Only one instance of this coroutine
+        should be active at a time per client. An initial block of events is read using the
+        Active Contract Set service, and the transaction stream is then subscribed to in order to
+        ensure that this client is caught up to the specified offset.
+
+        :param until_offset:
+            The destination ledger offset to read up until to. If not included, then the client
+            attempts to read as many transactions as is currently available.
+        :param raise_events:
+            ``True`` to raise transaction- and contract-related events to event handlers;
+            ``False`` to suppress this behavior and only update local state within the client
+            (offset information and active contract set).
+        :return:
+            The ledger offset that the reader ended at and a Future that is resolved when all event
+            handlers' follow-ups have either successfully or unsuccessfully completed.
+        """
+        LOG.info('Calling read_acs(%r, %r)', until_offset, raise_events)
+        client = await self._client_fut
+        acs = await client.active_contracts()
+        for acs_evt in acs:
+            await self._process_transaction_stream_event(acs_evt, False)
+
+        return await self.read_transactions(until_offset, raise_events)
+
+    async def read_transactions(self, until_offset: 'Optional[str]', raise_events: bool) \
+            -> 'Tuple[str, Future]':
         """
         Main processing method of events from the read side. Only one instance of this coroutine
-        should be active at a time.
+        should be active at a time per client.
 
         :param until_offset:
             The destination ledger offset to read up until to. If not included, then the client
@@ -188,9 +215,7 @@ class _PartyClientImpl:
         client = await self._client_fut
         metadata = await self._pool.ledger()
 
-        initial_offset = self._reader.offset
         event_count = 0
-
         futs = []
 
         while (until_offset is None or
@@ -254,6 +279,10 @@ class _PartyClientImpl:
             LOG.debug('evt recv: party %s, BIM %r (%s events)',
                       self.party, event.command_id[0:7], len(event.contract_events))
 
+        elif isinstance(event, ActiveContractSetEvent):
+            for contract_event in event.contract_events:
+                self._acs.handle_create(contract_event)
+
         if raise_events:
             fut = self.emit_event(event)
         else:
@@ -268,8 +297,11 @@ class _PartyClientImpl:
 
     # region Write path
 
-    def write_commands(self, commands: EventHandlerResponse, ignore_errors: bool = False,
-                       workflow_id: Optional[str] = None) \
+    def write_commands(
+            self,
+            commands: EventHandlerResponse,
+            ignore_errors: bool = False,
+            workflow_id: 'Optional[str]' = None) \
             -> Awaitable[None]:
         """
         Submit a command or list of commands.
@@ -279,6 +311,8 @@ class _PartyClientImpl:
         :param ignore_errors:
             Whether errors should be ignored for purposes of terminating the client. If ``True``,
             then a failure to send this command does not necessarily end the client.
+        :param workflow_id:
+            The workflow ID to use to tag submitted commands.
         :return:
             An ``asyncio.Future`` that is resolved right before the corresponding side effects have
             hit the event stream for this party. Synchronous errors are reported back immediately

@@ -7,7 +7,7 @@ Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic typ
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict, Iterable, List, Optional, Sequence
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Union
 
 # noinspection PyPackageRequirements
 from google.protobuf.empty_pb2 import Empty
@@ -16,11 +16,12 @@ from ... import LOG
 from ...model.core import ContractId
 from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
     TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
-    ContractExercisedEvent
+    ContractExercisedEvent, ActiveContractSetEvent
 from ...model.types import RecordType, Type, VariantType, ContractIdType, ListType, \
     TypeEvaluationContext, type_evaluate_dispatch_default_error, MapType, OptionalType
 from ...model.types_store import PackageStore
 from ...util.prim_types import to_date, to_datetime, to_hashable, frozendict
+from ...util.typing import safe_cast
 
 
 @dataclass(frozen=True)
@@ -36,11 +37,36 @@ class BaseEventDeserializationContext:
     def offset_event(self, time: datetime, offset: str) -> OffsetEvent:
         return OffsetEvent(self.client, self.party, time, self.ledger_id, self.store, offset)
 
+    def active_contract_set(self, offset: str, workflow_id: str) \
+            -> 'ActiveContractSetEventDeserializationContext':
+        return ActiveContractSetEventDeserializationContext(
+            self.client, self.store, self.party, self.ledger_id,
+            offset, workflow_id)
+
     def transaction(self, time: datetime, offset: str, command_id: str, workflow_id: str) \
             -> 'TransactionEventDeserializationContext':
         return TransactionEventDeserializationContext(
             self.client, self.store, self.party, self.ledger_id,
             time, offset, command_id, workflow_id)
+
+
+@dataclass(frozen=True)
+class ActiveContractSetEventDeserializationContext(BaseEventDeserializationContext):
+    """
+    Attributes required throughout the deserialization of the Active Contract Set.
+    """
+    offset: str
+    workflow_id: str
+
+    def active_contract_set_event(self, contract_events: 'Sequence[ContractCreateEvent]') \
+            -> 'ActiveContractSetEvent':
+        return ActiveContractSetEvent(self.client, self.party, self.ledger_id, self.store,
+                                      self.offset, contract_events)
+
+    def contract_created_event(self, cid, cdata, event_id, witness_parties) -> ContractCreateEvent:
+        return ContractCreateEvent(self.client, self.party, None, self.ledger_id, self.store,
+                                   self.offset, cid, cdata, '', self.workflow_id,
+                                   event_id, witness_parties)
 
 
 @dataclass(frozen=True)
@@ -83,7 +109,7 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
                                     event_id, witness_parties)
 
 
-def serialize_request(transaction_filter: TransactionFilter, party: str) \
+def serialize_transactions_request(transaction_filter: TransactionFilter, party: str) \
         -> 'G.GetTransactionsRequest':
     from . import model as G
     if transaction_filter.current_offset is not None:
@@ -112,6 +138,16 @@ def serialize_request(transaction_filter: TransactionFilter, party: str) \
         ledger_id=transaction_filter.ledger_id,
         begin=ledger_offset,
         end=final_offset,
+        filter=tr_filter)
+
+
+def serialize_acs_request(ledger_id: str, party: str):
+    from . import model as G
+
+    filters_by_party = {party: G.Filters()}
+    tr_filter = G.TransactionFilter(filters_by_party=filters_by_party)
+    return G.GetActiveContractsRequest(
+        ledger_id=ledger_id,
         filter=tr_filter)
 
 
@@ -162,6 +198,14 @@ def to_transaction_events(
     return events
 
 
+def to_acs_events(
+        context: 'BaseEventDeserializationContext',
+        acs_stream_pb: 'Iterable[Any]') -> 'Sequence[ActiveContractSetEvent]':
+    return [acs_evt
+            for acs_response_pb in acs_stream_pb
+            for acs_evt in to_acs_event(context, acs_response_pb)]
+
+
 def from_transaction_tree(context: 'BaseEventDeserializationContext', tt_pb: 'G.TransactionTree') \
         -> 'Sequence[OffsetEvent]':
 
@@ -178,6 +222,15 @@ def from_transaction_tree(context: 'BaseEventDeserializationContext', tt_pb: 'G.
             events.append(evt)
 
     return events
+
+
+def to_acs_event(context: BaseEventDeserializationContext, acs_pb: 'G.ActiveContractSetResponse'):
+    acs_context = context.active_contract_set(acs_pb.offset, acs_pb.workflow_id)
+    contract_events = \
+        [evt
+         for evt in (to_created_event(acs_context, evt_pb) for evt_pb in acs_pb.active_contracts)
+         if evt is not None]
+    return [acs_context.active_contract_set_event(contract_events)]
 
 
 def to_transaction_chunk(context: BaseEventDeserializationContext, tx_pb: 'G.Transaction') \
@@ -208,95 +261,117 @@ def to_transaction_chunk(context: BaseEventDeserializationContext, tx_pb: 'G.Tra
             t_context.transaction_end_event(contract_events)]
 
 
-def to_event(context: TransactionEventDeserializationContext, evt_pb: 'G.Event') \
+def to_event(
+        context: 'Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]',
+        evt_pb: 'G.Event') \
         -> 'Optional[BaseEvent]':
     try:
         event_type = evt_pb.WhichOneof('event')
     except ValueError:
-        event_type = evt_pb.WhichOneof('kind')
+        try:
+            event_type = evt_pb.WhichOneof('kind')
+        except ValueError:
+            LOG.error('Deserialization error into an event of %r', evt_pb)
+            raise
 
     if 'created' == event_type:
-        cr = evt_pb.created
-        search_str = f'{cr.template_id.name}@{cr.template_id.package_id}'
-
-        candidates = context.store.resolve_template_type(search_str)
-        if len(candidates) == 0:
-            LOG.warning('Could not find metadata for %s!', search_str)
-            return None
-        elif len(candidates) > 1:
-            LOG.error('The template identifier %s is not unique within its metadata!', candidates)
-            return None
-
-        ((type_ref, tt),) = candidates.items()
-
-        tt_context = TypeEvaluationContext.from_store(context.store)
-
-        cid = ContractId(cr.contract_id, type_ref)
-        cdata = to_record(tt_context, tt, cr.create_arguments)
-        event_id = cr.event_id
-        witness_parties = tuple(cr.witness_parties)
-
-        return context.contract_created_event(cid, cdata, event_id, witness_parties)
-
+        return to_created_event(context, evt_pb.created)
     elif 'exercised' == event_type:
-        er = evt_pb.exercised
-        search_str = f'{er.template_id.name}@{er.template_id.package_id}'
-
-        candidates = context.store.resolve_template_type(search_str)
-        if len(candidates) == 0:
-            LOG.warning('Could not find metadata for %s!', search_str)
-            return None
-        elif len(candidates) > 1:
-            LOG.error('The template identifier %s is not unique within its metadata!', candidates)
-            return None
-
-        ((type_ref, tt),) = candidates.items()
-
-        tt_context = TypeEvaluationContext.from_store(context.store)
-        choice_candidates = context.store.resolve_choice(type_ref, er.choice)
-        if len(candidates) == 0:
-            LOG.warning('Could not find metadata for %s!', search_str)
-            return None
-        elif len(candidates) > 1:
-            LOG.error('The template identifier %s is not unique within its metadata!', candidates)
-            return None
-
-        ((choice_ref, cc),) = choice_candidates.items()
-
-        cid = ContractId(er.contract_id, type_ref)
-        event_id = er.event_id
-        witness_parties = tuple(er.witness_parties)
-        contract_creating_event_id = er.contract_creating_event_id
-        choice = er.choice
-        choice_args = to_natural_type(tt_context, cc.data_type, er.choice_argument)
-        acting_parties = tuple(er.acting_parties)
-        consuming = er.consuming
-        child_event_ids = er.child_event_ids
-
-        return context.contract_exercised_event(
-            cid, None, event_id, witness_parties, contract_creating_event_id,
-            choice, choice_args, acting_parties, consuming, child_event_ids)
-
+        return to_exercised_event(context, evt_pb.exercised)
     elif 'archived' == event_type:
-        ar = evt_pb.archived
-        search_str = f'{ar.template_id.name}@{ar.template_id.package_id}'
-
-        candidates = context.store.resolve_template_type(search_str)
-        if len(candidates) == 0:
-            LOG.warning('Could not find metadata for %s!', search_str)
-            return None
-        elif len(candidates) > 1:
-            LOG.error('The template identifier %s is not unique within its metadata!', candidates)
-            return None
-
-        ((type_ref, tt),) = candidates.items()
-        event_id = ar.event_id
-        witness_parties = tuple(ar.witness_parties)
-
-        cid = ContractId(ar.contract_id, type_ref)
-        return context.contract_archived_event(cid, None, event_id, witness_parties)
+        return to_archived_event(context, evt_pb.archived)
     else:
         raise ValueError(f'unknown event type: {event_type}')
+
+
+def to_created_event(
+        context: 'Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]',
+        cr: 'G.CreatedEvent') \
+        -> 'Optional[ContractCreateEvent]':
+    search_str = f'{cr.template_id.name}@{cr.template_id.package_id}'
+
+    candidates = context.store.resolve_template_type(search_str)
+    if len(candidates) == 0:
+        LOG.warning('Could not find metadata for %s!', search_str)
+        return None
+    elif len(candidates) > 1:
+        LOG.error('The template identifier %s is not unique within its metadata!', candidates)
+        return None
+
+    ((type_ref, tt),) = candidates.items()
+
+    tt_context = TypeEvaluationContext.from_store(context.store)
+
+    cid = ContractId(cr.contract_id, type_ref)
+    cdata = to_record(tt_context, tt, cr.create_arguments)
+    event_id = cr.event_id
+    witness_parties = tuple(cr.witness_parties)
+
+    return context.contract_created_event(cid, cdata, event_id, witness_parties)
+
+
+def to_exercised_event(
+        context: 'TransactionEventDeserializationContext',
+        er: 'G.ExercisedEvent') \
+        -> 'Optional[ContractExercisedEvent]':
+    search_str = f'{er.template_id.name}@{er.template_id.package_id}'
+
+    candidates = context.store.resolve_template_type(search_str)
+    if len(candidates) == 0:
+        LOG.warning('Could not find metadata for %s!', search_str)
+        return None
+    elif len(candidates) > 1:
+        LOG.error('The template identifier %s is not unique within its metadata!', candidates)
+        return None
+
+    ((type_ref, tt),) = candidates.items()
+
+    tt_context = TypeEvaluationContext.from_store(context.store)
+    choice_candidates = context.store.resolve_choice(type_ref, er.choice)
+    if len(candidates) == 0:
+        LOG.warning('Could not find metadata for %s!', search_str)
+        return None
+    elif len(candidates) > 1:
+        LOG.error('The template identifier %s is not unique within its metadata!', candidates)
+        return None
+
+    ((choice_ref, cc),) = choice_candidates.items()
+
+    cid = ContractId(er.contract_id, type_ref)
+    event_id = er.event_id
+    witness_parties = tuple(er.witness_parties)
+    contract_creating_event_id = er.contract_creating_event_id
+    choice = er.choice
+    choice_args = to_natural_type(tt_context, cc.data_type, er.choice_argument)
+    acting_parties = tuple(er.acting_parties)
+    consuming = er.consuming
+    child_event_ids = er.child_event_ids
+
+    return context.contract_exercised_event(
+        cid, None, event_id, witness_parties, contract_creating_event_id,
+        choice, choice_args, acting_parties, consuming, child_event_ids)
+
+
+def to_archived_event(
+        context: 'TransactionEventDeserializationContext',
+        ar: 'G.ArchivedEvent') \
+        -> 'Optional[ContractArchiveEvent]':
+    search_str = f'{ar.template_id.name}@{ar.template_id.package_id}'
+
+    candidates = context.store.resolve_template_type(search_str)
+    if len(candidates) == 0:
+        LOG.warning('Could not find metadata for %s!', search_str)
+        return None
+    elif len(candidates) > 1:
+        LOG.error('The template identifier %s is not unique within its metadata!', candidates)
+        return None
+
+    ((type_ref, tt),) = candidates.items()
+    event_id = ar.event_id
+    witness_parties = tuple(ar.witness_parties)
+
+    cid = ContractId(ar.contract_id, type_ref)
+    return context.contract_archived_event(cid, None, event_id, witness_parties)
 
 
 def to_natural_type(context: TypeEvaluationContext, data_type: Type, obj: 'G.Value') -> Any:

@@ -76,6 +76,15 @@ class ReadyEvent(OffsetEvent):
     """
 
 
+class ActiveContractSetEvent(OffsetEvent):
+    """
+    Event raised on initial read of the active contract set.
+    """
+    def __init__(self, client, party, ledger_id, package_store, offset, contract_events):
+        super().__init__(client, party, None, ledger_id, package_store, offset)
+        self.contract_events = contract_events
+
+
 class BaseTransactionEvent(OffsetEvent):
     """
     Event raised when dazl encounters a new transaction. This is raised before any corresponding
