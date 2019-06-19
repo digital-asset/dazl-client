@@ -48,7 +48,7 @@ def ensure_sdk_component(
     artifact_loc = artifacts.artifacts[component]
     if version is not None and isinstance(version, str):
         version = VersionInfo.parse(version)
-    else:
+    elif not isinstance(version, VersionInfo):
         version = artifact_loc.default_version
         if version is None:
             raise ValueError(f'the component {component!r} does not have a default version defined')
