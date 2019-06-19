@@ -6,13 +6,13 @@ from asyncio import gather, ensure_future, sleep, Future
 from collections import defaultdict
 from datetime import timedelta, datetime
 from threading import RLock, Thread
-from typing import Any, Callable, Dict, List, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
+from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
     Union, overload
 
 from dataclasses import asdict
 
 from .. import LOG
-from ._party_client_impl import _PartyClientImpl, read_transactions
+from ._party_client_impl import _PartyClientImpl
 from ._run_level import RunState
 from ..client.config import NetworkConfig
 from ..metrics import MetricEvents
@@ -45,6 +45,7 @@ class _NetworkImpl:
         if metrics is None:
             # create a default set of metrics
             try:
+                # noinspection PyUnresolvedReferences
                 from ..metrics.prometheus import PrometheusMetricEvents
                 self._metrics = PrometheusMetricEvents.default()
             except ImportError:
@@ -84,8 +85,8 @@ class _NetworkImpl:
 
     def set_config(self, *configs: 'NetworkConfig', **kwargs):
         for config in configs:
-            self._config.update(asdict(config))
-        self._config.update(kwargs)
+            self._config.update({k: v for k, v in asdict(config).items() if v is not None})
+        self._config.update({k: v for k, v in kwargs.items() if v is not None})
 
     async def aio_run(self, *coroutines, run_state: Optional[RunState] = None) -> None:
         """
@@ -323,6 +324,7 @@ class _NetworkRunner:
         self._writers = []
 
     async def run(self, base_config: dict):
+        LOG.debug('Running a Network with base config: %r', base_config)
         prev_offset = None
         keep_running = True
         while keep_running:
@@ -358,7 +360,8 @@ class _NetworkRunner:
         """
         Called periodically to schedule reads and writes.
         """
-        offset, completions = await self._run(party_impls)
+        from ._reader_sync import run_iteration
+        offset, completions = await run_iteration(party_impls)
 
         self._read_completions = [fut for fut in (*self._read_completions, *completions)
                                   if not fut.done()]
@@ -417,21 +420,18 @@ class _NetworkRunner:
         for party_impl in party_impls:
             futs.append(party_impl.initialize(current_time, metadata))
 
-        LOG.info('Reading current ledger state...')
-        # Bring all clients up to the reported head.
-        if party_impls and first_offset or (metadata.offset and metadata.offset != '1-'):
-            await gather(*[party_impl.read_acs(first_offset or metadata.offset, False)
-                           for party_impl in party_impls])
+        from ._reader_sync import read_transaction_event_stream
+        offset = await read_transaction_event_stream(party_impls)
 
         LOG.debug('Preparing to raise the "ready" event...')
         # Raise the 'ready' event.
         current_time = metadata.time_model.get_time()
         if first_offset is None:
-            evt = ReadyEvent(None, None, current_time, metadata.ledger_id, metadata.store, metadata.offset)
+            evt = ReadyEvent(None, None, current_time, metadata.ledger_id, metadata.store, offset)
             self._network_impl.emit_event(evt)
         for party_impl in party_impls:
             evt = ReadyEvent(party_impl, party_impl.party, current_time, metadata.ledger_id,
-                             metadata.store, metadata.offset)
+                             metadata.store, offset)
             futs.append(party_impl.emit_event(evt))
         for party_impl in party_impls:
             party_impl.ready().set_result(None)
@@ -439,36 +439,5 @@ class _NetworkRunner:
         self._writers.extend(ensure_future(party_impl.main_writer()) for party_impl in party_impls)
 
         # Return the metadata offset for later
-        LOG.debug('Caught up to %s.', metadata.offset)
-        return metadata.offset, gather(*futs, return_exceptions=True)
-
-    @staticmethod
-    async def _run(party_impls: 'Collection[_PartyClientImpl]') -> Tuple[str, Collection[Future]]:
-        """
-        Read the next set of transactions for the set of parties. This coroutine ends when all
-        parties are caught up to the same offset.
-
-        :param party_impls:
-            A collection of :class:`_PartyClientImpl` will have scheduled invocations.
-        :return:
-            A tuple of the current ending offset and Futures that represent completions for commands
-            that were submitted as a direct result of these events.
-        """
-        read_coroutines = []  # type: List[Future]
-
-        # have every client read as far ahead as they can
-        offsets, event_fut = await read_transactions(party_impls, None, True)
-        if not event_fut.done():
-            read_coroutines.append(event_fut)
-
-        max_offset = offsets[-1] if offsets else None
-        if len(offsets) > 1:
-            # now have every client catch up to the agreed-upon HEAD
-            _, event_fut = await read_transactions(party_impls, max_offset, True)
-            if not event_fut.done():
-                read_coroutines.append(event_fut)
-
-        await sleep(0)
-
-        return max_offset, [fut for fut in read_coroutines if not fut.done()]
-
+        LOG.debug('Caught up to %s.', offset)
+        return offset, gather(*futs, return_exceptions=True)

@@ -10,13 +10,13 @@ template PostmanRole
   where
     signatory postman
     controller postman can
-      nonconsuming InviteParticipant : ()
+      nonconsuming InviteParticipant : (ContractId InviteAuthorRole, ContractId InviteReceiverRole)
         with
           party : Party; address: Text
         do
-          create InviteAuthorRole with postman; author = party
-          create InviteReceiverRole with postman; receiver = party; address
-          return ()
+          c <- create InviteAuthorRole with postman; author = party
+          d <- create InviteReceiverRole with postman; receiver = party; address
+          return (c, d)
 
 template AuthorRole
   with

@@ -7,28 +7,28 @@ This module contains models used on the read-side of the Ledger API.
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Callable, Collection, Optional, TypeVar, Union
+from typing import Any, Callable, Collection, Optional, Sequence, TypeVar, Union
 
 from .core import ContractId, ContractData, ContractContextualData, Party
 from .lookup import template_reverse_globs, validate_template
 from .types import Type, TypeReference
 from .types_store import PackageStore
-from ..util.typing import safe_cast, safe_optional_cast
 
 
 T = TypeVar('T')
 
 
+@dataclass(frozen=True)
 class BaseEvent:
     """
     Superclass of all dazl events.
     """
-    def __init__(self, client, party, time, ledger_id, package_store):
-        self.client = client
-        self.party = safe_cast(str, party) if party is not None else None  # type: Optional[Party]
-        self.time = safe_optional_cast(datetime, time)
-        self.ledger_id = safe_cast(str, ledger_id)
-        self.package_store = safe_cast(PackageStore, package_store)
+
+    client: 'Any'
+    party: Optional[Party]
+    time: Optional[datetime]
+    ledger_id: str
+    package_store: PackageStore
 
     def acs_find_active(self, template: Union[TypeReference, str], match=None):
         return self.client.find_active(template, match)
@@ -52,6 +52,7 @@ class BaseEvent:
         return f'{self.__class__.__name__}({fields})'
 
 
+@dataclass(frozen=True)
 class InitEvent(BaseEvent):
     """
     Event raised when dazl is initialized, but before it has begun reading from the Active Contract
@@ -59,16 +60,17 @@ class InitEvent(BaseEvent):
     """
 
 
+@dataclass(frozen=True)
 class OffsetEvent(BaseEvent):
     """
     Event raised when dazl is ready to begin processing new events. At this point, the Active
     Contract Set (ACS) is populated with the current state of the ledger.
     """
-    def __init__(self, client, party, time, ledger_id, package_store, offset):
-        super().__init__(client, party, time, ledger_id, package_store)
-        self.offset = safe_cast(str, offset)
+
+    offset: str
 
 
+@dataclass(frozen=True)
 class ReadyEvent(OffsetEvent):
     """
     Event raised when dazl is ready to begin processing new events. At this point, the Active
@@ -76,68 +78,57 @@ class ReadyEvent(OffsetEvent):
     """
 
 
+@dataclass(frozen=True)
 class ActiveContractSetEvent(OffsetEvent):
     """
     Event raised on initial read of the active contract set.
     """
-    def __init__(self, client, party, ledger_id, package_store, offset, contract_events):
-        super().__init__(client, party, None, ledger_id, package_store, offset)
-        self.contract_events = contract_events
+    contract_events: 'Sequence[ContractCreateEvent]'
 
 
+@dataclass(frozen=True)
 class BaseTransactionEvent(OffsetEvent):
     """
     Event raised when dazl encounters a new transaction. This is raised before any corresponding
     :class:`ContractCreateEvent` or :class:`ContractArchiveEvent`.
     """
-    def __init__(self, client, party, time, ledger_id, package_store, offset, command_id,
-                 workflow_id):
-        super().__init__(client, party, time, ledger_id, package_store, offset)
-        self.command_id = safe_cast(str, command_id)
-        self.workflow_id = safe_cast(str, workflow_id)
+    command_id: str
+    workflow_id: str
 
 
+@dataclass(frozen=True)
 class TransactionStartEvent(BaseTransactionEvent):
     """
     Event raised when dazl encounters a new transaction. This is raised before any corresponding
     :class:`ContractCreateEvent` or :class:`ContractArchiveEvent`.
     """
-    def __init__(self, client, party, time, ledger_id, package_store, offset, command_id,
-                 workflow_id, contract_events):
-        super().__init__(client, party, time, ledger_id, package_store, offset, command_id,
-                         workflow_id)
-        self.contract_events = contract_events
+    contract_events: 'Sequence[ContractEvent]'
 
 
+@dataclass(frozen=True)
 class TransactionEndEvent(BaseTransactionEvent):
     """
     Event raised when dazl encounters the end of a transaction. This is raised after any
     corresponding :class:`ContractCreateEvent` or :class:`ContractArchiveEvent`.
     """
-    def __init__(self, client, party, time, ledger_id, package_store, offset, command_id,
-                 workflow_id, contract_events):
-        super().__init__(client, party, time, ledger_id, package_store, offset, command_id,
-                         workflow_id)
-        self.contract_events = contract_events
+    contract_events: 'Sequence[ContractEvent]'
 
 
+@dataclass(frozen=True)
 class ContractEvent(BaseTransactionEvent):
     """
     Event raised when dazl automation detects a new create or an archive. The Active Contract Set
     (ACS) reflects this event, as well as all other events that occurred in the same transaction.
     """
-    def __init__(self, client, party, time, ledger_id, package_store, offset, cid, cdata,
-                 command_id, workflow_id, event_id, witness_parties):
-        super().__init__(client, party, time, ledger_id, package_store, offset, command_id,
-                         workflow_id)
-        self.cid = safe_cast(ContractId, cid)
-        self.cdata = cdata  # type: ContractData
-        self.command_id = command_id
-        self.workflow_id = workflow_id
-        self.event_id = event_id
-        self.witness_parties = witness_parties
+    cid: ContractId
+    cdata: ContractData
+    command_id: str
+    workflow_id: str
+    event_id: str
+    witness_parties: Sequence[str]
 
 
+@dataclass(frozen=True)
 class ContractCreateEvent(ContractEvent):
     """
     Event raised when dazl automation detects a contract create. The Active Contract Set
@@ -145,23 +136,20 @@ class ContractCreateEvent(ContractEvent):
     """
 
 
+@dataclass(frozen=True)
 class ContractExercisedEvent(ContractEvent):
     """
     Event raised when dazl automation detects a contract exercised.
     """
-    def __init__(self, client, party, time, ledger_id, package_store, offset, cid, cdata,
-                 command_id, workflow_id, event_id, witness_parties, contract_creating_event_id,
-                 choice, choice_args, acting_parties, consuming, child_event_ids):
-        super().__init__(client, party, time, ledger_id, package_store, offset, cid, cdata,
-                         command_id, workflow_id, event_id, witness_parties)
-        self.contract_creating_event_id = contract_creating_event_id
-        self.choice = choice
-        self.choice_args = choice_args
-        self.acting_parties = acting_parties
-        self.consuming = consuming
-        self.child_event_ids = child_event_ids
+    contract_creating_event_id: str
+    choice: str
+    choice_args: Any
+    acting_parties: Sequence[str]
+    consuming: True
+    child_event_ids: Sequence[str]
 
 
+@dataclass(frozen=True)
 class ContractArchiveEvent(ContractEvent):
     """
     Event raised when dazl automation detects a contract archive. The Active Contract Set
@@ -230,7 +218,7 @@ class EventKey:
         Return the names of events that get raised in response to an :class:`InitEvent`. This is
         currently only ``'init'``.
         """
-        return ('init',)
+        return 'init',
 
     @staticmethod
     def ready() -> Collection[str]:
@@ -238,7 +226,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`ReadyEvent`. This is
         currently only ``'ready'``.
         """
-        return ('ready',)
+        return 'ready',
 
     @staticmethod
     def offset() -> Collection[str]:
@@ -246,7 +234,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`OffsetEvent`. This is
         currently only ``'offset'``.
         """
-        return ('offset',)
+        return 'offset',
 
     @staticmethod
     def transaction_start() -> Collection[str]:
@@ -254,7 +242,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`TransactionStartEvent`.
         This is currently only ``'transaction-start'``.
         """
-        return ('transaction-start',)
+        return 'transaction-start',
 
     @staticmethod
     def transaction_end() -> Collection[str]:
@@ -262,7 +250,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`TransactionEndEvent`.
         This is currently only ``'transaction-end'``.
         """
-        return ('transaction-end',)
+        return 'transaction-end',
 
     @staticmethod
     def contract_created(primary_only: bool, template: Any) -> Collection[str]:
@@ -293,6 +281,16 @@ class EventKey:
     def _contract(primary_only: bool, prefix: str, template: Any) -> Collection[str]:
         m, t = validate_template(template)
         return tuple(f'{prefix}/{g}' for g in template_reverse_globs(primary_only, m, t))
+
+
+def max_offset(offsets: 'Collection[str]') -> 'Optional[str]':
+    """
+    Return the most "recent" offset from a collection of offsets.
+
+    :param offsets: A collection of offsets to examine.
+    :return: The largest offset, or ``None`` if unknown.
+    """
+    return max(offsets, key=sortable_offset_height) if offsets else None
 
 
 def sortable_offset_height(value: str) -> int:

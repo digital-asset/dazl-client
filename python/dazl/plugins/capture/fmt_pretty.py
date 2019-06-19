@@ -116,7 +116,7 @@ class ByPartySort:
 
     def key(self, entry):
         party_vis = [1 if entry.parties.get(party) is not None else 0 for party in self.parties]
-        return (sum(party_vis), ''.join(map(str, reversed(party_vis))))
+        return sum(party_vis), ''.join(map(str, reversed(party_vis)))
 
 
 def split_header_name(name, max_length=None):
@@ -162,6 +162,7 @@ class _TemplateEntryRenderer:
             self.headers = [_Header(".cdata", None, parties)]
             self.template_name = template.template_name
 
+        self.headers.insert(0, _Header(".time", None, parties))
         self.headers.insert(0, _Header(".cid", None, parties))
         self.headers.insert(0, _Header(".party", None, parties, colsize=len(parties)))
         self.entry_count = 0
@@ -205,6 +206,9 @@ class _Header:
         if name == '.cid':
             self.header_lines = ['#cid']
             self._value_from_entry = lambda entry: entry.contract_id
+        elif name == '.time':
+            self.header_lines = ['#time']
+            self._value_from_entry = lambda entry: entry.time
         elif name == '.party':
             self.header_lines = ['']
             self._value_from_entry = lambda entry: render_parties(parties, entry)

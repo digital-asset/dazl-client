@@ -1,12 +1,12 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from argparse import ArgumentParser
 
-from .. import LOG
+from asyncio import gather
+from argparse import ArgumentParser
+from .. import LOG, Network, write_acs
 from ._base import CliCommand
 from ..plugins import LedgerCapturePlugin
-from ..client.manager import LedgerClientManager
 from ..client.config import configure_parser, get_config
 
 
@@ -23,21 +23,24 @@ class ListAllCommand(CliCommand):
         return arg_parser
 
     def execute(self, args) -> int:
+        fmt = args.format
+        template_filter = [template.strip() for template in args.template_filter.split(',')] \
+                          if args.template_filter is not None else None
+        include_archived = bool(args.all)
         LOG.debug('Executing an ls...')
 
         final_config = get_config(args, config_file_support=True)
 
-        with LedgerClientManager(final_config) as mgr:
-            kwargs = dict()
-            if args.template_filter:
-                kwargs['template_filter'] = [template.strip() for template in args.template_filter.split(',')]
-            if args.all:
-                kwargs['include_archived'] = True
+        network = Network()
+        network.set_config(final_config)
 
-            inspector = LedgerCapturePlugin.stdout(**kwargs)
-            mgr.register(inspector)
-            mgr.run_until_complete()
+        global_ready = gather(*[network.aio_party(party).ready() for party in args.parties])
+        network.run_until_complete(self._main(network, global_ready, fmt, include_archived))
+        return 0
 
-            inspector.dump_all(fmt=args.format)
-            return 0
+    async def _main(self, network, global_ready, fmt, include_archived):
+        import sys
+        await global_ready
 
+        write_acs(sys.stdout, network, fmt=fmt, include_archived=include_archived)
+        network.shutdown()

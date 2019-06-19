@@ -17,11 +17,11 @@ from ...model.core import ContractId
 from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
     TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
     ContractExercisedEvent, ActiveContractSetEvent
+from ...model.core import Party
 from ...model.types import RecordType, Type, VariantType, ContractIdType, ListType, \
     TypeEvaluationContext, type_evaluate_dispatch_default_error, MapType, OptionalType
 from ...model.types_store import PackageStore
 from ...util.prim_types import to_date, to_datetime, to_hashable, frozendict
-from ...util.typing import safe_cast
 
 
 @dataclass(frozen=True)
@@ -31,7 +31,7 @@ class BaseEventDeserializationContext:
     """
     client: Any
     store: PackageStore
-    party: str
+    party: Party
     ledger_id: str
 
     def offset_event(self, time: datetime, offset: str) -> OffsetEvent:
@@ -60,13 +60,15 @@ class ActiveContractSetEventDeserializationContext(BaseEventDeserializationConte
 
     def active_contract_set_event(self, contract_events: 'Sequence[ContractCreateEvent]') \
             -> 'ActiveContractSetEvent':
-        return ActiveContractSetEvent(self.client, self.party, self.ledger_id, self.store,
+        return ActiveContractSetEvent(self.client, self.party, None, self.ledger_id, self.store,
                                       self.offset, contract_events)
 
     def contract_created_event(self, cid, cdata, event_id, witness_parties) -> ContractCreateEvent:
-        return ContractCreateEvent(self.client, self.party, None, self.ledger_id, self.store,
-                                   self.offset, cid, cdata, '', self.workflow_id,
-                                   event_id, witness_parties)
+        return ContractCreateEvent(
+            client=self.client, party=self.party, time=None, ledger_id=self.ledger_id,
+            package_store=self.store, offset=self.offset,
+            command_id='', workflow_id=self.workflow_id,
+            cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties)
 
 
 @dataclass(frozen=True)
@@ -88,25 +90,32 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
                                    self.offset, self.command_id, self.workflow_id, contract_events)
 
     def contract_created_event(self, cid, cdata, event_id, witness_parties) -> ContractCreateEvent:
-        return ContractCreateEvent(self.client, self.party, self.time, self.ledger_id, self.store,
-                                   self.offset, cid, cdata, self.command_id, self.workflow_id,
-                                   event_id, witness_parties)
+        return ContractCreateEvent(
+            client=self.client, party=self.party, time=self.time, ledger_id=self.ledger_id,
+            package_store=self.store, offset=self.offset,
+            command_id=self.command_id, workflow_id=self.workflow_id,
+            cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties)
 
     def contract_exercised_event(self, cid, cdata, event_id, witness_parties,
                                  contract_creating_event_id: str, choice: str, choice_argument: Any,
                                  acting_parties, consuming, child_event_ids) \
             -> ContractExercisedEvent:
         return ContractExercisedEvent(
-            self.client, self.party, self.time, self.ledger_id, self.store,
-            self.offset, cid, cdata, self.command_id, self.workflow_id,
-            event_id, witness_parties, contract_creating_event_id, choice, choice_argument,
-            acting_parties, consuming, child_event_ids)
+            client=self.client, party=self.party, time=self.time, ledger_id=self.ledger_id,
+            package_store=self.store, offset=self.offset,
+            command_id=self.command_id, workflow_id=self.workflow_id,
+            cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties,
+            contract_creating_event_id=contract_creating_event_id, acting_parties=acting_parties,
+            choice=choice, choice_args=choice_argument, consuming=consuming,
+            child_event_ids=child_event_ids)
 
     def contract_archived_event(self, cid, cdata, event_id, witness_parties) \
             -> ContractArchiveEvent:
-        return ContractArchiveEvent(self.client, self.party, self.time, self.ledger_id, self.store,
-                                    self.offset, cid, cdata, self.command_id, self.workflow_id,
-                                    event_id, witness_parties)
+        return ContractArchiveEvent(
+            client=self.client, party=self.party, time=self.time, ledger_id=self.ledger_id,
+            package_store=self.store, offset=self.offset,
+            command_id=self.command_id, workflow_id=self.workflow_id,
+            cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties)
 
 
 def serialize_transactions_request(transaction_filter: TransactionFilter, party: str) \
@@ -139,6 +148,14 @@ def serialize_transactions_request(transaction_filter: TransactionFilter, party:
         begin=ledger_offset,
         end=final_offset,
         filter=tr_filter)
+
+
+def serialize_event_id_request(ledger_id: str, event_id: str, requesting_parties: 'Sequence[str]') \
+        -> 'G.GetTransactionByEventIdRequest':
+    from . import model as G
+    return G.GetTransactionByEventIdRequest(ledger_id=ledger_id,
+                                            event_id=event_id,
+                                            requesting_parties=requesting_parties)
 
 
 def serialize_acs_request(ledger_id: str, party: str):

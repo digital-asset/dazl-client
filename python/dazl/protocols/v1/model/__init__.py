@@ -21,7 +21,7 @@ from ...._gen.com.digitalasset.ledger.api.v1.testing.time_service_pb2_grpc impor
 from ...._gen.com.digitalasset.ledger.api.v1.transaction_filter_pb2 import Filters, \
     TransactionFilter
 from ...._gen.com.digitalasset.ledger.api.v1.transaction_service_pb2 import GetTransactionsRequest, \
-    GetLedgerEndRequest
+    GetLedgerEndRequest, GetTransactionByEventIdRequest
 from ...._gen.com.digitalasset.ledger.api.v1.transaction_service_pb2_grpc import \
     TransactionServiceStub
 from ...._gen.da.daml_lf_pb2 import ArchivePayload

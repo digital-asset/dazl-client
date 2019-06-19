@@ -8,11 +8,12 @@ This module contains a plugin for capturing data off the ledger and outputting i
 import sys
 
 from functools import partial
-from typing import Iterable, TextIO, Optional, TYPE_CHECKING
+from typing import Collection, Iterable, TextIO, Optional, Union, TYPE_CHECKING
 
 from .fmt_base import DEFAULT_FORMATTER_NAME, get_formatter
 from .model_capture import LedgerCapture
 from ..plugins_base import Plugin
+from ...model.core import Party
 
 if TYPE_CHECKING:
     from ...client import LedgerClientManager, Network
@@ -137,7 +138,13 @@ class LedgerCapturePlugin(Plugin):
             self.buf.write(line + '\n')
 
 
-def write_acs(buf, network: 'Network', fmt=None, parties=None, include_archived=False, **kwargs) \
+def write_acs(
+        buf: 'TextIO',
+        network: 'Network',
+        fmt: 'Optional[str]' = None,
+        parties: 'Collection[Union[str, Party]]' = None,
+        include_archived: bool = False,
+        **kwargs) \
         -> None:
     """
     Write all entries captured by the plugin to the provided buffer.
@@ -168,15 +175,11 @@ def write_acs(buf, network: 'Network', fmt=None, parties=None, include_archived=
         #   the loop is closed.
         client = network.aio_party(party)
 
-        if include_archived:
-            for cxdata in client.find_historical('*'):
-                if cxdata.active:
-                    capture.capture(party, cxdata.cid, cxdata.cdata)
-                else:
-                    capture.capture(party, cxdata.cid, None)
-        else:
-            for cid, cdata in client.find_active('*').items():
-                capture.capture(party, cid, cdata)
+        for cxdata in client.find_historical('*'):
+            if cxdata.active:
+                capture.capture(party, cxdata.cid, cxdata.cdata, cxdata.effective_at)
+            elif include_archived:
+                capture.capture(party, cxdata.cid, None, None)
 
     lines = formatter.format_entries(
         capture=capture,
