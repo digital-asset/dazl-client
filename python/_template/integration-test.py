@@ -139,6 +139,7 @@ def _main():
     """
     import argparse
     argparser = argparse.ArgumentParser()
+    argparser.add_argument('--sandbox-version')
 
     backend_args = argparser.add_mutually_exclusive_group()
     backend_args.add_argument('--url', required=False, help='The URL of the *existing* server to connect to')
@@ -153,7 +154,7 @@ def _main():
         run_test(args.url)
     else:
         LOG.info('Spinning up a local sandbox as part of the test...')
-        with sandbox(dar_file if dar_file.exists() else daml_file, port=args.port) as damli_proc:
+        with sandbox(dar_file if dar_file.exists() else daml_file, port=args.port, backend=args.sandbox_version, extra_args=['-w']) as damli_proc:
             run_test(damli_proc.url, args.keep_alive)
 
 

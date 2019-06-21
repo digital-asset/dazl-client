@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import unittest
+from datetime import datetime
 
 from dazl.model.core import ContractId
 from dazl.plugins.capture import fmt_pretty
@@ -15,7 +16,7 @@ class PluginsCaptureTest(unittest.TestCase):
         capture = LedgerCapture()
         capture.capture('A',
                         ContractId('0:0', template_id='some_unknown_template'),
-                        dict(some_field='some_value'))
+                        dict(some_field='some_value'), datetime.utcnow())
 
         lines = fmt_pretty.format_entries(capture, parties)
         output = '\n'.join(lines) + '\n'

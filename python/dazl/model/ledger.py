@@ -56,7 +56,6 @@ class LedgerMetadata:
     Attributes that are invariant with respect to any party on the ledger.
     """
     ledger_id: str
-    offset: str
     store: PackageStore
     time_model: TimeModel
     serializer: Serializer[Any, Any]

@@ -19,12 +19,12 @@ class LedgerCapture:
         self.entries = dict()  # type: Dict[ContractId, LedgerCaptureEntry]
         self.store: Optional[PackageStore] = None
 
-    def capture(self, party: str, contract_id: ContractId, contract_data: Optional[ContractData]):
+    def capture(self, party: str, contract_id: ContractId, contract_data: Optional[ContractData], time):
         entry = self.entries.get(contract_id)
         if entry is not None:
             entry.extend(party, contract_id, contract_data)
         else:
-            self.entries[contract_id] = LedgerCaptureEntry(party, contract_id, contract_data)
+            self.entries[contract_id] = LedgerCaptureEntry(party, contract_id, contract_data, time)
 
     def capture_archive(self, party: str, contract_id: ContractId):
         return self.capture(party, contract_id, None)
@@ -43,11 +43,12 @@ class LedgerCapture:
 
 
 class LedgerCaptureEntry:
-    def __init__(self, party, contract_id, contract_data):
+    def __init__(self, party, contract_id, contract_data, time):
         self.parties = {party: True}
         self.contract_id = contract_id
         self.template_id = contract_id.template_id
         self.contract_args = contract_data
+        self.time = time
         self.errors = []
 
     def extend(self, party, _, contract_data):

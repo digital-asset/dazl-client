@@ -56,8 +56,11 @@ class _PartyClientImpl:
         self._callbacks = CallbackManager()
 
     def connect_in(self, pool: LedgerNetwork, base_config: dict) -> Future:
+        LOG.debug('Starting party %r with base config: %r and party config: %r', self.party, base_config, self._config_values)
+        base_party_config = _find_party_config(base_config, self.party) or dict()
+
         config_names = {f.name for f in fields(PartyConfig)}
-        all_config = {**base_config, **self._config_values}
+        all_config = {**base_config, **base_party_config, **self._config_values}
 
         self._config = config = PartyConfig(**{k: v for k, v in all_config.items() if k in config_names})
         settings, url_prefix = connection_settings(
@@ -103,13 +106,11 @@ class _PartyClientImpl:
 
     # noinspection PyShadowingBuiltins
     def add_event_handler(self, key, handler, filter, context):
-        from copy import copy
         from functools import wraps
 
         @wraps(handler)
         def rewritten_event(event):
-            new_event = copy(event)
-            new_event.client = context
+            new_event = replace(event, client=context)
             return handler(new_event)
 
         h = wrap_as_command_submission(self.write_commands, rewritten_event, filter)
@@ -254,6 +255,10 @@ class _PartyClientImpl:
             return self._reader.offset, futs[0]
         else:
             return self._reader.offset, gather(*futs, return_exceptions=True)
+
+    async def read_end(self) -> str:
+        client = await self._client_fut
+        return await client.events_end()
 
     def _process_transaction_stream_event(self, event: Any, raise_events: bool) -> Future:
         """
@@ -593,29 +598,16 @@ def wrap_as_command_submission(submit_fn, callback, filter) \
     return implementation
 
 
-async def read_transactions(
-        party_impls: Collection[_PartyClientImpl],
-        until_offset: Optional[str],
-        raise_events: bool) -> Tuple[Collection[str], Future]:
+def _find_party_config(config: 'Optional[dict]', party: Party) -> 'Optional[dict]':
     """
-    Read transactions from a collection of PartyImpls.
-
-    :param party_impls:
-    :param until_offset:
-    :param raise_events:
-    :return:
-        A tuple containing:
-         * a set of the offsets returned from all readers, and
-         * a Future that is resolved when all events across all readers have resolved either
-           successfully or unsuccessfully.
+    Look within a config dictionary (as specified by FlatConfig) for a configuration object that is
+    specific to this party.
     """
-    tuples = await gather(*(pi.read_transactions(until_offset, raise_events) for pi in party_impls))
-    offsets = sorted({t[0] for t in tuples}, key=sortable_offset_height)
-    futures = [ensure_future(t[1]) for t in tuples]
-    futures = [fut for fut in futures if not fut.done()]
-    if not futures:
-        return offsets, completed(None)
-    elif len(futures):
-        return offsets, futures[0]
-    else:
-        return offsets, named_gather(repr(futures), *futures, return_exceptions=True)
+    if config is not None:
+        party_config_list = config.get('parties')
+        if party_config_list is not None:
+            for party_config in party_config_list:
+                local_party = party_config.get('party')
+                if local_party == party:
+                    return party_config
+    return None

@@ -105,6 +105,11 @@ class LedgerClient:
         """
         raise NotImplementedError('events must be implemented')
 
+    async def events_end(self) -> str:
+        """
+        Return the (current) last offset of the ledger.
+        """
+
 
 class _LedgerConnectionContext:
     def __init__(self,

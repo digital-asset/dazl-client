@@ -6,6 +6,7 @@ Support for the gRPC-based Ledger API.
 """
 from asyncio import gather, get_event_loop
 from datetime import datetime
+from dataclasses import replace
 from threading import Thread, Event
 from typing import Awaitable, Iterable, Optional, Sequence
 
@@ -15,16 +16,18 @@ from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credenti
 from ... import LOG
 from .._base import LedgerClient, _LedgerConnection, _LedgerConnectionContext
 from .grpc_time import maybe_grpc_time_stream
-from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
-    to_acs_events, to_transaction_events, BaseEventDeserializationContext
+from .pb_parse_event import serialize_acs_request, serialize_event_id_request, \
+    serialize_transactions_request, to_acs_events, to_transaction_events, \
+    BaseEventDeserializationContext
 from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, find_dependencies
 from ...model.core import Party
 from ...model.ledger import LedgerMetadata, StaticTimeModel, RealTimeModel
 from ...model.network import HTTPConnectionSettings
-from ...model.reading import BaseEvent, TransactionFilter
+from ...model.reading import BaseEvent, TransactionFilter, ActiveContractSetEvent
 from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
 from ...util.io import read_file_bytes
+from ...util.prim_types import to_datetime
 from ...util.typing import safe_cast
 
 
@@ -40,25 +43,15 @@ class GRPCv1LedgerClient(LedgerClient):
         return self.connection.context.run_in_background(
             lambda: self.connection.command_service.SubmitAndWait(request))
 
-    def active_contracts(self) -> 'Awaitable[Sequence[BaseEvent]]':
-        results_future = get_event_loop().create_future()
+    async def active_contracts(self) -> 'Sequence[BaseEvent]':
         request = serialize_acs_request(self.ledger.ledger_id, self.party)
-
+        print(request)
         context = BaseEventDeserializationContext(
             None, self.ledger.store, self.party, self.ledger.ledger_id)
-
-        def on_acs_done(fut):
-            try:
-                acs_stream = fut.result()
-                events = to_acs_events(context, acs_stream)
-                results_future.set_result(events)
-            except Exception as ex:
-                results_future.set_exception(ex)
-
-        acs_future = self.connection.context.run_in_background(
+        acs_stream = await self.connection.context.run_in_background(
             lambda: self.connection.active_contract_set_service.GetActiveContracts(request))
-        acs_future.add_done_callback(on_acs_done)
-        return results_future
+        acs_events = to_acs_events(context, acs_stream)
+        return await self._augmented_acs_events(acs_events)
 
     def events(self, transaction_filter: TransactionFilter) \
             -> Awaitable[Sequence[BaseEvent]]:
@@ -87,6 +80,36 @@ class GRPCv1LedgerClient(LedgerClient):
         t_fut.add_done_callback(on_events_done)
 
         return results_future
+
+    async def events_end(self) -> str:
+        from . import model as G
+        request = G.GetLedgerEndRequest(ledger_id=self.ledger.ledger_id)
+        return await self.connection.context.run_in_background(
+            lambda: self.connection.transaction_service.GetLedgerEnd(request).offset.absolute)
+
+    async def _augmented_acs_events(self, acs_events: 'Sequence[ActiveContractSetEvent]')  \
+            -> 'Sequence[ActiveContractSetEvent]':
+        requests = [serialize_event_id_request(self.ledger.ledger_id, event_id, [self.party])
+                    for event_id
+                    in {e.event_id for acs_event in acs_events for e in acs_event.contract_events}]
+        print(requests)
+        responses = await gather(*(self.connection.context.run_in_background(
+            lambda: self.connection.transaction_service.GetFlatTransactionByEventId(request)
+        ) for request in requests))
+
+        event_times = {}
+        for response in responses:
+            dt = to_datetime(response.transaction.effective_at)
+            for event in response.transaction.events:
+                if event.WhichOneof('event') == 'created':
+                    event_times[event.created.event_id] = dt
+                else:
+                    print(event.archived.event_id)
+        print(event_times)
+
+        return [replace(acs_event, contract_events=[replace(contract_event, time=event_times.get(contract_event.event_id))
+                                                    for contract_event in acs_event.contract_events])
+                for acs_event in acs_events]
 
 
 def grpc_set_time(connection: 'GRPCv1Connection', ledger_id: str, new_datetime: datetime) -> None:
@@ -133,9 +156,6 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable
 
     package_provider = GRPCPackageProvider(connection, ledger_id)
 
-    request = G.GetLedgerEndRequest(ledger_id=ledger_id)
-    offset = connection.transaction_service.GetLedgerEnd(request).offset.absolute
-
     grpc_package_sync(package_provider, store)
 
     time_iter = maybe_grpc_time_stream(connection.time_service, ledger_id)
@@ -143,7 +163,6 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable
 
     yield LedgerMetadata(
         ledger_id=ledger_id,
-        offset=offset,
         store=store,
         time_model=time_model,
         serializer=ProtobufSerializer(store),
