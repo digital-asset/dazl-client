@@ -100,6 +100,10 @@ class _TestSetStaticTimeTwoClients:
 
         # now ensure that the second client's time is in sync with the Sandbox
         await self.manager2.aio_global().get_time()
+        # TODO: Come up with a better signal to be ABSOLUTELY sure that the second client is
+        #  "caught up" with the current time
+        from asyncio import sleep
+        await sleep(1.0)
 
         # this call can only succeed if the second client knows of the time as it was set by the
         # first party
