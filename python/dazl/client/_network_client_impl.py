@@ -420,8 +420,13 @@ class _NetworkRunner:
         for party_impl in party_impls:
             futs.append(party_impl.initialize(current_time, metadata))
 
+        # TODO: Make this configurable; there may still be value in fetching the current active
+        #  contract set from the transaction stream instead of ALWAYS using the ACS (for example,
+        #  getting historical contract information)
         from ._reader_sync import read_transaction_event_stream
-        offset = await read_transaction_event_stream(party_impls)
+        # offset = await read_transaction_event_stream(party_impls)
+        from ._reader_sync import read_initial_acs
+        offset = await read_initial_acs(party_impls)
 
         LOG.debug('Preparing to raise the "ready" event...')
         # Raise the 'ready' event.

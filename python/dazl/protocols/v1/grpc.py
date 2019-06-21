@@ -6,7 +6,6 @@ Support for the gRPC-based Ledger API.
 """
 from asyncio import gather, get_event_loop
 from datetime import datetime
-from dataclasses import replace
 from threading import Thread, Event
 from typing import Awaitable, Iterable, Optional, Sequence
 
@@ -18,12 +17,12 @@ from .._base import LedgerClient, _LedgerConnection, _LedgerConnectionContext
 from .grpc_time import maybe_grpc_time_stream
 from .pb_parse_event import serialize_acs_request, serialize_event_id_request, \
     serialize_transactions_request, to_acs_events, to_transaction_events, \
-    BaseEventDeserializationContext
+    BaseEventDeserializationContext, to_created_event
 from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, find_dependencies
 from ...model.core import Party
 from ...model.ledger import LedgerMetadata, StaticTimeModel, RealTimeModel
 from ...model.network import HTTPConnectionSettings
-from ...model.reading import BaseEvent, TransactionFilter, ActiveContractSetEvent
+from ...model.reading import BaseEvent, TransactionFilter, ActiveContractSetEvent, max_offset
 from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
 from ...util.io import read_file_bytes
@@ -89,27 +88,62 @@ class GRPCv1LedgerClient(LedgerClient):
 
     async def _augmented_acs_events(self, acs_events: 'Sequence[ActiveContractSetEvent]')  \
             -> 'Sequence[ActiveContractSetEvent]':
-        requests = [serialize_event_id_request(self.ledger.ledger_id, event_id, [self.party])
-                    for event_id
-                    in {e.event_id for acs_event in acs_events for e in acs_event.contract_events}]
-        print(requests)
-        responses = await gather(*(self.connection.context.run_in_background(
-            lambda: self.connection.transaction_service.GetFlatTransactionByEventId(request)
-        ) for request in requests))
+        # This method generally compensates for unexpected/missing behavior from the Active Contract
+        # Set service. It fills in effective dates (since they are not part of a ContractEvent)
+        # and also filters out disclosed contracts where there is no corresponding event from the
+        # transaction event stream (which is a signal that the contract has been disclosed to us
+        # outside of the transaction stream).
+        #
+        # It also collapses multiple dazl ActiveContractSetEvent objects into a single one, simply
+        # for expediency.
+        requests = []
+        offsets = []
+        times = []
 
-        event_times = {}
+        client = None
+        store = None
+
+        if not acs_events:
+            return []
+
+        for acs_event in acs_events:
+            offsets.append(acs_event.offset)
+            times.append(acs_event.time)
+            client = acs_event.client
+            store = acs_event.package_store
+
+            for e in acs_event.contract_events:
+                requests.append(serialize_event_id_request(
+                    self.ledger.ledger_id, e.event_id, [self.party]))
+
+        context = BaseEventDeserializationContext(client, store, self.party, self.ledger.ledger_id)
+
+        responses = await gather(*(self.connection.context.run_in_background(
+                lambda: self.connection.transaction_service.GetFlatTransactionByEventId(request)
+            ) for request in requests))
+
+        contract_events = []
         for response in responses:
             dt = to_datetime(response.transaction.effective_at)
+            times.append(dt)
+            tx_context = context.transaction(
+                dt, response.transaction.offset, response.transaction.command_id,
+                response.transaction.workflow_id)
             for event in response.transaction.events:
                 if event.WhichOneof('event') == 'created':
-                    event_times[event.created.event_id] = dt
-                else:
-                    print(event.archived.event_id)
-        print(event_times)
+                    contract_events.append(to_created_event(tx_context, event.created))
 
-        return [replace(acs_event, contract_events=[replace(contract_event, time=event_times.get(contract_event.event_id))
-                                                    for contract_event in acs_event.contract_events])
-                for acs_event in acs_events]
+        times = [time for time in times if time is not None]
+        offsets = [offset for offset in offsets if offset is not None]
+
+        return [ActiveContractSetEvent(
+            client=client,
+            party=self.party,
+            time=max(times) if times else None,
+            ledger_id=self.ledger.ledger_id,
+            offset=max_offset(offsets) if offsets else None,
+            package_store=self.ledger.store,
+            contract_events=contract_events)]
 
 
 def grpc_set_time(connection: 'GRPCv1Connection', ledger_id: str, new_datetime: datetime) -> None:
@@ -148,11 +182,9 @@ def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> Optional[str]:
 
 
 def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable[LedgerMetadata]:
-    from . import model as G
     from .pb_ser_command import ProtobufSerializer
 
     store = PackageStore.empty()
-    request = G.GetLedgerEndRequest(ledger_id=ledger_id)
 
     package_provider = GRPCPackageProvider(connection, ledger_id)
 
