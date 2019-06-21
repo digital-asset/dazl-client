@@ -254,7 +254,7 @@ def grpc_package_sync(package_provider: PackageProvider, store: 'PackageStore') 
             metadatas_pb[package_id] = parse_archive_payload(archive_payload)
 
     metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
-    for package_id, archive_payload in metadatas_pb.items():
+    for package_id, archive_payload in metadatas_pb.sorted_archives.items():
         store.register_all(parse_daml_metadata_pb(package_id, archive_payload))
 
 

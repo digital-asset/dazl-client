@@ -16,9 +16,10 @@ if TYPE_CHECKING:
 
 def build_dar(
         daml_path: 'Union[str, Path]',
-        dar_path: str,
+        dar_path: 'Union[str, Path]',
         damlc_component: 'Optional[str]' = None,
-        damlc_extra_args: 'Sequence[str]' = None) -> None:
+        damlc_extra_args: 'Sequence[str]' = None,
+        allow_caching: bool = False) -> bool:
     """
     Create a .dar file from a .daml file.
 
@@ -26,7 +27,22 @@ def build_dar(
     :param dar_path: Path to the DAR file to create.
     :param damlc_component: Version of the DAML compiler to use.
     :param damlc_extra_args: Extra arguments of damlc.
+    :param allow_caching:
+        ``True`` if timestamps should be checked to see if a DAR actually needs to be built;
+        otherwise ``False`` to always force compilation.
+    :return:
+        ``True`` if a DAR was created; ``False`` if compilation was skipped.
     """
+    daml_path = Path(daml_path)
+    dar_path = Path(dar_path)
+
+    if not daml_path.exists():
+        raise FileNotFoundError(str(daml_path))
+
+    if allow_caching and dar_path.exists():
+        if daml_path.lstat().st_mtime < dar_path.lstat().st_mtime:
+            return False
+
     from ..damlsdk.package import package, PackageOptions
     options = PackageOptions([str(daml_path)], dar_path, damlc_extra_args)
     proc_opts = package(options, component=damlc_component)
@@ -34,6 +50,7 @@ def build_dar(
         code = pw.run()
     if code != 0:
         raise DamlcPackageError(code)
+    return True
 
 
 def get_archives(contents: bytes) -> 'Mapping[str, bytes]':
