@@ -6,6 +6,7 @@ import time
 from collections import OrderedDict, defaultdict
 from typing import Any, Collection, Mapping, Set, Union
 
+from dataclasses import dataclass
 from toposort import toposort_flatten
 
 from ... import LOG
@@ -55,9 +56,15 @@ def parse_archive_payload(raw_bytes: bytes) -> 'G.ArchivePayload':
     return archive_payload
 
 
+@dataclass(frozen=True)
+class ArchiveDependencyResult:
+    sorted_archives: 'Mapping[str, G.ArchivePayload]'
+    unresolvable_archives: 'Mapping[str, G.ArchivePayload]'
+
+
 def find_dependencies(
         metadatas_pb: 'Mapping[str, G.ArchivePayload]', existing_package_ids: 'Collection[str]') \
-        -> 'Mapping[str, G.ArchivePayload]':
+        -> 'ArchiveDependencyResult':
     """
     Return a topologically-sorted list of dependencies for the package IDs.
 
@@ -82,11 +89,34 @@ def find_dependencies(
                     deps.difference_update(existing_package_ids)
                     dependencies[package_id].update(deps)
 
+    # identify any completely missing dependencies
+    # TODO: This doesn't handle transitive missing dependencies; this will be a problem once
+    #  DAML has proper dependency support
+    unresolvable_package_ids = []
+    for package_id, package_dependencies in dependencies.items():
+        if not package_dependencies.issubset(metadatas_pb):
+            unresolvable_package_ids.append(package_id)
+
     m_pb = {}
     sorted_package_ids = toposort_flatten(dependencies)
     for package_id in sorted_package_ids:
-        m_pb[package_id] = metadatas_pb[package_id]
-    return m_pb
+        if package_id not in unresolvable_package_ids:
+            required_package = metadatas_pb.get(package_id)
+            if required_package is not None:
+                m_pb[package_id] = required_package
+            else:
+                LOG.warning('Failed to find a package %r', package_id)
+
+    if unresolvable_package_ids:
+        # This isn't a major problem in the grand scheme of things because the caller continually
+        # retries all unknown packages, so if the missing dependent packages are eventually
+        # uploaded, we will end up back in this function and all of the packages will be parsed.
+        LOG.warning('Some package IDs could not be resolved, so packages that depend on these IDs '
+                    'will be unavailable: %r', unresolvable_package_ids)
+
+    return ArchiveDependencyResult(
+        sorted_archives=m_pb,
+        unresolvable_archives={pkg_id: metadatas_pb[pkg_id] for pkg_id in unresolvable_package_ids})
 
 
 def find_dependencies_of_fwts(fwts_pb) -> 'Set[str]':
