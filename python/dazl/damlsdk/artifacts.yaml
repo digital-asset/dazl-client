@@ -8,20 +8,20 @@ artifacts:
   damlc:
     groupId: com.digitalasset
     artifact: damlc
-    defaultVersion: 100.12.25
+    defaultVersion: 100.13.5
     packaging: tar.gz
     native: true
   sandbox:
     groupId: com.digitalasset
     artifact: sandbox
-    defaultVersion: 100.12.25
+    defaultVersion: 100.13.5
     packaging: tar.gz
   daml-lf-archive:
     groupId: com.digitalasset
     artifact: daml-lf-archive
-    defaultVersion: 100.12.25
+    defaultVersion: 100.13.5
   ledger-api-protos:
     groupId: com.digitalasset
     artifact: ledger-api-protos
-    defaultVersion: 100.12.25
+    defaultVersion: 100.13.5
     packaging: tar.gz
