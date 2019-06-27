@@ -7,7 +7,7 @@ from .. import LOG
 from ._base import CliCommand
 from ..plugins import LedgerCapturePlugin
 from ..client.manager import LedgerClientManager
-from ..client.config import configure_parser, get_config
+from ..client.config import configure_parser, NetworkConfig
 
 
 class TailCommand(CliCommand):
@@ -25,6 +25,6 @@ class TailCommand(CliCommand):
     def execute(self, args) -> None:
         LOG.debug('Executing a tail...')
 
-        config = get_config(args)
+        config = NetworkConfig.get_config(args)
         with LedgerClientManager(config) as mgr:
             mgr.run_forever()

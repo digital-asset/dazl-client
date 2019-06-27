@@ -42,6 +42,16 @@ class AutodetectLedgerNetwork(LedgerNetwork):
     def ledger(self) -> Awaitable[LedgerMetadata]:
         return self._ledger_future
 
+    async def connect_anonymous(
+            self, settings: 'HTTPConnectionSettings', context_path: 'Optional[str]') -> None:
+        """
+        Establish a single no-Party connection (but only if no other connections have already been
+        established). This is used by specialized setups that do not require Parties to be supplied
+        for any reason (such as fetching initial ledger metadata).
+        """
+        self._get_connection(settings, context_path)
+        await self.ledger()
+
     async def connect(self,
                       party: 'Union[str, Party]',
                       settings: 'HTTPConnectionSettings',
@@ -63,13 +73,10 @@ class AutodetectLedgerNetwork(LedgerNetwork):
         else:
             raise RuntimeError(f'Unknown protocol version: {ledger.protocol_version}')
 
-    async def upload_archive(self, contents: bytes) -> None:
-        if self._admin_url is None:
-            raise RuntimeError('upload_archive unsupported unless admin_url is specified')
-
-        from .admin.http_admin import admin_upload_package
+    async def upload_package(self, dar_contents: bytes) -> None:
+        from .v1.grpc import grpc_upload_package
         return await self._context.run_in_background(
-            lambda: admin_upload_package(self._admin_url, contents))
+            lambda: grpc_upload_package(self._first_connection, dar_contents))
 
     async def set_time(self, new_time: datetime):
         ledger = await self.ledger()

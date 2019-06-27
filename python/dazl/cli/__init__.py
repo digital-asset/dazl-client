@@ -18,6 +18,7 @@ from .metadata import PrintMetadataCommand
 from .package import PackageDarCommand
 from .sandbox import SandboxCommand
 from .tail import TailCommand
+from .upload import UploadCommand
 from .version import VersionCommand
 
 COMMANDS = [
@@ -27,6 +28,7 @@ COMMANDS = [
     PackageDarCommand(),
     SandboxCommand(),
     TailCommand(),
+    UploadCommand(),
     VersionCommand(),
 ]  # type: List[CliCommand]
 

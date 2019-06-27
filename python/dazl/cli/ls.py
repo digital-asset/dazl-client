@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 from .. import LOG, Network, write_acs
 from ._base import CliCommand
 from ..plugins import LedgerCapturePlugin
-from ..client.config import configure_parser, get_config
+from ..client.config import configure_parser, NetworkConfig
 
 
 class ListAllCommand(CliCommand):
@@ -25,11 +25,11 @@ class ListAllCommand(CliCommand):
     def execute(self, args) -> int:
         fmt = args.format
         template_filter = [template.strip() for template in args.template_filter.split(',')] \
-                          if args.template_filter is not None else None
+            if args.template_filter is not None else None
         include_archived = bool(args.all)
         LOG.debug('Executing an ls...')
 
-        final_config = get_config(args, config_file_support=True)
+        final_config = NetworkConfig.get_config(args)
 
         network = Network()
         network.set_config(final_config)

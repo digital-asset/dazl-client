@@ -10,7 +10,7 @@ from typing import Collection
 
 from ._base import CliCommand
 from .. import LOG, Network
-from ..client.config import configure_parser, get_config, merge_configurations, NetworkConfig
+from ..client.config import configure_parser, AnonymousNetworkConfig
 from ..model.types_store import PackageStore
 from ..util.dar import DamlcPackageError
 from ..util.dar_repo import LocalDarRepository
@@ -23,8 +23,7 @@ class PrintMetadataCommand(CliCommand):
     def parser(self) -> ArgumentParser:
         arg_parser = ArgumentParser()
 
-        configure_parser(arg_parser)
-        arg_parser.add_argument('--config', help='path to a YAML config file')
+        configure_parser(arg_parser, parties=False)
         arg_parser.add_argument('--file', help='path to a DAML or DAR file', action='append')
         arg_parser.add_argument('--show-hidden', help='show hidden types', action='store_true')
         arg_parser.add_argument('--format', help='one of \"daml\" or \"python\"', default='daml')
@@ -41,7 +40,7 @@ class PrintMetadataCommand(CliCommand):
         if args.file:
             return self.execute_static_metadata(args.file, options)
 
-        config = get_config(args)
+        config = AnonymousNetworkConfig.get_config(args)
 
         return self.execute_runtime_metadata(config, options)
 
@@ -57,12 +56,16 @@ class PrintMetadataCommand(CliCommand):
             return ex.exit_code
 
     @staticmethod
-    def execute_runtime_metadata(config: 'NetworkConfig', options: PrettyOptions) -> int:
+    def execute_runtime_metadata(config: 'AnonymousNetworkConfig', options: PrettyOptions) -> int:
         network = Network()
-        network.set_config(**config)
-        global_info = network.simple_global()
-        _process_metadata(global_info.metadata().store, options)
+        network.set_config(config)
+        network.run_until_complete(_main(network, options))
         return 0
+
+
+async def _main(network: Network, options):
+    metadata = await network.aio_global().metadata()
+    _process_metadata(metadata.store, options)
 
 
 def _process_metadata(store: PackageStore, options: PrettyOptions):

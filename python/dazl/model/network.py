@@ -1,8 +1,9 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import NamedTuple, Optional, Tuple
+from typing import NamedTuple, Optional, Tuple, Union
 from urllib.parse import urlparse
+from .core import Party
 
 
 class HTTPConnectionSettings(NamedTuple):
@@ -62,7 +63,7 @@ class OAuthSettings(NamedTuple):
 
 
 def connection_settings(url: str,
-                        party: str,
+                        party: 'Union[None, str, Party]',
                         oauth=None,
                         default_scheme=None,
                         verify_ssl=None,
@@ -70,7 +71,10 @@ def connection_settings(url: str,
                         cert_file=None,
                         cert_key_file=None) -> Tuple[HTTPConnectionSettings, str]:
     if url is None:
-        raise ValueError('URL is required for party %s' % party)
+        if party is not None:
+            raise ValueError('URL is required for party %s' % party)
+        else:
+            raise ValueError('URL is required')
     try:
         # relative URLs have no meaning in this context; enforce that all URLs passed to us are
         # absolute so that things parse properly

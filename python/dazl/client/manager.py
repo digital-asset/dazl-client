@@ -13,7 +13,7 @@ from typing import Collection, Union
 from dataclasses import asdict
 
 from .client_participant import ParticipantLedgerClient
-from .config import get_config, parse_kwargs, validate_config, NetworkConfig
+from .config import NetworkConfig
 from ._base_model import ExitCode, LedgerRun
 from ._run_level import RunState
 from ._network_client_impl import _NetworkImpl
@@ -34,7 +34,7 @@ def create_client(*config, **kwargs):
     :return:
         An instance of :class:`LedgerClientManager`.
     """
-    cfg = parse_kwargs(*config, **kwargs)
+    cfg = NetworkConfig.parse_kwargs(*config, **kwargs)
     return LedgerClientManager(cfg)
 
 
@@ -46,14 +46,14 @@ class LedgerClientManager:
 
     @classmethod
     def for_args(cls, args):
-        return cls(get_config(args))
+        return cls(NetworkConfig.get_config(args))
 
     def __init__(self, config: 'NetworkConfig'):
         # import warnings
         # warnings.warn('LedgerClientManager will be removed in version 6.0.0. Please switch to '
         #               'LedgerNetwork for managing instances of clients for parties that are '
         #               'connected to the ledger.', DeprecationWarning)
-        self._config = validate_config(config)
+        self._config = config.validate()
         self._primitive_type_converter = PrimitiveTypeConverter()
         self._impl = _NetworkImpl()
 

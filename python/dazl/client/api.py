@@ -32,7 +32,7 @@ from typing import Any, Awaitable, Callable, Collection, ContextManager, List, O
 from urllib.parse import urlparse
 
 from .. import LOG
-from ..client.config import NetworkConfig
+from ..client.config import AnonymousNetworkConfig, NetworkConfig
 from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, Party, ContractData, ContractsState, ContractMatch, \
@@ -155,7 +155,7 @@ class Network:
 
     def set_config(
             self,
-            *config: 'NetworkConfig',
+            *config: 'Union[NetworkConfig, AnonymousNetworkConfig]',
             url: 'Optional[str]' = None,
             admin_url: 'Optional[str]' = None,
             **kwargs):
@@ -348,7 +348,7 @@ class AIOGlobalClient(GlobalClient):
         :param contents: The DAR or DALF to ensure.
         :param timeout: The maximum length of time to wait before giving up.
         """
-        return self._impl.ensure_dar(contents, timeout)
+        return await self._impl.ensure_package(contents, timeout)
 
     async def ensure_packages(
             self,
