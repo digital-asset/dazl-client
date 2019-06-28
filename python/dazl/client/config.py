@@ -6,10 +6,11 @@ This module contains configuration parameters used by the rest of the library.
 """
 
 import warnings
-from argparse import Namespace
+import argparse
 
 from dataclasses import dataclass, field, fields, asdict
-from typing import Any, Collection, List, Mapping, Optional, Sequence
+from typing import Any, Collection, List, Mapping, Optional, Sequence, Type, TypeVar, \
+    TYPE_CHECKING
 
 from .. import LOG
 from ..model.core import ConfigurationError, Party
@@ -22,10 +23,16 @@ from ..util.config_meta import config_field, \
 DAZL_CONFIG_ENV = 'DAZL_CONFIG'
 
 
+# Define a type alias for things that quack like an ArgumentParser
+if TYPE_CHECKING:
+    # noinspection PyProtectedMember
+    ArgumentParser = argparse._ActionsContainer
+
+
 @dataclass(frozen=True)
-class _PartyConfig:
+class URLConfig:
     """
-    Configuration for a specific party's client.
+    Configuration for something that requires a URL.
     """
 
     url: str = config_field(
@@ -34,12 +41,6 @@ class _PartyConfig:
         short_alias='u',
         environment_variable='DAML_LEDGER_URL',
         deprecated_alias='participant_url')
-
-    admin_url: Optional[str] = config_field(
-        'URL where administrative functions are exposed',
-        param_type=URL_TYPE,
-        environment_variable='DAML_LEDGER_ADMIN_URL',
-        default_value=None)
 
     ca_file: Optional[str] = config_field(
         'server certificate authority file',
@@ -72,6 +73,19 @@ class _PartyConfig:
         'The name that this application uses to identify itself to the ledger.',
         param_type=STRING_TYPE,
         default_value='DAZL-Client')
+
+    log_level: Optional[int] = config_field(
+        'logging level for events for this party',
+        param_type=LOG_LEVEL_TYPE,
+        environment_variable='DAZL_LOG_LEVEL',
+        short_alias='l')
+
+
+@dataclass(frozen=True)
+class _PartyConfig(URLConfig):
+    """
+    Configuration for a specific party's client.
+    """
 
     max_event_block_size: Optional[int] = config_field(
         'Maximum number of blocks to read in a single call.',
@@ -197,14 +211,129 @@ class PartyConfig(_PartyConfig):
     party: Optional[Party] = None
 
 
+C = TypeVar('C', bound='_TopLevelConfig')
 @dataclass(frozen=True)
-class NetworkConfig(_NetworkConfig):
+class _TopLevelConfig:
+    @classmethod
+    def parse_kwargs(cls: Type[C], *config: 'C', **kwargs) -> 'C':
+        """
+        Create a :class:`NetworkConfig` for the configuration settings.
+
+        :param config:
+            Instances of :class:`NetworkConfig`` objects to merge together.
+        :param kwargs:
+            Configuration options that are accepted either at the global level or at the party level.
+        :return:
+            An instance of :class:`NetworkConfig`.
+        """
+        configurations = list(config)  # type: List[C]
+        if kwargs:
+            args_dict = dict(_get_env_defaults())
+            args_dict.update(_parse_args_dict(kwargs))
+            flat_config = _FlatConfig(**args_dict)
+            configurations.append(cls.unflatten(flat_config))
+
+        # TODO: Support merging of more than one configuration object
+        return configurations[0].validate()
+
+    @classmethod
+    def get_config(cls: Type[C], args: 'argparse.Namespace') -> 'C':
+        """
+        Convert an ``argparse.Namespace`` to a fully-formed and valid :class:`NetworkConfig`.
+        """
+        args_dict = dict(_get_env_defaults())
+        args_dict.update(_parse_args_ns(args))
+        flat_config = _FlatConfig(**args_dict)
+        network_config = cls.unflatten(flat_config)
+        return network_config.validate()
+
+    @classmethod
+    def unflatten(cls: Type[C], config: '_FlatConfig') -> 'C':
+        raise NotImplementedError
+
+    def validate(self: C) -> 'C':
+        """
+        Return this config, or raise a ConfigurationError if there is something wrong with the
+        parameters of this object.
+
+        This should only be called on fully-formed config objects once all possible values are
+        merged together.
+        """
+        raise NotImplementedError
+
+
+@dataclass(frozen=True)
+class NetworkConfig(_NetworkConfig, _TopLevelConfig):
     parties: 'Sequence[PartyConfig]' = field(default_factory=tuple)
 
+    @classmethod
+    def unflatten(cls, config: '_FlatConfig') -> 'NetworkConfig':
+        """
+        Convert a :class:`_FlatConfig` to a :class:`NetworkConfig`.
+        """
+        config_dict = {k: v for k, v in asdict(config).items() if v is not None}
+        network_dict = {fld.name: config_dict.get(fld.name) for fld in fields(_NetworkConfig)}
+        party_dict = {fld.name: config_dict.get(fld.name) for fld in fields(_PartyConfig)}
+        parties = tuple(PartyConfig(party=party, **party_dict) for party in config.parties)
+        return NetworkConfig(parties=parties, **network_dict)
 
-def configure_parser(arg_parser, config_file_support=False):
+    def validate(self) -> 'NetworkConfig':
+        failures = set()
+        LOG.debug('Configuration: %s', self)
+        if self.parties:
+            for party_config in self.parties:
+                if not party_config.url:
+                    failures.add(f'Party {party_config.party} has no Ledger API URL')
+        else:
+            failures.add('At least one party and a URL must be specified')
+
+        if failures:
+            raise ConfigurationError(failures)
+
+        return self
+
+
+@dataclass(frozen=True)
+class AnonymousNetworkConfig(_NetworkConfig, URLConfig, _TopLevelConfig):
+    """
+    A configuration object that contains all of the necessary parameters to configure a network
+    with no parties.
+    """
+
+    @classmethod
+    def unflatten(cls, config: '_FlatConfig') -> 'AnonymousNetworkConfig':
+        """
+        Convert a :class:`_FlatConfig` to a :class:`NetworkConfig`.
+        """
+        config_dict = {k: v for k, v in asdict(config).items() if v is not None}
+        network_dict = {fld.name: config_dict.get(fld.name) for fld in fields(AnonymousNetworkConfig)}
+        return AnonymousNetworkConfig(**network_dict)
+
+    def validate(self) -> 'AnonymousNetworkConfig':
+        failures = []
+
+        if not self.url:
+            failures.append('URL must be specified')
+
+        if failures:
+            raise ConfigurationError(failures)
+
+        return self
+
+
+def configure_parser(
+        arg_parser: 'ArgumentParser',
+        config_file_support: bool = False,
+        parties: bool = True):
     """
     Add standard options to an arg parser (later to be extracted out by ``get_config``).
+
+    :param arg_parser:
+        The ArgumentParser to add arguments to.
+    :param config_file_support:
+        ``True`` to enable reading configuration from a config file.
+    :param parties:
+        ``True`` to mandate (and validate) party-specific settings; ``False`` to omit them.
     """
     if config_file_support:
         from os import environ
@@ -212,64 +341,26 @@ def configure_parser(arg_parser, config_file_support=False):
         group = arg_parser.add_argument_group('Configuration Settings')
         group.add_argument('--config', help='path to a YAML config file', default=default_config)
 
-    party_config_fields = [fld.name for fld, _ in config_fields(_PartyConfig)]
+    if parties:
+        party_config_fields = [fld.name for fld, _ in config_fields(_PartyConfig)]
 
-    group = arg_parser.add_argument_group('Overall Settings')
-    for fld, param in config_fields(_FlatConfig):
-        if fld.name not in party_config_fields:
+        group = arg_parser.add_argument_group('Overall Settings')
+        for fld, param in config_fields(_FlatConfig):
+            if fld.name not in party_config_fields:
+                add_argument(group, fld.name, param)
+
+        group = arg_parser.add_argument_group('Per-Party Settings')
+        for fld, param in config_fields(_PartyConfig):
             add_argument(group, fld.name, param)
 
-    group = arg_parser.add_argument_group('Per-Party Settings')
-    for fld, param in config_fields(_PartyConfig):
-        add_argument(group, fld.name, param)
+    else:
+        for fld, param in config_fields(URLConfig):
+            add_argument(arg_parser, fld.name, param)
 
     return arg_parser
 
 
-def unflatten_config(config: '_FlatConfig') -> 'NetworkConfig':
-    """
-    Convert a :class:`_FlatConfig` to a :class:`NetworkConfig`.
-    """
-    config_dict = {k: v for k, v in asdict(config).items() if v is not None}
-    network_dict = {fld.name: config_dict.get(fld.name) for fld in fields(_NetworkConfig)}
-    party_dict = {fld.name: config_dict.get(fld.name) for fld in fields(_PartyConfig)}
-    parties = tuple(PartyConfig(party=party, **party_dict) for party in config.parties)
-    return NetworkConfig(parties=parties, **network_dict)
-
-
-def parse_kwargs(*config: 'NetworkConfig', **kwargs) -> 'NetworkConfig':
-    """
-    Create a :class:`NetworkConfig` for the configuration settings.
-
-    :param config:
-        Instances of :class:`NetworkConfig`` objects to merge together.
-    :param kwargs:
-        Configuration options that are accepted either at the global level or at the party level.
-    :return:
-        An instance of :class:`NetworkConfig`.
-    """
-    configurations = list(config)  # type: List[NetworkConfig]
-    if kwargs:
-        args_dict = dict(_get_env_defaults())
-        args_dict.update(_parse_args_dict(kwargs))
-        flat_config = _FlatConfig(**args_dict)
-        configurations.append(unflatten_config(flat_config))
-    network_config = merge_configurations(*configurations)
-    return validate_config(network_config)
-
-
-def get_config(args: 'Namespace', config_file_support: bool = False) -> 'NetworkConfig':
-    """
-    Convert an ``argparse.Namespace`` to a fully-formed and valid :class:`NetworkConfig`.
-    """
-    args_dict = dict(_get_env_defaults())
-    args_dict.update(_parse_args_ns(args))
-    flat_config = _FlatConfig(**args_dict)
-    network_config = unflatten_config(flat_config)
-    return validate_config(network_config)
-
-
-def fetch_config(path_or_url: Optional[str]) -> Optional[str]:
+def fetch_config(path_or_url: 'Optional[str]') -> 'Optional[str]':
     """
     Attempts to fetch a config file from what looks like either a path or a URL.
 
@@ -306,6 +397,10 @@ def fetch_config(path_or_url: Optional[str]) -> Optional[str]:
 
 
 def _get_env_defaults() -> 'Mapping[str, Any]':
+    """
+    Produce a mapping of configuration keys to values set in the environment through environment
+    variables.
+    """
     from os import getenv
     kwargs = {}
     for fld, param in config_fields(_FlatConfig):
@@ -316,7 +411,7 @@ def _get_env_defaults() -> 'Mapping[str, Any]':
     return kwargs
 
 
-def _parse_args_ns(args: 'Namespace') -> 'Mapping[str, Any]':
+def _parse_args_ns(args: 'argparse.Namespace') -> 'Mapping[str, Any]':
     """
     Convert the values
     :param args:
@@ -363,25 +458,3 @@ def _parse_args_dict(d: 'Mapping[str, Any]') -> 'Mapping[str, Any]':
     if unknown_fields:
         raise ValueError(f'unknown kwargs: {sorted(unknown_fields)}')
     return kwargs
-
-
-def validate_config(config: 'NetworkConfig') -> 'NetworkConfig':
-    failures = set()
-
-    LOG.debug('Configuration: %s', config)
-
-    if config.parties:
-        for party_config in config.parties:
-            if not party_config.url:
-                failures.add(f'Party {party_config.party} has no Ledger API URL')
-    else:
-        failures.add('At least one party and a URL must be specified')
-
-    if failures:
-        raise ConfigurationError(failures)
-
-    return config
-
-
-def merge_configurations(*configurations: 'NetworkConfig') -> 'NetworkConfig':
-    return configurations[0]

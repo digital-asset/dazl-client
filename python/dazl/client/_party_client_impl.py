@@ -72,8 +72,7 @@ class _PartyClientImpl:
             cert_key_file=config.cert_key_file)
 
         self._pool = pool
-        self._client_fut = ensure_future(pool.connect(
-            self.party, settings, url_prefix, config.admin_url))
+        self._client_fut = ensure_future(pool.connect(self.party, settings, url_prefix))
         return self._client_fut
 
     def set_config(self, **kwargs):

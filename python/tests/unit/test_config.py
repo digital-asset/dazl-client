@@ -5,7 +5,7 @@ import http.server
 import tempfile
 import unittest
 
-from dazl.client.config import ConfigurationError, fetch_config, parse_kwargs
+from dazl.client.config import ConfigurationError, fetch_config, NetworkConfig
 from dazl.model.core import Party
 from dazl_internal.background_http_server import TestHTTPServer
 
@@ -16,12 +16,12 @@ class TestConfig(unittest.TestCase):
     """
 
     def test_party_config_allows_single_string(self):
-        config = parse_kwargs(parties='Bob', participant_url='http://nowhere/')
+        config = NetworkConfig.parse_kwargs(parties='Bob', participant_url='http://nowhere/')
         self.assertEqual(config.parties[0].party, Party('Bob'))
         self.assertEqual(config.parties[0].url, 'http://nowhere/')
 
     def test_party_config_allows_list(self):
-        config = parse_kwargs(parties=['Bob'], participant_url='http://nowhere/')
+        config = NetworkConfig.parse_kwargs(parties=['Bob'], participant_url='http://nowhere/')
         self.assertEqual(config.parties[0].party, Party('Bob'))
         self.assertEqual(config.parties[0].url, 'http://nowhere/')
 

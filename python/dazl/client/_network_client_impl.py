@@ -4,6 +4,7 @@
 import logging
 from asyncio import gather, ensure_future, sleep, Future
 from collections import defaultdict
+from dataclasses import fields
 from datetime import timedelta, datetime
 from threading import RLock, Thread
 from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
@@ -14,15 +15,15 @@ from dataclasses import asdict
 from .. import LOG
 from ._party_client_impl import _PartyClientImpl
 from ._run_level import RunState
-from ..client.config import NetworkConfig
+from ..client.config import NetworkConfig, URLConfig
 from ..metrics import MetricEvents
 from ..model.core import Party, RunLevel
 from ..model.ledger import LedgerMetadata
+from ..model.network import connection_settings
 from ..model.reading import InitEvent, ReadyEvent, BaseEvent, EventKey
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
-from ..util.asyncio_util import execute_in_loop, completed, Invoker
-from ..util.dar import get_archives
+from ..util.asyncio_util import execute_in_loop, completed, Invoker, safe_create_future
 from ..util.events import CallbackManager
 from ..util.prim_types import to_timedelta, TimeDeltaConvertible
 
@@ -33,8 +34,8 @@ T = TypeVar('T')
 class _NetworkImpl:
 
     __slots__ = ('_lock', '_main_thread', 'invoker', '_party_clients', '_global_impls',
-                 '_party_impls', '_run_state', '_callbacks', '_config', '_pool', '_cached_metadata',
-                 '_metrics')
+                 '_party_impls', '_run_state', '_callbacks', '_config', '_pool', '_pool_init',
+                 '_cached_metadata', '_metrics')
 
     def __init__(self, metrics: 'Optional[MetricEvents]' = None):
         self.invoker = Invoker()
@@ -42,6 +43,7 @@ class _NetworkImpl:
         self._main_thread = None  # type: Optional[Thread]
         self._run_state = None  # type: Optional[RunState]
         self._pool = None  # type: Optional[LedgerNetwork]
+        self._pool_init = safe_create_future()
         if metrics is None:
             # create a default set of metrics
             try:
@@ -87,6 +89,7 @@ class _NetworkImpl:
         for config in configs:
             self._config.update({k: v for k, v in asdict(config).items() if v is not None})
         self._config.update({k: v for k, v in kwargs.items() if v is not None})
+        LOG.debug('Configuration for this network: %r', self._config)
 
     async def aio_run(self, *coroutines, run_state: Optional[RunState] = None) -> None:
         """
@@ -128,6 +131,7 @@ class _NetworkImpl:
 
             self._pool = pool = AutodetectLedgerNetwork(
                 options=options, loop=self.invoker.get_loop(), executor=self.invoker.get_executor())
+            self._pool_init.set_result(pool)
 
             try:
                 runner = _NetworkRunner(pool, run_state, self, coroutines)
@@ -254,9 +258,10 @@ class _NetworkImpl:
         """
         Coroutine version of :meth:`metadata`.
         """
-        return await self._pool.ledger()
+        pool = await self._pool_init
+        return await pool.ledger()
 
-    async def ensure_packages(self, contents: bytes, timeout: TimeDeltaConvertible) -> None:
+    async def ensure_package(self, contents: bytes, timeout: TimeDeltaConvertible) -> None:
         """
         Ensure packages specified by the given byte array are loaded on the remote server.
 
@@ -266,14 +271,7 @@ class _NetworkImpl:
         :param contents: Contents to attempt to upload.
         :param timeout: Length of time before giving up.
         """
-        archives = get_archives(contents)
-        admin_url = self._config.get('admin_url')
-        if admin_url is not None:
-            for archive_bytes in archives.values():
-                self._pool.run_in_executor
-
-        else:
-            await self.ensure_package_ids(archives.keys(), timeout)
+        await self._pool.upload_package(contents)
 
     async def ensure_package_ids(
             self, package_ids: 'Collection[str]', timeout: 'TimeDeltaConvertible'):
@@ -312,6 +310,18 @@ class _NetworkImpl:
 
     # endregion
 
+    async def connect_anonymous(self):
+        config_names = {f.name for f in fields(URLConfig)}
+        config = URLConfig(**{k: v for k, v in self._config.items() if k in config_names})
+        settings, url_prefix = connection_settings(
+            config.url,
+            None,
+            verify_ssl=config.verify_ssl,
+            ca_file=config.ca_file,
+            cert_file=config.cert_file,
+            cert_key_file=config.cert_key_file)
+        await self._pool.connect_anonymous(settings, url_prefix)
+
 
 class _NetworkRunner:
     def __init__(self, pool: LedgerNetwork, run_state: RunState, network_impl: '_NetworkImpl', user_coroutines):
@@ -329,6 +339,8 @@ class _NetworkRunner:
         keep_running = True
         while keep_running:
             party_impls = {pi.party: pi for pi in self._network_impl.party_impls()}
+            if not party_impls:
+                await self._network_impl.connect_anonymous()
 
             # make sure that all parties are initialized; we do this on EVERY tick because new
             # parties might come later and they'll need to be initialized too

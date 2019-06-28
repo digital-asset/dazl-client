@@ -161,6 +161,13 @@ def grpc_set_time(connection: 'GRPCv1Connection', ledger_id: str, new_datetime: 
     LOG.info('Time on the server changed by the local client to %s.', new_datetime)
 
 
+def grpc_upload_package(connection: 'GRPCv1Connection', dar_contents: bytes) -> None:
+    from . import model as G
+
+    request = G.UploadDarFileRequest(dar_file=dar_contents)
+    connection.package_management_service.UploadDarFile(request)
+
+
 def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> Optional[str]:
     """
     Return the ledger ID from the remote server when it becomes available, or ``None`` if the
@@ -316,6 +323,7 @@ class GRPCv1Connection(_LedgerConnection):
         self.command_service = G.CommandServiceStub(self._channel)
         self.transaction_service = G.TransactionServiceStub(self._channel)
         self.package_service = G.PackageServiceStub(self._channel)
+        self.package_management_service = G.PackageManagementServiceStub(self._channel)
         self.ledger_identity_service = G.LedgerIdentityServiceStub(self._channel)
         self.time_service = G.TimeServiceStub(self._channel)
 

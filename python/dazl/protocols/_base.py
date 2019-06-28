@@ -9,10 +9,11 @@ from asyncio import AbstractEventLoop, get_event_loop, Future, ensure_future
 from concurrent.futures import Executor, ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Optional, Sequence
+from typing import Any, Optional, Sequence, Union
 import threading
 
 from .. import LOG
+from ..model.core import Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
 from ..model.reading import BaseEvent, TransactionFilter
@@ -31,12 +32,20 @@ class LedgerNetwork:
     """
 
     async def connect(
-            self,
-            party: str,
-            settings: HTTPConnectionSettings,
-            context_path: 'Optional[str]',
-            admin_url: 'Optional[str]') -> 'LedgerClient':
+            self, party: 'Union[str, Party]', settings: HTTPConnectionSettings, context_path: 'Optional[str]') \
+            -> 'LedgerClient':
+        """
+        Establish a connection to a Party.
+        """
         raise NotImplementedError('connect must be implemented')
+
+    async def connect_anonymous(
+            self, settings: 'HTTPConnectionSettings', context_path: 'Optional[str]') -> None:
+        """
+        Establish a single no-Party connection (but only if no other connections have already been
+        established). This is used by specialized setups that do not require Parties to be supplied
+        for any reason (such as fetching initial ledger metadata).
+        """
 
     async def ledger(self) -> LedgerMetadata:
         """
@@ -108,6 +117,13 @@ class LedgerClient:
     async def events_end(self) -> str:
         """
         Return the (current) last offset of the ledger.
+        """
+
+    async def upload_package(self, dar_contents: bytes) -> None:
+        """
+        Upload a DAR file to the ledger.
+
+        :param dar_contents: The raw bytes that represent a package.
         """
 
 

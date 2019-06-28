@@ -7,7 +7,7 @@ This module contains utilities required by :mod:`dazl.client.config`.
 
 import logging
 
-from argparse import ArgumentParser
+from argparse import _ActionsContainer
 from dataclasses import dataclass, field, fields, Field
 from typing import Any, Callable, FrozenSet, Optional, Sequence, Tuple
 
@@ -53,7 +53,7 @@ class ConfigParameterType:
 
 
 def add_argument(
-        parser: 'ArgumentParser',
+        parser: '_ActionsContainer',
         key: str,
         config_param: 'ConfigParameter') -> None:
     if config_param.param_type is not None:
