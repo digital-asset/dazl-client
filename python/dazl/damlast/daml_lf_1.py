@@ -537,7 +537,7 @@ class Expr:
                 return buf.getvalue()
 
     # noinspection PyPep8Naming
-    class None_:
+    class OptionalNone:
         type: 'Type'
 
         # noinspection PyShadowingBuiltins
@@ -547,7 +547,7 @@ class Expr:
         def __repr__(self):
             return f'Expr.None(: {self.type})'
 
-    class Some:
+    class OptionalSome:
         type: 'Type'
         body: 'Expr'
 
@@ -586,8 +586,8 @@ class Expr:
             scenario: 'Scenario' = MISSING,
             rec_upd: 'RecUpd' = MISSING,
             tuple_upd: 'TupleUpd' = MISSING,
-            none: 'None_' = MISSING,
-            some: 'Some' = MISSING,
+            optional_none: 'OptionalNone' = MISSING,
+            optional_some: 'OptionalSome' = MISSING,
             location: 'Location' = MISSING):
         object.__setattr__(self, 'location', location)
         if var is not MISSING:
@@ -659,12 +659,12 @@ class Expr:
         elif tuple_upd is not MISSING:
             object.__setattr__(self, '_Sum_name', 'tuple_upd')
             object.__setattr__(self, '_Sum_value', tuple_upd)
-        elif none is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'none')
-            object.__setattr__(self, '_Sum_value', none)
-        elif some is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'some')
-            object.__setattr__(self, '_Sum_value', some)
+        elif optional_none is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'optional_none')
+            object.__setattr__(self, '_Sum_value', optional_none)
+        elif optional_some is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'optional_some')
+            object.__setattr__(self, '_Sum_value', optional_some)
         else:
             raise ValueError(f'At least one valid Sum value must be supplied!')
 
@@ -764,12 +764,12 @@ class Expr:
         return self._Sum_value if self._Sum_name == 'tuple_upd' else None
 
     @property
-    def none(self) -> 'Optional[None_]':
-        return self._Sum_value if self._Sum_name == 'none' else None
+    def optional_none(self) -> 'Optional[OptionalNone]':
+        return self._Sum_value if self._Sum_name == 'optional_none' else None
 
     @property
-    def some(self) -> 'Optional[Some]':
-        return self._Sum_value if self._Sum_name == 'some' else None
+    def optional_some(self) -> 'Optional[OptionalSome]':
+        return self._Sum_value if self._Sum_name == 'optional_some' else None
 
     # noinspection PyPep8Naming
     def Sum_match(
@@ -797,8 +797,8 @@ class Expr:
             scenario: 'Callable[[Scenario], T]',
             rec_upd: 'Callable[[RecUpd], T]',
             tuple_upd: 'Callable[[TupleUpd], T]',
-            none: 'Callable[[None_], T]',
-            some: 'Callable[[Some], T]') -> 'T':
+            optional_none: 'Callable[[OptionalNone], T]',
+            optional_some: 'Callable[[OptionalSome], T]') -> 'T':
         if self._Sum_name == 'var':
             return var(self.var)
         elif self._Sum_name == 'val':
@@ -845,10 +845,10 @@ class Expr:
             return rec_upd(self.rec_upd)
         elif self._Sum_name == 'tuple_upd':
             return tuple_upd(self.tuple_upd)
-        elif self._Sum_name == 'none':
-            return none(self.none)
-        elif self._Sum_name == 'some':
-            return some(self.some)
+        elif self._Sum_name == 'optional_none':
+            return optional_none(self.optional_none)
+        elif self._Sum_name == 'optional_some':
+            return optional_some(self.optional_some)
         else:
             raise Exception
 
@@ -873,7 +873,7 @@ class CaseAlt:
         var_tail: str
 
     @dataclass(frozen=True)
-    class Some:
+    class OptionalSome:
         var_body: str
 
     __slots__ = 'body', '_Sum_name', '_Sum_value'
@@ -886,8 +886,8 @@ class CaseAlt:
             prim_con: 'PrimCon' = MISSING,
             nil: 'Unit' = MISSING,
             cons: 'Cons' = MISSING,
-            none: 'Unit' = MISSING,
-            some: 'Some' = MISSING,
+            optional_none: 'Unit' = MISSING,
+            optional_some: 'OptionalSome' = MISSING,
             body: 'Expr' = MISSING):
         object.__setattr__(self, 'body', body)
         if default is not MISSING:
@@ -905,12 +905,12 @@ class CaseAlt:
         elif cons is not MISSING:
             object.__setattr__(self, '_Sum_name', 'cons')
             object.__setattr__(self, '_Sum_value', cons)
-        elif none is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'none')
-            object.__setattr__(self, '_Sum_value', none)
-        elif some is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'some')
-            object.__setattr__(self, '_Sum_value', some)
+        elif optional_none is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'optional_none')
+            object.__setattr__(self, '_Sum_value', optional_none)
+        elif optional_some is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'optional_some')
+            object.__setattr__(self, '_Sum_value', optional_some)
 
     @property
     def default(self) -> 'Optional[Unit]':
@@ -933,12 +933,12 @@ class CaseAlt:
         return self._Sum_value if self._Sum_name == 'cons' else None
 
     @property
-    def none(self) -> 'Optional[Unit]':
-        return self._Sum_value if self._Sum_name == 'none' else None
+    def optional_none(self) -> 'Optional[Unit]':
+        return self._Sum_value if self._Sum_name == 'optional_none' else None
 
     @property
-    def some(self) -> 'Optional[Some]':
-        return self._Sum_value if self._Sum_name == 'some' else None
+    def optional_some(self) -> 'Optional[OptionalSome]':
+        return self._Sum_value if self._Sum_name == 'optional_some' else None
 
     # noinspection PyPep8Naming
     def Sum_match(
@@ -948,8 +948,8 @@ class CaseAlt:
             prim_con: 'Callable[[PrimCon], T]',
             nil: 'Callable[[Unit], T]',
             cons: 'Callable[[Cons], T]',
-            none: 'Callable[[Unit], T]',
-            some: 'Callable[[Some], T]'):
+            optional_none: 'Callable[[Unit], T]',
+            optional_some: 'Callable[[OptionalSome], T]'):
         if self._Sum_name == 'default':
             return default(self.default)
         elif self._Sum_name == 'variant':
@@ -960,10 +960,10 @@ class CaseAlt:
             return nil(self.nil)
         elif self._Sum_name == 'cons':
             return cons(self.cons)
-        elif self._Sum_name == 'none':
-            return none(self.none)
-        elif self._Sum_name == 'some':
-            return some(self.some)
+        elif self._Sum_name == 'optional_none':
+            return optional_none(self.optional_none)
+        elif self._Sum_name == 'optional_some':
+            return optional_some(self.optional_some)
         else:
             raise Exception
 

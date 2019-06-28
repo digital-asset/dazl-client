@@ -285,26 +285,26 @@ class PythonPrettyPrint(PrettyPrintBase):
     def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> str:
         raise Exception
 
-    def visit_expr_none(self, none: 'Expr.None_') -> str:
+    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> str:
         expr = 'None'
         if self.context.in_expression:
             return expr
         else:
             try:
-                type_str = self.visit_type(none.type)
+                type_str = self.visit_type(optional_none.type)
                 type_str = f'  # type: Optional[{type_str}]'
             except:
                 type_str = None
 
             return f'return {expr}{type_str}'
 
-    def visit_expr_some(self, some: 'Expr.Some') -> str:
-        expr = self.visit_expr(some.body)
+    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> str:
+        expr = self.visit_expr(optional_some.body)
         if self.in_lambda_body:
             return expr
         else:
             try:
-                type_str = self.visit_type(some.type)
+                type_str = self.visit_type(optional_some.type)
                 type_str = f'  # type: Optional[{type_str}]'
             except:
                 type_str = None

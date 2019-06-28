@@ -22,8 +22,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/digitalasset/ledger/api/v1/trace_context.proto',
   package='com.digitalasset.ledger.api.v1',
   syntax='proto3',
-  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\026TraceContextOuterClass'),
-  serialized_pb=_b('\n2com/digitalasset/ledger/api/v1/trace_context.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a\x1egoogle/protobuf/wrappers.proto\"\x9b\x01\n\x0cTraceContext\x12\x19\n\rtrace_id_high\x18\x01 \x01(\x04\x42\x02\x30\x01\x12\x14\n\x08trace_id\x18\x02 \x01(\x04\x42\x02\x30\x01\x12\x13\n\x07span_id\x18\x03 \x01(\x04\x42\x02\x30\x01\x12\x34\n\x0eparent_span_id\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.UInt64Value\x12\x0f\n\x07sampled\x18\x05 \x01(\x08\x42\x38\n\x1e\x63om.digitalasset.ledger.api.v1B\x16TraceContextOuterClassb\x06proto3')
+  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\026TraceContextOuterClass\252\002\036Com.DigitalAsset.Ledger.Api.V1'),
+  serialized_pb=_b('\n2com/digitalasset/ledger/api/v1/trace_context.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a\x1egoogle/protobuf/wrappers.proto\"\x9b\x01\n\x0cTraceContext\x12\x19\n\rtrace_id_high\x18\x01 \x01(\x04\x42\x02\x30\x01\x12\x14\n\x08trace_id\x18\x02 \x01(\x04\x42\x02\x30\x01\x12\x13\n\x07span_id\x18\x03 \x01(\x04\x42\x02\x30\x01\x12\x34\n\x0eparent_span_id\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.UInt64Value\x12\x0f\n\x07sampled\x18\x05 \x01(\x08\x42Y\n\x1e\x63om.digitalasset.ledger.api.v1B\x16TraceContextOuterClass\xaa\x02\x1e\x43om.DigitalAsset.Ledger.Api.V1b\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,])
 

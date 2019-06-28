@@ -24,8 +24,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/digitalasset/ledger/api/v1/command_submission_service.proto',
   package='com.digitalasset.ledger.api.v1',
   syntax='proto3',
-  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\"CommandSubmissionServiceOuterClass'),
-  serialized_pb=_b('\n?com/digitalasset/ledger/api/v1/command_submission_service.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a\x32\x63om/digitalasset/ledger/api/v1/trace_context.proto\x1a-com/digitalasset/ledger/api/v1/commands.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x91\x01\n\rSubmitRequest\x12:\n\x08\x63ommands\x18\x01 \x01(\x0b\x32(.com.digitalasset.ledger.api.v1.Commands\x12\x44\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32,.com.digitalasset.ledger.api.v1.TraceContext2k\n\x18\x43ommandSubmissionService\x12O\n\x06Submit\x12-.com.digitalasset.ledger.api.v1.SubmitRequest\x1a\x16.google.protobuf.EmptyBD\n\x1e\x63om.digitalasset.ledger.api.v1B\"CommandSubmissionServiceOuterClassb\x06proto3')
+  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\"CommandSubmissionServiceOuterClass\252\002\036Com.DigitalAsset.Ledger.Api.V1'),
+  serialized_pb=_b('\n?com/digitalasset/ledger/api/v1/command_submission_service.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a\x32\x63om/digitalasset/ledger/api/v1/trace_context.proto\x1a-com/digitalasset/ledger/api/v1/commands.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x91\x01\n\rSubmitRequest\x12:\n\x08\x63ommands\x18\x01 \x01(\x0b\x32(.com.digitalasset.ledger.api.v1.Commands\x12\x44\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32,.com.digitalasset.ledger.api.v1.TraceContext2k\n\x18\x43ommandSubmissionService\x12O\n\x06Submit\x12-.com.digitalasset.ledger.api.v1.SubmitRequest\x1a\x16.google.protobuf.EmptyBe\n\x1e\x63om.digitalasset.ledger.api.v1B\"CommandSubmissionServiceOuterClass\xaa\x02\x1e\x43om.DigitalAsset.Ledger.Api.V1b\x06proto3')
   ,
   dependencies=[com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_commands__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 

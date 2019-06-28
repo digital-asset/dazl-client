@@ -132,11 +132,11 @@ class ExpressionEvaluator(ExprVisitor[Any], IdentityTypeVisitor):
     def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'Any':
         raise RuntimeError('expressions cannot currently be evaluated in the Update monad')
 
-    def visit_expr_none(self, none: 'Expr.None_') -> 'Any':
+    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'Any':
         return None
 
-    def visit_expr_some(self, some: 'Expr.Some') -> 'Any':
-        return self.visit_expr(some.body)
+    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'Any':
+        return self.visit_expr(optional_some.body)
 
     def visit_type_var(self, var: 'Type.Var') -> 'Type':
         resolved_type = self.resolve_type(var.var)

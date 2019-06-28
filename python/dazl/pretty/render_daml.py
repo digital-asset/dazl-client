@@ -182,11 +182,11 @@ class DamlPrettyPrinter(PrettyPrintBase):
     def visit_expr_scenario(self, scenario: 'Scenario'):
         return 'test ... return'
 
-    def visit_expr_none(self, none: 'Expr.None_') -> str:
+    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> str:
         return f'None'
 
-    def visit_expr_some(self, some: 'Expr.Some') -> str:
-        expr_text = self.visit_expr(some.body)
+    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> str:
+        expr_text = self.visit_expr(optional_some.body)
         return f'Some {maybe_parentheses(expr_text)}'
 
     # endregion

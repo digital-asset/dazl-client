@@ -537,8 +537,8 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
             self.visit_expr_casealt_prim_con,
             self.visit_expr_casealt_nil,
             self.visit_expr_casealt_cons,
-            self.visit_expr_casealt_none,
-            self.visit_expr_casealt_some)
+            self.visit_expr_casealt_optional_none,
+            self.visit_expr_casealt_optional_some)
         body_text = self.visit_expr(alt.body)
         return self._visit_expr_casealt(pattern_text, body_text)
 
@@ -568,11 +568,11 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
             tail=Expr(var=cons.var_tail),
             type=type))
 
-    def visit_expr_casealt_none(self, none: 'Unit', type: 'Optional[Type]' = None):
-        return self.visit_expr_none(Expr.None_(type=type))
+    def visit_expr_casealt_optional_none(self, optional_none: 'Unit', type: 'Optional[Type]' = None):
+        return self.visit_expr_optional_none(Expr.OptionalNone(type=type))
 
-    def visit_expr_casealt_some(self, some: 'CaseAlt.Some', type: 'Optional[Type]' = None):
-        return self.visit_expr_some(Expr.Some(type=type, body=Expr(var=some.var_body)))
+    def visit_expr_casealt_optional_some(self, optional_some: 'CaseAlt.OptionalSome', type: 'Optional[Type]' = None):
+        return self.visit_expr_optional_some(Expr.OptionalSome(type=type, body=Expr(var=optional_some.var_body)))
 
     def visit_expr_let(self, let: 'Block') -> 'str':
         pass
@@ -606,10 +606,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'str':
         pass
 
-    def visit_expr_none(self, none: 'Expr.None_') -> 'str':
+    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'str':
         pass
 
-    def visit_expr_some(self, some: 'Expr.Some') -> 'str':
+    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'str':
         pass
 
     # noinspection PyBroadException

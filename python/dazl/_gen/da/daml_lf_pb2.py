@@ -24,8 +24,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='da/daml_lf.proto',
   package='daml_lf',
   syntax='proto3',
-  serialized_options=_b('\n\030com.digitalasset.daml_lf'),
-  serialized_pb=_b('\n\x10\x64\x61/daml_lf.proto\x12\x07\x64\x61ml_lf\x1a\x12\x64\x61/daml_lf_0.proto\x1a\x12\x64\x61/daml_lf_1.proto\"\x80\x01\n\x0e\x41rchivePayload\x12\r\n\x05minor\x18\x03 \x01(\t\x12\'\n\tdaml_lf_0\x18\x01 \x01(\x0b\x32\x12.daml_lf_0.PackageH\x00\x12\'\n\tdaml_lf_1\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.PackageH\x00\x42\x05\n\x03SumJ\x06\x08\x8fN\x10\x90N\"V\n\x07\x41rchive\x12,\n\rhash_function\x18\x01 \x01(\x0e\x32\x15.daml_lf.HashFunction\x12\x0f\n\x07payload\x18\x03 \x01(\x0c\x12\x0c\n\x04hash\x18\x04 \x01(\t*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42\x1a\n\x18\x63om.digitalasset.daml_lfb\x06proto3')
+  serialized_options=_b('\n\030com.digitalasset.daml_lf\252\002\037Com.DigitalAsset.Daml_lf.DamlLf'),
+  serialized_pb=_b('\n\x10\x64\x61/daml_lf.proto\x12\x07\x64\x61ml_lf\x1a\x12\x64\x61/daml_lf_0.proto\x1a\x12\x64\x61/daml_lf_1.proto\"\x80\x01\n\x0e\x41rchivePayload\x12\r\n\x05minor\x18\x03 \x01(\t\x12\'\n\tdaml_lf_0\x18\x01 \x01(\x0b\x32\x12.daml_lf_0.PackageH\x00\x12\'\n\tdaml_lf_1\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.PackageH\x00\x42\x05\n\x03SumJ\x06\x08\x8fN\x10\x90N\"V\n\x07\x41rchive\x12,\n\rhash_function\x18\x01 \x01(\x0e\x32\x15.daml_lf.HashFunction\x12\x0f\n\x07payload\x18\x03 \x01(\x0c\x12\x0c\n\x04hash\x18\x04 \x01(\t*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42<\n\x18\x63om.digitalasset.daml_lf\xaa\x02\x1f\x43om.DigitalAsset.Daml_lf.DamlLfb\x06proto3')
   ,
   dependencies=[da_dot_daml__lf__0__pb2.DESCRIPTOR,da_dot_daml__lf__1__pb2.DESCRIPTOR,])
 

@@ -136,11 +136,11 @@ class TypeComputer(ExprVisitor[Type], IdentityTypeVisitor):
     def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'Type':
         raise Exception('Update not yet supported')
 
-    def visit_expr_none(self, none: 'Expr.None_') -> 'Type':
-        return Type(prim=Type.Prim(PrimType.OPTIONAL, [self.visit_type(none.type)]))
+    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'Type':
+        return Type(prim=Type.Prim(PrimType.OPTIONAL, [self.visit_type(optional_none.type)]))
 
-    def visit_expr_some(self, some: 'Expr.Some') -> 'Type':
-        return Type(prim=Type.Prim(PrimType.OPTIONAL, [self.visit_type(some.type)]))
+    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'Type':
+        return Type(prim=Type.Prim(PrimType.OPTIONAL, [self.visit_type(optional_some.type)]))
 
     def visit_type_var(self, var: 'Type.Var') -> 'Type':
         resolved_type = self.resolve_type(var.var)
