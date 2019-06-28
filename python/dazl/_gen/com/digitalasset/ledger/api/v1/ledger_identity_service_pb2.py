@@ -22,8 +22,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/digitalasset/ledger/api/v1/ledger_identity_service.proto',
   package='com.digitalasset.ledger.api.v1',
   syntax='proto3',
-  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\037LedgerIdentityServiceOuterClass'),
-  serialized_pb=_b('\n<com/digitalasset/ledger/api/v1/ledger_identity_service.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a\x32\x63om/digitalasset/ledger/api/v1/trace_context.proto\"`\n\x18GetLedgerIdentityRequest\x12\x44\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32,.com.digitalasset.ledger.api.v1.TraceContext\".\n\x19GetLedgerIdentityResponse\x12\x11\n\tledger_id\x18\x01 \x01(\t2\xa2\x01\n\x15LedgerIdentityService\x12\x88\x01\n\x11GetLedgerIdentity\x12\x38.com.digitalasset.ledger.api.v1.GetLedgerIdentityRequest\x1a\x39.com.digitalasset.ledger.api.v1.GetLedgerIdentityResponseBA\n\x1e\x63om.digitalasset.ledger.api.v1B\x1fLedgerIdentityServiceOuterClassb\x06proto3')
+  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\037LedgerIdentityServiceOuterClass\252\002\036Com.DigitalAsset.Ledger.Api.V1'),
+  serialized_pb=_b('\n<com/digitalasset/ledger/api/v1/ledger_identity_service.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a\x32\x63om/digitalasset/ledger/api/v1/trace_context.proto\"`\n\x18GetLedgerIdentityRequest\x12\x44\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32,.com.digitalasset.ledger.api.v1.TraceContext\".\n\x19GetLedgerIdentityResponse\x12\x11\n\tledger_id\x18\x01 \x01(\t2\xa2\x01\n\x15LedgerIdentityService\x12\x88\x01\n\x11GetLedgerIdentity\x12\x38.com.digitalasset.ledger.api.v1.GetLedgerIdentityRequest\x1a\x39.com.digitalasset.ledger.api.v1.GetLedgerIdentityResponseBb\n\x1e\x63om.digitalasset.ledger.api.v1B\x1fLedgerIdentityServiceOuterClass\xaa\x02\x1e\x43om.DigitalAsset.Ledger.Api.V1b\x06proto3')
   ,
   dependencies=[com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,])
 

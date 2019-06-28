@@ -22,8 +22,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/digitalasset/ledger/api/v1/transaction_filter.proto',
   package='com.digitalasset.ledger.api.v1',
   syntax='proto3',
-  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\033TransactionFilterOuterClass'),
-  serialized_pb=_b('\n7com/digitalasset/ledger/api/v1/transaction_filter.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a*com/digitalasset/ledger/api/v1/value.proto\"\xd4\x01\n\x11TransactionFilter\x12_\n\x10\x66ilters_by_party\x18\x01 \x03(\x0b\x32\x45.com.digitalasset.ledger.api.v1.TransactionFilter.FiltersByPartyEntry\x1a^\n\x13\x46iltersByPartyEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x36\n\x05value\x18\x02 \x01(\x0b\x32\'.com.digitalasset.ledger.api.v1.Filters:\x02\x38\x01\"N\n\x07\x46ilters\x12\x43\n\tinclusive\x18\x01 \x01(\x0b\x32\x30.com.digitalasset.ledger.api.v1.InclusiveFilters\"T\n\x10InclusiveFilters\x12@\n\x0ctemplate_ids\x18\x01 \x03(\x0b\x32*.com.digitalasset.ledger.api.v1.IdentifierB=\n\x1e\x63om.digitalasset.ledger.api.v1B\x1bTransactionFilterOuterClassb\x06proto3')
+  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\033TransactionFilterOuterClass\252\002\036Com.DigitalAsset.Ledger.Api.V1'),
+  serialized_pb=_b('\n7com/digitalasset/ledger/api/v1/transaction_filter.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a*com/digitalasset/ledger/api/v1/value.proto\"\xd4\x01\n\x11TransactionFilter\x12_\n\x10\x66ilters_by_party\x18\x01 \x03(\x0b\x32\x45.com.digitalasset.ledger.api.v1.TransactionFilter.FiltersByPartyEntry\x1a^\n\x13\x46iltersByPartyEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x36\n\x05value\x18\x02 \x01(\x0b\x32\'.com.digitalasset.ledger.api.v1.Filters:\x02\x38\x01\"N\n\x07\x46ilters\x12\x43\n\tinclusive\x18\x01 \x01(\x0b\x32\x30.com.digitalasset.ledger.api.v1.InclusiveFilters\"T\n\x10InclusiveFilters\x12@\n\x0ctemplate_ids\x18\x01 \x03(\x0b\x32*.com.digitalasset.ledger.api.v1.IdentifierB^\n\x1e\x63om.digitalasset.ledger.api.v1B\x1bTransactionFilterOuterClass\xaa\x02\x1e\x43om.DigitalAsset.Ledger.Api.V1b\x06proto3')
   ,
   dependencies=[com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_value__pb2.DESCRIPTOR,])
 

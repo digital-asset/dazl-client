@@ -22,8 +22,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/digitalasset/ledger/api/v1/testing/reset_service.proto',
   package='com.digitalasset.ledger.api.v1.testing',
   syntax='proto3',
-  serialized_options=_b('\n&com.digitalasset.ledger.api.v1.testingB\026ResetServiceOuterClass'),
-  serialized_pb=_b('\n:com/digitalasset/ledger/api/v1/testing/reset_service.proto\x12&com.digitalasset.ledger.api.v1.testing\x1a\x1bgoogle/protobuf/empty.proto\"!\n\x0cResetRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t2e\n\x0cResetService\x12U\n\x05Reset\x12\x34.com.digitalasset.ledger.api.v1.testing.ResetRequest\x1a\x16.google.protobuf.EmptyB@\n&com.digitalasset.ledger.api.v1.testingB\x16ResetServiceOuterClassb\x06proto3')
+  serialized_options=_b('\n&com.digitalasset.ledger.api.v1.testingB\026ResetServiceOuterClass\252\002&Com.DigitalAsset.Ledger.Api.V1.Testing'),
+  serialized_pb=_b('\n:com/digitalasset/ledger/api/v1/testing/reset_service.proto\x12&com.digitalasset.ledger.api.v1.testing\x1a\x1bgoogle/protobuf/empty.proto\"!\n\x0cResetRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t2e\n\x0cResetService\x12U\n\x05Reset\x12\x34.com.digitalasset.ledger.api.v1.testing.ResetRequest\x1a\x16.google.protobuf.EmptyBi\n&com.digitalasset.ledger.api.v1.testingB\x16ResetServiceOuterClass\xaa\x02&Com.DigitalAsset.Ledger.Api.V1.Testingb\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 

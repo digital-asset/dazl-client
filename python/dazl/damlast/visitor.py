@@ -50,8 +50,8 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_scenario,
             self.visit_expr_rec_upd,
             self.visit_expr_tuple_upd,
-            self.visit_expr_none,
-            self.visit_expr_some)
+            self.visit_expr_optional_none,
+            self.visit_expr_optional_some)
 
     def visit_expr_var(self, var: str) -> 'RE':
         raise NotImplementedError
@@ -122,10 +122,10 @@ class ExprVisitor(Generic[RE]):
     def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'RE':
         raise NotImplementedError
 
-    def visit_expr_none(self, none: 'Expr.None_') -> 'RE':
+    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'RE':
         raise NotImplementedError
 
-    def visit_expr_some(self, some: 'Expr.Some') -> 'RE':
+    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'RE':
         raise NotImplementedError
 
 
@@ -299,12 +299,11 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
     def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'Expr':
         return Expr(tuple_upd=tuple_upd)
 
-    def visit_expr_none(self, none: 'Expr.None_') -> 'Expr':
-        new_type = self.visit_type(none.type)
-        return Expr(none=Expr.None_(type=new_type))
+    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'Expr':
+        new_type = self.visit_type(optional_none.type)
+        return Expr(optional_none=Expr.OptionalNone(type=new_type))
 
-    def visit_expr_some(self, some: 'Expr.Some') -> 'Expr':
-        new_type = self.visit_type(some.type)
-        new_body = self.visit_expr(some.body)
-        return Expr(some=Expr.Some(type=new_type, body=new_body))
-
+    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'Expr':
+        new_type = self.visit_type(optional_some.type)
+        new_body = self.visit_expr(optional_some.body)
+        return Expr(optional_some=Expr.OptionalSome(type=new_type, body=new_body))

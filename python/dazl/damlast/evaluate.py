@@ -94,8 +94,8 @@ class Evaluator:
             self.eval_scenario,
             self.eval_rec_upd,
             self.eval_tuple_upd,
-            self.eval_none,
-            self.eval_some)
+            self.eval_optional_none,
+            self.eval_optional_some)
         if isinstance(result, Expr):
             LOG.warning('An Expr eval generated another Expr, which is probably incorrect.')
             LOG.warning('  Initial Expr: %r', expr)
@@ -261,11 +261,11 @@ class Evaluator:
         raise ValueError('not handling updates yet')
 
     @staticmethod
-    def eval_none(none: '') -> 'Any':
+    def eval_optional_none(optional_none: 'Expr.OptionalNone') -> 'Any':
         return None
 
-    def eval_some(self, some: 'Expr.Some') -> 'Any':
-        return self.eval_Expr(some.body)
+    def eval_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'Any':
+        return self.eval_Expr(optional_some.body)
 
 
 class BuiltinImpl:

@@ -21,8 +21,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/digitalasset/ledger/api/v1/ledger_offset.proto',
   package='com.digitalasset.ledger.api.v1',
   syntax='proto3',
-  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\026LedgerOffsetOuterClass'),
-  serialized_pb=_b('\n2com/digitalasset/ledger/api/v1/ledger_offset.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\"\xb0\x01\n\x0cLedgerOffset\x12\x12\n\x08\x61\x62solute\x18\x01 \x01(\tH\x00\x12O\n\x08\x62oundary\x18\x02 \x01(\x0e\x32;.com.digitalasset.ledger.api.v1.LedgerOffset.LedgerBoundaryH\x00\"2\n\x0eLedgerBoundary\x12\x10\n\x0cLEDGER_BEGIN\x10\x00\x12\x0e\n\nLEDGER_END\x10\x01\x42\x07\n\x05valueB8\n\x1e\x63om.digitalasset.ledger.api.v1B\x16LedgerOffsetOuterClassb\x06proto3')
+  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\026LedgerOffsetOuterClass\252\002\036Com.DigitalAsset.Ledger.Api.V1'),
+  serialized_pb=_b('\n2com/digitalasset/ledger/api/v1/ledger_offset.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\"\xb0\x01\n\x0cLedgerOffset\x12\x12\n\x08\x61\x62solute\x18\x01 \x01(\tH\x00\x12O\n\x08\x62oundary\x18\x02 \x01(\x0e\x32;.com.digitalasset.ledger.api.v1.LedgerOffset.LedgerBoundaryH\x00\"2\n\x0eLedgerBoundary\x12\x10\n\x0cLEDGER_BEGIN\x10\x00\x12\x0e\n\nLEDGER_END\x10\x01\x42\x07\n\x05valueBY\n\x1e\x63om.digitalasset.ledger.api.v1B\x16LedgerOffsetOuterClass\xaa\x02\x1e\x43om.DigitalAsset.Ledger.Api.V1b\x06proto3')
 )
 
 

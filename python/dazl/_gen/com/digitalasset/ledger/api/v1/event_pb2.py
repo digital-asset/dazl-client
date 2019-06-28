@@ -23,8 +23,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/digitalasset/ledger/api/v1/event.proto',
   package='com.digitalasset.ledger.api.v1',
   syntax='proto3',
-  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\017EventOuterClass'),
-  serialized_pb=_b('\n*com/digitalasset/ledger/api/v1/event.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a*com/digitalasset/ledger/api/v1/value.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xa5\x01\n\x05\x45vent\x12?\n\x07\x63reated\x18\x01 \x01(\x0b\x32,.com.digitalasset.ledger.api.v1.CreatedEventH\x00\x12\x41\n\x08\x61rchived\x18\x03 \x01(\x0b\x32-.com.digitalasset.ledger.api.v1.ArchivedEventH\x00\x42\x07\n\x05\x65ventJ\x04\x08\x02\x10\x03R\texercised\"\xc4\x02\n\x0c\x43reatedEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x13\n\x0b\x63ontract_id\x18\x02 \x01(\t\x12?\n\x0btemplate_id\x18\x03 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12;\n\x0c\x63ontract_key\x18\x07 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\x12@\n\x10\x63reate_arguments\x18\x04 \x01(\x0b\x32&.com.digitalasset.ledger.api.v1.Record\x12\x17\n\x0fwitness_parties\x18\x05 \x03(\t\x12\x34\n\x0e\x61greement_text\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\x90\x01\n\rArchivedEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x13\n\x0b\x63ontract_id\x18\x02 \x01(\t\x12?\n\x0btemplate_id\x18\x03 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12\x17\n\x0fwitness_parties\x18\x04 \x03(\t\"\x8f\x03\n\x0e\x45xercisedEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x13\n\x0b\x63ontract_id\x18\x02 \x01(\t\x12?\n\x0btemplate_id\x18\x03 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12\"\n\x1a\x63ontract_creating_event_id\x18\x04 \x01(\t\x12\x0e\n\x06\x63hoice\x18\x05 \x01(\t\x12>\n\x0f\x63hoice_argument\x18\x06 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\x12\x16\n\x0e\x61\x63ting_parties\x18\x07 \x03(\t\x12\x11\n\tconsuming\x18\x08 \x01(\x08\x12\x17\n\x0fwitness_parties\x18\n \x03(\t\x12\x17\n\x0f\x63hild_event_ids\x18\x0b \x03(\t\x12>\n\x0f\x65xercise_result\x18\x0c \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.ValueJ\x04\x08\t\x10\nB1\n\x1e\x63om.digitalasset.ledger.api.v1B\x0f\x45ventOuterClassb\x06proto3')
+  serialized_options=_b('\n\036com.digitalasset.ledger.api.v1B\017EventOuterClass\252\002\036Com.DigitalAsset.Ledger.Api.V1'),
+  serialized_pb=_b('\n*com/digitalasset/ledger/api/v1/event.proto\x12\x1e\x63om.digitalasset.ledger.api.v1\x1a*com/digitalasset/ledger/api/v1/value.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xa5\x01\n\x05\x45vent\x12?\n\x07\x63reated\x18\x01 \x01(\x0b\x32,.com.digitalasset.ledger.api.v1.CreatedEventH\x00\x12\x41\n\x08\x61rchived\x18\x03 \x01(\x0b\x32-.com.digitalasset.ledger.api.v1.ArchivedEventH\x00\x42\x07\n\x05\x65ventJ\x04\x08\x02\x10\x03R\texercised\"\xec\x02\n\x0c\x43reatedEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x13\n\x0b\x63ontract_id\x18\x02 \x01(\t\x12?\n\x0btemplate_id\x18\x03 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12;\n\x0c\x63ontract_key\x18\x07 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\x12@\n\x10\x63reate_arguments\x18\x04 \x01(\x0b\x32&.com.digitalasset.ledger.api.v1.Record\x12\x17\n\x0fwitness_parties\x18\x05 \x03(\t\x12\x13\n\x0bsignatories\x18\x08 \x03(\t\x12\x11\n\tobservers\x18\t \x03(\t\x12\x34\n\x0e\x61greement_text\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\x90\x01\n\rArchivedEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x13\n\x0b\x63ontract_id\x18\x02 \x01(\t\x12?\n\x0btemplate_id\x18\x03 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12\x17\n\x0fwitness_parties\x18\x04 \x03(\t\"\x8f\x03\n\x0e\x45xercisedEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x13\n\x0b\x63ontract_id\x18\x02 \x01(\t\x12?\n\x0btemplate_id\x18\x03 \x01(\x0b\x32*.com.digitalasset.ledger.api.v1.Identifier\x12\"\n\x1a\x63ontract_creating_event_id\x18\x04 \x01(\t\x12\x0e\n\x06\x63hoice\x18\x05 \x01(\t\x12>\n\x0f\x63hoice_argument\x18\x06 \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.Value\x12\x16\n\x0e\x61\x63ting_parties\x18\x07 \x03(\t\x12\x11\n\tconsuming\x18\x08 \x01(\x08\x12\x17\n\x0fwitness_parties\x18\n \x03(\t\x12\x17\n\x0f\x63hild_event_ids\x18\x0b \x03(\t\x12>\n\x0f\x65xercise_result\x18\x0c \x01(\x0b\x32%.com.digitalasset.ledger.api.v1.ValueJ\x04\x08\t\x10\nBR\n\x1e\x63om.digitalasset.ledger.api.v1B\x0f\x45ventOuterClass\xaa\x02\x1e\x43om.DigitalAsset.Ledger.Api.V1b\x06proto3')
   ,
   dependencies=[com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_value__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,])
 
@@ -122,7 +122,21 @@ _CREATEDEVENT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='agreement_text', full_name='com.digitalasset.ledger.api.v1.CreatedEvent.agreement_text', index=6,
+      name='signatories', full_name='com.digitalasset.ledger.api.v1.CreatedEvent.signatories', index=6,
+      number=8, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='observers', full_name='com.digitalasset.ledger.api.v1.CreatedEvent.observers', index=7,
+      number=9, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='agreement_text', full_name='com.digitalasset.ledger.api.v1.CreatedEvent.agreement_text', index=8,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -141,7 +155,7 @@ _CREATEDEVENT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=323,
-  serialized_end=647,
+  serialized_end=687,
 )
 
 
@@ -192,8 +206,8 @@ _ARCHIVEDEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=650,
-  serialized_end=794,
+  serialized_start=690,
+  serialized_end=834,
 )
 
 
@@ -293,8 +307,8 @@ _EXERCISEDEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=797,
-  serialized_end=1196,
+  serialized_start=837,
+  serialized_end=1236,
 )
 
 _EVENT.fields_by_name['created'].message_type = _CREATEDEVENT

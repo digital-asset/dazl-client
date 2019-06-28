@@ -226,10 +226,10 @@ class ProtobufParser:
             args['rec_upd'] = self.parse_Expr_RecUpd(pb.rec_upd)
         elif sum_name == 'tuple_upd':
             args['tuple_upd'] = self.parse_Expr_TupleUpd(pb.tuple_upd)
-        elif sum_name == 'none':
-            args['none'] = self.parse_Expr_None(pb.none)
-        elif sum_name == 'some':
-            args['some'] = self.parse_Expr_Some(pb.some)
+        elif sum_name == 'optional_none':
+            args['optional_none'] = self.parse_Expr_OptionalNone(pb.optional_none)
+        elif sum_name == 'optional_some':
+            args['optional_some'] = self.parse_Expr_OptionalSome(pb.optional_some)
         else:
             raise ValueError(f'Unknown type of Expr: {sum_name!r}')
 
@@ -306,12 +306,12 @@ class ProtobufParser:
             tuple(self.parse_Expr(front) for front in pb.front),  # length > 0
             self.parse_Expr(pb.tail))
 
-    def parse_Expr_None(self, pb):
-        return Expr.None_(
+    def parse_Expr_OptionalNone(self, pb):
+        return Expr.OptionalNone(
             self.parse_Type(pb.type))
 
-    def parse_Expr_Some(self, pb):
-        return Expr.Some(
+    def parse_Expr_OptionalSome(self, pb):
+        return Expr.OptionalSome(
             self.parse_Type(pb.type),
             self.parse_Expr(pb.body))
 
@@ -328,10 +328,10 @@ class ProtobufParser:
             return CaseAlt(nil=self.parse_Unit(pb.nil), body=body)
         elif sum_name == 'cons':
             return CaseAlt(cons=self.parse_CaseAlt_Cons(pb.cons), body=body)
-        elif sum_name == 'none':
-            return CaseAlt(none=self.parse_Unit(pb.none), body=body)
-        elif sum_name == 'some':
-            return CaseAlt(some=self.parse_CaseAlt_Some(pb.some), body=body)
+        elif sum_name == 'optional_none':
+            return CaseAlt(optional_none=self.parse_Unit(pb.optional_none), body=body)
+        elif sum_name == 'optional_some':
+            return CaseAlt(optional_some=self.parse_CaseAlt_OptionalSome(pb.optional_some), body=body)
         else:
             raise ValueError('unknown Sum value')
 
@@ -341,8 +341,8 @@ class ProtobufParser:
     def parse_CaseAlt_Cons(self, pb) -> 'CaseAlt.Cons':
         return CaseAlt.Cons(pb.var_head, pb.var_tail)
 
-    def parse_CaseAlt_Some(self, pb) -> 'CaseAlt.Some':
-        return CaseAlt.Some(pb.var_body)
+    def parse_CaseAlt_OptionalSome(self, pb) -> 'CaseAlt.OptionalSome':
+        return CaseAlt.OptionalSome(pb.var_body)
 
     def parse_Case(self, pb) -> 'Case':
         return Case(

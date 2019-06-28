@@ -4,12 +4,13 @@
 """
 Tests to ensure that packages can be loaded.
 """
+import logging
 from operator import setitem
 from pathlib import Path
-from unittest import TestCase
+from unittest import TestCase, skip
 from zipfile import ZipFile
 
-from dazl import sandbox, Network
+from dazl import sandbox, Network, setup_default_logger
 from dazl.model.types_store import PackageStore
 from dazl.util.dar import build_dar, DarFile
 from dazl.util.io import find_nearest_ancestor
@@ -30,11 +31,15 @@ class PackageLoadingTest(TestCase):
         with ZipFile(DAR_FILE) as z:
             DALF_FILE.write_bytes(z.read('package-name.dalf'))
 
+    @skip("Sandbox 100.13.10 does not currently accept DALFs as command-line parameters, so this "
+          "test cannot be run.")
     def test_incomplete_package_loading(self):
         # Attempt to load only the DALF into the Sandbox; this will cause the PackageService to
         # return a nonsensical result, the lack of an exception being thrown signals that we can
         # tolerate this condition
         d = {}
+
+        setup_default_logger(logging.INFO)
 
         with sandbox(DALF_FILE) as proc:
             network = Network()

@@ -44,7 +44,6 @@ class GRPCv1LedgerClient(LedgerClient):
 
     async def active_contracts(self) -> 'Sequence[BaseEvent]':
         request = serialize_acs_request(self.ledger.ledger_id, self.party)
-        print(request)
         context = BaseEventDeserializationContext(
             None, self.ledger.store, self.party, self.ledger.ledger_id)
         acs_stream = await self.connection.context.run_in_background(

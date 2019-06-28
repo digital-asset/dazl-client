@@ -21,8 +21,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='da/daml_lf_0.proto',
   package='daml_lf_0',
   syntax='proto3',
-  serialized_options=_b('\n\030com.digitalasset.daml_lf'),
-  serialized_pb=_b('\n\x12\x64\x61/daml_lf_0.proto\x12\tdaml_lf_0\"\t\n\x07PackageB\x1a\n\x18\x63om.digitalasset.daml_lfb\x06proto3')
+  serialized_options=_b('\n\030com.digitalasset.daml_lf\252\002 Com.DigitalAsset.Daml_lf.DamlLf0'),
+  serialized_pb=_b('\n\x12\x64\x61/daml_lf_0.proto\x12\tdaml_lf_0\"\t\n\x07PackageB=\n\x18\x63om.digitalasset.daml_lf\xaa\x02 Com.DigitalAsset.Daml_lf.DamlLf0b\x06proto3')
 )
 
 

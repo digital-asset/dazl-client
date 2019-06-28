@@ -305,12 +305,12 @@ class CSharpPrettyPrint(PrettyPrintBase):
     def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'str':
         pass
 
-    def visit_expr_none(self, none: 'Expr.None_') -> 'str':
-        expr_text = f'ImmutableList<{self.visit_type(none.type)}>.Empty'
+    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'str':
+        expr_text = f'ImmutableList<{self.visit_type(optional_none.type)}>.Empty'
         return expr_text if self.context.in_expression else f'return {expr_text};'
 
-    def visit_expr_some(self, some: 'Expr.Some') -> 'str':
-        return self.visit_expr(some.body)
+    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'str':
+        return self.visit_expr(optional_some.body)
 
     def visit_type_var(self, var: 'Union[str, Type.Var]') -> 'str':
         rendered_var = super(CSharpPrettyPrint, self).visit_type_var(var)
