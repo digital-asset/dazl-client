@@ -36,7 +36,7 @@ from ..client.config import AnonymousNetworkConfig, NetworkConfig
 from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, Party, ContractData, ContractsState, ContractMatch, \
-    RunLevel, ContractContextualData, ContractContextualDataCollection
+    RunLevel, ContractContextualData, ContractContextualDataCollection, UserTerminateRequest
 from ..model.ledger import LedgerMetadata
 from ..model.reading import InitEvent, ReadyEvent, ContractCreateEvent, ContractExercisedEvent, \
     ContractArchiveEvent, TransactionStartEvent, TransactionEndEvent, EventKey

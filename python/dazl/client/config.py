@@ -29,6 +29,9 @@ if TYPE_CHECKING:
     ArgumentParser = argparse._ActionsContainer
 
 
+DEFAULT_CONNECT_TIMEOUT_SECONDS = 120
+
+
 @dataclass(frozen=True)
 class URLConfig:
     """
@@ -67,7 +70,7 @@ class URLConfig:
     connect_timeout: Optional[float] = config_field(
         'number of seconds before giving up on a connection',
         param_type=SECONDS_TYPE,
-        default_value=120)
+        default_value=DEFAULT_CONNECT_TIMEOUT_SECONDS)
 
     application_name: Optional[str] = config_field(
         'The name that this application uses to identify itself to the ledger.',

@@ -9,9 +9,10 @@ from typing import Awaitable, Dict, Iterable, Optional, Union
 
 from .. import LOG
 from ._base import LedgerNetwork, LedgerClient, LedgerConnectionOptions, _LedgerConnectionContext
+from ..client._run_level import RunState
 from .v1.grpc import GRPCv1Connection
 from .oauth import oauth_flow
-from ..model.core import Party
+from ..model.core import Party, UserTerminateRequest, ConnectionTimeoutError
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
 
@@ -23,11 +24,12 @@ class AutodetectLedgerNetwork(LedgerNetwork):
     """
 
     def __init__(self,
+                 run_state: RunState,
                  options: LedgerConnectionOptions,
                  loop: Optional[AbstractEventLoop] = None,
                  executor: Optional[Executor] = None):
         self._options = options
-        self._context = _LedgerConnectionContext(options, loop, executor)
+        self._context = _LedgerConnectionContext(run_state, options, loop, executor)
 
         self._closed = False
         self._first_connection_evt = Event()
@@ -152,7 +154,7 @@ class AutodetectLedgerNetwork(LedgerNetwork):
         timeout = self._options.connect_timeout
         try:
             LOG.debug('Waiting for the first connection to be established (timeout: %s)...', timeout)
-            if not self._first_connection_evt.wait(timeout=timeout.total_seconds()):
+            if not self._first_connection_evt.wait(timeout=timeout.total_seconds() if timeout is not None else None):
                 LOG.error('Waited %s for the first connection but it never came. Aborting...', timeout)
                 raise Exception('first connection timeout')
 
@@ -164,7 +166,13 @@ class AutodetectLedgerNetwork(LedgerNetwork):
                         self._context.run_on_loop(lambda: self._ledger_future.set_result(metadata))
                     elif metadata is not None:
                         LOG.warning('The network monitor thread emitted multiple metadata!')
+        except (UserTerminateRequest, ConnectionTimeoutError) as ex:
+            # re-raise these, but they are "known" errors so a stack trace in the logs would just
+            # create clutter
+            self._context.run_on_loop(lambda: self._ledger_future.set_exception(ex))
+
         except Exception as ex:
+            # unexpected exception raised, so provide lots of information that might help debug
             LOG.exception('The main monitoring thread died.')
 
             def _maybe_apply_error():
