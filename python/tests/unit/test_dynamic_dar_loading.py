@@ -29,14 +29,13 @@ def create_package_provider(daml_file: 'Path') -> 'PackageProvider':
     data = {}
     with TemporaryDar(daml_file) as outputs:
         for output in outputs:
-            if output.endswith('.dar'):
+            if output.suffix == '.dar':
                 with DarFile(output) as dar:
                     data.update(dar.get_package_provider().get_all_packages())
-            elif output.endswith('.dalf'):
+            elif output.suffix == '.dalf':
                 from dazl._gen.da.daml_lf_pb2 import Archive
                 a = Archive()
-                with open(output, 'rb') as f:
-                    a.ParseFromString(f.read())
+                a.ParseFromString(output.read_bytes())
                 data[a.hash] = a.payload
 
     return MemoryPackageProvider(data)

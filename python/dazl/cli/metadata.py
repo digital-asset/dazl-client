@@ -11,6 +11,7 @@ from typing import Collection
 from ._base import CliCommand
 from .. import LOG, Network
 from ..client.config import configure_parser, AnonymousNetworkConfig
+from ..model.core import UserTerminateRequest, ConnectionTimeoutError
 from ..model.types_store import PackageStore
 from ..util.dar import DamlcPackageError
 from ..util.dar_repo import LocalDarRepository
@@ -57,10 +58,16 @@ class PrintMetadataCommand(CliCommand):
 
     @staticmethod
     def execute_runtime_metadata(config: 'AnonymousNetworkConfig', options: PrettyOptions) -> int:
-        network = Network()
-        network.set_config(config)
-        network.run_until_complete(_main(network, options))
-        return 0
+        try:
+            network = Network()
+            network.set_config(config)
+            network.run_until_complete(_main(network, options))
+            return 0
+        except UserTerminateRequest:
+            return 1
+        except ConnectionTimeoutError as ex:
+            print(str(ex))
+            return 1
 
 
 async def _main(network: Network, options):

@@ -13,6 +13,7 @@ from typing import Any, Optional, Sequence, Union
 import threading
 
 from .. import LOG
+from ..client._run_level import RunState
 from ..model.core import Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
@@ -23,7 +24,7 @@ from ..util.typing import safe_optional_cast, safe_cast
 
 @dataclass(frozen=True)
 class LedgerConnectionOptions:
-    connect_timeout: timedelta
+    connect_timeout: 'Optional[timedelta]'
 
 
 class LedgerNetwork:
@@ -129,9 +130,11 @@ class LedgerClient:
 
 class _LedgerConnectionContext:
     def __init__(self,
+                 run_state: RunState,
                  options: LedgerConnectionOptions,
                  loop: Optional[AbstractEventLoop] = None,
                  executor: Optional[Executor] = None):
+        self.run_state = run_state
         self.options = options
         self.loop = loop if loop is not None else get_event_loop()
         self.executor = executor if executor is not None else ThreadPoolExecutor(max_workers=25)

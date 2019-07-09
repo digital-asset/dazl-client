@@ -79,11 +79,11 @@ class TemporaryDar:
     """
     __slots__ = ('daml_path', 'dar_paths', 'damlc_component', '_tmp_dir', 'damlc_extra_args')
 
-    daml_path: str
-    dar_paths: Optional[List[str]]
-    damlc_component: Optional[str]
-    _tmp_dir: TemporaryDirectory
-    damlc_extra_args: Sequence[str]
+    daml_path: 'str'
+    dar_paths: 'Optional[Sequence[Path]]'
+    damlc_component: 'Optional[str]'
+    _tmp_dir: 'TemporaryDirectory'
+    damlc_extra_args: 'Sequence[str]'
 
     def __init__(self, daml_path: Union[str, Path], damlc_component: Optional[str] = None, damlc_extra_args=None):
         self.daml_path = pathify(daml_path)
@@ -98,17 +98,17 @@ class TemporaryDar:
         repo.add_source(*self.ensure_dar())
         return repo.store
 
-    def ensure_dar(self) -> List[str]:
+    def ensure_dar(self) -> 'Sequence[Path]':
         if self.dar_paths is None:
             dar_path = path.join(self._tmp_dir.name, 'file.dar')
             build_dar(self.daml_path, dar_path, damlc_component=self.damlc_component,
                       damlc_extra_args=self.damlc_extra_args)
             from os import listdir
-            self.dar_paths = [path.join(self._tmp_dir.name, o) for o in listdir(self._tmp_dir.name)]
+            self.dar_paths = [Path(path.join(self._tmp_dir.name, o)) for o in listdir(self._tmp_dir.name)]
 
         return self.dar_paths
 
-    def __enter__(self) -> List[str]:
+    def __enter__(self) -> 'Sequence[Path]':
         return self.ensure_dar()
 
     def __exit__(self, exc_type, exc_val, exc_tb):

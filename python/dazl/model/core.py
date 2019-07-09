@@ -178,6 +178,18 @@ class DazlWarning(Warning):
     """
 
 
+class UserTerminateRequest(DazlError):
+    """
+    Raised when the user has initiated a request to terminate the application.
+    """
+
+
+class ConnectionTimeoutError(DazlError):
+    """
+    Raised when a connection failed to be established before the connection timeout elapsed.
+    """
+
+
 class CommandTimeoutError(DazlError):
     """
     Raised when a corresponding event for a command was not seen in the appropriate time window.

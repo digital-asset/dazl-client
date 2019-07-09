@@ -19,7 +19,7 @@ from .pb_parse_event import serialize_acs_request, serialize_event_id_request, \
     serialize_transactions_request, to_acs_events, to_transaction_events, \
     BaseEventDeserializationContext, to_created_event
 from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, find_dependencies
-from ...model.core import Party
+from ...model.core import Party, UserTerminateRequest, ConnectionTimeoutError
 from ...model.ledger import LedgerMetadata, StaticTimeModel, RealTimeModel
 from ...model.network import HTTPConnectionSettings
 from ...model.reading import BaseEvent, TransactionFilter, ActiveContractSetEvent, max_offset
@@ -168,23 +168,40 @@ def grpc_upload_package(connection: 'GRPCv1Connection', dar_contents: bytes) -> 
     connection.package_management_service.UploadDarFile(request)
 
 
-def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> Optional[str]:
+def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
     """
-    Return the ledger ID from the remote server when it becomes available, or ``None`` if the
-    Ledger Identity API is not supported.
+    Return the ledger ID from the remote server when it becomes available. This method blocks until
+    a ledger ID has been successfully retrieved, or the timeout is reached (in which case an
+    exception is thrown).
     """
     from . import model as G
+    from time import sleep
     LOG.debug("Starting a monitor thread for stubs: %s", stub)
-    try:
-        response = stub.ledger_identity_service.GetLedgerIdentity(G.GetLedgerIdentityRequest())
-    except RpcError as ex:
-        if ex.details().startswith('Received http2 header with status'):
-            LOG.info("No gRPC Ledger Identity Service found!")
-            return None
-        LOG.exception('An unexpected error occurred when trying to fetch the ledger identity.')
-        raise
 
-    return response.ledger_id
+    start_time = datetime.utcnow()
+    connect_timeout = stub.context.options.connect_timeout
+
+    while connect_timeout is None or (datetime.utcnow() - start_time) < connect_timeout:
+        if stub.context.run_state.terminate_requested:
+            raise UserTerminateRequest()
+        if stub.closed:
+            raise Exception('connection closed')
+
+        try:
+            response = stub.ledger_identity_service.GetLedgerIdentity(G.GetLedgerIdentityRequest())
+        except RpcError as ex:
+            details_str = ex.details()
+            if details_str in ('DNS resolution failed', 'failed to connect to all addresses'):
+                # these are retryable errors
+                sleep(1)
+                continue
+            else:
+                LOG.exception('An unexpected error occurred when trying to fetch the ledger identity.')
+                raise
+
+        return response.ledger_id
+
+    raise ConnectionTimeoutError(f'connection timeout exceeded: {connect_timeout.total_seconds()} seconds')
 
 
 def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable[LedgerMetadata]:
@@ -336,3 +353,6 @@ class GRPCv1Connection(_LedgerConnection):
         finally:
             super().close()
 
+    @property
+    def closed(self) -> bool:
+        return self._closed.is_set()

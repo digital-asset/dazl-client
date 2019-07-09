@@ -15,7 +15,7 @@ from dataclasses import asdict
 from .. import LOG
 from ._party_client_impl import _PartyClientImpl
 from ._run_level import RunState
-from ..client.config import NetworkConfig, URLConfig
+from ..client.config import NetworkConfig, URLConfig, DEFAULT_CONNECT_TIMEOUT_SECONDS
 from ..metrics import MetricEvents
 from ..model.core import Party, RunLevel
 from ..model.ledger import LedgerMetadata
@@ -127,10 +127,18 @@ class _NetworkImpl:
                 ensure_future(site.start())
                 LOG.info('Listening on port %s for metrics.', server_port)
 
-            options = LedgerConnectionOptions(connect_timeout=timedelta(seconds=30))
+            # If the connect timeout is non-positive, assume the user intended for there to not be
+            # a timeout at all
+            connect_timeout = to_timedelta(
+                base_config.get('connect_timeout', DEFAULT_CONNECT_TIMEOUT_SECONDS))
+            if connect_timeout <= timedelta(0):
+                connect_timeout = None
+
+            options = LedgerConnectionOptions(connect_timeout=connect_timeout)
 
             self._pool = pool = AutodetectLedgerNetwork(
-                options=options, loop=self.invoker.get_loop(), executor=self.invoker.get_executor())
+                options=options, loop=self.invoker.get_loop(), executor=self.invoker.get_executor(),
+                run_state=self._run_state)
             self._pool_init.set_result(pool)
 
             try:
@@ -271,7 +279,8 @@ class _NetworkImpl:
         :param contents: Contents to attempt to upload.
         :param timeout: Length of time before giving up.
         """
-        await self._pool.upload_package(contents)
+        pool = await self._pool_init
+        await pool.upload_package(contents)
 
     async def ensure_package_ids(
             self, package_ids: 'Collection[str]', timeout: 'TimeDeltaConvertible'):
