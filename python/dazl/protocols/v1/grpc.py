@@ -168,6 +168,9 @@ def grpc_upload_package(connection: 'GRPCv1Connection', dar_contents: bytes) -> 
     connection.package_management_service.UploadDarFile(request)
 
 
+GRPC_KNOWN_RETRYABLE_ERRORS = ('DNS resolution failed', 'failed to connect to all addresses', 'no healthy upstream')
+
+
 def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
     """
     Return the ledger ID from the remote server when it becomes available. This method blocks until
@@ -191,13 +194,14 @@ def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
             response = stub.ledger_identity_service.GetLedgerIdentity(G.GetLedgerIdentityRequest())
         except RpcError as ex:
             details_str = ex.details()
-            if details_str in ('DNS resolution failed', 'failed to connect to all addresses'):
-                # these are retryable errors
-                sleep(1)
-                continue
-            else:
-                LOG.exception('An unexpected error occurred when trying to fetch the ledger identity.')
-                raise
+
+            # suppress some warning strings because they're not particularly useful and just clutter
+            # up the logs
+            if details_str not in GRPC_KNOWN_RETRYABLE_ERRORS:
+                LOG.exception('An unexpected error occurred when trying to fetch the '
+                              'ledger identity; this will be retried.')
+            sleep(1)
+            continue
 
         return response.ledger_id
 
