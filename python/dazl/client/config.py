@@ -15,8 +15,8 @@ from typing import Any, Collection, List, Mapping, Optional, Sequence, Type, Typ
 from .. import LOG
 from ..model.core import ConfigurationError, Party
 from ..util.config_meta import config_field, \
-    COUNT_TYPE, LOG_LEVEL_TYPE, PARTIES_TYPE, PATH_TYPE, PORT_TYPE, SECONDS_TYPE, STRING_TYPE, \
-    URL_TYPE, VERIFY_SSL_TYPE, config_fields, add_argument
+    BOOLEAN_TYPE, COUNT_TYPE, LOG_LEVEL_TYPE, PARTIES_TYPE, PATH_TYPE, PORT_TYPE, SECONDS_TYPE, \
+    STRING_TYPE, URL_TYPE, VERIFY_SSL_TYPE, config_fields, add_argument
 
 # If this environment variable is set, is used in place of a configuration file if none is supplied
 # on the command-line.
@@ -131,6 +131,11 @@ class _NetworkConfig:
         'Number of seconds to wait after the client "thinks" it\'s done to hang around for',
         param_type=SECONDS_TYPE,
         default_value=1)
+
+    use_acs_service: bool = config_field(
+        'Use Active Contract Set service instead of reading from the Transaction event stream',
+        param_type=BOOLEAN_TYPE,
+        default_value=False)
 
     idle_timeout: Optional[float] = config_field(
         'Maximum number of seconds of idle activity before automatically closing the client',

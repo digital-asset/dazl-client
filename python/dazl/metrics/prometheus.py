@@ -46,4 +46,5 @@ class PrometheusMetricEvents(MetricEvents):
         self._loop_responsiveness_seconds.set(responsiveness.total_seconds())
 
     def party_offset(self, party: 'Party', offset: str) -> None:
-        self._offset.labels(party).set(offset)
+        if offset is not None:
+            self._offset.labels(party).set(offset)
