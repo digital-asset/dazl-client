@@ -8,7 +8,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from io import StringIO
-from typing import Callable, Optional, Sequence
+from typing import Callable, Optional, Sequence, Union
 
 from ._base import MISSING, T
 from ..model.types import ModuleRef, ValueReference, TypeReference as TypeConName, TypeReference
@@ -1354,9 +1354,84 @@ class TemplateChoice:
     location: 'Location'
 
 
+@dataclass(init=False, frozen=True)
+class KeyExpr:
+    _Sum_name: str
+    _Sum_value: 'Union[KeyExpr.Projections, KeyExpr.Record]'
+
+    @dataclass(frozen=True)
+    class Projections:
+        projections: 'Sequence[KeyExpr.Projection]'
+
+    @dataclass(init=False, frozen=True)
+    class Projection:
+        tycon: 'Type.Con'
+        field: str
+
+    @dataclass(frozen=True)
+    class Record:
+        tycon: 'Type.Con'
+        fields: 'KeyExpr.RecordField'
+
+    @dataclass(frozen=True)
+    class RecordField:
+        field: str
+        expr: 'KeyExpr'
+
+    def __init__(self, projections = MISSING, record = MISSING):
+        if projections is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'projections')
+            object.__setattr__(self, '_Sum_value', projections)
+        elif record is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'record')
+            object.__setattr__(self, '_Sum_value', record)
+        else:
+            raise ValueError('one of projections or record must be set')
+
+    @property
+    def projections(self) -> 'Optional[KeyExpr.Projections]':
+        return self.projections if self._Sum_name == 'projections' else None
+
+    @property
+    def record(self) -> 'Optional[KeyExpr.Record]':
+        return self.record if self._Sum_name == 'record' else None
+
+
 @dataclass(frozen=True)
 class DefTemplate:
     """Contract template definition"""
+
+    @dataclass(frozen=True)
+    class DefKey:
+        type: 'Type'
+        _key_expr_name: str
+        _key_expr_value: Union[KeyExpr, Expr]
+        maintainers: 'Expr'
+
+        def __init__(
+                self,
+                type=MISSING,
+                key=MISSING,
+                complex_key=MISSING,
+                maintainers=MISSING):
+            object.__setattr__(self, 'type', type)
+            if key is not MISSING:
+                object.__setattr__(self, '_key_expr_name', 'key')
+                object.__setattr__(self, '_key_expr_value', key)
+            elif complex_key is not MISSING:
+                object.__setattr__(self, '_key_expr_name', 'complex_key')
+                object.__setattr__(self, '_key_expr_value', complex_key)
+            else:
+                raise ValueError('one of key/complex_key must be set')
+            object.__setattr__(self, 'maintainers', maintainers)
+
+        @property
+        def key(self) -> 'Optional[KeyExpr]':
+            return self._key_expr_value if self._key_expr_name == 'key' else None
+
+        @property
+        def complex_key(self) -> 'Optional[Expr]':
+            return self._key_expr_value if self._key_expr_name == 'complex_key' else None
 
     # The type constructor for the template, acting as both
     # the name of the template and the type of the template argument.
@@ -1385,6 +1460,9 @@ class DefTemplate:
     observers: 'Expr'
 
     location: 'Location'
+
+    # The key definition for the template, if present
+    key: 'Optional[DefKey]'
 
 
 class DefDataType:

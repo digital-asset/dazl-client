@@ -176,8 +176,11 @@ class ProtobufParser:
             raise ValueError(f'unknown Sum value: {pb!r}')
 
     def parse_Expr(self, pb, optional: bool = False) -> 'Expr':
-        location = self.parse_Location(pb.location)
-        args = {'location': location}
+        location = self.parse_Location(pb.location) if pb.HasField('location') else None
+        if location is not None:
+            args = {'location': location}
+        else:
+            args = {}
 
         sum_name = pb.WhichOneof('Sum')
         if optional and sum_name is None:
@@ -465,6 +468,9 @@ class ProtobufParser:
             self_binder=pb.self_binder,
             location=self.parse_Location(pb.location))
 
+    def parse_KeyExpr(self, pb) -> 'KeyExpr':
+        return KeyExpr()
+
     def parse_DefTemplate(self, pb) -> 'DefTemplate':
         return DefTemplate(
             tycon=self.parse_DottedName(pb.tycon),
@@ -474,7 +480,19 @@ class ProtobufParser:
             agreement=self.parse_Expr(pb.agreement),
             choices=tuple(self.parse_TemplateChoice(choice) for choice in pb.choices),
             observers=self.parse_Expr(pb.observers),
-            location=self.parse_Location(pb.location))
+            location=self.parse_Location(pb.location),
+            key=self.parse_DefTemplate_DefKey(pb.key) if pb.HasField('key') else None)
+
+    def parse_DefTemplate_DefKey(self, pb) -> 'DefTemplate.DefKey':
+        kwargs = dict(
+            type=self.parse_Type(pb.type),
+            maintainers=self.parse_Expr(pb.maintainers))
+        key_expr_name = pb.WhichOneof('key_expr')
+        if key_expr_name == 'key':
+            kwargs['key'] = self.parse_KeyExpr(pb.key)
+        elif key_expr_name == 'complex_key':
+            kwargs['complex_key'] = self.parse_Expr(pb.complex_key)
+        return DefTemplate.DefKey(**kwargs)
 
     def parse_DefDataType(self, pb) -> 'DefDataType':
         kwargs = dict(

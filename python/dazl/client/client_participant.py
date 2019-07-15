@@ -128,13 +128,16 @@ class ParticipantLedgerClient:
             A single command or a list of commands.
         :param ignore_errors:
             ``True`` if failure to submit a command should not prevent termination of the program.
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
         :return:
             A future that resolves when the commands have made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         return self._impl.write_commands(commands, ignore_errors, workflow_id=workflow_id)
 
-    def submit_create(self, template_name: str, arguments: Optional[dict] = None, workflow_id=None):
+    def submit_create(
+            self, template_name: str, arguments: 'Optional[dict]' = None, workflow_id=None):
         """
         Submit a single create command. Equivalent to calling :meth:`submit` with a single
         ``create``.
@@ -143,6 +146,8 @@ class ParticipantLedgerClient:
             The name of the template.
         :param arguments:
             The arguments to the create (as a ``dict``).
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
@@ -150,7 +155,9 @@ class ParticipantLedgerClient:
         from .. import create
         return self.submit(create(template_name, arguments), workflow_id=workflow_id)
 
-    def submit_exercise(self, cid: ContractId, choice_name: str, arguments: Optional[dict] = None, workflow_id=None):
+    def submit_exercise(
+            self, cid: ContractId, choice_name: str, arguments: 'Optional[dict]' = None,
+            workflow_id=None):
         """
         Submit a single exercise choice. Equivalent to calling :meth:`submit` with a single
         ``exercise``.
@@ -162,6 +169,8 @@ class ParticipantLedgerClient:
         :param arguments:
             The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
             choices.
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.

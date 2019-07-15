@@ -20,15 +20,16 @@ Ledger API.
 import uuid
 import warnings
 from datetime import datetime, timedelta
-from typing import Any, Collection, Dict, Generic, List, Optional, Sequence, TypeVar, Union
+from typing import Any, Collection, Dict, Generic, List, Mapping, Optional, Sequence, TypeVar, Union
 
 from dataclasses import dataclass, fields
 
 from .. import LOG
 from .core import ContractId, Party
-from .types import Type, UnresolvedTypeReference, TemplateChoice, RecordType, UnsupportedType, \
-    VariantType, ContractIdType, ListType, scalar_type_dispatch_table, \
-    TypeEvaluationContext, type_evaluate_dispatch, OptionalType, TemplateMeta, ChoiceMeta, MapType
+from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice, \
+    RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, MapType, \
+    scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch, \
+    TemplateMeta, ChoiceMeta
 from .types_store import PackageStore
 from ..util.typing import safe_cast
 
@@ -65,7 +66,7 @@ class CreateCommand(Command):
     template: Type
     arguments: Dict[str, Any]
 
-    def __init__(self, template: Union[str, Type], arguments=None):
+    def __init__(self, template: 'Union[str, Type]', arguments=None):
         object.__setattr__(self, 'template', template if isinstance(template, Type)
                            else UnresolvedTypeReference(template))
         object.__setattr__(self, 'arguments', arguments or dict())
@@ -122,7 +123,12 @@ class ExerciseCommand(Command):
     """
     __slots__ = ('contract', 'choice', 'arguments')
 
-    def __init__(self, contract: Union[str, ContractId], choice: str, arguments=None, template_id=None):
+    def __init__(
+            self,
+            contract: 'Union[str, ContractId]',
+            choice: str,
+            arguments=None,
+            template_id=None):
         if isinstance(contract, str):
             warnings.warn('Untyped ContractId support will be removed with the removal of '
                           'the deprecated REST API.', DeprecationWarning, stacklevel=2)
@@ -168,6 +174,22 @@ class ExerciseCommand(Command):
             self.choice,
             self.arguments,
             self.contract.contract_id if hasattr(self.contract, 'contract_id') else self.contract)
+
+
+@dataclass(frozen=True)
+class ExerciseByKeyCommand(Command):
+    template: Type
+    contract_key: Any
+    choice: str
+    choice_argument: Mapping[str, Any]
+
+
+@dataclass(frozen=True)
+class CreateAndExerciseCommand(Command):
+    template: Type
+    arguments: Mapping[str, Any]
+    choice: str
+    choice_argument: Mapping[str, Any]
 
 
 class CommandBuilder:
@@ -221,6 +243,11 @@ class CommandBuilder:
     def exercise(self, contract, choice, arguments=None) -> 'CommandBuilder':
         return self.append(exercise(contract, choice, arguments=arguments))
 
+    def create_and_exercise(self, template, create_arguments, choice_name, choice_arguments=None) \
+            -> 'CommandBuilder':
+        return self.append(create_and_exercise(
+            template, create_arguments, choice_name, choice_arguments))
+
     def append(self, *commands: CommandsOrCommandSequence) -> 'CommandBuilder':
         """
         Append one or more commands, or list of commands to the :class:`CommandBuilder` in flight.
@@ -256,12 +283,15 @@ class CommandBuilder:
         if defaults is None:
             raise ValueError('defaults must currently be specified')
 
+        command_id = defaults.default_command_id or self._defaults.default_command_id or \
+            uuid.uuid4().hex
+
         return [CommandPayload(
             party=defaults.default_party or self._defaults.default_party,
             ledger_id=defaults.default_ledger_id or self._defaults.default_ledger_id,
             workflow_id=defaults.default_workflow_id or self._defaults.default_workflow_id,
             application_id=defaults.default_application_id or self._defaults.default_application_id,
-            command_id=defaults.default_command_id or self._defaults.default_command_id or uuid.uuid4().hex,
+            command_id=command_id,
             ledger_effective_time=now,
             maximum_record_time=now + (defaults.default_ttl or self._defaults.default_ttl),
             commands=commands
@@ -353,7 +383,8 @@ class CommandPayload:
     def __post_init__(self):
         missing_fields = [field.name for field in fields(self) if getattr(self, field.name) is None]
         if missing_fields:
-            raise ValueError(f'Some fields are set to None when they are required: {missing_fields}')
+            raise ValueError(f'Some fields are set to None when they are required: '
+                             f'{missing_fields}')
 
 
 def create(template, arguments=None):
@@ -382,7 +413,8 @@ def create(template, arguments=None):
         template = str(template_type)
 
     elif not isinstance(template, str):
-        raise ValueError('template must be a string name, a template type, or an instantiated template')
+        raise ValueError(
+            'template must be a string name, a template type, or an instantiated template')
 
     return CreateCommand(template, arguments)
 
@@ -419,9 +451,18 @@ def exercise(contract, choice, arguments=None):
             choice = choice[choice_start_idx + 1:]
 
     elif not isinstance(choice, str):
-        raise ValueError('choice must be a string name, a template type, or an instantiated template')
+        raise ValueError('choice must be a string name, a template type, '
+                         'or an instantiated template')
 
     return ExerciseCommand(contract, choice, arguments)
+
+
+def exercise_by_key(template, choice_name, choice_argument):
+    return ExerciseByKeyCommand(template, choice_name, choice_argument)
+
+
+def create_and_exercise(template, create_arguments, choice_name, choice_argument):
+    return CreateAndExerciseCommand(template, create_arguments, choice_name, choice_argument)
 
 
 ####################################################################################################
@@ -487,23 +528,7 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
 
     def serialize_command(self, command: Command) -> TCommand:
         if isinstance(command, CreateCommand):
-            template = command.template
-            candidates = self.store.resolve_template_type(template)
-            if len(candidates) == 0:
-                msg = f'Could not resolve {template} to any valid types'
-                LOG.error(msg)
-                raise ValueError(msg)
-            elif len(candidates) > 1:
-                msg = f'Could not uniquely resolve {template} to a single valid type'
-                LOG.error(msg)
-                raise ValueError(msg)
-
-            tt, = candidates.values()
-            if not isinstance(tt, RecordType):
-                msg = f'CreateCommand requires a type that is a record (got {tt} instead)'
-                LOG.error(msg)
-                raise ValueError(msg)
-
+            tt = _resolve_template_type(self.store, command.template)
             value = self.serialize_value(tt, command.arguments)
             return self.serialize_create_command(tt, value)
         elif isinstance(command, ExerciseCommand):
@@ -523,6 +548,23 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
 
             args = self.serialize_value(choice.type, command.arguments)
             return self.serialize_exercise_command(command.contract, choice, args)
+        elif isinstance(command, CreateAndExerciseCommand):
+            tt = _resolve_template_type(self.store, command.template)
+            create_value = self.serialize_value(tt, command.arguments)
+            _, choice_info = next(iter(self.store.resolve_choice(tt, command.choice).items()))
+            choice_args = self.serialize_value(choice_info.type, command.choice_argument)
+            return self.serialize_create_and_exercise_command(
+                tt, create_value, choice_info, choice_args)
+        elif isinstance(command, ExerciseByKeyCommand):
+            template, = self.store.resolve_template(command.template)
+            key_value = self.serialize_value(template.key_type, command.contract_key)
+            choices = self.store.resolve_choice(template, command.choice)
+            _, choice_info = next(iter(choices.items()))
+            choice_args = self.serialize_value(choice_info.type, command.choice_argument)
+            return self.serialize_exercise_by_key_command(
+                template.data_type.name, key_value, choice_info, choice_args)
+        else:
+            raise ValueError(f'unknown Command type: {command!r}')
 
     def serialize_create_command(
             self, template_type: RecordType, template_args: TValue) \
@@ -533,6 +575,18 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
             self, contract_id: ContractId, choice_info: TemplateChoice, choice_args: TValue) \
             -> TCommand:
         raise NotImplementedError('serialize_exercise_command requires an implementation')
+
+    def serialize_exercise_by_key_command(
+            self, template_ref: TypeReference, key_arguments: Any,
+            choice_info: TemplateChoice, choice_arguments: Any) -> TCommand:
+        raise NotImplementedError(
+            'serialize_exercise_by_key_command requires an implementation')
+
+    def serialize_create_and_exercise_command(
+            self, template_type: RecordType, create_arguments: Any,
+            choice_info: TemplateChoice, choice_arguments: Any) -> TCommand:
+        raise NotImplementedError(
+            'serialize_create_and_exercise_command requires an implementation')
 
     def serialize_unit(self, context: TypeEvaluationContext, obj: Any) -> TValue:
         raise NotImplementedError('serialize_unit requires an implementation')
@@ -606,3 +660,23 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
             lambda c, vt: self.serialize_variant(c, vt, obj),
             lambda c, ut: self.serialize_unsupported(c, ut, obj))
         return eval_fn(context, tt)
+
+
+def _resolve_template_type(store: 'PackageStore', template) -> 'RecordType':
+    candidates = store.resolve_template_type(template)
+    if len(candidates) == 0:
+        msg = f'Could not resolve {template} to any valid types'
+        LOG.error(msg)
+        raise ValueError(msg)
+    elif len(candidates) > 1:
+        msg = f'Could not uniquely resolve {template} to a single valid type'
+        LOG.error(msg)
+        raise ValueError(msg)
+
+    tt, = candidates.values()
+    if not isinstance(tt, RecordType):
+        msg = f'CreateCommand requires a type that is a record (got {tt} instead)'
+        LOG.error(msg)
+        raise ValueError(msg)
+
+    return tt

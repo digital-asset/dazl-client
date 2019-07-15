@@ -202,6 +202,7 @@ def parse_daml_metadata_pb(package_id: str, metadata_pb: Any) -> 'PackageStore':
             if isinstance(data_type, RecordType):
                 psb.add_template(Template(
                     data_type=data_type,
+                    key_type=get_old_type(template_pb.key.type) if template_pb.key is not None else None,
                     choices=[
                         TemplateChoice(
                             c.name, c.consuming, get_old_type(c.arg_binder.type), c.controllers)
