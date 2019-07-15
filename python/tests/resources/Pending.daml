@@ -9,7 +9,10 @@ template Counter
     value: Int
   where
     signatory [owner]
-    agreement (toText owner) <> " has counter value " <> (toText value)
+    agreement (show owner) <> " has counter value " <> (show value)
+    key owner: Party
+    maintainer key
+
     controller owner can
       Increment: ContractId Counter
         do

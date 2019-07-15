@@ -36,10 +36,11 @@ from ..client.config import AnonymousNetworkConfig, NetworkConfig
 from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, Party, ContractData, ContractsState, ContractMatch, \
-    RunLevel, ContractContextualData, ContractContextualDataCollection, UserTerminateRequest
+    RunLevel, ContractContextualData, ContractContextualDataCollection
 from ..model.ledger import LedgerMetadata
 from ..model.reading import InitEvent, ReadyEvent, ContractCreateEvent, ContractExercisedEvent, \
     ContractArchiveEvent, TransactionStartEvent, TransactionEndEvent, EventKey
+from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
 from ..util.asyncio_util import await_then
 from ..util.prim_types import TimeDeltaConvertible
@@ -777,7 +778,7 @@ class AIOPartyClient(PartyClient):
         :param choice_name:
             The name of the choice to exercise.
         :param arguments:
-            The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
+            The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
@@ -787,6 +788,59 @@ class AIOPartyClient(PartyClient):
         """
         from .. import exercise
         return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id)
+
+    def submit_exercise_by_key(
+            self,
+            template_name: 'TemplateNameLike',
+            choice_name: str,
+            arguments: 'Optional[dict]' = None,
+            workflow_id: 'Optional[str]' = None) \
+            -> 'Awaitable[None]':
+        """
+        Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
+        single ``exercise_by_key``.
+
+        :param template_name:
+            The name of the template on which to do an exercise-by-key.
+        :param choice_name:
+            The name of the choice to exercise.
+        :param arguments:
+            The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
+            choices.
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
+        """
+        from .. import exercise_by_key
+        return self.submit(
+            exercise_by_key(template_name, choice_name, arguments), workflow_id=workflow_id)
+
+    def submit_create_and_exercise(
+            self,
+            template_name: 'TemplateNameLike',
+            arguments: 'dict',
+            choice_name: str,
+            choice_arguments: 'Optional[dict]' = None,
+            workflow_id: 'Optional[str]' = None) \
+            -> 'Awaitable[None]':
+        """
+        Synchronously submit a single create-and-exercise command. Equivalent to calling
+        :meth:`submit` with a single ``create_and_exercise``.
+
+        :param template_name:
+            The name of the template on which to do an exercise-by-key.
+        :param arguments:
+            The arguments to the create (as a ``dict``).
+        :param choice_name:
+            The name of the choice to exercise.
+        :param choice_arguments:
+            The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
+        """
+        from .. import create_and_exercise
+        return self.submit(
+            create_and_exercise(template_name, arguments, choice_name, choice_arguments),
+            workflow_id=workflow_id)
 
     # </editor-fold>
 
@@ -1272,10 +1326,11 @@ class SimplePartyClient(PartyClient):
 
     # region Command submission
 
-    def submit_create(self,
-                      template_name: str,
-                      arguments: 'Optional[dict]' = None,
-                      workflow_id: str = None) -> None:
+    def submit_create(
+            self,
+            template_name: 'TemplateNameLike',
+            arguments: 'Optional[dict]' = None,
+            workflow_id: 'Optional[str]' = None) -> None:
         """
         Synchronously submit a single create command. Equivalent to calling :meth:`submit` with a
         single ``create``.
@@ -1290,11 +1345,12 @@ class SimplePartyClient(PartyClient):
         from .. import create
         return self.submit(create(template_name, arguments), workflow_id=workflow_id)
 
-    def submit_exercise(self,
-                        cid: 'ContractId',
-                        choice_name: str,
-                        arguments: 'Optional[dict]' = None,
-                        workflow_id: str = None) \
+    def submit_exercise(
+            self,
+            cid: 'ContractId',
+            choice_name: str,
+            arguments: 'Optional[dict]' = None,
+            workflow_id: 'Optional[str]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1305,13 +1361,66 @@ class SimplePartyClient(PartyClient):
         :param choice_name:
             The name of the choice to exercise.
         :param arguments:
-            The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
+            The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
         """
         from .. import exercise
         return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id)
+
+    def submit_exercise_by_key(
+            self,
+            template_name: 'TemplateNameLike',
+            choice_name: str,
+            arguments: 'Optional[dict]' = None,
+            workflow_id: 'Optional[str]' = None) \
+            -> None:
+        """
+        Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
+        single ``exercise_by_key``.
+
+        :param template_name:
+            The name of the template on which to do an exercise-by-key.
+        :param choice_name:
+            The name of the choice to exercise.
+        :param arguments:
+            The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
+            choices.
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
+        """
+        from .. import exercise_by_key
+        return self.submit(
+            exercise_by_key(template_name, choice_name, arguments), workflow_id=workflow_id)
+
+    def submit_create_and_exercise(
+            self,
+            template_name: 'TemplateNameLike',
+            arguments: 'dict',
+            choice_name: str,
+            choice_arguments: 'Optional[dict]' = None,
+            workflow_id: 'Optional[str]' = None) \
+            -> None:
+        """
+        Synchronously submit a single create-and-exercise command. Equivalent to calling
+        :meth:`submit` with a single ``create_and_exercise``.
+
+        :param template_name:
+            The name of the template on which to do an exercise-by-key.
+        :param arguments:
+            The arguments to the create (as a ``dict``).
+        :param choice_name:
+            The name of the choice to exercise.
+        :param choice_arguments:
+            The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
+        """
+        from .. import create_and_exercise
+        return self.submit(
+            create_and_exercise(template_name, arguments, choice_name, choice_arguments),
+            workflow_id=workflow_id)
 
     # endregion
 

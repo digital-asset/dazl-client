@@ -166,6 +166,11 @@ class PackageStore:
         """
         from .lookup import validate_template
 
+        if isinstance(template, Template):
+            # if we were given a Template for some strange reason, just simply return a single-item
+            # tuple of that given Template
+            return [template]
+
         package_id, template_name = validate_template(template)
         return self._cache.templates.lookup(package_id, template_name)
 

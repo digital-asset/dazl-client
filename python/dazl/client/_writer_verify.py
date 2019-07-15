@@ -5,8 +5,10 @@ from typing import Any
 
 from ..model.core import ContractId
 from ..model.types import Type, UnsupportedType, VariantType, RecordType, ListType, \
-    ContractIdType, TemplateChoice, TypeEvaluationContext, OptionalType, MapType
-from ..model.writing import Command, CreateCommand, ExerciseCommand, AbstractSerializer
+    ContractIdType, TemplateChoice, TypeEvaluationContext, OptionalType, MapType, \
+    UnresolvedTypeReference, TypeReference
+from ..model.writing import Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, \
+    CreateAndExerciseCommand, AbstractSerializer
 from ..util.prim_types import to_int, to_str, to_decimal, to_date, to_datetime, \
     unflatten_dotted_keys, to_hashable
 
@@ -31,7 +33,25 @@ class ValidateSerializer(AbstractSerializer[Command, Any]):
     def serialize_exercise_command(
             self, contract_id: ContractId, choice_info: TemplateChoice, choice_args: Any) \
             -> ExerciseCommand:
+        if isinstance(contract_id.template_id, UnresolvedTypeReference):
+            tref = next(iter(self.store.resolve_template_type(contract_id.template_id)))
+            contract_id = ContractId(contract_id.contract_id, template_id=tref)
+
         return ExerciseCommand(contract=contract_id, choice=choice_info.name, arguments=choice_args)
+
+    def serialize_exercise_by_key_command(
+            self, template_ref: TypeReference, key_arguments: Any,
+            choice_info: TemplateChoice, choice_arguments: Any) -> ExerciseByKeyCommand:
+        return ExerciseByKeyCommand(
+            template=template_ref, contract_key=key_arguments,
+            choice=choice_info.name, choice_argument=choice_arguments)
+
+    def serialize_create_and_exercise_command(
+            self, template_type: RecordType, create_arguments: Any,
+            choice_info: TemplateChoice, choice_arguments: Any) -> CreateAndExerciseCommand:
+        return CreateAndExerciseCommand(
+            template=template_type, arguments=create_arguments,
+            choice=choice_info.name, choice_arguments=choice_arguments)
 
     def serialize_unit(self, context: TypeEvaluationContext, obj: Any) -> Any:
         return obj

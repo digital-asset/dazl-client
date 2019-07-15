@@ -195,7 +195,10 @@ class _Reference:
     """
     __slots__ = ('module', 'name')
 
-    def __init__(self, module: 'ModuleRef', name: Sequence[str]):
+    module: 'ModuleRef'
+    name: 'Sequence[str]'
+
+    def __init__(self, module: 'ModuleRef', name: 'Sequence[str]'):
         from collections import Collection
         if not isinstance(name, Collection):
             raise TypeError(f'Tuple of strings required here (got {name!r} instead)')
@@ -575,6 +578,7 @@ class Template:
     def __init__(
             self,
             data_type: 'RecordType',
+            key_type: 'Optional[Type]',
             choices: 'Collection[TemplateChoice]',
             observers: 'Expr',
             signatories: 'Expr',
@@ -584,6 +588,7 @@ class Template:
             raise ValueError(f'data_type is required and must be a named record type '
                              f'(got {data_type})')
         self.data_type = safe_cast(RecordType, data_type)
+        self.key_type = safe_optional_cast(Type, key_type)
         self.choices = choices
         self._observers = observers
         self._signatories = signatories
@@ -971,3 +976,7 @@ def module(obj):
     Marker decorator that denotes a class as a module.
     """
     return obj
+
+
+# types that can be used to refer to templates
+TemplateNameLike = Union[str, TypeReference, UnresolvedTypeReference, Template]

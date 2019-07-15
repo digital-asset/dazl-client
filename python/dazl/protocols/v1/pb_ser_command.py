@@ -5,7 +5,7 @@
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
 from datetime import date, datetime, timedelta, timezone
-from typing import Any, Tuple
+from typing import Any, Optional, Tuple
 
 from ... import LOG
 # noinspection PyPep8Naming
@@ -80,14 +80,13 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
             maximum_record_time=as_api_timestamp(command_payload.maximum_record_time)))
 
     def serialize_create_command(self, template_type: RecordType, template_args: R) -> G.Command:
-        _, value = template_args
+        create_ctor, create_value = template_args
+        if create_ctor != 'record':
+            raise ValueError('Template values must resemble records')
 
         cmd = G.CreateCommand()
-        cmd.template_id.package_id = template_type.name.module.package_id
-        cmd.template_id.name = template_type.name.full_name
-        cmd.template_id.module_name = '.'.join(template_type.name.module.module_name)
-        cmd.template_id.entity_name = '.'.join(template_type.name.name)
-        cmd.create_arguments.MergeFrom(value)
+        _set_template(cmd.template_id, template_type.name)
+        _set_value(cmd.create_arguments, None, create_value)
         return G.Command(create=cmd)
 
     def serialize_exercise_command(
@@ -97,15 +96,39 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         ctor, value = choice_args
 
         cmd = G.ExerciseCommand()
-        cmd.template_id.package_id = type_ref.module.package_id
-        cmd.template_id.name = type_ref.full_name
+        _set_template(cmd.template_id, type_ref)
         cmd.contract_id = contract_id.contract_id
         cmd.choice = choice_info.name
-        if ctor == 'unit':
-            cmd.choice_argument.unit.SetInParent()
-        else:
-            getattr(cmd.choice_argument, ctor).MergeFrom(value)
+        _set_value(cmd.choice_argument, ctor, value)
         return G.Command(exercise=cmd)
+
+    def serialize_exercise_by_key_command(
+            self, template_ref: TypeReference, key_arguments: Any,
+            choice_info: TemplateChoice, choice_arguments: Any) -> G.Command:
+        key_ctor, key_value = key_arguments
+        choice_ctor, choice_value = choice_arguments
+
+        cmd = G.ExerciseByKeyCommand()
+        _set_template(cmd.template_id, template_ref)
+        _set_value(cmd.contract_key, key_ctor, key_value)
+        cmd.choice = choice_info.name
+        _set_value(cmd.choice_argument, choice_ctor, choice_value)
+        return G.Command(exerciseByKey=cmd)
+
+    def serialize_create_and_exercise_command(
+            self, template_type: RecordType, create_arguments: Any,
+            choice_info: TemplateChoice, choice_arguments: Any) -> G.Command:
+        create_ctor, create_value = create_arguments
+        if create_ctor != 'record':
+            raise ValueError('Template values must resemble records')
+        choice_ctor, choice_value = choice_arguments
+
+        cmd = G.CreateAndExerciseCommand()
+        _set_template(cmd.template_id, template_type.name)
+        _set_value(cmd.create_arguments, None, create_value)
+        cmd.choice = choice_info.name
+        _set_value(cmd.choice_argument, choice_ctor, choice_value)
+        return G.Command(createAndExercise=cmd)
 
     ################################################################################################
     # VALUE serializers
@@ -146,7 +169,8 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         ut = tt.type_parameter
         if tt.internal_type is not None:
             blown_out_rep = {'None': {}} if obj is None else {'Some': obj}
-            return self._serialize_dispatch(context.append_path('?'), tt.internal_type, blown_out_rep)
+            return self._serialize_dispatch(
+                context.append_path('?'), tt.internal_type, blown_out_rep)
         else:
             from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Optional, Value
             optional_message = Optional()
@@ -202,10 +226,11 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
                 # we'll allow for some convenience representations of this case
                 obj_ctor, vt = tt.named_args[0]
                 if (isinstance(vt, (RecordType, VariantType)) and len(vt.named_args) == 0) or \
-                    vt == SCALAR_TYPE_UNIT:
+                   vt == SCALAR_TYPE_UNIT:
                     obj_value = {}
                 else:
-                    LOG.error('Could not find a helpful representation of the single-variant case with value type %s', vt)
+                    LOG.error('Could not find a helpful representation of the single-variant case '
+                              'with value type %s', vt)
                     raise
             else:
                 raise
@@ -224,22 +249,36 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         raise Exception(f'UnsupportedType {tt} is not serializable in gRPC')
 
 
-def _set_value(message: G.Value, ctor, value) -> None:
+def _set_template(message: G.Identifier, tref: TypeReference) -> None:
+    message.package_id = tref.module.package_id
+    message.module_name = '.'.join(tref.module.module_name)
+    message.entity_name = '.'.join(tref.name)
+    # This field is set for historical reasons, and no longer required after Sandbox 0.10.12
+    message.name = tref.full_name
+
+
+def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:
     """
     Work around the somewhat crazy API of Python's gRPC library to apply a known value to a
     :class:`Value`.
 
-    :param message: The :class:`Value` object to modify.
-    :param ctor: The actual field to apply to.
-    :param value: The actual value to set. Must be compatible with the appropriate field.
+    :param message:
+        The :class:`Value` object to modify.
+    :param ctor:
+        The actual field to apply to, or ``None`` to interpret the entire message as a ``Record``
+        instead.
+    :param value:
+        The actual value to set. Must be compatible with the appropriate field.
     """
     try:
-        if ctor == 'unit':
+        if ctor is None:
+            message.MergeFrom(value)
+        elif ctor == 'unit':
             message.unit.SetInParent()
         elif ctor in ('record', 'variant', 'list', 'optional'):
             getattr(message, ctor).MergeFrom(value)
         else:
             setattr(message, ctor, value)
-    except:
+    except:  # noqa
         LOG.error('Failed to set a value %s, %s', ctor, value)
         raise
