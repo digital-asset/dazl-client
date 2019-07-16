@@ -24,6 +24,7 @@ from ..model.reading import InitEvent, ReadyEvent, BaseEvent, EventKey
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
 from ..util.asyncio_util import execute_in_loop, completed, Invoker, safe_create_future
+from ..util.dar import get_dar_package_ids
 from ..util.events import CallbackManager
 from ..util.prim_types import to_timedelta, TimeDeltaConvertible
 
@@ -269,9 +270,10 @@ class _NetworkImpl:
         pool = await self._pool_init
         return await pool.ledger()
 
-    async def ensure_package(self, contents: bytes, timeout: TimeDeltaConvertible) -> None:
+    async def upload_package(self, contents: bytes, timeout: 'TimeDeltaConvertible') -> None:
         """
-        Ensure packages specified by the given byte array are loaded on the remote server.
+        Ensure packages specified by the given byte array are loaded on the remote server. This
+        method only returns once packages are reported by the package services.
 
         If an admin URL is specified, dazl will attempt to upload packages to that URL, and wait
         for the package to be reported by the package service.
@@ -280,7 +282,9 @@ class _NetworkImpl:
         :param timeout: Length of time before giving up.
         """
         pool = await self._pool_init
+        package_ids = get_dar_package_ids(contents)
         await pool.upload_package(contents)
+        await self.ensure_package_ids(package_ids, timeout)
 
     async def ensure_package_ids(
             self, package_ids: 'Collection[str]', timeout: 'TimeDeltaConvertible'):

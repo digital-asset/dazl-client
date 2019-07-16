@@ -23,6 +23,7 @@ from asyncio import get_event_loop
 from contextlib import contextmanager, ExitStack
 from datetime import datetime
 from functools import wraps
+from io import BufferedIOBase
 from logging import INFO
 from pathlib import Path
 from uuid import uuid4
@@ -43,6 +44,7 @@ from ..model.reading import InitEvent, ReadyEvent, ContractCreateEvent, Contract
 from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
 from ..util.asyncio_util import await_then
+from ..util.io import get_bytes
 from ..util.prim_types import TimeDeltaConvertible
 from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
@@ -340,7 +342,7 @@ class AIOGlobalClient(GlobalClient):
 
     async def ensure_dar(
             self,
-            contents: bytes,
+            contents: 'Union[str, Path, bytes, BufferedIOBase]',
             timeout: 'Optional[TimeDeltaConvertible]' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
@@ -349,7 +351,8 @@ class AIOGlobalClient(GlobalClient):
         :param contents: The DAR or DALF to ensure.
         :param timeout: The maximum length of time to wait before giving up.
         """
-        return await self._impl.ensure_package(contents, timeout)
+        raw_bytes = get_bytes(contents)
+        return await self._impl.upload_package(raw_bytes, timeout)
 
     async def ensure_packages(
             self,
@@ -362,7 +365,7 @@ class AIOGlobalClient(GlobalClient):
         :param package_ids: The set of package IDs to check for.
         :param timeout: The maximum length of time to wait before giving up.
         """
-        return self._impl.ensure_packages(package_ids, timeout)
+        return await self._impl.ensure_package_ids(package_ids, timeout)
 
     async def metadata(self) -> LedgerMetadata:
         """
@@ -381,7 +384,7 @@ class SimpleGlobalClient(GlobalClient):
 
     def ensure_dar(
             self,
-            contents: bytes,
+            contents: 'Union[str, Path, bytes, BufferedIOBase]',
             timeout: 'Optional[TimeDeltaConvertible]' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
@@ -390,7 +393,9 @@ class SimpleGlobalClient(GlobalClient):
         :param contents: The DAR or DALF to ensure.
         :param timeout: The maximum length of time to wait before giving up.
         """
-        return self._impl.ensure_dar(contents, timeout)
+        raw_bytes = get_bytes(contents)
+        return self._impl.run_in_loop_threadsafe(
+            lambda: self._impl.upload_package(raw_bytes, timeout))
 
     def ensure_packages(
             self,
@@ -403,7 +408,8 @@ class SimpleGlobalClient(GlobalClient):
         :param package_ids: The set of package IDs to check for.
         :param timeout: The maximum length of time to wait before giving up.
         """
-        return self._impl.ensure_packages(package_ids, timeout)
+        return self._impl.run_in_loop_threadsafe(
+            lambda: self._impl.ensure_package_ids(package_ids, timeout))
 
     def metadata(
             self,

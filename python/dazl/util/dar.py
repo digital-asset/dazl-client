@@ -4,7 +4,7 @@ from io import BytesIO
 from os import path
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import BinaryIO, Dict, List, Mapping, Optional, Union, TYPE_CHECKING, Sequence
+from typing import BinaryIO, Dict, Collection, Mapping, Optional, Sequence, Union, TYPE_CHECKING
 from zipfile import ZipFile
 
 from .process import ProcessWatcher
@@ -79,7 +79,7 @@ class TemporaryDar:
     """
     __slots__ = ('daml_path', 'dar_paths', 'damlc_component', '_tmp_dir', 'damlc_extra_args')
 
-    daml_path: 'str'
+    daml_path: 'Path'
     dar_paths: 'Optional[Sequence[Path]]'
     damlc_component: 'Optional[str]'
     _tmp_dir: 'TemporaryDirectory'
@@ -216,6 +216,12 @@ def parse_dalf(contents: bytes) -> 'PackageStore':
     a.ParseFromString(contents)
     p = parse_archive_payload(a.payload)
     return parse_daml_metadata_pb(a.hash, p)
+
+
+def get_dar_package_ids(contents: bytes) -> 'Collection[str]':
+    with BytesIO(contents) as buf:
+        with DarFile(buf) as dar:
+            return dar.read_metadata().package_ids()
 
 
 class DamlcPackageError(Exception):
