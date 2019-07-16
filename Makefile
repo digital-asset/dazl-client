@@ -7,6 +7,15 @@ deps:  ## Fetch all dependencies.
 	make -C python deps
 
 .PHONY:
+clean:  ## Clean everything.
+	make -C python clean
+	make -C tests clean
+
+.PHONY:
+build:  ## Build everything.
+	make -C python build
+
+.PHONY:
 test:  ## Run all tests.
 	make -C python test
 	make -C tests test
@@ -14,3 +23,7 @@ test:  ## Run all tests.
 .PHONY:
 local-ci:  ## Run the build as if it were running on CI.
 	circleci local execute
+
+.PHONY:
+publish:  ## Publish everything.
+	make -C python publish

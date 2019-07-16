@@ -6,7 +6,6 @@ This module contains the Python API for interacting with the Ledger API.
 """
 
 
-import pkg_resources as _pkg_resources
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -44,7 +43,37 @@ def _initialize_logger() -> 'LoggerWithVerbose':
     return dazl_logger
 
 
+def _get_version() -> str:
+    """
+    Used to make the version of this library easily accessible programatically.
+    Two techniques are tried:
+     1. Try to read it from the current package definition. This is what is used
+        when trying to look up version information if dazl is installed via a
+        wheel file.
+     2. Use the value from the local pyproject.toml file (this is used when
+        running dazl from source).
+    """
+    import pkg_resources
+    from ast import literal_eval
+    try:
+        __version__ = pkg_resources.require('dazl')[0].version
+    except pkg_resources.DistributionNotFound:
+        pass
+    except Exception:
+        return 'unknown'
+
+    try:
+        config = ConfigParser()
+        config.read(Path(__file__).parent.parent / 'pyproject.toml')
+        if 'tool.poetry' in config:
+            poetry_section = config['tool.poetry']
+            return literal_eval(poetry_section['version'])
+    except Exception:
+        return 'unknown'
+
+
 LOG = _initialize_logger()  # type: LoggerWithVerbose
+__version__ = _get_version()
 
 
 from .damlsdk.sandbox import sandbox  # noqa
@@ -56,6 +85,3 @@ from .model.writing import create, exercise, exercise_by_key, create_and_exercis
 from .util.logging import setup_default_logger  # noqa
 from .util.prim_types import frozendict  # noqa
 from .plugins.capture.plugin_capture import write_acs  # noqa
-
-
-__version__ = _pkg_resources.require('dazl')[0].version
