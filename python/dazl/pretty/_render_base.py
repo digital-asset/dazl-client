@@ -386,6 +386,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_rec_proj(self, rec_proj: 'Expr.RecProj') -> 'str':
         pass
 
+    def visit_expr_enum_con(self, enum_con: 'Expr.EnumCon') -> 'str':
+        return enum_con.enum_con
+
     def visit_expr_variant_con(self, variant_con: 'Expr.VariantCon') -> 'str':
         pass
 
@@ -538,7 +541,8 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
             self.visit_expr_casealt_nil,
             self.visit_expr_casealt_cons,
             self.visit_expr_casealt_optional_none,
-            self.visit_expr_casealt_optional_some)
+            self.visit_expr_casealt_optional_some,
+            self.visit_expr_casealt_enum)
         body_text = self.visit_expr(alt.body)
         return self._visit_expr_casealt(pattern_text, body_text)
 
@@ -573,6 +577,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
 
     def visit_expr_casealt_optional_some(self, optional_some: 'CaseAlt.OptionalSome', type: 'Optional[Type]' = None):
         return self.visit_expr_optional_some(Expr.OptionalSome(type=type, body=Expr(var=optional_some.var_body)))
+
+    def visit_expr_casealt_enum(self, enum: 'CaseAlt.Enum'):
+        return self.visit_expr_enum_con(Expr.EnumCon(enum.con, enum.constructor))
 
     def visit_expr_let(self, let: 'Block') -> 'str':
         pass

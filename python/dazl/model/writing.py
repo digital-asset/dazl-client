@@ -27,7 +27,7 @@ from dataclasses import dataclass, fields
 from .. import LOG
 from .core import ContractId, Party
 from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice, \
-    RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, MapType, \
+    RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, MapType, EnumType, \
     scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch, \
     TemplateMeta, ChoiceMeta
 from .types_store import PackageStore
@@ -636,6 +636,9 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
             -> TValue:
         raise NotImplementedError('serialize_variant requires an implementation')
 
+    def serialize_enum(self, context: TypeEvaluationContext, tt: EnumType, obj: Any) -> TValue:
+        raise NotImplementedError('serialize_enum requires an implementation')
+
     def serialize_unsupported(self, context: TypeEvaluationContext, tt: UnsupportedType, obj: Any) \
             -> TValue:
         raise NotImplementedError('serialize_unsupported requires an implementation')
@@ -658,6 +661,7 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
             lambda c, mt: self.serialize_map(c, mt, obj),
             lambda c, rt: self.serialize_record(c, rt, obj),
             lambda c, vt: self.serialize_variant(c, vt, obj),
+            lambda c, et: self.serialize_enum(c, et, obj),
             lambda c, ut: self.serialize_unsupported(c, ut, obj))
         return eval_fn(context, tt)
 

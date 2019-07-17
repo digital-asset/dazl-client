@@ -451,7 +451,7 @@ class Expr:
 
     @dataclass(frozen=True)
     class EnumCon:
-        tycon: 'Type.Con'  # Always fully applied
+        tycon: 'TypeReference'  # Always fully applied
         enum_con: str
 
     @dataclass(frozen=True)
@@ -868,6 +868,11 @@ class CaseAlt:
             self.binder = binder
 
     @dataclass(frozen=True)
+    class Enum:
+        con: TypeReference
+        constructor: str
+
+    @dataclass(frozen=True)
     class Cons:
         var_head: str
         var_tail: str
@@ -888,7 +893,8 @@ class CaseAlt:
             cons: 'Cons' = MISSING,
             optional_none: 'Unit' = MISSING,
             optional_some: 'OptionalSome' = MISSING,
-            body: 'Expr' = MISSING):
+            body: 'Expr' = MISSING,
+            enum: 'Enum' = MISSING):
         object.__setattr__(self, 'body', body)
         if default is not MISSING:
             object.__setattr__(self, '_Sum_name', 'default')
@@ -911,6 +917,9 @@ class CaseAlt:
         elif optional_some is not MISSING:
             object.__setattr__(self, '_Sum_name', 'optional_some')
             object.__setattr__(self, '_Sum_value', optional_some)
+        elif enum is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'enum')
+            object.__setattr__(self, '_Sum_value', enum)
 
     @property
     def default(self) -> 'Optional[Unit]':
@@ -940,6 +949,10 @@ class CaseAlt:
     def optional_some(self) -> 'Optional[OptionalSome]':
         return self._Sum_value if self._Sum_name == 'optional_some' else None
 
+    @property
+    def enum(self) -> 'Optional[Enum]':
+        return self._Sum_value if self._Sum_name == 'enum' else None
+
     # noinspection PyPep8Naming
     def Sum_match(
             self,
@@ -949,7 +962,8 @@ class CaseAlt:
             nil: 'Callable[[Unit], T]',
             cons: 'Callable[[Cons], T]',
             optional_none: 'Callable[[Unit], T]',
-            optional_some: 'Callable[[OptionalSome], T]'):
+            optional_some: 'Callable[[OptionalSome], T]',
+            enum: 'Callable[[Enum], T]'):
         if self._Sum_name == 'default':
             return default(self.default)
         elif self._Sum_name == 'variant':
@@ -964,6 +978,8 @@ class CaseAlt:
             return optional_none(self.optional_none)
         elif self._Sum_name == 'optional_some':
             return optional_some(self.optional_some)
+        elif self._Sum_name == 'enum':
+            return enum(self.enum)
         else:
             raise Exception
 
@@ -1473,6 +1489,12 @@ class DefDataType:
         def __init__(self, fields: 'Sequence[FieldWithType]'):
             self.fields = fields
 
+    class EnumConstructors:
+        constructors: 'Sequence[str]'
+
+        def __init__(self, constructors: 'Sequence[str]'):
+            self.constructors = constructors
+
     name: DottedName
     params: 'Sequence[TypeVarWithKind]'
     _DataCons_name: str
@@ -1486,6 +1508,7 @@ class DefDataType:
             params: 'Sequence[TypeVarWithKind]' = MISSING,
             record: 'DefDataType.Fields' = MISSING,
             variant: 'DefDataType.Fields' = MISSING,
+            enum: 'DefDataType.EnumConstructors' = MISSING,
             serializable: bool = MISSING,
             location: 'Location' = MISSING):
         self.name = name
@@ -1496,16 +1519,23 @@ class DefDataType:
         elif variant is not MISSING:
             self._DataCons_name = 'variant'
             self._DataCons_value = variant
+        elif enum is not MISSING:
+            self._DataCons_name = 'enum'
+            self._DataCons_value = enum
         self.serializable = serializable
         self.location = location
 
     @property
-    def record(self):
+    def record(self) -> 'Optional[DefDataType.Fields]':
         return self._DataCons_value if self._DataCons_name == 'record' else None
 
     @property
-    def variant(self):
+    def variant(self) -> 'Optional[DefDataType.Fields]':
         return self._DataCons_value if self._DataCons_name == 'variant' else None
+
+    @property
+    def enum(self) -> 'Optional[DefDataType.EnumConstructors]':
+        return self._DataCons_value if self._DataCons_name == 'enum' else None
 
 
 @dataclass(frozen=True)

@@ -87,6 +87,7 @@ def type_dispatch_table(
         on_map: 'Callable[[MapType], T]',
         on_record: Callable[['RecordType'], T],
         on_variant: Callable[['VariantType'], T],
+        on_enum: 'Callable[[EnumType], T]',
         on_unsupported: Callable[['UnsupportedType'], T]) -> Callable[['Type'], T]:
     def _impl(tt: Type):
         if isinstance(tt, TypeReference):
@@ -109,6 +110,8 @@ def type_dispatch_table(
             return on_record(tt)
         elif isinstance(tt, VariantType):
             return on_variant(tt)
+        elif isinstance(tt, EnumType):
+            return on_enum(tt)
         elif isinstance(tt, UnsupportedType):
             return on_unsupported(tt)
         else:
@@ -518,6 +521,19 @@ class VariantType(_CompositeDataType):
         return self.field_type(constructor_name)
 
 
+class EnumType(ConcreteType):
+
+    __slots__ = 'constructors',
+
+    def __init__(self, name: 'Optional[TypeReference]', constructors: 'Collection[str]'):
+        self.name = name
+        self.constructors = constructors
+
+    @property
+    def adjective(self) -> 'TypeAdjective':
+        return TypeAdjective.USER_DEFINED
+
+
 class UnsupportedType(Type):
     """
     A DAML type that is currently unparseable by the Python client library.
@@ -809,6 +825,7 @@ def type_evaluate_dispatch(
         on_map: 'Callable[[TypeEvaluationContext, MapType], T]',
         on_record: 'Callable[[TypeEvaluationContext, RecordType], T]',
         on_variant: 'Callable[[TypeEvaluationContext, VariantType], T]',
+        on_enum: 'Callable[[TypeEvaluationContext, EnumType], T]',
         on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T]') \
             -> 'Callable[[TypeEvaluationContext, Type], T]':
     """
@@ -840,6 +857,7 @@ def type_evaluate_dispatch(
             lambda mt: on_map(context, mt),
             lambda rt: on_record(context, rt),
             lambda vt: on_variant(context, vt),
+            lambda et: on_enum(context, et),
             lambda ut: on_unsupported(context, tt))(tt)
     return _impl
 
@@ -856,9 +874,10 @@ def type_evaluate_dispatch_default_error(
         on_map: Callable[['TypeEvaluationContext', 'MapType'], T] = _type_evaluate_dispatch_error,
         on_record: Callable[['TypeEvaluationContext', 'RecordType'], T] = _type_evaluate_dispatch_error,
         on_variant: Callable[['TypeEvaluationContext', 'VariantType'], T] = _type_evaluate_dispatch_error,
-        on_unsupported: Callable[['TypeEvaluationContext', 'UnsupportedType'], T]=_type_evaluate_dispatch_error):
+        on_enum: 'Callable[[TypeEvaluationContext, EnumType], T]' = _type_evaluate_dispatch_error,
+        on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T]' = _type_evaluate_dispatch_error):
     return type_evaluate_dispatch(
-        on_scalar, on_contract_id, on_optional, on_list, on_map, on_record, on_variant,
+        on_scalar, on_contract_id, on_optional, on_list, on_map, on_record, on_variant, on_enum,
         on_unsupported)
 
 
@@ -887,6 +906,7 @@ def single_reduce(context: TypeEvaluationContext, tt: Type) -> 'Tuple[TypeEvalua
         identity,
         identity,
         identity,
+        identity,
         identity)(tt)
 
 
@@ -900,7 +920,7 @@ def annotate_context(context: TypeEvaluationContext, tt: Type) -> Tuple[TypeEval
 
     return type_dispatch_table(
         error, error, error, identity, identity, identity, identity, identity,
-        annotate_path, annotate_path, identity)(tt)
+        annotate_path, annotate_path, identity, identity)(tt)
 
 
 class TemplateMeta(type):

@@ -12,7 +12,7 @@ from toposort import toposort_flatten
 from ... import LOG
 from ...damlast.daml_lf_1 import DefDataType, Archive
 from ...damlast.types import get_old_type
-from ...model.types import TypeReference, RecordType, VariantType, SCALAR_TYPE_UNIT, \
+from ...model.types import TypeReference, RecordType, VariantType, EnumType, SCALAR_TYPE_UNIT, \
     NamedArgumentList, TypeVariable, ModuleRef, TemplateChoice, Template, TypeAdjective, \
     ScalarType, ValueReference
 from ...model.types_store import PackageStore, PackageStoreBuilder
@@ -191,10 +191,10 @@ def parse_daml_metadata_pb(package_id: str, metadata_pb: Any) -> 'PackageStore':
 
         for dt in module.data_types:
             tt = create_data_type(current_module, dt)
-            if isinstance(tt, (RecordType, VariantType)):
+            if isinstance(tt, (RecordType, VariantType, EnumType)):
                 psb.add_type(tt.name, tt)
             else:
-                LOG.warning('Unexpected non-complex type')
+                LOG.warning('Unexpected non-complex type will be ignored: %r', tt)
 
         for template_pb in module.templates:
             tt = TypeReference(current_module, template_pb.tycon.segments)
@@ -224,7 +224,7 @@ def parse_daml_metadata_pb(package_id: str, metadata_pb: Any) -> 'PackageStore':
 
 
 def create_data_type(current_module_ref: 'ModuleRef', dt: 'DefDataType') \
-        -> 'Union[RecordType, VariantType, ScalarType]':
+        -> 'Union[RecordType, VariantType, EnumType, ScalarType]':
     from ...damlast.types import get_old_type
 
     type_vars = tuple(TypeVariable(type_var.var) for type_var in dt.params)
@@ -240,5 +240,7 @@ def create_data_type(current_module_ref: 'ModuleRef', dt: 'DefDataType') \
         for fwt in dt.variant.fields:
             d[fwt.field] = get_old_type(fwt.type)
         return VariantType(NamedArgumentList(d.items()), tt, type_vars, TypeAdjective.USER_DEFINED)
+    elif dt.enum is not None:
+        return EnumType(tt, dt.enum.constructors)
     else:
         return SCALAR_TYPE_UNIT
