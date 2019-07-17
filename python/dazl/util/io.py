@@ -7,17 +7,53 @@ Utilities for dealing with the file system.
 
 import socket
 import sys
-from io import TextIOBase, SEEK_SET
+from io import BufferedIOBase, TextIOBase, SEEK_SET
 from pathlib import Path
 from types import TracebackType
-from typing import TextIO, Optional, Type, Iterator, Iterable, List, Union
+from typing import BinaryIO, TextIO, Optional, Type, Iterator, Iterable, List, Union, overload
+
+
+@overload
+def get_bytes(_: None) -> None: ...
+
+
+@overload
+def get_bytes(_: bytes) -> bytes: ...
+
+
+@overload
+def get_bytes(_: str) -> bytes: ...
+
+
+@overload
+def get_bytes(_: Path) -> bytes: ...
+
+
+@overload
+def get_bytes(_: BinaryIO) -> bytes: ...
+
+
+def get_bytes(src):
+    """
+    Read the contents of a file as ``bytes``. If ``src`` is ``None``, then ``None`` is returned
+    instead.
+    """
+    if src is None:
+        return None
+    elif isinstance(src, str):
+        with open(src, 'rb') as f:
+            return f.read()
+    elif isinstance(src, bytes):
+        return src
+    elif isinstance(src, Path):
+        return src.read_bytes()
+    elif isinstance(src, BufferedIOBase):
+        return src.read(-1)
+    else:
+        raise ValueError('src must be a string path, a Path, or a BytesIO')
 
 
 def read_file_bytes(file_path: Optional[str]) -> Optional[bytes]:
-    """
-    Read the contents of a file as ``bytes``. If ``file_path`` is ``None``, then ``None`` is
-    returned instead.
-    """
     if file_path is not None:
         with open(file_path, 'rb') as f:
             return f.read()

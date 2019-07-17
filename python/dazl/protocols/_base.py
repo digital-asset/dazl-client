@@ -71,6 +71,13 @@ class LedgerNetwork:
         updates through the TimeService. In these contexts, this method is a no-op.
         """
 
+    async def upload_package(self, dar_contents: bytes) -> None:
+        """
+        Upload a DAR file to the ledger.
+
+        :param dar_contents: The raw bytes that represent a package.
+        """
+
     async def close(self):
         """
         Shut down all connections and transition the pool to the closed state.
@@ -118,13 +125,6 @@ class LedgerClient:
     async def events_end(self) -> str:
         """
         Return the (current) last offset of the ledger.
-        """
-
-    async def upload_package(self, dar_contents: bytes) -> None:
-        """
-        Upload a DAR file to the ledger.
-
-        :param dar_contents: The raw bytes that represent a package.
         """
 
 

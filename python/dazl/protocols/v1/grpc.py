@@ -241,12 +241,9 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable
         time_thread = Thread(name='time-sync-thread', target=time_sync_thread, daemon=True)
         time_thread.start()
 
-    LOG.debug('There is no time service, so we will merely wait for the underlying transaction '
-              'stream to die.')
-    while True:
+    # poll for package updates once a second
+    while not connection._closed.wait(1):
         grpc_package_sync(package_provider, store)
-        if connection._closed.wait(1):
-            break
 
     LOG.debug('The gRPC monitor thread is now shutting down.')
     yield None
