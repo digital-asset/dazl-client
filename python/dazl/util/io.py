@@ -18,19 +18,7 @@ def get_bytes(_: None) -> None: ...
 
 
 @overload
-def get_bytes(_: bytes) -> bytes: ...
-
-
-@overload
-def get_bytes(_: str) -> bytes: ...
-
-
-@overload
-def get_bytes(_: Path) -> bytes: ...
-
-
-@overload
-def get_bytes(_: BinaryIO) -> bytes: ...
+def get_bytes(_: 'Union[bytes, str, Path, BinaryIO]') -> bytes: ...
 
 
 def get_bytes(src):

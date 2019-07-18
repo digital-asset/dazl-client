@@ -41,7 +41,7 @@ class AutodetectLedgerNetwork(LedgerNetwork):
         self._main_thread = Thread(target=self._main, daemon=True)
         self._main_thread.start()
 
-    def ledger(self) -> Awaitable[LedgerMetadata]:
+    def ledger(self) -> 'Awaitable[LedgerMetadata]':
         return self._ledger_future
 
     async def connect_anonymous(
@@ -110,9 +110,10 @@ class AutodetectLedgerNetwork(LedgerNetwork):
                 self._connections.clear()
 
             for connection in connections:
+                # noinspection PyBroadException
                 try:
                     connection.close()
-                except:
+                except Exception:  # noqa
                     LOG.exception('Had trouble closing a connection.')
         finally:
             LOG.debug('Marked the connection pool as closed.')
@@ -144,7 +145,7 @@ class AutodetectLedgerNetwork(LedgerNetwork):
                     stub = AutodetectConnection(self._context, settings, context_path)
                     self._connections[settings] = stub
                 return stub
-        except:
+        except:  # noqa
             LOG.exception('An error occurred trying to create a connection.')
             raise
         finally:

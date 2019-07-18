@@ -23,7 +23,7 @@ from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEvent, OffsetEvent, \
     TransactionFilter, EventKey, ContractCreateEvent, ContractArchiveEvent, \
-    sortable_offset_height, InitEvent, ActiveContractSetEvent
+    InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, \
     EventHandlerResponse, Command
 from ..protocols import LedgerNetwork, LedgerClient
@@ -48,6 +48,7 @@ class _PartyClientImpl:
         self._pool_fut = None  # type: Optional[Awaitable[LedgerNetwork]]
         self._client_fut = None  # type: Optional[Awaitable[LedgerClient]]
         self._ready_fut = safe_create_future()
+        self._known_packages = set()  # type: Set[str]
 
         self._acs = ActiveContractSet()
         self._reader = _PartyClientReaderState()
@@ -56,7 +57,8 @@ class _PartyClientImpl:
         self._callbacks = CallbackManager()
 
     def connect_in(self, pool: LedgerNetwork, base_config: dict) -> Future:
-        LOG.debug('Starting party %r with base config: %r and party config: %r', self.party, base_config, self._config_values)
+        LOG.debug('Starting party %r with base config: %r and party config: %r',
+                  self.party, base_config, self._config_values)
         base_party_config = _find_party_config(base_config, self.party) or dict()
 
         config_names = {f.name for f in fields(PartyConfig)}
@@ -99,7 +101,7 @@ class _PartyClientImpl:
         return await_then(self._pool.ledger(), lambda metadata: metadata.time_model.get_time())
 
     def set_time(self, new_datetime) -> Awaitable[None]:
-        return await_then(self._pool, lambda pool: pool.set_time(new_datetime))
+        return await_then(self._pool_fut, lambda pool: pool.set_time(new_datetime))
 
     # region Event Handler Management
 
@@ -115,7 +117,7 @@ class _PartyClientImpl:
         h = wrap_as_command_submission(self.write_commands, rewritten_event, filter)
         self._callbacks.add_listener(key, h)
 
-    def emit_event(self, data: BaseEvent) -> Awaitable[Any]:
+    def emit_event(self, data: BaseEvent) -> 'Awaitable[Any]':
         """
         Emit an event.
 
@@ -135,6 +137,28 @@ class _PartyClientImpl:
             return futures[0]
         else:
             return named_gather(repr(data), *futures, return_exceptions=True)
+
+    async def emit_ready(self, metadata: LedgerMetadata, time: datetime, offset: str) -> None:
+        """
+        Emit a ready event specific to this client. This may also emit initial create events and
+        initial package added events.
+
+        :param metadata:
+            The :class:`LedgerMetadata` at the network level.
+        :param time:
+            The current time.
+        :param offset:
+            The ledger offset.
+        :return:
+            Nothing. This method "returns" when all events have been raised and their follow-ups
+            have been processed.
+        """
+        ready_event = ReadyEvent(self, self.party, time, metadata.ledger_id, metadata.store, offset)
+        self._known_packages.update(metadata.store.package_ids())
+        await self.emit_event(ready_event)
+
+        pkg_event = PackagesAddedEvent(self, self.party, time, metadata.ledger_id, metadata.store, True)
+        await self.emit_event(pkg_event)
 
     # endregion
 
@@ -224,6 +248,17 @@ class _PartyClientImpl:
             LOG.verbose('  read_transactions(%s, %s) with party %s | current offset: %s; '
                         'destination offset: %s',
                         until_offset, raise_events, self.party, self._reader.offset, until_offset)
+
+            # TODO: Find a more appropriate place to raise these events (or change the name of this
+            #  method to make it clearer that it has a bigger mandate than simply transaction
+            #  events)
+            all_packages = set(metadata.store.package_ids())
+            new_package_ids = all_packages - self._known_packages
+            if new_package_ids:
+                pkg_event = PackagesAddedEvent(
+                    self, self.party, None, metadata.ledger_id, metadata.store, False)
+                self._known_packages.update(all_packages)
+                await self.emit_event(pkg_event)
 
             # prepare a call to /events
             transaction_filter = TransactionFilter(
