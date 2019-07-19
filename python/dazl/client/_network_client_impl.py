@@ -15,7 +15,8 @@ from dataclasses import asdict
 from .. import LOG
 from ._party_client_impl import _PartyClientImpl
 from ._run_level import RunState
-from ..client.config import NetworkConfig, URLConfig, DEFAULT_CONNECT_TIMEOUT_SECONDS
+from ..client.config import AnonymousNetworkConfig, NetworkConfig, URLConfig, \
+    DEFAULT_CONNECT_TIMEOUT_SECONDS
 from ..metrics import MetricEvents
 from ..model.core import Party, RunLevel
 from ..model.ledger import LedgerMetadata
@@ -86,7 +87,7 @@ class _NetworkImpl:
         """
         return self.invoker.run_in_loop(cb, timeout=timeout)
 
-    def set_config(self, *configs: 'NetworkConfig', **kwargs):
+    def set_config(self, *configs: 'Union[NetworkConfig, AnonymousNetworkConfig]', **kwargs):
         for config in configs:
             self._config.update({k: v for k, v in asdict(config).items() if v is not None})
         self._config.update({k: v for k, v in kwargs.items() if v is not None})
@@ -250,7 +251,7 @@ class _NetworkImpl:
         with self._lock:
             return list(self._party_impls.values())
 
-    def simple_metadata(self, timeout: Optional[float] = 30.0) -> LedgerMetadata:
+    def simple_metadata(self, timeout: 'TimeDeltaConvertible') -> LedgerMetadata:
         """
         Retrieve metadata about the ledger.
 
@@ -310,7 +311,7 @@ class _NetworkImpl:
 
     # noinspection PyShadowingBuiltins
 
-    def add_event_handler(self, key, handler: Callable[[BaseEvent], None], context):
+    def add_event_handler(self, key, handler: 'Callable[[BaseEvent], None]', context):
         """
         Add an event handler to a specific event. Unlike event listeners on party clients, these
         event handlers are not allowed to return anything in response to handling an event.
@@ -456,9 +457,7 @@ class _NetworkRunner:
             evt = ReadyEvent(None, None, current_time, metadata.ledger_id, metadata.store, offset)
             self._network_impl.emit_event(evt)
         for party_impl in party_impls:
-            evt = ReadyEvent(party_impl, party_impl.party, current_time, metadata.ledger_id,
-                             metadata.store, offset)
-            futs.append(party_impl.emit_event(evt))
+            futs.append(ensure_future(party_impl.emit_ready(metadata, current_time, offset)))
         for party_impl in party_impls:
             party_impl.ready().set_result(None)
 

@@ -7,7 +7,7 @@ This module contains models used on the read-side of the Ledger API.
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Callable, Collection, Optional, Sequence, TypeVar, Union
+from typing import Any, Callable, Collection, Optional, Sequence, TypeVar, Union, Tuple
 
 from .core import ContractId, ContractData, ContractContextualData, Party
 from .lookup import template_reverse_globs, validate_template
@@ -157,6 +157,14 @@ class ContractArchiveEvent(ContractEvent):
     """
 
 
+@dataclass(frozen=True)
+class PackagesAddedEvent(BaseEvent):
+    """
+    Event raised when new packages have been detected.
+    """
+    initial: bool
+
+
 def create_dispatch(
         on_init: Callable[[InitEvent], T],
         on_ready: Callable[[ReadyEvent], T],
@@ -165,7 +173,9 @@ def create_dispatch(
         on_transaction_end: Callable[[TransactionEndEvent], T],
         on_contract_created: Callable[[ContractCreateEvent], T],
         on_contract_exercised: Callable[[ContractExercisedEvent], T],
-        on_contract_archived: Callable[[ContractArchiveEvent], T]) -> Callable[[BaseEvent], T]:
+        on_contract_archived: Callable[[ContractArchiveEvent], T],
+        on_packages_added: Callable[[PackagesAddedEvent], T]) \
+        -> Callable[[BaseEvent], T]:
     def handle(event: BaseEvent) -> T:
         if isinstance(event, ContractCreateEvent):
             return on_contract_created(event)
@@ -183,6 +193,8 @@ def create_dispatch(
             return on_init(event)
         elif isinstance(event, OffsetEvent):
             return on_offset(event)
+        elif isinstance(event, PackagesAddedEvent):
+            return on_packages_added(event)
         else:
             raise ValueError(f'unknown subclass of BaseEvent: {event!r}')
 
@@ -210,7 +222,9 @@ class EventKey:
         on_contract_created=lambda event: EventKey.contract_created(False, event.cid.template_id),
         on_contract_exercised=lambda event: EventKey.contract_exercised(
             False, event.cid.template_id, event.choice),
-        on_contract_archived=lambda event: EventKey.contract_archived(False, event.cid.template_id))
+        on_contract_archived=lambda event: EventKey.contract_archived(False, event.cid.template_id),
+        on_packages_added=lambda event: EventKey.packages_added(
+            initial=event.initial, changed=not event.initial))
 
     @staticmethod
     def init() -> Collection[str]:
@@ -276,6 +290,13 @@ class EventKey:
         of the specified template type.
         """
         return EventKey._contract(primary_only, 'archive', template)
+
+    @staticmethod
+    def packages_added(initial: bool, changed: bool) -> 'Collection[str]':
+        if initial:
+            yield 'packages-added/initial',
+        if changed:
+            yield 'packages-added/changed'
 
     @staticmethod
     def _contract(primary_only: bool, prefix: str, template: Any) -> Collection[str]:
