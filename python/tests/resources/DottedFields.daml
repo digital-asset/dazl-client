@@ -10,7 +10,7 @@ data USAddress = USAddress
     address: [Text]
     city: Text
     state: Text
-    zip: Integer
+    zip: Int
   deriving (Eq, Show)
 
 data UKAddress = UKAddress
