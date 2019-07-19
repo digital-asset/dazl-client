@@ -37,10 +37,10 @@ template AuthorRole
               address
               content
 
-      nonconsuming CreateIntegerLetter : ContractId UnsortedLetter
+      nonconsuming CreateIntLetter : ContractId UnsortedLetter
         with
           address : Text
-          content : Integer
+          content : Int
         do
           create UnsortedLetter
             with
@@ -73,10 +73,10 @@ template AuthorRole
               address
               content = (show content)
 
-      nonconsuming CreateListIntegerLetter : ContractId UnsortedLetter
+      nonconsuming CreateListIntLetter : ContractId UnsortedLetter
         with
           address : Text
-          content : [Integer]
+          content : [Int]
         do
           create UnsortedLetter
             with
