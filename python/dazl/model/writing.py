@@ -31,7 +31,8 @@ from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice,
     scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch, \
     TemplateMeta, ChoiceMeta
 from .types_store import PackageStore
-from ..util.typing import safe_cast
+from ..util.prim_types import DEFAULT_TYPE_CONVERTER
+from ..util.typing import safe_cast, safe_optional_cast
 
 TCommand = TypeVar('TCommand')
 TValue = TypeVar('TValue')
@@ -505,8 +506,10 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
     Implementation of :class:`Serializer` that helps enforce that all possible cases of type
     serialization have been implemented.
     """
-    def __init__(self, store: PackageStore):
+    def __init__(self, store: PackageStore, type_context: 'Optional[TypeEvaluationContext]' = None):
         self.store = safe_cast(PackageStore, store)
+        self.type_context = safe_optional_cast(TypeEvaluationContext, type_context) or \
+            DEFAULT_TYPE_CONVERTER
 
     def serialize_value(self, tt: Type, obj: Any) -> TValue:
         context = TypeEvaluationContext.from_store(self.store)

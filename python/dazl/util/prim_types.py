@@ -230,13 +230,12 @@ def unflatten_dotted_keys(m: Mapping[str, Any]):
     return reformatted
 
 
-_GLOBAL_TYPE_CONVERTER = PrimitiveTypeConverter()
-to_boolean = _GLOBAL_TYPE_CONVERTER.to_boolean
-to_int = _GLOBAL_TYPE_CONVERTER.to_int
-to_decimal = _GLOBAL_TYPE_CONVERTER.to_decimal
-to_str = _GLOBAL_TYPE_CONVERTER.to_str
-to_date = _GLOBAL_TYPE_CONVERTER.to_date
-to_datetime = _GLOBAL_TYPE_CONVERTER.to_datetime
+DEFAULT_TYPE_CONVERTER = PrimitiveTypeConverter()
+to_int = DEFAULT_TYPE_CONVERTER.to_int
+to_decimal = DEFAULT_TYPE_CONVERTER.to_decimal
+to_str = DEFAULT_TYPE_CONVERTER.to_str
+to_date = DEFAULT_TYPE_CONVERTER.to_date
+to_datetime = DEFAULT_TYPE_CONVERTER.to_datetime
 
 
 _KNOWN_DATE_FORMATS = [

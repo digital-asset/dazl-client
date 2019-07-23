@@ -485,7 +485,29 @@ class ProtobufParser:
             location=self.parse_Location(pb.location))
 
     def parse_KeyExpr(self, pb) -> 'KeyExpr':
-        return KeyExpr()
+        if pb.HasField('projections'):
+            return KeyExpr(projections=self.parse_KeyExpr_Projections(pb.projections))
+        elif pb.HasField('record'):
+            return KeyExpr(record=self.parse_KeyExpr_Record(pb.record))
+        else:
+            raise ValueError(f'unknown KeyExpr {pb}')
+
+    def parse_KeyExpr_Projection(self, pb) -> 'KeyExpr.Projection':
+        return KeyExpr.Projection(
+            tycon=self.parse_Type_Con(pb.tycon, allow_rewrite=False).con,
+            field=pb.field)
+
+    def parse_KeyExpr_Projections(self, pb) -> 'KeyExpr.Projections':
+        return KeyExpr.Projections(
+            projections=[self.parse_KeyExpr_Projection(p) for p in pb.projections])
+
+    def parse_KeyExpr_RecordField(self, pb) -> 'KeyExpr.RecordField':
+        return KeyExpr.RecordField(field=pb.field, expr=pb.expr)
+
+    def parse_KeyExpr_Record(self, pb) -> 'KeyExpr.Record':
+        return KeyExpr.Record(
+            tycon=self.parse_Type_Con(pb.tycon, allow_rewrite=False).con,
+            fields=[self.parse_KeyExpr_RecordField(p) for p in pb.fields])
 
     def parse_DefTemplate(self, pb) -> 'DefTemplate':
         return DefTemplate(
