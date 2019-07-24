@@ -25,7 +25,7 @@ def is_hidden_module_name(name: 'Sequence[str]') -> bool:
     if len(name) >= 2:
         if name[0] == 'GHC':
             return True
-        elif name[0] == 'DA' and name[1] == 'Internal':
+        elif name[0] == 'DA':
             return True
         elif name[0] == 'Control' and name[1] == 'Exception':
             return True

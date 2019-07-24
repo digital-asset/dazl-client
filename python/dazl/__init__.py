@@ -48,11 +48,11 @@ LOG = _initialize_logger()  # type: LoggerWithVerbose
 
 
 from .damlsdk.sandbox import sandbox  # noqa
-from .client import create_client, simple_client, Network  # noqa
+from .client import create_client, simple_client, Network, SimplePartyClient, AIOPartyClient  # noqa
 from .model.core import ContractId, DazlError, Party  # noqa
 from .model.types import module, TemplateMeta, ChoiceMeta  # noqa
 from .model.writing import create, exercise, exercise_by_key, create_and_exercise, \
-    CreateCommand, ExerciseCommand, ExerciseByKeyCommand, CreateAndExerciseCommand  # noqa
+    Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, CreateAndExerciseCommand  # noqa
 from .util.logging import setup_default_logger  # noqa
 from .util.prim_types import frozendict  # noqa
 from .plugins.capture.plugin_capture import write_acs  # noqa

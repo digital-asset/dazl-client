@@ -1019,11 +1019,12 @@ class Update:
         template: 'TypeConName'
         choice: str
         cid: 'Expr'
-        actor: 'Expr'
+        actor: 'Optional[Expr]'
         arg: 'Expr'
 
-        def __init__(self, template: 'TypeConName', choice: str, cid: 'Expr', actor: 'Expr',
-                     arg: 'Expr'):
+        def __init__(
+                self, template: 'TypeConName', choice: str, cid: 'Expr', actor: 'Optional[Expr]',
+                arg: 'Expr'):
             self.template = template
             self.choice = choice
             self.cid = cid
@@ -1123,9 +1124,49 @@ class Update:
         return self._Sum_value if self._Sum_name == 'get_time' else None
 
     @property
+    def lookup_by_key(self) -> 'Optional[RetrieveByKey]':
+        return self._Sum_value if self._Sum_name == 'lookup_by_key' else None
+
+    @property
+    def fetch_by_key(self) -> 'Optional[RetrieveByKey]':
+        return self._Sum_value if self._Sum_name == 'fetch_by_key' else None
+
+    @property
     def embed_expr(self) -> 'Optional[EmbedExpr]':
         """see similar constructor in `Scenario` on why this is useful."""
         return self._Sum_value if self._Sum_name == 'embed_expr' else None
+
+    def Sum_match(
+            self,
+            pure: 'Callable[[Pure], T]',
+            block: 'Callable[[Block], T]',
+            create: 'Callable[[Create], T]',
+            exercise: 'Callable[[Exercise], T]',
+            fetch: 'Callable[[Fetch], T]',
+            get_time: 'Callable[[Unit], T]',
+            lookup_by_key: 'Callable[[RetrieveByKey], T]',
+            fetch_by_key: 'Callable[[RetrieveByKey], T]',
+            embed_expr: 'Callable[[EmbedExpr], T]') -> T:
+        if self._Sum_name == 'pure':
+            return pure(self._Sum_value)
+        if self._Sum_name == 'block':
+            return block(self._Sum_value)
+        if self._Sum_name == 'create':
+            return create(self._Sum_value)
+        if self._Sum_name == 'exercise':
+            return exercise(self._Sum_value)
+        if self._Sum_name == 'fetch':
+            return fetch(self._Sum_value)
+        if self._Sum_name == 'get_time':
+            return get_time(self._Sum_value)
+        if self._Sum_name == 'lookup_by_key':
+            return lookup_by_key(self._Sum_value)
+        if self._Sum_name == 'fetch_by_key':
+            return fetch_by_key(self._Sum_value)
+        if self._Sum_name == 'embed_expr':
+            return embed_expr(self._Sum_value)
+        else:
+            raise ValueError(f'Unknown Update.Sum case: {self._Sum_name}')
 
 
 class Scenario:
@@ -1231,6 +1272,35 @@ class Scenario:
         as expected.
         """
         return self._Sum_value if self._Sum_name == 'embed_expr' else None
+
+    def Sum_match(
+            self,
+            pure: 'Callable[[Pure], T]',
+            block: 'Callable[[Block], T]',
+            commit: 'Callable[[Commit], T]',
+            must_fail_at: 'Callable[[Commit], T]',
+            pass_: 'Callable[[Expr], T]',
+            get_time: 'Callable[[Unit], T]',
+            get_party: 'Callable[[Expr], T]',
+            embed_expr: 'Callable[[EmbedExpr], T]') -> T:
+        if self._Sum_name == 'pure':
+            return pure(self._Sum_value)
+        if self._Sum_name == 'block':
+            return block(self._Sum_value)
+        if self._Sum_name == 'commit':
+            return commit(self._Sum_value)
+        if self._Sum_name == 'mustFailAt':
+            return must_fail_at(self._Sum_value)
+        if self._Sum_name == 'pass':
+            return pass_(self._Sum_value)
+        if self._Sum_name == 'get_time':
+            return get_time(self._Sum_value)
+        if self._Sum_name == 'get_party':
+            return get_party(self._Sum_value)
+        if self._Sum_name == 'embed_expr':
+            return embed_expr(self._Sum_value)
+        else:
+            raise ValueError(f'unknown Scenario.Sum case: {self._Sum_name!r}')
 
 
 class BuiltinFunction(Enum):
@@ -1375,26 +1445,37 @@ class KeyExpr:
     _Sum_name: str
     _Sum_value: 'Union[KeyExpr.Projections, KeyExpr.Record]'
 
-    @dataclass(frozen=True)
+    @dataclass(init=False, frozen=True)
     class Projections:
         projections: 'Sequence[KeyExpr.Projection]'
+
+        def __init__(self, projections: 'Sequence[KeyExpr.Projection]'):
+            object.__setattr__(self, 'projections', tuple(projections))
 
     @dataclass(init=False, frozen=True)
     class Projection:
         tycon: 'Type.Con'
         field: str
 
-    @dataclass(frozen=True)
+        def __init__(self, tycon: 'Type.Con', field: str):
+            object.__setattr__(self, 'tycon', tycon)
+            object.__setattr__(self, 'field', field)
+
+    @dataclass(init=False, frozen=True)
     class Record:
         tycon: 'Type.Con'
-        fields: 'KeyExpr.RecordField'
+        fields: 'Sequence[KeyExpr.RecordField]'
+
+        def __init__(self, tycon: 'Type.Con', fields: 'Sequence[KeyExpr.RecordField]'):
+            object.__setattr__(self, 'tycon', tycon)
+            object.__setattr__(self, 'fields', tuple(fields))
 
     @dataclass(frozen=True)
     class RecordField:
         field: str
         expr: 'KeyExpr'
 
-    def __init__(self, projections = MISSING, record = MISSING):
+    def __init__(self, projections=MISSING, record=MISSING):
         if projections is not MISSING:
             object.__setattr__(self, '_Sum_name', 'projections')
             object.__setattr__(self, '_Sum_value', projections)

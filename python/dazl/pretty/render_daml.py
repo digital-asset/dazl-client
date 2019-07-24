@@ -7,7 +7,7 @@ from typing import Optional, Sequence, Union
 from ._render_base import PrettyPrintBase
 from .util import maybe_parentheses
 from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, Module, PrimCon, PrimType, \
-    Type as NewType
+    Type as NewType, Scenario, Pure, Block, Update
 from ..model.types import Type as OldType, ScalarType, ContractIdType, ListType, OptionalType, \
     MapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, EnumType, \
     type_dispatch_table, SCALAR_TYPE_UNIT, SCALAR_TYPE_BOOL, SCALAR_TYPE_CHAR, \
@@ -30,6 +30,9 @@ class DamlPrettyPrinter(PrettyPrintBase):
             return None
 
         return DAMLLexer()
+
+    def module_indent(self):
+        return ''
 
     def visit_module_ref_start(self, module_ref: 'ModuleRef'):
         module_name = '.'.join(module_ref.module_name)
@@ -102,9 +105,9 @@ class DamlPrettyPrinter(PrettyPrintBase):
         ctor_expr = f'{self.visit_type_con(rec_con.tycon)} with'
         field_exprs = [f'{fwt.field}={self.visit_expr(fwt.expr)}' for fwt in rec_con.fields]
         if line_endings:
-            return f'{ctor_expr} {"; ".join(field_exprs)}'
+            return ctor_expr + ''.join('\n  ' + expr for expr in field_exprs)
         else:
-            return ctor_expr + '\n  '.join(field_exprs)
+            return f'{ctor_expr} {"; ".join(field_exprs)}'
 
     def visit_expr_rec_proj(self, rec_proj: 'Expr.RecProj'):
         rec_text = maybe_parentheses(self.visit_expr(rec_proj.record))
@@ -177,10 +180,96 @@ class DamlPrettyPrinter(PrettyPrintBase):
             return f'{front_texts[0]} `Cons` {tail_text}'
 
     def visit_expr_update(self, update: 'Update'):
-        return 'do ... return'
+        return update.Sum_match(
+            self.visit_expr_update_pure,
+            self.visit_expr_update_block,
+            self.visit_expr_update_create,
+            self.visit_expr_update_exercise,
+            self.visit_expr_update_fetch,
+            self.visit_expr_update_get_time,
+            self.visit_expr_update_lookup_by_key,
+            self.visit_expr_update_fetch_by_key,
+            self.visit_expr_update_embed_expr)
 
-    def visit_expr_scenario(self, scenario: 'Scenario'):
-        return 'test ... return'
+    def visit_expr_update_pure(self, pure: 'Pure') -> str:
+        return self._visit_pure(pure)
+
+    def visit_expr_update_block(self, block: 'Block') -> str:
+        return self._visit_block(block)
+
+    def visit_expr_update_create(self, create: 'Update.Create') -> str:
+        return f'create ' + self.visit_expr(create.expr)
+
+    def visit_expr_update_exercise(self, exercise: 'Update.Exercise') -> str:
+        return f'exercise ' + self.visit_expr(exercise.cid) + self.visit_expr(exercise.arg)
+
+    def visit_expr_update_fetch(self, fetch: 'Update.Fetch') -> str:
+        return f'fetch ' + self.visit_expr(fetch.cid)
+
+    def visit_expr_update_get_time(self, get_time: 'Unit') -> str:
+        return 'getTime'
+
+    def visit_expr_update_lookup_by_key(self, lookup_by_key: 'Update.RetrieveByKey') -> str:
+        return 'lookupByKey @' + self.visit_type(lookup_by_key.template) + ' ' + self.visit_expr(lookup_by_key.key)
+
+    def visit_expr_update_fetch_by_key(self, fetch_by_key: 'Update.RetrieveByKey') -> str:
+        return 'fetchByKey @' + self.visit_type(fetch_by_key.template) + ' ' + self.visit_expr(fetch_by_key.key)
+
+    def visit_expr_update_embed_expr(self, embed_expr: 'Update.EmbedExpr') -> str:
+        return self.visit_expr(embed_expr.body)
+
+    def _visit_pure(self, pure: 'Pure') -> str:
+        text = self.visit_expr(pure.expr)
+        return f'return $ {text}' if ' ' in text else f'return {text}'
+
+    def _visit_block(self, block: 'Block') -> str:
+        from .util import indent
+        with StringIO() as buf:
+            buf.write('do\n')
+            for binding in block.bindings:
+                buf.write(f'  {binding.binder.var} <- {indent(self.visit_expr(binding.bound), 2).lstrip()}\n')
+            for line in self.visit_expr(block.body).splitlines():
+                buf.write(f'  {line}\n')
+            return buf.getvalue()
+
+    def visit_expr_scenario(self, scenario: 'Scenario') -> str:
+        return scenario.Sum_match(
+            self.visit_expr_scenario_pure,
+            self.visit_expr_scenario_block,
+            self.visit_expr_scenario_commit,
+            self.visit_expr_scenario_must_fail_at,
+            self.visit_expr_scenario_pass,
+            self.visit_expr_scenario_get_time,
+            self.visit_expr_scenario_get_party,
+            self.visit_expr_scenario_embed_expr)
+
+    def visit_expr_scenario_pure(self, pure: 'Pure') -> str:
+        return self._visit_pure(pure)
+
+    def visit_expr_scenario_block(self, block: 'Block') -> str:
+        return self._visit_block(block)
+
+    def visit_expr_scenario_commit(self, commit: 'Scenario.Commit') -> str:
+        text = self.visit_expr(commit.expr)
+        return f'commit $ {text}' if ' ' in text else f'commit {text}'
+
+    def visit_expr_scenario_must_fail_at(self, must_fail_at: 'Scenario.Commit') -> str:
+        text = self.visit_expr(must_fail_at.expr)
+        return f'mustFailAt $ {text}' if ' ' in text else f'mustFailAt {text}'
+
+    def visit_expr_scenario_pass(self, pass_: 'Expr') -> str:
+        text = self.visit_expr(pass_)
+        return f'pass $ {text}' if ' ' in text else f'pass {text}'
+
+    def visit_expr_scenario_get_time(self, get_time: 'Unit') -> str:
+        return 'getTime'
+
+    def visit_expr_scenario_get_party(self, get_party: 'Expr') -> str:
+        text = self.visit_expr(get_party.expr)
+        return f'getParty $ {text}' if ' ' in text else f'getParty {text}'
+
+    def visit_expr_scenario_embed_expr(self, embed_expr: 'Expr') -> str:
+        return self.visit_expr(embed_expr)
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> str:
         return f'None'
