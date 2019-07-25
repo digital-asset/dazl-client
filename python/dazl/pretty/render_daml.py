@@ -265,11 +265,11 @@ class DamlPrettyPrinter(PrettyPrintBase):
         return 'getTime'
 
     def visit_expr_scenario_get_party(self, get_party: 'Expr') -> str:
-        text = self.visit_expr(get_party.expr)
+        text = self.visit_expr(get_party)
         return f'getParty $ {text}' if ' ' in text else f'getParty {text}'
 
-    def visit_expr_scenario_embed_expr(self, embed_expr: 'Expr') -> str:
-        return self.visit_expr(embed_expr)
+    def visit_expr_scenario_embed_expr(self, embed_expr: 'Scenario.EmbedExpr') -> str:
+        return self.visit_expr(embed_expr.body)
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> str:
         return f'None'

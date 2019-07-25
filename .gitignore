@@ -1,6 +1,7 @@
 .sw?
 .*.sw?
 *.pyc
+.DS_Store
 .idea
 .cache
 .mypy_cache

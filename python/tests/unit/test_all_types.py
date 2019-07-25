@@ -8,7 +8,7 @@ import unittest
 
 from pathlib import Path
 
-from dazl import sandbox, create, create_client
+from dazl import sandbox, create, Network
 
 
 PARTY = 'Operator'
@@ -36,11 +36,13 @@ class TestAllTypes(unittest.TestCase):
     def test_all_types(self):
         test_case = AllTypesTestCase()
         with sandbox(TEST_DAML) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(test_case.create_one_of_everything)
-                party_client.on_created(TEMPLATE, test_case.on_one_of_everything)
-                client.run_until_complete()
+            network = Network()
+            network.set_config(url=proc.url)
+
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(test_case.create_one_of_everything)
+            party_client.add_ledger_created(TEMPLATE, test_case.on_one_of_everything)
+            network.run_until_complete()
 
         self.assertIsNotNone(
             test_case.found_instance,
@@ -57,14 +59,17 @@ class TestAllTypes(unittest.TestCase):
 
     def test_maps(self):
         with sandbox(TEST_DAML) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(lambda *args, **kwargs: create(
-                    'AllKindsOf.MappyContract', {
-                        'operator': PARTY,
-                        'value': {'Map_internal': []}
-                    }))
-                client.run_until_complete()
+            network = Network()
+            network.set_config(url=proc.url)
+
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(lambda e: create(
+                'AllKindsOf.MappyContract', {
+                    'operator': PARTY,
+                    'value': {'Map_internal': []}
+                }))
+
+            network.run_until_complete()
 
 
 class AllTypesTestCase:
@@ -74,12 +79,12 @@ class AllTypesTestCase:
 
     # noinspection PyUnusedLocal
     @staticmethod
-    def create_one_of_everything(*args, **kwargs):
+    def create_one_of_everything(_):
         return create(TEMPLATE, SOME_ARGS)
 
-    def on_one_of_everything(self, cid, cdata):
-        if cdata is not None:
-            self.found_instance = cdata
-            return cid.exercise('Accept')
+    def on_one_of_everything(self, event):
+        if event.cdata is not None:
+            self.found_instance = event.cdata
+            return event.cid.exercise('Accept')
         else:
             self.archive_done = True
