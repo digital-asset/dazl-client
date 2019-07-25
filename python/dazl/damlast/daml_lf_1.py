@@ -1211,7 +1211,7 @@ class Scenario:
             object.__setattr__(self, '_Sum_name', 'commit')
             object.__setattr__(self, '_Sum_value', commit)
         elif must_fail_at is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'must_fail_at')
+            object.__setattr__(self, '_Sum_name', 'mustFailAt')
             object.__setattr__(self, '_Sum_value', must_fail_at)
         elif pass_ is not MISSING:
             object.__setattr__(self, '_Sum_name', 'pass')

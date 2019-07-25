@@ -6,7 +6,7 @@ from asyncio import get_event_loop, wait_for, sleep, gather
 from unittest import TestCase
 from pathlib import Path
 
-from dazl import sandbox, create_client, create, exercise, setup_default_logger
+from dazl import sandbox, create, exercise, setup_default_logger, Network
 from dazl.util.events import EventHandlerTracker
 
 DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Pending.daml'
@@ -25,24 +25,26 @@ class PendingTest(TestCase):
         number_of_contracts = 10
 
         with sandbox(DAML_FILE) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(lambda *args, **kwargs: [
-                    create(Counter, {'owner': PARTY, 'value': 0}),
-                    *[create(AccountRequest, {'owner': PARTY}) for i in range(number_of_contracts)],
-                ])
+            network = Network()
+            network.set_config(url=proc.url)
 
-                async def on_account_request(cid, _):
-                    counter_cid, counter_cdata = await party_client.select_first(Counter)
-                    return [
-                        exercise(cid, 'CreateAccount', dict(accountId=counter_cdata['value'])),
-                        exercise(counter_cid, 'Increment')
-                    ]
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(lambda _: [
+                create(Counter, {'owner': PARTY, 'value': 0}),
+                *[create(AccountRequest, {'owner': PARTY}) for i in range(number_of_contracts)],
+            ])
 
-                party_client.on_created(AccountRequest, on_account_request)
-                client.run_until_complete()
+            @party_client.ledger_created(AccountRequest)
+            async def on_account_request(event):
+                counter_cid, counter_cdata = await event.acs_find_one(Counter)
+                return [
+                    exercise(event.cid, 'CreateAccount', dict(accountId=counter_cdata['value'])),
+                    exercise(counter_cid, 'Increment')
+                ]
 
-                data = party_client.select(Account)
+            network.run_until_complete()
+
+            data = party_client.find_active(Account)
 
         self.assertEqual(len(data), number_of_contracts)
 

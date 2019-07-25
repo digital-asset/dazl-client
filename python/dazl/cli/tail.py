@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 from .. import LOG
 from ._base import CliCommand
 from ..plugins import LedgerCapturePlugin
-from ..client.manager import LedgerClientManager
+from ..client import Network
 from ..client.config import configure_parser, NetworkConfig
 
 
@@ -26,5 +26,6 @@ class TailCommand(CliCommand):
         LOG.debug('Executing a tail...')
 
         config = NetworkConfig.get_config(args)
-        with LedgerClientManager(config) as mgr:
-            mgr.run_forever()
+        network = Network()
+        network.set_config(config)
+        network.run_forever()

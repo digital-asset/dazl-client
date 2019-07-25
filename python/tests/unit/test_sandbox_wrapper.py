@@ -3,7 +3,7 @@
 from unittest import TestCase
 from pathlib import Path
 
-from dazl import sandbox, create_client, create
+from dazl import sandbox, create, Network
 from dazl.model.core import ProcessDiedException
 
 DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Simple.daml'
@@ -15,11 +15,13 @@ class SandboxWrapperTest(TestCase):
     def _sandbox_test(self, extra_args=None):
         cids = []
         with sandbox(DAML_FILE, extra_args=extra_args) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(lambda *args, **kwargs: create(OperatorRole, {'operator': PARTY}))
-                party_client.on_created(OperatorRole, lambda cid, cdata: cids.append(cid))
-                client.run_until_complete()
+            network = Network()
+            network.set_config(url=proc.url)
+
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(lambda _: create(OperatorRole, {'operator': PARTY}))
+            party_client.add_ledger_created(OperatorRole, lambda e: cids.append(e.cid))
+            network.run_until_complete()
 
         print('got to the end with contracts: ', cids)
         self.assertEqual(len(cids), 1)

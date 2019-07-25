@@ -18,6 +18,3 @@ For a higher-level, more declarative API, see :mod:`dazl.query`.
 from . import config
 from .api import simple_client, Network, PartyClient, AIOPartyClient, SimplePartyClient
 from ._base_model import ExitCode, LedgerRun
-from .client_participant import ParticipantLedgerClient
-from .manager import LedgerClientManager, create_client
-

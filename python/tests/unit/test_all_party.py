@@ -5,7 +5,7 @@ import logging
 from unittest import TestCase
 from pathlib import Path
 
-from dazl import sandbox, create_client, create, setup_default_logger
+from dazl import sandbox, create, setup_default_logger, Network
 
 DAML_FILE = Path(__file__).parent.parent / 'resources' / 'AllParty.daml'
 SOME_PARTY = 'SomeParty'
@@ -22,20 +22,22 @@ class AllPartyTest(TestCase):
         some_party_cids = []
         publisher_cids = []
         with sandbox(DAML_FILE, extra_args=None) as proc:
-            with create_client(participant_url=proc.url, parties=[SOME_PARTY, PUBLISHER], party_groups=[ALL_PARTY]) as client:
-                some_client = client.client(SOME_PARTY)
-                some_client.on_ready(lambda *args, **kwargs: create(PrivateContract, {'someParty': SOME_PARTY}))
+            network = Network()
+            network.set_config(url=proc.url, party_groups=[ALL_PARTY])
 
-                publisher_client = client.client(PUBLISHER)
-                publisher_client.on_ready(lambda *args, **kwargs: create(PublicContract, {'publisher': PUBLISHER, 'allParty': ALL_PARTY}))
+            some_client = network.aio_party(SOME_PARTY)
+            some_client.add_ledger_ready(lambda _: create(PrivateContract, {'someParty': SOME_PARTY}))
 
-                some_client.on_created(PublicContract, lambda cid, cdata: some_party_cids.append(cid))
-                some_client.on_created(PrivateContract, lambda cid, cdata: some_party_cids.append(cid))
+            publisher_client = network.aio_party(PUBLISHER)
+            publisher_client.add_ledger_ready(lambda _: create(PublicContract, {'publisher': PUBLISHER, 'allParty': ALL_PARTY}))
 
-                publisher_client.on_created(PublicContract, lambda cid, cdata: publisher_cids.append(cid))
-                publisher_client.on_created(PrivateContract, lambda cid, cdata: publisher_cids.append(cid))
+            some_client.add_ledger_created(PublicContract, lambda e: some_party_cids.append(e.cid))
+            some_client.add_ledger_created(PrivateContract, lambda e: some_party_cids.append(e.cid))
 
-                client.run_until_complete()
+            publisher_client.add_ledger_created(PublicContract, lambda e: publisher_cids.append(e.cid))
+            publisher_client.add_ledger_created(PrivateContract, lambda e: publisher_cids.append(e.cid))
+
+            network.run_until_complete()
 
         print(f'got to the end with some_party contracts: {some_party_cids} and publisher contracts: {publisher_cids}')
         self.assertEqual(len(some_party_cids), 2)

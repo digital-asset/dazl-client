@@ -395,9 +395,9 @@ class ProtobufParser:
         elif sum_name == 'embed_expr':
             return Update(embed_expr=self.parse_Update_EmbedExpr(pb.embed_expr))
         elif sum_name == 'lookup_by_key':
-            return Update(embed_expr=self.parse_Update_RetrieveByKey(pb.lookup_by_key))
+            return Update(lookup_by_key=self.parse_Update_RetrieveByKey(pb.lookup_by_key))
         elif sum_name == 'fetch_by_key':
-            return Update(embed_expr=self.parse_Update_RetrieveByKey(pb.fetch_by_key))
+            return Update(fetch_by_key=self.parse_Update_RetrieveByKey(pb.fetch_by_key))
         else:
             raise ValueError(f'unknown Sum value: {sum_name!r}')
 

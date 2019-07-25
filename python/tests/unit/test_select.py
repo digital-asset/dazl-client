@@ -5,7 +5,7 @@
 from unittest import TestCase
 from pathlib import Path
 
-from dazl import sandbox, create_client, create, exercise
+from dazl import sandbox, create, exercise, Network
 
 DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Simple.daml'
 PARTY = 'Operator'
@@ -13,31 +13,30 @@ OperatorRole = 'Simple.OperatorRole'
 OperatorNotification = 'Simple.OperatorNotification'
 
 
-from dazl import setup_default_logger
-import logging
-setup_default_logger(logging.DEBUG)
-
-
 class SelectTest(TestCase):
     def test_select_template_retrieves_contracts(self):
         with sandbox(DAML_FILE) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(lambda *args, **kwargs: create(OperatorRole, {'operator': PARTY}))
-                client.run_until_complete()
+            network = Network()
+            network.set_config(url=proc.url)
 
-                data = party_client.select(OperatorRole)
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': PARTY}))
+            network.run_until_complete()
+
+            data = party_client.find_active(OperatorRole)
 
         self.assertEqual(len(data), 1)
 
     def test_select_unknown_template_retrieves_empty_set(self):
         with sandbox(DAML_FILE) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(lambda *args, **kwargs: create(OperatorRole, {'operator': PARTY}))
-                client.run_until_complete()
+            network = Network()
+            network.set_config(url=proc.url)
 
-                data = party_client.select('NonExistentTemplate')
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': PARTY}))
+            network.run_until_complete()
+
+            data = party_client.find_active('NonExistentTemplate')
 
         self.assertEqual(len(data), 0)
 
@@ -49,17 +48,19 @@ class SelectTest(TestCase):
         expected_select_count = notification_count * notification_count
         actual_select_count = 0
 
-        def on_notification_contract(_, __):
+        def on_notification_contract(e):
             nonlocal actual_select_count
-            actual_select_count += len(party_client.select(OperatorNotification))
+            actual_select_count += len(party_client.find_active(OperatorNotification))
 
         with sandbox(DAML_FILE) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(lambda *args, **kwargs: create(OperatorRole, {'operator': PARTY}))
-                party_client.on_created(OperatorRole, lambda cid, cdata: exercise(cid, 'PublishMany', dict(count=3)))
-                party_client.on_created(OperatorNotification, on_notification_contract)
-                client.run_until_complete()
+            network = Network()
+            network.set_config(url=proc.url)
+
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': PARTY}))
+            party_client.add_ledger_created(OperatorRole, lambda e: exercise(e.cid, 'PublishMany', dict(count=3)))
+            party_client.add_ledger_created(OperatorNotification, on_notification_contract)
+            network.run_until_complete()
 
         self.assertEqual(actual_select_count, expected_select_count)
 
@@ -71,20 +72,22 @@ class SelectTest(TestCase):
         expected_select_count = notification_count * notification_count
         actual_select_count = 0
 
-        def on_notification_contract(_, __):
+        def on_notification_contract(event):
             nonlocal actual_select_count
-            actual_select_count += len(party_client.select(OperatorNotification))
+            actual_select_count += len(event.acs_find_active(OperatorNotification))
 
         with sandbox(DAML_FILE) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(lambda *args, **kwargs: create(OperatorRole, {'operator': PARTY}))
-                party_client.on_created(OperatorRole, lambda cid, cdata: exercise(cid, 'PublishMany', dict(count=3)))
-                party_client.on_created(OperatorNotification, lambda cid, _: exercise(cid, 'Archive'))
-                party_client.on_created(OperatorNotification, on_notification_contract)
-                client.run_until_complete()
+            network = Network()
+            network.set_config(url=proc.url)
 
-                final_select_count = len(party_client.select(OperatorNotification))
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': PARTY}))
+            party_client.add_ledger_created(OperatorRole, lambda e: exercise(e.cid, 'PublishMany', dict(count=3)))
+            party_client.add_ledger_created(OperatorNotification, lambda e: exercise(e.cid, 'Archive'))
+            party_client.add_ledger_created(OperatorNotification, on_notification_contract)
+            network.run_until_complete()
+
+            final_select_count = len(party_client.find_active(OperatorNotification))
 
         self.assertEqual(actual_select_count, expected_select_count)
         self.assertEqual(0, final_select_count)

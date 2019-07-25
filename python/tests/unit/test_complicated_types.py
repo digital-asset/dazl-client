@@ -6,8 +6,7 @@ from operator import setitem
 from unittest import TestCase
 from pathlib import Path
 
-from dazl import sandbox, create_client, create, exercise
-from dazl.model.core import ContractId
+from dazl import sandbox, create, exercise, Network
 
 DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Complicated.daml'
 PARTY = 'Operator'
@@ -22,26 +21,28 @@ class ComplicatedTypesTest(TestCase):
     def test_complicated_types(self):
         recorded_data = dict()
         with sandbox(DAML_FILE) as proc:
-            with create_client(participant_url=proc.url, parties=[PARTY]) as client:
-                party_client = client.client(PARTY)
-                party_client.on_ready(lambda *args, **kwargs: create(Complicated.OperatorRole, {'operator': PARTY}))
-                party_client.on_created(Complicated.OperatorRole, _create_empty_notification)
-                party_client.on_created(Complicated.OperatorRole, _create_complicated_notifications)
-                party_client.on_created(Complicated.OperatorFormulaNotification, partial(setitem, recorded_data))
-                client.run_until_complete()
+            network = Network()
+            network.set_config(url=proc.url)
+
+            party_client = network.aio_party(PARTY)
+            party_client.add_ledger_ready(lambda _: create(Complicated.OperatorRole, {'operator': PARTY}))
+            party_client.add_ledger_created(Complicated.OperatorRole, _create_empty_notification)
+            party_client.add_ledger_created(Complicated.OperatorRole, _create_complicated_notifications)
+            party_client.add_ledger_created(Complicated.OperatorFormulaNotification, lambda e: setitem(recorded_data, e.cid, e.cdata))
+            network.run_until_complete()
 
         print('got to the end with contracts: ', recorded_data)
         self.assertEqual(len(recorded_data), 4)
 
 
-def _create_complicated_notifications(cid: ContractId, cdata: dict) -> list:
+def _create_complicated_notifications(e) -> list:
     return [
-        exercise(cid, 'PublishFormula', dict(formula={'Tautology': {}})),
-        exercise(cid, 'PublishFormula', dict(formula={'Contradiction': {}})),
-        exercise(cid, 'PublishFormula', dict(formula={'Proposition': 'something'})),
-        exercise(cid, 'PublishFormula', dict(formula={'Conjunction': [{'Proposition': 'something_else'}]})),
+        exercise(e.cid, 'PublishFormula', dict(formula={'Tautology': {}})),
+        exercise(e.cid, 'PublishFormula', dict(formula={'Contradiction': {}})),
+        exercise(e.cid, 'PublishFormula', dict(formula={'Proposition': 'something'})),
+        exercise(e.cid, 'PublishFormula', dict(formula={'Conjunction': [{'Proposition': 'something_else'}]})),
     ]
 
 
-def _create_empty_notification(cid: ContractId, cdata: dict) -> list:
-    return [ exercise(cid, 'PublishEmpty') ]
+def _create_empty_notification(e) -> list:
+    return [exercise(e.cid, 'PublishEmpty')]

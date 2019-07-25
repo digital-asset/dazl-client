@@ -7,7 +7,7 @@ from subprocess import run
 from pathlib import Path
 from typing import Tuple
 
-from dazl import create, create_client, sandbox, LOG, setup_default_logger
+from dazl import create, sandbox, setup_default_logger, Network, LOG
 from dazl.model.network import SSLSettings
 
 _DAZL_ROOT = Path(__file__).parent.parent.parent
@@ -29,16 +29,18 @@ class SSLTest(unittest.TestCase):
         client_ssl_settings, server_ssl_settings = create_ssl_test_package()
         messages_received = []
         with sandbox(TEMPLATE_DAML_FILE, ssl_settings=server_ssl_settings) as proc:
-            with create_client(participant_url=proc.url, parties=['SOME_PARTY'],
+            network = Network()
+            network.set_config(url=proc.url,
                                ca_file=client_ssl_settings.ca_file,
                                cert_file=client_ssl_settings.cert_file,
-                               cert_key_file=client_ssl_settings.cert_key_file) as client_mgr:
-                client = client_mgr.client('SOME_PARTY')
-                client.on_ready(lambda *args, **kwargs: create('Main.PostmanRole', dict(party='SOME_PARTY')))
-                client.on_created('Main.PostmanRole', lambda cid, cdata: messages_received.append(cid))
-                ledger_run = client_mgr.run_until_complete()
-                self.assertEqual(ledger_run.exit_code, 0)
-                self.assertEqual(len(messages_received), 1)
+                               cert_key_file=client_ssl_settings.cert_key_file)
+
+            client = network.aio_party('SOME_PARTY')
+            client.add_ledger_ready(lambda e: create('Main.PostmanRole', dict(party='SOME_PARTY')))
+            client.add_ledger_created('Main.PostmanRole', lambda cid, cdata: messages_received.append(cid))
+            network.run_until_complete()
+
+            self.assertEqual(len(messages_received), 1)
 
 
 def create_ssl_test_package(force=False) -> Tuple[SSLSettings, SSLSettings]:

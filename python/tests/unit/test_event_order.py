@@ -7,7 +7,7 @@ import random
 from pathlib import Path
 from unittest import TestCase
 
-from dazl import create, exercise, create_client, sandbox, setup_default_logger
+from dazl import create, exercise, sandbox, setup_default_logger, Network
 
 NOTIFICATION_COUNT = 20
 PARTY_COUNT = 10
@@ -45,23 +45,24 @@ def some_sample_app():
 class Stage1LedgerInit:
 
     def run(self, url):
-        with create_client(participant_url=url, parties=ALL_PARTIES) as client_manager:
-            operator = client_manager.client(OPERATOR_PARTY)
-            operator.on_ready(
-                lambda *args, **kwargs: create(Simple.OperatorRole, {'operator': OPERATOR_PARTY}))
-            operator.on_created(Simple.OperatorRole, self.on_operator)
-            operator.on_created(Simple.OperatorNotification, self.on_notification)
-            client_manager.run_until_complete(asyncio.sleep(15))
+        network = Network()
+        network.set_config(url=url)
+
+        operator = network.aio_party(OPERATOR_PARTY)
+        operator.add_ledger_ready(lambda _: create(Simple.OperatorRole, {'operator': OPERATOR_PARTY}))
+        operator.add_ledger_created(Simple.OperatorRole, self.on_operator)
+        operator.add_ledger_created(Simple.OperatorNotification, self.on_notification)
+        network.run_until_complete(asyncio.sleep(15))
 
     @staticmethod
-    def on_operator(cid, cdata):
-        return [exercise(cid, 'Publish', {"text": n}) for n in range(0, NOTIFICATION_COUNT)]
+    def on_operator(event):
+        return [exercise(event.cid, 'Publish', {"text": n}) for n in range(0, NOTIFICATION_COUNT)]
 
     @staticmethod
-    def on_notification(cid, cdata):
-        missing_parties = USER_PARTIES.difference(cdata['theObservers'])
+    def on_notification(event):
+        missing_parties = USER_PARTIES.difference(event.cdata['theObservers'])
         if missing_parties:
-            return exercise(cid, 'Share', {'sharingParty': random.choice(list(missing_parties))})
+            return exercise(event.cid, 'Share', {'sharingParty': random.choice(list(missing_parties))})
 
 
 class Stage2LedgerVerify:
@@ -71,24 +72,26 @@ class Stage2LedgerVerify:
         self.events = []
 
     def run(self, url):
-        with create_client(participant_url=url, parties=ALL_PARTIES) as client_manager:
-            operator = client_manager.client(OPERATOR_PARTY)
-            operator.on_ready(self.on_ready)
-            operator.on_created(Simple.OperatorNotification, self.on_notification_created)
-            operator.on_archived(Simple.OperatorNotification, self.on_notification_archived)
-            client_manager.run_until_complete()
+        network = Network()
+        network.set_config(url=url)
+
+        operator = network.aio_party(OPERATOR_PARTY)
+        operator.add_ledger_ready(self.on_ready)
+        operator.add_ledger_created(Simple.OperatorNotification, self.on_notification_created)
+        operator.add_ledger_archived(Simple.OperatorNotification, self.on_notification_archived)
+        network.run_until_complete()
         self.events.append(('finished', (), ()))
 
-    def on_ready(self, *args, **kwargs):
+    def on_ready(self, _):
         self.events.append(('ready', (), ()))
 
-    def on_notification_created(self, cid, cdata):
-        self.events.append(('created', cid, cdata))
-        self.store[cid] = cdata
+    def on_notification_created(self, event):
+        self.events.append(('created', event.cid, event.cdata))
+        self.store[event.cid] = event.cdata
 
-    def on_notification_archived(self, cid, _):
-        self.events.append(('archived', cid, ()))
-        del self.store[cid]
+    def on_notification_archived(self, event):
+        self.events.append(('archived', event.cid, ()))
+        del self.store[event.cid]
 
 
 if __name__ == '__main__':
