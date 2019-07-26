@@ -90,6 +90,8 @@ def _process_metadata(store: PackageStore, options: PrettyOptions):
         formatter = None
 
     pretty_printer = get_pretty_printer(options.format, options, store)
+    if pretty_printer is None:
+        raise ValueError(f'Unknown formatter: {options.format}')
     code = pretty_printer.render_store()
     lexer = pretty_printer.lexer()
 

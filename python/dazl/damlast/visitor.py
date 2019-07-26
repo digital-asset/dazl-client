@@ -14,7 +14,7 @@ _tuple = tuple
 
 
 class PackageVisitor(Generic[RP]):
-    def visit_package(self, package: 'Package') -> 'RP':
+    def visit_package(self, package_id: str, package: 'Package') -> 'RP':
         raise NotImplementedError
 
 

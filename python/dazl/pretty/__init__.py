@@ -17,6 +17,7 @@ from ._render_base import PrettyPrintBase, pretty_print_syntax
 from .options import PrettyOptions
 from .render_csharp import CSharpPrettyPrint
 from .render_daml import DamlPrettyPrinter, DEFAULT_PRINTER as DAML_PRETTY_PRINTER
+from .render_json import JsonPrettyPrint
 from .render_python import PythonPrettyPrint
 from .util import maybe_parentheses
 from ..model.types_store import PackageStore
@@ -37,7 +38,7 @@ def _import_daml_lexer() -> 'Optional[Type[_DAMLLexer_TYPE]]':
 DAMLLexer = _import_daml_lexer()
 
 
-ALL_PRINTER_TYPES = [CSharpPrettyPrint, DamlPrettyPrinter, PythonPrettyPrint]
+ALL_PRINTER_TYPES = [CSharpPrettyPrint, DamlPrettyPrinter, JsonPrettyPrint, PythonPrettyPrint]
 
 
 # noinspection PyShadowingBuiltins,PyShadowingNames

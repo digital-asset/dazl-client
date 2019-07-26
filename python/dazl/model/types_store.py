@@ -334,6 +334,43 @@ class TypeCache(Generic[K, T]):
             return reduce(add, self.by_package_lookup.get(package_id, {}).values(), ())
         else:
             # PKG_ID:Specific.Module:Entity; we are looking for a very specific type
+
+        return {t.data_type.name.full_name_unambiguous: t for t in candidates}.values()
+
+
+def find_dependencies(store: PackageStore, types: 'Collection[Type]') -> 'Set[TypeReference]':
+    """
+    Find all of the :class:`TypeReference`s required in order to process any of the given specified
+    types.
+
+    :param store:
+    :param types:
+    :return:
+    """
+    from .types import type_dispatch_table, RecordType, VariantType, MapType, EnumType, \
+        OptionalType, ListType, TypeApp
+
+    discovered = set()  # type: Set[TypeReference]
+
+    def collect_type_ref(tr: 'TypeReference'):
+        if tr not in discovered:
+            _find_type_definitions(store.resolve_type_reference(tr))
+
+    def collect_record_or_variant_type_definitions(tt: 'Union[RecordType, VariantType]') -> None:
+        if tt.name is None or tt.name in discovered:
+            return
+
+        discovered.add(tt.name)
+        for _, value_type in tt.named_args:
+            if value_type not in discovered:
+                _find_type_definitions(value_type)
+
+    def find_map_type_definitions(mt: 'MapType') -> None:
+        _find_type_definitions(mt.value_type)
+
+    def find_type_app_type_definitions(ta: 'TypeApp') -> None:
+        _find_type_definitions(ta.body)
+        for arg in ta.arguments:
             return self.by_package_lookup.get(package_id, {}).get(type_name, ())
 
 

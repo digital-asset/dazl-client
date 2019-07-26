@@ -50,6 +50,9 @@ class PythonPrettyPrint(PrettyPrintBase):
     # def visit_def_value(self, def_value: 'DefValue', as_instance_method: bool = False):
     #     def_value.name_with_type
 
+    def visit_header(self) -> str:
+        return 'from dazl import create, exercise, module, TemplateMeta, ChoiceMeta\n\n'
+
     def visit_empty_block_body(self):
         return 'pass'
 

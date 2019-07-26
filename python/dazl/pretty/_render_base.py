@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import json
+from abc import ABC
 from io import StringIO
 from typing import Callable, Dict, Optional, Type as TType, Sequence, Union
 
@@ -13,31 +14,58 @@ from ..damlast.daml_lf_1 import Block, BuiltinFunction, Case, CaseAlt, DefDataTy
     Update, DefValue, Unit
 from ..damlast.util import unpack_arrow_type, package_local_name
 from ..damlast.visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVisitor
-from ..model.definition import DamlDataType, DamlTemplate
 from ..model.types import ModuleRef
 from ..model.types_store import PackageStore
 from ..util.prim_types import to_date, to_datetime
 
 
+from typing import TypeVar, Generic
+P = TypeVar('P')
+M = TypeVar('M')
+E = TypeVar('E')
+T = TypeVar('T')
+Self = TypeVar('Self')
+
+
+class AstVisitor(Generic[P, M, E, T], PackageVisitor[P], ModuleVisitor[M], ExprVisitor[E], TypeVisitor[T]):
+    def __init__(self, store: 'Optional[PackageStore]' = None, context: 'Union[None, CodeContext, PrettyOptions]' = None):
+        self.store = store
+        self.context = context if isinstance(context, CodeContext) else \
+            CodeContext.from_options(context) if isinstance(context, PrettyOptions) else \
+            CodeContext.top_level()
+
+    def with_module(self: Self, module_ref: 'ModuleRef') -> Self:
+        return type(self)(store=self.store, context=self.context.with_module(module_ref))
+
+    def with_decl(self: Self, decl_name: 'Sequence[str]', decl_type: Type) -> Self:
+        """
+        Return a sub-scoped pretty print visitor under the context of a field with a specified name
+        and type.
+
+        :param decl_name: The name of the declaration.
+        :param decl_type: The type of the declaration.
+        :return: An instance of this type.
+        """
+        return type(self)(store=self.store, context=self.context.with_decl(decl_name, decl_type))
+
+    def with_type_abs(self: Self, type_abs: 'Sequence[TypeVarWithKind]') -> Self:
+        return type(self)(store=self.store, context=self.context.with_type_abs(type_abs))
+
+    def with_type_app(self: Self, type_app: 'Sequence[Type]') -> Self:
+        return type(self)(store=self.store, context=self.context.with_type_app(type_app))
+
+    def with_expression(self: Self) -> Self:
+        return type(self)(store=self.store, context=self.context.with_expression())
+
+    def with_statement_block(self: Self) -> Self:
+        return type(self)(store=self.store, context=self.context.with_statement_block())
+
+
 # noinspection PyMethodMayBeStatic
-class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str], TypeVisitor[str]):
+class PrettyPrintBase(AstVisitor[str, str, str, str]):
     """
     Convenience base class for shared code between all pretty-print implementations.
     """
-
-    def __init__(
-            self,
-            store: 'Optional[PackageStore]' = None,
-            context: 'Union[None, CodeContext, PrettyOptions]' = None):
-        self.store = store
-        if context is None:
-            self.context = CodeContext.top_level()
-        elif isinstance(context, CodeContext):
-            self.context = context
-        elif isinstance(context, PrettyOptions):
-            self.context = CodeContext.from_options(context)
-        else:
-            raise TypeError('a CodeContext object required here')
 
     def lexer(self):
         """
@@ -66,39 +94,20 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
             raise Exception('cannot render_store because a PackageStore was not provided')
 
         with StringIO() as buf:
-            buf.write('from dazl import create, exercise, module, TemplateMeta, ChoiceMeta\n\n')
-            for package in store.packages():
-                buf.write(self.visit_package(package))
+            buf.write(self.visit_header())
+            for archive in store.archives():
+                buf.write(self.visit_package(archive.hash, archive.package))
                 buf.write('\n')
+            buf.write(self.visit_footer())
             return buf.getvalue()
 
-    def with_module(self, module_ref: 'ModuleRef'):
-        return type(self)(store=self.store, context=self.context.with_module(module_ref))
+    def visit_header(self) -> 'str':
+        return ''
 
-    def with_decl(self, decl_name: Sequence[str], decl_type: Type):
-        """
-        Return a sub-scoped pretty print visitor under the context of a field with a specified name
-        and type.
+    def visit_footer(self) -> 'str':
+        return ''
 
-        :param decl_name: The name of the declaration.
-        :param decl_type: The type of the declaration.
-        :return: An instance of this type.
-        """
-        return type(self)(store=self.store, context=self.context.with_decl(decl_name, decl_type))
-
-    def with_type_abs(self, type_abs: 'Sequence[TypeVarWithKind]'):
-        return type(self)(store=self.store, context=self.context.with_type_abs(type_abs))
-
-    def with_type_app(self, type_app: 'Sequence[Type]'):
-        return type(self)(store=self.store, context=self.context.with_type_app(type_app))
-
-    def with_expression(self):
-        return type(self)(store=self.store, context=self.context.with_expression())
-
-    def with_statement_block(self):
-        return type(self)(store=self.store, context=self.context.with_statement_block())
-
-    def visit_package(self, package: 'Package') -> 'str':
+    def visit_package(self, package_id: str, package: 'Package') -> 'str':
         """
         Simply render each package as the contents of its constituent models.
 
@@ -111,7 +120,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         LOG.info('Printing a package with %d modules:', len(package.modules))
         from ._module_builder import ModuleHierarchy
 
-        module_map = ModuleHierarchy('')
+        module_map = ModuleHierarchy(package_id)
         for module in package.modules:
             if self.context.show_hidden_types or not is_hidden_module_name(module.name.segments):
                 module_map.add_module(module)
@@ -125,7 +134,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
                 indent = child.module_indent()
                 module_contents = '\n'.join(indent + line
                                             for line in child.visit_module(module).splitlines())
-                lines.append(module_contents or (indent + 'pass'))
+                lines.append(module_contents)
             elif event_kind == ModuleHierarchy.END:
                 lines.append(self.visit_module_ref_end(ref))
 
@@ -199,21 +208,6 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         :param template: The :class:`DefTemplate` to attempt to render.
         :param def_data_type: The corresponding :class:`DefDataType` for that template (if known).
         :return: A rendered version of the template.
-        """
-        raise NotImplementedError
-
-    def visit_daml_data_type(self, data_type: DamlDataType) -> str:
-        """
-        Render the specified data type.
-
-        :param data_type:
-        :return:
-        """
-        raise NotImplementedError
-
-    def visit_daml_template(self, template: DamlTemplate) -> str:
-        """
-        Render a template instance.
         """
         raise NotImplementedError
 
