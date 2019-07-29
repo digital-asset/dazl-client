@@ -93,6 +93,19 @@ class _NetworkImpl:
         self._config.update({k: v for k, v in kwargs.items() if v is not None})
         LOG.debug('Configuration for this network: %r', self._config)
 
+    def get_config_raw(self, key: str, default: Any) -> Any:
+        return self._config.get(key, default)
+
+    def resolved_config(self) -> 'NetworkConfig':
+        config = self.resolved_anonymous_config()
+        return NetworkConfig(
+            **asdict(config),
+            parties=tuple(party_impl.resolved_config()
+                          for party_impl in self._party_impls.values()))
+
+    def resolved_anonymous_config(self) -> 'AnonymousNetworkConfig':
+        return AnonymousNetworkConfig.parse_kwargs(**self._config)
+
     async def aio_run(self, *coroutines, run_state: Optional[RunState] = None) -> None:
         """
         Coroutine where all network activity is scheduled from.
@@ -230,7 +243,7 @@ class _NetworkImpl:
         with self._lock:
             impl = self._party_impls.get(party)
             if impl is None:
-                impl = _PartyClientImpl(self._metrics, self.invoker, party)
+                impl = _PartyClientImpl(self, party)
                 self._party_impls[party] = impl
 
             mm = self._party_clients[ctor]
@@ -423,12 +436,12 @@ class _NetworkRunner:
         if party_impls:
             for party_impl in party_impls:
                 party_impl.set_config()
-            await gather(*(party_impl.connect_in(self.pool, base_config) for party_impl in party_impls))
+            await gather(*(party_impl.connect_in(self.pool) for party_impl in party_impls))
         elif first_offset is None:
             # establish a single null connection that will be used only to ensure that metadata can be
             # fetched
-            party_impl = _PartyClientImpl(self._network_impl._metrics, self._network_impl.invoker, Party('\x00'))
-            await party_impl.connect_in(self.pool, base_config)
+            party_impl = _PartyClientImpl(self._network_impl, Party('\x00'))
+            await party_impl.connect_in(self.pool)
         else:
             # trivially, there is nothing to do for init because there are no parties to initialize
             # and this isn't our first rodeo

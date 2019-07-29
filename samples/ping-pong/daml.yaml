@@ -1,0 +1,10 @@
+sdk-version: 0.13.12
+name: pingpong
+source: daml/PingPong.daml
+parties:
+  - Alice
+  - Bob
+version: 1.0.0
+dependencies:
+  - daml-prim
+  - daml-stdlib

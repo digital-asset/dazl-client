@@ -3,7 +3,7 @@
 
 from unittest import TestCase
 
-from dazl.metrics import MetricEvents
+from dazl.client._network_client_impl import _NetworkImpl
 from dazl.client._party_client_impl import _PartyClientImpl
 from dazl.client.api import AIOPartyClient, SimplePartyClient
 from dazl.model.core import Party
@@ -12,7 +12,7 @@ from dazl.util.asyncio_util import Invoker
 
 class TestApiConsistency(TestCase):
     def test_api_consistency(self):
-        impl = _PartyClientImpl(MetricEvents(), Invoker(), Party('party'))
+        impl = _PartyClientImpl(_NetworkImpl(), Party('party'))
 
         apc = AIOPartyClient(impl)
         tpc = SimplePartyClient(impl)
