@@ -2,7 +2,7 @@ from asyncio import ensure_future, new_event_loop, set_event_loop, sleep, gather
 from pathlib import Path
 from unittest import TestCase
 
-from dazl import Network, sandbox
+from dazl import Network, sandbox, setup_default_logger
 from dazl.util.dar import TemporaryDar
 
 
@@ -48,7 +48,7 @@ class TestDarUpload(TestCase):
 
                 # give the client some time to pick up the new packages; unfortunately there isn't
                 # much more to do here except wait
-                await sleep(2)
+                await sleep(10)
 
             client.add_ledger_packages_added(initial_events.append, initial=True)
             client.add_ledger_packages_added(follow_up_events.append)

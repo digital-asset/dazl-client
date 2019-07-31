@@ -2,13 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import json
+import logging
 from pathlib import Path
 from threading import Thread
 from unittest import TestCase
 
-from dazl import simple_client, sandbox, create
+from dazl import simple_client, sandbox, create, LOG, setup_default_logger
 from dazl.client import SimplePartyClient
-from flask import Flask, jsonify
 
 
 DAML_PATH = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
@@ -18,14 +18,18 @@ SAMPLE_PARTY = 'TestParty'
 class TestFlaskIntegration(TestCase):
 
     def test_simple_flask_integration(self):
+        setup_default_logger(logging.INFO)
         with sandbox(daml_path=DAML_PATH) as proc:
             with simple_client(proc.url, SAMPLE_PARTY) as client:
                 # seed the ledger with some initial state
-                client.add_ledger_ready(
-                    lambda event: create('Main.PostmanRole', dict(postman=SAMPLE_PARTY)))
+                client.add_ledger_ready(create_initial_state)
+
+                LOG.info('Waiting for the client to be ready...')
                 client.ready()
+                LOG.info('Client is ready.')
 
                 # now start a Flask app
+                LOG.info('Starting up the flask app...')
                 main_thread = Thread(target=run_flask_app, args=(client, 9999))
                 main_thread.start()
 
@@ -37,7 +41,13 @@ class TestFlaskIntegration(TestCase):
                     raise Exception('The Flask thread should have terminated, but did not.')
 
 
+def create_initial_state(_):
+    LOG.info('Creating the initial postman role contract...')
+    return create('Main.PostmanRole', dict(postman=SAMPLE_PARTY))
+
+
 def run_flask_app(client: SimplePartyClient, port: int) -> None:
+    from flask import Flask, jsonify
     app = Flask('TestFlaskIntegration')
 
     @app.route('/')
