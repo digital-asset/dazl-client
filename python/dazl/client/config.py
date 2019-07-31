@@ -111,9 +111,13 @@ class _PartyConfig(URLConfig):
 
 
 @dataclass(frozen=True)
-class _NetworkConfig:
+class _NetworkConfig(URLConfig):
     """
     Configuration for the entire client library and all connected parties.
+
+    The URL for the network is used for calls that do _not_ require a Party (such as retrieving
+    basic ledger information), and is also used as a default for party configs that do not supply
+    their own URL.
     """
 
     log_level: Optional[int] = config_field(
@@ -147,6 +151,10 @@ class _NetworkConfig:
         'before failing with an error',
         param_type=COUNT_TYPE,
         default_value=50)
+
+    party_groups: Optional[Collection[str]] = config_field(
+        'comma-separated list of broadcast parties',
+        param_type=PARTIES_TYPE)
 
     server_host: Optional[str] = config_field(
         'Server listening host. Used for OAuth web application flow callbacks.',
@@ -292,8 +300,6 @@ class NetworkConfig(_NetworkConfig, _TopLevelConfig):
             for party_config in self.parties:
                 if not party_config.url:
                     failures.add(f'Party {party_config.party} has no Ledger API URL')
-        else:
-            failures.add('At least one party and a URL must be specified')
 
         if failures:
             raise ConfigurationError(failures)
@@ -302,7 +308,7 @@ class NetworkConfig(_NetworkConfig, _TopLevelConfig):
 
 
 @dataclass(frozen=True)
-class AnonymousNetworkConfig(_NetworkConfig, URLConfig, _TopLevelConfig):
+class AnonymousNetworkConfig(_NetworkConfig, _TopLevelConfig):
     """
     A configuration object that contains all of the necessary parameters to configure a network
     with no parties.

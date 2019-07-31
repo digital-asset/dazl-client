@@ -1,14 +1,15 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import ensure_future, gather, get_event_loop, Future, InvalidStateError
+from asyncio import ensure_future, gather, get_event_loop, wait, Future, InvalidStateError
+from concurrent.futures import ALL_COMPLETED
 from functools import wraps
 
-from dataclasses import replace, dataclass, field, fields
+from dataclasses import replace, dataclass, field, fields, asdict
 from datetime import datetime, timedelta
 from io import StringIO
 from typing import Any, Awaitable, Callable, Collection, List, Optional, Sequence, Set, Tuple, \
-    TypeVar
+    TypeVar, TYPE_CHECKING
 import reprlib
 import uuid
 
@@ -16,7 +17,6 @@ from .. import LOG
 from .config import NetworkConfig, PartyConfig
 from ._writer_verify import ValidateSerializer
 from ..client.state import ActiveContractSet
-from ..metrics import MetricEvents
 from ..model.core import ContractMatch, ContractsState, ContractId, ContractData, \
     CommandTimeoutError, Party, ContractContextualData, ContractContextualDataCollection
 from ..model.ledger import LedgerMetadata
@@ -28,18 +28,23 @@ from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, \
     EventHandlerResponse, Command
 from ..protocols import LedgerNetwork, LedgerClient
 from ..util.asyncio_util import ServiceQueue, await_then, completed, propagate, \
-    safe_create_future, named_gather, failed, Invoker
+    safe_create_future, named_gather, failed
 from ..util.events import CallbackManager
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast
+
+if TYPE_CHECKING:
+    from ._network_client_impl import _NetworkImpl
+
 
 T = TypeVar('T')
 
 
 class _PartyClientImpl:
-    def __init__(self, metrics: 'MetricEvents', invoker: 'Invoker', party: 'Party'):
-        self.metrics = metrics
-        self.invoker = invoker
+    def __init__(self, parent: '_NetworkImpl', party: 'Party'):
+        self.parent = parent
+        self.metrics = parent._metrics
+        self.invoker = parent.invoker
         self.party = party
 
         self._config_values = dict()
@@ -56,15 +61,8 @@ class _PartyClientImpl:
 
         self._callbacks = CallbackManager()
 
-    def connect_in(self, pool: LedgerNetwork, base_config: dict) -> Future:
-        LOG.debug('Starting party %r with base config: %r and party config: %r',
-                  self.party, base_config, self._config_values)
-        base_party_config = _find_party_config(base_config, self.party) or dict()
-
-        config_names = {f.name for f in fields(PartyConfig)}
-        all_config = {**base_config, **base_party_config, **self._config_values}
-
-        self._config = config = PartyConfig(**{k: v for k, v in all_config.items() if k in config_names})
+    def connect_in(self, pool: 'LedgerNetwork') -> 'Future':
+        self._config = config = self.resolved_config()
         settings, url_prefix = connection_settings(
             config.url,
             self.party,
@@ -79,6 +77,17 @@ class _PartyClientImpl:
 
     def set_config(self, **kwargs):
         self._config_values.update(kwargs)
+
+    def resolved_config(self) -> 'PartyConfig':
+        parent_base_config = asdict(self.parent.resolved_anonymous_config())
+        parent_party_config = _find_party_config(self.parent.get_config_raw('parties', ()), self.party) or {}
+
+        config_names = {f.name for f in fields(PartyConfig)}
+        all_config = dict()
+        all_config.update(parent_base_config)
+        all_config.update(parent_party_config)
+        all_config.update(self._config_values)
+        return PartyConfig(**{k: v for k, v in all_config.items() if k in config_names})
 
     def initialize(self, current_time: datetime, metadata: LedgerMetadata) -> Awaitable[None]:
         """
@@ -430,9 +439,13 @@ class _PartyClientImpl:
 
         # After the pending command list is fully empty (and never to be filled again), wait for
         # all outstanding commands.
-        await gather(*(pc.future for pc in self._writer.inflight_commands), return_exceptions=True)
+        done, pending = await wait([pc.future for pc in self._writer.inflight_commands],
+                                   timeout=5, return_when=ALL_COMPLETED)
 
-        LOG.info('Writer loop for party %s is finished.', self.party)
+        if pending:
+            LOG.warning('Writer loop for party %s has NOT fully finished, but will be terminated anyway (%d futures still pending).', self.party, len(pending))
+        else:
+            LOG.info('Writer loop for party %s is finished.', self.party)
 
     def writer_idle(self):
         return not bool(self._writer.pending_commands) and not self._writer.inflight_commands
@@ -632,16 +645,14 @@ def wrap_as_command_submission(submit_fn, callback, filter) \
     return implementation
 
 
-def _find_party_config(config: 'Optional[dict]', party: Party) -> 'Optional[dict]':
+def _find_party_config(party_configs: 'Collection[dict]', party: Party) -> 'Optional[dict]':
     """
     Look within a config dictionary (as specified by FlatConfig) for a configuration object that is
     specific to this party.
     """
-    if config is not None:
-        party_config_list = config.get('parties')
-        if party_config_list is not None:
-            for party_config in party_config_list:
-                local_party = party_config.get('party')
-                if local_party == party:
-                    return party_config
+    if party_configs is not None:
+        for party_config in party_configs:
+            local_party = party_config.get('party')
+            if local_party == party:
+                return party_config
     return None

@@ -26,12 +26,12 @@ from logging import INFO
 from pathlib import Path
 from uuid import uuid4
 from threading import current_thread, main_thread
-from typing import Any, Awaitable, BinaryIO, Collection, ContextManager, List, Optional, Tuple, \
-    Union
+from typing import Any, Awaitable, BinaryIO, Collection, ContextManager, List, Mapping, Optional, \
+    Tuple, Union
 from urllib.parse import urlparse
 
 from .. import LOG
-from ..client.config import AnonymousNetworkConfig, NetworkConfig
+from ..client.config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, ContractData, ContractsState, ContractMatch, \
@@ -132,6 +132,12 @@ class Network:
             admin_url: 'Optional[str]' = None,
             **kwargs):
         self._impl.set_config(*config, url=url, admin_url=admin_url, **kwargs)
+
+    def resolved_config(self) -> 'NetworkConfig':
+        """
+        Calculate the configuration that will be used for this client when it is instantiated.
+        """
+        return self._impl.resolved_config()
 
     # <editor-fold desc="Global/Party client creation">
 
@@ -404,6 +410,12 @@ class PartyClient:
 
     def __init__(self, impl: '_PartyClientImpl'):
         self._impl = impl
+
+    def resolved_config(self) -> 'PartyConfig':
+        """
+        Calculate the configuration that will be used for this client when it is instantiated.
+        """
+        return self._impl.resolved_config()
 
 
 class AIOPartyClient(PartyClient):

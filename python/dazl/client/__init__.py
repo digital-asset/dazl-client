@@ -17,4 +17,5 @@ For a higher-level, more declarative API, see :mod:`dazl.query`.
 
 from . import config
 from .api import simple_client, Network, PartyClient, AIOPartyClient, SimplePartyClient
+from .runner import run
 from ._base_model import ExitCode, LedgerRun

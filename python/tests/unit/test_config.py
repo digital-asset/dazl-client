@@ -5,6 +5,7 @@ import http.server
 import tempfile
 import unittest
 
+from dazl import Network
 from dazl.client.config import ConfigurationError, fetch_config, NetworkConfig
 from dazl.model.core import Party
 from dazl_internal.background_http_server import TestHTTPServer
@@ -24,6 +25,14 @@ class TestConfig(unittest.TestCase):
         config = NetworkConfig.parse_kwargs(parties=['Bob'], participant_url='http://nowhere/')
         self.assertEqual(config.parties[0].party, Party('Bob'))
         self.assertEqual(config.parties[0].url, 'http://nowhere/')
+
+    def test_global_url_propagates_to_parties(self):
+        config = NetworkConfig.parse_kwargs(url='http://nowhere/')
+        network = Network()
+        network.set_config(config)
+        client = network.aio_party('Bob')
+        party_config = client.resolved_config()
+        self.assertEqual(party_config.url, 'http://nowhere/')
 
 
 class TestFetchConfig(unittest.TestCase):
