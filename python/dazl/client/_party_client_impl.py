@@ -115,7 +115,7 @@ class _PartyClientImpl:
     # region Event Handler Management
 
     # noinspection PyShadowingBuiltins
-    def add_event_handler(self, key, handler, filter, context):
+    def add_event_handler(self, key: str, handler, filter, context):
         from functools import wraps
 
         @wraps(handler)
@@ -443,7 +443,9 @@ class _PartyClientImpl:
                                    timeout=5, return_when=ALL_COMPLETED)
 
         if pending:
-            LOG.warning('Writer loop for party %s has NOT fully finished, but will be terminated anyway (%d futures still pending).', self.party, len(pending))
+            LOG.warning('Writer loop for party %s has NOT fully finished, '
+                        'but will be terminated anyway (%d futures still pending).',
+                        self.party, len(pending))
         else:
             LOG.info('Writer loop for party %s is finished.', self.party)
 
