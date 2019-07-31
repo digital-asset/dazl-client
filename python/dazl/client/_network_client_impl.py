@@ -324,12 +324,12 @@ class _NetworkImpl:
 
     # noinspection PyShadowingBuiltins
 
-    def add_event_handler(self, key, handler: 'Callable[[BaseEvent], None]', context):
+    def add_event_handler(self, key, handler: 'Callable[[BaseEvent], None]'):
         """
         Add an event handler to a specific event. Unlike event listeners on party clients, these
         event handlers are not allowed to return anything in response to handling an event.
         """
-        self._callbacks.add_listener(key, handler, None, context)
+        self._callbacks.add_listener(key, handler, None)
 
     def emit_event(self, data: BaseEvent):
         for key in EventKey.from_event(data):

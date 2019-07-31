@@ -5,9 +5,6 @@
 This module contains utilities to help work with ``asyncio``.
 """
 import sys
-import time
-
-import abc
 import threading
 
 from asyncio import ensure_future, gather, get_event_loop, new_event_loop, \
@@ -219,68 +216,6 @@ def execute_in_loop(
     return result
 
 
-class CancellableTask(abc.ABC):
-    def __init__(self, executor, loop: Optional[AbstractEventLoop] = None):
-        self.future: Optional[Future] = None
-        self.loop = loop or get_event_loop()
-        self.executor = executor
-
-    def done(self):
-        future = self.future
-        return future is not None and future.done()
-
-    def cancel(self):
-        future = self.future
-        if future is not None:
-            try:
-                future.cancel()
-            except InvalidStateError:
-                pass
-
-    def cancelled(self):
-        future = self.future
-        return future is not None and future.cancelled()
-
-    def check_cancelled(self):
-        if self.cancelled():
-            raise CancelledError()
-
-    def sleep(self, seconds=0):
-        """
-        Sleep for a little bit of time. Also checks for cancellation.
-        """
-        self.check_cancelled()
-        if seconds:
-            time.sleep(seconds)
-        self.check_cancelled()
-
-    def run_in_background(self, *args, **kwargs) -> Future:
-        """
-        Runs this task in the background. The arguments are passed to the target method.
-        """
-        # this slightly annoying threading code is to ensure the target in ``run_in_executor``
-        # doesn't start until the Future is ``defined``
-        evt = threading.Event()
-
-        def _execute_target():
-            evt.wait()
-            return self._target(*args, **kwargs)
-
-        try:
-            self.future = self.loop.run_in_executor(self.executor, _execute_target)
-            evt.set()
-        except:
-            LOG.exception('Failed to schedule self.loop.run_in_executor!')
-        return self.future
-
-    @abc.abstractmethod
-    def _target(self, *args, **kwargs):
-        """
-        Overridden to provide a real implementation. Subclassers should periodically check
-        `self.cancelled` to ensure that they should still be running.
-        """
-
-
 def completed(value, loop=None) -> Future:
     if loop is None:
         loop = get_event_loop()
@@ -322,6 +257,58 @@ def copy_result(from_: Future, to: Future) -> None:
         else:
             result = from_.result()
             to.set_result(result)
+
+
+def to_coroutine(callback: Callable[..., Any]) -> Callable[..., Future]:
+    """
+    Wrap a function or a coroutine, always producing a coroutine.
+
+    In other words, for a function like
+
+    ```
+    def double(x):
+        return x + x
+    ```
+
+    the result of ``to_coroutine(double)`` would be a function that is equivalent to:
+
+    ```
+    async def double(x):
+        return x + x
+    ```
+
+    For functions that are already coroutines, their behavior is unaffected by the wrapper generated
+    from this function.
+
+    :param callback:
+        The callback to convert to a coroutine.
+    :return:
+        A coroutine that calls the specified function.
+    """
+    if not callable(callback):
+        raise ValueError('callback must be callable')
+
+    @wraps(callback)
+    def invoke_sync(*args, **kwargs) -> Future:
+        loop = get_event_loop()
+
+        try:
+            result = callback(*args, **kwargs)
+            if isinstance(result, Future):
+                return result
+            else:
+                future = loop.create_future()
+                future.set_result(result)
+                return future
+        except Exception as ex:
+            future = loop.create_future()
+            future.set_exception(ex)
+            return future
+
+    if iscoroutinefunction(callback):
+        return lambda *args, **kwargs: ensure_future(callback(*args, **kwargs))
+    else:
+        return invoke_sync
 
 
 class LongRunningAwaitable:
@@ -624,6 +611,67 @@ class ContextFreeFuture(Awaitable[T]):
             yield self  # This tells Task to wait for completion.
         assert self.done(), "yield from wasn't used with future"
         return self.result()  # May raise too.
+
+
+class DeferredStartTask:
+    """
+    A :class:`Task`-like object that delays starting its coroutine until the :meth:`start` method is
+    called.
+    """
+    _asyncio_future_blocking = False
+
+    def __init__(self, cb: Callable[[], Future], start=False, name=None):
+        if not callable(cb):
+            raise ValueError('cb must be callable')
+
+        if start:
+            self._future = cb()
+            self._callback = None
+        else:
+            self._future = get_event_loop().create_future()
+            self._callback = cb
+
+        # This is required to be compatible with the interface of a Future.
+        self._loop = self._future._loop
+        self._name = name or repr(cb)
+
+    def start(self) -> None:
+        """
+        Actually invoke the underlying function (but only if it hasn't been invoked already).
+        """
+        cb = self._callback
+        if cb is not None:
+            self._callback = None
+            propagate(from_=ensure_future(cb()), to=self._future)
+
+    def started(self) -> bool:
+        return self._callback is None
+
+    def cancelled(self) -> bool:
+        return self._future.cancelled()
+
+    def cancel(self) -> bool:
+        self._callback = None
+        return self._future.cancel()
+
+    def result(self) -> Any:
+        return self._future.result()
+
+    def done(self) -> bool:
+        return self._future.done()
+
+    def exception(self) -> Optional[BaseException]:
+        return self._future.exception()
+
+    def add_done_callback(self, callback: Callable[[Future], Any]) -> None:
+        self._future.add_done_callback(callback)
+
+    def __await__(self):
+        return self._future.__await__()
+
+    def __repr__(self):
+        state = self._future._state if self.started() else 'NOT_STARTED'
+        return f'DeferredStartTask({self._name!r}, state={state})'
 
 
 def get_running_loop() -> Optional[AbstractEventLoop]:

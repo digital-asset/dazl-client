@@ -42,7 +42,7 @@ class PartyBot:
                 choices.append(('CreateTimeLetter', dict(
                     address=receiver_address,
                     content=datetime(2000,1,1))))
-                choices.append(('CreateListIntegerLetter', dict(
+                choices.append(('CreateListIntLetter', dict(
                     address=receiver_address,
                     content=[0, 1, 2, 3, 4])))
 
