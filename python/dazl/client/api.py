@@ -26,12 +26,13 @@ from logging import INFO
 from pathlib import Path
 from uuid import uuid4
 from threading import current_thread, main_thread
-from typing import Any, Awaitable, BinaryIO, Collection, ContextManager, List, Mapping, Optional, \
+from typing import Any, Awaitable, BinaryIO, Collection, ContextManager, List, Optional, \
     Tuple, Union
 from urllib.parse import urlparse
 
 from .. import LOG
-from ..client.config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
+from .bots import Bot
+from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, ContractData, ContractsState, ContractMatch, \
@@ -302,6 +303,9 @@ class Network:
         Return a snapshot of the set of parties that exist right now.
         """
         return self._impl.parties()
+
+    def bots(self) -> 'Collection[Bot]':
+        return self._impl.bots()
 
 
 class GlobalClient:

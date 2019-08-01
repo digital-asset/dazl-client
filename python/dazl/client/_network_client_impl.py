@@ -6,7 +6,7 @@ from asyncio import gather, ensure_future, sleep, Future
 from collections import defaultdict
 from dataclasses import fields
 from datetime import timedelta, datetime
-from threading import RLock, Thread
+from threading import RLock, Thread, current_thread
 from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
     Union, overload
 
@@ -15,18 +15,18 @@ from dataclasses import asdict
 from .. import LOG
 from ._party_client_impl import _PartyClientImpl
 from ._run_level import RunState
-from ..client.config import AnonymousNetworkConfig, NetworkConfig, URLConfig, \
+from .bots import Bot, BotCollection
+from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig, \
     DEFAULT_CONNECT_TIMEOUT_SECONDS
 from ..metrics import MetricEvents
 from ..model.core import Party, RunLevel
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
-from ..model.reading import InitEvent, ReadyEvent, BaseEvent, EventKey
+from ..model.reading import InitEvent, ReadyEvent, BaseEvent
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
 from ..util.asyncio_util import execute_in_loop, completed, Invoker, safe_create_future
 from ..util.dar import get_dar_package_ids
-from ..util.events import CallbackManager
 from ..util.prim_types import to_timedelta, TimeDeltaConvertible
 
 
@@ -36,7 +36,7 @@ T = TypeVar('T')
 class _NetworkImpl:
 
     __slots__ = ('_lock', '_main_thread', 'invoker', '_party_clients', '_global_impls',
-                 '_party_impls', '_run_state', '_callbacks', '_config', '_pool', '_pool_init',
+                 '_party_impls', '_run_state', 'bots', '_config', '_pool', '_pool_init',
                  '_cached_metadata', '_metrics')
 
     def __init__(self, metrics: 'Optional[MetricEvents]' = None):
@@ -64,7 +64,7 @@ class _NetworkImpl:
         self._party_impls = dict()  # type: Dict[Party, _PartyClientImpl]
 
         self._config = dict()
-        self._callbacks = CallbackManager()
+        self.bots = BotCollection(None)
 
     @overload
     def run_in_loop_threadsafe(self,
@@ -172,7 +172,7 @@ class _NetworkImpl:
         from asyncio import new_event_loop, set_event_loop
 
         def background_main():
-            LOG.info('Starting an event loop on a background thread...')
+            LOG.info('Starting an event loop on a background thread %r...', current_thread().name)
 
             try:
                 loop = new_event_loop()
@@ -181,6 +181,8 @@ class _NetworkImpl:
                 loop.run_until_complete(self.aio_run(run_state=run_state))
             except:
                 LOG.exception('The main event loop died!')
+
+            LOG.info('The main event loop has finished.')
 
         with self._lock:
             if self._main_thread is not None:
@@ -253,7 +255,7 @@ class _NetworkImpl:
                 mm[party] = inst
             return inst
 
-    def parties(self) -> Collection[Party]:
+    def parties(self) -> 'Collection[Party]':
         """
         Return a snapshot of the set of parties that exist right now.
         """
@@ -324,16 +326,15 @@ class _NetworkImpl:
 
     # noinspection PyShadowingBuiltins
 
-    def add_event_handler(self, key, handler: 'Callable[[BaseEvent], None]'):
+    def add_event_handler(self, key, handler: 'Callable[[BaseEvent], None]') -> 'Bot':
         """
         Add an event handler to a specific event. Unlike event listeners on party clients, these
         event handlers are not allowed to return anything in response to handling an event.
         """
-        self._callbacks.add_listener(key, handler, None)
+        return self.bots.add_single(key, handler, None)
 
-    def emit_event(self, data: BaseEvent):
-        for key in EventKey.from_event(data):
-            self._callbacks.for_listeners(key)(data)
+    def emit_event(self, data: BaseEvent) -> 'Awaitable[Any]':
+        return self.bots.notify(data)
 
     # endregion
 
@@ -358,12 +359,16 @@ class _NetworkRunner:
         self._network_impl = network_impl
         self._read_completions = []
         self._user_coroutines = [ensure_future(coro) for coro in user_coroutines]
+        self._bot_coroutines = []
         self._writers = []
 
     async def run(self, base_config: dict):
         LOG.debug('Running a Network with base config: %r', base_config)
         prev_offset = None
         keep_running = True
+
+        self._bot_coroutines.append(ensure_future(self._network_impl.bots._main()))
+
         while keep_running:
             party_impls = {pi.party: pi for pi in self._network_impl.party_impls()}
             if not party_impls:
@@ -377,7 +382,7 @@ class _NetworkRunner:
                 await self._init([party_impls[party] for party in uninitialized_parties], prev_offset, base_config)
             self.initialized_parties |= uninitialized_parties
 
-            current_offset, keep_running = await self.beat(party_impls.values())
+            current_offset, keep_running = await self.beat(list(party_impls.values()))
             if keep_running:
                 if prev_offset == current_offset:
                     await sleep(0.5)
@@ -385,6 +390,11 @@ class _NetworkRunner:
                     prev_offset = current_offset
 
         # prohibit any more command submissions
+        LOG.debug('network_run: stopping bots gracefully...')
+        for pi in self._network_impl.party_impls():
+            pi.bots.stop_all()
+        self._network_impl.bots.stop_all()
+
         LOG.debug('network_run: stopping its writers gracefully...')
         # TODO: This needs to be coordinated better among the list of writers we ACTUALLY started
         for pi in self._network_impl.party_impls():
@@ -421,7 +431,7 @@ class _NetworkRunner:
 
     async def _init(
             self, party_impls: 'Collection[_PartyClientImpl]',
-            first_offset: 'Optional[str]', base_config: dict) -> Tuple[str, Future]:
+            first_offset: 'Optional[str]', base_config: dict) -> Optional[str]:
         # region log
         if LOG.isEnabledFor(logging.DEBUG):
             parties = [pi.party for pi in party_impls]
@@ -430,12 +440,12 @@ class _NetworkRunner:
             else:
                 LOG.debug('Starting initialization for parties: %s, advancing to offset: %s', parties, first_offset)
         # endregion
-        futs = []
 
         # establish ledger connections
         if party_impls:
-            for party_impl in party_impls:
-                party_impl.set_config()
+            # noinspection PyProtectedMember
+            self._bot_coroutines.extend(ensure_future(party_impl.bots._main())
+                                        for party_impl in party_impls)
             await gather(*(party_impl.connect_in(self.pool) for party_impl in party_impls))
         elif first_offset is None:
             # establish a single null connection that will be used only to ensure that metadata can be
@@ -445,19 +455,27 @@ class _NetworkRunner:
         else:
             # trivially, there is nothing to do for init because there are no parties to initialize
             # and this isn't our first rodeo
-            return first_offset, completed(None)
+            return first_offset
 
         # get metadata about the ledger
         metadata = await self.pool.ledger()
         self._network_impl._cached_metadata = metadata
 
+        # start writers early to potentially service commands off the back of these events
+        self._writers.extend(ensure_future(party_impl.main_writer()) for party_impl in party_impls)
+
         # Raise the 'init' event.
+        init_futs = []
         current_time = metadata.time_model.get_time()
         if first_offset is None:
             evt = InitEvent(None, None, current_time, metadata.ledger_id, metadata.store)
-            self._network_impl.emit_event(evt)
+            init_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
-            futs.append(party_impl.initialize(current_time, metadata))
+            init_futs.append(ensure_future(party_impl.initialize(current_time, metadata)))
+
+        # TODO: Consider what should join on init_futs; we can't join here because otherwise this
+        #  blocks the readers from reading transactions that would cause these events to fully
+        #  resolve
 
         from ._reader_sync import read_initial_acs
         use_acs_service = base_config.get('use_acs_service', False)
@@ -465,17 +483,20 @@ class _NetworkRunner:
 
         LOG.debug('Preparing to raise the "ready" event...')
         # Raise the 'ready' event.
+        ready_futs = []
         current_time = metadata.time_model.get_time()
         if first_offset is None:
             evt = ReadyEvent(None, None, current_time, metadata.ledger_id, metadata.store, offset)
-            self._network_impl.emit_event(evt)
+            ready_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
-            futs.append(ensure_future(party_impl.emit_ready(metadata, current_time, offset)))
+            ready_futs.append(ensure_future(party_impl.emit_ready(metadata, current_time, offset)))
         for party_impl in party_impls:
             party_impl.ready().set_result(None)
 
-        self._writers.extend(ensure_future(party_impl.main_writer()) for party_impl in party_impls)
+        # TODO: Consider what should join on ready_futs; we can't join here because otherwise this
+        #  blocks the readers from reading transactions that would cause these events to fully
+        #  resolve
 
         # Return the metadata offset for later
-        LOG.debug('Caught up to %s.', offset)
-        return offset, gather(*futs, return_exceptions=True)
+        LOG.debug('Raised the ready event, and caught up to %s.', offset)
+        return offset

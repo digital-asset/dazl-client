@@ -293,10 +293,12 @@ class EventKey:
 
     @staticmethod
     def packages_added(initial: bool, changed: bool) -> 'Collection[str]':
+        keys = []
         if initial:
-            yield 'packages-added/initial',
+            keys.append('packages-added/initial')
         if changed:
-            yield 'packages-added/changed'
+            keys.append('packages-added/changed')
+        return tuple(keys)
 
     @staticmethod
     def _contract(primary_only: bool, prefix: str, template: Any) -> Collection[str]:

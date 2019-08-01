@@ -14,22 +14,22 @@ import reprlib
 import uuid
 
 from .. import LOG
+from .bots import Bot, BotCollection, BotCallback, BotFilter
 from .config import NetworkConfig, PartyConfig
+from .state import ActiveContractSet
 from ._writer_verify import ValidateSerializer
-from ..client.state import ActiveContractSet
-from ..model.core import ContractMatch, ContractsState, ContractId, ContractData, \
-    CommandTimeoutError, Party, ContractContextualData, ContractContextualDataCollection
+from ..model.core import ContractMatch, ContractsState, ContractId, \
+    CommandTimeoutError, ContractContextualData, ContractContextualDataCollection, Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEvent, OffsetEvent, \
-    TransactionFilter, EventKey, ContractCreateEvent, ContractArchiveEvent, \
+    TransactionFilter, ContractCreateEvent, ContractArchiveEvent, \
     InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, \
     EventHandlerResponse, Command
 from ..protocols import LedgerNetwork, LedgerClient
 from ..util.asyncio_util import ServiceQueue, await_then, completed, propagate, \
     safe_create_future, named_gather, failed
-from ..util.events import CallbackManager
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast
 
@@ -56,10 +56,9 @@ class _PartyClientImpl:
         self._known_packages = set()  # type: Set[str]
 
         self._acs = ActiveContractSet()
+        self.bots = BotCollection(party)
         self._reader = _PartyClientReaderState()
         self._writer = _PartyClientWriterState()
-
-        self._callbacks = CallbackManager()
 
     def connect_in(self, pool: 'LedgerNetwork') -> 'Future':
         self._config = config = self.resolved_config()
@@ -115,7 +114,9 @@ class _PartyClientImpl:
     # region Event Handler Management
 
     # noinspection PyShadowingBuiltins
-    def add_event_handler(self, key: str, handler, filter, context):
+    def add_event_handler(
+            self, key: str, handler: BotCallback, filter: 'Optional[BotFilter]', context: Any) \
+            -> 'Bot':
         from functools import wraps
 
         @wraps(handler)
@@ -124,7 +125,7 @@ class _PartyClientImpl:
             return handler(new_event)
 
         h = wrap_as_command_submission(self.write_commands, rewritten_event, filter)
-        self._callbacks.add_listener(key, h)
+        return self.bots.add_single(key, h, filter)
 
     def emit_event(self, data: BaseEvent) -> 'Awaitable[Any]':
         """
@@ -136,16 +137,7 @@ class _PartyClientImpl:
             An Awaitable that is resolved when the commands that resulted from event callbacks
             have been completed either successfully or unsuccessfully.
         """
-        futures = [ensure_future(fut)
-                   for key in EventKey.from_event(data)
-                   for fut in self._callbacks.for_listeners(key)(data)]
-        LOG.debug('The event %s yielded futures %s', data, futures)
-        if len(futures) == 0:
-            return completed(None)
-        elif len(futures) == 1:
-            return futures[0]
-        else:
-            return named_gather(repr(data), *futures, return_exceptions=True)
+        return self.bots.notify(data)
 
     async def emit_ready(self, metadata: LedgerMetadata, time: datetime, offset: str) -> None:
         """
@@ -581,7 +573,7 @@ def submit_command_async(
 
 # noinspection PyShadowingBuiltins
 def wrap_as_command_submission(submit_fn, callback, filter) \
-        -> Callable[[ContractId, ContractData], Awaitable[Any]]:
+        -> Callable[[BaseEvent], Awaitable[Any]]:
     """
     Normalize a callback to something that takes a single contract ID and contract data, and
     return an awaitable that is resolved when the underlying command has been fully submitted.
