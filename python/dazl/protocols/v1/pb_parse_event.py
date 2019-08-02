@@ -305,7 +305,7 @@ def to_created_event(
         context: 'Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]',
         cr: 'G.CreatedEvent') \
         -> 'Optional[ContractCreateEvent]':
-    search_str = f'{cr.template_id.name}@{cr.template_id.package_id}'
+    search_str = f'{cr.template_id.module_name}:{cr.template_id.entity_name}@{cr.template_id.package_id}'
 
     candidates = context.store.resolve_template_type(search_str)
     if len(candidates) == 0:
@@ -331,7 +331,7 @@ def to_exercised_event(
         context: 'TransactionEventDeserializationContext',
         er: 'G.ExercisedEvent') \
         -> 'Optional[ContractExercisedEvent]':
-    search_str = f'{er.template_id.name}@{er.template_id.package_id}'
+    search_str = f'{er.template_id.module_name}:{er.template_id.entity_name}@{er.template_id.package_id}'
 
     candidates = context.store.resolve_template_type(search_str)
     if len(candidates) == 0:
@@ -373,7 +373,7 @@ def to_archived_event(
         context: 'TransactionEventDeserializationContext',
         ar: 'G.ArchivedEvent') \
         -> 'Optional[ContractArchiveEvent]':
-    search_str = f'{ar.template_id.name}@{ar.template_id.package_id}'
+    search_str = f'{ar.template_id.module_name}:{ar.template_id.entity_name}@{ar.template_id.package_id}'
 
     candidates = context.store.resolve_template_type(search_str)
     if len(candidates) == 0:
