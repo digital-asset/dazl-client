@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dazl"
-version = "6.2.0"
+version = "6.2.1"
 description = "high-level Ledger API client for DAML ledgers"
 license = "Apache-2.0"
 authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]

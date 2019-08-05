@@ -17,7 +17,9 @@ from ..model.core import Party
 def config_field(
         description: str,
         param_type: 'Optional[ConfigParameterType]' = None,
+        *,
         default_value: Any = None,
+        long_alias: Optional[str] = None,
         short_alias: Optional[str] = None,
         deprecated_alias: Optional[str] = None,
         environment_variable: Optional[str] = None) -> Field:
@@ -25,6 +27,7 @@ def config_field(
         description=description,
         param_type=param_type,
         default_value=default_value,
+        long_aliases=frozenset([long_alias]) if long_alias else frozenset(),
         short_aliases=frozenset([short_alias]) if short_alias else frozenset(),
         deprecated_aliases=frozenset([deprecated_alias]) if deprecated_alias else frozenset(),
         environment_variable=environment_variable
@@ -40,8 +43,8 @@ class ConfigParameter:
     description: str
     param_type: 'Optional[ConfigParameterType]' = None
     default_value: Any = None
+    long_aliases: FrozenSet[str] = field(default_factory=frozenset)
     short_aliases: FrozenSet[str] = field(default_factory=frozenset)
-    alternate_keys: FrozenSet[str] = field(default_factory=frozenset)
     deprecated_aliases: FrozenSet[str] = field(default_factory=frozenset)
     environment_variable: Optional[str] = None
 
@@ -60,7 +63,7 @@ def add_argument(
         aliases = ['--' + key.replace('_', '-')]
         for alias in config_param.short_aliases:
             aliases.append('-' + alias)
-        for alias in config_param.alternate_keys:
+        for alias in config_param.long_aliases:
             aliases.append('--' + alias.replace('_', '-'))
         for alias in config_param.deprecated_aliases:
             aliases.append('--' + alias.replace('_', '-'))

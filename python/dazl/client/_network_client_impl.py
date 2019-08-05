@@ -2,33 +2,35 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from asyncio import gather, ensure_future, sleep, Future
+from asyncio import gather, ensure_future, sleep
 from collections import defaultdict
 from dataclasses import fields
 from datetime import timedelta, datetime
 from threading import RLock, Thread, current_thread
 from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
     Union, overload
+from typing_extensions import Literal
 
 from dataclasses import asdict
 
 from .. import LOG
+from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING, NONE_IF_MISSING, \
+    EXCEPTION_IF_MISSING
 from ._party_client_impl import _PartyClientImpl
 from ._run_level import RunState
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig, \
     DEFAULT_CONNECT_TIMEOUT_SECONDS
 from ..metrics import MetricEvents
-from ..model.core import Party, RunLevel
+from ..model.core import Party, RunLevel, DazlPartyMissingError
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import InitEvent, ReadyEvent, BaseEvent
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
-from ..util.asyncio_util import execute_in_loop, completed, Invoker, safe_create_future
+from ..util.asyncio_util import execute_in_loop, Invoker, safe_create_future
 from ..util.dar import get_dar_package_ids
 from ..util.prim_types import to_timedelta, TimeDeltaConvertible
-
 
 T = TypeVar('T')
 
@@ -126,26 +128,27 @@ class _NetworkImpl:
         with self._lock:
             self._run_state = run_state
             self.invoker.set_context_as_current()
-            base_config = dict(self._config)
+            config = self.resolved_config()
 
         site = None
         with AioLoopPerfMonitor(self._metrics.loop_responsiveness):
-            server_port = base_config.get('server_port')
-            if server_port is not None:
-                LOG.debug('Opening port %s for metrics...', server_port)
+            if config.server_port is not None:
+                LOG.info('Opening port %s for metrics...', config.server_port)
                 from aiohttp import web
                 from ..server import get_app
-                app = get_app()
+                app = get_app(self)
                 runner = web.AppRunner(app)
                 await runner.setup()
-                site = web.TCPSite(runner, '0.0.0.0', server_port)
+                site = web.TCPSite(runner, config.server_host, config.server_port)
                 ensure_future(site.start())
-                LOG.info('Listening on port %s for metrics.', server_port)
+                LOG.info('Listening on %s:%s for metrics.', config.server_host, config.server_port)
+            else:
+                LOG.info('No server_port configuration was specified, so metrics and other stats '
+                         'will not be served.')
 
             # If the connect timeout is non-positive, assume the user intended for there to not be
             # a timeout at all
-            connect_timeout = to_timedelta(
-                base_config.get('connect_timeout', DEFAULT_CONNECT_TIMEOUT_SECONDS))
+            connect_timeout = to_timedelta(config.connect_timeout)
             if connect_timeout <= timedelta(0):
                 connect_timeout = None
 
@@ -158,7 +161,7 @@ class _NetworkImpl:
 
             try:
                 runner = _NetworkRunner(pool, run_state, self, coroutines)
-                await runner.run(base_config)
+                await runner.run()
             finally:
                 await self._pool.close()
                 if site is not None:
@@ -241,12 +244,61 @@ class _NetworkImpl:
                 self._global_impls[ctor] = inst
             return inst
 
-    def party_impl(self, party: Party, ctor: 'Callable[[_PartyClientImpl], T]') -> T:
+    @overload
+    def party_impl(
+            self, party: Party, ctor: None = None,
+            if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING) -> \
+        _PartyClientImpl: ...
+
+    @overload
+    def party_impl(
+            self, party: Party, ctor: None = None,
+            if_missing: NONE_IF_MISSING = CREATE_IF_MISSING) -> \
+        Optional[_PartyClientImpl]: ...
+
+    @overload
+    def party_impl(
+            self, party: Party, ctor: 'Callable[[_PartyClientImpl], T]',
+            if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING) -> \
+        T: ...
+
+    @overload
+    def party_impl(
+            self, party: Party, ctor: 'Callable[[_PartyClientImpl], T]',
+            if_missing: NONE_IF_MISSING = CREATE_IF_MISSING) -> \
+        Optional[T]: ...
+
+    def party_impl(self, party, ctor=None, if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING):
+        """
+        Return a :class:`_PartyClientImpl` object for the specified party, possibly wrapping it in a
+        more high-level friendly API.
+
+        :param party:
+            The party to get (or create) a connection for.
+        :param ctor:
+            The constructor function to use to create a wrapper, or ``None`` to return a raw
+            :class:`_PartyClientImpl`.
+        :param if_missing:
+            The behavior of this method in the case that an entry for the Party does not yet exist:
+            ``CREATE_IF_MISSING``: if the party does not yet exist, create an implementation for it.
+            ``NONE_IF_MISSING``: if the party does not yet exist, return ``None``.
+            ``EXCEPTION_IF_MISSING``: if the party does not yet exist, throw an exception.
+        :return:
+            Either a :class:`_PartyClientImpl`, the specified wrapper type, or ``None``.
+        """
         with self._lock:
             impl = self._party_impls.get(party)
             if impl is None:
-                impl = _PartyClientImpl(self, party)
-                self._party_impls[party] = impl
+                if if_missing == CREATE_IF_MISSING:
+                    impl = _PartyClientImpl(self, party)
+                    self._party_impls[party] = impl
+                elif if_missing == NONE_IF_MISSING:
+                    return None
+                else:
+                    raise DazlPartyMissingError(party)
+
+            if ctor is None:
+                return impl
 
             mm = self._party_clients[ctor]
             inst = mm.get(party)
@@ -265,6 +317,16 @@ class _NetworkImpl:
     def party_impls(self) -> 'Collection[_PartyClientImpl]':
         with self._lock:
             return list(self._party_impls.values())
+
+    def find_bot(self, bot_id) -> 'Optional[Bot]':
+        """
+        Return the bot of the specified ID, or ``None`` if no matching bot is found.
+        """
+        for party_impl in self.party_impls():
+            for bot in party_impl.bots:
+                if bot.id == bot_id:
+                    return bot
+        return None
 
     def simple_metadata(self, timeout: 'TimeDeltaConvertible') -> LedgerMetadata:
         """
@@ -357,13 +419,14 @@ class _NetworkRunner:
         self.run_state = run_state
         self.initialized_parties = set()  # type: Set[Party]
         self._network_impl = network_impl
+        self._config = self._network_impl.resolved_config()
         self._read_completions = []
         self._user_coroutines = [ensure_future(coro) for coro in user_coroutines]
         self._bot_coroutines = []
         self._writers = []
 
-    async def run(self, base_config: dict):
-        LOG.debug('Running a Network with base config: %r', base_config)
+    async def run(self):
+        LOG.debug('Running a Network with config: %r', self._config)
         prev_offset = None
         keep_running = True
 
@@ -379,7 +442,7 @@ class _NetworkRunner:
             uninitialized_parties = set(party_impls) - self.initialized_parties
             # TODO: Also handle removed parties at some point
             if uninitialized_parties:
-                await self._init([party_impls[party] for party in uninitialized_parties], prev_offset, base_config)
+                await self._init([party_impls[party] for party in uninitialized_parties], prev_offset)
             self.initialized_parties |= uninitialized_parties
 
             current_offset, keep_running = await self.beat(list(party_impls.values()))
@@ -431,7 +494,7 @@ class _NetworkRunner:
 
     async def _init(
             self, party_impls: 'Collection[_PartyClientImpl]',
-            first_offset: 'Optional[str]', base_config: dict) -> Optional[str]:
+            first_offset: 'Optional[str]') -> Optional[str]:
         # region log
         if LOG.isEnabledFor(logging.DEBUG):
             parties = [pi.party for pi in party_impls]
@@ -478,7 +541,7 @@ class _NetworkRunner:
         #  resolve
 
         from ._reader_sync import read_initial_acs
-        use_acs_service = base_config.get('use_acs_service', False)
+        use_acs_service = self._config.use_acs_service
         offset = await read_initial_acs(party_impls, use_acs_service)
 
         LOG.debug('Preparing to raise the "ready" event...')

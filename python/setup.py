@@ -12,20 +12,24 @@ invocation.
 from ast import literal_eval
 from configparser import ConfigParser
 from pathlib import Path
+from typing import Collection
 from setuptools import setup
 
 
 def get_setup_args():
+    root_path = Path(__file__).parent
     setup_kwargs = dict()
 
     config = ConfigParser()
-    config.read(Path(__file__).parent / 'pyproject.toml')
+    config.read(root_path / 'pyproject.toml')
 
     if 'tool.poetry' in config:
         poetry_section = config['tool.poetry']
         name = setup_kwargs['name'] = parse_value(poetry_section['name'])
         setup_kwargs['version'] = parse_value(poetry_section['version'])
         setup_kwargs['description'] = parse_value(poetry_section['description'])
+    else:
+        name = None
 
     if 'tool.poetry.dependencies' in config:
         install_requires = []
@@ -40,8 +44,19 @@ def get_setup_args():
         for key, entrypoint in config['tool.poetry.scripts'].items():
             entry_points['console_scripts'].append(f'{key}={parse_value(entrypoint)}')
         setup_kwargs['entry_points'] = entry_points
-            
+
+    setup_kwargs['packages'] = _find_packages(root_path)
+
     return setup_kwargs
+
+
+def _find_packages(path: Path) -> 'Collection[str]':
+    packages = []
+    for proposed_package in path.glob('**/__init__.py'):
+        p = proposed_package.relative_to(path)
+        if not str(p).startswith('.'):
+            packages.append(str(p.parent))
+    return packages
 
 
 def parse_value(v):
