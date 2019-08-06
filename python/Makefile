@@ -1,9 +1,24 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+SHELL := /usr/bin/env bash
+.SHELLFLAGS := -euo pipefail -c
+
 LIBRARY_NAME=dazl
 SANDBOX_PORT=7600
-VERSION=$(shell python3 setup.py --version)
+version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
+
+dazl_files := $(shell find dazl -name '*.py') README.md
+dazl_bdist := dist/dazl-$(version)-py3-none-any.whl
+dazl_sdist := dist/dazl-$(version).tar.gz
+dazl_docs := dist/dazl-docs-$(version).tar.gz
+
+build_dir := build/.dir
+poetry_build_marker := build/.poetry.build
+poetry_install_marker := build/.poetry.install
+
+export PYTHONPATH:=.:${PYTHONPATH}
+
 
 
 ####################################################################################################
@@ -20,25 +35,32 @@ clean:
 	rm -fr build dist $(LIBRARY_NAME).egg-info test-reports
 
 .PHONY: deps
-deps:
-	poetry install -E prometheus -E pygments
+deps: $(poetry_install_marker)
+
+.PHONY: build
+build: package
 
 .PHONY: package
-package:
-	poetry build
+package: $(dazl_bdist) $(dazl_sdist) $(dazl_docs)
 
-.PHONY: package-docs
-package-docs:
-	pipenv run docs
-	(cd dist && tar czf dazl-docs-$(VERSION).tar.gz documentation)
+.PHONY: publish 
+publish: package
+	poetry upload
+	ghr -n "dazl v$(version)" -replace "v$(version)" "$(dazl_bdist)"
+	ghr -replace "v$(version)" "$(dazl_sdist)"
+	ghr -replace "v$(version)" "$(dazl_docs)"
+
+.PHONY: version
+version:
+	@echo $(version)
 
 
 ####################################################################################################
 ## TEST TARGETS                                                                                   ##
 ####################################################################################################
 
-.PHONY: mypy
-mypy:
+.PHONY: typecheck
+typecheck:
 	poetry run python3 -m mypy -p dazl
 
 .PHONY: test
@@ -54,7 +76,7 @@ integration-test:
 
 
 ####################################################################################################
-## TEST TARGETS                                                                                   ##
+## DOCUMENTATION TARGETS                                                                          ##
 ####################################################################################################
 
 .PHONY: docs
@@ -64,3 +86,31 @@ docs:
 .PHONY: docs-server
 docs-server:
 	poetry run python3 scripts/docs.py server
+
+
+####################################################################################################
+## file targets                                                                                   ##
+####################################################################################################
+
+$(build_dir):
+	@mkdir -p build
+	@touch $@
+
+$(poetry_build_marker): $(build_dir) pyproject.toml $(dazl_files)
+	poetry build
+	touch $@
+
+$(poetry_install_marker): $(build_dir) poetry.lock
+	poetry install -E prometheus -E pygments
+	touch $@
+
+$(dazl_bdist): $(poetry_build_marker)
+
+$(dazl_sdist): $(poetry_build_marker)
+
+$(dazl_docs): $(poetry_install_marker) $(dazl_files)
+	poetry run python3 scripts/docs.py build
+	(cd dist && tar czf dazl-docs-$(version).tar.gz documentation)
+
+.PHONY: poetry-build
+poetry-build: $(poetry_build_marker)

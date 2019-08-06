@@ -10,6 +10,7 @@
 .mypy_cache
 .poetry.ready
 .pytest_cache
+python/build
 python/dazl.egg-info
 python/dist
 app.log
