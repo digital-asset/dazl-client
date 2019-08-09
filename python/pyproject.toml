@@ -34,6 +34,7 @@ setuptools = "==40.8.0"
 sphinx = "*"
 watchdog = "*"
 flask = "^1.0"
+sphinx-markdown-builder = "^0.5.1"
 
 [tool.poetry.extras]
 prometheus = ["prometheus_client"]

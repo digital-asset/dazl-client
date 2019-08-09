@@ -21,12 +21,13 @@ from sphinx.cmd.build import main as sphinx_build_main
 DAZL_ROOT = Path(__file__).expanduser().resolve().parent.parent
 
 
-@dataclass
+@dataclass(frozen=True)
 class DocumentationBuildArguments:
     working_directory: 'Path'
     sphinx_build_args: 'Sequence[str]'
     output_directory: 'Path'
     output_file: 'Optional[Path]'
+    output_format: 'str'
     archive_format: 'Optional[str]'
 
 
@@ -39,6 +40,7 @@ def main(argv: 'Sequence[str]'):
     os.chdir(DAZL_ROOT)
 
     argp = ArgumentParser()
+    argp.add_argument('--format', '-f', default='html')
     argp.add_argument('--output-path', '-o', default=os.getenv('DAZL_DOCS_OUT', str(DAZL_ROOT / 'dist' / 'documentation')))
     argp.add_argument('--theme', default=os.getenv('DAZL_DA_THEME'))
     argp.add_argument('--dry-run', action='store_true')
@@ -47,6 +49,7 @@ def main(argv: 'Sequence[str]'):
 
     dba = parse_arguments(
         output_path=Path(args.output_path) if args.output_path else None,
+        output_format=args.format,
         theme_path=Path(args.theme) if args.theme else None)
 
     if cmd == 'build':
@@ -65,7 +68,7 @@ def main(argv: 'Sequence[str]'):
         run_server(dba, 7337)
     
 
-def parse_arguments(output_path: 'Path', theme_path: 'Optional[Path]') -> 'DocumentationBuildArguments':
+def parse_arguments(output_path: 'Path', output_format: 'str', theme_path: 'Optional[Path]') -> 'DocumentationBuildArguments':
     if len(output_path.suffixes) == 0:
         is_tgz = False
     elif len(output_path.suffixes) == 1:
@@ -85,9 +88,10 @@ def parse_arguments(output_path: 'Path', theme_path: 'Optional[Path]') -> 'Docum
 
     return DocumentationBuildArguments(
         working_directory=DAZL_ROOT,
-        sphinx_build_args=['-b', 'html', 'docs', str(output_directory)],
+        sphinx_build_args=['-b', output_format, 'docs', str(output_directory)],
         output_directory=output_directory,
         output_file=output_file,
+        output_format=output_format,
         archive_format=archive_format)
 
 
