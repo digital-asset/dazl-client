@@ -403,6 +403,8 @@ def to_natural_type(context: TypeEvaluationContext, data_type: Type, obj: 'G.Val
         return to_list(context, data_type, obj.list)
     elif ctor == 'optional':
         return to_optional(context, data_type, obj.optional)
+    elif ctor == 'enum':
+        return to_enum(obj.enum)
     elif ctor == 'int64':
         return to_int64(obj.int64)
     elif ctor == 'decimal':
@@ -495,6 +497,10 @@ def to_optional(context: TypeEvaluationContext, tt: Type, optional: 'G.Optional'
     def process(child_context: TypeEvaluationContext, ot: OptionalType) -> list:
         return to_natural_type(child_context.append_path(f'?'), ot.type_parameter, optional.value)
     return type_evaluate_dispatch_default_error(on_optional=process)(context, tt)
+
+
+def to_enum(enum: str) -> str:
+    return enum
 
 
 def to_int64(int64: int) -> int:

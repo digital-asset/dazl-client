@@ -6,7 +6,7 @@ from typing import Any
 from ..model.core import ContractId
 from ..model.types import Type, UnsupportedType, VariantType, RecordType, ListType, \
     ContractIdType, TemplateChoice, TypeEvaluationContext, OptionalType, MapType, \
-    UnresolvedTypeReference, TypeReference
+    UnresolvedTypeReference, TypeReference, EnumType
 from ..model.writing import Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, \
     CreateAndExerciseCommand, AbstractSerializer
 from ..util.prim_types import to_int, to_str, to_decimal, to_date, to_datetime, \
@@ -185,6 +185,13 @@ class ValidateSerializer(AbstractSerializer[Command, Any]):
         else:
             error = 'variants must be encoded as dictionaries with a single key and a value'
             raise ValueError(f'{error} (got {obj!r} instead)', obj)
+
+    def serialize_enum(self, context: TypeEvaluationContext, tt: EnumType, obj: Any) -> Any:
+        if obj in tt.constructors:
+            return obj
+        else:
+            error = f'expected one of {tt.constructors}'
+            raise ValueError(f'{error} (got {obj!r} instead')
 
     def serialize_unsupported(self, context: TypeEvaluationContext, tt: UnsupportedType, obj: Any) \
             -> Any:
