@@ -1,14 +1,13 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import ensure_future, gather, get_event_loop, wait, Future, InvalidStateError
+from asyncio import ensure_future, gather, get_event_loop, wait, Future
 from concurrent.futures import ALL_COMPLETED
-from functools import wraps
 
 from dataclasses import replace, dataclass, field, fields, asdict
 from datetime import datetime, timedelta
 from io import StringIO
-from typing import Any, Awaitable, Callable, Collection, List, Optional, Sequence, Set, Tuple, \
+from typing import Any, Awaitable, Collection, List, Optional, Sequence, Set, Tuple, \
     TypeVar, TYPE_CHECKING
 import reprlib
 import uuid
@@ -25,15 +24,15 @@ from ..model.network import connection_settings
 from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEvent, OffsetEvent, \
     TransactionFilter, ContractCreateEvent, ContractArchiveEvent, \
     InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent
-from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, \
-    EventHandlerResponse, Command
+from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from ..protocols import LedgerNetwork, LedgerClient
-from ..util.asyncio_util import ServiceQueue, await_then, completed, propagate, \
-    safe_create_future, named_gather, failed
+from ..util.asyncio_util import ServiceQueue, await_then, completed, safe_create_future, \
+    named_gather
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast
 
 if TYPE_CHECKING:
+    from .api import PartyClient
     from ._network_client_impl import _NetworkImpl
 
 
@@ -115,17 +114,12 @@ class _PartyClientImpl:
 
     # noinspection PyShadowingBuiltins
     def add_event_handler(
-            self, key: str, handler: BotCallback, filter: 'Optional[BotFilter]', context: Any) \
+            self, key: str, handler: 'BotCallback', filter: 'Optional[BotFilter]',
+            party_client: 'PartyClient') \
             -> 'Bot':
-        from functools import wraps
-
-        @wraps(handler)
-        def rewritten_event(event):
-            new_event = replace(event, client=context)
-            return handler(new_event)
-
-        h = wrap_as_command_submission(self.write_commands, rewritten_event, filter)
-        return self.bots.add_single(key, h, filter)
+        if party_client is None:
+            raise ValueError('a party_client is required here')
+        return self.bots.add_single(key, handler, filter, party_client=party_client)
 
     def emit_event(self, data: BaseEvent) -> 'Awaitable[Any]':
         """
@@ -569,74 +563,6 @@ def submit_command_async(
         return coros[0]
     else:
         return named_gather('SubmitCommandAsync()', *coros, return_exceptions=True)
-
-
-# noinspection PyShadowingBuiltins
-def wrap_as_command_submission(submit_fn, callback, filter) \
-        -> Callable[[BaseEvent], Awaitable[Any]]:
-    """
-    Normalize a callback to something that takes a single contract ID and contract data, and
-    return an awaitable that is resolved when the underlying command has been fully submitted.
-    """
-    import inspect
-
-    @wraps(callback)
-    def implementation(*args, **kwargs):
-        if filter is not None and not filter(*args, **kwargs):
-            return completed(None)
-
-        try:
-            ret = callback(*args, **kwargs)
-        except BaseException as exception:
-            LOG.exception('The callback %r threw an exception!', callback)
-            return failed(exception)
-
-        if ret is None:
-            return completed(None)
-        elif isinstance(ret, (CommandBuilder, Command, list, tuple)):
-            try:
-                ret_fut = submit_fn(ret)
-            except BaseException as exception:
-                LOG.exception('The callback %r returned commands that could not be submitted! (%s)',
-                              callback, ret)
-                return failed(exception)
-            return ret_fut
-        elif inspect.isawaitable(ret):
-            # the user-provided callback returned an Awaitable
-            cmd_fut = ensure_future(ret)
-            if cmd_fut.done():
-                if cmd_fut.cancelled() or cmd_fut.exception() is not None:
-                    # a cancelled or failed user-provided callback Future is the same as the
-                    # command submission itself failing
-                    return cmd_fut
-
-                # functionally equivalent to the non-Awaitable case if the Awaitable has already
-                # completed
-                return submit_fn(cmd_fut.result())
-            else:
-                # create `fut`, which we'll give to the user; wait for `cmd_fut` to finish, then
-                # take the result of that awaitable and try to submit a command with that result
-                fut = get_event_loop().create_future()
-
-                def cmd_future_finished(_):
-                    ret = cmd_fut.result()
-                    if ret is None:
-                        fut.set_result(None)
-                    elif isinstance(ret, (CommandBuilder, Command, list, tuple)):
-                        propagate(ensure_future(submit_fn(ret)), fut)
-                    elif inspect.isawaitable(ret):
-                        LOG.error('A callback cannot return an Awaitable of an Awaitable')
-                        raise InvalidStateError(
-                            'A callback cannot return an Awaitable of an Awaitable')
-
-                cmd_fut.add_done_callback(cmd_future_finished)
-
-                return fut
-        else:
-            LOG.error('the callback %r returned a value of an unexpected type: %s', callback, ret)
-            raise ValueError('unexpected return type from a callback')
-
-    return implementation
 
 
 def _find_party_config(party_configs: 'Collection[dict]', party: Party) -> 'Optional[dict]':

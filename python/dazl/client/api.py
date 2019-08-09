@@ -31,8 +31,9 @@ from typing import Any, Awaitable, BinaryIO, Collection, ContextManager, List, O
 from urllib.parse import urlparse
 
 from .. import LOG
-from .bots import Bot
+from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
+from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
 from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, ContractData, ContractsState, ContractMatch, \
@@ -171,6 +172,21 @@ class Network:
         :param party: The party to get a client for.
         """
         return self._impl.party_impl(Party(party), AIOPartyClient)
+
+    def party_bots(
+            self,
+            party: 'Union[str, Party]',
+            if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING) -> 'BotCollection':
+        """
+        Return the collection of bots associated with a party.
+
+        :param party: The party to get bots for.
+        :param if_missing:
+            Specify the behavior to use in the case where no client has been yet requested for this
+            party. The default behavior is CREATE_IF_MISSING.
+        """
+        party_impl = self._impl.party_impl(party, if_missing=if_missing)
+        return party_impl.bots if party_impl is not None else None
 
     # </editor-fold>
 
@@ -415,11 +431,22 @@ class PartyClient:
     def __init__(self, impl: '_PartyClientImpl'):
         self._impl = impl
 
+    # <editor-fold desc="Ledger/client metadata">
+
+    @property
+    def party(self) -> 'Party':
+        """
+        Return the party serviced by this client.
+        """
+        return self._impl.party
+
     def resolved_config(self) -> 'PartyConfig':
         """
         Calculate the configuration that will be used for this client when it is instantiated.
         """
         return self._impl.resolved_config()
+
+    # </editor-fold>
 
 
 class AIOPartyClient(PartyClient):
@@ -566,7 +593,7 @@ class AIOPartyClient(PartyClient):
 
     def add_ledger_created(
             self, template: Any, handler: 'AEventHandler[ContractCreateEvent]',
-            match: 'Optional[ContractMatch]' = None) -> None:
+            match: 'Optional[ContractMatch]' = None) -> 'Bot':
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters a newly created
         contract instance of a template.
@@ -578,8 +605,9 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
-        for key in EventKey.contract_created(True, template):
-            self._impl.add_event_handler(key, handler, match, self)
+        bot = self._impl.bots.add_new(party_client=self, name=handler.__name__)
+        bot.add_event_handler(EventKey.contract_created(True, template), handler, match)
+        return bot
 
     def ledger_exercised(self, template: Any, choice: str) \
             -> 'AEventHandlerDecorator[ContractExercisedEvent]':
@@ -723,6 +751,7 @@ class AIOPartyClient(PartyClient):
     def submit_exercise_by_key(
             self,
             template_name: 'TemplateNameLike',
+            contract_key: 'Any',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None) \
@@ -733,6 +762,8 @@ class AIOPartyClient(PartyClient):
 
         :param template_name:
             The name of the template on which to do an exercise-by-key.
+        :param contract_key:
+            The value that should uniquely identify a contract for the specified template.
         :param choice_name:
             The name of the choice to exercise.
         :param arguments:
@@ -743,7 +774,7 @@ class AIOPartyClient(PartyClient):
         """
         from .. import exercise_by_key
         return self.submit(
-            exercise_by_key(template_name, choice_name, arguments), workflow_id=workflow_id)
+            exercise_by_key(template_name, contract_key, choice_name, arguments), workflow_id=workflow_id)
 
     def submit_create_and_exercise(
             self,
@@ -876,13 +907,6 @@ class AIOPartyClient(PartyClient):
     # </editor-fold>
 
     # <editor-fold desc="Ledger/client metadata">
-
-    @property
-    def party(self) -> 'Party':
-        """
-        Return the party serviced by this client.
-        """
-        return self._impl.party
 
     def set_config(self, url: 'Optional[str]', **kwargs):
         self._impl.set_config(url=url, **kwargs)
@@ -1241,6 +1265,7 @@ class SimplePartyClient(PartyClient):
     def submit_exercise_by_key(
             self,
             template_name: 'TemplateNameLike',
+            contract_key: 'Any',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None) \
@@ -1251,6 +1276,8 @@ class SimplePartyClient(PartyClient):
 
         :param template_name:
             The name of the template on which to do an exercise-by-key.
+        :param contract_key:
+            The value that should uniquely identify a contract for the specified template.
         :param choice_name:
             The name of the choice to exercise.
         :param arguments:
@@ -1261,7 +1288,8 @@ class SimplePartyClient(PartyClient):
         """
         from .. import exercise_by_key
         return self.submit(
-            exercise_by_key(template_name, choice_name, arguments), workflow_id=workflow_id)
+            exercise_by_key(template_name, contract_key, choice_name, arguments),
+            workflow_id=workflow_id)
 
     def submit_create_and_exercise(
             self,
@@ -1399,13 +1427,6 @@ class SimplePartyClient(PartyClient):
     # </editor-fold>
 
     # <editor-fold desc="Ledger/client metadata">
-
-    @property
-    def party(self) -> Party:
-        """
-        Return the party serviced by this client.
-        """
-        return self._impl.party
 
     def set_config(self, url: Optional[str], **kwargs):
         self._impl.set_config(url=url, **kwargs)

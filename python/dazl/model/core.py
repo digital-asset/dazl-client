@@ -158,6 +158,13 @@ class ContractContextualData:
     active: bool
 
 
+@dataclass(frozen=True)
+class SourceLocation:
+    file_name: str
+    start_line: int
+    end_line: int
+
+
 class RunLevel(OrderedEnum):
     RUN_FOREVER = 0
     RUN_UNTIL_IDLE = 1
@@ -176,6 +183,25 @@ class DazlWarning(Warning):
     """
     Superclass of warnings raised by dazl.
     """
+
+
+class DazlPartyMissingError(DazlError):
+    """
+    Error raised when a party or some information about a party is requested, and that party is not
+    found.
+    """
+    def __init__(self, party: Party):
+        super().__init__(f'party {party!r} does not have a defined client')
+        self.party = party
+
+
+class DazlImportError(ImportError, DazlError):
+    """
+    Import error raised when an optional dependency could not be found.
+    """
+    def __init__(self, missing_module, message):
+        super().__init__(message)
+        self.missing_module = missing_module
 
 
 class UserTerminateRequest(DazlError):

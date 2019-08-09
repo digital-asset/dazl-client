@@ -158,11 +158,13 @@ class _NetworkConfig(URLConfig):
 
     server_host: Optional[str] = config_field(
         'Server listening host. Used for OAuth web application flow callbacks.',
-        param_type=STRING_TYPE)
+        param_type=STRING_TYPE,
+        environment_variable='DAZL_SERVER_HOST')
 
     server_port: Optional[int] = config_field(
         'Server listening port. Used for OAuth web application flow callbacks.',
-        param_type=PORT_TYPE)
+        param_type=PORT_TYPE,
+        environment_variable='DAZL_SERVER_PORT')
 
     oauth_client_id: Optional[str] = config_field(
         'OAuth client ID',
@@ -217,6 +219,7 @@ class _FlatConfig(_NetworkConfig, _PartyConfig):
     parties: Collection[Party] = config_field(
         'comma-separated list of parties serviced by a participant node',
         param_type=PARTIES_TYPE,
+        long_alias='party',
         short_alias='p',
         environment_variable='DAML_LEDGER_PARTY',
         default_value=())
@@ -447,7 +450,7 @@ def _parse_args_dict(d: 'Mapping[str, Any]') -> 'Mapping[str, Any]':
     for fld, param in config_fields(_FlatConfig):
         value = d.get(fld.name)
         if value is None:
-            for key in param.alternate_keys:
+            for key in param.long_aliases:
                 if d.get(key) is not None:
                     value = d.get(key)
                     break

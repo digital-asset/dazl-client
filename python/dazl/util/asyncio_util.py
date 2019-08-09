@@ -8,7 +8,7 @@ import sys
 import threading
 
 from asyncio import ensure_future, gather, get_event_loop, new_event_loop, \
-    AbstractEventLoop, AbstractEventLoopPolicy, CancelledError, Future, InvalidStateError
+    AbstractEventLoop, AbstractEventLoopPolicy, CancelledError, Future, InvalidStateError, QueueEmpty
 from concurrent.futures import Executor, ThreadPoolExecutor
 from dataclasses import dataclass
 from functools import partial, wraps
@@ -103,7 +103,7 @@ def isolated_async(async_fn):
     return invoke
 
 
-def await_then(awaitable: Awaitable[T], func: Callable[[T], U]) -> Awaitable[U]:
+def await_then(awaitable: 'Awaitable[T]', func: 'Callable[[T], U]') -> 'Awaitable[U]':
     """
     Call a function on the result of an Awaitable, and then return an Awaitable that is resolved
     with that result.
@@ -696,6 +696,27 @@ def named_gather(name: str, *awaitables, return_exceptions=False):
     g = gather(*awaitables, return_exceptions=return_exceptions)
     g.__repr__ = staticmethod(lambda _: f'<Gather {name}>')
     return g
+
+
+class Signal:
+    """
+    A simple guard that "wakes" up a coroutine from another coroutine.
+    """
+    def __init__(self):
+        self._fut = safe_create_future()
+
+    def notify_all(self) -> None:
+        """
+        Schedule a notification to all coroutines that are `wait`ing.
+        """
+        if self._fut is not None:
+            self._fut.set_result(None)
+            self._fut = None
+
+    def wait(self) -> 'Awaitable[None]':
+        if self._fut is None:
+            self._fut = safe_create_future()
+        return self._fut
 
 
 class UnsettableEventLoopPolicy(AbstractEventLoopPolicy):

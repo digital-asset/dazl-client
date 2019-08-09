@@ -458,8 +458,8 @@ def exercise(contract, choice, arguments=None):
     return ExerciseCommand(contract, choice, arguments)
 
 
-def exercise_by_key(template, choice_name, choice_argument):
-    return ExerciseByKeyCommand(template, choice_name, choice_argument)
+def exercise_by_key(template, contract_key, choice_name, choice_argument):
+    return ExerciseByKeyCommand(template, contract_key, choice_name, choice_argument)
 
 
 def create_and_exercise(template, create_arguments, choice_name, choice_argument):
