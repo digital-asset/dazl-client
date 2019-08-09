@@ -4,18 +4,18 @@ dazl\.client package
 Submodules
 ----------
 
-dazl\.client\.client\_participant module
-----------------------------------------
+dazl\.client\.api module
+------------------------
 
-.. automodule:: dazl.client.client_participant
+.. automodule:: dazl.client.api
     :members:
     :undoc-members:
     :show-inheritance:
 
-dazl\.client\.manager module
+dazl\.client\.bots module
 ----------------------------
 
-.. automodule:: dazl.client.manager
+.. automodule:: dazl.client.bots
     :members:
     :undoc-members:
     :show-inheritance:

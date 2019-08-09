@@ -27,8 +27,11 @@ The most important classes:
     :class:`~dazl.model.types.VariantType`
 
 .. automodule:: dazl.model.core
-.. automodule:: dazl.model.writing
+.. automodule:: dazl.model.ledger
+.. automodule:: dazl.model.reading
 .. automodule:: dazl.model.types
+.. automodule:: dazl.model.types_store
+.. automodule:: dazl.model.writing
 
 """
 

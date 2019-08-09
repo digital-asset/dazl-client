@@ -11,11 +11,14 @@ version := $(shell python3 -c "import configparser; config = configparser.Config
 dazl_files := $(shell find dazl -name '*.py') README.md
 dazl_bdist := dist/dazl-$(version)-py3-none-any.whl
 dazl_sdist := dist/dazl-$(version).tar.gz
-dazl_docs := dist/dazl-docs-$(version).tar.gz
+dazl_docs_html := dist/dazl-docs-$(version)-html.tar.gz
+dazl_docs_markdown := dist/dazl-docs-$(version)-markdown.tar.gz
 
 build_dir := build/.dir
 poetry_build_marker := build/.poetry.build
 poetry_install_marker := build/.poetry.install
+dazl_docs_html_dir := $(basename $(basename $(dazl_docs_html)))
+dazl_docs_markdown_dir := $(basename $(basename $(dazl_docs_markdown)))
 
 export PYTHONPATH:=.:${PYTHONPATH}
 
@@ -41,14 +44,15 @@ deps: $(poetry_install_marker)
 build: package
 
 .PHONY: package
-package: $(dazl_bdist) $(dazl_sdist) $(dazl_docs)
+package: $(dazl_bdist) $(dazl_sdist) $(dazl_docs_html) $(dazl_docs_markdown)
 
 .PHONY: publish 
 publish: package
-	poetry upload
+	poetry publish
 	ghr -n "dazl v$(version)" -replace "v$(version)" "$(dazl_bdist)"
 	ghr -replace "v$(version)" "$(dazl_sdist)"
-	ghr -replace "v$(version)" "$(dazl_docs)"
+	ghr -replace "v$(version)" "$(dazl_docs_html)"
+	ghr -replace "v$(version)" "$(dazl_docs_markdown)"
 
 .PHONY: version
 version:
@@ -80,8 +84,7 @@ integration-test:
 ####################################################################################################
 
 .PHONY: docs
-docs:
-	poetry run python3 scripts/docs.py build
+docs: $(dazl_docs_html) $(dazl_docs_markdown)
 
 .PHONY: docs-server
 docs-server:
@@ -108,9 +111,13 @@ $(dazl_bdist): $(poetry_build_marker)
 
 $(dazl_sdist): $(poetry_build_marker)
 
-$(dazl_docs): $(poetry_install_marker) $(dazl_files)
-	poetry run python3 scripts/docs.py build
-	(cd dist && tar czf dazl-docs-$(version).tar.gz documentation)
+$(dazl_docs_html): $(poetry_install_marker) $(dazl_files)
+	poetry run python3 scripts/docs.py build --format html -o $(dazl_docs_html_dir)
+	(cd dist && tar czf $(@F) $(notdir $(dazl_docs_html_dir)))
+
+$(dazl_docs_markdown): $(poetry_install_marker) $(dazl_files)
+	poetry run python3 scripts/docs.py build --format markdown -o $(dazl_docs_markdown_dir)
+	(cd dist && tar czf $(@F) $(notdir $(dazl_docs_markdown_dir)))
 
 .PHONY: poetry-build
 poetry-build: $(poetry_build_marker)
