@@ -13,7 +13,7 @@ from . import model as G
 from ...model.core import ContractId
 from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
     UnsupportedType, TemplateChoice, TypeReference, TypeEvaluationContext, SCALAR_TYPE_UNIT, \
-    MapType, OptionalType
+    MapType, OptionalType, EnumType
 from ...model.writing import AbstractSerializer, CommandPayload
 from ...util.prim_types import to_boolean, to_date, to_datetime, to_decimal, to_int, to_str, \
     decode_variant_dict
@@ -244,6 +244,12 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         _set_value(variant_message.value, ctor, value)
         return 'variant', variant_message
 
+    def serialize_enum(self, context: TypeEvaluationContext, tt: EnumType, obj: Any) -> R:
+        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Enum
+        enum_message = Enum()
+        enum_message.constructor = obj
+        return 'enum', enum_message
+
     def serialize_unsupported(
             self, context: TypeEvaluationContext, tt: UnsupportedType, obj: Any) -> R:
         raise Exception(f'UnsupportedType {tt} is not serializable in gRPC')
@@ -275,7 +281,7 @@ def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:
             message.MergeFrom(value)
         elif ctor == 'unit':
             message.unit.SetInParent()
-        elif ctor in ('record', 'variant', 'list', 'optional'):
+        elif ctor in ('record', 'variant', 'list', 'optional', 'enum'):
             getattr(message, ctor).MergeFrom(value)
         else:
             setattr(message, ctor, value)

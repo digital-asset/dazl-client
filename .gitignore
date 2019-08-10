@@ -13,6 +13,7 @@
 python/build
 python/dazl.egg-info
 python/dist
+python/pip-wheel-metadata
 app.log
 sandbox.log
 target
