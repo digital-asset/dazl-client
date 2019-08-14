@@ -30,7 +30,7 @@ def load_dars(damlc_version: 'Optional[str]' = None) -> 'Mapping[str, Path]':
     dars = dict()  # type: Dict[str, Path]
 
     if damlc_version is None:
-        damlc_version = '100.13.18'
+        damlc_version = '100.13.19'
 
     ensure_sdk_component('damlc', damlc_version)
 

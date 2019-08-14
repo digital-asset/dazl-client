@@ -6,7 +6,7 @@ from typing import Any
 from ..damlast.daml_lf_1 import Expr, Scenario, Update, PrimCon, PrimLit, FieldWithExpr, Type as _Type
 from ..model.core import ContractId
 from ..model.types import RecordType, TemplateChoice, TypeReference, TypeEvaluationContext, UnsupportedType, \
-    EnumType, VariantType, MapType, ListType, OptionalType, ContractIdType
+    EnumType, VariantType, TextMapType, ListType, OptionalType, ContractIdType
 from ..model.writing import AbstractSerializer
 
 TypeCon = _Type.Con
@@ -89,7 +89,7 @@ class ScenarioSerializer(AbstractSerializer[None, Expr]):
         tail = Expr(nil=Expr.Nil(type=tt.type_parameter))
         return Expr(cons=Expr.Cons(type=tt.type_parameter, front=front, tail=tail))
 
-    def serialize_map(self, context: TypeEvaluationContext, tt: MapType, obj: Any) -> Expr:
+    def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> Expr:
         pass
 
     def serialize_record(self, context: TypeEvaluationContext, tt: RecordType, obj: Any) -> Expr:
