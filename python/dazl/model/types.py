@@ -38,6 +38,8 @@ from ..util.typing import safe_cast, safe_dict_cast, safe_optional_cast
 
 DottedNameish = Union[str, Sequence[str]]
 
+T_co = TypeVar('T_co', covariant=True)
+
 if TYPE_CHECKING:
     from .types_store import PackageStore
     from ..damlast.daml_lf_1 import Expr
@@ -73,22 +75,19 @@ class NamedArgumentList(tuple):
         return set(name for name, _ in self)
 
 
-T = TypeVar('T')
-
-
 def type_dispatch_table(
-        on_type_ref: Callable[['TypeReference'], T],
-        on_type_var: Callable[['TypeVariable'], T],
-        on_type_app: Callable[['TypeApp'], T],
-        on_scalar: Callable[['ScalarType'], T],
-        on_contract_id: Callable[['ContractIdType'], T],
-        on_optional: Callable[['OptionalType'], T],
-        on_list: Callable[['ListType'], T],
-        on_text_map: 'Callable[[TextMapType], T]',
-        on_record: Callable[['RecordType'], T],
-        on_variant: Callable[['VariantType'], T],
-        on_enum: 'Callable[[EnumType], T]',
-        on_unsupported: Callable[['UnsupportedType'], T]) -> Callable[['Type'], T]:
+        on_type_ref: Callable[['TypeReference'], T_co],
+        on_type_var: Callable[['TypeVariable'], T_co],
+        on_type_app: Callable[['TypeApp'], T_co],
+        on_scalar: Callable[['ScalarType'], T_co],
+        on_contract_id: Callable[['ContractIdType'], T_co],
+        on_optional: Callable[['OptionalType'], T_co],
+        on_list: Callable[['ListType'], T_co],
+        on_text_map: 'Callable[[TextMapType], T_co]',
+        on_record: Callable[['RecordType'], T_co],
+        on_variant: Callable[['VariantType'], T_co],
+        on_enum: 'Callable[[EnumType], T_co]',
+        on_unsupported: Callable[['UnsupportedType'], T_co]) -> Callable[['Type'], T_co]:
     def _impl(tt: Type):
         if isinstance(tt, TypeReference):
             return on_type_ref(tt)
@@ -123,15 +122,15 @@ def type_dispatch_table(
 
 
 def scalar_type_dispatch_table(
-        on_unit: Callable[[], T],
-        on_bool: Callable[[], T],
-        on_text: Callable[[], T],
-        on_int: Callable[[], T],
-        on_decimal: Callable[[], T],
-        on_party: Callable[[], T],
-        on_date: Callable[[], T],
-        on_datetime: Callable[[], T],
-        on_timedelta: Callable[[], T]) -> Callable[['ScalarType'], T]:
+        on_unit: 'Callable[[], T_co]',
+        on_bool: 'Callable[[], T_co]',
+        on_text: 'Callable[[], T_co]',
+        on_int: 'Callable[[], T_co]',
+        on_decimal: 'Callable[[], T_co]',
+        on_party: 'Callable[[], T_co]',
+        on_date: 'Callable[[], T_co]',
+        on_datetime: 'Callable[[], T_co]',
+        on_timedelta: 'Callable[[], T_co]') -> 'Callable[[ScalarType], T_co]':
     def _impl(tt: ScalarType):
         st = safe_cast(ScalarType, tt)
         if st == SCALAR_TYPE_UNIT:
@@ -677,8 +676,6 @@ class TemplateChoice:
         Return every :class:`Party` that can exercise this choice given the specified contract data.
         """
 
-C = TypeVar('C', RecordType, VariantType)
-
 
 def as_commands(commands_ish, allow_callables=False):
     """
@@ -795,16 +792,16 @@ class TypeEvaluationContext:
 
 
 def type_evaluate_dispatch(
-        on_scalar: 'Callable[[TypeEvaluationContext, ScalarType], T]',
-        on_contract_id: 'Callable[[TypeEvaluationContext,  ContractIdType], T]',
-        on_optional: 'Callable[[TypeEvaluationContext, OptionalType], T]',
-        on_list: 'Callable[[TypeEvaluationContext, ListType], T]',
-        on_text_map: 'Callable[[TypeEvaluationContext, TextMapType], T]',
-        on_record: 'Callable[[TypeEvaluationContext, RecordType], T]',
-        on_variant: 'Callable[[TypeEvaluationContext, VariantType], T]',
-        on_enum: 'Callable[[TypeEvaluationContext, EnumType], T]',
-        on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T]') \
-            -> 'Callable[[TypeEvaluationContext, Type], T]':
+        on_scalar: 'Callable[[TypeEvaluationContext, ScalarType], T_co]',
+        on_contract_id: 'Callable[[TypeEvaluationContext,  ContractIdType], T_co]',
+        on_optional: 'Callable[[TypeEvaluationContext, OptionalType], T_co]',
+        on_list: 'Callable[[TypeEvaluationContext, ListType], T_co]',
+        on_text_map: 'Callable[[TypeEvaluationContext, TextMapType], T_co]',
+        on_record: 'Callable[[TypeEvaluationContext, RecordType], T_co]',
+        on_variant: 'Callable[[TypeEvaluationContext, VariantType], T_co]',
+        on_enum: 'Callable[[TypeEvaluationContext, EnumType], T_co]',
+        on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T_co]') \
+            -> 'Callable[[TypeEvaluationContext, Type], T_co]':
     """
     Produce a function that defers handling of core types to the passed in functions.
 
@@ -821,7 +818,7 @@ def type_evaluate_dispatch(
             if resolve_depth > 10:
                 raise Exception('hit our max resolve depth, which is probably not so great')
 
-        def error(_: Any) -> T: raise Exception()
+        def error(_: Any) -> 'T_co': raise Exception()
 
         context, tt = annotate_context(context, tt)
 
@@ -844,15 +841,15 @@ def _type_evaluate_dispatch_error(_, __):
 
 
 def type_evaluate_dispatch_default_error(
-        on_scalar: Callable[['TypeEvaluationContext', 'ScalarType'], T] = _type_evaluate_dispatch_error,
-        on_contract_id: Callable[['TypeEvaluationContext',  'ContractIdType'], T] = _type_evaluate_dispatch_error,
-        on_optional: Callable[['TypeEvaluationContext',  'OptionalType'], T] = _type_evaluate_dispatch_error,
-        on_list: Callable[['TypeEvaluationContext', 'ListType'], T] = _type_evaluate_dispatch_error,
-        on_text_map: Callable[['TypeEvaluationContext', 'TextMapType'], T] = _type_evaluate_dispatch_error,
-        on_record: Callable[['TypeEvaluationContext', 'RecordType'], T] = _type_evaluate_dispatch_error,
-        on_variant: Callable[['TypeEvaluationContext', 'VariantType'], T] = _type_evaluate_dispatch_error,
-        on_enum: 'Callable[[TypeEvaluationContext, EnumType], T]' = _type_evaluate_dispatch_error,
-        on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T]' = _type_evaluate_dispatch_error):
+        on_scalar: 'Callable[[TypeEvaluationContext, ScalarType], T_co]' = _type_evaluate_dispatch_error,
+        on_contract_id: 'Callable[[TypeEvaluationContext,  ContractIdType], T_co]' = _type_evaluate_dispatch_error,
+        on_optional: 'Callable[[TypeEvaluationContext,  OptionalType], T_co]' = _type_evaluate_dispatch_error,
+        on_list: 'Callable[[TypeEvaluationContext, ListType], T_co]' = _type_evaluate_dispatch_error,
+        on_text_map: 'Callable[[TypeEvaluationContext, TextMapType], T_co]' = _type_evaluate_dispatch_error,
+        on_record: 'Callable[[TypeEvaluationContext, RecordType], T_co]' = _type_evaluate_dispatch_error,
+        on_variant: 'Callable[[TypeEvaluationContext, VariantType], T_co]' = _type_evaluate_dispatch_error,
+        on_enum: 'Callable[[TypeEvaluationContext, EnumType], T_co]' = _type_evaluate_dispatch_error,
+        on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T_co]' = _type_evaluate_dispatch_error):
     return type_evaluate_dispatch(
         on_scalar, on_contract_id, on_optional, on_list, on_text_map, on_record, on_variant,
         on_enum, on_unsupported)
