@@ -7,7 +7,7 @@ Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic typ
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Union
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Union
 
 # noinspection PyPackageRequirements
 from google.protobuf.empty_pb2 import Empty
@@ -19,7 +19,7 @@ from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, 
     ContractExercisedEvent, ActiveContractSetEvent
 from ...model.core import Party
 from ...model.types import RecordType, Type, VariantType, ContractIdType, ListType, \
-    TypeEvaluationContext, type_evaluate_dispatch_default_error, MapType, OptionalType
+    TypeEvaluationContext, type_evaluate_dispatch_default_error, TextMapType, OptionalType
 from ...model.types_store import PackageStore
 from ...util.prim_types import to_date, to_datetime, to_hashable, frozendict
 
@@ -397,6 +397,8 @@ def to_natural_type(context: TypeEvaluationContext, data_type: Type, obj: 'G.Val
         return to_record(context, data_type, obj.record)
     elif ctor == 'variant':
         return to_variant(context, data_type, obj.variant)
+    elif ctor == 'map':
+        return to_map(context, data_type, obj.map)
     elif ctor == 'contract_id':
         return to_contract_id(context, data_type, obj.contract_id)
     elif ctor == 'list':
@@ -443,40 +445,29 @@ def to_variant(context: TypeEvaluationContext, tt: Type, variant: 'G.Variant') -
     """
     Convert an on-the-wire :class:`G.Variant` to a Python type.
 
-    Currently this also handles transparent conversion of :class:`MapType` and :class:`OptionalType`
-    to native Python types as well.
-
     :param context: The :class:`TypeEvaluationContext`
     :param tt: The DAML :class:`Type` to convert to.
     :param variant: The on-the-wire :class:`G.Variant` Protobuf message.
     :return: The native Python representation of this variant.
     """
-    def process_variant(child_context: TypeEvaluationContext, vt: VariantType) -> dict:
+    def process(child_context: TypeEvaluationContext, vt: VariantType) -> dict:
         ctor = variant.constructor
         field_type = vt.field_type(ctor)
         return {ctor: to_natural_type(child_context.append_path(ctor), field_type, variant.value)}
 
-    def process_map(child_context: TypeEvaluationContext, mt: MapType) -> dict:
-        reformatted = {}
-        for map_internal_tuple in variant.value.list.elements:
-            # TODO: Bake hashability into to_natural_type
-            key = to_hashable(to_natural_type(
-                child_context, mt.key_type, map_internal_tuple.record.fields[0].value))
-            value = to_hashable(to_natural_type(
-                child_context, mt.value_type, map_internal_tuple.record.fields[1].value))
-            reformatted[key] = value
-        return frozendict(reformatted)
+    return type_evaluate_dispatch_default_error(on_variant=process)(context, tt)
 
-    def process_optional(child_context: TypeEvaluationContext, ot: OptionalType) -> Optional[Any]:
-        if variant.constructor == 'None':
-            return None
-        elif variant.constructor == 'Some':
-            return to_natural_type(child_context.append_path('?'), ot.type_parameter, variant.value)
 
-    return type_evaluate_dispatch_default_error(
-        on_optional=process_optional,
-        on_map=process_map,
-        on_variant=process_variant)(context, tt)
+def to_map(context: TypeEvaluationContext, tt: Type, map_pb: 'G.Map') -> 'Mapping[str, Any]':
+    def process(child_context: TypeEvaluationContext, mt: TextMapType) -> dict:
+        return {
+            entry_pb.key:
+            to_natural_type(child_context.append_path(f'[{entry_pb.key}]'),
+                            mt.value_type,
+                            entry_pb.value)
+            for entry_pb in map_pb.entries}
+
+    return type_evaluate_dispatch_default_error(on_text_map=process)(context, tt)
 
 
 def to_contract_id(context: TypeEvaluationContext, tt: Type, contract_id: str) \

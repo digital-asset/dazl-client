@@ -1,12 +1,11 @@
-from asyncio import ensure_future, new_event_loop, set_event_loop, sleep, gather
-from pathlib import Path
+# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+from asyncio import new_event_loop, set_event_loop, sleep
 from unittest import TestCase
 
-from dazl import Network, sandbox, setup_default_logger
-from dazl.util.dar import TemporaryDar
-
-
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'AllKindsOf.daml'
+from dazl import Network, sandbox
+from .dars import AllKindsOf
 
 
 class TestDarUpload(TestCase):
@@ -59,6 +58,5 @@ class TestDarUpload(TestCase):
 
 
 async def upload_test_dars(network: 'Network'):
-    with TemporaryDar(DAML_FILE) as dar_files:
-        g = network.aio_global()
-        await gather(*[ensure_future(g.ensure_dar(file.read_bytes())) for file in dar_files])
+    g = network.aio_global()
+    await g.ensure_dar(AllKindsOf.read_bytes())

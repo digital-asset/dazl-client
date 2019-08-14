@@ -1,14 +1,12 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from functools import partial
 from operator import setitem
 from unittest import TestCase
-from pathlib import Path
 
 from dazl import sandbox, create, exercise, Network
+from .dars import Complicated as ComplicatedDar
 
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Complicated.daml'
 PARTY = 'Operator'
 
 
@@ -20,7 +18,7 @@ class Complicated:
 class ComplicatedTypesTest(TestCase):
     def test_complicated_types(self):
         recorded_data = dict()
-        with sandbox(DAML_FILE) as proc:
+        with sandbox(ComplicatedDar) as proc:
             network = Network()
             network.set_config(url=proc.url)
 

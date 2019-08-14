@@ -9,13 +9,13 @@ from .util import maybe_parentheses
 from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, Module, PrimCon, PrimType, \
     Type as NewType, Scenario, Pure, Block, Update
 from ..model.types import Type as OldType, ScalarType, ContractIdType, ListType, OptionalType, \
-    MapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, EnumType, \
-    type_dispatch_table, SCALAR_TYPE_UNIT, SCALAR_TYPE_BOOL, SCALAR_TYPE_CHAR, \
+    TextMapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, \
+    EnumType, type_dispatch_table, SCALAR_TYPE_UNIT, SCALAR_TYPE_BOOL, SCALAR_TYPE_CHAR, \
     SCALAR_TYPE_INTEGER, SCALAR_TYPE_DECIMAL, SCALAR_TYPE_TEXT, SCALAR_TYPE_PARTY, \
     SCALAR_TYPE_RELTIME, SCALAR_TYPE_DATE, SCALAR_TYPE_TIME, ForAllType
 
 
-_OldTypePrim = Union[ScalarType, ContractIdType, ListType, OptionalType, MapType, UpdateType,
+_OldTypePrim = Union[ScalarType, ContractIdType, ListType, OptionalType, TextMapType, UpdateType,
                      NewType.Prim]
 
 
@@ -304,7 +304,7 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 on_contract_id=self.visit_type_prim,
                 on_list=self.visit_type_prim,
                 on_optional=self.visit_type_prim,
-                on_map=self.visit_type_prim,
+                on_text_map=self.visit_type_prim,
                 on_record=self.visit_type_con,
                 on_variant=self.visit_type_con,
                 on_enum=self.visit_type_con,
@@ -395,10 +395,6 @@ class DamlPrettyPrinter(PrettyPrintBase):
 
         elif PrimType.MAP == prim_type:
             return self._visit_type_app(('Map', *prim.args))
-        elif PrimType.MAP_GENERIC == prim_type:
-            return self._visit_type_app(('Map', *prim.args))
-        elif isinstance(prim, MapType):
-            return self._visit_type_app(('Map', prim.key_type, prim.value_type))
 
         else:
             raise TypeError(f'A DAML Type primitive is required here (got {prim!r} instead')

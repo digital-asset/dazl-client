@@ -8,25 +8,24 @@ from dazl.model.types import TypeReference
 from dazl.model.types_store import PackageStore
 from dazl.protocols.v1.pb_ser_command import ProtobufSerializer
 from dazl.protocols.v1 import model as G
-from dazl.util.dar import TemporaryDar
-
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Pending.daml'
+from dazl.util.dar import DarFile
+from .dars import Pending
 
 
 class TestProtobufSerialize(TestCase):
 
-    dar: ClassVar[TemporaryDar]
+    dar: ClassVar[DarFile]
     store: ClassVar[PackageStore]
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.dar = TemporaryDar(DAML_FILE)
-        cls.store = cls.dar.store()
+        cls.dar = DarFile(Pending)
+        cls.store = cls.dar.read_metadata()
         cls.sut = ProtobufSerializer(cls.store)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.dar.cleanup()
+        cls.dar.close()
 
     @classmethod
     def get_template_type(cls, identifier: str) -> 'TypeReference':

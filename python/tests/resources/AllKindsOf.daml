@@ -4,7 +4,7 @@ module AllKindsOf
 
 where
 
-import DA.Map
+import DA.TextMap
 
 type Measurement = Decimal
 
@@ -25,7 +25,7 @@ template OneOfEverything
     someMaybeNot: Optional Int
     someText: Text
     someDate: Date
-    someDatetime: Datetime
+    someDatetime: Time
     someSimpleList: [Int]
     someSimplePair: MyPair Int
     someNestedPair: MyPair (MyPair Int)
@@ -43,7 +43,7 @@ template OneOfEverything
 template MappyContract
   with
     operator: Party
-    value: Map Text Text
+    value: TextMap Text
   where
     signatory operator
 

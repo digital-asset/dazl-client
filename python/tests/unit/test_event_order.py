@@ -4,10 +4,10 @@
 import asyncio
 import logging
 import random
-from pathlib import Path
 from unittest import TestCase
 
 from dazl import create, exercise, sandbox, setup_default_logger, Network
+from .dars import Simple as SimpleDar
 
 NOTIFICATION_COUNT = 20
 PARTY_COUNT = 10
@@ -15,8 +15,6 @@ PARTY_COUNT = 10
 OPERATOR_PARTY = 'Operator'
 USER_PARTIES = frozenset(f'Party{i}' for i in range(0, PARTY_COUNT))
 ALL_PARTIES = [OPERATOR_PARTY, *sorted(USER_PARTIES)]
-
-SIMPLE_DAML = Path(__file__).parent.parent / 'resources' / 'Simple.daml'
 
 
 class Simple:
@@ -34,7 +32,7 @@ def some_sample_app():
     stage1 = Stage1LedgerInit()
     stage2 = Stage2LedgerVerify()
 
-    with sandbox(SIMPLE_DAML) as proc:
+    with sandbox(SimpleDar) as proc:
         stage1.run(proc.url)
         stage2.run(proc.url)
 

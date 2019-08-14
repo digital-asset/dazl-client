@@ -107,7 +107,7 @@ class ProtobufParser:
     def parse_Type_Var(self, pb) -> 'Type':
         return Type(var=Type.Var(pb.var, tuple(self.parse_Type(arg) for arg in pb.args)))
 
-    def parse_Type_Con(self, pb, allow_rewrite: bool = True) -> 'Type':
+    def parse_Type_Con(self, pb) -> 'Type':
         """
         Create a :class:`Type` instance (but may produce something slightly different than the AST
         due to ``Map``/``Optional`` type rewriting).
@@ -115,15 +115,7 @@ class ProtobufParser:
         tycon = self.parse_TypeConName(pb.tycon)
         args = tuple(self.parse_Type(arg) for arg in pb.args)
         core_type = Type(con=Type.Con(tycon, args))
-
-        if not allow_rewrite:
-            return core_type
-        if tycon.full_name_unambiguous == 'DA.Map:Map':
-            return Type(prim=Type.Prim(PrimType.MAP_GENERIC, args, internal_type=core_type))
-        elif tycon.full_name_unambiguous == 'DA.Internal.Prelude:Optional':
-            return Type(prim=Type.Prim(PrimType.OPTIONAL, args, internal_type=core_type))
-        else:
-            return core_type
+        return core_type
 
     def parse_Type_Prim(self, pb) -> 'Type.Prim':
         return Type.Prim(
@@ -246,26 +238,26 @@ class ProtobufParser:
 
     def parse_Expr_RecCon(self, pb) -> 'Expr.RecCon':
         return Expr.RecCon(
-            self.parse_Type_Con(pb.tycon, allow_rewrite=False).con,
+            self.parse_Type_Con(pb.tycon).con,
             tuple(self.parse_FieldWithExpr(field) for field in pb.fields))  # length > 0
 
     def parse_Expr_RecProj(self, pb) -> 'Expr.RecProj':
         return Expr.RecProj(
-            self.parse_Type_Con(pb.tycon, allow_rewrite=False).con,  # Always fully applied
+            self.parse_Type_Con(pb.tycon).con,  # Always fully applied
             pb.field,
             self.parse_Expr(pb.record))
 
     def parse_Expr_RecUpd(self, pb) -> 'Expr.RecUpd':
         """Set ``field`` in ``record`` to ``update``."""
         return Expr.RecUpd(
-            self.parse_Type_Con(pb.tycon, allow_rewrite=False).con,
+            self.parse_Type_Con(pb.tycon).con,
             pb.field,
             self.parse_Expr(pb.record),
             self.parse_Expr(pb.update))
 
     def parse_Expr_VariantCon(self, pb) -> 'Expr.VariantCon':
         return Expr.VariantCon(
-            self.parse_Type_Con(pb.tycon, allow_rewrite=False).con,  # Always fully applied
+            self.parse_Type_Con(pb.tycon).con,  # Always fully applied
             pb.variant_con,
             self.parse_Expr(pb.variant_arg))
 
@@ -494,7 +486,7 @@ class ProtobufParser:
 
     def parse_KeyExpr_Projection(self, pb) -> 'KeyExpr.Projection':
         return KeyExpr.Projection(
-            tycon=self.parse_Type_Con(pb.tycon, allow_rewrite=False).con,
+            tycon=self.parse_Type_Con(pb.tycon).con,
             field=pb.field)
 
     def parse_KeyExpr_Projections(self, pb) -> 'KeyExpr.Projections':
@@ -506,7 +498,7 @@ class ProtobufParser:
 
     def parse_KeyExpr_Record(self, pb) -> 'KeyExpr.Record':
         return KeyExpr.Record(
-            tycon=self.parse_Type_Con(pb.tycon, allow_rewrite=False).con,
+            tycon=self.parse_Type_Con(pb.tycon).con,
             fields=[self.parse_KeyExpr_RecordField(p) for p in pb.fields])
 
     def parse_DefTemplate(self, pb) -> 'DefTemplate':

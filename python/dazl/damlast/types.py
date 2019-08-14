@@ -34,7 +34,7 @@ def match_prim_type(
         on_contract_id: 'Callable[[Type], T]',
         on_optional: 'Callable[[Type], T]',
         on_arrow: 'Callable[[Type, Type], T]',
-        on_map: 'Callable[[Type, Type], T]') -> 'T':
+        on_text_map: 'Callable[[Type], T]') -> 'T':
     if prim_type.prim == PrimType.UNIT:
         return on_unit()
     elif prim_type.prim == PrimType.BOOL:
@@ -66,9 +66,7 @@ def match_prim_type(
     elif prim_type.prim == PrimType.ARROW:
         return on_arrow(prim_type.args[0], prim_type.args[1])
     elif prim_type.prim == PrimType.MAP:
-        return on_map(STRING, prim_type.args[0])
-    elif prim_type.prim == PrimType.MAP_GENERIC:
-        return on_map(prim_type.args[0], prim_type.args[1])
+        return on_text_map(prim_type.args[0])
     else:
         raise ValueError(f'undefined PrimType: {prim_type}')
 
@@ -95,8 +93,7 @@ def _old_type_con(con: 'Type.Con') -> 'OldType':
 
 def _old_type_prim(prim: 'Type.Prim') -> 'OldType':
     from ..model.types import UnsupportedType
-
-    core_type = match_prim_type(
+    return match_prim_type(
         prim,
         _old_scalar_type_unit,
         _old_scalar_type_bool,
@@ -113,13 +110,7 @@ def _old_type_prim(prim: 'Type.Prim') -> 'OldType':
         _old_scalar_contract_id_type,
         _old_optional_type,
         lambda *args: UnsupportedType('Arrow'),
-        _old_map_type)
-
-    # TODO: This is pretty ugly
-    if hasattr(prim, 'internal_type') and prim.internal_type is not None:
-        core_type.internal_type = get_old_type(prim.internal_type)
-
-    return core_type
+        _old_textmap_type)
 
 
 def _old_forall_type(forall: 'Type.Forall') -> 'OldType':
@@ -189,11 +180,9 @@ def _old_scalar_contract_id_type(arg: 'Type') -> 'OldType':
 
 def _old_optional_type(arg: 'Type') -> 'OldType':
     from ..model.types import OptionalType
-    internal_type = arg._Sum_value.internal_type if hasattr(arg._Sum_value, 'internal_type') \
-        else None
-    return OptionalType(get_old_type(arg), internal_type=internal_type)
+    return OptionalType(get_old_type(arg))
 
 
-def _old_map_type(key_type: 'Type', value_type: 'Type') -> 'OldType':
-    from ..model.types import MapType
-    return MapType(get_old_type(key_type), get_old_type(value_type))
+def _old_textmap_type(value_type: 'Type') -> 'OldType':
+    from ..model.types import TextMapType
+    return TextMapType(get_old_type(value_type))

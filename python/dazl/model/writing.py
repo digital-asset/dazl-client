@@ -27,8 +27,8 @@ from dataclasses import dataclass, fields
 from .. import LOG
 from .core import ContractId, Party
 from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice, \
-    RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, MapType, EnumType, \
-    scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch, \
+    RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, TextMapType, \
+    EnumType, scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch, \
     TemplateMeta, ChoiceMeta
 from .types_store import PackageStore
 from ..util.prim_types import DEFAULT_TYPE_CONVERTER
@@ -629,7 +629,7 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
     def serialize_list(self, context: TypeEvaluationContext, tt: ListType, obj: Any) -> TValue:
         raise NotImplementedError('serialize_list requires an implementation')
 
-    def serialize_map(self, context: TypeEvaluationContext, tt: MapType, obj: Any) -> TValue:
+    def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> TValue:
         raise NotImplementedError('serialize_map requires an implementation')
 
     def serialize_record(self, context: TypeEvaluationContext, tt: RecordType, obj: Any) -> TValue:

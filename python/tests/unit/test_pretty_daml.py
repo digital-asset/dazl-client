@@ -1,14 +1,11 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-
-from pathlib import Path
 from unittest import TestCase
 
 from dazl.pretty import DamlPrettyPrinter, PrettyOptions
-from dazl.util.dar import TemporaryDar
-
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Pending.daml'
+from dazl.util.dar import DarFile
+from .dars import Pending
 
 
 class TestDamlPrettyPrinter(TestCase):
@@ -90,7 +87,6 @@ class TestDamlPrettyPrinter(TestCase):
     # endregion
 
     def test_render_metadata(self):
-        dar = TemporaryDar(DAML_FILE)
-        with dar:
-            pp = DamlPrettyPrinter(store=dar.store(), context=PrettyOptions(show_hidden_types=True))
+        with DarFile(Pending) as dar:
+            pp = DamlPrettyPrinter(store=dar.read_metadata(), context=PrettyOptions(show_hidden_types=True))
             pp.render_store()

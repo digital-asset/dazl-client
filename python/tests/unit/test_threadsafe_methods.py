@@ -1,26 +1,21 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
-from pathlib import Path
 from unittest import TestCase
 
-from dazl import sandbox, exercise, setup_default_logger
-from dazl.client.api import simple_client
-from dazl.model.core import Party
+from dazl import sandbox, exercise, Party, simple_client
+from .dars import Simple
 
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Simple.daml'
+
 PARTY = Party('Operator')
 OperatorRole = 'Simple.OperatorRole'
 OperatorNotification = 'Simple.OperatorNotification'
-
-setup_default_logger(logging.DEBUG)
 
 
 class TestThreadsafeMethods(TestCase):
 
     def test_threadsafe_methods(self):
-        with sandbox(DAML_FILE) as proc:
+        with sandbox(Simple) as proc:
             with simple_client(proc.url, PARTY) as client:
                 client.ready()
                 client.submit_create(OperatorRole, {'operator': PARTY})

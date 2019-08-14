@@ -48,6 +48,18 @@ def build_dar(
     proc_opts = package(options, component=damlc_component)
     with ProcessWatcher(proc_opts) as pw:
         code = pw.run()
+
+    # the daml compiler spits out .hi and .hie files next to source, and there is currently no way
+    # to suppress this behavior
+    try:
+        daml_path.with_suffix('.hi').unlink()
+    except FileNotFoundError:
+        pass
+    try:
+        daml_path.with_suffix('.hie').unlink()
+    except FileNotFoundError:
+        pass
+
     if code != 0:
         raise DamlcPackageError(code)
     return True
@@ -136,6 +148,9 @@ class DarFile:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def close(self):
         self.dar_contents.close()
 
     def read_metadata(self) -> 'PackageStore':

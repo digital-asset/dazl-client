@@ -1,12 +1,12 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from unittest import TestCase
-from pathlib import Path
 
 from dazl import sandbox, create, Network
 from dazl.model.core import ProcessDiedException
+from .dars import Simple
 
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Simple.daml'
 PARTY = 'Operator'
 OperatorRole = 'Simple.OperatorRole'
 
@@ -14,7 +14,7 @@ OperatorRole = 'Simple.OperatorRole'
 class SandboxWrapperTest(TestCase):
     def _sandbox_test(self, extra_args=None):
         cids = []
-        with sandbox(DAML_FILE, extra_args=extra_args) as proc:
+        with sandbox(Simple, extra_args=extra_args) as proc:
             network = Network()
             network.set_config(url=proc.url)
 

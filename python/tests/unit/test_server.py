@@ -3,21 +3,19 @@
 
 import logging
 from asyncio import sleep
-from pathlib import Path
 from unittest import TestCase
 
 from aiohttp import ClientSession
 
-from dazl import Network, sandbox, create, exercise, exercise_by_key, setup_default_logger
+from dazl import Network, sandbox, create, exercise_by_key
 from dazl.model.core import Party
-setup_default_logger(logging.DEBUG)
+from .dars import TestServer as TestServerDar
+
 
 Alice = Party("Alice")
 Bob = Party("Bob")
 Carol = Party("Carol")
 
-
-TEST_DAML = Path(__file__).parent.parent / 'resources' / 'TestServer.daml'
 
 LOG = logging.getLogger('test_server')
 
@@ -25,7 +23,7 @@ LOG = logging.getLogger('test_server')
 class TestServer(TestCase):
     def test_server_endpoint(self):
         SERVER_PORT = 53390
-        with sandbox([TEST_DAML], backend='sandbox:100.13.16') as proc:
+        with sandbox(TestServerDar) as proc:
             bot_main(sandbox_url=proc.url, server_port=SERVER_PORT)
 
 
@@ -53,12 +51,12 @@ def bot_main(sandbox_url, server_port):
     bob_bot = bob._impl.bots.add_new("Bob's Bot")
     bob_bot.pause()
     @bob_bot.ledger_created('TestServer.Person')
-    def bob_sends_a_message(event):
+    def bob_sends_a_message(_):
         return exercise_by_key(
             'TestServer:Person', Bob, 'SayHello', {'receiver': Alice, 'text': "Bob's ultra secret message"})
 
     @carol.ledger_created('TestServer.Person')
-    def carol_sends_a_message(event):
+    def carol_sends_a_message(_):
         return exercise_by_key(
             'TestServer:Person', Carol, 'SayHello', {'receiver': Alice, 'text': "Carol's gonna Carol"})
 

@@ -122,8 +122,6 @@ class Kind:
 
 
 class PrimType(Enum):
-    MAP_GENERIC = -1  # arity = 2 (this does NOT correspond to a DAML Primitive, but is treated as a
-                      # primitive in dazl to allow specialized processing of it
     UNIT = 0          # arity = 0
     BOOL = 1          # arity = 0
     INT64 = 2         # arity = 0
@@ -165,16 +163,13 @@ class Type:
     class Prim:
         prim: 'PrimType'
         args: 'Sequence[Type]'
-        internal_type: 'Optional[Type]'
 
         def __init__(
                 self,
                 prim: 'PrimType',
-                args: 'Sequence[Type]',
-                internal_type: 'Optional[Type]' = None):
+                args: 'Sequence[Type]'):
             self.prim = prim
             self.args = tuple(args)
-            self.internal_type = internal_type
 
     class Forall:
         vars: 'Sequence[TypeVarWithKind]'

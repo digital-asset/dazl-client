@@ -5,7 +5,7 @@
 from typing import Any, NoReturn
 
 from ..model.core import ContractId
-from ..model.types import Type, UnsupportedType, VariantType, RecordType, ListType, MapType, \
+from ..model.types import Type, UnsupportedType, VariantType, RecordType, ListType, TextMapType, \
     ContractIdType, TemplateChoice, TypeEvaluationContext, OptionalType
 from ..model.types_store import PackageStore
 from ..model.writing import AbstractSerializer
@@ -71,8 +71,17 @@ class PythonExampleSerializer(AbstractSerializer[Any, Any]):
                 LOG.exception(f'Failed to serialize an optional: {tt}!')
                 return '...O'
 
-    def serialize_map(self, context: TypeEvaluationContext, tt: MapType, obj: Any) -> Any:
-        return '{}'
+    def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> Any:
+        if len(context.path) > 6:
+            return '...'
+        else:
+            try:
+                obj = self._serialize_dispatch(context, tt.value_type, None)
+                return {'key1': obj, 'key2': obj}
+            except:
+                from .. import LOG
+                LOG.exception(f'Failed to serialize an optional: {tt}!')
+                return '...M'
 
     def serialize_list(self, context: TypeEvaluationContext, tt: ListType, obj: Any) -> Any:
         if len(context.path) > 6:

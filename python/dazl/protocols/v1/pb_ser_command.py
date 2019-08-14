@@ -13,7 +13,7 @@ from . import model as G
 from ...model.core import ContractId
 from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
     UnsupportedType, TemplateChoice, TypeReference, TypeEvaluationContext, SCALAR_TYPE_UNIT, \
-    MapType, OptionalType, EnumType
+    TextMapType, OptionalType, EnumType
 from ...model.writing import AbstractSerializer, CommandPayload
 from ...util.prim_types import to_boolean, to_date, to_datetime, to_decimal, to_int, to_str, \
     decode_variant_dict
@@ -166,18 +166,14 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'contract_id', to_str(obj)
 
     def serialize_optional(self, context: TypeEvaluationContext, tt: OptionalType, obj: Any):
+        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Optional
         ut = tt.type_parameter
-        if tt.internal_type is not None:
-            blown_out_rep = {'None': {}} if obj is None else {'Some': obj}
-            return self._serialize_dispatch(
-                context.append_path('?'), tt.internal_type, blown_out_rep)
-        else:
-            from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Optional, Value
-            optional_message = Optional()
-            if obj is not None:
-                ctor, val = self._serialize_dispatch(context.append_path('?'), ut, obj)
-                _set_value(optional_message.value, ctor, val)
-            return 'optional', optional_message
+
+        optional_message = Optional()
+        if obj is not None:
+            ctor, val = self._serialize_dispatch(context.append_path('?'), ut, obj)
+            _set_value(optional_message.value, ctor, val)
+        return 'optional', optional_message
 
     def serialize_list(self, context: TypeEvaluationContext, tt: ListType, obj: Any) -> R:
         from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import List
@@ -190,12 +186,17 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
             _set_value(value, ctor, val)
         return 'list', list_message
 
-    def serialize_map(self, context: TypeEvaluationContext, tt: MapType, obj: Any) -> R:
-        if tt.internal_type is not None:
-            blown_out_rep = {'Map_internal': [{'_1': k, '_2': v} for k, v in obj.items()]}
-            return self._serialize_dispatch(context, tt.internal_type, blown_out_rep)
-        else:
-            raise ValueError('A native Map type does not yet exist in the gRPC API')
+    def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> R:
+        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Map
+        vt = tt.value_type
+
+        map_message = Map()
+        for key, value in obj.items():
+            entry = map_message.entries.add()
+            entry.key = key
+            ctor, val = self._serialize_dispatch(context.append_path(f'[{key}]'), vt, value)
+            _set_value(entry.value, ctor, val)
+        return 'map', map_message
 
     def serialize_record(self, context: TypeEvaluationContext, tt: RecordType, obj: Any) -> R:
         from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Record
@@ -281,7 +282,7 @@ def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:
             message.MergeFrom(value)
         elif ctor == 'unit':
             message.unit.SetInParent()
-        elif ctor in ('record', 'variant', 'list', 'optional', 'enum'):
+        elif ctor in ('record', 'variant', 'list', 'optional', 'enum', 'map'):
             getattr(message, ctor).MergeFrom(value)
         else:
             setattr(message, ctor, value)
