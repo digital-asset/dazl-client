@@ -1,12 +1,13 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from asyncio import wait_for, ensure_future
 from unittest import TestCase
-from pathlib import Path
 
 from dazl import sandbox, exercise, Network, AIOPartyClient
+from .dars import Simple
 
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Simple.daml'
+
 PARTY = 'Operator'
 OperatorRole = 'Simple.OperatorRole'
 OperatorNotification = 'Simple.OperatorNotification'
@@ -15,7 +16,7 @@ OperatorNotification = 'Simple.OperatorNotification'
 class SelectNonEmptyTestCase(TestCase):
     def test_select_template_retrieves_contracts(self):
         seen_notifications = []
-        with sandbox(DAML_FILE) as proc:
+        with sandbox(Simple) as proc:
             network = Network()
             network.set_config(url=proc.url)
 

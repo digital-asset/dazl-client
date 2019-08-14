@@ -1,13 +1,12 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-
 from unittest import TestCase
-from pathlib import Path
 
 from dazl import sandbox, create, exercise, Network
+from .dars import Simple
 
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Simple.daml'
+
 PARTY = 'Operator'
 OperatorRole = 'Simple.OperatorRole'
 OperatorNotification = 'Simple.OperatorNotification'
@@ -15,7 +14,7 @@ OperatorNotification = 'Simple.OperatorNotification'
 
 class SelectTest(TestCase):
     def test_select_template_retrieves_contracts(self):
-        with sandbox(DAML_FILE) as proc:
+        with sandbox(Simple) as proc:
             network = Network()
             network.set_config(url=proc.url)
 
@@ -28,7 +27,7 @@ class SelectTest(TestCase):
         self.assertEqual(len(data), 1)
 
     def test_select_unknown_template_retrieves_empty_set(self):
-        with sandbox(DAML_FILE) as proc:
+        with sandbox(Simple) as proc:
             network = Network()
             network.set_config(url=proc.url)
 
@@ -52,7 +51,7 @@ class SelectTest(TestCase):
             nonlocal actual_select_count
             actual_select_count += len(party_client.find_active(OperatorNotification))
 
-        with sandbox(DAML_FILE) as proc:
+        with sandbox(Simple) as proc:
             network = Network()
             network.set_config(url=proc.url)
 
@@ -76,7 +75,7 @@ class SelectTest(TestCase):
             nonlocal actual_select_count
             actual_select_count += len(event.acs_find_active(OperatorNotification))
 
-        with sandbox(DAML_FILE) as proc:
+        with sandbox(Simple) as proc:
             network = Network()
             network.set_config(url=proc.url)
 

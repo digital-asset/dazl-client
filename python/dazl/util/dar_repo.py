@@ -1,6 +1,7 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+import time
 from contextlib import ExitStack
 from pathlib import Path
 from typing import Union, List, Sequence
@@ -22,10 +23,10 @@ class LocalDarRepository:
         ext = path.suffix.lower()
 
         if ext == '.daml':
-            # dar_create_start_time = time.time()
+            dar_create_start_time = time.time()
             dar_paths = self._context.enter_context(TemporaryDar(path))
             self.add_source(*dar_paths)
-            # LOG.info('Compiled a dar in % seconds.', time.time() - dar_create_start_time)
+            LOG.debug('Compiled a dar in % seconds.', time.time() - dar_create_start_time)
 
         elif ext == '.dalf':
             dalf_package = parse_dalf(path.read_bytes())
@@ -33,13 +34,13 @@ class LocalDarRepository:
             self.store.register_all(dalf_package)
 
         elif ext == '.dar':
-            # dar_parse_start_time = time.time()
+            dar_parse_start_time = time.time()
             dar = self._context.enter_context(DarFile(path))
             dar_package = dar.read_metadata()
             self._dar_paths.append(path)
             self.store.register_all(dar_package)
-            # dar_parse_end_time = time.time()
-            # LOG.info('Parsed a dar in %s seconds.', dar_parse_end_time - dar_parse_start_time)
+            dar_parse_end_time = time.time()
+            LOG.debug('Parsed a dar in %s seconds.', dar_parse_end_time - dar_parse_start_time)
 
         else:
             LOG.error('Unknown extension: %s', ext)
@@ -58,33 +59,6 @@ class LocalDarRepository:
             if path not in self._files:
                 self._files.add(path)
                 self._add_source(path)
-
-        # stores = list()
-        # files = list(files)
-        # while files:
-        #     file = files.pop(0)
-        #     ext = pathify(file).suffix.lower()
-        #
-        #     if ext == '.daml':
-        #         # dar_create_start_time = time.time()
-        #         dar_paths = self._context.enter_context(TemporaryDar(file))
-        #         #LOG.info('Compiled a dar in % seconds.', time.time() - dar_create_start_time)
-        #         files.extend(dar_paths)
-        #     elif ext == '.dalf':
-        #         with open(file, 'rb') as f:
-        #             contents = f.read()
-        #         stores.append(parse_dalf('pkg0', contents))
-        #     elif ext == '.dar':
-        #         #dar_parse_start_time = time.time()
-        #         dar = self._context.enter_context(DarFile(file))
-        #         stores.append(dar.read_metadata())
-        #         #dar_parse_end_time = time.time()
-        #         #LOG.info('Parsed a dar in %s seconds.', dar_parse_end_time - dar_parse_start_time)
-        #     else:
-        #         LOG.error('Unknown extension: %s', ext)
-        #         raise ValueError(f'Unknown extension: {ext}')
-        #
-        # reduce(lambda store, other_store: store.register_all(other_store), stores, self.store)
 
     def get_daml_archives(self) -> Sequence[Path]:
         return self._dar_paths

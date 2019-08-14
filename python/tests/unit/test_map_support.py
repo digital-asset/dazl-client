@@ -2,30 +2,31 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from pathlib import Path
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from dazl import frozendict, sandbox, simple_client
 
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'MapSupport.daml'
+from .dars import MapSupport
 
 
 class TestMapSupport(TestCase):
     def test_map_support(self):
-        with sandbox(daml_path=DAML_FILE) as proc:
+        with sandbox(MapSupport) as proc:
             with simple_client(url=proc.url, party='Test') as client:
                 client.ready()
                 client.submit_create('MapSupport.Sample', {
                     'party': 'Test',
                     'mappings': {
-                        65: 'A',
-                        97: 'a'
+                        '65': 'A',
+                        '97': 'a'
                     },
                     'text': None
                 })
                 print(client.find_active('*'))
 
+    @skip('Keys with arbitrary types are no longer supported. See the comments in MapSupport.daml.')
     def test_complicated_map_support(self):
-        with sandbox(daml_path=DAML_FILE) as proc:
+        with sandbox(MapSupport) as proc:
             with simple_client(url=proc.url, party='Test') as client:
                 client.ready()
                 client.submit_create('MapSupport.ComplicatedSample', {

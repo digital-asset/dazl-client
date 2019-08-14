@@ -3,11 +3,11 @@
 
 import logging
 from unittest import TestCase
-from pathlib import Path
 
 from dazl import sandbox, create, setup_default_logger, Network
 
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'AllParty.daml'
+from .dars import AllParty
+
 SOME_PARTY = 'SomeParty'
 PUBLISHER = 'Publisher'
 ALL_PARTY = '000'
@@ -21,7 +21,7 @@ class AllPartyTest(TestCase):
     def test_some_party_receives_public_contract(self):
         some_party_cids = []
         publisher_cids = []
-        with sandbox(DAML_FILE, extra_args=None) as proc:
+        with sandbox(AllParty, extra_args=None) as proc:
             network = Network()
             network.set_config(url=proc.url, party_groups=[ALL_PARTY])
 

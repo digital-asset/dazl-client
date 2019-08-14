@@ -2,11 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 import logging
 from unittest import TestCase
-from pathlib import Path
 
-from dazl import sandbox, create, exercise, setup_default_logger, Network
+from dazl import sandbox, create, exercise, Network
+from .dars import Pending
 
-DAML_FILE = Path(__file__).parent.parent / 'resources' / 'Pending.daml'
 PARTY = 'Operator'
 Counter = 'Pending.Counter'
 Account = 'Pending.Account'
@@ -14,14 +13,12 @@ AccountRequest = 'Pending.AccountRequest'
 
 OperatorNotification = 'Simple.OperatorNotification'
 
-setup_default_logger(logging.DEBUG)
-
 
 class PendingTest(TestCase):
     def test_select_template_retrieves_contracts(self):
         number_of_contracts = 10
 
-        with sandbox(DAML_FILE) as proc:
+        with sandbox(Pending) as proc:
             network = Network()
             network.set_config(url=proc.url)
 

@@ -5,7 +5,7 @@ from typing import Any
 
 from ..model.core import ContractId
 from ..model.types import Type, UnsupportedType, VariantType, RecordType, ListType, \
-    ContractIdType, TemplateChoice, TypeEvaluationContext, OptionalType, MapType, \
+    ContractIdType, TemplateChoice, TypeEvaluationContext, OptionalType, TextMapType, \
     UnresolvedTypeReference, TypeReference, EnumType
 from ..model.writing import Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, \
     CreateAndExerciseCommand, AbstractSerializer
@@ -112,19 +112,17 @@ class ValidateSerializer(AbstractSerializer[Command, Any]):
         return [self._serialize_dispatch(context.append_path(f'[{i}]'), tt.type_parameter, item)
                 for i, item in enumerate(obj)]
 
-    def serialize_map(self, context: TypeEvaluationContext, tt: MapType, obj: Any) -> Any:
+    def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> Any:
         if obj is None:
             return {}
 
         from collections import Mapping
         if isinstance(obj, Mapping):
             reformatted = {}
-            for i, (key, value) in enumerate(obj.items()):
-                new_key = to_hashable(self._serialize_dispatch(
-                    context.append_path(f'[key {i}]'), tt.key_type, key))
-                new_value = to_hashable(self._serialize_dispatch(
-                    context.append_path(f'[value {i}]'), tt.value_type, value))
-                reformatted[new_key] = new_value
+            for key, value in obj.items():
+                new_value = self._serialize_dispatch(
+                    context.append_path(f'[{key}]'), tt.value_type, value)
+                reformatted[key] = new_value
             return reformatted
         else:
             raise ValueError(f'expected a dict here (got {type(obj)}: {obj!r} instead)')

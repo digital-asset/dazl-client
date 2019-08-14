@@ -2,17 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import datetime
+import unittest
 from decimal import Decimal
 
-import unittest
-
-from pathlib import Path
-
 from dazl import sandbox, create, Network
+from .dars import AllKindsOf
 
 
 PARTY = 'Operator'
-TEST_DAML = Path(__file__).parent.parent / 'resources' / 'AllKindsOf.daml'
 TEMPLATE = 'AllKindsOf.OneOfEverything'
 SOME_ARGS = dict(
     operator=PARTY,
@@ -35,7 +32,7 @@ SOME_ARGS = dict(
 class TestAllTypes(unittest.TestCase):
     def test_all_types(self):
         test_case = AllTypesTestCase()
-        with sandbox(TEST_DAML) as proc:
+        with sandbox(AllKindsOf) as proc:
             network = Network()
             network.set_config(url=proc.url)
 
@@ -58,7 +55,7 @@ class TestAllTypes(unittest.TestCase):
             self.assertEqual(expected, actual, f'Failed to compare types for key: {key}')
 
     def test_maps(self):
-        with sandbox(TEST_DAML) as proc:
+        with sandbox(AllKindsOf) as proc:
             network = Network()
             network.set_config(url=proc.url)
 

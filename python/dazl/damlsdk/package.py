@@ -27,7 +27,10 @@ def package(options: 'PackageOptions', component: 'Optional[str]' = None) -> 'Pr
         raise ValueError(f'Unknown packaging component: {component}')
 
     LOG.info('Using %s to create a DAR package...', name)
-    args = [path / 'da-hs-damlc-app', *_damlc_package_options(options)]
+    jars = list(path.glob('*.jar'))
+    if len(jars) != 1:
+        raise Exception(f"Could not find damlc jar in {path}")
+    args = ['java', '-jar', jars[0], *_damlc_package_options(options)]
     return ProcessContext(args, logger=logging.getLogger('damlc'))
 
 
@@ -36,5 +39,3 @@ def _damlc_package_options(options: 'PackageOptions') -> 'Sequence[str]':
         return ['package', *options.files, *options.extra_args, 'package-name', '-o', options.output_path]
     else:
         return ['package', *options.files, 'package-name', '-o', options.output_path]
-
-

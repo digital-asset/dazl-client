@@ -84,7 +84,7 @@ def type_dispatch_table(
         on_contract_id: Callable[['ContractIdType'], T],
         on_optional: Callable[['OptionalType'], T],
         on_list: Callable[['ListType'], T],
-        on_map: 'Callable[[MapType], T]',
+        on_text_map: 'Callable[[TextMapType], T]',
         on_record: Callable[['RecordType'], T],
         on_variant: Callable[['VariantType'], T],
         on_enum: 'Callable[[EnumType], T]',
@@ -104,8 +104,8 @@ def type_dispatch_table(
             return on_optional(tt)
         elif isinstance(tt, ListType):
             return on_list(tt)
-        elif isinstance(tt, MapType):
-            return on_map(tt)
+        elif isinstance(tt, TextMapType):
+            return on_text_map(tt)
         elif isinstance(tt, RecordType):
             return on_record(tt)
         elif isinstance(tt, VariantType):
@@ -368,32 +368,20 @@ class ListType(_BuiltInParameterizedType):
     pass
 
 
-class MapType(ConcreteType):
+class TextMapType(ConcreteType):
     """
-    A DAML-defined Map.
+    A DAML-defined TextMap.
 
     Instance attributes:
 
-    .. attribute: MapType.key_type
-
-        The type of keys in this map.
-
-    .. attribute: MapType.value_type
+    .. attribute: TextMapType.value_type
 
         The type of values in this map.
-
-    .. attribute: MapType.internal_type
-
-        The behind-the-scenes type that this :class:`MapType` is supposed to stand in as in context.
-        This field should only be used by wire serializers and never be used for processing
-        user-facing data.
     """
-    __slots__ = ('key_type', 'value_type', 'internal_type')
+    __slots__ = 'value_type',
 
-    def __init__(self, key_type: Type, value_type: Type, internal_type: 'Optional[Type]' = None):
-        self.key_type = safe_cast(Type, key_type)
+    def __init__(self, value_type: Type):
         self.value_type = safe_cast(Type, value_type)
-        self.internal_type = safe_optional_cast(Type, internal_type)
 
     @property
     def adjective(self):
@@ -401,7 +389,7 @@ class MapType(ConcreteType):
 
     def __repr__(self):
         py_type = type(self).__name__
-        return f'<{py_type}({self.key_type!r}, {self.value_type!r})>'
+        return f'<{py_type}({self.value_type!r})>'
 
 
 class OptionalType(_BuiltInParameterizedType):
@@ -413,18 +401,7 @@ class OptionalType(_BuiltInParameterizedType):
     .. attribute: OptionalType.type_parameter
 
         The type of value in the Optional.
-
-    .. attribute: OptionalType.internal_type
-
-        The behind-the-scenes type that this :class:`MapType` is supposed to stand in as in context.
-        This field should only be used by wire serializers and never be used for processing
-        user-facing data.
     """
-    __slots__ = 'internal_type',
-
-    def __init__(self, type_parameter: Type, internal_type: 'Optional[Type]' = None):
-        super().__init__(type_parameter)
-        self.internal_type = safe_optional_cast(Type, internal_type)
 
 
 class UpdateType(_BuiltInParameterizedType):
@@ -822,7 +799,7 @@ def type_evaluate_dispatch(
         on_contract_id: 'Callable[[TypeEvaluationContext,  ContractIdType], T]',
         on_optional: 'Callable[[TypeEvaluationContext, OptionalType], T]',
         on_list: 'Callable[[TypeEvaluationContext, ListType], T]',
-        on_map: 'Callable[[TypeEvaluationContext, MapType], T]',
+        on_text_map: 'Callable[[TypeEvaluationContext, TextMapType], T]',
         on_record: 'Callable[[TypeEvaluationContext, RecordType], T]',
         on_variant: 'Callable[[TypeEvaluationContext, VariantType], T]',
         on_enum: 'Callable[[TypeEvaluationContext, EnumType], T]',
@@ -854,7 +831,7 @@ def type_evaluate_dispatch(
             lambda ct: on_contract_id(context, ct),
             lambda ot: on_optional(context, ot),
             lambda lt: on_list(context, lt),
-            lambda mt: on_map(context, mt),
+            lambda mt: on_text_map(context, mt),
             lambda rt: on_record(context, rt),
             lambda vt: on_variant(context, vt),
             lambda et: on_enum(context, et),
@@ -871,14 +848,14 @@ def type_evaluate_dispatch_default_error(
         on_contract_id: Callable[['TypeEvaluationContext',  'ContractIdType'], T] = _type_evaluate_dispatch_error,
         on_optional: Callable[['TypeEvaluationContext',  'OptionalType'], T] = _type_evaluate_dispatch_error,
         on_list: Callable[['TypeEvaluationContext', 'ListType'], T] = _type_evaluate_dispatch_error,
-        on_map: Callable[['TypeEvaluationContext', 'MapType'], T] = _type_evaluate_dispatch_error,
+        on_text_map: Callable[['TypeEvaluationContext', 'TextMapType'], T] = _type_evaluate_dispatch_error,
         on_record: Callable[['TypeEvaluationContext', 'RecordType'], T] = _type_evaluate_dispatch_error,
         on_variant: Callable[['TypeEvaluationContext', 'VariantType'], T] = _type_evaluate_dispatch_error,
         on_enum: 'Callable[[TypeEvaluationContext, EnumType], T]' = _type_evaluate_dispatch_error,
         on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T]' = _type_evaluate_dispatch_error):
     return type_evaluate_dispatch(
-        on_scalar, on_contract_id, on_optional, on_list, on_map, on_record, on_variant, on_enum,
-        on_unsupported)
+        on_scalar, on_contract_id, on_optional, on_list, on_text_map, on_record, on_variant,
+        on_enum, on_unsupported)
 
 
 def single_reduce(context: TypeEvaluationContext, tt: Type) -> 'Tuple[TypeEvaluationContext, Type]':
