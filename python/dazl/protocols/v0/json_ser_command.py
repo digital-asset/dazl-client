@@ -16,7 +16,7 @@ from typing import Union, Dict, Any, List
 from ... import LOG
 from ...model.core import ContractId
 from ...model.types import ScalarType, ListType, RecordType, VariantType, \
-    ContractIdType, UnsupportedType, as_contract_id, TemplateChoice, MapType
+    ContractIdType, UnsupportedType, as_contract_id, TemplateChoice, TextMapType
 from ...model.writing import CommandPayload, AbstractSerializer, TypeEvaluationContext
 from ...util.prim_types import to_boolean, to_date, to_str, to_decimal, decode_variant_dict, \
     to_int, to_datetime, to_timedelta
@@ -236,7 +236,7 @@ class JsonSerializer(AbstractSerializer[dict, R]):
         return [self._serialize_dispatch(context.append_path(f'[{i}]'), tt.type_parameter, item)
                 for i, item in enumerate(obj)]
 
-    def serialize_map(self, context: TypeEvaluationContext, tt: MapType, obj: Any) -> R:
+    def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> R:
         return {self._serialize_dispatch(context.append_path(f'[key {i}]'), tt.key_type, key):
                 self._serialize_dispatch(context.append_path(f'[value {i}]'), tt.value_type, value)
                 for i, (key, value) in enumerate(obj.items())}
