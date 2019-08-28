@@ -12,69 +12,82 @@ SPDX-License-Identifier: Apache-2.0
 
 Rich Python bindings for accessing Ledger API-based applications.
 
+Documentation
+-------------
+The user documentation is available online [here](https://digital-asset.github.io/dazl-client).
+
+Installation
+------------
+If you just want to use the library, you can install it locally with `pip`:
+```sh
+pip install --user dazl
+```
+
 Requirements
 ------------
 * Python 3.6+
-* [Pipenv](https://pipenv.readthedocs.io/en/latest/)
+* [Poetry](https://poetry.eustace.io/) for build/dependency management
 * Although not strictly required for building, you'll probably want the [DAML SDK](https://www.daml.com)
 
 Examples
 --------
 
-All of the examples below assume you imported `dazl`.
+All of the examples below assume you imported `dazl`, and are running a ledger with the default scenario generated with `daml new`.
 
 Connect to the ledger and submit a single command:
 
 ```py
-with dazl.simple_client('http://localhost:7600', 'Alice') as client:
-    client.submit_create('Alice', 'My.Template', { someField: 'someText' })
+with dazl.simple_client('http://localhost:6865', 'Alice') as client:
+    contract = { 'issuer' : 'Alice', 'owner' : 'Alice', 'name' : 'hello world!' }
+    client.ready()
+    client.submit_create('Main.Asset', contract)
 ```
 
 Connect to the ledger as a single party, print all contracts, and close:
 
 ```py
-with dazl.simple_client('http://localhost:7600', 'Alice') as client:
+with dazl.simple_client('http://localhost:6865', 'Alice') as client:
     # wait for the ACS to be fully read
     client.ready()
     contract_dict = client.find_active('*')
 print(contract_dict)
 ```
 
-Connect to the ledger as multiple parties:
+Connect to the ledger using asynchronous callbacks:
 
 ```py
+from dazl.model.reading import ReadyEvent
 network = dazl.Network()
-network.set_config(url='http://localhost:7600')
+network.set_config(url='http://localhost:6865')
 
-alice = network.simple_party('Alice')
-bob = network.simple_party('Bob')
+alice = network.aio_party('Alice')
 
 @alice.ledger_ready()
-def set_up(event):
-    currency_cid, _ = await event.acs_find_one('My.Currency', {"currency": "USD"})
-    return dazl.create('SomethingOf.Value', {
-        'amount': 100,
-        'currency': currency_cid,
-        'from': 'Accept',
-        'to': 'Bob' })
+async def onReady(event: ReadyEvent):
+  contracts = await event.acs_find_one('Main.Asset')
+  print(contracts)
 
-@bob.ledger_created('SomethingOf.Value')
-def on_something_of_value(event):
-    return dazl.exercise(event.cid, 'Accept', { 'message': 'Thanks!' })
-
-network.start()
+network.run_until_complete()
 ```
 
 
 Building locally
 ----------------
+You will need to have [Poetry](https://poetry.eustace.io/) installed, and the dependencies fetched using `poetry install`. Then do:
+
 ```sh
-cd python && pipenv run package
+make build
 ```
+
+If you see errors about incompatible python versions, switch your environment to python3 using `poetry env use python3`, for instance.
+
+Building Documentation
+----------------------
+The above command will build documentation in the root `docs/` dir. Committing this into source control and pushing to github will cause github-pages to be updated.
 
 Tests
 -----
 
 ```sh
-cd python && pipenv run test
+make test
 ```

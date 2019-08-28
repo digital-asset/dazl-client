@@ -71,20 +71,17 @@
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>You will need Python 3.6 or later and a Digital Asset ledger implementation (DA Sandbox or
-DA Ledger Server). <a class="reference internal" href="glossary.html#term-dazl"><span class="xref std std-term">dazl</span></a> additionally requires the following libraries to be
-installed:</p>
-<ul class="simple">
-<li><p>grpcio, version 1.18.0 or later</p></li>
-<li><p>PyYAML</p></li>
-<li><p>semver</p></li>
-</ul>
+DA Ledger Server).</p>
+<p>Build-time dependencies are handled using <a class="reference external" href="https://poetry.eustace.io/">Poetry</a>.</p>
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>This section assumes that you already have a running ledger with a DAML model loaded.</p>
+<p>This section assumes that you already have a running ledger with the standard <cite>daml new</cite> model loaded, and have imported <cite>dazl</cite>.</p>
 <p>Connect to the ledger and submit a single command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">simple_client</span><span class="p">(</span><span class="s1">&#39;http://localhost:7600&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">submit_create</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;My.Template&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">someField</span><span class="p">:</span> <span class="s1">&#39;someText&#39;</span> <span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">simple_client</span><span class="p">(</span><span class="s1">&#39;http://localhost:6865&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+    <span class="n">contract</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;issuer&#39;</span> <span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;owner&#39;</span> <span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="s1">&#39;hello world!&#39;</span> <span class="p">}</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">ready</span><span class="p">()</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">submit_create</span><span class="p">(</span><span class="s1">&#39;Main.Asset&#39;</span><span class="p">,</span> <span class="n">contract</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Connect to the ledger as a single party, print all contracts, and close:</p>
@@ -95,27 +92,19 @@ installed:</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">contract_dict</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Connect to the ledger as multiple parties:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">network</span> <span class="o">=</span> <span class="n">dazl</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
-<span class="n">network</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://localhost:7600&#39;</span><span class="p">)</span>
+<p>Connect to the ledger using asynchronous callbacks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dazl.model.reading</span> <span class="k">import</span> <span class="n">ReadyEvent</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">dazl</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
+<span class="n">network</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://localhost:6865&#39;</span><span class="p">)</span>
 
-<span class="n">alice</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">simple_party</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span>
-<span class="n">bob</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">simple_party</span><span class="p">(</span><span class="s1">&#39;Bob&#39;</span><span class="p">)</span>
+<span class="n">alice</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">aio_party</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span>
 
 <span class="nd">@alice</span><span class="o">.</span><span class="n">ledger_ready</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="n">currency_cid</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">event</span><span class="o">.</span><span class="n">acs_find_one</span><span class="p">(</span><span class="s1">&#39;My.Currency&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;currency&quot;</span><span class="p">:</span> <span class="s2">&quot;USD&quot;</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">dazl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;SomethingOf.Value&#39;</span><span class="p">,</span> <span class="p">{</span>
-        <span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-        <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="n">currency_cid</span><span class="p">,</span>
-        <span class="s1">&#39;from&#39;</span><span class="p">:</span> <span class="s1">&#39;Accept&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;to&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span> <span class="p">})</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">onReady</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">ReadyEvent</span><span class="p">):</span>
+  <span class="n">contracts</span> <span class="o">=</span> <span class="k">await</span> <span class="n">event</span><span class="o">.</span><span class="n">acs_find_one</span><span class="p">(</span><span class="s1">&#39;Main.Asset&#39;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">contracts</span><span class="p">)</span>
 
-<span class="nd">@bob</span><span class="o">.</span><span class="n">ledger_created</span><span class="p">(</span><span class="s1">&#39;SomethingOf.Value&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">on_something_of_value</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">dazl</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;Accept&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Thanks!&#39;</span> <span class="p">})</span>
-
-<span class="n">network</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">network</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
