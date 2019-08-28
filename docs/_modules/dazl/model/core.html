@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dazl.model.core</title>
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" href="../../../_static/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="../../../_static/favicon-16x16.png" sizes="16x16"/>
+  <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="dazl unknown documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+</head>
+<body>
+
+   
+
+  <header>
+    dazl
+
+  </header>
+  <nav>
+              
+              
+                
+              
+              
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../migrating.html">Migrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dazl.html">dazl package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+</ul>
+
+              
+
+  </nav>
+  <main>
+    
+  <h1>Source code for dazl.model.core</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Core types</span>
+<span class="sd">----------</span>
+
+<span class="sd">The :mod:`dazl.model.core` module contains classes used on both the read-side and the write-side of</span>
+<span class="sd">the Ledger API.</span>
+
+<span class="sd">.. autoclass:: ContractId</span>
+<span class="sd">   :members:</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="k">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">NewType</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> \
+    <span class="n">Union</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">..util.enum</span> <span class="k">import</span> <span class="n">OrderedEnum</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.types</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ContractId"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.core.ContractId">[docs]</a><span class="k">class</span> <span class="nc">ContractId</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    There are two kinds of contract IDs: those that know the template type of the underlying</span>
+<span class="sd">    contract instance and those that don&#39;t. Contract IDs that arise from event processing are always</span>
+<span class="sd">    tagged with their type when they are read off the event stream. Contract IDs that are</span>
+<span class="sd">    parameters to a template are not currently tagged with a template type.</span>
+
+<span class="sd">    Instance attributes:</span>
+
+<span class="sd">    .. attribute:: ContractId.contract_id</span>
+
+<span class="sd">        A ``str`` reference to a contract.</span>
+
+<span class="sd">    .. attribute:: ContractId.template_id</span>
+
+<span class="sd">        An optional ``str`` template ID.</span>
+
+<span class="sd">    Instance members:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;contract_id&#39;</span><span class="p">,</span> <span class="s1">&#39;template_id&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">template_id</span><span class="p">:</span> <span class="s1">&#39;Union[None, str, Type]&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.types</span> <span class="k">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">UnresolvedTypeReference</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">contract_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;contract_id must be a string&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">template_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Untyped ContractId support will be removed with the removal of &#39;</span>
+                          <span class="s1">&#39;the deprecated REST API.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">template_id</span> <span class="o">=</span> <span class="n">UnresolvedTypeReference</span><span class="p">(</span><span class="n">template_id</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_id</span><span class="p">,</span> <span class="n">Type</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;template_id must either be unspecified or a template identifier &#39;</span>
+                                 <span class="n">f</span><span class="s1">&#39;(got {repr(template_id)})&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span> <span class="o">=</span> <span class="n">contract_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template_id</span> <span class="o">=</span> <span class="n">template_id</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the contract ID without a type adornment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&lt;ContractId(&quot;</span><span class="si">{}</span><span class="s1">&lt;</span><span class="si">{}</span><span class="s1">&gt;&quot;)&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&lt;ContractId(&quot;</span><span class="si">{}</span><span class="s1">&quot;)&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether this contract is the same as the other one. Template</span>
+<span class="sd">        type is NOT considered in equality.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ContractId</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">contract_id</span>
+
+    <span class="k">def</span> <span class="nf">__format__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;{:&#39;</span> <span class="o">+</span> <span class="n">format_spec</span> <span class="o">+</span> <span class="s1">&#39;s}&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a hash of the ContractId (based on the value of ContractId).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ContractId.exercise"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.core.ContractId.exercise">[docs]</a>    <span class="k">def</span> <span class="nf">exercise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create an :class:`ExerciseCommand` that represents the result of exercising a choice on this</span>
+<span class="sd">        contract with the specified choice.</span>
+
+<span class="sd">        :param choice_name:</span>
+<span class="sd">            The name of the choice to exercise.</span>
+<span class="sd">        :param arguments:</span>
+<span class="sd">            (optional) A ``dict`` of named values to send as parameters to the choice exercise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.writing</span> <span class="k">import</span> <span class="n">ExerciseCommand</span>
+        <span class="k">return</span> <span class="n">ExerciseCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="n">arguments</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ContractId.replace"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.core.ContractId.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a new :class:`ContractId` instance replacing specified fields with values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ContractId</span><span class="p">(</span>
+            <span class="n">contract_id</span> <span class="k">if</span> <span class="n">contract_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span><span class="p">,</span>
+            <span class="n">template_id</span> <span class="k">if</span> <span class="n">template_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ContractId.for_json"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.core.ContractId.for_json">[docs]</a>    <span class="k">def</span> <span class="nf">for_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the JSON representation of this contract. This is currently just the contract ID</span>
+<span class="sd">        string itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">contract_id</span></div></div>
+
+
+<span class="n">ContractData</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<span class="n">ContractMatch</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ContractData</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">ContractData</span><span class="p">]</span>
+<span class="n">ContractsState</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ContractId</span><span class="p">,</span> <span class="n">ContractData</span><span class="p">]</span>
+<span class="n">ContractsHistoricalState</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ContractId</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ContractData</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span>
+<span class="n">Party</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s1">&#39;Party&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ContractContextualDataCollection</span><span class="p">(</span><span class="nb">tuple</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ContractId</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;the index cannot be None&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">cxd</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cxd</span><span class="o">.</span><span class="n">cid</span><span class="o">.</span><span class="n">contract_id</span> <span class="o">==</span> <span class="n">index</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">cxd</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">ContractId</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">cxd</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cxd</span><span class="o">.</span><span class="n">cid</span> <span class="o">==</span> <span class="n">index</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">cxd</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;cannot index into a ContractContextualDataCollection with </span><span class="si">{index!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ContractContextualData</span><span class="p">:</span>
+    <span class="n">cid</span><span class="p">:</span> <span class="n">ContractId</span>
+    <span class="n">cdata</span><span class="p">:</span> <span class="s1">&#39;Optional[ContractData]&#39;</span>
+    <span class="n">effective_at</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">archived_at</span><span class="p">:</span> <span class="s1">&#39;Optional[datetime]&#39;</span>
+    <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SourceLocation</span><span class="p">:</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">start_line</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">end_line</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="k">class</span> <span class="nc">RunLevel</span><span class="p">(</span><span class="n">OrderedEnum</span><span class="p">):</span>
+    <span class="n">RUN_FOREVER</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">RUN_UNTIL_IDLE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">TERMINATE_GRACEFULLY</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">TERMINATE_IMMEDIATELY</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">STOPPED</span> <span class="o">=</span> <span class="mi">4</span>
+
+
+<span class="k">class</span> <span class="nc">DazlError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Superclass of errors raised by dazl.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">DazlWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Superclass of warnings raised by dazl.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">DazlPartyMissingError</span><span class="p">(</span><span class="n">DazlError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Error raised when a party or some information about a party is requested, and that party is not</span>
+<span class="sd">    found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">party</span><span class="p">:</span> <span class="n">Party</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;party </span><span class="si">{party!r}</span><span class="s1"> does not have a defined client&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">party</span>
+
+
+<span class="k">class</span> <span class="nc">DazlImportError</span><span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="n">DazlError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Import error raised when an optional dependency could not be found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_module</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">missing_module</span> <span class="o">=</span> <span class="n">missing_module</span>
+
+
+<span class="k">class</span> <span class="nc">UserTerminateRequest</span><span class="p">(</span><span class="n">DazlError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when the user has initiated a request to terminate the application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">ConnectionTimeoutError</span><span class="p">(</span><span class="n">DazlError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a connection failed to be established before the connection timeout elapsed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">CommandTimeoutError</span><span class="p">(</span><span class="n">DazlError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a corresponding event for a command was not seen in the appropriate time window.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">ConfigurationError</span><span class="p">(</span><span class="n">DazlError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a configuration error prevents a client from being started.</span>
+
+<span class="sd">    .. attribute:: ConfigurationError.reasons</span>
+
+<span class="sd">        A collection of reasons for a failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reasons</span><span class="p">:</span> <span class="s1">&#39;Union[str, Collection[str]]&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">reasons</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[str]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reasons</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[</span><span class="n">reasons</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="n">reasons</span>  <span class="c1"># type: List[str]</span>
+
+
+<span class="k">class</span> <span class="nc">ConnectionClosedError</span><span class="p">(</span><span class="n">DazlError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when trying to do something that requires a connection after connection pools have been</span>
+<span class="sd">    closed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">UnknownTemplateWarning</span><span class="p">(</span><span class="n">DazlWarning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when trying to do something with a template name that is unknown.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">ProcessDiedException</span><span class="p">(</span><span class="n">DazlError</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+
+  </main>
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'unknown',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  <footer> 
+  </footer>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Message Ingester</title>
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="_static/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" href="_static/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="_static/favicon-16x16.png" sizes="16x16"/>
+  <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="dazl unknown documentation" href="index.html"/>
+        <link rel="up" title="Tutorials" href="tutorials.html"/>
+        <link rel="next" title="dazl package" href="dazl.html"/>
+        <link rel="prev" title="Workflow State Example" href="tutorials_workflow_state.html"/> 
+</head>
+<body>
+
+   
+
+  <header>
+    dazl
+
+  </header>
+  <nav>
+              
+              
+                
+              
+              
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tutorials_post_office.html">Post Office</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials_workflow_state.html">Workflow State Example</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Message Ingester</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#daml-model">DAML Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-application">Python Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-output">Application Output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dazl.html">dazl package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+              
+
+  </nav>
+  <main>
+    
+  <div class="section" id="message-ingester">
+<span id="tutorials-message-ingester"></span><h1>Message Ingester<a class="headerlink" href="#message-ingester" title="Permalink to this headline">¶</a></h1>
+<p>This example sets up a workflow involving two parties, <code class="docutils literal notranslate"><span class="pre">Alice</span></code> and <code class="docutils literal notranslate"><span class="pre">Bob</span></code>. When writing a DAML
+application, we recommend the following steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Describe your workflow as a series of contracts in DAML.</p></li>
+<li><p>Write one or more DAML test scenarios that walk through each step of the workflow, starting from creation of the genesis contract, through a sequence of <code class="docutils literal notranslate"><span class="pre">exercise</span></code> commands, to the final state of the workflow. (Note: The DAML test scenarios are used for verifying the steps of the workflow in a sequential manner. However, when the workflow is deployed to a live platflorm, the events that prompt steps in the workflow to move forward cannot be assumed to occur sequentially.)</p></li>
+<li><p>Write your application.</p></li>
+<li><p>Test your application on the sandbox. The ledger server implements the same API, so performance testing can be done with the same application.</p></li>
+</ol>
+</div></blockquote>
+<p>The Message Ingester workflow is as follows:</p>
+<ol class="arabic simple">
+<li><p>The genesis contract, <code class="docutils literal notranslate"><span class="pre">OperatorRole</span></code>, is created. The <code class="docutils literal notranslate"><span class="pre">OperatorRole</span></code> contract is a contract that describes the operation(s) that the operator of this workflow can perform. In this example, we have assigned the party name <code class="docutils literal notranslate"><span class="pre">Alice</span></code> to the OperatorRole.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Alice</span></code> ingests an input message, which causes the generation of a <code class="docutils literal notranslate"><span class="pre">TradeRequest</span></code> contract.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bob</span></code> is the <code class="docutils literal notranslate"><span class="pre">requestProcessingParty</span></code> on the <code class="docutils literal notranslate"><span class="pre">TradeRequest</span></code> contract, and exercises the
+<code class="docutils literal notranslate"><span class="pre">AcceptMessage</span></code> choice on the <code class="docutils literal notranslate"><span class="pre">TradeRequest</span></code>. This causes the generation of a <code class="docutils literal notranslate"><span class="pre">TradeResponse</span></code> contract.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Alice</span></code> exercises the <code class="docutils literal notranslate"><span class="pre">Acknowledge</span></code> choice on the <code class="docutils literal notranslate"><span class="pre">TradeResponse</span></code> contract.
+This causes the generation of a <code class="docutils literal notranslate"><span class="pre">WorkflowCompleted</span></code> contract.</p></li>
+</ol>
+<div class="section" id="daml-model">
+<h2>DAML Model<a class="headerlink" href="#daml-model" title="Permalink to this headline">¶</a></h2>
+<p>This example assumes the following DAML:</p>
+<div class="highlight-daml notranslate"><div class="highlight"><pre><span></span><span class="kr">daml</span> <span class="mf">1.0</span>
+<span class="kr">module</span> <span class="nn">MessageIngester</span> <span class="kr">where</span>
+
+<span class="kr">template</span> <span class="kt">OperatorRole</span>
+    <span class="kr">with</span>
+        <span class="n">operator</span><span class="kt">:</span> <span class="kt">Party</span>
+    <span class="kr">where</span>
+        <span class="kr">signatory</span> <span class="n">operator</span>
+        <span class="kr">controller</span> <span class="n">operator</span> <span class="kr">can</span>
+            <span class="kt">IngestMessage</span> <span class="kr">with</span> <span class="n">requestProcessingParty</span><span class="kt">:</span> <span class="kt">Party</span>
+                <span class="n">returning</span> <span class="kt">ContractId</span> <span class="kt">TradeRequest</span>
+                <span class="n">to</span> <span class="kr">do</span>
+                    <span class="n">tchoose</span> <span class="ow">&lt;-</span> <span class="n">getTime</span>
+                    <span class="n">create</span> <span class="kt">TradeRequest</span> <span class="kr">with</span> <span class="n">messageIngester</span><span class="ow">=</span><span class="n">operator</span><span class="p">;</span> <span class="n">requestProcessingParty</span><span class="p">;</span> <span class="n">originalMessageIngestedTime</span><span class="ow">=</span><span class="n">tchoose</span><span class="p">;</span>
+
+<span class="kr">template</span> <span class="kt">TradeRequest</span>
+    <span class="kr">with</span>
+        <span class="n">messageIngester</span><span class="kt">:</span> <span class="kt">Party</span>
+        <span class="n">requestProcessingParty</span><span class="kt">:</span> <span class="kt">Party</span>
+        <span class="n">originalMessageIngestedTime</span><span class="kt">:</span> <span class="kt">Time</span>
+    <span class="kr">where</span>
+        <span class="kr">signatory</span> <span class="n">messageIngester</span>
+
+        <span class="kr">controller</span> <span class="n">requestProcessingParty</span> <span class="kr">can</span>
+            <span class="kt">AcceptMessage</span> <span class="kr">with</span> <span class="n">acknowledgingParty</span><span class="kt">:</span> <span class="kt">Party</span>
+                <span class="n">returning</span> <span class="kt">ContractId</span> <span class="kt">TradeResponse</span>
+                <span class="n">to</span> <span class="kr">do</span>
+                    <span class="n">tchoose</span> <span class="ow">&lt;-</span> <span class="n">getTime</span>
+                    <span class="n">create</span> <span class="kt">TradeResponse</span> <span class="kr">with</span> <span class="n">acknowledgingParty</span><span class="ow">=</span><span class="n">messageIngester</span><span class="p">;</span> <span class="n">tradeRequestAcceptedTime</span><span class="ow">=</span><span class="n">tchoose</span><span class="p">;</span> <span class="n">originalMessageIngestedTime</span><span class="p">;</span>
+            <span class="kt">RejectMessage</span>
+                <span class="n">returning</span> <span class="p">{}</span>
+                <span class="n">to</span> <span class="kr">return</span> <span class="p">{}</span>
+
+<span class="kr">template</span> <span class="kt">TradeResponse</span>
+    <span class="kr">with</span>
+        <span class="n">acknowledgingParty</span><span class="kt">:</span> <span class="kt">Party</span>
+        <span class="n">tradeRequestAcceptedTime</span><span class="kt">:</span> <span class="kt">Time</span>
+        <span class="n">originalMessageIngestedTime</span><span class="kt">:</span> <span class="kt">Time</span>
+    <span class="kr">where</span>
+        <span class="kr">signatory</span> <span class="n">acknowledgingParty</span>
+
+        <span class="kr">controller</span> <span class="n">acknowledgingParty</span> <span class="kr">can</span>
+            <span class="kt">Acknowledge</span>
+                <span class="n">returning</span> <span class="kt">ContractId</span> <span class="kt">WorkflowCompleted</span>
+                <span class="n">to</span> <span class="kr">do</span>
+                    <span class="n">create</span> <span class="kt">WorkflowCompleted</span> <span class="kr">with</span> <span class="n">acknowledgingParty</span><span class="p">;</span> <span class="n">tradeRequestAcceptedTime</span><span class="p">;</span> <span class="n">originalMessageIngestedTime</span><span class="p">;</span>
+
+<span class="kr">template</span> <span class="kt">WorkflowCompleted</span>
+    <span class="kr">with</span>
+        <span class="n">acknowledgingParty</span><span class="kt">:</span> <span class="kt">Party</span>
+        <span class="n">tradeRequestAcceptedTime</span><span class="kt">:</span> <span class="kt">Time</span>
+        <span class="n">originalMessageIngestedTime</span><span class="kt">:</span> <span class="kt">Time</span>
+    <span class="kr">where</span>
+        <span class="kr">signatory</span> <span class="n">acknowledgingParty</span>
+
+        <span class="kr">controller</span> <span class="n">acknowledgingParty</span> <span class="kr">can</span>
+            <span class="kt">Archive</span>
+                <span class="n">returning</span> <span class="p">{}</span>
+                <span class="n">to</span> <span class="kr">return</span> <span class="p">{}</span>
+
+<span class="nf">test</span> <span class="n">messageIngesterTest</span> <span class="ow">=</span> 
+    <span class="n">scenario</span>
+        <span class="n">operatorRoleCid</span> <span class="ow">&lt;-</span> <span class="kt">&#39;Alice&#39;</span> <span class="n">commits</span> <span class="n">create</span> <span class="kt">OperatorRole</span> <span class="kr">with</span> <span class="n">operator</span><span class="ow">=</span><span class="kt">&#39;Alice&#39;</span>
+        <span class="c1">-- DOC_BEGIN: SAMPLE_DAML_SCENARIO_INGEST_MESSAGE</span>
+        <span class="n">tradeRequestCid</span> <span class="ow">&lt;-</span> <span class="kt">&#39;Alice&#39;</span> <span class="n">commits</span> <span class="n">exercise</span> <span class="n">operatorRoleCid</span> <span class="kt">IngestMessage</span> <span class="kr">with</span> <span class="n">requestProcessingParty</span><span class="ow">=</span><span class="kt">&#39;Bob&#39;</span>
+        <span class="c1">-- DOC_END: SAMPLE_DAML_SCENARIO_INGEST_MESSAGE</span>
+        <span class="n">tradeResponseCid</span> <span class="ow">&lt;-</span> <span class="kt">&#39;Bob&#39;</span> <span class="n">commits</span> <span class="n">exercise</span> <span class="n">tradeRequestCid</span> <span class="kt">AcceptMessage</span> <span class="kr">with</span> <span class="n">acknowledgingParty</span><span class="ow">=</span><span class="kt">&#39;Alice&#39;</span>
+        <span class="n">workflowCompleted</span> <span class="ow">&lt;-</span> <span class="kt">&#39;Alice&#39;</span> <span class="n">commits</span> <span class="n">exercise</span> <span class="n">tradeResponseCid</span> <span class="kt">Acknowledge</span>
+        <span class="kt">&#39;Alice&#39;</span> <span class="n">commits</span> <span class="n">exercise</span> <span class="n">workflowCompleted</span> <span class="kt">Archive</span> 
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">messageIngesterTest</span></code> scenario describes a sample execution of the workflow, and is the basis from from which
+our Python application will be designed.</p>
+</div>
+<div class="section" id="python-application">
+<h2>Python Application<a class="headerlink" href="#python-application" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="kn">from</span> <span class="nn">dazl</span> <span class="kn">import</span> <span class="n">create</span><span class="p">,</span> <span class="n">exercise</span>
+<span class="kn">from</span> <span class="nn">dazl.client</span> <span class="kn">import</span> <span class="n">create_client</span>
+<span class="kn">from</span> <span class="nn">dazl.plugins</span> <span class="kn">import</span> <span class="n">LedgerCapturePlugin</span>
+
+<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span><span class="s1">&#39;Bob&#39;</span><span class="p">]</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:7600/&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">genesis_contract</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;MessageIngester.OperatorRole&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="s1">&#39;operator&#39;</span> <span class="p">:</span> <span class="s1">&#39;Alice&#39;</span> <span class="p">})</span>
+
+<span class="c1"># DOC_BEGIN: FUNCTION_INGEST_THE_MESSAGE</span>
+<span class="k">def</span> <span class="nf">ingest_the_message</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
+    <span class="n">ingest_message</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;IngestMessage&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;requestProcessingParty&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">})]</span>
+    <span class="k">return</span> <span class="n">ingest_message</span>
+    <span class="c1"># DOC_BEGIN: FUNCTION_INGEST_THE_MESSAGE</span>
+
+
+<span class="k">def</span> <span class="nf">accept_the_message</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
+    <span class="n">accept_message_action</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;AcceptMessage&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;acknowledgingParty&#39;</span><span class="p">:</span> <span class="s1">&#39;alice&#39;</span><span class="p">})]</span>
+    <span class="k">return</span> <span class="n">accept_message_action</span>
+
+
+<span class="k">def</span> <span class="nf">acknowledge_the_message</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
+    <span class="n">acknowledge_message_action</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;Acknowledge&#39;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="k">return</span> <span class="n">acknowledge_message_action</span>
+
+
+<span class="k">def</span> <span class="nf">register_event_handlers</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">):</span>
+    <span class="c1">#define a sandbox client, associated with the &#39;operator&#39; party, and how it reacts to events</span>
+    <span class="n">alice_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span>
+    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span><span class="n">genesis_contract</span><span class="p">)</span>
+    <span class="c1"># DOC_BEGIN: SAMPLE_CALLBACK_ONCREATED</span>
+    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;MessageIngester.OperatorRole&#39;</span><span class="p">,</span> <span class="n">ingest_the_message</span><span class="p">)</span>
+    <span class="c1"># DOC_END: SAMPLE_CALLBACK_ONCREATED</span>
+    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;MessageIngester.TradeResponse&#39;</span><span class="p">,</span> <span class="n">acknowledge_the_message</span><span class="p">)</span>
+
+    <span class="c1">#define a sandbox client, associated with the &#39;requestor&#39; party, and how it reacts to events</span>
+    <span class="n">bob_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="s1">&#39;Bob&#39;</span><span class="p">)</span>
+    <span class="n">bob_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;MessageIngester.TradeRequest&#39;</span><span class="p">,</span> <span class="n">accept_the_message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">parties</span><span class="o">=</span><span class="n">parties</span><span class="p">,</span> <span class="n">participant_url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">client_mgr</span><span class="p">:</span>
+        <span class="n">inspector</span> <span class="o">=</span> <span class="n">LedgerCapturePlugin</span><span class="o">.</span><span class="n">stdout</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">client_mgr</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">inspector</span><span class="p">)</span>
+            <span class="n">register_event_handlers</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">)</span>
+            <span class="n">ledger_run</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">inspector</span><span class="o">.</span><span class="n">dump_all</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<dl class="simple">
+<dt>To run this code sample:</dt><dd><ol class="arabic simple">
+<li><p>Download the SDK</p></li>
+<li><p>create a new project: <code class="docutils literal notranslate"><span class="pre">da</span> <span class="pre">new</span> <span class="pre">my-project-name-here</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">my-project-name-here</span></code></p></li>
+<li><p>Create a file, MessageIngester.daml, that contains the above listed DAML.</p></li>
+<li><p>Createa  file, message_ingester.py, that contains the above listed Python code.</p></li>
+<li><p>Download the dazl-starter template (which also creates a Python venv): <code class="docutils literal notranslate"><span class="pre">da</span> <span class="pre">project</span> <span class="pre">add</span> <span class="pre">dazl-starter</span></code></p></li>
+<li><p>Start the sandbox: <code class="docutils literal notranslate"><span class="pre">da</span> <span class="pre">sandbox</span></code></p></li>
+<li><p>Run the application: <code class="docutils literal notranslate"><span class="pre">./venv/bin/python3</span> <span class="pre">message_ingester.py</span></code></p></li>
+</ol>
+</dd>
+</dl>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code> configures client_mgr such that it will invoke the <code class="xref py py-func docutils literal notranslate"><span class="pre">work()</span></code> function after
+it has successfully connected to the platform/sandbox.</p>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">work()</span></code> contains a command to create the genesis contract, and a series of callback registrations,
+each of which provide a reference to a custom python function that shall be invoked when a certain
+leger event occurs. For example, this registration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;MessageIngester.OperatorRole&#39;</span><span class="p">,</span> <span class="n">ingest_the_message</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>indicates that the <code class="xref py py-func docutils literal notranslate"><span class="pre">ingest_the_message()</span></code> shall be invoked after the <code class="docutils literal notranslate"><span class="pre">OperatorRole</span></code> contract is
+created.</p>
+<dl class="simple">
+<dt><code class="xref py py-func docutils literal notranslate"><span class="pre">ingest_the_message()</span></code> describes what will happen when at <code class="docutils literal notranslate"><span class="pre">on_created</span></code> event occurs:</dt><dd><ol class="arabic simple">
+<li><p>The DAZL framework, upon detecting the specified <code class="docutils literal notranslate"><span class="pre">on_created</span></code> event, will invoke this function and pass it the contract id (<code class="docutils literal notranslate"><span class="pre">cid</span></code>) and corresponding contract parameters (<code class="docutils literal notranslate"><span class="pre">cdata</span></code>).</p></li>
+<li><p>An <code class="docutils literal notranslate"><span class="pre">exercise</span></code> choice will be performed on the contract (in this case, it’s an <code class="docutils literal notranslate"><span class="pre">OperatorRole</span></code> contract)</p></li>
+<li><p>That <code class="docutils literal notranslate"><span class="pre">exercise</span></code> choice will be invoked on a DAML contract with a contract id of <code class="docutils literal notranslate"><span class="pre">cid</span></code>, with the specified parameters.</p></li>
+<li><p>Since this is a non-consuming choice, the <code class="docutils literal notranslate"><span class="pre">OperatorRole</span></code> contract will remain active.</p></li>
+</ol>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ingest_the_message</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
+    <span class="n">ingest_message</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;IngestMessage&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;requestProcessingParty&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">})]</span>
+    <span class="k">return</span> <span class="n">ingest_message</span>
+</pre></div>
+</div>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">exercise()</span></code> call in the above code snippet corresponds to this line in our DAML test scenario:</p>
+<div class="highlight-daml notranslate"><div class="highlight"><pre><span></span>        <span class="n">tradeRequestCid</span> <span class="ow">&lt;-</span> <span class="kt">&#39;Alice&#39;</span> <span class="n">commits</span> <span class="n">exercise</span> <span class="n">operatorRoleCid</span> <span class="kt">IngestMessage</span> <span class="kr">with</span> <span class="n">requestProcessingParty</span><span class="ow">=</span><span class="kt">&#39;Bob&#39;</span>
+</pre></div>
+</div>
+<p>Thus, a typical application would have a similar structure to <code class="xref py py-func docutils literal notranslate"><span class="pre">work()</span></code> in that it will contain only one command
+to create the genesis contract, and all other code will describe the callback handlers and the situations under which
+those callbacks shall be invoked.</p>
+</div>
+<div class="section" id="application-output">
+<h2>Application Output<a class="headerlink" href="#application-output" title="Permalink to this headline">¶</a></h2>
+<p>This application will produce this output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span> <span class="n">total</span> <span class="n">contracts</span> <span class="n">over</span> <span class="mi">2</span> <span class="n">templates</span>
+<span class="o">+-</span> <span class="n">party</span> <span class="s1">&#39;Alice&#39;</span> <span class="p">(</span><span class="n">block</span> <span class="n">heights</span> <span class="mi">1</span> <span class="n">to</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">|+</span> <span class="n">party</span> <span class="s1">&#39;Bob&#39;</span> <span class="p">(</span><span class="n">block</span> <span class="n">heights</span> <span class="mi">2</span> <span class="n">to</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">||</span>
+
+<span class="n">MessageIngester</span><span class="o">.</span><span class="n">OperatorRole</span> <span class="p">(</span><span class="mi">1</span> <span class="n">contract</span><span class="p">)</span> <span class="o">------------------------------------------------------------------------------</span>
+<span class="c1">#cid operator</span>
+<span class="n">C</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">0</span><span class="n">_</span> <span class="n">Alice</span>
+
+<span class="n">MessageIngester</span><span class="o">.</span><span class="n">WorkflowCompleted</span> <span class="p">(</span><span class="mi">1</span> <span class="n">contract</span><span class="p">)</span> <span class="o">-------------------------------------------------------------------------</span>
+<span class="c1">#cid acknowledgingParty originalMessageIngestedTime TradeResponseAcknowledgedTime</span>
+<span class="n">C</span>  <span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="n">_</span> <span class="n">Alice</span>              <span class="mi">1970</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="n">Z</span>        <span class="mi">1970</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="n">Z</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">TradeRequest</span></code> and <code class="docutils literal notranslate"><span class="pre">TradeResponse</span></code> contracts were created, and subsequently archived during the course
+of the workflow, thus only <code class="docutils literal notranslate"><span class="pre">OperatorRole</span></code> <code class="docutils literal notranslate"><span class="pre">WorkflowCompleted</span></code> and (which has no consuming choices) are active on the ledger
+when this application terminates.</p>
+</div>
+</div>
+
+
+  </main>
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'unknown',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <footer> 
+  </footer>
+</body>
+</html>

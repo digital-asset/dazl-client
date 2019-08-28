@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Post Office</title>
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="_static/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" href="_static/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="_static/favicon-16x16.png" sizes="16x16"/>
+  <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="dazl unknown documentation" href="index.html"/>
+        <link rel="up" title="Tutorials" href="tutorials.html"/>
+        <link rel="next" title="Workflow State Example" href="tutorials_workflow_state.html"/>
+        <link rel="prev" title="Tutorials" href="tutorials.html"/> 
+</head>
+<body>
+
+   
+
+  <header>
+    dazl
+
+  </header>
+  <nav>
+              
+              
+                
+              
+              
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Post Office</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#daml-model">DAML Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-postman">Create the Postman</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inspect-the-ledger">Inspect the Ledger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-up-participants">Set up participants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#send-some-letters-through-the-post-office">Send some “letters” through the post office</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials_workflow_state.html">Workflow State Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials_message_ingester.html">Message Ingester</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dazl.html">dazl package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+              
+
+  </nav>
+  <main>
+    
+  <div class="section" id="post-office">
+<span id="tutorials-post-office"></span><h1>Post Office<a class="headerlink" href="#post-office" title="Permalink to this headline">¶</a></h1>
+<p>This example sets up a post office, with a <code class="docutils literal notranslate"><span class="pre">Postman</span></code> who routes letters, instances of <code class="docutils literal notranslate"><span class="pre">Author</span></code>
+who send letters, and instances of <code class="docutils literal notranslate"><span class="pre">Receiver</span></code> who receive letters.</p>
+<p>Each author, when instantiated, will immediately send letters to five of their friends.</p>
+<div class="section" id="daml-model">
+<h2>DAML Model<a class="headerlink" href="#daml-model" title="Permalink to this headline">¶</a></h2>
+<p>This example assumes the following DAML:</p>
+<div class="highlight-daml notranslate"><div class="highlight"><pre><span></span><span class="kr">daml</span> <span class="mf">1.2</span>
+<span class="kr">module</span> <span class="nn">Main</span> <span class="kr">where</span>
+
+
+<span class="c1">-- Roles -----------------------------------------------------------------------</span>
+
+<span class="kr">template</span> <span class="kt">PostmanRole</span>
+  <span class="kr">with</span>
+    <span class="n">postman</span> <span class="kt">:</span> <span class="kt">Party</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">postman</span>
+    <span class="kr">controller</span> <span class="n">postman</span> <span class="kr">can</span>
+      <span class="kr">nonconsuming</span> <span class="kt">InviteParticipant</span> <span class="kt">:</span> <span class="p">(</span><span class="kt">ContractId</span> <span class="kt">InviteAuthorRole</span><span class="p">,</span> <span class="kt">ContractId</span> <span class="kt">InviteReceiverRole</span><span class="p">)</span>
+        <span class="kr">with</span>
+          <span class="n">party</span> <span class="kt">:</span> <span class="kt">Party</span><span class="p">;</span> <span class="n">address</span><span class="kt">:</span> <span class="kt">Text</span>
+        <span class="kr">do</span>
+          <span class="n">c</span> <span class="ow">&lt;-</span> <span class="n">create</span> <span class="kt">InviteAuthorRole</span> <span class="kr">with</span> <span class="n">postman</span><span class="p">;</span> <span class="n">author</span> <span class="ow">=</span> <span class="n">party</span>
+          <span class="n">d</span> <span class="ow">&lt;-</span> <span class="n">create</span> <span class="kt">InviteReceiverRole</span> <span class="kr">with</span> <span class="n">postman</span><span class="p">;</span> <span class="n">receiver</span> <span class="ow">=</span> <span class="n">party</span><span class="p">;</span> <span class="n">address</span>
+          <span class="kr">return</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+<span class="kr">template</span> <span class="kt">AuthorRole</span>
+  <span class="kr">with</span>
+    <span class="n">postman</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">author</span><span class="kt">:</span> <span class="kt">Party</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">postman</span>
+    <span class="kr">controller</span> <span class="n">author</span> <span class="kr">can</span>
+      <span class="kr">nonconsuming</span> <span class="kt">CreateLetter</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">UnsortedLetter</span>
+        <span class="kr">with</span>
+          <span class="n">address</span> <span class="kt">:</span> <span class="kt">Text</span>
+          <span class="n">content</span> <span class="kt">:</span> <span class="kt">Text</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">UnsortedLetter</span>
+            <span class="kr">with</span>
+              <span class="n">postman</span>
+              <span class="n">sender</span> <span class="ow">=</span> <span class="n">author</span>
+              <span class="n">address</span>
+              <span class="n">content</span>
+
+      <span class="kr">nonconsuming</span> <span class="kt">CreateIntLetter</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">UnsortedLetter</span>
+        <span class="kr">with</span>
+          <span class="n">address</span> <span class="kt">:</span> <span class="kt">Text</span>
+          <span class="n">content</span> <span class="kt">:</span> <span class="kt">Int</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">UnsortedLetter</span>
+            <span class="kr">with</span>
+              <span class="n">postman</span>
+              <span class="n">sender</span> <span class="ow">=</span> <span class="n">author</span>
+              <span class="n">address</span>
+              <span class="n">content</span> <span class="ow">=</span> <span class="p">(</span><span class="n">show</span> <span class="n">content</span><span class="p">)</span>
+
+      <span class="kr">nonconsuming</span> <span class="kt">CreateDecimalLetter</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">UnsortedLetter</span>
+        <span class="kr">with</span>
+          <span class="n">address</span> <span class="kt">:</span> <span class="kt">Text</span>
+          <span class="n">content</span> <span class="kt">:</span> <span class="kt">Decimal</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">UnsortedLetter</span>
+            <span class="kr">with</span>
+              <span class="n">postman</span>
+              <span class="n">sender</span> <span class="ow">=</span> <span class="n">author</span>
+              <span class="n">address</span>
+              <span class="n">content</span> <span class="ow">=</span> <span class="p">(</span><span class="n">show</span> <span class="n">content</span><span class="p">)</span>
+
+      <span class="kr">nonconsuming</span> <span class="kt">CreateTimeLetter</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">UnsortedLetter</span>
+        <span class="kr">with</span>
+          <span class="n">address</span> <span class="kt">:</span> <span class="kt">Text</span>
+          <span class="n">content</span> <span class="kt">:</span> <span class="kt">Time</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">UnsortedLetter</span>
+            <span class="kr">with</span>
+              <span class="n">postman</span>
+              <span class="n">sender</span> <span class="ow">=</span> <span class="n">author</span>
+              <span class="n">address</span>
+              <span class="n">content</span> <span class="ow">=</span> <span class="p">(</span><span class="n">show</span> <span class="n">content</span><span class="p">)</span>
+
+      <span class="kr">nonconsuming</span> <span class="kt">CreateListIntLetter</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">UnsortedLetter</span>
+        <span class="kr">with</span>
+          <span class="n">address</span> <span class="kt">:</span> <span class="kt">Text</span>
+          <span class="n">content</span> <span class="kt">:</span> <span class="p">[</span><span class="kt">Int</span><span class="p">]</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">UnsortedLetter</span>
+            <span class="kr">with</span>
+              <span class="n">postman</span>
+              <span class="n">sender</span> <span class="ow">=</span> <span class="n">author</span>
+              <span class="n">address</span>
+              <span class="n">content</span> <span class="ow">=</span> <span class="p">(</span><span class="n">show</span> <span class="n">content</span><span class="p">)</span>
+
+<span class="kr">template</span> <span class="kt">ReceiverRole</span>
+  <span class="kr">with</span>
+    <span class="n">postman</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">receiver</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">address</span> <span class="kt">:</span> <span class="kt">Text</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">postman</span>
+    <span class="kr">controller</span> <span class="n">receiver</span> <span class="kr">can</span>
+      <span class="kt">AcceptLetter</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">AcknowlegedLetter</span>
+        <span class="kr">with</span>
+          <span class="n">sentLetterCid</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">SentLetter</span>
+        <span class="kr">do</span>
+          <span class="n">sentLetterCid2</span> <span class="ow">&lt;-</span> <span class="n">fetch</span> <span class="n">sentLetterCid</span>
+          <span class="n">assert</span> <span class="o">$</span> <span class="n">sentLetterCid2</span><span class="o">.</span><span class="n">receiver</span> <span class="o">==</span> <span class="n">receiver</span>
+          <span class="n">assert</span> <span class="o">$</span> <span class="n">sentLetterCid2</span><span class="o">.</span><span class="n">receiverAddress</span> <span class="o">==</span> <span class="n">address</span>
+
+          <span class="n">create</span> <span class="kt">AcknowlegedLetter</span>
+            <span class="kr">with</span>
+              <span class="n">sender</span> <span class="ow">=</span> <span class="n">sentLetterCid2</span><span class="o">.</span><span class="n">sender</span>
+              <span class="n">receiver</span>
+              <span class="n">receiverAddress</span> <span class="ow">=</span> <span class="n">address</span>
+              <span class="n">content</span> <span class="ow">=</span> <span class="n">sentLetterCid2</span><span class="o">.</span><span class="n">content</span>
+
+    <span class="kr">controller</span> <span class="n">postman</span> <span class="kr">can</span>
+      <span class="kt">Deactivate</span> <span class="kt">:</span> <span class="nb">()</span>
+        <span class="kr">do</span>
+          <span class="n">assert</span> <span class="o">$</span> <span class="n">postman</span> <span class="o">==</span> <span class="n">postman</span>
+
+<span class="kr">template</span> <span class="kt">InviteAuthorRole</span>
+  <span class="kr">with</span>
+    <span class="n">postman</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">author</span> <span class="kt">:</span> <span class="kt">Party</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">postman</span>
+    <span class="kr">controller</span> <span class="n">author</span> <span class="kr">can</span>
+      <span class="kt">AcceptInviteAuthorRole</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">AuthorRole</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">AuthorRole</span> <span class="kr">with</span> <span class="n">postman</span><span class="p">;</span> <span class="n">author</span>
+
+<span class="kr">template</span> <span class="kt">InviteReceiverRole</span>
+  <span class="kr">with</span>
+    <span class="n">postman</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">receiver</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">address</span> <span class="kt">:</span> <span class="kt">Text</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">postman</span>
+    <span class="kr">controller</span> <span class="n">receiver</span> <span class="kr">can</span>
+      <span class="kt">AcceptInviteReceiverRole</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">ReceiverRole</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">ReceiverRole</span> <span class="kr">with</span> <span class="n">postman</span><span class="p">;</span> <span class="n">receiver</span><span class="p">;</span> <span class="n">address</span>
+
+<span class="c1">-- Letters ---------------------------------------------------------------------</span>
+
+<span class="kr">template</span> <span class="kt">UnsortedLetter</span>
+  <span class="kr">with</span>
+    <span class="n">postman</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">sender</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">address</span> <span class="kt">:</span> <span class="kt">Text</span>
+    <span class="n">content</span> <span class="kt">:</span> <span class="kt">Text</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">sender</span>
+    <span class="kr">controller</span> <span class="n">postman</span> <span class="kr">can</span>
+      <span class="kt">Sort</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">SortedLetter</span>
+        <span class="kr">with</span>
+          <span class="n">receiverCid</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">ReceiverRole</span>
+        <span class="kr">do</span>
+          <span class="n">receiverCid2</span> <span class="ow">&lt;-</span> <span class="n">fetch</span> <span class="n">receiverCid</span>
+          <span class="n">assert</span> <span class="o">$</span> <span class="n">receiverCid2</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">address</span>
+          <span class="n">assert</span> <span class="o">$</span> <span class="n">receiverCid2</span><span class="o">.</span><span class="n">postman</span> <span class="o">==</span> <span class="n">postman</span>
+
+          <span class="n">create</span> <span class="kt">SortedLetter</span>
+            <span class="kr">with</span>
+              <span class="n">postman</span>
+              <span class="n">sender</span>
+              <span class="n">receiver</span> <span class="ow">=</span> <span class="n">receiverCid2</span><span class="o">.</span><span class="n">receiver</span>
+              <span class="n">receiverAddress</span> <span class="ow">=</span> <span class="n">receiverCid2</span><span class="o">.</span><span class="n">address</span>
+              <span class="n">content</span>
+
+<span class="kr">template</span> <span class="kt">SortedLetter</span>
+  <span class="kr">with</span>
+    <span class="n">postman</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">sender</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">receiver</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">receiverAddress</span> <span class="kt">:</span> <span class="kt">Text</span>
+    <span class="n">content</span> <span class="kt">:</span> <span class="kt">Text</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">sender</span>
+    <span class="kr">controller</span> <span class="n">postman</span> <span class="kr">can</span>
+      <span class="kt">Deliver</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">SentLetter</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">SentLetter</span> <span class="kr">with</span> <span class="n">sender</span><span class="p">;</span> <span class="n">receiver</span><span class="p">;</span> <span class="n">receiverAddress</span><span class="p">;</span> <span class="n">content</span>
+
+<span class="kr">template</span> <span class="kt">SentLetter</span>
+  <span class="kr">with</span>
+    <span class="n">sender</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">receiver</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">receiverAddress</span> <span class="kt">:</span> <span class="kt">Text</span>
+    <span class="n">content</span> <span class="kt">:</span> <span class="kt">Text</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">sender</span>
+    <span class="kr">controller</span> <span class="n">receiver</span> <span class="kr">can</span>
+      <span class="kt">AcceptSentLetter</span> <span class="kt">:</span> <span class="kt">ContractId</span> <span class="kt">AcknowlegedLetter</span>
+        <span class="kr">do</span>
+          <span class="n">create</span> <span class="kt">AcknowlegedLetter</span> <span class="kr">with</span> <span class="n">sender</span><span class="p">;</span> <span class="n">receiver</span><span class="p">;</span> <span class="n">receiverAddress</span><span class="p">;</span> <span class="n">content</span>
+
+<span class="kr">template</span> <span class="kt">AcknowlegedLetter</span>
+  <span class="kr">with</span>
+    <span class="n">sender</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">receiver</span> <span class="kt">:</span> <span class="kt">Party</span>
+    <span class="n">receiverAddress</span> <span class="kt">:</span> <span class="kt">Text</span>
+    <span class="n">content</span> <span class="kt">:</span> <span class="kt">Text</span>
+  <span class="kr">where</span>
+    <span class="kr">signatory</span> <span class="n">receiver</span>
+
+    <span class="kr">agreement</span> <span class="p">(</span><span class="n">show</span> <span class="n">sender</span><span class="p">)</span> <span class="o">&lt;&gt;</span> <span class="s">&quot; sent&quot;</span> <span class="o">&lt;&gt;</span> <span class="n">content</span> <span class="o">&lt;&gt;</span> <span class="s">&quot; to &quot;</span> <span class="o">&lt;&gt;</span> <span class="p">(</span><span class="n">show</span> <span class="n">receiver</span><span class="p">)</span> <span class="o">&lt;&gt;</span> <span class="s">&quot; at &quot;</span> <span class="o">&lt;&gt;</span> <span class="p">(</span><span class="n">show</span> <span class="n">receiverAddress</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-the-postman">
+<h2>Create the Postman<a class="headerlink" href="#create-the-postman" title="Permalink to this headline">¶</a></h2>
+<p>The Postman serves as the operator of this market, and its role contract must be defined before
+anything else can happen:</p>
+<dl class="simple">
+<dt>If you are running this code example through the SDK, it will:</dt><dd><ol class="arabic simple">
+<li><p>start up a Ledger Sandbox in the background, point it to the above DAML model,</p></li>
+<li><p>run the code against that Ledger Sandbox, and</p></li>
+<li><p>stop the Ledger Sandbox.</p></li>
+</ol>
+</dd>
+</dl>
+<p>First, a few important imports:</p>
+<div class="highlight-python notranslate" id="imports-and-constants"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+
+<span class="kn">from</span> <span class="nn">dazl</span> <span class="kn">import</span> <span class="n">create</span><span class="p">,</span> <span class="n">sandbox</span>
+<span class="kn">from</span> <span class="nn">dazl.client</span> <span class="kn">import</span> <span class="n">create_client</span>
+
+<span class="n">DAML_FILE</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;./Main.daml&#39;</span><span class="p">))</span>
+
+<span class="n">POSTMAN_PARTY</span> <span class="o">=</span> <span class="s1">&#39;Postman&#39;</span>
+<span class="n">MEMBER_PARTY_COUNT</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>Then the main dish:</p>
+<div class="highlight-python notranslate" id="run-test-create-postman"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_test</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">all_parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">POSTMAN_PARTY</span><span class="p">]</span>
+
+    <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">parties</span><span class="o">=</span><span class="n">all_parties</span><span class="p">,</span> <span class="n">participant_url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">client_mgr</span><span class="p">:</span>
+        <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
+        <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+
+        <span class="n">ledger_run</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
+</pre></div>
+</div>
+<p>Lastly, the code that actually runs everything:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+
+    <span class="k">with</span> <span class="n">sandbox</span><span class="p">(</span><span class="n">DAML_FILE</span><span class="p">)</span> <span class="k">as</span> <span class="n">server</span><span class="p">:</span>
+        <span class="n">exit_code</span> <span class="o">=</span> <span class="n">run_test</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">exit_code</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.sandbox()</span></code> is a helper function for creating a disposable sandbox, running
+a test, and terminating the process. You wouldn’t use it when pointing to a production instance,
+but it is very useful for testing. All of these examples assume that you are using a blank
+ledger every single time. As you iterate through the steps of the tutorial, make sure to stop and
+start the ledger each time if you’re using <code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.sandbox()</span></code>.</p>
+</div>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.simple_client()</span></code> is a helper function for creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">LedgerClientManager</span></code>.
+At a minimum, you must provide it a list of parties to listen as, and a URL to the Sandbox
+(or Ledger Server participant node when running against a real instance).</p>
+<p>To create a client for a specific party, call <code class="xref py py-meth docutils literal notranslate"><span class="pre">LedgerClientManager.new_client()</span></code>. There are
+several key methods on it; this example introduces <code class="docutils literal notranslate"><span class="pre">ParticipantLedgerClient.on_ready</span></code>, which is
+called when the connection to the ledger is initialized. The parameters are ignored at this point.
+The callback, like most callbacks, can return a <code class="docutils literal notranslate"><span class="pre">Command</span></code> to submit to the ledger. In this
+example, a <code class="docutils literal notranslate"><span class="pre">Main.postmanRole</span></code> contract is to be created with one argument named <code class="docutils literal notranslate"><span class="pre">postman</span></code>
+and a value of <code class="docutils literal notranslate"><span class="pre">'Postman'</span></code></p>
+<p>Finally, to actually start the manager and all the clients, call
+<code class="docutils literal notranslate"><span class="pre">LedgerClientManager.run_until_complete</span></code>. The code should run and return an exit code of 0,
+indicating that the script successfully ran. But what if you wanted to actually see what happened
+to the ledger afterwards?</p>
+</div>
+<div class="section" id="inspect-the-ledger">
+<h2>Inspect the Ledger<a class="headerlink" href="#inspect-the-ledger" title="Permalink to this headline">¶</a></h2>
+<p>Using the convenience <code class="docutils literal notranslate"><span class="pre">sandbox()</span></code> method makes development a bit quicker, but it is difficult to
+actually see what is happening afterwards because it tears down the ledger and all of its state.
+You could either start a Sandbox instance manually through the SDK, or you could output the ledger
+after every run:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dazl.plugins</span> <span class="kn">import</span> <span class="n">LedgerCapturePlugin</span>
+
+<span class="k">def</span> <span class="nf">run_test</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">all_parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">POSTMAN_PARTY</span><span class="p">]</span>
+
+    <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">parties</span><span class="o">=</span><span class="n">all_parties</span><span class="p">,</span> <span class="n">participant_url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">client_mgr</span><span class="p">:</span>
+        <span class="n">inspector</span> <span class="o">=</span> <span class="n">LedgerCapturePlugin</span><span class="o">.</span><span class="n">stdout</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
+            <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+
+            <span class="n">client_mgr</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">inspector</span><span class="p">)</span>
+
+            <span class="n">ledger_run</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">inspector</span><span class="o">.</span><span class="n">dump_all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We have added <code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.plugin.LedgerCapturePlugin</span></code>, which listens for events from the ledger and
+stores them internally to be drawn out later. The main body of <code class="docutils literal notranslate"><span class="pre">run_test</span></code> outputs the result of
+the ledger in a <code class="docutils literal notranslate"><span class="pre">try</span></code>/<code class="docutils literal notranslate"><span class="pre">finally</span></code> block so that the ledger is always printed out, even if an
+exception occurs.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.plugin.LedgerCapturePlugin</span></code> exposes several class methods for easily creating an
+instance; in this example, <code class="docutils literal notranslate"><span class="pre">LedgerCapturePlugin</span></code> outputs its results to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> when
+<code class="docutils literal notranslate"><span class="pre">dump_all</span></code> is called.</p>
+</div>
+<div class="section" id="set-up-participants">
+<h2>Set up participants<a class="headerlink" href="#set-up-participants" title="Permalink to this headline">¶</a></h2>
+<p>We have now created the postman and can see that on the ledger; now we’ll add the other participants
+of this market. For readability, let’s also split out all the registration methods into a separate
+<code class="docutils literal notranslate"><span class="pre">set_up</span></code> function so that we can keep the focus on adding listeners to the ledger:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_test</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Member {i}&#39;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+               <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MEMBER_PARTY_COUNT</span><span class="p">)]</span>
+    <span class="n">all_parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">POSTMAN_PARTY</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">member</span><span class="p">[</span><span class="s1">&#39;party&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
+
+    <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">parties</span><span class="o">=</span><span class="n">all_parties</span><span class="p">,</span> <span class="n">participant_url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">client_mgr</span><span class="p">:</span>
+        <span class="n">inspector</span> <span class="o">=</span> <span class="n">LedgerCapturePlugin</span><span class="o">.</span><span class="n">stdout</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">set_up</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span>
+            <span class="n">client_mgr</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">inspector</span><span class="p">)</span>
+
+            <span class="n">ledger_run</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">inspector</span><span class="o">.</span><span class="n">dump_all</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
+    <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
+    <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+    <span class="n">postman_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+        <span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="p">[</span><span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;InviteParticipant&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;{} Member Lane&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">on_created</span></code> method allows you to add an event handler for templates as they are created on
+the ledger. Like the <code class="docutils literal notranslate"><span class="pre">on_ready</span></code> method above, you can return a <code class="docutils literal notranslate"><span class="pre">Command</span></code> (or in this case, a
+<code class="docutils literal notranslate"><span class="pre">list</span></code> of <code class="docutils literal notranslate"><span class="pre">Command</span></code>) that is to be executed in response to this event.</p>
+<p>After running the script, you should see a few more columns in the output for all the new parties,
+and you can see that the parties now see invitation contracts that they can exercise choices on. To
+further progress the workflow, let’s add more callbacks in <code class="docutils literal notranslate"><span class="pre">set_up</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
+    <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
+    <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+    <span class="n">postman_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+        <span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="p">[</span><span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;InviteParticipant&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">])</span>
+
+    <span class="n">member_clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;party&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">member_client</span> <span class="ow">in</span> <span class="n">member_clients</span><span class="p">:</span>
+        <span class="c1"># every member automatically accepts</span>
+        <span class="n">member_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+            <span class="s1">&#39;Main.InviteAuthorRole&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;AcceptInviteAuthorRole&#39;</span><span class="p">))</span>
+        <span class="n">member_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+            <span class="s1">&#39;Main.InviteReceiverRole&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;AcceptInviteReceiverRole&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now notice that the <code class="docutils literal notranslate"><span class="pre">inviteAsAuthor</span></code> and <code class="docutils literal notranslate"><span class="pre">inviteAsReceiver</span></code> contracts are no longer in the
+output, instead replaced with <code class="docutils literal notranslate"><span class="pre">authorRole</span></code> and <code class="docutils literal notranslate"><span class="pre">receiverRole</span></code> contracts; that’s because the
+<code class="docutils literal notranslate"><span class="pre">accept</span></code> choice on these contracts is a consuming choice.</p>
+<p>In order to respond to these contracts as other parties, we have also created new clients, one for
+every additional party. Now that we have a universe of participants fully set up and ready to go,
+let’s do some actual work.</p>
+</div>
+<div class="section" id="send-some-letters-through-the-post-office">
+<h2>Send some “letters” through the post office<a class="headerlink" href="#send-some-letters-through-the-post-office" title="Permalink to this headline">¶</a></h2>
+<p>Once a participant’s <code class="docutils literal notranslate"><span class="pre">Main.authorRole</span></code> is created, that participant is now granted the ability to
+send letters to other participants in the market.</p>
+<p>– TBC –</p>
+</div>
+</div>
+
+
+  </main>
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'unknown',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <footer> 
+  </footer>
+</body>
+</html>
