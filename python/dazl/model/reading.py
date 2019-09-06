@@ -1,8 +1,58 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+# TODO: `automodule reading` directive doesn't appear to work here, have to list each class individually.
 """
+Read-Side Types
+---------------
+
 This module contains models used on the read-side of the Ledger API.
+
+.. autoclass:: InitEvent
+  :members:
+
+.. autoclass::  InitEvent
+  :members:
+
+.. autoclass::  OffsetEvent
+  :members:
+
+.. autoclass::  ReadyEvent
+  :members:
+
+.. autoclass::  ActiveContractSetEvent
+  :members:
+
+.. autoclass::  BaseTransactionEvent
+  :members:
+
+.. autoclass::  TransactionStartEvent
+  :members:
+
+.. autoclass::  TransactionEndEvent
+  :members:
+
+.. autoclass::  ContractEvent
+  :members:
+
+.. autoclass::  ContractCreateEvent
+  :members:
+
+.. autoclass::  ContractExercisedEvent
+  :members:
+
+.. autoclass::  ContractArchiveEvent
+  :members:
+
+.. autoclass::  PackagesAddedEvent
+  :members:
+
+.. autoclass::  TransactionFilter
+  :members:
+
+.. autoclass::  EventKey
+  :members:
+
 """
 
 from dataclasses import dataclass

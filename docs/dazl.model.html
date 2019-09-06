@@ -66,6 +66,7 @@
 <li class="toctree-l3"><a class="reference internal" href="dazl.damlsdk.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damlsdk</span></code> package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#core-types">Core types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#read-side-types">Read-Side Types</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#type-system-types">Type system types</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#write-side-types">Write-Side types</a></li>
 </ul>
@@ -163,7 +164,164 @@ string itself.</p>
 
 </div>
 <span class="target" id="module-dazl.model.ledger"></span><p>Types that describe the behavior of the ledger itself.</p>
-<span class="target" id="module-dazl.model.reading"></span><p>This module contains models used on the read-side of the Ledger API.</p>
+<span class="target" id="module-dazl.model.reading"></span><div class="section" id="read-side-types">
+<h2>Read-Side Types<a class="headerlink" href="#read-side-types" title="Permalink to this headline">¶</a></h2>
+<p>This module contains models used on the read-side of the Ledger API.</p>
+<dl class="class">
+<dt id="dazl.model.reading.InitEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">InitEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#InitEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.InitEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl is initialized, but before it has begun reading from the Active Contract
+Set (ACS).</p>
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">InitEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#InitEvent"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Event raised when dazl is initialized, but before it has begun reading from the Active Contract
+Set (ACS).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.OffsetEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">OffsetEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#OffsetEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.OffsetEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl is ready to begin processing new events. At this point, the Active
+Contract Set (ACS) is populated with the current state of the ledger.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.ReadyEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">ReadyEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#ReadyEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.ReadyEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl is ready to begin processing new events. At this point, the Active
+Contract Set (ACS) is populated with the current state of the ledger.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.ActiveContractSetEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">ActiveContractSetEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str, contract_events: Sequence[ContractCreateEvent]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#ActiveContractSetEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.ActiveContractSetEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised on initial read of the active contract set.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.BaseTransactionEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">BaseTransactionEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str, command_id: str, workflow_id: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#BaseTransactionEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.BaseTransactionEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl encounters a new transaction. This is raised before any corresponding
+<a class="reference internal" href="#dazl.model.reading.ContractCreateEvent" title="dazl.model.reading.ContractCreateEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractCreateEvent</span></code></a> or <a class="reference internal" href="#dazl.model.reading.ContractArchiveEvent" title="dazl.model.reading.ContractArchiveEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractArchiveEvent</span></code></a>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.TransactionStartEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">TransactionStartEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str, command_id: str, workflow_id: str, contract_events: Sequence[ContractEvent]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#TransactionStartEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.TransactionStartEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl encounters a new transaction. This is raised before any corresponding
+<a class="reference internal" href="#dazl.model.reading.ContractCreateEvent" title="dazl.model.reading.ContractCreateEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractCreateEvent</span></code></a> or <a class="reference internal" href="#dazl.model.reading.ContractArchiveEvent" title="dazl.model.reading.ContractArchiveEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractArchiveEvent</span></code></a>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.TransactionEndEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">TransactionEndEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str, command_id: str, workflow_id: str, contract_events: Sequence[ContractEvent]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#TransactionEndEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.TransactionEndEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl encounters the end of a transaction. This is raised after any
+corresponding <a class="reference internal" href="#dazl.model.reading.ContractCreateEvent" title="dazl.model.reading.ContractCreateEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractCreateEvent</span></code></a> or <a class="reference internal" href="#dazl.model.reading.ContractArchiveEvent" title="dazl.model.reading.ContractArchiveEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractArchiveEvent</span></code></a>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.ContractEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">ContractEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str, command_id: str, workflow_id: str, cid: dazl.model.core.ContractId, cdata: Dict[str, Any], event_id: str, witness_parties: Sequence[str]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#ContractEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.ContractEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl automation detects a new create or an archive. The Active Contract Set
+(ACS) reflects this event, as well as all other events that occurred in the same transaction.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.ContractCreateEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">ContractCreateEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str, command_id: str, workflow_id: str, cid: dazl.model.core.ContractId, cdata: Dict[str, Any], event_id: str, witness_parties: Sequence[str]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#ContractCreateEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.ContractCreateEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl automation detects a contract create. The Active Contract Set
+(ACS) reflects this event, as well as all other events that occurred in the same transaction.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.ContractExercisedEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">ContractExercisedEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str, command_id: str, workflow_id: str, cid: dazl.model.core.ContractId, cdata: Dict[str, Any], event_id: str, witness_parties: Sequence[str], contract_creating_event_id: str, choice: str, choice_args: Any, acting_parties: Sequence[str], consuming: True, child_event_ids: Sequence[str]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#ContractExercisedEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.ContractExercisedEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl automation detects a contract exercised.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.ContractArchiveEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">ContractArchiveEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, offset: str, command_id: str, workflow_id: str, cid: dazl.model.core.ContractId, cdata: Dict[str, Any], event_id: str, witness_parties: Sequence[str]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#ContractArchiveEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.ContractArchiveEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when dazl automation detects a contract archive. The Active Contract Set
+(ACS) reflects this event, as well as all other events that occurred in the same transaction.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.PackagesAddedEvent">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">PackagesAddedEvent</code><span class="sig-paren">(</span><em class="sig-param">client: Any, party: Optional[NewType.&lt;locals&gt;.new_type], time: Optional[datetime.datetime], ledger_id: str, package_store: dazl.model.types_store.PackageStore, initial: bool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#PackagesAddedEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.PackagesAddedEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event raised when new packages have been detected.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.TransactionFilter">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">TransactionFilter</code><span class="sig-paren">(</span><em class="sig-param">ledger_id:str, current_offset:Union[str, NoneType], destination_offset:Union[str, NoneType], templates:Union[Collection[dazl.model.types.Type], NoneType], max_blocks:Union[int, NoneType], party_groups:Union[Collection[str], NoneType]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/reading.html#TransactionFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.TransactionFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="dazl.model.reading.EventKey">
+<em class="property">class </em><code class="sig-prename descclassname">dazl.model.reading.</code><code class="sig-name descname">EventKey</code><a class="reference internal" href="_modules/dazl/model/reading.html#EventKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="dazl.model.reading.EventKey.contract_archived">
+<em class="property">static </em><code class="sig-name descname">contract_archived</code><span class="sig-paren">(</span><em class="sig-param">primary_only: bool</em>, <em class="sig-param">template: Any</em><span class="sig-paren">)</span> &#x2192; Collection[str]<a class="reference internal" href="_modules/dazl/model/reading.html#EventKey.contract_archived"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey.contract_archived" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of events that get raised in response to a <a class="reference internal" href="#dazl.model.reading.ContractCreateEvent" title="dazl.model.reading.ContractCreateEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractCreateEvent</span></code></a>
+of the specified template type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dazl.model.reading.EventKey.contract_created">
+<em class="property">static </em><code class="sig-name descname">contract_created</code><span class="sig-paren">(</span><em class="sig-param">primary_only: bool</em>, <em class="sig-param">template: Any</em><span class="sig-paren">)</span> &#x2192; Collection[str]<a class="reference internal" href="_modules/dazl/model/reading.html#EventKey.contract_created"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey.contract_created" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of events that get raised in response to a <a class="reference internal" href="#dazl.model.reading.ContractCreateEvent" title="dazl.model.reading.ContractCreateEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractCreateEvent</span></code></a>
+of the specified template type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dazl.model.reading.EventKey.contract_exercised">
+<em class="property">static </em><code class="sig-name descname">contract_exercised</code><span class="sig-paren">(</span><em class="sig-param">primary_only: bool</em>, <em class="sig-param">template: Any</em>, <em class="sig-param">choice: Any</em><span class="sig-paren">)</span> &#x2192; Collection[str]<a class="reference internal" href="_modules/dazl/model/reading.html#EventKey.contract_exercised"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey.contract_exercised" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of events that get raised in response to a <a class="reference internal" href="#dazl.model.reading.ContractExercisedEvent" title="dazl.model.reading.ContractExercisedEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractExercisedEvent</span></code></a>
+of the specified choice.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dazl.model.reading.EventKey.init">
+<em class="property">static </em><code class="sig-name descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Collection[str]<a class="reference internal" href="_modules/dazl/model/reading.html#EventKey.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of events that get raised in response to an <a class="reference internal" href="#dazl.model.reading.InitEvent" title="dazl.model.reading.InitEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">InitEvent</span></code></a>. This is
+currently only <code class="docutils literal notranslate"><span class="pre">'init'</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dazl.model.reading.EventKey.offset">
+<em class="property">static </em><code class="sig-name descname">offset</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Collection[str]<a class="reference internal" href="_modules/dazl/model/reading.html#EventKey.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey.offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of events that get raised in response to a <a class="reference internal" href="#dazl.model.reading.OffsetEvent" title="dazl.model.reading.OffsetEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">OffsetEvent</span></code></a>. This is
+currently only <code class="docutils literal notranslate"><span class="pre">'offset'</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dazl.model.reading.EventKey.ready">
+<em class="property">static </em><code class="sig-name descname">ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Collection[str]<a class="reference internal" href="_modules/dazl/model/reading.html#EventKey.ready"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey.ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of events that get raised in response to a <a class="reference internal" href="#dazl.model.reading.ReadyEvent" title="dazl.model.reading.ReadyEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadyEvent</span></code></a>. This is
+currently only <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dazl.model.reading.EventKey.transaction_end">
+<em class="property">static </em><code class="sig-name descname">transaction_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Collection[str]<a class="reference internal" href="_modules/dazl/model/reading.html#EventKey.transaction_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey.transaction_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of events that get raised in response to a <a class="reference internal" href="#dazl.model.reading.TransactionEndEvent" title="dazl.model.reading.TransactionEndEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransactionEndEvent</span></code></a>.
+This is currently only <code class="docutils literal notranslate"><span class="pre">'transaction-end'</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dazl.model.reading.EventKey.transaction_start">
+<em class="property">static </em><code class="sig-name descname">transaction_start</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Collection[str]<a class="reference internal" href="_modules/dazl/model/reading.html#EventKey.transaction_start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.reading.EventKey.transaction_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of events that get raised in response to a <a class="reference internal" href="#dazl.model.reading.TransactionStartEvent" title="dazl.model.reading.TransactionStartEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransactionStartEvent</span></code></a>.
+This is currently only <code class="docutils literal notranslate"><span class="pre">'transaction-start'</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <span class="target" id="module-dazl.model.types"></span><div class="section" id="type-system-types">
 <h2>Type system types<a class="headerlink" href="#type-system-types" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#module-dazl.model.types" title="dazl.model.types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model.types</span></code></a> module contains the Python classes used to represent the DAML type
