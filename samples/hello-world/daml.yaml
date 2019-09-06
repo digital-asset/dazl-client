@@ -1,0 +1,10 @@
+sdk-version: 0.13.21
+name: hello-world
+source: src/daml/Sample.daml
+parties:
+  - Alice
+  - Bob
+version: "2"
+dependencies:
+  - daml-prim
+  - daml-stdlib
