@@ -55,7 +55,7 @@ def register_pingpong_handler(network: dazl.Network, party):
             return send(party, event.cid, 'RespondPing', event.cdata['count'])
 
 
-def main(network):
+def dazl_main(network):
     init_pingpong(network, 'Alice', 'Bob')
     init_pingpong(network, 'Bob', 'Alice')
 
@@ -63,5 +63,9 @@ def main(network):
     register_pingpong_handler(network, 'Bob')
 
 
+def main():
+    dazl.run(dazl_main)
+
+
 if __name__ == '__main__':
-    dazl.run(main)
+    main()

@@ -10,6 +10,7 @@ jobs:
           command: |
             curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python && \
             source $HOME/.poetry/env && \
+            pip install pipenv && \
             poetry config settings.virtualenvs.in-project true && \
             curl -LO https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && \
             chmod 755 jq-linux64 && \

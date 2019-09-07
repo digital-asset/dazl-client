@@ -3,11 +3,27 @@ daml 1.2
 module Sample where
 
 
+template Setup
+  with
+    party: Party
+  where
+    signatory party
+    controller party can
+      Execute : ContractId HelloRole
+        do
+          cidRole <- lookupByKey @HelloRole party
+          case cidRole of
+            Some cid -> return cid
+            None -> create HelloRole with ..
+
+
 template HelloRole
   with
     party: Party
   where
     signatory party
+    key party : Party
+    maintainer key
 
     controller party can
       nonconsuming SayHello : ContractId HelloMessage
