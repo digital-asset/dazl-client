@@ -51,7 +51,7 @@ class ValidateSerializer(AbstractSerializer[Command, Any]):
             choice_info: TemplateChoice, choice_arguments: Any) -> CreateAndExerciseCommand:
         return CreateAndExerciseCommand(
             template=template_type, arguments=create_arguments,
-            choice=choice_info.name, choice_arguments=choice_arguments)
+            choice=choice_info.name, choice_argument=choice_arguments)
 
     def serialize_unit(self, context: TypeEvaluationContext, obj: Any) -> Any:
         return obj
