@@ -102,11 +102,11 @@ _LEDGEROFFSET.fields_by_name['boundary'].containing_oneof = _LEDGEROFFSET.oneofs
 DESCRIPTOR.message_types_by_name['LedgerOffset'] = _LEDGEROFFSET
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-LedgerOffset = _reflection.GeneratedProtocolMessageType('LedgerOffset', (_message.Message,), dict(
-  DESCRIPTOR = _LEDGEROFFSET,
-  __module__ = 'com.digitalasset.ledger.api.v1.ledger_offset_pb2'
+LedgerOffset = _reflection.GeneratedProtocolMessageType('LedgerOffset', (_message.Message,), {
+  'DESCRIPTOR' : _LEDGEROFFSET,
+  '__module__' : 'com.digitalasset.ledger.api.v1.ledger_offset_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.LedgerOffset)
-  ))
+  })
 _sym_db.RegisterMessage(LedgerOffset)
 
 

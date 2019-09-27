@@ -76,7 +76,8 @@ def get_old_type(daml_type: 'Type') -> 'OldType':
 
     return safe_cast(Type, daml_type).Sum_match(
         _old_type_var, _old_type_con, _old_type_prim, _old_forall_type,
-        lambda tuple_: UnsupportedType('Tuple'))
+        lambda tuple_: UnsupportedType('Tuple'),
+        lambda nat: UnsupportedType('Nat'))
 
 
 def _old_type_var(var_: 'Type.Var') -> 'OldType':

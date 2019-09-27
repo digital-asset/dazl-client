@@ -6,7 +6,7 @@ from typing import Optional, Sequence, Union
 
 from ._render_base import PrettyPrintBase
 from .util import maybe_parentheses
-from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, Module, PrimCon, PrimType, \
+from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, PrimType, \
     Type as NewType, Scenario, Pure, Block, Update
 from ..model.types import Type as OldType, ScalarType, ContractIdType, ListType, OptionalType, \
     TextMapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, \
@@ -291,7 +291,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 con=self.visit_type_con,
                 prim=self.visit_type_prim,
                 forall=self.visit_type_forall,
-                tuple=self.visit_type_tuple)
+                tuple=self.visit_type_tuple,
+                nat=self.visit_type_nat)
         elif isinstance(type, UpdateType):
             type_str = self.visit_type_prim(type)
         elif isinstance(type, ForAllType):

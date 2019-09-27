@@ -283,33 +283,33 @@ DESCRIPTOR.message_types_by_name['TreeEvent'] = _TREEEVENT
 DESCRIPTOR.message_types_by_name['Transaction'] = _TRANSACTION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-TransactionTree = _reflection.GeneratedProtocolMessageType('TransactionTree', (_message.Message,), dict(
+TransactionTree = _reflection.GeneratedProtocolMessageType('TransactionTree', (_message.Message,), {
 
-  EventsByIdEntry = _reflection.GeneratedProtocolMessageType('EventsByIdEntry', (_message.Message,), dict(
-    DESCRIPTOR = _TRANSACTIONTREE_EVENTSBYIDENTRY,
-    __module__ = 'com.digitalasset.ledger.api.v1.transaction_pb2'
+  'EventsByIdEntry' : _reflection.GeneratedProtocolMessageType('EventsByIdEntry', (_message.Message,), {
+    'DESCRIPTOR' : _TRANSACTIONTREE_EVENTSBYIDENTRY,
+    '__module__' : 'com.digitalasset.ledger.api.v1.transaction_pb2'
     # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.TransactionTree.EventsByIdEntry)
-    ))
+    })
   ,
-  DESCRIPTOR = _TRANSACTIONTREE,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_pb2'
+  'DESCRIPTOR' : _TRANSACTIONTREE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.TransactionTree)
-  ))
+  })
 _sym_db.RegisterMessage(TransactionTree)
 _sym_db.RegisterMessage(TransactionTree.EventsByIdEntry)
 
-TreeEvent = _reflection.GeneratedProtocolMessageType('TreeEvent', (_message.Message,), dict(
-  DESCRIPTOR = _TREEEVENT,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_pb2'
+TreeEvent = _reflection.GeneratedProtocolMessageType('TreeEvent', (_message.Message,), {
+  'DESCRIPTOR' : _TREEEVENT,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.TreeEvent)
-  ))
+  })
 _sym_db.RegisterMessage(TreeEvent)
 
-Transaction = _reflection.GeneratedProtocolMessageType('Transaction', (_message.Message,), dict(
-  DESCRIPTOR = _TRANSACTION,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_pb2'
+Transaction = _reflection.GeneratedProtocolMessageType('Transaction', (_message.Message,), {
+  'DESCRIPTOR' : _TRANSACTION,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.Transaction)
-  ))
+  })
 _sym_db.RegisterMessage(Transaction)
 
 

@@ -169,33 +169,33 @@ DESCRIPTOR.message_types_by_name['Filters'] = _FILTERS
 DESCRIPTOR.message_types_by_name['InclusiveFilters'] = _INCLUSIVEFILTERS
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-TransactionFilter = _reflection.GeneratedProtocolMessageType('TransactionFilter', (_message.Message,), dict(
+TransactionFilter = _reflection.GeneratedProtocolMessageType('TransactionFilter', (_message.Message,), {
 
-  FiltersByPartyEntry = _reflection.GeneratedProtocolMessageType('FiltersByPartyEntry', (_message.Message,), dict(
-    DESCRIPTOR = _TRANSACTIONFILTER_FILTERSBYPARTYENTRY,
-    __module__ = 'com.digitalasset.ledger.api.v1.transaction_filter_pb2'
+  'FiltersByPartyEntry' : _reflection.GeneratedProtocolMessageType('FiltersByPartyEntry', (_message.Message,), {
+    'DESCRIPTOR' : _TRANSACTIONFILTER_FILTERSBYPARTYENTRY,
+    '__module__' : 'com.digitalasset.ledger.api.v1.transaction_filter_pb2'
     # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.TransactionFilter.FiltersByPartyEntry)
-    ))
+    })
   ,
-  DESCRIPTOR = _TRANSACTIONFILTER,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_filter_pb2'
+  'DESCRIPTOR' : _TRANSACTIONFILTER,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_filter_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.TransactionFilter)
-  ))
+  })
 _sym_db.RegisterMessage(TransactionFilter)
 _sym_db.RegisterMessage(TransactionFilter.FiltersByPartyEntry)
 
-Filters = _reflection.GeneratedProtocolMessageType('Filters', (_message.Message,), dict(
-  DESCRIPTOR = _FILTERS,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_filter_pb2'
+Filters = _reflection.GeneratedProtocolMessageType('Filters', (_message.Message,), {
+  'DESCRIPTOR' : _FILTERS,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_filter_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.Filters)
-  ))
+  })
 _sym_db.RegisterMessage(Filters)
 
-InclusiveFilters = _reflection.GeneratedProtocolMessageType('InclusiveFilters', (_message.Message,), dict(
-  DESCRIPTOR = _INCLUSIVEFILTERS,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_filter_pb2'
+InclusiveFilters = _reflection.GeneratedProtocolMessageType('InclusiveFilters', (_message.Message,), {
+  'DESCRIPTOR' : _INCLUSIVEFILTERS,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_filter_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.InclusiveFilters)
-  ))
+  })
 _sym_db.RegisterMessage(InclusiveFilters)
 
 

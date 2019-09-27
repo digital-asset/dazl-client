@@ -12,7 +12,7 @@ from typing import BinaryIO, Optional, Union
 
 ROOT = Path(__file__).absolute().parent.parent
 
-DAML_SDK_VERSION = '100.13.10'
+DAML_SDK_VERSION = '100.13.27'
 DAML_SDK_BASE_URL = 'https://digitalassetsdk.bintray.com/DigitalAssetSDK'
 GOOGLE_APIS_BASE_URL = 'https://raw.githubusercontent.com/googleapis/googleapis/master'
 

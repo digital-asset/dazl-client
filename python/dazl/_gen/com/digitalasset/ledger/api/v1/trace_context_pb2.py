@@ -92,11 +92,11 @@ _TRACECONTEXT.fields_by_name['parent_span_id'].message_type = google_dot_protobu
 DESCRIPTOR.message_types_by_name['TraceContext'] = _TRACECONTEXT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-TraceContext = _reflection.GeneratedProtocolMessageType('TraceContext', (_message.Message,), dict(
-  DESCRIPTOR = _TRACECONTEXT,
-  __module__ = 'com.digitalasset.ledger.api.v1.trace_context_pb2'
+TraceContext = _reflection.GeneratedProtocolMessageType('TraceContext', (_message.Message,), {
+  'DESCRIPTOR' : _TRACECONTEXT,
+  '__module__' : 'com.digitalasset.ledger.api.v1.trace_context_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.TraceContext)
-  ))
+  })
 _sym_db.RegisterMessage(TraceContext)
 
 

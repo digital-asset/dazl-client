@@ -158,18 +158,18 @@ DESCRIPTOR.message_types_by_name['Archive'] = _ARCHIVE
 DESCRIPTOR.enum_types_by_name['HashFunction'] = _HASHFUNCTION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ArchivePayload = _reflection.GeneratedProtocolMessageType('ArchivePayload', (_message.Message,), dict(
-  DESCRIPTOR = _ARCHIVEPAYLOAD,
-  __module__ = 'da.daml_lf_pb2'
+ArchivePayload = _reflection.GeneratedProtocolMessageType('ArchivePayload', (_message.Message,), {
+  'DESCRIPTOR' : _ARCHIVEPAYLOAD,
+  '__module__' : 'da.daml_lf_pb2'
   # @@protoc_insertion_point(class_scope:daml_lf.ArchivePayload)
-  ))
+  })
 _sym_db.RegisterMessage(ArchivePayload)
 
-Archive = _reflection.GeneratedProtocolMessageType('Archive', (_message.Message,), dict(
-  DESCRIPTOR = _ARCHIVE,
-  __module__ = 'da.daml_lf_pb2'
+Archive = _reflection.GeneratedProtocolMessageType('Archive', (_message.Message,), {
+  'DESCRIPTOR' : _ARCHIVE,
+  '__module__' : 'da.daml_lf_pb2'
   # @@protoc_insertion_point(class_scope:daml_lf.Archive)
-  ))
+  })
 _sym_db.RegisterMessage(Archive)
 
 

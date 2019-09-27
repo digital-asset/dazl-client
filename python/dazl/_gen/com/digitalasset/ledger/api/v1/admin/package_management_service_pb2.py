@@ -200,39 +200,39 @@ DESCRIPTOR.message_types_by_name['UploadDarFileRequest'] = _UPLOADDARFILEREQUEST
 DESCRIPTOR.message_types_by_name['UploadDarFileResponse'] = _UPLOADDARFILERESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ListKnownPackagesRequest = _reflection.GeneratedProtocolMessageType('ListKnownPackagesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTKNOWNPACKAGESREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
+ListKnownPackagesRequest = _reflection.GeneratedProtocolMessageType('ListKnownPackagesRequest', (_message.Message,), {
+  'DESCRIPTOR' : _LISTKNOWNPACKAGESREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.ListKnownPackagesRequest)
-  ))
+  })
 _sym_db.RegisterMessage(ListKnownPackagesRequest)
 
-ListKnownPackagesResponse = _reflection.GeneratedProtocolMessageType('ListKnownPackagesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTKNOWNPACKAGESRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
+ListKnownPackagesResponse = _reflection.GeneratedProtocolMessageType('ListKnownPackagesResponse', (_message.Message,), {
+  'DESCRIPTOR' : _LISTKNOWNPACKAGESRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.ListKnownPackagesResponse)
-  ))
+  })
 _sym_db.RegisterMessage(ListKnownPackagesResponse)
 
-PackageDetails = _reflection.GeneratedProtocolMessageType('PackageDetails', (_message.Message,), dict(
-  DESCRIPTOR = _PACKAGEDETAILS,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
+PackageDetails = _reflection.GeneratedProtocolMessageType('PackageDetails', (_message.Message,), {
+  'DESCRIPTOR' : _PACKAGEDETAILS,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.PackageDetails)
-  ))
+  })
 _sym_db.RegisterMessage(PackageDetails)
 
-UploadDarFileRequest = _reflection.GeneratedProtocolMessageType('UploadDarFileRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPLOADDARFILEREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
+UploadDarFileRequest = _reflection.GeneratedProtocolMessageType('UploadDarFileRequest', (_message.Message,), {
+  'DESCRIPTOR' : _UPLOADDARFILEREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.UploadDarFileRequest)
-  ))
+  })
 _sym_db.RegisterMessage(UploadDarFileRequest)
 
-UploadDarFileResponse = _reflection.GeneratedProtocolMessageType('UploadDarFileResponse', (_message.Message,), dict(
-  DESCRIPTOR = _UPLOADDARFILERESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
+UploadDarFileResponse = _reflection.GeneratedProtocolMessageType('UploadDarFileResponse', (_message.Message,), {
+  'DESCRIPTOR' : _UPLOADDARFILERESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.package_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.UploadDarFileResponse)
-  ))
+  })
 _sym_db.RegisterMessage(UploadDarFileResponse)
 
 

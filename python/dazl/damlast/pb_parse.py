@@ -101,6 +101,8 @@ class ProtobufParser:
             return Type(forall=self.parse_Type_Forall(pb.forall))
         elif sum_name == 'tuple':
             return Type(tuple=self.parse_Type_Tuple(pb.tuple))
+        elif sum_name == 'nat':
+            return Type(nat=pb.nat)
         else:
             raise ValueError(f'unknown sum type value: {sum_name!r}')
 
@@ -231,6 +233,10 @@ class ProtobufParser:
             args['optional_none'] = self.parse_Expr_OptionalNone(pb.optional_none)
         elif sum_name == 'optional_some':
             args['optional_some'] = self.parse_Expr_OptionalSome(pb.optional_some)
+        elif sum_name == 'to_any':
+            args['to_any'] = self.parse_Expr_ToAny(pb.to_any)
+        elif sum_name == 'optional_some':
+            args['from_any'] = self.parse_Expr_FromAny(pb.from_any)
         else:
             raise ValueError(f'Unknown type of Expr: {sum_name!r}')
 
@@ -320,6 +326,16 @@ class ProtobufParser:
         return Expr.OptionalSome(
             self.parse_Type(pb.type),
             self.parse_Expr(pb.body))
+
+    def parse_Expr_ToAny(self, pb):
+        return Expr.ToAny(
+            self.parse_Type(pb.type),
+            self.parse_Expr(pb.expr))
+
+    def parse_Expr_FromAny(self, pb):
+        return Expr.FromAny(
+            self.parse_Type(pb.type),
+            self.parse_Expr(pb.expr))
 
     def parse_CaseAlt(self, pb) -> 'CaseAlt':
         body = self.parse_Expr(pb.body)

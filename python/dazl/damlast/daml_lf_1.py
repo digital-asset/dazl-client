@@ -94,13 +94,17 @@ class Kind:
     def __init__(
             self,
             star: 'Unit' = MISSING,
-            arrow: 'Arrow' = MISSING):
+            arrow: 'Arrow' = MISSING,
+            nat: 'Unit' = MISSING):
         if star is not MISSING:
             object.__setattr__(self, '_Sum_name', 'star')
             object.__setattr__(self, '_Sum_value', star)
         elif arrow is not MISSING:
             object.__setattr__(self, '_Sum_name', 'arrow')
             object.__setattr__(self, '_Sum_value', arrow)
+        elif nat is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'nat')
+            object.__setattr__(self, '_Sum_value', nat)
         else:
             raise ValueError('at least one must be specified')
 
@@ -111,6 +115,10 @@ class Kind:
     @property
     def arrow(self) -> 'Optional[Arrow]':
         return self._Sum_value if self._Sum_name == 'arrow' else None
+
+    @property
+    def nat(self) -> 'Optional[Unit]':
+        return self._Sum_value if self._Sum_name == 'nat' else None
 
     def __repr__(self):
         if self._Sum_name == 'star':
@@ -139,6 +147,8 @@ class PrimType(Enum):
     OPTIONAL = 14     # arity = 1
     ARROW = 15        # arity = 2
     MAP = 16          # arity = 1
+    NUMERIC = 17
+    ANY = 18
 
 
 # noinspection PyShadowingBuiltins
@@ -199,7 +209,8 @@ class Type:
             con: 'Type.Con' = MISSING,
             prim: 'Type.Prim' = MISSING,
             forall: 'Type.Forall' = MISSING,
-            tuple: 'Type.Tuple' = MISSING):
+            tuple: 'Type.Tuple' = MISSING,
+            nat: int = MISSING):
         if var is not MISSING:
             object.__setattr__(self, '_Sum_name', 'var')
             object.__setattr__(self, '_Sum_value', var)
@@ -215,6 +226,9 @@ class Type:
         elif tuple is not MISSING:
             object.__setattr__(self, '_Sum_name', 'tuple')
             object.__setattr__(self, '_Sum_value', tuple)
+        elif nat is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'nat')
+            object.__setattr__(self, '_Sum_value', nat)
         else:
             raise ValueError('unknown sum type')
 
@@ -238,6 +252,10 @@ class Type:
     def tuple(self) -> 'Type.Tuple':
         return self._Sum_value if self._Sum_name == 'tuple' else None
 
+    @property
+    def nat(self) -> int:
+        return self._Sum_value if self._Sum_name == 'nat' else None
+
     # noinspection PyPep8Naming
     def Sum_match(
             self,
@@ -245,7 +263,8 @@ class Type:
             con: 'Callable[[Type.Con], T]',
             prim: 'Callable[[Type.Prim], T]',
             forall: 'Callable[[Type.Forall], T]',
-            tuple: 'Callable[[Type.Tuple], T]') -> 'T':
+            tuple: 'Callable[[Type.Tuple], T]',
+            nat: 'Callable[[int], T]') -> 'T':
         if self._Sum_name == 'var':
             return var(self._Sum_value)
         elif self._Sum_name == 'con':
@@ -256,6 +275,8 @@ class Type:
             return forall(self._Sum_value)
         elif self._Sum_name == 'tuple':
             return tuple(self._Sum_value)
+        elif self._Sum_name == 'nat':
+            return nat(self._Sum_value)
         else:
             raise Exception('invalid _Sum_name value')
 
@@ -299,7 +320,8 @@ class PrimLit:
             text: str = MISSING,
             timestamp: float = MISSING,
             party: str = MISSING,
-            date: int = MISSING):
+            date: int = MISSING,
+            numeric: str = MISSING):
         if int64 is not MISSING:
             object.__setattr__(self, '_Sum_name', 'int64')
             object.__setattr__(self, '_Sum_value', int64)
@@ -318,6 +340,9 @@ class PrimLit:
         elif date is not MISSING:
             object.__setattr__(self, '_Sum_name', 'date')
             object.__setattr__(self, '_Sum_value', date)
+        elif numeric is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'numeric')
+            object.__setattr__(self, '_Sum_value', numeric)
 
     @property
     def int64(self) -> 'Optional[int]':
@@ -358,6 +383,18 @@ class PrimLit:
         days since the unix epoch. can go backwards. limited from
         0001-01-01 to 9999-12-31, also to be compatible with
         https://www.ietf.org/rfc/rfc3339.txt
+        """
+        return self._Sum_value if self._Sum_name == 'date' else None
+
+    @property
+    def numeric(self) -> 'Optional[str]':
+        """
+        Serialization of number with precision 38 and scale between 0 and 37
+
+        Must be a string that matched
+            `-?([0-1]\d*|0)\.(\d*)
+
+        The number of decimal digits indicate the scale of the number.
         """
         return self._Sum_value if self._Sum_name == 'date' else None
 
@@ -554,6 +591,24 @@ class Expr:
         def __repr__(self):
             return f'Expr.Some({self.body!r} : {self.type})'
 
+    class ToAny:
+        type: 'Type'
+        expr: 'Expr'
+
+        # noinspection PyShadowingBuiltins
+        def __init__(self, type: 'Type', expr: 'Expr'):
+            self.type = type
+            self.expr = expr
+
+    class FromAny:
+        type: 'Type'
+        expr: 'Expr'
+
+        # noinspection PyShadowingBuiltins
+        def __init__(self, type: 'Type', expr: 'Expr'):
+            self.type = type
+            self.expr = expr
+
     __slots__ = 'location', '_Sum_name', '_Sum_value'
 
     def __init__(
@@ -583,7 +638,9 @@ class Expr:
             tuple_upd: 'TupleUpd' = MISSING,
             optional_none: 'OptionalNone' = MISSING,
             optional_some: 'OptionalSome' = MISSING,
-            location: 'Location' = MISSING):
+            location: 'Location' = MISSING,
+            to_any: 'ToAny' = MISSING,
+            from_any: 'FromAny' = MISSING):
         object.__setattr__(self, 'location', location)
         if var is not MISSING:
             object.__setattr__(self, '_Sum_name', 'var')
@@ -660,6 +717,12 @@ class Expr:
         elif optional_some is not MISSING:
             object.__setattr__(self, '_Sum_name', 'optional_some')
             object.__setattr__(self, '_Sum_value', optional_some)
+        elif to_any is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'to_any')
+            object.__setattr__(self, '_Sum_value', to_any)
+        elif from_any is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'from_any')
+            object.__setattr__(self, '_Sum_value', from_any)
         else:
             raise ValueError(f'At least one valid Sum value must be supplied!')
 
@@ -766,6 +829,14 @@ class Expr:
     def optional_some(self) -> 'Optional[OptionalSome]':
         return self._Sum_value if self._Sum_name == 'optional_some' else None
 
+    @property
+    def to_any(self) -> 'Optional[ToAny]':
+        return self._Sum_value if self._Sum_name == 'to_any' else None
+
+    @property
+    def from_any(self) -> 'Optional[FromAny]':
+        return self._Sum_value if self._Sum_name == 'from_any' else None
+
     # noinspection PyPep8Naming
     def Sum_match(
             self,
@@ -793,7 +864,9 @@ class Expr:
             rec_upd: 'Callable[[RecUpd], T]',
             tuple_upd: 'Callable[[TupleUpd], T]',
             optional_none: 'Callable[[OptionalNone], T]',
-            optional_some: 'Callable[[OptionalSome], T]') -> 'T':
+            optional_some: 'Callable[[OptionalSome], T]',
+            to_any: 'Callable[[ToAny], T]',
+            from_any: 'Callable[[ToAny], T]') -> 'T':
         if self._Sum_name == 'var':
             return var(self.var)
         elif self._Sum_name == 'val':
@@ -844,6 +917,10 @@ class Expr:
             return optional_none(self.optional_none)
         elif self._Sum_name == 'optional_some':
             return optional_some(self.optional_some)
+        elif self._Sum_name == 'to_any':
+            return to_any(self.to_any)
+        elif self._Sum_name == 'from_any':
+            return from_any(self.from_any)
         else:
             raise Exception
 
@@ -1307,6 +1384,14 @@ class BuiltinFunction(Enum):
     DIV_DECIMAL = 3
     ROUND_DECIMAL = 6
 
+    ADD_NUMERIC = 107
+    SUB_NUMERIC = 108
+    MUL_NUMERIC = 109
+    DIV_NUMERIC = 110
+    ROUND_NUMERIC = 111
+    CAST_NUMERIC = 121
+    SHIFT_NUMERIC = 122
+
     ADD_INT64 = 7
     SUB_INT64 = 8
     MUL_INT64 = 9
@@ -1331,6 +1416,7 @@ class BuiltinFunction(Enum):
 
     LEQ_INT64 = 33
     LEQ_DECIMAL = 34
+    LEQ_NUMERIC = 112
     LEQ_TEXT = 36
     LEQ_TIMESTAMP = 37
     LEQ_DATE = 67
@@ -1338,6 +1424,7 @@ class BuiltinFunction(Enum):
 
     LESS_INT64 = 39
     LESS_DECIMAL = 40
+    LESS_NUMERIC = 113
     LESS_TEXT = 42
     LESS_TIMESTAMP = 43
     LESS_DATE = 68
@@ -1345,6 +1432,7 @@ class BuiltinFunction(Enum):
 
     GEQ_INT64 = 45
     GEQ_DECIMAL = 46
+    GEQ_NUMERIC = 114
     GEQ_TEXT = 48
     GEQ_TIMESTAMP = 49
     GEQ_DATE = 69
@@ -1352,6 +1440,7 @@ class BuiltinFunction(Enum):
 
     GREATER_INT64 = 51
     GREATER_DECIMAL = 52
+    GREATER_NUMERIC = 115
     GREATER_TEXT = 54
     GREATER_TIMESTAMP = 55
     GREATER_DATE = 70
@@ -1359,16 +1448,16 @@ class BuiltinFunction(Enum):
 
     TO_TEXT_INT64 = 57
     TO_TEXT_DECIMAL = 58
+    TO_TEXT_NUMERIC = 116
     TO_TEXT_TEXT = 60
     TO_TEXT_TIMESTAMP = 61
     TO_TEXT_DATE = 71
     TO_QUOTED_TEXT_PARTY = 63  # legacy, remove in next major version
     TO_TEXT_PARTY = 94  # Available Since version 1.2
-    TO_TEXT_CODE_POINTS = 105
     FROM_TEXT_PARTY = 95  # Available Since version 1.2
     FROM_TEXT_INT64 = 103  # Available Since version 1.5
     FROM_TEXT_DECIMAL = 104  # Available Since version 1.5
-    FROM_TEXT_CODE_POINTS = 106
+    FROM_TEXT_NUMERIC = 117
     SHA256_TEXT = 93  # Available Since version 1.2
 
     DATE_TO_UNIX_DAYS = 72  # Date -> Int64
@@ -1380,10 +1469,14 @@ class BuiltinFunction(Enum):
     INT64_TO_DECIMAL = 76
     DECIMAL_TO_INT64 = 77
 
+    INT64_TO_NUMERIC = 118
+    NUMERIC_TO_INT64 = 119
+
     IMPLODE_TEXT = 78
 
     EQUAL_INT64 = 79
     EQUAL_DECIMAL = 80
+    EQUAL_NUMERIC = 120
     EQUAL_TEXT = 81
     EQUAL_TIMESTAMP = 82
     EQUAL_DATE = 83
@@ -1395,6 +1488,9 @@ class BuiltinFunction(Enum):
     TRACE = 88
 
     COERCE_CONTRACT_ID = 102
+
+    TO_TEXT_CODE_POINTS = 105
+    FROM_TEXT_CODE_POINTS = 106
 
 
 class PrimCon(Enum):

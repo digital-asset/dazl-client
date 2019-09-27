@@ -51,7 +51,9 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_rec_upd,
             self.visit_expr_tuple_upd,
             self.visit_expr_optional_none,
-            self.visit_expr_optional_some)
+            self.visit_expr_optional_some,
+            self.visit_expr_to_any,
+            self.visit_expr_from_any)
 
     def visit_expr_var(self, var: str) -> 'RE':
         raise NotImplementedError
@@ -128,6 +130,12 @@ class ExprVisitor(Generic[RE]):
     def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'RE':
         raise NotImplementedError
 
+    def visit_expr_to_any(self, to_any: 'Expr.ToAny') -> 'RE':
+        raise NotImplementedError
+
+    def visit_expr_from_any(self, from_any: 'Expr.FromAny') -> 'RE':
+        raise NotImplementedError
+
 
 class TypeVisitor(Generic[RT]):
 
@@ -137,7 +145,8 @@ class TypeVisitor(Generic[RT]):
             self.visit_type_con,
             self.visit_type_prim,
             self.visit_type_forall,
-            self.visit_type_tuple)
+            self.visit_type_tuple,
+            self.visit_type_nat)
 
     def visit_type_var(self, var: 'Type.Var') -> 'RT':
         raise NotImplementedError
@@ -152,6 +161,9 @@ class TypeVisitor(Generic[RT]):
         raise NotImplementedError
 
     def visit_type_tuple(self, tuple: 'Type.Tuple') -> 'RT':
+        raise NotImplementedError
+
+    def visit_type_nat(self, nat: int) -> 'RT':
         raise NotImplementedError
 
 
@@ -193,6 +205,9 @@ class IdentityTypeVisitor(TypeVisitor[Type]):
         new_fields = _tuple([FieldWithType(field=fwt.field, type=self.visit_type(fwt.type))
                              for fwt in tuple.fields])
         return Type(tuple=Type.Tuple(fields=new_fields))
+
+    def visit_type_nat(self, nat: int) -> 'Type':
+        return Type(nat=nat)
 
 
 class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
@@ -307,3 +322,13 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
         new_type = self.visit_type(optional_some.type)
         new_body = self.visit_expr(optional_some.body)
         return Expr(optional_some=Expr.OptionalSome(type=new_type, body=new_body))
+
+    def visit_expr_to_any(self, to_any: 'Expr.ToAny') -> 'Expr':
+        return Expr(to_any=Expr.ToAny(
+            type=self.visit_type(to_any.type),
+            expr=self.visit_expr(to_any.expr)))
+
+    def visit_expr_from_any(self, from_any: 'Expr.FromAny') -> 'Expr':
+        return Expr(from_any=Expr.ToAny(
+            type=self.visit_type(from_any.type),
+            expr=self.visit_expr(from_any.expr)))

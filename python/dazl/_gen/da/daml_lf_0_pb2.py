@@ -54,11 +54,11 @@ _PACKAGE = _descriptor.Descriptor(
 DESCRIPTOR.message_types_by_name['Package'] = _PACKAGE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Package = _reflection.GeneratedProtocolMessageType('Package', (_message.Message,), dict(
-  DESCRIPTOR = _PACKAGE,
-  __module__ = 'da.daml_lf_0_pb2'
+Package = _reflection.GeneratedProtocolMessageType('Package', (_message.Message,), {
+  'DESCRIPTOR' : _PACKAGE,
+  '__module__' : 'da.daml_lf_0_pb2'
   # @@protoc_insertion_point(class_scope:daml_lf_0.Package)
-  ))
+  })
 _sym_db.RegisterMessage(Package)
 
 

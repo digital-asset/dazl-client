@@ -357,7 +357,10 @@ def to_exercised_event(
     cid = ContractId(er.contract_id, type_ref)
     event_id = er.event_id
     witness_parties = tuple(er.witness_parties)
-    contract_creating_event_id = er.contract_creating_event_id
+    try:
+        contract_creating_event_id = er.contract_creating_event_id
+    except AttributeError:
+        contract_creating_event_id = None
     choice = er.choice
     choice_args = to_natural_type(tt_context, cc.data_type, er.choice_argument)
     acting_parties = tuple(er.acting_parties)
@@ -409,8 +412,8 @@ def to_natural_type(context: TypeEvaluationContext, data_type: Type, obj: 'G.Val
         return to_enum(obj.enum)
     elif ctor == 'int64':
         return to_int64(obj.int64)
-    elif ctor == 'decimal':
-        return to_decimal(obj.decimal)
+    elif ctor == 'numeric':
+        return to_decimal(obj.numeric)
     elif ctor == 'text':
         return to_text(obj.text)
     elif ctor == 'date':
