@@ -18,7 +18,7 @@ def main():
 
     @client.ledger_created('Sample.HelloMessage')
     def on_message(event):
-        if (event.cdata['receiver'] == client.party) and (event.cdata['sender'] != client.party):
+        if (event.cdata['recipient'] == client.party) and (event.cdata['sender'] != client.party):
             return dazl.exercise_by_key('Sample.HelloRole', client.party, 'SayHello', {
                 'to': event.cdata['sender'],
                 'message': f'Thank you for telling me, {json.dumps(event.cdata["message"])}'
