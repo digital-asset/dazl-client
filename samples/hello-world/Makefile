@@ -1,26 +1,32 @@
 PYTHON := pipenv run python3
+bot_version := $(shell python3 src/python/setup.py --version)
+dar := target/artifacts/hello-world.dar
+bot := target/artifacts/hello-world-$(bot_version).tar.gz
+
+.PHONY: package
+package: $(bot) $(dar)
+
+
+$(dar):
+	daml build -o $@
+
+
+$(bot):
+	cd src/python && python3 setup.py sdist
+	rm -fr src/python/hello_world.egg-info
+	mkdir -p $(@D)
+	mv src/python/dist/hello-world-$(bot_version).tar.gz $@
+
 
 .PHONY: clean
 clean:
-	rm -fr target
+	rm -fr src/python/hello_world.egg-info src/python/dist target
 
-.PHONY: package
-package: target/hello-world.zip
 
-target/hello-world/requirements.txt:
-	echo https://digitalassetsdk.bintray.com/DigitalAssetSDK/com/digitalasset/dazl/dazl/5.2.12/dazl-5.2.12-py3-none-any.whl > $@
-
-target/hello-world.zip: target/hello-world/hello-world.dar target/hello-world/requirements.txt src/python/hello_world.py
-	cp src/python/hello_world.py target/hello-world/
-	(cd target && zip -r hello-world.zip hello-world)
-
-.PHONY: package
-run: package
-	DAML_LEDGER_URL=sandbox:// \
-	DAML_LEDGER_PARTY=Alice \
-	PIPENV_PIPFILE=../../python/Pipfile \
-	$(PYTHON) src/python/hello_world.py
-
-target/hello-world/hello-world.dar: src/daml/Sample.daml
-	mkdir -p `dirname $@`
-	da run damlc -- package -o $@ $< hello-world
+.PHONY: run-bot
+run-bot: $(bot)
+	DAML_LEDGER_URL=http://localhost:6865 \
+	DAML_LEDGER_PARTY=Operator \
+	PIPENV_PIPFILE=src/python/Pipfile \
+	PYTHONPATH=src/python \
+	$(PYTHON) -um bot
