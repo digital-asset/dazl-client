@@ -22,7 +22,7 @@ from ...._gen.com.daml.ledger.api.v1.package_service_pb2_grpc import PackageServ
 from ...._gen.com.daml.ledger.api.v1.testing.time_service_pb2 import GetTimeRequest, SetTimeRequest
 from ...._gen.com.daml.ledger.api.v1.testing.time_service_pb2_grpc import TimeServiceStub
 from ...._gen.com.daml.ledger.api.v1.transaction_filter_pb2 import Filters, \
-    TransactionFilter
+    InclusiveFilters, TransactionFilter
 from ...._gen.com.daml.ledger.api.v1.transaction_service_pb2 import GetTransactionsRequest, \
     GetLedgerEndRequest, GetTransactionByEventIdRequest
 from ...._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import \

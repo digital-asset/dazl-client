@@ -8,7 +8,7 @@ from threading import RLock
 from types import MappingProxyType
 
 from dataclasses import dataclass
-from typing import Any, Collection, Dict, Generic, List, Mapping, Optional, TypeVar, Union
+from typing import Any, Collection, Dict, Generic, Iterable, List, Mapping, Optional, TypeVar, Union
 
 from ..damlast.daml_lf_1 import Archive, Expr, Package, PackageRef, ValName, TypeConName, _Name
 from .types import Template, TemplateChoice, Type, TypeReference, UnresolvedTypeReference, \
@@ -30,6 +30,7 @@ class PackageStoreBuilder:
         self._value_types = dict()  # type: Dict[ValName, Expr]
         self._data_types = dict()  # type: Dict[TypeConName, Type]
         self._templates = dict()  # type: Dict[TypeConName, Template]
+        self._expected_package_ids = None  # type: Optional[Collection[str]]
 
     def add_archive(self, archive: 'Archive') -> None:
         self._archives.append(archive)
@@ -45,11 +46,16 @@ class PackageStoreBuilder:
     def add_template(self, template: Template):
         self._templates[template.data_type.name.con] = safe_cast(Template, template)
 
+    def add_expected_package_ids(self, expected_package_ids: 'Collection[str]'):
+        self._expected_package_ids = expected_package_ids
+
     def get_type(self, name: TypeConName) -> 'Optional[Type]':
         return self._data_types.get(name)
 
     def build(self) -> 'PackageStore':
-        return PackageStore(self._archives, self._value_types, self._data_types, self._templates)
+        return PackageStore(
+            self._archives, self._value_types, self._data_types, self._templates,
+            self._expected_package_ids)
 
 
 class PackageStore:
@@ -62,20 +68,22 @@ class PackageStore:
         """
         Create an empty store.
         """
-        return cls([], {}, {}, {})
+        return cls([], {}, {}, {}, None)
 
     def __init__(
             self,
             archives: 'Collection[Archive]',
             value_types: 'Dict[ValName, Expr]',
             data_types: 'Dict[TypeConName, Type]',
-            templates: 'Dict[TypeConName, Template]'):
+            templates: 'Dict[TypeConName, Template]',
+            expected_package_ids: 'Optional[Collection[str]]' = None):
         self._lock = RLock()
         self._archives = list(archives)
         self._cache = PackageStoreCache(EMPTY_TYPE_CACHE, EMPTY_TYPE_CACHE, EMPTY_TYPE_CACHE)
         self._value_types = safe_dict_cast(ValName, Expr, value_types)
         self._data_types = safe_dict_cast(TypeConName, Type, data_types)
         self._templates = safe_dict_cast(TypeConName, Template, templates)
+        self._expected_package_ids = expected_package_ids
 
     def archives(self) -> 'Collection[Archive]':
         """
@@ -91,12 +99,18 @@ class PackageStore:
         with self._lock:
             return [a.package for a in self._archives]
 
-    def package_ids(self) -> 'Collection[str]':
+    def package_ids(self) -> 'Collection[PackageRef]':
         """
         Return a copy of the collection of the set of loaded :class:`Package`s.
         """
         with self._lock:
             return [a.hash for a in self._archives]
+
+    def expected_package_ids(self) -> 'Collection[str]':
+        """
+        Return package IDs that are expected to be found on the ledger.
+        """
+        return self._expected_package_ids
 
     def register_all(self, other_store: 'PackageStore') -> 'PackageStore':
         """
@@ -145,6 +159,21 @@ class PackageStore:
     def types(self) -> 'Mapping[TypeConName, ConcreteType]':
         with self._lock:
             return MappingProxyType(dict(self._data_types))
+
+    def get_templates_for_packages(self, package_ids: 'Iterable[PackageRef]') -> 'Collection[Template]':
+        """
+        Return a collection of :class:`Template` instances from the given set of package IDs.
+
+        :param package_ids:
+            The set of package IDs to restrict templates to.
+        :return:
+            A collection of matching templates, or an empty collection if none match. This method
+            never returns ``None``.
+        """
+        match = []
+        for pkg_id in package_ids:
+            match.extend(self._cache.templates.lookup(pkg_id, '*'))
+        return match
 
     def resolve_template(self, template: 'Union[None, str, TypeReference, UnresolvedTypeReference, TypeConName]') \
             -> Collection[Template]:

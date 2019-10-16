@@ -1,14 +1,16 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 from io import BytesIO
 from os import path
 from pathlib import Path
-from typing import BinaryIO, Dict, Collection, Mapping, Optional, Sequence, Union, TYPE_CHECKING
+from typing import Dict, Collection, Mapping, Optional, Sequence, TYPE_CHECKING
 from zipfile import ZipFile
 
 from ..util.path_util import pathify
 
 if TYPE_CHECKING:
+    from ..model.core import Dar
+    from ..model.types import PackageId
     from ..model.types_store import PackageStore, PackageProvider
 
 
@@ -35,18 +37,26 @@ class DarFile:
     """
     Provides access to the contents of a .dar file.
     """
-    def __init__(self, dar_path: 'Union[str, Path, BinaryIO]'):
-        if isinstance(dar_path, (str, Path)):
-            self.dar_path = pathify(dar_path)
+    def __init__(self, dar: 'Dar'):
+        if isinstance(dar, (str, Path)):
+            self._buf = None
+            self.dar_path = pathify(dar)
             self.dar_contents = ZipFile(str(self.dar_path))
-        else:
+        elif isinstance(dar, bytes):
+            self._buf = BytesIO(dar)
             self.dar_path = None
-            self.dar_contents = ZipFile(dar_path)
+            self.dar_contents = ZipFile(self._buf)
+        else:
+            self._buf = None
+            self.dar_path = None
+            self.dar_contents = ZipFile(dar)
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        if self._buf is not None:
+            self._buf.close()
         self.close()
 
     def close(self):
@@ -133,10 +143,9 @@ def parse_dalf(contents: bytes) -> 'PackageStore':
     return parse_daml_metadata_pb(a.hash, p)
 
 
-def get_dar_package_ids(contents: bytes) -> 'Collection[str]':
-    with BytesIO(contents) as buf:
-        with DarFile(buf) as dar:
-            return dar.read_metadata().package_ids()
+def get_dar_package_ids(dar: 'Dar') -> 'Collection[PackageId]':
+    with DarFile(dar) as dar_file:
+        return dar_file.read_metadata().package_ids()
 
 
 class DamlcPackageError(Exception):

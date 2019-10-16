@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -13,7 +13,7 @@ from .. import LOG
 from ..model.core import Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
-from ..model.reading import BaseEvent, TransactionFilter
+from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ..model.writing import CommandPayload
 from ..scheduler import Invoker
 from ..util.typing import safe_optional_cast, safe_cast
@@ -85,7 +85,7 @@ class LedgerClient:
     Abstract base class that defines the required methods to define a protocol over the Ledger API.
     """
 
-    async def commands(self, command_payload: CommandPayload) -> None:
+    async def commands(self, command_payload: 'CommandPayload') -> None:
         """
         Submit a command to the ledger.
 
@@ -96,13 +96,13 @@ class LedgerClient:
         """
         raise NotImplementedError('commands must be implemented')
 
-    async def active_contracts(self) -> 'Sequence[BaseEvent]':
+    async def active_contracts(self, contract_filter: 'ContractFilter') -> 'Sequence[BaseEvent]':
         """
         Return the current active contract set.
         """
         raise NotImplementedError('active contract set fetch must be implemented')
 
-    async def events(self, transaction_filter: TransactionFilter) -> 'Sequence[BaseEvent]':
+    async def events(self, transaction_filter: 'TransactionFilter') -> 'Sequence[BaseEvent]':
         """
         Return events from a certain offset in the ledger. The number of blocks
         returned is implementation-defined.

@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -515,7 +515,6 @@ class UnsupportedType(Type):
 
     def __repr__(self):
         return f'<UnsupportedType({self.name})>'
-
 
 
 class Template:

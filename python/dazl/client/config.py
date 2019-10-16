@@ -15,8 +15,8 @@ from typing import Any, Collection, List, Mapping, Optional, Sequence, Type, Typ
 from .. import LOG
 from ..model.core import ConfigurationError, Party
 from ..util.config_meta import config_field, \
-    BOOLEAN_TYPE, COUNT_TYPE, LOG_LEVEL_TYPE, PARTIES_TYPE, PATH_TYPE, PORT_TYPE, SECONDS_TYPE, \
-    STRING_TYPE, URL_TYPE, VERIFY_SSL_TYPE, config_fields, add_argument
+    BOOLEAN_TYPE, COUNT_TYPE, LOG_LEVEL_TYPE, PARTIES_TYPE, PATH_TYPE, PACKAGE_IDS_TYPE, \
+    PORT_TYPE, SECONDS_TYPE, STRING_TYPE, URL_TYPE, VERIFY_SSL_TYPE, config_fields, add_argument
 
 # If this environment variable is set, is used in place of a configuration file if none is supplied
 # on the command-line.
@@ -155,6 +155,10 @@ class _NetworkConfig(URLConfig):
     party_groups: Optional[Collection[str]] = config_field(
         'comma-separated list of broadcast parties',
         param_type=PARTIES_TYPE)
+
+    package_ids: Optional[Collection[str]] = config_field(
+        'comma-separated list of package IDs to listen on',
+        param_type=PACKAGE_IDS_TYPE)
 
     server_host: Optional[str] = config_field(
         'Server listening host. Used for OAuth web application flow callbacks.',

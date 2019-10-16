@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -41,6 +41,7 @@ from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
 from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
+from ..util.dar import get_dar_package_ids
 from ..util.io import get_bytes
 from ..util.prim_types import TimeDeltaConvertible
 from ._events import EventHandler, AEventHandler, EventHandlerDecorator, AEventHandlerDecorator, \
@@ -115,9 +116,14 @@ class async_network:
         if url:
             self.network.set_config(url=url)
         self.dars = as_list(dars)  # type: List[Dar]
+        self.package_ids = {pkg_id for dar in self.dars for pkg_id in get_dar_package_ids(dar)} \
+            if self.dars else None
+        if self.package_ids:
+            self.network.set_config(package_ids=self.package_ids)
 
     async def __aenter__(self):
         LOG.debug('async_network.__aenter__')
+
         for dar in self.dars:
             await self.network.aio_global().ensure_dar(dar)
         return self.network

@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -21,7 +21,7 @@ from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, fi
 from ...model.core import Party, UserTerminateRequest, ConnectionTimeoutError
 from ...model.ledger import LedgerMetadata
 from ...model.network import HTTPConnectionSettings
-from ...model.reading import BaseEvent, TransactionFilter
+from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ...model.types import PackageId, PackageIdSet
 from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
@@ -42,8 +42,8 @@ class GRPCv1LedgerClient(LedgerClient):
         return self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request))
 
-    async def active_contracts(self) -> 'Sequence[BaseEvent]':
-        request = serialize_acs_request(self.ledger.ledger_id, self.party)
+    async def active_contracts(self, contract_filter: 'ContractFilter') -> 'Sequence[BaseEvent]':
+        request = serialize_acs_request(contract_filter, self.ledger.ledger_id, self.party)
         context = BaseEventDeserializationContext(
             None, self.ledger.store, self.party, self.ledger.ledger_id)
         acs_stream = await self.connection.invoker.run_in_executor(
@@ -51,13 +51,13 @@ class GRPCv1LedgerClient(LedgerClient):
         acs_events = to_acs_events(context, acs_stream)
         return acs_events
 
-    def events(self, transaction_filter: TransactionFilter) \
+    def events(self, transaction_filter: 'TransactionFilter') \
             -> Awaitable[Sequence[BaseEvent]]:
         results_future = get_event_loop().create_future()
-        request = serialize_transactions_request(transaction_filter, self.party)
-
+        request = serialize_transactions_request(
+            transaction_filter, self.ledger.ledger_id, self.party)
         context = BaseEventDeserializationContext(
-            None, self.ledger.store, self.party, transaction_filter.ledger_id)
+            None, self.ledger.store, self.party, self.ledger.ledger_id)
 
         def on_events_done(fut):
             try:
@@ -72,8 +72,17 @@ class GRPCv1LedgerClient(LedgerClient):
 
         ts_future = self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetTransactions(request))
-        tst_future = self.connection.invoker.run_in_executor(
-            lambda: self.connection.transaction_service.GetTransactionTrees(request))
+
+        # Filtering by package must disable the ability to handle exercise nodes; we may want to
+        # consider dropping client-side support for exercise events anyway because they are not
+        # widely used
+        if not transaction_filter.templates:
+            tst_future = self.connection.invoker.run_in_executor(
+                lambda: self.connection.transaction_service.GetTransactionTrees(request))
+        else:
+            tst_future = get_event_loop().create_future()
+            tst_future.set_result(None)
+
         t_fut = gather(ts_future, tst_future)
         t_fut.add_done_callback(on_events_done)
 
@@ -158,6 +167,8 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterabl
 
     package_provider = GRPCPackageProvider(connection, ledger_id)
 
+    # TODO: We could probably disable package syncing if expected packages are provided AND we have
+    #  fetched metadata for them all.
     grpc_package_sync(package_provider, store)
 
     yield LedgerMetadata(
@@ -199,14 +210,24 @@ class GRPCPackageProvider(PackageProvider):
 def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore') -> 'None':
     all_package_ids = package_provider.get_package_ids()
     loaded_package_ids = {a.hash for a in store.archives()}
+    expected_package_ids = store.expected_package_ids()
 
     missing_package_ids = all_package_ids - loaded_package_ids
 
+    def should_load(package_id: str) -> bool:
+        # TODO: Filtering by expected package IDs may cause packages to never fully load due to
+        #  transitive dependencies; here we put the onus on the app writer to ensure that they
+        #  supply the complete graph, and we don't even warn them if there is an issue (but
+        #  we could only actually warn them if we parse the archive, which is the expensive
+        #  operation we're trying to avoid).
+        return (expected_package_ids is None or package_id in expected_package_ids) and \
+            package_id not in loaded_package_ids
+
     metadatas_pb = {}
-    for package_id in missing_package_ids:
-        LOG.debug('Fetching package: %r', package_id)
-        archive_payload = package_provider.fetch_package(package_id)
-        metadatas_pb[package_id] = parse_archive_payload(archive_payload, package_id)
+    for package_id in all_package_ids:
+        if should_load(package_id):
+            archive_payload = package_provider.fetch_package(package_id)
+            metadatas_pb[package_id] = parse_archive_payload(archive_payload)
 
     metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
     for package_id, archive_payload in metadatas_pb.sorted_archives.items():
