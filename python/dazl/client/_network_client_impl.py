@@ -9,7 +9,10 @@ from datetime import timedelta, datetime
 from threading import RLock, Thread, current_thread
 from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
     Union, overload
-from typing_extensions import Literal
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 from dataclasses import asdict
 
