@@ -243,7 +243,10 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable
 
     # poll for package updates once a second
     while not connection._closed.wait(1):
-        grpc_package_sync(package_provider, store)
+        try:
+            grpc_package_sync(package_provider, store)
+        except:
+            LOG.warning('Package syncing raised an exception.', exc_info=True)
 
     LOG.debug('The gRPC monitor thread is now shutting down.')
     yield None

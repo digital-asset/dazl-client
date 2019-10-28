@@ -5,7 +5,7 @@
 This module contains the abstract base class that defines the protocol for interacting with a
 process that implements the Ledger API.
 """
-from asyncio import AbstractEventLoop, get_event_loop, Future, ensure_future
+from asyncio import AbstractEventLoop, get_event_loop, Future, ensure_future, shield
 from concurrent.futures import Executor, ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -140,7 +140,7 @@ class _LedgerConnectionContext:
         self.executor = executor if executor is not None else ThreadPoolExecutor(max_workers=25)
 
     def run_in_background(self, func, *args) -> Future:
-        return ensure_future(self.loop.run_in_executor(self.executor, func, *args))
+        return shield(ensure_future(self.loop.run_in_executor(self.executor, func, *args)))
 
     def run_on_loop(self, func, *args) -> Any:
         """

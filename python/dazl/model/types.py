@@ -201,7 +201,7 @@ class _Reference:
     name: 'Sequence[str]'
 
     def __init__(self, module: 'ModuleRef', name: 'Sequence[str]'):
-        from collections import Collection
+        from collections.abc import Collection
         if not isinstance(name, Collection):
             raise TypeError(f'Tuple of strings required here (got {name!r} instead)')
 
