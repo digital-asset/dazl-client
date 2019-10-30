@@ -146,25 +146,25 @@ DESCRIPTOR.message_types_by_name['GetLedgerConfigurationResponse'] = _GETLEDGERC
 DESCRIPTOR.message_types_by_name['LedgerConfiguration'] = _LEDGERCONFIGURATION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-GetLedgerConfigurationRequest = _reflection.GeneratedProtocolMessageType('GetLedgerConfigurationRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETLEDGERCONFIGURATIONREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.ledger_configuration_service_pb2'
+GetLedgerConfigurationRequest = _reflection.GeneratedProtocolMessageType('GetLedgerConfigurationRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETLEDGERCONFIGURATIONREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.ledger_configuration_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetLedgerConfigurationRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetLedgerConfigurationRequest)
 
-GetLedgerConfigurationResponse = _reflection.GeneratedProtocolMessageType('GetLedgerConfigurationResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETLEDGERCONFIGURATIONRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.ledger_configuration_service_pb2'
+GetLedgerConfigurationResponse = _reflection.GeneratedProtocolMessageType('GetLedgerConfigurationResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETLEDGERCONFIGURATIONRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.ledger_configuration_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetLedgerConfigurationResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetLedgerConfigurationResponse)
 
-LedgerConfiguration = _reflection.GeneratedProtocolMessageType('LedgerConfiguration', (_message.Message,), dict(
-  DESCRIPTOR = _LEDGERCONFIGURATION,
-  __module__ = 'com.digitalasset.ledger.api.v1.ledger_configuration_service_pb2'
+LedgerConfiguration = _reflection.GeneratedProtocolMessageType('LedgerConfiguration', (_message.Message,), {
+  'DESCRIPTOR' : _LEDGERCONFIGURATION,
+  '__module__' : 'com.digitalasset.ledger.api.v1.ledger_configuration_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.LedgerConfiguration)
-  ))
+  })
 _sym_db.RegisterMessage(LedgerConfiguration)
 
 

@@ -87,11 +87,11 @@ _COMPLETION.fields_by_name['trace_context'].message_type = com_dot_digitalasset_
 DESCRIPTOR.message_types_by_name['Completion'] = _COMPLETION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Completion = _reflection.GeneratedProtocolMessageType('Completion', (_message.Message,), dict(
-  DESCRIPTOR = _COMPLETION,
-  __module__ = 'com.digitalasset.ledger.api.v1.completion_pb2'
+Completion = _reflection.GeneratedProtocolMessageType('Completion', (_message.Message,), {
+  'DESCRIPTOR' : _COMPLETION,
+  '__module__' : 'com.digitalasset.ledger.api.v1.completion_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.Completion)
-  ))
+  })
 _sym_db.RegisterMessage(Completion)
 
 

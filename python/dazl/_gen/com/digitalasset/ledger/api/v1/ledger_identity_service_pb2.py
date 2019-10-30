@@ -96,18 +96,18 @@ DESCRIPTOR.message_types_by_name['GetLedgerIdentityRequest'] = _GETLEDGERIDENTIT
 DESCRIPTOR.message_types_by_name['GetLedgerIdentityResponse'] = _GETLEDGERIDENTITYRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-GetLedgerIdentityRequest = _reflection.GeneratedProtocolMessageType('GetLedgerIdentityRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETLEDGERIDENTITYREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.ledger_identity_service_pb2'
+GetLedgerIdentityRequest = _reflection.GeneratedProtocolMessageType('GetLedgerIdentityRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETLEDGERIDENTITYREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.ledger_identity_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetLedgerIdentityRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetLedgerIdentityRequest)
 
-GetLedgerIdentityResponse = _reflection.GeneratedProtocolMessageType('GetLedgerIdentityResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETLEDGERIDENTITYRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.ledger_identity_service_pb2'
+GetLedgerIdentityResponse = _reflection.GeneratedProtocolMessageType('GetLedgerIdentityResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETLEDGERIDENTITYRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.ledger_identity_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetLedgerIdentityResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetLedgerIdentityResponse)
 
 

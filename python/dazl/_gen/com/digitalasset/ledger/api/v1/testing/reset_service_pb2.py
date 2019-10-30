@@ -63,11 +63,11 @@ _RESETREQUEST = _descriptor.Descriptor(
 DESCRIPTOR.message_types_by_name['ResetRequest'] = _RESETREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ResetRequest = _reflection.GeneratedProtocolMessageType('ResetRequest', (_message.Message,), dict(
-  DESCRIPTOR = _RESETREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.testing.reset_service_pb2'
+ResetRequest = _reflection.GeneratedProtocolMessageType('ResetRequest', (_message.Message,), {
+  'DESCRIPTOR' : _RESETREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.testing.reset_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.testing.ResetRequest)
-  ))
+  })
 _sym_db.RegisterMessage(ResetRequest)
 
 

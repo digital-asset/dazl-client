@@ -74,11 +74,11 @@ _SUBMITREQUEST.fields_by_name['trace_context'].message_type = com_dot_digitalass
 DESCRIPTOR.message_types_by_name['SubmitRequest'] = _SUBMITREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-SubmitRequest = _reflection.GeneratedProtocolMessageType('SubmitRequest', (_message.Message,), dict(
-  DESCRIPTOR = _SUBMITREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_submission_service_pb2'
+SubmitRequest = _reflection.GeneratedProtocolMessageType('SubmitRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SUBMITREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_submission_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.SubmitRequest)
-  ))
+  })
 _sym_db.RegisterMessage(SubmitRequest)
 
 

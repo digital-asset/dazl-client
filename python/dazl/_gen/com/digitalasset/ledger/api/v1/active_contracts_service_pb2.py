@@ -143,18 +143,18 @@ DESCRIPTOR.message_types_by_name['GetActiveContractsRequest'] = _GETACTIVECONTRA
 DESCRIPTOR.message_types_by_name['GetActiveContractsResponse'] = _GETACTIVECONTRACTSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-GetActiveContractsRequest = _reflection.GeneratedProtocolMessageType('GetActiveContractsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETACTIVECONTRACTSREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.active_contracts_service_pb2'
+GetActiveContractsRequest = _reflection.GeneratedProtocolMessageType('GetActiveContractsRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETACTIVECONTRACTSREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.active_contracts_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetActiveContractsRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetActiveContractsRequest)
 
-GetActiveContractsResponse = _reflection.GeneratedProtocolMessageType('GetActiveContractsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETACTIVECONTRACTSRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.active_contracts_service_pb2'
+GetActiveContractsResponse = _reflection.GeneratedProtocolMessageType('GetActiveContractsResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETACTIVECONTRACTSRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.active_contracts_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetActiveContractsResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetActiveContractsResponse)
 
 

@@ -396,46 +396,46 @@ DESCRIPTOR.message_types_by_name['ExerciseByKeyCommand'] = _EXERCISEBYKEYCOMMAND
 DESCRIPTOR.message_types_by_name['CreateAndExerciseCommand'] = _CREATEANDEXERCISECOMMAND
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Commands = _reflection.GeneratedProtocolMessageType('Commands', (_message.Message,), dict(
-  DESCRIPTOR = _COMMANDS,
-  __module__ = 'com.digitalasset.ledger.api.v1.commands_pb2'
+Commands = _reflection.GeneratedProtocolMessageType('Commands', (_message.Message,), {
+  'DESCRIPTOR' : _COMMANDS,
+  '__module__' : 'com.digitalasset.ledger.api.v1.commands_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.Commands)
-  ))
+  })
 _sym_db.RegisterMessage(Commands)
 
-Command = _reflection.GeneratedProtocolMessageType('Command', (_message.Message,), dict(
-  DESCRIPTOR = _COMMAND,
-  __module__ = 'com.digitalasset.ledger.api.v1.commands_pb2'
+Command = _reflection.GeneratedProtocolMessageType('Command', (_message.Message,), {
+  'DESCRIPTOR' : _COMMAND,
+  '__module__' : 'com.digitalasset.ledger.api.v1.commands_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.Command)
-  ))
+  })
 _sym_db.RegisterMessage(Command)
 
-CreateCommand = _reflection.GeneratedProtocolMessageType('CreateCommand', (_message.Message,), dict(
-  DESCRIPTOR = _CREATECOMMAND,
-  __module__ = 'com.digitalasset.ledger.api.v1.commands_pb2'
+CreateCommand = _reflection.GeneratedProtocolMessageType('CreateCommand', (_message.Message,), {
+  'DESCRIPTOR' : _CREATECOMMAND,
+  '__module__' : 'com.digitalasset.ledger.api.v1.commands_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.CreateCommand)
-  ))
+  })
 _sym_db.RegisterMessage(CreateCommand)
 
-ExerciseCommand = _reflection.GeneratedProtocolMessageType('ExerciseCommand', (_message.Message,), dict(
-  DESCRIPTOR = _EXERCISECOMMAND,
-  __module__ = 'com.digitalasset.ledger.api.v1.commands_pb2'
+ExerciseCommand = _reflection.GeneratedProtocolMessageType('ExerciseCommand', (_message.Message,), {
+  'DESCRIPTOR' : _EXERCISECOMMAND,
+  '__module__' : 'com.digitalasset.ledger.api.v1.commands_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.ExerciseCommand)
-  ))
+  })
 _sym_db.RegisterMessage(ExerciseCommand)
 
-ExerciseByKeyCommand = _reflection.GeneratedProtocolMessageType('ExerciseByKeyCommand', (_message.Message,), dict(
-  DESCRIPTOR = _EXERCISEBYKEYCOMMAND,
-  __module__ = 'com.digitalasset.ledger.api.v1.commands_pb2'
+ExerciseByKeyCommand = _reflection.GeneratedProtocolMessageType('ExerciseByKeyCommand', (_message.Message,), {
+  'DESCRIPTOR' : _EXERCISEBYKEYCOMMAND,
+  '__module__' : 'com.digitalasset.ledger.api.v1.commands_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.ExerciseByKeyCommand)
-  ))
+  })
 _sym_db.RegisterMessage(ExerciseByKeyCommand)
 
-CreateAndExerciseCommand = _reflection.GeneratedProtocolMessageType('CreateAndExerciseCommand', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEANDEXERCISECOMMAND,
-  __module__ = 'com.digitalasset.ledger.api.v1.commands_pb2'
+CreateAndExerciseCommand = _reflection.GeneratedProtocolMessageType('CreateAndExerciseCommand', (_message.Message,), {
+  'DESCRIPTOR' : _CREATEANDEXERCISECOMMAND,
+  '__module__' : 'com.digitalasset.ledger.api.v1.commands_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.CreateAndExerciseCommand)
-  ))
+  })
 _sym_db.RegisterMessage(CreateAndExerciseCommand)
 
 

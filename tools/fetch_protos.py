@@ -12,17 +12,17 @@ from typing import BinaryIO, Optional, Union
 
 ROOT = Path(__file__).absolute().parent.parent
 
-DAML_SDK_VERSION = '100.13.10'
+DAML_SDK_VERSION = '100.13.32'
 DAML_SDK_BASE_URL = 'https://digitalassetsdk.bintray.com/DigitalAssetSDK'
 GOOGLE_APIS_BASE_URL = 'https://raw.githubusercontent.com/googleapis/googleapis/master'
 
-DAML_LF_JAR = 'daml-lf-archive.jar'
+DAML_LF_TGZ = 'daml-lf-dev-archive-proto.tar.gz'
 LEDGER_API_TGZ = 'ledger-api-protos.tar.gz'
 GOOGLE_RPC_STATUS_PROTO = 'google-rpc-status.proto'
 
 
 fetch_urls = {
-    DAML_LF_JAR: f'{DAML_SDK_BASE_URL}/com/digitalasset/daml-lf-archive/{DAML_SDK_VERSION}/daml-lf-archive-{DAML_SDK_VERSION}.jar',
+    DAML_LF_TGZ: f'{DAML_SDK_BASE_URL}/com/digitalasset/daml-lf-dev-archive-proto/{DAML_SDK_VERSION}/daml-lf-dev-archive-proto-{DAML_SDK_VERSION}.tar.gz',
     LEDGER_API_TGZ: f'{DAML_SDK_BASE_URL}/com/digitalasset/ledger-api-protos/{DAML_SDK_VERSION}/ledger-api-protos-{DAML_SDK_VERSION}.tar.gz',
     GOOGLE_RPC_STATUS_PROTO: f'{GOOGLE_APIS_BASE_URL}/google/rpc/status.proto',
 }
@@ -55,12 +55,13 @@ def main():
                     with tar.extractfile(tarinfo) as from_:
                         copy(src=from_, dest=protos_dir / p)
 
-    with zipfile.ZipFile(download_dir / DAML_LF_JAR) as jar:
-        for name in jar.namelist():
-            p = remainder(name, 'daml-lf/archive/')
-            if p is not None:
-                with jar.open(name) as from_:
-                    copy(src=from_, dest=protos_dir / p)
+    with tarfile.open(download_dir / DAML_LF_TGZ) as tar:
+        for tarinfo in tar:
+            if tarinfo.isfile():
+                p = remainder(tarinfo.name, './com/digitalasset/daml_lf/')
+                if p is not None:
+                    with tar.extractfile(tarinfo) as from_:
+                        copy(src=from_, dest=protos_dir / 'com' / 'digitalasset' / 'daml_lf_dev' / p)
 
 
 def copy(src: 'Union[BinaryIO, Path]', dest: 'Path') -> 'Path':

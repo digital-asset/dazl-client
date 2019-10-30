@@ -27,8 +27,8 @@ from ...._gen.com.digitalasset.ledger.api.v1.transaction_service_pb2 import GetT
     GetLedgerEndRequest, GetTransactionByEventIdRequest
 from ...._gen.com.digitalasset.ledger.api.v1.transaction_service_pb2_grpc import \
     TransactionServiceStub
-from ...._gen.da.daml_lf_pb2 import ArchivePayload
-from ...._gen.da.daml_lf_1_pb2 import DefDataType, PrimType, DefTemplate, TemplateChoice
+from ...._gen.com.digitalasset.daml_lf_dev.daml_lf_pb2 import ArchivePayload
+from ...._gen.com.digitalasset.daml_lf_dev.daml_lf_1_pb2 import DefDataType, PrimType, DefTemplate, TemplateChoice
 from ...._gen.com.digitalasset.ledger.api.v1.event_pb2 import Event
 from ...._gen.com.digitalasset.ledger.api.v1.transaction_pb2 import Transaction
 from ...._gen.com.digitalasset.ledger.api.v1.transaction_service_pb2 import GetTransactionsResponse

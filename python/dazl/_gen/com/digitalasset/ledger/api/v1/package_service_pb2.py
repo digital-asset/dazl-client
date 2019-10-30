@@ -325,46 +325,46 @@ DESCRIPTOR.enum_types_by_name['PackageStatus'] = _PACKAGESTATUS
 DESCRIPTOR.enum_types_by_name['HashFunction'] = _HASHFUNCTION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ListPackagesRequest = _reflection.GeneratedProtocolMessageType('ListPackagesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTPACKAGESREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.package_service_pb2'
+ListPackagesRequest = _reflection.GeneratedProtocolMessageType('ListPackagesRequest', (_message.Message,), {
+  'DESCRIPTOR' : _LISTPACKAGESREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.package_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.ListPackagesRequest)
-  ))
+  })
 _sym_db.RegisterMessage(ListPackagesRequest)
 
-ListPackagesResponse = _reflection.GeneratedProtocolMessageType('ListPackagesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTPACKAGESRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.package_service_pb2'
+ListPackagesResponse = _reflection.GeneratedProtocolMessageType('ListPackagesResponse', (_message.Message,), {
+  'DESCRIPTOR' : _LISTPACKAGESRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.package_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.ListPackagesResponse)
-  ))
+  })
 _sym_db.RegisterMessage(ListPackagesResponse)
 
-GetPackageRequest = _reflection.GeneratedProtocolMessageType('GetPackageRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETPACKAGEREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.package_service_pb2'
+GetPackageRequest = _reflection.GeneratedProtocolMessageType('GetPackageRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETPACKAGEREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.package_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetPackageRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetPackageRequest)
 
-GetPackageResponse = _reflection.GeneratedProtocolMessageType('GetPackageResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETPACKAGERESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.package_service_pb2'
+GetPackageResponse = _reflection.GeneratedProtocolMessageType('GetPackageResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETPACKAGERESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.package_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetPackageResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetPackageResponse)
 
-GetPackageStatusRequest = _reflection.GeneratedProtocolMessageType('GetPackageStatusRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETPACKAGESTATUSREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.package_service_pb2'
+GetPackageStatusRequest = _reflection.GeneratedProtocolMessageType('GetPackageStatusRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETPACKAGESTATUSREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.package_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetPackageStatusRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetPackageStatusRequest)
 
-GetPackageStatusResponse = _reflection.GeneratedProtocolMessageType('GetPackageStatusResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETPACKAGESTATUSRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.package_service_pb2'
+GetPackageStatusResponse = _reflection.GeneratedProtocolMessageType('GetPackageStatusResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETPACKAGESTATUSRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.package_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetPackageStatusResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetPackageStatusResponse)
 
 

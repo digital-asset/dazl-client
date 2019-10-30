@@ -147,7 +147,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'int64', to_int(obj)
 
     def serialize_decimal(self, context: TypeEvaluationContext, obj: Any) -> R:
-        return 'decimal', str(to_decimal(obj))
+        return 'numeric', str(to_decimal(obj))
 
     def serialize_party(self, context: TypeEvaluationContext, obj: Any) -> R:
         return 'party', to_str(obj)
@@ -261,7 +261,10 @@ def _set_template(message: G.Identifier, tref: TypeReference) -> None:
     message.module_name = '.'.join(tref.module.module_name)
     message.entity_name = '.'.join(tref.name)
     # This field is set for historical reasons, and no longer required after Sandbox 0.10.12
-    message.name = tref.full_name
+    try:
+        message.name = tref.full_name
+    except AttributeError:
+        pass
 
 
 def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:

@@ -262,53 +262,53 @@ DESCRIPTOR.message_types_by_name['AllocatePartyRequest'] = _ALLOCATEPARTYREQUEST
 DESCRIPTOR.message_types_by_name['AllocatePartyResponse'] = _ALLOCATEPARTYRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-GetParticipantIdRequest = _reflection.GeneratedProtocolMessageType('GetParticipantIdRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETPARTICIPANTIDREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+GetParticipantIdRequest = _reflection.GeneratedProtocolMessageType('GetParticipantIdRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETPARTICIPANTIDREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.GetParticipantIdRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetParticipantIdRequest)
 
-GetParticipantIdResponse = _reflection.GeneratedProtocolMessageType('GetParticipantIdResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETPARTICIPANTIDRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+GetParticipantIdResponse = _reflection.GeneratedProtocolMessageType('GetParticipantIdResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETPARTICIPANTIDRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.GetParticipantIdResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetParticipantIdResponse)
 
-ListKnownPartiesRequest = _reflection.GeneratedProtocolMessageType('ListKnownPartiesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTKNOWNPARTIESREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+ListKnownPartiesRequest = _reflection.GeneratedProtocolMessageType('ListKnownPartiesRequest', (_message.Message,), {
+  'DESCRIPTOR' : _LISTKNOWNPARTIESREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.ListKnownPartiesRequest)
-  ))
+  })
 _sym_db.RegisterMessage(ListKnownPartiesRequest)
 
-ListKnownPartiesResponse = _reflection.GeneratedProtocolMessageType('ListKnownPartiesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTKNOWNPARTIESRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+ListKnownPartiesResponse = _reflection.GeneratedProtocolMessageType('ListKnownPartiesResponse', (_message.Message,), {
+  'DESCRIPTOR' : _LISTKNOWNPARTIESRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.ListKnownPartiesResponse)
-  ))
+  })
 _sym_db.RegisterMessage(ListKnownPartiesResponse)
 
-PartyDetails = _reflection.GeneratedProtocolMessageType('PartyDetails', (_message.Message,), dict(
-  DESCRIPTOR = _PARTYDETAILS,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+PartyDetails = _reflection.GeneratedProtocolMessageType('PartyDetails', (_message.Message,), {
+  'DESCRIPTOR' : _PARTYDETAILS,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.PartyDetails)
-  ))
+  })
 _sym_db.RegisterMessage(PartyDetails)
 
-AllocatePartyRequest = _reflection.GeneratedProtocolMessageType('AllocatePartyRequest', (_message.Message,), dict(
-  DESCRIPTOR = _ALLOCATEPARTYREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+AllocatePartyRequest = _reflection.GeneratedProtocolMessageType('AllocatePartyRequest', (_message.Message,), {
+  'DESCRIPTOR' : _ALLOCATEPARTYREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest)
-  ))
+  })
 _sym_db.RegisterMessage(AllocatePartyRequest)
 
-AllocatePartyResponse = _reflection.GeneratedProtocolMessageType('AllocatePartyResponse', (_message.Message,), dict(
-  DESCRIPTOR = _ALLOCATEPARTYRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+AllocatePartyResponse = _reflection.GeneratedProtocolMessageType('AllocatePartyResponse', (_message.Message,), {
+  'DESCRIPTOR' : _ALLOCATEPARTYRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.AllocatePartyResponse)
-  ))
+  })
 _sym_db.RegisterMessage(AllocatePartyResponse)
 
 

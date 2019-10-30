@@ -173,32 +173,32 @@ DESCRIPTOR.message_types_by_name['SubmitAndWaitForTransactionResponse'] = _SUBMI
 DESCRIPTOR.message_types_by_name['SubmitAndWaitForTransactionTreeResponse'] = _SUBMITANDWAITFORTRANSACTIONTREERESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-SubmitAndWaitRequest = _reflection.GeneratedProtocolMessageType('SubmitAndWaitRequest', (_message.Message,), dict(
-  DESCRIPTOR = _SUBMITANDWAITREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_service_pb2'
+SubmitAndWaitRequest = _reflection.GeneratedProtocolMessageType('SubmitAndWaitRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SUBMITANDWAITREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.SubmitAndWaitRequest)
-  ))
+  })
 _sym_db.RegisterMessage(SubmitAndWaitRequest)
 
-SubmitAndWaitForTransactionIdResponse = _reflection.GeneratedProtocolMessageType('SubmitAndWaitForTransactionIdResponse', (_message.Message,), dict(
-  DESCRIPTOR = _SUBMITANDWAITFORTRANSACTIONIDRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_service_pb2'
+SubmitAndWaitForTransactionIdResponse = _reflection.GeneratedProtocolMessageType('SubmitAndWaitForTransactionIdResponse', (_message.Message,), {
+  'DESCRIPTOR' : _SUBMITANDWAITFORTRANSACTIONIDRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.SubmitAndWaitForTransactionIdResponse)
-  ))
+  })
 _sym_db.RegisterMessage(SubmitAndWaitForTransactionIdResponse)
 
-SubmitAndWaitForTransactionResponse = _reflection.GeneratedProtocolMessageType('SubmitAndWaitForTransactionResponse', (_message.Message,), dict(
-  DESCRIPTOR = _SUBMITANDWAITFORTRANSACTIONRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_service_pb2'
+SubmitAndWaitForTransactionResponse = _reflection.GeneratedProtocolMessageType('SubmitAndWaitForTransactionResponse', (_message.Message,), {
+  'DESCRIPTOR' : _SUBMITANDWAITFORTRANSACTIONRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.SubmitAndWaitForTransactionResponse)
-  ))
+  })
 _sym_db.RegisterMessage(SubmitAndWaitForTransactionResponse)
 
-SubmitAndWaitForTransactionTreeResponse = _reflection.GeneratedProtocolMessageType('SubmitAndWaitForTransactionTreeResponse', (_message.Message,), dict(
-  DESCRIPTOR = _SUBMITANDWAITFORTRANSACTIONTREERESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_service_pb2'
+SubmitAndWaitForTransactionTreeResponse = _reflection.GeneratedProtocolMessageType('SubmitAndWaitForTransactionTreeResponse', (_message.Message,), {
+  'DESCRIPTOR' : _SUBMITANDWAITFORTRANSACTIONTREERESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.SubmitAndWaitForTransactionTreeResponse)
-  ))
+  })
 _sym_db.RegisterMessage(SubmitAndWaitForTransactionTreeResponse)
 
 

@@ -34,7 +34,9 @@ def match_prim_type(
         on_contract_id: 'Callable[[Type], T]',
         on_optional: 'Callable[[Type], T]',
         on_arrow: 'Callable[[Type, Type], T]',
-        on_text_map: 'Callable[[Type], T]') -> 'T':
+        on_text_map: 'Callable[[Type], T]',
+        on_numeric: 'Callable[[int], T]',
+        on_any: 'Callable[[], T]') -> 'T':
     if prim_type.prim == PrimType.UNIT:
         return on_unit()
     elif prim_type.prim == PrimType.BOOL:
@@ -67,6 +69,10 @@ def match_prim_type(
         return on_arrow(prim_type.args[0], prim_type.args[1])
     elif prim_type.prim == PrimType.MAP:
         return on_text_map(prim_type.args[0])
+    elif prim_type.prim == PrimType.NUMERIC:
+        return on_numeric(prim_type.args[0].nat)
+    elif prim_type.prim == PrimType.ANY:
+        return on_any()
     else:
         raise ValueError(f'undefined PrimType: {prim_type}')
 
@@ -76,7 +82,8 @@ def get_old_type(daml_type: 'Type') -> 'OldType':
 
     return safe_cast(Type, daml_type).Sum_match(
         _old_type_var, _old_type_con, _old_type_prim, _old_forall_type,
-        lambda tuple_: UnsupportedType('Tuple'))
+        lambda tuple_: UnsupportedType('Tuple'),
+        lambda nat: UnsupportedType('Nat'))
 
 
 def _old_type_var(var_: 'Type.Var') -> 'OldType':
@@ -110,7 +117,9 @@ def _old_type_prim(prim: 'Type.Prim') -> 'OldType':
         _old_scalar_contract_id_type,
         _old_optional_type,
         lambda *args: UnsupportedType('Arrow'),
-        _old_textmap_type)
+        _old_textmap_type,
+        _old_scalar_type_numeric,
+        _old_scalar_type_any)
 
 
 def _old_forall_type(forall: 'Type.Forall') -> 'OldType':
@@ -138,6 +147,11 @@ def _old_scalar_type_decimal() -> 'OldType':
     return SCALAR_TYPE_DECIMAL
 
 
+def _old_scalar_type_numeric() -> 'OldType':
+    from ..model.types import SCALAR_TYPE_NUMERIC
+    return SCALAR_TYPE_NUMERIC
+
+
 def _old_scalar_type_text() -> 'OldType':
     from ..model.types import SCALAR_TYPE_TEXT
     return SCALAR_TYPE_TEXT
@@ -156,6 +170,11 @@ def _old_scalar_type_reltime() -> 'OldType':
 def _old_scalar_type_party() -> 'OldType':
     from ..model.types import SCALAR_TYPE_PARTY
     return SCALAR_TYPE_PARTY
+
+
+def _old_scalar_type_any() -> 'OldType':
+    from ..model.types import SCALAR_TYPE_ANY
+    return SCALAR_TYPE_ANY
 
 
 def _old_list_type(arg: 'Type') -> 'OldType':

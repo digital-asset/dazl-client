@@ -145,25 +145,25 @@ DESCRIPTOR.message_types_by_name['GetTimeResponse'] = _GETTIMERESPONSE
 DESCRIPTOR.message_types_by_name['SetTimeRequest'] = _SETTIMEREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-GetTimeRequest = _reflection.GeneratedProtocolMessageType('GetTimeRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETTIMEREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.testing.time_service_pb2'
+GetTimeRequest = _reflection.GeneratedProtocolMessageType('GetTimeRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETTIMEREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.testing.time_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.testing.GetTimeRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetTimeRequest)
 
-GetTimeResponse = _reflection.GeneratedProtocolMessageType('GetTimeResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETTIMERESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.testing.time_service_pb2'
+GetTimeResponse = _reflection.GeneratedProtocolMessageType('GetTimeResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETTIMERESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.testing.time_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.testing.GetTimeResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetTimeResponse)
 
-SetTimeRequest = _reflection.GeneratedProtocolMessageType('SetTimeRequest', (_message.Message,), dict(
-  DESCRIPTOR = _SETTIMEREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.testing.time_service_pb2'
+SetTimeRequest = _reflection.GeneratedProtocolMessageType('SetTimeRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SETTIMEREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.testing.time_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.testing.SetTimeRequest)
-  ))
+  })
 _sym_db.RegisterMessage(SetTimeRequest)
 
 
