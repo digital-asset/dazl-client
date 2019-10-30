@@ -152,11 +152,13 @@ def _define_scalar_formatters():
         "Char": str,
         "Integer": int,
         "Decimal": Decimal,
+        "Numeric": Decimal,
         "Text": str,
         "Party": str,
         "RelTime": timedelta_for_json,
         "Date": date_for_json,
         "Time": time_for_json,
+        "Any": str,
     }
 
     if len(ScalarType.BUILTINS) != len(formatters):
