@@ -243,39 +243,39 @@ DESCRIPTOR.message_types_by_name['CompletionEndRequest'] = _COMPLETIONENDREQUEST
 DESCRIPTOR.message_types_by_name['CompletionEndResponse'] = _COMPLETIONENDRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-CompletionStreamRequest = _reflection.GeneratedProtocolMessageType('CompletionStreamRequest', (_message.Message,), dict(
-  DESCRIPTOR = _COMPLETIONSTREAMREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
+CompletionStreamRequest = _reflection.GeneratedProtocolMessageType('CompletionStreamRequest', (_message.Message,), {
+  'DESCRIPTOR' : _COMPLETIONSTREAMREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.CompletionStreamRequest)
-  ))
+  })
 _sym_db.RegisterMessage(CompletionStreamRequest)
 
-CompletionStreamResponse = _reflection.GeneratedProtocolMessageType('CompletionStreamResponse', (_message.Message,), dict(
-  DESCRIPTOR = _COMPLETIONSTREAMRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
+CompletionStreamResponse = _reflection.GeneratedProtocolMessageType('CompletionStreamResponse', (_message.Message,), {
+  'DESCRIPTOR' : _COMPLETIONSTREAMRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.CompletionStreamResponse)
-  ))
+  })
 _sym_db.RegisterMessage(CompletionStreamResponse)
 
-Checkpoint = _reflection.GeneratedProtocolMessageType('Checkpoint', (_message.Message,), dict(
-  DESCRIPTOR = _CHECKPOINT,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
+Checkpoint = _reflection.GeneratedProtocolMessageType('Checkpoint', (_message.Message,), {
+  'DESCRIPTOR' : _CHECKPOINT,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.Checkpoint)
-  ))
+  })
 _sym_db.RegisterMessage(Checkpoint)
 
-CompletionEndRequest = _reflection.GeneratedProtocolMessageType('CompletionEndRequest', (_message.Message,), dict(
-  DESCRIPTOR = _COMPLETIONENDREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
+CompletionEndRequest = _reflection.GeneratedProtocolMessageType('CompletionEndRequest', (_message.Message,), {
+  'DESCRIPTOR' : _COMPLETIONENDREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.CompletionEndRequest)
-  ))
+  })
 _sym_db.RegisterMessage(CompletionEndRequest)
 
-CompletionEndResponse = _reflection.GeneratedProtocolMessageType('CompletionEndResponse', (_message.Message,), dict(
-  DESCRIPTOR = _COMPLETIONENDRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
+CompletionEndResponse = _reflection.GeneratedProtocolMessageType('CompletionEndResponse', (_message.Message,), {
+  'DESCRIPTOR' : _COMPLETIONENDRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.command_completion_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.CompletionEndResponse)
-  ))
+  })
 _sym_db.RegisterMessage(CompletionEndResponse)
 
 

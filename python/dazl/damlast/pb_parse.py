@@ -11,7 +11,8 @@ class ProtobufParser:
     def __init__(self, current_package: str):
         from typing import List
         self.current_package = current_package
-        self.interned_packages = []  # type: List[str]
+        self.interned_strings = []  # type: List[str]
+        self.interned_dotted_names = []  # type: List[List[int]]
 
     # noinspection PyUnusedLocal
     def parse_Unit(self, pb) -> 'Unit':
@@ -26,7 +27,7 @@ class ProtobufParser:
         elif sum_name == 'package_id':
             return ModuleRef(pb.package_ref.package_id, pb.module_name.segments)
         elif sum_name == 'interned_id':
-            return ModuleRef(self.interned_packages[pb.package_ref.interned_id], pb.module_name.segments)
+            return ModuleRef(self.interned_strings[pb.package_ref.interned_id], pb.module_name.segments)
         else:
             raise ValueError(f'unknown sum type value: {sum_name!r}')
 
@@ -36,31 +37,33 @@ class ProtobufParser:
             self.parse_DottedName(pb.name).segments)
 
     def parse_DottedName(self, pb) -> 'DottedName':
-        return DottedName(segments=pb.segments)
+        return DottedName(segments=self._resolve_dotted_name(pb.segments, pb.segments_interned_id))
 
     def parse_ValName(self, pb) -> 'ValName':
-        return ValName(self.parse_ModuleRef(pb.module), tuple(pb.name))
+        return ValName(
+            self.parse_ModuleRef(pb.module),
+            self._resolve_dotted_name(pb.name, pb.name_interned_id))
 
     def parse_FieldWithType(self, pb) -> 'FieldWithType':
         """A field definition in a record or a variant associated with a type."""
         return FieldWithType(
-            pb.field,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Type(pb.type))
 
     def parse_VarWithType(self, pb) -> 'VarWithType':
         """Binder associated with a type."""
         return VarWithType(
-            pb.var,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Type(pb.type))
 
     def parse_TypeVarWithKind(self, pb) -> 'TypeVarWithKind':
         return TypeVarWithKind(
-            pb.var,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Kind(pb.kind))
 
     def parse_FieldWithExpr(self, pb) -> 'FieldWithExpr':
         return FieldWithExpr(
-            pb.field,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Expr(pb.expr))
 
     def parse_Binding(self, pb) -> 'Binding':
@@ -76,6 +79,8 @@ class ProtobufParser:
             return Kind(star=self.parse_Unit(pb.star))
         elif sum_name == 'arrow':
             return Kind(arrow=self.parse_Kind_Arrow(pb.arrow))
+        elif sum_name == 'nat':
+            return Kind(nat=pb.nat)
         else:
             raise ValueError(f'unknown sum type value: {sum_name!r}')
 
@@ -101,11 +106,15 @@ class ProtobufParser:
             return Type(forall=self.parse_Type_Forall(pb.forall))
         elif sum_name == 'tuple':
             return Type(tuple=self.parse_Type_Tuple(pb.tuple))
+        elif sum_name == 'nat':
+            return Type(nat=pb.nat)
         else:
             raise ValueError(f'unknown sum type value: {sum_name!r}')
 
     def parse_Type_Var(self, pb) -> 'Type':
-        return Type(var=Type.Var(pb.var, tuple(self.parse_Type(arg) for arg in pb.args)))
+        return Type(var=Type.Var(
+            self._resolve_string(pb.var_name, pb.var_interned_id),
+            tuple(self.parse_Type(arg) for arg in pb.args)))
 
     def parse_Type_Con(self, pb) -> 'Type':
         """
@@ -160,14 +169,24 @@ class ProtobufParser:
             return PrimLit(int64=pb.int64)
         elif sum_name == 'decimal':
             return PrimLit(decimal=pb.decimal)
+        elif sum_name == 'decimal_interned_id':
+            return PrimLit(decimal=self.interned_strings[pb.decimal_interned_id])
         elif sum_name == 'text':
             return PrimLit(text=pb.text)
+        elif sum_name == 'text_interned_id':
+            return PrimLit(text=self.interned_strings[pb.text_interned_id])
         elif sum_name == 'timestamp':
             return PrimLit(timestamp=pb.timestamp)
         elif sum_name == 'party':
             return PrimLit(party=pb.party)
+        elif sum_name == 'party_interned_id':
+            return PrimLit(party=pb.party_interned_id)
         elif sum_name == 'date':
             return PrimLit(date=pb.date)
+        elif sum_name == 'numeric':
+            return PrimLit(numeric=pb.numeric)
+        elif sum_name == 'numeric_interned_id':
+            return PrimLit(numeric=self.interned_strings[pb.numeric_interned_id])
         else:
             raise ValueError(f'unknown Sum value: {pb!r}')
 
@@ -183,6 +202,8 @@ class ProtobufParser:
             return None
         if sum_name == 'var':
             args['var'] = pb.var
+        elif sum_name == 'var_interned_id':
+            args['var'] = self.interned_strings[pb.var_interned_id]
         elif sum_name == 'val':
             args['val'] = self.parse_ValName(pb.val)
         elif sum_name == 'builtin':
@@ -231,6 +252,12 @@ class ProtobufParser:
             args['optional_none'] = self.parse_Expr_OptionalNone(pb.optional_none)
         elif sum_name == 'optional_some':
             args['optional_some'] = self.parse_Expr_OptionalSome(pb.optional_some)
+        elif sum_name == 'to_any':
+            args['to_any'] = self.parse_Expr_ToAny(pb.to_any)
+        elif sum_name == 'from_any':
+            args['from_any'] = self.parse_Expr_FromAny(pb.from_any)
+        elif sum_name == 'to_text_template_id':
+            args['to_text_template_id'] = self.parse_Expr_ToTextTemplateId(pb.to_text_template_id)
         else:
             raise ValueError(f'Unknown type of Expr: {sum_name!r}')
 
@@ -244,21 +271,21 @@ class ProtobufParser:
     def parse_Expr_RecProj(self, pb) -> 'Expr.RecProj':
         return Expr.RecProj(
             self.parse_Type_Con(pb.tycon).con,  # Always fully applied
-            pb.field,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Expr(pb.record))
 
     def parse_Expr_RecUpd(self, pb) -> 'Expr.RecUpd':
         """Set ``field`` in ``record`` to ``update``."""
         return Expr.RecUpd(
             self.parse_Type_Con(pb.tycon).con,
-            pb.field,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Expr(pb.record),
             self.parse_Expr(pb.update))
 
     def parse_Expr_VariantCon(self, pb) -> 'Expr.VariantCon':
         return Expr.VariantCon(
             self.parse_Type_Con(pb.tycon).con,  # Always fully applied
-            pb.variant_con,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Expr(pb.variant_arg))
 
     def parse_Expr_TupleCon(self, pb) -> 'Expr.TupleCon':
@@ -268,17 +295,17 @@ class ProtobufParser:
     def parse_Expr_EnumCon(self, pb) -> 'Expr.EnumCon':
         return Expr.EnumCon(
             self.parse_TypeConName(pb.tycon),
-            pb.enum_con)
+            self._resolve_string(pb.name, pb.interned_id))
 
     def parse_Expr_TupleProj(self, pb) -> 'Expr.TupleProj':
         return Expr.TupleProj(
-            pb.field,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Expr(pb.tuple))
 
     def parse_Expr_TupleUpd(self, pb) -> 'Expr.TupleUpd':
         """Set ``field`` in ``tuple`` to ``update``."""
         return Expr.TupleUpd(
-            pb.field,
+            self._resolve_string(pb.name, pb.interned_id),
             self.parse_Expr(pb.tuple),
             self.parse_Expr(pb.update))
 
@@ -321,6 +348,19 @@ class ProtobufParser:
             self.parse_Type(pb.type),
             self.parse_Expr(pb.body))
 
+    def parse_Expr_ToAny(self, pb):
+        return Expr.ToAny(
+            self.parse_Type(pb.type),
+            self.parse_Expr(pb.expr))
+
+    def parse_Expr_FromAny(self, pb):
+        return Expr.FromAny(
+            self.parse_Type(pb.type),
+            self.parse_Expr(pb.expr))
+
+    def parse_Expr_ToTextTemplateId(self, pb):
+        return Expr.ToTextTemplateId(self.parse_Type(pb.type))
+
     def parse_CaseAlt(self, pb) -> 'CaseAlt':
         body = self.parse_Expr(pb.body)
         sum_name = pb.WhichOneof('Sum')
@@ -344,16 +384,24 @@ class ProtobufParser:
             raise ValueError(f'unknown Sum value: {sum_name!r}')
 
     def parse_CaseAlt_Variant(self, pb) -> 'CaseAlt.Variant':
-        return CaseAlt.Variant(self.parse_TypeConName(pb.con), pb.variant, pb.binder)
+        return CaseAlt.Variant(
+            self.parse_TypeConName(pb.con),
+            self._resolve_string(pb.variant_name, pb.variant_interned_id),
+            self._resolve_string(pb.binder_name, pb.binder_interned_id))
 
     def parse_CaseAlt_Enum(self, pb) -> 'CaseAlt.Enum':
-        return CaseAlt.Enum(self.parse_TypeConName(pb.con), pb.constructor)
+        return CaseAlt.Enum(
+            self.parse_TypeConName(pb.con),
+            self._resolve_string(pb.name, pb.interned_id))
 
     def parse_CaseAlt_Cons(self, pb) -> 'CaseAlt.Cons':
-        return CaseAlt.Cons(pb.var_head, pb.var_tail)
+        return CaseAlt.Cons(
+            self._resolve_string(pb.var_head_name, pb.var_head_interned_id),
+            self._resolve_string(pb.var_tail_name, pb.var_tail_interned_id))
 
     def parse_CaseAlt_OptionalSome(self, pb) -> 'CaseAlt.OptionalSome':
-        return CaseAlt.OptionalSome(pb.var_body)
+        return CaseAlt.OptionalSome(
+            self._resolve_string(pb.name, pb.interned_id))
 
     def parse_Case(self, pb) -> 'Case':
         return Case(
@@ -401,7 +449,7 @@ class ProtobufParser:
     def parse_Update_Exercise(self, pb) -> 'Update.Exercise':
         return Update.Exercise(
             template=self.parse_TypeConName(pb.template),
-            choice=pb.choice,
+            choice=self._resolve_string(pb.name, pb.interned_id),
             cid=self.parse_Expr(pb.cid),
             actor=self.parse_Expr(pb.actor, optional=True),
             arg=self.parse_Expr(pb.arg))
@@ -467,13 +515,13 @@ class ProtobufParser:
 
     def parse_TemplateChoice(self, pb) -> 'TemplateChoice':
         return TemplateChoice(
-            name=pb.name,
+            name=self._resolve_string(pb.choice_name, pb.choice_interned_id),
             consuming=pb.consuming,
             controllers=self.parse_Expr(pb.controllers),
             arg_binder=self.parse_VarWithType(pb.arg_binder),
             ret_type=self.parse_Type(pb.ret_type),
             update=self.parse_Expr(pb.update),
-            self_binder=pb.self_binder,
+            self_binder=self._resolve_string(pb.self_binder_name, pb.self_binder_interned_id),
             location=self.parse_Location(pb.location))
 
     def parse_KeyExpr(self, pb) -> 'KeyExpr':
@@ -487,14 +535,15 @@ class ProtobufParser:
     def parse_KeyExpr_Projection(self, pb) -> 'KeyExpr.Projection':
         return KeyExpr.Projection(
             tycon=self.parse_Type_Con(pb.tycon).con,
-            field=pb.field)
+            field=self._resolve_string(pb.name, pb.interned_id))
 
     def parse_KeyExpr_Projections(self, pb) -> 'KeyExpr.Projections':
         return KeyExpr.Projections(
             projections=[self.parse_KeyExpr_Projection(p) for p in pb.projections])
 
     def parse_KeyExpr_RecordField(self, pb) -> 'KeyExpr.RecordField':
-        return KeyExpr.RecordField(field=pb.field, expr=pb.expr)
+        return KeyExpr.RecordField(
+            field=self._resolve_string(pb.name, pb.interned_id), expr=pb.expr)
 
     def parse_KeyExpr_Record(self, pb) -> 'KeyExpr.Record':
         return KeyExpr.Record(
@@ -504,7 +553,7 @@ class ProtobufParser:
     def parse_DefTemplate(self, pb) -> 'DefTemplate':
         return DefTemplate(
             tycon=self.parse_DottedName(pb.tycon),
-            param=pb.param,
+            param=self._resolve_string(pb.param_name, pb.param_interned_id),
             precond=self.parse_Expr(pb.precond),
             signatories=self.parse_Expr(pb.signatories),
             agreement=self.parse_Expr(pb.agreement),
@@ -546,7 +595,9 @@ class ProtobufParser:
             fields=tuple(self.parse_FieldWithType(field) for field in pb.fields))
 
     def parse_DefDataType_EnumConstructors(self, pb) -> 'DefDataType.EnumConstructors':
-        return DefDataType.EnumConstructors(constructors=tuple(pb.constructors))
+        ctors_1 = tuple(pb.constructors)
+        ctors_2 = tuple(self.interned_strings[idx] for idx in pb.constructors_interned_ids)
+        return DefDataType.EnumConstructors(constructors=ctors_1 + ctors_2)
 
     def parse_DefValue(self, pb) -> 'DefValue':
         return DefValue(
@@ -558,7 +609,7 @@ class ProtobufParser:
 
     def parse_DefValue_NameWithType(self, pb) -> 'DefValue.NameWithType':
         return DefValue.NameWithType(
-            name=tuple(pb.name),
+            name=self._resolve_dotted_name(pb.name, pb.name_interned_id),
             type=self.parse_Type(pb.type))
 
     def parse_FeatureFlags(self, pb) -> 'FeatureFlags':
@@ -579,6 +630,19 @@ class ProtobufParser:
         # TODO: this modifies state in a parser which is less than ideal; a better pattern would be
         #  to create a sub-parser with the contextual state required to understand interned package
         #  IDs
-        self.interned_packages.extend(pb.interned_package_ids)
+        self.interned_strings.extend(pb.interned_strings)
+
+        indices = [tuple(self.interned_strings[idx] for idx in idn.segment_ids)
+                   for idn in pb.interned_dotted_names]
+
+        self.interned_dotted_names.extend(indices)
 
         return Package(modules=tuple(self.parse_Module(module) for module in pb.modules))
+
+    def _resolve_string(self, name: 'Optional[str]', interned_id: 'Optional[int]') -> str:
+        return name if name else self.interned_strings[interned_id]
+
+    def _resolve_dotted_name(
+            self, name: 'Optional[Sequence[str]]', name_interned_id: 'Optional[int]') \
+            -> 'Sequence[str]':
+        return tuple(name) if name else self.interned_dotted_names[name_interned_id]

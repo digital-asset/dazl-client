@@ -1,6 +1,8 @@
 .sw?
 .*.sw?
 *.pyc
+*.hi
+*.hie
 .daml
 .venv
 .vscode

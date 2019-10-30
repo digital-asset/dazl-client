@@ -418,67 +418,67 @@ DESCRIPTOR.message_types_by_name['GetLedgerEndRequest'] = _GETLEDGERENDREQUEST
 DESCRIPTOR.message_types_by_name['GetLedgerEndResponse'] = _GETLEDGERENDRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-GetTransactionsRequest = _reflection.GeneratedProtocolMessageType('GetTransactionsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETTRANSACTIONSREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetTransactionsRequest = _reflection.GeneratedProtocolMessageType('GetTransactionsRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETTRANSACTIONSREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetTransactionsRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetTransactionsRequest)
 
-GetTransactionsResponse = _reflection.GeneratedProtocolMessageType('GetTransactionsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETTRANSACTIONSRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetTransactionsResponse = _reflection.GeneratedProtocolMessageType('GetTransactionsResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETTRANSACTIONSRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetTransactionsResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetTransactionsResponse)
 
-GetTransactionTreesResponse = _reflection.GeneratedProtocolMessageType('GetTransactionTreesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETTRANSACTIONTREESRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetTransactionTreesResponse = _reflection.GeneratedProtocolMessageType('GetTransactionTreesResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETTRANSACTIONTREESRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetTransactionTreesResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetTransactionTreesResponse)
 
-GetTransactionByEventIdRequest = _reflection.GeneratedProtocolMessageType('GetTransactionByEventIdRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETTRANSACTIONBYEVENTIDREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetTransactionByEventIdRequest = _reflection.GeneratedProtocolMessageType('GetTransactionByEventIdRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETTRANSACTIONBYEVENTIDREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetTransactionByEventIdRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetTransactionByEventIdRequest)
 
-GetTransactionByIdRequest = _reflection.GeneratedProtocolMessageType('GetTransactionByIdRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETTRANSACTIONBYIDREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetTransactionByIdRequest = _reflection.GeneratedProtocolMessageType('GetTransactionByIdRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETTRANSACTIONBYIDREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetTransactionByIdRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetTransactionByIdRequest)
 
-GetTransactionResponse = _reflection.GeneratedProtocolMessageType('GetTransactionResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETTRANSACTIONRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetTransactionResponse = _reflection.GeneratedProtocolMessageType('GetTransactionResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETTRANSACTIONRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetTransactionResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetTransactionResponse)
 
-GetFlatTransactionResponse = _reflection.GeneratedProtocolMessageType('GetFlatTransactionResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETFLATTRANSACTIONRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetFlatTransactionResponse = _reflection.GeneratedProtocolMessageType('GetFlatTransactionResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETFLATTRANSACTIONRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetFlatTransactionResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetFlatTransactionResponse)
 
-GetLedgerEndRequest = _reflection.GeneratedProtocolMessageType('GetLedgerEndRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETLEDGERENDREQUEST,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetLedgerEndRequest = _reflection.GeneratedProtocolMessageType('GetLedgerEndRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETLEDGERENDREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetLedgerEndRequest)
-  ))
+  })
 _sym_db.RegisterMessage(GetLedgerEndRequest)
 
-GetLedgerEndResponse = _reflection.GeneratedProtocolMessageType('GetLedgerEndResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETLEDGERENDRESPONSE,
-  __module__ = 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
+GetLedgerEndResponse = _reflection.GeneratedProtocolMessageType('GetLedgerEndResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETLEDGERENDRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.transaction_service_pb2'
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.GetLedgerEndResponse)
-  ))
+  })
 _sym_db.RegisterMessage(GetLedgerEndResponse)
 
 

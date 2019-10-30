@@ -41,7 +41,6 @@ class TestProtobufSerialize(TestCase):
         return G.Identifier(
             module_name='.'.join(tref.module.module_name),
             entity_name='.'.join(tref.name),
-            name=tref.full_name,
             package_id=tref.module.package_id)
 
     def test_serialize_create(self):

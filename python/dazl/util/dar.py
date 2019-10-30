@@ -209,7 +209,7 @@ class DarFile:
     def get_package_provider(self) -> 'PackageProvider':
         from typing import Dict
         from ..model.types_store import MemoryPackageProvider
-        from .._gen.da.daml_lf_pb2 import Archive
+        from .._gen.com.digitalasset.daml_lf_dev.daml_lf_pb2 import Archive
 
         packages = {}  # type: Dict[str, bytes]
         dalf_names = self.get_dalf_names()
@@ -225,7 +225,7 @@ class DarFile:
 
 
 def parse_dalf(contents: bytes) -> 'PackageStore':
-    from .._gen.da.daml_lf_pb2 import Archive
+    from .._gen.com.digitalasset.daml_lf_dev.daml_lf_pb2 import Archive
     from ..protocols.v1.pb_parse_metadata import parse_archive_payload, parse_daml_metadata_pb
     a = Archive()
     a.ParseFromString(contents)
