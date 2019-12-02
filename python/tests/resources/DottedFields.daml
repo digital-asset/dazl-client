@@ -5,6 +5,7 @@ module DottedFields where
 data Address = US USAddress | UK UKAddress
   deriving (Eq, Show)
 
+
 data USAddress = USAddress
   with
     address: [Text]
@@ -12,6 +13,7 @@ data USAddress = USAddress
     state: Text
     zip: Int
   deriving (Eq, Show)
+
 
 data UKAddress = UKAddress
   with
@@ -22,12 +24,21 @@ data UKAddress = UKAddress
     postcode: Text
   deriving (Eq, Show)
 
+
 template American
   with
     person: Party
     address: USAddress
    where
     signatory person
+
+
+template Briton
+  with
+    person: Party
+    address: UKAddress
+  where signatory person
+
 
 template Person
   with

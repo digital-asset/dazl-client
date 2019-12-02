@@ -367,6 +367,10 @@ class ListType(_BuiltInParameterizedType):
     pass
 
 
+class TypeRefType(_BuiltInParameterizedType):
+    pass
+
+
 class TextMapType(ConcreteType):
     """
     A DAML-defined TextMap.
@@ -389,6 +393,35 @@ class TextMapType(ConcreteType):
     def __repr__(self):
         py_type = type(self).__name__
         return f'<{py_type}({self.value_type!r})>'
+
+
+class GenMapType(ConcreteType):
+    """
+    A DAML-defined GenMap.
+
+    Instance attributes:
+
+    .. attribute: TextMapType.key_type
+
+        The type of keys in this map.
+
+    .. attribute: TextMapType.value_type
+
+        The type of values in this map.
+    """
+    __slots__ = 'key_type', 'value_type'
+
+    def __init__(self, key_type: Type, value_type: Type):
+        self.key_type = safe_cast(Type, key_type)
+        self.value_type = safe_cast(Type, value_type)
+
+    @property
+    def adjective(self):
+        return TypeAdjective.DAML_BUILTIN
+
+    def __repr__(self):
+        py_type = type(self).__name__
+        return f'<{py_type}({self.key_type!r}, {self.value_type!r})>'
 
 
 class OptionalType(_BuiltInParameterizedType):

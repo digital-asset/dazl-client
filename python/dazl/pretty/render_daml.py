@@ -120,11 +120,11 @@ class DamlPrettyPrinter(PrettyPrintBase):
         arg_text = self.visit_expr(variant_con.variant_arg)
         return f'{variant_con.variant_con} {maybe_parentheses(arg_text)}'
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj'):
-        tuple_text = maybe_parentheses(self.visit_expr(tuple_proj.tuple))
-        return f'{tuple_text}.{tuple_proj.field}'
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> str:
+        tuple_text = maybe_parentheses(self.visit_expr(struct_proj.tuple))
+        return f'{tuple_text}.{struct_proj.field}'
 
-    def visit_expr_app_inline(self, app: 'Expr.App'):
+    def visit_expr_app_inline(self, app: 'Expr.App') -> str:
         components = [app.fun, *app.args]
         return ' '.join(maybe_parentheses(self.visit_expr(e)) for e in components)
 
@@ -397,8 +397,14 @@ class DamlPrettyPrinter(PrettyPrintBase):
             return arrow_operator.join(
                 maybe_parentheses(self.visit_type(a), arrow_operator) for a in prim.args)
 
-        elif PrimType.MAP == prim_type:
-            return self._visit_type_app(('Map', *prim.args))
+        elif PrimType.NUMERIC == prim_type:
+            return self._visit_type_app(('Numeric', *prim.args))
+
+        elif PrimType.TEXTMAP == prim_type:
+            return self._visit_type_app(('TextMap', *prim.args))
+
+        elif PrimType.ANY == prim_type:
+            return 'Any'
 
         else:
             raise TypeError(f'A DAML Type primitive is required here (got {prim!r} instead')

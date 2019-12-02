@@ -392,10 +392,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_variant_con(self, variant_con: 'Expr.VariantCon') -> 'str':
         pass
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'str':
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'str':
         pass
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> 'str':
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'str':
         pass
 
     def visit_expr_app(self, app: 'Expr.App') -> 'str':
@@ -610,7 +610,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'str':
         pass
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'str':
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> 'str':
         pass
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'str':
@@ -671,6 +671,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
 
     def visit_type_tuple(self, tuple: 'Type.Tuple') -> 'str':
         pass
+
+    def visit_type_nat(self, nat: int) -> 'str':
+        return str(nat)
 
     def _visit_type_function(self, arguments: 'Sequence[Type]', return_type: 'Type') -> str:
         """

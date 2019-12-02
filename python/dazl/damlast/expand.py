@@ -229,12 +229,12 @@ class SimplifyVisitor(RewriteVisitor):
         else:
             return Expr(rec_proj=Expr.RecProj(tycon=rec_proj.tycon, field=rec_proj.field, record=new_record))
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj'):
-        new_tuple = self.visit_expr(tuple_proj.tuple)
-        if new_tuple.tuple_con is not None:
-            for fwt in new_tuple.tuple_con.fields:
-                if fwt.field == tuple_proj.field:
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj'):
+        new_tuple = self.visit_expr(struct_proj.tuple)
+        if new_tuple.struct_con is not None:
+            for fwt in new_tuple.struct_con.fields:
+                if fwt.field == struct_proj.field:
                     return self.visit_expr(fwt.expr)
             raise RuntimeError('rec_proj over a rec_con that did not have the necessary field')
         else:
-            return Expr(tuple_proj=Expr.TupleProj(field=tuple_proj.field, tuple=new_tuple))
+            return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, tuple=new_tuple))
