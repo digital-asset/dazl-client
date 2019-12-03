@@ -36,8 +36,8 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_rec_proj,
             self.visit_expr_variant_con,
             self.visit_expr_enum_con,
-            self.visit_expr_tuple_con,
-            self.visit_expr_tuple_proj,
+            self.visit_expr_struct_con,
+            self.visit_expr_struct_proj,
             self.visit_expr_app,
             self.visit_expr_ty_app,
             self.visit_expr_abs,
@@ -49,12 +49,13 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_update,
             self.visit_expr_scenario,
             self.visit_expr_rec_upd,
-            self.visit_expr_tuple_upd,
+            self.visit_expr_struct_upd,
             self.visit_expr_optional_none,
             self.visit_expr_optional_some,
             self.visit_expr_to_any,
             self.visit_expr_from_any,
-            self.visit_expr_to_text_template_id)
+            self.visit_expr_to_text_template_id,
+            self.visit_expr_type_rep)
 
     def visit_expr_var(self, var: str) -> 'RE':
         raise NotImplementedError
@@ -80,13 +81,13 @@ class ExprVisitor(Generic[RE]):
     def visit_expr_variant_con(self, variant_con: 'Expr.VariantCon') -> 'RE':
         raise NotImplementedError
 
-    def visit_expr_enum_con(self, tuple_con: 'Expr.EnumCon') -> 'RE':
+    def visit_expr_enum_con(self, enum_con: 'Expr.EnumCon') -> 'RE':
         raise NotImplementedError
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'RE':
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'RE':
         raise NotImplementedError
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> 'RE':
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'RE':
         raise NotImplementedError
 
     def visit_expr_app(self, app: 'Expr.App') -> 'RE':
@@ -122,7 +123,7 @@ class ExprVisitor(Generic[RE]):
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'RE':
         raise NotImplementedError
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'RE':
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> 'RE':
         raise NotImplementedError
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'RE':
@@ -138,6 +139,9 @@ class ExprVisitor(Generic[RE]):
         raise NotImplementedError
 
     def visit_expr_to_text_template_id(self, to_text_template_id: 'Expr.ToTextTemplateId') -> 'RE':
+        raise NotImplementedError
+
+    def visit_expr_type_rep(self, type_rep: 'Type') -> 'RE':
         raise NotImplementedError
 
 
@@ -258,14 +262,14 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
         new_type_con = self.visit_type_con(enum_con.tycon).con
         return Expr(enum_con=Expr.EnumCon(tycon=new_type_con, enum_con=enum_con.enum_con))
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'Expr':
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'Expr':
         new_fields = tuple([FieldWithExpr(fwt.field, self.visit_expr(fwt.expr))
-                            for fwt in tuple_con.fields])
-        return Expr(tuple_con=Expr.TupleCon(fields=new_fields))
+                            for fwt in struct_con.fields])
+        return Expr(struct_con=Expr.StructCon(fields=new_fields))
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> 'Expr':
-        new_tuple = self.visit_expr(tuple_proj.tuple)
-        return Expr(tuple_proj=Expr.TupleProj(field=tuple_proj.field, tuple=new_tuple))
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'Expr':
+        new_tuple = self.visit_expr(struct_proj.tuple)
+        return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, tuple=new_tuple))
 
     def visit_expr_app(self, app: 'Expr.App') -> 'Expr':
         new_fun = self.visit_expr(app.fun)
@@ -315,8 +319,8 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'Expr':
         return Expr(rec_upd=rec_upd)
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'Expr':
-        return Expr(tuple_upd=tuple_upd)
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> 'Expr':
+        return Expr(struct_upd=struct_upd)
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'Expr':
         new_type = self.visit_type(optional_none.type)

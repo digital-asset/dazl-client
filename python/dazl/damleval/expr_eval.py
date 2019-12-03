@@ -82,12 +82,12 @@ class ExpressionEvaluator(ExprVisitor[Any], IdentityTypeVisitor):
         value = self.visit_expr(variant_con.variant_arg)
         return frozendict({ctor: value})
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'Any':
-        return frozendict({fwt.field: self.visit_expr(fwt.expr) for fwt in tuple_con.fields})
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'Any':
+        return frozendict({fwt.field: self.visit_expr(fwt.expr) for fwt in struct_con.fields})
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> 'Any':
-        tuple_expr = self.visit_expr(tuple_proj.tuple)
-        return tuple_expr[tuple_proj.field]
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'Any':
+        tuple_expr = self.visit_expr(struct_proj.tuple)
+        return tuple_expr[struct_proj.field]
 
     def visit_expr_app(self, app: 'Expr.App') -> 'Any':
         fun = self.visit_expr(app.fun)
@@ -129,7 +129,7 @@ class ExpressionEvaluator(ExprVisitor[Any], IdentityTypeVisitor):
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'Any':
         raise RuntimeError('expressions cannot currently be evaluated in the Update monad')
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'Any':
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> 'Any':
         raise RuntimeError('expressions cannot currently be evaluated in the Update monad')
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'Any':

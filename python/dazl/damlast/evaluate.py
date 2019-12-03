@@ -174,12 +174,12 @@ class Evaluator:
     def eval_enum_con(self, enum_con: 'Expr.EnumCon') -> 'Any':
         return enum_con.enum_con
 
-    def eval_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'Any':
-        return frozendict({fwt.field: self.eval_Expr(fwt.expr) for fwt in tuple_con.fields})
+    def eval_tuple_con(self, struct_con: 'Expr.StructCon') -> 'Any':
+        return frozendict({fwt.field: self.eval_Expr(fwt.expr) for fwt in struct_con.fields})
 
-    def eval_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> 'Any':
-        tuple_expr = self.eval_Expr(tuple_proj.tuple)
-        return tuple_expr[tuple_proj.field]
+    def eval_tuple_proj(self, struct_proj: 'Expr.StructProj') -> 'Any':
+        tuple_expr = self.eval_Expr(struct_proj.tuple)
+        return tuple_expr[struct_proj.field]
 
     def eval_app(self, app: 'Expr.App') -> 'Any':
         fun = self.eval_Expr(app.fun)
@@ -257,7 +257,7 @@ class Evaluator:
     def eval_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'Any':
         raise ValueError('not handling updates yet')
 
-    def eval_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'Any':
+    def eval_tuple_upd(self, struct_upd: 'Expr.StructUpd') -> 'Any':
         raise ValueError('not handling updates yet')
 
     @staticmethod

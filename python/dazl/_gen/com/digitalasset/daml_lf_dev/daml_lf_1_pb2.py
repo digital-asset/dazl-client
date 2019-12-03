@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='daml_lf_1',
   syntax='proto3',
   serialized_options=_b('\n\034com.digitalasset.daml_lf_dev\252\002$Com.DigitalAsset.Daml_Lf_Dev.DamlLf1'),
-  serialized_pb=_b('\n,com/digitalasset/daml_lf_dev/daml_lf_1.proto\x12\tdaml_lf_1\"\x06\n\x04Unit\"a\n\nPackageRef\x12\x1f\n\x04self\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x14\n\npackage_id\x18\x02 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x42\x05\n\x03Sum\"<\n\nDottedName\x12\x10\n\x08segments\x18\x01 \x03(\t\x12\x1c\n\x14segments_interned_id\x18\x02 \x01(\x05\"c\n\tModuleRef\x12*\n\x0bpackage_ref\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.PackageRef\x12*\n\x0bmodule_name\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedName\"X\n\x0bTypeConName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12#\n\x04name\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedName\"W\n\x07ValName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12\x0c\n\x04name\x18\x02 \x03(\t\x12\x18\n\x10name_interned_id\x18\x03 \x01(\x05\"^\n\rFieldWithType\x12\x0e\n\x04name\x18\x01 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x07\n\x05\x66ield\"Z\n\x0bVarWithType\x12\x0e\n\x04name\x18\x01 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\"^\n\x0fTypeVarWithKind\x12\x0e\n\x04name\x18\x01 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04kind\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03var\"^\n\rFieldWithExpr\x12\x0e\n\x04name\x18\x01 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\"Q\n\x07\x42inding\x12&\n\x06\x62inder\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1e\n\x05\x62ound\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc1\x01\n\x04Kind\x12\x1f\n\x04star\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12&\n\x05\x61rrow\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.Kind.ArrowH\x00\x12\x1e\n\x03nat\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x1aI\n\x05\x41rrow\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Kind\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03Sum\"\xda\x05\n\x04Type\x12\"\n\x03var\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.VarH\x00\x12\"\n\x03\x63on\x18\x02 \x01(\x0b\x32\x13.daml_lf_1.Type.ConH\x00\x12$\n\x04prim\x18\x03 \x01(\x0b\x32\x14.daml_lf_1.Type.PrimH\x00\x12\"\n\x03\x66un\x18\x04 \x01(\x0b\x32\x13.daml_lf_1.Type.FunH\x00\x12(\n\x06\x66orall\x18\x05 \x01(\x0b\x32\x16.daml_lf_1.Type.ForallH\x00\x12&\n\x05tuple\x18\x07 \x01(\x0b\x32\x15.daml_lf_1.Type.TupleH\x00\x12\r\n\x03nat\x18\x0b \x01(\x12H\x00\x1aZ\n\x03Var\x12\x12\n\x08var_name\x18\x01 \x01(\tH\x00\x12\x19\n\x0fvar_interned_id\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\x1aK\n\x03\x43on\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aH\n\x04Prim\x12!\n\x04prim\x18\x01 \x01(\x0e\x32\x13.daml_lf_1.PrimType\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aG\n\x03\x46un\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aQ\n\x06\x46orall\x12(\n\x04vars\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x31\n\x05Tuple\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithTypeB\x05\n\x03SumJ\x04\x08\x06\x10\x07J\x04\x08\x08\x10\tJ\x04\x08\t\x10\nJ\x04\x08\n\x10\x0b\"\x90\x02\n\x07PrimLit\x12\x0f\n\x05int64\x18\x01 \x01(\x12H\x00\x12\x11\n\x07\x64\x65\x63imal\x18\x02 \x01(\tH\x00\x12\x1d\n\x13\x64\x65\x63imal_interned_id\x18\n \x01(\x05H\x00\x12\x0e\n\x04text\x18\x04 \x01(\tH\x00\x12\x1a\n\x10text_interned_id\x18\x0b \x01(\x05H\x00\x12\x13\n\ttimestamp\x18\x05 \x01(\x10H\x00\x12\x0f\n\x05party\x18\x07 \x01(\tH\x00\x12\x1b\n\x11party_interned_id\x18\x0c \x01(\x05H\x00\x12\x0e\n\x04\x64\x61te\x18\x08 \x01(\x05H\x00\x12\x11\n\x07numeric\x18\t \x01(\tH\x00\x12\x1d\n\x13numeric_interned_id\x18\r \x01(\x05H\x00\x42\x05\n\x03SumJ\x04\x08\x03\x10\x04J\x04\x08\x06\x10\x07\"\xad\x01\n\x08Location\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12(\n\x05range\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.Location.Range\x1aQ\n\x05Range\x12\x12\n\nstart_line\x18\x01 \x01(\x05\x12\x11\n\tstart_col\x18\x02 \x01(\x05\x12\x10\n\x08\x65nd_line\x18\x03 \x01(\x05\x12\x0f\n\x07\x65nd_col\x18\x04 \x01(\x05\"\xec\x16\n\x04\x45xpr\x12%\n\x08location\x18\x19 \x01(\x0b\x32\x13.daml_lf_1.Location\x12\r\n\x03var\x18\x01 \x01(\tH\x00\x12\x19\n\x0fvar_interned_id\x18\x1d \x01(\x05H\x00\x12!\n\x03val\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.ValNameH\x00\x12-\n\x07\x62uiltin\x18\x03 \x01(\x0e\x32\x1a.daml_lf_1.BuiltinFunctionH\x00\x12&\n\x08prim_con\x18\x04 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12&\n\x08prim_lit\x18\x05 \x01(\x0b\x32\x12.daml_lf_1.PrimLitH\x00\x12)\n\x07rec_con\x18\x06 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecConH\x00\x12+\n\x08rec_proj\x18\x07 \x01(\x0b\x32\x17.daml_lf_1.Expr.RecProjH\x00\x12)\n\x07rec_upd\x18\x16 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecUpdH\x00\x12\x31\n\x0bvariant_con\x18\x08 \x01(\x0b\x32\x1a.daml_lf_1.Expr.VariantConH\x00\x12+\n\x08\x65num_con\x18\x1c \x01(\x0b\x32\x17.daml_lf_1.Expr.EnumConH\x00\x12-\n\ttuple_con\x18\t \x01(\x0b\x32\x18.daml_lf_1.Expr.TupleConH\x00\x12/\n\ntuple_proj\x18\n \x01(\x0b\x32\x19.daml_lf_1.Expr.TupleProjH\x00\x12-\n\ttuple_upd\x18\x17 \x01(\x0b\x32\x18.daml_lf_1.Expr.TupleUpdH\x00\x12\"\n\x03\x61pp\x18\x0b \x01(\x0b\x32\x13.daml_lf_1.Expr.AppH\x00\x12\'\n\x06ty_app\x18\x0c \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAppH\x00\x12\"\n\x03\x61\x62s\x18\r \x01(\x0b\x32\x13.daml_lf_1.Expr.AbsH\x00\x12\'\n\x06ty_abs\x18\x0e \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAbsH\x00\x12\x1f\n\x04\x63\x61se\x18\x0f \x01(\x0b\x32\x0f.daml_lf_1.CaseH\x00\x12\x1f\n\x03let\x18\x10 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12\"\n\x03nil\x18\x11 \x01(\x0b\x32\x13.daml_lf_1.Expr.NilH\x00\x12$\n\x04\x63ons\x18\x12 \x01(\x0b\x32\x14.daml_lf_1.Expr.ConsH\x00\x12#\n\x06update\x18\x14 \x01(\x0b\x32\x11.daml_lf_1.UpdateH\x00\x12\'\n\x08scenario\x18\x15 \x01(\x0b\x32\x13.daml_lf_1.ScenarioH\x00\x12\x35\n\roptional_none\x18\x1a \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalNoneH\x00\x12\x35\n\roptional_some\x18\x1b \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalSomeH\x00\x12\'\n\x06to_any\x18\x1e \x01(\x0b\x32\x15.daml_lf_1.Expr.ToAnyH\x00\x12+\n\x08\x66rom_any\x18\x1f \x01(\x0b\x32\x17.daml_lf_1.Expr.FromAnyH\x00\x12?\n\x13to_text_template_id\x18  \x01(\x0b\x32 .daml_lf_1.Expr.ToTextTemplateIdH\x00\x1aV\n\x06RecCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12(\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1a~\n\x07RecProj\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x0e\n\x04name\x18\x02 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x9e\x01\n\x06RecUpd\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x0e\n\x04name\x18\x02 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x05 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x8c\x01\n\nVariantCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x0e\n\x04name\x18\x02 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x04 \x01(\x05H\x00\x12$\n\x0bvariant_arg\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\r\n\x0bvariant_con\x1a\x63\n\x07\x45numCon\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x0e\n\x04name\x18\x02 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x42\n\n\x08\x65num_con\x1a\x34\n\x08TupleCon\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1a[\n\tTupleProj\x12\x0e\n\x04name\x18\x01 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x12\x1e\n\x05tuple\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a{\n\x08TupleUpd\x12\x0e\n\x04name\x18\x01 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x04 \x01(\x05H\x00\x12\x1e\n\x05tuple\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x42\n\x03\x41pp\x12\x1c\n\x03\x66un\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x46\n\x05TyApp\x12\x1d\n\x04\x65xpr\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05types\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03\x41\x62s\x12%\n\x05param\x18\x01 \x03(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aQ\n\x05TyAbs\x12)\n\x05param\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a$\n\x03Nil\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x64\n\x04\x43ons\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1e\n\x05\x66ront\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04tail\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a-\n\x0cOptionalNone\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aL\n\x0cOptionalSome\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x45\n\x05ToAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aG\n\x07\x46romAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x31\n\x10ToTextTemplateId\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03SumJ\x04\x08\x13\x10\x14J\x04\x08\x18\x10\x19\"\xeb\x06\n\x07\x43\x61seAlt\x12\"\n\x07\x64\x65\x66\x61ult\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12-\n\x07variant\x18\x02 \x01(\x0b\x32\x1a.daml_lf_1.CaseAlt.VariantH\x00\x12&\n\x08prim_con\x18\x03 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12\x1e\n\x03nil\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\'\n\x04\x63ons\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.ConsH\x00\x12(\n\roptional_none\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\roptional_some\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.CaseAlt.OptionalSomeH\x00\x12\'\n\x04\x65num\x18\t \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.EnumH\x00\x12\x1d\n\x04\x62ody\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xaf\x01\n\x07Variant\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x16\n\x0cvariant_name\x18\x02 \x01(\tH\x00\x12\x1d\n\x13variant_interned_id\x18\x04 \x01(\x05H\x00\x12\x15\n\x0b\x62inder_name\x18\x03 \x01(\tH\x01\x12\x1c\n\x12\x62inder_interned_id\x18\x05 \x01(\x05H\x01\x42\t\n\x07variantB\x08\n\x06\x62inder\x1a\x61\n\x04\x45num\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x0e\n\x04name\x18\x02 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x42\r\n\x0b\x63onstructor\x1a\x90\x01\n\x04\x43ons\x12\x17\n\rvar_head_name\x18\x01 \x01(\tH\x00\x12\x1e\n\x14var_head_interned_id\x18\x03 \x01(\x05H\x00\x12\x17\n\rvar_tail_name\x18\x02 \x01(\tH\x01\x12\x1e\n\x14var_tail_interned_id\x18\x04 \x01(\x05H\x01\x42\n\n\x08var_headB\n\n\x08var_tail\x1a\x41\n\x0cOptionalSome\x12\x0e\n\x04name\x18\x01 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x02 \x01(\x05H\x00\x42\n\n\x08var_bodyB\x05\n\x03Sum\"H\n\x04\x43\x61se\x12\x1e\n\x05scrut\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12 \n\x04\x61lts\x18\x02 \x03(\x0b\x32\x12.daml_lf_1.CaseAlt\"L\n\x05\x42lock\x12$\n\x08\x62indings\x18\x01 \x03(\x0b\x32\x12.daml_lf_1.Binding\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"D\n\x04Pure\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xb6\x07\n\x06Update\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12*\n\x06\x63reate\x18\x03 \x01(\x0b\x32\x18.daml_lf_1.Update.CreateH\x00\x12.\n\x08\x65xercise\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Update.ExerciseH\x00\x12(\n\x05\x66\x65tch\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.Update.FetchH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\rlookup_by_key\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x37\n\x0c\x66\x65tch_by_key\x18\t \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x31\n\nembed_expr\x18\x07 \x01(\x0b\x32\x1b.daml_lf_1.Update.EmbedExprH\x00\x1aQ\n\x06\x43reate\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xc1\x01\n\x08\x45xercise\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x0e\n\x04name\x18\x02 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x06 \x01(\x05H\x00\x12\x1c\n\x03\x63id\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05\x61\x63tor\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1c\n\x03\x61rg\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x08\n\x06\x63hoice\x1aU\n\x05\x46\x65tch\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03\x63id\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprJ\x04\x08\x03\x10\x04\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aW\n\rRetrieveByKey\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03key\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\x8d\x04\n\x08Scenario\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12,\n\x06\x63ommit\x18\x03 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x30\n\nmustFailAt\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x1f\n\x04pass\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12$\n\tget_party\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12\x33\n\nembed_expr\x18\x08 \x01(\x0b\x32\x1d.daml_lf_1.Scenario.EmbedExprH\x00\x1aj\n\x06\x43ommit\x12\x1e\n\x05party\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12!\n\x08ret_type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\xeb\x02\n\x0eTemplateChoice\x12\x15\n\x0b\x63hoice_name\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x63hoice_interned_id\x18\t \x01(\x05H\x00\x12\x11\n\tconsuming\x18\x02 \x01(\x08\x12$\n\x0b\x63ontrollers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\narg_binder\x18\x04 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12!\n\x08ret_type\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06update\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1a\n\x10self_binder_name\x18\x07 \x01(\tH\x01\x12!\n\x17self_binder_interned_id\x18\n \x01(\x05H\x01\x12%\n\x08location\x18\x08 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04nameB\r\n\x0bself_binder\"\xd8\x03\n\x07KeyExpr\x12\x35\n\x0bprojections\x18\x01 \x01(\x0b\x32\x1e.daml_lf_1.KeyExpr.ProjectionsH\x00\x12+\n\x06record\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.KeyExpr.RecordH\x00\x1a`\n\nProjection\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x0e\n\x04name\x18\x02 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x42\x07\n\x05\x66ield\x1a\x41\n\x0bProjections\x12\x32\n\x0bprojections\x18\x02 \x03(\x0b\x32\x1d.daml_lf_1.KeyExpr.Projection\x1a_\n\x0bRecordField\x12\x0e\n\x04name\x18\x01 \x01(\tH\x00\x12\x15\n\x0binterned_id\x18\x03 \x01(\x05H\x00\x12 \n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprB\x07\n\x05\x66ield\x1a\\\n\x06Record\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12.\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x1e.daml_lf_1.KeyExpr.RecordFieldB\x05\n\x03Sum\"\xab\x04\n\x0b\x44\x65\x66Template\x12$\n\x05tycon\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedName\x12\x14\n\nparam_name\x18\x02 \x01(\tH\x00\x12\x1b\n\x11param_interned_id\x18\x0b \x01(\x05H\x00\x12 \n\x07precond\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12$\n\x0bsignatories\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\"\n\tagreement\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\x07\x63hoices\x18\x07 \x03(\x0b\x32\x19.daml_lf_1.TemplateChoice\x12\"\n\tobservers\x18\x08 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12%\n\x08location\x18\t \x01(\x0b\x32\x13.daml_lf_1.Location\x12*\n\x03key\x18\n \x01(\x0b\x32\x1d.daml_lf_1.DefTemplate.DefKey\x1a\xa4\x01\n\x06\x44\x65\x66Key\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12!\n\x03key\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprH\x00\x12&\n\x0b\x63omplex_key\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12$\n\x0bmaintainers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\n\n\x08key_exprB\x07\n\x05paramJ\x04\x08\x03\x10\x04\"\xc4\x03\n\x0b\x44\x65\x66\x44\x61taType\x12#\n\x04name\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedName\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12/\n\x06record\x18\x03 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x00\x12\x30\n\x07variant\x18\x04 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x00\x12\x37\n\x04\x65num\x18\x07 \x01(\x0b\x32\'.daml_lf_1.DefDataType.EnumConstructorsH\x00\x12\x14\n\x0cserializable\x18\x05 \x01(\x08\x12%\n\x08location\x18\x06 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a\x32\n\x06\x46ields\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithType\x1aK\n\x10\x45numConstructors\x12\x14\n\x0c\x63onstructors\x18\x01 \x03(\t\x12!\n\x19\x63onstructors_interned_ids\x18\x02 \x03(\x05\x42\n\n\x08\x44\x61taCons\"\x8d\x02\n\x08\x44\x65\x66Value\x12\x38\n\x0ename_with_type\x18\x01 \x01(\x0b\x32 .daml_lf_1.DefValue.NameWithType\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x11no_party_literals\x18\x03 \x01(\x08\x12\x0f\n\x07is_test\x18\x04 \x01(\x08\x12%\n\x08location\x18\x05 \x01(\x0b\x32\x13.daml_lf_1.Location\x1aU\n\x0cNameWithType\x12\x0c\n\x04name\x18\x01 \x03(\t\x12\x18\n\x10name_interned_id\x18\x06 \x01(\x05\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\"\x90\x01\n\x0c\x46\x65\x61tureFlags\x12\x1b\n\x13\x66orbidPartyLiterals\x18\x01 \x01(\x08\x12/\n\'dontDivulgeContractIdsInCreateArguments\x18\x02 \x01(\x08\x12\x32\n*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\x08\"\xdd\x01\n\x06Module\x12#\n\x04name\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedName\x12&\n\x05\x66lags\x18\x04 \x01(\x0b\x32\x17.daml_lf_1.FeatureFlags\x12*\n\ndata_types\x18\x05 \x03(\x0b\x32\x16.daml_lf_1.DefDataType\x12#\n\x06values\x18\x06 \x03(\x0b\x32\x13.daml_lf_1.DefValue\x12)\n\ttemplates\x18\x07 \x03(\x0b\x32\x16.daml_lf_1.DefTemplateJ\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04\")\n\x12InternedDottedName\x12\x13\n\x0bsegment_ids\x18\x01 \x03(\x05\"\x85\x01\n\x07Package\x12\"\n\x07modules\x18\x01 \x03(\x0b\x32\x11.daml_lf_1.Module\x12\x18\n\x10interned_strings\x18\x02 \x03(\t\x12<\n\x15interned_dotted_names\x18\x03 \x03(\x0b\x32\x1d.daml_lf_1.InternedDottedName*\xd1\x01\n\x08PrimType\x12\x08\n\x04UNIT\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x03\x12\x08\n\x04TEXT\x10\x05\x12\r\n\tTIMESTAMP\x10\x06\x12\t\n\x05PARTY\x10\x08\x12\x08\n\x04LIST\x10\t\x12\n\n\x06UPDATE\x10\n\x12\x0c\n\x08SCENARIO\x10\x0b\x12\x08\n\x04\x44\x41TE\x10\x0c\x12\x0f\n\x0b\x43ONTRACT_ID\x10\r\x12\x0c\n\x08OPTIONAL\x10\x0e\x12\t\n\x05\x41RROW\x10\x0f\x12\x07\n\x03MAP\x10\x10\x12\x0b\n\x07NUMERIC\x10\x11\x12\x07\n\x03\x41NY\x10\x12*4\n\x07PrimCon\x12\x0c\n\x08\x43ON_UNIT\x10\x00\x12\r\n\tCON_FALSE\x10\x01\x12\x0c\n\x08\x43ON_TRUE\x10\x02*\xb8\r\n\x0f\x42uiltinFunction\x12\x0f\n\x0b\x41\x44\x44_DECIMAL\x10\x00\x12\x0f\n\x0bSUB_DECIMAL\x10\x01\x12\x0f\n\x0bMUL_DECIMAL\x10\x02\x12\x0f\n\x0b\x44IV_DECIMAL\x10\x03\x12\x11\n\rROUND_DECIMAL\x10\x06\x12\x0f\n\x0b\x41\x44\x44_NUMERIC\x10k\x12\x0f\n\x0bSUB_NUMERIC\x10l\x12\x0f\n\x0bMUL_NUMERIC\x10m\x12\x0f\n\x0b\x44IV_NUMERIC\x10n\x12\x11\n\rROUND_NUMERIC\x10o\x12\x10\n\x0c\x43\x41ST_NUMERIC\x10y\x12\x11\n\rSHIFT_NUMERIC\x10z\x12\r\n\tADD_INT64\x10\x07\x12\r\n\tSUB_INT64\x10\x08\x12\r\n\tMUL_INT64\x10\t\x12\r\n\tDIV_INT64\x10\n\x12\r\n\tMOD_INT64\x10\x0b\x12\r\n\tEXP_INT64\x10\x0c\x12\t\n\x05\x46OLDL\x10\x14\x12\t\n\x05\x46OLDR\x10\x15\x12\r\n\tMAP_EMPTY\x10`\x12\x0e\n\nMAP_INSERT\x10\x61\x12\x0e\n\nMAP_LOOKUP\x10\x62\x12\x0e\n\nMAP_DELETE\x10\x63\x12\x0f\n\x0bMAP_TO_LIST\x10\x64\x12\x0c\n\x08MAP_SIZE\x10\x65\x12\x10\n\x0c\x45XPLODE_TEXT\x10\x17\x12\x0f\n\x0b\x41PPEND_TEXT\x10\x18\x12\t\n\x05\x45RROR\x10\x19\x12\r\n\tLEQ_INT64\x10!\x12\x0f\n\x0bLEQ_DECIMAL\x10\"\x12\x0f\n\x0bLEQ_NUMERIC\x10p\x12\x0c\n\x08LEQ_TEXT\x10$\x12\x11\n\rLEQ_TIMESTAMP\x10%\x12\x0c\n\x08LEQ_DATE\x10\x43\x12\r\n\tLEQ_PARTY\x10Y\x12\x0e\n\nLESS_INT64\x10\'\x12\x10\n\x0cLESS_DECIMAL\x10(\x12\x10\n\x0cLESS_NUMERIC\x10q\x12\r\n\tLESS_TEXT\x10*\x12\x12\n\x0eLESS_TIMESTAMP\x10+\x12\r\n\tLESS_DATE\x10\x44\x12\x0e\n\nLESS_PARTY\x10Z\x12\r\n\tGEQ_INT64\x10-\x12\x0f\n\x0bGEQ_DECIMAL\x10.\x12\x0f\n\x0bGEQ_NUMERIC\x10r\x12\x0c\n\x08GEQ_TEXT\x10\x30\x12\x11\n\rGEQ_TIMESTAMP\x10\x31\x12\x0c\n\x08GEQ_DATE\x10\x45\x12\r\n\tGEQ_PARTY\x10[\x12\x11\n\rGREATER_INT64\x10\x33\x12\x13\n\x0fGREATER_DECIMAL\x10\x34\x12\x13\n\x0fGREATER_NUMERIC\x10s\x12\x10\n\x0cGREATER_TEXT\x10\x36\x12\x15\n\x11GREATER_TIMESTAMP\x10\x37\x12\x10\n\x0cGREATER_DATE\x10\x46\x12\x11\n\rGREATER_PARTY\x10\\\x12\x11\n\rTO_TEXT_INT64\x10\x39\x12\x13\n\x0fTO_TEXT_DECIMAL\x10:\x12\x13\n\x0fTO_TEXT_NUMERIC\x10t\x12\x10\n\x0cTO_TEXT_TEXT\x10<\x12\x15\n\x11TO_TEXT_TIMESTAMP\x10=\x12\x10\n\x0cTO_TEXT_DATE\x10G\x12\x18\n\x14TO_QUOTED_TEXT_PARTY\x10?\x12\x11\n\rTO_TEXT_PARTY\x10^\x12\x13\n\x0f\x46ROM_TEXT_PARTY\x10_\x12\x13\n\x0f\x46ROM_TEXT_INT64\x10g\x12\x15\n\x11\x46ROM_TEXT_DECIMAL\x10h\x12\x15\n\x11\x46ROM_TEXT_NUMERIC\x10u\x12\x0f\n\x0bSHA256_TEXT\x10]\x12\x15\n\x11\x44\x41TE_TO_UNIX_DAYS\x10H\x12\x15\n\x11UNIX_DAYS_TO_DATE\x10I\x12\"\n\x1eTIMESTAMP_TO_UNIX_MICROSECONDS\x10J\x12\"\n\x1eUNIX_MICROSECONDS_TO_TIMESTAMP\x10K\x12\x14\n\x10INT64_TO_DECIMAL\x10L\x12\x14\n\x10\x44\x45\x43IMAL_TO_INT64\x10M\x12\x14\n\x10INT64_TO_NUMERIC\x10v\x12\x14\n\x10NUMERIC_TO_INT64\x10w\x12\x10\n\x0cIMPLODE_TEXT\x10N\x12\x0f\n\x0b\x45QUAL_INT64\x10O\x12\x11\n\rEQUAL_DECIMAL\x10P\x12\x11\n\rEQUAL_NUMERIC\x10x\x12\x0e\n\nEQUAL_TEXT\x10Q\x12\x13\n\x0f\x45QUAL_TIMESTAMP\x10R\x12\x0e\n\nEQUAL_DATE\x10S\x12\x0f\n\x0b\x45QUAL_PARTY\x10T\x12\x0e\n\nEQUAL_BOOL\x10U\x12\x15\n\x11\x45QUAL_CONTRACT_ID\x10V\x12\x0e\n\nEQUAL_LIST\x10W\x12\t\n\x05TRACE\x10X\x12\x16\n\x12\x43OERCE_CONTRACT_ID\x10\x66\x12\x19\n\x15TEXT_FROM_CODE_POINTS\x10i\x12\x17\n\x13TEXT_TO_CODE_POINTS\x10jBE\n\x1c\x63om.digitalasset.daml_lf_dev\xaa\x02$Com.DigitalAsset.Daml_Lf_Dev.DamlLf1b\x06proto3')
+  serialized_pb=_b('\n,com/digitalasset/daml_lf_dev/daml_lf_1.proto\x12\tdaml_lf_1\"\x06\n\x04Unit\"q\n\nPackageRef\x12\x1f\n\x04self\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x18\n\x0epackage_id_str\x18\x02 \x01(\tH\x00\x12!\n\x17package_id_interned_str\x18\x03 \x01(\x05H\x00\x42\x05\n\x03Sum\"\x1e\n\nDottedName\x12\x10\n\x08segments\x18\x01 \x03(\t\"\xa0\x01\n\tModuleRef\x12*\n\x0bpackage_ref\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.PackageRef\x12\x32\n\x11module_name_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12$\n\x1amodule_name_interned_dname\x18\x03 \x01(\x05H\x00\x42\r\n\x0bmodule_name\"\x87\x01\n\x0bTypeConName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12+\n\nname_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x03 \x01(\x05H\x00\x42\x06\n\x04name\"`\n\x07ValName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12\x12\n\nname_dname\x18\x02 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\"j\n\rFieldWithType\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x07\n\x05\x66ield\"b\n\x0bVarWithType\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\"f\n\x0fTypeVarWithKind\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04kind\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03var\"j\n\rFieldWithExpr\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\"Q\n\x07\x42inding\x12&\n\x06\x62inder\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1e\n\x05\x62ound\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc1\x01\n\x04Kind\x12\x1f\n\x04star\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12&\n\x05\x61rrow\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.Kind.ArrowH\x00\x12\x1e\n\x03nat\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x1aI\n\x05\x41rrow\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Kind\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03Sum\"\xdd\x05\n\x04Type\x12\"\n\x03var\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.VarH\x00\x12\"\n\x03\x63on\x18\x02 \x01(\x0b\x32\x13.daml_lf_1.Type.ConH\x00\x12$\n\x04prim\x18\x03 \x01(\x0b\x32\x14.daml_lf_1.Type.PrimH\x00\x12\"\n\x03\x66un\x18\x04 \x01(\x0b\x32\x13.daml_lf_1.Type.FunH\x00\x12(\n\x06\x66orall\x18\x05 \x01(\x0b\x32\x16.daml_lf_1.Type.ForallH\x00\x12(\n\x06struct\x18\x07 \x01(\x0b\x32\x16.daml_lf_1.Type.StructH\x00\x12\r\n\x03nat\x18\x0b \x01(\x12H\x00\x1aZ\n\x03Var\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\x1aK\n\x03\x43on\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aH\n\x04Prim\x12!\n\x04prim\x18\x01 \x01(\x0e\x32\x13.daml_lf_1.PrimType\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aG\n\x03\x46un\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aQ\n\x06\x46orall\x12(\n\x04vars\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x32\n\x06Struct\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithTypeB\x05\n\x03SumJ\x04\x08\x06\x10\x07J\x04\x08\x08\x10\tJ\x04\x08\t\x10\nJ\x04\x08\n\x10\x0b\"\xed\x01\n\x07PrimLit\x12\x0f\n\x05int64\x18\x01 \x01(\x12H\x00\x12\x15\n\x0b\x64\x65\x63imal_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14numeric_interned_str\x18\n \x01(\x05H\x00\x12\x12\n\x08text_str\x18\x04 \x01(\tH\x00\x12\x1b\n\x11text_interned_str\x18\x0b \x01(\x05H\x00\x12\x13\n\ttimestamp\x18\x05 \x01(\x10H\x00\x12\x13\n\tparty_str\x18\x07 \x01(\tH\x00\x12\x1c\n\x12party_interned_str\x18\x0c \x01(\x05H\x00\x12\x0e\n\x04\x64\x61te\x18\x08 \x01(\x05H\x00\x42\x05\n\x03SumJ\x04\x08\x03\x10\x04J\x04\x08\x06\x10\x07\"\xad\x01\n\x08Location\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12(\n\x05range\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.Location.Range\x1aQ\n\x05Range\x12\x12\n\nstart_line\x18\x01 \x01(\x05\x12\x11\n\tstart_col\x18\x02 \x01(\x05\x12\x10\n\x08\x65nd_line\x18\x03 \x01(\x05\x12\x0f\n\x07\x65nd_col\x18\x04 \x01(\x05\"\x89\x17\n\x04\x45xpr\x12%\n\x08location\x18\x19 \x01(\x0b\x32\x13.daml_lf_1.Location\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x1d \x01(\x05H\x00\x12!\n\x03val\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.ValNameH\x00\x12-\n\x07\x62uiltin\x18\x03 \x01(\x0e\x32\x1a.daml_lf_1.BuiltinFunctionH\x00\x12&\n\x08prim_con\x18\x04 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12&\n\x08prim_lit\x18\x05 \x01(\x0b\x32\x12.daml_lf_1.PrimLitH\x00\x12)\n\x07rec_con\x18\x06 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecConH\x00\x12+\n\x08rec_proj\x18\x07 \x01(\x0b\x32\x17.daml_lf_1.Expr.RecProjH\x00\x12)\n\x07rec_upd\x18\x16 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecUpdH\x00\x12\x31\n\x0bvariant_con\x18\x08 \x01(\x0b\x32\x1a.daml_lf_1.Expr.VariantConH\x00\x12+\n\x08\x65num_con\x18\x1c \x01(\x0b\x32\x17.daml_lf_1.Expr.EnumConH\x00\x12/\n\nstruct_con\x18\t \x01(\x0b\x32\x19.daml_lf_1.Expr.StructConH\x00\x12\x31\n\x0bstruct_proj\x18\n \x01(\x0b\x32\x1a.daml_lf_1.Expr.StructProjH\x00\x12/\n\nstruct_upd\x18\x17 \x01(\x0b\x32\x19.daml_lf_1.Expr.StructUpdH\x00\x12\"\n\x03\x61pp\x18\x0b \x01(\x0b\x32\x13.daml_lf_1.Expr.AppH\x00\x12\'\n\x06ty_app\x18\x0c \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAppH\x00\x12\"\n\x03\x61\x62s\x18\r \x01(\x0b\x32\x13.daml_lf_1.Expr.AbsH\x00\x12\'\n\x06ty_abs\x18\x0e \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAbsH\x00\x12\x1f\n\x04\x63\x61se\x18\x0f \x01(\x0b\x32\x0f.daml_lf_1.CaseH\x00\x12\x1f\n\x03let\x18\x10 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12\"\n\x03nil\x18\x11 \x01(\x0b\x32\x13.daml_lf_1.Expr.NilH\x00\x12$\n\x04\x63ons\x18\x12 \x01(\x0b\x32\x14.daml_lf_1.Expr.ConsH\x00\x12#\n\x06update\x18\x14 \x01(\x0b\x32\x11.daml_lf_1.UpdateH\x00\x12\'\n\x08scenario\x18\x15 \x01(\x0b\x32\x13.daml_lf_1.ScenarioH\x00\x12\x35\n\roptional_none\x18\x1a \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalNoneH\x00\x12\x35\n\roptional_some\x18\x1b \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalSomeH\x00\x12\'\n\x06to_any\x18\x1e \x01(\x0b\x32\x15.daml_lf_1.Expr.ToAnyH\x00\x12+\n\x08\x66rom_any\x18\x1f \x01(\x0b\x32\x17.daml_lf_1.Expr.FromAnyH\x00\x12#\n\x08type_rep\x18  \x01(\x0b\x32\x0f.daml_lf_1.TypeH\x00\x1aV\n\x06RecCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12(\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1a\x8a\x01\n\x07RecProj\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xaa\x01\n\x06RecUpd\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x05 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xa4\x01\n\nVariantCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x19\n\x0fvariant_con_str\x18\x02 \x01(\tH\x00\x12\"\n\x18variant_con_interned_str\x18\x04 \x01(\x05H\x00\x12$\n\x0bvariant_arg\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\r\n\x0bvariant_con\x1au\n\x07\x45numCon\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x16\n\x0c\x65num_con_str\x18\x02 \x01(\tH\x00\x12\x1f\n\x15\x65num_con_interned_str\x18\x03 \x01(\x05H\x00\x42\n\n\x08\x65num_con\x1a\x35\n\tStructCon\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1ai\n\nStructProj\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x89\x01\n\tStructUpd\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x42\n\x03\x41pp\x12\x1c\n\x03\x66un\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x46\n\x05TyApp\x12\x1d\n\x04\x65xpr\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05types\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03\x41\x62s\x12%\n\x05param\x18\x01 \x03(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aQ\n\x05TyAbs\x12)\n\x05param\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a$\n\x03Nil\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x64\n\x04\x43ons\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1e\n\x05\x66ront\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04tail\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a-\n\x0cOptionalNone\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aL\n\x0cOptionalSome\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x45\n\x05ToAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aG\n\x07\x46romAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03SumJ\x04\x08\x13\x10\x14J\x04\x08\x18\x10\x19\"\x95\x07\n\x07\x43\x61seAlt\x12\"\n\x07\x64\x65\x66\x61ult\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12-\n\x07variant\x18\x02 \x01(\x0b\x32\x1a.daml_lf_1.CaseAlt.VariantH\x00\x12&\n\x08prim_con\x18\x03 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12\x1e\n\x03nil\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\'\n\x04\x63ons\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.ConsH\x00\x12(\n\roptional_none\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\roptional_some\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.CaseAlt.OptionalSomeH\x00\x12\'\n\x04\x65num\x18\t \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.EnumH\x00\x12\x1d\n\x04\x62ody\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xaf\x01\n\x07Variant\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x15\n\x0bvariant_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14variant_interned_str\x18\x04 \x01(\x05H\x00\x12\x14\n\nbinder_str\x18\x03 \x01(\tH\x01\x12\x1d\n\x13\x62inder_interned_str\x18\x05 \x01(\x05H\x01\x42\t\n\x07variantB\x08\n\x06\x62inder\x1ay\n\x04\x45num\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x19\n\x0f\x63onstructor_str\x18\x02 \x01(\tH\x00\x12\"\n\x18\x63onstructor_interned_str\x18\x03 \x01(\x05H\x00\x42\r\n\x0b\x63onstructor\x1a\x90\x01\n\x04\x43ons\x12\x16\n\x0cvar_head_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_head_interned_str\x18\x03 \x01(\x05H\x00\x12\x16\n\x0cvar_tail_str\x18\x02 \x01(\tH\x01\x12\x1f\n\x15var_tail_interned_str\x18\x04 \x01(\x05H\x01\x42\n\n\x08var_headB\n\n\x08var_tail\x1aS\n\x0cOptionalSome\x12\x16\n\x0cvar_body_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_body_interned_str\x18\x02 \x01(\x05H\x00\x42\n\n\x08var_bodyB\x05\n\x03Sum\"H\n\x04\x43\x61se\x12\x1e\n\x05scrut\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12 \n\x04\x61lts\x18\x02 \x03(\x0b\x32\x12.daml_lf_1.CaseAlt\"L\n\x05\x42lock\x12$\n\x08\x62indings\x18\x01 \x03(\x0b\x32\x12.daml_lf_1.Binding\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"D\n\x04Pure\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc4\x07\n\x06Update\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12*\n\x06\x63reate\x18\x03 \x01(\x0b\x32\x18.daml_lf_1.Update.CreateH\x00\x12.\n\x08\x65xercise\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Update.ExerciseH\x00\x12(\n\x05\x66\x65tch\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.Update.FetchH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\rlookup_by_key\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x37\n\x0c\x66\x65tch_by_key\x18\t \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x31\n\nembed_expr\x18\x07 \x01(\x0b\x32\x1b.daml_lf_1.Update.EmbedExprH\x00\x1aQ\n\x06\x43reate\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xcf\x01\n\x08\x45xercise\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x14\n\nchoice_str\x18\x02 \x01(\tH\x00\x12\x1d\n\x13\x63hoice_interned_str\x18\x06 \x01(\x05H\x00\x12\x1c\n\x03\x63id\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05\x61\x63tor\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1c\n\x03\x61rg\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x08\n\x06\x63hoice\x1aU\n\x05\x46\x65tch\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03\x63id\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprJ\x04\x08\x03\x10\x04\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aW\n\rRetrieveByKey\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03key\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\x8d\x04\n\x08Scenario\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12,\n\x06\x63ommit\x18\x03 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x30\n\nmustFailAt\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x1f\n\x04pass\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12$\n\tget_party\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12\x33\n\nembed_expr\x18\x08 \x01(\x0b\x32\x1d.daml_lf_1.Scenario.EmbedExprH\x00\x1aj\n\x06\x43ommit\x12\x1e\n\x05party\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12!\n\x08ret_type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\xe7\x02\n\x0eTemplateChoice\x12\x12\n\x08name_str\x18\x01 \x01(\tH\x00\x12\x1b\n\x11name_interned_str\x18\t \x01(\x05H\x00\x12\x11\n\tconsuming\x18\x02 \x01(\x08\x12$\n\x0b\x63ontrollers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\narg_binder\x18\x04 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12!\n\x08ret_type\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06update\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x0fself_binder_str\x18\x07 \x01(\tH\x01\x12\"\n\x18self_binder_interned_str\x18\n \x01(\x05H\x01\x12%\n\x08location\x18\x08 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04nameB\r\n\x0bself_binder\"\xf0\x03\n\x07KeyExpr\x12\x35\n\x0bprojections\x18\x01 \x01(\x0b\x32\x1e.daml_lf_1.KeyExpr.ProjectionsH\x00\x12+\n\x06record\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.KeyExpr.RecordH\x00\x1al\n\nProjection\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x42\x07\n\x05\x66ield\x1a\x41\n\x0bProjections\x12\x32\n\x0bprojections\x18\x02 \x03(\x0b\x32\x1d.daml_lf_1.KeyExpr.Projection\x1ak\n\x0bRecordField\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12 \n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprB\x07\n\x05\x66ield\x1a\\\n\x06Record\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12.\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x1e.daml_lf_1.KeyExpr.RecordFieldB\x05\n\x03Sum\"\xdc\x04\n\x0b\x44\x65\x66Template\x12,\n\x0btycon_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1e\n\x14tycon_interned_dname\x18\x0c \x01(\x05H\x00\x12\x13\n\tparam_str\x18\x02 \x01(\tH\x01\x12\x1c\n\x12param_interned_str\x18\x0b \x01(\x05H\x01\x12 \n\x07precond\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12$\n\x0bsignatories\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\"\n\tagreement\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\x07\x63hoices\x18\x07 \x03(\x0b\x32\x19.daml_lf_1.TemplateChoice\x12\"\n\tobservers\x18\x08 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12%\n\x08location\x18\t \x01(\x0b\x32\x13.daml_lf_1.Location\x12*\n\x03key\x18\n \x01(\x0b\x32\x1d.daml_lf_1.DefTemplate.DefKey\x1a\xa4\x01\n\x06\x44\x65\x66Key\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12!\n\x03key\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprH\x00\x12&\n\x0b\x63omplex_key\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12$\n\x0bmaintainers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\n\n\x08key_exprB\x07\n\x05tyconB\x07\n\x05paramJ\x04\x08\x03\x10\x04\"\xf7\x03\n\x0b\x44\x65\x66\x44\x61taType\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12/\n\x06record\x18\x03 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x30\n\x07variant\x18\x04 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x37\n\x04\x65num\x18\x07 \x01(\x0b\x32\'.daml_lf_1.DefDataType.EnumConstructorsH\x01\x12\x14\n\x0cserializable\x18\x05 \x01(\x08\x12%\n\x08location\x18\x06 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a\x32\n\x06\x46ields\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithType\x1aO\n\x10\x45numConstructors\x12\x18\n\x10\x63onstructors_str\x18\x01 \x03(\t\x12!\n\x19\x63onstructors_interned_str\x18\x02 \x03(\x05\x42\x06\n\x04nameB\n\n\x08\x44\x61taCons\"\x96\x02\n\x08\x44\x65\x66Value\x12\x38\n\x0ename_with_type\x18\x01 \x01(\x0b\x32 .daml_lf_1.DefValue.NameWithType\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x11no_party_literals\x18\x03 \x01(\x08\x12\x0f\n\x07is_test\x18\x04 \x01(\x08\x12%\n\x08location\x18\x05 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a^\n\x0cNameWithType\x12\x12\n\nname_dname\x18\x01 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\"\x90\x01\n\x0c\x46\x65\x61tureFlags\x12\x1b\n\x13\x66orbidPartyLiterals\x18\x01 \x01(\x08\x12/\n\'dontDivulgeContractIdsInCreateArguments\x18\x02 \x01(\x08\x12\x32\n*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\x08\"\x8c\x02\n\x06Module\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12&\n\x05\x66lags\x18\x04 \x01(\x0b\x32\x17.daml_lf_1.FeatureFlags\x12*\n\ndata_types\x18\x05 \x03(\x0b\x32\x16.daml_lf_1.DefDataType\x12#\n\x06values\x18\x06 \x03(\x0b\x32\x13.daml_lf_1.DefValue\x12)\n\ttemplates\x18\x07 \x03(\x0b\x32\x16.daml_lf_1.DefTemplateB\x06\n\x04nameJ\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04\"3\n\x12InternedDottedName\x12\x1d\n\x15segments_interned_str\x18\x01 \x03(\x05\"\x85\x01\n\x07Package\x12\"\n\x07modules\x18\x01 \x03(\x0b\x32\x11.daml_lf_1.Module\x12\x18\n\x10interned_strings\x18\x02 \x03(\t\x12<\n\x15interned_dotted_names\x18\x03 \x03(\x0b\x32\x1d.daml_lf_1.InternedDottedName*\xef\x01\n\x08PrimType\x12\x08\n\x04UNIT\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x03\x12\x08\n\x04TEXT\x10\x05\x12\r\n\tTIMESTAMP\x10\x06\x12\t\n\x05PARTY\x10\x08\x12\x08\n\x04LIST\x10\t\x12\n\n\x06UPDATE\x10\n\x12\x0c\n\x08SCENARIO\x10\x0b\x12\x08\n\x04\x44\x41TE\x10\x0c\x12\x0f\n\x0b\x43ONTRACT_ID\x10\r\x12\x0c\n\x08OPTIONAL\x10\x0e\x12\t\n\x05\x41RROW\x10\x0f\x12\x0b\n\x07TEXTMAP\x10\x10\x12\x0b\n\x07NUMERIC\x10\x11\x12\x07\n\x03\x41NY\x10\x12\x12\x0c\n\x08TYPE_REP\x10\x13\x12\n\n\x06GENMAP\x10\x14*4\n\x07PrimCon\x12\x0c\n\x08\x43ON_UNIT\x10\x00\x12\r\n\tCON_FALSE\x10\x01\x12\x0c\n\x08\x43ON_TRUE\x10\x02*\xe7\x0e\n\x0f\x42uiltinFunction\x12\x0f\n\x0b\x41\x44\x44_DECIMAL\x10\x00\x12\x0f\n\x0bSUB_DECIMAL\x10\x01\x12\x0f\n\x0bMUL_DECIMAL\x10\x02\x12\x0f\n\x0b\x44IV_DECIMAL\x10\x03\x12\x11\n\rROUND_DECIMAL\x10\x06\x12\x0f\n\x0b\x41\x44\x44_NUMERIC\x10k\x12\x0f\n\x0bSUB_NUMERIC\x10l\x12\x0f\n\x0bMUL_NUMERIC\x10m\x12\x0f\n\x0b\x44IV_NUMERIC\x10n\x12\x11\n\rROUND_NUMERIC\x10o\x12\x10\n\x0c\x43\x41ST_NUMERIC\x10y\x12\x11\n\rSHIFT_NUMERIC\x10z\x12\r\n\tADD_INT64\x10\x07\x12\r\n\tSUB_INT64\x10\x08\x12\r\n\tMUL_INT64\x10\t\x12\r\n\tDIV_INT64\x10\n\x12\r\n\tMOD_INT64\x10\x0b\x12\r\n\tEXP_INT64\x10\x0c\x12\t\n\x05\x46OLDL\x10\x14\x12\t\n\x05\x46OLDR\x10\x15\x12\x11\n\rTEXTMAP_EMPTY\x10`\x12\x12\n\x0eTEXTMAP_INSERT\x10\x61\x12\x12\n\x0eTEXTMAP_LOOKUP\x10\x62\x12\x12\n\x0eTEXTMAP_DELETE\x10\x63\x12\x13\n\x0fTEXTMAP_TO_LIST\x10\x64\x12\x10\n\x0cTEXTMAP_SIZE\x10\x65\x12\x10\n\x0cGENMAP_EMPTY\x10|\x12\x11\n\rGENMAP_INSERT\x10}\x12\x11\n\rGENMAP_LOOKUP\x10~\x12\x11\n\rGENMAP_DELETE\x10\x7f\x12\x10\n\x0bGENMAP_KEYS\x10\x80\x01\x12\x12\n\rGENMAP_VALUES\x10\x81\x01\x12\x10\n\x0bGENMAP_SIZE\x10\x82\x01\x12\x10\n\x0c\x45XPLODE_TEXT\x10\x17\x12\x0f\n\x0b\x41PPEND_TEXT\x10\x18\x12\t\n\x05\x45RROR\x10\x19\x12\r\n\tLEQ_INT64\x10!\x12\x0f\n\x0bLEQ_DECIMAL\x10\"\x12\x0f\n\x0bLEQ_NUMERIC\x10p\x12\x0c\n\x08LEQ_TEXT\x10$\x12\x11\n\rLEQ_TIMESTAMP\x10%\x12\x0c\n\x08LEQ_DATE\x10\x43\x12\r\n\tLEQ_PARTY\x10Y\x12\x0e\n\nLESS_INT64\x10\'\x12\x10\n\x0cLESS_DECIMAL\x10(\x12\x10\n\x0cLESS_NUMERIC\x10q\x12\r\n\tLESS_TEXT\x10*\x12\x12\n\x0eLESS_TIMESTAMP\x10+\x12\r\n\tLESS_DATE\x10\x44\x12\x0e\n\nLESS_PARTY\x10Z\x12\r\n\tGEQ_INT64\x10-\x12\x0f\n\x0bGEQ_DECIMAL\x10.\x12\x0f\n\x0bGEQ_NUMERIC\x10r\x12\x0c\n\x08GEQ_TEXT\x10\x30\x12\x11\n\rGEQ_TIMESTAMP\x10\x31\x12\x0c\n\x08GEQ_DATE\x10\x45\x12\r\n\tGEQ_PARTY\x10[\x12\x11\n\rGREATER_INT64\x10\x33\x12\x13\n\x0fGREATER_DECIMAL\x10\x34\x12\x13\n\x0fGREATER_NUMERIC\x10s\x12\x10\n\x0cGREATER_TEXT\x10\x36\x12\x15\n\x11GREATER_TIMESTAMP\x10\x37\x12\x10\n\x0cGREATER_DATE\x10\x46\x12\x11\n\rGREATER_PARTY\x10\\\x12\x11\n\rTO_TEXT_INT64\x10\x39\x12\x13\n\x0fTO_TEXT_DECIMAL\x10:\x12\x13\n\x0fTO_TEXT_NUMERIC\x10t\x12\x10\n\x0cTO_TEXT_TEXT\x10<\x12\x15\n\x11TO_TEXT_TIMESTAMP\x10=\x12\x10\n\x0cTO_TEXT_DATE\x10G\x12\x18\n\x14TO_QUOTED_TEXT_PARTY\x10?\x12\x11\n\rTO_TEXT_PARTY\x10^\x12\x13\n\x0f\x46ROM_TEXT_PARTY\x10_\x12\x13\n\x0f\x46ROM_TEXT_INT64\x10g\x12\x15\n\x11\x46ROM_TEXT_DECIMAL\x10h\x12\x15\n\x11\x46ROM_TEXT_NUMERIC\x10u\x12\x0f\n\x0bSHA256_TEXT\x10]\x12\x15\n\x11\x44\x41TE_TO_UNIX_DAYS\x10H\x12\x15\n\x11UNIX_DAYS_TO_DATE\x10I\x12\"\n\x1eTIMESTAMP_TO_UNIX_MICROSECONDS\x10J\x12\"\n\x1eUNIX_MICROSECONDS_TO_TIMESTAMP\x10K\x12\x14\n\x10INT64_TO_DECIMAL\x10L\x12\x14\n\x10\x44\x45\x43IMAL_TO_INT64\x10M\x12\x14\n\x10INT64_TO_NUMERIC\x10v\x12\x14\n\x10NUMERIC_TO_INT64\x10w\x12\x10\n\x0cIMPLODE_TEXT\x10N\x12\x0f\n\x0b\x45QUAL_INT64\x10O\x12\x11\n\rEQUAL_DECIMAL\x10P\x12\x11\n\rEQUAL_NUMERIC\x10x\x12\x0e\n\nEQUAL_TEXT\x10Q\x12\x13\n\x0f\x45QUAL_TIMESTAMP\x10R\x12\x0e\n\nEQUAL_DATE\x10S\x12\x0f\n\x0b\x45QUAL_PARTY\x10T\x12\x0e\n\nEQUAL_BOOL\x10U\x12\x15\n\x11\x45QUAL_CONTRACT_ID\x10V\x12\x0e\n\nEQUAL_LIST\x10W\x12\x12\n\x0e\x45QUAL_TYPE_REP\x10{\x12\t\n\x05TRACE\x10X\x12\x16\n\x12\x43OERCE_CONTRACT_ID\x10\x66\x12\x19\n\x15TEXT_FROM_CODE_POINTS\x10i\x12\x17\n\x13TEXT_TO_CODE_POINTS\x10jBE\n\x1c\x63om.digitalasset.daml_lf_dev\xaa\x02$Com.DigitalAsset.Daml_Lf_Dev.DamlLf1b\x06proto3')
 )
 
 _PRIMTYPE = _descriptor.EnumDescriptor(
@@ -89,7 +89,7 @@ _PRIMTYPE = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='MAP', index=14, number=16,
+      name='TEXTMAP', index=14, number=16,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
@@ -100,11 +100,19 @@ _PRIMTYPE = _descriptor.EnumDescriptor(
       name='ANY', index=16, number=18,
       serialized_options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='TYPE_REP', index=17, number=19,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GENMAP', index=18, number=20,
+      serialized_options=None,
+      type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=10536,
-  serialized_end=10745,
+  serialized_start=10920,
+  serialized_end=11159,
 )
 _sym_db.RegisterEnumDescriptor(_PRIMTYPE)
 
@@ -130,8 +138,8 @@ _PRIMCON = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=10747,
-  serialized_end=10799,
+  serialized_start=11161,
+  serialized_end=11213,
 )
 _sym_db.RegisterEnumDescriptor(_PRIMCON)
 
@@ -223,302 +231,334 @@ _BUILTINFUNCTION = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='MAP_EMPTY', index=20, number=96,
+      name='TEXTMAP_EMPTY', index=20, number=96,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='MAP_INSERT', index=21, number=97,
+      name='TEXTMAP_INSERT', index=21, number=97,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='MAP_LOOKUP', index=22, number=98,
+      name='TEXTMAP_LOOKUP', index=22, number=98,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='MAP_DELETE', index=23, number=99,
+      name='TEXTMAP_DELETE', index=23, number=99,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='MAP_TO_LIST', index=24, number=100,
+      name='TEXTMAP_TO_LIST', index=24, number=100,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='MAP_SIZE', index=25, number=101,
+      name='TEXTMAP_SIZE', index=25, number=101,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EXPLODE_TEXT', index=26, number=23,
+      name='GENMAP_EMPTY', index=26, number=124,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='APPEND_TEXT', index=27, number=24,
+      name='GENMAP_INSERT', index=27, number=125,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ERROR', index=28, number=25,
+      name='GENMAP_LOOKUP', index=28, number=126,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_INT64', index=29, number=33,
+      name='GENMAP_DELETE', index=29, number=127,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_DECIMAL', index=30, number=34,
+      name='GENMAP_KEYS', index=30, number=128,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_NUMERIC', index=31, number=112,
+      name='GENMAP_VALUES', index=31, number=129,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_TEXT', index=32, number=36,
+      name='GENMAP_SIZE', index=32, number=130,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_TIMESTAMP', index=33, number=37,
+      name='EXPLODE_TEXT', index=33, number=23,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_DATE', index=34, number=67,
+      name='APPEND_TEXT', index=34, number=24,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_PARTY', index=35, number=89,
+      name='ERROR', index=35, number=25,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LESS_INT64', index=36, number=39,
+      name='LEQ_INT64', index=36, number=33,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LESS_DECIMAL', index=37, number=40,
+      name='LEQ_DECIMAL', index=37, number=34,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LESS_NUMERIC', index=38, number=113,
+      name='LEQ_NUMERIC', index=38, number=112,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LESS_TEXT', index=39, number=42,
+      name='LEQ_TEXT', index=39, number=36,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LESS_TIMESTAMP', index=40, number=43,
+      name='LEQ_TIMESTAMP', index=40, number=37,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LESS_DATE', index=41, number=68,
+      name='LEQ_DATE', index=41, number=67,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LESS_PARTY', index=42, number=90,
+      name='LEQ_PARTY', index=42, number=89,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_INT64', index=43, number=45,
+      name='LESS_INT64', index=43, number=39,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_DECIMAL', index=44, number=46,
+      name='LESS_DECIMAL', index=44, number=40,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_NUMERIC', index=45, number=114,
+      name='LESS_NUMERIC', index=45, number=113,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_TEXT', index=46, number=48,
+      name='LESS_TEXT', index=46, number=42,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_TIMESTAMP', index=47, number=49,
+      name='LESS_TIMESTAMP', index=47, number=43,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_DATE', index=48, number=69,
+      name='LESS_DATE', index=48, number=68,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_PARTY', index=49, number=91,
+      name='LESS_PARTY', index=49, number=90,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_INT64', index=50, number=51,
+      name='GEQ_INT64', index=50, number=45,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_DECIMAL', index=51, number=52,
+      name='GEQ_DECIMAL', index=51, number=46,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_NUMERIC', index=52, number=115,
+      name='GEQ_NUMERIC', index=52, number=114,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_TEXT', index=53, number=54,
+      name='GEQ_TEXT', index=53, number=48,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_TIMESTAMP', index=54, number=55,
+      name='GEQ_TIMESTAMP', index=54, number=49,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_DATE', index=55, number=70,
+      name='GEQ_DATE', index=55, number=69,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_PARTY', index=56, number=92,
+      name='GEQ_PARTY', index=56, number=91,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_INT64', index=57, number=57,
+      name='GREATER_INT64', index=57, number=51,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_DECIMAL', index=58, number=58,
+      name='GREATER_DECIMAL', index=58, number=52,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_NUMERIC', index=59, number=116,
+      name='GREATER_NUMERIC', index=59, number=115,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_TEXT', index=60, number=60,
+      name='GREATER_TEXT', index=60, number=54,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_TIMESTAMP', index=61, number=61,
+      name='GREATER_TIMESTAMP', index=61, number=55,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_DATE', index=62, number=71,
+      name='GREATER_DATE', index=62, number=70,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TO_QUOTED_TEXT_PARTY', index=63, number=63,
+      name='GREATER_PARTY', index=63, number=92,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_PARTY', index=64, number=94,
+      name='TO_TEXT_INT64', index=64, number=57,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='FROM_TEXT_PARTY', index=65, number=95,
+      name='TO_TEXT_DECIMAL', index=65, number=58,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='FROM_TEXT_INT64', index=66, number=103,
+      name='TO_TEXT_NUMERIC', index=66, number=116,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='FROM_TEXT_DECIMAL', index=67, number=104,
+      name='TO_TEXT_TEXT', index=67, number=60,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='FROM_TEXT_NUMERIC', index=68, number=117,
+      name='TO_TEXT_TIMESTAMP', index=68, number=61,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='SHA256_TEXT', index=69, number=93,
+      name='TO_TEXT_DATE', index=69, number=71,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DATE_TO_UNIX_DAYS', index=70, number=72,
+      name='TO_QUOTED_TEXT_PARTY', index=70, number=63,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='UNIX_DAYS_TO_DATE', index=71, number=73,
+      name='TO_TEXT_PARTY', index=71, number=94,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TIMESTAMP_TO_UNIX_MICROSECONDS', index=72, number=74,
+      name='FROM_TEXT_PARTY', index=72, number=95,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='UNIX_MICROSECONDS_TO_TIMESTAMP', index=73, number=75,
+      name='FROM_TEXT_INT64', index=73, number=103,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='INT64_TO_DECIMAL', index=74, number=76,
+      name='FROM_TEXT_DECIMAL', index=74, number=104,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DECIMAL_TO_INT64', index=75, number=77,
+      name='FROM_TEXT_NUMERIC', index=75, number=117,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='INT64_TO_NUMERIC', index=76, number=118,
+      name='SHA256_TEXT', index=76, number=93,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='NUMERIC_TO_INT64', index=77, number=119,
+      name='DATE_TO_UNIX_DAYS', index=77, number=72,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='IMPLODE_TEXT', index=78, number=78,
+      name='UNIX_DAYS_TO_DATE', index=78, number=73,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_INT64', index=79, number=79,
+      name='TIMESTAMP_TO_UNIX_MICROSECONDS', index=79, number=74,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_DECIMAL', index=80, number=80,
+      name='UNIX_MICROSECONDS_TO_TIMESTAMP', index=80, number=75,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_NUMERIC', index=81, number=120,
+      name='INT64_TO_DECIMAL', index=81, number=76,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_TEXT', index=82, number=81,
+      name='DECIMAL_TO_INT64', index=82, number=77,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_TIMESTAMP', index=83, number=82,
+      name='INT64_TO_NUMERIC', index=83, number=118,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_DATE', index=84, number=83,
+      name='NUMERIC_TO_INT64', index=84, number=119,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_PARTY', index=85, number=84,
+      name='IMPLODE_TEXT', index=85, number=78,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_BOOL', index=86, number=85,
+      name='EQUAL_INT64', index=86, number=79,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_CONTRACT_ID', index=87, number=86,
+      name='EQUAL_DECIMAL', index=87, number=80,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_LIST', index=88, number=87,
+      name='EQUAL_NUMERIC', index=88, number=120,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TRACE', index=89, number=88,
+      name='EQUAL_TEXT', index=89, number=81,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='COERCE_CONTRACT_ID', index=90, number=102,
+      name='EQUAL_TIMESTAMP', index=90, number=82,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_FROM_CODE_POINTS', index=91, number=105,
+      name='EQUAL_DATE', index=91, number=83,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_TO_CODE_POINTS', index=92, number=106,
+      name='EQUAL_PARTY', index=92, number=84,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='EQUAL_BOOL', index=93, number=85,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='EQUAL_CONTRACT_ID', index=94, number=86,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='EQUAL_LIST', index=95, number=87,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='EQUAL_TYPE_REP', index=96, number=123,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='TRACE', index=97, number=88,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='COERCE_CONTRACT_ID', index=98, number=102,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_FROM_CODE_POINTS', index=99, number=105,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_TO_CODE_POINTS', index=100, number=106,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=10802,
-  serialized_end=12522,
+  serialized_start=11216,
+  serialized_end=13111,
 )
 _sym_db.RegisterEnumDescriptor(_BUILTINFUNCTION)
 
@@ -537,9 +577,11 @@ DATE = 12
 CONTRACT_ID = 13
 OPTIONAL = 14
 ARROW = 15
-MAP = 16
+TEXTMAP = 16
 NUMERIC = 17
 ANY = 18
+TYPE_REP = 19
+GENMAP = 20
 CON_UNIT = 0
 CON_FALSE = 1
 CON_TRUE = 2
@@ -563,12 +605,19 @@ MOD_INT64 = 11
 EXP_INT64 = 12
 FOLDL = 20
 FOLDR = 21
-MAP_EMPTY = 96
-MAP_INSERT = 97
-MAP_LOOKUP = 98
-MAP_DELETE = 99
-MAP_TO_LIST = 100
-MAP_SIZE = 101
+TEXTMAP_EMPTY = 96
+TEXTMAP_INSERT = 97
+TEXTMAP_LOOKUP = 98
+TEXTMAP_DELETE = 99
+TEXTMAP_TO_LIST = 100
+TEXTMAP_SIZE = 101
+GENMAP_EMPTY = 124
+GENMAP_INSERT = 125
+GENMAP_LOOKUP = 126
+GENMAP_DELETE = 127
+GENMAP_KEYS = 128
+GENMAP_VALUES = 129
+GENMAP_SIZE = 130
 EXPLODE_TEXT = 23
 APPEND_TEXT = 24
 ERROR = 25
@@ -632,6 +681,7 @@ EQUAL_PARTY = 84
 EQUAL_BOOL = 85
 EQUAL_CONTRACT_ID = 86
 EQUAL_LIST = 87
+EQUAL_TYPE_REP = 123
 TRACE = 88
 COERCE_CONTRACT_ID = 102
 TEXT_FROM_CODE_POINTS = 105
@@ -678,14 +728,14 @@ _PACKAGEREF = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='package_id', full_name='daml_lf_1.PackageRef.package_id', index=1,
+      name='package_id_str', full_name='daml_lf_1.PackageRef.package_id_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.PackageRef.interned_id', index=2,
+      name='package_id_interned_str', full_name='daml_lf_1.PackageRef.package_id_interned_str', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -707,7 +757,7 @@ _PACKAGEREF = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=67,
-  serialized_end=164,
+  serialized_end=180,
 )
 
 
@@ -725,13 +775,6 @@ _DOTTEDNAME = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='segments_interned_id', full_name='daml_lf_1.DottedName.segments_interned_id', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -744,8 +787,8 @@ _DOTTEDNAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=166,
-  serialized_end=226,
+  serialized_start=182,
+  serialized_end=212,
 )
 
 
@@ -764,9 +807,16 @@ _MODULEREF = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='module_name', full_name='daml_lf_1.ModuleRef.module_name', index=1,
+      name='module_name_dname', full_name='daml_lf_1.ModuleRef.module_name_dname', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='module_name_interned_dname', full_name='daml_lf_1.ModuleRef.module_name_interned_dname', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -781,9 +831,12 @@ _MODULEREF = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='module_name', full_name='daml_lf_1.ModuleRef.module_name',
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=228,
-  serialized_end=327,
+  serialized_start=215,
+  serialized_end=375,
 )
 
 
@@ -802,9 +855,16 @@ _TYPECONNAME = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.TypeConName.name', index=1,
+      name='name_dname', full_name='daml_lf_1.TypeConName.name_dname', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name_interned_dname', full_name='daml_lf_1.TypeConName.name_interned_dname', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -819,9 +879,12 @@ _TYPECONNAME = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='name', full_name='daml_lf_1.TypeConName.name',
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=329,
-  serialized_end=417,
+  serialized_start=378,
+  serialized_end=513,
 )
 
 
@@ -840,14 +903,14 @@ _VALNAME = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.ValName.name', index=1,
+      name='name_dname', full_name='daml_lf_1.ValName.name_dname', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name_interned_id', full_name='daml_lf_1.ValName.name_interned_id', index=2,
+      name='name_interned_dname', full_name='daml_lf_1.ValName.name_interned_dname', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -865,8 +928,8 @@ _VALNAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=419,
-  serialized_end=506,
+  serialized_start=515,
+  serialized_end=611,
 )
 
 
@@ -878,14 +941,14 @@ _FIELDWITHTYPE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.FieldWithType.name', index=0,
+      name='field_str', full_name='daml_lf_1.FieldWithType.field_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.FieldWithType.interned_id', index=1,
+      name='field_interned_str', full_name='daml_lf_1.FieldWithType.field_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -913,8 +976,8 @@ _FIELDWITHTYPE = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.FieldWithType.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=508,
-  serialized_end=602,
+  serialized_start=613,
+  serialized_end=719,
 )
 
 
@@ -926,14 +989,14 @@ _VARWITHTYPE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.VarWithType.name', index=0,
+      name='var_str', full_name='daml_lf_1.VarWithType.var_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.VarWithType.interned_id', index=1,
+      name='var_interned_str', full_name='daml_lf_1.VarWithType.var_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -961,8 +1024,8 @@ _VARWITHTYPE = _descriptor.Descriptor(
       name='var', full_name='daml_lf_1.VarWithType.var',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=604,
-  serialized_end=694,
+  serialized_start=721,
+  serialized_end=819,
 )
 
 
@@ -974,14 +1037,14 @@ _TYPEVARWITHKIND = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.TypeVarWithKind.name', index=0,
+      name='var_str', full_name='daml_lf_1.TypeVarWithKind.var_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.TypeVarWithKind.interned_id', index=1,
+      name='var_interned_str', full_name='daml_lf_1.TypeVarWithKind.var_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1009,8 +1072,8 @@ _TYPEVARWITHKIND = _descriptor.Descriptor(
       name='var', full_name='daml_lf_1.TypeVarWithKind.var',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=696,
-  serialized_end=790,
+  serialized_start=821,
+  serialized_end=923,
 )
 
 
@@ -1022,14 +1085,14 @@ _FIELDWITHEXPR = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.FieldWithExpr.name', index=0,
+      name='field_str', full_name='daml_lf_1.FieldWithExpr.field_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.FieldWithExpr.interned_id', index=1,
+      name='field_interned_str', full_name='daml_lf_1.FieldWithExpr.field_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1057,8 +1120,8 @@ _FIELDWITHEXPR = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.FieldWithExpr.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=792,
-  serialized_end=886,
+  serialized_start=925,
+  serialized_end=1031,
 )
 
 
@@ -1095,8 +1158,8 @@ _BINDING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=888,
-  serialized_end=969,
+  serialized_start=1033,
+  serialized_end=1114,
 )
 
 
@@ -1133,8 +1196,8 @@ _KIND_ARROW = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1085,
-  serialized_end=1158,
+  serialized_start=1230,
+  serialized_end=1303,
 )
 
 _KIND = _descriptor.Descriptor(
@@ -1180,8 +1243,8 @@ _KIND = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Kind.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=972,
-  serialized_end=1165,
+  serialized_start=1117,
+  serialized_end=1310,
 )
 
 
@@ -1193,14 +1256,14 @@ _TYPE_VAR = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='var_name', full_name='daml_lf_1.Type.Var.var_name', index=0,
+      name='var_str', full_name='daml_lf_1.Type.Var.var_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='var_interned_id', full_name='daml_lf_1.Type.Var.var_interned_id', index=1,
+      name='var_interned_str', full_name='daml_lf_1.Type.Var.var_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1228,8 +1291,8 @@ _TYPE_VAR = _descriptor.Descriptor(
       name='var', full_name='daml_lf_1.Type.Var.var',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1419,
-  serialized_end=1509,
+  serialized_start=1566,
+  serialized_end=1656,
 )
 
 _TYPE_CON = _descriptor.Descriptor(
@@ -1265,8 +1328,8 @@ _TYPE_CON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1511,
-  serialized_end=1586,
+  serialized_start=1658,
+  serialized_end=1733,
 )
 
 _TYPE_PRIM = _descriptor.Descriptor(
@@ -1302,8 +1365,8 @@ _TYPE_PRIM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1588,
-  serialized_end=1660,
+  serialized_start=1735,
+  serialized_end=1807,
 )
 
 _TYPE_FUN = _descriptor.Descriptor(
@@ -1339,8 +1402,8 @@ _TYPE_FUN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1662,
-  serialized_end=1733,
+  serialized_start=1809,
+  serialized_end=1880,
 )
 
 _TYPE_FORALL = _descriptor.Descriptor(
@@ -1376,19 +1439,19 @@ _TYPE_FORALL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1735,
-  serialized_end=1816,
+  serialized_start=1882,
+  serialized_end=1963,
 )
 
-_TYPE_TUPLE = _descriptor.Descriptor(
-  name='Tuple',
-  full_name='daml_lf_1.Type.Tuple',
+_TYPE_STRUCT = _descriptor.Descriptor(
+  name='Struct',
+  full_name='daml_lf_1.Type.Struct',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='fields', full_name='daml_lf_1.Type.Tuple.fields', index=0,
+      name='fields', full_name='daml_lf_1.Type.Struct.fields', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1406,8 +1469,8 @@ _TYPE_TUPLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1818,
-  serialized_end=1867,
+  serialized_start=1965,
+  serialized_end=2015,
 )
 
 _TYPE = _descriptor.Descriptor(
@@ -1453,7 +1516,7 @@ _TYPE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tuple', full_name='daml_lf_1.Type.tuple', index=5,
+      name='struct', full_name='daml_lf_1.Type.struct', index=5,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1469,7 +1532,7 @@ _TYPE = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_TYPE_VAR, _TYPE_CON, _TYPE_PRIM, _TYPE_FUN, _TYPE_FORALL, _TYPE_TUPLE, ],
+  nested_types=[_TYPE_VAR, _TYPE_CON, _TYPE_PRIM, _TYPE_FUN, _TYPE_FORALL, _TYPE_STRUCT, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -1481,8 +1544,8 @@ _TYPE = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Type.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1168,
-  serialized_end=1898,
+  serialized_start=1313,
+  serialized_end=2046,
 )
 
 
@@ -1501,28 +1564,28 @@ _PRIMLIT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='decimal', full_name='daml_lf_1.PrimLit.decimal', index=1,
+      name='decimal_str', full_name='daml_lf_1.PrimLit.decimal_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='decimal_interned_id', full_name='daml_lf_1.PrimLit.decimal_interned_id', index=2,
+      name='numeric_interned_str', full_name='daml_lf_1.PrimLit.numeric_interned_str', index=2,
       number=10, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='text', full_name='daml_lf_1.PrimLit.text', index=3,
+      name='text_str', full_name='daml_lf_1.PrimLit.text_str', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='text_interned_id', full_name='daml_lf_1.PrimLit.text_interned_id', index=4,
+      name='text_interned_str', full_name='daml_lf_1.PrimLit.text_interned_str', index=4,
       number=11, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1536,14 +1599,14 @@ _PRIMLIT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='party', full_name='daml_lf_1.PrimLit.party', index=6,
+      name='party_str', full_name='daml_lf_1.PrimLit.party_str', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='party_interned_id', full_name='daml_lf_1.PrimLit.party_interned_id', index=7,
+      name='party_interned_str', full_name='daml_lf_1.PrimLit.party_interned_str', index=7,
       number=12, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1552,20 +1615,6 @@ _PRIMLIT = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='date', full_name='daml_lf_1.PrimLit.date', index=8,
       number=8, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='numeric', full_name='daml_lf_1.PrimLit.numeric', index=9,
-      number=9, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='numeric_interned_id', full_name='daml_lf_1.PrimLit.numeric_interned_id', index=10,
-      number=13, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1585,8 +1634,8 @@ _PRIMLIT = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.PrimLit.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1901,
-  serialized_end=2173,
+  serialized_start=2049,
+  serialized_end=2286,
 )
 
 
@@ -1637,8 +1686,8 @@ _LOCATION_RANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2268,
-  serialized_end=2349,
+  serialized_start=2381,
+  serialized_end=2462,
 )
 
 _LOCATION = _descriptor.Descriptor(
@@ -1674,8 +1723,8 @@ _LOCATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2176,
-  serialized_end=2349,
+  serialized_start=2289,
+  serialized_end=2462,
 )
 
 
@@ -1712,8 +1761,8 @@ _EXPR_RECCON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3606,
-  serialized_end=3692,
+  serialized_start=3702,
+  serialized_end=3788,
 )
 
 _EXPR_RECPROJ = _descriptor.Descriptor(
@@ -1731,14 +1780,14 @@ _EXPR_RECPROJ = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.Expr.RecProj.name', index=1,
+      name='field_str', full_name='daml_lf_1.Expr.RecProj.field_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.Expr.RecProj.interned_id', index=2,
+      name='field_interned_str', full_name='daml_lf_1.Expr.RecProj.field_interned_str', index=2,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1766,8 +1815,8 @@ _EXPR_RECPROJ = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.Expr.RecProj.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3694,
-  serialized_end=3820,
+  serialized_start=3791,
+  serialized_end=3929,
 )
 
 _EXPR_RECUPD = _descriptor.Descriptor(
@@ -1785,14 +1834,14 @@ _EXPR_RECUPD = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.Expr.RecUpd.name', index=1,
+      name='field_str', full_name='daml_lf_1.Expr.RecUpd.field_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.Expr.RecUpd.interned_id', index=2,
+      name='field_interned_str', full_name='daml_lf_1.Expr.RecUpd.field_interned_str', index=2,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1827,8 +1876,8 @@ _EXPR_RECUPD = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.Expr.RecUpd.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3823,
-  serialized_end=3981,
+  serialized_start=3932,
+  serialized_end=4102,
 )
 
 _EXPR_VARIANTCON = _descriptor.Descriptor(
@@ -1846,14 +1895,14 @@ _EXPR_VARIANTCON = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.Expr.VariantCon.name', index=1,
+      name='variant_con_str', full_name='daml_lf_1.Expr.VariantCon.variant_con_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.Expr.VariantCon.interned_id', index=2,
+      name='variant_con_interned_str', full_name='daml_lf_1.Expr.VariantCon.variant_con_interned_str', index=2,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1881,8 +1930,8 @@ _EXPR_VARIANTCON = _descriptor.Descriptor(
       name='variant_con', full_name='daml_lf_1.Expr.VariantCon.variant_con',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3984,
-  serialized_end=4124,
+  serialized_start=4105,
+  serialized_end=4269,
 )
 
 _EXPR_ENUMCON = _descriptor.Descriptor(
@@ -1900,14 +1949,14 @@ _EXPR_ENUMCON = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.Expr.EnumCon.name', index=1,
+      name='enum_con_str', full_name='daml_lf_1.Expr.EnumCon.enum_con_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.Expr.EnumCon.interned_id', index=2,
+      name='enum_con_interned_str', full_name='daml_lf_1.Expr.EnumCon.enum_con_interned_str', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1928,19 +1977,19 @@ _EXPR_ENUMCON = _descriptor.Descriptor(
       name='enum_con', full_name='daml_lf_1.Expr.EnumCon.enum_con',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4126,
-  serialized_end=4225,
+  serialized_start=4271,
+  serialized_end=4388,
 )
 
-_EXPR_TUPLECON = _descriptor.Descriptor(
-  name='TupleCon',
-  full_name='daml_lf_1.Expr.TupleCon',
+_EXPR_STRUCTCON = _descriptor.Descriptor(
+  name='StructCon',
+  full_name='daml_lf_1.Expr.StructCon',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='fields', full_name='daml_lf_1.Expr.TupleCon.fields', index=0,
+      name='fields', full_name='daml_lf_1.Expr.StructCon.fields', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1958,33 +2007,33 @@ _EXPR_TUPLECON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4227,
-  serialized_end=4279,
+  serialized_start=4390,
+  serialized_end=4443,
 )
 
-_EXPR_TUPLEPROJ = _descriptor.Descriptor(
-  name='TupleProj',
-  full_name='daml_lf_1.Expr.TupleProj',
+_EXPR_STRUCTPROJ = _descriptor.Descriptor(
+  name='StructProj',
+  full_name='daml_lf_1.Expr.StructProj',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.Expr.TupleProj.name', index=0,
+      name='field_str', full_name='daml_lf_1.Expr.StructProj.field_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.Expr.TupleProj.interned_id', index=1,
+      name='field_interned_str', full_name='daml_lf_1.Expr.StructProj.field_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tuple', full_name='daml_lf_1.Expr.TupleProj.tuple', index=2,
+      name='struct', full_name='daml_lf_1.Expr.StructProj.struct', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2002,43 +2051,43 @@ _EXPR_TUPLEPROJ = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='field', full_name='daml_lf_1.Expr.TupleProj.field',
+      name='field', full_name='daml_lf_1.Expr.StructProj.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4281,
-  serialized_end=4372,
+  serialized_start=4445,
+  serialized_end=4550,
 )
 
-_EXPR_TUPLEUPD = _descriptor.Descriptor(
-  name='TupleUpd',
-  full_name='daml_lf_1.Expr.TupleUpd',
+_EXPR_STRUCTUPD = _descriptor.Descriptor(
+  name='StructUpd',
+  full_name='daml_lf_1.Expr.StructUpd',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.Expr.TupleUpd.name', index=0,
+      name='field_str', full_name='daml_lf_1.Expr.StructUpd.field_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.Expr.TupleUpd.interned_id', index=1,
+      name='field_interned_str', full_name='daml_lf_1.Expr.StructUpd.field_interned_str', index=1,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tuple', full_name='daml_lf_1.Expr.TupleUpd.tuple', index=2,
+      name='struct', full_name='daml_lf_1.Expr.StructUpd.struct', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='update', full_name='daml_lf_1.Expr.TupleUpd.update', index=3,
+      name='update', full_name='daml_lf_1.Expr.StructUpd.update', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2056,11 +2105,11 @@ _EXPR_TUPLEUPD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='field', full_name='daml_lf_1.Expr.TupleUpd.field',
+      name='field', full_name='daml_lf_1.Expr.StructUpd.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4374,
-  serialized_end=4497,
+  serialized_start=4553,
+  serialized_end=4690,
 )
 
 _EXPR_APP = _descriptor.Descriptor(
@@ -2096,8 +2145,8 @@ _EXPR_APP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4499,
-  serialized_end=4565,
+  serialized_start=4692,
+  serialized_end=4758,
 )
 
 _EXPR_TYAPP = _descriptor.Descriptor(
@@ -2133,8 +2182,8 @@ _EXPR_TYAPP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4567,
-  serialized_end=4637,
+  serialized_start=4760,
+  serialized_end=4830,
 )
 
 _EXPR_ABS = _descriptor.Descriptor(
@@ -2170,8 +2219,8 @@ _EXPR_ABS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4639,
-  serialized_end=4714,
+  serialized_start=4832,
+  serialized_end=4907,
 )
 
 _EXPR_TYABS = _descriptor.Descriptor(
@@ -2207,8 +2256,8 @@ _EXPR_TYABS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4716,
-  serialized_end=4797,
+  serialized_start=4909,
+  serialized_end=4990,
 )
 
 _EXPR_NIL = _descriptor.Descriptor(
@@ -2237,8 +2286,8 @@ _EXPR_NIL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4799,
-  serialized_end=4835,
+  serialized_start=4992,
+  serialized_end=5028,
 )
 
 _EXPR_CONS = _descriptor.Descriptor(
@@ -2281,8 +2330,8 @@ _EXPR_CONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4837,
-  serialized_end=4937,
+  serialized_start=5030,
+  serialized_end=5130,
 )
 
 _EXPR_OPTIONALNONE = _descriptor.Descriptor(
@@ -2311,8 +2360,8 @@ _EXPR_OPTIONALNONE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4939,
-  serialized_end=4984,
+  serialized_start=5132,
+  serialized_end=5177,
 )
 
 _EXPR_OPTIONALSOME = _descriptor.Descriptor(
@@ -2348,8 +2397,8 @@ _EXPR_OPTIONALSOME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4986,
-  serialized_end=5062,
+  serialized_start=5179,
+  serialized_end=5255,
 )
 
 _EXPR_TOANY = _descriptor.Descriptor(
@@ -2385,8 +2434,8 @@ _EXPR_TOANY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5064,
-  serialized_end=5133,
+  serialized_start=5257,
+  serialized_end=5326,
 )
 
 _EXPR_FROMANY = _descriptor.Descriptor(
@@ -2422,38 +2471,8 @@ _EXPR_FROMANY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5135,
-  serialized_end=5206,
-)
-
-_EXPR_TOTEXTTEMPLATEID = _descriptor.Descriptor(
-  name='ToTextTemplateId',
-  full_name='daml_lf_1.Expr.ToTextTemplateId',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='type', full_name='daml_lf_1.Expr.ToTextTemplateId.type', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5208,
-  serialized_end=5257,
+  serialized_start=5328,
+  serialized_end=5399,
 )
 
 _EXPR = _descriptor.Descriptor(
@@ -2471,14 +2490,14 @@ _EXPR = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='var', full_name='daml_lf_1.Expr.var', index=1,
+      name='var_str', full_name='daml_lf_1.Expr.var_str', index=1,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='var_interned_id', full_name='daml_lf_1.Expr.var_interned_id', index=2,
+      name='var_interned_str', full_name='daml_lf_1.Expr.var_interned_str', index=2,
       number=29, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -2548,21 +2567,21 @@ _EXPR = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tuple_con', full_name='daml_lf_1.Expr.tuple_con', index=12,
+      name='struct_con', full_name='daml_lf_1.Expr.struct_con', index=12,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tuple_proj', full_name='daml_lf_1.Expr.tuple_proj', index=13,
+      name='struct_proj', full_name='daml_lf_1.Expr.struct_proj', index=13,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tuple_upd', full_name='daml_lf_1.Expr.tuple_upd', index=14,
+      name='struct_upd', full_name='daml_lf_1.Expr.struct_upd', index=14,
       number=23, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2667,7 +2686,7 @@ _EXPR = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='to_text_template_id', full_name='daml_lf_1.Expr.to_text_template_id', index=29,
+      name='type_rep', full_name='daml_lf_1.Expr.type_rep', index=29,
       number=32, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2676,7 +2695,7 @@ _EXPR = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_EXPR_RECCON, _EXPR_RECPROJ, _EXPR_RECUPD, _EXPR_VARIANTCON, _EXPR_ENUMCON, _EXPR_TUPLECON, _EXPR_TUPLEPROJ, _EXPR_TUPLEUPD, _EXPR_APP, _EXPR_TYAPP, _EXPR_ABS, _EXPR_TYABS, _EXPR_NIL, _EXPR_CONS, _EXPR_OPTIONALNONE, _EXPR_OPTIONALSOME, _EXPR_TOANY, _EXPR_FROMANY, _EXPR_TOTEXTTEMPLATEID, ],
+  nested_types=[_EXPR_RECCON, _EXPR_RECPROJ, _EXPR_RECUPD, _EXPR_VARIANTCON, _EXPR_ENUMCON, _EXPR_STRUCTCON, _EXPR_STRUCTPROJ, _EXPR_STRUCTUPD, _EXPR_APP, _EXPR_TYAPP, _EXPR_ABS, _EXPR_TYABS, _EXPR_NIL, _EXPR_CONS, _EXPR_OPTIONALNONE, _EXPR_OPTIONALSOME, _EXPR_TOANY, _EXPR_FROMANY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -2688,8 +2707,8 @@ _EXPR = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Expr.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2352,
-  serialized_end=5276,
+  serialized_start=2465,
+  serialized_end=5418,
 )
 
 
@@ -2708,28 +2727,28 @@ _CASEALT_VARIANT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='variant_name', full_name='daml_lf_1.CaseAlt.Variant.variant_name', index=1,
+      name='variant_str', full_name='daml_lf_1.CaseAlt.Variant.variant_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='variant_interned_id', full_name='daml_lf_1.CaseAlt.Variant.variant_interned_id', index=2,
+      name='variant_interned_str', full_name='daml_lf_1.CaseAlt.Variant.variant_interned_str', index=2,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='binder_name', full_name='daml_lf_1.CaseAlt.Variant.binder_name', index=3,
+      name='binder_str', full_name='daml_lf_1.CaseAlt.Variant.binder_str', index=3,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='binder_interned_id', full_name='daml_lf_1.CaseAlt.Variant.binder_interned_id', index=4,
+      name='binder_interned_str', full_name='daml_lf_1.CaseAlt.Variant.binder_interned_str', index=4,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -2753,8 +2772,8 @@ _CASEALT_VARIANT = _descriptor.Descriptor(
       name='binder', full_name='daml_lf_1.CaseAlt.Variant.binder',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=5659,
-  serialized_end=5834,
+  serialized_start=5801,
+  serialized_end=5976,
 )
 
 _CASEALT_ENUM = _descriptor.Descriptor(
@@ -2772,14 +2791,14 @@ _CASEALT_ENUM = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.CaseAlt.Enum.name', index=1,
+      name='constructor_str', full_name='daml_lf_1.CaseAlt.Enum.constructor_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.CaseAlt.Enum.interned_id', index=2,
+      name='constructor_interned_str', full_name='daml_lf_1.CaseAlt.Enum.constructor_interned_str', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -2800,8 +2819,8 @@ _CASEALT_ENUM = _descriptor.Descriptor(
       name='constructor', full_name='daml_lf_1.CaseAlt.Enum.constructor',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5836,
-  serialized_end=5933,
+  serialized_start=5978,
+  serialized_end=6099,
 )
 
 _CASEALT_CONS = _descriptor.Descriptor(
@@ -2812,28 +2831,28 @@ _CASEALT_CONS = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='var_head_name', full_name='daml_lf_1.CaseAlt.Cons.var_head_name', index=0,
+      name='var_head_str', full_name='daml_lf_1.CaseAlt.Cons.var_head_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='var_head_interned_id', full_name='daml_lf_1.CaseAlt.Cons.var_head_interned_id', index=1,
+      name='var_head_interned_str', full_name='daml_lf_1.CaseAlt.Cons.var_head_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='var_tail_name', full_name='daml_lf_1.CaseAlt.Cons.var_tail_name', index=2,
+      name='var_tail_str', full_name='daml_lf_1.CaseAlt.Cons.var_tail_str', index=2,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='var_tail_interned_id', full_name='daml_lf_1.CaseAlt.Cons.var_tail_interned_id', index=3,
+      name='var_tail_interned_str', full_name='daml_lf_1.CaseAlt.Cons.var_tail_interned_str', index=3,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -2857,8 +2876,8 @@ _CASEALT_CONS = _descriptor.Descriptor(
       name='var_tail', full_name='daml_lf_1.CaseAlt.Cons.var_tail',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=5936,
-  serialized_end=6080,
+  serialized_start=6102,
+  serialized_end=6246,
 )
 
 _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
@@ -2869,14 +2888,14 @@ _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.CaseAlt.OptionalSome.name', index=0,
+      name='var_body_str', full_name='daml_lf_1.CaseAlt.OptionalSome.var_body_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.CaseAlt.OptionalSome.interned_id', index=1,
+      name='var_body_interned_str', full_name='daml_lf_1.CaseAlt.OptionalSome.var_body_interned_str', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -2897,8 +2916,8 @@ _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
       name='var_body', full_name='daml_lf_1.CaseAlt.OptionalSome.var_body',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=6082,
-  serialized_end=6147,
+  serialized_start=6248,
+  serialized_end=6331,
 )
 
 _CASEALT = _descriptor.Descriptor(
@@ -2986,8 +3005,8 @@ _CASEALT = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.CaseAlt.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5279,
-  serialized_end=6154,
+  serialized_start=5421,
+  serialized_end=6338,
 )
 
 
@@ -3024,8 +3043,8 @@ _CASE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6156,
-  serialized_end=6228,
+  serialized_start=6340,
+  serialized_end=6412,
 )
 
 
@@ -3062,8 +3081,8 @@ _BLOCK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6230,
-  serialized_end=6306,
+  serialized_start=6414,
+  serialized_end=6490,
 )
 
 
@@ -3100,8 +3119,8 @@ _PURE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6308,
-  serialized_end=6376,
+  serialized_start=6492,
+  serialized_end=6560,
 )
 
 
@@ -3138,8 +3157,8 @@ _UPDATE_CREATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6794,
-  serialized_end=6875,
+  serialized_start=6978,
+  serialized_end=7059,
 )
 
 _UPDATE_EXERCISE = _descriptor.Descriptor(
@@ -3157,14 +3176,14 @@ _UPDATE_EXERCISE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.Update.Exercise.name', index=1,
+      name='choice_str', full_name='daml_lf_1.Update.Exercise.choice_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.Update.Exercise.interned_id', index=2,
+      name='choice_interned_str', full_name='daml_lf_1.Update.Exercise.choice_interned_str', index=2,
       number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -3206,8 +3225,8 @@ _UPDATE_EXERCISE = _descriptor.Descriptor(
       name='choice', full_name='daml_lf_1.Update.Exercise.choice',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=6878,
-  serialized_end=7071,
+  serialized_start=7062,
+  serialized_end=7269,
 )
 
 _UPDATE_FETCH = _descriptor.Descriptor(
@@ -3243,8 +3262,8 @@ _UPDATE_FETCH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7073,
-  serialized_end=7158,
+  serialized_start=7271,
+  serialized_end=7356,
 )
 
 _UPDATE_EMBEDEXPR = _descriptor.Descriptor(
@@ -3280,8 +3299,8 @@ _UPDATE_EMBEDEXPR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7160,
-  serialized_end=7233,
+  serialized_start=7358,
+  serialized_end=7431,
 )
 
 _UPDATE_RETRIEVEBYKEY = _descriptor.Descriptor(
@@ -3317,8 +3336,8 @@ _UPDATE_RETRIEVEBYKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7235,
-  serialized_end=7322,
+  serialized_start=7433,
+  serialized_end=7520,
 )
 
 _UPDATE = _descriptor.Descriptor(
@@ -3406,8 +3425,8 @@ _UPDATE = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Update.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=6379,
-  serialized_end=7329,
+  serialized_start=6563,
+  serialized_end=7527,
 )
 
 
@@ -3451,8 +3470,8 @@ _SCENARIO_COMMIT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7669,
-  serialized_end=7775,
+  serialized_start=7867,
+  serialized_end=7973,
 )
 
 _SCENARIO_EMBEDEXPR = _descriptor.Descriptor(
@@ -3488,8 +3507,8 @@ _SCENARIO_EMBEDEXPR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7160,
-  serialized_end=7233,
+  serialized_start=7358,
+  serialized_end=7431,
 )
 
 _SCENARIO = _descriptor.Descriptor(
@@ -3570,8 +3589,8 @@ _SCENARIO = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Scenario.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=7332,
-  serialized_end=7857,
+  serialized_start=7530,
+  serialized_end=8055,
 )
 
 
@@ -3583,14 +3602,14 @@ _TEMPLATECHOICE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='choice_name', full_name='daml_lf_1.TemplateChoice.choice_name', index=0,
+      name='name_str', full_name='daml_lf_1.TemplateChoice.name_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='choice_interned_id', full_name='daml_lf_1.TemplateChoice.choice_interned_id', index=1,
+      name='name_interned_str', full_name='daml_lf_1.TemplateChoice.name_interned_str', index=1,
       number=9, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -3632,14 +3651,14 @@ _TEMPLATECHOICE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='self_binder_name', full_name='daml_lf_1.TemplateChoice.self_binder_name', index=7,
+      name='self_binder_str', full_name='daml_lf_1.TemplateChoice.self_binder_str', index=7,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='self_binder_interned_id', full_name='daml_lf_1.TemplateChoice.self_binder_interned_id', index=8,
+      name='self_binder_interned_str', full_name='daml_lf_1.TemplateChoice.self_binder_interned_str', index=8,
       number=10, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -3670,8 +3689,8 @@ _TEMPLATECHOICE = _descriptor.Descriptor(
       name='self_binder', full_name='daml_lf_1.TemplateChoice.self_binder',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=7860,
-  serialized_end=8223,
+  serialized_start=8058,
+  serialized_end=8417,
 )
 
 
@@ -3690,14 +3709,14 @@ _KEYEXPR_PROJECTION = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.KeyExpr.Projection.name', index=1,
+      name='field_str', full_name='daml_lf_1.KeyExpr.Projection.field_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.KeyExpr.Projection.interned_id', index=2,
+      name='field_interned_str', full_name='daml_lf_1.KeyExpr.Projection.field_interned_str', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -3718,8 +3737,8 @@ _KEYEXPR_PROJECTION = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.KeyExpr.Projection.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=8337,
-  serialized_end=8433,
+  serialized_start=8531,
+  serialized_end=8639,
 )
 
 _KEYEXPR_PROJECTIONS = _descriptor.Descriptor(
@@ -3748,8 +3767,8 @@ _KEYEXPR_PROJECTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8435,
-  serialized_end=8500,
+  serialized_start=8641,
+  serialized_end=8706,
 )
 
 _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
@@ -3760,14 +3779,14 @@ _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.KeyExpr.RecordField.name', index=0,
+      name='field_str', full_name='daml_lf_1.KeyExpr.RecordField.field_str', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='interned_id', full_name='daml_lf_1.KeyExpr.RecordField.interned_id', index=1,
+      name='field_interned_str', full_name='daml_lf_1.KeyExpr.RecordField.field_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -3795,8 +3814,8 @@ _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.KeyExpr.RecordField.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=8502,
-  serialized_end=8597,
+  serialized_start=8708,
+  serialized_end=8815,
 )
 
 _KEYEXPR_RECORD = _descriptor.Descriptor(
@@ -3832,8 +3851,8 @@ _KEYEXPR_RECORD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8599,
-  serialized_end=8691,
+  serialized_start=8817,
+  serialized_end=8909,
 )
 
 _KEYEXPR = _descriptor.Descriptor(
@@ -3872,8 +3891,8 @@ _KEYEXPR = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.KeyExpr.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=8226,
-  serialized_end=8698,
+  serialized_start=8420,
+  serialized_end=8916,
 )
 
 
@@ -3927,8 +3946,8 @@ _DEFTEMPLATE_DEFKEY = _descriptor.Descriptor(
       name='key_expr', full_name='daml_lf_1.DefTemplate.DefKey.key_expr',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=9077,
-  serialized_end=9241,
+  serialized_start=9335,
+  serialized_end=9499,
 )
 
 _DEFTEMPLATE = _descriptor.Descriptor(
@@ -3939,70 +3958,77 @@ _DEFTEMPLATE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='tycon', full_name='daml_lf_1.DefTemplate.tycon', index=0,
+      name='tycon_dname', full_name='daml_lf_1.DefTemplate.tycon_dname', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='param_name', full_name='daml_lf_1.DefTemplate.param_name', index=1,
+      name='tycon_interned_dname', full_name='daml_lf_1.DefTemplate.tycon_interned_dname', index=1,
+      number=12, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='param_str', full_name='daml_lf_1.DefTemplate.param_str', index=2,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='param_interned_id', full_name='daml_lf_1.DefTemplate.param_interned_id', index=2,
+      name='param_interned_str', full_name='daml_lf_1.DefTemplate.param_interned_str', index=3,
       number=11, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='precond', full_name='daml_lf_1.DefTemplate.precond', index=3,
+      name='precond', full_name='daml_lf_1.DefTemplate.precond', index=4,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='signatories', full_name='daml_lf_1.DefTemplate.signatories', index=4,
+      name='signatories', full_name='daml_lf_1.DefTemplate.signatories', index=5,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='agreement', full_name='daml_lf_1.DefTemplate.agreement', index=5,
+      name='agreement', full_name='daml_lf_1.DefTemplate.agreement', index=6,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='choices', full_name='daml_lf_1.DefTemplate.choices', index=6,
+      name='choices', full_name='daml_lf_1.DefTemplate.choices', index=7,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='observers', full_name='daml_lf_1.DefTemplate.observers', index=7,
+      name='observers', full_name='daml_lf_1.DefTemplate.observers', index=8,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='location', full_name='daml_lf_1.DefTemplate.location', index=8,
+      name='location', full_name='daml_lf_1.DefTemplate.location', index=9,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='key', full_name='daml_lf_1.DefTemplate.key', index=9,
+      name='key', full_name='daml_lf_1.DefTemplate.key', index=10,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -4020,11 +4046,14 @@ _DEFTEMPLATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='param', full_name='daml_lf_1.DefTemplate.param',
+      name='tycon', full_name='daml_lf_1.DefTemplate.tycon',
       index=0, containing_type=None, fields=[]),
+    _descriptor.OneofDescriptor(
+      name='param', full_name='daml_lf_1.DefTemplate.param',
+      index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=8701,
-  serialized_end=9256,
+  serialized_start=8919,
+  serialized_end=9523,
 )
 
 
@@ -4054,8 +4083,8 @@ _DEFDATATYPE_FIELDS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9572,
-  serialized_end=9622,
+  serialized_start=9878,
+  serialized_end=9928,
 )
 
 _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
@@ -4066,14 +4095,14 @@ _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='constructors', full_name='daml_lf_1.DefDataType.EnumConstructors.constructors', index=0,
+      name='constructors_str', full_name='daml_lf_1.DefDataType.EnumConstructors.constructors_str', index=0,
       number=1, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='constructors_interned_ids', full_name='daml_lf_1.DefDataType.EnumConstructors.constructors_interned_ids', index=1,
+      name='constructors_interned_str', full_name='daml_lf_1.DefDataType.EnumConstructors.constructors_interned_str', index=1,
       number=2, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -4091,8 +4120,8 @@ _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9624,
-  serialized_end=9699,
+  serialized_start=9930,
+  serialized_end=10009,
 )
 
 _DEFDATATYPE = _descriptor.Descriptor(
@@ -4103,49 +4132,56 @@ _DEFDATATYPE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.DefDataType.name', index=0,
+      name='name_dname', full_name='daml_lf_1.DefDataType.name_dname', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='params', full_name='daml_lf_1.DefDataType.params', index=1,
+      name='name_interned_dname', full_name='daml_lf_1.DefDataType.name_interned_dname', index=1,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='params', full_name='daml_lf_1.DefDataType.params', index=2,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='record', full_name='daml_lf_1.DefDataType.record', index=2,
+      name='record', full_name='daml_lf_1.DefDataType.record', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='variant', full_name='daml_lf_1.DefDataType.variant', index=3,
+      name='variant', full_name='daml_lf_1.DefDataType.variant', index=4,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='enum', full_name='daml_lf_1.DefDataType.enum', index=4,
+      name='enum', full_name='daml_lf_1.DefDataType.enum', index=5,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='serializable', full_name='daml_lf_1.DefDataType.serializable', index=5,
+      name='serializable', full_name='daml_lf_1.DefDataType.serializable', index=6,
       number=5, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='location', full_name='daml_lf_1.DefDataType.location', index=6,
+      name='location', full_name='daml_lf_1.DefDataType.location', index=7,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -4163,11 +4199,14 @@ _DEFDATATYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='DataCons', full_name='daml_lf_1.DefDataType.DataCons',
+      name='name', full_name='daml_lf_1.DefDataType.name',
       index=0, containing_type=None, fields=[]),
+    _descriptor.OneofDescriptor(
+      name='DataCons', full_name='daml_lf_1.DefDataType.DataCons',
+      index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=9259,
-  serialized_end=9711,
+  serialized_start=9526,
+  serialized_end=10029,
 )
 
 
@@ -4179,15 +4218,15 @@ _DEFVALUE_NAMEWITHTYPE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.DefValue.NameWithType.name', index=0,
+      name='name_dname', full_name='daml_lf_1.DefValue.NameWithType.name_dname', index=0,
       number=1, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name_interned_id', full_name='daml_lf_1.DefValue.NameWithType.name_interned_id', index=1,
-      number=6, type=5, cpp_type=1, label=1,
+      name='name_interned_dname', full_name='daml_lf_1.DefValue.NameWithType.name_interned_dname', index=1,
+      number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -4211,8 +4250,8 @@ _DEFVALUE_NAMEWITHTYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9898,
-  serialized_end=9983,
+  serialized_start=10216,
+  serialized_end=10310,
 )
 
 _DEFVALUE = _descriptor.Descriptor(
@@ -4269,8 +4308,8 @@ _DEFVALUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9714,
-  serialized_end=9983,
+  serialized_start=10032,
+  serialized_end=10310,
 )
 
 
@@ -4314,8 +4353,8 @@ _FEATUREFLAGS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9986,
-  serialized_end=10130,
+  serialized_start=10313,
+  serialized_end=10457,
 )
 
 
@@ -4327,35 +4366,42 @@ _MODULE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='daml_lf_1.Module.name', index=0,
+      name='name_dname', full_name='daml_lf_1.Module.name_dname', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='flags', full_name='daml_lf_1.Module.flags', index=1,
+      name='name_interned_dname', full_name='daml_lf_1.Module.name_interned_dname', index=1,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='flags', full_name='daml_lf_1.Module.flags', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='data_types', full_name='daml_lf_1.Module.data_types', index=2,
+      name='data_types', full_name='daml_lf_1.Module.data_types', index=3,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='values', full_name='daml_lf_1.Module.values', index=3,
+      name='values', full_name='daml_lf_1.Module.values', index=4,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='templates', full_name='daml_lf_1.Module.templates', index=4,
+      name='templates', full_name='daml_lf_1.Module.templates', index=5,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -4372,9 +4418,12 @@ _MODULE = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='name', full_name='daml_lf_1.Module.name',
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=10133,
-  serialized_end=10354,
+  serialized_start=10460,
+  serialized_end=10728,
 )
 
 
@@ -4386,7 +4435,7 @@ _INTERNEDDOTTEDNAME = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='segment_ids', full_name='daml_lf_1.InternedDottedName.segment_ids', index=0,
+      name='segments_interned_str', full_name='daml_lf_1.InternedDottedName.segments_interned_str', index=0,
       number=1, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -4404,8 +4453,8 @@ _INTERNEDDOTTEDNAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10356,
-  serialized_end=10397,
+  serialized_start=10730,
+  serialized_end=10781,
 )
 
 
@@ -4449,8 +4498,8 @@ _PACKAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10400,
-  serialized_end=10533,
+  serialized_start=10784,
+  serialized_end=10917,
 )
 
 _PACKAGEREF.fields_by_name['self'].message_type = _UNIT
@@ -4458,44 +4507,56 @@ _PACKAGEREF.oneofs_by_name['Sum'].fields.append(
   _PACKAGEREF.fields_by_name['self'])
 _PACKAGEREF.fields_by_name['self'].containing_oneof = _PACKAGEREF.oneofs_by_name['Sum']
 _PACKAGEREF.oneofs_by_name['Sum'].fields.append(
-  _PACKAGEREF.fields_by_name['package_id'])
-_PACKAGEREF.fields_by_name['package_id'].containing_oneof = _PACKAGEREF.oneofs_by_name['Sum']
+  _PACKAGEREF.fields_by_name['package_id_str'])
+_PACKAGEREF.fields_by_name['package_id_str'].containing_oneof = _PACKAGEREF.oneofs_by_name['Sum']
 _PACKAGEREF.oneofs_by_name['Sum'].fields.append(
-  _PACKAGEREF.fields_by_name['interned_id'])
-_PACKAGEREF.fields_by_name['interned_id'].containing_oneof = _PACKAGEREF.oneofs_by_name['Sum']
+  _PACKAGEREF.fields_by_name['package_id_interned_str'])
+_PACKAGEREF.fields_by_name['package_id_interned_str'].containing_oneof = _PACKAGEREF.oneofs_by_name['Sum']
 _MODULEREF.fields_by_name['package_ref'].message_type = _PACKAGEREF
-_MODULEREF.fields_by_name['module_name'].message_type = _DOTTEDNAME
+_MODULEREF.fields_by_name['module_name_dname'].message_type = _DOTTEDNAME
+_MODULEREF.oneofs_by_name['module_name'].fields.append(
+  _MODULEREF.fields_by_name['module_name_dname'])
+_MODULEREF.fields_by_name['module_name_dname'].containing_oneof = _MODULEREF.oneofs_by_name['module_name']
+_MODULEREF.oneofs_by_name['module_name'].fields.append(
+  _MODULEREF.fields_by_name['module_name_interned_dname'])
+_MODULEREF.fields_by_name['module_name_interned_dname'].containing_oneof = _MODULEREF.oneofs_by_name['module_name']
 _TYPECONNAME.fields_by_name['module'].message_type = _MODULEREF
-_TYPECONNAME.fields_by_name['name'].message_type = _DOTTEDNAME
+_TYPECONNAME.fields_by_name['name_dname'].message_type = _DOTTEDNAME
+_TYPECONNAME.oneofs_by_name['name'].fields.append(
+  _TYPECONNAME.fields_by_name['name_dname'])
+_TYPECONNAME.fields_by_name['name_dname'].containing_oneof = _TYPECONNAME.oneofs_by_name['name']
+_TYPECONNAME.oneofs_by_name['name'].fields.append(
+  _TYPECONNAME.fields_by_name['name_interned_dname'])
+_TYPECONNAME.fields_by_name['name_interned_dname'].containing_oneof = _TYPECONNAME.oneofs_by_name['name']
 _VALNAME.fields_by_name['module'].message_type = _MODULEREF
 _FIELDWITHTYPE.fields_by_name['type'].message_type = _TYPE
 _FIELDWITHTYPE.oneofs_by_name['field'].fields.append(
-  _FIELDWITHTYPE.fields_by_name['name'])
-_FIELDWITHTYPE.fields_by_name['name'].containing_oneof = _FIELDWITHTYPE.oneofs_by_name['field']
+  _FIELDWITHTYPE.fields_by_name['field_str'])
+_FIELDWITHTYPE.fields_by_name['field_str'].containing_oneof = _FIELDWITHTYPE.oneofs_by_name['field']
 _FIELDWITHTYPE.oneofs_by_name['field'].fields.append(
-  _FIELDWITHTYPE.fields_by_name['interned_id'])
-_FIELDWITHTYPE.fields_by_name['interned_id'].containing_oneof = _FIELDWITHTYPE.oneofs_by_name['field']
+  _FIELDWITHTYPE.fields_by_name['field_interned_str'])
+_FIELDWITHTYPE.fields_by_name['field_interned_str'].containing_oneof = _FIELDWITHTYPE.oneofs_by_name['field']
 _VARWITHTYPE.fields_by_name['type'].message_type = _TYPE
 _VARWITHTYPE.oneofs_by_name['var'].fields.append(
-  _VARWITHTYPE.fields_by_name['name'])
-_VARWITHTYPE.fields_by_name['name'].containing_oneof = _VARWITHTYPE.oneofs_by_name['var']
+  _VARWITHTYPE.fields_by_name['var_str'])
+_VARWITHTYPE.fields_by_name['var_str'].containing_oneof = _VARWITHTYPE.oneofs_by_name['var']
 _VARWITHTYPE.oneofs_by_name['var'].fields.append(
-  _VARWITHTYPE.fields_by_name['interned_id'])
-_VARWITHTYPE.fields_by_name['interned_id'].containing_oneof = _VARWITHTYPE.oneofs_by_name['var']
+  _VARWITHTYPE.fields_by_name['var_interned_str'])
+_VARWITHTYPE.fields_by_name['var_interned_str'].containing_oneof = _VARWITHTYPE.oneofs_by_name['var']
 _TYPEVARWITHKIND.fields_by_name['kind'].message_type = _KIND
 _TYPEVARWITHKIND.oneofs_by_name['var'].fields.append(
-  _TYPEVARWITHKIND.fields_by_name['name'])
-_TYPEVARWITHKIND.fields_by_name['name'].containing_oneof = _TYPEVARWITHKIND.oneofs_by_name['var']
+  _TYPEVARWITHKIND.fields_by_name['var_str'])
+_TYPEVARWITHKIND.fields_by_name['var_str'].containing_oneof = _TYPEVARWITHKIND.oneofs_by_name['var']
 _TYPEVARWITHKIND.oneofs_by_name['var'].fields.append(
-  _TYPEVARWITHKIND.fields_by_name['interned_id'])
-_TYPEVARWITHKIND.fields_by_name['interned_id'].containing_oneof = _TYPEVARWITHKIND.oneofs_by_name['var']
+  _TYPEVARWITHKIND.fields_by_name['var_interned_str'])
+_TYPEVARWITHKIND.fields_by_name['var_interned_str'].containing_oneof = _TYPEVARWITHKIND.oneofs_by_name['var']
 _FIELDWITHEXPR.fields_by_name['expr'].message_type = _EXPR
 _FIELDWITHEXPR.oneofs_by_name['field'].fields.append(
-  _FIELDWITHEXPR.fields_by_name['name'])
-_FIELDWITHEXPR.fields_by_name['name'].containing_oneof = _FIELDWITHEXPR.oneofs_by_name['field']
+  _FIELDWITHEXPR.fields_by_name['field_str'])
+_FIELDWITHEXPR.fields_by_name['field_str'].containing_oneof = _FIELDWITHEXPR.oneofs_by_name['field']
 _FIELDWITHEXPR.oneofs_by_name['field'].fields.append(
-  _FIELDWITHEXPR.fields_by_name['interned_id'])
-_FIELDWITHEXPR.fields_by_name['interned_id'].containing_oneof = _FIELDWITHEXPR.oneofs_by_name['field']
+  _FIELDWITHEXPR.fields_by_name['field_interned_str'])
+_FIELDWITHEXPR.fields_by_name['field_interned_str'].containing_oneof = _FIELDWITHEXPR.oneofs_by_name['field']
 _BINDING.fields_by_name['binder'].message_type = _VARWITHTYPE
 _BINDING.fields_by_name['bound'].message_type = _EXPR
 _KIND_ARROW.fields_by_name['params'].message_type = _KIND
@@ -4516,11 +4577,11 @@ _KIND.fields_by_name['nat'].containing_oneof = _KIND.oneofs_by_name['Sum']
 _TYPE_VAR.fields_by_name['args'].message_type = _TYPE
 _TYPE_VAR.containing_type = _TYPE
 _TYPE_VAR.oneofs_by_name['var'].fields.append(
-  _TYPE_VAR.fields_by_name['var_name'])
-_TYPE_VAR.fields_by_name['var_name'].containing_oneof = _TYPE_VAR.oneofs_by_name['var']
+  _TYPE_VAR.fields_by_name['var_str'])
+_TYPE_VAR.fields_by_name['var_str'].containing_oneof = _TYPE_VAR.oneofs_by_name['var']
 _TYPE_VAR.oneofs_by_name['var'].fields.append(
-  _TYPE_VAR.fields_by_name['var_interned_id'])
-_TYPE_VAR.fields_by_name['var_interned_id'].containing_oneof = _TYPE_VAR.oneofs_by_name['var']
+  _TYPE_VAR.fields_by_name['var_interned_str'])
+_TYPE_VAR.fields_by_name['var_interned_str'].containing_oneof = _TYPE_VAR.oneofs_by_name['var']
 _TYPE_CON.fields_by_name['tycon'].message_type = _TYPECONNAME
 _TYPE_CON.fields_by_name['args'].message_type = _TYPE
 _TYPE_CON.containing_type = _TYPE
@@ -4533,14 +4594,14 @@ _TYPE_FUN.containing_type = _TYPE
 _TYPE_FORALL.fields_by_name['vars'].message_type = _TYPEVARWITHKIND
 _TYPE_FORALL.fields_by_name['body'].message_type = _TYPE
 _TYPE_FORALL.containing_type = _TYPE
-_TYPE_TUPLE.fields_by_name['fields'].message_type = _FIELDWITHTYPE
-_TYPE_TUPLE.containing_type = _TYPE
+_TYPE_STRUCT.fields_by_name['fields'].message_type = _FIELDWITHTYPE
+_TYPE_STRUCT.containing_type = _TYPE
 _TYPE.fields_by_name['var'].message_type = _TYPE_VAR
 _TYPE.fields_by_name['con'].message_type = _TYPE_CON
 _TYPE.fields_by_name['prim'].message_type = _TYPE_PRIM
 _TYPE.fields_by_name['fun'].message_type = _TYPE_FUN
 _TYPE.fields_by_name['forall'].message_type = _TYPE_FORALL
-_TYPE.fields_by_name['tuple'].message_type = _TYPE_TUPLE
+_TYPE.fields_by_name['struct'].message_type = _TYPE_STRUCT
 _TYPE.oneofs_by_name['Sum'].fields.append(
   _TYPE.fields_by_name['var'])
 _TYPE.fields_by_name['var'].containing_oneof = _TYPE.oneofs_by_name['Sum']
@@ -4557,8 +4618,8 @@ _TYPE.oneofs_by_name['Sum'].fields.append(
   _TYPE.fields_by_name['forall'])
 _TYPE.fields_by_name['forall'].containing_oneof = _TYPE.oneofs_by_name['Sum']
 _TYPE.oneofs_by_name['Sum'].fields.append(
-  _TYPE.fields_by_name['tuple'])
-_TYPE.fields_by_name['tuple'].containing_oneof = _TYPE.oneofs_by_name['Sum']
+  _TYPE.fields_by_name['struct'])
+_TYPE.fields_by_name['struct'].containing_oneof = _TYPE.oneofs_by_name['Sum']
 _TYPE.oneofs_by_name['Sum'].fields.append(
   _TYPE.fields_by_name['nat'])
 _TYPE.fields_by_name['nat'].containing_oneof = _TYPE.oneofs_by_name['Sum']
@@ -4566,35 +4627,29 @@ _PRIMLIT.oneofs_by_name['Sum'].fields.append(
   _PRIMLIT.fields_by_name['int64'])
 _PRIMLIT.fields_by_name['int64'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
-  _PRIMLIT.fields_by_name['decimal'])
-_PRIMLIT.fields_by_name['decimal'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
+  _PRIMLIT.fields_by_name['decimal_str'])
+_PRIMLIT.fields_by_name['decimal_str'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
-  _PRIMLIT.fields_by_name['decimal_interned_id'])
-_PRIMLIT.fields_by_name['decimal_interned_id'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
+  _PRIMLIT.fields_by_name['numeric_interned_str'])
+_PRIMLIT.fields_by_name['numeric_interned_str'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
-  _PRIMLIT.fields_by_name['text'])
-_PRIMLIT.fields_by_name['text'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
+  _PRIMLIT.fields_by_name['text_str'])
+_PRIMLIT.fields_by_name['text_str'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
-  _PRIMLIT.fields_by_name['text_interned_id'])
-_PRIMLIT.fields_by_name['text_interned_id'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
+  _PRIMLIT.fields_by_name['text_interned_str'])
+_PRIMLIT.fields_by_name['text_interned_str'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
   _PRIMLIT.fields_by_name['timestamp'])
 _PRIMLIT.fields_by_name['timestamp'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
-  _PRIMLIT.fields_by_name['party'])
-_PRIMLIT.fields_by_name['party'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
+  _PRIMLIT.fields_by_name['party_str'])
+_PRIMLIT.fields_by_name['party_str'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
-  _PRIMLIT.fields_by_name['party_interned_id'])
-_PRIMLIT.fields_by_name['party_interned_id'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
+  _PRIMLIT.fields_by_name['party_interned_str'])
+_PRIMLIT.fields_by_name['party_interned_str'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
   _PRIMLIT.fields_by_name['date'])
 _PRIMLIT.fields_by_name['date'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
-_PRIMLIT.oneofs_by_name['Sum'].fields.append(
-  _PRIMLIT.fields_by_name['numeric'])
-_PRIMLIT.fields_by_name['numeric'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
-_PRIMLIT.oneofs_by_name['Sum'].fields.append(
-  _PRIMLIT.fields_by_name['numeric_interned_id'])
-_PRIMLIT.fields_by_name['numeric_interned_id'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
 _LOCATION_RANGE.containing_type = _LOCATION
 _LOCATION.fields_by_name['module'].message_type = _MODULEREF
 _LOCATION.fields_by_name['range'].message_type = _LOCATION_RANGE
@@ -4605,57 +4660,57 @@ _EXPR_RECPROJ.fields_by_name['tycon'].message_type = _TYPE_CON
 _EXPR_RECPROJ.fields_by_name['record'].message_type = _EXPR
 _EXPR_RECPROJ.containing_type = _EXPR
 _EXPR_RECPROJ.oneofs_by_name['field'].fields.append(
-  _EXPR_RECPROJ.fields_by_name['name'])
-_EXPR_RECPROJ.fields_by_name['name'].containing_oneof = _EXPR_RECPROJ.oneofs_by_name['field']
+  _EXPR_RECPROJ.fields_by_name['field_str'])
+_EXPR_RECPROJ.fields_by_name['field_str'].containing_oneof = _EXPR_RECPROJ.oneofs_by_name['field']
 _EXPR_RECPROJ.oneofs_by_name['field'].fields.append(
-  _EXPR_RECPROJ.fields_by_name['interned_id'])
-_EXPR_RECPROJ.fields_by_name['interned_id'].containing_oneof = _EXPR_RECPROJ.oneofs_by_name['field']
+  _EXPR_RECPROJ.fields_by_name['field_interned_str'])
+_EXPR_RECPROJ.fields_by_name['field_interned_str'].containing_oneof = _EXPR_RECPROJ.oneofs_by_name['field']
 _EXPR_RECUPD.fields_by_name['tycon'].message_type = _TYPE_CON
 _EXPR_RECUPD.fields_by_name['record'].message_type = _EXPR
 _EXPR_RECUPD.fields_by_name['update'].message_type = _EXPR
 _EXPR_RECUPD.containing_type = _EXPR
 _EXPR_RECUPD.oneofs_by_name['field'].fields.append(
-  _EXPR_RECUPD.fields_by_name['name'])
-_EXPR_RECUPD.fields_by_name['name'].containing_oneof = _EXPR_RECUPD.oneofs_by_name['field']
+  _EXPR_RECUPD.fields_by_name['field_str'])
+_EXPR_RECUPD.fields_by_name['field_str'].containing_oneof = _EXPR_RECUPD.oneofs_by_name['field']
 _EXPR_RECUPD.oneofs_by_name['field'].fields.append(
-  _EXPR_RECUPD.fields_by_name['interned_id'])
-_EXPR_RECUPD.fields_by_name['interned_id'].containing_oneof = _EXPR_RECUPD.oneofs_by_name['field']
+  _EXPR_RECUPD.fields_by_name['field_interned_str'])
+_EXPR_RECUPD.fields_by_name['field_interned_str'].containing_oneof = _EXPR_RECUPD.oneofs_by_name['field']
 _EXPR_VARIANTCON.fields_by_name['tycon'].message_type = _TYPE_CON
 _EXPR_VARIANTCON.fields_by_name['variant_arg'].message_type = _EXPR
 _EXPR_VARIANTCON.containing_type = _EXPR
 _EXPR_VARIANTCON.oneofs_by_name['variant_con'].fields.append(
-  _EXPR_VARIANTCON.fields_by_name['name'])
-_EXPR_VARIANTCON.fields_by_name['name'].containing_oneof = _EXPR_VARIANTCON.oneofs_by_name['variant_con']
+  _EXPR_VARIANTCON.fields_by_name['variant_con_str'])
+_EXPR_VARIANTCON.fields_by_name['variant_con_str'].containing_oneof = _EXPR_VARIANTCON.oneofs_by_name['variant_con']
 _EXPR_VARIANTCON.oneofs_by_name['variant_con'].fields.append(
-  _EXPR_VARIANTCON.fields_by_name['interned_id'])
-_EXPR_VARIANTCON.fields_by_name['interned_id'].containing_oneof = _EXPR_VARIANTCON.oneofs_by_name['variant_con']
+  _EXPR_VARIANTCON.fields_by_name['variant_con_interned_str'])
+_EXPR_VARIANTCON.fields_by_name['variant_con_interned_str'].containing_oneof = _EXPR_VARIANTCON.oneofs_by_name['variant_con']
 _EXPR_ENUMCON.fields_by_name['tycon'].message_type = _TYPECONNAME
 _EXPR_ENUMCON.containing_type = _EXPR
 _EXPR_ENUMCON.oneofs_by_name['enum_con'].fields.append(
-  _EXPR_ENUMCON.fields_by_name['name'])
-_EXPR_ENUMCON.fields_by_name['name'].containing_oneof = _EXPR_ENUMCON.oneofs_by_name['enum_con']
+  _EXPR_ENUMCON.fields_by_name['enum_con_str'])
+_EXPR_ENUMCON.fields_by_name['enum_con_str'].containing_oneof = _EXPR_ENUMCON.oneofs_by_name['enum_con']
 _EXPR_ENUMCON.oneofs_by_name['enum_con'].fields.append(
-  _EXPR_ENUMCON.fields_by_name['interned_id'])
-_EXPR_ENUMCON.fields_by_name['interned_id'].containing_oneof = _EXPR_ENUMCON.oneofs_by_name['enum_con']
-_EXPR_TUPLECON.fields_by_name['fields'].message_type = _FIELDWITHEXPR
-_EXPR_TUPLECON.containing_type = _EXPR
-_EXPR_TUPLEPROJ.fields_by_name['tuple'].message_type = _EXPR
-_EXPR_TUPLEPROJ.containing_type = _EXPR
-_EXPR_TUPLEPROJ.oneofs_by_name['field'].fields.append(
-  _EXPR_TUPLEPROJ.fields_by_name['name'])
-_EXPR_TUPLEPROJ.fields_by_name['name'].containing_oneof = _EXPR_TUPLEPROJ.oneofs_by_name['field']
-_EXPR_TUPLEPROJ.oneofs_by_name['field'].fields.append(
-  _EXPR_TUPLEPROJ.fields_by_name['interned_id'])
-_EXPR_TUPLEPROJ.fields_by_name['interned_id'].containing_oneof = _EXPR_TUPLEPROJ.oneofs_by_name['field']
-_EXPR_TUPLEUPD.fields_by_name['tuple'].message_type = _EXPR
-_EXPR_TUPLEUPD.fields_by_name['update'].message_type = _EXPR
-_EXPR_TUPLEUPD.containing_type = _EXPR
-_EXPR_TUPLEUPD.oneofs_by_name['field'].fields.append(
-  _EXPR_TUPLEUPD.fields_by_name['name'])
-_EXPR_TUPLEUPD.fields_by_name['name'].containing_oneof = _EXPR_TUPLEUPD.oneofs_by_name['field']
-_EXPR_TUPLEUPD.oneofs_by_name['field'].fields.append(
-  _EXPR_TUPLEUPD.fields_by_name['interned_id'])
-_EXPR_TUPLEUPD.fields_by_name['interned_id'].containing_oneof = _EXPR_TUPLEUPD.oneofs_by_name['field']
+  _EXPR_ENUMCON.fields_by_name['enum_con_interned_str'])
+_EXPR_ENUMCON.fields_by_name['enum_con_interned_str'].containing_oneof = _EXPR_ENUMCON.oneofs_by_name['enum_con']
+_EXPR_STRUCTCON.fields_by_name['fields'].message_type = _FIELDWITHEXPR
+_EXPR_STRUCTCON.containing_type = _EXPR
+_EXPR_STRUCTPROJ.fields_by_name['struct'].message_type = _EXPR
+_EXPR_STRUCTPROJ.containing_type = _EXPR
+_EXPR_STRUCTPROJ.oneofs_by_name['field'].fields.append(
+  _EXPR_STRUCTPROJ.fields_by_name['field_str'])
+_EXPR_STRUCTPROJ.fields_by_name['field_str'].containing_oneof = _EXPR_STRUCTPROJ.oneofs_by_name['field']
+_EXPR_STRUCTPROJ.oneofs_by_name['field'].fields.append(
+  _EXPR_STRUCTPROJ.fields_by_name['field_interned_str'])
+_EXPR_STRUCTPROJ.fields_by_name['field_interned_str'].containing_oneof = _EXPR_STRUCTPROJ.oneofs_by_name['field']
+_EXPR_STRUCTUPD.fields_by_name['struct'].message_type = _EXPR
+_EXPR_STRUCTUPD.fields_by_name['update'].message_type = _EXPR
+_EXPR_STRUCTUPD.containing_type = _EXPR
+_EXPR_STRUCTUPD.oneofs_by_name['field'].fields.append(
+  _EXPR_STRUCTUPD.fields_by_name['field_str'])
+_EXPR_STRUCTUPD.fields_by_name['field_str'].containing_oneof = _EXPR_STRUCTUPD.oneofs_by_name['field']
+_EXPR_STRUCTUPD.oneofs_by_name['field'].fields.append(
+  _EXPR_STRUCTUPD.fields_by_name['field_interned_str'])
+_EXPR_STRUCTUPD.fields_by_name['field_interned_str'].containing_oneof = _EXPR_STRUCTUPD.oneofs_by_name['field']
 _EXPR_APP.fields_by_name['fun'].message_type = _EXPR
 _EXPR_APP.fields_by_name['args'].message_type = _EXPR
 _EXPR_APP.containing_type = _EXPR
@@ -4685,8 +4740,6 @@ _EXPR_TOANY.containing_type = _EXPR
 _EXPR_FROMANY.fields_by_name['type'].message_type = _TYPE
 _EXPR_FROMANY.fields_by_name['expr'].message_type = _EXPR
 _EXPR_FROMANY.containing_type = _EXPR
-_EXPR_TOTEXTTEMPLATEID.fields_by_name['type'].message_type = _TYPE
-_EXPR_TOTEXTTEMPLATEID.containing_type = _EXPR
 _EXPR.fields_by_name['location'].message_type = _LOCATION
 _EXPR.fields_by_name['val'].message_type = _VALNAME
 _EXPR.fields_by_name['builtin'].enum_type = _BUILTINFUNCTION
@@ -4697,9 +4750,9 @@ _EXPR.fields_by_name['rec_proj'].message_type = _EXPR_RECPROJ
 _EXPR.fields_by_name['rec_upd'].message_type = _EXPR_RECUPD
 _EXPR.fields_by_name['variant_con'].message_type = _EXPR_VARIANTCON
 _EXPR.fields_by_name['enum_con'].message_type = _EXPR_ENUMCON
-_EXPR.fields_by_name['tuple_con'].message_type = _EXPR_TUPLECON
-_EXPR.fields_by_name['tuple_proj'].message_type = _EXPR_TUPLEPROJ
-_EXPR.fields_by_name['tuple_upd'].message_type = _EXPR_TUPLEUPD
+_EXPR.fields_by_name['struct_con'].message_type = _EXPR_STRUCTCON
+_EXPR.fields_by_name['struct_proj'].message_type = _EXPR_STRUCTPROJ
+_EXPR.fields_by_name['struct_upd'].message_type = _EXPR_STRUCTUPD
 _EXPR.fields_by_name['app'].message_type = _EXPR_APP
 _EXPR.fields_by_name['ty_app'].message_type = _EXPR_TYAPP
 _EXPR.fields_by_name['abs'].message_type = _EXPR_ABS
@@ -4714,13 +4767,13 @@ _EXPR.fields_by_name['optional_none'].message_type = _EXPR_OPTIONALNONE
 _EXPR.fields_by_name['optional_some'].message_type = _EXPR_OPTIONALSOME
 _EXPR.fields_by_name['to_any'].message_type = _EXPR_TOANY
 _EXPR.fields_by_name['from_any'].message_type = _EXPR_FROMANY
-_EXPR.fields_by_name['to_text_template_id'].message_type = _EXPR_TOTEXTTEMPLATEID
+_EXPR.fields_by_name['type_rep'].message_type = _TYPE
 _EXPR.oneofs_by_name['Sum'].fields.append(
-  _EXPR.fields_by_name['var'])
-_EXPR.fields_by_name['var'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+  _EXPR.fields_by_name['var_str'])
+_EXPR.fields_by_name['var_str'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _EXPR.oneofs_by_name['Sum'].fields.append(
-  _EXPR.fields_by_name['var_interned_id'])
-_EXPR.fields_by_name['var_interned_id'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+  _EXPR.fields_by_name['var_interned_str'])
+_EXPR.fields_by_name['var_interned_str'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _EXPR.oneofs_by_name['Sum'].fields.append(
   _EXPR.fields_by_name['val'])
 _EXPR.fields_by_name['val'].containing_oneof = _EXPR.oneofs_by_name['Sum']
@@ -4749,14 +4802,14 @@ _EXPR.oneofs_by_name['Sum'].fields.append(
   _EXPR.fields_by_name['enum_con'])
 _EXPR.fields_by_name['enum_con'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _EXPR.oneofs_by_name['Sum'].fields.append(
-  _EXPR.fields_by_name['tuple_con'])
-_EXPR.fields_by_name['tuple_con'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+  _EXPR.fields_by_name['struct_con'])
+_EXPR.fields_by_name['struct_con'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _EXPR.oneofs_by_name['Sum'].fields.append(
-  _EXPR.fields_by_name['tuple_proj'])
-_EXPR.fields_by_name['tuple_proj'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+  _EXPR.fields_by_name['struct_proj'])
+_EXPR.fields_by_name['struct_proj'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _EXPR.oneofs_by_name['Sum'].fields.append(
-  _EXPR.fields_by_name['tuple_upd'])
-_EXPR.fields_by_name['tuple_upd'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+  _EXPR.fields_by_name['struct_upd'])
+_EXPR.fields_by_name['struct_upd'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _EXPR.oneofs_by_name['Sum'].fields.append(
   _EXPR.fields_by_name['app'])
 _EXPR.fields_by_name['app'].containing_oneof = _EXPR.oneofs_by_name['Sum']
@@ -4800,50 +4853,50 @@ _EXPR.oneofs_by_name['Sum'].fields.append(
   _EXPR.fields_by_name['from_any'])
 _EXPR.fields_by_name['from_any'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _EXPR.oneofs_by_name['Sum'].fields.append(
-  _EXPR.fields_by_name['to_text_template_id'])
-_EXPR.fields_by_name['to_text_template_id'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+  _EXPR.fields_by_name['type_rep'])
+_EXPR.fields_by_name['type_rep'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _CASEALT_VARIANT.fields_by_name['con'].message_type = _TYPECONNAME
 _CASEALT_VARIANT.containing_type = _CASEALT
 _CASEALT_VARIANT.oneofs_by_name['variant'].fields.append(
-  _CASEALT_VARIANT.fields_by_name['variant_name'])
-_CASEALT_VARIANT.fields_by_name['variant_name'].containing_oneof = _CASEALT_VARIANT.oneofs_by_name['variant']
+  _CASEALT_VARIANT.fields_by_name['variant_str'])
+_CASEALT_VARIANT.fields_by_name['variant_str'].containing_oneof = _CASEALT_VARIANT.oneofs_by_name['variant']
 _CASEALT_VARIANT.oneofs_by_name['variant'].fields.append(
-  _CASEALT_VARIANT.fields_by_name['variant_interned_id'])
-_CASEALT_VARIANT.fields_by_name['variant_interned_id'].containing_oneof = _CASEALT_VARIANT.oneofs_by_name['variant']
+  _CASEALT_VARIANT.fields_by_name['variant_interned_str'])
+_CASEALT_VARIANT.fields_by_name['variant_interned_str'].containing_oneof = _CASEALT_VARIANT.oneofs_by_name['variant']
 _CASEALT_VARIANT.oneofs_by_name['binder'].fields.append(
-  _CASEALT_VARIANT.fields_by_name['binder_name'])
-_CASEALT_VARIANT.fields_by_name['binder_name'].containing_oneof = _CASEALT_VARIANT.oneofs_by_name['binder']
+  _CASEALT_VARIANT.fields_by_name['binder_str'])
+_CASEALT_VARIANT.fields_by_name['binder_str'].containing_oneof = _CASEALT_VARIANT.oneofs_by_name['binder']
 _CASEALT_VARIANT.oneofs_by_name['binder'].fields.append(
-  _CASEALT_VARIANT.fields_by_name['binder_interned_id'])
-_CASEALT_VARIANT.fields_by_name['binder_interned_id'].containing_oneof = _CASEALT_VARIANT.oneofs_by_name['binder']
+  _CASEALT_VARIANT.fields_by_name['binder_interned_str'])
+_CASEALT_VARIANT.fields_by_name['binder_interned_str'].containing_oneof = _CASEALT_VARIANT.oneofs_by_name['binder']
 _CASEALT_ENUM.fields_by_name['con'].message_type = _TYPECONNAME
 _CASEALT_ENUM.containing_type = _CASEALT
 _CASEALT_ENUM.oneofs_by_name['constructor'].fields.append(
-  _CASEALT_ENUM.fields_by_name['name'])
-_CASEALT_ENUM.fields_by_name['name'].containing_oneof = _CASEALT_ENUM.oneofs_by_name['constructor']
+  _CASEALT_ENUM.fields_by_name['constructor_str'])
+_CASEALT_ENUM.fields_by_name['constructor_str'].containing_oneof = _CASEALT_ENUM.oneofs_by_name['constructor']
 _CASEALT_ENUM.oneofs_by_name['constructor'].fields.append(
-  _CASEALT_ENUM.fields_by_name['interned_id'])
-_CASEALT_ENUM.fields_by_name['interned_id'].containing_oneof = _CASEALT_ENUM.oneofs_by_name['constructor']
+  _CASEALT_ENUM.fields_by_name['constructor_interned_str'])
+_CASEALT_ENUM.fields_by_name['constructor_interned_str'].containing_oneof = _CASEALT_ENUM.oneofs_by_name['constructor']
 _CASEALT_CONS.containing_type = _CASEALT
 _CASEALT_CONS.oneofs_by_name['var_head'].fields.append(
-  _CASEALT_CONS.fields_by_name['var_head_name'])
-_CASEALT_CONS.fields_by_name['var_head_name'].containing_oneof = _CASEALT_CONS.oneofs_by_name['var_head']
+  _CASEALT_CONS.fields_by_name['var_head_str'])
+_CASEALT_CONS.fields_by_name['var_head_str'].containing_oneof = _CASEALT_CONS.oneofs_by_name['var_head']
 _CASEALT_CONS.oneofs_by_name['var_head'].fields.append(
-  _CASEALT_CONS.fields_by_name['var_head_interned_id'])
-_CASEALT_CONS.fields_by_name['var_head_interned_id'].containing_oneof = _CASEALT_CONS.oneofs_by_name['var_head']
+  _CASEALT_CONS.fields_by_name['var_head_interned_str'])
+_CASEALT_CONS.fields_by_name['var_head_interned_str'].containing_oneof = _CASEALT_CONS.oneofs_by_name['var_head']
 _CASEALT_CONS.oneofs_by_name['var_tail'].fields.append(
-  _CASEALT_CONS.fields_by_name['var_tail_name'])
-_CASEALT_CONS.fields_by_name['var_tail_name'].containing_oneof = _CASEALT_CONS.oneofs_by_name['var_tail']
+  _CASEALT_CONS.fields_by_name['var_tail_str'])
+_CASEALT_CONS.fields_by_name['var_tail_str'].containing_oneof = _CASEALT_CONS.oneofs_by_name['var_tail']
 _CASEALT_CONS.oneofs_by_name['var_tail'].fields.append(
-  _CASEALT_CONS.fields_by_name['var_tail_interned_id'])
-_CASEALT_CONS.fields_by_name['var_tail_interned_id'].containing_oneof = _CASEALT_CONS.oneofs_by_name['var_tail']
+  _CASEALT_CONS.fields_by_name['var_tail_interned_str'])
+_CASEALT_CONS.fields_by_name['var_tail_interned_str'].containing_oneof = _CASEALT_CONS.oneofs_by_name['var_tail']
 _CASEALT_OPTIONALSOME.containing_type = _CASEALT
 _CASEALT_OPTIONALSOME.oneofs_by_name['var_body'].fields.append(
-  _CASEALT_OPTIONALSOME.fields_by_name['name'])
-_CASEALT_OPTIONALSOME.fields_by_name['name'].containing_oneof = _CASEALT_OPTIONALSOME.oneofs_by_name['var_body']
+  _CASEALT_OPTIONALSOME.fields_by_name['var_body_str'])
+_CASEALT_OPTIONALSOME.fields_by_name['var_body_str'].containing_oneof = _CASEALT_OPTIONALSOME.oneofs_by_name['var_body']
 _CASEALT_OPTIONALSOME.oneofs_by_name['var_body'].fields.append(
-  _CASEALT_OPTIONALSOME.fields_by_name['interned_id'])
-_CASEALT_OPTIONALSOME.fields_by_name['interned_id'].containing_oneof = _CASEALT_OPTIONALSOME.oneofs_by_name['var_body']
+  _CASEALT_OPTIONALSOME.fields_by_name['var_body_interned_str'])
+_CASEALT_OPTIONALSOME.fields_by_name['var_body_interned_str'].containing_oneof = _CASEALT_OPTIONALSOME.oneofs_by_name['var_body']
 _CASEALT.fields_by_name['default'].message_type = _UNIT
 _CASEALT.fields_by_name['variant'].message_type = _CASEALT_VARIANT
 _CASEALT.fields_by_name['prim_con'].enum_type = _PRIMCON
@@ -4892,11 +4945,11 @@ _UPDATE_EXERCISE.fields_by_name['actor'].message_type = _EXPR
 _UPDATE_EXERCISE.fields_by_name['arg'].message_type = _EXPR
 _UPDATE_EXERCISE.containing_type = _UPDATE
 _UPDATE_EXERCISE.oneofs_by_name['choice'].fields.append(
-  _UPDATE_EXERCISE.fields_by_name['name'])
-_UPDATE_EXERCISE.fields_by_name['name'].containing_oneof = _UPDATE_EXERCISE.oneofs_by_name['choice']
+  _UPDATE_EXERCISE.fields_by_name['choice_str'])
+_UPDATE_EXERCISE.fields_by_name['choice_str'].containing_oneof = _UPDATE_EXERCISE.oneofs_by_name['choice']
 _UPDATE_EXERCISE.oneofs_by_name['choice'].fields.append(
-  _UPDATE_EXERCISE.fields_by_name['interned_id'])
-_UPDATE_EXERCISE.fields_by_name['interned_id'].containing_oneof = _UPDATE_EXERCISE.oneofs_by_name['choice']
+  _UPDATE_EXERCISE.fields_by_name['choice_interned_str'])
+_UPDATE_EXERCISE.fields_by_name['choice_interned_str'].containing_oneof = _UPDATE_EXERCISE.oneofs_by_name['choice']
 _UPDATE_FETCH.fields_by_name['template'].message_type = _TYPECONNAME
 _UPDATE_FETCH.fields_by_name['cid'].message_type = _EXPR
 _UPDATE_FETCH.containing_type = _UPDATE
@@ -4987,35 +5040,35 @@ _TEMPLATECHOICE.fields_by_name['ret_type'].message_type = _TYPE
 _TEMPLATECHOICE.fields_by_name['update'].message_type = _EXPR
 _TEMPLATECHOICE.fields_by_name['location'].message_type = _LOCATION
 _TEMPLATECHOICE.oneofs_by_name['name'].fields.append(
-  _TEMPLATECHOICE.fields_by_name['choice_name'])
-_TEMPLATECHOICE.fields_by_name['choice_name'].containing_oneof = _TEMPLATECHOICE.oneofs_by_name['name']
+  _TEMPLATECHOICE.fields_by_name['name_str'])
+_TEMPLATECHOICE.fields_by_name['name_str'].containing_oneof = _TEMPLATECHOICE.oneofs_by_name['name']
 _TEMPLATECHOICE.oneofs_by_name['name'].fields.append(
-  _TEMPLATECHOICE.fields_by_name['choice_interned_id'])
-_TEMPLATECHOICE.fields_by_name['choice_interned_id'].containing_oneof = _TEMPLATECHOICE.oneofs_by_name['name']
+  _TEMPLATECHOICE.fields_by_name['name_interned_str'])
+_TEMPLATECHOICE.fields_by_name['name_interned_str'].containing_oneof = _TEMPLATECHOICE.oneofs_by_name['name']
 _TEMPLATECHOICE.oneofs_by_name['self_binder'].fields.append(
-  _TEMPLATECHOICE.fields_by_name['self_binder_name'])
-_TEMPLATECHOICE.fields_by_name['self_binder_name'].containing_oneof = _TEMPLATECHOICE.oneofs_by_name['self_binder']
+  _TEMPLATECHOICE.fields_by_name['self_binder_str'])
+_TEMPLATECHOICE.fields_by_name['self_binder_str'].containing_oneof = _TEMPLATECHOICE.oneofs_by_name['self_binder']
 _TEMPLATECHOICE.oneofs_by_name['self_binder'].fields.append(
-  _TEMPLATECHOICE.fields_by_name['self_binder_interned_id'])
-_TEMPLATECHOICE.fields_by_name['self_binder_interned_id'].containing_oneof = _TEMPLATECHOICE.oneofs_by_name['self_binder']
+  _TEMPLATECHOICE.fields_by_name['self_binder_interned_str'])
+_TEMPLATECHOICE.fields_by_name['self_binder_interned_str'].containing_oneof = _TEMPLATECHOICE.oneofs_by_name['self_binder']
 _KEYEXPR_PROJECTION.fields_by_name['tycon'].message_type = _TYPE_CON
 _KEYEXPR_PROJECTION.containing_type = _KEYEXPR
 _KEYEXPR_PROJECTION.oneofs_by_name['field'].fields.append(
-  _KEYEXPR_PROJECTION.fields_by_name['name'])
-_KEYEXPR_PROJECTION.fields_by_name['name'].containing_oneof = _KEYEXPR_PROJECTION.oneofs_by_name['field']
+  _KEYEXPR_PROJECTION.fields_by_name['field_str'])
+_KEYEXPR_PROJECTION.fields_by_name['field_str'].containing_oneof = _KEYEXPR_PROJECTION.oneofs_by_name['field']
 _KEYEXPR_PROJECTION.oneofs_by_name['field'].fields.append(
-  _KEYEXPR_PROJECTION.fields_by_name['interned_id'])
-_KEYEXPR_PROJECTION.fields_by_name['interned_id'].containing_oneof = _KEYEXPR_PROJECTION.oneofs_by_name['field']
+  _KEYEXPR_PROJECTION.fields_by_name['field_interned_str'])
+_KEYEXPR_PROJECTION.fields_by_name['field_interned_str'].containing_oneof = _KEYEXPR_PROJECTION.oneofs_by_name['field']
 _KEYEXPR_PROJECTIONS.fields_by_name['projections'].message_type = _KEYEXPR_PROJECTION
 _KEYEXPR_PROJECTIONS.containing_type = _KEYEXPR
 _KEYEXPR_RECORDFIELD.fields_by_name['expr'].message_type = _KEYEXPR
 _KEYEXPR_RECORDFIELD.containing_type = _KEYEXPR
 _KEYEXPR_RECORDFIELD.oneofs_by_name['field'].fields.append(
-  _KEYEXPR_RECORDFIELD.fields_by_name['name'])
-_KEYEXPR_RECORDFIELD.fields_by_name['name'].containing_oneof = _KEYEXPR_RECORDFIELD.oneofs_by_name['field']
+  _KEYEXPR_RECORDFIELD.fields_by_name['field_str'])
+_KEYEXPR_RECORDFIELD.fields_by_name['field_str'].containing_oneof = _KEYEXPR_RECORDFIELD.oneofs_by_name['field']
 _KEYEXPR_RECORDFIELD.oneofs_by_name['field'].fields.append(
-  _KEYEXPR_RECORDFIELD.fields_by_name['interned_id'])
-_KEYEXPR_RECORDFIELD.fields_by_name['interned_id'].containing_oneof = _KEYEXPR_RECORDFIELD.oneofs_by_name['field']
+  _KEYEXPR_RECORDFIELD.fields_by_name['field_interned_str'])
+_KEYEXPR_RECORDFIELD.fields_by_name['field_interned_str'].containing_oneof = _KEYEXPR_RECORDFIELD.oneofs_by_name['field']
 _KEYEXPR_RECORD.fields_by_name['tycon'].message_type = _TYPE_CON
 _KEYEXPR_RECORD.fields_by_name['fields'].message_type = _KEYEXPR_RECORDFIELD
 _KEYEXPR_RECORD.containing_type = _KEYEXPR
@@ -5038,7 +5091,7 @@ _DEFTEMPLATE_DEFKEY.fields_by_name['key'].containing_oneof = _DEFTEMPLATE_DEFKEY
 _DEFTEMPLATE_DEFKEY.oneofs_by_name['key_expr'].fields.append(
   _DEFTEMPLATE_DEFKEY.fields_by_name['complex_key'])
 _DEFTEMPLATE_DEFKEY.fields_by_name['complex_key'].containing_oneof = _DEFTEMPLATE_DEFKEY.oneofs_by_name['key_expr']
-_DEFTEMPLATE.fields_by_name['tycon'].message_type = _DOTTEDNAME
+_DEFTEMPLATE.fields_by_name['tycon_dname'].message_type = _DOTTEDNAME
 _DEFTEMPLATE.fields_by_name['precond'].message_type = _EXPR
 _DEFTEMPLATE.fields_by_name['signatories'].message_type = _EXPR
 _DEFTEMPLATE.fields_by_name['agreement'].message_type = _EXPR
@@ -5046,21 +5099,33 @@ _DEFTEMPLATE.fields_by_name['choices'].message_type = _TEMPLATECHOICE
 _DEFTEMPLATE.fields_by_name['observers'].message_type = _EXPR
 _DEFTEMPLATE.fields_by_name['location'].message_type = _LOCATION
 _DEFTEMPLATE.fields_by_name['key'].message_type = _DEFTEMPLATE_DEFKEY
+_DEFTEMPLATE.oneofs_by_name['tycon'].fields.append(
+  _DEFTEMPLATE.fields_by_name['tycon_dname'])
+_DEFTEMPLATE.fields_by_name['tycon_dname'].containing_oneof = _DEFTEMPLATE.oneofs_by_name['tycon']
+_DEFTEMPLATE.oneofs_by_name['tycon'].fields.append(
+  _DEFTEMPLATE.fields_by_name['tycon_interned_dname'])
+_DEFTEMPLATE.fields_by_name['tycon_interned_dname'].containing_oneof = _DEFTEMPLATE.oneofs_by_name['tycon']
 _DEFTEMPLATE.oneofs_by_name['param'].fields.append(
-  _DEFTEMPLATE.fields_by_name['param_name'])
-_DEFTEMPLATE.fields_by_name['param_name'].containing_oneof = _DEFTEMPLATE.oneofs_by_name['param']
+  _DEFTEMPLATE.fields_by_name['param_str'])
+_DEFTEMPLATE.fields_by_name['param_str'].containing_oneof = _DEFTEMPLATE.oneofs_by_name['param']
 _DEFTEMPLATE.oneofs_by_name['param'].fields.append(
-  _DEFTEMPLATE.fields_by_name['param_interned_id'])
-_DEFTEMPLATE.fields_by_name['param_interned_id'].containing_oneof = _DEFTEMPLATE.oneofs_by_name['param']
+  _DEFTEMPLATE.fields_by_name['param_interned_str'])
+_DEFTEMPLATE.fields_by_name['param_interned_str'].containing_oneof = _DEFTEMPLATE.oneofs_by_name['param']
 _DEFDATATYPE_FIELDS.fields_by_name['fields'].message_type = _FIELDWITHTYPE
 _DEFDATATYPE_FIELDS.containing_type = _DEFDATATYPE
 _DEFDATATYPE_ENUMCONSTRUCTORS.containing_type = _DEFDATATYPE
-_DEFDATATYPE.fields_by_name['name'].message_type = _DOTTEDNAME
+_DEFDATATYPE.fields_by_name['name_dname'].message_type = _DOTTEDNAME
 _DEFDATATYPE.fields_by_name['params'].message_type = _TYPEVARWITHKIND
 _DEFDATATYPE.fields_by_name['record'].message_type = _DEFDATATYPE_FIELDS
 _DEFDATATYPE.fields_by_name['variant'].message_type = _DEFDATATYPE_FIELDS
 _DEFDATATYPE.fields_by_name['enum'].message_type = _DEFDATATYPE_ENUMCONSTRUCTORS
 _DEFDATATYPE.fields_by_name['location'].message_type = _LOCATION
+_DEFDATATYPE.oneofs_by_name['name'].fields.append(
+  _DEFDATATYPE.fields_by_name['name_dname'])
+_DEFDATATYPE.fields_by_name['name_dname'].containing_oneof = _DEFDATATYPE.oneofs_by_name['name']
+_DEFDATATYPE.oneofs_by_name['name'].fields.append(
+  _DEFDATATYPE.fields_by_name['name_interned_dname'])
+_DEFDATATYPE.fields_by_name['name_interned_dname'].containing_oneof = _DEFDATATYPE.oneofs_by_name['name']
 _DEFDATATYPE.oneofs_by_name['DataCons'].fields.append(
   _DEFDATATYPE.fields_by_name['record'])
 _DEFDATATYPE.fields_by_name['record'].containing_oneof = _DEFDATATYPE.oneofs_by_name['DataCons']
@@ -5075,11 +5140,17 @@ _DEFVALUE_NAMEWITHTYPE.containing_type = _DEFVALUE
 _DEFVALUE.fields_by_name['name_with_type'].message_type = _DEFVALUE_NAMEWITHTYPE
 _DEFVALUE.fields_by_name['expr'].message_type = _EXPR
 _DEFVALUE.fields_by_name['location'].message_type = _LOCATION
-_MODULE.fields_by_name['name'].message_type = _DOTTEDNAME
+_MODULE.fields_by_name['name_dname'].message_type = _DOTTEDNAME
 _MODULE.fields_by_name['flags'].message_type = _FEATUREFLAGS
 _MODULE.fields_by_name['data_types'].message_type = _DEFDATATYPE
 _MODULE.fields_by_name['values'].message_type = _DEFVALUE
 _MODULE.fields_by_name['templates'].message_type = _DEFTEMPLATE
+_MODULE.oneofs_by_name['name'].fields.append(
+  _MODULE.fields_by_name['name_dname'])
+_MODULE.fields_by_name['name_dname'].containing_oneof = _MODULE.oneofs_by_name['name']
+_MODULE.oneofs_by_name['name'].fields.append(
+  _MODULE.fields_by_name['name_interned_dname'])
+_MODULE.fields_by_name['name_interned_dname'].containing_oneof = _MODULE.oneofs_by_name['name']
 _PACKAGE.fields_by_name['modules'].message_type = _MODULE
 _PACKAGE.fields_by_name['interned_dotted_names'].message_type = _INTERNEDDOTTEDNAME
 DESCRIPTOR.message_types_by_name['Unit'] = _UNIT
@@ -5247,10 +5318,10 @@ Type = _reflection.GeneratedProtocolMessageType('Type', (_message.Message,), {
     })
   ,
 
-  'Tuple' : _reflection.GeneratedProtocolMessageType('Tuple', (_message.Message,), {
-    'DESCRIPTOR' : _TYPE_TUPLE,
+  'Struct' : _reflection.GeneratedProtocolMessageType('Struct', (_message.Message,), {
+    'DESCRIPTOR' : _TYPE_STRUCT,
     '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
-    # @@protoc_insertion_point(class_scope:daml_lf_1.Type.Tuple)
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Type.Struct)
     })
   ,
   'DESCRIPTOR' : _TYPE,
@@ -5263,7 +5334,7 @@ _sym_db.RegisterMessage(Type.Con)
 _sym_db.RegisterMessage(Type.Prim)
 _sym_db.RegisterMessage(Type.Fun)
 _sym_db.RegisterMessage(Type.Forall)
-_sym_db.RegisterMessage(Type.Tuple)
+_sym_db.RegisterMessage(Type.Struct)
 
 PrimLit = _reflection.GeneratedProtocolMessageType('PrimLit', (_message.Message,), {
   'DESCRIPTOR' : _PRIMLIT,
@@ -5324,24 +5395,24 @@ Expr = _reflection.GeneratedProtocolMessageType('Expr', (_message.Message,), {
     })
   ,
 
-  'TupleCon' : _reflection.GeneratedProtocolMessageType('TupleCon', (_message.Message,), {
-    'DESCRIPTOR' : _EXPR_TUPLECON,
+  'StructCon' : _reflection.GeneratedProtocolMessageType('StructCon', (_message.Message,), {
+    'DESCRIPTOR' : _EXPR_STRUCTCON,
     '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
-    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.TupleCon)
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.StructCon)
     })
   ,
 
-  'TupleProj' : _reflection.GeneratedProtocolMessageType('TupleProj', (_message.Message,), {
-    'DESCRIPTOR' : _EXPR_TUPLEPROJ,
+  'StructProj' : _reflection.GeneratedProtocolMessageType('StructProj', (_message.Message,), {
+    'DESCRIPTOR' : _EXPR_STRUCTPROJ,
     '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
-    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.TupleProj)
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.StructProj)
     })
   ,
 
-  'TupleUpd' : _reflection.GeneratedProtocolMessageType('TupleUpd', (_message.Message,), {
-    'DESCRIPTOR' : _EXPR_TUPLEUPD,
+  'StructUpd' : _reflection.GeneratedProtocolMessageType('StructUpd', (_message.Message,), {
+    'DESCRIPTOR' : _EXPR_STRUCTUPD,
     '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
-    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.TupleUpd)
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.StructUpd)
     })
   ,
 
@@ -5414,13 +5485,6 @@ Expr = _reflection.GeneratedProtocolMessageType('Expr', (_message.Message,), {
     # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.FromAny)
     })
   ,
-
-  'ToTextTemplateId' : _reflection.GeneratedProtocolMessageType('ToTextTemplateId', (_message.Message,), {
-    'DESCRIPTOR' : _EXPR_TOTEXTTEMPLATEID,
-    '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
-    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.ToTextTemplateId)
-    })
-  ,
   'DESCRIPTOR' : _EXPR,
   '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
   # @@protoc_insertion_point(class_scope:daml_lf_1.Expr)
@@ -5431,9 +5495,9 @@ _sym_db.RegisterMessage(Expr.RecProj)
 _sym_db.RegisterMessage(Expr.RecUpd)
 _sym_db.RegisterMessage(Expr.VariantCon)
 _sym_db.RegisterMessage(Expr.EnumCon)
-_sym_db.RegisterMessage(Expr.TupleCon)
-_sym_db.RegisterMessage(Expr.TupleProj)
-_sym_db.RegisterMessage(Expr.TupleUpd)
+_sym_db.RegisterMessage(Expr.StructCon)
+_sym_db.RegisterMessage(Expr.StructProj)
+_sym_db.RegisterMessage(Expr.StructUpd)
 _sym_db.RegisterMessage(Expr.App)
 _sym_db.RegisterMessage(Expr.TyApp)
 _sym_db.RegisterMessage(Expr.Abs)
@@ -5444,7 +5508,6 @@ _sym_db.RegisterMessage(Expr.OptionalNone)
 _sym_db.RegisterMessage(Expr.OptionalSome)
 _sym_db.RegisterMessage(Expr.ToAny)
 _sym_db.RegisterMessage(Expr.FromAny)
-_sym_db.RegisterMessage(Expr.ToTextTemplateId)
 
 CaseAlt = _reflection.GeneratedProtocolMessageType('CaseAlt', (_message.Message,), {
 

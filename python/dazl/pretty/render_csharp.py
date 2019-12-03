@@ -179,14 +179,14 @@ class CSharpPrettyPrint(PrettyPrintBase):
         args = [f'{variant_con.variant_con}: {scope.visit_expr(variant_con.variant_arg)}']
         return self._render_rhs(self.visit_type_con(variant_con.tycon), args)
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'str':
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'str':
         scope = self.with_expression()
-        args = [f'{field}: {scope.visit_expr(field.expr)}' for field in tuple_con.fields]
+        args = [f'{field}: {scope.visit_expr(field.expr)}' for field in struct_con.fields]
         return self._render_rhs('', args)
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> 'str':
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'str':
         scope = self.with_expression()
-        return self._render_rhs(f'{scope.visit_expr(tuple_proj.tuple)}.{tuple_proj.field}', None)
+        return self._render_rhs(f'{scope.visit_expr(struct_proj.tuple)}.{struct_proj.field}', None)
 
     def visit_expr_app(self, app: 'Expr.App') -> 'str':
         scope = self.with_expression()
@@ -302,7 +302,7 @@ class CSharpPrettyPrint(PrettyPrintBase):
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'str':
         pass
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'str':
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> 'str':
         pass
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'str':
@@ -369,7 +369,7 @@ class CSharpPrettyPrint(PrettyPrintBase):
         elif PrimType.ARROW == prim.prim:
             type_strings = [self.visit_type(a) for a in prim.args]
             return f'Func<{", ".join(type_strings)}>'
-        elif PrimType.MAP == prim.prim:
+        elif PrimType.TEXTMAP == prim.prim:
             return f'Dictionary<{self.visit_type(prim.args[0])},  {self.visit_type(prim.args[1])}>'
         else:
             raise ValueError(f'unknown Type.Prim: {prim!r}')

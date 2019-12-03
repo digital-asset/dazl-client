@@ -146,9 +146,11 @@ class PrimType(Enum):
     CONTRACT_ID = 13  # arity = 1
     OPTIONAL = 14     # arity = 1
     ARROW = 15        # arity = 2
-    MAP = 16          # arity = 1
+    TEXTMAP = 16      # arity = 1
     NUMERIC = 17
     ANY = 18
+    TYPE_REP = 19
+    GENMAP = 20
 
 
 # noinspection PyShadowingBuiltins
@@ -490,17 +492,17 @@ class Expr:
         enum_con: str
 
     @dataclass(frozen=True)
-    class TupleCon:
+    class StructCon:
         fields: 'Sequence[FieldWithExpr]'  # length > 0
 
     @dataclass(frozen=True)
-    class TupleProj:
+    class StructProj:
         field: str
         tuple: 'Expr'
 
     # Set `field` in `tuple` to `update`.
     @dataclass(frozen=True)
-    class TupleUpd:
+    class StructUpd:
         field: str
         tuple: 'Expr'
         update: 'Expr'
@@ -632,8 +634,8 @@ class Expr:
             rec_proj: 'RecProj' = MISSING,
             variant_con: 'VariantCon' = MISSING,
             enum_con: 'EnumCon' = MISSING,
-            tuple_con: 'TupleCon' = MISSING,
-            tuple_proj: 'TupleProj' = MISSING,
+            struct_con: 'StructCon' = MISSING,
+            struct_proj: 'StructProj' = MISSING,
             app: 'App' = MISSING,
             ty_app: 'TyApp' = MISSING,
             abs: 'Abs' = MISSING,
@@ -645,13 +647,14 @@ class Expr:
             update: 'Update' = MISSING,
             scenario: 'Scenario' = MISSING,
             rec_upd: 'RecUpd' = MISSING,
-            tuple_upd: 'TupleUpd' = MISSING,
+            struct_upd: 'StructUpd' = MISSING,
             optional_none: 'OptionalNone' = MISSING,
             optional_some: 'OptionalSome' = MISSING,
             location: 'Location' = MISSING,
             to_any: 'ToAny' = MISSING,
             from_any: 'FromAny' = MISSING,
-            to_text_template_id: 'ToTextTemplateId' = MISSING):
+            to_text_template_id: 'ToTextTemplateId' = MISSING,
+            type_rep: 'Type' = MISSING):
         object.__setattr__(self, 'location', location)
         if var is not MISSING:
             object.__setattr__(self, '_Sum_name', 'var')
@@ -680,12 +683,12 @@ class Expr:
         elif enum_con is not MISSING:
             object.__setattr__(self, '_Sum_name', 'enum_con')
             object.__setattr__(self, '_Sum_value', enum_con)
-        elif tuple_con is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'tuple_con')
-            object.__setattr__(self, '_Sum_value', tuple_con)
-        elif tuple_proj is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'tuple_proj')
-            object.__setattr__(self, '_Sum_value', tuple_proj)
+        elif struct_con is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'struct_con')
+            object.__setattr__(self, '_Sum_value', struct_con)
+        elif struct_proj is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'struct_proj')
+            object.__setattr__(self, '_Sum_value', struct_proj)
         elif app is not MISSING:
             object.__setattr__(self, '_Sum_name', 'app')
             object.__setattr__(self, '_Sum_value', app)
@@ -719,9 +722,9 @@ class Expr:
         elif rec_upd is not MISSING:
             object.__setattr__(self, '_Sum_name', 'rec_upd')
             object.__setattr__(self, '_Sum_value', rec_upd)
-        elif tuple_upd is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'tuple_upd')
-            object.__setattr__(self, '_Sum_value', tuple_upd)
+        elif struct_upd is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'struct_upd')
+            object.__setattr__(self, '_Sum_value', struct_upd)
         elif optional_none is not MISSING:
             object.__setattr__(self, '_Sum_name', 'optional_none')
             object.__setattr__(self, '_Sum_value', optional_none)
@@ -737,6 +740,9 @@ class Expr:
         elif to_text_template_id is not MISSING:
             object.__setattr__(self, '_Sum_name', 'to_text_template_id')
             object.__setattr__(self, '_Sum_value', to_text_template_id)
+        elif type_rep is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'type_rep')
+            object.__setattr__(self, '_Sum_value', type_rep)
         else:
             raise ValueError(f'At least one valid Sum value must be supplied!')
 
@@ -780,12 +786,12 @@ class Expr:
         return self._Sum_value if self._Sum_name == 'enum_con' else None
 
     @property
-    def tuple_con(self) -> 'Optional[TupleCon]':
-        return self._Sum_value if self._Sum_name == 'tuple_con' else None
+    def struct_con(self) -> 'Optional[StructCon]':
+        return self._Sum_value if self._Sum_name == 'struct_con' else None
 
     @property
-    def tuple_proj(self) -> 'Optional[TupleProj]':
-        return self._Sum_value if self._Sum_name == 'tuple_proj' else None
+    def struct_proj(self) -> 'Optional[StructProj]':
+        return self._Sum_value if self._Sum_name == 'struct_proj' else None
 
     @property
     def app(self) -> 'Optional[App]':
@@ -832,8 +838,8 @@ class Expr:
         return self._Sum_value if self._Sum_name == 'rec_upd' else None
 
     @property
-    def tuple_upd(self) -> 'Optional[TupleUpd]':
-        return self._Sum_value if self._Sum_name == 'tuple_upd' else None
+    def struct_upd(self) -> 'Optional[StructUpd]':
+        return self._Sum_value if self._Sum_name == 'struct_upd' else None
 
     @property
     def optional_none(self) -> 'Optional[OptionalNone]':
@@ -855,6 +861,10 @@ class Expr:
     def to_text_template_id(self) -> 'Optional[ToTextTemplateId]':
         return self._Sum_value if self._Sum_name == 'to_text_template_id' else None
 
+    @property
+    def type_rep(self) -> 'Optional[Type]':
+        return self._Sum_value if self._Sum_name == 'type_rep' else None
+
     # noinspection PyPep8Naming
     def Sum_match(
             self,
@@ -867,8 +877,8 @@ class Expr:
             rec_proj: 'Callable[[RecProj], T]',
             variant_con: 'Callable[[VariantCon], T]',
             enum_con: 'Callable[[EnumCon], T]',
-            tuple_con: 'Callable[[TupleCon], T]',
-            tuple_proj: 'Callable[[TupleProj], T]',
+            struct_con: 'Callable[[StructCon], T]',
+            struct_proj: 'Callable[[StructProj], T]',
             app: 'Callable[[App], T]',
             ty_app: 'Callable[[TyApp], T]',
             abs: 'Callable[[Abs], T]',
@@ -880,12 +890,13 @@ class Expr:
             update: 'Callable[[Update], T]',
             scenario: 'Callable[[Scenario], T]',
             rec_upd: 'Callable[[RecUpd], T]',
-            tuple_upd: 'Callable[[TupleUpd], T]',
+            struct_upd: 'Callable[[StructUpd], T]',
             optional_none: 'Callable[[OptionalNone], T]',
             optional_some: 'Callable[[OptionalSome], T]',
             to_any: 'Callable[[ToAny], T]',
             from_any: 'Callable[[ToAny], T]',
-            to_text_template_id: 'Callable[[ToTextTemplateId], T]') -> 'T':
+            to_text_template_id: 'Callable[[ToTextTemplateId], T]',
+            type_rep: 'Callable[[Type], T') -> 'T':
         if self._Sum_name == 'var':
             return var(self.var)
         elif self._Sum_name == 'val':
@@ -904,10 +915,10 @@ class Expr:
             return variant_con(self.variant_con)
         elif self._Sum_name == 'enum_con':
             return enum_con(self.enum_con)
-        elif self._Sum_name == 'tuple_con':
-            return tuple_con(self.tuple_con)
-        elif self._Sum_name == 'tuple_proj':
-            return tuple_proj(self.tuple_proj)
+        elif self._Sum_name == 'struct_con':
+            return struct_con(self.struct_con)
+        elif self._Sum_name == 'struct_proj':
+            return struct_proj(self.struct_proj)
         elif self._Sum_name == 'app':
             return app(self.app)
         elif self._Sum_name == 'ty_app':
@@ -930,8 +941,8 @@ class Expr:
             return scenario(self.scenario)
         elif self._Sum_name == 'rec_upd':
             return rec_upd(self.rec_upd)
-        elif self._Sum_name == 'tuple_upd':
-            return tuple_upd(self.tuple_upd)
+        elif self._Sum_name == 'struct_upd':
+            return struct_upd(self.struct_upd)
         elif self._Sum_name == 'optional_none':
             return optional_none(self.optional_none)
         elif self._Sum_name == 'optional_some':
@@ -942,6 +953,8 @@ class Expr:
             return from_any(self.from_any)
         elif self._Sum_name == 'to_text_template_id':
             return to_text_template_id(self.to_text_template_id)
+        elif self._Sum_name == 'type_rep':
+            return type_rep(self.type_rep)
         else:
             raise Exception
 
@@ -1413,6 +1426,14 @@ class BuiltinFunction(Enum):
     CAST_NUMERIC = 121
     SHIFT_NUMERIC = 122
 
+    GENMAP_EMPTY = 124
+    GENMAP_INSERT = 125
+    GENMAP_LOOKUP = 126
+    GENMAP_DELETE = 127
+    GENMAP_KEYS = 128
+    GENMAP_VALUES = 129
+    GENMAP_SIZE = 130
+
     ADD_INT64 = 7
     SUB_INT64 = 8
     MUL_INT64 = 9
@@ -1505,6 +1526,7 @@ class BuiltinFunction(Enum):
     EQUAL_BOOL = 85
     EQUAL_CONTRACT_ID = 86
     EQUAL_LIST = 87
+    EQUAL_TYPE_REP = 123
 
     TRACE = 88
 

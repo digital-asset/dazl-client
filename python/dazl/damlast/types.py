@@ -36,7 +36,9 @@ def match_prim_type(
         on_arrow: 'Callable[[Type, Type], T]',
         on_text_map: 'Callable[[Type], T]',
         on_numeric: 'Callable[[int], T]',
-        on_any: 'Callable[[], T]') -> 'T':
+        on_any: 'Callable[[], T]',
+        on_type_rep: 'Callable[[], T]',
+        on_gen_map: 'Callable[[Type, Type], T]') -> 'T':
     if prim_type.prim == PrimType.UNIT:
         return on_unit()
     elif prim_type.prim == PrimType.BOOL:
@@ -67,12 +69,16 @@ def match_prim_type(
         return on_optional(prim_type.args[0])
     elif prim_type.prim == PrimType.ARROW:
         return on_arrow(prim_type.args[0], prim_type.args[1])
-    elif prim_type.prim == PrimType.MAP:
+    elif prim_type.prim == PrimType.TEXTMAP:
         return on_text_map(prim_type.args[0])
     elif prim_type.prim == PrimType.NUMERIC:
         return on_numeric(prim_type.args[0].nat)
     elif prim_type.prim == PrimType.ANY:
         return on_any()
+    elif prim_type.prim == PrimType.TYPE_REP:
+        return on_type_rep()
+    elif prim_type.prim == PrimType.GENMAP:
+        return on_gen_map(prim_type.args[0], prim_type.args[1])
     else:
         raise ValueError(f'undefined PrimType: {prim_type}')
 
@@ -119,7 +125,9 @@ def _old_type_prim(prim: 'Type.Prim') -> 'OldType':
         lambda *args: UnsupportedType('Arrow'),
         _old_textmap_type,
         _old_scalar_type_numeric,
-        _old_scalar_type_any)
+        _old_scalar_type_any,
+        _old_scalar_type_type_rep,
+        _old_genmap_type)
 
 
 def _old_forall_type(forall: 'Type.Forall') -> 'OldType':
@@ -147,7 +155,7 @@ def _old_scalar_type_decimal() -> 'OldType':
     return SCALAR_TYPE_DECIMAL
 
 
-def _old_scalar_type_numeric() -> 'OldType':
+def _old_scalar_type_numeric(nat: int = 10) -> 'OldType':
     from ..model.types import SCALAR_TYPE_NUMERIC
     return SCALAR_TYPE_NUMERIC
 
@@ -205,3 +213,16 @@ def _old_optional_type(arg: 'Type') -> 'OldType':
 def _old_textmap_type(value_type: 'Type') -> 'OldType':
     from ..model.types import TextMapType
     return TextMapType(get_old_type(value_type))
+
+
+def _old_scalar_type_type_rep(arg: 'Optional[Type]' = None) -> 'OldType':
+    from ..model.types import TypeRefType, UnsupportedType
+    if arg is not None:
+        return TypeRefType(get_old_type(arg))
+    else:
+        return UnsupportedType('TypeRef')
+
+
+def _old_genmap_type(key_type: 'Type', value_type: 'Type') -> 'OldType':
+    from ..model.types import GenMapType
+    return GenMapType(get_old_type(key_type), get_old_type(value_type))

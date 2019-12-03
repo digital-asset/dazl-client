@@ -285,7 +285,7 @@ def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:
             message.MergeFrom(value)
         elif ctor == 'unit':
             message.unit.SetInParent()
-        elif ctor in ('record', 'variant', 'list', 'optional', 'enum', 'map'):
+        elif ctor in ('record', 'variant', 'list', 'optional', 'enum', 'map', 'gen_map'):
             getattr(message, ctor).MergeFrom(value)
         else:
             setattr(message, ctor, value)

@@ -158,11 +158,11 @@ class PythonPrettyPrint(PrettyPrintBase):
                 LOG.exception('why why why')
                 exit(-1)
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> str:
-        if tuple_con.fields:
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> str:
+        if struct_con.fields:
             with StringIO() as buf:
                 delim = 'tuple('
-                for fwe in tuple_con.fields:
+                for fwe in struct_con.fields:
                     buf.write(delim)
                     buf.write(fwe.field)
                     buf.write('=')
@@ -178,12 +178,12 @@ class PythonPrettyPrint(PrettyPrintBase):
         else:
             return 'tuple()'
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> str:
-        record_text = self.visit_expr(tuple_proj.tuple)
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> str:
+        record_text = self.visit_expr(struct_proj.tuple)
         if ' ' in record_text:
-            return f'({record_text})[{tuple_proj.field!r}]'
+            return f'({record_text})[{struct_proj.field!r}]'
         else:
-            return f'{record_text}[{tuple_proj.field!r}]'
+            return f'{record_text}[{struct_proj.field!r}]'
 
     def visit_expr_app_inline(self, app: 'Expr.App'):
         fun_text = maybe_parentheses(self.visit_expr(app.fun))
@@ -282,7 +282,7 @@ class PythonPrettyPrint(PrettyPrintBase):
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> str:
         raise Exception
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> str:
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> str:
         raise Exception
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> str:
@@ -366,7 +366,7 @@ class PythonPrettyPrint(PrettyPrintBase):
         elif PrimType.ARROW == prim.prim:
             type_strings = [self.visit_type(a) for a in prim.args]
             return f'Callable[[{", ".join(type_strings[:-1])}], {type_strings[-1]}]'
-        elif PrimType.MAP == prim.prim:
+        elif PrimType.TEXTMAP == prim.prim:
             return f'Map[{self.visit_type(prim.args[0])},  {self.visit_type(prim.args[1])}]'
         else:
             raise ValueError(f'unknown Type.Prim: {prim!r}')
