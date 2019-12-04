@@ -25,8 +25,8 @@ class ProtobufParser:
             return None
         elif sum_name == 'self':
             return ModuleRef(self.current_package, module_name.segments)
-        elif sum_name == 'package_id':
-            return ModuleRef(pb.package_ref.package_id, module_name.segments)
+        elif sum_name == 'package_id_str':
+            return ModuleRef(pb.package_ref.package_id_str, module_name.segments)
         elif sum_name == 'package_id_interned_str':
             return ModuleRef(
                 self.interned_strings[pb.package_ref.package_id_interned_str], module_name.segments)
