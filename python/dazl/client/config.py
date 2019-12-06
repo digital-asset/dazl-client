@@ -139,7 +139,7 @@ class _NetworkConfig(URLConfig):
     use_acs_service: bool = config_field(
         'Use Active Contract Set service instead of reading from the Transaction event stream',
         param_type=BOOLEAN_TYPE,
-        default_value=False)
+        default_value=True)
 
     idle_timeout: Optional[float] = config_field(
         'Maximum number of seconds of idle activity before automatically closing the client',
