@@ -12,7 +12,7 @@ from typing import BinaryIO, Optional, Union
 
 ROOT = Path(__file__).absolute().parent.parent
 
-DAML_SDK_VERSION = '100.13.38'
+DAML_SDK_VERSION = '100.13.40'
 DAML_SDK_BASE_URL = 'https://digitalassetsdk.bintray.com/DigitalAssetSDK'
 GOOGLE_APIS_BASE_URL = 'https://raw.githubusercontent.com/googleapis/googleapis/master'
 
@@ -58,7 +58,7 @@ def main():
     with tarfile.open(download_dir / DAML_LF_TGZ) as tar:
         for tarinfo in tar:
             if tarinfo.isfile():
-                p = remainder(tarinfo.name, './com/digitalasset/daml_lf/')
+                p = remainder(tarinfo.name, './com/digitalasset/daml_lf_dev/')
                 if p is not None:
                     with tar.extractfile(tarinfo) as from_:
                         copy(src=from_, dest=protos_dir / 'com' / 'digitalasset' / 'daml_lf_dev' / p)

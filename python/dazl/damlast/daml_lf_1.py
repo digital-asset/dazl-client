@@ -1527,6 +1527,7 @@ class BuiltinFunction(Enum):
     EQUAL_CONTRACT_ID = 86
     EQUAL_LIST = 87
     EQUAL_TYPE_REP = 123
+    EQUAL = 131
 
     TRACE = 88
 
@@ -1534,6 +1535,15 @@ class BuiltinFunction(Enum):
 
     TO_TEXT_CODE_POINTS = 105
     FROM_TEXT_CODE_POINTS = 106
+
+    TEXT_TO_UPPER = 9901
+    TEXT_TO_LOWER = 9902
+    TEXT_SLICE = 9903
+    TEXT_SLICE_INDEX = 9904
+    TEXT_CONTAINS_ONLY = 9905
+    TEXT_REPLICATE = 9906
+    TEXT_SPLIT_ON = 9907
+    TEXT_INTERCALATE = 9908
 
 
 class PrimCon(Enum):
@@ -1724,6 +1734,7 @@ class DefDataType:
             record: 'DefDataType.Fields' = MISSING,
             variant: 'DefDataType.Fields' = MISSING,
             enum: 'DefDataType.EnumConstructors' = MISSING,
+            synonym: 'Type' = MISSING,
             serializable: bool = MISSING,
             location: 'Location' = MISSING):
         self.name = name
@@ -1737,6 +1748,9 @@ class DefDataType:
         elif enum is not MISSING:
             self._DataCons_name = 'enum'
             self._DataCons_value = enum
+        elif synonym is not MISSING:
+            self._DataCons_name = 'synonym'
+            self._DataCons_value = synonym
         self.serializable = serializable
         self.location = location
 
@@ -1751,6 +1765,10 @@ class DefDataType:
     @property
     def enum(self) -> 'Optional[DefDataType.EnumConstructors]':
         return self._DataCons_value if self._DataCons_name == 'enum' else None
+
+    @property
+    def synonym(self) -> 'Optional[Type]':
+        return self._DataCons_value if self._DataCons_name == 'synonym' else None
 
 
 @dataclass(frozen=True)
