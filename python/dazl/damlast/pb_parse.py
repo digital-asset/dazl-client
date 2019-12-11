@@ -586,6 +586,8 @@ class ProtobufParser:
             kwargs['variant'] = self.parse_DefDataType_Fields(pb.variant)
         elif DataCons_name == 'enum':
             kwargs['enum'] = self.parse_DefDataType_EnumConstructors(pb.enum)
+        elif DataCons_name == 'synonym':
+            kwargs['synonym'] = self.parse_Type(pb.synonym)
         else:
             raise ValueError(f'unknown DataCons value: {DataCons_name!r}')
         return DefDataType(**kwargs)
