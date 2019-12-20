@@ -25,9 +25,9 @@ class DateTimeTest(unittest.TestCase):
     def test_simple_date_parse(self):
         expected = datetime(2018, 8, 7, 23, 17, 31, 143080, tzinfo=timezone.utc)
         actual = to_datetime('2018-08-07T23:17:31.143080Z')
-        self.assertEqual(expected, actual)
+        assert expected == actual
 
     def test_simple_date_parse_with_nanos(self):
         expected = datetime(2018, 8, 7, 23, 17, 31, 143080, tzinfo=timezone.utc)
         actual = to_datetime('2018-08-07T23:17:31.143080698Z')
-        self.assertEqual(expected, actual)
+        assert expected == actual

@@ -1,6 +1,10 @@
-from pathlib import Path
-from typing import ClassVar, Mapping
-from unittest import TestCase
+# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+import pytest
+from typing import Mapping
+
+from dataclasses import dataclass
 
 from dazl import CreateCommand, ExerciseCommand, CreateAndExerciseCommand, ExerciseByKeyCommand, \
     ContractId
@@ -12,90 +16,98 @@ from dazl.util.dar import DarFile
 from .dars import Pending
 
 
-class TestProtobufSerialize(TestCase):
+@dataclass(frozen=True)
+class DarFixture:
+    dar: DarFile
+    store: PackageStore
 
-    dar: ClassVar[DarFile]
-    store: ClassVar[PackageStore]
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.dar = DarFile(Pending)
-        cls.store = cls.dar.read_metadata()
-        cls.sut = ProtobufSerializer(cls.store)
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.dar.close()
-
-    @classmethod
-    def get_template_type(cls, identifier: str) -> 'TypeReference':
-        templates = cls.store.resolve_template(identifier)
+    def get_template_type(self, identifier: str) -> 'TypeReference':
+        templates = self.store.resolve_template(identifier)
         for template in templates:
             return template.data_type.name
 
         raise AssertionError(f'Unknown template name: {identifier!r}')
 
-    @classmethod
-    def get_identifier(cls, identifier: str) -> 'Mapping[str, str]':
-        tref = TestProtobufSerialize.get_template_type(identifier)
+    def get_identifier(self, identifier: str) -> 'Mapping[str, str]':
+        tref = self.get_template_type(identifier)
         return G.Identifier(
             module_name='.'.join(tref.module.module_name),
             entity_name='.'.join(tref.name),
             package_id=tref.module.package_id)
 
-    def test_serialize_create(self):
-        command = CreateCommand('Pending.AccountRequest', dict(owner='SomeParty'))
 
-        expected = G.Command()
-        expected.create.template_id.MergeFrom(
-            TestProtobufSerialize.get_identifier('Pending.AccountRequest'))
-        expected.create.create_arguments.fields.append(
-            G.RecordField(label='owner', value=G.Value(party='SomeParty')))
-        actual = self.sut.serialize_command(command)
+@pytest.fixture(scope='module')
+def dar_fixture() -> 'DarFixture':
+    with DarFile(Pending) as dar:
+        store = dar.read_metadata()
 
-        self.assertEqual(expected, actual)
+        yield DarFixture(dar, store)
 
-    def test_serialize_exercise(self):
-        tref = TestProtobufSerialize.get_template_type('Pending.AccountRequest')
-        cid = ContractId('#1:0', tref)
-        command = ExerciseCommand(cid, 'CreateAccount', dict(accountId=42))
 
-        expected = G.Command()
-        expected.exercise.contract_id = '#1:0'
-        expected.exercise.template_id.MergeFrom(
-            TestProtobufSerialize.get_identifier('Pending.AccountRequest'))
-        expected.exercise.choice = 'CreateAccount'
-        expected.exercise.choice_argument.record.fields.append(
-            G.RecordField(label='accountId', value=G.Value(int64=42)))
-        actual = self.sut.serialize_command(command)
+def test_serialize_create(dar_fixture):
+    sut = ProtobufSerializer(dar_fixture.store)
 
-        self.assertEqual(expected, actual)
+    command = CreateCommand('Pending.AccountRequest', dict(owner='SomeParty'))
 
-    def test_serialize_exercise_by_key(self):
-        command = ExerciseByKeyCommand('Pending.Counter', 'SomeParty', 'Increment', {})
+    expected = G.Command()
+    expected.create.template_id.MergeFrom(
+        dar_fixture.get_identifier('Pending.AccountRequest'))
+    expected.create.create_arguments.fields.append(
+        G.RecordField(label='owner', value=G.Value(party='SomeParty')))
+    actual = sut.serialize_command(command)
 
-        expected = G.Command()
-        expected.exerciseByKey.template_id.MergeFrom(
-            TestProtobufSerialize.get_identifier('Pending.Counter'))
-        expected.exerciseByKey.contract_key.party = 'SomeParty'
-        expected.exerciseByKey.choice = 'Increment'
-        expected.exerciseByKey.choice_argument.record.SetInParent()
-        actual = self.sut.serialize_command(command)
+    assert expected == actual
 
-        self.assertEqual(expected, actual)
 
-    def test_serialize_create_and_exercise(self):
-        command = CreateAndExerciseCommand(
-            'Pending.AccountRequest', dict(owner='SomeParty'), 'CreateAccount', dict(accountId=42))
+def test_serialize_exercise(dar_fixture):
+    sut = ProtobufSerializer(dar_fixture.store)
 
-        expected = G.Command()
-        expected.createAndExercise.template_id.MergeFrom(
-            TestProtobufSerialize.get_identifier('Pending.AccountRequest'))
-        expected.createAndExercise.create_arguments.fields.append(
-            G.RecordField(label='owner', value=G.Value(party='SomeParty')))
-        expected.createAndExercise.choice = 'CreateAccount'
-        expected.createAndExercise.choice_argument.record.fields.append(
-            G.RecordField(label='accountId', value=G.Value(int64=42)))
-        actual = self.sut.serialize_command(command)
+    tref = dar_fixture.get_template_type('Pending.AccountRequest')
+    cid = ContractId('#1:0', tref)
+    command = ExerciseCommand(cid, 'CreateAccount', dict(accountId=42))
 
-        self.assertEqual(expected, actual)
+    expected = G.Command()
+    expected.exercise.contract_id = '#1:0'
+    expected.exercise.template_id.MergeFrom(
+        dar_fixture.get_identifier('Pending.AccountRequest'))
+    expected.exercise.choice = 'CreateAccount'
+    expected.exercise.choice_argument.record.fields.append(
+        G.RecordField(label='accountId', value=G.Value(int64=42)))
+    actual = sut.serialize_command(command)
+
+    assert expected == actual
+
+
+def test_serialize_exercise_by_key(dar_fixture):
+    sut = ProtobufSerializer(dar_fixture.store)
+
+    command = ExerciseByKeyCommand('Pending.Counter', 'SomeParty', 'Increment', {})
+
+    expected = G.Command()
+    expected.exerciseByKey.template_id.MergeFrom(
+        dar_fixture.get_identifier('Pending.Counter'))
+    expected.exerciseByKey.contract_key.party = 'SomeParty'
+    expected.exerciseByKey.choice = 'Increment'
+    expected.exerciseByKey.choice_argument.record.SetInParent()
+    actual = sut.serialize_command(command)
+
+    assert expected == actual
+
+
+def test_serialize_create_and_exercise(dar_fixture):
+    sut = ProtobufSerializer(dar_fixture.store)
+
+    command = CreateAndExerciseCommand(
+        'Pending.AccountRequest', dict(owner='SomeParty'), 'CreateAccount', dict(accountId=42))
+
+    expected = G.Command()
+    expected.createAndExercise.template_id.MergeFrom(
+        dar_fixture.get_identifier('Pending.AccountRequest'))
+    expected.createAndExercise.create_arguments.fields.append(
+        G.RecordField(label='owner', value=G.Value(party='SomeParty')))
+    expected.createAndExercise.choice = 'CreateAccount'
+    expected.createAndExercise.choice_argument.record.fields.append(
+        G.RecordField(label='accountId', value=G.Value(int64=42)))
+    actual = sut.serialize_command(command)
+
+    assert expected == actual

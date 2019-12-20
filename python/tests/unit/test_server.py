@@ -3,7 +3,6 @@
 
 import logging
 from asyncio import sleep
-from unittest import TestCase
 
 from aiohttp import ClientSession
 
@@ -20,11 +19,10 @@ Carol = Party("Carol")
 LOG = logging.getLogger('test_server')
 
 
-class TestServer(TestCase):
-    def test_server_endpoint(self):
-        SERVER_PORT = 53390
-        with sandbox(TestServerDar) as proc:
-            bot_main(sandbox_url=proc.url, server_port=SERVER_PORT)
+def test_server_endpoint():
+    SERVER_PORT = 53390
+    with sandbox(TestServerDar) as proc:
+        bot_main(sandbox_url=proc.url, server_port=SERVER_PORT)
 
 
 def ensure_person_contract(network: Network, party: Party):

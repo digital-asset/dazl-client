@@ -4,9 +4,8 @@
 import asyncio
 import logging
 import random
-from unittest import TestCase
 
-from dazl import create, exercise, sandbox, setup_default_logger, Network
+from dazl import create, exercise, sandbox, Network
 from .dars import Simple as SimpleDar
 
 NOTIFICATION_COUNT = 20
@@ -22,13 +21,7 @@ class Simple:
     OperatorNotification = 'Simple.OperatorNotification'
 
 
-class TestEventOrder(TestCase):
-    def test_event_order(self):
-        some_sample_app()
-
-
-def some_sample_app():
-    setup_default_logger(logging.INFO)
+def test_event_order():
     stage1 = Stage1LedgerInit()
     stage2 = Stage2LedgerVerify()
 
@@ -93,4 +86,6 @@ class Stage2LedgerVerify:
 
 
 if __name__ == '__main__':
-    some_sample_app()
+    from dazl import setup_default_logger
+    setup_default_logger(logging.INFO)
+    test_event_order()
