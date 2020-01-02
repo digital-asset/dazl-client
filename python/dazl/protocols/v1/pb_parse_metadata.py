@@ -159,6 +159,8 @@ def find_dependencies_of_type(type_pb) -> 'Collection[str]':
         return find_dependencies_of_type(type_pb.forall.body)
     elif t == 'tuple':
         return find_dependencies_of_fwts(type_pb.tuple.fields)
+    elif t == 'nat':
+        return ()
     else:
         LOG.warning('Unknown DAML-LF Type: %s (when evaluating %s)', t, type_pb)
         return ()
