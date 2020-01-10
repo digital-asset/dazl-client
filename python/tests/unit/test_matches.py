@@ -24,3 +24,15 @@ def test_match_of_partial_deep_nested_keys():
     match = {"a": {"b": 1}}
     value = {"a": {"b": 1, "c": 2}, "d": 3}
     assert is_match(match, value)
+
+
+def test_non_match_of_partial_deep_nested_keys():
+    match = {"a": {"b": 1}}
+    value = {"a": {"b": 2, "c": 2}, "d": 3}
+    assert not is_match(match, value)
+
+
+def test_non_match_of_disjoint_keys():
+    match = {"x": 1}
+    value = {"a": {"b": 2, "c": 2}, "d": 3}
+    assert not is_match(match, value)

@@ -371,7 +371,7 @@ class _NetworkImpl:
             self, package_ids: 'Collection[str]', timeout: 'TimeDeltaConvertible'):
         from asyncio import wait_for, TimeoutError
         timeout = to_timedelta(timeout)
-        expire_time = datetime.utcnow() + timeout
+        expire_time = datetime.max #datetime.utcnow() + timeout
         metadata = await wait_for(self.aio_metadata(), timeout.total_seconds())
         package_id_set = set(package_ids)
         while datetime.utcnow() < expire_time:

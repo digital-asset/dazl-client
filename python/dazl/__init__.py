@@ -4,8 +4,6 @@
 """
 This module contains the Python API for interacting with the Ledger API.
 """
-
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -55,8 +53,10 @@ def _get_version() -> str:
     """
     import pkg_resources
     from ast import literal_eval
+    from configparser import ConfigParser
+    from pathlib import Path
     try:
-        __version__ = pkg_resources.require('dazl')[0].version
+        return pkg_resources.require('dazl')[0].version
     except pkg_resources.DistributionNotFound:
         pass
     except Exception:

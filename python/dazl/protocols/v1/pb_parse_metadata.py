@@ -99,6 +99,11 @@ def find_dependencies(
 
     m_pb = {}
     sorted_package_ids = toposort_flatten(dependencies)
+
+    # packages with no dependencies or dependents can safely be added in the front
+    remainders = set(metadatas_pb) - set(unresolvable_package_ids) - set(sorted_package_ids)
+    sorted_package_ids[0:0] = sorted(remainders)
+
     for package_id in sorted_package_ids:
         if package_id not in unresolvable_package_ids:
             required_package = metadatas_pb.get(package_id)
