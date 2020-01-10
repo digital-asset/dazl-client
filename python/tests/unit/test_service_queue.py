@@ -33,4 +33,4 @@ class TestServiceQueue(TestCase):
         sq.start()
         loop.run_until_complete(gather(main_test(), populate()))
 
-        self.assertEqual(expected, actual)
+        assert expected == actual

@@ -1,13 +1,13 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
-import unittest
+import pytest
+
 from subprocess import run
 from pathlib import Path
 from typing import Tuple
 
-from dazl import create, sandbox, setup_default_logger, Network, LOG
+from dazl import create, sandbox, Network, LOG
 from dazl.model.network import SSLSettings
 
 _DAZL_ROOT = Path(__file__).parent.parent.parent
@@ -16,31 +16,27 @@ TLS_KEYGEN_SCRIPT = _DAZL_ROOT.parent.parent.parent / 'pipeline' / 'scripts' / '
 TEMPLATE_DAML_FILE = _DAZL_ROOT / '_template' / 'Main.daml'
 
 
-setup_default_logger(logging.DEBUG)
+def test_ssl_not_defined():
+    assert not SSLSettings(None, None, None)
 
 
-class SSLTest(unittest.TestCase):
+@pytest.mark.skip('Still needs work')
+def test_ssl_connectivity():
+    client_ssl_settings, server_ssl_settings = create_ssl_test_package()
+    messages_received = []
+    with sandbox(TEMPLATE_DAML_FILE, ssl_settings=server_ssl_settings) as proc:
+        network = Network()
+        network.set_config(url=proc.url,
+                           ca_file=client_ssl_settings.ca_file,
+                           cert_file=client_ssl_settings.cert_file,
+                           cert_key_file=client_ssl_settings.cert_key_file)
 
-    def test_ssl_not_defined(self):
-        self.assertFalse(SSLSettings(None, None, None))
+        client = network.aio_party('SOME_PARTY')
+        client.add_ledger_ready(lambda e: create('Main.PostmanRole', dict(party='SOME_PARTY')))
+        client.add_ledger_created('Main.PostmanRole', lambda cid, cdata: messages_received.append(cid))
+        network.run_until_complete()
 
-    @unittest.skip('Still needs work')
-    def test_ssl_connectivity(self):
-        client_ssl_settings, server_ssl_settings = create_ssl_test_package()
-        messages_received = []
-        with sandbox(TEMPLATE_DAML_FILE, ssl_settings=server_ssl_settings) as proc:
-            network = Network()
-            network.set_config(url=proc.url,
-                               ca_file=client_ssl_settings.ca_file,
-                               cert_file=client_ssl_settings.cert_file,
-                               cert_key_file=client_ssl_settings.cert_key_file)
-
-            client = network.aio_party('SOME_PARTY')
-            client.add_ledger_ready(lambda e: create('Main.PostmanRole', dict(party='SOME_PARTY')))
-            client.add_ledger_created('Main.PostmanRole', lambda cid, cdata: messages_received.append(cid))
-            network.run_until_complete()
-
-            self.assertEqual(len(messages_received), 1)
+        assert len(messages_received) == 1
 
 
 def create_ssl_test_package(force=False) -> Tuple[SSLSettings, SSLSettings]:
@@ -77,7 +73,3 @@ def create_ssl_test_package(force=False) -> Tuple[SSLSettings, SSLSettings]:
     # create the certs
     run(args=[str(TLS_KEYGEN_SCRIPT), '--destination', str(pkg_dir), '--common-name', 'digitalasset.com.test'], check=True)
     return client_ssl_settings, server_ssl_settings
-
-
-if __name__ == '__main__':
-    unittest.main()

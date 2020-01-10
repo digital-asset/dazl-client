@@ -43,7 +43,7 @@ class TestCommandBuilderTest(TestCase):
         )]
         actual = CommandBuilder.coerce(expr).build(DEFAULTS, DEFAULT_NOW)
 
-        self.assertEqual(expected, actual)
+        assert expected == actual
 
     def test_object_create_untyped(self):
         builder = CommandBuilder()
@@ -61,7 +61,7 @@ class TestCommandBuilderTest(TestCase):
         )]
         actual = builder.build(DEFAULTS, DEFAULT_NOW)
 
-        self.assertEqual(expected, actual)
+        assert expected == actual
 
     def test_object_atomic_default_false(self):
         builder = CommandBuilder(atomic_default=False)
@@ -91,7 +91,7 @@ class TestCommandBuilderTest(TestCase):
 
         actual = builder.build(DEFAULTS, DEFAULT_NOW)
 
-        self.assertEqual(expected, actual)
+        assert expected == actual
 
     def test_object_atomic_default_true(self):
         builder = CommandBuilder(atomic_default=True)
@@ -114,4 +114,4 @@ class TestCommandBuilderTest(TestCase):
 
         actual = builder.build(DEFAULTS, DEFAULT_NOW)
 
-        self.assertEqual(expected, actual)
+        assert expected == actual

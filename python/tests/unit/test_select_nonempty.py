@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from asyncio import wait_for, ensure_future
-from unittest import TestCase
 
 from dazl import sandbox, exercise, Network, AIOPartyClient
 from .dars import Simple
@@ -13,21 +12,20 @@ OperatorRole = 'Simple.OperatorRole'
 OperatorNotification = 'Simple.OperatorNotification'
 
 
-class SelectNonEmptyTestCase(TestCase):
-    def test_select_template_retrieves_contracts(self):
-        seen_notifications = []
-        with sandbox(Simple) as proc:
-            network = Network()
-            network.set_config(url=proc.url)
+def test_select_template_retrieves_contracts():
+    seen_notifications = []
+    with sandbox(Simple) as proc:
+        network = Network()
+        network.set_config(url=proc.url)
 
-            party_client = network.aio_party(PARTY)
-            party_client.add_ledger_created(OperatorNotification, lambda event: seen_notifications.append(event.cid))
-            network.run_until_complete(async_test_case(party_client))
+        party_client = network.aio_party(PARTY)
+        party_client.add_ledger_created(OperatorNotification, lambda event: seen_notifications.append(event.cid))
+        network.run_until_complete(async_test_case(party_client))
 
-            data = party_client.find_active(OperatorNotification)
+        data = party_client.find_active(OperatorNotification)
 
-        self.assertEqual(len(data), 5)
-        self.assertEqual(len(seen_notifications), 8)
+    assert len(data) == 5
+    assert len(seen_notifications) == 8
 
 
 async def async_test_case(client: AIOPartyClient):

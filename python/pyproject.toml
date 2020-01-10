@@ -35,10 +35,12 @@ sphinx = "*"
 watchdog = "*"
 flask = "^1.0"
 sphinx-markdown-builder = "^0.5.1"
+pytest-subtests = "^0.2.1"
 
 [tool.poetry.extras]
 prometheus = ["prometheus_client"]
 pygments = ["pygments"]
+pytest = []
 
 [tool.poetry.scripts]
 dazl = 'dazl.cli:main'

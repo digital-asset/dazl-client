@@ -2,55 +2,56 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-import unittest
-
 from dazl.util.io import LoggingStream
 
 
-class LoggingStreamTest(unittest.TestCase):
+def test_unterminated_write():
+    logger = MockLogger()
+    stream = LoggingStream(logger, None)
+    stream.write('abc')
+    assert [] == logger.lines
 
-    def test_unterminated_write(self):
-        logger = MockLogger()
-        stream = LoggingStream(logger, None)
-        stream.write('abc')
-        self.assertEqual(logger.lines, [])
 
-    def test_terminated_write(self):
-        logger = MockLogger()
-        stream = LoggingStream(logger, None)
-        stream.write('abc\n')
-        self.assertEqual(['abc'], logger.lines)
+def test_terminated_write():
+    logger = MockLogger()
+    stream = LoggingStream(logger, None)
+    stream.write('abc\n')
+    assert ['abc'] == logger.lines
 
-    def test_multiple_writes(self):
-        logger = MockLogger()
-        stream = LoggingStream(logger, None)
-        stream.write('abc')
-        stream.write('def\n')
-        self.assertEqual(['abcdef'], logger.lines)
 
-    def test_multiple_writes_of_lines(self):
-        logger = MockLogger()
-        stream = LoggingStream(logger, None)
-        stream.write('abc\n')
-        stream.write('def\n')
-        self.assertEqual(['abc', 'def'], logger.lines)
+def test_multiple_writes():
+    logger = MockLogger()
+    stream = LoggingStream(logger, None)
+    stream.write('abc')
+    stream.write('def\n')
+    assert ['abcdef'] == logger.lines
 
-    def test_multiple_writelines(self):
-        logger = MockLogger()
-        stream = LoggingStream(logger, None)
-        stream.write('abc')
-        stream.writelines(['def', 'ghi'])
-        stream.write('jkl\n')
-        self.assertEqual(['abcdef', 'ghi', 'jkl'], logger.lines)
 
-    def test_complex(self):
-        logger = MockLogger()
-        stream = LoggingStream(logger, None)
-        stream.write('abc')
-        stream.write('def\nghi\njkl')
-        stream.write('mno')
-        stream.write('\n')
-        self.assertEqual(['abcdef', 'ghi', 'jklmno'], logger.lines)
+def test_multiple_writes_of_lines():
+    logger = MockLogger()
+    stream = LoggingStream(logger, None)
+    stream.write('abc\n')
+    stream.write('def\n')
+    assert ['abc', 'def'] == logger.lines
+
+
+def test_multiple_writelines():
+    logger = MockLogger()
+    stream = LoggingStream(logger, None)
+    stream.write('abc')
+    stream.writelines(['def', 'ghi'])
+    stream.write('jkl\n')
+    assert ['abcdef', 'ghi', 'jkl'] == logger.lines
+
+
+def test_complex():
+    logger = MockLogger()
+    stream = LoggingStream(logger, None)
+    stream.write('abc')
+    stream.write('def\nghi\njkl')
+    stream.write('mno')
+    stream.write('\n')
+    assert ['abcdef', 'ghi', 'jklmno'] == logger.lines
 
 
 class MockLogger:

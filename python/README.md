@@ -15,7 +15,7 @@ Rich Python bindings for accessing Ledger API-based applications.
 Requirements
 ------------
 * Python 3.6+
-* [Pipenv](https://pipenv.readthedocs.io/en/latest/)
+* [Poetry](https://python-poetry.org/)
 * Although not strictly required for building, you'll probably want the [DAML SDK](https://www.daml.com)
 
 Examples
@@ -69,12 +69,14 @@ network.start()
 Building locally
 ----------------
 ```sh
-cd python && pipenv run package
+make package
 ```
 
 Tests
 -----
 
+Tests in dazl are written using [pytest](https://docs.pytest.org/en/latest/). You can run them by doing:
+
 ```sh
-cd python && pipenv run test
+make test
 ```

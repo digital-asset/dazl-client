@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import datetime
-import unittest
 from decimal import Decimal
 
 from dazl import sandbox, create, Network
@@ -29,44 +28,42 @@ SOME_ARGS = dict(
     theUnit=dict())
 
 
-class TestAllTypes(unittest.TestCase):
-    def test_all_types(self):
-        test_case = AllTypesTestCase()
-        with sandbox(AllKindsOf) as proc:
-            network = Network()
-            network.set_config(url=proc.url)
+def test_all_types():
+    test_case = AllTypesTestCase()
+    with sandbox(AllKindsOf) as proc:
+        network = Network()
+        network.set_config(url=proc.url)
 
-            party_client = network.aio_party(PARTY)
-            party_client.add_ledger_ready(test_case.create_one_of_everything)
-            party_client.add_ledger_created(TEMPLATE, test_case.on_one_of_everything)
-            network.run_until_complete()
+        party_client = network.aio_party(PARTY)
+        party_client.add_ledger_ready(test_case.create_one_of_everything)
+        party_client.add_ledger_created(TEMPLATE, test_case.on_one_of_everything)
+        network.run_until_complete()
 
-        self.assertIsNotNone(
-            test_case.found_instance,
-            'Expected to find an instance of OneOfEverything!')
+    assert test_case.found_instance is not None, \
+        'Expected to find an instance of OneOfEverything!'
 
-        self.assertEqual(
-            SOME_ARGS.keys(), test_case.found_instance.keys(),
-            'There are either extra fields or missing fields!')
+    assert SOME_ARGS.keys() == test_case.found_instance.keys(), \
+        'There are either extra fields or missing fields!'
 
-        for key in SOME_ARGS:
-            expected = SOME_ARGS.get(key)
-            actual = test_case.found_instance.get(key)
-            self.assertEqual(expected, actual, f'Failed to compare types for key: {key}')
+    for key in SOME_ARGS:
+        expected = SOME_ARGS.get(key)
+        actual = test_case.found_instance.get(key)
+        assert expected == actual, f'Failed to compare types for key: {key}'
 
-    def test_maps(self):
-        with sandbox(AllKindsOf) as proc:
-            network = Network()
-            network.set_config(url=proc.url)
 
-            party_client = network.aio_party(PARTY)
-            party_client.add_ledger_ready(lambda e: create(
-                'AllKindsOf.MappyContract', {
-                    'operator': PARTY,
-                    'value': {'Map_internal': []}
-                }))
+def test_maps():
+    with sandbox(AllKindsOf) as proc:
+        network = Network()
+        network.set_config(url=proc.url)
 
-            network.run_until_complete()
+        party_client = network.aio_party(PARTY)
+        party_client.add_ledger_ready(lambda e: create(
+            'AllKindsOf.MappyContract', {
+                'operator': PARTY,
+                'value': {'Map_internal': []}
+            }))
+
+        network.run_until_complete()
 
 
 class AllTypesTestCase:
