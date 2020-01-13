@@ -21,9 +21,11 @@ def is_match(predicate: ContractMatch, cdata: ContractData) -> bool:
     for key, predicate_value in predicate.items():
         cdata_value = cdata.get(key)
         if cdata_value is None:
-            continue
+            # None only matches with None
+            if predicate_value is not None:
+                return False
 
-        if callable(predicate_value):
+        elif callable(predicate_value):
             # support lambdas as predicate values
             if not predicate_value(cdata_value):
                 return False

@@ -218,6 +218,7 @@ def grpc_package_sync(package_provider: PackageProvider, store: 'PackageStore') 
     metadatas_pb = {}
     for package_id in all_package_ids:
         if package_id not in loaded_package_ids:
+            LOG.debug('Fetching package: %r', package_id)
             archive_payload = package_provider.fetch_package(package_id)
             metadatas_pb[package_id] = parse_archive_payload(archive_payload)
 
