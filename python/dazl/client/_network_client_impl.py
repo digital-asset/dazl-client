@@ -36,6 +36,9 @@ from ..util.prim_types import to_timedelta, TimeDeltaConvertible
 T = TypeVar('T')
 
 
+EXPECTED_RESPONSIVENESS_THRESHOLD = timedelta(milliseconds=500)
+
+
 class _NetworkImpl:
 
     __slots__ = ('_lock', '_main_thread', 'invoker', '_party_clients', '_global_impls',
@@ -115,6 +118,16 @@ class _NetworkImpl:
             self._pool_init.set_result(pool)
 
         return config
+
+    def _loop_responsiveness_tick(self, responsiveness: 'timedelta'):
+        """
+        Called periodically in order to verify the overall health of the main event loop.
+        """
+        if responsiveness >= EXPECTED_RESPONSIVENESS_THRESHOLD:
+            LOG.warning("dazl detected an abnormally slow main thread (%1.2f ms). Make sure you are not accidentally "
+                        "blocking in async callbacks.",
+                        responsiveness.total_seconds() * 1000)
+        self._metrics.loop_responsiveness(responsiveness)
 
     async def aio_run(self, *coroutines) -> None:
         """
@@ -344,7 +357,7 @@ class _NetworkImpl:
             self, package_ids: 'Collection[str]', timeout: 'TimeDeltaConvertible'):
         from asyncio import wait_for, TimeoutError
         timeout = to_timedelta(timeout)
-        expire_time = datetime.max #datetime.utcnow() + timeout
+        expire_time = datetime.utcnow() + timeout
         metadata = await wait_for(self.aio_metadata(), timeout.total_seconds())
         package_id_set = set(package_ids)
         while datetime.utcnow() < expire_time:
