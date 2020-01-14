@@ -1,0 +1,794 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>dazl.model.writing &#8212; dazl 6.6.3 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dazl.model.writing</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Write-Side types</span>
+<span class="sd">----------------</span>
+
+<span class="sd">The :mod:`dazl.model.writing` module contains the Python classes used on the write-side of the</span>
+<span class="sd">Ledger API.</span>
+
+<span class="sd">.. autoclass:: Command</span>
+<span class="sd">   :members:</span>
+
+<span class="sd">.. autoclass:: CreateCommand</span>
+<span class="sd">   :members:</span>
+
+<span class="sd">.. autoclass:: ExerciseCommand</span>
+<span class="sd">   :members:</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">fields</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">LOG</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">ContractId</span><span class="p">,</span> <span class="n">Party</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">TypeReference</span><span class="p">,</span> <span class="n">UnresolvedTypeReference</span><span class="p">,</span> <span class="n">TemplateChoice</span><span class="p">,</span> \
+    <span class="n">RecordType</span><span class="p">,</span> <span class="n">UnsupportedType</span><span class="p">,</span> <span class="n">VariantType</span><span class="p">,</span> <span class="n">ContractIdType</span><span class="p">,</span> <span class="n">ListType</span><span class="p">,</span> <span class="n">OptionalType</span><span class="p">,</span> <span class="n">TextMapType</span><span class="p">,</span> \
+    <span class="n">EnumType</span><span class="p">,</span> <span class="n">scalar_type_dispatch_table</span><span class="p">,</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">type_evaluate_dispatch</span><span class="p">,</span> \
+    <span class="n">TemplateMeta</span><span class="p">,</span> <span class="n">ChoiceMeta</span>
+<span class="kn">from</span> <span class="nn">.types_store</span> <span class="kn">import</span> <span class="n">PackageStore</span>
+<span class="kn">from</span> <span class="nn">..util.prim_types</span> <span class="kn">import</span> <span class="n">DEFAULT_TYPE_CONVERTER</span>
+<span class="kn">from</span> <span class="nn">..util.typing</span> <span class="kn">import</span> <span class="n">safe_cast</span><span class="p">,</span> <span class="n">safe_optional_cast</span>
+
+<span class="n">TCommand</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;TCommand&#39;</span><span class="p">)</span>
+<span class="n">TValue</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;TValue&#39;</span><span class="p">)</span>
+
+
+<span class="n">CommandsOrCommandSequence</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Command&#39;</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;Command&#39;</span><span class="p">]]]</span>
+<span class="n">EventHandlerResponse</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">CommandsOrCommandSequence</span><span class="p">,</span> <span class="s1">&#39;CommandBuilder&#39;</span><span class="p">,</span> <span class="s1">&#39;CommandPayload&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Command"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.writing.Command">[docs]</a><span class="k">class</span> <span class="nc">Command</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for write-side commands.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="CreateCommand"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.writing.CreateCommand">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">CreateCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A command that creates a contract without any predecessors.</span>
+
+<span class="sd">    .. attribute:: CreateCommand.template</span>
+
+<span class="sd">        Refers to the type of a template. This can be passed in as a ``str`` to the constructor,</span>
+<span class="sd">        where it assumed to represent the ID or name of a template.</span>
+
+<span class="sd">    .. attribute:: CreateCommand.arguments</span>
+
+<span class="sd">        The arguments to the create (as a ``dict``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;template&#39;</span><span class="p">,</span> <span class="s1">&#39;arguments&#39;</span><span class="p">)</span>
+
+    <span class="n">template</span><span class="p">:</span> <span class="n">Type</span>
+    <span class="n">arguments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="s1">&#39;Union[str, Type]&#39;</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;template&#39;</span><span class="p">,</span> <span class="n">template</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">Type</span><span class="p">)</span>
+                           <span class="k">else</span> <span class="n">UnresolvedTypeReference</span><span class="p">(</span><span class="n">template</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;arguments&#39;</span><span class="p">,</span> <span class="n">arguments</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">())</span>
+
+<div class="viewcode-block" id="CreateCommand.replace"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.writing.CreateCommand.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new :class:`CreateCommand` with the same identifier as this command, but with new</span>
+<span class="sd">        values for its parameters.</span>
+
+<span class="sd">        :param template:</span>
+<span class="sd">            The new value of the `template` field, or `None` to reuse the existing value.</span>
+<span class="sd">        :param arguments:</span>
+<span class="sd">            The new value of the `arguments` field, or `None` to reuse the existing value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">template</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">Type</span><span class="p">)</span> \
+                <span class="k">else</span> <span class="n">UnresolvedTypeReference</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CreateCommand</span><span class="p">(</span>
+            <span class="n">template</span> <span class="k">if</span> <span class="n">template</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">,</span>
+            <span class="n">arguments</span> <span class="k">if</span> <span class="n">arguments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;create </span><span class="si">{self.template}</span><span class="s1"> </span><span class="si">{self.arguments}</span><span class="s1">&gt;&#39;</span></div>
+
+
+<div class="viewcode-block" id="ExerciseCommand"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.writing.ExerciseCommand">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ExerciseCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A command that exercises a choice on a pre-existing contract.</span>
+
+<span class="sd">    .. attribute:: ExerciseCommand.contract</span>
+
+<span class="sd">        The :class:`ContractId` on which a choice is being exercised.</span>
+
+<span class="sd">    .. attribute:: ExerciseCommand.choice</span>
+
+<span class="sd">        Refers to a choice (either a :class:`ChoiceRef` or a :class:`ChoiceMetadata`).</span>
+<span class="sd">        This can be passed in as a ``str`` to the constructor, where it assumed to represent the</span>
+<span class="sd">        name of a choice.</span>
+
+<span class="sd">    .. attribute:: ExerciseCommand.arguments</span>
+
+<span class="sd">        The arguments to the exercise choice (as a ``dict``).</span>
+
+<span class="sd">    Note that when an ``ExerciseCommand`` is created, an additional ``template_id`` parameter can</span>
+<span class="sd">    be supplied to the constructor to aid in disambiguation of the specific choice being invoked.</span>
+<span class="sd">    In some situations involving composite commands, a ``template_id`` must eventually be supplied</span>
+<span class="sd">    before a choice can be exercised. If this ``template_id`` is specified, the ``contract`` and</span>
+<span class="sd">    ``choice`` are both tagged with this ID.</span>
+
+<span class="sd">    Instance methods:</span>
+
+<span class="sd">    .. automethod:: replace</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;contract&#39;</span><span class="p">,</span> <span class="s1">&#39;choice&#39;</span><span class="p">,</span> <span class="s1">&#39;arguments&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">contract</span><span class="p">:</span> <span class="s1">&#39;Union[str, ContractId]&#39;</span><span class="p">,</span>
+            <span class="n">choice</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">template_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">contract</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Untyped ContractId support will be removed with the removal of &#39;</span>
+                          <span class="s1">&#39;the deprecated REST API.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+                <span class="n">contract</span> <span class="o">=</span> <span class="n">ContractId</span><span class="p">(</span><span class="n">contract</span><span class="p">,</span> <span class="n">template_id</span><span class="o">=</span><span class="n">template_id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">template_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;Specifying template_id in an ExerciseChoice is no longer necessary. &#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;Please avoid specifying it, as this parameter will be removed in the future.&#39;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">contract</span><span class="p">,</span> <span class="n">ContractId</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;ContractId expected here&#39;</span><span class="p">)</span>
+
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;contract&#39;</span><span class="p">,</span> <span class="n">contract</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;choice&#39;</span><span class="p">,</span> <span class="n">choice</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;arguments&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span> <span class="k">if</span> <span class="n">arguments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">())</span>
+
+<div class="viewcode-block" id="ExerciseCommand.replace"><a class="viewcode-back" href="../../../dazl.model.html#dazl.model.writing.ExerciseCommand.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new :class:`ExerciseCommand` with the same identifier as this command, but with new</span>
+<span class="sd">        values for its parameters.</span>
+
+<span class="sd">        :param contract:</span>
+<span class="sd">            The new value of the `contract` field, or `None` to reuse the existing value.</span>
+<span class="sd">            The same type coercion rules used in the constructor apply here.</span>
+<span class="sd">        :param choice:</span>
+<span class="sd">            The new value of the `choice` field, or `None` to reuse the existing value.</span>
+<span class="sd">            The same type coercion rules used in the constructor apply here.</span>
+<span class="sd">        :param arguments:</span>
+<span class="sd">            The new value of the `choice` field, or `None` to reuse the existing value.</span>
+<span class="sd">        :param template_id:</span>
+<span class="sd">            The expected template type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ExerciseCommand</span><span class="p">(</span>
+            <span class="n">contract</span> <span class="k">if</span> <span class="n">contract</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">contract</span><span class="p">,</span>
+            <span class="n">choice</span> <span class="k">if</span> <span class="n">choice</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">,</span>
+            <span class="n">arguments</span> <span class="k">if</span> <span class="n">arguments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">,</span>
+            <span class="n">template_id</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;exercise </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s1"> with </span><span class="si">{}</span><span class="s1"> on </span><span class="si">{}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">contract</span><span class="o">.</span><span class="n">contract_id</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contract</span><span class="p">,</span> <span class="s1">&#39;contract_id&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">contract</span><span class="p">)</span></div>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ExerciseByKeyCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="n">template</span><span class="p">:</span> <span class="n">Type</span>
+    <span class="n">contract_key</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">choice</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">choice_argument</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">CreateAndExerciseCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="n">template</span><span class="p">:</span> <span class="n">Type</span>
+    <span class="n">arguments</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="n">choice</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">choice_argument</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">CommandBuilder</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builder class for generating commands to be sent to the ledger.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">coerce</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">atomic_default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;CommandBuilder&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a :class:`CommandBuilder` from the objects that an event handler is allowed to</span>
+<span class="sd">        return.</span>
+
+<span class="sd">        :param obj:</span>
+<span class="sd">        :param atomic_default:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">CommandBuilder</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">obj</span>
+
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">CommandBuilder</span><span class="p">(</span><span class="n">atomic_default</span><span class="o">=</span><span class="n">atomic_default</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">builder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">builder</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atomic_default</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_atomic_default</span> <span class="o">=</span> <span class="n">atomic_default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span> <span class="o">=</span> <span class="p">[[]]</span>  <span class="c1"># type: List[List[Command]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span> <span class="o">=</span> <span class="n">CommandDefaults</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">party</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Party</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">ledger_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">workflow_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">application_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">command_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">party</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_party</span> <span class="o">=</span> <span class="n">party</span>
+        <span class="k">if</span> <span class="n">ledger_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">ledger_id</span> <span class="o">=</span> <span class="n">ledger_id</span>
+        <span class="k">if</span> <span class="n">workflow_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_workflow_id</span> <span class="o">=</span> <span class="n">workflow_id</span>
+        <span class="k">if</span> <span class="n">application_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_application_id</span> <span class="o">=</span> <span class="n">application_id</span>
+        <span class="k">if</span> <span class="n">command_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_command_id</span> <span class="o">=</span> <span class="n">command_id</span>
+
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;CommandBuilder&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">create</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="n">arguments</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">exercise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;CommandBuilder&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">exercise</span><span class="p">(</span><span class="n">contract</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="n">arguments</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">create_and_exercise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">create_arguments</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">,</span> <span class="n">choice_arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="s1">&#39;CommandBuilder&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">create_and_exercise</span><span class="p">(</span>
+            <span class="n">template</span><span class="p">,</span> <span class="n">create_arguments</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">,</span> <span class="n">choice_arguments</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">commands</span><span class="p">:</span> <span class="n">CommandsOrCommandSequence</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;CommandBuilder&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append one or more commands, or list of commands to the :class:`CommandBuilder` in flight.</span>
+<span class="sd">        This method respects the value of ``atomic_default`` that this object was constructed with.</span>
+<span class="sd">        In order to force commands to be submitted either atomically, use :meth:`append_atomically`.</span>
+<span class="sd">        To allow these commands to be submitted in parallel use :meth:`append_nonatomically`.</span>
+
+<span class="sd">        :param commands: One or more commands, or list of commands to be submitted to the ledger.</span>
+<span class="sd">        :return: This object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atomic_default</span><span class="p">:</span>
+            <span class="c1"># a command builder that defaults to being atomic will put all commands in a single</span>
+            <span class="c1"># transaction; build on the very first transaction</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">flatten_command_sequence</span><span class="p">(</span><span class="n">commands</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">append_nonatomically</span><span class="p">(</span><span class="o">*</span><span class="n">commands</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">append_atomically</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">commands</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Command</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Command</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="s1">&#39;CommandBuilder&#39;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">flatten_command_sequence</span><span class="p">(</span><span class="n">commands</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">append_nonatomically</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">commands</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Command</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Command</span><span class="p">]])</span> <span class="o">-&gt;</span> \
+            <span class="s1">&#39;CommandBuilder&#39;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">extend</span><span class="p">([[</span><span class="n">cmd</span><span class="p">]</span> <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">flatten_command_sequence</span><span class="p">(</span><span class="n">commands</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaults</span><span class="p">:</span> <span class="s1">&#39;Optional[CommandDefaults]&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">now</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="s1">&#39;Collection[CommandPayload]&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a collection of commands.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">defaults</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;defaults must currently be specified&#39;</span><span class="p">)</span>
+
+        <span class="n">command_id</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">default_command_id</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_command_id</span> <span class="ow">or</span> \
+            <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">CommandPayload</span><span class="p">(</span>
+            <span class="n">party</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">default_party</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_party</span><span class="p">,</span>
+            <span class="n">ledger_id</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">default_ledger_id</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_ledger_id</span><span class="p">,</span>
+            <span class="n">workflow_id</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">default_workflow_id</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_workflow_id</span><span class="p">,</span>
+            <span class="n">application_id</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">default_application_id</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_application_id</span><span class="p">,</span>
+            <span class="n">command_id</span><span class="o">=</span><span class="n">command_id</span><span class="p">,</span>
+            <span class="n">ledger_effective_time</span><span class="o">=</span><span class="n">now</span><span class="p">,</span>
+            <span class="n">maximum_record_time</span><span class="o">=</span><span class="n">now</span> <span class="o">+</span> <span class="p">(</span><span class="n">defaults</span><span class="o">.</span><span class="n">default_ttl</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="o">.</span><span class="n">default_ttl</span><span class="p">),</span>
+            <span class="n">commands</span><span class="o">=</span><span class="n">commands</span>
+        <span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">commands</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">)</span> <span class="k">if</span> <span class="n">commands</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__format__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">format_spec</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;CommandBuilder(</span><span class="si">{self._commands}</span><span class="s1">)&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">flatten_command_sequence</span><span class="p">(</span><span class="n">commands</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">CommandsOrCommandSequence</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Command</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a list of mixed commands, ``None``, and list of commands into an ordered sequence of</span>
+<span class="sd">    non-``None`` commands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[Command]</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">commands</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Command</span><span class="p">):</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">cmd_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">i</span><span class="p">,),</span> <span class="n">obj</span><span class="p">))</span>
+                    <span class="k">continue</span>
+                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cmd_iter</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">Command</span><span class="p">):</span>
+                        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">cmd</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to interpret some elements as Commands in the list: &#39;</span>
+                         <span class="sa">f</span><span class="s1">&#39;$[</span><span class="si">{index}</span><span class="s1">] = </span><span class="si">{command}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CommandDefaults</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Values to use for a :class:`Command` when no value is specified with the creation of the</span>
+<span class="sd">    command.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_party</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Party</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">default_ledger_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">default_workflow_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">default_application_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">default_command_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">default_ttl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">timedelta</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">CommandPayload</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A request to mutate active state of the ledger.</span>
+
+<span class="sd">    .. attribute:: CommandPayload.party</span>
+<span class="sd">        The party submitting the request.</span>
+<span class="sd">    .. attribute:: CommandPayload.application_id:</span>
+<span class="sd">        An optional application ID to accompany the request.</span>
+<span class="sd">    .. attribute:: CommandPayload.command_id:</span>
+<span class="sd">        A hash that represents the BIM commitment.</span>
+<span class="sd">    .. attribute:: CommandPayload.ledger_effective_time:</span>
+<span class="sd">        The effective time of this command. Should usually be set to ``datetime.now()``, but</span>
+<span class="sd">        may have a different value when the server is operating in static time mode.</span>
+<span class="sd">    .. attribute:: CommandPayload.maximum_record_time:</span>
+<span class="sd">        The maximum time before the client should consider this command expired.</span>
+<span class="sd">    .. attribute:: CommandPayload.commands</span>
+<span class="sd">        A sequence of commands to submit to the ledger. These commands are submitted atomically</span>
+<span class="sd">        (in other words, they all succeed or they all fail).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">party</span><span class="p">:</span> <span class="n">Party</span>
+    <span class="n">ledger_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">workflow_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">application_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">command_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">ledger_effective_time</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">maximum_record_time</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">commands</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Command</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">missing_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">missing_fields</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Some fields are set to None when they are required: &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{missing_fields}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">.types_dynamic</span> <span class="kn">import</span> <span class="n">NamedRecord</span><span class="p">,</span> <span class="n">ProxyMeta</span>
+
+    <span class="n">template_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_type</span><span class="p">,</span> <span class="n">TemplateMeta</span><span class="p">):</span>
+        <span class="c1"># static codegen, instantiated type</span>
+        <span class="k">if</span> <span class="n">arguments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;arguments cannot be specified with an instantiated template&#39;</span><span class="p">)</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">template_type</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">NamedRecord</span><span class="p">):</span>
+        <span class="c1"># dynamic &quot;codegen&quot;, instantiated type</span>
+        <span class="k">if</span> <span class="n">arguments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;arguments cannot be specified with an instantiated template&#39;</span><span class="p">)</span>
+        <span class="n">template</span><span class="p">,</span> <span class="n">arguments</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="o">.</span><span class="n">arguments</span>
+
+    <span class="k">elif</span> <span class="n">template_type</span> <span class="o">==</span> <span class="n">TemplateMeta</span><span class="p">:</span>
+        <span class="c1"># static codegen, non-instantiated</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_type</span><span class="p">,</span> <span class="n">ProxyMeta</span><span class="p">):</span>
+        <span class="c1"># dynamic codegen, non-instantiated</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">template_type</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;template must be a string name, a template type, or an instantiated template&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CreateCommand</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">arguments</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">exercise</span><span class="p">(</span><span class="n">contract</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">.types_dynamic</span> <span class="kn">import</span> <span class="n">NamedRecord</span><span class="p">,</span> <span class="n">ProxyMeta</span>
+
+    <span class="n">choice_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">choice</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choice_type</span><span class="p">,</span> <span class="n">ChoiceMeta</span><span class="p">):</span>
+        <span class="c1"># static codegen, instantiated type</span>
+        <span class="k">if</span> <span class="n">arguments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;arguments cannot be specified with an instantiated template&#39;</span><span class="p">)</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">choice_type</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span> <span class="n">NamedRecord</span><span class="p">):</span>
+        <span class="c1"># dynamic &quot;codegen&quot;, instantiated type</span>
+        <span class="k">if</span> <span class="n">arguments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;arguments cannot be specified with an instantiated template&#39;</span><span class="p">)</span>
+        <span class="n">choice</span><span class="p">,</span> <span class="n">arguments</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">choice</span><span class="o">.</span><span class="n">arguments</span>
+        <span class="n">choice_start_idx</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">choice_start_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">choice</span> <span class="o">=</span> <span class="n">choice</span><span class="p">[</span><span class="n">choice_start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+
+    <span class="k">elif</span> <span class="n">choice_type</span> <span class="o">==</span> <span class="n">ChoiceMeta</span><span class="p">:</span>
+        <span class="c1"># static codegen, non-instantiated</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">choice</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choice_type</span><span class="p">,</span> <span class="n">ProxyMeta</span><span class="p">):</span>
+        <span class="c1"># dynamic codegen, non-instantiated</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">choice_type</span><span class="p">)</span>
+        <span class="n">choice_start_idx</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">choice_start_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">choice</span> <span class="o">=</span> <span class="n">choice</span><span class="p">[</span><span class="n">choice_start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;choice must be a string name, a template type, &#39;</span>
+                         <span class="s1">&#39;or an instantiated template&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ExerciseCommand</span><span class="p">(</span><span class="n">contract</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">arguments</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">exercise_by_key</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">contract_key</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">,</span> <span class="n">choice_argument</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ExerciseByKeyCommand</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">contract_key</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">,</span> <span class="n">choice_argument</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">create_and_exercise</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">create_arguments</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">,</span> <span class="n">choice_argument</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">CreateAndExerciseCommand</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">create_arguments</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">,</span> <span class="n">choice_argument</span><span class="p">)</span>
+
+
+<span class="c1">####################################################################################################</span>
+<span class="c1"># argument iteration support</span>
+<span class="c1">####################################################################################################</span>
+
+
+<span class="k">def</span> <span class="nf">arg_iter</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Produce an iterator that walks over an argument tree and all of its values, recursing into</span>
+<span class="sd">    lists and record/variant fields.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># str is a common case, and it&#39;s also iterable (which we don&#39;t want to exploit here)</span>
+        <span class="k">yield</span> <span class="n">value</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">sub_value</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">sub_value</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">value</span>
+
+
+<span class="k">class</span> <span class="nc">Serializer</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">TCommand</span><span class="p">,</span> <span class="n">TValue</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serializer interface for objects on the write-side of the API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">serialize_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_token</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_value requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="n">Command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TCommand</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_command requires an implementation&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">AbstractSerializer</span><span class="p">(</span><span class="n">Serializer</span><span class="p">[</span><span class="n">TCommand</span><span class="p">,</span> <span class="n">TValue</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation of :class:`Serializer` that helps enforce that all possible cases of type</span>
+<span class="sd">    serialization have been implemented.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store</span><span class="p">:</span> <span class="n">PackageStore</span><span class="p">,</span> <span class="n">type_context</span><span class="p">:</span> <span class="s1">&#39;Optional[TypeEvaluationContext]&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="n">safe_cast</span><span class="p">(</span><span class="n">PackageStore</span><span class="p">,</span> <span class="n">store</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_context</span> <span class="o">=</span> <span class="n">safe_optional_cast</span><span class="p">(</span><span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">type_context</span><span class="p">)</span> <span class="ow">or</span> \
+            <span class="n">DEFAULT_TYPE_CONVERTER</span>
+
+    <span class="k">def</span> <span class="nf">serialize_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">TypeEvaluationContext</span><span class="o">.</span><span class="n">from_store</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize_dispatch</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">tt</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">..util.fmt_py</span> <span class="kn">import</span> <span class="n">python_example_object</span>
+
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Expected something like:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="n">python_example_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">,</span> <span class="n">tt</span><span class="p">)):</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;    </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;But got this instead:&quot;</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;    </span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">serialize_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commands</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Command</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">TCommand</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">serialize_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">serialize_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="n">Command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TCommand</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">CreateCommand</span><span class="p">):</span>
+            <span class="n">tt</span> <span class="o">=</span> <span class="n">_resolve_template_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_value</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">arguments</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_create_command</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">ExerciseCommand</span><span class="p">):</span>
+            <span class="n">template_type_ref</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">contract</span><span class="o">.</span><span class="n">template_id</span>
+            <span class="n">choice_name</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">choice</span>
+            <span class="n">choice_opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">resolve_choice</span><span class="p">(</span><span class="n">template_type_ref</span><span class="p">,</span> <span class="n">choice_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">choice_opts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Could not resolve </span><span class="si">{template_type_ref}</span><span class="s1"> </span><span class="si">{choice_name}</span><span class="s1"> to any valid choices&#39;</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">choice_opts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Could not uniquely resolve </span><span class="si">{template_type_ref}</span><span class="s1"> </span><span class="si">{choice_name}</span><span class="s1"> &#39;</span> \
+                    <span class="sa">f</span><span class="s1">&#39;to a single valid choice&#39;</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">tt</span><span class="p">,</span> <span class="n">choice</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">choice_opts</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_value</span><span class="p">(</span><span class="n">choice</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">arguments</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_exercise_command</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">contract</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">CreateAndExerciseCommand</span><span class="p">):</span>
+            <span class="n">tt</span> <span class="o">=</span> <span class="n">_resolve_template_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
+            <span class="n">create_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_value</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">arguments</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">choice_info</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">resolve_choice</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">choice</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="n">choice_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_value</span><span class="p">(</span><span class="n">choice_info</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">choice_argument</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_create_and_exercise_command</span><span class="p">(</span>
+                <span class="n">tt</span><span class="p">,</span> <span class="n">create_value</span><span class="p">,</span> <span class="n">choice_info</span><span class="p">,</span> <span class="n">choice_args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">ExerciseByKeyCommand</span><span class="p">):</span>
+            <span class="n">template</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">resolve_template</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
+            <span class="n">key_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_value</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">key_type</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">contract_key</span><span class="p">)</span>
+            <span class="n">choices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">resolve_choice</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">choice</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">choice_info</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">choices</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="n">choice_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_value</span><span class="p">(</span><span class="n">choice_info</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">choice_argument</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_exercise_by_key_command</span><span class="p">(</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">data_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key_value</span><span class="p">,</span> <span class="n">choice_info</span><span class="p">,</span> <span class="n">choice_args</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;unknown Command type: </span><span class="si">{command!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_create_command</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">template_type</span><span class="p">:</span> <span class="n">RecordType</span><span class="p">,</span> <span class="n">template_args</span><span class="p">:</span> <span class="n">TValue</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">TCommand</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_create_command requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_exercise_command</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">contract_id</span><span class="p">:</span> <span class="n">ContractId</span><span class="p">,</span> <span class="n">choice_info</span><span class="p">:</span> <span class="n">TemplateChoice</span><span class="p">,</span> <span class="n">choice_args</span><span class="p">:</span> <span class="n">TValue</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">TCommand</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_exercise_command requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_exercise_by_key_command</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">template_ref</span><span class="p">:</span> <span class="n">TypeReference</span><span class="p">,</span> <span class="n">key_arguments</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+            <span class="n">choice_info</span><span class="p">:</span> <span class="n">TemplateChoice</span><span class="p">,</span> <span class="n">choice_arguments</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TCommand</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s1">&#39;serialize_exercise_by_key_command requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_create_and_exercise_command</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">template_type</span><span class="p">:</span> <span class="n">RecordType</span><span class="p">,</span> <span class="n">create_arguments</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+            <span class="n">choice_info</span><span class="p">:</span> <span class="n">TemplateChoice</span><span class="p">,</span> <span class="n">choice_arguments</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TCommand</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s1">&#39;serialize_create_and_exercise_command requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_unit requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_bool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_bool requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_bool requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_bool requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_decimal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_bool requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_party</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_bool requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_bool requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_bool requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_timedelta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_bool requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_contract_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">ContractIdType</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_contract_id requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">OptionalType</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_optional requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">ListType</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_list requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">TextMapType</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_map requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">RecordType</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_record requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_variant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">VariantType</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_variant requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">EnumType</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_enum requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_unsupported</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">UnsupportedType</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;serialize_unsupported requires an implementation&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_serialize_dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TypeEvaluationContext</span><span class="p">,</span> <span class="n">tt</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TValue</span><span class="p">:</span>
+        <span class="n">eval_fn</span> <span class="o">=</span> <span class="n">type_evaluate_dispatch</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">st</span><span class="p">:</span> <span class="n">scalar_type_dispatch_table</span><span class="p">(</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_unit</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_bool</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_text</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_int</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_decimal</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_party</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_date</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_datetime</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_timedelta</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">obj</span><span class="p">))(</span><span class="n">st</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">ct</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_contract_id</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ct</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">ot</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_optional</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ot</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">lt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_list</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">lt</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">mt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_map</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">mt</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">rt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_record</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">rt</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">vt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_variant</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">vt</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">et</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_enum</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">et</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">ut</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize_unsupported</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ut</span><span class="p">,</span> <span class="n">obj</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">eval_fn</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">tt</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_resolve_template_type</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="s1">&#39;PackageStore&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;RecordType&#39;</span><span class="p">:</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">resolve_template_type</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Could not resolve </span><span class="si">{template}</span><span class="s1"> to any valid types&#39;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Could not uniquely resolve </span><span class="si">{template}</span><span class="s1"> to a single valid type&#39;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">tt</span><span class="p">,</span> <span class="o">=</span> <span class="n">candidates</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">RecordType</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;CreateCommand requires a type that is a record (got </span><span class="si">{tt}</span><span class="s1"> instead)&#39;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tt</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">dazl</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../migrating.html">Migrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dazl.html">dazl package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2019, Digital Asset.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
