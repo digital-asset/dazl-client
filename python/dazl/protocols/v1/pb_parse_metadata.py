@@ -212,7 +212,11 @@ def parse_daml_metadata_pb(package_id: str, metadata_pb: Any) -> 'PackageStore':
                     key_type=get_old_type(template_pb.key.type) if template_pb.key is not None else None,
                     choices=[
                         TemplateChoice(
-                            c.name, c.consuming, get_old_type(c.arg_binder.type), c.controllers)
+                            c.name,
+                            c.consuming,
+                            get_old_type(c.arg_binder.type),
+                            get_old_type(c.ret_type),
+                            c.controllers)
                         for c in template_pb.choices],
                     observers=template_pb.observers,
                     signatories=template_pb.signatories,
