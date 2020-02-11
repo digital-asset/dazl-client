@@ -141,7 +141,7 @@ def scalar_type_dispatch_table(
             return on_text()
         elif tt == SCALAR_TYPE_INTEGER:
             return on_int()
-        elif tt == SCALAR_TYPE_DECIMAL:
+        elif tt == SCALAR_TYPE_DECIMAL or tt == SCALAR_TYPE_NUMERIC:
             return on_decimal()
         elif tt == SCALAR_TYPE_PARTY:
             return on_party()
