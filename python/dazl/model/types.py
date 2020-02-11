@@ -692,12 +692,13 @@ class Template:
 
 
 class TemplateChoice:
-    __slots__ = ('name', 'consuming', 'data_type', '_controllers')
+    __slots__ = ('name', 'consuming', 'data_type', 'return_type', '_controllers')
 
-    def __init__(self, name: str, consuming: bool, data_type: Type, controllers: 'Expr'):
+    def __init__(self, name: str, consuming: bool, data_type: Type, return_type: Type, controllers: 'Expr'):
         self.name = name
         self.consuming = consuming
         self.data_type = data_type
+        self.return_type = return_type
         self._controllers = controllers
 
     @property

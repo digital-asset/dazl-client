@@ -98,7 +98,7 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
 
     def contract_exercised_event(self, cid, cdata, event_id, witness_parties,
                                  contract_creating_event_id: str, choice: str, choice_argument: Any,
-                                 acting_parties, consuming, child_event_ids) \
+                                 acting_parties, consuming, child_event_ids, exercise_result) \
             -> ContractExercisedEvent:
         return ContractExercisedEvent(
             client=self.client, party=self.party, time=self.time, ledger_id=self.ledger_id,
@@ -107,7 +107,8 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties,
             contract_creating_event_id=contract_creating_event_id, acting_parties=acting_parties,
             choice=choice, choice_args=choice_argument, consuming=consuming,
-            child_event_ids=child_event_ids)
+            child_event_ids=child_event_ids,
+            exercise_result=exercise_result)
 
     def contract_archived_event(self, cid, cdata, event_id, witness_parties) \
             -> ContractArchiveEvent:
@@ -366,10 +367,11 @@ def to_exercised_event(
     acting_parties = tuple(er.acting_parties)
     consuming = er.consuming
     child_event_ids = er.child_event_ids
+    exercise_result = to_natural_type(tt_context, cc.return_type, er.exercise_result)
 
     return context.contract_exercised_event(
         cid, None, event_id, witness_parties, contract_creating_event_id,
-        choice, choice_args, acting_parties, consuming, child_event_ids)
+        choice, choice_args, acting_parties, consuming, child_event_ids, exercise_result)
 
 
 def to_archived_event(

@@ -145,8 +145,9 @@ class ContractExercisedEvent(ContractEvent):
     choice: str
     choice_args: Any
     acting_parties: Sequence[str]
-    consuming: True
+    consuming: bool
     child_event_ids: Sequence[str]
+    exercise_result: Any
 
 
 @dataclass(frozen=True)
