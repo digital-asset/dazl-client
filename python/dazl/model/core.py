@@ -17,8 +17,6 @@ from typing import Any, Callable, Collection, Dict, List, NewType, Optional, Tup
     Union, TYPE_CHECKING
 from datetime import datetime
 
-from ..util.enum import OrderedEnum
-
 if TYPE_CHECKING:
     from .types import Type
 
@@ -163,14 +161,6 @@ class SourceLocation:
     file_name: str
     start_line: int
     end_line: int
-
-
-class RunLevel(OrderedEnum):
-    RUN_FOREVER = 0
-    RUN_UNTIL_IDLE = 1
-    TERMINATE_GRACEFULLY = 2
-    TERMINATE_IMMEDIATELY = 3
-    STOPPED = 4
 
 
 class DazlError(Exception):

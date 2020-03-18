@@ -11,13 +11,15 @@ from asyncio import gather, get_event_loop, ensure_future
 from datetime import datetime
 from pathlib import Path
 
-from dazl import create, exercise, sandbox, Network
+from dazl import create, exercise, sandbox, Network, setup_default_logger
 
 TEMPLATE_DAML_FILE = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
 
 LOG = logging.getLogger('test_static_time')
 
 PARTY = 'POSTMAN'
+
+setup_default_logger(logging.DEBUG)
 
 
 def test_set_static_time():

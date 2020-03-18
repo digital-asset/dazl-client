@@ -14,7 +14,7 @@ from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credenti
     StatusCode
 
 from ... import LOG
-from .._base import LedgerClient, _LedgerConnection, _LedgerConnectionContext
+from .._base import LedgerClient, _LedgerConnection, LedgerConnectionOptions
 from .grpc_time import maybe_grpc_time_stream
 from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
     to_acs_events, to_transaction_events, BaseEventDeserializationContext
@@ -25,6 +25,7 @@ from ...model.network import HTTPConnectionSettings
 from ...model.reading import BaseEvent, TransactionFilter
 from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
+from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
 
@@ -38,14 +39,14 @@ class GRPCv1LedgerClient(LedgerClient):
     def commands(self, commands: CommandPayload) -> None:
         serializer = self.ledger.serializer
         request = serializer.serialize_command_request(commands)
-        return self.connection.context.run_in_background(
+        return self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request))
 
     async def active_contracts(self) -> 'Sequence[BaseEvent]':
         request = serialize_acs_request(self.ledger.ledger_id, self.party)
         context = BaseEventDeserializationContext(
             None, self.ledger.store, self.party, self.ledger.ledger_id)
-        acs_stream = await self.connection.context.run_in_background(
+        acs_stream = await self.connection.invoker.run_in_executor(
             lambda: self.connection.active_contract_set_service.GetActiveContracts(request))
         acs_events = to_acs_events(context, acs_stream)
         return acs_events
@@ -69,9 +70,9 @@ class GRPCv1LedgerClient(LedgerClient):
                 return
             results_future.set_result(events)
 
-        ts_future = self.connection.context.run_in_background(
+        ts_future = self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetTransactions(request))
-        tst_future = self.connection.context.run_in_background(
+        tst_future = self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetTransactionTrees(request))
         t_fut = gather(ts_future, tst_future)
         t_fut.add_done_callback(on_events_done)
@@ -81,7 +82,7 @@ class GRPCv1LedgerClient(LedgerClient):
     async def events_end(self) -> str:
         from . import model as G
         request = G.GetLedgerEndRequest(ledger_id=self.ledger.ledger_id)
-        return await self.connection.context.run_in_background(
+        return await self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetLedgerEnd(request).offset.absolute)
 
 
@@ -111,7 +112,7 @@ def grpc_upload_package(connection: 'GRPCv1Connection', dar_contents: bytes) -> 
 GRPC_KNOWN_RETRYABLE_ERRORS = ('DNS resolution failed', 'failed to connect to all addresses', 'no healthy upstream')
 
 
-def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
+def grpc_detect_ledger_id(connection: 'GRPCv1Connection') -> str:
     """
     Return the ledger ID from the remote server when it becomes available. This method blocks until
     a ledger ID has been successfully retrieved, or the timeout is reached (in which case an
@@ -119,19 +120,20 @@ def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
     """
     from . import model as G
     from time import sleep
-    LOG.debug("Starting a monitor thread for stubs: %s", stub)
+    LOG.debug("Starting a monitor thread for connection: %s", connection)
 
     start_time = datetime.utcnow()
-    connect_timeout = stub.context.options.connect_timeout
+    connect_timeout = connection.options.connect_timeout
 
     while connect_timeout is None or (datetime.utcnow() - start_time) < connect_timeout:
-        if stub.context.run_state.terminate_requested:
+        if connection.invoker.level >= RunLevel.TERMINATE_GRACEFULLY:
             raise UserTerminateRequest()
-        if stub.closed:
+        if connection.closed:
             raise Exception('connection closed')
 
         try:
-            response = stub.ledger_identity_service.GetLedgerIdentity(G.GetLedgerIdentityRequest())
+            response = connection.ledger_identity_service.GetLedgerIdentity(
+                G.GetLedgerIdentityRequest())
         except RpcError as ex:
             details_str = ex.details()
 
@@ -145,7 +147,8 @@ def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
 
         return response.ledger_id
 
-    raise ConnectionTimeoutError(f'connection timeout exceeded: {connect_timeout.total_seconds()} seconds')
+    raise ConnectionTimeoutError(
+        f'connection timeout exceeded: {connect_timeout.total_seconds()} seconds')
 
 
 def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable[LedgerMetadata]:
@@ -274,10 +277,11 @@ def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
 
 class GRPCv1Connection(_LedgerConnection):
     def __init__(self,
-                 context: _LedgerConnectionContext,
-                 settings: HTTPConnectionSettings,
-                 context_path: Optional[str]):
-        super(GRPCv1Connection, self).__init__(context, settings, context_path)
+                 invoker: 'Invoker',
+                 options: 'LedgerConnectionOptions',
+                 settings: 'HTTPConnectionSettings',
+                 context_path: 'Optional[str]'):
+        super(GRPCv1Connection, self).__init__(invoker, options, settings, context_path)
         from . import model as G
 
         self._closed = Event()

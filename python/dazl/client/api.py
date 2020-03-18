@@ -17,7 +17,6 @@ specific party.
 # for a more concise representation of the various flavors of the API. The unit test
 # ``test_api_consistency.py`` verifies that these implementations are generally in sync with each
 # other the way that the documentation says they are.
-import signal
 from asyncio import get_event_loop
 from contextlib import contextmanager, ExitStack
 from datetime import datetime
@@ -37,12 +36,13 @@ from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
 from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, ContractData, ContractsState, ContractMatch, \
-    ContractContextualData, ContractContextualDataCollection, Party, RunLevel
+    ContractContextualData, ContractContextualDataCollection, Party
 from ..model.ledger import LedgerMetadata
 from ..model.reading import InitEvent, ReadyEvent, ContractCreateEvent, ContractExercisedEvent, \
     ContractArchiveEvent, TransactionStartEvent, TransactionEndEvent, PackagesAddedEvent, EventKey
 from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
+from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
 from ..util.io import get_bytes
 from ..util.prim_types import TimeDeltaConvertible
@@ -50,7 +50,6 @@ from ._events import EventHandler, AEventHandler, EventHandlerDecorator, AEventH
     fluentize
 from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
-from ._run_level import RunState
 
 
 DEFAULT_TIMEOUT_SECONDS = 30
@@ -193,7 +192,7 @@ class Network:
     # <editor-fold desc="Daemon thread-based scheduling API">
 
     def start_in_background(
-            self, daemon: bool = True, install_signal_handlers: Optional[bool] = None) -> None:
+            self, daemon: bool = True, install_signal_handlers: 'Optional[bool]' = None) -> None:
         """
         Connect to the ledger in a background thread.
 
@@ -201,24 +200,9 @@ class Network:
         are allowed, and operations on instances of :class:`AIOPartyClient` are allowed as long as
         they are made from the correct thread.
         """
-        if install_signal_handlers is None:
-            if current_thread() is main_thread():
-                install_signal_handlers = True
-        elif install_signal_handlers:
-            if current_thread() is not main_thread():
-                raise RuntimeError('tried to install signal handlers when not on the main thread')
-
-        run_state = RunState(RunLevel.RUN_FOREVER)
-        if install_signal_handlers:
-            # the main loop will be run from a background thread, so do NOT use asyncio directly
-            try:
-                signal.signal(signal.SIGINT, lambda *_: self._impl.shutdown())
-                signal.signal(signal.SIGQUIT, lambda *_: self._impl.abort())
-            except (NotImplementedError, AttributeError, ValueError):
-                # SIGINIT and SIGQUIT handlers are not supported on Windows.
-                pass
-
-        return self._impl.start(run_state, daemon)
+        if validate_install_signal_handlers(install_signal_handlers):
+            self._impl.invoker.install_signal_handlers()
+        return self._impl.start(daemon)
 
     def shutdown(self) -> None:
         """
@@ -242,27 +226,6 @@ class Network:
 
     # <editor-fold desc="asyncio-based scheduling API">
 
-    def _run(self, initial_run_level, *coroutines: 'Awaitable[None]',
-             install_signal_handlers: 'Optional[bool]' = None) -> None:
-        if install_signal_handlers is None:
-            if current_thread() is main_thread():
-                install_signal_handlers = True
-        elif install_signal_handlers:
-            if current_thread() is not main_thread():
-                raise RuntimeError('tried to install signal handlers when not on the main thread')
-
-        run_state = RunState(initial_run_level)
-        loop = get_event_loop()
-        if install_signal_handlers:
-            try:
-                loop.add_signal_handler(signal.SIGINT, run_state.handle_sigint)
-                loop.add_signal_handler(signal.SIGQUIT, run_state.handle_sigquit)
-            except (NotImplementedError, AttributeError, ValueError):
-                # SIGINT and SIGQUIT are not supported on Windows.
-                pass
-
-        loop.run_until_complete(self.aio_run(*coroutines, run_state=run_state))
-
     def run_until_complete(
             self, *coroutines: 'Awaitable[None]',
             install_signal_handlers: 'Optional[bool]' = None) \
@@ -281,8 +244,11 @@ class Network:
             handlers only when called from the main thread (default). If signal handlers are
             requested to be installed and the thread is NOT the main thread, this method throws.
         """
-        self._run(RunLevel.RUN_UNTIL_IDLE, *coroutines,
-                  install_signal_handlers=install_signal_handlers)
+        self._impl.invoker.level = RunLevel.RUN_UNTIL_IDLE
+        self._impl.invoker.loop = get_event_loop()
+        if validate_install_signal_handlers(install_signal_handlers):
+            self._impl.invoker.install_signal_handlers()
+        self._impl.invoker.loop.run_until_complete(self.aio_run(*coroutines))
         LOG.info('The internal run_until_complete event loop has now completed.')
 
     def run_forever(
@@ -294,11 +260,13 @@ class Network:
         terminates when :meth:`shutdown` is called AND all active command submissions and event
         handlers' follow-ups have successfully returned.
         """
-        self._run(RunLevel.RUN_FOREVER, *coroutines,
-                  install_signal_handlers=install_signal_handlers)
+        self._impl.invoker.loop = get_event_loop()
+        if validate_install_signal_handlers(install_signal_handlers):
+            self._impl.invoker.install_signal_handlers()
+        self._impl.invoker.loop.run_until_complete(self.aio_run(*coroutines))
         LOG.info('The internal run_forever event loop has been shut down.')
 
-    async def aio_run(self, *coroutines, run_state: 'Optional[RunState]' = None) -> None:
+    async def aio_run(self, *coroutines, keep_open: bool = True) -> None:
         """
         Coroutine where all network activity is scheduled from. This coroutine exits when
         :meth:`shutdown` is called, and can be used directly as an asyncio-native alternative to
@@ -309,7 +277,9 @@ class Network:
         :meth:`run_forever` if you can block the current thread, or :meth:`start_in_background`
         with :meth:`join` if you wish to run the entire client on background threads.
         """
-        await self._impl.aio_run(*coroutines, run_state=run_state)
+        if not keep_open:
+            self._impl.invoker.level = RunLevel.RUN_UNTIL_IDLE
+        await self._impl.aio_run(*coroutines)
         LOG.info('The aio_run coroutine has completed.')
 
     # </editor-fold>
@@ -391,7 +361,7 @@ class SimpleGlobalClient(GlobalClient):
         :param timeout: The maximum length of time to wait before giving up.
         """
         raw_bytes = get_bytes(contents)
-        return self._impl.run_in_loop_threadsafe(
+        return self._impl.invoker.run_in_loop(
             lambda: self._impl.upload_package(raw_bytes, timeout))
 
     def ensure_packages(
@@ -405,7 +375,7 @@ class SimpleGlobalClient(GlobalClient):
         :param package_ids: The set of package IDs to check for.
         :param timeout: The maximum length of time to wait before giving up.
         """
-        return self._impl.run_in_loop_threadsafe(
+        return self._impl.invoker.run_in_loop(
             lambda: self._impl.ensure_package_ids(package_ids, timeout))
 
     def metadata(self, timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) \
@@ -416,10 +386,10 @@ class SimpleGlobalClient(GlobalClient):
         return self._impl.simple_metadata(timeout)
 
     def get_time(self) -> datetime:
-        return self._impl.run_in_loop_threadsafe(self._impl.get_time)
+        return self._impl.invoker.run_in_loop(self._impl.get_time)
 
     def set_time(self, new_datetime: datetime) -> None:
-        self._impl.run_in_loop_threadsafe(lambda: self._impl.set_time(new_datetime))
+        self._impl.invoker.run_in_loop(lambda: self._impl.set_time(new_datetime))
 
 
 class PartyClient:
@@ -1446,7 +1416,7 @@ class SimplePartyClient(PartyClient):
         """
         # TODO: Improve on this implementation; this spin loop is unnecessarily ugly
         from time import sleep
-        while self._impl.invoker.get_loop() is None:
+        while self._impl.invoker.loop is None:
             sleep(0.1)
 
         LOG.debug('Waiting for the underlying implementation to be ready...')
