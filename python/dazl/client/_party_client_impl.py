@@ -26,8 +26,7 @@ from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEven
     InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from ..protocols import LedgerNetwork, LedgerClient
-from ..util.asyncio_util import ServiceQueue, await_then, completed, safe_create_future, \
-    named_gather
+from ..util.asyncio_util import ServiceQueue, await_then, completed, named_gather
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast
 
@@ -51,10 +50,10 @@ class _PartyClientImpl:
         self._pool = None  # type: Optional[LedgerNetwork]
         self._pool_fut = None  # type: Optional[Awaitable[LedgerNetwork]]
         self._client_fut = None  # type: Optional[Awaitable[LedgerClient]]
-        self._ready_fut = safe_create_future()
+        self._ready_fut = self.invoker.create_future()
         self._known_packages = set()  # type: Set[str]
 
-        self._acs = ActiveContractSet()
+        self._acs = ActiveContractSet(self.invoker)
         self.bots = BotCollection(party)
         self._reader = _PartyClientReaderState()
         self._writer = _PartyClientWriterState()

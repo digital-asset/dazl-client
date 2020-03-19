@@ -8,14 +8,13 @@ import sys
 import threading
 
 from asyncio import ensure_future, gather, get_event_loop, new_event_loop, \
-    AbstractEventLoop, AbstractEventLoopPolicy, CancelledError, Future, InvalidStateError, QueueEmpty
-from concurrent.futures import Executor, ThreadPoolExecutor
+    AbstractEventLoop, AbstractEventLoopPolicy, CancelledError, Future, InvalidStateError
 from dataclasses import dataclass
 from functools import partial, wraps
 from inspect import isawaitable, iscoroutinefunction
 from queue import Queue
 from typing import Any, Awaitable, Callable, Generator, Generic, Iterable, List, Optional, \
-    Sequence, TypeVar, Union, cast, overload
+    Sequence, TypeVar, Union
 
 from .. import LOG
 from .prim_types import to_timedelta, TimeDeltaConvertible
@@ -26,6 +25,7 @@ U = TypeVar('U')
 _PENDING = 'PENDING'
 _CANCELLED = 'CANCELLED'
 _FINISHED = 'FINISHED'
+
 
 
 def non_reentrant(async_fn):
@@ -734,68 +734,4 @@ class UnsettableEventLoopPolicy(AbstractEventLoopPolicy):
 
     def set_child_watcher(self, watcher: Any) -> None:
         raise Exception('set_child_watcher')
-
-
-class Invoker:
-    """
-    A generally thread-safe invoker that aids in coordination between event-loop driven events and
-    background thread events.
-    """
-    def __init__(self):
-        self._loop = None  # type: Optional[AbstractEventLoop]
-        self._executor = None  # type: Optional[Executor]
-
-    def set_context_as_current(self) -> None:
-        """
-        Adopt the current event loop as the loop for this :class:`Invoker`, and additionally define
-        a default executor if one has not yet been set.
-        """
-        self._loop = get_event_loop()
-        self._executor = ThreadPoolExecutor()
-
-    def get_loop(self) -> Optional[AbstractEventLoop]:
-        return self._loop
-
-    def set_loop(self, loop):
-        self._loop = loop
-
-    def get_executor(self) -> Optional[Executor]:
-        return self._executor
-
-    def set_executor(self, executor):
-        self._executor = executor
-
-    @overload
-    def run_in_loop(self, func: Callable[[], Awaitable[None]], timeout: float = 30) -> None: ...
-
-    @overload
-    def run_in_loop(self, func: Callable[[], None], timeout: float = 30) -> None: ...
-
-    @overload
-    def run_in_loop(self, func: Callable[[], Awaitable[T]], timeout: float = 30) -> T: ...
-
-    @overload
-    def run_in_loop(self, func: Callable[[], T], timeout: float = 30) -> T: ...
-
-    def run_in_loop(self, func, timeout: float = 30.0):
-        """
-        Schedule a normal function or coroutine function to be run on the event loop, and block
-        until the function has returned.
-        """
-        # TODO: the awful awful witchcraft required to remove these checks
-        if self._loop is None:
-            raise InvalidStateError('loop must be set before calling these methods')
-        return execute_in_loop(self._loop, func, timeout=timeout)
-
-    def run_in_executor(self, func: 'Callable[[], T]') -> Awaitable[T]:
-        """
-        Schedule a normal function to be run on a background thread, and yield until the function
-        has returned.
-        """
-        # TODO: the awful awful witchcraft required to remove these checks
-        if self._loop is None or self._executor is None:
-            raise InvalidStateError('loop must be set before calling these methods')
-
-        # for some reason, PyCharm doesn't seem to like this type so make an explicit cast
-        return cast(Awaitable[T], self._loop.run_in_executor(self._executor, func))
 
