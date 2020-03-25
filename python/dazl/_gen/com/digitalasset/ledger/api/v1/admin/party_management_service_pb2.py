@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.digitalasset.ledger.api.v1.admin',
   syntax='proto3',
   serialized_options=_b('\n$com.digitalasset.ledger.api.v1.adminB PartyManagementServiceOuterClass\252\002$Com.DigitalAsset.Ledger.Api.V1.Admin'),
-  serialized_pb=_b('\nCcom/digitalasset/ledger/api/v1/admin/party_management_service.proto\x12$com.digitalasset.ledger.api.v1.admin\"\x19\n\x17GetParticipantIdRequest\"2\n\x18GetParticipantIdResponse\x12\x16\n\x0eparticipant_id\x18\x01 \x01(\t\"\x19\n\x17ListKnownPartiesRequest\"e\n\x18ListKnownPartiesResponse\x12I\n\rparty_details\x18\x01 \x03(\x0b\x32\x32.com.digitalasset.ledger.api.v1.admin.PartyDetails\"E\n\x0cPartyDetails\x12\r\n\x05party\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x10\n\x08is_local\x18\x03 \x01(\x08\"C\n\x14\x41llocatePartyRequest\x12\x15\n\rparty_id_hint\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\"b\n\x15\x41llocatePartyResponse\x12I\n\rparty_details\x18\x01 \x01(\x0b\x32\x32.com.digitalasset.ledger.api.v1.admin.PartyDetails2\xcb\x03\n\x16PartyManagementService\x12\x91\x01\n\x10GetParticipantId\x12=.com.digitalasset.ledger.api.v1.admin.GetParticipantIdRequest\x1a>.com.digitalasset.ledger.api.v1.admin.GetParticipantIdResponse\x12\x91\x01\n\x10ListKnownParties\x12=.com.digitalasset.ledger.api.v1.admin.ListKnownPartiesRequest\x1a>.com.digitalasset.ledger.api.v1.admin.ListKnownPartiesResponse\x12\x88\x01\n\rAllocateParty\x12:.com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest\x1a;.com.digitalasset.ledger.api.v1.admin.AllocatePartyResponseBo\n$com.digitalasset.ledger.api.v1.adminB PartyManagementServiceOuterClass\xaa\x02$Com.DigitalAsset.Ledger.Api.V1.Adminb\x06proto3')
+  serialized_pb=_b('\nCcom/digitalasset/ledger/api/v1/admin/party_management_service.proto\x12$com.digitalasset.ledger.api.v1.admin\"\x19\n\x17GetParticipantIdRequest\"2\n\x18GetParticipantIdResponse\x12\x16\n\x0eparticipant_id\x18\x01 \x01(\t\"$\n\x11GetPartiesRequest\x12\x0f\n\x07parties\x18\x01 \x03(\t\"_\n\x12GetPartiesResponse\x12I\n\rparty_details\x18\x01 \x03(\x0b\x32\x32.com.digitalasset.ledger.api.v1.admin.PartyDetails\"\x19\n\x17ListKnownPartiesRequest\"e\n\x18ListKnownPartiesResponse\x12I\n\rparty_details\x18\x01 \x03(\x0b\x32\x32.com.digitalasset.ledger.api.v1.admin.PartyDetails\"C\n\x14\x41llocatePartyRequest\x12\x15\n\rparty_id_hint\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\"b\n\x15\x41llocatePartyResponse\x12I\n\rparty_details\x18\x01 \x01(\x0b\x32\x32.com.digitalasset.ledger.api.v1.admin.PartyDetails\"E\n\x0cPartyDetails\x12\r\n\x05party\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x10\n\x08is_local\x18\x03 \x01(\x08\x32\xcc\x04\n\x16PartyManagementService\x12\x91\x01\n\x10GetParticipantId\x12=.com.digitalasset.ledger.api.v1.admin.GetParticipantIdRequest\x1a>.com.digitalasset.ledger.api.v1.admin.GetParticipantIdResponse\x12\x7f\n\nGetParties\x12\x37.com.digitalasset.ledger.api.v1.admin.GetPartiesRequest\x1a\x38.com.digitalasset.ledger.api.v1.admin.GetPartiesResponse\x12\x91\x01\n\x10ListKnownParties\x12=.com.digitalasset.ledger.api.v1.admin.ListKnownPartiesRequest\x1a>.com.digitalasset.ledger.api.v1.admin.ListKnownPartiesResponse\x12\x88\x01\n\rAllocateParty\x12:.com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest\x1a;.com.digitalasset.ledger.api.v1.admin.AllocatePartyResponseBo\n$com.digitalasset.ledger.api.v1.adminB PartyManagementServiceOuterClass\xaa\x02$Com.DigitalAsset.Ledger.Api.V1.Adminb\x06proto3')
 )
 
 
@@ -83,6 +83,68 @@ _GETPARTICIPANTIDRESPONSE = _descriptor.Descriptor(
 )
 
 
+_GETPARTIESREQUEST = _descriptor.Descriptor(
+  name='GetPartiesRequest',
+  full_name='com.digitalasset.ledger.api.v1.admin.GetPartiesRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parties', full_name='com.digitalasset.ledger.api.v1.admin.GetPartiesRequest.parties', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=188,
+  serialized_end=224,
+)
+
+
+_GETPARTIESRESPONSE = _descriptor.Descriptor(
+  name='GetPartiesResponse',
+  full_name='com.digitalasset.ledger.api.v1.admin.GetPartiesResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='party_details', full_name='com.digitalasset.ledger.api.v1.admin.GetPartiesResponse.party_details', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=226,
+  serialized_end=321,
+)
+
+
 _LISTKNOWNPARTIESREQUEST = _descriptor.Descriptor(
   name='ListKnownPartiesRequest',
   full_name='com.digitalasset.ledger.api.v1.admin.ListKnownPartiesRequest',
@@ -102,8 +164,8 @@ _LISTKNOWNPARTIESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=188,
-  serialized_end=213,
+  serialized_start=323,
+  serialized_end=348,
 )
 
 
@@ -133,8 +195,77 @@ _LISTKNOWNPARTIESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=215,
-  serialized_end=316,
+  serialized_start=350,
+  serialized_end=451,
+)
+
+
+_ALLOCATEPARTYREQUEST = _descriptor.Descriptor(
+  name='AllocatePartyRequest',
+  full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='party_id_hint', full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest.party_id_hint', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='display_name', full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest.display_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=453,
+  serialized_end=520,
+)
+
+
+_ALLOCATEPARTYRESPONSE = _descriptor.Descriptor(
+  name='AllocatePartyResponse',
+  full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='party_details', full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyResponse.party_details', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=522,
+  serialized_end=620,
 )
 
 
@@ -178,88 +309,22 @@ _PARTYDETAILS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=318,
-  serialized_end=387,
+  serialized_start=622,
+  serialized_end=691,
 )
 
-
-_ALLOCATEPARTYREQUEST = _descriptor.Descriptor(
-  name='AllocatePartyRequest',
-  full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='party_id_hint', full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest.party_id_hint', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='display_name', full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyRequest.display_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=389,
-  serialized_end=456,
-)
-
-
-_ALLOCATEPARTYRESPONSE = _descriptor.Descriptor(
-  name='AllocatePartyResponse',
-  full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='party_details', full_name='com.digitalasset.ledger.api.v1.admin.AllocatePartyResponse.party_details', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=458,
-  serialized_end=556,
-)
-
+_GETPARTIESRESPONSE.fields_by_name['party_details'].message_type = _PARTYDETAILS
 _LISTKNOWNPARTIESRESPONSE.fields_by_name['party_details'].message_type = _PARTYDETAILS
 _ALLOCATEPARTYRESPONSE.fields_by_name['party_details'].message_type = _PARTYDETAILS
 DESCRIPTOR.message_types_by_name['GetParticipantIdRequest'] = _GETPARTICIPANTIDREQUEST
 DESCRIPTOR.message_types_by_name['GetParticipantIdResponse'] = _GETPARTICIPANTIDRESPONSE
+DESCRIPTOR.message_types_by_name['GetPartiesRequest'] = _GETPARTIESREQUEST
+DESCRIPTOR.message_types_by_name['GetPartiesResponse'] = _GETPARTIESRESPONSE
 DESCRIPTOR.message_types_by_name['ListKnownPartiesRequest'] = _LISTKNOWNPARTIESREQUEST
 DESCRIPTOR.message_types_by_name['ListKnownPartiesResponse'] = _LISTKNOWNPARTIESRESPONSE
-DESCRIPTOR.message_types_by_name['PartyDetails'] = _PARTYDETAILS
 DESCRIPTOR.message_types_by_name['AllocatePartyRequest'] = _ALLOCATEPARTYREQUEST
 DESCRIPTOR.message_types_by_name['AllocatePartyResponse'] = _ALLOCATEPARTYRESPONSE
+DESCRIPTOR.message_types_by_name['PartyDetails'] = _PARTYDETAILS
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 GetParticipantIdRequest = _reflection.GeneratedProtocolMessageType('GetParticipantIdRequest', (_message.Message,), {
@@ -276,6 +341,20 @@ GetParticipantIdResponse = _reflection.GeneratedProtocolMessageType('GetParticip
   })
 _sym_db.RegisterMessage(GetParticipantIdResponse)
 
+GetPartiesRequest = _reflection.GeneratedProtocolMessageType('GetPartiesRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETPARTIESREQUEST,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+  # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.GetPartiesRequest)
+  })
+_sym_db.RegisterMessage(GetPartiesRequest)
+
+GetPartiesResponse = _reflection.GeneratedProtocolMessageType('GetPartiesResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETPARTIESRESPONSE,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+  # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.GetPartiesResponse)
+  })
+_sym_db.RegisterMessage(GetPartiesResponse)
+
 ListKnownPartiesRequest = _reflection.GeneratedProtocolMessageType('ListKnownPartiesRequest', (_message.Message,), {
   'DESCRIPTOR' : _LISTKNOWNPARTIESREQUEST,
   '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
@@ -289,13 +368,6 @@ ListKnownPartiesResponse = _reflection.GeneratedProtocolMessageType('ListKnownPa
   # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.ListKnownPartiesResponse)
   })
 _sym_db.RegisterMessage(ListKnownPartiesResponse)
-
-PartyDetails = _reflection.GeneratedProtocolMessageType('PartyDetails', (_message.Message,), {
-  'DESCRIPTOR' : _PARTYDETAILS,
-  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.PartyDetails)
-  })
-_sym_db.RegisterMessage(PartyDetails)
 
 AllocatePartyRequest = _reflection.GeneratedProtocolMessageType('AllocatePartyRequest', (_message.Message,), {
   'DESCRIPTOR' : _ALLOCATEPARTYREQUEST,
@@ -311,6 +383,13 @@ AllocatePartyResponse = _reflection.GeneratedProtocolMessageType('AllocatePartyR
   })
 _sym_db.RegisterMessage(AllocatePartyResponse)
 
+PartyDetails = _reflection.GeneratedProtocolMessageType('PartyDetails', (_message.Message,), {
+  'DESCRIPTOR' : _PARTYDETAILS,
+  '__module__' : 'com.digitalasset.ledger.api.v1.admin.party_management_service_pb2'
+  # @@protoc_insertion_point(class_scope:com.digitalasset.ledger.api.v1.admin.PartyDetails)
+  })
+_sym_db.RegisterMessage(PartyDetails)
+
 
 DESCRIPTOR._options = None
 
@@ -320,8 +399,8 @@ _PARTYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=559,
-  serialized_end=1018,
+  serialized_start=694,
+  serialized_end=1282,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetParticipantId',
@@ -333,9 +412,18 @@ _PARTYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
+    name='GetParties',
+    full_name='com.digitalasset.ledger.api.v1.admin.PartyManagementService.GetParties',
+    index=1,
+    containing_service=None,
+    input_type=_GETPARTIESREQUEST,
+    output_type=_GETPARTIESRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
     name='ListKnownParties',
     full_name='com.digitalasset.ledger.api.v1.admin.PartyManagementService.ListKnownParties',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_LISTKNOWNPARTIESREQUEST,
     output_type=_LISTKNOWNPARTIESRESPONSE,
@@ -344,7 +432,7 @@ _PARTYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='AllocateParty',
     full_name='com.digitalasset.ledger.api.v1.admin.PartyManagementService.AllocateParty',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_ALLOCATEPARTYREQUEST,
     output_type=_ALLOCATEPARTYRESPONSE,

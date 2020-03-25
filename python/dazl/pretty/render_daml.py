@@ -293,6 +293,7 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 var=self.visit_type_var,
                 con=self.visit_type_con,
                 prim=self.visit_type_prim,
+                tysyn=self.visit_type_syn,
                 forall=self.visit_type_forall,
                 tuple=self.visit_type_tuple,
                 nat=self.visit_type_nat)

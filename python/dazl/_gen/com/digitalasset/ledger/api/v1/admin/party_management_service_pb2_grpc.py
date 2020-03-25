@@ -32,6 +32,11 @@ class PartyManagementServiceStub(object):
         request_serializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.GetParticipantIdRequest.SerializeToString,
         response_deserializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.GetParticipantIdResponse.FromString,
         )
+    self.GetParties = channel.unary_unary(
+        '/com.digitalasset.ledger.api.v1.admin.PartyManagementService/GetParties',
+        request_serializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.GetPartiesRequest.SerializeToString,
+        response_deserializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.GetPartiesResponse.FromString,
+        )
     self.ListKnownParties = channel.unary_unary(
         '/com.digitalasset.ledger.api.v1.admin.PartyManagementService/ListKnownParties',
         request_serializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.ListKnownPartiesRequest.SerializeToString,
@@ -67,6 +72,15 @@ class PartyManagementServiceServicer(object):
     daml-on-sql: returns an identifier supplied on command line at launch time
     daml-on-kv-ledger: as above
     canton: returns globally unique identifier of the backing participant
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def GetParties(self, request, context):
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
+    This request will always succeed.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -112,6 +126,11 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
           servicer.GetParticipantId,
           request_deserializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.GetParticipantIdRequest.FromString,
           response_serializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.GetParticipantIdResponse.SerializeToString,
+      ),
+      'GetParties': grpc.unary_unary_rpc_method_handler(
+          servicer.GetParties,
+          request_deserializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.GetPartiesRequest.FromString,
+          response_serializer=com_dot_digitalasset_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.GetPartiesResponse.SerializeToString,
       ),
       'ListKnownParties': grpc.unary_unary_rpc_method_handler(
           servicer.ListKnownParties,

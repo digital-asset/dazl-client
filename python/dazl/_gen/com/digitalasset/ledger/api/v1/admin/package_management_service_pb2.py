@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.digitalasset.ledger.api.v1.admin',
   syntax='proto3',
   serialized_options=_b('\n$com.digitalasset.ledger.api.v1.adminB\"PackageManagementServiceOuterClass\252\002$Com.DigitalAsset.Ledger.Api.V1.Admin'),
-  serialized_pb=_b('\nEcom/digitalasset/ledger/api/v1/admin/package_management_service.proto\x12$com.digitalasset.ledger.api.v1.admin\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1a\n\x18ListKnownPackagesRequest\"j\n\x19ListKnownPackagesResponse\x12M\n\x0fpackage_details\x18\x01 \x03(\x0b\x32\x34.com.digitalasset.ledger.api.v1.admin.PackageDetails\"\x87\x01\n\x0ePackageDetails\x12\x12\n\npackage_id\x18\x01 \x01(\t\x12\x14\n\x0cpackage_size\x18\x02 \x01(\x04\x12/\n\x0bknown_since\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12source_description\x18\x04 \x01(\t\"(\n\x14UploadDarFileRequest\x12\x10\n\x08\x64\x61r_file\x18\x01 \x01(\x0c\"\x17\n\x15UploadDarFileResponse2\xbc\x02\n\x18PackageManagementService\x12\x94\x01\n\x11ListKnownPackages\x12>.com.digitalasset.ledger.api.v1.admin.ListKnownPackagesRequest\x1a?.com.digitalasset.ledger.api.v1.admin.ListKnownPackagesResponse\x12\x88\x01\n\rUploadDarFile\x12:.com.digitalasset.ledger.api.v1.admin.UploadDarFileRequest\x1a;.com.digitalasset.ledger.api.v1.admin.UploadDarFileResponseBq\n$com.digitalasset.ledger.api.v1.adminB\"PackageManagementServiceOuterClass\xaa\x02$Com.DigitalAsset.Ledger.Api.V1.Adminb\x06proto3')
+  serialized_pb=_b('\nEcom/digitalasset/ledger/api/v1/admin/package_management_service.proto\x12$com.digitalasset.ledger.api.v1.admin\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1a\n\x18ListKnownPackagesRequest\"j\n\x19ListKnownPackagesResponse\x12M\n\x0fpackage_details\x18\x01 \x03(\x0b\x32\x34.com.digitalasset.ledger.api.v1.admin.PackageDetails\"\x87\x01\n\x0ePackageDetails\x12\x12\n\npackage_id\x18\x01 \x01(\t\x12\x14\n\x0cpackage_size\x18\x02 \x01(\x04\x12/\n\x0bknown_since\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12source_description\x18\x04 \x01(\t\"?\n\x14UploadDarFileRequest\x12\x10\n\x08\x64\x61r_file\x18\x01 \x01(\x0c\x12\x15\n\rsubmission_id\x18\x02 \x01(\t\"\x17\n\x15UploadDarFileResponse2\xbc\x02\n\x18PackageManagementService\x12\x94\x01\n\x11ListKnownPackages\x12>.com.digitalasset.ledger.api.v1.admin.ListKnownPackagesRequest\x1a?.com.digitalasset.ledger.api.v1.admin.ListKnownPackagesResponse\x12\x88\x01\n\rUploadDarFile\x12:.com.digitalasset.ledger.api.v1.admin.UploadDarFileRequest\x1a;.com.digitalasset.ledger.api.v1.admin.UploadDarFileResponseBq\n$com.digitalasset.ledger.api.v1.adminB\"PackageManagementServiceOuterClass\xaa\x02$Com.DigitalAsset.Ledger.Api.V1.Adminb\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -151,6 +151,13 @@ _UPLOADDARFILEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='submission_id', full_name='com.digitalasset.ledger.api.v1.admin.UploadDarFileRequest.submission_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -164,7 +171,7 @@ _UPLOADDARFILEREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=418,
-  serialized_end=458,
+  serialized_end=481,
 )
 
 
@@ -187,8 +194,8 @@ _UPLOADDARFILERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=460,
-  serialized_end=483,
+  serialized_start=483,
+  serialized_end=506,
 )
 
 _LISTKNOWNPACKAGESRESPONSE.fields_by_name['package_details'].message_type = _PACKAGEDETAILS
@@ -244,8 +251,8 @@ _PACKAGEMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=486,
-  serialized_end=802,
+  serialized_start=509,
+  serialized_end=825,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListKnownPackages',
