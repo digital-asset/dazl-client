@@ -1,0 +1,32 @@
+{{define "parseDottedName"}}
+	switch message.Name.(type) {
+	case *pb.TypeConName_NameDname:
+		if name, err = DecodeDottedName(ctx, message.GetNameDname()); err != nil {
+			return nil, err
+		}
+	case *pb.TypeConName_NameInternedDname:
+		name = ctx.InternedDottedName(message.GetNameInternedDname())
+	default:
+		return nil, ctx.ParseError(fmt.Sprintf("unknown sum type for TypeConName.Name: %", message.Name))
+	}
+{{end}}
+
+package damlast
+
+import (
+    pb "github.com/digital-asset/dazl/go/gen/com/daml/daml_lf_dev"
+)
+
+{{range .Messages}}
+
+{{if .BuiltIn}}
+{{else}}
+
+func Decode{{.GoName}}(ctx *DecodeContext, message *pb.{{.GoName}}) ({{.GoName}}, error) {
+{{range .Fields}}    var {{.GoLocalName}} {{.Type.GoName}}
+{{end}}
+    return New{{.GoName}}({{range $i, $f := .Fields}}{{if gt $i 0}}, {{end}}{{$f.GoLocalName}}{{end}})
+}
+
+{{end}}
+{{end}}

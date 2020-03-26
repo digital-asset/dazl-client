@@ -1,0 +1,54 @@
+{{define "constructor"}}
+
+
+{{end}}
+
+package damlast
+
+{{range .Enums}}
+type {{.GoName}} int32
+{{$enumName := .GoName }}
+const (
+{{range .Values}}
+    {{.GoName}} {{ $enumName }} = {{.Value}}
+{{end}}
+)
+{{end}}
+
+{{range $_, $message := .Messages}}
+
+{{if $message.BuiltIn}}
+{{else}}
+type {{$message.GoName}} interface {
+{{range $message.Fields}}    {{.GoName}}() {{.Type.GoName}}
+{{end}}
+}
+
+{{if $message.HasCases}}
+{{range $message.Cases}}
+func New{{.GoName}}({{range $i, $f := .Fields}}{{if gt $i 0}}, {{end}}{{$f.GoLocalName}} {{$f.Type.GoName}}{{end}}) ({{.GoName}}, error) {
+}
+{{end}}
+{{else}}
+// Fields for message {{$message.Name}}
+type {{$message.GoLocalName}} struct {
+{{range $message.Fields}}    {{.GoLocalName}} {{.Type.GoName}}
+{{end}}
+}
+
+{{range $message.Fields}}
+func (obj {{$message.GoLocalName}}) {{.GoName}}() {{.Type.GoName}} {
+    return obj.{{.GoLocalName}}
+}
+{{end}}
+
+func New{{$message.GoName}}({{range $i, $f := $message.Fields}}{{if gt $i 0}}, {{end}}{{$f.GoLocalName}} {{$f.Type.GoName}}{{end}}) ({{.GoName}}, error) {
+    return {{.GoLocalName}}{
+{{range $message.Fields}}    {{.GoLocalName}}: {{.GoLocalName}},
+{{end}}
+    }, nil
+}
+{{end}}
+{{end}}
+
+{{end}}

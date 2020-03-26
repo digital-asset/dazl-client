@@ -256,9 +256,10 @@ class ProtobufManifest:
         paths = []
 
         for line in buf:
-            if not line.startswith("#"):
-                k, _, p = line.rstrip().partition(" ")
-                if k == "version":
+            if not line.startswith('#'):
+                k, _, p = line.rstrip().partition(' ')
+                k, _, p = line.partition(' ')
+                if k == 'version':
                     version = p
                 else:
                     paths.append((k, p))

@@ -1,0 +1,28 @@
+PackageMetadata: PackageMetadata
+  name: name_interned_str
+  version: version_interned_str
+
+Module:
+  name: name_dname,name_interned_dname
+  synonyms: synonyms
+  dataTypes: data_types
+  values: values
+  templates: templates
+
+DefValue:
+  name: name_with_type.name_dname,name_with_type.name_interned_dname
+  type: name_with_type.type
+  expr: expr
+  location: location
+
+DefTypeSyn:
+  name: name_dname,name_interned_dname
+  params: params
+  type: type
+  location: location
+
+DefDataType:
+  name: DottedName<name_dname, name_interned_dname>
+  params: TypeVarWithKind[]
+
+  oneof Data
