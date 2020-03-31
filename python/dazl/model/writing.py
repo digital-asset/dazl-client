@@ -38,7 +38,7 @@ TCommand = TypeVar('TCommand')
 TValue = TypeVar('TValue')
 
 
-CommandsOrCommandSequence = Union[None, 'Command', List[Optional['Command']]]
+CommandsOrCommandSequence = Union[None, 'Command', Sequence[Optional['Command']]]
 EventHandlerResponse = Union[CommandsOrCommandSequence, 'CommandBuilder', 'CommandPayload']
 
 
@@ -226,7 +226,8 @@ class CommandBuilder:
                  ledger_id: Optional[str] = None,
                  workflow_id: Optional[str] = None,
                  application_id: Optional[str] = None,
-                 command_id: Optional[str] = None) -> None:
+                 command_id: Optional[str] = None,
+                 ttl: Optional[timedelta] = None) -> None:
         if party is not None:
             self._defaults.default_party = party
         if ledger_id is not None:
@@ -237,6 +238,8 @@ class CommandBuilder:
             self._defaults.default_application_id = application_id
         if command_id is not None:
             self._defaults.default_command_id = command_id
+        if ttl is not None:
+            self._defaults.default_ttl = ttl
 
     def create(self, template, arguments=None) -> 'CommandBuilder':
         return self.append(create(template, arguments=arguments))
