@@ -12,5 +12,5 @@ Run each of the following commands in a spearate shell:
 
 * Start DAZL via
 
-      pipenv run python3 src/main.py --url {ledgerUrl}
+      pipenv run python3 pingpong/bots.py --url {ledgerUrl}
 
