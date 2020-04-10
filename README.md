@@ -15,7 +15,8 @@ Rich Python bindings for accessing Ledger API-based applications.
 Requirements
 ------------
 * Python 3.6+
-* [Pipenv](https://pipenv.readthedocs.io/en/latest/)
+* [Poetry](https://python-poetry.org/)
+* GNU Make
 * Although not strictly required for building, you'll probably want the [DAML SDK](https://www.daml.com)
 
 Examples
