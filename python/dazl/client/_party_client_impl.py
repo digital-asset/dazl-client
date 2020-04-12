@@ -28,6 +28,7 @@ from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, Eve
 from ..protocols import LedgerNetwork, LedgerClient
 from ..util.asyncio_util import ServiceQueue, await_then, completed, named_gather
 from ..util.prim_natural import n_things
+from ..util.prim_types import TimeDeltaConvertible, to_timedelta
 from ..util.typing import safe_cast
 
 if TYPE_CHECKING:
@@ -94,7 +95,6 @@ class _PartyClientImpl:
             The ledger time to publish as part of the :class:`InitEvent`.
         :param metadata:
             Information about the connected ledger.
-        :return:
         """
         self._acs.metadata_future.set_result(metadata.store)
         evt = InitEvent(self, self.party, current_time, metadata.ledger_id, metadata.store)
@@ -334,7 +334,8 @@ class _PartyClientImpl:
             self,
             commands: EventHandlerResponse,
             ignore_errors: bool = False,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> Awaitable[None]:
         """
         Submit a command or list of commands.
@@ -346,6 +347,8 @@ class _PartyClientImpl:
             then a failure to send this command does not necessarily end the client.
         :param workflow_id:
             The workflow ID to use to tag submitted commands.
+        :param ttl:
+            A time-to-live for the command.
         :return:
             An ``asyncio.Future`` that is resolved right before the corresponding side effects have
             hit the event stream for this party. Synchronous errors are reported back immediately
@@ -354,7 +357,7 @@ class _PartyClientImpl:
         if workflow_id is None:
             workflow_id = uuid.uuid4().hex
         cb = CommandBuilder.coerce(commands, atomic_default=True)
-        cb.defaults(workflow_id=workflow_id)
+        cb.defaults(workflow_id=workflow_id, ttl=to_timedelta(ttl) if ttl is not None else None)
 
         p = _PendingCommand(cb)
         p.future.add_done_callback(lambda _: self._process_command_finished(p, ignore_errors))

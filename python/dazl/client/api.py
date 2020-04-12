@@ -653,7 +653,11 @@ class AIOPartyClient(PartyClient):
 
     # <editor-fold desc="Command submission">
 
-    def submit(self, commands: 'EventHandlerResponse', workflow_id: 'Optional[str]' = None) \
+    def submit(
+            self,
+            commands: 'EventHandlerResponse',
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit commands to the ledger.
@@ -662,17 +666,20 @@ class AIOPartyClient(PartyClient):
             An object that can be converted to a command.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
-        return self._impl.write_commands(commands, workflow_id=workflow_id)
+        return self._impl.write_commands(commands, workflow_id=workflow_id, ttl=ttl)
 
     def submit_create(
             self,
             template_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit a single create command. Equivalent to calling :meth:`submit` with a single
@@ -684,19 +691,22 @@ class AIOPartyClient(PartyClient):
             The arguments to the create (as a ``dict``).
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         from .. import create
-        return self.submit(create(template_name, arguments), workflow_id=workflow_id)
+        return self.submit(create(template_name, arguments), workflow_id=workflow_id, ttl=ttl)
 
     def submit_exercise(
             self,
             cid: 'ContractId',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit a single exercise choice. Equivalent to calling :meth:`submit` with a single
@@ -711,12 +721,14 @@ class AIOPartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         from .. import exercise
-        return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id)
+        return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id, ttl=ttl)
 
     def submit_exercise_by_key(
             self,
@@ -724,7 +736,8 @@ class AIOPartyClient(PartyClient):
             contract_key: 'Any',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -741,10 +754,14 @@ class AIOPartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
         """
         from .. import exercise_by_key
         return self.submit(
-            exercise_by_key(template_name, contract_key, choice_name, arguments), workflow_id=workflow_id)
+            exercise_by_key(template_name, contract_key, choice_name, arguments),
+            workflow_id=workflow_id,
+            ttl=ttl)
 
     def submit_create_and_exercise(
             self,
@@ -752,7 +769,8 @@ class AIOPartyClient(PartyClient):
             arguments: 'dict',
             choice_name: str,
             choice_arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
@@ -768,6 +786,8 @@ class AIOPartyClient(PartyClient):
             The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
         """
         from .. import create_and_exercise
         return self.submit(
@@ -1189,11 +1209,35 @@ class SimplePartyClient(PartyClient):
 
     # region Command submission
 
+    def submit(
+            self,
+            commands,
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            -> None:
+        """
+        Submit commands to the ledger.
+
+        :param commands:
+            An object that can be converted to a command.
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
+        :return:
+            A future that resolves when the command has made it to the ledger _or_ an error
+            occurred when trying to process them.
+        """
+        return self._impl.invoker.run_in_loop(
+            lambda: self._impl.write_commands(commands, workflow_id=workflow_id, ttl=ttl))
+
     def submit_create(
             self,
             template_name: 'TemplateNameLike',
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) -> None:
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            -> None:
         """
         Synchronously submit a single create command. Equivalent to calling :meth:`submit` with a
         single ``create``.
@@ -1204,16 +1248,19 @@ class SimplePartyClient(PartyClient):
             The arguments to the create (as a ``dict``).
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
         """
         from .. import create
-        return self.submit(create(template_name, arguments), workflow_id=workflow_id)
+        return self.submit(create(template_name, arguments), workflow_id=workflow_id, ttl=ttl)
 
     def submit_exercise(
             self,
             cid: 'ContractId',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1228,9 +1275,11 @@ class SimplePartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
         """
         from .. import exercise
-        return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id)
+        return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id, ttl=ttl)
 
     def submit_exercise_by_key(
             self,
@@ -1238,7 +1287,8 @@ class SimplePartyClient(PartyClient):
             contract_key: 'Any',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1253,13 +1303,15 @@ class SimplePartyClient(PartyClient):
         :param arguments:
             The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
             choices.
+        :param ttl:
+            A time-to-live for the command.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
         """
         from .. import exercise_by_key
         return self.submit(
             exercise_by_key(template_name, contract_key, choice_name, arguments),
-            workflow_id=workflow_id)
+            workflow_id=workflow_id, ttl=ttl)
 
     def submit_create_and_exercise(
             self,
@@ -1267,7 +1319,8 @@ class SimplePartyClient(PartyClient):
             arguments: 'dict',
             choice_name: str,
             choice_arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            ttl: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
@@ -1283,6 +1336,8 @@ class SimplePartyClient(PartyClient):
             The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param ttl:
+            A time-to-live for the command.
         """
         from .. import create_and_exercise
         return self.submit(
@@ -1406,9 +1461,6 @@ class SimplePartyClient(PartyClient):
 
     def set_time(self, new_datetime: datetime) -> None:
         return self._impl.invoker.run_in_loop(lambda: self._impl.set_time(new_datetime))
-
-    def submit(self, commands, workflow_id: str = None) -> None:
-        return self._impl.invoker.run_in_loop(lambda: self._impl.write_commands(commands, workflow_id=workflow_id))
 
     def ready(self) -> None:
         """
