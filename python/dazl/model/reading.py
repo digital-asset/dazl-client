@@ -317,11 +317,16 @@ def max_offset(offsets: 'Collection[str]') -> 'Optional[str]':
     return max(offsets, key=sortable_offset_height) if offsets else None
 
 
-def sortable_offset_height(value: str) -> int:
+def sortable_offset_height(value: str) -> 'Union[int, str]':
     if value:
-        components = value.split('-', 3)
-        if len(components) == 1:
-            return int(value)
-        elif len(components) >= 1:
-            return int(components[1])
+        try:
+            components = value.split('-', 3)
+            if len(components) == 1:
+                return int(value)
+            elif len(components) >= 1:
+                return int(components[1])
+        except ValueError:
+            # newer versions of the DAML SDK no longer return offsets in a parseable format, but
+            # the strings themselves are naturally comparable
+            return value
     return 0
