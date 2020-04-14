@@ -11,7 +11,7 @@ from io import StringIO
 from typing import Callable, Optional, Sequence, Union
 
 from ._base import MISSING, T
-from ..model.types import ModuleRef, ValueReference, TypeReference as TypeConName, TypeReference
+from ..model.types import ModuleRef, ValueReference, TypeReference as TypeConName, TypeReference, TypeSynName
 from ..util.typing import safe_cast
 
 
@@ -186,6 +186,11 @@ class Type:
         def __repr__(self):
             return f'Type.Prim(prim={self.prim!r}, args={self.args!r})'
 
+    @dataclass(frozen=True)
+    class Syn:
+        tysyn: 'TypeSynName'
+        args: 'Sequence[Type]'
+
     class Forall:
         vars: 'Sequence[TypeVarWithKind]'
         body: 'Type'
@@ -215,7 +220,8 @@ class Type:
             prim: 'Type.Prim' = MISSING,
             forall: 'Type.Forall' = MISSING,
             tuple: 'Type.Tuple' = MISSING,
-            nat: int = MISSING):
+            nat: int = MISSING,
+            syn: 'Type.Syn' = MISSING):
         if var is not MISSING:
             object.__setattr__(self, '_Sum_name', 'var')
             object.__setattr__(self, '_Sum_value', var)
@@ -234,6 +240,9 @@ class Type:
         elif nat is not MISSING:
             object.__setattr__(self, '_Sum_name', 'nat')
             object.__setattr__(self, '_Sum_value', nat)
+        elif syn is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'syn')
+            object.__setattr__(self, '_Sum_value', syn)
         else:
             raise ValueError('unknown sum type')
 
@@ -248,6 +257,10 @@ class Type:
     @property
     def prim(self) -> 'Type.Prim':
         return self._Sum_value if self._Sum_name == 'prim' else None
+
+    @property
+    def tysyn(self) -> 'Type.Syn':
+        return self._Sum_value if self._Sum_name == 'tysyn' else None
 
     @property
     def forall(self) -> 'Type.Forall':
@@ -267,6 +280,7 @@ class Type:
             var: 'Callable[[Type.Var], T]',
             con: 'Callable[[Type.Con], T]',
             prim: 'Callable[[Type.Prim], T]',
+            tysyn: 'Callable[[Type.Syn], T]',
             forall: 'Callable[[Type.Forall], T]',
             tuple: 'Callable[[Type.Tuple], T]',
             nat: 'Callable[[int], T]') -> 'T':
@@ -276,6 +290,8 @@ class Type:
             return con(self._Sum_value)
         elif self._Sum_name == 'prim':
             return prim(self._Sum_value)
+        elif self._Sum_name == 'tysyn':
+            return tysyn(self._Sum_value)
         elif self._Sum_name == 'forall':
             return forall(self._Sum_value)
         elif self._Sum_name == 'tuple':
@@ -1772,6 +1788,14 @@ class DefDataType:
 
 
 @dataclass(frozen=True)
+class DefTypeSyn:
+    name: 'DottedName'
+    params: 'Sequence[TypeVarWithKind]'
+    type: 'Type'
+    location: 'Optional[Location]'
+
+
+@dataclass(frozen=True)
 class DefValue:
     """Value definition"""
 
@@ -1814,6 +1838,7 @@ class FeatureFlags:
 class Module:
     name: 'DottedName'
     flags: 'FeatureFlags'
+    synonyms: 'Sequence[DefTypeSyn]'
     data_types: 'Sequence[DefDataType]'
     values: 'Sequence[DefValue]'
     templates: 'Sequence[DefTemplate]'
@@ -1822,6 +1847,13 @@ class Module:
 @dataclass(frozen=True)
 class Package:
     modules: 'Sequence[Module]'
+    metadata: 'Optional[PackageMetadata]'
+
+
+@dataclass(frozen=True)
+class PackageMetadata:
+    name: str
+    version: str
 
 
 @dataclass(frozen=True)

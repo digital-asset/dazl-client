@@ -666,6 +666,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_type_prim(self, prim: 'Type.Prim') -> 'str':
         pass
 
+    def visit_type_syn(self, tysyn: 'Type.Syn') -> str:
+        pass
+
     def visit_type_forall(self, forall: 'Type.Forall') -> 'str':
         pass
 

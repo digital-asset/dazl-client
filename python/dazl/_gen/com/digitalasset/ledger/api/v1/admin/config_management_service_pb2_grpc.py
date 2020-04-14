@@ -56,6 +56,9 @@ class ConfigManagementServiceServicer(object):
     does not match the current active configuration generation. The caller is expected
     to retry by again fetching current time model using 'GetTimeModel', applying changes
     and resubmitting.
+    - ABORTED if the request is rejected or times out. Note that a timed out request may
+    have still been committed to the ledger. Application should re-query the current
+    time model before retrying.
     - UNIMPLEMENTED if this method is not supported by the backing ledger.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)

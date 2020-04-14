@@ -87,7 +87,11 @@ def get_old_type(daml_type: 'Type') -> 'OldType':
     from ..model.types import UnsupportedType
 
     return safe_cast(Type, daml_type).Sum_match(
-        _old_type_var, _old_type_con, _old_type_prim, _old_forall_type,
+        _old_type_var,
+        _old_type_con,
+        _old_type_prim,
+        _old_type_syn,
+        _old_forall_type,
         lambda tuple_: UnsupportedType('Tuple'),
         lambda nat: UnsupportedType('Nat'))
 
@@ -128,6 +132,12 @@ def _old_type_prim(prim: 'Type.Prim') -> 'OldType':
         _old_scalar_type_any,
         _old_scalar_type_type_rep,
         _old_genmap_type)
+
+
+def _old_type_syn(tysyn: 'Type.Syn') -> 'OldType':
+    from ..model.types import TypeApp
+    core_type = tysyn.tysyn
+    return TypeApp(core_type, [get_old_type(arg) for arg in tysyn.args]) if tysyn.args else core_type
 
 
 def _old_forall_type(forall: 'Type.Forall') -> 'OldType':

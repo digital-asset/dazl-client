@@ -38,6 +38,11 @@ class ProtobufParser:
             self.parse_ModuleRef(pb.module),
             self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments)
 
+    def parse_TypeSynName(self, pb) -> 'TypeSynName':
+        return TypeSynName(
+            self.parse_ModuleRef(pb.module),
+            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments)
+
     def parse_DottedName(self, pb) -> 'DottedName':
         return DottedName(segments=self._resolve_string_seq(pb.segments, pb.segments_interned_id))
 
@@ -110,6 +115,8 @@ class ProtobufParser:
             return Type(tuple=self.parse_Type_Tuple(pb.struct))
         elif sum_name == 'nat':
             return Type(nat=pb.nat)
+        elif sum_name == 'syn':
+            return Type(syn=self.parse_Type_Syn(pb.syn))
         else:
             raise ValueError(f'unknown sum type value: {sum_name!r}')
 
@@ -147,6 +154,11 @@ class ProtobufParser:
 
     def parse_Type_Tuple(self, pb) -> 'Type.Tuple':
         return Type.Tuple(tuple(self.parse_FieldWithType(field) for field in pb.fields))
+
+    def parse_Type_Syn(self, pb) -> 'Type.Syn':
+        return Type.Syn(
+            tysyn=self.parse_TypeSynName(pb.tysyn),
+            args=tuple(self.parse_Type(arg) for arg in pb.args))
 
     def parse_PrimCon(self, pb) -> 'Optional[PrimCon]':
         if pb is None:
@@ -601,6 +613,13 @@ class ProtobufParser:
         ctors_2 = tuple(self.interned_strings[idx] for idx in pb.constructors_interned_str)
         return DefDataType.EnumConstructors(constructors=ctors_1 + ctors_2)
 
+    def parse_DefTypeSyn(self, pb) -> 'DefTypeSyn':
+        return DefTypeSyn(
+            name=self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
+            params=tuple(self.parse_TypeVarWithKind(param) for param in pb.params),
+            type=self.parse_Type(pb.type),
+            location=self.parse_Location(pb.location))
+
     def parse_DefValue(self, pb) -> 'DefValue':
         return DefValue(
             name_with_type=self.parse_DefValue_NameWithType(pb.name_with_type),
@@ -624,6 +643,7 @@ class ProtobufParser:
         return Module(
             name=self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
             flags=self.parse_FeatureFlags(pb.flags),
+            synonyms=tuple(self.parse_DefTypeSyn(value) for value in pb.synonyms),
             data_types=tuple(self.parse_DefDataType(data_type) for data_type in pb.data_types),
             values=tuple(self.parse_DefValue(value) for value in pb.values),
             templates=tuple(self.parse_DefTemplate(template) for template in pb.templates))
@@ -639,7 +659,14 @@ class ProtobufParser:
 
         self.interned_dotted_names.extend(indices)
 
-        return Package(modules=tuple(self.parse_Module(module) for module in pb.modules))
+        return Package(
+            modules=tuple(self.parse_Module(module) for module in pb.modules),
+            metadata=self.parse_PackageMetadata(pb.metadata) if pb.HasField('metadata') else None)
+
+    def parse_PackageMetadata(self, pb) -> 'PackageMetadata':
+        return PackageMetadata(
+            name=self.interned_strings[pb.name_interned_str],
+            version=self.interned_strings[pb.version_interned_str])
 
     def _resolve_string(self, name: 'Optional[str]', interned_id: 'Optional[int]') -> str:
         return name if name else self.interned_strings[interned_id]

@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='daml_lf_1',
   syntax='proto3',
   serialized_options=_b('\n\034com.digitalasset.daml_lf_dev\252\002$Com.DigitalAsset.Daml_Lf_Dev.DamlLf1'),
-  serialized_pb=_b('\n,com/digitalasset/daml_lf_dev/daml_lf_1.proto\x12\tdaml_lf_1\"\x06\n\x04Unit\"q\n\nPackageRef\x12\x1f\n\x04self\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x18\n\x0epackage_id_str\x18\x02 \x01(\tH\x00\x12!\n\x17package_id_interned_str\x18\x03 \x01(\x05H\x00\x42\x05\n\x03Sum\"\x1e\n\nDottedName\x12\x10\n\x08segments\x18\x01 \x03(\t\"\xa0\x01\n\tModuleRef\x12*\n\x0bpackage_ref\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.PackageRef\x12\x32\n\x11module_name_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12$\n\x1amodule_name_interned_dname\x18\x03 \x01(\x05H\x00\x42\r\n\x0bmodule_name\"\x87\x01\n\x0bTypeConName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12+\n\nname_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x03 \x01(\x05H\x00\x42\x06\n\x04name\"`\n\x07ValName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12\x12\n\nname_dname\x18\x02 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\"j\n\rFieldWithType\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x07\n\x05\x66ield\"b\n\x0bVarWithType\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\"f\n\x0fTypeVarWithKind\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04kind\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03var\"j\n\rFieldWithExpr\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\"Q\n\x07\x42inding\x12&\n\x06\x62inder\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1e\n\x05\x62ound\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc1\x01\n\x04Kind\x12\x1f\n\x04star\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12&\n\x05\x61rrow\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.Kind.ArrowH\x00\x12\x1e\n\x03nat\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x1aI\n\x05\x41rrow\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Kind\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03Sum\"\xdd\x05\n\x04Type\x12\"\n\x03var\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.VarH\x00\x12\"\n\x03\x63on\x18\x02 \x01(\x0b\x32\x13.daml_lf_1.Type.ConH\x00\x12$\n\x04prim\x18\x03 \x01(\x0b\x32\x14.daml_lf_1.Type.PrimH\x00\x12\"\n\x03\x66un\x18\x04 \x01(\x0b\x32\x13.daml_lf_1.Type.FunH\x00\x12(\n\x06\x66orall\x18\x05 \x01(\x0b\x32\x16.daml_lf_1.Type.ForallH\x00\x12(\n\x06struct\x18\x07 \x01(\x0b\x32\x16.daml_lf_1.Type.StructH\x00\x12\r\n\x03nat\x18\x0b \x01(\x12H\x00\x1aZ\n\x03Var\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\x1aK\n\x03\x43on\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aH\n\x04Prim\x12!\n\x04prim\x18\x01 \x01(\x0e\x32\x13.daml_lf_1.PrimType\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aG\n\x03\x46un\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aQ\n\x06\x46orall\x12(\n\x04vars\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x32\n\x06Struct\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithTypeB\x05\n\x03SumJ\x04\x08\x06\x10\x07J\x04\x08\x08\x10\tJ\x04\x08\t\x10\nJ\x04\x08\n\x10\x0b\"\xed\x01\n\x07PrimLit\x12\x0f\n\x05int64\x18\x01 \x01(\x12H\x00\x12\x15\n\x0b\x64\x65\x63imal_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14numeric_interned_str\x18\n \x01(\x05H\x00\x12\x12\n\x08text_str\x18\x04 \x01(\tH\x00\x12\x1b\n\x11text_interned_str\x18\x0b \x01(\x05H\x00\x12\x13\n\ttimestamp\x18\x05 \x01(\x10H\x00\x12\x13\n\tparty_str\x18\x07 \x01(\tH\x00\x12\x1c\n\x12party_interned_str\x18\x0c \x01(\x05H\x00\x12\x0e\n\x04\x64\x61te\x18\x08 \x01(\x05H\x00\x42\x05\n\x03SumJ\x04\x08\x03\x10\x04J\x04\x08\x06\x10\x07\"\xad\x01\n\x08Location\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12(\n\x05range\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.Location.Range\x1aQ\n\x05Range\x12\x12\n\nstart_line\x18\x01 \x01(\x05\x12\x11\n\tstart_col\x18\x02 \x01(\x05\x12\x10\n\x08\x65nd_line\x18\x03 \x01(\x05\x12\x0f\n\x07\x65nd_col\x18\x04 \x01(\x05\"\x89\x17\n\x04\x45xpr\x12%\n\x08location\x18\x19 \x01(\x0b\x32\x13.daml_lf_1.Location\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x1d \x01(\x05H\x00\x12!\n\x03val\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.ValNameH\x00\x12-\n\x07\x62uiltin\x18\x03 \x01(\x0e\x32\x1a.daml_lf_1.BuiltinFunctionH\x00\x12&\n\x08prim_con\x18\x04 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12&\n\x08prim_lit\x18\x05 \x01(\x0b\x32\x12.daml_lf_1.PrimLitH\x00\x12)\n\x07rec_con\x18\x06 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecConH\x00\x12+\n\x08rec_proj\x18\x07 \x01(\x0b\x32\x17.daml_lf_1.Expr.RecProjH\x00\x12)\n\x07rec_upd\x18\x16 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecUpdH\x00\x12\x31\n\x0bvariant_con\x18\x08 \x01(\x0b\x32\x1a.daml_lf_1.Expr.VariantConH\x00\x12+\n\x08\x65num_con\x18\x1c \x01(\x0b\x32\x17.daml_lf_1.Expr.EnumConH\x00\x12/\n\nstruct_con\x18\t \x01(\x0b\x32\x19.daml_lf_1.Expr.StructConH\x00\x12\x31\n\x0bstruct_proj\x18\n \x01(\x0b\x32\x1a.daml_lf_1.Expr.StructProjH\x00\x12/\n\nstruct_upd\x18\x17 \x01(\x0b\x32\x19.daml_lf_1.Expr.StructUpdH\x00\x12\"\n\x03\x61pp\x18\x0b \x01(\x0b\x32\x13.daml_lf_1.Expr.AppH\x00\x12\'\n\x06ty_app\x18\x0c \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAppH\x00\x12\"\n\x03\x61\x62s\x18\r \x01(\x0b\x32\x13.daml_lf_1.Expr.AbsH\x00\x12\'\n\x06ty_abs\x18\x0e \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAbsH\x00\x12\x1f\n\x04\x63\x61se\x18\x0f \x01(\x0b\x32\x0f.daml_lf_1.CaseH\x00\x12\x1f\n\x03let\x18\x10 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12\"\n\x03nil\x18\x11 \x01(\x0b\x32\x13.daml_lf_1.Expr.NilH\x00\x12$\n\x04\x63ons\x18\x12 \x01(\x0b\x32\x14.daml_lf_1.Expr.ConsH\x00\x12#\n\x06update\x18\x14 \x01(\x0b\x32\x11.daml_lf_1.UpdateH\x00\x12\'\n\x08scenario\x18\x15 \x01(\x0b\x32\x13.daml_lf_1.ScenarioH\x00\x12\x35\n\roptional_none\x18\x1a \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalNoneH\x00\x12\x35\n\roptional_some\x18\x1b \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalSomeH\x00\x12\'\n\x06to_any\x18\x1e \x01(\x0b\x32\x15.daml_lf_1.Expr.ToAnyH\x00\x12+\n\x08\x66rom_any\x18\x1f \x01(\x0b\x32\x17.daml_lf_1.Expr.FromAnyH\x00\x12#\n\x08type_rep\x18  \x01(\x0b\x32\x0f.daml_lf_1.TypeH\x00\x1aV\n\x06RecCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12(\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1a\x8a\x01\n\x07RecProj\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xaa\x01\n\x06RecUpd\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x05 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xa4\x01\n\nVariantCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x19\n\x0fvariant_con_str\x18\x02 \x01(\tH\x00\x12\"\n\x18variant_con_interned_str\x18\x04 \x01(\x05H\x00\x12$\n\x0bvariant_arg\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\r\n\x0bvariant_con\x1au\n\x07\x45numCon\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x16\n\x0c\x65num_con_str\x18\x02 \x01(\tH\x00\x12\x1f\n\x15\x65num_con_interned_str\x18\x03 \x01(\x05H\x00\x42\n\n\x08\x65num_con\x1a\x35\n\tStructCon\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1ai\n\nStructProj\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x89\x01\n\tStructUpd\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x42\n\x03\x41pp\x12\x1c\n\x03\x66un\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x46\n\x05TyApp\x12\x1d\n\x04\x65xpr\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05types\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03\x41\x62s\x12%\n\x05param\x18\x01 \x03(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aQ\n\x05TyAbs\x12)\n\x05param\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a$\n\x03Nil\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x64\n\x04\x43ons\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1e\n\x05\x66ront\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04tail\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a-\n\x0cOptionalNone\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aL\n\x0cOptionalSome\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x45\n\x05ToAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aG\n\x07\x46romAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03SumJ\x04\x08\x13\x10\x14J\x04\x08\x18\x10\x19\"\x95\x07\n\x07\x43\x61seAlt\x12\"\n\x07\x64\x65\x66\x61ult\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12-\n\x07variant\x18\x02 \x01(\x0b\x32\x1a.daml_lf_1.CaseAlt.VariantH\x00\x12&\n\x08prim_con\x18\x03 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12\x1e\n\x03nil\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\'\n\x04\x63ons\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.ConsH\x00\x12(\n\roptional_none\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\roptional_some\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.CaseAlt.OptionalSomeH\x00\x12\'\n\x04\x65num\x18\t \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.EnumH\x00\x12\x1d\n\x04\x62ody\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xaf\x01\n\x07Variant\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x15\n\x0bvariant_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14variant_interned_str\x18\x04 \x01(\x05H\x00\x12\x14\n\nbinder_str\x18\x03 \x01(\tH\x01\x12\x1d\n\x13\x62inder_interned_str\x18\x05 \x01(\x05H\x01\x42\t\n\x07variantB\x08\n\x06\x62inder\x1ay\n\x04\x45num\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x19\n\x0f\x63onstructor_str\x18\x02 \x01(\tH\x00\x12\"\n\x18\x63onstructor_interned_str\x18\x03 \x01(\x05H\x00\x42\r\n\x0b\x63onstructor\x1a\x90\x01\n\x04\x43ons\x12\x16\n\x0cvar_head_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_head_interned_str\x18\x03 \x01(\x05H\x00\x12\x16\n\x0cvar_tail_str\x18\x02 \x01(\tH\x01\x12\x1f\n\x15var_tail_interned_str\x18\x04 \x01(\x05H\x01\x42\n\n\x08var_headB\n\n\x08var_tail\x1aS\n\x0cOptionalSome\x12\x16\n\x0cvar_body_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_body_interned_str\x18\x02 \x01(\x05H\x00\x42\n\n\x08var_bodyB\x05\n\x03Sum\"H\n\x04\x43\x61se\x12\x1e\n\x05scrut\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12 \n\x04\x61lts\x18\x02 \x03(\x0b\x32\x12.daml_lf_1.CaseAlt\"L\n\x05\x42lock\x12$\n\x08\x62indings\x18\x01 \x03(\x0b\x32\x12.daml_lf_1.Binding\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"D\n\x04Pure\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc4\x07\n\x06Update\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12*\n\x06\x63reate\x18\x03 \x01(\x0b\x32\x18.daml_lf_1.Update.CreateH\x00\x12.\n\x08\x65xercise\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Update.ExerciseH\x00\x12(\n\x05\x66\x65tch\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.Update.FetchH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\rlookup_by_key\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x37\n\x0c\x66\x65tch_by_key\x18\t \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x31\n\nembed_expr\x18\x07 \x01(\x0b\x32\x1b.daml_lf_1.Update.EmbedExprH\x00\x1aQ\n\x06\x43reate\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xcf\x01\n\x08\x45xercise\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x14\n\nchoice_str\x18\x02 \x01(\tH\x00\x12\x1d\n\x13\x63hoice_interned_str\x18\x06 \x01(\x05H\x00\x12\x1c\n\x03\x63id\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05\x61\x63tor\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1c\n\x03\x61rg\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x08\n\x06\x63hoice\x1aU\n\x05\x46\x65tch\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03\x63id\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprJ\x04\x08\x03\x10\x04\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aW\n\rRetrieveByKey\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03key\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\x8d\x04\n\x08Scenario\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12,\n\x06\x63ommit\x18\x03 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x30\n\nmustFailAt\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x1f\n\x04pass\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12$\n\tget_party\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12\x33\n\nembed_expr\x18\x08 \x01(\x0b\x32\x1d.daml_lf_1.Scenario.EmbedExprH\x00\x1aj\n\x06\x43ommit\x12\x1e\n\x05party\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12!\n\x08ret_type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\xe7\x02\n\x0eTemplateChoice\x12\x12\n\x08name_str\x18\x01 \x01(\tH\x00\x12\x1b\n\x11name_interned_str\x18\t \x01(\x05H\x00\x12\x11\n\tconsuming\x18\x02 \x01(\x08\x12$\n\x0b\x63ontrollers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\narg_binder\x18\x04 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12!\n\x08ret_type\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06update\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x0fself_binder_str\x18\x07 \x01(\tH\x01\x12\"\n\x18self_binder_interned_str\x18\n \x01(\x05H\x01\x12%\n\x08location\x18\x08 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04nameB\r\n\x0bself_binder\"\xf0\x03\n\x07KeyExpr\x12\x35\n\x0bprojections\x18\x01 \x01(\x0b\x32\x1e.daml_lf_1.KeyExpr.ProjectionsH\x00\x12+\n\x06record\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.KeyExpr.RecordH\x00\x1al\n\nProjection\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x42\x07\n\x05\x66ield\x1a\x41\n\x0bProjections\x12\x32\n\x0bprojections\x18\x02 \x03(\x0b\x32\x1d.daml_lf_1.KeyExpr.Projection\x1ak\n\x0bRecordField\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12 \n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprB\x07\n\x05\x66ield\x1a\\\n\x06Record\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12.\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x1e.daml_lf_1.KeyExpr.RecordFieldB\x05\n\x03Sum\"\xdc\x04\n\x0b\x44\x65\x66Template\x12,\n\x0btycon_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1e\n\x14tycon_interned_dname\x18\x0c \x01(\x05H\x00\x12\x13\n\tparam_str\x18\x02 \x01(\tH\x01\x12\x1c\n\x12param_interned_str\x18\x0b \x01(\x05H\x01\x12 \n\x07precond\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12$\n\x0bsignatories\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\"\n\tagreement\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\x07\x63hoices\x18\x07 \x03(\x0b\x32\x19.daml_lf_1.TemplateChoice\x12\"\n\tobservers\x18\x08 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12%\n\x08location\x18\t \x01(\x0b\x32\x13.daml_lf_1.Location\x12*\n\x03key\x18\n \x01(\x0b\x32\x1d.daml_lf_1.DefTemplate.DefKey\x1a\xa4\x01\n\x06\x44\x65\x66Key\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12!\n\x03key\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprH\x00\x12&\n\x0b\x63omplex_key\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12$\n\x0bmaintainers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\n\n\x08key_exprB\x07\n\x05tyconB\x07\n\x05paramJ\x04\x08\x03\x10\x04\"\x9b\x04\n\x0b\x44\x65\x66\x44\x61taType\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12/\n\x06record\x18\x03 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x30\n\x07variant\x18\x04 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x37\n\x04\x65num\x18\x07 \x01(\x0b\x32\'.daml_lf_1.DefDataType.EnumConstructorsH\x01\x12\"\n\x07synonym\x18\t \x01(\x0b\x32\x0f.daml_lf_1.TypeH\x01\x12\x14\n\x0cserializable\x18\x05 \x01(\x08\x12%\n\x08location\x18\x06 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a\x32\n\x06\x46ields\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithType\x1aO\n\x10\x45numConstructors\x12\x18\n\x10\x63onstructors_str\x18\x01 \x03(\t\x12!\n\x19\x63onstructors_interned_str\x18\x02 \x03(\x05\x42\x06\n\x04nameB\n\n\x08\x44\x61taCons\"\x96\x02\n\x08\x44\x65\x66Value\x12\x38\n\x0ename_with_type\x18\x01 \x01(\x0b\x32 .daml_lf_1.DefValue.NameWithType\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x11no_party_literals\x18\x03 \x01(\x08\x12\x0f\n\x07is_test\x18\x04 \x01(\x08\x12%\n\x08location\x18\x05 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a^\n\x0cNameWithType\x12\x12\n\nname_dname\x18\x01 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\"\x90\x01\n\x0c\x46\x65\x61tureFlags\x12\x1b\n\x13\x66orbidPartyLiterals\x18\x01 \x01(\x08\x12/\n\'dontDivulgeContractIdsInCreateArguments\x18\x02 \x01(\x08\x12\x32\n*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\x08\"\x8c\x02\n\x06Module\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12&\n\x05\x66lags\x18\x04 \x01(\x0b\x32\x17.daml_lf_1.FeatureFlags\x12*\n\ndata_types\x18\x05 \x03(\x0b\x32\x16.daml_lf_1.DefDataType\x12#\n\x06values\x18\x06 \x03(\x0b\x32\x13.daml_lf_1.DefValue\x12)\n\ttemplates\x18\x07 \x03(\x0b\x32\x16.daml_lf_1.DefTemplateB\x06\n\x04nameJ\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04\"3\n\x12InternedDottedName\x12\x1d\n\x15segments_interned_str\x18\x01 \x03(\x05\"\x85\x01\n\x07Package\x12\"\n\x07modules\x18\x01 \x03(\x0b\x32\x11.daml_lf_1.Module\x12\x18\n\x10interned_strings\x18\x02 \x03(\t\x12<\n\x15interned_dotted_names\x18\x03 \x03(\x0b\x32\x1d.daml_lf_1.InternedDottedName*\xef\x01\n\x08PrimType\x12\x08\n\x04UNIT\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x03\x12\x08\n\x04TEXT\x10\x05\x12\r\n\tTIMESTAMP\x10\x06\x12\t\n\x05PARTY\x10\x08\x12\x08\n\x04LIST\x10\t\x12\n\n\x06UPDATE\x10\n\x12\x0c\n\x08SCENARIO\x10\x0b\x12\x08\n\x04\x44\x41TE\x10\x0c\x12\x0f\n\x0b\x43ONTRACT_ID\x10\r\x12\x0c\n\x08OPTIONAL\x10\x0e\x12\t\n\x05\x41RROW\x10\x0f\x12\x0b\n\x07TEXTMAP\x10\x10\x12\x0b\n\x07NUMERIC\x10\x11\x12\x07\n\x03\x41NY\x10\x12\x12\x0c\n\x08TYPE_REP\x10\x13\x12\n\n\x06GENMAP\x10\x14*4\n\x07PrimCon\x12\x0c\n\x08\x43ON_UNIT\x10\x00\x12\r\n\tCON_FALSE\x10\x01\x12\x0c\n\x08\x43ON_TRUE\x10\x02*\x9c\x10\n\x0f\x42uiltinFunction\x12\x0f\n\x0b\x41\x44\x44_DECIMAL\x10\x00\x12\x0f\n\x0bSUB_DECIMAL\x10\x01\x12\x0f\n\x0bMUL_DECIMAL\x10\x02\x12\x0f\n\x0b\x44IV_DECIMAL\x10\x03\x12\x11\n\rROUND_DECIMAL\x10\x06\x12\x0f\n\x0b\x41\x44\x44_NUMERIC\x10k\x12\x0f\n\x0bSUB_NUMERIC\x10l\x12\x0f\n\x0bMUL_NUMERIC\x10m\x12\x0f\n\x0b\x44IV_NUMERIC\x10n\x12\x11\n\rROUND_NUMERIC\x10o\x12\x10\n\x0c\x43\x41ST_NUMERIC\x10y\x12\x11\n\rSHIFT_NUMERIC\x10z\x12\r\n\tADD_INT64\x10\x07\x12\r\n\tSUB_INT64\x10\x08\x12\r\n\tMUL_INT64\x10\t\x12\r\n\tDIV_INT64\x10\n\x12\r\n\tMOD_INT64\x10\x0b\x12\r\n\tEXP_INT64\x10\x0c\x12\t\n\x05\x46OLDL\x10\x14\x12\t\n\x05\x46OLDR\x10\x15\x12\x11\n\rTEXTMAP_EMPTY\x10`\x12\x12\n\x0eTEXTMAP_INSERT\x10\x61\x12\x12\n\x0eTEXTMAP_LOOKUP\x10\x62\x12\x12\n\x0eTEXTMAP_DELETE\x10\x63\x12\x13\n\x0fTEXTMAP_TO_LIST\x10\x64\x12\x10\n\x0cTEXTMAP_SIZE\x10\x65\x12\x10\n\x0cGENMAP_EMPTY\x10|\x12\x11\n\rGENMAP_INSERT\x10}\x12\x11\n\rGENMAP_LOOKUP\x10~\x12\x11\n\rGENMAP_DELETE\x10\x7f\x12\x10\n\x0bGENMAP_KEYS\x10\x80\x01\x12\x12\n\rGENMAP_VALUES\x10\x81\x01\x12\x10\n\x0bGENMAP_SIZE\x10\x82\x01\x12\x10\n\x0c\x45XPLODE_TEXT\x10\x17\x12\x0f\n\x0b\x41PPEND_TEXT\x10\x18\x12\t\n\x05\x45RROR\x10\x19\x12\r\n\tLEQ_INT64\x10!\x12\x0f\n\x0bLEQ_DECIMAL\x10\"\x12\x0f\n\x0bLEQ_NUMERIC\x10p\x12\x0c\n\x08LEQ_TEXT\x10$\x12\x11\n\rLEQ_TIMESTAMP\x10%\x12\x0c\n\x08LEQ_DATE\x10\x43\x12\r\n\tLEQ_PARTY\x10Y\x12\x0e\n\nLESS_INT64\x10\'\x12\x10\n\x0cLESS_DECIMAL\x10(\x12\x10\n\x0cLESS_NUMERIC\x10q\x12\r\n\tLESS_TEXT\x10*\x12\x12\n\x0eLESS_TIMESTAMP\x10+\x12\r\n\tLESS_DATE\x10\x44\x12\x0e\n\nLESS_PARTY\x10Z\x12\r\n\tGEQ_INT64\x10-\x12\x0f\n\x0bGEQ_DECIMAL\x10.\x12\x0f\n\x0bGEQ_NUMERIC\x10r\x12\x0c\n\x08GEQ_TEXT\x10\x30\x12\x11\n\rGEQ_TIMESTAMP\x10\x31\x12\x0c\n\x08GEQ_DATE\x10\x45\x12\r\n\tGEQ_PARTY\x10[\x12\x11\n\rGREATER_INT64\x10\x33\x12\x13\n\x0fGREATER_DECIMAL\x10\x34\x12\x13\n\x0fGREATER_NUMERIC\x10s\x12\x10\n\x0cGREATER_TEXT\x10\x36\x12\x15\n\x11GREATER_TIMESTAMP\x10\x37\x12\x10\n\x0cGREATER_DATE\x10\x46\x12\x11\n\rGREATER_PARTY\x10\\\x12\x11\n\rTO_TEXT_INT64\x10\x39\x12\x13\n\x0fTO_TEXT_DECIMAL\x10:\x12\x13\n\x0fTO_TEXT_NUMERIC\x10t\x12\x10\n\x0cTO_TEXT_TEXT\x10<\x12\x15\n\x11TO_TEXT_TIMESTAMP\x10=\x12\x10\n\x0cTO_TEXT_DATE\x10G\x12\x18\n\x14TO_QUOTED_TEXT_PARTY\x10?\x12\x11\n\rTO_TEXT_PARTY\x10^\x12\x13\n\x0f\x46ROM_TEXT_PARTY\x10_\x12\x13\n\x0f\x46ROM_TEXT_INT64\x10g\x12\x15\n\x11\x46ROM_TEXT_DECIMAL\x10h\x12\x15\n\x11\x46ROM_TEXT_NUMERIC\x10u\x12\x0f\n\x0bSHA256_TEXT\x10]\x12\x15\n\x11\x44\x41TE_TO_UNIX_DAYS\x10H\x12\x15\n\x11UNIX_DAYS_TO_DATE\x10I\x12\"\n\x1eTIMESTAMP_TO_UNIX_MICROSECONDS\x10J\x12\"\n\x1eUNIX_MICROSECONDS_TO_TIMESTAMP\x10K\x12\x14\n\x10INT64_TO_DECIMAL\x10L\x12\x14\n\x10\x44\x45\x43IMAL_TO_INT64\x10M\x12\x14\n\x10INT64_TO_NUMERIC\x10v\x12\x14\n\x10NUMERIC_TO_INT64\x10w\x12\x10\n\x0cIMPLODE_TEXT\x10N\x12\x0f\n\x0b\x45QUAL_INT64\x10O\x12\x11\n\rEQUAL_DECIMAL\x10P\x12\x11\n\rEQUAL_NUMERIC\x10x\x12\x0e\n\nEQUAL_TEXT\x10Q\x12\x13\n\x0f\x45QUAL_TIMESTAMP\x10R\x12\x0e\n\nEQUAL_DATE\x10S\x12\x0f\n\x0b\x45QUAL_PARTY\x10T\x12\x0e\n\nEQUAL_BOOL\x10U\x12\x15\n\x11\x45QUAL_CONTRACT_ID\x10V\x12\x0e\n\nEQUAL_LIST\x10W\x12\x12\n\x0e\x45QUAL_TYPE_REP\x10{\x12\n\n\x05\x45QUAL\x10\x83\x01\x12\t\n\x05TRACE\x10X\x12\x16\n\x12\x43OERCE_CONTRACT_ID\x10\x66\x12\x19\n\x15TEXT_FROM_CODE_POINTS\x10i\x12\x17\n\x13TEXT_TO_CODE_POINTS\x10j\x12\x12\n\rTEXT_TO_UPPER\x10\xadM\x12\x12\n\rTEXT_TO_LOWER\x10\xaeM\x12\x0f\n\nTEXT_SLICE\x10\xafM\x12\x15\n\x10TEXT_SLICE_INDEX\x10\xb0M\x12\x17\n\x12TEXT_CONTAINS_ONLY\x10\xb1M\x12\x13\n\x0eTEXT_REPLICATE\x10\xb2M\x12\x12\n\rTEXT_SPLIT_ON\x10\xb3M\x12\x15\n\x10TEXT_INTERCALATE\x10\xb4MBE\n\x1c\x63om.digitalasset.daml_lf_dev\xaa\x02$Com.DigitalAsset.Daml_Lf_Dev.DamlLf1b\x06proto3')
+  serialized_pb=_b('\n,com/digitalasset/daml_lf_dev/daml_lf_1.proto\x12\tdaml_lf_1\"\x06\n\x04Unit\"q\n\nPackageRef\x12\x1f\n\x04self\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x18\n\x0epackage_id_str\x18\x02 \x01(\tH\x00\x12!\n\x17package_id_interned_str\x18\x03 \x01(\x05H\x00\x42\x05\n\x03Sum\"\x1e\n\nDottedName\x12\x10\n\x08segments\x18\x01 \x03(\t\"\xa0\x01\n\tModuleRef\x12*\n\x0bpackage_ref\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.PackageRef\x12\x32\n\x11module_name_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12$\n\x1amodule_name_interned_dname\x18\x03 \x01(\x05H\x00\x42\r\n\x0bmodule_name\"\x87\x01\n\x0bTypeConName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12+\n\nname_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x03 \x01(\x05H\x00\x42\x06\n\x04name\"\x87\x01\n\x0bTypeSynName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12+\n\nname_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x03 \x01(\x05H\x00\x42\x06\n\x04name\"`\n\x07ValName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12\x12\n\nname_dname\x18\x02 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\"j\n\rFieldWithType\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x07\n\x05\x66ield\"b\n\x0bVarWithType\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\"f\n\x0fTypeVarWithKind\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04kind\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03var\"j\n\rFieldWithExpr\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\"Q\n\x07\x42inding\x12&\n\x06\x62inder\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1e\n\x05\x62ound\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc1\x01\n\x04Kind\x12\x1f\n\x04star\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12&\n\x05\x61rrow\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.Kind.ArrowH\x00\x12\x1e\n\x03nat\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x1aI\n\x05\x41rrow\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Kind\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03Sum\"\xce\x06\n\x04Type\x12\"\n\x03var\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.VarH\x00\x12\"\n\x03\x63on\x18\x02 \x01(\x0b\x32\x13.daml_lf_1.Type.ConH\x00\x12$\n\x04prim\x18\x03 \x01(\x0b\x32\x14.daml_lf_1.Type.PrimH\x00\x12\"\n\x03\x66un\x18\x04 \x01(\x0b\x32\x13.daml_lf_1.Type.FunH\x00\x12(\n\x06\x66orall\x18\x05 \x01(\x0b\x32\x16.daml_lf_1.Type.ForallH\x00\x12(\n\x06struct\x18\x07 \x01(\x0b\x32\x16.daml_lf_1.Type.StructH\x00\x12\r\n\x03nat\x18\x0b \x01(\x12H\x00\x12\"\n\x03syn\x18\x0c \x01(\x0b\x32\x13.daml_lf_1.Type.SynH\x00\x1aZ\n\x03Var\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\x1aK\n\x03\x43on\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03Syn\x12%\n\x05tysyn\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeSynName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aH\n\x04Prim\x12!\n\x04prim\x18\x01 \x01(\x0e\x32\x13.daml_lf_1.PrimType\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aG\n\x03\x46un\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aQ\n\x06\x46orall\x12(\n\x04vars\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x32\n\x06Struct\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithTypeB\x05\n\x03SumJ\x04\x08\x06\x10\x07J\x04\x08\x08\x10\tJ\x04\x08\t\x10\nJ\x04\x08\n\x10\x0b\"\xed\x01\n\x07PrimLit\x12\x0f\n\x05int64\x18\x01 \x01(\x12H\x00\x12\x15\n\x0b\x64\x65\x63imal_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14numeric_interned_str\x18\n \x01(\x05H\x00\x12\x12\n\x08text_str\x18\x04 \x01(\tH\x00\x12\x1b\n\x11text_interned_str\x18\x0b \x01(\x05H\x00\x12\x13\n\ttimestamp\x18\x05 \x01(\x10H\x00\x12\x13\n\tparty_str\x18\x07 \x01(\tH\x00\x12\x1c\n\x12party_interned_str\x18\x0c \x01(\x05H\x00\x12\x0e\n\x04\x64\x61te\x18\x08 \x01(\x05H\x00\x42\x05\n\x03SumJ\x04\x08\x03\x10\x04J\x04\x08\x06\x10\x07\"\xad\x01\n\x08Location\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12(\n\x05range\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.Location.Range\x1aQ\n\x05Range\x12\x12\n\nstart_line\x18\x01 \x01(\x05\x12\x11\n\tstart_col\x18\x02 \x01(\x05\x12\x10\n\x08\x65nd_line\x18\x03 \x01(\x05\x12\x0f\n\x07\x65nd_col\x18\x04 \x01(\x05\"\x89\x17\n\x04\x45xpr\x12%\n\x08location\x18\x19 \x01(\x0b\x32\x13.daml_lf_1.Location\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x1d \x01(\x05H\x00\x12!\n\x03val\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.ValNameH\x00\x12-\n\x07\x62uiltin\x18\x03 \x01(\x0e\x32\x1a.daml_lf_1.BuiltinFunctionH\x00\x12&\n\x08prim_con\x18\x04 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12&\n\x08prim_lit\x18\x05 \x01(\x0b\x32\x12.daml_lf_1.PrimLitH\x00\x12)\n\x07rec_con\x18\x06 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecConH\x00\x12+\n\x08rec_proj\x18\x07 \x01(\x0b\x32\x17.daml_lf_1.Expr.RecProjH\x00\x12)\n\x07rec_upd\x18\x16 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecUpdH\x00\x12\x31\n\x0bvariant_con\x18\x08 \x01(\x0b\x32\x1a.daml_lf_1.Expr.VariantConH\x00\x12+\n\x08\x65num_con\x18\x1c \x01(\x0b\x32\x17.daml_lf_1.Expr.EnumConH\x00\x12/\n\nstruct_con\x18\t \x01(\x0b\x32\x19.daml_lf_1.Expr.StructConH\x00\x12\x31\n\x0bstruct_proj\x18\n \x01(\x0b\x32\x1a.daml_lf_1.Expr.StructProjH\x00\x12/\n\nstruct_upd\x18\x17 \x01(\x0b\x32\x19.daml_lf_1.Expr.StructUpdH\x00\x12\"\n\x03\x61pp\x18\x0b \x01(\x0b\x32\x13.daml_lf_1.Expr.AppH\x00\x12\'\n\x06ty_app\x18\x0c \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAppH\x00\x12\"\n\x03\x61\x62s\x18\r \x01(\x0b\x32\x13.daml_lf_1.Expr.AbsH\x00\x12\'\n\x06ty_abs\x18\x0e \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAbsH\x00\x12\x1f\n\x04\x63\x61se\x18\x0f \x01(\x0b\x32\x0f.daml_lf_1.CaseH\x00\x12\x1f\n\x03let\x18\x10 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12\"\n\x03nil\x18\x11 \x01(\x0b\x32\x13.daml_lf_1.Expr.NilH\x00\x12$\n\x04\x63ons\x18\x12 \x01(\x0b\x32\x14.daml_lf_1.Expr.ConsH\x00\x12#\n\x06update\x18\x14 \x01(\x0b\x32\x11.daml_lf_1.UpdateH\x00\x12\'\n\x08scenario\x18\x15 \x01(\x0b\x32\x13.daml_lf_1.ScenarioH\x00\x12\x35\n\roptional_none\x18\x1a \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalNoneH\x00\x12\x35\n\roptional_some\x18\x1b \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalSomeH\x00\x12\'\n\x06to_any\x18\x1e \x01(\x0b\x32\x15.daml_lf_1.Expr.ToAnyH\x00\x12+\n\x08\x66rom_any\x18\x1f \x01(\x0b\x32\x17.daml_lf_1.Expr.FromAnyH\x00\x12#\n\x08type_rep\x18  \x01(\x0b\x32\x0f.daml_lf_1.TypeH\x00\x1aV\n\x06RecCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12(\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1a\x8a\x01\n\x07RecProj\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xaa\x01\n\x06RecUpd\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x05 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xa4\x01\n\nVariantCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x19\n\x0fvariant_con_str\x18\x02 \x01(\tH\x00\x12\"\n\x18variant_con_interned_str\x18\x04 \x01(\x05H\x00\x12$\n\x0bvariant_arg\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\r\n\x0bvariant_con\x1au\n\x07\x45numCon\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x16\n\x0c\x65num_con_str\x18\x02 \x01(\tH\x00\x12\x1f\n\x15\x65num_con_interned_str\x18\x03 \x01(\x05H\x00\x42\n\n\x08\x65num_con\x1a\x35\n\tStructCon\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1ai\n\nStructProj\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x89\x01\n\tStructUpd\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x42\n\x03\x41pp\x12\x1c\n\x03\x66un\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x46\n\x05TyApp\x12\x1d\n\x04\x65xpr\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05types\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03\x41\x62s\x12%\n\x05param\x18\x01 \x03(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aQ\n\x05TyAbs\x12)\n\x05param\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a$\n\x03Nil\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x64\n\x04\x43ons\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1e\n\x05\x66ront\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04tail\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a-\n\x0cOptionalNone\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aL\n\x0cOptionalSome\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x45\n\x05ToAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aG\n\x07\x46romAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03SumJ\x04\x08\x13\x10\x14J\x04\x08\x18\x10\x19\"\x95\x07\n\x07\x43\x61seAlt\x12\"\n\x07\x64\x65\x66\x61ult\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12-\n\x07variant\x18\x02 \x01(\x0b\x32\x1a.daml_lf_1.CaseAlt.VariantH\x00\x12&\n\x08prim_con\x18\x03 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12\x1e\n\x03nil\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\'\n\x04\x63ons\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.ConsH\x00\x12(\n\roptional_none\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\roptional_some\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.CaseAlt.OptionalSomeH\x00\x12\'\n\x04\x65num\x18\t \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.EnumH\x00\x12\x1d\n\x04\x62ody\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xaf\x01\n\x07Variant\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x15\n\x0bvariant_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14variant_interned_str\x18\x04 \x01(\x05H\x00\x12\x14\n\nbinder_str\x18\x03 \x01(\tH\x01\x12\x1d\n\x13\x62inder_interned_str\x18\x05 \x01(\x05H\x01\x42\t\n\x07variantB\x08\n\x06\x62inder\x1ay\n\x04\x45num\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x19\n\x0f\x63onstructor_str\x18\x02 \x01(\tH\x00\x12\"\n\x18\x63onstructor_interned_str\x18\x03 \x01(\x05H\x00\x42\r\n\x0b\x63onstructor\x1a\x90\x01\n\x04\x43ons\x12\x16\n\x0cvar_head_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_head_interned_str\x18\x03 \x01(\x05H\x00\x12\x16\n\x0cvar_tail_str\x18\x02 \x01(\tH\x01\x12\x1f\n\x15var_tail_interned_str\x18\x04 \x01(\x05H\x01\x42\n\n\x08var_headB\n\n\x08var_tail\x1aS\n\x0cOptionalSome\x12\x16\n\x0cvar_body_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_body_interned_str\x18\x02 \x01(\x05H\x00\x42\n\n\x08var_bodyB\x05\n\x03Sum\"H\n\x04\x43\x61se\x12\x1e\n\x05scrut\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12 \n\x04\x61lts\x18\x02 \x03(\x0b\x32\x12.daml_lf_1.CaseAlt\"L\n\x05\x42lock\x12$\n\x08\x62indings\x18\x01 \x03(\x0b\x32\x12.daml_lf_1.Binding\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"D\n\x04Pure\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc4\x07\n\x06Update\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12*\n\x06\x63reate\x18\x03 \x01(\x0b\x32\x18.daml_lf_1.Update.CreateH\x00\x12.\n\x08\x65xercise\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Update.ExerciseH\x00\x12(\n\x05\x66\x65tch\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.Update.FetchH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\rlookup_by_key\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x37\n\x0c\x66\x65tch_by_key\x18\t \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x31\n\nembed_expr\x18\x07 \x01(\x0b\x32\x1b.daml_lf_1.Update.EmbedExprH\x00\x1aQ\n\x06\x43reate\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xcf\x01\n\x08\x45xercise\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x14\n\nchoice_str\x18\x02 \x01(\tH\x00\x12\x1d\n\x13\x63hoice_interned_str\x18\x06 \x01(\x05H\x00\x12\x1c\n\x03\x63id\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05\x61\x63tor\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1c\n\x03\x61rg\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x08\n\x06\x63hoice\x1aU\n\x05\x46\x65tch\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03\x63id\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprJ\x04\x08\x03\x10\x04\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aW\n\rRetrieveByKey\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03key\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\x8d\x04\n\x08Scenario\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12,\n\x06\x63ommit\x18\x03 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x30\n\nmustFailAt\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x1f\n\x04pass\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12$\n\tget_party\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12\x33\n\nembed_expr\x18\x08 \x01(\x0b\x32\x1d.daml_lf_1.Scenario.EmbedExprH\x00\x1aj\n\x06\x43ommit\x12\x1e\n\x05party\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12!\n\x08ret_type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\xe7\x02\n\x0eTemplateChoice\x12\x12\n\x08name_str\x18\x01 \x01(\tH\x00\x12\x1b\n\x11name_interned_str\x18\t \x01(\x05H\x00\x12\x11\n\tconsuming\x18\x02 \x01(\x08\x12$\n\x0b\x63ontrollers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\narg_binder\x18\x04 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12!\n\x08ret_type\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06update\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x0fself_binder_str\x18\x07 \x01(\tH\x01\x12\"\n\x18self_binder_interned_str\x18\n \x01(\x05H\x01\x12%\n\x08location\x18\x08 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04nameB\r\n\x0bself_binder\"\xf0\x03\n\x07KeyExpr\x12\x35\n\x0bprojections\x18\x01 \x01(\x0b\x32\x1e.daml_lf_1.KeyExpr.ProjectionsH\x00\x12+\n\x06record\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.KeyExpr.RecordH\x00\x1al\n\nProjection\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x42\x07\n\x05\x66ield\x1a\x41\n\x0bProjections\x12\x32\n\x0bprojections\x18\x02 \x03(\x0b\x32\x1d.daml_lf_1.KeyExpr.Projection\x1ak\n\x0bRecordField\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12 \n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprB\x07\n\x05\x66ield\x1a\\\n\x06Record\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12.\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x1e.daml_lf_1.KeyExpr.RecordFieldB\x05\n\x03Sum\"\xdc\x04\n\x0b\x44\x65\x66Template\x12,\n\x0btycon_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1e\n\x14tycon_interned_dname\x18\x0c \x01(\x05H\x00\x12\x13\n\tparam_str\x18\x02 \x01(\tH\x01\x12\x1c\n\x12param_interned_str\x18\x0b \x01(\x05H\x01\x12 \n\x07precond\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12$\n\x0bsignatories\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\"\n\tagreement\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\x07\x63hoices\x18\x07 \x03(\x0b\x32\x19.daml_lf_1.TemplateChoice\x12\"\n\tobservers\x18\x08 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12%\n\x08location\x18\t \x01(\x0b\x32\x13.daml_lf_1.Location\x12*\n\x03key\x18\n \x01(\x0b\x32\x1d.daml_lf_1.DefTemplate.DefKey\x1a\xa4\x01\n\x06\x44\x65\x66Key\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12!\n\x03key\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprH\x00\x12&\n\x0b\x63omplex_key\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12$\n\x0bmaintainers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\n\n\x08key_exprB\x07\n\x05tyconB\x07\n\x05paramJ\x04\x08\x03\x10\x04\"\xf7\x03\n\x0b\x44\x65\x66\x44\x61taType\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12/\n\x06record\x18\x03 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x30\n\x07variant\x18\x04 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x37\n\x04\x65num\x18\x07 \x01(\x0b\x32\'.daml_lf_1.DefDataType.EnumConstructorsH\x01\x12\x14\n\x0cserializable\x18\x05 \x01(\x08\x12%\n\x08location\x18\x06 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a\x32\n\x06\x46ields\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithType\x1aO\n\x10\x45numConstructors\x12\x18\n\x10\x63onstructors_str\x18\x01 \x03(\t\x12!\n\x19\x63onstructors_interned_str\x18\x02 \x03(\x05\x42\x06\n\x04nameB\n\n\x08\x44\x61taCons\"\xd2\x01\n\nDefTypeSyn\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12%\n\x08location\x18\x04 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04name\"\x96\x02\n\x08\x44\x65\x66Value\x12\x38\n\x0ename_with_type\x18\x01 \x01(\x0b\x32 .daml_lf_1.DefValue.NameWithType\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x11no_party_literals\x18\x03 \x01(\x08\x12\x0f\n\x07is_test\x18\x04 \x01(\x08\x12%\n\x08location\x18\x05 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a^\n\x0cNameWithType\x12\x12\n\nname_dname\x18\x01 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\"\x90\x01\n\x0c\x46\x65\x61tureFlags\x12\x1b\n\x13\x66orbidPartyLiterals\x18\x01 \x01(\x08\x12/\n\'dontDivulgeContractIdsInCreateArguments\x18\x02 \x01(\x08\x12\x32\n*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\x08\"\xb5\x02\n\x06Module\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12&\n\x05\x66lags\x18\x04 \x01(\x0b\x32\x17.daml_lf_1.FeatureFlags\x12\'\n\x08synonyms\x18\t \x03(\x0b\x32\x15.daml_lf_1.DefTypeSyn\x12*\n\ndata_types\x18\x05 \x03(\x0b\x32\x16.daml_lf_1.DefDataType\x12#\n\x06values\x18\x06 \x03(\x0b\x32\x13.daml_lf_1.DefValue\x12)\n\ttemplates\x18\x07 \x03(\x0b\x32\x16.daml_lf_1.DefTemplateB\x06\n\x04nameJ\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04\"3\n\x12InternedDottedName\x12\x1d\n\x15segments_interned_str\x18\x01 \x03(\x05\"J\n\x0fPackageMetadata\x12\x19\n\x11name_interned_str\x18\x01 \x01(\x05\x12\x1c\n\x14version_interned_str\x18\x02 \x01(\x05\"\xb3\x01\n\x07Package\x12\"\n\x07modules\x18\x01 \x03(\x0b\x32\x11.daml_lf_1.Module\x12\x18\n\x10interned_strings\x18\x02 \x03(\t\x12<\n\x15interned_dotted_names\x18\x03 \x03(\x0b\x32\x1d.daml_lf_1.InternedDottedName\x12,\n\x08metadata\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.PackageMetadata*\xef\x01\n\x08PrimType\x12\x08\n\x04UNIT\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x03\x12\x08\n\x04TEXT\x10\x05\x12\r\n\tTIMESTAMP\x10\x06\x12\t\n\x05PARTY\x10\x08\x12\x08\n\x04LIST\x10\t\x12\n\n\x06UPDATE\x10\n\x12\x0c\n\x08SCENARIO\x10\x0b\x12\x08\n\x04\x44\x41TE\x10\x0c\x12\x0f\n\x0b\x43ONTRACT_ID\x10\r\x12\x0c\n\x08OPTIONAL\x10\x0e\x12\t\n\x05\x41RROW\x10\x0f\x12\x0b\n\x07TEXTMAP\x10\x10\x12\x0b\n\x07NUMERIC\x10\x11\x12\x07\n\x03\x41NY\x10\x12\x12\x0c\n\x08TYPE_REP\x10\x13\x12\n\n\x06GENMAP\x10\x14*4\n\x07PrimCon\x12\x0c\n\x08\x43ON_UNIT\x10\x00\x12\r\n\tCON_FALSE\x10\x01\x12\x0c\n\x08\x43ON_TRUE\x10\x02*\x9c\x10\n\x0f\x42uiltinFunction\x12\x0f\n\x0b\x41\x44\x44_DECIMAL\x10\x00\x12\x0f\n\x0bSUB_DECIMAL\x10\x01\x12\x0f\n\x0bMUL_DECIMAL\x10\x02\x12\x0f\n\x0b\x44IV_DECIMAL\x10\x03\x12\x11\n\rROUND_DECIMAL\x10\x06\x12\x0f\n\x0b\x41\x44\x44_NUMERIC\x10k\x12\x0f\n\x0bSUB_NUMERIC\x10l\x12\x0f\n\x0bMUL_NUMERIC\x10m\x12\x0f\n\x0b\x44IV_NUMERIC\x10n\x12\x11\n\rROUND_NUMERIC\x10o\x12\x10\n\x0c\x43\x41ST_NUMERIC\x10y\x12\x11\n\rSHIFT_NUMERIC\x10z\x12\r\n\tADD_INT64\x10\x07\x12\r\n\tSUB_INT64\x10\x08\x12\r\n\tMUL_INT64\x10\t\x12\r\n\tDIV_INT64\x10\n\x12\r\n\tMOD_INT64\x10\x0b\x12\r\n\tEXP_INT64\x10\x0c\x12\t\n\x05\x46OLDL\x10\x14\x12\t\n\x05\x46OLDR\x10\x15\x12\x11\n\rTEXTMAP_EMPTY\x10`\x12\x12\n\x0eTEXTMAP_INSERT\x10\x61\x12\x12\n\x0eTEXTMAP_LOOKUP\x10\x62\x12\x12\n\x0eTEXTMAP_DELETE\x10\x63\x12\x13\n\x0fTEXTMAP_TO_LIST\x10\x64\x12\x10\n\x0cTEXTMAP_SIZE\x10\x65\x12\x10\n\x0cGENMAP_EMPTY\x10|\x12\x11\n\rGENMAP_INSERT\x10}\x12\x11\n\rGENMAP_LOOKUP\x10~\x12\x11\n\rGENMAP_DELETE\x10\x7f\x12\x10\n\x0bGENMAP_KEYS\x10\x80\x01\x12\x12\n\rGENMAP_VALUES\x10\x81\x01\x12\x10\n\x0bGENMAP_SIZE\x10\x82\x01\x12\x10\n\x0c\x45XPLODE_TEXT\x10\x17\x12\x0f\n\x0b\x41PPEND_TEXT\x10\x18\x12\t\n\x05\x45RROR\x10\x19\x12\r\n\tLEQ_INT64\x10!\x12\x0f\n\x0bLEQ_DECIMAL\x10\"\x12\x0f\n\x0bLEQ_NUMERIC\x10p\x12\x0c\n\x08LEQ_TEXT\x10$\x12\x11\n\rLEQ_TIMESTAMP\x10%\x12\x0c\n\x08LEQ_DATE\x10\x43\x12\r\n\tLEQ_PARTY\x10Y\x12\x0e\n\nLESS_INT64\x10\'\x12\x10\n\x0cLESS_DECIMAL\x10(\x12\x10\n\x0cLESS_NUMERIC\x10q\x12\r\n\tLESS_TEXT\x10*\x12\x12\n\x0eLESS_TIMESTAMP\x10+\x12\r\n\tLESS_DATE\x10\x44\x12\x0e\n\nLESS_PARTY\x10Z\x12\r\n\tGEQ_INT64\x10-\x12\x0f\n\x0bGEQ_DECIMAL\x10.\x12\x0f\n\x0bGEQ_NUMERIC\x10r\x12\x0c\n\x08GEQ_TEXT\x10\x30\x12\x11\n\rGEQ_TIMESTAMP\x10\x31\x12\x0c\n\x08GEQ_DATE\x10\x45\x12\r\n\tGEQ_PARTY\x10[\x12\x11\n\rGREATER_INT64\x10\x33\x12\x13\n\x0fGREATER_DECIMAL\x10\x34\x12\x13\n\x0fGREATER_NUMERIC\x10s\x12\x10\n\x0cGREATER_TEXT\x10\x36\x12\x15\n\x11GREATER_TIMESTAMP\x10\x37\x12\x10\n\x0cGREATER_DATE\x10\x46\x12\x11\n\rGREATER_PARTY\x10\\\x12\x11\n\rTO_TEXT_INT64\x10\x39\x12\x13\n\x0fTO_TEXT_DECIMAL\x10:\x12\x13\n\x0fTO_TEXT_NUMERIC\x10t\x12\x10\n\x0cTO_TEXT_TEXT\x10<\x12\x15\n\x11TO_TEXT_TIMESTAMP\x10=\x12\x10\n\x0cTO_TEXT_DATE\x10G\x12\x18\n\x14TO_QUOTED_TEXT_PARTY\x10?\x12\x11\n\rTO_TEXT_PARTY\x10^\x12\x13\n\x0f\x46ROM_TEXT_PARTY\x10_\x12\x13\n\x0f\x46ROM_TEXT_INT64\x10g\x12\x15\n\x11\x46ROM_TEXT_DECIMAL\x10h\x12\x15\n\x11\x46ROM_TEXT_NUMERIC\x10u\x12\x0f\n\x0bSHA256_TEXT\x10]\x12\x15\n\x11\x44\x41TE_TO_UNIX_DAYS\x10H\x12\x15\n\x11UNIX_DAYS_TO_DATE\x10I\x12\"\n\x1eTIMESTAMP_TO_UNIX_MICROSECONDS\x10J\x12\"\n\x1eUNIX_MICROSECONDS_TO_TIMESTAMP\x10K\x12\x14\n\x10INT64_TO_DECIMAL\x10L\x12\x14\n\x10\x44\x45\x43IMAL_TO_INT64\x10M\x12\x14\n\x10INT64_TO_NUMERIC\x10v\x12\x14\n\x10NUMERIC_TO_INT64\x10w\x12\x10\n\x0cIMPLODE_TEXT\x10N\x12\x0f\n\x0b\x45QUAL_INT64\x10O\x12\x11\n\rEQUAL_DECIMAL\x10P\x12\x11\n\rEQUAL_NUMERIC\x10x\x12\x0e\n\nEQUAL_TEXT\x10Q\x12\x13\n\x0f\x45QUAL_TIMESTAMP\x10R\x12\x0e\n\nEQUAL_DATE\x10S\x12\x0f\n\x0b\x45QUAL_PARTY\x10T\x12\x0e\n\nEQUAL_BOOL\x10U\x12\x15\n\x11\x45QUAL_CONTRACT_ID\x10V\x12\x0e\n\nEQUAL_LIST\x10W\x12\x12\n\x0e\x45QUAL_TYPE_REP\x10{\x12\n\n\x05\x45QUAL\x10\x83\x01\x12\t\n\x05TRACE\x10X\x12\x16\n\x12\x43OERCE_CONTRACT_ID\x10\x66\x12\x19\n\x15TEXT_FROM_CODE_POINTS\x10i\x12\x17\n\x13TEXT_TO_CODE_POINTS\x10j\x12\x12\n\rTEXT_TO_UPPER\x10\xadM\x12\x12\n\rTEXT_TO_LOWER\x10\xaeM\x12\x0f\n\nTEXT_SLICE\x10\xafM\x12\x15\n\x10TEXT_SLICE_INDEX\x10\xb0M\x12\x17\n\x12TEXT_CONTAINS_ONLY\x10\xb1M\x12\x13\n\x0eTEXT_REPLICATE\x10\xb2M\x12\x12\n\rTEXT_SPLIT_ON\x10\xb3M\x12\x15\n\x10TEXT_INTERCALATE\x10\xb4MBE\n\x1c\x63om.digitalasset.daml_lf_dev\xaa\x02$Com.DigitalAsset.Daml_Lf_Dev.DamlLf1b\x06proto3')
 )
 
 _PRIMTYPE = _descriptor.EnumDescriptor(
@@ -111,8 +111,8 @@ _PRIMTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=10956,
-  serialized_end=11195,
+  serialized_start=11547,
+  serialized_end=11786,
 )
 _sym_db.RegisterEnumDescriptor(_PRIMTYPE)
 
@@ -138,8 +138,8 @@ _PRIMCON = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=11197,
-  serialized_end=11249,
+  serialized_start=11788,
+  serialized_end=11840,
 )
 _sym_db.RegisterEnumDescriptor(_PRIMCON)
 
@@ -593,8 +593,8 @@ _BUILTINFUNCTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=11252,
-  serialized_end=13328,
+  serialized_start=11843,
+  serialized_end=13919,
 )
 _sym_db.RegisterEnumDescriptor(_BUILTINFUNCTION)
 
@@ -933,6 +933,54 @@ _TYPECONNAME = _descriptor.Descriptor(
 )
 
 
+_TYPESYNNAME = _descriptor.Descriptor(
+  name='TypeSynName',
+  full_name='daml_lf_1.TypeSynName',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='module', full_name='daml_lf_1.TypeSynName.module', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name_dname', full_name='daml_lf_1.TypeSynName.name_dname', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name_interned_dname', full_name='daml_lf_1.TypeSynName.name_interned_dname', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='name', full_name='daml_lf_1.TypeSynName.name',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=516,
+  serialized_end=651,
+)
+
+
 _VALNAME = _descriptor.Descriptor(
   name='ValName',
   full_name='daml_lf_1.ValName',
@@ -973,8 +1021,8 @@ _VALNAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=515,
-  serialized_end=611,
+  serialized_start=653,
+  serialized_end=749,
 )
 
 
@@ -1021,8 +1069,8 @@ _FIELDWITHTYPE = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.FieldWithType.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=613,
-  serialized_end=719,
+  serialized_start=751,
+  serialized_end=857,
 )
 
 
@@ -1069,8 +1117,8 @@ _VARWITHTYPE = _descriptor.Descriptor(
       name='var', full_name='daml_lf_1.VarWithType.var',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=721,
-  serialized_end=819,
+  serialized_start=859,
+  serialized_end=957,
 )
 
 
@@ -1117,8 +1165,8 @@ _TYPEVARWITHKIND = _descriptor.Descriptor(
       name='var', full_name='daml_lf_1.TypeVarWithKind.var',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=821,
-  serialized_end=923,
+  serialized_start=959,
+  serialized_end=1061,
 )
 
 
@@ -1165,8 +1213,8 @@ _FIELDWITHEXPR = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.FieldWithExpr.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=925,
-  serialized_end=1031,
+  serialized_start=1063,
+  serialized_end=1169,
 )
 
 
@@ -1203,8 +1251,8 @@ _BINDING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1033,
-  serialized_end=1114,
+  serialized_start=1171,
+  serialized_end=1252,
 )
 
 
@@ -1241,8 +1289,8 @@ _KIND_ARROW = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1230,
-  serialized_end=1303,
+  serialized_start=1368,
+  serialized_end=1441,
 )
 
 _KIND = _descriptor.Descriptor(
@@ -1288,8 +1336,8 @@ _KIND = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Kind.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1117,
-  serialized_end=1310,
+  serialized_start=1255,
+  serialized_end=1448,
 )
 
 
@@ -1336,8 +1384,8 @@ _TYPE_VAR = _descriptor.Descriptor(
       name='var', full_name='daml_lf_1.Type.Var.var',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1566,
-  serialized_end=1656,
+  serialized_start=1740,
+  serialized_end=1830,
 )
 
 _TYPE_CON = _descriptor.Descriptor(
@@ -1373,8 +1421,45 @@ _TYPE_CON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1658,
-  serialized_end=1733,
+  serialized_start=1832,
+  serialized_end=1907,
+)
+
+_TYPE_SYN = _descriptor.Descriptor(
+  name='Syn',
+  full_name='daml_lf_1.Type.Syn',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='tysyn', full_name='daml_lf_1.Type.Syn.tysyn', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='args', full_name='daml_lf_1.Type.Syn.args', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1909,
+  serialized_end=1984,
 )
 
 _TYPE_PRIM = _descriptor.Descriptor(
@@ -1410,8 +1495,8 @@ _TYPE_PRIM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1735,
-  serialized_end=1807,
+  serialized_start=1986,
+  serialized_end=2058,
 )
 
 _TYPE_FUN = _descriptor.Descriptor(
@@ -1447,8 +1532,8 @@ _TYPE_FUN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1809,
-  serialized_end=1880,
+  serialized_start=2060,
+  serialized_end=2131,
 )
 
 _TYPE_FORALL = _descriptor.Descriptor(
@@ -1484,8 +1569,8 @@ _TYPE_FORALL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1882,
-  serialized_end=1963,
+  serialized_start=2133,
+  serialized_end=2214,
 )
 
 _TYPE_STRUCT = _descriptor.Descriptor(
@@ -1514,8 +1599,8 @@ _TYPE_STRUCT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1965,
-  serialized_end=2015,
+  serialized_start=2216,
+  serialized_end=2266,
 )
 
 _TYPE = _descriptor.Descriptor(
@@ -1574,10 +1659,17 @@ _TYPE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='syn', full_name='daml_lf_1.Type.syn', index=7,
+      number=12, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
-  nested_types=[_TYPE_VAR, _TYPE_CON, _TYPE_PRIM, _TYPE_FUN, _TYPE_FORALL, _TYPE_STRUCT, ],
+  nested_types=[_TYPE_VAR, _TYPE_CON, _TYPE_SYN, _TYPE_PRIM, _TYPE_FUN, _TYPE_FORALL, _TYPE_STRUCT, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -1589,8 +1681,8 @@ _TYPE = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Type.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1313,
-  serialized_end=2046,
+  serialized_start=1451,
+  serialized_end=2297,
 )
 
 
@@ -1679,8 +1771,8 @@ _PRIMLIT = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.PrimLit.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2049,
-  serialized_end=2286,
+  serialized_start=2300,
+  serialized_end=2537,
 )
 
 
@@ -1731,8 +1823,8 @@ _LOCATION_RANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2381,
-  serialized_end=2462,
+  serialized_start=2632,
+  serialized_end=2713,
 )
 
 _LOCATION = _descriptor.Descriptor(
@@ -1768,8 +1860,8 @@ _LOCATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2289,
-  serialized_end=2462,
+  serialized_start=2540,
+  serialized_end=2713,
 )
 
 
@@ -1806,8 +1898,8 @@ _EXPR_RECCON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3702,
-  serialized_end=3788,
+  serialized_start=3953,
+  serialized_end=4039,
 )
 
 _EXPR_RECPROJ = _descriptor.Descriptor(
@@ -1860,8 +1952,8 @@ _EXPR_RECPROJ = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.Expr.RecProj.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3791,
-  serialized_end=3929,
+  serialized_start=4042,
+  serialized_end=4180,
 )
 
 _EXPR_RECUPD = _descriptor.Descriptor(
@@ -1921,8 +2013,8 @@ _EXPR_RECUPD = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.Expr.RecUpd.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3932,
-  serialized_end=4102,
+  serialized_start=4183,
+  serialized_end=4353,
 )
 
 _EXPR_VARIANTCON = _descriptor.Descriptor(
@@ -1975,8 +2067,8 @@ _EXPR_VARIANTCON = _descriptor.Descriptor(
       name='variant_con', full_name='daml_lf_1.Expr.VariantCon.variant_con',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4105,
-  serialized_end=4269,
+  serialized_start=4356,
+  serialized_end=4520,
 )
 
 _EXPR_ENUMCON = _descriptor.Descriptor(
@@ -2022,8 +2114,8 @@ _EXPR_ENUMCON = _descriptor.Descriptor(
       name='enum_con', full_name='daml_lf_1.Expr.EnumCon.enum_con',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4271,
-  serialized_end=4388,
+  serialized_start=4522,
+  serialized_end=4639,
 )
 
 _EXPR_STRUCTCON = _descriptor.Descriptor(
@@ -2052,8 +2144,8 @@ _EXPR_STRUCTCON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4390,
-  serialized_end=4443,
+  serialized_start=4641,
+  serialized_end=4694,
 )
 
 _EXPR_STRUCTPROJ = _descriptor.Descriptor(
@@ -2099,8 +2191,8 @@ _EXPR_STRUCTPROJ = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.Expr.StructProj.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4445,
-  serialized_end=4550,
+  serialized_start=4696,
+  serialized_end=4801,
 )
 
 _EXPR_STRUCTUPD = _descriptor.Descriptor(
@@ -2153,8 +2245,8 @@ _EXPR_STRUCTUPD = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.Expr.StructUpd.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4553,
-  serialized_end=4690,
+  serialized_start=4804,
+  serialized_end=4941,
 )
 
 _EXPR_APP = _descriptor.Descriptor(
@@ -2190,8 +2282,8 @@ _EXPR_APP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4692,
-  serialized_end=4758,
+  serialized_start=4943,
+  serialized_end=5009,
 )
 
 _EXPR_TYAPP = _descriptor.Descriptor(
@@ -2227,8 +2319,8 @@ _EXPR_TYAPP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4760,
-  serialized_end=4830,
+  serialized_start=5011,
+  serialized_end=5081,
 )
 
 _EXPR_ABS = _descriptor.Descriptor(
@@ -2264,8 +2356,8 @@ _EXPR_ABS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4832,
-  serialized_end=4907,
+  serialized_start=5083,
+  serialized_end=5158,
 )
 
 _EXPR_TYABS = _descriptor.Descriptor(
@@ -2301,8 +2393,8 @@ _EXPR_TYABS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4909,
-  serialized_end=4990,
+  serialized_start=5160,
+  serialized_end=5241,
 )
 
 _EXPR_NIL = _descriptor.Descriptor(
@@ -2331,8 +2423,8 @@ _EXPR_NIL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4992,
-  serialized_end=5028,
+  serialized_start=5243,
+  serialized_end=5279,
 )
 
 _EXPR_CONS = _descriptor.Descriptor(
@@ -2375,8 +2467,8 @@ _EXPR_CONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5030,
-  serialized_end=5130,
+  serialized_start=5281,
+  serialized_end=5381,
 )
 
 _EXPR_OPTIONALNONE = _descriptor.Descriptor(
@@ -2405,8 +2497,8 @@ _EXPR_OPTIONALNONE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5132,
-  serialized_end=5177,
+  serialized_start=5383,
+  serialized_end=5428,
 )
 
 _EXPR_OPTIONALSOME = _descriptor.Descriptor(
@@ -2442,8 +2534,8 @@ _EXPR_OPTIONALSOME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5179,
-  serialized_end=5255,
+  serialized_start=5430,
+  serialized_end=5506,
 )
 
 _EXPR_TOANY = _descriptor.Descriptor(
@@ -2479,8 +2571,8 @@ _EXPR_TOANY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5257,
-  serialized_end=5326,
+  serialized_start=5508,
+  serialized_end=5577,
 )
 
 _EXPR_FROMANY = _descriptor.Descriptor(
@@ -2516,8 +2608,8 @@ _EXPR_FROMANY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5328,
-  serialized_end=5399,
+  serialized_start=5579,
+  serialized_end=5650,
 )
 
 _EXPR = _descriptor.Descriptor(
@@ -2752,8 +2844,8 @@ _EXPR = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Expr.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2465,
-  serialized_end=5418,
+  serialized_start=2716,
+  serialized_end=5669,
 )
 
 
@@ -2817,8 +2909,8 @@ _CASEALT_VARIANT = _descriptor.Descriptor(
       name='binder', full_name='daml_lf_1.CaseAlt.Variant.binder',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=5801,
-  serialized_end=5976,
+  serialized_start=6052,
+  serialized_end=6227,
 )
 
 _CASEALT_ENUM = _descriptor.Descriptor(
@@ -2864,8 +2956,8 @@ _CASEALT_ENUM = _descriptor.Descriptor(
       name='constructor', full_name='daml_lf_1.CaseAlt.Enum.constructor',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5978,
-  serialized_end=6099,
+  serialized_start=6229,
+  serialized_end=6350,
 )
 
 _CASEALT_CONS = _descriptor.Descriptor(
@@ -2921,8 +3013,8 @@ _CASEALT_CONS = _descriptor.Descriptor(
       name='var_tail', full_name='daml_lf_1.CaseAlt.Cons.var_tail',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=6102,
-  serialized_end=6246,
+  serialized_start=6353,
+  serialized_end=6497,
 )
 
 _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
@@ -2961,8 +3053,8 @@ _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
       name='var_body', full_name='daml_lf_1.CaseAlt.OptionalSome.var_body',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=6248,
-  serialized_end=6331,
+  serialized_start=6499,
+  serialized_end=6582,
 )
 
 _CASEALT = _descriptor.Descriptor(
@@ -3050,8 +3142,8 @@ _CASEALT = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.CaseAlt.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5421,
-  serialized_end=6338,
+  serialized_start=5672,
+  serialized_end=6589,
 )
 
 
@@ -3088,8 +3180,8 @@ _CASE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6340,
-  serialized_end=6412,
+  serialized_start=6591,
+  serialized_end=6663,
 )
 
 
@@ -3126,8 +3218,8 @@ _BLOCK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6414,
-  serialized_end=6490,
+  serialized_start=6665,
+  serialized_end=6741,
 )
 
 
@@ -3164,8 +3256,8 @@ _PURE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6492,
-  serialized_end=6560,
+  serialized_start=6743,
+  serialized_end=6811,
 )
 
 
@@ -3202,8 +3294,8 @@ _UPDATE_CREATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6978,
-  serialized_end=7059,
+  serialized_start=7229,
+  serialized_end=7310,
 )
 
 _UPDATE_EXERCISE = _descriptor.Descriptor(
@@ -3270,8 +3362,8 @@ _UPDATE_EXERCISE = _descriptor.Descriptor(
       name='choice', full_name='daml_lf_1.Update.Exercise.choice',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=7062,
-  serialized_end=7269,
+  serialized_start=7313,
+  serialized_end=7520,
 )
 
 _UPDATE_FETCH = _descriptor.Descriptor(
@@ -3307,8 +3399,8 @@ _UPDATE_FETCH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7271,
-  serialized_end=7356,
+  serialized_start=7522,
+  serialized_end=7607,
 )
 
 _UPDATE_EMBEDEXPR = _descriptor.Descriptor(
@@ -3344,8 +3436,8 @@ _UPDATE_EMBEDEXPR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7358,
-  serialized_end=7431,
+  serialized_start=7609,
+  serialized_end=7682,
 )
 
 _UPDATE_RETRIEVEBYKEY = _descriptor.Descriptor(
@@ -3381,8 +3473,8 @@ _UPDATE_RETRIEVEBYKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7433,
-  serialized_end=7520,
+  serialized_start=7684,
+  serialized_end=7771,
 )
 
 _UPDATE = _descriptor.Descriptor(
@@ -3470,8 +3562,8 @@ _UPDATE = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Update.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=6563,
-  serialized_end=7527,
+  serialized_start=6814,
+  serialized_end=7778,
 )
 
 
@@ -3515,8 +3607,8 @@ _SCENARIO_COMMIT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7867,
-  serialized_end=7973,
+  serialized_start=8118,
+  serialized_end=8224,
 )
 
 _SCENARIO_EMBEDEXPR = _descriptor.Descriptor(
@@ -3552,8 +3644,8 @@ _SCENARIO_EMBEDEXPR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7358,
-  serialized_end=7431,
+  serialized_start=7609,
+  serialized_end=7682,
 )
 
 _SCENARIO = _descriptor.Descriptor(
@@ -3634,8 +3726,8 @@ _SCENARIO = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.Scenario.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=7530,
-  serialized_end=8055,
+  serialized_start=7781,
+  serialized_end=8306,
 )
 
 
@@ -3734,8 +3826,8 @@ _TEMPLATECHOICE = _descriptor.Descriptor(
       name='self_binder', full_name='daml_lf_1.TemplateChoice.self_binder',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=8058,
-  serialized_end=8417,
+  serialized_start=8309,
+  serialized_end=8668,
 )
 
 
@@ -3782,8 +3874,8 @@ _KEYEXPR_PROJECTION = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.KeyExpr.Projection.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=8531,
-  serialized_end=8639,
+  serialized_start=8782,
+  serialized_end=8890,
 )
 
 _KEYEXPR_PROJECTIONS = _descriptor.Descriptor(
@@ -3812,8 +3904,8 @@ _KEYEXPR_PROJECTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8641,
-  serialized_end=8706,
+  serialized_start=8892,
+  serialized_end=8957,
 )
 
 _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
@@ -3859,8 +3951,8 @@ _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
       name='field', full_name='daml_lf_1.KeyExpr.RecordField.field',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=8708,
-  serialized_end=8815,
+  serialized_start=8959,
+  serialized_end=9066,
 )
 
 _KEYEXPR_RECORD = _descriptor.Descriptor(
@@ -3896,8 +3988,8 @@ _KEYEXPR_RECORD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8817,
-  serialized_end=8909,
+  serialized_start=9068,
+  serialized_end=9160,
 )
 
 _KEYEXPR = _descriptor.Descriptor(
@@ -3936,8 +4028,8 @@ _KEYEXPR = _descriptor.Descriptor(
       name='Sum', full_name='daml_lf_1.KeyExpr.Sum',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=8420,
-  serialized_end=8916,
+  serialized_start=8671,
+  serialized_end=9167,
 )
 
 
@@ -3991,8 +4083,8 @@ _DEFTEMPLATE_DEFKEY = _descriptor.Descriptor(
       name='key_expr', full_name='daml_lf_1.DefTemplate.DefKey.key_expr',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=9335,
-  serialized_end=9499,
+  serialized_start=9586,
+  serialized_end=9750,
 )
 
 _DEFTEMPLATE = _descriptor.Descriptor(
@@ -4097,8 +4189,8 @@ _DEFTEMPLATE = _descriptor.Descriptor(
       name='param', full_name='daml_lf_1.DefTemplate.param',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=8919,
-  serialized_end=9523,
+  serialized_start=9170,
+  serialized_end=9774,
 )
 
 
@@ -4128,8 +4220,8 @@ _DEFDATATYPE_FIELDS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9914,
-  serialized_end=9964,
+  serialized_start=10129,
+  serialized_end=10179,
 )
 
 _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
@@ -4165,8 +4257,8 @@ _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9966,
-  serialized_end=10045,
+  serialized_start=10181,
+  serialized_end=10260,
 )
 
 _DEFDATATYPE = _descriptor.Descriptor(
@@ -4219,21 +4311,14 @@ _DEFDATATYPE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='synonym', full_name='daml_lf_1.DefDataType.synonym', index=6,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='serializable', full_name='daml_lf_1.DefDataType.serializable', index=7,
+      name='serializable', full_name='daml_lf_1.DefDataType.serializable', index=6,
       number=5, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='location', full_name='daml_lf_1.DefDataType.location', index=8,
+      name='location', full_name='daml_lf_1.DefDataType.location', index=7,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -4257,8 +4342,70 @@ _DEFDATATYPE = _descriptor.Descriptor(
       name='DataCons', full_name='daml_lf_1.DefDataType.DataCons',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=9526,
-  serialized_end=10065,
+  serialized_start=9777,
+  serialized_end=10280,
+)
+
+
+_DEFTYPESYN = _descriptor.Descriptor(
+  name='DefTypeSyn',
+  full_name='daml_lf_1.DefTypeSyn',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name_dname', full_name='daml_lf_1.DefTypeSyn.name_dname', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name_interned_dname', full_name='daml_lf_1.DefTypeSyn.name_interned_dname', index=1,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='params', full_name='daml_lf_1.DefTypeSyn.params', index=2,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='type', full_name='daml_lf_1.DefTypeSyn.type', index=3,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='location', full_name='daml_lf_1.DefTypeSyn.location', index=4,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='name', full_name='daml_lf_1.DefTypeSyn.name',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=10283,
+  serialized_end=10493,
 )
 
 
@@ -4302,8 +4449,8 @@ _DEFVALUE_NAMEWITHTYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10252,
-  serialized_end=10346,
+  serialized_start=10680,
+  serialized_end=10774,
 )
 
 _DEFVALUE = _descriptor.Descriptor(
@@ -4360,8 +4507,8 @@ _DEFVALUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10068,
-  serialized_end=10346,
+  serialized_start=10496,
+  serialized_end=10774,
 )
 
 
@@ -4405,8 +4552,8 @@ _FEATUREFLAGS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10349,
-  serialized_end=10493,
+  serialized_start=10777,
+  serialized_end=10921,
 )
 
 
@@ -4439,21 +4586,28 @@ _MODULE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='data_types', full_name='daml_lf_1.Module.data_types', index=3,
+      name='synonyms', full_name='daml_lf_1.Module.synonyms', index=3,
+      number=9, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='data_types', full_name='daml_lf_1.Module.data_types', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='values', full_name='daml_lf_1.Module.values', index=4,
+      name='values', full_name='daml_lf_1.Module.values', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='templates', full_name='daml_lf_1.Module.templates', index=5,
+      name='templates', full_name='daml_lf_1.Module.templates', index=6,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -4474,8 +4628,8 @@ _MODULE = _descriptor.Descriptor(
       name='name', full_name='daml_lf_1.Module.name',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=10496,
-  serialized_end=10764,
+  serialized_start=10924,
+  serialized_end=11233,
 )
 
 
@@ -4505,8 +4659,46 @@ _INTERNEDDOTTEDNAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10766,
-  serialized_end=10817,
+  serialized_start=11235,
+  serialized_end=11286,
+)
+
+
+_PACKAGEMETADATA = _descriptor.Descriptor(
+  name='PackageMetadata',
+  full_name='daml_lf_1.PackageMetadata',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name_interned_str', full_name='daml_lf_1.PackageMetadata.name_interned_str', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='version_interned_str', full_name='daml_lf_1.PackageMetadata.version_interned_str', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=11288,
+  serialized_end=11362,
 )
 
 
@@ -4538,6 +4730,13 @@ _PACKAGE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='metadata', full_name='daml_lf_1.Package.metadata', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -4550,8 +4749,8 @@ _PACKAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10820,
-  serialized_end=10953,
+  serialized_start=11365,
+  serialized_end=11544,
 )
 
 _PACKAGEREF.fields_by_name['self'].message_type = _UNIT
@@ -4580,6 +4779,14 @@ _TYPECONNAME.fields_by_name['name_dname'].containing_oneof = _TYPECONNAME.oneofs
 _TYPECONNAME.oneofs_by_name['name'].fields.append(
   _TYPECONNAME.fields_by_name['name_interned_dname'])
 _TYPECONNAME.fields_by_name['name_interned_dname'].containing_oneof = _TYPECONNAME.oneofs_by_name['name']
+_TYPESYNNAME.fields_by_name['module'].message_type = _MODULEREF
+_TYPESYNNAME.fields_by_name['name_dname'].message_type = _DOTTEDNAME
+_TYPESYNNAME.oneofs_by_name['name'].fields.append(
+  _TYPESYNNAME.fields_by_name['name_dname'])
+_TYPESYNNAME.fields_by_name['name_dname'].containing_oneof = _TYPESYNNAME.oneofs_by_name['name']
+_TYPESYNNAME.oneofs_by_name['name'].fields.append(
+  _TYPESYNNAME.fields_by_name['name_interned_dname'])
+_TYPESYNNAME.fields_by_name['name_interned_dname'].containing_oneof = _TYPESYNNAME.oneofs_by_name['name']
 _VALNAME.fields_by_name['module'].message_type = _MODULEREF
 _FIELDWITHTYPE.fields_by_name['type'].message_type = _TYPE
 _FIELDWITHTYPE.oneofs_by_name['field'].fields.append(
@@ -4637,6 +4844,9 @@ _TYPE_VAR.fields_by_name['var_interned_str'].containing_oneof = _TYPE_VAR.oneofs
 _TYPE_CON.fields_by_name['tycon'].message_type = _TYPECONNAME
 _TYPE_CON.fields_by_name['args'].message_type = _TYPE
 _TYPE_CON.containing_type = _TYPE
+_TYPE_SYN.fields_by_name['tysyn'].message_type = _TYPESYNNAME
+_TYPE_SYN.fields_by_name['args'].message_type = _TYPE
+_TYPE_SYN.containing_type = _TYPE
 _TYPE_PRIM.fields_by_name['prim'].enum_type = _PRIMTYPE
 _TYPE_PRIM.fields_by_name['args'].message_type = _TYPE
 _TYPE_PRIM.containing_type = _TYPE
@@ -4654,6 +4864,7 @@ _TYPE.fields_by_name['prim'].message_type = _TYPE_PRIM
 _TYPE.fields_by_name['fun'].message_type = _TYPE_FUN
 _TYPE.fields_by_name['forall'].message_type = _TYPE_FORALL
 _TYPE.fields_by_name['struct'].message_type = _TYPE_STRUCT
+_TYPE.fields_by_name['syn'].message_type = _TYPE_SYN
 _TYPE.oneofs_by_name['Sum'].fields.append(
   _TYPE.fields_by_name['var'])
 _TYPE.fields_by_name['var'].containing_oneof = _TYPE.oneofs_by_name['Sum']
@@ -4675,6 +4886,9 @@ _TYPE.fields_by_name['struct'].containing_oneof = _TYPE.oneofs_by_name['Sum']
 _TYPE.oneofs_by_name['Sum'].fields.append(
   _TYPE.fields_by_name['nat'])
 _TYPE.fields_by_name['nat'].containing_oneof = _TYPE.oneofs_by_name['Sum']
+_TYPE.oneofs_by_name['Sum'].fields.append(
+  _TYPE.fields_by_name['syn'])
+_TYPE.fields_by_name['syn'].containing_oneof = _TYPE.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
   _PRIMLIT.fields_by_name['int64'])
 _PRIMLIT.fields_by_name['int64'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
@@ -5171,7 +5385,6 @@ _DEFDATATYPE.fields_by_name['params'].message_type = _TYPEVARWITHKIND
 _DEFDATATYPE.fields_by_name['record'].message_type = _DEFDATATYPE_FIELDS
 _DEFDATATYPE.fields_by_name['variant'].message_type = _DEFDATATYPE_FIELDS
 _DEFDATATYPE.fields_by_name['enum'].message_type = _DEFDATATYPE_ENUMCONSTRUCTORS
-_DEFDATATYPE.fields_by_name['synonym'].message_type = _TYPE
 _DEFDATATYPE.fields_by_name['location'].message_type = _LOCATION
 _DEFDATATYPE.oneofs_by_name['name'].fields.append(
   _DEFDATATYPE.fields_by_name['name_dname'])
@@ -5188,9 +5401,16 @@ _DEFDATATYPE.fields_by_name['variant'].containing_oneof = _DEFDATATYPE.oneofs_by
 _DEFDATATYPE.oneofs_by_name['DataCons'].fields.append(
   _DEFDATATYPE.fields_by_name['enum'])
 _DEFDATATYPE.fields_by_name['enum'].containing_oneof = _DEFDATATYPE.oneofs_by_name['DataCons']
-_DEFDATATYPE.oneofs_by_name['DataCons'].fields.append(
-  _DEFDATATYPE.fields_by_name['synonym'])
-_DEFDATATYPE.fields_by_name['synonym'].containing_oneof = _DEFDATATYPE.oneofs_by_name['DataCons']
+_DEFTYPESYN.fields_by_name['name_dname'].message_type = _DOTTEDNAME
+_DEFTYPESYN.fields_by_name['params'].message_type = _TYPEVARWITHKIND
+_DEFTYPESYN.fields_by_name['type'].message_type = _TYPE
+_DEFTYPESYN.fields_by_name['location'].message_type = _LOCATION
+_DEFTYPESYN.oneofs_by_name['name'].fields.append(
+  _DEFTYPESYN.fields_by_name['name_dname'])
+_DEFTYPESYN.fields_by_name['name_dname'].containing_oneof = _DEFTYPESYN.oneofs_by_name['name']
+_DEFTYPESYN.oneofs_by_name['name'].fields.append(
+  _DEFTYPESYN.fields_by_name['name_interned_dname'])
+_DEFTYPESYN.fields_by_name['name_interned_dname'].containing_oneof = _DEFTYPESYN.oneofs_by_name['name']
 _DEFVALUE_NAMEWITHTYPE.fields_by_name['type'].message_type = _TYPE
 _DEFVALUE_NAMEWITHTYPE.containing_type = _DEFVALUE
 _DEFVALUE.fields_by_name['name_with_type'].message_type = _DEFVALUE_NAMEWITHTYPE
@@ -5198,6 +5418,7 @@ _DEFVALUE.fields_by_name['expr'].message_type = _EXPR
 _DEFVALUE.fields_by_name['location'].message_type = _LOCATION
 _MODULE.fields_by_name['name_dname'].message_type = _DOTTEDNAME
 _MODULE.fields_by_name['flags'].message_type = _FEATUREFLAGS
+_MODULE.fields_by_name['synonyms'].message_type = _DEFTYPESYN
 _MODULE.fields_by_name['data_types'].message_type = _DEFDATATYPE
 _MODULE.fields_by_name['values'].message_type = _DEFVALUE
 _MODULE.fields_by_name['templates'].message_type = _DEFTEMPLATE
@@ -5209,11 +5430,13 @@ _MODULE.oneofs_by_name['name'].fields.append(
 _MODULE.fields_by_name['name_interned_dname'].containing_oneof = _MODULE.oneofs_by_name['name']
 _PACKAGE.fields_by_name['modules'].message_type = _MODULE
 _PACKAGE.fields_by_name['interned_dotted_names'].message_type = _INTERNEDDOTTEDNAME
+_PACKAGE.fields_by_name['metadata'].message_type = _PACKAGEMETADATA
 DESCRIPTOR.message_types_by_name['Unit'] = _UNIT
 DESCRIPTOR.message_types_by_name['PackageRef'] = _PACKAGEREF
 DESCRIPTOR.message_types_by_name['DottedName'] = _DOTTEDNAME
 DESCRIPTOR.message_types_by_name['ModuleRef'] = _MODULEREF
 DESCRIPTOR.message_types_by_name['TypeConName'] = _TYPECONNAME
+DESCRIPTOR.message_types_by_name['TypeSynName'] = _TYPESYNNAME
 DESCRIPTOR.message_types_by_name['ValName'] = _VALNAME
 DESCRIPTOR.message_types_by_name['FieldWithType'] = _FIELDWITHTYPE
 DESCRIPTOR.message_types_by_name['VarWithType'] = _VARWITHTYPE
@@ -5235,10 +5458,12 @@ DESCRIPTOR.message_types_by_name['TemplateChoice'] = _TEMPLATECHOICE
 DESCRIPTOR.message_types_by_name['KeyExpr'] = _KEYEXPR
 DESCRIPTOR.message_types_by_name['DefTemplate'] = _DEFTEMPLATE
 DESCRIPTOR.message_types_by_name['DefDataType'] = _DEFDATATYPE
+DESCRIPTOR.message_types_by_name['DefTypeSyn'] = _DEFTYPESYN
 DESCRIPTOR.message_types_by_name['DefValue'] = _DEFVALUE
 DESCRIPTOR.message_types_by_name['FeatureFlags'] = _FEATUREFLAGS
 DESCRIPTOR.message_types_by_name['Module'] = _MODULE
 DESCRIPTOR.message_types_by_name['InternedDottedName'] = _INTERNEDDOTTEDNAME
+DESCRIPTOR.message_types_by_name['PackageMetadata'] = _PACKAGEMETADATA
 DESCRIPTOR.message_types_by_name['Package'] = _PACKAGE
 DESCRIPTOR.enum_types_by_name['PrimType'] = _PRIMTYPE
 DESCRIPTOR.enum_types_by_name['PrimCon'] = _PRIMCON
@@ -5279,6 +5504,13 @@ TypeConName = _reflection.GeneratedProtocolMessageType('TypeConName', (_message.
   # @@protoc_insertion_point(class_scope:daml_lf_1.TypeConName)
   })
 _sym_db.RegisterMessage(TypeConName)
+
+TypeSynName = _reflection.GeneratedProtocolMessageType('TypeSynName', (_message.Message,), {
+  'DESCRIPTOR' : _TYPESYNNAME,
+  '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
+  # @@protoc_insertion_point(class_scope:daml_lf_1.TypeSynName)
+  })
+_sym_db.RegisterMessage(TypeSynName)
 
 ValName = _reflection.GeneratedProtocolMessageType('ValName', (_message.Message,), {
   'DESCRIPTOR' : _VALNAME,
@@ -5353,6 +5585,13 @@ Type = _reflection.GeneratedProtocolMessageType('Type', (_message.Message,), {
     })
   ,
 
+  'Syn' : _reflection.GeneratedProtocolMessageType('Syn', (_message.Message,), {
+    'DESCRIPTOR' : _TYPE_SYN,
+    '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Type.Syn)
+    })
+  ,
+
   'Prim' : _reflection.GeneratedProtocolMessageType('Prim', (_message.Message,), {
     'DESCRIPTOR' : _TYPE_PRIM,
     '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
@@ -5387,6 +5626,7 @@ Type = _reflection.GeneratedProtocolMessageType('Type', (_message.Message,), {
 _sym_db.RegisterMessage(Type)
 _sym_db.RegisterMessage(Type.Var)
 _sym_db.RegisterMessage(Type.Con)
+_sym_db.RegisterMessage(Type.Syn)
 _sym_db.RegisterMessage(Type.Prim)
 _sym_db.RegisterMessage(Type.Fun)
 _sym_db.RegisterMessage(Type.Forall)
@@ -5779,6 +6019,13 @@ _sym_db.RegisterMessage(DefDataType)
 _sym_db.RegisterMessage(DefDataType.Fields)
 _sym_db.RegisterMessage(DefDataType.EnumConstructors)
 
+DefTypeSyn = _reflection.GeneratedProtocolMessageType('DefTypeSyn', (_message.Message,), {
+  'DESCRIPTOR' : _DEFTYPESYN,
+  '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
+  # @@protoc_insertion_point(class_scope:daml_lf_1.DefTypeSyn)
+  })
+_sym_db.RegisterMessage(DefTypeSyn)
+
 DefValue = _reflection.GeneratedProtocolMessageType('DefValue', (_message.Message,), {
 
   'NameWithType' : _reflection.GeneratedProtocolMessageType('NameWithType', (_message.Message,), {
@@ -5814,6 +6061,13 @@ InternedDottedName = _reflection.GeneratedProtocolMessageType('InternedDottedNam
   # @@protoc_insertion_point(class_scope:daml_lf_1.InternedDottedName)
   })
 _sym_db.RegisterMessage(InternedDottedName)
+
+PackageMetadata = _reflection.GeneratedProtocolMessageType('PackageMetadata', (_message.Message,), {
+  'DESCRIPTOR' : _PACKAGEMETADATA,
+  '__module__' : 'com.digitalasset.daml_lf_dev.daml_lf_1_pb2'
+  # @@protoc_insertion_point(class_scope:daml_lf_1.PackageMetadata)
+  })
+_sym_db.RegisterMessage(PackageMetadata)
 
 Package = _reflection.GeneratedProtocolMessageType('Package', (_message.Message,), {
   'DESCRIPTOR' : _PACKAGE,

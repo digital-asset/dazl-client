@@ -258,6 +258,10 @@ class ValueReference(_Reference):
     pass
 
 
+class TypeSynName(_Reference):
+    pass
+
+
 class TypeVariable(Type):
     """
     An unbound type in a Type expression.
