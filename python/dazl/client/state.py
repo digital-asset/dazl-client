@@ -129,10 +129,12 @@ class TemplateContractData:
         self._queries = [q for q in self._queries if not q.check_ready(self)]
 
     def handle_archive(self, event: ContractArchiveEvent) -> None:
+        existing_data = self._data.get(event.cid.contract_id)
+        effective_at = existing_data.effective_at if existing_data is not None else None
         self._data[event.cid.contract_id] = ContractContextualData(
             cid=event.cid,
             cdata=None,
-            effective_at=self._data[event.cid.contract_id].effective_at,
+            effective_at=effective_at,
             archived_at=event.time,
             active=False)
 
