@@ -23,6 +23,7 @@ from ...model.core import Party, UserTerminateRequest, ConnectionTimeoutError
 from ...model.ledger import LedgerMetadata, StaticTimeModel, RealTimeModel
 from ...model.network import HTTPConnectionSettings
 from ...model.reading import BaseEvent, TransactionFilter
+from ...model.types import PackageId, PackageIdSet
 from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
 from ...scheduler import Invoker, RunLevel
@@ -151,7 +152,7 @@ def grpc_detect_ledger_id(connection: 'GRPCv1Connection') -> str:
         f'connection timeout exceeded: {connect_timeout.total_seconds()} seconds')
 
 
-def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable[LedgerMetadata]:
+def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterable[LedgerMetadata]':
     from .pb_ser_command import ProtobufSerializer
 
     store = PackageStore.empty()
@@ -201,29 +202,30 @@ class GRPCPackageProvider(PackageProvider):
         self.connection = connection
         self.ledger_id = ledger_id
 
-    def get_package_ids(self) -> 'Sequence[str]':
+    def get_package_ids(self) -> 'PackageIdSet':
         from . import model as G
         request = G.ListPackagesRequest(ledger_id=self.ledger_id)
         response = self.connection.package_service.ListPackages(request)
-        return response.package_ids
+        return frozenset(response.package_ids)
 
-    def fetch_package(self, package_id: str) -> bytes:
+    def fetch_package(self, package_id: 'PackageId') -> bytes:
         from . import model as G
         request = G.GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
         package_info = self.connection.package_service.GetPackage(request)
         return package_info.archive_payload
 
 
-def grpc_package_sync(package_provider: PackageProvider, store: 'PackageStore') -> 'None':
+def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore') -> 'None':
     all_package_ids = package_provider.get_package_ids()
-    loaded_package_ids = [a.hash for a in store.archives()]
+    loaded_package_ids = {a.hash for a in store.archives()}
+
+    missing_package_ids = all_package_ids - loaded_package_ids
 
     metadatas_pb = {}
-    for package_id in all_package_ids:
-        if package_id not in loaded_package_ids:
-            LOG.debug('Fetching package: %r', package_id)
-            archive_payload = package_provider.fetch_package(package_id)
-            metadatas_pb[package_id] = parse_archive_payload(archive_payload)
+    for package_id in missing_package_ids:
+        LOG.debug('Fetching package: %r', package_id)
+        archive_payload = package_provider.fetch_package(package_id)
+        metadatas_pb[package_id] = parse_archive_payload(archive_payload, package_id)
 
     metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
     for package_id, archive_payload in metadatas_pb.sorted_archives.items():

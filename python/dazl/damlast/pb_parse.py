@@ -3,12 +3,12 @@
 
 
 from .daml_lf_1 import *
-from ..model.types import ModuleRef, TypeReference
+from ..model.types import ModuleRef, PackageId, TypeReference
 
 
 # noinspection PyPep8Naming,PyMethodMayBeStatic
 class ProtobufParser:
-    def __init__(self, current_package: str):
+    def __init__(self, current_package: 'PackageId'):
         from typing import List
         self.current_package = current_package
         self.interned_strings = []  # type: List[str]

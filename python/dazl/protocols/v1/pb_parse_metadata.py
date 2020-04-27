@@ -4,7 +4,7 @@
 import sys
 import time
 from collections import OrderedDict, defaultdict
-from typing import Any, Collection, Mapping, Set, Union
+from typing import Any, Collection, Mapping, Optional, Set, Union
 
 from dataclasses import dataclass
 from toposort import toposort_flatten
@@ -14,11 +14,11 @@ from ...damlast.daml_lf_1 import DefDataType, Archive
 from ...damlast.types import get_old_type
 from ...model.types import TypeReference, RecordType, VariantType, EnumType, SCALAR_TYPE_UNIT, \
     NamedArgumentList, TypeVariable, ModuleRef, TemplateChoice, Template, TypeAdjective, \
-    ScalarType, ValueReference
+    ScalarType, ValueReference, PackageId
 from ...model.types_store import PackageStore, PackageStoreBuilder
 
 
-def parse_archive_payload(raw_bytes: bytes) -> 'G.ArchivePayload':
+def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageId]' = None) -> 'G.ArchivePayload':
     """
     Convert ``bytes`` into a :class:`G.ArchivePayload`.
 
@@ -51,19 +51,22 @@ def parse_archive_payload(raw_bytes: bytes) -> 'G.ArchivePayload':
 
     final_time = time.time()
     total_millis = (final_time - current_time) * 1000
-    LOG.info('Parsed %s bytes of metadata in %2.f ms.', len(raw_bytes), total_millis)
+    if package_id is None:
+        LOG.info('Parsed %s bytes of metadata in %2.f ms.', len(raw_bytes), total_millis)
+    else:
+        LOG.info('Parsed %s bytes of metadata (package ID %r) in %2.f ms.', len(raw_bytes), package_id, total_millis)
 
     return archive_payload
 
 
 @dataclass(frozen=True)
 class ArchiveDependencyResult:
-    sorted_archives: 'Mapping[str, G.ArchivePayload]'
-    unresolvable_archives: 'Mapping[str, G.ArchivePayload]'
+    sorted_archives: 'Mapping[PackageId, G.ArchivePayload]'
+    unresolvable_archives: 'Mapping[PackageId, G.ArchivePayload]'
 
 
 def find_dependencies(
-        metadatas_pb: 'Mapping[str, G.ArchivePayload]', existing_package_ids: 'Collection[str]') \
+        metadatas_pb: 'Mapping[str, G.ArchivePayload]', existing_package_ids: 'Collection[PackageId]') \
         -> 'ArchiveDependencyResult':
     """
     Return a topologically-sorted list of dependencies for the package IDs.
@@ -171,7 +174,7 @@ def find_dependencies_of_type(type_pb) -> 'Collection[str]':
         return ()
 
 
-def parse_daml_metadata_pb(package_id: str, metadata_pb: Any) -> 'PackageStore':
+def parse_daml_metadata_pb(package_id: 'PackageId', metadata_pb: Any) -> 'PackageStore':
     """
     Parse the contents of the given DAML-LF archive.
 

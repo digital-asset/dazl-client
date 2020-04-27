@@ -11,7 +11,7 @@ from io import StringIO
 from typing import Callable, Optional, Sequence, Union
 
 from ._base import MISSING, T
-from ..model.types import ModuleRef, ValueReference, TypeReference as TypeConName, TypeReference, TypeSynName
+from ..model.types import ModuleRef, PackageId, ValueReference, TypeReference as TypeConName, TypeReference, TypeSynName
 from ..util.typing import safe_cast
 
 
@@ -1858,5 +1858,5 @@ class PackageMetadata:
 
 @dataclass(frozen=True)
 class Archive:
-    hash: str
+    hash: 'PackageId'
     package: 'Package'
