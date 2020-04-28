@@ -323,7 +323,7 @@ class _NetworkImpl:
         :param timeout: Length of time before giving up.
         """
         pool = await self._pool_init
-        package_ids = get_dar_package_ids(contents)
+        package_ids = await self.invoker.run_in_executor(lambda: get_dar_package_ids(contents))
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)
 

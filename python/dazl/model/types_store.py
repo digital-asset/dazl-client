@@ -12,7 +12,7 @@ from typing import Any, Collection, Dict, Generic, List, Mapping, Optional, Sequ
     Union, TYPE_CHECKING
 
 from .types import Template, TemplateChoice, Type, TypeReference, UnresolvedTypeReference, \
-    TypeAdjective, ConcreteType, ValueReference
+    TypeAdjective, ConcreteType, ValueReference, PackageId, PackageIdSet
 from ..util.typing import safe_cast, safe_dict_cast
 
 if TYPE_CHECKING:
@@ -207,30 +207,30 @@ class PackageProvider:
     Interface to an object that can provide package information.
     """
 
-    def get_package_ids(self) -> 'Sequence[str]':
+    def get_package_ids(self) -> 'PackageIdSet':
         """
         Return the current universe of package IDs.
         """
         raise NotImplementedError
 
-    def fetch_package(self, package_id: str) -> bytes:
+    def fetch_package(self, package_id: 'PackageId') -> bytes:
         """
         Retrieve the bytes that correspond to a package.
         """
         raise NotImplementedError
 
-    def get_all_packages(self) -> 'Mapping[str, bytes]':
+    def get_all_packages(self) -> 'Mapping[PackageId, bytes]':
         return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
 
 
 class MemoryPackageProvider(PackageProvider):
-    def __init__(self, mapping: 'Mapping[str, bytes]'):
+    def __init__(self, mapping: 'Mapping[PackageId, bytes]'):
         self.mapping = mapping
 
-    def get_package_ids(self) -> 'Sequence[str]':
-        return list(self.mapping.keys())
+    def get_package_ids(self) -> 'PackageIdSet':
+        return frozenset(self.mapping.keys())
 
-    def fetch_package(self, package_id: str) -> bytes:
+    def fetch_package(self, package_id: 'PackageId') -> bytes:
         return self.mapping.get(package_id)
 
 

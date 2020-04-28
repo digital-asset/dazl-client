@@ -29,8 +29,8 @@ system.
 """
 
 from enum import Flag
-from typing import Any, Callable, Collection, Dict, Optional, Sequence, Tuple, TypeVar, Union, \
-    TYPE_CHECKING
+from typing import AbstractSet, Any, Callable, Collection, Dict, NewType, Optional, Sequence, Tuple, TypeVar, \
+    Union, TYPE_CHECKING
 
 from .. import LOG
 from ..model.core import ContractData, Party
@@ -45,7 +45,18 @@ if TYPE_CHECKING:
     from ..damlast.daml_lf_1 import Expr
 
 
-def dotted_name(obj: DottedNameish) -> Sequence[str]:
+# Reference to a ledger ID.
+LedgerId = NewType('LedgerId', str)
+
+# Reference to a package via a package identifier. The identifier is the ascii7
+# lowercase hex-encoded hash of the package contents found in the DAML LF Archive.
+PackageId = NewType('PackageId', str)
+
+# A set of PackageId.
+PackageIdSet = AbstractSet[PackageId]
+
+
+def dotted_name(obj: DottedNameish) -> 'Sequence[str]':
     """
     Sanitize a string or a tuple of strings to a dotted name.
 
@@ -566,8 +577,8 @@ class ModuleRef:
     """
     __slots__ = ('package_id', 'module_name')
 
-    def __init__(self, package_id: str, module_name: DottedNameish):
-        self.package_id = safe_cast(str, package_id)
+    def __init__(self, package_id: 'PackageId', module_name: DottedNameish):
+        self.package_id = PackageId(safe_cast(str, package_id))
         self.module_name = dotted_name(module_name)
 
     def __eq__(self, other):
