@@ -48,8 +48,8 @@ def test_package_events():
             # much more to do here except wait
             await sleep(10)
 
-        client.add_ledger_packages_added(initial_events.append, initial=True)
-        client.add_ledger_packages_added(follow_up_events.append)
+        client.add_ledger_packages_added(lambda _: initial_events.append(_), initial=True)
+        client.add_ledger_packages_added(lambda _: follow_up_events.append(_))
         network.run_until_complete(upload_dars_and_verify())
 
     assert len(initial_events) == 2

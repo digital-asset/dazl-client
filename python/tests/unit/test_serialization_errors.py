@@ -4,7 +4,7 @@
 import pytest
 
 from dazl.client._writer_verify import ValidateSerializer
-from dazl.model.types import TypeReference, ModuleRef, RecordType, NamedArgumentList, \
+from dazl.model.types import TypeReference, RecordType, NamedArgumentList, \
     SCALAR_TYPE_INTEGER
 from dazl.model.types_store import PackageStoreBuilder
 

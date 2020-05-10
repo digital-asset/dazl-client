@@ -10,6 +10,6 @@ def test_generated_type_proxy_with_no_package_id():
     # noinspection PyPep8Naming
     Sample = generated_type_proxy_root(root_module_name='Sample')
 
-    expected = ('*', 'Sample.Test.Template')
+    expected = ('*', 'Sample.Test:Template')
     actual = validate_template(Sample.Test.Template)
     assert expected == actual

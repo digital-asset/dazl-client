@@ -3,12 +3,11 @@
 
 
 from .daml_lf_1 import *
-from ..model.types import ModuleRef, PackageId, TypeReference
 
 
 # noinspection PyPep8Naming,PyMethodMayBeStatic
 class ProtobufParser:
-    def __init__(self, current_package: 'PackageId'):
+    def __init__(self, current_package: 'PackageRef'):
         from typing import List
         self.current_package = current_package
         self.interned_strings = []  # type: List[str]
@@ -24,17 +23,17 @@ class ProtobufParser:
         if sum_name is None:
             return None
         elif sum_name == 'self':
-            return ModuleRef(self.current_package, module_name.segments)
+            return ModuleRef(self.current_package, module_name)
         elif sum_name == 'package_id_str':
-            return ModuleRef(pb.package_ref.package_id_str, module_name.segments)
+            return ModuleRef(pb.package_ref.package_id_str, module_name)
         elif sum_name == 'package_id_interned_str':
             return ModuleRef(
-                self.interned_strings[pb.package_ref.package_id_interned_str], module_name.segments)
+                self.interned_strings[pb.package_ref.package_id_interned_str], module_name)
         else:
             raise ValueError(f'unknown sum type value: {sum_name!r}')
 
-    def parse_TypeConName(self, pb) -> 'TypeReference':
-        return TypeReference(
+    def parse_TypeConName(self, pb) -> 'TypeConName':
+        return TypeConName(
             self.parse_ModuleRef(pb.module),
             self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments)
 

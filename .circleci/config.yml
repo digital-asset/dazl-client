@@ -4,6 +4,7 @@ jobs:
     working_directory: ~/dazl
     docker:
       - image: rappdw/docker-java-python
+    resource_class: medium+
     steps:
       - run:
           name: Install poetry and jq

@@ -10,6 +10,7 @@ from typing import Any, Optional, Tuple
 from ... import LOG
 # noinspection PyPep8Naming
 from . import model as G
+from ...damlast.daml_lf_1 import TypeConName
 from ...model.core import ContractId
 from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
     UnsupportedType, TemplateChoice, TypeReference, TypeEvaluationContext, SCALAR_TYPE_UNIT, \
@@ -39,6 +40,12 @@ def as_api_timestamp(dt: datetime) -> Timestamp:
     ts.seconds = td.seconds + td.days * _SECONDS_PER_DAY
     ts.nanos = td.microseconds * _NANOS_PER_MICROSECOND
     return ts
+
+
+def as_identifier(tref: 'TypeReference') -> 'G.Identifier':
+    identifier = G.Identifier()
+    _set_template(identifier, tref)
+    return identifier
 
 
 def pb_get_date(obj: date) -> int:
@@ -257,14 +264,10 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
 
 
 def _set_template(message: G.Identifier, tref: TypeReference) -> None:
-    message.package_id = tref.module.package_id
-    message.module_name = '.'.join(tref.module.module_name)
-    message.entity_name = '.'.join(tref.name)
-    # This field is set for historical reasons, and no longer required after Sandbox 0.10.12
-    try:
-        message.name = tref.full_name
-    except AttributeError:
-        pass
+    from ...damlast.util import package_ref, module_name, module_local_name
+    message.package_id = package_ref(tref)
+    message.module_name = str(module_name(tref))
+    message.entity_name = module_local_name(tref)
 
 
 def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:

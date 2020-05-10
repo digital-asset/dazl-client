@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-from typing import Callable
+from typing import Callable, Optional
 
 from ._base import T
 from ..model.types import Type as OldType
@@ -103,9 +103,10 @@ def _old_type_var(var_: 'Type.Var') -> 'OldType':
 
 
 def _old_type_con(con: 'Type.Con') -> 'OldType':
-    from ..model.types import TypeApp
-    core_type = con.tycon
-    return TypeApp(core_type, [get_old_type(var) for var in con.args]) if con.args else core_type
+    from ..model.types import TypeApp, TypeReference
+    core_type = TypeReference(con.tycon)
+    return TypeApp(core_type, [get_old_type(var) for var in con.args]) \
+        if con.args else core_type
 
 
 def _old_type_prim(prim: 'Type.Prim') -> 'OldType':
@@ -135,9 +136,10 @@ def _old_type_prim(prim: 'Type.Prim') -> 'OldType':
 
 
 def _old_type_syn(tysyn: 'Type.Syn') -> 'OldType':
-    from ..model.types import TypeApp
+    from ..model.types import TypeApp, TypeReference
     core_type = tysyn.tysyn
-    return TypeApp(core_type, [get_old_type(arg) for arg in tysyn.args]) if tysyn.args else core_type
+    return TypeApp(TypeReference(core_type), [get_old_type(arg) for arg in tysyn.args]) \
+        if tysyn.args else core_type
 
 
 def _old_forall_type(forall: 'Type.Forall') -> 'OldType':

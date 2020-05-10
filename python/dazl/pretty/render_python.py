@@ -8,8 +8,8 @@ from ._render_base import PrettyPrintBase, pretty_print_syntax
 from .util import maybe_parentheses, indent
 from .. import LOG
 from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, Type, Case, Block, \
-    Update, Scenario, PrimType
-from ..damlast.util import def_value, list_type, PARTY_TYPE
+    Update, Scenario, PrimType, TypeConName
+from ..damlast.util import def_value, list_type, module_name, PARTY_TYPE
 from ..model.types import ModuleRef, Type as OldType, TypeReference
 from ..model.types_store import PackageStore
 
@@ -42,7 +42,10 @@ class PythonPrettyPrint(PrettyPrintBase):
         return PythonLexer()
 
     def visit_module_ref_start(self, module_ref: 'ModuleRef') -> str:
-        return f'@module\nclass {module_ref.module_name[-1]}:\n' if module_ref.module_name else ''
+        mn = str(module_name(module_ref))
+        _, _, last_component = mn.rpartition('.')
+
+        return f'@module\nclass {last_component}:\n' if last_component else ''
 
     # def visit_def_value(self, def_value: 'DefValue', as_instance_method: bool = False):
     #     def_value.name_with_type
@@ -54,7 +57,7 @@ class PythonPrettyPrint(PrettyPrintBase):
             self,
             template: 'Optional[DefTemplate]',
             def_data_type: 'Optional[DefDataType]' = None) -> str:
-        template_full_name = TypeReference(self.context.current_module, def_data_type.name.segments).full_name
+        template_full_name = str(TypeConName(self.context.current_module, def_data_type.name.segments))
         template_name = def_data_type.name.segments[-1]
         slot_names = tuple(fwt.field for fwt in def_data_type.record.fields) if def_data_type.record else ()
         signatories_def = def_value('signatories', list_type(PARTY_TYPE), template.signatories) if template is not None else None
@@ -64,7 +67,7 @@ class PythonPrettyPrint(PrettyPrintBase):
             lines.append(f'class {template_name}(metaclass=TemplateMeta, template_name={template_full_name!r}):')
             lines.append('    """')
             lines.append('    Example usage:')
-            lines.append(f'        create({template_full_name},')
+            lines.append(f'        create({template_full_name.replace(":", ".")},')
             lines.append(f'               {python_example_object(self.store, def_data_type)})')
             for choice in template.choices:
                 lines.append(f'        exercise(cid, {choice.name!r}, {python_example_object(self.store, choice.arg_binder.type)})')

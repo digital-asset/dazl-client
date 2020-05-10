@@ -3,13 +3,17 @@
 
 from datetime import datetime, date, timedelta, timezone
 from decimal import Decimal
-from typing import Any, Mapping
+from typing import Any, Mapping, TYPE_CHECKING
 
 from .. import LOG
 from ..model.core import Party
-from ..model.types_store import PackageStore
 from ..util.prim_types import frozendict
 from .daml_lf_1 import *
+from .util import package_local_name
+
+
+if TYPE_CHECKING:
+    from ..model.types import PackageStore
 
 
 class Evaluator:
@@ -111,7 +115,7 @@ class Evaluator:
         return self.eval_Expr(expr)
 
     def eval_val(self, val: 'ValName') -> 'Any':
-        if val.full_name_unambiguous == 'DA.Internal.Prelude:concat':
+        if package_local_name(val) == 'DA.Internal.Prelude:concat':
             return PartialFunction(lambda a: PartialFunction(Evaluator.concat))
         value = self.store.resolve_value_reference(val)
         if value is None:

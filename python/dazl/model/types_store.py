@@ -8,16 +8,15 @@ from threading import RLock
 from types import MappingProxyType
 
 from dataclasses import dataclass
-from typing import Any, Collection, Dict, Generic, List, Mapping, Optional, Sequence, TypeVar, \
-    Union, TYPE_CHECKING
+from typing import Any, Collection, Dict, Generic, List, Mapping, Optional, TypeVar, Union
 
+from ..damlast.daml_lf_1 import Archive, Expr, Package, PackageRef, ValName, TypeConName, _Name
 from .types import Template, TemplateChoice, Type, TypeReference, UnresolvedTypeReference, \
-    TypeAdjective, ConcreteType, ValueReference, PackageId, PackageIdSet
+    ConcreteType, PackageIdSet
 from ..util.typing import safe_cast, safe_dict_cast
 
-if TYPE_CHECKING:
-    from ..damlast.daml_lf_1 import Archive, Expr, Package
 
+K = TypeVar('K', bound=_Name)
 T = TypeVar('T')
 
 
@@ -28,25 +27,25 @@ class PackageStoreBuilder:
 
     def __init__(self):
         self._archives = list()  # type: List[Archive]
-        self._value_types = dict()  # type: Dict[ValueReference, Expr]
-        self._data_types = dict()  # type: Dict[TypeReference, Type]
-        self._templates = dict()  # type: Dict[TypeReference, Template]
+        self._value_types = dict()  # type: Dict[ValName, Expr]
+        self._data_types = dict()  # type: Dict[TypeConName, Type]
+        self._templates = dict()  # type: Dict[TypeConName, Template]
 
     def add_archive(self, archive: 'Archive') -> None:
         self._archives.append(archive)
 
-    def add_type(self, name: TypeReference, data_type: Type):
-        safe_cast(TypeReference, name)
-        safe_cast(Type, data_type)
-        self._data_types[name] = data_type
+    def add_type(self, name: 'TypeConName', data_type: Type):
+        safe_cast(TypeConName, name)
+        self._data_types[name] = safe_cast(Type, data_type)
 
-    def add_value(self, name: ValueReference, value: 'Expr'):
-        self._value_types[name] = value
+    def add_value(self, name: 'ValName', value: 'Expr'):
+        safe_cast(ValName, name)
+        self._value_types[name] = safe_cast(Expr, value)
 
     def add_template(self, template: Template):
-        self._templates[template.data_type.name] = safe_cast(Template, template)
+        self._templates[template.data_type.name.con] = safe_cast(Template, template)
 
-    def get_type(self, name: TypeReference) -> Optional[Type]:
+    def get_type(self, name: TypeConName) -> 'Optional[Type]':
         return self._data_types.get(name)
 
     def build(self) -> 'PackageStore':
@@ -68,15 +67,15 @@ class PackageStore:
     def __init__(
             self,
             archives: 'Collection[Archive]',
-            value_types: 'Dict[ValueReference, Expr]',
-            data_types: 'Dict[TypeReference, Type]',
-            templates: 'Dict[TypeReference, Template]'):
+            value_types: 'Dict[ValName, Expr]',
+            data_types: 'Dict[TypeConName, Type]',
+            templates: 'Dict[TypeConName, Template]'):
         self._lock = RLock()
         self._archives = list(archives)
         self._cache = PackageStoreCache(EMPTY_TYPE_CACHE, EMPTY_TYPE_CACHE, EMPTY_TYPE_CACHE)
-        self._value_types = value_types  # safe_dict_cast(ValueReference, Expr, value_types)
-        self._data_types = safe_dict_cast(TypeReference, Type, data_types)
-        self._templates = safe_dict_cast(TypeReference, Template, templates)
+        self._value_types = safe_dict_cast(ValName, Expr, value_types)
+        self._data_types = safe_dict_cast(TypeConName, Type, data_types)
+        self._templates = safe_dict_cast(TypeConName, Template, templates)
 
     def archives(self) -> 'Collection[Archive]':
         """
@@ -118,11 +117,11 @@ class PackageStore:
                     TypeCache.build(self._templates))
         return self
 
-    def resolve_value_reference(self, value_ref: ValueReference) -> 'Expr':
+    def resolve_value_reference(self, value_ref: 'ValName') -> 'Expr':
         with self._lock:
             return self._value_types[value_ref]
 
-    def resolve_type_reference(self, template_ref: TypeReference) -> Type:
+    def resolve_type_reference(self, template_ref: 'Union[TypeConName, TypeReference]') -> Type:
         """
         Resolve a type based on its reference.
 
@@ -133,23 +132,21 @@ class PackageStore:
         :raise KeyError:
             If the :class:`TypeReference` does not have a corresponding value in this store.
         """
-        safe_cast(TypeReference, template_ref)
+        if isinstance(template_ref, TypeReference):
+            con = template_ref.con
+        elif isinstance(template_ref, TypeConName):
+            con = template_ref
+        else:
+            raise ValueError('template_ref must either by a TypeConName or TypeReference')
 
         with self._lock:
-            return self._data_types[template_ref]
+            return self._data_types[con]
 
-    def find_types(self, adjective: TypeAdjective = TypeAdjective.ANY) \
-            -> Mapping[TypeReference, ConcreteType]:
+    def types(self) -> 'Mapping[TypeConName, ConcreteType]':
         with self._lock:
-            if adjective == TypeAdjective.ANY:
-                return MappingProxyType(dict(self._data_types))
+            return MappingProxyType(dict(self._data_types))
 
-            return {tt: data_type
-                    for tt, data_type in self._data_types.items()
-                    if isinstance(data_type, ConcreteType)
-                    and data_type.adjective & adjective != TypeAdjective.NONE}
-
-    def resolve_template(self, template: Union[None, str, TypeReference, UnresolvedTypeReference]) \
+    def resolve_template(self, template: 'Union[None, str, TypeReference, UnresolvedTypeReference, TypeConName]') \
             -> Collection[Template]:
         """
         Return a collection of :class:`Template` instances that match the specified template name.
@@ -213,36 +210,36 @@ class PackageProvider:
         """
         raise NotImplementedError
 
-    def fetch_package(self, package_id: 'PackageId') -> bytes:
+    def fetch_package(self, package_id: 'PackageRef') -> bytes:
         """
         Retrieve the bytes that correspond to a package.
         """
         raise NotImplementedError
 
-    def get_all_packages(self) -> 'Mapping[PackageId, bytes]':
+    def get_all_packages(self) -> 'Mapping[PackageRef, bytes]':
         return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
 
 
 class MemoryPackageProvider(PackageProvider):
-    def __init__(self, mapping: 'Mapping[PackageId, bytes]'):
+    def __init__(self, mapping: 'Mapping[PackageRef, bytes]'):
         self.mapping = mapping
 
     def get_package_ids(self) -> 'PackageIdSet':
         return frozenset(self.mapping.keys())
 
-    def fetch_package(self, package_id: 'PackageId') -> bytes:
+    def fetch_package(self, package_id: 'PackageRef') -> bytes:
         return self.mapping.get(package_id)
 
 
 @dataclass(frozen=True)
 class PackageStoreCache:
-    value_types: 'TypeCache[Type]'
-    data_types: 'TypeCache[Type]'
-    templates: 'TypeCache[Template]'
+    value_types: 'TypeCache[ValName, Expr]'
+    data_types: 'TypeCache[TypeConName, Type]'
+    templates: 'TypeCache[TypeConName, Template]'
 
 
 @dataclass(frozen=True)
-class TypeCache(Generic[T]):
+class TypeCache(Generic[K, T]):
     """
     Immutable cache of type information.
 
@@ -253,38 +250,41 @@ class TypeCache(Generic[T]):
         A mapping from package ID strings to another mapping, where keys are fully-qualified type
         names for templates to a collection of matching Template instances. These collections are
         never non-empty; they will only ever contain multiple entries if there is a collision in
-        dot-separated names. None of these maps contain ``'*'`` as keys; wildcards mut be
-        implemented by the caller.
+        dot-separated names.
 
     .. attribute:: TypeCache.by_name_lookup
 
-        A mapping from fully-qualified type names to a sub-mapping, where the sub-mapping keys are
-        package IDs and the value are collections of Template. None of these maps contain ``'*'``
-        as keys; wildcards mut be implemented by the caller.
+        A mapping from fully-qualified type names (excluding package IDs) to ``Collection[T]``.
+        These subcollections will only contain multiple values if names are not unique with respect
+        to package IDs.
     """
 
-    everything: Collection['T']
+    everything: 'Collection[T]'
     by_package_lookup: 'Mapping[str, Mapping[str, Collection[T]]]'
-    by_name_lookup: 'Mapping[str, Mapping[str, Collection[T]]]'
+    by_name_lookup: 'Mapping[str, Collection[T]]'
 
     @classmethod
-    def build(cls, objects: 'Mapping[TypeReference, T]') -> 'TypeCache[T]':
-        everything = tuple(objects)
+    def build(cls, objects: 'Mapping[K, T]') -> 'TypeCache[K, T]':
+        from ..damlast.util import package_ref, package_local_name
+        everything = tuple(objects.values())
         by_package_lookup = defaultdict(lambda: defaultdict(list))
-        by_name_lookup = defaultdict(lambda: defaultdict(list))
+        by_name_lookup = defaultdict(list)
 
         for k, v in objects.items():
-            for package_id in (k.module.package_id, '*'):
-                for valid_name in (k.full_name, k.full_name_unambiguous, '*'):
-                    by_package_lookup[package_id][valid_name].append(v)
-                    by_name_lookup[valid_name][package_id].append(v)
+            package_id = package_ref(k)
+            module_entity_name = package_local_name(k)
+            # This is kept here for backwards compatibility, but its use should be discouraged
+            module_entity_name_deprecated = module_entity_name.replace(':', '.')
+            for valid_name in (module_entity_name, module_entity_name_deprecated):
+                by_package_lookup[package_id][valid_name].append(v)
+                by_name_lookup[valid_name].append(v)
 
         return TypeCache(
             everything,
             _immutable_mmc(by_package_lookup),
-            _immutable_mmc(by_name_lookup))
+            MappingProxyType({k: tuple(v) for k, v in by_name_lookup.items()}))
 
-    def lookup(self, package_id: str, type_name: str) -> Collection[T]:
+    def lookup(self, package_id: str, type_name: str) -> 'Collection[T]':
         """
         Look up items based on package ID and type name. The values cannot be ``None``, but they
         can be the special-meaning ``'*'`` value.
@@ -293,13 +293,19 @@ class TypeCache(Generic[T]):
         safe_cast(str, type_name)
 
         if package_id == '*':
-            candidates = reduce(add, self.by_name_lookup.get(type_name, {}).values(), ())
+            if type_name == '*':
+                # *:* means return everything
+                return self.everything
+            else:
+                # *:Specific.Module:Entity means return all matches of the requested name, but
+                # under any package
+                return self.by_name_lookup.get(type_name, ())
         elif type_name == '*':
-            candidates = reduce(add, self.by_package_lookup.get(package_id, {}).values(), ())
+            # PKG_ID:* means return all matches in a specific package
+            return reduce(add, self.by_package_lookup.get(package_id, {}).values(), ())
         else:
-            candidates = self.by_package_lookup.get(package_id, {}).get(type_name, ())
-
-        return {t.data_type.name.full_name_unambiguous: t for t in candidates}.values()
+            # PKG_ID:Specific.Module:Entity; we are looking for a very specific type
+            return self.by_package_lookup.get(package_id, {}).get(type_name, ())
 
 
 def _immutable_mmc(mapping: 'Mapping[str, Mapping[str, Collection[T]]]') -> \

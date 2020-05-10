@@ -9,8 +9,9 @@ DAML-LF files.
 
 from typing import Any, Optional, Sequence, Union
 
-from .daml_lf_1 import Expr, Type, BuiltinFunction
-from ..model.types import TypeReference, ValueReference
+from .daml_lf_1 import BuiltinFunction, Expr, Type, ValName
+from .util import package_local_name
+from ..model.types import TypeReference
 
 
 class _BuiltinMeta(type):
@@ -60,7 +61,7 @@ class BuiltinTable:
         else:
             raise ValueError(f'A builtin could not be registered! {builtin!r}')
 
-    def resolve(self, ref: 'Union[str, ValueReference, TypeReference, BuiltinFunction]') -> \
+    def resolve(self, ref: 'Union[str, ValName, TypeReference, BuiltinFunction]') -> \
             'Optional[Builtin]':
         """
         Return a :class:`Builtin` implementation for the name or reference if one is defined.
@@ -68,8 +69,8 @@ class BuiltinTable:
         if isinstance(ref, BuiltinFunction):
             # All BuiltinFunctions MUST be defined
             return self.by_builtin[ref]
-        elif isinstance(ref, (ValueReference, TypeReference)):
-            return self.by_name.get(ref.full_name_unambiguous)
+        elif isinstance(ref, (ValName, TypeReference)):
+            return self.by_name.get(package_local_name(ref))
         elif isinstance(ref, str):
             return self.by_name.get(ref)
         else:

@@ -6,6 +6,7 @@ from typing import Collection, Mapping, Optional
 
 from .builtins import builtins
 from .daml_lf_1 import Block, Expr, Type, ValName
+from .util import package_local_name
 from .visitor import IdentityVisitor
 from ..model.types_store import PackageStore
 
@@ -67,13 +68,13 @@ class ExpandVisitor(RewriteVisitor):
         builtin = builtins.resolve(val)
         if builtin is not None:
             return Expr(val=val)
-        if self.always_expand or val.name[0][0] == '$' or val.full_name_unambiguous == 'DA.Internal.Template:toParties':
+        if self.always_expand or val.name[0][0] == '$' or package_local_name(val) == 'DA.Internal.Template:toParties':
             val_expr = self.resolve_val(val)
             if val_expr is not None:
                 child = self.without_val(val)
                 return child.visit_expr(val_expr)
             else:
-                print(f'Failed to resolve {val.full_name_unambiguous} against blacklist {self.val_blacklist}')
+                print(f'Failed to resolve {package_local_name(val)} against blacklist {self.val_blacklist}')
 
         return super(ExpandVisitor, self).visit_expr_val(val)
 

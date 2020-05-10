@@ -48,6 +48,7 @@ def bot_main(sandbox_url, server_port):
     # have Bob start up "suspended"; we'll start up Bob from the outside
     bob_bot = bob._impl.bots.add_new("Bob's Bot")
     bob_bot.pause()
+
     @bob_bot.ledger_created('TestServer.Person')
     def bob_sends_a_message(_):
         return exercise_by_key(
