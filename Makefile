@@ -20,18 +20,24 @@ docs_html_tgz := $(docs_html_dir).tar.gz
 docs_markdown_dir := dist/dazl-docs-$(version)-markdown
 docs_markdown_tgz := $(docs_markdown_dir).tar.gz
 packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
-test_dars := \
-  _fixtures/src/all-kinds-of/.daml/dist/all-kinds-of-1.0.0.dar \
-  _fixtures/src/all-party/.daml/dist/all-party-1.0.0.dar \
-  _fixtures/src/complicated/.daml/dist/complicated-1.0.0.dar \
-  _fixtures/src/dotted-fields/.daml/dist/dotted-fields-1.0.0.dar \
-  _fixtures/src/kitchen-sink/.daml/dist/kitchen-sink-1.0.0.dar \
-  _fixtures/src/map-support/.daml/dist/map-support-1.0.0.dar \
-  _fixtures/src/pending/.daml/dist/pending-1.0.0.dar \
-  _fixtures/src/post-office/.daml/dist/post-office-1.0.0.dar \
-  _fixtures/src/simple/.daml/dist/simple-1.0.0.dar \
-  _fixtures/src/test-server/.daml/dist/test-server-1.0.0.dar \
-  _fixtures/src/upload-test/.daml/dist/upload-test-1.0.0.dar
+
+
+####################################################################################################
+# DAR test fixtures
+
+_fixture_dars := $(shell scripts/make/dars -o)
+
+.cache/make/dars.mk: scripts/make/dars $(shell scripts/make/dars -d)
+	@mkdir -p $(@D)
+	@$< -M > $@
+
+.PHONY: dars
+dars: $(_fixture_dars)
+
+include .cache/make/dars.mk
+
+####################################################################################################
+
 
 # Go requires that GOBIN be an absolute path
 export GOBIN := $(shell pwd)/.cache/bin
@@ -129,7 +135,7 @@ python-format-test: .venv/poetry.lock
 
 
 .PHONY: python-unit-test
-python-unit-test: .venv/poetry.lock $(test_dars)
+python-unit-test: .venv/poetry.lock $(_fixture_dars)
 	poetry run pytest --log-cli-level=INFO --junitxml=target/test-results/junit.xml
 
 
@@ -199,53 +205,6 @@ $(docs_markdown_tgz): .venv/poetry.lock $(docs_src)
 	poetry run sphinx-build -b markdown docs $(docs_markdown_dir)
 	(cd dist && tar czf $(@F) $(notdir $(docs_markdown_dir)))
 
-
-.PHONY: dars
-dars: $(test_dars)
-
-
-_fixtures/src/all-kinds-of/.daml/dist/all-kinds-of-1.0.0.dar: _fixtures/src/all-kinds-of/daml.yaml $(shell find _fixtures/src/all-kinds-of -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/all-party/.daml/dist/all-party-1.0.0.dar: _fixtures/src/all-party/daml.yaml $(shell find _fixtures/src/all-party -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/complicated/.daml/dist/complicated-1.0.0.dar: _fixtures/src/complicated/daml.yaml $(shell find _fixtures/src/complicated -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/dotted-fields/.daml/dist/dotted-fields-1.0.0.dar: _fixtures/src/dotted-fields/daml.yaml $(shell find _fixtures/src/dotted-fields -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/kitchen-sink/.daml/dist/kitchen-sink-1.0.0.dar: _fixtures/src/kitchen-sink/daml.yaml $(shell find _fixtures/src/kitchen-sink -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/map-support/.daml/dist/map-support-1.0.0.dar: _fixtures/src/map-support/daml.yaml $(shell find _fixtures/src/map-support -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/pending/.daml/dist/pending-1.0.0.dar: _fixtures/src/pending/daml.yaml $(shell find _fixtures/src/pending -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/post-office/.daml/dist/post-office-1.0.0.dar: _fixtures/src/post-office/daml.yaml $(shell find _fixtures/src/post-office -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/simple/.daml/dist/simple-1.0.0.dar: _fixtures/src/simple/daml.yaml $(shell find _fixtures/src/simple -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/test-server/.daml/dist/test-server-1.0.0.dar: _fixtures/src/test-server/daml.yaml $(shell find _fixtures/src/test-server -name '*.daml')
-	cd $(<D) && daml build
-
-
-_fixtures/src/upload-test/.daml/dist/upload-test-1.0.0.dar: _fixtures/src/upload-test/daml.yaml $(shell find _fixtures/src/upload-test -name '*.daml')
-	cd $(<D) && daml build
 
 
 include .cache/make/go.mk
