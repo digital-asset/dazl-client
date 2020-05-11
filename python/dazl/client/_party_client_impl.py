@@ -202,11 +202,12 @@ class _PartyClientImpl:
             The ledger offset that the reader ended at and a Future that is resolved when all event
             handlers' follow-ups have either successfully or unsuccessfully completed.
         """
-        LOG.info('Calling read_acs(%r, %r)', until_offset, raise_events)
+        LOG.info('Calling read_acs(%r, %r) for party: %r', until_offset, raise_events, self.party)
         client = await self._client_fut
         acs = await client.active_contracts()
         for acs_evt in acs:
             await self._process_transaction_stream_event(acs_evt, False)
+        LOG.info('read_acs() finished at offset %r for party: %r', self._reader.offset, self.party)
 
         return await self.read_transactions(until_offset, raise_events)
 
