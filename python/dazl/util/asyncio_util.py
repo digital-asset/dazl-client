@@ -537,7 +537,9 @@ class ContextFreeFuture(Awaitable[T]):
             self._schedule_callbacks()
             self._log_traceback = True
 
-    def add_done_callback(self, fn: 'Callable[[ContextFreeFuture[T]], None]') -> None:
+    def add_done_callback(self, fn: 'Callable[[ContextFreeFuture[T]], None]', context=None) -> None:
+        if context is not None:
+            LOG.warning("ContextFreeFutures do not support the use of contexts.")
         with self._lock:
             if self._loop is not None and self._state != _PENDING:
                 self._loop.call_soon_threadsafe(fn, self)
@@ -663,8 +665,11 @@ class DeferredStartTask:
     def exception(self) -> Optional[BaseException]:
         return self._future.exception()
 
-    def add_done_callback(self, callback: Callable[[Future], Any]) -> None:
-        self._future.add_done_callback(callback)
+    def add_done_callback(self, callback: 'Callable[[Future], Any]', context=None) -> None:
+        if context is None:
+            self._future.add_done_callback(callback)
+        else:
+            self._future.add_done_callback(callback, context=context)
 
     def __await__(self):
         return self._future.__await__()

@@ -157,6 +157,7 @@ class Bot:
                             await handler.callback(new_event)
                     except Exception:  # noqa
                         LOG.exception('An event handler in a bot has thrown an exception!')
+        LOG.debug('Party %s finished handling events.', self.party)
 
     def notify(self, event: 'BaseEvent') -> 'Awaitable[None]':
         """
