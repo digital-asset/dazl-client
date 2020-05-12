@@ -11,7 +11,7 @@ from .. import LOG
 from ..damlast.daml_lf_1 import Block, BuiltinFunction, Case, CaseAlt, DefDataType, DefTemplate, \
     Expr, Module, Package, PrimCon, PrimLit, Scenario, Type, TypeVarWithKind, ValName, \
     Update, DefValue, Unit
-from ..damlast.util import unpack_arrow_type
+from ..damlast.util import unpack_arrow_type, package_local_name
 from ..damlast.visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVisitor
 from ..model.definition import DamlDataType, DamlTemplate
 from ..model.types import ModuleRef
@@ -47,9 +47,13 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         return None
 
     def module_indent(self):
+        from ..damlast.util import module_name
+
         cm = self.context.current_module
         if cm is not None:
-            return ' ' * (len(cm.module_name) * 4)
+            mn = module_name(cm)
+            indent_level = str(mn).count('.') if mn else 0
+            return ' ' * (indent_level * 4)
         else:
             return ''
 
@@ -260,7 +264,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         return self._visit_expr_decl(context, self.visit_expr_val_inline(val))
 
     def visit_expr_val_inline(self, val: 'ValName'):
-        return val.full_name_unambiguous
+        return package_local_name(val)
 
     def visit_expr_builtin(self, builtin: 'BuiltinFunction') -> 'str':
         return builtin.name

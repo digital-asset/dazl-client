@@ -6,8 +6,9 @@ from typing import Optional, Sequence, Union
 
 from ._render_base import PrettyPrintBase
 from .util import maybe_parentheses
-from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, PrimType, \
+from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, ModuleRef, PrimType, \
     Type as NewType, Scenario, Pure, Block, Update
+from ..damlast.util import package_local_name, module_name
 from ..model.types import Type as OldType, ScalarType, ContractIdType, ListType, OptionalType, \
     TextMapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, \
     EnumType, type_dispatch_table, SCALAR_TYPE_UNIT, SCALAR_TYPE_BOOL, SCALAR_TYPE_CHAR, \
@@ -35,8 +36,7 @@ class DamlPrettyPrinter(PrettyPrintBase):
         return ''
 
     def visit_module_ref_start(self, module_ref: 'ModuleRef'):
-        module_name = '.'.join(module_ref.module_name)
-        return f'module {module_name} where\n'
+        return f'module {module_name(module_ref)} where\n'
 
     def visit_def_data_type(self, def_data_type: 'DefDataType') -> str:
         return self.visit_def_template(None, def_data_type)
@@ -286,6 +286,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
     # region visit_type_* methods
 
     def visit_type(self, type: 'Union[str, NewType, OldType]', parenthesize: bool = False) -> str:
+        from ..model.types import TypeReference
+        from ..damlast.daml_lf_1 import TypeConName
         if isinstance(type, str):
             type_str = type
         elif isinstance(type, NewType):
@@ -315,6 +317,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 on_enum=self.visit_type_con,
                 on_type_app=self._visit_type_app,
                 on_unsupported=repr)(type)
+        elif isinstance(type, TypeConName):
+            type_str = self.visit_type_con(TypeReference(type))
         else:
             raise TypeError(f'A DAML Type is required here (got {type!r} instead')
 
@@ -332,13 +336,13 @@ class DamlPrettyPrinter(PrettyPrintBase):
 
     def visit_type_con(self, con: 'Union[TypeReference, RecordType, VariantType, EnumType, NewType.Con]') -> str:
         if isinstance(con, TypeReference):
-            return con.full_name_unambiguous
+            return package_local_name(con.con)
         elif isinstance(con, (RecordType, VariantType, EnumType)):
             if con.name is None:
                 raise ValueError('A named Record, Variant, or Enum type is required here')
-            return con.name.full_name_unambiguous
+            return package_local_name(con.name.con)
         elif isinstance(con, NewType.Con):
-            return self._visit_type_app((con.tycon.full_name_unambiguous, *con.args))
+            return self._visit_type_app((package_local_name(con.tycon), *con.args))
         else:
             raise TypeError(f'A DAML Type constructor is required here (got {con!r} instead')
 

@@ -10,7 +10,7 @@ from dazl import CreateCommand, ExerciseCommand, CreateAndExerciseCommand, Exerc
     ContractId
 from dazl.model.types import TypeReference
 from dazl.model.types_store import PackageStore
-from dazl.protocols.v1.pb_ser_command import ProtobufSerializer
+from dazl.protocols.v1.pb_ser_command import ProtobufSerializer, as_identifier
 from dazl.protocols.v1 import model as G
 from dazl.util.dar import DarFile
 from .dars import Pending
@@ -29,11 +29,7 @@ class DarFixture:
         raise AssertionError(f'Unknown template name: {identifier!r}')
 
     def get_identifier(self, identifier: str) -> 'Mapping[str, str]':
-        tref = self.get_template_type(identifier)
-        return G.Identifier(
-            module_name='.'.join(tref.module.module_name),
-            entity_name='.'.join(tref.name),
-            package_id=tref.module.package_id)
+        return as_identifier(self.get_template_type(identifier))
 
 
 @pytest.fixture(scope='module')

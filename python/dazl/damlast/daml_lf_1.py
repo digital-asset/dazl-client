@@ -4,14 +4,14 @@
 # NOTE TO IMPLEMENTORS: A future version of this file is intended to be code-generated instead of
 # manually maintained. The makeup of this file is intentionally highly formulaic in order to
 # facilitate a smooth transition to automatically-generated data structures.
+import warnings
 
 from dataclasses import dataclass
 from enum import Enum
 from io import StringIO
-from typing import Callable, Optional, Sequence, Union
+from typing import Callable, NewType, Optional, Sequence, Tuple, Union
 
 from ._base import MISSING, T
-from ..model.types import ModuleRef, PackageId, ValueReference, TypeReference as TypeConName, TypeReference, TypeSynName
 from ..util.typing import safe_cast
 
 
@@ -22,7 +22,9 @@ class Unit:
 UNIT = Unit()
 
 
-# PackageRef
+# Reference to a package via a package identifier. The identifier is the ascii7
+# lowercase hex-encoded hash of the package contents found in the DAML LF Archive.
+PackageRef = NewType('PackageRef', str)
 
 
 class DottedName:
@@ -33,12 +35,185 @@ class DottedName:
     def __init__(self, segments: Sequence[str] = ()):
         object.__setattr__(self, 'segments', tuple(segments))
 
+    def __str__(self):
+        return '.'.join(self.segments)
 
-# ModuleRef
-# TypeConName
+    def __eq__(self, other):
+        return isinstance(other, DottedName) and self.segments == other.segments
+
+    def __hash__(self):
+        return hash(self.segments)
 
 
-ValName = ValueReference
+class ModuleRef:
+    """
+    A reference to a module.
+
+    In dazl 7.0.0, ModuleRef will become a `NewType(str)`, so making assumptions about the structure
+    of this type should be avoided, and accessor methods should be instead used for callers that
+    care about the structure of these names.
+    """
+    __slots__ = '_package_id', '_module_name'
+
+    def __init__(self, package_id: 'PackageRef', module_name: 'DottedName'):
+        self._package_id = PackageRef(safe_cast(str, package_id))
+        self._module_name = safe_cast(DottedName, module_name)
+
+    @property
+    def package_id(self) -> 'PackageRef':
+        warnings.warn(
+            "Do not use ModuleRef.package_id; use package_ref(...) instead.", DeprecationWarning)
+        return self._package_id
+
+    @property
+    def module_name(self) -> 'DottedName':
+        warnings.warn(
+            "Do not use ModuleRef.module_name; use module_name(...) instead.", DeprecationWarning)
+        return self._module_name
+
+    def __eq__(self, other):
+        return isinstance(other, ModuleRef) and \
+               self._package_id == other._package_id and \
+               self._module_name == other._module_name
+
+    def __lt__(self, other):
+        return self._package_id < other.package_id or \
+               (self._package_id == other.package_id and self._module_name < other.module_name)
+
+    def __le__(self, other):
+        return self._package_id < other.package_id or \
+               (self._package_id == other.package_id and self._module_name <= other.module_name)
+
+    def __gt__(self, other):
+        return self._package_id > other.package_id or \
+               (self._package_id == other.package_id and self._module_name > other.module_name)
+
+    def __ge__(self, other):
+        return self._package_id > other.package_id or \
+               (self._package_id == other.package_id and self._module_name >= other.module_name)
+
+    def __hash__(self):
+        return hash(self._package_id) ^ hash(self._module_name)
+
+    def __str__(self):
+        return f'{self._package_id}:{self._module_name}'
+
+    def __repr__(self):
+        return f'ModuleRef(package_id={self._package_id!r}, ' \
+            f'module_name={self._module_name})'
+
+
+class _Name:
+    """
+    A reference by name to another object.
+
+    This implementation powers all of a TypeConName, TypeSynName, and ValName.
+
+    In dazl 7.0.0, these will become `NewType(str)`, so making assumptions about the structure of
+    this type should be avoided, and accessor methods should be instead used for callers that care
+    about the structure of these names.
+    """
+
+    __slots__ = '_module', '_name'
+
+    def __init__(self, module: 'ModuleRef', name: 'Sequence[str]'):
+        from collections.abc import Collection
+        if not isinstance(name, Collection):
+            raise TypeError(f'Tuple of strings required here (got {name!r} instead)')
+
+        self._module = safe_cast(ModuleRef, module)
+        self._name = tuple(name)  # type: Tuple[str, ...]
+
+    @property
+    def module(self) -> 'ModuleRef':
+        warnings.warn(
+            "Do not use Name.module; you can use module_ref(...) instead.",
+            DeprecationWarning)
+        return self._module
+
+    @property
+    def name(self) -> 'Sequence[str]':
+        warnings.warn(
+            "Do not use Name.name; you can use module_local_name(...) instead.",
+            DeprecationWarning)
+        return self._name
+
+    @property
+    def full_name(self) -> str:
+        from .util import module_name
+        warnings.warn(
+            "Do not use Name.full_name; this format is no longer used, so it has no replacement.",
+            DeprecationWarning)
+        return f"{module_name(self)}.{'.'.join(self._name)}"
+
+    @property
+    def full_name_unambiguous(self):
+        from .util import package_local_name
+        warnings.warn(
+            "Do not use Name.full_name_unambiguous; use package_local_name(...) instead.",
+            DeprecationWarning)
+        return package_local_name(self)
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) and \
+               self._module == other._module and self._name == other._name
+
+    def __ne__(self, other):
+        return not isinstance(other, type(self)) or \
+               self._module != other._module or self._name != other._name
+
+    def __lt__(self, other):
+        if not isinstance(other, _Name):
+            raise TypeError("must compare Name to other names")
+
+        return self._module < other._module or \
+               (self._module == other._module and self._name < other._name)
+
+    def __le__(self, other):
+        if not isinstance(other, _Name):
+            raise TypeError("must compare Name to other names")
+        return self._module <= other._module or \
+               (self._module == other._module and self._name <= other._name)
+
+    def __gt__(self, other):
+        if not isinstance(other, _Name):
+            raise TypeError("must compare Name to other names")
+        return self._module > other._module or \
+               (self._module == other._module and self._name > other._name)
+
+    def __ge__(self, other):
+        if not isinstance(other, _Name):
+            raise TypeError("must compare Name to other names")
+
+        return self._module >= other._module or \
+               (self._module == other._module and self._name >= other._name)
+
+    def __hash__(self):
+        return hash(self._module) ^ hash(self._name)
+
+    def __str__(self):
+        return f"{self._module}:{'.'.join(self._name)}"
+
+    def __repr__(self):
+        return f"{type(self).__name__}({str(self)!r})"
+
+
+class TypeConName(_Name):
+    """
+    A reference to a type constructor.
+    """
+
+
+class TypeSynName(_Name):
+    """
+    A reference to a type synonym.
+    """
+
+
+class ValName(_Name):
+    """
+    A reference to a value.
+    """
 
 
 @dataclass(frozen=True)
@@ -162,10 +337,10 @@ class Type:
         args: 'Sequence[Type]'
 
     class Con:
-        tycon: 'TypeReference'
+        tycon: 'TypeConName'
         args: 'Sequence[Type]'
 
-        def __init__(self, tycon: 'TypeReference', args: 'Sequence[Type]'):
+        def __init__(self, tycon: 'TypeConName', args: 'Sequence[Type]'):
             self.tycon = tycon
             self.args = tuple(args)
 
@@ -413,7 +588,7 @@ class PrimLit:
         Serialization of number with precision 38 and scale between 0 and 37
 
         Must be a string that matched
-            `-?([0-1]\d*|0)\.(\d*)
+            `-?([0-1]\\d*|0)\\.(\\d*)
 
         The number of decimal digits indicate the scale of the number.
         """
@@ -504,7 +679,7 @@ class Expr:
 
     @dataclass(frozen=True)
     class EnumCon:
-        tycon: 'TypeReference'  # Always fully applied
+        tycon: 'TypeConName'  # Always fully applied
         enum_con: str
 
     @dataclass(frozen=True)
@@ -991,7 +1166,7 @@ class CaseAlt:
 
     @dataclass(frozen=True)
     class Enum:
-        con: TypeReference
+        con: TypeConName
         constructor: str
 
     @dataclass(frozen=True)
@@ -1858,5 +2033,5 @@ class PackageMetadata:
 
 @dataclass(frozen=True)
 class Archive:
-    hash: 'PackageId'
+    hash: 'PackageRef'
     package: 'Package'

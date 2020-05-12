@@ -10,15 +10,15 @@ from dataclasses import dataclass
 from toposort import toposort_flatten
 
 from ... import LOG
-from ...damlast.daml_lf_1 import DefDataType, Archive
+from ...damlast.daml_lf_1 import Archive, DefDataType, DottedName, ModuleRef, PackageRef, TypeConName, ValName
 from ...damlast.types import get_old_type
 from ...model.types import TypeReference, RecordType, VariantType, EnumType, SCALAR_TYPE_UNIT, \
-    NamedArgumentList, TypeVariable, ModuleRef, TemplateChoice, Template, TypeAdjective, \
-    ScalarType, ValueReference, PackageId
+    NamedArgumentList, TypeVariable, TemplateChoice, Template, TypeAdjective, \
+    ScalarType
 from ...model.types_store import PackageStore, PackageStoreBuilder
 
 
-def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageId]' = None) -> 'G.ArchivePayload':
+def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageRef]' = None) -> 'G.ArchivePayload':
     """
     Convert ``bytes`` into a :class:`G.ArchivePayload`.
 
@@ -61,12 +61,13 @@ def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageId]' = 
 
 @dataclass(frozen=True)
 class ArchiveDependencyResult:
-    sorted_archives: 'Mapping[PackageId, G.ArchivePayload]'
-    unresolvable_archives: 'Mapping[PackageId, G.ArchivePayload]'
+    sorted_archives: 'Mapping[PackageRef, G.ArchivePayload]'
+    unresolvable_archives: 'Mapping[PackageRef, G.ArchivePayload]'
 
 
 def find_dependencies(
-        metadatas_pb: 'Mapping[str, G.ArchivePayload]', existing_package_ids: 'Collection[PackageId]') \
+        metadatas_pb: 'Mapping[str, G.ArchivePayload]',
+        existing_package_ids: 'Collection[PackageRef]') \
         -> 'ArchiveDependencyResult':
     """
     Return a topologically-sorted list of dependencies for the package IDs.
@@ -174,7 +175,7 @@ def find_dependencies_of_type(type_pb) -> 'Collection[str]':
         return ()
 
 
-def parse_daml_metadata_pb(package_id: 'PackageId', metadata_pb: Any) -> 'PackageStore':
+def parse_daml_metadata_pb(package_id: 'PackageRef', metadata_pb: Any) -> 'PackageStore':
     """
     Parse the contents of the given DAML-LF archive.
 
@@ -194,21 +195,21 @@ def parse_daml_metadata_pb(package_id: 'PackageId', metadata_pb: Any) -> 'Packag
     psb.add_archive(Archive(package_id, package))
 
     for module in package.modules:
-        current_module = ModuleRef(package_id, module.name.segments)
+        current_module = ModuleRef(package_id, DottedName(module.name.segments))
         for vv in module.values:
-            vt = ValueReference(current_module, vv.name_with_type.name)
+            vt = ValName(current_module, vv.name_with_type.name)
             psb.add_value(vt, vv.expr)
 
         for dt in module.data_types:
             tt = create_data_type(current_module, dt)
             if isinstance(tt, (RecordType, VariantType, EnumType)):
-                psb.add_type(tt.name, tt)
+                psb.add_type(tt.name.con, tt)
             else:
                 LOG.warning('Unexpected non-complex type will be ignored: %r', tt)
 
         for template_pb in module.templates:
-            tt = TypeReference(current_module, template_pb.tycon.segments)
-            data_type = psb.get_type(tt)
+            con = TypeConName(current_module, template_pb.tycon.segments)
+            data_type = psb.get_type(con)
             if isinstance(data_type, RecordType):
                 psb.add_template(Template(
                     data_type=data_type,
@@ -227,11 +228,11 @@ def parse_daml_metadata_pb(package_id: 'PackageId', metadata_pb: Any) -> 'Packag
                     ensure=template_pb.precond))
             elif data_type is None:
                 LOG.warning('The template %s did not have a corresponding data definition; '
-                            'it will be ignored', tt)
+                            'it will be ignored', con)
             else:
                 LOG.warning(
                     'The template %s was of type %s; only records are supported for templates',
-                    tt, data_type)
+                    con, data_type)
 
     LOG.debug('Fully registered all types for package ID %r', package_id)
     return psb.build()
@@ -242,7 +243,7 @@ def create_data_type(current_module_ref: 'ModuleRef', dt: 'DefDataType') \
     from ...damlast.types import get_old_type
 
     type_vars = tuple(TypeVariable(type_var.var) for type_var in dt.params)
-    tt = TypeReference(current_module_ref, tuple(dt.name.segments))
+    tt = TypeReference(con=TypeConName(current_module_ref, dt.name.segments))
 
     if dt.record is not None:
         d = OrderedDict()

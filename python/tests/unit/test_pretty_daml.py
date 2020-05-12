@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
+from dazl.damlast.daml_lf_1 import DottedName, PackageRef, TypeConName
 from dazl.pretty import DamlPrettyPrinter, PrettyOptions
 from dazl.util.dar import DarFile
 from .dars import Pending
@@ -31,8 +31,8 @@ def test_render_list_of_party_new():
 def test_render_list_of_contract_type_con_old():
     from dazl.model.types import ContractIdType, ListType, ModuleRef, TypeReference
 
-    module_ref = ModuleRef(package_id='00000000000000000000000000000000', module_name=('ABC',))
-    type_ref = TypeReference(module=module_ref, name=('DefGhi',))
+    module_ref = ModuleRef(package_id=PackageRef('00000000000000000000000000000000'), module_name=DottedName(('ABC',)))
+    type_ref = TypeReference(con=TypeConName(module=module_ref, name=('DefGhi',)))
     type_ = ListType(ContractIdType(type_ref))
 
     expected = '[ContractId ABC:DefGhi]'
@@ -45,8 +45,8 @@ def test_render_list_of_contract_type_con_new():
     from dazl.damlast.daml_lf_1 import PrimType, Type
     from dazl.model.types import ModuleRef, TypeReference
 
-    module_ref = ModuleRef(package_id='00000000000000000000000000000000', module_name=('ABC',))
-    con_type = Type(con=Type.Con(tycon=TypeReference(module=module_ref, name=('DefGhi',)), args=()))
+    module_ref = ModuleRef(package_id=PackageRef('00000000000000000000000000000000'), module_name=DottedName(('ABC',)))
+    con_type = Type(con=Type.Con(tycon=TypeConName(module=module_ref, name=('DefGhi',)), args=()))
     cid_type = Type(prim=Type.Prim(prim=PrimType.CONTRACT_ID, args=(con_type,)))
     type_ = Type(prim=Type.Prim(prim=PrimType.LIST, args=(cid_type,)))
 
@@ -59,8 +59,8 @@ def test_render_list_of_contract_type_con_new():
 def test_render_update_of_contract_type_con_old():
     from dazl.model.types import ContractIdType, UpdateType, ModuleRef, TypeReference
 
-    module_ref = ModuleRef(package_id='00000000000000000000000000000000', module_name=('ABC',))
-    type_ref = TypeReference(module=module_ref, name=('DefGhi',))
+    module_ref = ModuleRef(package_id=PackageRef('00000000000000000000000000000000'), module_name=DottedName(('ABC',)))
+    type_ref = TypeReference(con=TypeConName(module=module_ref, name=('DefGhi',)))
     type_ = UpdateType(ContractIdType(type_ref))
 
     expected = 'Update (ContractId ABC:DefGhi)'
@@ -73,8 +73,8 @@ def test_render_update_of_contract_type_con_new():
     from dazl.damlast.daml_lf_1 import PrimType, Type
     from dazl.model.types import ModuleRef, TypeReference
 
-    module_ref = ModuleRef(package_id='00000000000000000000000000000000', module_name=('ABC',))
-    con_type = Type(con=Type.Con(tycon=TypeReference(module=module_ref, name=('DefGhi',)), args=()))
+    module_ref = ModuleRef(package_id=PackageRef('00000000000000000000000000000000'), module_name=DottedName(('ABC',)))
+    con_type = Type(con=Type.Con(tycon=TypeConName(module=module_ref, name=('DefGhi',)), args=()))
     cid_type = Type(prim=Type.Prim(prim=PrimType.CONTRACT_ID, args=(con_type,)))
     type_ = Type(prim=Type.Prim(prim=PrimType.UPDATE, args=(cid_type,)))
 

@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-from typing import Dict, List, Sequence, Union
+from typing import Dict, List, Sequence
 
-from ..damlast.daml_lf_1 import Module
+from ..damlast.daml_lf_1 import DottedName, Module
+from ..damlast.util import module_name, package_ref
 from ..model.types import ModuleRef
 
 
@@ -14,7 +15,7 @@ class ModuleHierarchy:
     END = 'END'
 
     def __init__(self, package_id, module_name: 'Sequence[str]' = ()):
-        self.ref = ModuleRef(package_id, module_name)
+        self.ref = ModuleRef(package_id, DottedName(module_name))
         self._items = dict()  # type: Dict[str, ModuleHierarchy]
         self._modules = list()  # type: List[Module]
 
@@ -26,13 +27,15 @@ class ModuleHierarchy:
         """
         mb = self._items.get(item)
         if mb is None:
-            mb = ModuleHierarchy(self.ref.package_id, self.ref.module_name + (item,))
+            mn = module_name(self.ref)
+            # TODO: Revisit in dazl 7.0.0 when the internal structures of ModuleRef and DottedName change
+            mb = ModuleHierarchy(package_ref(self.ref), (f"{mn}.{item}" if mn else str(mn)).split('.'))
             self._items[item] = mb
         return mb
 
     def add_module(self, module: 'Module') -> None:
         obj = self
-        components = module.name.segments
+        components = str(module.name).split('.')
         for component in components:
             obj = obj[component]
         obj._modules.append(module)

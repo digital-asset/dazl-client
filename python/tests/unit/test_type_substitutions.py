@@ -1,15 +1,11 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl.model.types import TypeReference, ModuleRef, dotted_name, RecordType, \
+from dazl.model.types import type_ref, TypeReference, RecordType, \
     NamedArgumentList, \
     ListType, TypeVariable, TypeApp, SCALAR_TYPE_TEXT, SCALAR_TYPE_INTEGER, \
     type_evaluate_dispatch_default_error, TypeEvaluationContext, TypeAdjective
 from dazl.model.types_store import PackageStoreBuilder
-
-
-def simple_type_ref(name) -> TypeReference:
-    return TypeReference(module=ModuleRef('pkg0', ()), name=dotted_name(name))
 
 
 def record_type(name: TypeReference, type_args, **fields):
@@ -29,15 +25,15 @@ def type_var(name):
 
 
 def test_simple_translate():
-    tr = simple_type_ref('Map')
-    tt = simple_type_ref('Tuple')
+    tr = type_ref(f'pkg0::Map')
+    tt = type_ref(f'pkg0::Tuple')
 
     tuple_type = record_type(tt, 'AB', _1=type_var('A'), _2=type_var('B'))
     map_type = record_type(tr, 'KV', _1=list_type(TypeApp(tt, (type_var('K'), type_var('V')))))
 
     psb = PackageStoreBuilder()
-    psb.add_type(tuple_type.name, tuple_type)
-    psb.add_type(map_type.name, map_type)
+    psb.add_type(tuple_type.name.con, tuple_type)
+    psb.add_type(map_type.name.con, map_type)
 
     test_case_type = TypeApp(tr, (SCALAR_TYPE_INTEGER, SCALAR_TYPE_TEXT))
 

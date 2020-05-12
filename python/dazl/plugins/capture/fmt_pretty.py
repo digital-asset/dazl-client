@@ -35,9 +35,7 @@ class _TemplateKey:
 
     @staticmethod
     def for_record_type(record_type: RecordType) -> '_TemplateKey':
-        return _TemplateKey(
-            '.'.join(record_type.name.module.module_name + record_type.name.name),
-            record_type)
+        return _TemplateKey(str(record_type.name.con), record_type)
 
     def __init__(self, template_name: str, data_type: Optional[Type]):
         self.template_name = template_name

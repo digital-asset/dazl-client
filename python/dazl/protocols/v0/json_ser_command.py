@@ -189,7 +189,7 @@ class JsonSerializer(AbstractSerializer[dict, R]):
         # the package_id in ModuleRef is a convenient place to
         # stash legacy template IDs in the REST endpoint
         return {'create': {
-            'template': template_type.name.module.package_id,
+            'template': str(template_type.name.con),
             'arguments': template_args}}
 
     def serialize_exercise_command(
