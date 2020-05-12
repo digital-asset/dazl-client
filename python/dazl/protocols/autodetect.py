@@ -3,7 +3,7 @@
 
 import datetime
 from threading import Event, Thread, RLock
-from typing import Awaitable, Dict, Iterable, Optional, Union
+from typing import Awaitable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
 from .. import LOG
 from ._base import LedgerNetwork, LedgerClient, LedgerConnectionOptions
@@ -13,6 +13,9 @@ from ..model.core import Party, UserTerminateRequest, ConnectionTimeoutError
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
 from ..scheduler import Invoker
+
+
+T = TypeVar('T')
 
 
 class AutodetectLedgerNetwork(LedgerNetwork):
