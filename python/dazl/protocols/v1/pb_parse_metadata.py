@@ -13,8 +13,7 @@ from ... import LOG
 from ...damlast.daml_lf_1 import Archive, DefDataType, DottedName, ModuleRef, PackageRef, TypeConName, ValName
 from ...damlast.types import get_old_type
 from ...model.types import TypeReference, RecordType, VariantType, EnumType, SCALAR_TYPE_UNIT, \
-    NamedArgumentList, TypeVariable, TemplateChoice, Template, TypeAdjective, \
-    ScalarType
+    NamedArgumentList, ScalarType, TypeVariable, TemplateChoice, Template
 from ...model.types_store import PackageStore, PackageStoreBuilder
 
 
@@ -249,12 +248,12 @@ def create_data_type(current_module_ref: 'ModuleRef', dt: 'DefDataType') \
         d = OrderedDict()
         for fwt in dt.record.fields:
             d[fwt.field] = get_old_type(fwt.type)
-        return RecordType(NamedArgumentList(d.items()), tt, type_vars, TypeAdjective.USER_DEFINED)
+        return RecordType(NamedArgumentList(d.items()), tt, type_vars)
     elif dt.variant is not None:
         d = OrderedDict()
         for fwt in dt.variant.fields:
             d[fwt.field] = get_old_type(fwt.type)
-        return VariantType(NamedArgumentList(d.items()), tt, type_vars, TypeAdjective.USER_DEFINED)
+        return VariantType(NamedArgumentList(d.items()), tt, type_vars)
     elif dt.enum is not None:
         return EnumType(tt, dt.enum.constructors)
     else:

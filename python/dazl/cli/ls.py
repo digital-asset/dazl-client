@@ -4,9 +4,10 @@
 
 from asyncio import gather
 from argparse import ArgumentParser
-from .. import LOG, Network, write_acs
+
+from .. import LOG, Network
 from ._base import CliCommand
-from ..plugins import LedgerCapturePlugin
+from ..pretty.table import write_acs, DEFAULT_FORMATTER_NAME
 from ..client.config import configure_parser, NetworkConfig
 
 
@@ -17,7 +18,7 @@ class ListAllCommand(CliCommand):
         arg_parser = ArgumentParser('dazl ls')
 
         configure_parser(arg_parser, config_file_support=True)
-        arg_parser.add_argument('--format', '--fmt', '-F', type=str, default=LedgerCapturePlugin.DEFAULT_FORMATTER_NAME)
+        arg_parser.add_argument('--format', '--fmt', '-F', type=str, default=DEFAULT_FORMATTER_NAME)
         arg_parser.add_argument('--template-filter', '-T', type=str)
         arg_parser.add_argument('--all', '-A', action='store_true')
         return arg_parser

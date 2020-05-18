@@ -11,8 +11,8 @@ import re
 from collections import defaultdict
 from typing import Iterable, Optional
 
-from .model_capture import LedgerCapture, LedgerCaptureEntry
-from dazl.util.termcap import termsize
+from .client_app import LedgerCapture, LedgerCaptureEntry
+from ...util.termcap import termsize
 from ...model.types import Type, RecordType
 
 BOX_B3 = '|'

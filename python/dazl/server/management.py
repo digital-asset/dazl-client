@@ -35,7 +35,7 @@ class BotInfoEntry:
     source_location: 'SourceLocation'
 
 
-def build_routes(network_impl: '_NetworkImpl') -> 'Collection[web.RouteDef]':
+def build_routes(network_impl: '_NetworkImpl') -> 'Collection[web.AbstractRouteDef]':
     try:
         from aiohttp import web
     except ImportError:

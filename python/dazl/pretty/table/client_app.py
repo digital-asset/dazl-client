@@ -2,47 +2,145 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-This module contains a plugin for capturing data off the ledger and outputting it.
+This module contains utilities for deterministically outputting contract information.
 """
 
 import sys
-
-from functools import partial
+from collections import defaultdict
 from typing import Collection, Iterable, TextIO, Optional, Union, TYPE_CHECKING
+from typing import Dict, Iterator
 
-from .fmt_base import DEFAULT_FORMATTER_NAME, get_formatter
-from .model_capture import LedgerCapture
-from ..plugins_base import Plugin
-from ...model.core import Party
+from .fmt_base import get_formatter
+from ...model.core import ContractId, ContractData, Party
+from ...model.types_store import PackageStore
 
 if TYPE_CHECKING:
-    from ...client import LedgerClientManager, Network
+    from ...client import Network
 
 
-class LedgerCapturePlugin(Plugin):
+def collate_entries(metadata, parties, entries):
+    """
+    Return entries as a dict of :class:`TemplateMetadata` to list of :class:`LedgerCaptureEntry`.
+    """
+    sort = EntrySorter(parties)
+
+    entries_by_template = defaultdict(list)
+    for entry in entries:
+        entries_by_template[entry.template_id].append(entry)
+
+    grouped_entries = []
+    for template_id, entries in entries_by_template.items():
+        template = metadata.templates.find(template_id)
+        entries.sort(key=sort.key)
+        grouped_entries.append((template, entries))
+
+    grouped_entries.sort(key=lambda t: t[0].template_name)
+    return dict(grouped_entries)
+
+
+class EntrySorter:
+    """
+    Implementation of a sort key method for :class:`LedgerCaptureEntry`.
+    """
+
+    def __init__(self, parties):
+        self.parties = parties
+
+    def key(self, entry):
+        """
+        Return an expression that can be used as an absolute sorting value as a proxy for this
+        entry.
+        """
+        party_vis = [1 if entry.parties.get(party) is not None else 0 for party in self.parties]
+        return sum(party_vis), ''.join(map(str, reversed(party_vis)))
+
+
+class LedgerCapture:
+    """
+    State built up during a ledger run.
+    """
+
+    def __init__(self):
+        self.entries = dict()  # type: Dict[ContractId, LedgerCaptureEntry]
+        self.store: Optional[PackageStore] = None
+
+    def capture(self, party: str, contract_id: ContractId, contract_data: Optional[ContractData], time = None):
+        entry = self.entries.get(contract_id)
+        if entry is not None:
+            entry.extend(party, contract_id, contract_data)
+        else:
+            self.entries[contract_id] = LedgerCaptureEntry(party, contract_id, contract_data, time)
+
+    def capture_archive(self, party: str, contract_id: ContractId):
+        return self.capture(party, contract_id, None)
+
+    def excluding_inactive(self):
+        return filter(lambda e: not e.is_archived(), self)
+
+    def filtered_by(self, predicate):
+        return filter(predicate, self)
+
+    def __iter__(self) -> 'Iterator[LedgerCaptureEntry]':
+        return iter(self.entries.values())
+
+    def __repr__(self):
+        return '<LedgerCapture(entry_count={!r})>'.format(len(self.entries))
+
+
+class LedgerCaptureEntry:
+    def __init__(self, party, contract_id, contract_data, time):
+        self.parties = {party: True}
+        self.contract_id = contract_id
+        self.template_id = contract_id.template_id
+        self.contract_args = contract_data
+        self.time = time
+        self.errors = []
+
+    def extend(self, party, _, contract_data):
+        active = contract_data is not None
+        self.parties[party] = active
+
+        if active:
+            # make sure this party is seeing a consistent view of the same contract
+            pass
+
+    def is_archived(self):
+        return all(not active for active in self.parties.values())
+
+    def contract_state(self, party):
+        p = self.parties.get(party)
+        if p is not None:
+            return "CREATED" if p else "ARCHIVED"
+        else:
+            return None
+
+    def __repr__(self):
+        return '<LedgerEntry(parties={}, contract_id={}, template_id={}, contract_args={})>'.format(
+            self.parties, self.contract_id, self.template_id, self.contract_args)
+
+
+class LedgerCaptureApp:
     """
     Plugin that passively listens to the event stream on all parties. Call :meth:`dump_all` to
     render what it sees.
     """
 
-    DEFAULT_FORMATTER_NAME = DEFAULT_FORMATTER_NAME
-
     @classmethod
-    def stdout(cls, **kwargs) -> 'LedgerCapturePlugin':
+    def stdout(cls, **kwargs) -> 'LedgerCaptureApp':
         """
         Return a :class:`LedgerCapturePlugin` that writes its output to stdout.
         """
         return cls(sys.stdout, False, **kwargs)
 
     @classmethod
-    def stderr(cls, **kwargs) -> 'LedgerCapturePlugin':
+    def stderr(cls, **kwargs) -> 'LedgerCaptureApp':
         """
         Return a :class:`LedgerCapturePlugin` that writes its output to stderr.
         """
         return cls(sys.stderr, False, **kwargs)
 
     @classmethod
-    def to_file(cls, path, **kwargs) -> 'LedgerCapturePlugin':
+    def to_file(cls, path, **kwargs) -> 'LedgerCaptureApp':
         """
         Return a :class:`LedgerCapturePlugin` that writes its output to a file.
 
@@ -53,8 +151,8 @@ class LedgerCapturePlugin(Plugin):
     def __init__(self,
                  buf: TextIO,
                  buf_close: bool,
-                 template_filter: Optional[Iterable[str]]=None,
-                 include_archived: bool=False):
+                 template_filter: 'Optional[Iterable[str]]' = None,
+                 include_archived: bool = False):
         """
         Initialize a :class:`LedgerCapturePlugin`.
 
@@ -76,16 +174,6 @@ class LedgerCapturePlugin(Plugin):
         self.include_archived = include_archived
         self.manager = None
         self.store = None
-
-    def install(self, manager: 'LedgerClientManager'):
-        """
-        Monitor the events off of a ledger client.
-
-        :param manager:
-            The :class:`LedgerClientManager` to install event handlers into.
-        """
-        self.manager = manager
-        self.manager.on_init_metadata(partial(setattr, self, 'store'))
 
     def dump_all(self, fmt=None, parties=None, include_archived=None, **kwargs) -> None:
         """
