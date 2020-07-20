@@ -368,16 +368,20 @@ class _PartyClientImpl:
 
     def _process_command_finished(self, pending_command, ignore_errors):
         try:
-            if pending_command.future.exception() is None:
-                LOG.debug('Command finished: %s', pending_command)
             self._writer.inflight_commands.remove(pending_command)
         except ValueError:
             LOG.warning('Tried to remove %s even though it was already removed.', pending_command)
 
-        if pending_command.future.exception() is not None:
-            # TODO: more with this; maybe let the user respond to this
-            LOG.exception('A command submission failed!',
-                          exc_info=pending_command.future.exception())
+        if pending_command.future.cancelled():
+            LOG.debug("Command cancelled: %s", pending_command)
+        else:
+            ex = pending_command.future.exception()
+            if ex is not None:
+                # TODO: more with this; maybe let the user respond to this
+                LOG.exception('A command submission failed!',
+                              exc_info=pending_command.future.exception())
+            else:
+                LOG.debug('Command finished: %s', pending_command)
 
     async def main_writer(self):
         """
@@ -401,6 +405,12 @@ class _PartyClientImpl:
             ledger_effective_time = metadata.time_model.get_time()
             command_payloads = []  # type: List[Tuple[_PendingCommand, Sequence[CommandPayload]]]
 
+            if p.future.done():
+                # PendingCommand instances that are already marked as done have either been marked
+                # as a failure or cancelled by the caller. Do NOT send the corresponding Ledger API
+                # command because the PendingCommand() has effectively been aborted.
+                continue
+
             self._writer.inflight_commands.append(p)
             try:
                 defaults = CommandDefaults(
@@ -419,7 +429,8 @@ class _PartyClientImpl:
                 else:
                     # This is a "null command"; don't even bother sending to the server. Immediately
                     # resolve the future successfully and discard
-                    p.future.set_result(None)
+                    if not p.future.done():
+                        p.future.set_result(None)
             except Exception as ex:
                 LOG.exception("Tried to send a command and failed!")
                 p.notify_read_fail(ex)
@@ -491,15 +502,28 @@ class _PendingCommand:
             self.command_ids.discard(command_id)
             if not self.command_ids:
                 # the command is finished
-                self.future.set_result(None)
+                if not self.future.done():
+                    self.future.set_result(None)
                 return
 
         if self.max_record_time is not None and ledger_time is not None and \
                 self.max_record_time < ledger_time:
-            self.future.set_exception(CommandTimeoutError())
+            if self.future.done():
+                LOG.debug(
+                    'A command timed out on the server and the client also cancelled the request.')
+            else:
+                self.future.set_exception(CommandTimeoutError())
 
     def notify_read_fail(self, ex: Exception):
-        self.future.set_exception(ex)
+        if self.future.done():
+            # The user may have cancelled the command or otherwise terminated the Future; trying
+            # to set an exception on a done Future will itself throw an exception, so the best
+            # we can do is log
+            LOG.exception(
+                'An exception was received and reported to a Future that has already been aborted! '
+                'This cannot be reported in a normal way.', ex)
+        else:
+            self.future.set_exception(ex)
 
     def __eq__(self, other):
         return self is other
