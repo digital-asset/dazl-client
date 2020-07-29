@@ -10,14 +10,13 @@ from typing import Any, Optional, Tuple
 from ... import LOG
 # noinspection PyPep8Naming
 from . import model as G
-from ...damlast.daml_lf_1 import TypeConName
 from ...model.core import ContractId
 from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
     UnsupportedType, TemplateChoice, TypeReference, TypeEvaluationContext, SCALAR_TYPE_UNIT, \
     TextMapType, OptionalType, EnumType
 from ...model.writing import AbstractSerializer, CommandPayload
 from ...util.prim_types import to_boolean, to_date, to_datetime, to_decimal, to_int, to_str, \
-    decode_variant_dict
+    to_ledger_api_decimal, decode_variant_dict
 
 # noinspection PyPackageRequirements
 from google.protobuf.empty_pb2 import Empty
@@ -154,7 +153,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'int64', to_int(obj)
 
     def serialize_decimal(self, context: TypeEvaluationContext, obj: Any) -> R:
-        return 'numeric', str(to_decimal(obj))
+        return 'numeric', to_ledger_api_decimal(to_decimal(obj))
 
     def serialize_party(self, context: TypeEvaluationContext, obj: Any) -> R:
         return 'party', to_str(obj)

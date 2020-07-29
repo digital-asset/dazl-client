@@ -46,6 +46,11 @@ def to_boolean(obj) -> bool:
     raise ValueError(f'Could not parse as a boolean: {obj!r}')
 
 
+def to_ledger_api_decimal(obj: 'Decimal') -> str:
+    precision = max(0, -obj.as_tuple().exponent)
+    return format(obj, f'.{precision}f')
+
+
 @overload
 def to_timedelta(obj: TimeDeltaConvertible) -> timedelta: ...
 
