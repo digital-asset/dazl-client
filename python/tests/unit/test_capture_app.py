@@ -4,8 +4,7 @@
 from datetime import datetime
 
 from dazl import ContractId
-from dazl.plugins.capture import fmt_pretty
-from dazl.plugins.capture.model_capture import LedgerCapture
+from dazl.pretty.table import fmt_pretty, LedgerCapture
 
 
 def test_capture_handles_unknown_templates():

@@ -8,9 +8,9 @@ This model contains definitions for the data classes used at the client layer of
 from enum import IntEnum
 from typing import NamedTuple, Optional
 try:
-    from typing import Literal
+    from typing import Literal  # type: ignore
 except ImportError:
-    from typing_extensions import Literal
+    from typing_extensions import Literal  # type: ignore
 
 
 class ExitCode(IntEnum):

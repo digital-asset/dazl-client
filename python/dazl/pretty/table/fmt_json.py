@@ -7,9 +7,9 @@ Formatting module for outputting captures.
 
 from typing import Iterable
 
+from .client_app import LedgerCapture
 from ...protocols.v0.json_ser_command import LedgerJSONEncoder
 from ...util.tools import boundary_iter
-from .model_capture import LedgerCapture
 
 
 def format_error(error: str) -> Iterable[str]:
@@ -17,7 +17,7 @@ def format_error(error: str) -> Iterable[str]:
     return encode(dict(errors=[error]))
 
 
-def format_entries(capture: LedgerCapture, parties=None, entries=None, **kwargs) -> Iterable[str]:
+def format_entries(capture: LedgerCapture, parties=None, entries=None, **kwargs) -> 'Iterable[str]':
     """
     Return a list of strings that, when taken together, constitute a JSON document that lists
     all of the entries of the ledger.

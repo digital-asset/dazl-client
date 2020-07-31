@@ -24,17 +24,12 @@ def validate_template(template: Any) -> 'Tuple[str, str]':
     """
     from ..damlast.daml_lf_1 import TypeConName
     from ..damlast.util import package_ref, package_local_name
-    from .types import TemplateMeta, RecordType, TypeReference, UnresolvedTypeReference
-    from .types_dynamic import ProxyMeta
+    from .types import RecordType, TypeReference, UnresolvedTypeReference
 
     if template == '*' or template is None:
         return '*', '*'
 
-    if isinstance(template, TemplateMeta):
-        template = str(template)
-    elif isinstance(type(template), ProxyMeta):
-        template = str(template)
-    elif isinstance(template, UnresolvedTypeReference):
+    if isinstance(template, UnresolvedTypeReference):
         template = template.name
 
     if isinstance(template, str):

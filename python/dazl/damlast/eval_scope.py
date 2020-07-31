@@ -4,7 +4,7 @@
 from types import MappingProxyType
 from typing import Collection, Mapping, Optional
 
-from ..model.types import ValueReference
+from ..damlast.daml_lf_1 import ValName
 from ..model.types_store import PackageStore
 from .daml_lf_1 import Expr, Type
 
@@ -14,8 +14,8 @@ class EvaluationScope:
             self,
             store: 'PackageStore',
             bindings: 'Mapping[str, Expr]',
-            blocked_value_refs: 'Collection[ValueReference]' = (),
-            depth = 0):
+            blocked_value_refs: 'Collection[ValName]' = (),
+            depth: int = 0):
         self.store = store
         self.depth = depth
         self._vars = MappingProxyType(dict(bindings))

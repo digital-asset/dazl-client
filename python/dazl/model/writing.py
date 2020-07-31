@@ -28,8 +28,7 @@ from .. import LOG
 from .core import ContractId, Party
 from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice, \
     RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, TextMapType, \
-    EnumType, scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch, \
-    TemplateMeta, ChoiceMeta
+    EnumType, scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch
 from .types_store import PackageStore
 from ..util.prim_types import DEFAULT_TYPE_CONVERTER
 from ..util.typing import safe_cast, safe_optional_cast
@@ -392,31 +391,7 @@ class CommandPayload:
 
 
 def create(template, arguments=None):
-    from .types_dynamic import NamedRecord, ProxyMeta
-
-    template_type = type(template)
-    if isinstance(template_type, TemplateMeta):
-        # static codegen, instantiated type
-        if arguments is not None:
-            raise ValueError('arguments cannot be specified with an instantiated template')
-        arguments = template._asdict()
-        template = str(template_type)
-
-    elif isinstance(template, NamedRecord):
-        # dynamic "codegen", instantiated type
-        if arguments is not None:
-            raise ValueError('arguments cannot be specified with an instantiated template')
-        template, arguments = template.name, template.arguments
-
-    elif template_type == TemplateMeta:
-        # static codegen, non-instantiated
-        template = str(template)
-
-    elif isinstance(template_type, ProxyMeta):
-        # dynamic codegen, non-instantiated
-        template = str(template_type)
-
-    elif not isinstance(template, str):
+    if not isinstance(template, str):
         raise ValueError(
             'template must be a string name, a template type, or an instantiated template')
 
@@ -424,37 +399,7 @@ def create(template, arguments=None):
 
 
 def exercise(contract, choice, arguments=None):
-    from .types_dynamic import NamedRecord, ProxyMeta
-
-    choice_type = type(choice)
-    if isinstance(choice_type, ChoiceMeta):
-        # static codegen, instantiated type
-        if arguments is not None:
-            raise ValueError('arguments cannot be specified with an instantiated template')
-        arguments = choice._asdict()
-        choice = str(choice_type)
-
-    elif isinstance(choice, NamedRecord):
-        # dynamic "codegen", instantiated type
-        if arguments is not None:
-            raise ValueError('arguments cannot be specified with an instantiated template')
-        choice, arguments = choice.name, choice.arguments
-        choice_start_idx = choice.rfind('.')
-        if choice_start_idx >= 0:
-            choice = choice[choice_start_idx + 1:]
-
-    elif choice_type == ChoiceMeta:
-        # static codegen, non-instantiated
-        choice = str(choice)
-
-    elif isinstance(choice_type, ProxyMeta):
-        # dynamic codegen, non-instantiated
-        choice = str(choice_type)
-        choice_start_idx = choice.rfind('.')
-        if choice_start_idx >= 0:
-            choice = choice[choice_start_idx + 1:]
-
-    elif not isinstance(choice, str):
+    if not isinstance(choice, str):
         raise ValueError('choice must be a string name, a template type, '
                          'or an instantiated template')
 

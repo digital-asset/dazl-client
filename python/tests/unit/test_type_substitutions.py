@@ -4,7 +4,7 @@
 from dazl.model.types import type_ref, TypeReference, RecordType, \
     NamedArgumentList, \
     ListType, TypeVariable, TypeApp, SCALAR_TYPE_TEXT, SCALAR_TYPE_INTEGER, \
-    type_evaluate_dispatch_default_error, TypeEvaluationContext, TypeAdjective
+    type_evaluate_dispatch_default_error, TypeEvaluationContext
 from dazl.model.types_store import PackageStoreBuilder
 
 
@@ -12,8 +12,7 @@ def record_type(name: TypeReference, type_args, **fields):
     return RecordType(
         named_args=NamedArgumentList((k, v) for k, v in fields.items()),
         name=name,
-        type_args=tuple(map(TypeVariable, type_args)),
-        adjective=TypeAdjective.USER_DEFINED)
+        type_args=tuple(map(TypeVariable, type_args)))
 
 
 def list_type(tt):

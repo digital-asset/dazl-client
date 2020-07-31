@@ -10,7 +10,7 @@ from ..client import _NetworkImpl
 from ..model.core import Party
 
 
-def build_routes(network_impl: '_NetworkImpl', registry=None) -> 'Collection[web.RouteDef]':
+def build_routes(network_impl: '_NetworkImpl', registry=None) -> 'Collection[web.AbstractRouteDef]':
     routes = web.RouteTableDef()
 
     from prometheus_client import exposition, REGISTRY

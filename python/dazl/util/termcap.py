@@ -16,7 +16,7 @@ def termsize() -> 'Tuple[Optional[int], Optional[int]]':
     """
     try:
         with Popen(['stty', 'size'], stdout=PIPE, stderr=DEVNULL) as proc:
-            term_size_str = proc.stdout.read().decode('utf8')
+            term_size_str = proc.stdout.read().decode('utf8') if proc.stdout is not None else None
     except FileNotFoundError:
         term_size_str = None
     if term_size_str is not None:

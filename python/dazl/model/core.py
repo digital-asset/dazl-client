@@ -13,7 +13,7 @@ the Ledger API.
 """
 import warnings
 from dataclasses import dataclass
-from typing import Any, Callable, Collection, Dict, List, NewType, Optional, Tuple, TypeVar, \
+from typing import Any, Callable, Collection, Dict, NewType, Optional, Tuple, TypeVar, \
     Union, TYPE_CHECKING
 from datetime import datetime
 
@@ -222,11 +222,11 @@ class ConfigurationError(DazlError):
     """
     def __init__(self, reasons: 'Union[str, Collection[str]]'):
         if reasons is None:
-            self.reasons = []  # type: List[str]
+            self.reasons = []  # type: Collection[str]
         elif isinstance(reasons, str):
             self.reasons = [reasons]
         else:
-            self.reasons = reasons  # type: List[str]
+            self.reasons = reasons  # type: Collection[str]
 
 
 class ConnectionClosedError(DazlError):
