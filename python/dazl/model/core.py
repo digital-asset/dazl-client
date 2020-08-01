@@ -12,8 +12,10 @@ the Ledger API.
    :members:
 """
 import warnings
+from pathlib import Path
+
 from dataclasses import dataclass
-from typing import Any, Callable, Collection, Dict, NewType, Optional, Tuple, TypeVar, \
+from typing import Any, BinaryIO, Callable, Collection, Dict, NewType, Optional, Tuple, TypeVar, \
     Union, TYPE_CHECKING
 from datetime import datetime
 
@@ -154,6 +156,10 @@ class ContractContextualData:
     effective_at: datetime
     archived_at: 'Optional[datetime]'
     active: bool
+
+
+# Wherever the API expects a DAR, we can take a file path, `bytes`, or a byte buffer.
+Dar = Union[bytes, str, Path, BinaryIO]
 
 
 @dataclass(frozen=True)

@@ -1,10 +1,10 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+import pytest
 
-from dazl import sandbox, create, exercise, Network
+from dazl import async_network, create, exercise
 from .dars import Pending
 
-PARTY = 'Operator'
 Counter = 'Pending.Counter'
 Account = 'Pending.Account'
 AccountRequest = 'Pending.AccountRequest'
@@ -12,20 +12,18 @@ AccountRequest = 'Pending.AccountRequest'
 OperatorNotification = 'Simple.OperatorNotification'
 
 
-def test_select_template_retrieves_contracts():
+@pytest.mark.asyncio
+async def test_select_template_retrieves_contracts(sandbox):
     number_of_contracts = 10
 
-    with sandbox(Pending) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
-
-        party_client = network.aio_party(PARTY)
-        party_client.add_ledger_ready(lambda _: [
-            create(Counter, {'owner': PARTY, 'value': 0}),
-            *[create(AccountRequest, {'owner': PARTY}) for i in range(number_of_contracts)],
+    async with async_network(url=sandbox, dars=Pending) as network:
+        client = network.aio_new_party()
+        client.add_ledger_ready(lambda _: [
+            create(Counter, {'owner': client.party, 'value': 0}),
+            *[create(AccountRequest, {'owner': client.party}) for i in range(number_of_contracts)],
         ])
 
-        @party_client.ledger_created(AccountRequest)
+        @client.ledger_created(AccountRequest)
         async def on_account_request(event):
             counter_cid, counter_cdata = await event.acs_find_one(Counter)
             return [
@@ -33,8 +31,8 @@ def test_select_template_retrieves_contracts():
                 exercise(counter_cid, 'Increment')
             ]
 
-        network.run_until_complete()
+        await network.aio_run(keep_open=False)
 
-        data = party_client.find_active(Account)
+        data = client.find_active(Account)
 
     assert len(data) == number_of_contracts

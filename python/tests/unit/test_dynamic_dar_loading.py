@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from pathlib import Path
-from unittest import TestCase
 
 from dazl.model.types_store import PackageStore, PackageProvider, MemoryPackageProvider
 from dazl.protocols.v1.grpc import grpc_package_sync

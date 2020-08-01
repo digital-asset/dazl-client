@@ -1,36 +1,33 @@
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Tests to ensure that cancelled command submissions behave correctly.
 """
-from dazl import sandbox, Network
+import pytest
+
+from dazl import async_network
 from tests.unit.dars import Pending
 
-PARTY = 'SomeParty'
 
+@pytest.mark.asyncio
+async def test_cancelled_write(sandbox):
+    async with async_network(url=sandbox, dars=Pending) as network:
+        client = network.aio_new_party()
 
-def test_cancelled_write():
+        network.start()
 
-    with sandbox(Pending) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
+        # Submit a command, but _immediately_ cancel it. Because there are no awaits, this code
+        # cannot have possibly been interrupted by the coroutine responsible for scheduling a write
+        # to the server, so the command should be cancelled.
+        fut = client.submit_create('Pending:Counter', {'owner': client.party, 'value': 66})
+        fut.cancel()
 
-        party_client = network.aio_party(PARTY)
+        # Immediately afterwards, schedule another command submission; this time, we wait for it.
+        fut = client.submit_create('Pending:Counter', {'owner': client.party, 'value': 7})
+        await fut
 
-        async def test_body(_):
-            # Submit a command, but _immediately_ cancel it. Because there are no awaits, this code
-            # cannot have possibly been interrupted by the coroutine responsible for scheduling a write
-            # to the server, so the command should be cancelled.
-            fut = party_client.submit_create('Pending:Counter', {'owner': PARTY, 'value': 66})
-            fut.cancel()
+        data = client.find_active('Pending:Counter')
 
-            # Immediately afterwards, schedule another command submission; this time, we wait for it.
-            fut = party_client.submit_create('Pending:Counter', {'owner': PARTY, 'value': 7})
-            await fut
-
-        party_client.add_ledger_ready(test_body)
-
-        network.run_until_complete()
-
-        data = party_client.find_active('Pending:Counter')
-
-    assert len(data) == 1
-    assert list(data.values())[0]['value'] == 7
+        assert len(data) == 1
+        assert list(data.values())[0]['value'] == 7

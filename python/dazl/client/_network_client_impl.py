@@ -87,6 +87,34 @@ class _NetworkImpl:
     def resolved_anonymous_config(self) -> 'AnonymousNetworkConfig':
         return AnonymousNetworkConfig.parse_kwargs(**self._config)
 
+    def freeze(self):
+        """
+        Freeze configuration, and assume the current run loop can be used to schedule dazl
+        coroutines. Once this method is called, ``aio_run()`` must be called instead of ``start()``
+        in order to run dazl.
+        """
+        with self._lock:
+            self.invoker.set_context_as_current()
+            config = self.resolved_config()
+
+        # From this point on, we're assuming we're on an asyncio event loop so locking is no longer
+        # required
+        if self._pool is None:
+            from ..protocols import LedgerConnectionOptions
+
+            # If the connect timeout is non-positive, assume the user intended for there to not be
+            # a timeout at all
+            connect_timeout = to_timedelta(config.connect_timeout)
+            if connect_timeout <= timedelta(0):
+                connect_timeout = None
+
+            options = LedgerConnectionOptions(connect_timeout=connect_timeout)
+
+            self._pool = pool = AutodetectLedgerNetwork(self.invoker, options)
+            self._pool_init.set_result(pool)
+
+        return config
+
     async def aio_run(self, *coroutines) -> None:
         """
         Coroutine where all network activity is scheduled from.
@@ -96,11 +124,8 @@ class _NetworkImpl:
             of the additional coroutines are also finished.
         """
         from ..metrics.instrumenters import AioLoopPerfMonitor
-        from ..protocols import LedgerConnectionOptions
 
-        with self._lock:
-            self.invoker.set_context_as_current()
-            config = self.resolved_config()
+        config = self.freeze()
 
         site = None
         with AioLoopPerfMonitor(self._metrics.loop_responsiveness):
@@ -118,19 +143,8 @@ class _NetworkImpl:
                 LOG.info('No server_port configuration was specified, so metrics and other stats '
                          'will not be served.')
 
-            # If the connect timeout is non-positive, assume the user intended for there to not be
-            # a timeout at all
-            connect_timeout = to_timedelta(config.connect_timeout)
-            if connect_timeout <= timedelta(0):
-                connect_timeout = None
-
-            options = LedgerConnectionOptions(connect_timeout=connect_timeout)
-
-            self._pool = pool = AutodetectLedgerNetwork(self.invoker, options)
-            self._pool_init.set_result(pool)
-
             try:
-                runner = _NetworkRunner(pool, self, coroutines)
+                runner = _NetworkRunner(self._pool, self, coroutines)
                 await runner.run()
             finally:
                 await self._pool.close()
@@ -323,6 +337,7 @@ class _NetworkImpl:
         :param timeout: Length of time before giving up.
         """
         pool = await self._pool_init
+        await self.connect_anonymous()
         package_ids = await self.invoker.run_in_executor(lambda: get_dar_package_ids(contents))
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)

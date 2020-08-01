@@ -85,7 +85,8 @@ class Invoker:
         a default executor if one has not yet been set.
         """
         self.loop = get_event_loop()
-        self.executor = ThreadPoolExecutor()
+        if self.executor is None:
+            self.executor = ThreadPoolExecutor()
 
     def run_in_loop(self, func, timeout: float = 30.0):
         """
