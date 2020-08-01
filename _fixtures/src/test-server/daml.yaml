@@ -1,0 +1,10 @@
+sdk-version: 0.13.32
+name: test-server
+version: 1.0.0
+source: TestServer.daml
+parties:
+- Alice
+- Bob
+dependencies:
+- daml-prim
+- daml-stdlib

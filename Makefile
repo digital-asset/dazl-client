@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 cache_dir=.cache
 daml_proto_version=0.13.56-snapshot.20200408.3877.0.1ddcd3c0
 
@@ -6,7 +9,6 @@ download_status_proto := $(cache_dir)/download/google/rpc/status.proto
 proto_dir := $(cache_dir)/protos
 proto_manifest := $(proto_dir)/manifest.json
 python := $(shell cd python && poetry env info -p)/bin/python3
-
 
 $(download_protos_zip):
 	@mkdir -p $(@D)
@@ -48,7 +50,7 @@ build:  ## Build everything.
 	make -C python build
 
 .PHONY: test
-test:  ## Run all tests.
+test: dars  ## Run all tests.
 	make -C python test
 	make -C tests test
 
@@ -69,9 +71,15 @@ gen-python: .cache/make/python.mk  ## Rebuild Python code-generated files.
 fetch-protos: .cache/protos/protobufs-$(daml_proto_version).zip
 
 
+.cache/make/dars.mk: _build/dar-mk
+	mkdir -p $(@D)
+	$^ > $@
+
+
 .cache/make/python.mk: _build/make-template.py $(proto_manifest)
 	mkdir -p $(@D)
 	$^ > $@
 
 
+include .cache/make/dars.mk
 include .cache/make/python.mk
