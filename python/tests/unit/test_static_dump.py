@@ -2,16 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from asyncio import sleep
-from pathlib import Path
 from random import random
 
 from dazl import Network, sandbox
-
-DAML_PATH = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
+from .dars import PostOffice
 
 
 def test_static_dump_and_tail():
-    with sandbox(daml_path=DAML_PATH) as proc:
+    with sandbox(dar_path=PostOffice) as proc:
         seen_contracts = []
 
         network = Network()

@@ -8,7 +8,7 @@ from .dars import DottedFields
 
 
 def test_record_dotted_fields_submit():
-    with sandbox(daml_path=DottedFields) as proc:
+    with sandbox(dar_path=DottedFields) as proc:
         with simple_client(url=proc.url, party='Test') as client:
             client.ready()
             client.submit_create('DottedFields.American', {
@@ -23,7 +23,7 @@ def test_record_dotted_fields_submit():
 
 
 def test_variant_dotted_fields_submit():
-    with sandbox(daml_path=DottedFields) as proc:
+    with sandbox(dar_path=DottedFields) as proc:
         with simple_client(url=proc.url, party='Test') as client:
             client.ready()
             client.submit_create('DottedFields.Person', {

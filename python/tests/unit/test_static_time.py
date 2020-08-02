@@ -9,11 +9,10 @@ import logging
 
 from asyncio import gather, get_event_loop, ensure_future
 from datetime import datetime
-from pathlib import Path
 
 from dazl import create, exercise, sandbox, Network, setup_default_logger
 
-TEMPLATE_DAML_FILE = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
+from .dars import PostOffice
 
 LOG = logging.getLogger('test_static_time')
 
@@ -29,7 +28,7 @@ def test_set_static_time():
      * Upon receipt of a corresponding event, advance the time and submit a new command
      * Observe a corresponding event has been received.
     """
-    with sandbox(TEMPLATE_DAML_FILE) as damli_proc:
+    with sandbox(PostOffice) as damli_proc:
         network = Network()
         network.set_config(url=damli_proc.url)
 
@@ -70,7 +69,7 @@ def test_set_static_time_two_clients():
      * Observe Client 2 receives its corresponding event.
     """
     event_loop = get_event_loop()
-    with sandbox(TEMPLATE_DAML_FILE) as damli_proc:
+    with sandbox(PostOffice) as damli_proc:
         test = _TestSetStaticTimeTwoClients(damli_proc.url)
         event_loop.run_until_complete(test.main())
 

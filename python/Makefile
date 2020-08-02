@@ -76,7 +76,7 @@ unit-test:
 
 .PHONY: integration-test
 integration-test:
-	poetry run python3 _template/integration-test.py
+	poetry run python3 ../_fixtures/src/post-office/integration-test.py
 
 
 ####################################################################################################
