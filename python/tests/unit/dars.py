@@ -10,7 +10,6 @@ from dazl.util.io import find_nearest_ancestor
 
 DAZL_ROOT = find_nearest_ancestor('.dazl-root', Path(__file__).resolve()).parent
 DAML_ROOT = DAZL_ROOT / 'python' / 'tests' / 'resources'
-CACHE_ROOT = DAZL_ROOT / '.cache' / 'test-dars'
 
 
 setup_default_logger(logging.DEBUG)
@@ -40,6 +39,7 @@ Complicated = DARS['complicated']
 DottedFields = DARS['dotted-fields']
 MapSupport = DARS['map-support']
 Pending = DARS['pending']
+PostOffice = DARS['post-office']
 Simple = DARS['simple']
 TestServer = DARS['test-server']
 

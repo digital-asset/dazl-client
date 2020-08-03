@@ -1,15 +1,13 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from pathlib import Path
-
 from dazl import create, exercise, sandbox, Network
 
-DAML_PATH = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
+from .dars import PostOffice
 
 
 def test_parties_can_be_added_after_run_forever():
-    with sandbox(daml_path=DAML_PATH) as proc:
+    with sandbox(dar_path=PostOffice) as proc:
         network = Network()
         network.set_config(url=proc.url)
 

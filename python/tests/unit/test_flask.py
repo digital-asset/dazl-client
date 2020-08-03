@@ -3,20 +3,19 @@
 
 import json
 import logging
-from pathlib import Path
 from threading import Thread
 
 from dazl import simple_client, sandbox, create, LOG, setup_default_logger
 from dazl.client import SimplePartyClient
+from .dars import PostOffice
 
 
-DAML_PATH = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
 SAMPLE_PARTY = 'TestParty'
 
 
 def test_simple_flask_integration():
     setup_default_logger(logging.INFO)
-    with sandbox(daml_path=DAML_PATH) as proc:
+    with sandbox(dar_path=PostOffice) as proc:
         with simple_client(proc.url, SAMPLE_PARTY) as client:
             # seed the ledger with some initial state
             client.add_ledger_ready(create_initial_state)

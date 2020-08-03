@@ -9,11 +9,12 @@ from typing import Tuple
 
 from dazl import create, sandbox, Network, LOG
 from dazl.model.network import SSLSettings
+from .dars import PostOffice
+
 
 _DAZL_ROOT = Path(__file__).parent.parent.parent
 # TODO: This utility should be fetched in a less ugly way
 TLS_KEYGEN_SCRIPT = _DAZL_ROOT.parent.parent.parent / 'pipeline' / 'scripts' / 'TLS' / 'generate-certificates.sh'
-TEMPLATE_DAML_FILE = _DAZL_ROOT / '_template' / 'Main.daml'
 
 
 def test_ssl_not_defined():
@@ -24,7 +25,7 @@ def test_ssl_not_defined():
 def test_ssl_connectivity():
     client_ssl_settings, server_ssl_settings = create_ssl_test_package()
     messages_received = []
-    with sandbox(TEMPLATE_DAML_FILE, ssl_settings=server_ssl_settings) as proc:
+    with sandbox(PostOffice, ssl_settings=server_ssl_settings) as proc:
         network = Network()
         network.set_config(url=proc.url,
                            ca_file=client_ssl_settings.ca_file,

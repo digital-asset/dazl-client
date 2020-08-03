@@ -1,0 +1,10 @@
+sdk-version: 0.13.32
+name: post-office
+version: 1.0.0
+source: Main.daml
+parties:
+- Alice
+- Bob
+dependencies:
+- daml-prim
+- daml-stdlib

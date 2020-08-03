@@ -25,7 +25,7 @@ class PrintMetadataCommand(CliCommand):
         arg_parser = ArgumentParser()
 
         configure_parser(arg_parser, parties=False)
-        arg_parser.add_argument('--file', help='path to a DAML or DAR file', action='append')
+        arg_parser.add_argument('--file', help='path to a DAR file', action='append')
         arg_parser.add_argument('--show-hidden', help='show hidden types', action='store_true')
         arg_parser.add_argument('--format', help='one of \"daml\" or \"python\"', default='daml')
         return arg_parser

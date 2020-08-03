@@ -11,19 +11,15 @@ from typing import List, Sequence
 from .. import setup_default_logger
 from ..model.core import ConfigurationError
 from ._base import CliCommand
-from .fetch import FetchComponentCommand
 from .ls import ListAllCommand
 from .metadata import PrintMetadataCommand
-from .package import PackageDarCommand
 from .sandbox import SandboxCommand
 from .upload import UploadCommand
 from .version import VersionCommand
 
 COMMANDS = [
-    FetchComponentCommand(),
     ListAllCommand(),
     PrintMetadataCommand(),
-    PackageDarCommand(),
     SandboxCommand(),
     UploadCommand(),
     VersionCommand(),

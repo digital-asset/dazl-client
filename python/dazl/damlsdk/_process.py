@@ -6,6 +6,7 @@ This module contains internal utilities for managing the lifecycle of a process.
 """
 
 import logging
+import os
 import subprocess
 import sys
 import time
@@ -13,29 +14,23 @@ import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from threading import Thread
-from typing import Any, ContextManager, Optional, Sequence, Union
-
-from .io import is_port_alive
+from typing import Any, Optional, Sequence, Union
 
 
 DEFAULT_WATCH_TIMEOUT = timedelta(seconds=10)
 
 
-class ProcessContext:
+class SandboxProcessOptions:
     """
-    Information about how to launch a process, and a context manager that optionally manages
-    any temporary resources that need to be kept around while the process is running.
+    Information about how to launch a Sandbox.
     """
 
     def __init__(self, args: 'Sequence[Any]', *,
-                 secondary_context: 'Optional[ContextManager]' = None,
                  watch_port: 'Optional[int]' = None,
                  watch_timeout: 'Union[None, int, float, timedelta]' = DEFAULT_WATCH_TIMEOUT,
                  logger: 'Optional[logging.Logger]' = None,
-                 working_directory: 'Union[None, str, Path]' = None,
-                 extra_data: 'Optional[dict]' = None):
+                 working_directory: 'Union[None, str, Path]' = None):
         self.args = [str(arg) for arg in args]
-        self.secondary_context = secondary_context
         self.watch_port = watch_port
 
         if isinstance(watch_timeout, (int, float)):
@@ -59,38 +54,35 @@ class ProcessContext:
         else:
             raise TypeError(f'Not a valid working directory: {working_directory!r}')
 
-        self.extra_data = extra_data or {}
 
-    def __enter__(self):
-        if self.secondary_context is not None:
-            self.secondary_context.__enter__()
-        return self.args
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.secondary_context is not None:
-            self.secondary_context.__exit__(exc_type, exc_val, exc_tb)
-
-
-class ProcessWatcher:
+class SandboxProcessWatcher:
     """
-    Manages the lifetime of an external process.
+    Manages the lifetime of an external sandbox.
     """
-    def __init__(self, process_context: 'ProcessContext'):
+    def __init__(self, process_context: 'SandboxProcessOptions', url: str, sdk_version: str):
         self.process = None
         self.process_context = process_context
         self.logger = self.process_context.logger or logging.getLogger()
+        self.url = url
+        self.sdk_version = sdk_version
 
         self._start_entered = False
 
     def start(self) -> None:
+        from ..util.io import is_port_alive
+
         if self._start_entered:
             return
         self._start_entered = True
 
-        self.process_context.__enter__()
+        sandbox_env = os.environ.copy()
+        if self.sdk_version is not None:
+            sandbox_env['DAML_SDK_VERSION'] = self.sdk_version
+
         self.process = subprocess.Popen(
             self.process_context.args,
             cwd=self.process_context.working_directory,
+            env=sandbox_env,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True)
@@ -154,7 +146,6 @@ class ProcessWatcher:
                 self.process.communicate()
             self.process = None
         if self.process_context is not None:
-            self.process_context.__exit__(None, None, None)
             self.process_context = None
 
     def run(self) -> int:
@@ -185,7 +176,7 @@ class ProcessWatcher:
         except:  # noqa
             pass
 
-    def __enter__(self) -> 'ProcessWatcher':
+    def __enter__(self) -> 'SandboxProcessWatcher':
         self.start()
         return self
 

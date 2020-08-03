@@ -17,7 +17,7 @@ PublicContract = 'AllParty.PublicContract'
 def test_some_party_receives_public_contract():
     some_party_cids = []
     publisher_cids = []
-    with sandbox(AllParty, extra_args=None) as proc:
+    with sandbox(AllParty) as proc:
         network = Network()
         network.set_config(url=proc.url, party_groups=[ALL_PARTY])
 

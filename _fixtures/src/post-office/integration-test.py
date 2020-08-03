@@ -18,8 +18,7 @@ LOG = logging.getLogger('integration_test')
 POSTMAN_PARTY = 'Postman'
 MEMBER_PARTY_COUNT = 6
 
-dar_file = Path(__file__).parent / 'Main.dar'
-daml_file = Path(__file__).parent / 'Main.daml'
+dar_file = Path(__file__).parent / '.daml/dist/post-office-1.0.0.dar'
 
 
 def address(index):
@@ -154,7 +153,7 @@ def _main():
         run_test(args.url)
     else:
         LOG.info('Spinning up a local sandbox as part of the test...')
-        with sandbox(dar_file if dar_file.exists() else daml_file, port=args.port, backend=args.sandbox_version, extra_args=['-w']) as damli_proc:
+        with sandbox(dar_file, port=args.port, sdk_version=args.sandbox_version, extra_args=['-w']) as damli_proc:
             run_test(damli_proc.url, args.keep_alive)
 
 

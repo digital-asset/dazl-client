@@ -7,67 +7,54 @@ either through the Sandbox or one local to the build tree of the project.
 """
 
 import logging
-from contextlib import ExitStack
+import warnings
 from pathlib import Path
-from typing import Collection, Sequence, Optional, Type, Union, Tuple, ContextManager
+from typing import Collection, Sequence, Optional, Type, Union
 
-from dataclasses import dataclass
-
-from .. import LOG
-from .fetch import sdk_component_path
+from ._process import SandboxProcessOptions, SandboxProcessWatcher
 from ..model.core import DazlError
 from ..model.ledger import TimeModel, StaticTimeModel, RealTimeModel
 from ..model.network import SSLSettings
-from ..util.process import ProcessContext, ProcessWatcher
 
 
-@dataclass(frozen=True)
-class SandboxOptions:
-    """
-    Parameters that indicate how a sandbox is to be started.
-    """
-    files: 'Sequence[Union[str, Path]]'
-    port: 'int'
-    extra_args: 'Sequence[str]'
+# TODO: This is currently 0.13.32 simply because that's what it was already set to, and we're trying
+#  to preserve the existing behavior as much as can before we fully drop sandbox launching support.
+DEFAULT_SDK_VERSION = '0.13.32'
 
 
-def sandbox(daml_path: 'Union[str, Path, Collection[str], Collection[Path]]',
+def sandbox(dar_path: 'Union[str, Path, Collection[str], Collection[Path]]',
             port: 'Optional[int]' = None,
-            backend: 'Optional[str]' = None,
-            damlc: 'Optional[str]' = None,
             time_model_type: 'Type[TimeModel]' = StaticTimeModel,
+            sdk_version: 'str' = DEFAULT_SDK_VERSION,
             ssl_settings: 'Optional[SSLSettings]' = None,
-            extra_args: 'Optional[Sequence[str]]' = None,
-            damlc_extra_args: 'Optional[Sequence[str]]' = None) -> ProcessWatcher:
+            extra_args: 'Optional[Sequence[str]]' = None) \
+        -> 'SandboxProcessWatcher':
     """
     Run an instance of the Sandbox.
 
-    :param daml_path:
+    :param dar_path:
         The path to the DAML file or DAR file to open, or a list of files.
     :param port:
         The port to bind the server to, or ``None`` to pick a port at random and use it.
-    :param backend:
-        ``None`` to use the default backend (``'sdk'`` if it is found, otherwise ``'damlc'``) or a
-        string that identifies a backend.
-    :param damlc:
-        ``None`` to use the default DAML compiler (``'sdk'`` if it found) or a string that
-        identifies a DAML compiler.
     :param time_model_type:
         The mode in which to run the Sandbox clock. Defaults to static time.
+    :param sdk_version:
+        The version of the SDK that specifies the Sandbox that is to be launched.
     :param ssl_settings:
         Settings that configure how the Sandbox is to start in HTTPS mode. If not supplied, the
         Sandbox starts up in HTTP.
     :param extra_args:
         Extra arguments to pass to the Sandbox.
-    :param damlc_extra_args:
-        Extra arguments to pass to the compiler (only used when compilation is performed as part
-        of running the Sandbox).
     :return:
         A ``SandboxRunner`` that can be used as a context object to end the process.
     """
+    warnings.warn(
+        "The sandbox wrapper is deprecated; you should start the sandbox outside of dazl.",
+        DeprecationWarning)
+
     # provide default values for backend and port if they were not provided
-    if daml_path is None:
-        raise ValueError('daml_path is required')
+    if dar_path is None:
+        raise ValueError('dar_path is required')
 
     if port is None:
         from ..util.io import find_free_port
@@ -78,6 +65,7 @@ def sandbox(daml_path: 'Union[str, Path, Collection[str], Collection[Path]]',
         pass
     elif time_model_type == RealTimeModel:
         full_extra_args.append('-w')
+
     if ssl_settings:
         if ssl_settings.cert_file:
             full_extra_args.extend(('--crt', ssl_settings.cert_file))
@@ -86,83 +74,11 @@ def sandbox(daml_path: 'Union[str, Path, Collection[str], Collection[Path]]',
         if ssl_settings.ca_file:
             full_extra_args.extend(('--cacrt', ssl_settings.ca_file))
 
-    if isinstance(daml_path, str):
-        daml_path = [daml_path]
-    elif isinstance(daml_path, Path):
-        daml_path = [str(daml_path)]
-
-    options = SandboxOptions(files=daml_path, port=port, extra_args=full_extra_args)
-    proc_opts = _sandbox(options, backend, damlc_component=damlc, damlc_extra_args=damlc_extra_args)
-    pw = ProcessWatcher(proc_opts)
-    pw.extra_data = proc_opts.extra_data
-    pw.url = f'http://localhost:{port}'
-    return pw
-
-
-@dataclass(frozen=True)
-class _SandboxIntermediateOptions:
-    args: 'Tuple[str]'
-    context: 'Optional[ContextManager]'
-    files: 'Collection[str]'
-
-
-def _sandbox(options: SandboxOptions,
-             component: 'Optional[str]' = None,
-             damlc_component: 'Optional[str]' = None,
-             damlc_extra_args: 'Sequence[str]' = None) \
-        -> 'ProcessContext':
-    name, path = sdk_component_path(component or 'sandbox')
-    if name == 'damlc':
-        # older versions of the DAML compiler supported running DAML natively, but this is no
-        # longer supported
-        raise ValueError('The damlc-based sandbox is no longer supported.')
-    elif name == 'sdk':
-        # older versions of dazl could use 'da run sandbox' directly, but the DA Assistant will
-        # soon be deprecated and equivalent functionality will not be replicated
-        raise ValueError('SDK-based running of the sandbox is no longer supported.')
-    elif name != 'sandbox':
-        # the sandbox is really the only supported backend at this point
-        raise ValueError(f'Unknown component type: {component}')
-
-    LOG.debug('Starting sandbox %s...', component)
-
-    # start the JVM-based sandbox, possibly compiling the source files if they are not already
-    # .dar packages or .dalf archives
-    int_opts = _sandbox_options(options, damlc_component, damlc_extra_args)
-    sandbox_jar = next(path.glob('sandbox-*.jar'))
-
-    args = ['java', '-jar', sandbox_jar, *int_opts.args]
-    return ProcessContext(
-        args, secondary_context=int_opts.context, logger=logging.getLogger('sandbox'),
-        watch_port=options.port, extra_data={'files': int_opts.files})
-
-
-def _sandbox_options(options: 'SandboxOptions',
-                     damlc_component: 'Optional[str]',
-                     damlc_extra_args: 'Sequence[str]') \
-        -> '_SandboxIntermediateOptions':
-    from ..util.dar import TemporaryDar
-
-    files = []
-    context = ExitStack()
-    for file in options.files:
-        ext = Path(file).suffix.lower()
-        if ext == '.daml':
-            # the Java Sandbox needs .daml files to be converted to a package first
-            temp_dar = TemporaryDar(
-                file, damlc_component=damlc_component, damlc_extra_args=damlc_extra_args)
-            files.extend(context.enter_context(temp_dar))
-        elif ext == '.dalf':
-            files.append(file)
-        elif ext == '.dar':
-            files.append(file)
-        else:
-            raise ValueError(f'unknown file type: {ext}')
-
-    return _SandboxIntermediateOptions(
-        args=tuple(str(s) for s in [*options.extra_args, '--port', options.port, *files]),
-        context=context,
-        files=files)
+    args = ['daml', 'sandbox', *full_extra_args, '--port', port, *_validate_dar_path(dar_path)]
+    return SandboxProcessWatcher(
+        SandboxProcessOptions(args, logger=logging.getLogger('sandbox'), watch_port=port),
+        f'http://localhost:{port}',
+        sdk_version if sdk_version else DEFAULT_SDK_VERSION)
 
 
 class SandboxError(DazlError):
@@ -171,3 +87,20 @@ class SandboxError(DazlError):
     """
     def __init__(self, exit_code: int):
         self.exit_code = exit_code
+
+
+def _validate_dar_path(dar_path: 'Union[str, Path, Collection[str], Collection[Path]]') \
+        -> 'Collection[Path]':
+    if isinstance(dar_path, str):
+        paths = [Path(dar_path)]
+    elif isinstance(dar_path, Path):
+        paths = [dar_path]
+    else:
+        paths = [Path(p) for p in dar_path]
+
+    for p in paths:
+        ext = p.suffix.lower()
+        if ext != '.dar':
+            raise ValueError(f'unknown file type: {ext}')
+
+    return paths

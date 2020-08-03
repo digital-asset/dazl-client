@@ -101,7 +101,7 @@ def simple_client(url: 'Optional[str]' = None, party: 'Union[None, str, Party]' 
             daml_artifacts.extend(daml_path.glob('**/*.dar'))
             daml_artifacts.extend(daml_path.glob('**/*.dalf'))
 
-            sandbox_proc = sandbox(daml_path=daml_artifacts)
+            sandbox_proc = sandbox(dar_path=daml_artifacts)
             url = context_manager.enter_context(sandbox_proc).url
 
         network = Network()
