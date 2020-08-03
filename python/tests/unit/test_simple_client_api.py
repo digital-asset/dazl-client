@@ -1,23 +1,24 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import sandbox, simple_client, LOG
+import logging
 
+from dazl import simple_client
+from .blocking_setup import blocking_setup
 from .dars import PostOffice
 
 
-def test_simple_client_api():
-    party = 'abc'
+def test_simple_client_api(sandbox):
+    party = blocking_setup(sandbox, PostOffice)
 
-    LOG.info('Creating sandbox...')
-    with sandbox(dar_path=PostOffice) as proc:
-        LOG.info('Creating client...')
-        with simple_client(url=proc.url, party=party) as client:
-            client.ready()
-            LOG.info('Submitting...')
-            client.submit_create('Main.PostmanRole', {'postman': party})
-            LOG.info('getting contracts')
-            contracts = client.find_active('*')
-            LOG.info('got the contracts')
+    logging.info('Creating client...')
+    with simple_client(url=sandbox, party=party) as client:
+        client.ready()
+        logging.info('Submitting...')
+        client.submit_create('Main.PostmanRole', {'postman': party})
+        logging.info('getting contracts')
+        contracts = client.find_active('*')
+        logging.info('got the contracts')
 
     assert 1 == len(contracts)
+
