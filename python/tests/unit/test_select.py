@@ -1,44 +1,44 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import sandbox, create, exercise, Network
+from dazl import async_network, create, exercise
 from .dars import Simple
+import pytest
 
-
-PARTY = 'Operator'
 OperatorRole = 'Simple.OperatorRole'
 OperatorNotification = 'Simple.OperatorNotification'
 
 
-def test_select_template_retrieves_contracts():
-    with sandbox(Simple) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
+@pytest.mark.asyncio
+async def test_select_template_retrieves_contracts(sandbox):
+    async with async_network(url=sandbox, dars=Simple) as network:
+        client = network.aio_new_party()
 
-        party_client = network.aio_party(PARTY)
-        party_client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': PARTY}))
-        network.run_until_complete()
+        network.start()
 
-        data = party_client.find_active(OperatorRole)
+        await client.submit_create(OperatorRole, {'operator': client.party})
+
+        data = client.find_active(OperatorRole)
 
     assert len(data) == 1
 
 
-def test_select_unknown_template_retrieves_empty_set():
-    with sandbox(Simple) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
+@pytest.mark.asyncio
+async def test_select_unknown_template_retrieves_empty_set(sandbox):
+    async with async_network(url=sandbox, dars=Simple) as network:
+        client = network.aio_new_party()
 
-        party_client = network.aio_party(PARTY)
-        party_client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': PARTY}))
-        network.run_until_complete()
+        network.start()
 
-        data = party_client.find_active('NonExistentTemplate')
+        await client.submit_create(OperatorRole, {'operator': client.party})
+
+        data = client.find_active('NonExistentTemplate')
 
     assert len(data) == 0
 
 
-def test_select_operates_on_acs_before_event_handlers():
+@pytest.mark.asyncio
+async def test_select_operates_on_acs_before_event_handlers(sandbox):
     notification_count = 3
 
     # we expect that, upon each on_created notification of an OperatorNotification contract,
@@ -46,24 +46,23 @@ def test_select_operates_on_acs_before_event_handlers():
     expected_select_count = notification_count * notification_count
     actual_select_count = 0
 
-    def on_notification_contract(e):
+    def on_notification_contract(_):
         nonlocal actual_select_count
-        actual_select_count += len(party_client.find_active(OperatorNotification))
+        actual_select_count += len(client.find_active(OperatorNotification))
 
-    with sandbox(Simple) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
+    async with async_network(url=sandbox, dars=Simple) as network:
+        client = network.aio_new_party()
+        client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': client.party}))
+        client.add_ledger_created(OperatorRole, lambda e: exercise(e.cid, 'PublishMany', dict(count=3)))
+        client.add_ledger_created(OperatorNotification, on_notification_contract)
 
-        party_client = network.aio_party(PARTY)
-        party_client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': PARTY}))
-        party_client.add_ledger_created(OperatorRole, lambda e: exercise(e.cid, 'PublishMany', dict(count=3)))
-        party_client.add_ledger_created(OperatorNotification, on_notification_contract)
-        network.run_until_complete()
+        network.start()
 
     assert actual_select_count == expected_select_count
 
 
-def test_select_reflects_archive_events():
+@pytest.mark.asyncio
+async def test_select_reflects_archive_events(sandbox):
     notification_count = 3
 
     # we expect that, upon each on_created notification of an OperatorNotification contract,
@@ -75,18 +74,16 @@ def test_select_reflects_archive_events():
         nonlocal actual_select_count
         actual_select_count += len(event.acs_find_active(OperatorNotification))
 
-    with sandbox(Simple) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
+    async with async_network(url=sandbox, dars=Simple) as network:
+        client = network.aio_new_party()
+        client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': client.party}))
+        client.add_ledger_created(OperatorRole, lambda e: exercise(e.cid, 'PublishMany', dict(count=3)))
+        client.add_ledger_created(OperatorNotification, lambda e: exercise(e.cid, 'Archive'))
+        client.add_ledger_created(OperatorNotification, on_notification_contract)
 
-        party_client = network.aio_party(PARTY)
-        party_client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': PARTY}))
-        party_client.add_ledger_created(OperatorRole, lambda e: exercise(e.cid, 'PublishMany', dict(count=3)))
-        party_client.add_ledger_created(OperatorNotification, lambda e: exercise(e.cid, 'Archive'))
-        party_client.add_ledger_created(OperatorNotification, on_notification_contract)
-        network.run_until_complete()
+        network.start()
 
-        final_select_count = len(party_client.find_active(OperatorNotification))
+        final_select_count = len(client.find_active(OperatorNotification))
 
     assert actual_select_count == expected_select_count
     assert 0 == final_select_count

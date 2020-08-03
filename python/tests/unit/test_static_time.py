@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -9,6 +9,8 @@ import logging
 
 from asyncio import gather, get_event_loop, ensure_future
 from datetime import datetime
+
+import pytest
 
 from dazl import create, exercise, sandbox, Network, setup_default_logger
 
@@ -21,6 +23,8 @@ PARTY = 'POSTMAN'
 setup_default_logger(logging.DEBUG)
 
 
+@pytest.mark.skip(
+    "This test cannot coexist with other tests on the same sandbox because it manipulates static time.")
 def test_set_static_time():
     """
     Run a simple test involving manipulation of static time:
@@ -57,6 +61,8 @@ def test_set_static_time():
         LOG.info('Application finished.')
 
 
+@pytest.mark.skip(
+    "This test cannot coexist with other tests on the same sandbox because it manipulates static time.")
 def test_set_static_time_two_clients():
     """
     Run a slightly complicated test involving manipulation of static time and multiple clients:

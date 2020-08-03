@@ -1,37 +1,31 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import sleep
-from random import random
-
-from dazl import Network, sandbox
+import pytest
+from dazl import async_network, LOG
 from .dars import PostOffice
 
 
-def test_static_dump_and_tail():
-    with sandbox(dar_path=PostOffice) as proc:
+@pytest.mark.asyncio
+async def test_static_dump_and_tail(sandbox):
+    async with async_network(url=sandbox, dars=PostOffice) as network:
+        client = network.aio_new_party()
         seen_contracts = []
-
-        network = Network()
-        network.set_config(url=proc.url)
-        client = network.simple_party('PARTY')
 
         @client.ledger_ready()
         def print_initial_state(event):
-            print(event.acs_find_active('*'))
+            LOG.info("Current ACS: %s", event.acs_find_active('*'))
 
         @client.ledger_created('*')
         def print_create(event):
-            print(event.cid, event.cdata)
+            LOG.info("Seen cid: %s, cdata: %s", event.cid, event.cdata)
             seen_contracts.append(event.cid)
 
-        async def publish_some_contracts():
-            aclient = network.aio_party('PARTY')
-            for i in range(0, 5):
-                sleep_interval = random()
-                print(f'Publishing contract {i}, then sleeping for {sleep_interval} seconds...')
-                await aclient.submit_create('Main.PostmanRole', {'postman': 'PARTY'})
-                await sleep(sleep_interval)
-            network.shutdown()
+        network.start()
 
-        network.run_forever(publish_some_contracts())
+        await client.ready()
+
+        for i in range(0, 5):
+            await client.submit_create('Main.PostmanRole', {'postman': client.party})
+
+    assert len(seen_contracts) == 5

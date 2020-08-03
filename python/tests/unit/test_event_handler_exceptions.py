@@ -1,23 +1,24 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+import pytest
 
-from dazl import simple_client, sandbox
+from dazl import async_network
 from dazl.model.reading import ReadyEvent
 
 from .dars import PostOffice
 
 
-SAMPLE_PARTY = 'TestParty'
+@pytest.mark.asyncio
+async def test_event_handler_exceptions(sandbox):
+    async with async_network(url=sandbox, dars=PostOffice) as network:
+        client = network.aio_new_party()
 
+        def throw_error(event: ReadyEvent):
+            raise MagicException(event.ledger_id)
 
-def test_event_handler_exceptions():
-    with sandbox(dar_path=PostOffice) as proc:
-        with simple_client(proc.url, SAMPLE_PARTY) as client:
-            def throw_error(event: ReadyEvent):
-                raise MagicException(event.ledger_id)
+        client.add_ledger_ready(throw_error)
 
-            client.add_ledger_ready(throw_error)
-            client.ready()
+        network.start()
 
 
 class MagicException(Exception):

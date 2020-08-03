@@ -4,10 +4,10 @@
 import logging
 from operator import setitem
 
-from dazl import sandbox, create, exercise, Network
-from .dars import Complicated as ComplicatedDar
+import pytest
 
-PARTY = 'Operator'
+from dazl import async_network, create, exercise
+from .dars import Complicated as ComplicatedDar
 
 
 class Complicated:
@@ -15,18 +15,18 @@ class Complicated:
     OperatorFormulaNotification = 'Complicated.OperatorFormulaNotification'
 
 
-def test_complicated_types():
+@pytest.mark.asyncio
+async def test_complicated_types(sandbox):
     recorded_data = dict()
-    with sandbox(ComplicatedDar) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
 
-        party_client = network.aio_party(PARTY)
-        party_client.add_ledger_ready(lambda _: create(Complicated.OperatorRole, {'operator': PARTY}))
+    async with async_network(url=sandbox, dars=ComplicatedDar) as network:
+        party_client = network.aio_new_party()
+        party_client.add_ledger_ready(lambda event: create(Complicated.OperatorRole, {'operator': event.party}))
         party_client.add_ledger_created(Complicated.OperatorRole, _create_empty_notification)
         party_client.add_ledger_created(Complicated.OperatorRole, _create_complicated_notifications)
         party_client.add_ledger_created(Complicated.OperatorFormulaNotification, lambda e: setitem(recorded_data, e.cid, e.cdata))
-        network.run_until_complete()
+
+        network.start()
 
     logging.info('got to the end with contracts: %s', recorded_data)
     assert len(recorded_data) == 4

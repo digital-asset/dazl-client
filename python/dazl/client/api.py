@@ -17,7 +17,7 @@ specific party.
 # for a more concise representation of the various flavors of the API. The unit test
 # ``test_api_consistency.py`` verifies that these implementations are generally in sync with each
 # other the way that the documentation says they are.
-from asyncio import get_event_loop
+from asyncio import get_event_loop, ensure_future
 from contextlib import contextmanager, ExitStack
 from datetime import datetime
 from functools import wraps
@@ -35,7 +35,7 @@ from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
 from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, ContractData, ContractsState, ContractMatch, \
-    ContractContextualData, ContractContextualDataCollection, Party
+    ContractContextualData, ContractContextualDataCollection, Party, Dar
 from ..model.ledger import LedgerMetadata
 from ..model.reading import InitEvent, ReadyEvent, ContractCreateEvent, ContractExercisedEvent, \
     ContractArchiveEvent, TransactionStartEvent, TransactionEndEvent, PackagesAddedEvent, EventKey
@@ -49,7 +49,7 @@ from ._events import EventHandler, AEventHandler, EventHandlerDecorator, AEventH
     fluentize
 from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
-
+from ..util.tools import as_list
 
 DEFAULT_TIMEOUT_SECONDS = 30
 
@@ -116,6 +116,35 @@ def simple_client(url: 'Optional[str]' = None, party: 'Union[None, str, Party]' 
         network.join()
 
 
+# This class is intended to be used as a function.
+# noinspection PyPep8Naming
+class async_network:
+    """
+    Create a :class:`Network` and ensure that it has the given set of DARs loaded.
+    """
+    def __init__(
+            self,
+            url: 'Optional[str]' = None,
+            dars: 'Optional[Union[Dar, Collection[Dar]]]' = None):
+        LOG.debug('async_network.__init__')
+        self.network = Network()
+        if url:
+            self.network.set_config(url=url)
+        self.dars = as_list(dars)  # type: List[Dar]
+
+    async def __aenter__(self):
+        LOG.debug('async_network.__aenter__')
+        for dar in self.dars:
+            await self.network.aio_global().ensure_dar(dar)
+        return self.network
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        LOG.debug('async_network.__aexit__')
+        fut = self.network.shutdown()
+        if fut is not None:
+            await fut
+
+
 class Network:
     """
     Manages network connection/scheduling logic on behalf of one or more :class:`PartyClient`
@@ -124,6 +153,7 @@ class Network:
 
     def __init__(self, metrics: 'Optional[MetricEvents]' = None):
         self._impl = _NetworkImpl(metrics)
+        self._main_fut = None
 
     def set_config(
             self,
@@ -151,8 +181,13 @@ class Network:
     def aio_global(self) -> 'AIOGlobalClient':
         """
         Return a :class:`GlobalClient` that works on an asyncio event loop.
+
+        Note that once this object can only be accessed from the asyncio event loop it is intended
+        to be used on.
         """
-        return self._impl.global_impl(AIOGlobalClient)
+        client = self._impl.global_impl(AIOGlobalClient)
+        self._impl.freeze()
+        return client
 
     def simple_party(self, party: 'Union[str, Party]') -> 'SimplePartyClient':
         """
@@ -163,6 +198,13 @@ class Network:
         """
         return self._impl.party_impl(Party(party), SimplePartyClient)
 
+    def simple_new_party(self) -> 'SimplePartyClient':
+        """
+        Return a :class:`PartyClient` that exposes thread-safe, synchronous (blocking) methods for
+        communicating with a ledger. Callbacks are dispatched to background threads.
+        """
+        return self.simple_party(str(uuid4()))
+
     def aio_party(self, party: 'Union[str, Party]') -> 'AIOPartyClient':
         """
         Return a :class:`PartyClient` that works on an asyncio event loop.
@@ -170,6 +212,13 @@ class Network:
         :param party: The party to get a client for.
         """
         return self._impl.party_impl(Party(party), AIOPartyClient)
+
+    def aio_new_party(self) -> 'AIOPartyClient':
+        """
+        Return a :class:`PartyClient` for a random party that works on an asyncio event loop.
+        This will never return the same object twice.
+        """
+        return self.aio_party(str(uuid4()))
 
     def party_bots(
             self,
@@ -203,14 +252,18 @@ class Network:
             self._impl.invoker.install_signal_handlers()
         return self._impl.start(daemon)
 
-    def shutdown(self) -> None:
+    def shutdown(self) -> 'Optional[Awaitable[None]]':
         """
         Gracefully shut down all network connections and notify all clients that they are about to
         be terminated.
 
         The current thread does NOT block.
+
+        :return: ``None`` unless ``start()`` was called, in which case the coroutine that
+        corresponds to dazl's "main" is returned.
         """
-        return self._impl.shutdown()
+        self._impl.shutdown()
+        return self._main_fut
 
     def join(self, timeout: 'Optional[float]' = None) -> None:
         """
@@ -224,6 +277,12 @@ class Network:
     # </editor-fold>
 
     # <editor-fold desc="asyncio-based scheduling API">
+
+    def start(self) -> None:
+        """
+        Start the coroutine that spawns callbacks for listeners on event streams.
+        """
+        self._main_fut = ensure_future(self.aio_run(keep_open=False))
 
     def run_until_complete(
             self, *coroutines: 'Awaitable[None]',
@@ -291,6 +350,12 @@ class Network:
 
     def bots(self) -> 'Collection[Bot]':
         return self._impl.bots()
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.shutdown()
 
 
 class GlobalClient:
@@ -914,6 +979,20 @@ class AIOPartyClient(PartyClient):
         """
         return self._impl.set_time(new_datetime)
 
+    async def ensure_dar(
+            self,
+            contents: 'Union[str, Path, bytes, BinaryIO]',
+            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        """
+        Validate that the ledger has the packages specified by the given contents (as a byte array).
+        Throw an exception if the specified DARs do not exist within the specified timeout.
+
+        :param contents: The DAR or DALF to ensure.
+        :param timeout: The maximum length of time to wait before giving up.
+        """
+        raw_bytes = get_bytes(contents)
+        return await self._impl.parent.upload_package(raw_bytes, timeout)
+
     def ready(self) -> 'Awaitable[None]':
         """
         Block until the ledger client has caught up to the current head and is ready to send
@@ -1460,6 +1539,21 @@ class SimplePartyClient(PartyClient):
 
     def set_time(self, new_datetime: datetime) -> None:
         return self._impl.invoker.run_in_loop(lambda: self._impl.set_time(new_datetime))
+
+    def ensure_dar(
+            self,
+            contents: 'Union[str, Path, bytes, BinaryIO]',
+            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        """
+        Validate that the ledger has the packages specified by the given contents (as a byte array).
+        Throw an exception if the specified DARs do not exist within the specified timeout.
+
+        :param contents: The DAR or DALF to ensure.
+        :param timeout: The maximum length of time to wait before giving up.
+        """
+        raw_bytes = get_bytes(contents)
+        return self._impl.invoker.run_in_loop(
+            lambda: self._impl.parent.upload_package(raw_bytes, timeout))
 
     def ready(self) -> None:
         """

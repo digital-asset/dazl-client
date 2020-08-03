@@ -4,42 +4,62 @@
 import json
 import logging
 from threading import Thread
+from time import sleep
 
-from dazl import simple_client, sandbox, create, LOG, setup_default_logger
-from dazl.client import SimplePartyClient
+from dazl import create, LOG, setup_default_logger, Network, SimplePartyClient
+from dazl.model.reading import ReadyEvent
 from .dars import PostOffice
 
 
-SAMPLE_PARTY = 'TestParty'
-
-
-def test_simple_flask_integration():
+def test_simple_flask_integration(sandbox):
     setup_default_logger(logging.INFO)
-    with sandbox(dar_path=PostOffice) as proc:
-        with simple_client(proc.url, SAMPLE_PARTY) as client:
-            # seed the ledger with some initial state
-            client.add_ledger_ready(create_initial_state)
 
-            LOG.info('Waiting for the client to be ready...')
-            client.ready()
-            LOG.info('Client is ready.')
+    network = Network()
+    network.set_config(url=sandbox)
+    client = network.simple_new_party()
 
-            # now start a Flask app
-            LOG.info('Starting up the flask app...')
-            main_thread = Thread(target=run_flask_app, args=(client, 9999))
-            main_thread.start()
+    # seed the ledger with some initial state
+    client.add_ledger_ready(create_initial_state)
 
-            returned_data = run_flask_test(9999)
-            assert returned_data == {'postman': SAMPLE_PARTY}
+    network.start_in_background()
 
-            main_thread.join(30)
-            if main_thread.is_alive():
-                raise Exception('The Flask thread should have terminated, but did not.')
+    LOG.info('Waiting for the client to be ready...')
+    client.ready()
+
+    # TODO: This is currently necessary because there is a bug that prevents ready() from waiting
+    #  on ledger_ready events even when those callbacks are added at the appropriate time.
+    sleep(10)
+
+    LOG.info('Client is ready.')
+
+    # now start a Flask app
+    LOG.info('Starting up the flask app...')
+    main_thread = Thread(target=run_flask_app, args=(client, 9999))
+    main_thread.start()
+
+    returned_data = run_flask_test(9999)
+    assert returned_data == {'postman': client.party}
+
+    network.shutdown()
+    network.join(30)
+
+    main_thread.join(30)
+    if main_thread.is_alive():
+        raise Exception('The Flask thread should have terminated, but did not.')
 
 
-def create_initial_state(_):
-    LOG.info('Creating the initial postman role contract...')
-    return create('Main.PostmanRole', dict(postman=SAMPLE_PARTY))
+def create_initial_state(event: 'ReadyEvent'):
+    try:
+        LOG.info('Uploading our DAR...')
+        event.client.ensure_dar(PostOffice)
+        while not event.package_store.resolve_template('Main.PostmanRole'):
+            logging.info("Waiting for our DAR to be uploaded...")
+            sleep(1)
+
+        LOG.info('DAR uploaded. Creating the initial postman role contract...')
+        return create('Main.PostmanRole', dict(postman=event.party))
+    except:
+        LOG.exception('Failed to set up our initial state!')
 
 
 def run_flask_app(client: SimplePartyClient, port: int) -> None:

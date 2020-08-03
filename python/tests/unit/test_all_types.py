@@ -4,14 +4,15 @@
 import datetime
 from decimal import Decimal
 
-from dazl import sandbox, create, Network
+import pytest
+
+from dazl import create, async_network
 from .dars import AllKindsOf
 
 
-PARTY = 'Operator'
 TEMPLATE = 'AllKindsOf.OneOfEverything'
 SOME_ARGS = dict(
-    operator=PARTY,
+    operator=None,  # this is filled in by each of the tests because Party allocation is random
     someBoolean=True,
     someInteger=5,
     someDecimal=Decimal(5.0),
@@ -28,16 +29,16 @@ SOME_ARGS = dict(
     theUnit=dict())
 
 
-def test_all_types():
-    test_case = AllTypesTestCase()
-    with sandbox(AllKindsOf) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
+@pytest.mark.asyncio
+async def test_all_types(sandbox):
+    async with async_network(url=sandbox, dars=AllKindsOf) as network:
+        client = network.aio_new_party()
 
-        party_client = network.aio_party(PARTY)
-        party_client.add_ledger_ready(test_case.create_one_of_everything)
-        party_client.add_ledger_created(TEMPLATE, test_case.on_one_of_everything)
-        network.run_until_complete()
+        test_case = AllTypesTestCase(client.party)
+        client.add_ledger_ready(test_case.create_one_of_everything)
+        client.add_ledger_created(TEMPLATE, test_case.on_one_of_everything)
+
+        network.start()
 
     assert test_case.found_instance is not None, \
         'Expected to find an instance of OneOfEverything!'
@@ -46,35 +47,33 @@ def test_all_types():
         'There are either extra fields or missing fields!'
 
     for key in SOME_ARGS:
-        expected = SOME_ARGS.get(key)
-        actual = test_case.found_instance.get(key)
-        assert expected == actual, f'Failed to compare types for key: {key}'
+        if key != 'operator':
+            expected = SOME_ARGS.get(key)
+            actual = test_case.found_instance.get(key)
+            assert expected == actual, f'Failed to compare types for key: {key}'
 
 
-def test_maps():
-    with sandbox(AllKindsOf) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
+@pytest.mark.asyncio
+async def test_maps(sandbox):
+    async with async_network(url=sandbox, dars=AllKindsOf) as network:
+        client = network.aio_new_party()
 
-        party_client = network.aio_party(PARTY)
-        party_client.add_ledger_ready(lambda e: create(
-            'AllKindsOf.MappyContract', {
-                'operator': PARTY,
-                'value': {'Map_internal': []}
-            }))
+        network.start()
 
-        network.run_until_complete()
+        await client.submit_create('AllKindsOf.MappyContract', {
+            'operator': client.party,
+            'value': {'Map_internal': []}
+        })
 
 
 class AllTypesTestCase:
-    def __init__(self):
+    def __init__(self, operator):
+        self.operator = operator
         self.found_instance = None
         self.archive_done = False
 
-    # noinspection PyUnusedLocal
-    @staticmethod
-    def create_one_of_everything(_):
-        return create(TEMPLATE, SOME_ARGS)
+    def create_one_of_everything(self, _):
+        return create(TEMPLATE, {**SOME_ARGS, "operator": self.operator})
 
     def on_one_of_everything(self, event):
         if event.cdata is not None:

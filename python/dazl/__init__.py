@@ -77,7 +77,7 @@ __version__ = _get_version()
 
 
 from .damlsdk.sandbox import sandbox  # noqa
-from .client import run, simple_client, Network, SimplePartyClient, AIOPartyClient  # noqa
+from .client import run, simple_client, async_network, Network, SimplePartyClient, AIOPartyClient  # noqa
 from .model.core import ContractId, ContractData, DazlError, Party  # noqa
 from .model.writing import create, exercise, exercise_by_key, create_and_exercise, \
     Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, CreateAndExerciseCommand  # noqa
