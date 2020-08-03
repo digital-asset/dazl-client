@@ -1,0 +1,10 @@
+sdk-version: 0.13.32
+name: all-party
+version: 1.0.0
+source: AllParty.daml
+parties:
+- Alice
+- Bob
+dependencies:
+- daml-prim
+- daml-stdlib

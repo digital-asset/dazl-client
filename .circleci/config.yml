@@ -18,9 +18,20 @@ jobs:
             mv jq-linux64 /usr/bin/jq
       - checkout
       - restore_cache:
+          key: daml-sdk-0.13.32
+      - run:
+          command: curl -sSL https://get.daml.com/ | sh
+      - run:
+          command: PATH=$PATH:~/.daml/bin daml install 0.13.32
+      - save_cache:
+          key: daml-sdk-0.13.32
+          paths:
+            - "~/.daml"
+      - restore_cache:
           key: deps9-{{ .Branch }}-{{ checksum "python/poetry.lock" }}
       - run:
           command: |
+            export PATH=$PATH:~/.daml/bin; \
             source $HOME/.poetry/env && \
             make -C python deps
       - save_cache:
@@ -30,16 +41,19 @@ jobs:
       - run:
           name: Python unit tests
           command: |
+            export PATH=$PATH:~/.daml/bin; \
             source $HOME/.poetry/env && \
             make -C python test
       - run:
           name: Python integration tests
           command: |
+            export PATH=$PATH:~/.daml/bin; \
             source $HOME/.poetry/env && \
             make -C python integration-test
       - run:
           name: Python packaging
           command: |
+            export PATH=$PATH:~/.daml/bin; \
             source $HOME/.poetry/env && \
             make -C python package
       - run:
