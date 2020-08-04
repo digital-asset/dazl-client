@@ -5,7 +5,7 @@ from asyncio import ensure_future, gather, sleep, Future
 from typing import Collection, List, Optional, Tuple, TYPE_CHECKING
 
 from .. import LOG
-from ..model.reading import sortable_offset_height, max_offset
+from ..model.reading import max_offset
 from ..util.asyncio_util import completed, named_gather
 
 if TYPE_CHECKING:
@@ -113,7 +113,7 @@ async def read_transactions(
            successfully or unsuccessfully.
     """
     tuples = await gather(*(pi.read_transactions(until_offset, raise_events) for pi in party_impls))
-    offsets = sorted({t[0] for t in tuples}, key=sortable_offset_height)
+    offsets = sorted({t[0] for t in tuples})
     futures = [ensure_future(t[1]) for t in tuples]
     futures = [fut for fut in futures if not fut.done()]
     if not futures:
