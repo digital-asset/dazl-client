@@ -13,14 +13,12 @@ from ..model.core import ConfigurationError
 from ._base import CliCommand
 from .ls import ListAllCommand
 from .metadata import PrintMetadataCommand
-from .sandbox import SandboxCommand
 from .upload import UploadCommand
 from .version import VersionCommand
 
 COMMANDS = [
     ListAllCommand(),
     PrintMetadataCommand(),
-    SandboxCommand(),
     UploadCommand(),
     VersionCommand(),
 ]  # type: List[CliCommand]

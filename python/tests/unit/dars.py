@@ -42,6 +42,7 @@ Pending = DARS['pending']
 PostOffice = DARS['post-office']
 Simple = DARS['simple']
 TestServer = DARS['test-server']
+UploadTest = DARS['upload-test']
 
 
 if __name__ == '__main__':
