@@ -6,7 +6,7 @@ dazl
 <img src="https://circleci.com/gh/digital-asset/dazl-client.svg?style=svg">
 </a>
 
-Copyright 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All Rights Reserved.
+Copyright 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 
 
@@ -17,7 +17,7 @@ Requirements
 * Python 3.6+
 * [Poetry](https://python-poetry.org/)
 * GNU Make
-* Although not strictly required for building, you'll probably want the [DAML SDK](https://www.daml.com)
+* [DAML SDK](https://www.daml.com)
 
 Examples
 --------
@@ -70,12 +70,12 @@ network.start()
 Building locally
 ----------------
 ```sh
-cd python && pipenv run package
+make
 ```
 
 Tests
 -----
 
 ```sh
-cd python && pipenv run test
+make test
 ```

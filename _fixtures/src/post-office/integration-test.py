@@ -6,10 +6,10 @@ import logging
 import sys
 
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
-from dazl import create, exercise, sandbox, setup_default_logger, Network, write_acs
+from dazl import create, exercise, setup_default_logger, Network, write_acs
 
 setup_default_logger()
 
@@ -137,8 +137,10 @@ def _main():
     the integration test is run, and the sandbox is shut down when it is complete.
     """
     import argparse
+    import subprocess
+    from dazl.util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
+
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--sandbox-version')
 
     backend_args = argparser.add_mutually_exclusive_group()
     backend_args.add_argument('--url', required=False, help='The URL of the *existing* server to connect to')
@@ -153,8 +155,20 @@ def _main():
         run_test(args.url)
     else:
         LOG.info('Spinning up a local sandbox as part of the test...')
-        with sandbox(dar_file, port=args.port, sdk_version=args.sandbox_version, extra_args=['-w']) as damli_proc:
-            run_test(damli_proc.url, args.keep_alive)
+        port = args.port if args.port else find_free_port()
+
+        proc = subprocess.Popen(
+            ["daml", "start", "--start-navigator=no", "--open-browser=no", f"--sandbox-port={port}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True)
+        try:
+            ProcessLogger(proc, logging.getLogger('sandbox')).start()
+            wait_for_process_port(proc, port, timedelta(seconds=10))
+            
+            run_test(f'http://localhost:{port}', args.keep_alive)
+        finally:
+            kill_process_tree(proc)
 
 
 if __name__ == '__main__':
