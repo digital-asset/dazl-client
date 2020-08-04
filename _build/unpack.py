@@ -2,7 +2,6 @@
 import json
 import logging
 from os import PathLike, fspath
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping, Optional, Sequence
 from zipfile import ZipFile
@@ -31,7 +30,6 @@ def main():
             json.dump(manifest, f, indent='  ')
 
 
-@dataclass(frozen=True)
 class PathSpec:
     """
     An individual input file to unpack.
@@ -51,8 +49,9 @@ class PathSpec:
         p, _, r = s.partition(':')
         return cls(Path(p), r)
 
-    path: Path
-    relative_root: 'Optional[str]' = None
+    def __init__(self, path: 'Path', relative_root: 'Optional[str]' = None):
+        self.path = path
+        self.relative_root = relative_root
 
     def relative(self, p: PathLike) -> Optional[str]:
         """
@@ -66,20 +65,11 @@ class PathSpec:
         else:
             return None
     
-    def as_proto_record(self) -> 'ProtoRecord':
-        return ProtoRecord()
 
-
-@dataclass(frozen=True)
-class ProtoRecord:
-    name: str
-    contents: str
-
-
-@dataclass(frozen=True)
 class Unpacker:
-    inputs: 'Sequence[PathSpec]'
-    output: 'Path'
+    def __init__(self, inputs: 'Sequence[PathSpec]', output: 'Path'):
+        self.inputs = inputs
+        self.output = output
 
     def run(self) -> 'Manifest':
         manifest = {}
@@ -100,12 +90,12 @@ class Unpacker:
         with ZipFile(zip_file_spec.path) as z:
             for zi in z.infolist():
                 path = zip_file_spec.relative(zi.filename)
-                print(zi.filename, path)
-                if path is not None and not zi.is_dir():
+                if is_valid_proto(path) and not zi.is_dir():
+                    print(zi.filename, path)
                     with z.open(zi) as f:
                         with TextIOWrapper(f) as text_buf:
                             contents = text_buf.read()
-                    proto_packages.update(self._process_proto(PathSpec(path, None), contents=contents))
+                    proto_packages.update(self._process_proto(PathSpec(path), contents=contents))
         return proto_packages
 
     def _process_proto(self, proto_file_spec: 'PathSpec', contents: 'Optional[str]' = None) -> 'Manifest':
@@ -125,6 +115,18 @@ class Unpacker:
         out_file.write_text(contents)
 
         return { name.rpartition('.')[0]: ['pb', 'grpc'] if is_grpc else ['pb'] }
+
+
+def is_valid_proto(p):
+    # Look only for .proto files that are not DAML-LF 1.6, 1.7 or 1.8.
+    # We prefer DAML-LF 1.dev because dev is always a strict superset of
+    # the latest 1.x version, but also allows us to build and test support for
+    # experimental features before they are released.
+    return p is not None and \
+        p.endswith('.proto') and \
+        '/daml_lf_1_6/' not in p and \
+        '/daml_lf_1_7/' not in p and \
+        '/daml_lf_1_8/' not in p
     
 
 if __name__ == '__main__':

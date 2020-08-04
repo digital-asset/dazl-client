@@ -172,7 +172,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'contract_id', to_str(obj)
 
     def serialize_optional(self, context: TypeEvaluationContext, tt: OptionalType, obj: Any):
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Optional
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Optional
         ut = tt.type_parameter
 
         optional_message = Optional()
@@ -182,7 +182,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'optional', optional_message
 
     def serialize_list(self, context: TypeEvaluationContext, tt: ListType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import List
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import List
         ut = tt.type_parameter
 
         list_message = List()
@@ -193,7 +193,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'list', list_message
 
     def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Map
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Map
         vt = tt.value_type
 
         map_message = Map()
@@ -205,7 +205,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'map', map_message
 
     def serialize_record(self, context: TypeEvaluationContext, tt: RecordType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Record
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Record
 
         did_fail = False
         record_message = Record()
@@ -224,7 +224,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'record', record_message
 
     def serialize_variant(self, context: TypeEvaluationContext, tt: VariantType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Variant
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Variant
         try:
             obj_ctor, obj_value = decode_variant_dict(obj)
         except ValueError:
@@ -252,7 +252,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'variant', variant_message
 
     def serialize_enum(self, context: TypeEvaluationContext, tt: EnumType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Enum
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Enum
         enum_message = Enum()
         enum_message.constructor = obj
         return 'enum', enum_message
