@@ -8,4 +8,4 @@ from .dars import Pending
 def test_get_sdk_version():
     with DarFile(Pending) as dar:
         print(dar.get_manifest())
-        assert '0.13.32' == dar.get_sdk_version()
+        assert '1.3.0' == dar.get_sdk_version()
