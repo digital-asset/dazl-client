@@ -18,7 +18,7 @@ specific party.
 # ``test_api_consistency.py`` verifies that these implementations are generally in sync with each
 # other the way that the documentation says they are.
 from asyncio import get_event_loop, ensure_future
-from contextlib import contextmanager, ExitStack
+from contextlib import contextmanager
 from datetime import datetime
 from functools import wraps
 from logging import INFO
@@ -26,13 +26,11 @@ from pathlib import Path
 from uuid import uuid4
 from typing import Any, Awaitable, BinaryIO, Collection, ContextManager, List, Optional, \
     Tuple, Union
-from urllib.parse import urlparse
 
 from .. import LOG
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
-from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, ContractData, ContractsState, ContractMatch, \
     ContractContextualData, ContractContextualDataCollection, Party, Dar
@@ -81,8 +79,6 @@ def simple_client(url: 'Optional[str]' = None, party: 'Union[None, str, Party]' 
     import os
     if url is None:
         url = os.getenv('DAML_LEDGER_URL')
-    if party is None:
-        party = os.getenv('DAML_LEDGER_PARTY') or uuid4().hex
     if not url:
         raise ValueError('url must be specified, or the DAML_LEDGER_URL environment variable '
                          'must be set')
@@ -90,30 +86,18 @@ def simple_client(url: 'Optional[str]' = None, party: 'Union[None, str, Party]' 
         raise ValueError('party must be specified, or the DAML_LEDGER_PARTY environment variable '
                          'must be set')
 
-    with ExitStack() as context_manager:
-        LOG.info('Starting a simple_client with to %s with party %r...', url, party)
-        parsed_url = urlparse(url)
-        if parsed_url.scheme is not None and parsed_url.scheme == 'sandbox':
-            # start a local in-memory sandbox first
-            daml_path = Path(os.getenv('DAML_LEDGER_DAR_PATH', 'target'))
+    LOG.info('Starting a simple_client with to %s with party %r...', url, party)
 
-            daml_artifacts = []  # type: List[Path]
-            daml_artifacts.extend(daml_path.glob('**/*.dar'))
-            daml_artifacts.extend(daml_path.glob('**/*.dalf'))
+    network = Network()
+    network.set_config(url=url)
+    client = network.simple_party(party) if party else network.simple_new_party()
 
-            sandbox_proc = sandbox(dar_path=daml_artifacts)
-            url = context_manager.enter_context(sandbox_proc).url
+    network.start_in_background()
 
-        network = Network()
-        network.set_config(url=url)
-        client = network.simple_party(party)
+    yield client
 
-        network.start_in_background()
-
-        yield client
-
-        network.shutdown()
-        network.join()
+    network.shutdown()
+    network.join()
 
 
 # This class is intended to be used as a function.

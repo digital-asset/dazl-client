@@ -20,6 +20,8 @@ poetry_install_marker := build/.poetry.install
 dazl_docs_html_dir := $(basename $(basename $(dazl_docs_html)))
 dazl_docs_markdown_dir := $(basename $(basename $(dazl_docs_markdown)))
 
+python := $(shell pwd)/.venv/bin/python3 
+
 export PYTHONPATH:=.:${PYTHONPATH}
 
 
@@ -76,7 +78,7 @@ unit-test:
 
 .PHONY: integration-test
 integration-test:
-	poetry run python3 ../_fixtures/src/post-office/integration-test.py
+	cd ../_fixtures/src/post-office && $(python) integration-test.py
 
 
 ####################################################################################################
