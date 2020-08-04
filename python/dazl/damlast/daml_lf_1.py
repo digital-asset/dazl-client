@@ -458,7 +458,8 @@ class Type:
             tysyn: 'Callable[[Type.Syn], T]',
             forall: 'Callable[[Type.Forall], T]',
             tuple: 'Callable[[Type.Tuple], T]',
-            nat: 'Callable[[int], T]') -> 'T':
+            nat: 'Callable[[int], T]',
+            syn: 'Callable[[Type.Syn], T]') -> 'T':
         if self._Sum_name == 'var':
             return var(self._Sum_value)
         elif self._Sum_name == 'con':
@@ -473,8 +474,10 @@ class Type:
             return tuple(self._Sum_value)
         elif self._Sum_name == 'nat':
             return nat(self._Sum_value)
+        elif self._Sum_name == 'syn':
+            return syn(self._Sum_value)
         else:
-            raise Exception('invalid _Sum_name value')
+            raise Exception(f'invalid _Sum_name value: {self._Sum_name}')
 
     def __setattr__(self, key, value):
         raise Exception('Type is a read-only object')

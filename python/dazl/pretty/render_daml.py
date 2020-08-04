@@ -298,7 +298,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 tysyn=self.visit_type_syn,
                 forall=self.visit_type_forall,
                 tuple=self.visit_type_tuple,
-                nat=self.visit_type_nat)
+                nat=self.visit_type_nat,
+                syn=self.visit_type_syn)
         elif isinstance(type, UpdateType):
             type_str = self.visit_type_prim(type)
         elif isinstance(type, ForAllType):
@@ -407,6 +408,9 @@ class DamlPrettyPrinter(PrettyPrintBase):
 
         elif PrimType.TEXTMAP == prim_type:
             return self._visit_type_app(('TextMap', *prim.args))
+
+        elif PrimType.TYPE_REP == prim.prim:
+            return '???'
 
         elif PrimType.ANY == prim_type:
             return 'Any'
