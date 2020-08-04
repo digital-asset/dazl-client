@@ -10,7 +10,7 @@ import subprocess
 
 from dazl.util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
 
-DEFAULT_SDK_VERSION = '0.13.32'
+DEFAULT_SDK_VERSION = '1.3.0'
 SANDBOX_START_TIMEOUT = timedelta(seconds=10)
 
 
@@ -45,7 +45,7 @@ def sandbox() -> str:
     # Running dazl's tests against a different Sandbox merely requires the DAML_SDK_VERSION
     # variable be set to a different value
     if 'DAML_SDK_VERSION' not in env:
-        env['DAML_SDK_VERSION'] = '0.13.32'
+        env['DAML_SDK_VERSION'] = DEFAULT_SDK_VERSION
 
     process = subprocess.Popen(
         ['daml', 'sandbox', '--port', str(port)],

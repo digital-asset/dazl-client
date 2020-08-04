@@ -371,6 +371,8 @@ class PythonPrettyPrint(PrettyPrintBase):
             return f'Callable[[{", ".join(type_strings[:-1])}], {type_strings[-1]}]'
         elif PrimType.TEXTMAP == prim.prim:
             return f'Map[{self.visit_type(prim.args[0])},  {self.visit_type(prim.args[1])}]'
+        elif PrimType.TYPE_REP == prim.prim:
+            return '???'
         else:
             raise ValueError(f'unknown Type.Prim: {prim!r}')
 

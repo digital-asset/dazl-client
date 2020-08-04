@@ -93,7 +93,8 @@ def get_old_type(daml_type: 'Type') -> 'OldType':
         _old_type_syn,
         _old_forall_type,
         lambda tuple_: UnsupportedType('Tuple'),
-        lambda nat: UnsupportedType('Nat'))
+        lambda nat: UnsupportedType('Nat'),
+        lambda _: UnsupportedType('Syn'))
 
 
 def _old_type_var(var_: 'Type.Var') -> 'OldType':
