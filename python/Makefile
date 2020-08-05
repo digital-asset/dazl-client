@@ -75,6 +75,12 @@ test: deps unit-test integration-test
 unit-test:
 	poetry run pytest --log-cli-level=INFO --junitxml=test-results/junit.xml
 
+# Run tests specifically testing our documentation around using Python's unittest framework.
+# This is NOT hooked into CircleCI because it requires a Docker container with both Java and Python.
+.PHONY: unittest-test
+unittest-test:
+	poetry run python3 -m unittest tests/unittest_example/unittest_example.py
+
 .PHONY: integration-test
 integration-test:
 	cd ../_fixtures/src/post-office && \

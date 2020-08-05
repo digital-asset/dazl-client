@@ -9,7 +9,6 @@ Subpackages
     dazl.cli
     dazl.client
     dazl.damlast
-    dazl.damlsdk
     dazl.model
     dazl.pretty
     dazl.protocols
