@@ -19,7 +19,7 @@ Ledger API.
 """
 import uuid
 import warnings
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Any, Collection, Dict, Generic, List, Mapping, Optional, Sequence, TypeVar, Union
 
 from dataclasses import dataclass, fields
@@ -28,8 +28,7 @@ from .. import LOG
 from .core import ContractId, Party
 from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice, \
     RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, TextMapType, \
-    EnumType, scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch, \
-    TemplateMeta, ChoiceMeta
+    EnumType, scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch
 from .types_store import PackageStore
 from ..util.prim_types import DEFAULT_TYPE_CONVERTER
 from ..util.typing import safe_cast, safe_optional_cast
@@ -38,7 +37,7 @@ TCommand = TypeVar('TCommand')
 TValue = TypeVar('TValue')
 
 
-CommandsOrCommandSequence = Union[None, 'Command', List[Optional['Command']]]
+CommandsOrCommandSequence = Union[None, 'Command', Sequence[Optional['Command']]]
 EventHandlerResponse = Union[CommandsOrCommandSequence, 'CommandBuilder', 'CommandPayload']
 
 
@@ -226,7 +225,8 @@ class CommandBuilder:
                  ledger_id: Optional[str] = None,
                  workflow_id: Optional[str] = None,
                  application_id: Optional[str] = None,
-                 command_id: Optional[str] = None) -> None:
+                 command_id: Optional[str] = None,
+                 deduplication_time: Optional[timedelta] = None) -> None:
         if party is not None:
             self._defaults.default_party = party
         if ledger_id is not None:
@@ -237,6 +237,8 @@ class CommandBuilder:
             self._defaults.default_application_id = application_id
         if command_id is not None:
             self._defaults.default_command_id = command_id
+        if deduplication_time is not None:
+            self._defaults.default_deduplication_time = deduplication_time
 
     def create(self, template, arguments=None) -> 'CommandBuilder':
         return self.append(create(template, arguments=arguments))
@@ -276,8 +278,7 @@ class CommandBuilder:
         self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
         return self
 
-    def build(self, defaults: 'Optional[CommandDefaults]' = None, now: Optional[datetime] = None) \
-            -> 'Collection[CommandPayload]':
+    def build(self, defaults: 'Optional[CommandDefaults]' = None) -> 'Collection[CommandPayload]':
         """
         Return a collection of commands.
         """
@@ -293,8 +294,7 @@ class CommandBuilder:
             workflow_id=defaults.default_workflow_id or self._defaults.default_workflow_id,
             application_id=defaults.default_application_id or self._defaults.default_application_id,
             command_id=command_id,
-            ledger_effective_time=now,
-            maximum_record_time=now + (defaults.default_ttl or self._defaults.default_ttl),
+            deduplication_time=defaults.default_deduplication_time or self._defaults.default_deduplication_time,
             commands=commands
         ) for i, commands in enumerate(self._commands) if commands]
 
@@ -349,7 +349,7 @@ class CommandDefaults:
     default_workflow_id: Optional[str] = None
     default_application_id: Optional[str] = None
     default_command_id: Optional[str] = None
-    default_ttl: Optional[timedelta] = None
+    default_deduplication_time: Optional[timedelta] = None
 
 
 @dataclass(frozen=True)
@@ -363,57 +363,34 @@ class CommandPayload:
         An optional application ID to accompany the request.
     .. attribute:: CommandPayload.command_id:
         A hash that represents the BIM commitment.
-    .. attribute:: CommandPayload.ledger_effective_time:
-        The effective time of this command. Should usually be set to ``datetime.now()``, but
-        may have a different value when the server is operating in static time mode.
-    .. attribute:: CommandPayload.maximum_record_time:
-        The maximum time before the client should consider this command expired.
+    .. attribute:: CommandPayload.deduplication_time:
+        The maximum time interval before the client should consider this command expired.
     .. attribute:: CommandPayload.commands
         A sequence of commands to submit to the ledger. These commands are submitted atomically
         (in other words, they all succeed or they all fail).
+    .. attribute:: CommandPayload.deduplication_time:
+        The length of the time window during which all commands with the same party and command ID
+        will be deduplicated. Duplicate commands submitted before the end of this window return an
+        ``ALREADY_EXISTS`` error.
     """
     party: Party
     ledger_id: str
     workflow_id: str
     application_id: str
     command_id: str
-    ledger_effective_time: datetime
-    maximum_record_time: datetime
-    commands: Sequence[Command]
+    commands: 'Sequence[Command]'
+    deduplication_time: 'Optional[timedelta]' = None
 
     def __post_init__(self):
-        missing_fields = [field.name for field in fields(self) if getattr(self, field.name) is None]
+        missing_fields = [field.name for field in fields(self)
+                          if field.name != 'deduplication_time' and getattr(self, field.name) is None]
         if missing_fields:
             raise ValueError(f'Some fields are set to None when they are required: '
                              f'{missing_fields}')
 
 
 def create(template, arguments=None):
-    from .types_dynamic import NamedRecord, ProxyMeta
-
-    template_type = type(template)
-    if isinstance(template_type, TemplateMeta):
-        # static codegen, instantiated type
-        if arguments is not None:
-            raise ValueError('arguments cannot be specified with an instantiated template')
-        arguments = template._asdict()
-        template = str(template_type)
-
-    elif isinstance(template, NamedRecord):
-        # dynamic "codegen", instantiated type
-        if arguments is not None:
-            raise ValueError('arguments cannot be specified with an instantiated template')
-        template, arguments = template.name, template.arguments
-
-    elif template_type == TemplateMeta:
-        # static codegen, non-instantiated
-        template = str(template)
-
-    elif isinstance(template_type, ProxyMeta):
-        # dynamic codegen, non-instantiated
-        template = str(template_type)
-
-    elif not isinstance(template, str):
+    if not isinstance(template, str):
         raise ValueError(
             'template must be a string name, a template type, or an instantiated template')
 
@@ -421,37 +398,7 @@ def create(template, arguments=None):
 
 
 def exercise(contract, choice, arguments=None):
-    from .types_dynamic import NamedRecord, ProxyMeta
-
-    choice_type = type(choice)
-    if isinstance(choice_type, ChoiceMeta):
-        # static codegen, instantiated type
-        if arguments is not None:
-            raise ValueError('arguments cannot be specified with an instantiated template')
-        arguments = choice._asdict()
-        choice = str(choice_type)
-
-    elif isinstance(choice, NamedRecord):
-        # dynamic "codegen", instantiated type
-        if arguments is not None:
-            raise ValueError('arguments cannot be specified with an instantiated template')
-        choice, arguments = choice.name, choice.arguments
-        choice_start_idx = choice.rfind('.')
-        if choice_start_idx >= 0:
-            choice = choice[choice_start_idx + 1:]
-
-    elif choice_type == ChoiceMeta:
-        # static codegen, non-instantiated
-        choice = str(choice)
-
-    elif isinstance(choice_type, ProxyMeta):
-        # dynamic codegen, non-instantiated
-        choice = str(choice_type)
-        choice_start_idx = choice.rfind('.')
-        if choice_start_idx >= 0:
-            choice = choice[choice_start_idx + 1:]
-
-    elif not isinstance(choice, str):
+    if not isinstance(choice, str):
         raise ValueError('choice must be a string name, a template type, '
                          'or an instantiated template')
 

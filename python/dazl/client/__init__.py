@@ -16,7 +16,8 @@ For a higher-level, more declarative API, see :mod:`dazl.query`.
 """
 
 from . import config
-from .api import simple_client, Network, PartyClient, AIOPartyClient, SimplePartyClient
+from .api import async_network, simple_client, Network, PartyClient, AIOPartyClient, \
+    SimplePartyClient
 from .bots import Bot, BotCollection, BotEntry
 from .runner import run
 from ._base_model import ExitCode, LedgerRun, CREATE_IF_MISSING, NONE_IF_MISSING, \

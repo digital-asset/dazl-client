@@ -2,19 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import datetime
-from asyncio import AbstractEventLoop
-from concurrent.futures import Executor
 from threading import Event, Thread, RLock
 from typing import Awaitable, Dict, Iterable, Optional, Union
 
 from .. import LOG
-from ._base import LedgerNetwork, LedgerClient, LedgerConnectionOptions, _LedgerConnectionContext
-from ..client._run_level import RunState
+from ._base import LedgerNetwork, LedgerClient, LedgerConnectionOptions
 from .v1.grpc import GRPCv1Connection
 from .oauth import oauth_flow
 from ..model.core import Party, UserTerminateRequest, ConnectionTimeoutError
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
+from ..scheduler import Invoker
 
 
 class AutodetectLedgerNetwork(LedgerNetwork):
@@ -23,21 +21,16 @@ class AutodetectLedgerNetwork(LedgerNetwork):
     implementation based on the scheme specified in the URL.
     """
 
-    def __init__(self,
-                 run_state: RunState,
-                 options: LedgerConnectionOptions,
-                 loop: Optional[AbstractEventLoop] = None,
-                 executor: Optional[Executor] = None):
+    def __init__(self, invoker: 'Invoker', options: 'LedgerConnectionOptions'):
+        self._invoker = invoker
         self._options = options
-        self._context = _LedgerConnectionContext(run_state, options, loop, executor)
 
         self._closed = False
         self._first_connection_evt = Event()
         self._first_connection = None  # type: Optional[AutodetectConnection]
         self._connections = dict()  # type: Dict[HTTPConnectionSettings, AutodetectConnection]
         self._lock = RLock()
-        self._ledger_future = self._context.loop.create_future()
-        self._admin_url = None  # type: Optional[str]
+        self._ledger_future = self._invoker.create_future()
         self._main_thread = Thread(target=self._main, daemon=True)
         self._main_thread.start()
 
@@ -57,11 +50,8 @@ class AutodetectLedgerNetwork(LedgerNetwork):
     async def connect(self,
                       party: 'Union[str, Party]',
                       settings: 'HTTPConnectionSettings',
-                      context_path: 'Optional[str]' = None,
-                      admin_url: 'Optional[str]' = None) -> LedgerClient:
+                      context_path: 'Optional[str]' = None) -> LedgerClient:
         LOG.info('Establishing a connection to %s on party %s...', settings, party)
-        if admin_url is not None:
-            self._admin_url = admin_url
         if settings.oauth:
             new_oauth_settings = await oauth_flow(settings.oauth)
             settings = settings._replace(oauth=new_oauth_settings)
@@ -77,14 +67,14 @@ class AutodetectLedgerNetwork(LedgerNetwork):
 
     async def upload_package(self, dar_contents: bytes) -> None:
         from .v1.grpc import grpc_upload_package
-        return await self._context.run_in_background(
+        return await self._invoker.run_in_executor(
             lambda: grpc_upload_package(self._first_connection, dar_contents))
 
     async def set_time(self, new_time: datetime):
         ledger = await self.ledger()
         if ledger.protocol_version == 'v1':
             from .v1.grpc import grpc_set_time
-            return await self._context.run_in_background(
+            return await self._invoker.run_in_executor(
                 lambda: grpc_set_time(self._first_connection, ledger.ledger_id, new_time))
         elif ledger.protocol_version == 'v0':
             raise RuntimeError(f'Unsupported protocol version: {ledger.protocol_version}')
@@ -134,7 +124,8 @@ class AutodetectLedgerNetwork(LedgerNetwork):
 
             if not self._connections:
                 LOG.debug('Initializing the first connection to %s...', settings)
-                self._first_connection = AutodetectConnection(self._context, settings, context_path)
+                self._first_connection = AutodetectConnection(
+                    self._invoker, self._options, settings, context_path)
                 self._connections[settings] = self._first_connection
                 self._first_connection_evt.set()
                 return self._first_connection
@@ -142,7 +133,7 @@ class AutodetectLedgerNetwork(LedgerNetwork):
                 LOG.debug('Initializing a connection to %s...', settings)
                 stub = self._connections.get(settings)
                 if stub is None:
-                    stub = AutodetectConnection(self._context, settings, context_path)
+                    stub = AutodetectConnection(self._invoker, settings, context_path)
                     self._connections[settings] = stub
                 return stub
         except:  # noqa
@@ -164,13 +155,13 @@ class AutodetectLedgerNetwork(LedgerNetwork):
             if conn is not None:
                 for i, metadata in enumerate(_monitor_ledger_network(conn)):
                     if i == 0:
-                        self._context.run_on_loop(lambda: self._ledger_future.set_result(metadata))
+                        self._invoker.run_in_loop(lambda: self._ledger_future.set_result(metadata))
                     elif metadata is not None:
                         LOG.warning('The network monitor thread emitted multiple metadata!')
         except (UserTerminateRequest, ConnectionTimeoutError) as ex:
             # re-raise these, but they are "known" errors so a stack trace in the logs would just
             # create clutter
-            self._context.run_on_loop(lambda: self._ledger_future.set_exception(ex))
+            self._invoker.run_in_loop(lambda: self._ledger_future.set_exception(ex))
 
         except Exception as ex:
             # unexpected exception raised, so provide lots of information that might help debug
@@ -182,7 +173,7 @@ class AutodetectLedgerNetwork(LedgerNetwork):
                     self._ledger_future.set_exception(ex)
 
             # if we haven't even been able to initialize, propagate this error to the init future
-            self._context.run_on_loop(_maybe_apply_error)
+            self._invoker.run_in_loop(_maybe_apply_error)
 
         finally:
             self._close_all()

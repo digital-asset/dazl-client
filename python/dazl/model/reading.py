@@ -195,8 +195,9 @@ class ContractExercisedEvent(ContractEvent):
     choice: str
     choice_args: Any
     acting_parties: Sequence[str]
-    consuming: True
+    consuming: bool
     child_event_ids: Sequence[str]
+    exercise_result: Any
 
 
 @dataclass(frozen=True)
@@ -259,6 +260,11 @@ class TransactionFilter:
     templates: Optional[Collection[Type]]
     max_blocks: Optional[int]
     party_groups: Optional[Collection[str]]
+
+    def __post_init__(self):
+        if self.current_offset is not None and self.destination_offset is not None:
+            if self.current_offset > self.destination_offset:
+                raise ValueError('current_offset must be before destination_offset if both are specified')
 
 
 class EventKey:
@@ -363,14 +369,4 @@ def max_offset(offsets: 'Collection[str]') -> 'Optional[str]':
     :param offsets: A collection of offsets to examine.
     :return: The largest offset, or ``None`` if unknown.
     """
-    return max(offsets, key=sortable_offset_height) if offsets else None
-
-
-def sortable_offset_height(value: str) -> int:
-    if value:
-        components = value.split('-', 3)
-        if len(components) == 1:
-            return int(value)
-        elif len(components) >= 1:
-            return int(components[1])
-    return 0
+    return max(offsets) if offsets else None

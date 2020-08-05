@@ -5,20 +5,17 @@
 This module contains the abstract base class that defines the protocol for interacting with a
 process that implements the Ledger API.
 """
-from asyncio import AbstractEventLoop, get_event_loop, Future, ensure_future
-from concurrent.futures import Executor, ThreadPoolExecutor
 from dataclasses import dataclass
-from datetime import datetime, timedelta
-from typing import Any, Optional, Sequence, Union
-import threading
+from datetime import timedelta
+from typing import Optional, Sequence, Union
 
 from .. import LOG
-from ..client._run_level import RunState
 from ..model.core import Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
 from ..model.reading import BaseEvent, TransactionFilter
 from ..model.writing import CommandPayload
+from ..scheduler import Invoker
 from ..util.typing import safe_optional_cast, safe_cast
 
 
@@ -53,16 +50,6 @@ class LedgerNetwork:
         Return information about the entire ledger.
         """
         raise NotImplementedError('ledger must be implemented')
-
-    async def set_time(self, new_datetime: datetime) -> None:
-        """
-        Advance the time on the Sandbox (static time model only).
-
-        To access the current time, use the time_model returned from :meth:`ledger`.
-
-        :param new_datetime: The new time to set.
-        """
-        raise NotImplementedError('set_time must be implemented')
 
     async def sync_time(self) -> None:
         """
@@ -128,49 +115,17 @@ class LedgerClient:
         """
 
 
-class _LedgerConnectionContext:
-    def __init__(self,
-                 run_state: RunState,
-                 options: LedgerConnectionOptions,
-                 loop: Optional[AbstractEventLoop] = None,
-                 executor: Optional[Executor] = None):
-        self.run_state = run_state
-        self.options = options
-        self.loop = loop if loop is not None else get_event_loop()
-        self.executor = executor if executor is not None else ThreadPoolExecutor(max_workers=25)
-
-    def run_in_background(self, func, *args) -> Future:
-        return ensure_future(self.loop.run_in_executor(self.executor, func, *args))
-
-    def run_on_loop(self, func, *args) -> Any:
-        """
-        Called from a background thread to invoke a function on the event loop. This method blocks
-        until the function has returned.
-        """
-        evt = threading.Event()
-        result, ex = None, None
-
-        def _invoke():
-            nonlocal result
-            try:
-                result = func(*args)
-            finally:
-                evt.set()
-
-        self.loop.call_soon_threadsafe(_invoke)
-        evt.wait()
-        return result
-
-
 class _LedgerConnection:
     def __init__(self,
-                 context: _LedgerConnectionContext,
+                 invoker: 'Invoker',
+                 options: 'LedgerConnectionOptions',
                  settings: HTTPConnectionSettings,
                  context_path: Optional[str]):
         LOG.debug('Creating a gRPC channel for %s...', settings)
         import threading
 
-        self.context = safe_cast(_LedgerConnectionContext, context)
+        self.invoker = safe_cast(Invoker, invoker)
+        self.options = safe_cast(LedgerConnectionOptions, options)
         self.settings = safe_cast(HTTPConnectionSettings, settings)
         self.context_path = safe_optional_cast(str, context_path)
         self.close_evt = threading.Event()

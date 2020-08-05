@@ -4,8 +4,6 @@
 """
 This module contains the Python API for interacting with the Ledger API.
 """
-
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -29,7 +27,7 @@ def _initialize_logger() -> 'LoggerWithVerbose':
     except ImportError:
         pass
 
-    original_logger = logging.getLoggerClass()
+    original_logger = logging.getLoggerClass()  # type: type
 
     class CombinedLogger(original_logger, _LoggerWithVerbose):
         pass
@@ -40,7 +38,7 @@ def _initialize_logger() -> 'LoggerWithVerbose':
         from functools import partial
         dazl_logger.verbose = partial(log_verbose, dazl_logger)
     logging.setLoggerClass(original_logger)
-    return dazl_logger
+    return dazl_logger  # type: ignore
 
 
 def _get_version() -> str:
@@ -55,8 +53,10 @@ def _get_version() -> str:
     """
     import pkg_resources
     from ast import literal_eval
+    from configparser import ConfigParser
+    from pathlib import Path
     try:
-        __version__ = pkg_resources.require('dazl')[0].version
+        return pkg_resources.require('dazl')[0].version
     except pkg_resources.DistributionNotFound:
         pass
     except Exception:
@@ -76,12 +76,10 @@ LOG = _initialize_logger()  # type: LoggerWithVerbose
 __version__ = _get_version()
 
 
-from .damlsdk.sandbox import sandbox  # noqa
-from .client import run, simple_client, Network, SimplePartyClient, AIOPartyClient  # noqa
-from .model.core import ContractId, DazlError, Party  # noqa
-from .model.types import module, TemplateMeta, ChoiceMeta  # noqa
+from .client import run, simple_client, async_network, Network, SimplePartyClient, AIOPartyClient  # noqa
+from .model.core import ContractId, ContractData, DazlError, Party  # noqa
 from .model.writing import create, exercise, exercise_by_key, create_and_exercise, \
     Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, CreateAndExerciseCommand  # noqa
 from .util.logging import setup_default_logger  # noqa
 from .util.prim_types import frozendict  # noqa
-from .plugins.capture.plugin_capture import write_acs  # noqa
+from .pretty.table import write_acs  # noqa

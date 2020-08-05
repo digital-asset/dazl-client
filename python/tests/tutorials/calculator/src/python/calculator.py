@@ -24,7 +24,7 @@ def get_client_role_data() -> List[dict]:
 
 
 def run_sandbox_and_app() -> None:
-    with sandbox(DAML_PATH) as proc:
+    with sandbox(dar_path=DAML_PATH) as proc:
         run_app(proc.url)
 
 

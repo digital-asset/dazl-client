@@ -154,9 +154,12 @@ class Bot:
                     # noinspection PyBroadException
                     try:
                         if handler.filter is None or handler.filter(new_event):
-                            await handler.callback(new_event)
+                            fut = handler.callback(new_event)
+                            if inspect.isawaitable(fut):
+                                await fut
                     except Exception:  # noqa
                         LOG.exception('An event handler in a bot has thrown an exception!')
+        LOG.debug('Party %s finished handling events.', self.party)
 
     def notify(self, event: 'BaseEvent') -> 'Awaitable[None]':
         """

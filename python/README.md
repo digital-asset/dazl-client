@@ -6,7 +6,7 @@ dazl
 <img src="https://circleci.com/gh/digital-asset/dazl-client.svg?style=svg">
 </a>
 
-Copyright 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All Rights Reserved.
+Copyright 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 
 
@@ -26,8 +26,9 @@ pip install --user dazl
 Requirements
 ------------
 * Python 3.6+
-* [Poetry](https://poetry.eustace.io/) for build/dependency management
-* Although not strictly required for building, you'll probably want the [DAML SDK](https://www.daml.com)
+* GNU Make
+* [Poetry](https://python-poetry.org/) for build/dependency management
+* [DAML SDK](https://www.daml.com)
 
 Examples
 --------
@@ -73,7 +74,7 @@ network.run_until_complete()
 
 Building locally
 ----------------
-You will need to have [Poetry](https://poetry.eustace.io/) installed, and the dependencies fetched using `poetry install`. Then do:
+You will need to have [Poetry](https://python-poetry.org) installed, and the dependencies fetched using `poetry install`. Then do:
 
 ```sh
 make build
@@ -87,6 +88,8 @@ The above command will build documentation in the root `docs/` dir. Committing t
 
 Tests
 -----
+
+Tests in dazl are written using [pytest](https://docs.pytest.org/en/latest/). You can run them by doing:
 
 ```sh
 make test

@@ -6,6 +6,7 @@ from typing import Collection, Mapping, Optional
 
 from .builtins import builtins
 from .daml_lf_1 import Block, Expr, Type, ValName
+from .util import package_local_name
 from .visitor import IdentityVisitor
 from ..model.types_store import PackageStore
 
@@ -67,13 +68,13 @@ class ExpandVisitor(RewriteVisitor):
         builtin = builtins.resolve(val)
         if builtin is not None:
             return Expr(val=val)
-        if self.always_expand or val.name[0][0] == '$' or val.full_name_unambiguous == 'DA.Internal.Template:toParties':
+        if self.always_expand or val.name[0][0] == '$' or package_local_name(val) == 'DA.Internal.Template:toParties':
             val_expr = self.resolve_val(val)
             if val_expr is not None:
                 child = self.without_val(val)
                 return child.visit_expr(val_expr)
             else:
-                print(f'Failed to resolve {val.full_name_unambiguous} against blacklist {self.val_blacklist}')
+                print(f'Failed to resolve {package_local_name(val)} against blacklist {self.val_blacklist}')
 
         return super(ExpandVisitor, self).visit_expr_val(val)
 
@@ -229,12 +230,12 @@ class SimplifyVisitor(RewriteVisitor):
         else:
             return Expr(rec_proj=Expr.RecProj(tycon=rec_proj.tycon, field=rec_proj.field, record=new_record))
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj'):
-        new_tuple = self.visit_expr(tuple_proj.tuple)
-        if new_tuple.tuple_con is not None:
-            for fwt in new_tuple.tuple_con.fields:
-                if fwt.field == tuple_proj.field:
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj'):
+        new_tuple = self.visit_expr(struct_proj.tuple)
+        if new_tuple.struct_con is not None:
+            for fwt in new_tuple.struct_con.fields:
+                if fwt.field == struct_proj.field:
                     return self.visit_expr(fwt.expr)
             raise RuntimeError('rec_proj over a rec_con that did not have the necessary field')
         else:
-            return Expr(tuple_proj=Expr.TupleProj(field=tuple_proj.field, tuple=new_tuple))
+            return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, tuple=new_tuple))

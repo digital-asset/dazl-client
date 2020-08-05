@@ -17,32 +17,29 @@ specific party.
 # for a more concise representation of the various flavors of the API. The unit test
 # ``test_api_consistency.py`` verifies that these implementations are generally in sync with each
 # other the way that the documentation says they are.
-import signal
-from asyncio import get_event_loop
-from contextlib import contextmanager, ExitStack
+from asyncio import get_event_loop, ensure_future
+from contextlib import contextmanager
 from datetime import datetime
 from functools import wraps
 from logging import INFO
 from pathlib import Path
 from uuid import uuid4
-from threading import current_thread, main_thread
 from typing import Any, Awaitable, BinaryIO, Collection, ContextManager, List, Optional, \
     Tuple, Union
-from urllib.parse import urlparse
 
 from .. import LOG
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
-from ..damlsdk.sandbox import sandbox
 from ..metrics import MetricEvents
 from ..model.core import ContractId, ContractData, ContractsState, ContractMatch, \
-    ContractContextualData, ContractContextualDataCollection, Party, RunLevel
+    ContractContextualData, ContractContextualDataCollection, Party, Dar
 from ..model.ledger import LedgerMetadata
 from ..model.reading import InitEvent, ReadyEvent, ContractCreateEvent, ContractExercisedEvent, \
     ContractArchiveEvent, TransactionStartEvent, TransactionEndEvent, PackagesAddedEvent, EventKey
 from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
+from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
 from ..util.io import get_bytes
 from ..util.prim_types import TimeDeltaConvertible
@@ -50,8 +47,7 @@ from ._events import EventHandler, AEventHandler, EventHandlerDecorator, AEventH
     fluentize
 from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
-from ._run_level import RunState
-
+from ..util.tools import as_list
 
 DEFAULT_TIMEOUT_SECONDS = 30
 
@@ -83,8 +79,6 @@ def simple_client(url: 'Optional[str]' = None, party: 'Union[None, str, Party]' 
     import os
     if url is None:
         url = os.getenv('DAML_LEDGER_URL')
-    if party is None:
-        party = os.getenv('DAML_LEDGER_PARTY') or uuid4().hex
     if not url:
         raise ValueError('url must be specified, or the DAML_LEDGER_URL environment variable '
                          'must be set')
@@ -92,30 +86,47 @@ def simple_client(url: 'Optional[str]' = None, party: 'Union[None, str, Party]' 
         raise ValueError('party must be specified, or the DAML_LEDGER_PARTY environment variable '
                          'must be set')
 
-    with ExitStack() as context_manager:
-        LOG.info('Starting a simple_client with to %s with party %r...', url, party)
-        parsed_url = urlparse(url)
-        if parsed_url.scheme is not None and parsed_url.scheme == 'sandbox':
-            # start a local in-memory sandbox first
-            daml_path = Path(os.getenv('DAML_LEDGER_DAR_PATH', 'target'))
+    LOG.info('Starting a simple_client with to %s with party %r...', url, party)
 
-            daml_artifacts = []  # type: List[Path]
-            daml_artifacts.extend(daml_path.glob('**/*.dar'))
-            daml_artifacts.extend(daml_path.glob('**/*.dalf'))
+    network = Network()
+    network.set_config(url=url)
+    client = network.simple_party(party) if party else network.simple_new_party()
 
-            sandbox_proc = sandbox(daml_path=daml_artifacts)
-            url = context_manager.enter_context(sandbox_proc).url
+    network.start_in_background()
 
-        network = Network()
-        network.set_config(url=url)
-        client = network.simple_party(party)
+    yield client
 
-        network.start_in_background()
+    network.shutdown()
+    network.join()
 
-        yield client
 
-        network.shutdown()
-        network.join()
+# This class is intended to be used as a function.
+# noinspection PyPep8Naming
+class async_network:
+    """
+    Create a :class:`Network` and ensure that it has the given set of DARs loaded.
+    """
+    def __init__(
+            self,
+            url: 'Optional[str]' = None,
+            dars: 'Optional[Union[Dar, Collection[Dar]]]' = None):
+        LOG.debug('async_network.__init__')
+        self.network = Network()
+        if url:
+            self.network.set_config(url=url)
+        self.dars = as_list(dars)  # type: List[Dar]
+
+    async def __aenter__(self):
+        LOG.debug('async_network.__aenter__')
+        for dar in self.dars:
+            await self.network.aio_global().ensure_dar(dar)
+        return self.network
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        LOG.debug('async_network.__aexit__')
+        fut = self.network.shutdown()
+        if fut is not None:
+            await fut
 
 
 class Network:
@@ -126,6 +137,7 @@ class Network:
 
     def __init__(self, metrics: 'Optional[MetricEvents]' = None):
         self._impl = _NetworkImpl(metrics)
+        self._main_fut = None
 
     def set_config(
             self,
@@ -153,8 +165,13 @@ class Network:
     def aio_global(self) -> 'AIOGlobalClient':
         """
         Return a :class:`GlobalClient` that works on an asyncio event loop.
+
+        Note that once this object can only be accessed from the asyncio event loop it is intended
+        to be used on.
         """
-        return self._impl.global_impl(AIOGlobalClient)
+        client = self._impl.global_impl(AIOGlobalClient)
+        self._impl.freeze()
+        return client
 
     def simple_party(self, party: 'Union[str, Party]') -> 'SimplePartyClient':
         """
@@ -165,6 +182,13 @@ class Network:
         """
         return self._impl.party_impl(Party(party), SimplePartyClient)
 
+    def simple_new_party(self) -> 'SimplePartyClient':
+        """
+        Return a :class:`PartyClient` that exposes thread-safe, synchronous (blocking) methods for
+        communicating with a ledger. Callbacks are dispatched to background threads.
+        """
+        return self.simple_party(str(uuid4()))
+
     def aio_party(self, party: 'Union[str, Party]') -> 'AIOPartyClient':
         """
         Return a :class:`PartyClient` that works on an asyncio event loop.
@@ -172,6 +196,13 @@ class Network:
         :param party: The party to get a client for.
         """
         return self._impl.party_impl(Party(party), AIOPartyClient)
+
+    def aio_new_party(self) -> 'AIOPartyClient':
+        """
+        Return a :class:`PartyClient` for a random party that works on an asyncio event loop.
+        This will never return the same object twice.
+        """
+        return self.aio_party(str(uuid4()))
 
     def party_bots(
             self,
@@ -193,7 +224,7 @@ class Network:
     # <editor-fold desc="Daemon thread-based scheduling API">
 
     def start_in_background(
-            self, daemon: bool = True, install_signal_handlers: Optional[bool] = None) -> None:
+            self, daemon: bool = True, install_signal_handlers: 'Optional[bool]' = None) -> None:
         """
         Connect to the ledger in a background thread.
 
@@ -201,33 +232,22 @@ class Network:
         are allowed, and operations on instances of :class:`AIOPartyClient` are allowed as long as
         they are made from the correct thread.
         """
-        if install_signal_handlers is None:
-            if current_thread() is main_thread():
-                install_signal_handlers = True
-        elif install_signal_handlers:
-            if current_thread() is not main_thread():
-                raise RuntimeError('tried to install signal handlers when not on the main thread')
+        if validate_install_signal_handlers(install_signal_handlers):
+            self._impl.invoker.install_signal_handlers()
+        return self._impl.start(daemon)
 
-        run_state = RunState(RunLevel.RUN_FOREVER)
-        if install_signal_handlers:
-            # the main loop will be run from a background thread, so do NOT use asyncio directly
-            try:
-                signal.signal(signal.SIGINT, lambda *_: self._impl.shutdown())
-                signal.signal(signal.SIGQUIT, lambda *_: self._impl.abort())
-            except (NotImplementedError, AttributeError, ValueError):
-                # SIGINIT and SIGQUIT handlers are not supported on Windows.
-                pass
-
-        return self._impl.start(run_state, daemon)
-
-    def shutdown(self) -> None:
+    def shutdown(self) -> 'Optional[Awaitable[None]]':
         """
         Gracefully shut down all network connections and notify all clients that they are about to
         be terminated.
 
         The current thread does NOT block.
+
+        :return: ``None`` unless ``start()`` was called, in which case the coroutine that
+        corresponds to dazl's "main" is returned.
         """
-        return self._impl.shutdown()
+        self._impl.shutdown()
+        return self._main_fut
 
     def join(self, timeout: 'Optional[float]' = None) -> None:
         """
@@ -242,26 +262,11 @@ class Network:
 
     # <editor-fold desc="asyncio-based scheduling API">
 
-    def _run(self, initial_run_level, *coroutines: 'Awaitable[None]',
-             install_signal_handlers: 'Optional[bool]' = None) -> None:
-        if install_signal_handlers is None:
-            if current_thread() is main_thread():
-                install_signal_handlers = True
-        elif install_signal_handlers:
-            if current_thread() is not main_thread():
-                raise RuntimeError('tried to install signal handlers when not on the main thread')
-
-        run_state = RunState(initial_run_level)
-        loop = get_event_loop()
-        if install_signal_handlers:
-            try:
-                loop.add_signal_handler(signal.SIGINT, run_state.handle_sigint)
-                loop.add_signal_handler(signal.SIGQUIT, run_state.handle_sigquit)
-            except (NotImplementedError, AttributeError, ValueError):
-                # SIGINT and SIGQUIT are not supported on Windows.
-                pass
-
-        loop.run_until_complete(self.aio_run(*coroutines, run_state=run_state))
+    def start(self) -> None:
+        """
+        Start the coroutine that spawns callbacks for listeners on event streams.
+        """
+        self._main_fut = ensure_future(self.aio_run(keep_open=False))
 
     def run_until_complete(
             self, *coroutines: 'Awaitable[None]',
@@ -281,8 +286,11 @@ class Network:
             handlers only when called from the main thread (default). If signal handlers are
             requested to be installed and the thread is NOT the main thread, this method throws.
         """
-        self._run(RunLevel.RUN_UNTIL_IDLE, *coroutines,
-                  install_signal_handlers=install_signal_handlers)
+        self._impl.invoker.level = RunLevel.RUN_UNTIL_IDLE
+        self._impl.invoker.loop = get_event_loop()
+        if validate_install_signal_handlers(install_signal_handlers):
+            self._impl.invoker.install_signal_handlers()
+        self._impl.invoker.loop.run_until_complete(self.aio_run(*coroutines))
         LOG.info('The internal run_until_complete event loop has now completed.')
 
     def run_forever(
@@ -294,11 +302,13 @@ class Network:
         terminates when :meth:`shutdown` is called AND all active command submissions and event
         handlers' follow-ups have successfully returned.
         """
-        self._run(RunLevel.RUN_FOREVER, *coroutines,
-                  install_signal_handlers=install_signal_handlers)
+        self._impl.invoker.loop = get_event_loop()
+        if validate_install_signal_handlers(install_signal_handlers):
+            self._impl.invoker.install_signal_handlers()
+        self._impl.invoker.loop.run_until_complete(self.aio_run(*coroutines))
         LOG.info('The internal run_forever event loop has been shut down.')
 
-    async def aio_run(self, *coroutines, run_state: 'Optional[RunState]' = None) -> None:
+    async def aio_run(self, *coroutines, keep_open: bool = True) -> None:
         """
         Coroutine where all network activity is scheduled from. This coroutine exits when
         :meth:`shutdown` is called, and can be used directly as an asyncio-native alternative to
@@ -309,7 +319,9 @@ class Network:
         :meth:`run_forever` if you can block the current thread, or :meth:`start_in_background`
         with :meth:`join` if you wish to run the entire client on background threads.
         """
-        await self._impl.aio_run(*coroutines, run_state=run_state)
+        if not keep_open:
+            self._impl.invoker.level = RunLevel.RUN_UNTIL_IDLE
+        await self._impl.aio_run(*coroutines)
         LOG.info('The aio_run coroutine has completed.')
 
     # </editor-fold>
@@ -322,6 +334,12 @@ class Network:
 
     def bots(self) -> 'Collection[Bot]':
         return self._impl.bots()
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.shutdown()
 
 
 class GlobalClient:
@@ -370,12 +388,6 @@ class AIOGlobalClient(GlobalClient):
         """
         return await self._impl.aio_metadata()
 
-    async def get_time(self) -> datetime:
-        return await self._impl.get_time()
-
-    async def set_time(self, new_datetime: datetime) -> None:
-        await self._impl.set_time(new_datetime)
-
 
 class SimpleGlobalClient(GlobalClient):
 
@@ -391,7 +403,7 @@ class SimpleGlobalClient(GlobalClient):
         :param timeout: The maximum length of time to wait before giving up.
         """
         raw_bytes = get_bytes(contents)
-        return self._impl.run_in_loop_threadsafe(
+        return self._impl.invoker.run_in_loop(
             lambda: self._impl.upload_package(raw_bytes, timeout))
 
     def ensure_packages(
@@ -405,7 +417,7 @@ class SimpleGlobalClient(GlobalClient):
         :param package_ids: The set of package IDs to check for.
         :param timeout: The maximum length of time to wait before giving up.
         """
-        return self._impl.run_in_loop_threadsafe(
+        return self._impl.invoker.run_in_loop(
             lambda: self._impl.ensure_package_ids(package_ids, timeout))
 
     def metadata(self, timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) \
@@ -414,12 +426,6 @@ class SimpleGlobalClient(GlobalClient):
         Return the current set of known packages.
         """
         return self._impl.simple_metadata(timeout)
-
-    def get_time(self) -> datetime:
-        return self._impl.run_in_loop_threadsafe(self._impl.get_time)
-
-    def set_time(self, new_datetime: datetime) -> None:
-        self._impl.run_in_loop_threadsafe(lambda: self._impl.set_time(new_datetime))
 
 
 class PartyClient:
@@ -683,7 +689,11 @@ class AIOPartyClient(PartyClient):
 
     # <editor-fold desc="Command submission">
 
-    def submit(self, commands: 'EventHandlerResponse', workflow_id: 'Optional[str]' = None) \
+    def submit(
+            self,
+            commands: 'EventHandlerResponse',
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit commands to the ledger.
@@ -692,17 +702,23 @@ class AIOPartyClient(PartyClient):
             An object that can be converted to a command.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
-        return self._impl.write_commands(commands, workflow_id=workflow_id)
+        return self._impl.write_commands(
+            commands, workflow_id=workflow_id, deduplication_time=deduplication_time)
 
     def submit_create(
             self,
             template_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit a single create command. Equivalent to calling :meth:`submit` with a single
@@ -714,19 +730,27 @@ class AIOPartyClient(PartyClient):
             The arguments to the create (as a ``dict``).
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         from .. import create
-        return self.submit(create(template_name, arguments), workflow_id=workflow_id)
+        return self.submit(
+            create(template_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_exercise(
             self,
             cid: 'ContractId',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit a single exercise choice. Equivalent to calling :meth:`submit` with a single
@@ -741,12 +765,19 @@ class AIOPartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         from .. import exercise
-        return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id)
+        return self.submit(
+            exercise(cid, choice_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_exercise_by_key(
             self,
@@ -754,7 +785,8 @@ class AIOPartyClient(PartyClient):
             contract_key: 'Any',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -771,10 +803,16 @@ class AIOPartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise_by_key
         return self.submit(
-            exercise_by_key(template_name, contract_key, choice_name, arguments), workflow_id=workflow_id)
+            exercise_by_key(template_name, contract_key, choice_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_create_and_exercise(
             self,
@@ -782,7 +820,8 @@ class AIOPartyClient(PartyClient):
             arguments: 'dict',
             choice_name: str,
             choice_arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
@@ -798,11 +837,16 @@ class AIOPartyClient(PartyClient):
             The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import create_and_exercise
         return self.submit(
             create_and_exercise(template_name, arguments, choice_name, choice_arguments),
-            workflow_id=workflow_id)
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     # </editor-fold>
 
@@ -911,19 +955,19 @@ class AIOPartyClient(PartyClient):
     def set_config(self, url: 'Optional[str]', **kwargs):
         self._impl.set_config(url=url, **kwargs)
 
-    def get_time(self) -> 'Awaitable[datetime]':
+    async def ensure_dar(
+            self,
+            contents: 'Union[str, Path, bytes, BinaryIO]',
+            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
-        Return the current time on the remote server. Also advance the local notion of time if
-        required.
-        """
-        return self._impl.get_time()
+        Validate that the ledger has the packages specified by the given contents (as a byte array).
+        Throw an exception if the specified DARs do not exist within the specified timeout.
 
-    def set_time(self, new_datetime: datetime) -> 'Awaitable[None]':
+        :param contents: The DAR or DALF to ensure.
+        :param timeout: The maximum length of time to wait before giving up.
         """
-        Set the current time on the ledger. This is only supported if the ledger supports time
-        manipulation.
-        """
-        return self._impl.set_time(new_datetime)
+        raw_bytes = get_bytes(contents)
+        return await self._impl.parent.upload_package(raw_bytes, timeout)
 
     def ready(self) -> 'Awaitable[None]':
         """
@@ -1219,11 +1263,38 @@ class SimplePartyClient(PartyClient):
 
     # region Command submission
 
+    def submit(
+            self,
+            commands,
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            -> None:
+        """
+        Submit commands to the ledger.
+
+        :param commands:
+            An object that can be converted to a command.
+        :param workflow_id:
+            The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
+        :return:
+            A future that resolves when the command has made it to the ledger _or_ an error
+            occurred when trying to process them.
+        """
+        return self._impl.invoker.run_in_loop(
+            lambda: self._impl.write_commands(
+                commands, workflow_id=workflow_id, deduplication_time=deduplication_time))
+
     def submit_create(
             self,
             template_name: 'TemplateNameLike',
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) -> None:
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            -> None:
         """
         Synchronously submit a single create command. Equivalent to calling :meth:`submit` with a
         single ``create``.
@@ -1234,16 +1305,24 @@ class SimplePartyClient(PartyClient):
             The arguments to the create (as a ``dict``).
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import create
-        return self.submit(create(template_name, arguments), workflow_id=workflow_id)
+        return self.submit(
+            create(template_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_exercise(
             self,
             cid: 'ContractId',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1258,9 +1337,16 @@ class SimplePartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise
-        return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id)
+        return self.submit(
+            exercise(cid, choice_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_exercise_by_key(
             self,
@@ -1268,7 +1354,8 @@ class SimplePartyClient(PartyClient):
             contract_key: 'Any',
             choice_name: str,
             arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1285,11 +1372,16 @@ class SimplePartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise_by_key
         return self.submit(
             exercise_by_key(template_name, contract_key, choice_name, arguments),
-            workflow_id=workflow_id)
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_create_and_exercise(
             self,
@@ -1297,7 +1389,8 @@ class SimplePartyClient(PartyClient):
             arguments: 'dict',
             choice_name: str,
             choice_arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
@@ -1313,11 +1406,16 @@ class SimplePartyClient(PartyClient):
             The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import create_and_exercise
         return self.submit(
             create_and_exercise(template_name, arguments, choice_name, choice_arguments),
-            workflow_id=workflow_id)
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     # endregion
 
@@ -1431,14 +1529,20 @@ class SimplePartyClient(PartyClient):
     def set_config(self, url: Optional[str], **kwargs):
         self._impl.set_config(url=url, **kwargs)
 
-    def get_time(self) -> datetime:
-        return self._impl.invoker.run_in_loop(lambda: self._impl.get_time())
+    def ensure_dar(
+            self,
+            contents: 'Union[str, Path, bytes, BinaryIO]',
+            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        """
+        Validate that the ledger has the packages specified by the given contents (as a byte array).
+        Throw an exception if the specified DARs do not exist within the specified timeout.
 
-    def set_time(self, new_datetime: datetime) -> None:
-        return self._impl.invoker.run_in_loop(lambda: self._impl.set_time(new_datetime))
-
-    def submit(self, commands, workflow_id: str = None) -> None:
-        return self._impl.invoker.run_in_loop(lambda: self._impl.write_commands(commands, workflow_id=workflow_id))
+        :param contents: The DAR or DALF to ensure.
+        :param timeout: The maximum length of time to wait before giving up.
+        """
+        raw_bytes = get_bytes(contents)
+        return self._impl.invoker.run_in_loop(
+            lambda: self._impl.parent.upload_package(raw_bytes, timeout))
 
     def ready(self) -> None:
         """
@@ -1446,7 +1550,7 @@ class SimplePartyClient(PartyClient):
         """
         # TODO: Improve on this implementation; this spin loop is unnecessarily ugly
         from time import sleep
-        while self._impl.invoker.get_loop() is None:
+        while self._impl.invoker.loop is None:
             sleep(0.1)
 
         LOG.debug('Waiting for the underlying implementation to be ready...')

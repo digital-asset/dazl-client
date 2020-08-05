@@ -6,8 +6,9 @@ from typing import Optional, Sequence, Union
 
 from ._render_base import PrettyPrintBase
 from .util import maybe_parentheses
-from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, Module, PrimCon, PrimType, \
+from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, ModuleRef, PrimType, \
     Type as NewType, Scenario, Pure, Block, Update
+from ..damlast.util import package_local_name, module_name
 from ..model.types import Type as OldType, ScalarType, ContractIdType, ListType, OptionalType, \
     TextMapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, \
     EnumType, type_dispatch_table, SCALAR_TYPE_UNIT, SCALAR_TYPE_BOOL, SCALAR_TYPE_CHAR, \
@@ -35,8 +36,7 @@ class DamlPrettyPrinter(PrettyPrintBase):
         return ''
 
     def visit_module_ref_start(self, module_ref: 'ModuleRef'):
-        module_name = '.'.join(module_ref.module_name)
-        return f'module {module_name} where\n'
+        return f'module {module_name(module_ref)} where\n'
 
     def visit_def_data_type(self, def_data_type: 'DefDataType') -> str:
         return self.visit_def_template(None, def_data_type)
@@ -62,9 +62,12 @@ class DamlPrettyPrinter(PrettyPrintBase):
 
         def render(expr: Expr) -> str:
             #return self.visit_expr(expr)
-            e1 = ex.visit_expr(expr)
-            e2 = sp.visit_expr(e1)
-            return self.visit_expr(e2)
+            try:
+                e1 = ex.visit_expr(expr)
+                e2 = sp.visit_expr(e1)
+                return self.visit_expr(e2)
+            except:
+                return '???'
 
         with StringIO() as buf:
             if def_data_type.record is not None:
@@ -117,11 +120,11 @@ class DamlPrettyPrinter(PrettyPrintBase):
         arg_text = self.visit_expr(variant_con.variant_arg)
         return f'{variant_con.variant_con} {maybe_parentheses(arg_text)}'
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj'):
-        tuple_text = maybe_parentheses(self.visit_expr(tuple_proj.tuple))
-        return f'{tuple_text}.{tuple_proj.field}'
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> str:
+        tuple_text = maybe_parentheses(self.visit_expr(struct_proj.tuple))
+        return f'{tuple_text}.{struct_proj.field}'
 
-    def visit_expr_app_inline(self, app: 'Expr.App'):
+    def visit_expr_app_inline(self, app: 'Expr.App') -> str:
         components = [app.fun, *app.args]
         return ' '.join(maybe_parentheses(self.visit_expr(e)) for e in components)
 
@@ -283,6 +286,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
     # region visit_type_* methods
 
     def visit_type(self, type: 'Union[str, NewType, OldType]', parenthesize: bool = False) -> str:
+        from ..model.types import TypeReference
+        from ..damlast.daml_lf_1 import TypeConName
         if isinstance(type, str):
             type_str = type
         elif isinstance(type, NewType):
@@ -290,8 +295,11 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 var=self.visit_type_var,
                 con=self.visit_type_con,
                 prim=self.visit_type_prim,
+                tysyn=self.visit_type_syn,
                 forall=self.visit_type_forall,
-                tuple=self.visit_type_tuple)
+                tuple=self.visit_type_tuple,
+                nat=self.visit_type_nat,
+                syn=self.visit_type_syn)
         elif isinstance(type, UpdateType):
             type_str = self.visit_type_prim(type)
         elif isinstance(type, ForAllType):
@@ -310,6 +318,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 on_enum=self.visit_type_con,
                 on_type_app=self._visit_type_app,
                 on_unsupported=repr)(type)
+        elif isinstance(type, TypeConName):
+            type_str = self.visit_type_con(TypeReference(type))
         else:
             raise TypeError(f'A DAML Type is required here (got {type!r} instead')
 
@@ -327,13 +337,13 @@ class DamlPrettyPrinter(PrettyPrintBase):
 
     def visit_type_con(self, con: 'Union[TypeReference, RecordType, VariantType, EnumType, NewType.Con]') -> str:
         if isinstance(con, TypeReference):
-            return con.full_name_unambiguous
+            return package_local_name(con.con)
         elif isinstance(con, (RecordType, VariantType, EnumType)):
             if con.name is None:
                 raise ValueError('A named Record, Variant, or Enum type is required here')
-            return con.name.full_name_unambiguous
+            return package_local_name(con.name.con)
         elif isinstance(con, NewType.Con):
-            return self._visit_type_app((con.tycon.full_name_unambiguous, *con.args))
+            return self._visit_type_app((package_local_name(con.tycon), *con.args))
         else:
             raise TypeError(f'A DAML Type constructor is required here (got {con!r} instead')
 
@@ -393,8 +403,17 @@ class DamlPrettyPrinter(PrettyPrintBase):
             return arrow_operator.join(
                 maybe_parentheses(self.visit_type(a), arrow_operator) for a in prim.args)
 
-        elif PrimType.MAP == prim_type:
-            return self._visit_type_app(('Map', *prim.args))
+        elif PrimType.NUMERIC == prim_type:
+            return self._visit_type_app(('Numeric', *prim.args))
+
+        elif PrimType.TEXTMAP == prim_type:
+            return self._visit_type_app(('TextMap', *prim.args))
+
+        elif PrimType.TYPE_REP == prim.prim:
+            return '???'
+
+        elif PrimType.ANY == prim_type:
+            return 'Any'
 
         else:
             raise TypeError(f'A DAML Type primitive is required here (got {prim!r} instead')

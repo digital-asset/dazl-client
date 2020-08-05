@@ -4,14 +4,14 @@
 # NOTE TO IMPLEMENTORS: A future version of this file is intended to be code-generated instead of
 # manually maintained. The makeup of this file is intentionally highly formulaic in order to
 # facilitate a smooth transition to automatically-generated data structures.
+import warnings
 
 from dataclasses import dataclass
 from enum import Enum
 from io import StringIO
-from typing import Callable, Optional, Sequence, Union
+from typing import Callable, NewType, Optional, Sequence, Tuple, Union
 
 from ._base import MISSING, T
-from ..model.types import ModuleRef, ValueReference, TypeReference as TypeConName, TypeReference
 from ..util.typing import safe_cast
 
 
@@ -22,7 +22,9 @@ class Unit:
 UNIT = Unit()
 
 
-# PackageRef
+# Reference to a package via a package identifier. The identifier is the ascii7
+# lowercase hex-encoded hash of the package contents found in the DAML LF Archive.
+PackageRef = NewType('PackageRef', str)
 
 
 class DottedName:
@@ -33,12 +35,185 @@ class DottedName:
     def __init__(self, segments: Sequence[str] = ()):
         object.__setattr__(self, 'segments', tuple(segments))
 
+    def __str__(self):
+        return '.'.join(self.segments)
 
-# ModuleRef
-# TypeConName
+    def __eq__(self, other):
+        return isinstance(other, DottedName) and self.segments == other.segments
+
+    def __hash__(self):
+        return hash(self.segments)
 
 
-ValName = ValueReference
+class ModuleRef:
+    """
+    A reference to a module.
+
+    In dazl 7.0.0, ModuleRef will become a `NewType(str)`, so making assumptions about the structure
+    of this type should be avoided, and accessor methods should be instead used for callers that
+    care about the structure of these names.
+    """
+    __slots__ = '_package_id', '_module_name'
+
+    def __init__(self, package_id: 'PackageRef', module_name: 'DottedName'):
+        self._package_id = PackageRef(safe_cast(str, package_id))
+        self._module_name = safe_cast(DottedName, module_name)
+
+    @property
+    def package_id(self) -> 'PackageRef':
+        warnings.warn(
+            "Do not use ModuleRef.package_id; use package_ref(...) instead.", DeprecationWarning)
+        return self._package_id
+
+    @property
+    def module_name(self) -> 'DottedName':
+        warnings.warn(
+            "Do not use ModuleRef.module_name; use module_name(...) instead.", DeprecationWarning)
+        return self._module_name
+
+    def __eq__(self, other):
+        return isinstance(other, ModuleRef) and \
+               self._package_id == other._package_id and \
+               self._module_name == other._module_name
+
+    def __lt__(self, other):
+        return self._package_id < other.package_id or \
+               (self._package_id == other.package_id and self._module_name < other.module_name)
+
+    def __le__(self, other):
+        return self._package_id < other.package_id or \
+               (self._package_id == other.package_id and self._module_name <= other.module_name)
+
+    def __gt__(self, other):
+        return self._package_id > other.package_id or \
+               (self._package_id == other.package_id and self._module_name > other.module_name)
+
+    def __ge__(self, other):
+        return self._package_id > other.package_id or \
+               (self._package_id == other.package_id and self._module_name >= other.module_name)
+
+    def __hash__(self):
+        return hash(self._package_id) ^ hash(self._module_name)
+
+    def __str__(self):
+        return f'{self._package_id}:{self._module_name}'
+
+    def __repr__(self):
+        return f'ModuleRef(package_id={self._package_id!r}, ' \
+            f'module_name={self._module_name})'
+
+
+class _Name:
+    """
+    A reference by name to another object.
+
+    This implementation powers all of a TypeConName, TypeSynName, and ValName.
+
+    In dazl 7.0.0, these will become `NewType(str)`, so making assumptions about the structure of
+    this type should be avoided, and accessor methods should be instead used for callers that care
+    about the structure of these names.
+    """
+
+    __slots__ = '_module', '_name'
+
+    def __init__(self, module: 'ModuleRef', name: 'Sequence[str]'):
+        from collections.abc import Collection
+        if not isinstance(name, Collection):
+            raise TypeError(f'Tuple of strings required here (got {name!r} instead)')
+
+        self._module = safe_cast(ModuleRef, module)
+        self._name = tuple(name)  # type: Tuple[str, ...]
+
+    @property
+    def module(self) -> 'ModuleRef':
+        warnings.warn(
+            "Do not use Name.module; you can use module_ref(...) instead.",
+            DeprecationWarning)
+        return self._module
+
+    @property
+    def name(self) -> 'Sequence[str]':
+        warnings.warn(
+            "Do not use Name.name; you can use module_local_name(...) instead.",
+            DeprecationWarning)
+        return self._name
+
+    @property
+    def full_name(self) -> str:
+        from .util import module_name
+        warnings.warn(
+            "Do not use Name.full_name; this format is no longer used, so it has no replacement.",
+            DeprecationWarning)
+        return f"{module_name(self)}.{'.'.join(self._name)}"
+
+    @property
+    def full_name_unambiguous(self):
+        from .util import package_local_name
+        warnings.warn(
+            "Do not use Name.full_name_unambiguous; use package_local_name(...) instead.",
+            DeprecationWarning)
+        return package_local_name(self)
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) and \
+               self._module == other._module and self._name == other._name
+
+    def __ne__(self, other):
+        return not isinstance(other, type(self)) or \
+               self._module != other._module or self._name != other._name
+
+    def __lt__(self, other):
+        if not isinstance(other, _Name):
+            raise TypeError("must compare Name to other names")
+
+        return self._module < other._module or \
+               (self._module == other._module and self._name < other._name)
+
+    def __le__(self, other):
+        if not isinstance(other, _Name):
+            raise TypeError("must compare Name to other names")
+        return self._module <= other._module or \
+               (self._module == other._module and self._name <= other._name)
+
+    def __gt__(self, other):
+        if not isinstance(other, _Name):
+            raise TypeError("must compare Name to other names")
+        return self._module > other._module or \
+               (self._module == other._module and self._name > other._name)
+
+    def __ge__(self, other):
+        if not isinstance(other, _Name):
+            raise TypeError("must compare Name to other names")
+
+        return self._module >= other._module or \
+               (self._module == other._module and self._name >= other._name)
+
+    def __hash__(self):
+        return hash(self._module) ^ hash(self._name)
+
+    def __str__(self):
+        return f"{self._module}:{'.'.join(self._name)}"
+
+    def __repr__(self):
+        return f"{type(self).__name__}({str(self)!r})"
+
+
+class TypeConName(_Name):
+    """
+    A reference to a type constructor.
+    """
+
+
+class TypeSynName(_Name):
+    """
+    A reference to a type synonym.
+    """
+
+
+class ValName(_Name):
+    """
+    A reference to a value.
+    """
 
 
 @dataclass(frozen=True)
@@ -94,13 +269,17 @@ class Kind:
     def __init__(
             self,
             star: 'Unit' = MISSING,
-            arrow: 'Arrow' = MISSING):
+            arrow: 'Arrow' = MISSING,
+            nat: 'Unit' = MISSING):
         if star is not MISSING:
             object.__setattr__(self, '_Sum_name', 'star')
             object.__setattr__(self, '_Sum_value', star)
         elif arrow is not MISSING:
             object.__setattr__(self, '_Sum_name', 'arrow')
             object.__setattr__(self, '_Sum_value', arrow)
+        elif nat is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'nat')
+            object.__setattr__(self, '_Sum_value', nat)
         else:
             raise ValueError('at least one must be specified')
 
@@ -111,6 +290,10 @@ class Kind:
     @property
     def arrow(self) -> 'Optional[Arrow]':
         return self._Sum_value if self._Sum_name == 'arrow' else None
+
+    @property
+    def nat(self) -> 'Optional[Unit]':
+        return self._Sum_value if self._Sum_name == 'nat' else None
 
     def __repr__(self):
         if self._Sum_name == 'star':
@@ -138,7 +321,11 @@ class PrimType(Enum):
     CONTRACT_ID = 13  # arity = 1
     OPTIONAL = 14     # arity = 1
     ARROW = 15        # arity = 2
-    MAP = 16          # arity = 1
+    TEXTMAP = 16      # arity = 1
+    NUMERIC = 17
+    ANY = 18
+    TYPE_REP = 19
+    GENMAP = 20
 
 
 # noinspection PyShadowingBuiltins
@@ -150,10 +337,10 @@ class Type:
         args: 'Sequence[Type]'
 
     class Con:
-        tycon: 'TypeReference'
+        tycon: 'TypeConName'
         args: 'Sequence[Type]'
 
-        def __init__(self, tycon: 'TypeReference', args: 'Sequence[Type]'):
+        def __init__(self, tycon: 'TypeConName', args: 'Sequence[Type]'):
             self.tycon = tycon
             self.args = tuple(args)
 
@@ -170,6 +357,14 @@ class Type:
                 args: 'Sequence[Type]'):
             self.prim = prim
             self.args = tuple(args)
+
+        def __repr__(self):
+            return f'Type.Prim(prim={self.prim!r}, args={self.args!r})'
+
+    @dataclass(frozen=True)
+    class Syn:
+        tysyn: 'TypeSynName'
+        args: 'Sequence[Type]'
 
     class Forall:
         vars: 'Sequence[TypeVarWithKind]'
@@ -199,7 +394,9 @@ class Type:
             con: 'Type.Con' = MISSING,
             prim: 'Type.Prim' = MISSING,
             forall: 'Type.Forall' = MISSING,
-            tuple: 'Type.Tuple' = MISSING):
+            tuple: 'Type.Tuple' = MISSING,
+            nat: int = MISSING,
+            syn: 'Type.Syn' = MISSING):
         if var is not MISSING:
             object.__setattr__(self, '_Sum_name', 'var')
             object.__setattr__(self, '_Sum_value', var)
@@ -215,6 +412,12 @@ class Type:
         elif tuple is not MISSING:
             object.__setattr__(self, '_Sum_name', 'tuple')
             object.__setattr__(self, '_Sum_value', tuple)
+        elif nat is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'nat')
+            object.__setattr__(self, '_Sum_value', nat)
+        elif syn is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'syn')
+            object.__setattr__(self, '_Sum_value', syn)
         else:
             raise ValueError('unknown sum type')
 
@@ -231,6 +434,10 @@ class Type:
         return self._Sum_value if self._Sum_name == 'prim' else None
 
     @property
+    def tysyn(self) -> 'Type.Syn':
+        return self._Sum_value if self._Sum_name == 'tysyn' else None
+
+    @property
     def forall(self) -> 'Type.Forall':
         return self._Sum_value if self._Sum_name == 'forall' else None
 
@@ -238,26 +445,39 @@ class Type:
     def tuple(self) -> 'Type.Tuple':
         return self._Sum_value if self._Sum_name == 'tuple' else None
 
+    @property
+    def nat(self) -> int:
+        return self._Sum_value if self._Sum_name == 'nat' else None
+
     # noinspection PyPep8Naming
     def Sum_match(
             self,
             var: 'Callable[[Type.Var], T]',
             con: 'Callable[[Type.Con], T]',
             prim: 'Callable[[Type.Prim], T]',
+            tysyn: 'Callable[[Type.Syn], T]',
             forall: 'Callable[[Type.Forall], T]',
-            tuple: 'Callable[[Type.Tuple], T]') -> 'T':
+            tuple: 'Callable[[Type.Tuple], T]',
+            nat: 'Callable[[int], T]',
+            syn: 'Callable[[Type.Syn], T]') -> 'T':
         if self._Sum_name == 'var':
             return var(self._Sum_value)
         elif self._Sum_name == 'con':
             return con(self._Sum_value)
         elif self._Sum_name == 'prim':
             return prim(self._Sum_value)
+        elif self._Sum_name == 'tysyn':
+            return tysyn(self._Sum_value)
         elif self._Sum_name == 'forall':
             return forall(self._Sum_value)
         elif self._Sum_name == 'tuple':
             return tuple(self._Sum_value)
+        elif self._Sum_name == 'nat':
+            return nat(self._Sum_value)
+        elif self._Sum_name == 'syn':
+            return syn(self._Sum_value)
         else:
-            raise Exception('invalid _Sum_name value')
+            raise Exception(f'invalid _Sum_name value: {self._Sum_name}')
 
     def __setattr__(self, key, value):
         raise Exception('Type is a read-only object')
@@ -299,7 +519,8 @@ class PrimLit:
             text: str = MISSING,
             timestamp: float = MISSING,
             party: str = MISSING,
-            date: int = MISSING):
+            date: int = MISSING,
+            numeric: str = MISSING):
         if int64 is not MISSING:
             object.__setattr__(self, '_Sum_name', 'int64')
             object.__setattr__(self, '_Sum_value', int64)
@@ -318,6 +539,9 @@ class PrimLit:
         elif date is not MISSING:
             object.__setattr__(self, '_Sum_name', 'date')
             object.__setattr__(self, '_Sum_value', date)
+        elif numeric is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'numeric')
+            object.__setattr__(self, '_Sum_value', numeric)
 
     @property
     def int64(self) -> 'Optional[int]':
@@ -358,6 +582,18 @@ class PrimLit:
         days since the unix epoch. can go backwards. limited from
         0001-01-01 to 9999-12-31, also to be compatible with
         https://www.ietf.org/rfc/rfc3339.txt
+        """
+        return self._Sum_value if self._Sum_name == 'date' else None
+
+    @property
+    def numeric(self) -> 'Optional[str]':
+        """
+        Serialization of number with precision 38 and scale between 0 and 37
+
+        Must be a string that matched
+            `-?([0-1]\\d*|0)\\.(\\d*)
+
+        The number of decimal digits indicate the scale of the number.
         """
         return self._Sum_value if self._Sum_name == 'date' else None
 
@@ -446,21 +682,21 @@ class Expr:
 
     @dataclass(frozen=True)
     class EnumCon:
-        tycon: 'TypeReference'  # Always fully applied
+        tycon: 'TypeConName'  # Always fully applied
         enum_con: str
 
     @dataclass(frozen=True)
-    class TupleCon:
+    class StructCon:
         fields: 'Sequence[FieldWithExpr]'  # length > 0
 
     @dataclass(frozen=True)
-    class TupleProj:
+    class StructProj:
         field: str
         tuple: 'Expr'
 
     # Set `field` in `tuple` to `update`.
     @dataclass(frozen=True)
-    class TupleUpd:
+    class StructUpd:
         field: str
         tuple: 'Expr'
         update: 'Expr'
@@ -554,6 +790,31 @@ class Expr:
         def __repr__(self):
             return f'Expr.Some({self.body!r} : {self.type})'
 
+    class ToAny:
+        type: 'Type'
+        expr: 'Expr'
+
+        # noinspection PyShadowingBuiltins
+        def __init__(self, type: 'Type', expr: 'Expr'):
+            self.type = type
+            self.expr = expr
+
+    class FromAny:
+        type: 'Type'
+        expr: 'Expr'
+
+        # noinspection PyShadowingBuiltins
+        def __init__(self, type: 'Type', expr: 'Expr'):
+            self.type = type
+            self.expr = expr
+
+    class ToTextTemplateId:
+        type: 'Type'
+
+        # noinspection PyShadowingBuiltins
+        def __init__(self, type: 'Type'):
+            self.type = type
+
     __slots__ = 'location', '_Sum_name', '_Sum_value'
 
     def __init__(
@@ -567,8 +828,8 @@ class Expr:
             rec_proj: 'RecProj' = MISSING,
             variant_con: 'VariantCon' = MISSING,
             enum_con: 'EnumCon' = MISSING,
-            tuple_con: 'TupleCon' = MISSING,
-            tuple_proj: 'TupleProj' = MISSING,
+            struct_con: 'StructCon' = MISSING,
+            struct_proj: 'StructProj' = MISSING,
             app: 'App' = MISSING,
             ty_app: 'TyApp' = MISSING,
             abs: 'Abs' = MISSING,
@@ -580,10 +841,14 @@ class Expr:
             update: 'Update' = MISSING,
             scenario: 'Scenario' = MISSING,
             rec_upd: 'RecUpd' = MISSING,
-            tuple_upd: 'TupleUpd' = MISSING,
+            struct_upd: 'StructUpd' = MISSING,
             optional_none: 'OptionalNone' = MISSING,
             optional_some: 'OptionalSome' = MISSING,
-            location: 'Location' = MISSING):
+            location: 'Location' = MISSING,
+            to_any: 'ToAny' = MISSING,
+            from_any: 'FromAny' = MISSING,
+            to_text_template_id: 'ToTextTemplateId' = MISSING,
+            type_rep: 'Type' = MISSING):
         object.__setattr__(self, 'location', location)
         if var is not MISSING:
             object.__setattr__(self, '_Sum_name', 'var')
@@ -612,12 +877,12 @@ class Expr:
         elif enum_con is not MISSING:
             object.__setattr__(self, '_Sum_name', 'enum_con')
             object.__setattr__(self, '_Sum_value', enum_con)
-        elif tuple_con is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'tuple_con')
-            object.__setattr__(self, '_Sum_value', tuple_con)
-        elif tuple_proj is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'tuple_proj')
-            object.__setattr__(self, '_Sum_value', tuple_proj)
+        elif struct_con is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'struct_con')
+            object.__setattr__(self, '_Sum_value', struct_con)
+        elif struct_proj is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'struct_proj')
+            object.__setattr__(self, '_Sum_value', struct_proj)
         elif app is not MISSING:
             object.__setattr__(self, '_Sum_name', 'app')
             object.__setattr__(self, '_Sum_value', app)
@@ -651,15 +916,27 @@ class Expr:
         elif rec_upd is not MISSING:
             object.__setattr__(self, '_Sum_name', 'rec_upd')
             object.__setattr__(self, '_Sum_value', rec_upd)
-        elif tuple_upd is not MISSING:
-            object.__setattr__(self, '_Sum_name', 'tuple_upd')
-            object.__setattr__(self, '_Sum_value', tuple_upd)
+        elif struct_upd is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'struct_upd')
+            object.__setattr__(self, '_Sum_value', struct_upd)
         elif optional_none is not MISSING:
             object.__setattr__(self, '_Sum_name', 'optional_none')
             object.__setattr__(self, '_Sum_value', optional_none)
         elif optional_some is not MISSING:
             object.__setattr__(self, '_Sum_name', 'optional_some')
             object.__setattr__(self, '_Sum_value', optional_some)
+        elif to_any is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'to_any')
+            object.__setattr__(self, '_Sum_value', to_any)
+        elif from_any is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'from_any')
+            object.__setattr__(self, '_Sum_value', from_any)
+        elif to_text_template_id is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'to_text_template_id')
+            object.__setattr__(self, '_Sum_value', to_text_template_id)
+        elif type_rep is not MISSING:
+            object.__setattr__(self, '_Sum_name', 'type_rep')
+            object.__setattr__(self, '_Sum_value', type_rep)
         else:
             raise ValueError(f'At least one valid Sum value must be supplied!')
 
@@ -703,12 +980,12 @@ class Expr:
         return self._Sum_value if self._Sum_name == 'enum_con' else None
 
     @property
-    def tuple_con(self) -> 'Optional[TupleCon]':
-        return self._Sum_value if self._Sum_name == 'tuple_con' else None
+    def struct_con(self) -> 'Optional[StructCon]':
+        return self._Sum_value if self._Sum_name == 'struct_con' else None
 
     @property
-    def tuple_proj(self) -> 'Optional[TupleProj]':
-        return self._Sum_value if self._Sum_name == 'tuple_proj' else None
+    def struct_proj(self) -> 'Optional[StructProj]':
+        return self._Sum_value if self._Sum_name == 'struct_proj' else None
 
     @property
     def app(self) -> 'Optional[App]':
@@ -755,8 +1032,8 @@ class Expr:
         return self._Sum_value if self._Sum_name == 'rec_upd' else None
 
     @property
-    def tuple_upd(self) -> 'Optional[TupleUpd]':
-        return self._Sum_value if self._Sum_name == 'tuple_upd' else None
+    def struct_upd(self) -> 'Optional[StructUpd]':
+        return self._Sum_value if self._Sum_name == 'struct_upd' else None
 
     @property
     def optional_none(self) -> 'Optional[OptionalNone]':
@@ -765,6 +1042,22 @@ class Expr:
     @property
     def optional_some(self) -> 'Optional[OptionalSome]':
         return self._Sum_value if self._Sum_name == 'optional_some' else None
+
+    @property
+    def to_any(self) -> 'Optional[ToAny]':
+        return self._Sum_value if self._Sum_name == 'to_any' else None
+
+    @property
+    def from_any(self) -> 'Optional[FromAny]':
+        return self._Sum_value if self._Sum_name == 'from_any' else None
+
+    @property
+    def to_text_template_id(self) -> 'Optional[ToTextTemplateId]':
+        return self._Sum_value if self._Sum_name == 'to_text_template_id' else None
+
+    @property
+    def type_rep(self) -> 'Optional[Type]':
+        return self._Sum_value if self._Sum_name == 'type_rep' else None
 
     # noinspection PyPep8Naming
     def Sum_match(
@@ -778,8 +1071,8 @@ class Expr:
             rec_proj: 'Callable[[RecProj], T]',
             variant_con: 'Callable[[VariantCon], T]',
             enum_con: 'Callable[[EnumCon], T]',
-            tuple_con: 'Callable[[TupleCon], T]',
-            tuple_proj: 'Callable[[TupleProj], T]',
+            struct_con: 'Callable[[StructCon], T]',
+            struct_proj: 'Callable[[StructProj], T]',
             app: 'Callable[[App], T]',
             ty_app: 'Callable[[TyApp], T]',
             abs: 'Callable[[Abs], T]',
@@ -791,9 +1084,13 @@ class Expr:
             update: 'Callable[[Update], T]',
             scenario: 'Callable[[Scenario], T]',
             rec_upd: 'Callable[[RecUpd], T]',
-            tuple_upd: 'Callable[[TupleUpd], T]',
+            struct_upd: 'Callable[[StructUpd], T]',
             optional_none: 'Callable[[OptionalNone], T]',
-            optional_some: 'Callable[[OptionalSome], T]') -> 'T':
+            optional_some: 'Callable[[OptionalSome], T]',
+            to_any: 'Callable[[ToAny], T]',
+            from_any: 'Callable[[ToAny], T]',
+            to_text_template_id: 'Callable[[ToTextTemplateId], T]',
+            type_rep: 'Callable[[Type], T') -> 'T':
         if self._Sum_name == 'var':
             return var(self.var)
         elif self._Sum_name == 'val':
@@ -812,10 +1109,10 @@ class Expr:
             return variant_con(self.variant_con)
         elif self._Sum_name == 'enum_con':
             return enum_con(self.enum_con)
-        elif self._Sum_name == 'tuple_con':
-            return tuple_con(self.tuple_con)
-        elif self._Sum_name == 'tuple_proj':
-            return tuple_proj(self.tuple_proj)
+        elif self._Sum_name == 'struct_con':
+            return struct_con(self.struct_con)
+        elif self._Sum_name == 'struct_proj':
+            return struct_proj(self.struct_proj)
         elif self._Sum_name == 'app':
             return app(self.app)
         elif self._Sum_name == 'ty_app':
@@ -838,12 +1135,20 @@ class Expr:
             return scenario(self.scenario)
         elif self._Sum_name == 'rec_upd':
             return rec_upd(self.rec_upd)
-        elif self._Sum_name == 'tuple_upd':
-            return tuple_upd(self.tuple_upd)
+        elif self._Sum_name == 'struct_upd':
+            return struct_upd(self.struct_upd)
         elif self._Sum_name == 'optional_none':
             return optional_none(self.optional_none)
         elif self._Sum_name == 'optional_some':
             return optional_some(self.optional_some)
+        elif self._Sum_name == 'to_any':
+            return to_any(self.to_any)
+        elif self._Sum_name == 'from_any':
+            return from_any(self.from_any)
+        elif self._Sum_name == 'to_text_template_id':
+            return to_text_template_id(self.to_text_template_id)
+        elif self._Sum_name == 'type_rep':
+            return type_rep(self.type_rep)
         else:
             raise Exception
 
@@ -864,7 +1169,7 @@ class CaseAlt:
 
     @dataclass(frozen=True)
     class Enum:
-        con: TypeReference
+        con: TypeConName
         constructor: str
 
     @dataclass(frozen=True)
@@ -1307,6 +1612,22 @@ class BuiltinFunction(Enum):
     DIV_DECIMAL = 3
     ROUND_DECIMAL = 6
 
+    ADD_NUMERIC = 107
+    SUB_NUMERIC = 108
+    MUL_NUMERIC = 109
+    DIV_NUMERIC = 110
+    ROUND_NUMERIC = 111
+    CAST_NUMERIC = 121
+    SHIFT_NUMERIC = 122
+
+    GENMAP_EMPTY = 124
+    GENMAP_INSERT = 125
+    GENMAP_LOOKUP = 126
+    GENMAP_DELETE = 127
+    GENMAP_KEYS = 128
+    GENMAP_VALUES = 129
+    GENMAP_SIZE = 130
+
     ADD_INT64 = 7
     SUB_INT64 = 8
     MUL_INT64 = 9
@@ -1331,6 +1652,7 @@ class BuiltinFunction(Enum):
 
     LEQ_INT64 = 33
     LEQ_DECIMAL = 34
+    LEQ_NUMERIC = 112
     LEQ_TEXT = 36
     LEQ_TIMESTAMP = 37
     LEQ_DATE = 67
@@ -1338,6 +1660,7 @@ class BuiltinFunction(Enum):
 
     LESS_INT64 = 39
     LESS_DECIMAL = 40
+    LESS_NUMERIC = 113
     LESS_TEXT = 42
     LESS_TIMESTAMP = 43
     LESS_DATE = 68
@@ -1345,6 +1668,7 @@ class BuiltinFunction(Enum):
 
     GEQ_INT64 = 45
     GEQ_DECIMAL = 46
+    GEQ_NUMERIC = 114
     GEQ_TEXT = 48
     GEQ_TIMESTAMP = 49
     GEQ_DATE = 69
@@ -1352,6 +1676,7 @@ class BuiltinFunction(Enum):
 
     GREATER_INT64 = 51
     GREATER_DECIMAL = 52
+    GREATER_NUMERIC = 115
     GREATER_TEXT = 54
     GREATER_TIMESTAMP = 55
     GREATER_DATE = 70
@@ -1359,16 +1684,16 @@ class BuiltinFunction(Enum):
 
     TO_TEXT_INT64 = 57
     TO_TEXT_DECIMAL = 58
+    TO_TEXT_NUMERIC = 116
     TO_TEXT_TEXT = 60
     TO_TEXT_TIMESTAMP = 61
     TO_TEXT_DATE = 71
     TO_QUOTED_TEXT_PARTY = 63  # legacy, remove in next major version
     TO_TEXT_PARTY = 94  # Available Since version 1.2
-    TO_TEXT_CODE_POINTS = 105
     FROM_TEXT_PARTY = 95  # Available Since version 1.2
     FROM_TEXT_INT64 = 103  # Available Since version 1.5
     FROM_TEXT_DECIMAL = 104  # Available Since version 1.5
-    FROM_TEXT_CODE_POINTS = 106
+    FROM_TEXT_NUMERIC = 117
     SHA256_TEXT = 93  # Available Since version 1.2
 
     DATE_TO_UNIX_DAYS = 72  # Date -> Int64
@@ -1380,10 +1705,14 @@ class BuiltinFunction(Enum):
     INT64_TO_DECIMAL = 76
     DECIMAL_TO_INT64 = 77
 
+    INT64_TO_NUMERIC = 118
+    NUMERIC_TO_INT64 = 119
+
     IMPLODE_TEXT = 78
 
     EQUAL_INT64 = 79
     EQUAL_DECIMAL = 80
+    EQUAL_NUMERIC = 120
     EQUAL_TEXT = 81
     EQUAL_TIMESTAMP = 82
     EQUAL_DATE = 83
@@ -1391,10 +1720,24 @@ class BuiltinFunction(Enum):
     EQUAL_BOOL = 85
     EQUAL_CONTRACT_ID = 86
     EQUAL_LIST = 87
+    EQUAL_TYPE_REP = 123
+    EQUAL = 131
 
     TRACE = 88
 
     COERCE_CONTRACT_ID = 102
+
+    TO_TEXT_CODE_POINTS = 105
+    FROM_TEXT_CODE_POINTS = 106
+
+    TEXT_TO_UPPER = 9901
+    TEXT_TO_LOWER = 9902
+    TEXT_SLICE = 9903
+    TEXT_SLICE_INDEX = 9904
+    TEXT_CONTAINS_ONLY = 9905
+    TEXT_REPLICATE = 9906
+    TEXT_SPLIT_ON = 9907
+    TEXT_INTERCALATE = 9908
 
 
 class PrimCon(Enum):
@@ -1585,6 +1928,7 @@ class DefDataType:
             record: 'DefDataType.Fields' = MISSING,
             variant: 'DefDataType.Fields' = MISSING,
             enum: 'DefDataType.EnumConstructors' = MISSING,
+            synonym: 'Type' = MISSING,
             serializable: bool = MISSING,
             location: 'Location' = MISSING):
         self.name = name
@@ -1598,6 +1942,9 @@ class DefDataType:
         elif enum is not MISSING:
             self._DataCons_name = 'enum'
             self._DataCons_value = enum
+        elif synonym is not MISSING:
+            self._DataCons_name = 'synonym'
+            self._DataCons_value = synonym
         self.serializable = serializable
         self.location = location
 
@@ -1612,6 +1959,18 @@ class DefDataType:
     @property
     def enum(self) -> 'Optional[DefDataType.EnumConstructors]':
         return self._DataCons_value if self._DataCons_name == 'enum' else None
+
+    @property
+    def synonym(self) -> 'Optional[Type]':
+        return self._DataCons_value if self._DataCons_name == 'synonym' else None
+
+
+@dataclass(frozen=True)
+class DefTypeSyn:
+    name: 'DottedName'
+    params: 'Sequence[TypeVarWithKind]'
+    type: 'Type'
+    location: 'Optional[Location]'
 
 
 @dataclass(frozen=True)
@@ -1657,6 +2016,7 @@ class FeatureFlags:
 class Module:
     name: 'DottedName'
     flags: 'FeatureFlags'
+    synonyms: 'Sequence[DefTypeSyn]'
     data_types: 'Sequence[DefDataType]'
     values: 'Sequence[DefValue]'
     templates: 'Sequence[DefTemplate]'
@@ -1665,9 +2025,16 @@ class Module:
 @dataclass(frozen=True)
 class Package:
     modules: 'Sequence[Module]'
+    metadata: 'Optional[PackageMetadata]'
+
+
+@dataclass(frozen=True)
+class PackageMetadata:
+    name: str
+    version: str
 
 
 @dataclass(frozen=True)
 class Archive:
-    hash: str
+    hash: 'PackageRef'
     package: 'Package'

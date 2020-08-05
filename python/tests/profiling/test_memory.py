@@ -7,31 +7,29 @@ active contract set information, and not additional things about transactions. L
 test are more likely to be the fault of infrastructural code.
 """
 
+import sys
 from asyncio import get_event_loop
 from datetime import datetime
-from pathlib import Path
 
-from dazl import create, sandbox, setup_default_logger, Network
+from dazl import create, setup_default_logger, Network
 from dazl.model.reading import ContractCreateEvent, ReadyEvent
 from pympler import muppy, summary
 
 
-def main():
-    DAML_FILE = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
-    with sandbox(DAML_FILE, extra_args=['-w', '--jdbcurl', 'jdbc:h2:file:sandbox.db']) as proc:
-        network = Network()
-        network.set_config(url=proc.url)
+def main(url: str):
+    network = Network()
+    network.set_config(url=url)
 
-        test_party = network.aio_party('TestA')
-        test_party.add_ledger_ready(ready)
-        test_party.add_ledger_created('Main.PostmanRole', created)
+    test_party = network.aio_party('TestA')
+    test_party.add_ledger_ready(ready)
+    test_party.add_ledger_created('Main.PostmanRole', created)
 
-        other_party = network.aio_party('TestB')
-        other_party.add_ledger_ready(ready)
+    other_party = network.aio_party('TestB')
+    other_party.add_ledger_ready(ready)
 
-        dump_state()
+    dump_state()
 
-        network.run_forever()
+    network.run_forever()
 
 
 def ready(event: ReadyEvent):
@@ -54,4 +52,4 @@ def dump_state():
 
 if __name__ == '__main__':
     setup_default_logger()
-    main()
+    main(sys.argv[1])

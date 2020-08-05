@@ -36,15 +36,9 @@ class PrometheusMetricEvents(MetricEvents):
             'dazl_network_loop_responsiveness_seconds',
             'Number of seconds to immediately schedule and execute a no-op on the event loop',
             registry=registry)
-        self._offset = Gauge(
-            'dazl_party_offset',
-            'current read offset',
-            ['party'],
-            registry=registry)
 
     def loop_responsiveness(self, responsiveness: 'timedelta') -> None:
         self._loop_responsiveness_seconds.set(responsiveness.total_seconds())
 
     def party_offset(self, party: 'Party', offset: str) -> None:
-        if offset is not None:
-            self._offset.labels(party).set(offset)
+        pass

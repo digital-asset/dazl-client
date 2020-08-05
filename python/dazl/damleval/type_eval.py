@@ -67,11 +67,11 @@ class TypeComputer(ExprVisitor[Type], IdentityTypeVisitor):
     def visit_expr_variant_con(self, variant_con: 'Expr.VariantCon') -> 'Type':
         return self.visit_type(Type(con=variant_con.tycon))
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'Type':
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'Type':
         return Type(tuple=Type.Tuple([FieldWithType(fwe.field, self.visit_expr(fwe.expr))
-                                      for fwe in tuple_con.fields]))
+                                      for fwe in struct_con.fields]))
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> 'Type':
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'Type':
         pass
 
     def visit_expr_app(self, app: 'Expr.App') -> 'Type':
@@ -133,7 +133,7 @@ class TypeComputer(ExprVisitor[Type], IdentityTypeVisitor):
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'Type':
         raise Exception('Update not yet supported')
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'Type':
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> 'Type':
         raise Exception('Update not yet supported')
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'Type':

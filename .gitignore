@@ -1,6 +1,8 @@
 .sw?
 .*.sw?
 *.pyc
+*.hi
+*.hie
 .daml
 .venv
 .vscode
@@ -15,6 +17,7 @@ python/dazl.egg-info
 python/dist
 python/pip-wheel-metadata
 app.log
+navigator.log
 sandbox.log
 target
 *#

@@ -5,7 +5,7 @@ from asyncio import ensure_future, gather, get_event_loop, wait, Future
 from concurrent.futures import ALL_COMPLETED
 
 from dataclasses import replace, dataclass, field, fields, asdict
-from datetime import datetime, timedelta
+from datetime import datetime
 from io import StringIO
 from typing import Any, Awaitable, Collection, List, Optional, Sequence, Set, Tuple, \
     TypeVar, TYPE_CHECKING
@@ -18,7 +18,7 @@ from .config import NetworkConfig, PartyConfig
 from .state import ActiveContractSet
 from ._writer_verify import ValidateSerializer
 from ..model.core import ContractMatch, ContractsState, ContractId, \
-    CommandTimeoutError, ContractContextualData, ContractContextualDataCollection, Party
+    ContractContextualData, ContractContextualDataCollection, Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEvent, OffsetEvent, \
@@ -26,9 +26,9 @@ from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEven
     InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from ..protocols import LedgerNetwork, LedgerClient
-from ..util.asyncio_util import ServiceQueue, await_then, completed, safe_create_future, \
-    named_gather
+from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
+from ..util.prim_types import TimeDeltaConvertible, to_timedelta
 from ..util.typing import safe_cast
 
 if TYPE_CHECKING:
@@ -51,10 +51,10 @@ class _PartyClientImpl:
         self._pool = None  # type: Optional[LedgerNetwork]
         self._pool_fut = None  # type: Optional[Awaitable[LedgerNetwork]]
         self._client_fut = None  # type: Optional[Awaitable[LedgerClient]]
-        self._ready_fut = safe_create_future()
+        self._ready_fut = self.invoker.create_future()
         self._known_packages = set()  # type: Set[str]
 
-        self._acs = ActiveContractSet()
+        self._acs = ActiveContractSet(self.invoker)
         self.bots = BotCollection(party)
         self._reader = _PartyClientReaderState()
         self._writer = _PartyClientWriterState()
@@ -95,7 +95,6 @@ class _PartyClientImpl:
             The ledger time to publish as part of the :class:`InitEvent`.
         :param metadata:
             Information about the connected ledger.
-        :return:
         """
         self._acs.metadata_future.set_result(metadata.store)
         evt = InitEvent(self, self.party, current_time, metadata.ledger_id, metadata.store)
@@ -103,12 +102,6 @@ class _PartyClientImpl:
 
     def ready(self) -> Awaitable[None]:
         return self._ready_fut
-
-    def get_time(self) -> Awaitable[datetime]:
-        return await_then(self._pool.ledger(), lambda metadata: metadata.time_model.get_time())
-
-    def set_time(self, new_datetime) -> Awaitable[None]:
-        return await_then(self._pool_fut, lambda pool: pool.set_time(new_datetime))
 
     # region Event Handler Management
 
@@ -203,11 +196,12 @@ class _PartyClientImpl:
             The ledger offset that the reader ended at and a Future that is resolved when all event
             handlers' follow-ups have either successfully or unsuccessfully completed.
         """
-        LOG.info('Calling read_acs(%r, %r)', until_offset, raise_events)
+        LOG.info('Calling read_acs(%r, %r) for party: %r', until_offset, raise_events, self.party)
         client = await self._client_fut
         acs = await client.active_contracts()
         for acs_evt in acs:
             await self._process_transaction_stream_event(acs_evt, False)
+        LOG.info('read_acs() finished at offset %r for party: %r', self._reader.offset, self.party)
 
         return await self.read_transactions(until_offset, raise_events)
 
@@ -308,7 +302,7 @@ class _PartyClientImpl:
             # Notify anything waiting on commands to complete that some of them will have
             # completed as a consequence of this transaction.
             for cmd in self._writer.inflight_commands:
-                cmd.notify_read_done(event.command_id, event.time)
+                cmd.notify_read_done(event.command_id)
 
             LOG.debug('evt recv: party %s, BIM %r (%s events)',
                       self.party, event.command_id[0:7], len(event.contract_events))
@@ -335,7 +329,8 @@ class _PartyClientImpl:
             self,
             commands: EventHandlerResponse,
             ignore_errors: bool = False,
-            workflow_id: 'Optional[str]' = None) \
+            workflow_id: 'Optional[str]' = None,
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> Awaitable[None]:
         """
         Submit a command or list of commands.
@@ -347,6 +342,10 @@ class _PartyClientImpl:
             then a failure to send this command does not necessarily end the client.
         :param workflow_id:
             The workflow ID to use to tag submitted commands.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         :return:
             An ``asyncio.Future`` that is resolved right before the corresponding side effects have
             hit the event stream for this party. Synchronous errors are reported back immediately
@@ -355,7 +354,10 @@ class _PartyClientImpl:
         if workflow_id is None:
             workflow_id = uuid.uuid4().hex
         cb = CommandBuilder.coerce(commands, atomic_default=True)
-        cb.defaults(workflow_id=workflow_id)
+        cb.defaults(
+            workflow_id=workflow_id,
+            deduplication_time=(to_timedelta(deduplication_time)
+                                if deduplication_time is not None else None))
 
         p = _PendingCommand(cb)
         p.future.add_done_callback(lambda _: self._process_command_finished(p, ignore_errors))
@@ -365,16 +367,20 @@ class _PartyClientImpl:
 
     def _process_command_finished(self, pending_command, ignore_errors):
         try:
-            if pending_command.future.exception() is None:
-                LOG.debug('Command finished: %s', pending_command)
             self._writer.inflight_commands.remove(pending_command)
         except ValueError:
             LOG.warning('Tried to remove %s even though it was already removed.', pending_command)
 
-        if pending_command.future.exception() is not None:
-            # TODO: more with this; maybe let the user respond to this
-            LOG.exception('A command submission failed!',
-                          exc_info=pending_command.future.exception())
+        if pending_command.future.cancelled():
+            LOG.debug("Command cancelled: %s", pending_command)
+        else:
+            ex = pending_command.future.exception()
+            if ex is not None:
+                # TODO: more with this; maybe let the user respond to this
+                LOG.exception('A command submission failed!',
+                              exc_info=pending_command.future.exception())
+            else:
+                LOG.debug('Command finished: %s', pending_command)
 
     async def main_writer(self):
         """
@@ -395,8 +401,13 @@ class _PartyClientImpl:
         # ServiceQueue is stopped.
         async for p in self._writer.pending_commands:
             LOG.debug('Sending a command: %s', p)
-            ledger_effective_time = metadata.time_model.get_time()
             command_payloads = []  # type: List[Tuple[_PendingCommand, Sequence[CommandPayload]]]
+
+            if p.future.done():
+                # PendingCommand instances that are already marked as done have either been marked
+                # as a failure or cancelled by the caller. Do NOT send the corresponding Ledger API
+                # command because the PendingCommand() has effectively been aborted.
+                continue
 
             self._writer.inflight_commands.append(p)
             try:
@@ -405,9 +416,8 @@ class _PartyClientImpl:
                     default_ledger_id=metadata.ledger_id,
                     default_workflow_id=None,
                     default_application_id=self._config.application_name,
-                    default_command_id=None,
-                    default_ttl=timedelta(seconds=30))
-                cps = p.command.build(defaults, ledger_effective_time)
+                    default_command_id=None)
+                cps = p.command.build(defaults)
                 if cps:
                     commands = [replace(cp, commands=validator.serialize_commands(cp.commands))
                                 for cp in cps]  # type: Sequence[CommandPayload]
@@ -416,7 +426,8 @@ class _PartyClientImpl:
                 else:
                     # This is a "null command"; don't even bother sending to the server. Immediately
                     # resolve the future successfully and discard
-                    p.future.set_result(None)
+                    if not p.future.done():
+                        p.future.set_result(None)
             except Exception as ex:
                 LOG.exception("Tried to send a command and failed!")
                 p.notify_read_fail(ex)
@@ -463,21 +474,17 @@ class _PendingCommand:
     Track the status of a set of commands in-flight.
     """
 
-    __slots__ = ('command', 'command_ids', 'max_record_time', 'future')
+    __slots__ = ('command', 'command_ids', 'future')
 
     def __init__(self, command: CommandBuilder):
         self.command = safe_cast(CommandBuilder, command)
         self.command_ids = None  # type: Optional[Set[str]]
-        self.max_record_time = None  # type: Optional[datetime]
         self.future = get_event_loop().create_future()
 
-    def notify_write(self, command_ids: Collection[str], max_record_time: datetime):
-        if self.max_record_time is not None:
-            raise Exception('cannot send an already in-progress command')
+    def notify_write(self, command_ids: Collection[str]):
         self.command_ids = set(command_ids)
-        self.max_record_time = max_record_time
 
-    def notify_read_done(self, command_id: str, ledger_time: Optional[datetime]):
+    def notify_read_done(self, command_id: str):
         """
         Trigger an appropriate response given the receipt of a transaction.
         """
@@ -488,15 +495,20 @@ class _PendingCommand:
             self.command_ids.discard(command_id)
             if not self.command_ids:
                 # the command is finished
-                self.future.set_result(None)
+                if not self.future.done():
+                    self.future.set_result(None)
                 return
 
-        if self.max_record_time is not None and ledger_time is not None and \
-                self.max_record_time < ledger_time:
-            self.future.set_exception(CommandTimeoutError())
-
     def notify_read_fail(self, ex: Exception):
-        self.future.set_exception(ex)
+        if self.future.done():
+            # The user may have cancelled the command or otherwise terminated the Future; trying
+            # to set an exception on a done Future will itself throw an exception, so the best
+            # we can do is log
+            LOG.exception(
+                'An exception was received and reported to a Future that has already been aborted! '
+                'This cannot be reported in a normal way.', ex)
+        else:
+            self.future.set_exception(ex)
 
     def __eq__(self, other):
         return self is other
@@ -511,10 +523,6 @@ class _PendingCommand:
             if self.command_ids is not None:
                 buf.write(', command_ids=')
                 buf.write(format(self.command_ids))
-            if self.max_record_time is not None:
-                buf.write(', max_record_time="')
-                buf.write(format(self.max_record_time.isoformat()))
-                buf.write('"')
             buf.write(', future=')
             buf.write(format(self.future))
             buf.write('>')
@@ -538,7 +546,6 @@ def submit_command_async(
     """
     coros = []
     command_ids = []
-    maximum_record_time = commands[0].maximum_record_time
 
     for payload in commands:
         coro = None
@@ -556,7 +563,7 @@ def submit_command_async(
         if coro is not None:
             coros.append(coro)
 
-    p.notify_write(command_ids, maximum_record_time)
+    p.notify_write(command_ids)
     if len(coros) == 0:
         return completed(None)
     elif len(coros) == 1:

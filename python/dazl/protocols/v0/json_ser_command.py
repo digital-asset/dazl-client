@@ -152,11 +152,13 @@ def _define_scalar_formatters():
         "Char": str,
         "Integer": int,
         "Decimal": Decimal,
+        "Numeric": Decimal,
         "Text": str,
         "Party": str,
         "RelTime": timedelta_for_json,
         "Date": date_for_json,
         "Time": time_for_json,
+        "Any": str,
     }
 
     if len(ScalarType.BUILTINS) != len(formatters):
@@ -178,8 +180,6 @@ class JsonSerializer(AbstractSerializer[dict, R]):
         commands = [self.serialize_command(command) for command in command_payload.commands]
         return dict(
             businessIntent=command_payload.command_id,
-            ledgerEffectiveTime=command_payload.ledger_effective_time,
-            maximumRecordTime=command_payload.maximum_record_time,
             commands=commands,
             application=command_payload.application_id)
 
@@ -187,7 +187,7 @@ class JsonSerializer(AbstractSerializer[dict, R]):
         # the package_id in ModuleRef is a convenient place to
         # stash legacy template IDs in the REST endpoint
         return {'create': {
-            'template': template_type.name.module.package_id,
+            'template': str(template_type.name.con),
             'arguments': template_args}}
 
     def serialize_exercise_command(

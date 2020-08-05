@@ -7,7 +7,7 @@ Utilities for dealing with the file system.
 
 import socket
 import sys
-from io import BufferedIOBase, TextIOBase, SEEK_SET
+from io import BufferedIOBase, SEEK_SET
 from pathlib import Path
 from types import TracebackType
 from typing import BinaryIO, TextIO, Optional, Type, Iterator, Iterable, List, Union, overload
@@ -94,75 +94,6 @@ def find_nearest_ancestor(file_name: str, relative_to: Union[str, Path]) -> 'Opt
                 return None
             else:
                 relative_to = new_relative_to
-
-
-class LoggingStream(TextIOBase):
-    """
-    A text "stream" that actually redirects to the specified logger at the specified log level.
-    """
-    def __init__(self, logger, log_level):
-        self.logger = logger
-        self.log_level = log_level
-        self._buf = None  # type: Optional[str]
-
-    def __enter__(self) -> 'LoggingStream':
-        """
-        Does nothing; LoggingStreams are not closeable.
-        """
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """
-        Does nothing; LoggingStreams are not closeable.
-        """
-
-    @property
-    def buffer(self):
-        return None
-
-    def closed(self) -> bool:
-        return False
-
-    def close(self) -> None:
-        """
-        Does nothing; LoggingStreams are not closeable.
-        """
-
-    def write(self, text: str) -> int:
-        # weed out empty or None strings
-        if not text:
-            return 0
-
-        lines = str.splitlines(text)
-        trail = None if text.endswith('\n') else lines.pop()
-        if lines:
-            # if there is at least one line that we are definitely writing out, then grab the rest
-            # of our buffer and prepend it to the first line
-            if self._buf is not None:
-                prefix = self._buf
-                lines[0] = prefix + lines[0]
-                self._buf = None
-
-        if trail is not None:
-            # if there is trailing text that we are not supposed to write, either append it to our
-            # buffer in progress or create a new buffer specifically for that text
-            if self._buf is not None:
-                self._buf += trail
-            else:
-                self._buf = trail
-
-        for line in lines:
-            # now actually log the lines we were supposed to log
-            self.logger.log(self.log_level, line)
-
-        return len(text)
-
-    def writelines(self, lines: Iterable[str]) -> None:
-        for line in lines:
-            if self._buf is not None:
-                line = self._buf + line
-                self._buf = None
-            self.logger.log(self.log_level, line)
 
 
 class StdoutStreamWrapper(TextIO):

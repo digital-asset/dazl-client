@@ -12,12 +12,12 @@ the Ledger API.
    :members:
 """
 import warnings
+from pathlib import Path
+
 from dataclasses import dataclass
-from typing import Any, Callable, Collection, Dict, List, NewType, Optional, Tuple, TypeVar, \
+from typing import Any, BinaryIO, Callable, Collection, Dict, NewType, Optional, Tuple, TypeVar, \
     Union, TYPE_CHECKING
 from datetime import datetime
-
-from ..util.enum import OrderedEnum
 
 if TYPE_CHECKING:
     from .types import Type
@@ -158,19 +158,15 @@ class ContractContextualData:
     active: bool
 
 
+# Wherever the API expects a DAR, we can take a file path, `bytes`, or a byte buffer.
+Dar = Union[bytes, str, Path, BinaryIO]
+
+
 @dataclass(frozen=True)
 class SourceLocation:
     file_name: str
     start_line: int
     end_line: int
-
-
-class RunLevel(OrderedEnum):
-    RUN_FOREVER = 0
-    RUN_UNTIL_IDLE = 1
-    TERMINATE_GRACEFULLY = 2
-    TERMINATE_IMMEDIATELY = 3
-    STOPPED = 4
 
 
 class DazlError(Exception):
@@ -232,11 +228,11 @@ class ConfigurationError(DazlError):
     """
     def __init__(self, reasons: 'Union[str, Collection[str]]'):
         if reasons is None:
-            self.reasons = []  # type: List[str]
+            self.reasons = []  # type: Collection[str]
         elif isinstance(reasons, str):
             self.reasons = [reasons]
         else:
-            self.reasons = reasons  # type: List[str]
+            self.reasons = reasons  # type: Collection[str]
 
 
 class ConnectionClosedError(DazlError):

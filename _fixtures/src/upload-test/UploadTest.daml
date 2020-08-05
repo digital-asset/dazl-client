@@ -1,0 +1,14 @@
+-- UploadTest.daml
+--
+-- This is ONLY used to test DAR uploading functionality. The test that uploads
+-- this DAR assumes it has not been uploaded by any other process before, so it
+-- should only be used for that one test.
+daml 1.2
+
+module UploadTest where
+
+template XYZ
+    with
+        party: Party
+    where
+        signatory party

@@ -8,8 +8,8 @@ from ._render_base import PrettyPrintBase, pretty_print_syntax
 from .util import maybe_parentheses, indent
 from .. import LOG
 from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, Type, Case, Block, \
-    Update, Scenario, PrimType
-from ..damlast.util import def_value, list_type, PARTY_TYPE
+    Update, Scenario, PrimType, TypeConName
+from ..damlast.util import def_value, list_type, module_name, PARTY_TYPE
 from ..model.types import ModuleRef, Type as OldType, TypeReference
 from ..model.types_store import PackageStore
 
@@ -42,7 +42,10 @@ class PythonPrettyPrint(PrettyPrintBase):
         return PythonLexer()
 
     def visit_module_ref_start(self, module_ref: 'ModuleRef') -> str:
-        return f'@module\nclass {module_ref.module_name[-1]}:\n' if module_ref.module_name else ''
+        mn = str(module_name(module_ref))
+        _, _, last_component = mn.rpartition('.')
+
+        return f'@module\nclass {last_component}:\n' if last_component else ''
 
     # def visit_def_value(self, def_value: 'DefValue', as_instance_method: bool = False):
     #     def_value.name_with_type
@@ -54,7 +57,7 @@ class PythonPrettyPrint(PrettyPrintBase):
             self,
             template: 'Optional[DefTemplate]',
             def_data_type: 'Optional[DefDataType]' = None) -> str:
-        template_full_name = TypeReference(self.context.current_module, def_data_type.name.segments).full_name
+        template_full_name = str(TypeConName(self.context.current_module, def_data_type.name.segments))
         template_name = def_data_type.name.segments[-1]
         slot_names = tuple(fwt.field for fwt in def_data_type.record.fields) if def_data_type.record else ()
         signatories_def = def_value('signatories', list_type(PARTY_TYPE), template.signatories) if template is not None else None
@@ -64,7 +67,7 @@ class PythonPrettyPrint(PrettyPrintBase):
             lines.append(f'class {template_name}(metaclass=TemplateMeta, template_name={template_full_name!r}):')
             lines.append('    """')
             lines.append('    Example usage:')
-            lines.append(f'        create({template_full_name},')
+            lines.append(f'        create({template_full_name.replace(":", ".")},')
             lines.append(f'               {python_example_object(self.store, def_data_type)})')
             for choice in template.choices:
                 lines.append(f'        exercise(cid, {choice.name!r}, {python_example_object(self.store, choice.arg_binder.type)})')
@@ -158,11 +161,11 @@ class PythonPrettyPrint(PrettyPrintBase):
                 LOG.exception('why why why')
                 exit(-1)
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> str:
-        if tuple_con.fields:
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> str:
+        if struct_con.fields:
             with StringIO() as buf:
                 delim = 'tuple('
-                for fwe in tuple_con.fields:
+                for fwe in struct_con.fields:
                     buf.write(delim)
                     buf.write(fwe.field)
                     buf.write('=')
@@ -178,12 +181,12 @@ class PythonPrettyPrint(PrettyPrintBase):
         else:
             return 'tuple()'
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> str:
-        record_text = self.visit_expr(tuple_proj.tuple)
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> str:
+        record_text = self.visit_expr(struct_proj.tuple)
         if ' ' in record_text:
-            return f'({record_text})[{tuple_proj.field!r}]'
+            return f'({record_text})[{struct_proj.field!r}]'
         else:
-            return f'{record_text}[{tuple_proj.field!r}]'
+            return f'{record_text}[{struct_proj.field!r}]'
 
     def visit_expr_app_inline(self, app: 'Expr.App'):
         fun_text = maybe_parentheses(self.visit_expr(app.fun))
@@ -282,7 +285,7 @@ class PythonPrettyPrint(PrettyPrintBase):
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> str:
         raise Exception
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> str:
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> str:
         raise Exception
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> str:
@@ -366,8 +369,10 @@ class PythonPrettyPrint(PrettyPrintBase):
         elif PrimType.ARROW == prim.prim:
             type_strings = [self.visit_type(a) for a in prim.args]
             return f'Callable[[{", ".join(type_strings[:-1])}], {type_strings[-1]}]'
-        elif PrimType.MAP == prim.prim:
+        elif PrimType.TEXTMAP == prim.prim:
             return f'Map[{self.visit_type(prim.args[0])},  {self.visit_type(prim.args[1])}]'
+        elif PrimType.TYPE_REP == prim.prim:
+            return '???'
         else:
             raise ValueError(f'unknown Type.Prim: {prim!r}')
 

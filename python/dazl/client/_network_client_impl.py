@@ -9,7 +9,10 @@ from datetime import timedelta, datetime
 from threading import RLock, Thread, current_thread
 from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
     Union, overload
-from typing_extensions import Literal
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 from dataclasses import asdict
 
@@ -17,18 +20,16 @@ from .. import LOG
 from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING, NONE_IF_MISSING, \
     EXCEPTION_IF_MISSING
 from ._party_client_impl import _PartyClientImpl
-from ._run_level import RunState
 from .bots import Bot, BotCollection
-from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig, \
-    DEFAULT_CONNECT_TIMEOUT_SECONDS
+from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
 from ..metrics import MetricEvents
-from ..model.core import Party, RunLevel, DazlPartyMissingError
+from ..model.core import Party, DazlPartyMissingError
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import InitEvent, ReadyEvent, BaseEvent
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
-from ..util.asyncio_util import execute_in_loop, Invoker, safe_create_future
+from ..scheduler import Invoker, RunLevel
 from ..util.dar import get_dar_package_ids
 from ..util.prim_types import to_timedelta, TimeDeltaConvertible
 
@@ -38,16 +39,15 @@ T = TypeVar('T')
 class _NetworkImpl:
 
     __slots__ = ('_lock', '_main_thread', 'invoker', '_party_clients', '_global_impls',
-                 '_party_impls', '_run_state', 'bots', '_config', '_pool', '_pool_init',
+                 '_party_impls', 'bots', '_config', '_pool', '_pool_init',
                  '_cached_metadata', '_metrics')
 
     def __init__(self, metrics: 'Optional[MetricEvents]' = None):
         self.invoker = Invoker()
         self._lock = RLock()
         self._main_thread = None  # type: Optional[Thread]
-        self._run_state = None  # type: Optional[RunState]
         self._pool = None  # type: Optional[LedgerNetwork]
-        self._pool_init = safe_create_future()
+        self._pool_init = self.invoker.create_future()
         if metrics is None:
             # create a default set of metrics
             try:
@@ -68,27 +68,6 @@ class _NetworkImpl:
         self._config = dict()
         self.bots = BotCollection(None)
 
-    @overload
-    def run_in_loop_threadsafe(self,
-                               cb: Callable[[], Union[None, Awaitable[None]]],
-                               timeout: float = 30) -> None: ...
-
-    @overload
-    def run_in_loop_threadsafe(self,
-                               cb: Callable[[], Union[Awaitable[T], T]],
-                               timeout: float = 30) -> T: ...
-
-    def run_in_loop_threadsafe(self, cb, timeout=30):
-        """
-        Schedule a callback to be run on the event loop. This can either be a normal function or a
-        coroutine.
-
-        :param cb: The callback to invoke.
-        :param timeout: The timeout, in seconds, to abort.
-        :return: The returned value from the function or coroutine.
-        """
-        return self.invoker.run_in_loop(cb, timeout=timeout)
-
     def set_config(self, *configs: 'Union[NetworkConfig, AnonymousNetworkConfig]', **kwargs):
         for config in configs:
             self._config.update({k: v for k, v in asdict(config).items() if v is not None})
@@ -108,27 +87,45 @@ class _NetworkImpl:
     def resolved_anonymous_config(self) -> 'AnonymousNetworkConfig':
         return AnonymousNetworkConfig.parse_kwargs(**self._config)
 
-    async def aio_run(self, *coroutines, run_state: Optional[RunState] = None) -> None:
+    def freeze(self):
+        """
+        Freeze configuration, and assume the current run loop can be used to schedule dazl
+        coroutines. Once this method is called, ``aio_run()`` must be called instead of ``start()``
+        in order to run dazl.
+        """
+        with self._lock:
+            self.invoker.set_context_as_current()
+            config = self.resolved_config()
+
+        # From this point on, we're assuming we're on an asyncio event loop so locking is no longer
+        # required
+        if self._pool is None:
+            from ..protocols import LedgerConnectionOptions
+
+            # If the connect timeout is non-positive, assume the user intended for there to not be
+            # a timeout at all
+            connect_timeout = to_timedelta(config.connect_timeout)
+            if connect_timeout <= timedelta(0):
+                connect_timeout = None
+
+            options = LedgerConnectionOptions(connect_timeout=connect_timeout)
+
+            self._pool = pool = AutodetectLedgerNetwork(self.invoker, options)
+            self._pool_init.set_result(pool)
+
+        return config
+
+    async def aio_run(self, *coroutines) -> None:
         """
         Coroutine where all network activity is scheduled from.
 
         :param coroutines:
             Optional additional coroutines to run. ``aio_run`` is only considered complete once all
             of the additional coroutines are also finished.
-        :param run_state:
-            :class:`RunState` that specifies when the loop is to be terminated. If ``None`` is
-            supplied, a default :class:`RunState` that runs until explicitly stopped is assigned.
         """
         from ..metrics.instrumenters import AioLoopPerfMonitor
-        from ..protocols import LedgerConnectionOptions
 
-        if run_state is None:
-            run_state = RunState(RunLevel.RUN_FOREVER)
-
-        with self._lock:
-            self._run_state = run_state
-            self.invoker.set_context_as_current()
-            config = self.resolved_config()
+        config = self.freeze()
 
         site = None
         with AioLoopPerfMonitor(self._metrics.loop_responsiveness):
@@ -146,29 +143,17 @@ class _NetworkImpl:
                 LOG.info('No server_port configuration was specified, so metrics and other stats '
                          'will not be served.')
 
-            # If the connect timeout is non-positive, assume the user intended for there to not be
-            # a timeout at all
-            connect_timeout = to_timedelta(config.connect_timeout)
-            if connect_timeout <= timedelta(0):
-                connect_timeout = None
-
-            options = LedgerConnectionOptions(connect_timeout=connect_timeout)
-
-            self._pool = pool = AutodetectLedgerNetwork(
-                options=options, loop=self.invoker.get_loop(), executor=self.invoker.get_executor(),
-                run_state=self._run_state)
-            self._pool_init.set_result(pool)
-
             try:
-                runner = _NetworkRunner(pool, run_state, self, coroutines)
+                runner = _NetworkRunner(self._pool, self, coroutines)
                 await runner.run()
             finally:
                 await self._pool.close()
                 if site is not None:
                     await site.stop()
+                await self.invoker.shutdown(0)
                 self._pool = None
 
-    def start(self, run_state: RunState, daemon: bool) -> None:
+    def start(self, daemon: bool) -> None:
         """
         Create a background thread, start an event loop, and run the application.
         """
@@ -181,7 +166,7 @@ class _NetworkImpl:
                 loop = new_event_loop()
                 set_event_loop(loop)
 
-                loop.run_until_complete(self.aio_run(run_state=run_state))
+                loop.run_until_complete(self.aio_run())
             except:
                 LOG.exception('The main event loop died!')
 
@@ -204,11 +189,7 @@ class _NetworkImpl:
         """
         with self._lock:
             LOG.info('Shutting down...')
-            loop = self.invoker.get_loop()
-            run_state = self._run_state
-            if loop is None:
-                raise RuntimeError('shutdown() called on a non-stopped Network')
-        loop.call_soon_threadsafe(run_state.handle_sigint)
+            self.invoker.handle_sigint()
 
     def abort(self) -> None:
         """
@@ -218,11 +199,7 @@ class _NetworkImpl:
         """
         with self._lock:
             LOG.info('Aborting...')
-            loop = self.invoker.get_loop()
-            run_state = self._run_state
-            if loop is None:
-                raise RuntimeError('abort() called on a non-stopped Network')
-        loop.call_soon_threadsafe(run_state.handle_sigquit)
+            self.invoker.handle_sigquit()
 
     def join(self, timeout=None):
         """
@@ -238,10 +215,10 @@ class _NetworkImpl:
 
     def global_impl(self, ctor: 'Callable[[_NetworkImpl], T]') -> T:
         with self._lock:
-            inst = self._global_impls.get(ctor)
+            inst = self._global_impls.get(ctor)  # type: ignore
             if inst is None:
                 inst = ctor(self)
-                self._global_impls[ctor] = inst
+                self._global_impls[ctor] = inst  # type: ignore
             return inst
 
     @overload
@@ -339,7 +316,7 @@ class _NetworkImpl:
             return self._cached_metadata
 
         with self._lock:
-            return execute_in_loop(self.invoker.get_loop(), self._pool.ledger, timeout=timeout)
+            return self.invoker.run_in_loop(self._pool.ledger, timeout=timeout)
 
     async def aio_metadata(self) -> LedgerMetadata:
         """
@@ -360,7 +337,8 @@ class _NetworkImpl:
         :param timeout: Length of time before giving up.
         """
         pool = await self._pool_init
-        package_ids = get_dar_package_ids(contents)
+        await self.connect_anonymous()
+        package_ids = await self.invoker.run_in_executor(lambda: get_dar_package_ids(contents))
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)
 
@@ -368,21 +346,13 @@ class _NetworkImpl:
             self, package_ids: 'Collection[str]', timeout: 'TimeDeltaConvertible'):
         from asyncio import wait_for, TimeoutError
         timeout = to_timedelta(timeout)
-        expire_time = datetime.utcnow() + timeout
+        expire_time = datetime.max #datetime.utcnow() + timeout
         metadata = await wait_for(self.aio_metadata(), timeout.total_seconds())
         package_id_set = set(package_ids)
         while datetime.utcnow() < expire_time:
             if package_id_set.issubset(set(metadata.store.package_ids())):
                 return
         raise TimeoutError()
-
-    async def get_time(self) -> datetime:
-        metadata = await self._pool.ledger()
-        await self._pool.sync_time()
-        return metadata.time_model.get_time()
-
-    def set_time(self, new_datetime: datetime) -> Awaitable[None]:
-        return self._pool.set_time(new_datetime)
 
     # region Event Handler Management
 
@@ -414,9 +384,8 @@ class _NetworkImpl:
 
 
 class _NetworkRunner:
-    def __init__(self, pool: LedgerNetwork, run_state: RunState, network_impl: '_NetworkImpl', user_coroutines):
+    def __init__(self, pool: LedgerNetwork, network_impl: '_NetworkImpl', user_coroutines):
         self.pool = pool
-        self.run_state = run_state
         self.initialized_parties = set()  # type: Set[Party]
         self._network_impl = network_impl
         self._config = self._network_impl.resolved_config()
@@ -480,10 +449,10 @@ class _NetworkRunner:
         self._user_coroutines = [fut for fut in self._user_coroutines if not fut.done()]
 
         # If there are no more commands in flight, there is no more activity
-        if self.run_state.level >= RunLevel.TERMINATE_GRACEFULLY:
+        if self._network_impl.invoker.level >= RunLevel.TERMINATE_GRACEFULLY:
             LOG.info('network_run terminating on user request...')
             return offset, False
-        elif self.run_state.level >= RunLevel.RUN_UNTIL_IDLE:
+        elif self._network_impl.invoker.level >= RunLevel.RUN_UNTIL_IDLE:
             if not self._read_completions and not self._user_coroutines:
                 if all(pi.writer_idle() for pi in party_impls):
                     LOG.info('network_run: terminating because all writers are idle and all '
@@ -529,12 +498,11 @@ class _NetworkRunner:
 
         # Raise the 'init' event.
         init_futs = []
-        current_time = metadata.time_model.get_time()
         if first_offset is None:
-            evt = InitEvent(None, None, current_time, metadata.ledger_id, metadata.store)
+            evt = InitEvent(None, None, None, metadata.ledger_id, metadata.store)
             init_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
-            init_futs.append(ensure_future(party_impl.initialize(current_time, metadata)))
+            init_futs.append(ensure_future(party_impl.initialize(None, metadata)))
 
         # TODO: Consider what should join on init_futs; we can't join here because otherwise this
         #  blocks the readers from reading transactions that would cause these events to fully
@@ -547,12 +515,11 @@ class _NetworkRunner:
         LOG.debug('Preparing to raise the "ready" event...')
         # Raise the 'ready' event.
         ready_futs = []
-        current_time = metadata.time_model.get_time()
         if first_offset is None:
-            evt = ReadyEvent(None, None, current_time, metadata.ledger_id, metadata.store, offset)
+            evt = ReadyEvent(None, None, None, metadata.ledger_id, metadata.store, offset)
             ready_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
-            ready_futs.append(ensure_future(party_impl.emit_ready(metadata, current_time, offset)))
+            ready_futs.append(ensure_future(party_impl.emit_ready(metadata, None, offset)))
         for party_impl in party_impls:
             party_impl.ready().set_result(None)
 

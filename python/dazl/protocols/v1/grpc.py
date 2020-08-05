@@ -6,27 +6,27 @@ Support for the gRPC-based Ledger API.
 """
 from asyncio import gather, get_event_loop
 from datetime import datetime
-from threading import Thread, Event
+from threading import Event
 from typing import Awaitable, Iterable, Optional, Sequence
 
 # noinspection PyPackageRequirements
-from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credentials, RpcError
+from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credentials, RpcError, \
+    StatusCode
 
 from ... import LOG
-from .._base import LedgerClient, _LedgerConnection, _LedgerConnectionContext
-from .grpc_time import maybe_grpc_time_stream
-from .pb_parse_event import serialize_acs_request, serialize_event_id_request, \
-    serialize_transactions_request, to_acs_events, to_transaction_events, \
-    BaseEventDeserializationContext, to_created_event
+from .._base import LedgerClient, _LedgerConnection, LedgerConnectionOptions
+from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
+    to_acs_events, to_transaction_events, BaseEventDeserializationContext
 from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, find_dependencies
 from ...model.core import Party, UserTerminateRequest, ConnectionTimeoutError
-from ...model.ledger import LedgerMetadata, StaticTimeModel, RealTimeModel
+from ...model.ledger import LedgerMetadata
 from ...model.network import HTTPConnectionSettings
-from ...model.reading import BaseEvent, TransactionFilter, ActiveContractSetEvent, max_offset
+from ...model.reading import BaseEvent, TransactionFilter
+from ...model.types import PackageId, PackageIdSet
 from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
+from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
-from ...util.prim_types import to_datetime
 from ...util.typing import safe_cast
 
 
@@ -39,17 +39,17 @@ class GRPCv1LedgerClient(LedgerClient):
     def commands(self, commands: CommandPayload) -> None:
         serializer = self.ledger.serializer
         request = serializer.serialize_command_request(commands)
-        return self.connection.context.run_in_background(
+        return self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request))
 
     async def active_contracts(self) -> 'Sequence[BaseEvent]':
         request = serialize_acs_request(self.ledger.ledger_id, self.party)
         context = BaseEventDeserializationContext(
             None, self.ledger.store, self.party, self.ledger.ledger_id)
-        acs_stream = await self.connection.context.run_in_background(
+        acs_stream = await self.connection.invoker.run_in_executor(
             lambda: self.connection.active_contract_set_service.GetActiveContracts(request))
         acs_events = to_acs_events(context, acs_stream)
-        return await self._augmented_acs_events(acs_events)
+        return acs_events
 
     def events(self, transaction_filter: TransactionFilter) \
             -> Awaitable[Sequence[BaseEvent]]:
@@ -70,9 +70,9 @@ class GRPCv1LedgerClient(LedgerClient):
                 return
             results_future.set_result(events)
 
-        ts_future = self.connection.context.run_in_background(
+        ts_future = self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetTransactions(request))
-        tst_future = self.connection.context.run_in_background(
+        tst_future = self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetTransactionTrees(request))
         t_fut = gather(ts_future, tst_future)
         t_fut.add_done_callback(on_events_done)
@@ -82,67 +82,8 @@ class GRPCv1LedgerClient(LedgerClient):
     async def events_end(self) -> str:
         from . import model as G
         request = G.GetLedgerEndRequest(ledger_id=self.ledger.ledger_id)
-        return await self.connection.context.run_in_background(
+        return await self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetLedgerEnd(request).offset.absolute)
-
-    async def _augmented_acs_events(self, acs_events: 'Sequence[ActiveContractSetEvent]')  \
-            -> 'Sequence[ActiveContractSetEvent]':
-        # This method generally compensates for unexpected/missing behavior from the Active Contract
-        # Set service. It fills in effective dates (since they are not part of a ContractEvent)
-        # and also filters out disclosed contracts where there is no corresponding event from the
-        # transaction event stream (which is a signal that the contract has been disclosed to us
-        # outside of the transaction stream).
-        #
-        # It also collapses multiple dazl ActiveContractSetEvent objects into a single one, simply
-        # for expediency.
-        requests = []
-        offsets = []
-        times = []
-
-        client = None
-        store = None
-
-        if not acs_events:
-            return []
-
-        for acs_event in acs_events:
-            offsets.append(acs_event.offset)
-            times.append(acs_event.time)
-            client = acs_event.client
-            store = acs_event.package_store
-
-            for e in acs_event.contract_events:
-                requests.append(serialize_event_id_request(
-                    self.ledger.ledger_id, e.event_id, [self.party]))
-
-        context = BaseEventDeserializationContext(client, store, self.party, self.ledger.ledger_id)
-
-        responses = await gather(*(self.connection.context.run_in_background(
-                lambda: self.connection.transaction_service.GetFlatTransactionByEventId(request)
-            ) for request in requests))
-
-        contract_events = []
-        for response in responses:
-            dt = to_datetime(response.transaction.effective_at)
-            times.append(dt)
-            tx_context = context.transaction(
-                dt, response.transaction.offset, response.transaction.command_id,
-                response.transaction.workflow_id)
-            for event in response.transaction.events:
-                if event.WhichOneof('event') == 'created':
-                    contract_events.append(to_created_event(tx_context, event.created))
-
-        times = [time for time in times if time is not None]
-        offsets = [offset for offset in offsets if offset is not None]
-
-        return [ActiveContractSetEvent(
-            client=client,
-            party=self.party,
-            time=max(times) if times else None,
-            ledger_id=self.ledger.ledger_id,
-            offset=max_offset(offsets) if offsets else None,
-            package_store=self.ledger.store,
-            contract_events=contract_events)]
 
 
 def grpc_set_time(connection: 'GRPCv1Connection', ledger_id: str, new_datetime: datetime) -> None:
@@ -171,7 +112,7 @@ def grpc_upload_package(connection: 'GRPCv1Connection', dar_contents: bytes) -> 
 GRPC_KNOWN_RETRYABLE_ERRORS = ('DNS resolution failed', 'failed to connect to all addresses', 'no healthy upstream')
 
 
-def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
+def grpc_detect_ledger_id(connection: 'GRPCv1Connection') -> str:
     """
     Return the ledger ID from the remote server when it becomes available. This method blocks until
     a ledger ID has been successfully retrieved, or the timeout is reached (in which case an
@@ -179,19 +120,20 @@ def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
     """
     from . import model as G
     from time import sleep
-    LOG.debug("Starting a monitor thread for stubs: %s", stub)
+    LOG.debug("Starting a monitor thread for connection: %s", connection)
 
     start_time = datetime.utcnow()
-    connect_timeout = stub.context.options.connect_timeout
+    connect_timeout = connection.options.connect_timeout
 
     while connect_timeout is None or (datetime.utcnow() - start_time) < connect_timeout:
-        if stub.context.run_state.terminate_requested:
+        if connection.invoker.level >= RunLevel.TERMINATE_GRACEFULLY:
             raise UserTerminateRequest()
-        if stub.closed:
+        if connection.closed:
             raise Exception('connection closed')
 
         try:
-            response = stub.ledger_identity_service.GetLedgerIdentity(G.GetLedgerIdentityRequest())
+            response = connection.ledger_identity_service.GetLedgerIdentity(
+                G.GetLedgerIdentityRequest())
         except RpcError as ex:
             details_str = ex.details()
 
@@ -205,10 +147,11 @@ def grpc_detect_ledger_id(stub: 'GRPCv1Connection') -> str:
 
         return response.ledger_id
 
-    raise ConnectionTimeoutError(f'connection timeout exceeded: {connect_timeout.total_seconds()} seconds')
+    raise ConnectionTimeoutError(
+        f'connection timeout exceeded: {connect_timeout.total_seconds()} seconds')
 
 
-def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable[LedgerMetadata]:
+def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterable[LedgerMetadata]':
     from .pb_ser_command import ProtobufSerializer
 
     store = PackageStore.empty()
@@ -217,33 +160,19 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> Iterable
 
     grpc_package_sync(package_provider, store)
 
-    time_iter = maybe_grpc_time_stream(connection.time_service, ledger_id)
-    time_model = StaticTimeModel(next(time_iter)) if time_iter is not None else RealTimeModel()
-
     yield LedgerMetadata(
         ledger_id=ledger_id,
         store=store,
-        time_model=time_model,
         serializer=ProtobufSerializer(store),
         protocol_version="v1")
 
-    # oh man, another thread...
-    def time_sync_thread():
-        try:
-            # keep the network open as long as we keep getting time updates
-            for ts in time_iter:
-                time_model.current_time = ts
-            LOG.debug('The time stream has completed.')
-        except:
-            pass
-
-    if time_iter is not None:
-        time_thread = Thread(name='time-sync-thread', target=time_sync_thread, daemon=True)
-        time_thread.start()
-
     # poll for package updates once a second
     while not connection._closed.wait(1):
-        grpc_package_sync(package_provider, store)
+        try:
+            grpc_package_sync(package_provider, store)
+        except Exception as ex:
+            if not isinstance(ex, RpcError) or ex.code() != StatusCode.CANCELLED:
+                LOG.warning('Package syncing raised an exception.', exc_info=True)
 
     LOG.debug('The gRPC monitor thread is now shutting down.')
     yield None
@@ -254,28 +183,30 @@ class GRPCPackageProvider(PackageProvider):
         self.connection = connection
         self.ledger_id = ledger_id
 
-    def get_package_ids(self) -> 'Sequence[str]':
+    def get_package_ids(self) -> 'PackageIdSet':
         from . import model as G
         request = G.ListPackagesRequest(ledger_id=self.ledger_id)
         response = self.connection.package_service.ListPackages(request)
-        return response.package_ids
+        return frozenset(response.package_ids)
 
-    def fetch_package(self, package_id: str) -> bytes:
+    def fetch_package(self, package_id: 'PackageId') -> bytes:
         from . import model as G
         request = G.GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
         package_info = self.connection.package_service.GetPackage(request)
         return package_info.archive_payload
 
 
-def grpc_package_sync(package_provider: PackageProvider, store: 'PackageStore') -> 'None':
+def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore') -> 'None':
     all_package_ids = package_provider.get_package_ids()
-    loaded_package_ids = [a.hash for a in store.archives()]
+    loaded_package_ids = {a.hash for a in store.archives()}
+
+    missing_package_ids = all_package_ids - loaded_package_ids
 
     metadatas_pb = {}
-    for package_id in all_package_ids:
-        if package_id not in loaded_package_ids:
-            archive_payload = package_provider.fetch_package(package_id)
-            metadatas_pb[package_id] = parse_archive_payload(archive_payload)
+    for package_id in missing_package_ids:
+        LOG.debug('Fetching package: %r', package_id)
+        archive_payload = package_provider.fetch_package(package_id)
+        metadatas_pb[package_id] = parse_archive_payload(archive_payload, package_id)
 
     metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
     for package_id, archive_payload in metadatas_pb.sorted_archives.items():
@@ -329,10 +260,11 @@ def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
 
 class GRPCv1Connection(_LedgerConnection):
     def __init__(self,
-                 context: _LedgerConnectionContext,
-                 settings: HTTPConnectionSettings,
-                 context_path: Optional[str]):
-        super(GRPCv1Connection, self).__init__(context, settings, context_path)
+                 invoker: 'Invoker',
+                 options: 'LedgerConnectionOptions',
+                 settings: 'HTTPConnectionSettings',
+                 context_path: 'Optional[str]'):
+        super(GRPCv1Connection, self).__init__(invoker, options, settings, context_path)
         from . import model as G
 
         self._closed = Event()

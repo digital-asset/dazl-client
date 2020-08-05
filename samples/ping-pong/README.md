@@ -13,4 +13,3 @@ Run each of the following commands in a spearate shell:
 * Start DAZL ping-pong client via
 
       poetry run python3 app.py --url localhost:6865
-

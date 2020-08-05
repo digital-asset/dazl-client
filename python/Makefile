@@ -1,11 +1,10 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 SHELL := /usr/bin/env bash
 .SHELLFLAGS := -euo pipefail -c
 
 LIBRARY_NAME=dazl
-SANDBOX_PORT=7600
 version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
 
 dazl_files := $(shell find dazl -name '*.py') README.md
@@ -19,6 +18,8 @@ poetry_build_marker := build/.poetry.build
 poetry_install_marker := build/.poetry.install
 dazl_docs_html_dir := $(basename $(basename $(dazl_docs_html)))
 dazl_docs_markdown_dir := $(basename $(basename $(dazl_docs_markdown)))
+
+python := $(shell pwd)/.venv/bin/python3 
 
 export PYTHONPATH:=.:${PYTHONPATH}
 
@@ -76,7 +77,8 @@ unit-test:
 
 .PHONY: integration-test
 integration-test:
-	poetry run python3 _template/integration-test.py
+	cd ../_fixtures/src/post-office && \
+	$(python) integration-test.py $(if $(DAZL_TEST_DAML_LEDGER_URL),--url $(DAZL_TEST_DAML_LEDGER_URL))
 
 
 ####################################################################################################

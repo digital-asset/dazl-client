@@ -1,39 +1,38 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 from asyncio import wait_for, ensure_future
-from unittest import TestCase
 
-from dazl import sandbox, exercise, Network, AIOPartyClient
+import pytest
+
+from dazl import async_network, exercise, AIOPartyClient
 from .dars import Simple
 
 
-PARTY = 'Operator'
 OperatorRole = 'Simple.OperatorRole'
 OperatorNotification = 'Simple.OperatorNotification'
 
 
-class SelectNonEmptyTestCase(TestCase):
-    def test_select_template_retrieves_contracts(self):
-        seen_notifications = []
-        with sandbox(Simple) as proc:
-            network = Network()
-            network.set_config(url=proc.url)
+@pytest.mark.asyncio
+async def test_select_template_retrieves_contracts(sandbox):
+    seen_notifications = []
 
-            party_client = network.aio_party(PARTY)
-            party_client.add_ledger_created(OperatorNotification, lambda event: seen_notifications.append(event.cid))
-            network.run_until_complete(async_test_case(party_client))
+    async with async_network(url=sandbox, dars=Simple) as network:
+        client = network.aio_new_party()
+        client.add_ledger_created(OperatorNotification, lambda event: seen_notifications.append(event.cid))
 
-            data = party_client.find_active(OperatorNotification)
+        await network.aio_run(async_test_case(client), keep_open=False)
 
-        self.assertEqual(len(data), 5)
-        self.assertEqual(len(seen_notifications), 8)
+        data = client.find_active(OperatorNotification)
+
+    assert len(data) == 5
+    assert len(seen_notifications) == 8
 
 
 async def async_test_case(client: AIOPartyClient):
     await client.ready()
 
-    ensure_future(client.submit_create(OperatorRole, {'operator': PARTY}))
+    ensure_future(client.submit_create(OperatorRole, {'operator': client.party}))
 
     operator_cid, _ = await client.find_one(OperatorRole)
 
@@ -43,7 +42,7 @@ async def async_test_case(client: AIOPartyClient):
     # "too late" are not treated strangely
     await wait_for(client.ready(), timeout=0.1)
 
-    notifications = await client.find_nonempty(OperatorNotification, {'operator': PARTY}, min_count=5)
+    notifications = await client.find_nonempty(OperatorNotification, {'operator': client.party}, min_count=5)
     contracts_to_delete = []
     for cid, cdata in notifications.items():
         if int(cdata['text']) <= 3:

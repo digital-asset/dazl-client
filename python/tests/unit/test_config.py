@@ -3,7 +3,6 @@
 
 import http.server
 import tempfile
-import unittest
 
 from dazl import Network
 from dazl.client.config import ConfigurationError, fetch_config, NetworkConfig
@@ -11,69 +10,68 @@ from dazl.model.core import Party
 from dazl_internal.background_http_server import TestHTTPServer
 
 
-class TestConfig(unittest.TestCase):
-    """
-    Ensure the key/value pairs that initialize a manager create an appropriate configuration.
-    """
+# Ensure the key/value pairs that initialize a manager create an appropriate configuration.
 
-    def test_party_config_allows_single_string(self):
-        config = NetworkConfig.parse_kwargs(parties='Bob', participant_url='http://nowhere/')
-        self.assertEqual(config.parties[0].party, Party('Bob'))
-        self.assertEqual(config.parties[0].url, 'http://nowhere/')
-
-    def test_party_config_allows_list(self):
-        config = NetworkConfig.parse_kwargs(parties=['Bob'], participant_url='http://nowhere/')
-        self.assertEqual(config.parties[0].party, Party('Bob'))
-        self.assertEqual(config.parties[0].url, 'http://nowhere/')
-
-    def test_global_url_propagates_to_parties(self):
-        config = NetworkConfig.parse_kwargs(url='http://nowhere/')
-        network = Network()
-        network.set_config(config)
-        client = network.aio_party('Bob')
-        party_config = client.resolved_config()
-        self.assertEqual(party_config.url, 'http://nowhere/')
+def test_party_config_allows_single_string():
+    config = NetworkConfig.parse_kwargs(parties='Bob', participant_url='http://nowhere/')
+    assert config.parties[0].party == Party('Bob')
+    assert config.parties[0].url == 'http://nowhere/'
 
 
-class TestFetchConfig(unittest.TestCase):
-    """
-    Ensure that the value passed in through --config is either appropriately read from
-    a remote HTTP server or the local file system, or that an appropriate error is returned.
-    """
+def test_party_config_allows_list():
+    config = NetworkConfig.parse_kwargs(parties=['Bob'], participant_url='http://nowhere/')
+    assert config.parties[0].party == Party('Bob')
+    assert config.parties[0].url == 'http://nowhere/'
 
-    def test_fetch_from_url_200(self):
+
+def test_global_url_propagates_to_parties():
+    config = NetworkConfig.parse_kwargs(url='http://nowhere/')
+    network = Network()
+    network.set_config(config)
+    client = network.aio_party('Bob')
+    party_config = client.resolved_config()
+    assert party_config.url == 'http://nowhere/'
+
+
+# Ensure that the value passed in through --config is either appropriately read from
+# a remote HTTP server or the local file system, or that an appropriate error is returned.
+
+def test_fetch_from_url_200():
+    with TestHTTPServer(SimpleHandler) as server:
+        actual = fetch_config(f'http://localhost:{server.port}/good_path.txt')
+    assert SimpleHandler.BODY == actual
+
+
+def test_fetch_from_url_404():
+    url = None
+    try:
         with TestHTTPServer(SimpleHandler) as server:
-            actual = fetch_config(f'http://localhost:{server.port}/good_path.txt')
-        self.assertEqual(SimpleHandler.BODY, actual)
-
-    def test_fetch_from_url_404(self):
-        url = None
-        try:
-            with TestHTTPServer(SimpleHandler) as server:
-                url = f'http://localhost:{server.port}/bad_path.txt'
-                fetch_config(url)
-                self.fail('The fetch should not have succeeded')
-        except ConfigurationError as error:
-            self.assertListEqual(error.reasons, [f'HTTP 404: {url}'])
-
-    def test_fetch_no_server(self):
-        url = 'http://localhost:65534/something-silly.txt'
-        try:
+            url = f'http://localhost:{server.port}/bad_path.txt'
             fetch_config(url)
-            self.fail('The fetch should not have succeeded')
-        except ConfigurationError as error:
-            pass
-            # TODO: The error returned by this failure is currently not the string I'd like to
-            #  have returned in this context:
-            #  'OSError(99, 'Cannot assign requested address')'
-            # self.assertListEqual(error.reasons, [f'HTTP unreachable: {url}'])
+            assert False, 'The fetch should not have succeeded'
+    except ConfigurationError as error:
+        assert list(error.reasons) == [f'HTTP 404: {url}']
 
-    def test_fetch_from_file(self):
-        with tempfile.NamedTemporaryFile() as buf:
-            buf.file.write('TEST CONFIG'.encode('utf8'))
-            buf.file.close()
-            actual = fetch_config(buf.name)
-        self.assertEqual('TEST CONFIG', actual)
+
+def test_fetch_no_server():
+    url = 'http://localhost:65534/something-silly.txt'
+    try:
+        fetch_config(url)
+        assert False, 'The fetch should not have succeeded'
+    except ConfigurationError as error:
+        pass
+        # TODO: The error returned by this failure is currently not the string I'd like to
+        #  have returned in this context:
+        #  'OSError(99, 'Cannot assign requested address')'
+        # self.assertListEqual(error.reasons, [f'HTTP unreachable: {url}'])
+
+
+def test_fetch_from_file():
+    with tempfile.NamedTemporaryFile() as buf:
+        buf.file.write('TEST CONFIG'.encode('utf8'))
+        buf.file.close()
+        actual = fetch_config(buf.name)
+    assert 'TEST CONFIG' == actual
 
 
 class SimpleHandler(http.server.BaseHTTPRequestHandler):

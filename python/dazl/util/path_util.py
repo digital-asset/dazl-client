@@ -2,19 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from pathlib import Path
+from os import PathLike
 from typing import Union
 
 
-def pathify(path: Union[str, Path]) -> Path:
+def pathify(path: 'Union[str, Path, PathLike]') -> Path:
     """
     Convert an object that could be a :class:`Path` into a :class:`Path`.
-
-    :param path:
-    :return:
     """
     if isinstance(path, Path):
         return path
-    elif isinstance(path, str):
+    elif isinstance(path, PathLike):
         return Path(path)
     else:
         raise ValueError(f'path must be a str or Path (got {path!r} instead)')

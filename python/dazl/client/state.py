@@ -13,12 +13,14 @@ from ..model.core import ContractId, ContractsState, ContractMatch, \
 from ..model.reading import ContractCreateEvent, ContractArchiveEvent
 from ..model.types import TypeReference
 from ..model.types_store import PackageStore
-from ..util.asyncio_util import ContextFreeFuture, safe_create_future, propagate, completed, await_then
+from ..scheduler import Invoker
+from ..util.asyncio_util import await_then, completed, propagate
 
 
 class ActiveContractSet:
-    def __init__(self):
-        self.metadata_future = ContextFreeFuture()
+    def __init__(self, invoker: 'Invoker'):
+        self.invoker = invoker
+        self.metadata_future = invoker.create_future()
         self._tcdata = defaultdict(TemplateContractData)  # type: Dict[TypeReference, TemplateContractData]
 
     def handle_create(self, event: ContractCreateEvent) -> None:
@@ -77,7 +79,7 @@ class ActiveContractSet:
 
             (tt, tcd), = unfiltered.items()
 
-            query = PendingQuery(asyncio.get_event_loop(), match, min_count)
+            query = PendingQuery(self.invoker, match, min_count)
             # if the current state is already a match, then don't remember the query since we're
             # already done
             if tcd is None or not query.check_ready(tcd):
@@ -86,7 +88,7 @@ class ActiveContractSet:
             return await_then(query.future, lambda cxds: {cxd.cid: cxd.cdata for cxd in cxds})
         else:
             # delay the invocation of this entire method call until metadata is made available to us
-            future = safe_create_future()
+            future = self.invoker.create_future()
 
             def delayed_invoke(_):
                 propagate(
@@ -127,10 +129,12 @@ class TemplateContractData:
         self._queries = [q for q in self._queries if not q.check_ready(self)]
 
     def handle_archive(self, event: ContractArchiveEvent) -> None:
+        existing_data = self._data.get(event.cid.contract_id)
+        effective_at = existing_data.effective_at if existing_data is not None else None
         self._data[event.cid.contract_id] = ContractContextualData(
             cid=event.cid,
             cdata=None,
-            effective_at=self._data[event.cid.contract_id].effective_at,
+            effective_at=effective_at,
             archived_at=event.time,
             active=False)
 
@@ -149,8 +153,8 @@ class TemplateContractData:
 
 
 class PendingQuery:
-    def __init__(self, loop, match, min_count: int):
-        self.future = loop.create_future()  # type: Awaitable[Collection[ContractContextualData]]
+    def __init__(self, invoker: 'Invoker', match, min_count: int):
+        self.future = invoker.create_future()  # type: Awaitable[Collection[ContractContextualData]]
         self.match = match
         self.min_count = min_count
 

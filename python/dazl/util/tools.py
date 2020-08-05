@@ -5,7 +5,7 @@
 This module contains miscellaneous utility methods that don't really fit anywhere else.
 """
 
-from typing import Generator, Tuple, TypeVar, Iterable
+from typing import Collection, Generator, Iterable, List, Tuple, TypeVar, Union
 
 T = TypeVar('T')
 
@@ -49,3 +49,24 @@ def flatten(obj):
     for sublist in obj:
         ret.extend(sublist)
     return ret
+
+
+def as_list(obj: 'Union[None, T, Collection[Union[None, T]]]') -> 'List[T]':
+    """
+    Convert an object that is either nothing, a single object, or a collection, to a list of type
+    of that object.
+    """
+    from collections.abc import Iterable
+
+    if obj is None:
+        return []
+    elif isinstance(obj, str):
+        # strings are iterable, but it's almost never intended to be used in place of a list; if
+        # we're given a string, then assume what is wanted is a single list containing the full
+        # string instead of a list containing every character as an individual item
+        return [obj]
+    elif isinstance(obj, Iterable):
+        return [o for o in obj if o is not None]
+    else:
+        # assume we're dealing with a single object of the requested type
+        return [obj]

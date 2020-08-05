@@ -11,7 +11,7 @@ from .. import LOG
 from ..damlast.daml_lf_1 import Block, BuiltinFunction, Case, CaseAlt, DefDataType, DefTemplate, \
     Expr, Module, Package, PrimCon, PrimLit, Scenario, Type, TypeVarWithKind, ValName, \
     Update, DefValue, Unit
-from ..damlast.util import unpack_arrow_type
+from ..damlast.util import unpack_arrow_type, package_local_name
 from ..damlast.visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVisitor
 from ..model.definition import DamlDataType, DamlTemplate
 from ..model.types import ModuleRef
@@ -47,9 +47,13 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         return None
 
     def module_indent(self):
+        from ..damlast.util import module_name
+
         cm = self.context.current_module
         if cm is not None:
-            return ' ' * (len(cm.module_name) * 4)
+            mn = module_name(cm)
+            indent_level = str(mn).count('.') if mn else 0
+            return ' ' * (indent_level * 4)
         else:
             return ''
 
@@ -260,7 +264,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         return self._visit_expr_decl(context, self.visit_expr_val_inline(val))
 
     def visit_expr_val_inline(self, val: 'ValName'):
-        return val.full_name_unambiguous
+        return package_local_name(val)
 
     def visit_expr_builtin(self, builtin: 'BuiltinFunction') -> 'str':
         return builtin.name
@@ -392,10 +396,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_variant_con(self, variant_con: 'Expr.VariantCon') -> 'str':
         pass
 
-    def visit_expr_tuple_con(self, tuple_con: 'Expr.TupleCon') -> 'str':
+    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'str':
         pass
 
-    def visit_expr_tuple_proj(self, tuple_proj: 'Expr.TupleProj') -> 'str':
+    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'str':
         pass
 
     def visit_expr_app(self, app: 'Expr.App') -> 'str':
@@ -610,7 +614,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'str':
         pass
 
-    def visit_expr_tuple_upd(self, tuple_upd: 'Expr.TupleUpd') -> 'str':
+    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> 'str':
         pass
 
     def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'str':
@@ -666,11 +670,17 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_type_prim(self, prim: 'Type.Prim') -> 'str':
         pass
 
+    def visit_type_syn(self, tysyn: 'Type.Syn') -> str:
+        pass
+
     def visit_type_forall(self, forall: 'Type.Forall') -> 'str':
         pass
 
     def visit_type_tuple(self, tuple: 'Type.Tuple') -> 'str':
         pass
+
+    def visit_type_nat(self, nat: int) -> 'str':
+        return str(nat)
 
     def _visit_type_function(self, arguments: 'Sequence[Type]', return_type: 'Type') -> str:
         """

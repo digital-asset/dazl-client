@@ -1,0 +1,10 @@
+sdk-version: 1.3.0
+name: map-support
+version: 1.0.0
+source: MapSupport.daml
+parties:
+- Alice
+- Bob
+dependencies:
+- daml-prim
+- daml-stdlib

@@ -1,0 +1,21 @@
+daml 1.2
+
+module SampleTest where
+
+import Sample
+
+
+setup_runsOnce = scenario do
+  party <- getParty "Test Party"
+
+  cid1 <- submit party
+    do
+      setupCid <- create Setup with ..
+      exercise setupCid Execute
+
+  cid2 <- submit party
+    do
+      setupCid <- create Setup with ..
+      exercise setupCid Execute
+
+  assert $ cid1 == cid2

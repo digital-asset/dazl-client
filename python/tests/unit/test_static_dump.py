@@ -1,44 +1,31 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
-from asyncio import sleep
-from pathlib import Path
-from random import random
-from unittest import TestCase
-
-from dazl import Network, sandbox, setup_default_logger
-
-DAML_PATH = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
-
-setup_default_logger(logging.DEBUG)
+import pytest
+from dazl import async_network, LOG
+from .dars import PostOffice
 
 
-class TestStaticDump(TestCase):
-    def test_static_dump_and_tail(self):
-        with sandbox(daml_path=DAML_PATH) as proc:
-            seen_contracts = []
+@pytest.mark.asyncio
+async def test_static_dump_and_tail(sandbox):
+    async with async_network(url=sandbox, dars=PostOffice) as network:
+        client = network.aio_new_party()
+        seen_contracts = []
 
-            network = Network()
-            network.set_config(url=proc.url)
-            client = network.simple_party('PARTY')
+        @client.ledger_ready()
+        def print_initial_state(event):
+            LOG.info("Current ACS: %s", event.acs_find_active('*'))
 
-            @client.ledger_ready()
-            def print_initial_state(event):
-                print(event.acs_find_active('*'))
+        @client.ledger_created('*')
+        def print_create(event):
+            LOG.info("Seen cid: %s, cdata: %s", event.cid, event.cdata)
+            seen_contracts.append(event.cid)
 
-            @client.ledger_created('*')
-            def print_create(event):
-                print(event.cid, event.cdata)
-                seen_contracts.append(event.cid)
+        network.start()
 
-            async def publish_some_contracts():
-                aclient = network.aio_party('PARTY')
-                for i in range(0, 5):
-                    sleep_interval = random()
-                    print(f'Publishing contract {i}, then sleeping for {sleep_interval} seconds...')
-                    await aclient.submit_create('Main.PostmanRole', {'postman': 'PARTY'})
-                    await sleep(sleep_interval)
-                network.shutdown()
+        await client.ready()
 
-            network.run_forever(publish_some_contracts())
+        for i in range(0, 5):
+            await client.submit_create('Main.PostmanRole', {'postman': client.party})
+
+    assert len(seen_contracts) == 5

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dazl"
-version = "6.3.1"
+version = "7.0.0"
 description = "high-level Ledger API client for DAML ledgers"
 license = "Apache-2.0"
 authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]
@@ -23,22 +23,25 @@ pyyaml = "*"
 requests = "*"
 semver = "*"
 toposort = "*"
-typing_extensions = "*"
+typing_extensions = { version = "*", python = "<3.8.0" }
 
 [tool.poetry.dev-dependencies]
 grpcio-tools = ">=1.20.1"
 mypy = "*"
 pympler = "*"
-pytest = "*"
+pytest = "^5"
+pytest-asyncio = "*"
 setuptools = "==40.8.0"
 sphinx = "*"
 watchdog = "*"
 flask = "^1.0"
 sphinx-markdown-builder = "^0.5.1"
+pytest-subtests = "^0.2.1"
 
 [tool.poetry.extras]
 prometheus = ["prometheus_client"]
 pygments = ["pygments"]
+pytest = []
 
 [tool.poetry.scripts]
 dazl = 'dazl.cli:main'

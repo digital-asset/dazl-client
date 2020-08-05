@@ -1,92 +1,90 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
-from unittest import TestCase
-
+from dazl.damlast.daml_lf_1 import DottedName, PackageRef, TypeConName
 from dazl.pretty import DamlPrettyPrinter, PrettyOptions
 from dazl.util.dar import DarFile
 from .dars import Pending
 
 
-class TestDamlPrettyPrinter(TestCase):
+def test_render_list_of_party_old():
+    from dazl.model.types import ListType, SCALAR_TYPE_PARTY
 
-    # region Basic type rendering
+    type_ = ListType(SCALAR_TYPE_PARTY)
 
-    def test_render_list_of_party_old(self):
-        from dazl.model.types import ListType, SCALAR_TYPE_PARTY
+    expected = '[Party]'
+    actual = str(type_)
 
-        type_ = ListType(SCALAR_TYPE_PARTY)
+    assert expected == actual
 
-        expected = '[Party]'
-        actual = str(type_)
 
-        self.assertEqual(expected, actual)
+def test_render_list_of_party_new():
+    from dazl.damlast.daml_lf_1 import PrimType, Type
 
-    def test_render_list_of_party_new(self):
-        from dazl.damlast.daml_lf_1 import PrimType, Type
+    type_ = Type(prim=Type.Prim(prim=PrimType.LIST, args=(Type(prim=Type.Prim(prim=PrimType.PARTY, args=())),)))
 
-        type_ = Type(prim=Type.Prim(prim=PrimType.LIST, args=(Type(prim=Type.Prim(prim=PrimType.PARTY, args=())),)))
+    expected = '[Party]'
+    actual = str(type_)
 
-        expected = '[Party]'
-        actual = str(type_)
+    assert expected == actual
 
-        self.assertEqual(expected, actual)
 
-    def test_render_list_of_contract_type_con_old(self):
-        from dazl.model.types import ContractIdType, ListType, ModuleRef, TypeReference
+def test_render_list_of_contract_type_con_old():
+    from dazl.model.types import ContractIdType, ListType, ModuleRef, TypeReference
 
-        module_ref = ModuleRef(package_id='00000000000000000000000000000000', module_name=('ABC',))
-        type_ref = TypeReference(module=module_ref, name=('DefGhi',))
-        type_ = ListType(ContractIdType(type_ref))
+    module_ref = ModuleRef(package_id=PackageRef('00000000000000000000000000000000'), module_name=DottedName(('ABC',)))
+    type_ref = TypeReference(con=TypeConName(module=module_ref, name=('DefGhi',)))
+    type_ = ListType(ContractIdType(type_ref))
 
-        expected = '[ContractId ABC:DefGhi]'
-        actual = str(type_)
+    expected = '[ContractId ABC:DefGhi]'
+    actual = str(type_)
 
-        self.assertEqual(expected, actual)
+    assert expected == actual
 
-    def test_render_list_of_contract_type_con_new(self):
-        from dazl.damlast.daml_lf_1 import PrimType, Type
-        from dazl.model.types import ModuleRef, TypeReference
 
-        module_ref = ModuleRef(package_id='00000000000000000000000000000000', module_name=('ABC',))
-        con_type = Type(con=Type.Con(tycon=TypeReference(module=module_ref, name=('DefGhi',)), args=()))
-        cid_type = Type(prim=Type.Prim(prim=PrimType.CONTRACT_ID, args=(con_type,)))
-        type_ = Type(prim=Type.Prim(prim=PrimType.LIST, args=(cid_type,)))
+def test_render_list_of_contract_type_con_new():
+    from dazl.damlast.daml_lf_1 import PrimType, Type
+    from dazl.model.types import ModuleRef, TypeReference
 
-        expected = '[ContractId ABC:DefGhi]'
-        actual = str(type_)
+    module_ref = ModuleRef(package_id=PackageRef('00000000000000000000000000000000'), module_name=DottedName(('ABC',)))
+    con_type = Type(con=Type.Con(tycon=TypeConName(module=module_ref, name=('DefGhi',)), args=()))
+    cid_type = Type(prim=Type.Prim(prim=PrimType.CONTRACT_ID, args=(con_type,)))
+    type_ = Type(prim=Type.Prim(prim=PrimType.LIST, args=(cid_type,)))
 
-        self.assertEqual(expected, actual)
+    expected = '[ContractId ABC:DefGhi]'
+    actual = str(type_)
 
-    def test_render_update_of_contract_type_con_old(self):
-        from dazl.model.types import ContractIdType, UpdateType, ModuleRef, TypeReference
+    assert expected == actual
 
-        module_ref = ModuleRef(package_id='00000000000000000000000000000000', module_name=('ABC',))
-        type_ref = TypeReference(module=module_ref, name=('DefGhi',))
-        type_ = UpdateType(ContractIdType(type_ref))
 
-        expected = 'Update (ContractId ABC:DefGhi)'
-        actual = str(type_)
+def test_render_update_of_contract_type_con_old():
+    from dazl.model.types import ContractIdType, UpdateType, ModuleRef, TypeReference
 
-        self.assertEqual(expected, actual)
+    module_ref = ModuleRef(package_id=PackageRef('00000000000000000000000000000000'), module_name=DottedName(('ABC',)))
+    type_ref = TypeReference(con=TypeConName(module=module_ref, name=('DefGhi',)))
+    type_ = UpdateType(ContractIdType(type_ref))
 
-    def test_render_update_of_contract_type_con_new(self):
-        from dazl.damlast.daml_lf_1 import PrimType, Type
-        from dazl.model.types import ModuleRef, TypeReference
+    expected = 'Update (ContractId ABC:DefGhi)'
+    actual = str(type_)
 
-        module_ref = ModuleRef(package_id='00000000000000000000000000000000', module_name=('ABC',))
-        con_type = Type(con=Type.Con(tycon=TypeReference(module=module_ref, name=('DefGhi',)), args=()))
-        cid_type = Type(prim=Type.Prim(prim=PrimType.CONTRACT_ID, args=(con_type,)))
-        type_ = Type(prim=Type.Prim(prim=PrimType.UPDATE, args=(cid_type,)))
+    assert expected == actual
 
-        expected = 'Update (ContractId ABC:DefGhi)'
-        actual = str(type_)
 
-        self.assertEqual(expected, actual)
+def test_render_update_of_contract_type_con_new():
+    from dazl.damlast.daml_lf_1 import PrimType, Type
+    from dazl.model.types import ModuleRef, TypeReference
 
-    # endregion
+    module_ref = ModuleRef(package_id=PackageRef('00000000000000000000000000000000'), module_name=DottedName(('ABC',)))
+    con_type = Type(con=Type.Con(tycon=TypeConName(module=module_ref, name=('DefGhi',)), args=()))
+    cid_type = Type(prim=Type.Prim(prim=PrimType.CONTRACT_ID, args=(con_type,)))
+    type_ = Type(prim=Type.Prim(prim=PrimType.UPDATE, args=(cid_type,)))
 
-    def test_render_metadata(self):
-        with DarFile(Pending) as dar:
-            pp = DamlPrettyPrinter(store=dar.read_metadata(), context=PrettyOptions(show_hidden_types=True))
-            pp.render_store()
+    expected = 'Update (ContractId ABC:DefGhi)'
+    actual = str(type_)
+
+    assert expected == actual
+
+
+def test_render_metadata():
+    with DarFile(Pending) as dar:
+        pp = DamlPrettyPrinter(store=dar.read_metadata(), context=PrettyOptions(show_hidden_types=True))
+        pp.render_store()

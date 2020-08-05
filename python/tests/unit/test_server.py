@@ -3,89 +3,83 @@
 
 import logging
 from asyncio import sleep
-from unittest import TestCase
 
+import pytest
 from aiohttp import ClientSession
 
-from dazl import Network, sandbox, create, exercise_by_key
+from dazl import async_network, create, exercise_by_key, Network
 from dazl.model.core import Party
 from .dars import TestServer as TestServerDar
-
-
-Alice = Party("Alice")
-Bob = Party("Bob")
-Carol = Party("Carol")
 
 
 LOG = logging.getLogger('test_server')
 
 
-class TestServer(TestCase):
-    def test_server_endpoint(self):
-        SERVER_PORT = 53390
-        with sandbox(TestServerDar) as proc:
-            bot_main(sandbox_url=proc.url, server_port=SERVER_PORT)
+@pytest.mark.asyncio
+async def test_server_endpoint(sandbox):
+    SERVER_PORT = 53390
+    async with async_network(url=sandbox, dars=TestServerDar) as network:
+        network.set_config(server_port=SERVER_PORT)
+
+        alice_client = network.aio_new_party()
+        alice = alice_client.party
+
+        bob_client = network.aio_new_party()
+        bob = bob_client.party
+
+        carol_client = network.aio_new_party()
+        carol = carol_client.party
+
+        # create Person contracts for each party
+        for party in [alice, bob, carol]:
+            ensure_person_contract(network, party)
+
+        # have Bob start up "suspended"; we'll start up Bob from the outside
+        bob_bot = bob_client._impl.bots.add_new("Bob's Bot")
+        bob_bot.pause()
+
+        @bob_bot.ledger_created('TestServer.Person')
+        def bob_sends_a_message(_):
+            return exercise_by_key(
+                'TestServer:Person', bob, 'SayHello', {'receiver': alice, 'text': "Bob's ultra secret message"})
+
+        @carol_client.ledger_created('TestServer.Person')
+        def carol_sends_a_message(_):
+            return exercise_by_key(
+                'TestServer:Person', carol, 'SayHello', {'receiver': alice, 'text': "Carol's gonna Carol"})
+
+        # Carol will start Bob only once Alice has processed three events
+        await network.aio_run(client_main(network, SERVER_PORT, alice, bob, carol), keep_open=False)
 
 
 def ensure_person_contract(network: Network, party: Party):
     network.aio_party(party).add_ledger_ready(lambda _: create('TestServer:Person', dict(party=party)))
 
 
-def bot_main(sandbox_url, server_port):
-    """
-    The 'dazl app' being tested.
-    """
-
-    network = Network()
-    network.set_config(url=sandbox_url, server_port=server_port)
-
-    network.aio_party(Alice)
-    bob = network.aio_party(Bob)
-    carol = network.aio_party(Carol)
-
-    # create Person contracts for each party
-    for party in [Alice, Bob, Carol]:
-        ensure_person_contract(network, party)
-
-    # have Bob start up "suspended"; we'll start up Bob from the outside
-    bob_bot = bob._impl.bots.add_new("Bob's Bot")
-    bob_bot.pause()
-    @bob_bot.ledger_created('TestServer.Person')
-    def bob_sends_a_message(_):
-        return exercise_by_key(
-            'TestServer:Person', Bob, 'SayHello', {'receiver': Alice, 'text': "Bob's ultra secret message"})
-
-    @carol.ledger_created('TestServer.Person')
-    def carol_sends_a_message(_):
-        return exercise_by_key(
-            'TestServer:Person', Carol, 'SayHello', {'receiver': Alice, 'text': "Carol's gonna Carol"})
-
-    # Carol will start Bob only once Alice has processed three events
-    network.run_until_complete(client_main(network, server_port))
-
-
-async def client_main(network: Network, server_port: int):
+async def client_main(
+        network: Network, server_port: int,
+        alice: 'Party', bob: 'Party', carol: 'Party'):
     """
     The main method of a client running against the server endpoint exposed by the dazl app above.
     """
     LOG.info('client_main: started.')
     try:
         async with ClientSession() as session:
-            await wait_for_ready(session, server_port, [Alice, Bob, Carol])
+            await wait_for_ready(session, server_port, [alice, bob, carol])
 
             # start Bob from the administration endpoint
             bots_response = await session.get(f'http://localhost:{server_port}/bots')
             bots = await bots_response.json()
-            bobs_bots = [bot for bot in bots['bots'] if bot['party'] == Bob]
+            bobs_bots = [bot for bot in bots['bots'] if bot['party'] == bob]
             for bobs_bot in bobs_bots:
                 await session.post(f'http://localhost:{server_port}/bots/{bobs_bot["id"]}/state/resume')
 
             # now make sure Alice received Bob's message, and not Carol's (because Carol was never started)
-            alice = network.aio_party(Alice)
-            _, cdata = await alice.find_one('TestServer:Message')
+            alice_client = network.aio_party(alice)
+            _, cdata = await alice_client.find_one('TestServer:Message')
             LOG.info('Received message from %r: %r', cdata['sender'], cdata['text'])
 
-            all_messages = alice.find('TestServer:Message')
+            all_messages = alice_client.find('TestServer:Message')
             LOG.info('Alice has a total of %d message(s).', len(all_messages))
 
             if len(all_messages) > 1:

@@ -16,10 +16,12 @@ from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
     TextMapType, OptionalType, EnumType
 from ...model.writing import AbstractSerializer, CommandPayload
 from ...util.prim_types import to_boolean, to_date, to_datetime, to_decimal, to_int, to_str, \
-    decode_variant_dict
+    to_ledger_api_decimal, decode_variant_dict
 
 # noinspection PyPackageRequirements
 from google.protobuf.empty_pb2 import Empty
+# noinspection PyPackageRequirements
+from google.protobuf.duration_pb2 import Duration
 # noinspection PyPackageRequirements
 from google.protobuf.timestamp_pb2 import Timestamp
 
@@ -39,6 +41,19 @@ def as_api_timestamp(dt: datetime) -> Timestamp:
     ts.seconds = td.seconds + td.days * _SECONDS_PER_DAY
     ts.nanos = td.microseconds * _NANOS_PER_MICROSECOND
     return ts
+
+
+def as_api_duration(t: timedelta) -> Duration:
+    d = Duration()
+    d.seconds = t.total_seconds()
+    d.nanos = t.microseconds * 1000
+    return d
+
+
+def as_identifier(tref: 'TypeReference') -> 'G.Identifier':
+    identifier = G.Identifier()
+    _set_template(identifier, tref)
+    return identifier
 
 
 def pb_get_date(obj: date) -> int:
@@ -76,8 +91,8 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
             command_id=command_payload.command_id,
             party=command_payload.party,
             commands=commands,
-            ledger_effective_time=as_api_timestamp(command_payload.ledger_effective_time),
-            maximum_record_time=as_api_timestamp(command_payload.maximum_record_time)))
+            deduplication_time=(as_api_duration(command_payload.deduplication_time)
+                                if command_payload.deduplication_time is not None else None)))
 
     def serialize_create_command(self, template_type: RecordType, template_args: R) -> G.Command:
         create_ctor, create_value = template_args
@@ -147,7 +162,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'int64', to_int(obj)
 
     def serialize_decimal(self, context: TypeEvaluationContext, obj: Any) -> R:
-        return 'decimal', str(to_decimal(obj))
+        return 'numeric', to_ledger_api_decimal(to_decimal(obj))
 
     def serialize_party(self, context: TypeEvaluationContext, obj: Any) -> R:
         return 'party', to_str(obj)
@@ -166,7 +181,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'contract_id', to_str(obj)
 
     def serialize_optional(self, context: TypeEvaluationContext, tt: OptionalType, obj: Any):
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Optional
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Optional
         ut = tt.type_parameter
 
         optional_message = Optional()
@@ -176,7 +191,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'optional', optional_message
 
     def serialize_list(self, context: TypeEvaluationContext, tt: ListType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import List
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import List
         ut = tt.type_parameter
 
         list_message = List()
@@ -187,7 +202,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'list', list_message
 
     def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Map
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Map
         vt = tt.value_type
 
         map_message = Map()
@@ -199,7 +214,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'map', map_message
 
     def serialize_record(self, context: TypeEvaluationContext, tt: RecordType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Record
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Record
 
         did_fail = False
         record_message = Record()
@@ -218,7 +233,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'record', record_message
 
     def serialize_variant(self, context: TypeEvaluationContext, tt: VariantType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Variant
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Variant
         try:
             obj_ctor, obj_value = decode_variant_dict(obj)
         except ValueError:
@@ -246,7 +261,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'variant', variant_message
 
     def serialize_enum(self, context: TypeEvaluationContext, tt: EnumType, obj: Any) -> R:
-        from ..._gen.com.digitalasset.ledger.api.v1.value_pb2 import Enum
+        from ..._gen.com.daml.ledger.api.v1.value_pb2 import Enum
         enum_message = Enum()
         enum_message.constructor = obj
         return 'enum', enum_message
@@ -257,11 +272,10 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
 
 
 def _set_template(message: G.Identifier, tref: TypeReference) -> None:
-    message.package_id = tref.module.package_id
-    message.module_name = '.'.join(tref.module.module_name)
-    message.entity_name = '.'.join(tref.name)
-    # This field is set for historical reasons, and no longer required after Sandbox 0.10.12
-    message.name = tref.full_name
+    from ...damlast.util import package_ref, module_name, module_local_name
+    message.package_id = package_ref(tref)
+    message.module_name = str(module_name(tref))
+    message.entity_name = module_local_name(tref)
 
 
 def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:
@@ -282,7 +296,7 @@ def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:
             message.MergeFrom(value)
         elif ctor == 'unit':
             message.unit.SetInParent()
-        elif ctor in ('record', 'variant', 'list', 'optional', 'enum', 'map'):
+        elif ctor in ('record', 'variant', 'list', 'optional', 'enum', 'map', 'gen_map'):
             getattr(message, ctor).MergeFrom(value)
         else:
             setattr(message, ctor, value)

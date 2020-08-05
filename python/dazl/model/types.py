@@ -27,12 +27,12 @@ system.
 .. autoclass:: VariantType
 .. autoclass:: UnsupportedType
 """
-
-from enum import Flag
-from typing import Any, Callable, Collection, Dict, Optional, Sequence, Tuple, TypeVar, Union, \
-    TYPE_CHECKING
+import warnings
+from typing import AbstractSet, Any, Callable, Collection, Dict, Mapping, NewType, Optional, \
+    Sequence, Tuple, TypeVar, Union, TYPE_CHECKING
 
 from .. import LOG
+from ..damlast.daml_lf_1 import DottedName, Expr, ModuleRef, PackageRef, TypeConName
 from ..model.core import ContractData, Party
 from ..util.typing import safe_cast, safe_dict_cast, safe_optional_cast
 
@@ -42,10 +42,55 @@ T_co = TypeVar('T_co', covariant=True)
 
 if TYPE_CHECKING:
     from .types_store import PackageStore
-    from ..damlast.daml_lf_1 import Expr
 
 
-def dotted_name(obj: DottedNameish) -> Sequence[str]:
+# Reference to a ledger ID.
+LedgerId = NewType('LedgerId', str)
+
+# Reference to a package via a package identifier. The identifier is the ascii7
+# lowercase hex-encoded hash of the package contents found in the DAML LF Archive.
+#
+# This is re-exported from the daml_lf_1 as PackageId for backwards compatibility, and will
+# be removed in dazl 7.0.0.
+PackageId = PackageRef
+
+# A set of PackageId.
+PackageIdSet = AbstractSet[PackageId]
+
+
+def type_ref(s: str) -> 'TypeReference':
+    """
+    Convenience method for creating a fully-qualified :class:`TypeReference`. A few formats are
+    supported:
+
+    "packageId:module:entity"
+    "module:entity@pkgid"
+    "module.entity@pkgid"
+    """
+    # Attempt to parse in an older format still used by Navigator for display purposes.
+    me, is_at, pkgid = s.partition('@')
+    if is_at:
+        # encourage people to use the new format
+        m, has_colon, e = me.partition(':')
+        if not has_colon:
+            m, _, e = me.rpartition('.')
+
+        pkg_ref = PackageRef(pkgid)
+        module_name = DottedName(m.split('.'))
+        entity_name = e.split('.')
+    else:
+        components = s.split(':')
+        if len(components) != 3:
+            raise ValueError(f"could not parse as a template reference: {s!r}")
+
+        pkg_ref = PackageRef(components[0])
+        module_name = DottedName(components[1].split('.'))
+        entity_name = components[2].split('.')
+
+    return TypeReference(con=TypeConName(module=ModuleRef(pkg_ref, module_name), name=entity_name))
+
+
+def dotted_name(obj: DottedNameish) -> 'Sequence[str]':
     """
     Sanitize a string or a tuple of strings to a dotted name.
 
@@ -141,7 +186,7 @@ def scalar_type_dispatch_table(
             return on_text()
         elif tt == SCALAR_TYPE_INTEGER:
             return on_int()
-        elif tt == SCALAR_TYPE_DECIMAL:
+        elif tt == SCALAR_TYPE_DECIMAL or tt == SCALAR_TYPE_NUMERIC:
             return on_decimal()
         elif tt == SCALAR_TYPE_PARTY:
             return on_party()
@@ -189,75 +234,6 @@ class TypeApp(Type):
         return f"<TypeApp(body={self.body}, arguments={self.arguments}>"
 
 
-class _Reference:
-    """
-    A reference to another type.
-
-    This is basically TypeConName in the Protobuf declaration.
-    """
-    __slots__ = ('module', 'name')
-
-    module: 'ModuleRef'
-    name: 'Sequence[str]'
-
-    def __init__(self, module: 'ModuleRef', name: 'Sequence[str]'):
-        from collections import Collection
-        if not isinstance(name, Collection):
-            raise TypeError(f'Tuple of strings required here (got {name!r} instead)')
-
-        self.module = safe_cast(ModuleRef, module)
-        self.name = tuple(name)  # type: Tuple[str, ...]
-
-    @property
-    def full_name(self):
-        return '.'.join((*self.module.module_name, *self.name))
-
-    @property
-    def full_name_unambiguous(self):
-        return '.'.join(self.module.module_name) + ':' + '.'.join(self.name)
-
-    def __eq__(self, other):
-        return isinstance(other, type(self)) and \
-               self.module == other.module and self.name == other.name
-
-    def __ne__(self, other):
-        return not isinstance(other, type(self)) or \
-               self.module != other.module or self.name != other.name
-
-    def __lt__(self, other):
-        return self.module < other.module or \
-               (self.module == other.module and self.name < other.name)
-
-    def __le__(self, other):
-        return self.module <= other.module or \
-               (self.module == other.module and self.name <= other.name)
-
-    def __gt__(self, other):
-        return self.module > other.module or \
-               (self.module == other.module and self.name > other.name)
-
-    def __ge__(self, other):
-        return self.module >= other.module or \
-               (self.module == other.module and self.name >= other.name)
-
-    def __hash__(self):
-        return hash(self.module) ^ hash(self.name)
-
-    def __str__(self):
-        return self.full_name
-
-    def __repr__(self):
-        return f"{self.full_name}@{self.module.package_id}"
-
-
-class TypeReference(Type, _Reference):
-    pass
-
-
-class ValueReference(_Reference):
-    pass
-
-
 class TypeVariable(Type):
     """
     An unbound type in a Type expression.
@@ -278,6 +254,54 @@ class TypeVariable(Type):
 
     def __hash__(self):
         return hash(self.name)
+
+
+class TypeReference(Type):
+    def __init__(self, con: 'TypeConName'):
+        self.con = con
+
+    @property
+    def module(self) -> 'ModuleRef':
+        from ..damlast.util import module_ref
+        warnings.warn(
+            "Do not use TypeReference.module; you can use module_ref(...) instead.",
+            DeprecationWarning)
+        return module_ref(self)
+
+    @property
+    def name(self) -> 'Sequence[str]':
+        warnings.warn(
+            "Do not use TypeReference.name; you can use module_local_name(...) instead.",
+            DeprecationWarning)
+        # noinspection PyProtectedMember
+        return self.con._name
+
+    @property
+    def full_name(self):
+        warnings.warn(
+            'Do not use TypeReference.full_name; this format is no longer used, "'
+            'so it has no replacement.', DeprecationWarning)
+
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            return self.con.full_name
+
+    @property
+    def full_name_unambiguous(self):
+        from ..damlast.util import package_local_name
+        warnings.warn(
+            "Do not use TypeReference.full_name_unambiguous; use package_local_name(...) instead.",
+            DeprecationWarning)
+        return package_local_name(self)
+
+    def __str__(self):
+        return str(self.con)
+
+    def __eq__(self, other):
+        return isinstance(other, TypeReference) and self.con == other.con
+
+    def __hash__(self):
+        return hash(self.con)
 
 
 class UnresolvedTypeReference(Type):
@@ -302,9 +326,7 @@ class UnresolvedTypeReference(Type):
 
 
 class ConcreteType(Type):
-    @property
-    def adjective(self) -> 'TypeAdjective':
-        raise NotImplementedError
+    pass
 
 
 class ScalarType(ConcreteType):
@@ -322,10 +344,6 @@ class ScalarType(ConcreteType):
         :param name: The name of this type as it is known in DAML.
         """
         self.name = safe_cast(str, name)
-
-    @property
-    def adjective(self):
-        return TypeAdjective.DAML_BUILTIN
 
     def __repr__(self):
         """
@@ -350,10 +368,6 @@ class _BuiltInParameterizedType(ConcreteType):
     def __init__(self, type_parameter: Type):
         self.type_parameter = safe_cast(Type, type_parameter)
 
-    @property
-    def adjective(self):
-        return TypeAdjective.DAML_BUILTIN
-
     def __repr__(self):
         py_type = type(self).__name__
         return f'<{py_type}({self.type_parameter!r})>'
@@ -364,6 +378,10 @@ class ContractIdType(_BuiltInParameterizedType):
 
 
 class ListType(_BuiltInParameterizedType):
+    pass
+
+
+class TypeRefType(_BuiltInParameterizedType):
     pass
 
 
@@ -382,13 +400,34 @@ class TextMapType(ConcreteType):
     def __init__(self, value_type: Type):
         self.value_type = safe_cast(Type, value_type)
 
-    @property
-    def adjective(self):
-        return TypeAdjective.DAML_BUILTIN
-
     def __repr__(self):
         py_type = type(self).__name__
         return f'<{py_type}({self.value_type!r})>'
+
+
+class GenMapType(ConcreteType):
+    """
+    A DAML-defined GenMap.
+
+    Instance attributes:
+
+    .. attribute: TextMapType.key_type
+
+        The type of keys in this map.
+
+    .. attribute: TextMapType.value_type
+
+        The type of values in this map.
+    """
+    __slots__ = 'key_type', 'value_type'
+
+    def __init__(self, key_type: Type, value_type: Type):
+        self.key_type = safe_cast(Type, key_type)
+        self.value_type = safe_cast(Type, value_type)
+
+    def __repr__(self):
+        py_type = type(self).__name__
+        return f'<{py_type}({self.key_type!r}, {self.value_type!r})>'
 
 
 class OptionalType(_BuiltInParameterizedType):
@@ -424,8 +463,7 @@ class _CompositeDataType(ConcreteType):
     def __init__(self,
                  named_args: 'NamedArgumentList',
                  name: 'Optional[TypeReference]',
-                 type_args: 'Sequence[TypeVariable]',
-                 adjective: 'TypeAdjective'):
+                 type_args: 'Sequence[TypeVariable]'):
         if type(self) == _CompositeDataType:
             raise Exception('_CompositeDataType cannot be constructed')
         if not isinstance(named_args, NamedArgumentList):
@@ -436,11 +474,6 @@ class _CompositeDataType(ConcreteType):
         self.named_args = named_args
         self.name = name
         self.type_args = tuple(type_args)
-        self._adjective = adjective
-
-    @property
-    def adjective(self):
-        return self._adjective
 
     def field_type(self, name: str) -> Type:
         for key, value_type in self.named_args:
@@ -505,10 +538,6 @@ class EnumType(ConcreteType):
         self.name = name
         self.constructors = constructors
 
-    @property
-    def adjective(self) -> 'TypeAdjective':
-        return TypeAdjective.USER_DEFINED
-
 
 class UnsupportedType(Type):
     """
@@ -522,44 +551,6 @@ class UnsupportedType(Type):
     def __repr__(self):
         return f'<UnsupportedType({self.name})>'
 
-
-class ModuleRef:
-    """
-    A reference to a module.
-    """
-    __slots__ = ('package_id', 'module_name')
-
-    def __init__(self, package_id: str, module_name: DottedNameish):
-        self.package_id = safe_cast(str, package_id)
-        self.module_name = dotted_name(module_name)
-
-    def __eq__(self, other):
-        return isinstance(other, ModuleRef) and \
-               self.package_id == other.package_id and \
-               self.module_name == other.module_name
-
-    def __lt__(self, other):
-        return self.package_id < other.package_id or \
-               (self.package_id == other.package_id and self.module_name < other.module_name)
-
-    def __le__(self, other):
-        return self.package_id < other.package_id or \
-               (self.package_id == other.package_id and self.module_name <= other.module_name)
-
-    def __gt__(self, other):
-        return self.package_id > other.package_id or \
-               (self.package_id == other.package_id and self.module_name > other.module_name)
-
-    def __ge__(self, other):
-        return self.package_id > other.package_id or \
-               (self.package_id == other.package_id and self.module_name >= other.module_name)
-
-    def __hash__(self):
-        return hash(self.package_id) ^ hash(self.module_name)
-
-    def __repr__(self):
-        return f'ModuleRef(package_id={self.package_id!r}, ' \
-            f'module_name={".".join(self.module_name)!r})'
 
 
 class Template:
@@ -587,84 +578,15 @@ class Template:
         self._agreement = agreement
         self._ensure = ensure
 
-    def signatories(self, store: 'PackageStore', cdata: ContractData) -> Collection[Party]:
-        from ..damlast.eval_scope import EvaluationScope
-        from ..damlast.eval2 import Evaluator
-        from ..damlast.pretty_print import pretty_print
-
-        scope = EvaluationScope(store, {}) #{'this': cdata})
-        print('Trying to evaluate:')
-        print(pretty_print(scope, self._signatories))
-        print('-')
-        print(repr(self._signatories))
-        print('-')
-        print('')
-        print('now here we go')
-        return Evaluator(store, {'this': Evaluator.Constant(cdata)}, {}).eval_Expr(self._signatories)
-
-    def observers(self, store: 'PackageStore', cdata: ContractData) -> Collection[Party]:
-        from ..damlast import DamlPrettyPrintVisitor, CSharpPrettyPrintVisitor
-        from ..damlast.expand import ExpandVisitor, SimplifyVisitor
-        pp = CSharpPrettyPrintVisitor(store)
-        ex = ExpandVisitor(store, always_expand=False)
-        sp = SimplifyVisitor(store)
-
-        expr = sp.visit_expr(ex.visit_expr(self._observers))
-        print(pp.visit_expr(expr))
-
-
-        return Evaluator(store, {'this': Evaluator.Constant(cdata)}, {}).eval_Expr(self._observers)
-
-    def agreement(self, store: 'PackageStore', cdata: ContractData) -> str:
-        """
-        Return ths text of the agreement of this :class:`Template` from a contract data.
-
-        :param cdata:
-            An object that represents the record that describe the fields of this template.
-        :return:
-            The agreement string.
-        """
-        from ..damlast.eval_scope import EvaluationScope
-        from ..damlast.eval2 import Evaluator
-        from ..damlast.pretty_print import pretty_print
-
-        scope = EvaluationScope(store, {}) #{'this': cdata})
-        print('Trying to evaluate:')
-        print(pretty_print(scope, self._signatories))
-        print('-')
-        print(repr(self._signatories))
-        print('-')
-        print('')
-        print('now here we go')
-        #fn = Evaluator(store, {}, {}).eval_Expr(self._agreement)
-        #return fn(Evaluator.Constant(cdata))
-        expr = Evaluator(store, {'this': Evaluator.Constant(cdata)}, {}).eval_Expr(self._agreement)
-        return expr
-
-    def ensure(self, store: 'PackageStore', cdata: 'ContractData') -> bool:
-        from ..damlast import DamlPrettyPrintVisitor
-        from ..damlast.expand import ExpandVisitor, SimplifyVisitor
-        pp = DamlPrettyPrintVisitor()
-        ex = ExpandVisitor(
-            store,
-            always_expand=True,
-            val_blacklist=[ValueReference(
-                module=ModuleRef('993b6de82f6297d2a618f0ac17e6c3c4173baf04f1903481f236dd8bf4c64554',
-                                 module_name=('DA', 'Internal', 'Prelude')),
-                name=('concat',))])
-        sp = SimplifyVisitor(store)
-
-        expr = sp.visit_expr(ex.visit_expr(self._ensure))
-        print(pp.visit_expr(expr))
-
 
 class TemplateChoice:
-    __slots__ = ('name', 'consuming', 'data_type', '_controllers')
+    __slots__ = ('name', 'consuming', 'data_type', 'return_type', '_controllers')
 
-    def __init__(self, name: str, consuming: bool, data_type: Type, controllers: 'Expr'):
+    def __init__(self, name: str, consuming: bool, data_type: Type, return_type: Type, controllers: 'Expr'):
         self.name = name
         self.consuming = consuming
         self.data_type = data_type
+        self.return_type = return_type
         self._controllers = controllers
 
     @property
@@ -732,11 +654,13 @@ SCALAR_TYPE_BOOL = ScalarType('Bool')
 SCALAR_TYPE_CHAR = ScalarType('Char')
 SCALAR_TYPE_INTEGER = ScalarType('Integer')
 SCALAR_TYPE_DECIMAL = ScalarType('Decimal')
+SCALAR_TYPE_NUMERIC = ScalarType('Numeric')
 SCALAR_TYPE_TEXT = ScalarType('Text')
 SCALAR_TYPE_PARTY = ScalarType('Party')
 SCALAR_TYPE_RELTIME = ScalarType('RelTime')
 SCALAR_TYPE_DATE = ScalarType('Date')
 SCALAR_TYPE_TIME = ScalarType('Time')
+SCALAR_TYPE_ANY = ScalarType('Any')
 SCALAR_TYPE_DATETIME = SCALAR_TYPE_TIME
 
 ScalarType.BUILTINS = [
@@ -744,16 +668,18 @@ ScalarType.BUILTINS = [
     SCALAR_TYPE_CHAR,
     SCALAR_TYPE_INTEGER,
     SCALAR_TYPE_DECIMAL,
+    SCALAR_TYPE_NUMERIC,
     SCALAR_TYPE_TEXT,
     SCALAR_TYPE_PARTY,
     SCALAR_TYPE_RELTIME,
     SCALAR_TYPE_DATE,
     SCALAR_TYPE_TIME,
+    SCALAR_TYPE_ANY,
 ]
 
 
 class TypeEvaluationContext:
-    references: Dict[TypeReference, Type]
+    references: Dict[TypeConName, ConcreteType]
     variables: Dict[TypeVariable, Type]
     path: Sequence[Union[TypeReference, str]]
 
@@ -761,10 +687,10 @@ class TypeEvaluationContext:
 
     @classmethod
     def from_store(cls, store: 'PackageStore') -> 'TypeEvaluationContext':
-        return cls(store.find_types(), {}, ())
+        return cls(store.types(), {}, ())
 
-    def __init__(self, references, variables, path):
-        self.references = safe_dict_cast(TypeReference, Type, references)
+    def __init__(self, references: 'Mapping[TypeConName, ConcreteType]', variables, path):
+        self.references = safe_dict_cast(TypeConName, ConcreteType, references)
         self.variables = safe_dict_cast(TypeVariable, Type, variables)
         self.path = path
 
@@ -863,14 +789,14 @@ def single_reduce(context: TypeEvaluationContext, tt: Type) -> 'Tuple[TypeEvalua
     def identity(t): return context, t
 
     def reduce_app(ta: TypeApp) -> 'Tuple[TypeEvaluationContext, Type]':
-        body = context.references[ta.body] if isinstance(ta.body, TypeReference) else ta.body
+        body = context.references[ta.body.con] if isinstance(ta.body, TypeReference) else ta.body
         if not isinstance(body, (RecordType, VariantType)):
             raise Exception("Can't apply types to non-generic data structures")
 
         return context.with_vars(dict(zip(body.type_args, ta.arguments))), ta.body
 
     return type_dispatch_table(
-        lambda tr: (context, context.references[tr]),
+        lambda tr: (context, context.references[tr.con]),
         lambda tv: (context, context.resolve_var(tv)),
         reduce_app,
         identity,
@@ -895,81 +821,6 @@ def annotate_context(context: TypeEvaluationContext, tt: Type) -> Tuple[TypeEval
     return type_dispatch_table(
         error, error, error, identity, identity, identity, identity, identity,
         annotate_path, annotate_path, identity, identity)(tt)
-
-
-class TemplateMeta(type):
-    """
-    Metaclass for generated template types.
-    """
-    def __new__(mcs, name, bases, namespace, template_name: str):
-        result = type.__new__(mcs, name, bases, dict(namespace))
-        result._template_name = template_name
-        return result
-
-    def __str__(self):
-        return self._template_name
-
-    def __repr__(self):
-        return self._template_name
-
-
-class ChoiceMeta(type):
-    """
-    Metaclass for generated template choice types.
-    """
-    def __new__(mcs, name, bases, namespace, template_name: str, choice_name: str):
-        result = type.__new__(mcs, name, bases, dict(namespace))
-        result._template_name = template_name
-        result._choice_name = choice_name
-        return result
-
-    def __str__(self):
-        return self._choice_name
-
-    def __repr__(self):
-        return self._choice_name
-
-
-class TypeAdjective(Flag):
-    """
-    Different descriptions for how and why a type comes to be.
-
-    Instance attributes:
-
-    .. attribute: TypeAdjective.DAML_BUILTIN:
-
-        A native type to DAML, such as ``Integer``, ``Text``, or ``ContractId``
-
-    .. attribute: TypeAdjective.DAML_INTERNAL:
-
-        Types that are used internally to DAML and generally not exposed to users.
-
-    .. attribute: TypeAdjective.USER_TEMPLATE_AUTOGENERATED:
-
-        Types that were created because of a DAML ``template`` declaration.
-
-    .. attribute: TypeAdjective.USER_CHOICE_AUTOGENERATED:
-
-        Types that were created because of a DAML choice declaration.
-
-    .. attribute: TypeAdjective.USER_DEFINED:
-
-        Types that were explicitly created because of a user declaration.
-    """
-    NONE = 0
-    DAML_BUILTIN = 1
-    DAML_INTERNAL = 2
-    USER_TEMPLATE_AUTOGENERATED = 4
-    USER_CHOICE_AUTOGENERATED = 8
-    USER_DEFINED = 16
-    ANY = 0xFFFFFFFF
-
-
-def module(obj):
-    """
-    Marker decorator that denotes a class as a module.
-    """
-    return obj
 
 
 # types that can be used to refer to templates

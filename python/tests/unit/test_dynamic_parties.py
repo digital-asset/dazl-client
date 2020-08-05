@@ -1,46 +1,43 @@
 # Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
 import logging
-from pathlib import Path
-from unittest import TestCase
+import uuid
 
-from dazl import create, exercise, sandbox, Network, setup_default_logger
+import pytest
 
-DAML_PATH = Path(__file__).parent.parent.parent / '_template' / 'Main.daml'
+from dazl import async_network, create, exercise
 
-setup_default_logger(logging.DEBUG)
+from .dars import PostOffice
 
 
-class TestDynamicParties(TestCase):
-    def test_parties_can_be_added_after_run_forever(self):
-        with sandbox(daml_path=DAML_PATH) as proc:
-            network = Network()
-            network.set_config(url=proc.url)
+@pytest.mark.asyncio
+async def test_parties_can_be_added_after_run_forever(sandbox):
+    async with async_network(url=sandbox, dars=PostOffice) as network:
+        operator_client = network.aio_new_party()
+        party_a_client = network.aio_new_party()
+        party_b_client = network.aio_new_party()
+        # TODO: Introduce a Party allocation API separate from client creation
+        party_c_party = str(uuid.uuid4())
 
-            operator = network.aio_party('Operator')
-            party_a = network.aio_party('Party A')
-            party_b = network.aio_party('Party B')
+        @operator_client.ledger_ready()
+        def operator_ready(event):
+            return create('Main.PostmanRole', {'postman': event.party})
 
-            @operator.ledger_ready()
-            def _(event):
-                return create('Main.PostmanRole', {'postman': 'Operator'})
+        @operator_client.ledger_created('Main.PostmanRole')
+        def operator_role_created(event):
+            return [exercise(event.cid, 'InviteParticipant', {'party': party, 'address': 'whatevs'})
+                    for party in (party_a_client.party, party_b_client.party, party_c_party)]
 
-            @operator.ledger_created('Main.PostmanRole')
-            def __(event):
-                return [exercise(event.cid, 'InviteParticipant', {'party': party, 'address': 'whatevs'})
-                        for party in ('Party A', 'Party B', 'Party C')]
+        @party_a_client.ledger_created('Main.InviteAuthorRole')
+        async def party_a_accept_invite(_):
+            party_c = network.aio_party(party_c_party)
 
-            @party_a.ledger_created('Main.InviteAuthorRole')
-            async def _(event):
-                party_c = network.aio_party('Party C')
+            @party_c.ledger_created('Main.AuthorRole')
+            def party_c_role_created(_):
+                network.shutdown()
 
-                @party_c.ledger_created('Main.AuthorRole')
-                def ___(event):
-                    network.shutdown()
+            cid, cdata = await party_c.find_one('Main.InviteAuthorRole')
+            party_c.submit_exercise(cid, 'AcceptInviteAuthorRole')
 
-                cid, cdata = await party_c.find_one('Main.InviteAuthorRole')
-                party_c.submit_exercise(cid, 'AcceptInviteAuthorRole')
-
-            network.run_forever()
+        network.start()
 
