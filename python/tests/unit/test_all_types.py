@@ -26,6 +26,7 @@ SOME_ARGS = dict(
     someNestedPair=dict(left=dict(left=1, right=2), right=dict(left=3, right=4)),
     someUglyNesting=dict(Both=dict(Left=dict(left=dict(left=1, right=2), right=dict(left=3, right=4)))),
     someMeasurement=Decimal(10.0),
+    someEnum='Green',
     theUnit=dict())
 
 
