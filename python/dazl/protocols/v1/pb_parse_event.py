@@ -503,8 +503,8 @@ def to_optional(context: TypeEvaluationContext, tt: Type, optional: 'G.Optional'
     return type_evaluate_dispatch_default_error(on_optional=process)(context, tt)
 
 
-def to_enum(enum: str) -> str:
-    return enum
+def to_enum(enum: 'Union[str, G.Enum]') -> str:
+    return getattr(enum, 'constructor', enum)
 
 
 def to_int64(int64: int) -> int:
