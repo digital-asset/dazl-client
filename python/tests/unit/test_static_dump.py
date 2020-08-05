@@ -26,6 +26,6 @@ async def test_static_dump_and_tail(sandbox):
         await client.ready()
 
         for i in range(0, 5):
-            await client.submit_create('Main.PostmanRole', {'postman': client.party})
+            await client.submit_create('Main:PostmanRole', {'postman': client.party})
 
     assert len(seen_contracts) == 5

@@ -5,8 +5,8 @@ from dazl import async_network, create, exercise
 from .dars import Simple
 import pytest
 
-OperatorRole = 'Simple.OperatorRole'
-OperatorNotification = 'Simple.OperatorNotification'
+OperatorRole = 'Simple:OperatorRole'
+OperatorNotification = 'Simple:OperatorNotification'
 
 
 @pytest.mark.asyncio
@@ -32,7 +32,7 @@ async def test_select_unknown_template_retrieves_empty_set(sandbox):
 
         await client.submit_create(OperatorRole, {'operator': client.party})
 
-        data = client.find_active('NonExistentTemplate')
+        data = client.find_active('NonExistentModule:NonExistentTemplate')
 
     assert len(data) == 0
 

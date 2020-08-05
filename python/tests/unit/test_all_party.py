@@ -10,8 +10,8 @@ from dazl import async_network, create, Party
 
 from .dars import AllParty as AllPartyDar
 
-PrivateContract = 'AllParty.PrivateContract'
-PublicContract = 'AllParty.PublicContract'
+PrivateContract = 'AllParty:PrivateContract'
+PublicContract = 'AllParty:PublicContract'
 
 
 @pytest.mark.asyncio

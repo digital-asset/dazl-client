@@ -15,7 +15,7 @@ async def test_record_dotted_fields_submit(sandbox):
         network.start()
 
         await client.ready()
-        await client.submit_create('DottedFields.American', {
+        await client.submit_create('DottedFields:American', {
             'person': client.party,
             'address.address': '1 Test Place',
             'address.city': 'Somewhere',
@@ -23,7 +23,7 @@ async def test_record_dotted_fields_submit(sandbox):
             'address.zip': '99999'
         })
 
-        items = client.find_active('DottedFields.American')
+        items = client.find_active('DottedFields:American')
         assert len(items) == 1
 
 
@@ -35,7 +35,7 @@ async def test_variant_dotted_fields_submit(sandbox):
         network.start()
 
         await client.ready()
-        await client.submit_create('DottedFields.Person', {
+        await client.submit_create('DottedFields:Person', {
             'person': client.party,
             'address.US.address': '1 Test Place',
             'address.US.city': 'Somewhere',
@@ -48,5 +48,5 @@ async def test_variant_dotted_fields_submit(sandbox):
             'address.UK.postcode': '',
         })
 
-        items = client.find_active('DottedFields.Person')
+        items = client.find_active('DottedFields:Person')
         assert len(items) == 1

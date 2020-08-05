@@ -14,8 +14,8 @@ PARTY_COUNT = 10
 
 
 class Simple:
-    OperatorRole = 'Simple.OperatorRole'
-    OperatorNotification = 'Simple.OperatorNotification'
+    OperatorRole = 'Simple:OperatorRole'
+    OperatorNotification = 'Simple:OperatorNotification'
 
 
 def test_event_order(sandbox):

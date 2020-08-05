@@ -43,11 +43,11 @@ def dar_fixture() -> 'DarFixture':
 def test_serialize_create(dar_fixture):
     sut = ProtobufSerializer(dar_fixture.store)
 
-    command = CreateCommand('Pending.AccountRequest', dict(owner='SomeParty'))
+    command = CreateCommand('Pending:AccountRequest', dict(owner='SomeParty'))
 
     expected = G.Command()
     expected.create.template_id.MergeFrom(
-        dar_fixture.get_identifier('Pending.AccountRequest'))
+        dar_fixture.get_identifier('Pending:AccountRequest'))
     expected.create.create_arguments.fields.append(
         G.RecordField(label='owner', value=G.Value(party='SomeParty')))
     actual = sut.serialize_command(command)
@@ -58,14 +58,14 @@ def test_serialize_create(dar_fixture):
 def test_serialize_exercise(dar_fixture):
     sut = ProtobufSerializer(dar_fixture.store)
 
-    tref = dar_fixture.get_template_type('Pending.AccountRequest')
+    tref = dar_fixture.get_template_type('Pending:AccountRequest')
     cid = ContractId('#1:0', tref)
     command = ExerciseCommand(cid, 'CreateAccount', dict(accountId=42))
 
     expected = G.Command()
     expected.exercise.contract_id = '#1:0'
     expected.exercise.template_id.MergeFrom(
-        dar_fixture.get_identifier('Pending.AccountRequest'))
+        dar_fixture.get_identifier('Pending:AccountRequest'))
     expected.exercise.choice = 'CreateAccount'
     expected.exercise.choice_argument.record.fields.append(
         G.RecordField(label='accountId', value=G.Value(int64=42)))
@@ -77,11 +77,11 @@ def test_serialize_exercise(dar_fixture):
 def test_serialize_exercise_by_key(dar_fixture):
     sut = ProtobufSerializer(dar_fixture.store)
 
-    command = ExerciseByKeyCommand('Pending.Counter', 'SomeParty', 'Increment', {})
+    command = ExerciseByKeyCommand('Pending:Counter', 'SomeParty', 'Increment', {})
 
     expected = G.Command()
     expected.exerciseByKey.template_id.MergeFrom(
-        dar_fixture.get_identifier('Pending.Counter'))
+        dar_fixture.get_identifier('Pending:Counter'))
     expected.exerciseByKey.contract_key.party = 'SomeParty'
     expected.exerciseByKey.choice = 'Increment'
     expected.exerciseByKey.choice_argument.record.SetInParent()
@@ -94,11 +94,11 @@ def test_serialize_create_and_exercise(dar_fixture):
     sut = ProtobufSerializer(dar_fixture.store)
 
     command = CreateAndExerciseCommand(
-        'Pending.AccountRequest', dict(owner='SomeParty'), 'CreateAccount', dict(accountId=42))
+        'Pending:AccountRequest', dict(owner='SomeParty'), 'CreateAccount', dict(accountId=42))
 
     expected = G.Command()
     expected.createAndExercise.template_id.MergeFrom(
-        dar_fixture.get_identifier('Pending.AccountRequest'))
+        dar_fixture.get_identifier('Pending:AccountRequest'))
     expected.createAndExercise.create_arguments.fields.append(
         G.RecordField(label='owner', value=G.Value(party='SomeParty')))
     expected.createAndExercise.choice = 'CreateAccount'

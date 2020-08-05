@@ -9,8 +9,8 @@ from dazl import async_network, exercise, AIOPartyClient
 from .dars import Simple
 
 
-OperatorRole = 'Simple.OperatorRole'
-OperatorNotification = 'Simple.OperatorNotification'
+OperatorRole = 'Simple:OperatorRole'
+OperatorNotification = 'Simple:OperatorNotification'
 
 
 @pytest.mark.asyncio

@@ -5,11 +5,11 @@ import pytest
 from dazl import async_network, create, exercise
 from .dars import Pending
 
-Counter = 'Pending.Counter'
-Account = 'Pending.Account'
-AccountRequest = 'Pending.AccountRequest'
+Counter = 'Pending:Counter'
+Account = 'Pending:Account'
+AccountRequest = 'Pending:AccountRequest'
 
-OperatorNotification = 'Simple.OperatorNotification'
+OperatorNotification = 'Simple:OperatorNotification'
 
 
 @pytest.mark.asyncio

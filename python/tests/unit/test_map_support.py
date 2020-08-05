@@ -16,7 +16,7 @@ async def test_map_support(sandbox):
         network.start()
 
         await client.ready()
-        await client.submit_create('MapSupport.Sample', {
+        await client.submit_create('MapSupport:Sample', {
             'party': client.party,
             'mappings': {
                 '65': 'A',
@@ -35,7 +35,7 @@ async def test_complicated_map_support(sandbox):
         client = network.aio_new_party()
 
         await client.ready()
-        await client.submit_create('MapSupport.ComplicatedSample', {
+        await client.submit_create('MapSupport:ComplicatedSample', {
             'party': 'Test',
             # Note: Python `dict`s are not hashable, so the only way to write this out
             # is to create a special dict as a key

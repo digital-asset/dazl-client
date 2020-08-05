@@ -42,7 +42,7 @@ def create_postman():
         with create_client(parties=all_parties, participant_url=url) as client_mgr:
             postman_client = client_mgr.new_client(POSTMAN_PARTY)
             postman_client.on_ready(
-                lambda _, __: create('Main.PostmanRole', dict(postman=POSTMAN_PARTY)))
+                lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
 
             ledger_run = client_mgr.run_until_complete()
             return ledger_run.exit_code
@@ -62,7 +62,7 @@ def inspect_ledger():
             try:
                 postman_client = client_mgr.new_client(POSTMAN_PARTY)
                 postman_client.on_ready(
-                    lambda _, __: create('Main.PostmanRole', dict(postman=POSTMAN_PARTY)))
+                    lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
 
                 client_mgr.register(inspector)
 
@@ -97,9 +97,9 @@ def invite_participants():
     def set_up(client_mgr, members):
         postman_client = client_mgr.new_client(POSTMAN_PARTY)
         postman_client.on_ready(
-            lambda _, __: create('Main.PostmanRole', dict(postman=POSTMAN_PARTY)))
+            lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
         postman_client.on_created(
-            'Main.PostmanRole',
+            'Main:PostmanRole',
             lambda cid, cdata: [cid.exercise('InviteParticipant', m) for m in members])
 
     def address(index):
@@ -138,18 +138,18 @@ def accept_invites():
     def set_up(client_mgr, members):
         postman_client = client_mgr.new_client(POSTMAN_PARTY)
         postman_client.on_ready(
-            lambda _, __: create('Main.PostmanRole', dict(postman=POSTMAN_PARTY)))
+            lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
         postman_client.on_created(
-            'Main.PostmanRole',
+            'Main:PostmanRole',
             lambda cid, cdata: [cid.exercise('InviteParticipant', m) for m in members])
 
         member_clients = [client_mgr.new_client(m['party']) for m in members]
         for member_client in member_clients:
             # every member automatically accepts
             member_client.on_created(
-                'Main.InviteAuthorRole', lambda cid, cdata: cid.exercise('AcceptInviteAuthorRole'))
+                'Main:InviteAuthorRole', lambda cid, cdata: cid.exercise('AcceptInviteAuthorRole'))
             member_client.on_created(
-                'Main.InviteReceiverRole', lambda cid, cdata: cid.exercise('AcceptInviteReceiverRole'))
+                'Main:InviteReceiverRole', lambda cid, cdata: cid.exercise('AcceptInviteReceiverRole'))
     # DOC_END: ACCEPT_INVITES
     return final_run_test(set_up)
 
@@ -164,20 +164,20 @@ def send_letters():
     def set_up(client_mgr, members):
         postman_client = client_mgr.new_client(POSTMAN_PARTY)
         postman_client.on_ready(
-            lambda _, __: create('Main.PostmanRole', dict(postman=POSTMAN_PARTY)))
+            lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
         postman_client.on_created(
-            'Main.PostmanRole',
+            'Main:PostmanRole',
             lambda cid, cdata: [cid.exercise('InviteParticipant', m) for m in members])
 
         member_clients = [client_mgr.new_client(m['party']) for m in members]
         for member_client in member_clients:
             # every member automatically accepts
             member_client.on_created(
-                'Main.InviteAuthorRole', lambda cid, cdata: cid.exercise('AcceptInviteAuthorRole'))
+                'Main:InviteAuthorRole', lambda cid, cdata: cid.exercise('AcceptInviteAuthorRole'))
             member_client.on_created(
-                'Main.InviteReceiverRole', lambda cid, cdata: cid.exercise('AcceptInviteReceiverRole'))
+                'Main:InviteReceiverRole', lambda cid, cdata: cid.exercise('AcceptInviteReceiverRole'))
             member_client.on_created(
-                'Main.AuthorRole', partial(send_five_letters, member_client.party_name))
+                'Main:AuthorRole', partial(send_five_letters, member_client.party_name))
 
     def send_five_letters(party_name, cid, cdata):
         if party_name == cdata['author']:

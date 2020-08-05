@@ -243,8 +243,9 @@ class Network:
 
         The current thread does NOT block.
 
-        :return: ``None`` unless ``start()`` was called, in which case the coroutine that
-        corresponds to dazl's "main" is returned.
+        :return:
+            ``None`` unless ``start()`` was called, in which case the coroutine that
+            corresponds to dazl's "main" is returned.
         """
         self._impl.shutdown()
         return self._main_fut
