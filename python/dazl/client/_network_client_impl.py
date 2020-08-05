@@ -354,14 +354,6 @@ class _NetworkImpl:
                 return
         raise TimeoutError()
 
-    async def get_time(self) -> datetime:
-        metadata = await self._pool.ledger()
-        await self._pool.sync_time()
-        return metadata.time_model.get_time()
-
-    def set_time(self, new_datetime: datetime) -> Awaitable[None]:
-        return self._pool.set_time(new_datetime)
-
     # region Event Handler Management
 
     # noinspection PyShadowingBuiltins
@@ -506,12 +498,11 @@ class _NetworkRunner:
 
         # Raise the 'init' event.
         init_futs = []
-        current_time = metadata.time_model.get_time()
         if first_offset is None:
-            evt = InitEvent(None, None, current_time, metadata.ledger_id, metadata.store)
+            evt = InitEvent(None, None, None, metadata.ledger_id, metadata.store)
             init_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
-            init_futs.append(ensure_future(party_impl.initialize(current_time, metadata)))
+            init_futs.append(ensure_future(party_impl.initialize(None, metadata)))
 
         # TODO: Consider what should join on init_futs; we can't join here because otherwise this
         #  blocks the readers from reading transactions that would cause these events to fully
@@ -524,12 +515,11 @@ class _NetworkRunner:
         LOG.debug('Preparing to raise the "ready" event...')
         # Raise the 'ready' event.
         ready_futs = []
-        current_time = metadata.time_model.get_time()
         if first_offset is None:
-            evt = ReadyEvent(None, None, current_time, metadata.ledger_id, metadata.store, offset)
+            evt = ReadyEvent(None, None, None, metadata.ledger_id, metadata.store, offset)
             ready_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
-            ready_futs.append(ensure_future(party_impl.emit_ready(metadata, current_time, offset)))
+            ready_futs.append(ensure_future(party_impl.emit_ready(metadata, None, offset)))
         for party_impl in party_impls:
             party_impl.ready().set_result(None)
 

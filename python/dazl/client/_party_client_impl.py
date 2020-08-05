@@ -26,7 +26,7 @@ from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEven
     InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from ..protocols import LedgerNetwork, LedgerClient
-from ..util.asyncio_util import ServiceQueue, await_then, completed, named_gather
+from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
 from ..util.prim_types import TimeDeltaConvertible, to_timedelta
 from ..util.typing import safe_cast
@@ -102,12 +102,6 @@ class _PartyClientImpl:
 
     def ready(self) -> Awaitable[None]:
         return self._ready_fut
-
-    def get_time(self) -> Awaitable[datetime]:
-        return await_then(self._pool.ledger(), lambda metadata: metadata.time_model.get_time())
-
-    def set_time(self, new_datetime) -> Awaitable[None]:
-        return await_then(self._pool_fut, lambda pool: pool.set_time(new_datetime))
 
     # region Event Handler Management
 

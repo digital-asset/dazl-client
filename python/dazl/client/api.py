@@ -388,12 +388,6 @@ class AIOGlobalClient(GlobalClient):
         """
         return await self._impl.aio_metadata()
 
-    async def get_time(self) -> datetime:
-        return await self._impl.get_time()
-
-    async def set_time(self, new_datetime: datetime) -> None:
-        await self._impl.set_time(new_datetime)
-
 
 class SimpleGlobalClient(GlobalClient):
 
@@ -432,12 +426,6 @@ class SimpleGlobalClient(GlobalClient):
         Return the current set of known packages.
         """
         return self._impl.simple_metadata(timeout)
-
-    def get_time(self) -> datetime:
-        return self._impl.invoker.run_in_loop(self._impl.get_time)
-
-    def set_time(self, new_datetime: datetime) -> None:
-        self._impl.invoker.run_in_loop(lambda: self._impl.set_time(new_datetime))
 
 
 class PartyClient:
@@ -966,20 +954,6 @@ class AIOPartyClient(PartyClient):
 
     def set_config(self, url: 'Optional[str]', **kwargs):
         self._impl.set_config(url=url, **kwargs)
-
-    def get_time(self) -> 'Awaitable[datetime]':
-        """
-        Return the current time on the remote server. Also advance the local notion of time if
-        required.
-        """
-        return self._impl.get_time()
-
-    def set_time(self, new_datetime: datetime) -> 'Awaitable[None]':
-        """
-        Set the current time on the ledger. This is only supported if the ledger supports time
-        manipulation.
-        """
-        return self._impl.set_time(new_datetime)
 
     async def ensure_dar(
             self,
@@ -1554,12 +1528,6 @@ class SimplePartyClient(PartyClient):
 
     def set_config(self, url: Optional[str], **kwargs):
         self._impl.set_config(url=url, **kwargs)
-
-    def get_time(self) -> datetime:
-        return self._impl.invoker.run_in_loop(lambda: self._impl.get_time())
-
-    def set_time(self, new_datetime: datetime) -> None:
-        return self._impl.invoker.run_in_loop(lambda: self._impl.set_time(new_datetime))
 
     def ensure_dar(
             self,
