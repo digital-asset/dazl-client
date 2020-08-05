@@ -21,6 +21,8 @@ from ...util.prim_types import to_boolean, to_date, to_datetime, to_decimal, to_
 # noinspection PyPackageRequirements
 from google.protobuf.empty_pb2 import Empty
 # noinspection PyPackageRequirements
+from google.protobuf.duration_pb2 import Duration
+# noinspection PyPackageRequirements
 from google.protobuf.timestamp_pb2 import Timestamp
 
 
@@ -39,6 +41,13 @@ def as_api_timestamp(dt: datetime) -> Timestamp:
     ts.seconds = td.seconds + td.days * _SECONDS_PER_DAY
     ts.nanos = td.microseconds * _NANOS_PER_MICROSECOND
     return ts
+
+
+def as_api_duration(t: timedelta) -> Duration:
+    d = Duration()
+    d.seconds = t.total_seconds()
+    d.nanos = t.microseconds * 1000
+    return d
 
 
 def as_identifier(tref: 'TypeReference') -> 'G.Identifier':
@@ -82,8 +91,8 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
             command_id=command_payload.command_id,
             party=command_payload.party,
             commands=commands,
-            ledger_effective_time=as_api_timestamp(command_payload.ledger_effective_time),
-            maximum_record_time=as_api_timestamp(command_payload.maximum_record_time)))
+            deduplication_time=(as_api_duration(command_payload.deduplication_time)
+                                if command_payload.deduplication_time is not None else None)))
 
     def serialize_create_command(self, template_type: RecordType, template_args: R) -> G.Command:
         create_ctor, create_value = template_args
