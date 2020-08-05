@@ -6,7 +6,7 @@ Support for the gRPC-based Ledger API.
 """
 from asyncio import gather, get_event_loop
 from datetime import datetime
-from threading import Thread, Event
+from threading import Event
 from typing import Awaitable, Iterable, Optional, Sequence
 
 # noinspection PyPackageRequirements
@@ -15,12 +15,11 @@ from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credenti
 
 from ... import LOG
 from .._base import LedgerClient, _LedgerConnection, LedgerConnectionOptions
-from .grpc_time import maybe_grpc_time_stream
 from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
     to_acs_events, to_transaction_events, BaseEventDeserializationContext
 from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, find_dependencies
 from ...model.core import Party, UserTerminateRequest, ConnectionTimeoutError
-from ...model.ledger import LedgerMetadata, StaticTimeModel, RealTimeModel
+from ...model.ledger import LedgerMetadata
 from ...model.network import HTTPConnectionSettings
 from ...model.reading import BaseEvent, TransactionFilter
 from ...model.types import PackageId, PackageIdSet
@@ -161,29 +160,11 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterabl
 
     grpc_package_sync(package_provider, store)
 
-    time_iter = maybe_grpc_time_stream(connection.time_service, ledger_id)
-    time_model = StaticTimeModel(next(time_iter)) if time_iter is not None else RealTimeModel()
-
     yield LedgerMetadata(
         ledger_id=ledger_id,
         store=store,
-        time_model=time_model,
         serializer=ProtobufSerializer(store),
         protocol_version="v1")
-
-    # oh man, another thread...
-    def time_sync_thread():
-        try:
-            # keep the network open as long as we keep getting time updates
-            for ts in time_iter:
-                time_model.current_time = ts
-            LOG.debug('The time stream has completed.')
-        except:
-            pass
-
-    if time_iter is not None:
-        time_thread = Thread(name='time-sync-thread', target=time_sync_thread, daemon=True)
-        time_thread.start()
 
     # poll for package updates once a second
     while not connection._closed.wait(1):

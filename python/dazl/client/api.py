@@ -388,12 +388,6 @@ class AIOGlobalClient(GlobalClient):
         """
         return await self._impl.aio_metadata()
 
-    async def get_time(self) -> datetime:
-        return await self._impl.get_time()
-
-    async def set_time(self, new_datetime: datetime) -> None:
-        await self._impl.set_time(new_datetime)
-
 
 class SimpleGlobalClient(GlobalClient):
 
@@ -432,12 +426,6 @@ class SimpleGlobalClient(GlobalClient):
         Return the current set of known packages.
         """
         return self._impl.simple_metadata(timeout)
-
-    def get_time(self) -> datetime:
-        return self._impl.invoker.run_in_loop(self._impl.get_time)
-
-    def set_time(self, new_datetime: datetime) -> None:
-        self._impl.invoker.run_in_loop(lambda: self._impl.set_time(new_datetime))
 
 
 class PartyClient:
@@ -705,7 +693,7 @@ class AIOPartyClient(PartyClient):
             self,
             commands: 'EventHandlerResponse',
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit commands to the ledger.
@@ -714,20 +702,23 @@ class AIOPartyClient(PartyClient):
             An object that can be converted to a command.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
-        return self._impl.write_commands(commands, workflow_id=workflow_id, ttl=ttl)
+        return self._impl.write_commands(
+            commands, workflow_id=workflow_id, deduplication_time=deduplication_time)
 
     def submit_create(
             self,
             template_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit a single create command. Equivalent to calling :meth:`submit` with a single
@@ -739,14 +730,19 @@ class AIOPartyClient(PartyClient):
             The arguments to the create (as a ``dict``).
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         from .. import create
-        return self.submit(create(template_name, arguments), workflow_id=workflow_id, ttl=ttl)
+        return self.submit(
+            create(template_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_exercise(
             self,
@@ -754,7 +750,7 @@ class AIOPartyClient(PartyClient):
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Submit a single exercise choice. Equivalent to calling :meth:`submit` with a single
@@ -769,14 +765,19 @@ class AIOPartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         from .. import exercise
-        return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id, ttl=ttl)
+        return self.submit(
+            exercise(cid, choice_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_exercise_by_key(
             self,
@@ -785,7 +786,7 @@ class AIOPartyClient(PartyClient):
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -802,14 +803,16 @@ class AIOPartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise_by_key
         return self.submit(
             exercise_by_key(template_name, contract_key, choice_name, arguments),
             workflow_id=workflow_id,
-            ttl=ttl)
+            deduplication_time=deduplication_time)
 
     def submit_create_and_exercise(
             self,
@@ -818,7 +821,7 @@ class AIOPartyClient(PartyClient):
             choice_name: str,
             choice_arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> 'Awaitable[None]':
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
@@ -834,13 +837,16 @@ class AIOPartyClient(PartyClient):
             The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import create_and_exercise
         return self.submit(
             create_and_exercise(template_name, arguments, choice_name, choice_arguments),
-            workflow_id=workflow_id)
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     # </editor-fold>
 
@@ -948,20 +954,6 @@ class AIOPartyClient(PartyClient):
 
     def set_config(self, url: 'Optional[str]', **kwargs):
         self._impl.set_config(url=url, **kwargs)
-
-    def get_time(self) -> 'Awaitable[datetime]':
-        """
-        Return the current time on the remote server. Also advance the local notion of time if
-        required.
-        """
-        return self._impl.get_time()
-
-    def set_time(self, new_datetime: datetime) -> 'Awaitable[None]':
-        """
-        Set the current time on the ledger. This is only supported if the ledger supports time
-        manipulation.
-        """
-        return self._impl.set_time(new_datetime)
 
     async def ensure_dar(
             self,
@@ -1275,7 +1267,7 @@ class SimplePartyClient(PartyClient):
             self,
             commands,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Submit commands to the ledger.
@@ -1284,21 +1276,24 @@ class SimplePartyClient(PartyClient):
             An object that can be converted to a command.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         return self._impl.invoker.run_in_loop(
-            lambda: self._impl.write_commands(commands, workflow_id=workflow_id, ttl=ttl))
+            lambda: self._impl.write_commands(
+                commands, workflow_id=workflow_id, deduplication_time=deduplication_time))
 
     def submit_create(
             self,
             template_name: 'TemplateNameLike',
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single create command. Equivalent to calling :meth:`submit` with a
@@ -1310,11 +1305,16 @@ class SimplePartyClient(PartyClient):
             The arguments to the create (as a ``dict``).
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import create
-        return self.submit(create(template_name, arguments), workflow_id=workflow_id, ttl=ttl)
+        return self.submit(
+            create(template_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_exercise(
             self,
@@ -1322,7 +1322,7 @@ class SimplePartyClient(PartyClient):
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1337,11 +1337,16 @@ class SimplePartyClient(PartyClient):
             choices.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise
-        return self.submit(exercise(cid, choice_name, arguments), workflow_id=workflow_id, ttl=ttl)
+        return self.submit(
+            exercise(cid, choice_name, arguments),
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_exercise_by_key(
             self,
@@ -1350,7 +1355,7 @@ class SimplePartyClient(PartyClient):
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1365,15 +1370,18 @@ class SimplePartyClient(PartyClient):
         :param arguments:
             The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
             choices.
-        :param ttl:
-            A time-to-live for the command.
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise_by_key
         return self.submit(
             exercise_by_key(template_name, contract_key, choice_name, arguments),
-            workflow_id=workflow_id, ttl=ttl)
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     def submit_create_and_exercise(
             self,
@@ -1382,7 +1390,7 @@ class SimplePartyClient(PartyClient):
             choice_name: str,
             choice_arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            ttl: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
             -> None:
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
@@ -1398,13 +1406,16 @@ class SimplePartyClient(PartyClient):
             The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
         :param workflow_id:
             The optional workflow ID to stamp on the outgoing command.
-        :param ttl:
-            A time-to-live for the command.
+        :param deduplication_time:
+            The length of the time window during which all commands with the same party and command
+            ID will be deduplicated. Duplicate commands submitted before the end of this window
+            return an ``ALREADY_EXISTS`` error.
         """
         from .. import create_and_exercise
         return self.submit(
             create_and_exercise(template_name, arguments, choice_name, choice_arguments),
-            workflow_id=workflow_id)
+            workflow_id=workflow_id,
+            deduplication_time=deduplication_time)
 
     # endregion
 
@@ -1517,12 +1528,6 @@ class SimplePartyClient(PartyClient):
 
     def set_config(self, url: Optional[str], **kwargs):
         self._impl.set_config(url=url, **kwargs)
-
-    def get_time(self) -> datetime:
-        return self._impl.invoker.run_in_loop(lambda: self._impl.get_time())
-
-    def set_time(self, new_datetime: datetime) -> None:
-        return self._impl.invoker.run_in_loop(lambda: self._impl.set_time(new_datetime))
 
     def ensure_dar(
             self,

@@ -18,7 +18,7 @@ jobs:
             mv jq-linux64 /usr/bin/jq
       - checkout
       - restore_cache:
-          key: daml-sdk-0.13.32
+          key: daml-sdk-1.3.0
       - run:
           command: curl -sSL https://get.daml.com/ | sh
       - run:
@@ -43,13 +43,13 @@ jobs:
           command: |
             export PATH=$PATH:~/.daml/bin; \
             source $HOME/.poetry/env && \
-            make -C python test
+            make python-test
       - run:
           name: Python integration tests
           command: |
             export PATH=$PATH:~/.daml/bin; \
             source $HOME/.poetry/env && \
-            make -C python integration-test
+            make python-integration-test
       - run:
           name: Python packaging
           command: |

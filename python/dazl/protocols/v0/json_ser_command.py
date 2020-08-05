@@ -180,8 +180,6 @@ class JsonSerializer(AbstractSerializer[dict, R]):
         commands = [self.serialize_command(command) for command in command_payload.commands]
         return dict(
             businessIntent=command_payload.command_id,
-            ledgerEffectiveTime=command_payload.ledger_effective_time,
-            maximumRecordTime=command_payload.maximum_record_time,
             commands=commands,
             application=command_payload.application_id)
 

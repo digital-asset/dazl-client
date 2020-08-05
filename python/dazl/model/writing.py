@@ -19,7 +19,7 @@ Ledger API.
 """
 import uuid
 import warnings
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Any, Collection, Dict, Generic, List, Mapping, Optional, Sequence, TypeVar, Union
 
 from dataclasses import dataclass, fields
@@ -226,7 +226,7 @@ class CommandBuilder:
                  workflow_id: Optional[str] = None,
                  application_id: Optional[str] = None,
                  command_id: Optional[str] = None,
-                 ttl: Optional[timedelta] = None) -> None:
+                 deduplication_time: Optional[timedelta] = None) -> None:
         if party is not None:
             self._defaults.default_party = party
         if ledger_id is not None:
@@ -237,8 +237,8 @@ class CommandBuilder:
             self._defaults.default_application_id = application_id
         if command_id is not None:
             self._defaults.default_command_id = command_id
-        if ttl is not None:
-            self._defaults.default_ttl = ttl
+        if deduplication_time is not None:
+            self._defaults.default_deduplication_time = deduplication_time
 
     def create(self, template, arguments=None) -> 'CommandBuilder':
         return self.append(create(template, arguments=arguments))
@@ -278,8 +278,7 @@ class CommandBuilder:
         self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
         return self
 
-    def build(self, defaults: 'Optional[CommandDefaults]' = None, now: Optional[datetime] = None) \
-            -> 'Collection[CommandPayload]':
+    def build(self, defaults: 'Optional[CommandDefaults]' = None) -> 'Collection[CommandPayload]':
         """
         Return a collection of commands.
         """
@@ -295,8 +294,7 @@ class CommandBuilder:
             workflow_id=defaults.default_workflow_id or self._defaults.default_workflow_id,
             application_id=defaults.default_application_id or self._defaults.default_application_id,
             command_id=command_id,
-            ledger_effective_time=now,
-            maximum_record_time=now + (defaults.default_ttl or self._defaults.default_ttl),
+            deduplication_time=defaults.default_deduplication_time or self._defaults.default_deduplication_time,
             commands=commands
         ) for i, commands in enumerate(self._commands) if commands]
 
@@ -351,7 +349,7 @@ class CommandDefaults:
     default_workflow_id: Optional[str] = None
     default_application_id: Optional[str] = None
     default_command_id: Optional[str] = None
-    default_ttl: Optional[timedelta] = None
+    default_deduplication_time: Optional[timedelta] = None
 
 
 @dataclass(frozen=True)
@@ -365,26 +363,27 @@ class CommandPayload:
         An optional application ID to accompany the request.
     .. attribute:: CommandPayload.command_id:
         A hash that represents the BIM commitment.
-    .. attribute:: CommandPayload.ledger_effective_time:
-        The effective time of this command. Should usually be set to ``datetime.now()``, but
-        may have a different value when the server is operating in static time mode.
-    .. attribute:: CommandPayload.maximum_record_time:
-        The maximum time before the client should consider this command expired.
+    .. attribute:: CommandPayload.deduplication_time:
+        The maximum time interval before the client should consider this command expired.
     .. attribute:: CommandPayload.commands
         A sequence of commands to submit to the ledger. These commands are submitted atomically
         (in other words, they all succeed or they all fail).
+    .. attribute:: CommandPayload.deduplication_time:
+        The length of the time window during which all commands with the same party and command ID
+        will be deduplicated. Duplicate commands submitted before the end of this window return an
+        ``ALREADY_EXISTS`` error.
     """
     party: Party
     ledger_id: str
     workflow_id: str
     application_id: str
     command_id: str
-    ledger_effective_time: datetime
-    maximum_record_time: datetime
-    commands: Sequence[Command]
+    commands: 'Sequence[Command]'
+    deduplication_time: 'Optional[timedelta]' = None
 
     def __post_init__(self):
-        missing_fields = [field.name for field in fields(self) if getattr(self, field.name) is None]
+        missing_fields = [field.name for field in fields(self)
+                          if field.name != 'deduplication_time' and getattr(self, field.name) is None]
         if missing_fields:
             raise ValueError(f'Some fields are set to None when they are required: '
                              f'{missing_fields}')

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 cache_dir=.cache
-daml_proto_version=0.13.56-snapshot.20200408.3877.0.1ddcd3c0
+daml_proto_version=1.3.0
 
 download_protos_zip := $(cache_dir)/download/protobufs-$(daml_proto_version).zip
 download_status_proto := $(cache_dir)/download/google/rpc/status.proto
@@ -63,20 +63,30 @@ publish:  ## Publish everything.
 	make -C python publish
 
 
-.PHONY: gen-python
-gen-python: .cache/make/python.mk  ## Rebuild Python code-generated files.
+.PHONY: python-test
+python-test: dars
+	$(MAKE) -C python test
+
+
+.PHONY: python-integration-test
+python-integration-test:
+	$(MAKE) -C python integration-test
 
 
 .PHONY: fetch-protos
 fetch-protos: .cache/protos/protobufs-$(daml_proto_version).zip
 
 
-.cache/make/dars.mk: _build/dar-mk
+.PHONY: gen-python
+gen-python: .cache/make/python.mk  ## Rebuild Python code-generated files.
+
+
+.cache/make/dars.mk: _build/dar/make-fragment
 	mkdir -p $(@D)
 	$^ > $@
 
 
-.cache/make/python.mk: _build/make-template.py $(proto_manifest)
+.cache/make/python.mk: _build/python/make-fragment $(proto_manifest)
 	mkdir -p $(@D)
 	$^ > $@
 

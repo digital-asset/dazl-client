@@ -6,7 +6,7 @@ This module contains the abstract base class that defines the protocol for inter
 process that implements the Ledger API.
 """
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Optional, Sequence, Union
 
 from .. import LOG
@@ -50,16 +50,6 @@ class LedgerNetwork:
         Return information about the entire ledger.
         """
         raise NotImplementedError('ledger must be implemented')
-
-    async def set_time(self, new_datetime: datetime) -> None:
-        """
-        Advance the time on the Sandbox (static time model only).
-
-        To access the current time, use the time_model returned from :meth:`ledger`.
-
-        :param new_datetime: The new time to set.
-        """
-        raise NotImplementedError('set_time must be implemented')
 
     async def sync_time(self) -> None:
         """

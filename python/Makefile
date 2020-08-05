@@ -5,7 +5,6 @@ SHELL := /usr/bin/env bash
 .SHELLFLAGS := -euo pipefail -c
 
 LIBRARY_NAME=dazl
-SANDBOX_PORT=7600
 version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
 
 dazl_files := $(shell find dazl -name '*.py') README.md
