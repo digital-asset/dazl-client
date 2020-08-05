@@ -67,10 +67,10 @@ def build_routes(network_impl: '_NetworkImpl') -> 'Collection[web.AbstractRouteD
 
         if action.lower() == 'pause':
             bot.pause()
-            return web.HTTPAccepted()
+            raise web.HTTPAccepted()
         elif action.lower() == 'resume':
             bot.resume()
-            return web.HTTPAccepted()
+            raise web.HTTPAccepted()
         else:
             raise web.HTTPBadRequest()
 

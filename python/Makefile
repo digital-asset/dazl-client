@@ -77,7 +77,8 @@ unit-test:
 
 .PHONY: integration-test
 integration-test:
-	cd ../_fixtures/src/post-office && $(python) integration-test.py
+	cd ../_fixtures/src/post-office && \
+	$(python) integration-test.py $(if $(DAZL_TEST_DAML_LEDGER_URL),--url $(DAZL_TEST_DAML_LEDGER_URL))
 
 
 ####################################################################################################
