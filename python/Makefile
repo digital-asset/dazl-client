@@ -17,7 +17,7 @@ dazl_docs_markdown := dist/dazl-docs-$(version)-markdown.tar.gz
 build_dir := build/.dir
 poetry_build_marker := build/.poetry.build
 poetry_install_marker := build/.poetry.install
-dazl_docs_html_dir := ../docs # Required for Github pages
+dazl_docs_html_dir := $(basename $(basename $(dazl_docs_html)))
 dazl_docs_markdown_dir := $(basename $(basename $(dazl_docs_markdown)))
 
 export PYTHONPATH:=.:${PYTHONPATH}
@@ -113,7 +113,7 @@ $(dazl_sdist): $(poetry_build_marker)
 
 $(dazl_docs_html): $(poetry_install_marker) $(dazl_files)
 	poetry run python3 scripts/docs.py build --format html -o $(dazl_docs_html_dir)
-	(cd dist && tar czf $(@F) -C ../.. docs) #FIXME: use variables for this
+	(cd dist && tar czf $(@F) $(notdir $(dazl_docs_html_dir)))
 
 $(dazl_docs_markdown): $(poetry_install_marker) $(dazl_files)
 	poetry run python3 scripts/docs.py build --format markdown -o $(dazl_docs_markdown_dir)
