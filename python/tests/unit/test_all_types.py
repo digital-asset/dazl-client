@@ -10,7 +10,7 @@ from dazl import create, async_network
 from .dars import AllKindsOf
 
 
-TEMPLATE = 'AllKindsOf.OneOfEverything'
+TEMPLATE = 'AllKindsOf:OneOfEverything'
 SOME_ARGS = dict(
     operator=None,  # this is filled in by each of the tests because Party allocation is random
     someBoolean=True,
@@ -60,7 +60,7 @@ async def test_maps(sandbox):
 
         network.start()
 
-        await client.submit_create('AllKindsOf.MappyContract', {
+        await client.submit_create('AllKindsOf:MappyContract', {
             'operator': client.party,
             'value': {'Map_internal': []}
         })

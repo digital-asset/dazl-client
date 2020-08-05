@@ -4,7 +4,6 @@
 # NOTE TO IMPLEMENTORS: A future version of this file is intended to be code-generated instead of
 # manually maintained. The makeup of this file is intentionally highly formulaic in order to
 # facilitate a smooth transition to automatically-generated data structures.
-import warnings
 
 from dataclasses import dataclass
 from enum import Enum
@@ -59,18 +58,6 @@ class ModuleRef:
         self._package_id = PackageRef(safe_cast(str, package_id))
         self._module_name = safe_cast(DottedName, module_name)
 
-    @property
-    def package_id(self) -> 'PackageRef':
-        warnings.warn(
-            "Do not use ModuleRef.package_id; use package_ref(...) instead.", DeprecationWarning)
-        return self._package_id
-
-    @property
-    def module_name(self) -> 'DottedName':
-        warnings.warn(
-            "Do not use ModuleRef.module_name; use module_name(...) instead.", DeprecationWarning)
-        return self._module_name
-
     def __eq__(self, other):
         return isinstance(other, ModuleRef) and \
                self._package_id == other._package_id and \
@@ -123,36 +110,6 @@ class _Name:
 
         self._module = safe_cast(ModuleRef, module)
         self._name = tuple(name)  # type: Tuple[str, ...]
-
-    @property
-    def module(self) -> 'ModuleRef':
-        warnings.warn(
-            "Do not use Name.module; you can use module_ref(...) instead.",
-            DeprecationWarning)
-        return self._module
-
-    @property
-    def name(self) -> 'Sequence[str]':
-        warnings.warn(
-            "Do not use Name.name; you can use module_local_name(...) instead.",
-            DeprecationWarning)
-        return self._name
-
-    @property
-    def full_name(self) -> str:
-        from .util import module_name
-        warnings.warn(
-            "Do not use Name.full_name; this format is no longer used, so it has no replacement.",
-            DeprecationWarning)
-        return f"{module_name(self)}.{'.'.join(self._name)}"
-
-    @property
-    def full_name_unambiguous(self):
-        from .util import package_local_name
-        warnings.warn(
-            "Do not use Name.full_name_unambiguous; use package_local_name(...) instead.",
-            DeprecationWarning)
-        return package_local_name(self)
 
     def __eq__(self, other):
         return isinstance(other, type(self)) and \

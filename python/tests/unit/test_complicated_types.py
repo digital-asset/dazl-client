@@ -11,8 +11,8 @@ from .dars import Complicated as ComplicatedDar
 
 
 class Complicated:
-    OperatorRole = 'Complicated.OperatorRole'
-    OperatorFormulaNotification = 'Complicated.OperatorFormulaNotification'
+    OperatorRole = 'Complicated:OperatorRole'
+    OperatorFormulaNotification = 'Complicated:OperatorFormulaNotification'
 
 
 @pytest.mark.asyncio

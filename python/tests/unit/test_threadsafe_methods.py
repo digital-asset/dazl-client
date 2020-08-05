@@ -6,8 +6,8 @@ from .blocking_setup import blocking_setup
 from .dars import Simple
 
 
-OperatorRole = 'Simple.OperatorRole'
-OperatorNotification = 'Simple.OperatorNotification'
+OperatorRole = 'Simple:OperatorRole'
+OperatorNotification = 'Simple:OperatorNotification'
 
 
 def test_threadsafe_methods(sandbox):

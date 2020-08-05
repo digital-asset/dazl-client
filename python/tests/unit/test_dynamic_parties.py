@@ -1,6 +1,5 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-import logging
 import uuid
 
 import pytest
@@ -21,22 +20,22 @@ async def test_parties_can_be_added_after_run_forever(sandbox):
 
         @operator_client.ledger_ready()
         def operator_ready(event):
-            return create('Main.PostmanRole', {'postman': event.party})
+            return create('Main:PostmanRole', {'postman': event.party})
 
-        @operator_client.ledger_created('Main.PostmanRole')
+        @operator_client.ledger_created('Main:PostmanRole')
         def operator_role_created(event):
             return [exercise(event.cid, 'InviteParticipant', {'party': party, 'address': 'whatevs'})
                     for party in (party_a_client.party, party_b_client.party, party_c_party)]
 
-        @party_a_client.ledger_created('Main.InviteAuthorRole')
+        @party_a_client.ledger_created('Main:InviteAuthorRole')
         async def party_a_accept_invite(_):
             party_c = network.aio_party(party_c_party)
 
-            @party_c.ledger_created('Main.AuthorRole')
+            @party_c.ledger_created('Main:AuthorRole')
             def party_c_role_created(_):
                 network.shutdown()
 
-            cid, cdata = await party_c.find_one('Main.InviteAuthorRole')
+            cid, cdata = await party_c.find_one('Main:InviteAuthorRole')
             party_c.submit_exercise(cid, 'AcceptInviteAuthorRole')
 
         network.start()

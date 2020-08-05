@@ -38,12 +38,12 @@ async def test_server_endpoint(sandbox):
         bob_bot = bob_client._impl.bots.add_new("Bob's Bot")
         bob_bot.pause()
 
-        @bob_bot.ledger_created('TestServer.Person')
+        @bob_bot.ledger_created('TestServer:Person')
         def bob_sends_a_message(_):
             return exercise_by_key(
                 'TestServer:Person', bob, 'SayHello', {'receiver': alice, 'text': "Bob's ultra secret message"})
 
-        @carol_client.ledger_created('TestServer.Person')
+        @carol_client.ledger_created('TestServer:Person')
         def carol_sends_a_message(_):
             return exercise_by_key(
                 'TestServer:Person', carol, 'SayHello', {'receiver': alice, 'text': "Carol's gonna Carol"})
