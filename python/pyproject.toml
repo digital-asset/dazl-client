@@ -10,38 +10,40 @@ homepage = "https://github.com/digital-asset/dazl-client"
 keywords = ["daml", "blockchain", "dlt", "distributed ledger", "digital asset"]
 
 [tool.poetry.dependencies]
-python = ">=3.6"
-aiohttp = "*"
+python = "^3.6"
+aiohttp = { version = "*", optional = true }
 dataclasses = { version = "*", python = "~=3.6.0" }
-google-auth = "*"
-grpcio = ">=1.20.1"
-oauthlib = "*"
+google-auth = { version = "*", optional = true }
+grpcio = ">=1.29.1"
+oauthlib = { version = "*", optional = true }
 prometheus_client = { version = "*", optional = true }
-protobuf = ">=3.8.0"
+protobuf = ">=3.12.0"
 pygments = { version = "*", optional = true }
-pyyaml = "*"
 requests = "*"
 semver = "*"
 toposort = "*"
 typing_extensions = { version = "*", python = "<3.8.0" }
 
 [tool.poetry.dev-dependencies]
-grpcio-tools = ">=1.20.1"
+flask = "^1.0"
+grpcio-tools = ">=1.29.1"
+isort = "^5.3.0"
 mypy = "*"
 pympler = "*"
 pytest = "^5"
 pytest-asyncio = "*"
+pytest-subtests = "^0.2.1"
 setuptools = "==40.8.0"
 sphinx = "*"
-watchdog = "*"
-flask = "^1.0"
 sphinx-markdown-builder = "^0.5.1"
-pytest-subtests = "^0.2.1"
+watchdog = "*"
+yapf = "*"
 
 [tool.poetry.extras]
+oauth = ["google-auth", "oauthlib"]
 prometheus = ["prometheus_client"]
 pygments = ["pygments"]
-pytest = []
+server = ["aiohttp"]
 
 [tool.poetry.scripts]
 dazl = 'dazl.cli:main'
