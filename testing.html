@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Testing</title>
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="_static/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" href="_static/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="_static/favicon-16x16.png" sizes="16x16"/>
+  <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/>
+        <link rel="next" title="Migrate" href="migrating.html"/>
+        <link rel="prev" title="Basics" href="basics.html"/> 
+</head>
+<body>
+
+   
+
+  <header>
+    dazl
+
+  </header>
+  <nav>
+              
+              
+                
+              
+              
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unittest"><code class="docutils literal notranslate"><span class="pre">unittest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pytest">pytest</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dazl.html">dazl package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+              
+
+  </nav>
+  <main>
+    
+  <div class="section" id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+<p>Code that you write against <cite>dazl</cite> will typically need a Sandbox to be running. You can use a setup
+similar to what <code class="docutils literal notranslate"><span class="pre">dazl</span></code> does for its own tests.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dazl</span></code> starts a single Sandbox process for all of its tests, because starting and stopping Sandbox
+instances repeatedly can greatly slow down the test suite. To achieve good isolation between tests,
+use freshly-allocated <code class="docutils literal notranslate"><span class="pre">Party</span></code> in instances instead. Because of DAML’s privacy model, islands of
+<code class="docutils literal notranslate"><span class="pre">Party</span></code> s that are mutually unaware of each other are guaranteed to never see unintended
+contracts.</p>
+<div class="section" id="unittest">
+<h2><code class="docutils literal notranslate"><span class="pre">unittest</span></code><a class="headerlink" href="#unittest" title="Permalink to this headline">¶</a></h2>
+<p>You can use a module-based setup fixture in <code class="docutils literal notranslate"><span class="pre">unittest</span></code>:</p>
+<div class="highlight-python notranslate" id="unittest-example"><div class="highlight"><pre><span></span><span class="c1"># Change this to point to your DAML project directory.</span>
+<span class="c1"># daml_project_root = &quot;&lt;path to directory containing daml.yaml&gt;&quot;</span>
+
+<span class="c1"># This field will contain t</span>
+<span class="n">sandbox_url</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[str]</span>
+<span class="n">sandbox_proc</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[subprocess.Popen]</span>
+
+
+<span class="k">def</span> <span class="nf">setUpModule</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Called by ``unittest`` before the tests in this module are going to be run.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">sandbox_url</span><span class="p">,</span> <span class="n">sandbox_proc</span>
+
+    <span class="n">port</span> <span class="o">=</span> <span class="n">dazl</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_free_port</span><span class="p">()</span>
+
+    <span class="n">sandbox_proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;daml&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;--start-navigator=no&quot;</span><span class="p">,</span> <span class="s2">&quot;--open-browser=no&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--sandbox-port=</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
+        <span class="n">cwd</span><span class="o">=</span><span class="n">daml_project_root</span><span class="p">)</span>
+    <span class="n">sandbox_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">tearDownModule</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">sandbox_proc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sandbox_proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">ExampleTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">dazl</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">sandbox_url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">start_in_background</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">test_something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">simple_new_party</span><span class="p">()</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">ready</span><span class="p">()</span>
+
+        <span class="n">client</span><span class="o">.</span><span class="n">submit_create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;postman&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">party</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">find_active</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="section" id="pytest">
+<h2>pytest<a class="headerlink" href="#pytest" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dazl</span></code> uses pytest internally, which supports session-scoped fixtures and avoids the need for
+globals:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="c1"># Change this to point to your DAML project directory.</span>
+<span class="c1"># daml_project_root = &quot;&lt;path to directory containing daml.yaml&gt;&quot;</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sandbox</span><span class="p">():</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">dazl</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_free_port</span><span class="p">()</span>
+
+    <span class="n">sandbox_proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;daml&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;--start-navigator=no&quot;</span><span class="p">,</span> <span class="s2">&quot;--open-browser=no&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--sandbox-port=</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
+        <span class="n">cwd</span><span class="o">=</span><span class="n">daml_project_root</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s2">&quot;http://localhost:</span><span class="si">{port}</span><span class="s2">&quot;</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">sandbox_proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">test_something</span><span class="p">(</span><span class="n">sandbox</span><span class="p">):</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">dazl</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">sandbox_url</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">start_in_background</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">simple_new_party</span><span class="p">()</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">ready</span><span class="p">()</span>
+
+        <span class="n">client</span><span class="o">.</span><span class="n">submit_create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;postman&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">party</span><span class="p">})</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">find_active</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">network</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+        <span class="n">network</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+  </main>
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'7.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <footer> 
+  </footer>
+</body>
+</html>

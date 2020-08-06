@@ -1,42 +1,179 @@
-
 <!DOCTYPE html>
+<html lang="" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Migrate</title>
+  
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Migrate &#8212; dazl 6.6.3 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tutorials" href="tutorials.html" />
-    <link rel="prev" title="Basics" href="basics.html" />
+  <link rel="apple-touch-icon" sizes="180x180" href="_static/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" href="_static/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="_static/favicon-16x16.png" sizes="16x16"/>
+  <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/>
+        <link rel="next" title="dazl package" href="dazl.html"/>
+        <link rel="prev" title="Testing" href="testing.html"/> 
+</head>
+<body>
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head><body>
-  
+  <header>
+    dazl
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+  </header>
+  <nav>
+              
+              
+                
+              
+              
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Migrate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#migrating-from-dazl-v6-from-v7">Migrating from dazl v6 from v7</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#template-formats">Template formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sandbox-wrapper">Sandbox Wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-model-changes">Time Model changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecated-symbols-removal">Deprecated symbols removal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#migrating-from-dazl-v5-from-v6">Migrating from dazl v5 from v6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#migrating-from-dazl-v5-from-v4">Migrating from dazl v5 from v4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#library-initialization">Library Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization-event-listeners">Initialization Event Listeners</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ready-event-listeners">Ready Event Listeners</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-archive-event-listeners">Create/Archive Event Listeners</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dazl.html">dazl package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
 
-          <div class="body" role="main">
-            
+              
+
+  </nav>
+  <main>
+    
   <div class="section" id="migrate">
 <h1>Migrate<a class="headerlink" href="#migrate" title="Permalink to this headline">¶</a></h1>
-<p>Migrating from dazl v5 from v4</p>
+<div class="section" id="migrating-from-dazl-v6-from-v7">
+<h2>Migrating from dazl v6 from v7<a class="headerlink" href="#migrating-from-dazl-v6-from-v7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="template-formats">
+<h3>Template formats<a class="headerlink" href="#template-formats" title="Permalink to this headline">¶</a></h3>
+<p>Versions of <cite>dazl</cite> prior to version 7 understood previously-used conventions for template names
+other than the form <code class="docutils literal notranslate"><span class="pre">package_ref:module_name:entity_name</span></code>. As of version 7, this is the only
+understood format, and other forms are now unrecognized.</p>
+<p>Concretely, this will mean you need to change code usages such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@client</span><span class="o">.</span><span class="n">ledger_create</span><span class="p">(</span><span class="s1">&#39;MyModule.MyTemplate&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_something</span><span class="p">(</span><span class="n">event</span><span class="p">):</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@client</span><span class="o">.</span><span class="n">ledger_create</span><span class="p">(</span><span class="s1">&#39;MyModule:MyTemplate&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_something</span><span class="p">(</span><span class="n">event</span><span class="p">):</span> <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sandbox-wrapper">
+<h3>Sandbox Wrapper<a class="headerlink" href="#sandbox-wrapper" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">dazl.sandbox()</span></code> function has been removed. In order to set up tests around applications that
+use <code class="docutils literal notranslate"><span class="pre">dazl</span></code> as a library, see the testing guide.</p>
+</div>
+<div class="section" id="time-model-changes">
+<h3>Time Model changes<a class="headerlink" href="#time-model-changes" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://github.com/digital-asset/daml/releases/tag/v1.0.0">DAML SDK 1.0</a> brought some changes to
+the way that time works over the Ledger API. Clients no longer need to behave differently for
+ledgers that run in static time vs. real time mode.</p>
+<p>The default time model for the DAML SDK Sandbox has changed to real time. Consequently, the <cite>dazl</cite>
+APIs for manipulating static time have been removed and no replacement API is available. Static time
+is generally only useful in non-production contexts and use cases that require static time are
+better addressed with DAML scenarios.</p>
+</div>
+<div class="section" id="deprecated-symbols-removal">
+<h3>Deprecated symbols removal<a class="headerlink" href="#deprecated-symbols-removal" title="Permalink to this headline">¶</a></h3>
+<p>Deprecated symbols in the <cite>dazl.damlast</cite> and <cite>dazl.model</cite> packages have been removed:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Removed symbol</p></th>
+<th class="head"><p>Replacement</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.damlast.daml_lf_1.ModuleRef.package_id</span></code> property</p></td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.damlast.util.package_ref()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.damlast.daml_lf_1.ModuleRef.module_name</span></code> property</p></td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.damlast.util.module_name()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.damlast.daml_lf_1.TypeConName.module</span></code> property</p></td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.damlast.util.module_ref()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.damlast.daml_lf_1.TypeConName.name</span></code> property</p></td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.damlast.util.module_local_name()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.damlast.daml_lf_1.TypeConName.full_name</span></code> property</p></td>
+<td><p>no replacement</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.damlast.daml_lf_1.TypeConName.full_name_unambiguous</span></code> property</p></td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.damlast.util.package_local_name()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.model.types.TypeReference.module</span></code> property</p></td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.damlast.util.module_ref()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.model.types.TypeReference.name</span></code> property</p></td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.damlast.util.module_local_name()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.model.types.TypeReference.full_name</span></code> property</p></td>
+<td><p>no replacement</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dazl.model.types.TypeReference.full_name_unambiguous</span></code> property</p></td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.damlast.util.package_local_name()</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="migrating-from-dazl-v5-from-v6">
+<h2>Migrating from dazl v5 from v6<a class="headerlink" href="#migrating-from-dazl-v5-from-v6" title="Permalink to this headline">¶</a></h2>
+<p>No major breaking API changes were introduced in the v6 release.</p>
+</div>
+<div class="section" id="migrating-from-dazl-v5-from-v4">
+<h2>Migrating from dazl v5 from v4<a class="headerlink" href="#migrating-from-dazl-v5-from-v4" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="library-initialization">
-<h2>Library Initialization<a class="headerlink" href="#library-initialization" title="Permalink to this headline">¶</a></h2>
+<h3>Library Initialization<a class="headerlink" href="#library-initialization" title="Permalink to this headline">¶</a></h3>
 <p>Old API:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
 <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">participant_url</span><span class="o">=</span><span class="s1">&#39;http://localhost:7600&#39;</span><span class="p">,</span> <span class="n">parties</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">manager</span><span class="p">:</span>
@@ -60,7 +197,7 @@
 </div>
 </div>
 <div class="section" id="initialization-event-listeners">
-<h2>Initialization Event Listeners<a class="headerlink" href="#initialization-event-listeners" title="Permalink to this headline">¶</a></h2>
+<h3>Initialization Event Listeners<a class="headerlink" href="#initialization-event-listeners" title="Permalink to this headline">¶</a></h3>
 <p>Arguments to event listeners have changed in order to provide more information about events and
 for consistency across event handlers.</p>
 <p>Initialization has been collapsed into a single event, where formerly, there were two events
@@ -69,32 +206,32 @@ for consistency across event handlers.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;Some Party&#39;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">on_init</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ledger initialization is happening&#39;</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">on_init_metadata</span><span class="p">(</span><span class="k">lambda</span> <span class="n">store</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ledger package store: </span><span class="si">{store}</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">client</span><span class="o">.</span><span class="n">on_init_metadata</span><span class="p">(</span><span class="k">lambda</span> <span class="n">store</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ledger package store: </span><span class="si">{</span><span class="n">store</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>New API:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># asyncio-based API</span>
-<span class="n">client</span><span class="o">.</span><span class="n">add_ledger_init</span><span class="p">(</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ledger initialization with package store: </span><span class="si">{event.store}</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">client</span><span class="o">.</span><span class="n">add_ledger_init</span><span class="p">(</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ledger initialization with package store: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">store</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="ready-event-listeners">
-<h2>Ready Event Listeners<a class="headerlink" href="#ready-event-listeners" title="Permalink to this headline">¶</a></h2>
+<h3>Ready Event Listeners<a class="headerlink" href="#ready-event-listeners" title="Permalink to this headline">¶</a></h3>
 <p>Old API:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;Some Party&#39;</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span><span class="k">lambda</span> <span class="n">party_name</span><span class="p">,</span> <span class="n">client</span>\<span class="n">_</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Party </span><span class="si">{party_name}</span><span class="s1"> is ready&#39;</span><span class="p">))</span>
+<span class="n">client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span><span class="k">lambda</span> <span class="n">party_name</span><span class="p">,</span> <span class="n">client</span>\<span class="n">_</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Party </span><span class="si">{</span><span class="n">party_name</span><span class="si">}</span><span class="s1"> is ready&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>New API:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># asyncio-based API</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">aio_party</span><span class="p">(</span><span class="s1">&#39;Some Party&#39;</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">add_ledger_ready</span><span class="p">(</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Party </span><span class="si">{event.party}</span><span class="s1"> is ready&#39;</span><span class="p">))</span>
+<span class="n">client</span><span class="o">.</span><span class="n">add_ledger_ready</span><span class="p">(</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Party </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">party</span><span class="si">}</span><span class="s1"> is ready&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="create-archive-event-listeners">
-<h2>Create/Archive Event Listeners<a class="headerlink" href="#create-archive-event-listeners" title="Permalink to this headline">¶</a></h2>
+<h3>Create/Archive Event Listeners<a class="headerlink" href="#create-archive-event-listeners" title="Permalink to this headline">¶</a></h3>
 <p>Create and archive events now take a single parameter, called <code class="docutils literal notranslate"><span class="pre">event</span></code> by convention, that contain
 the contract ID, contract data, and additional metadata about the event, such as the time of
 execution, ledger ID, and access to the active contract set.</p>
@@ -114,84 +251,37 @@ execution, ledger ID, and access to the active contract set.</p>
 </div>
 </div>
 </div>
-
-
-          </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">dazl</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Migrate</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#library-initialization">Library Initialization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#initialization-event-listeners">Initialization Event Listeners</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ready-event-listeners">Ready Event Listeners</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#create-archive-event-listeners">Create/Archive Event Listeners</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dazl.html">dazl package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="basics.html" title="previous chapter">Basics</a></li>
-      <li>Next: <a href="tutorials.html" title="next chapter">Tutorials</a></li>
-  </ul></li>
-</ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
 
 
+  </main>
 
+  
 
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'7.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
+  
 
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
 
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2014-2019, Digital Asset.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/migrating.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+  <footer> 
+  </footer>
+</body>
 </html>

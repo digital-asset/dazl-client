@@ -36,32 +36,3 @@ Mapping DAML types to Python types
 | variants                | ``dict`` containing a single key naming the specific constructor to    |
 |                         | use, and value as listed in this table                                 |
 +-------------------------+------------------------------------------------------------------------+
-
-
-Some examples
-
-The examples below are valid for the following DAML:
-
-.. code-block:: daml
-
-   data Rectangle = Rectangle with
-       length: Decimal
-       width: Decimal
-
-   data Expr a = Num a
-               | Product (Expr a) (Expr a)
-               | Sum (Expr a) (Expr a)
-
-   template CalculateRequest
-     with
-       requester: Party
-       computer: Party
-       expression: Expr Decimal
-
-   template CalculateResponse
-     with
-       requester: Party
-       computer: Party
-       value: Decimal
-
-

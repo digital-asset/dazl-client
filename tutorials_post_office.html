@@ -1,37 +1,69 @@
-
 <!DOCTYPE html>
+<html lang="" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Post Office</title>
+  
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Post Office &#8212; dazl 6.6.3 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Workflow State Example" href="tutorials_workflow_state.html" />
-    <link rel="prev" title="Tutorials" href="tutorials.html" />
+  <link rel="apple-touch-icon" sizes="180x180" href="_static/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" href="_static/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="_static/favicon-16x16.png" sizes="16x16"/>
+  <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/> 
+</head>
+<body>
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head><body>
-  
+  <header>
+    dazl
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+  </header>
+  <nav>
+              
+              
+                
+              
+              
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dazl.html">dazl package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
 
-          <div class="body" role="main">
-            
+              
+
+  </nav>
+  <main>
+    
   <div class="section" id="post-office">
 <span id="tutorials-post-office"></span><h1>Post Office<a class="headerlink" href="#post-office" title="Permalink to this headline">¶</a></h1>
 <p>This example sets up a post office, with a <code class="docutils literal notranslate"><span class="pre">Postman</span></code> who routes letters, instances of <code class="docutils literal notranslate"><span class="pre">Author</span></code>
@@ -276,7 +308,7 @@ anything else can happen:</p>
     <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">parties</span><span class="o">=</span><span class="n">all_parties</span><span class="p">,</span> <span class="n">participant_url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">client_mgr</span><span class="p">:</span>
         <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
         <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+            <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
 
         <span class="n">ledger_run</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
@@ -291,22 +323,14 @@ anything else can happen:</p>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">exit_code</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.sandbox()</span></code> is a helper function for creating a disposable sandbox, running
-a test, and terminating the process. You wouldn’t use it when pointing to a production instance,
-but it is very useful for testing. All of these examples assume that you are using a blank
-ledger every single time. As you iterate through the steps of the tutorial, make sure to stop and
-start the ledger each time if you’re using <code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.sandbox()</span></code>.</p>
-</div>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.simple_client()</span></code> is a helper function for creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">LedgerClientManager</span></code>.
-At a minimum, you must provide it a list of parties to listen as, and a URL to the Sandbox
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.simple_client()</span></code> is a helper function for creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code> and a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SimplePartyClient</span></code>. At a minimum, you must provide it a list of parties to listen as, and a URL to the Sandbox
 (or Ledger Server participant node when running against a real instance).</p>
 <p>To create a client for a specific party, call <code class="xref py py-meth docutils literal notranslate"><span class="pre">LedgerClientManager.new_client()</span></code>. There are
 several key methods on it; this example introduces <code class="docutils literal notranslate"><span class="pre">ParticipantLedgerClient.on_ready</span></code>, which is
 called when the connection to the ledger is initialized. The parameters are ignored at this point.
 The callback, like most callbacks, can return a <code class="docutils literal notranslate"><span class="pre">Command</span></code> to submit to the ledger. In this
-example, a <code class="docutils literal notranslate"><span class="pre">Main.postmanRole</span></code> contract is to be created with one argument named <code class="docutils literal notranslate"><span class="pre">postman</span></code>
+example, a <code class="docutils literal notranslate"><span class="pre">Main:PostmanRole</span></code> contract is to be created with one argument named <code class="docutils literal notranslate"><span class="pre">postman</span></code>
 and a value of <code class="docutils literal notranslate"><span class="pre">'Postman'</span></code></p>
 <p>Finally, to actually start the manager and all the clients, call
 <code class="docutils literal notranslate"><span class="pre">LedgerClientManager.run_until_complete</span></code>. The code should run and return an exit code of 0,
@@ -329,7 +353,7 @@ after every run:</p>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
             <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+                <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
 
             <span class="n">client_mgr</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">inspector</span><span class="p">)</span>
 
@@ -353,7 +377,7 @@ instance; in this example, <code class="docutils literal notranslate"><span clas
 of this market. For readability, let’s also split out all the registration methods into a separate
 <code class="docutils literal notranslate"><span class="pre">set_up</span></code> function so that we can keep the focus on adding listeners to the ledger:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_test</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Member </span><span class="si">{i}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Member </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
                <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MEMBER_PARTY_COUNT</span><span class="p">)]</span>
     <span class="n">all_parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">POSTMAN_PARTY</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">member</span><span class="p">[</span><span class="s1">&#39;party&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
 
@@ -371,9 +395,9 @@ of this market. For readability, let’s also split out all the registration met
 <span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
     <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
     <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
-        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
     <span class="n">postman_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
-        <span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span>
         <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="p">[</span><span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;InviteParticipant&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">])</span>
 
 <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
@@ -389,120 +413,64 @@ further progress the workflow, let’s add more callbacks in <code class="docuti
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
     <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
     <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
-        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
     <span class="n">postman_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
-        <span class="s1">&#39;Main.PostmanRole&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span>
         <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="p">[</span><span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;InviteParticipant&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">])</span>
 
     <span class="n">member_clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;party&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">member_client</span> <span class="ow">in</span> <span class="n">member_clients</span><span class="p">:</span>
         <span class="c1"># every member automatically accepts</span>
         <span class="n">member_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
-            <span class="s1">&#39;Main.InviteAuthorRole&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;AcceptInviteAuthorRole&#39;</span><span class="p">))</span>
+            <span class="s1">&#39;Main:InviteAuthorRole&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;AcceptInviteAuthorRole&#39;</span><span class="p">))</span>
         <span class="n">member_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
-            <span class="s1">&#39;Main.InviteReceiverRole&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;AcceptInviteReceiverRole&#39;</span><span class="p">))</span>
+            <span class="s1">&#39;Main:InviteReceiverRole&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;AcceptInviteReceiverRole&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Now notice that the <code class="docutils literal notranslate"><span class="pre">inviteAsAuthor</span></code> and <code class="docutils literal notranslate"><span class="pre">inviteAsReceiver</span></code> contracts are no longer in the
-output, instead replaced with <code class="docutils literal notranslate"><span class="pre">authorRole</span></code> and <code class="docutils literal notranslate"><span class="pre">receiverRole</span></code> contracts; that’s because the
-<code class="docutils literal notranslate"><span class="pre">accept</span></code> choice on these contracts is a consuming choice.</p>
+<p>Now notice that the <code class="docutils literal notranslate"><span class="pre">InviteAsAuthor</span></code> and <code class="docutils literal notranslate"><span class="pre">InviteAsReceiver</span></code> contracts are no longer in the
+output, instead replaced with <code class="docutils literal notranslate"><span class="pre">AuthorRole</span></code> and <code class="docutils literal notranslate"><span class="pre">ReceiverRole</span></code> contracts; that’s because the
+<code class="docutils literal notranslate"><span class="pre">Accept</span></code> choice on these contracts is a consuming choice.</p>
 <p>In order to respond to these contracts as other parties, we have also created new clients, one for
 every additional party. Now that we have a universe of participants fully set up and ready to go,
 let’s do some actual work.</p>
 </div>
 <div class="section" id="send-some-letters-through-the-post-office">
 <h2>Send some “letters” through the post office<a class="headerlink" href="#send-some-letters-through-the-post-office" title="Permalink to this headline">¶</a></h2>
-<p>Once a participant’s <code class="docutils literal notranslate"><span class="pre">Main.authorRole</span></code> is created, that participant is now granted the ability to
+<p>Once a participant’s <code class="docutils literal notranslate"><span class="pre">Main:AuthorRole</span></code> is created, that participant is now granted the ability to
 send letters to other participants in the market.</p>
 <p>– TBC –</p>
 </div>
 </div>
 
 
-          </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">dazl</a></h1>
+  </main>
 
+  
 
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'7.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
+  
 
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
 
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Post Office</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#daml-model">DAML Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#create-the-postman">Create the Postman</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#inspect-the-ledger">Inspect the Ledger</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#set-up-participants">Set up participants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#send-some-letters-through-the-post-office">Send some “letters” through the post office</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials_workflow_state.html">Workflow State Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials_message_ingester.html">Message Ingester</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="dazl.html">dazl package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="tutorials.html">Tutorials</a><ul>
-      <li>Previous: <a href="tutorials.html" title="previous chapter">Tutorials</a></li>
-      <li>Next: <a href="tutorials_workflow_state.html" title="next chapter">Workflow State Example</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2014-2019, Digital Asset.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/tutorials_post_office.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+  <footer> 
+  </footer>
+</body>
 </html>

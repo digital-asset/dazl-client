@@ -64,7 +64,7 @@ Table of Contents
    :caption: Contents:
 
    basics
+   testing
    migrating
-   tutorials
    dazl
    glossary
