@@ -52,23 +52,16 @@ Lastly, the code that actually runs everything:
     :start-after: # DOC_BEGIN: MAIN-BOILERPLATE
     :end-before: # DOC_END: MAIN-BOILERPLATE
 
-.. note::
 
-   :func:`dazl.sandbox` is a helper function for creating a disposable sandbox, running
-   a test, and terminating the process. You wouldn't use it when pointing to a production instance,
-   but it is very useful for testing. All of these examples assume that you are using a blank
-   ledger every single time. As you iterate through the steps of the tutorial, make sure to stop and
-   start the ledger each time if you're using :func:`dazl.sandbox`.
-
-:func:`dazl.simple_client` is a helper function for creating a :class:`LedgerClientManager`.
-At a minimum, you must provide it a list of parties to listen as, and a URL to the Sandbox
+:func:`dazl.simple_client` is a helper function for creating a :class:`Network` and a
+:class:`SimplePartyClient`. At a minimum, you must provide it a list of parties to listen as, and a URL to the Sandbox
 (or Ledger Server participant node when running against a real instance).
 
 To create a client for a specific party, call :meth:`LedgerClientManager.new_client`. There are
 several key methods on it; this example introduces ``ParticipantLedgerClient.on_ready``, which is
 called when the connection to the ledger is initialized. The parameters are ignored at this point.
 The callback, like most callbacks, can return a ``Command`` to submit to the ledger. In this
-example, a ``Main.postmanRole`` contract is to be created with one argument named ``postman``
+example, a ``Main:PostmanRole`` contract is to be created with one argument named ``postman``
 and a value of ``'Postman'``
 
 Finally, to actually start the manager and all the clients, call
@@ -128,9 +121,9 @@ further progress the workflow, let's add more callbacks in ``set_up``:
     :start-after: # DOC_BEGIN: ACCEPT_INVITES
     :end-before: # DOC_END: ACCEPT_INVITES
 
-Now notice that the ``inviteAsAuthor`` and ``inviteAsReceiver`` contracts are no longer in the
-output, instead replaced with ``authorRole`` and ``receiverRole`` contracts; that's because the
-``accept`` choice on these contracts is a consuming choice.
+Now notice that the ``InviteAsAuthor`` and ``InviteAsReceiver`` contracts are no longer in the
+output, instead replaced with ``AuthorRole`` and ``ReceiverRole`` contracts; that's because the
+``Accept`` choice on these contracts is a consuming choice.
 
 In order to respond to these contracts as other parties, we have also created new clients, one for
 every additional party. Now that we have a universe of participants fully set up and ready to go,
@@ -140,7 +133,7 @@ let's do some actual work.
 Send some "letters" through the post office
 -------------------------------------------
 
-Once a participant's ``Main.authorRole`` is created, that participant is now granted the ability to
+Once a participant's ``Main:AuthorRole`` is created, that participant is now granted the ability to
 send letters to other participants in the market.
 
 -- TBC --

@@ -1,7 +1,82 @@
+#######
 Migrate
-=======
+#######
+
+Migrating from dazl v6 from v7
+==============================
+
+Template formats
+----------------
+
+Versions of `dazl` prior to version 7 understood previously-used conventions for template names
+other than the form ``package_ref:module_name:entity_name``. As of version 7, this is the only
+understood format, and other forms are now unrecognized.
+
+Concretely, this will mean you need to change code usages such as::
+
+    @client.ledger_create('MyModule.MyTemplate')
+    def handle_something(event): ...
+
+to::
+
+    @client.ledger_create('MyModule:MyTemplate')
+    def handle_something(event): ...
+
+Sandbox Wrapper
+---------------
+
+The ``dazl.sandbox()`` function has been removed. In order to set up tests around applications that
+use ``dazl`` as a library, see the testing guide.
+
+Time Model changes
+------------------
+
+`DAML SDK 1.0 <https://github.com/digital-asset/daml/releases/tag/v1.0.0>`_ brought some changes to
+the way that time works over the Ledger API. Clients no longer need to behave differently for
+ledgers that run in static time vs. real time mode.
+
+The default time model for the DAML SDK Sandbox has changed to real time. Consequently, the `dazl`
+APIs for manipulating static time have been removed and no replacement API is available. Static time
+is generally only useful in non-production contexts and use cases that require static time are
+better addressed with DAML scenarios.
+
+Deprecated symbols removal
+--------------------------
+
+Deprecated symbols in the `dazl.damlast` and `dazl.model` packages have been removed:
+
++-----------------------------------------------------------------------+------------------------------------------------+
+| Removed symbol                                                        | Replacement                                    |
++=======================================================================+================================================+
+| ``dazl.damlast.daml_lf_1.ModuleRef.package_id`` property              | :func:`dazl.damlast.util.package_ref()`        |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.damlast.daml_lf_1.ModuleRef.module_name`` property             | :func:`dazl.damlast.util.module_name()`        |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.damlast.daml_lf_1.TypeConName.module`` property                | :func:`dazl.damlast.util.module_ref()`         |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.damlast.daml_lf_1.TypeConName.name`` property                  | :func:`dazl.damlast.util.module_local_name()`  |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.damlast.daml_lf_1.TypeConName.full_name`` property             | no replacement                                 |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.damlast.daml_lf_1.TypeConName.full_name_unambiguous`` property | :func:`dazl.damlast.util.package_local_name()` |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.model.types.TypeReference.module`` property                    | :func:`dazl.damlast.util.module_ref()`         |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.model.types.TypeReference.name`` property                      | :func:`dazl.damlast.util.module_local_name()`  |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.model.types.TypeReference.full_name`` property                 | no replacement                                 |
++-----------------------------------------------------------------------+------------------------------------------------+
+| ``dazl.model.types.TypeReference.full_name_unambiguous`` property     | :func:`dazl.damlast.util.package_local_name()` |
++-----------------------------------------------------------------------+------------------------------------------------+
+
+Migrating from dazl v5 from v6
+==============================
+
+No major breaking API changes were introduced in the v6 release.
+
 
 Migrating from dazl v5 from v4
+==============================
 
 
 
