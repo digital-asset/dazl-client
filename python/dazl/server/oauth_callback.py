@@ -2,10 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-from aiohttp import ClientSession
-from aiohttp.web import get, post, Request, Response
 from asyncio import get_event_loop
-from oauthlib.oauth2 import WebApplicationClient
 from typing import Dict
 import uuid
 
@@ -17,6 +14,8 @@ class OAuthHandler:
     AUTH_ROUTE = '/auth/callback'
 
     def __init__(self, url_prefix: str):
+        from aiohttp.web import get
+
         self.url_prefix = url_prefix
         self.callbacks = {}  # type: Dict[str, OAuthAuthorizationCodeGrantRequest]
         self.routes = [
@@ -39,7 +38,7 @@ class OAuthHandler:
         # wait until the callback has been called
         return await oauth_req.future
 
-    async def oauth_callback(self, request: Request) -> Response:
+    async def oauth_callback(self, request: 'web.Request') -> 'web.Response':
         code = request.query.get('code')
         state = request.query.get('state')
         oauth_req = self.callbacks.pop(state)
@@ -52,15 +51,18 @@ class OAuthHandler:
         else:
             return await self._invalid_state(request)
 
-    async def _auth_finished(self, request: Request) -> Response:
+    async def _auth_finished(self, request: 'web.Request') -> 'web.Response':
         pass
 
-    async def _invalid_state(self, request: Request) -> Response:
+    async def _invalid_state(self, request: 'web.Request') -> 'web.Response':
         pass
 
 
 class OAuthAuthorizationCodeGrantRequest:
     def __init__(self, redirect_uri: str, settings: OAuthSettings):
+        from aiohttp import ClientSession
+        from oauthlib.oauth2 import WebApplicationClient
+
         self.settings = settings
         self.future = get_event_loop().create_future()
         self.state = uuid.uuid4().hex
