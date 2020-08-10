@@ -6,11 +6,10 @@ Ping Pong application using [DAZL](https://pypi.org/project/dazl/)
 
 Run each of the following commands in a spearate shell:
 
-* Start the sandbox and navigator via:
+* Start the sandbox and navigator on default port 6865 via:
 
       daml start
 
-* Start DAZL via
+* Start DAZL ping-pong client via
 
-      pipenv run python3 pingpong/bots.py --url {ledgerUrl}
-
+      poetry run python3 app.py --url localhost:6865

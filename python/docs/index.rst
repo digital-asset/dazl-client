@@ -7,22 +7,22 @@ Dependencies
 ------------
 
 You will need Python 3.6 or later and a Digital Asset ledger implementation (DA Sandbox or
-DA Ledger Server). :term:`dazl` additionally requires the following libraries to be
-installed:
+DA Ledger Server). 
 
-* grpcio, version 1.18.0 or later
-* PyYAML
-* semver
+Build-time dependencies are handled using `Poetry <https://poetry.eustace.io/>`_.
+
 
 Getting Started
 ---------------
 
-This section assumes that you already have a running ledger with a DAML model loaded.
+This section assumes that you already have a running ledger with the standard `daml new` model loaded, and have imported `dazl`.
 
 Connect to the ledger and submit a single command::
 
-    with dazl.simple_client('http://localhost:7600', 'Alice') as client:
-        client.submit_create('Alice', 'My.Template', { someField: 'someText' })
+    with dazl.simple_client('http://localhost:6865', 'Alice') as client:
+        contract = { 'issuer' : 'Alice', 'owner' : 'Alice', 'name' : 'hello world!' }
+        client.ready()
+        client.submit_create('Main.Asset', contract)
 
 Connect to the ledger as a single party, print all contracts, and close::
 
@@ -32,29 +32,20 @@ Connect to the ledger as a single party, print all contracts, and close::
         contract_dict = client.find_active('*')
     print(contract_dict)
 
-Connect to the ledger as multiple parties::
+Connect to the ledger using asynchronous callbacks::
 
+    from dazl.model.reading import ReadyEvent
     network = dazl.Network()
-    network.set_config(url='http://localhost:7600')
+    network.set_config(url='http://localhost:6865')
 
-    alice = network.simple_party('Alice')
-    bob = network.simple_party('Bob')
+    alice = network.aio_party('Alice')
 
     @alice.ledger_ready()
-    def set_up(event):
-        currency_cid, _ = await event.acs_find_one('My.Currency', {"currency": "USD"})
-        return dazl.create('SomethingOf.Value', {
-            'amount': 100,
-            'currency': currency_cid,
-            'from': 'Accept',
-            'to': 'Bob' })
+    async def onReady(event: ReadyEvent):
+      contracts = await event.acs_find_one('Main.Asset')
+      print(contracts)
 
-    @bob.ledger_created('SomethingOf.Value')
-    def on_something_of_value(event):
-        return dazl.exercise(event.cid, 'Accept', { 'message': 'Thanks!' })
-
-    network.start()
-
+    network.run_until_complete()
 
 Table of Contents
 -----------------
