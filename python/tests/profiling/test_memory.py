@@ -22,7 +22,7 @@ def main(url: str):
 
     test_party = network.aio_party('TestA')
     test_party.add_ledger_ready(ready)
-    test_party.add_ledger_created('Main.PostmanRole', created)
+    test_party.add_ledger_created('Main:PostmanRole', created)
 
     other_party = network.aio_party('TestB')
     other_party.add_ledger_ready(ready)
@@ -34,7 +34,7 @@ def main(url: str):
 
 def ready(event: ReadyEvent):
     print('The ledger is now ready.')
-    return create('Main.PostmanRole', {'postman': event.party})
+    return create('Main:PostmanRole', {'postman': event.party})
 
 
 def created(event: ContractCreateEvent):

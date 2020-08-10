@@ -15,6 +15,9 @@ data MyPair a = MyPair with left: a; right: a
 data VPair a = Left a | Right a | Both (VPair a)
     deriving (Eq, Show)
 
+data Color = Red | Green | Blue
+    deriving (Eq, Show)
+
 template OneOfEverything
   with
     operator: Party
@@ -31,6 +34,7 @@ template OneOfEverything
     someNestedPair: MyPair (MyPair Int)
     someUglyNesting: VPair (MyPair (MyPair Int))
     someMeasurement: Measurement
+    someEnum: Color
     theUnit: ()
   where
     signatory operator

@@ -93,23 +93,23 @@ def run_test(url, keepalive=False):
 
     post_office = PostOffice()
 
-    postman_client.add_ledger_ready(lambda event: create('Main.PostmanRole', dict(postman=POSTMAN_PARTY)))
-    postman_client.add_ledger_created('Main.PostmanRole', lambda event: [exercise(event.cid, 'InviteParticipant', m) for m in members])
-    postman_client.add_ledger_created('Main.UnsortedLetter', post_office.sort_and_deliver_letter)
-    postman_client.add_ledger_created('Main.ReceiverRole', post_office.register_address)
-    postman_client.add_ledger_created('Main.SortedLetter', lambda event: exercise(event.cid, 'Deliver'))
+    postman_client.add_ledger_ready(lambda event: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
+    postman_client.add_ledger_created('Main:PostmanRole', lambda event: [exercise(event.cid, 'InviteParticipant', m) for m in members])
+    postman_client.add_ledger_created('Main:UnsortedLetter', post_office.sort_and_deliver_letter)
+    postman_client.add_ledger_created('Main:ReceiverRole', post_office.register_address)
+    postman_client.add_ledger_created('Main:SortedLetter', lambda event: exercise(event.cid, 'Deliver'))
 
-    @postman_client.ledger_exercised('Main.PostmanRole', 'InviteParticipant')
+    @postman_client.ledger_exercised('Main:PostmanRole', 'InviteParticipant')
     def log(event):
         LOG.info('Observing the exercise of an InviteParticipant: %s', event)
 
     for member_client in member_clients:
         bot = PartyBot(member_client.party)
         # every member automatically accepts
-        member_client.add_ledger_created('Main.InviteAuthorRole', lambda event: exercise(event.cid, 'AcceptInviteAuthorRole'))
-        member_client.add_ledger_created('Main.InviteReceiverRole', lambda event: exercise(event.cid, 'AcceptInviteReceiverRole'))
+        member_client.add_ledger_created('Main:InviteAuthorRole', lambda event: exercise(event.cid, 'AcceptInviteAuthorRole'))
+        member_client.add_ledger_created('Main:InviteReceiverRole', lambda event: exercise(event.cid, 'AcceptInviteReceiverRole'))
         # every member, upon joining, sends messages to five of their best friends
-        member_client.add_ledger_created('Main.AuthorRole', bot.send_to_five_friends)
+        member_client.add_ledger_created('Main:AuthorRole', bot.send_to_five_friends)
 
     try:
         if not keepalive:

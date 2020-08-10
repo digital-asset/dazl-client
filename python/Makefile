@@ -75,6 +75,12 @@ test: deps unit-test integration-test
 unit-test:
 	poetry run pytest --log-cli-level=INFO --junitxml=test-results/junit.xml
 
+# Run tests specifically testing our documentation around using Python's unittest framework.
+# This is NOT hooked into CircleCI because it requires a Docker container with both Java and Python.
+.PHONY: unittest-test
+unittest-test:
+	poetry run python3 -m unittest tests/unittest_example/unittest_example.py
+
 .PHONY: integration-test
 integration-test:
 	cd ../_fixtures/src/post-office && \
@@ -106,7 +112,7 @@ $(poetry_build_marker): $(build_dir) pyproject.toml $(dazl_files)
 	touch $@
 
 $(poetry_install_marker): $(build_dir) poetry.lock
-	poetry install -E prometheus -E pygments
+	poetry install -E oauth -E prometheus -E pygments -E server
 	touch $@
 
 $(dazl_bdist): $(poetry_build_marker)

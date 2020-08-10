@@ -27,7 +27,6 @@ system.
 .. autoclass:: VariantType
 .. autoclass:: UnsupportedType
 """
-import warnings
 from typing import AbstractSet, Any, Callable, Collection, Dict, Mapping, NewType, Optional, \
     Sequence, Tuple, TypeVar, Union, TYPE_CHECKING
 
@@ -259,40 +258,6 @@ class TypeVariable(Type):
 class TypeReference(Type):
     def __init__(self, con: 'TypeConName'):
         self.con = con
-
-    @property
-    def module(self) -> 'ModuleRef':
-        from ..damlast.util import module_ref
-        warnings.warn(
-            "Do not use TypeReference.module; you can use module_ref(...) instead.",
-            DeprecationWarning)
-        return module_ref(self)
-
-    @property
-    def name(self) -> 'Sequence[str]':
-        warnings.warn(
-            "Do not use TypeReference.name; you can use module_local_name(...) instead.",
-            DeprecationWarning)
-        # noinspection PyProtectedMember
-        return self.con._name
-
-    @property
-    def full_name(self):
-        warnings.warn(
-            'Do not use TypeReference.full_name; this format is no longer used, "'
-            'so it has no replacement.', DeprecationWarning)
-
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            return self.con.full_name
-
-    @property
-    def full_name_unambiguous(self):
-        from ..damlast.util import package_local_name
-        warnings.warn(
-            "Do not use TypeReference.full_name_unambiguous; use package_local_name(...) instead.",
-            DeprecationWarning)
-        return package_local_name(self)
 
     def __str__(self):
         return str(self.con)

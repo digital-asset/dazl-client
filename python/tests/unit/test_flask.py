@@ -52,12 +52,12 @@ def create_initial_state(event: 'ReadyEvent'):
     try:
         LOG.info('Uploading our DAR...')
         event.client.ensure_dar(PostOffice)
-        while not event.package_store.resolve_template('Main.PostmanRole'):
+        while not event.package_store.resolve_template('Main:PostmanRole'):
             logging.info("Waiting for our DAR to be uploaded...")
             sleep(1)
 
         LOG.info('DAR uploaded. Creating the initial postman role contract...')
-        return create('Main.PostmanRole', dict(postman=event.party))
+        return create('Main:PostmanRole', dict(postman=event.party))
     except:
         LOG.exception('Failed to set up our initial state!')
 
@@ -74,7 +74,7 @@ def run_flask_app(client: SimplePartyClient, port: int) -> None:
         func = request.environ.get('werkzeug.server.shutdown')
         func()
 
-        cid, cdata = client.find_one('Main.PostmanRole')
+        cid, cdata = client.find_one('Main:PostmanRole')
         return jsonify(cdata)
 
     app.run(host='localhost', port=port)

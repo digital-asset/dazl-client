@@ -13,15 +13,16 @@ from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Union
 from google.protobuf.empty_pb2 import Empty
 
 from ... import LOG
+from ...damlast.daml_lf_1 import ModuleRef, PackageRef, DottedName, TypeConName
 from ...model.core import ContractId
 from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
     TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
     ContractExercisedEvent, ActiveContractSetEvent
 from ...model.core import Party
 from ...model.types import RecordType, Type, VariantType, ContractIdType, ListType, \
-    TypeEvaluationContext, type_evaluate_dispatch_default_error, TextMapType, OptionalType
+    TypeEvaluationContext, type_evaluate_dispatch_default_error, TextMapType, OptionalType, TypeReference
 from ...model.types_store import PackageStore
-from ...util.prim_types import to_date, to_datetime, to_hashable, frozendict
+from ...util.prim_types import to_date, to_datetime
 
 
 @dataclass(frozen=True)
@@ -306,11 +307,10 @@ def to_created_event(
         context: 'Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]',
         cr: 'G.CreatedEvent') \
         -> 'Optional[ContractCreateEvent]':
-    search_str = f'{cr.template_id.module_name}:{cr.template_id.entity_name}@{cr.template_id.package_id}'
-
-    candidates = context.store.resolve_template_type(search_str)
+    type_ref = to_type_ref(cr.template_id)
+    candidates = context.store.resolve_template_type(type_ref)
     if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', search_str)
+        LOG.warning('Could not find metadata for %s!', type_ref)
         return None
     elif len(candidates) > 1:
         LOG.error('The template identifier %s is not unique within its metadata!', candidates)
@@ -332,11 +332,10 @@ def to_exercised_event(
         context: 'TransactionEventDeserializationContext',
         er: 'G.ExercisedEvent') \
         -> 'Optional[ContractExercisedEvent]':
-    search_str = f'{er.template_id.module_name}:{er.template_id.entity_name}@{er.template_id.package_id}'
-
-    candidates = context.store.resolve_template_type(search_str)
+    type_ref = to_type_ref(er.template_id)
+    candidates = context.store.resolve_template_type(type_ref)
     if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', search_str)
+        LOG.warning('Could not find metadata for %s!', type_ref)
         return None
     elif len(candidates) > 1:
         LOG.error('The template identifier %s is not unique within its metadata!', candidates)
@@ -347,7 +346,7 @@ def to_exercised_event(
     tt_context = TypeEvaluationContext.from_store(context.store)
     choice_candidates = context.store.resolve_choice(type_ref, er.choice)
     if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', search_str)
+        LOG.warning('Could not find metadata for %s!', type_ref)
         return None
     elif len(candidates) > 1:
         LOG.error('The template identifier %s is not unique within its metadata!', candidates)
@@ -378,11 +377,10 @@ def to_archived_event(
         context: 'TransactionEventDeserializationContext',
         ar: 'G.ArchivedEvent') \
         -> 'Optional[ContractArchiveEvent]':
-    search_str = f'{ar.template_id.module_name}:{ar.template_id.entity_name}@{ar.template_id.package_id}'
-
-    candidates = context.store.resolve_template_type(search_str)
+    type_ref = to_type_ref(ar.template_id)
+    candidates = context.store.resolve_template_type(type_ref)
     if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', search_str)
+        LOG.warning('Could not find metadata for %s!', type_ref)
         return None
     elif len(candidates) > 1:
         LOG.error('The template identifier %s is not unique within its metadata!', candidates)
@@ -394,6 +392,16 @@ def to_archived_event(
 
     cid = ContractId(ar.contract_id, type_ref)
     return context.contract_archived_event(cid, None, event_id, witness_parties)
+
+
+def to_type_ref(identifier: 'G.Identifier') -> 'TypeReference':
+    return TypeReference(
+        TypeConName(
+            ModuleRef(
+                PackageRef(identifier.package_id),
+                DottedName(identifier.module_name.split('.'))
+            ),
+            DottedName(identifier.entity_name.split('.')).segments))
 
 
 def to_natural_type(context: TypeEvaluationContext, data_type: Type, obj: 'G.Value') -> Any:
@@ -495,8 +503,8 @@ def to_optional(context: TypeEvaluationContext, tt: Type, optional: 'G.Optional'
     return type_evaluate_dispatch_default_error(on_optional=process)(context, tt)
 
 
-def to_enum(enum: str) -> str:
-    return enum
+def to_enum(enum: 'Union[str, G.Enum]') -> str:
+    return getattr(enum, 'constructor', enum)
 
 
 def to_int64(int64: int) -> int:

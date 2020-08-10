@@ -4,13 +4,14 @@
 from dataclasses import dataclass, asdict
 from typing import Collection, Mapping
 
-from aiohttp import web
-
 from ..client import _NetworkImpl
 from ..model.core import Party
 
 
 def build_routes(network_impl: '_NetworkImpl', registry=None) -> 'Collection[web.AbstractRouteDef]':
+    # this import is optional, so do it as late as possible
+    from aiohttp import web
+
     routes = web.RouteTableDef()
 
     from prometheus_client import exposition, REGISTRY
