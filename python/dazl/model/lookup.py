@@ -45,7 +45,11 @@ def validate_template(template: Any) -> 'Tuple[str, str]':
             return '*', f'{m}:{e}'
 
         elif len(components) == 1:
-            raise ValueError('string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY')
+            # no colon whatsoever
+            # TODO: Add a deprecation warning in the appropriate place
+            m, _, e = components[0].rpartition('.')
+            return '*', f'{m}:{e}'
+            # raise ValueError('string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY')
 
     elif isinstance(template, RecordType):
         template = template.name
