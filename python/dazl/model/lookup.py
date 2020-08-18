@@ -68,12 +68,28 @@ def template_reverse_globs(primary_only: bool, package_id: str, type_name: str) 
 
     if package_id != '*':
         if type_name != '*':
+            if ':' not in type_name:
+                # this is a historical use of template name here; assume the last dot was supposed
+                # to have been a colon instead
+                m, delim, e = type_name.rpartition('.')
+                if delim:
+                    yield f'{package_id}:{m}:{e}'
+                    if primary_only:
+                        return
             yield f'{package_id}:{type_name}'
             if primary_only:
                 return
         if not primary_only or type_name == '*':
             yield f'{package_id}:*'
     if type_name != '*':
+        if ':' not in type_name:
+            # this is a historical use of template name here; assume the last dot was supposed
+            # to have been a colon instead
+            m, delim, e = type_name.rpartition('.')
+            if delim:
+                yield f'*:{m}:{e}'
+                if primary_only:
+                    return
         yield f'*:{type_name}'
         if primary_only:
             return
