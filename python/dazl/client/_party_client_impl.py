@@ -20,7 +20,7 @@ from ._writer_verify import ValidateSerializer
 from ..model.core import ContractMatch, ContractsState, ContractId, \
     ContractContextualData, ContractContextualDataCollection, Party
 from ..model.ledger import LedgerMetadata
-from ..model.network import connection_settings
+from ..model.network import connection_settings, OAuthSettings
 from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEvent, OffsetEvent, \
     TransactionFilter, ContractCreateEvent, ContractArchiveEvent, \
     InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent
@@ -61,13 +61,29 @@ class _PartyClientImpl:
 
     def connect_in(self, pool: 'LedgerNetwork') -> 'Future':
         self._config = config = self.resolved_config()
+
+        oauth=None
+        if config.oauth_token or config.oauth_client_id:
+            oauth=OAuthSettings(
+                token=config.oauth_token,
+                token_uri=config.oauth_token_uri,
+                refresh_token=config.oauth_refresh_token,
+                client_id=config.oauth_client_id,
+                client_secret=config.oauth_client_secret,
+                id_token=config.oauth_id_token,
+                redirect_uri=config.oauth_redirect_uri,
+                auth_url=config.oauth_auth_url
+            )
+
         settings, url_prefix = connection_settings(
             config.url,
             self.party,
             verify_ssl=config.verify_ssl,
             ca_file=config.ca_file,
             cert_file=config.cert_file,
-            cert_key_file=config.cert_key_file)
+            cert_key_file=config.cert_key_file,
+            oauth=oauth
+        )
 
         self._pool = pool
         self._client_fut = ensure_future(pool.connect(self.party, settings, url_prefix))

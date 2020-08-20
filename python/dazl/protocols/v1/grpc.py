@@ -212,7 +212,6 @@ def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore'
     for package_id, archive_payload in metadatas_pb.sorted_archives.items():
         store.register_all(parse_daml_metadata_pb(package_id, archive_payload))
 
-
 def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
     target = f'{settings.host}:{settings.port}'
     options = [('grpc.max_send_message_length', -1),
@@ -235,7 +234,24 @@ def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
             token_uri=settings.oauth.token_uri,
             client_id=settings.oauth.client_id,
             client_secret=settings.oauth.client_secret)
-        return secure_authorized_channel(credentials, RefreshRequester(), target, options=options)
+
+        ssl_credentials=None
+        if settings.ssl_settings:
+            cert_chain = read_file_bytes(settings.ssl_settings.cert_file)
+            cert = read_file_bytes(settings.ssl_settings.cert_key_file)
+            ca_cert = read_file_bytes(settings.ssl_settings.ca_file)
+
+            LOG.debug('Using a secure gRPC connection:')
+            LOG.debug('    target: %s', target)
+            LOG.debug('    root_certificates: contents of %s', settings.ssl_settings.ca_file)
+            LOG.debug('    private_key: contents of %s', settings.ssl_settings.cert_key_file)
+            LOG.debug('    certificate_chain: contents of %s', settings.ssl_settings.cert_file)
+
+            ssl_credentials = ssl_channel_credentials(
+                root_certificates=ca_cert,
+                private_key=cert,
+                certificate_chain=cert_chain)
+        return secure_authorized_channel(credentials, RefreshRequester(), target, ssl_credentials=ssl_credentials, options=options)
 
     if settings.ssl_settings:
         cert_chain = read_file_bytes(settings.ssl_settings.cert_file)

@@ -226,7 +226,7 @@ class _FlatConfig(_NetworkConfig, _PartyConfig):
 
 
 @dataclass(frozen=True)
-class PartyConfig(_PartyConfig):
+class PartyConfig(_PartyConfig, _NetworkConfig):
     party: Optional[Party] = None
 
 
