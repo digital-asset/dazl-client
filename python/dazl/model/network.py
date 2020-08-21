@@ -60,7 +60,8 @@ class OAuthSettings(NamedTuple):
     client_secret: Optional[str]
     redirect_uri: Optional[str]
     auth_url: Optional[str]
-
+    auth_ca_file: Optional[str]
+    auth_audience: Optional[str]
 
 def connection_settings(url: str,
                         party: 'Union[None, str, Party]',

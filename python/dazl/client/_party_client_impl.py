@@ -72,7 +72,9 @@ class _PartyClientImpl:
                 client_secret=config.oauth_client_secret,
                 id_token=config.oauth_id_token,
                 redirect_uri=config.oauth_redirect_uri,
-                auth_url=config.oauth_auth_url
+                auth_url=config.oauth_auth_url,
+                auth_audience=config.oauth_audience,
+                auth_ca_file=config.oauth_ca_file
             )
 
         settings, url_prefix = connection_settings(

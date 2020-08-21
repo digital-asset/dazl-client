@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from ..model.network import OAuthSettings
-
+import requests
+import logging
 
 async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
     """
@@ -12,11 +13,46 @@ async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
     :return:
     """
     if not settings.token:
-        raise ValueError('the token must be directly supplied at this time')
-        # if settings.redirect_uri:
-        #     client = WebApplicationClient(settings.client_id)
-        #     client.prepare_request_uri()
-        #     client.prepare_request_body()
-        #     client.parse_request_uri_response()
-        #     settings.
-    return settings
+
+        if settings.auth_audience == None:
+            logging.error("ERROR: Need to supply an oAuth audience")
+            raise ValueError('ERROR: Need to supply an oAuth audience')
+
+        headers = { 'Accept': 'application/json' }
+        data = {
+            'client_id': settings.client_id,
+            'client_secret': settings.client_secret,
+            'audience': settings.auth_audience,
+            'grant_type': "client_credentials"
+        }
+
+        response = None
+        try:
+            response = requests.post(settings.token_uri, headers=headers, data=data, auth=None)
+        except Exception as ex:
+            logging.info(ex)
+            raise ValueError('Unable to get token at this time')
+
+        if response.status_code != 200:
+            logging.error("ERROR: Unable to retrieve token. Exiting")
+            raise ValueError('Unable to get token from oAuth source')
+
+        json = response.json()
+        return_settings = OAuthSettings(
+            client_id=settings.client_id,
+            client_secret=settings.client_secret,
+            token=json['access_token'],
+            token_uri=settings.token_uri,
+            refresh_token=settings.refresh_token,
+            id_token=settings.id_token,
+            auth_url=settings.auth_url,
+            redirect_uri=settings.redirect_uri,
+            auth_audience=settings.auth_audience,
+            auth_ca_file=settings.auth_ca_file
+        )
+
+        return return_settings
+
+    else:
+        return settings
+

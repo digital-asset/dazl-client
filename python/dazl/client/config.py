@@ -198,6 +198,14 @@ class _NetworkConfig(URLConfig):
         'OAuth auth URL (implies mobile application flow)',
         param_type=STRING_TYPE)
 
+    oauth_ca_file: Optional[str] = config_field(
+        'OAuth CA CA Bundle File',
+        param_type=STRING_TYPE)
+
+    oauth_audience: Optional[str] = config_field(
+        'OAuth audience (Implies Client Credentials Flow)',
+        param_type=STRING_TYPE)
+
     oauth_legacy_username: Optional[str] = config_field(
         'OAuth username (implies legacy application flow)',
         param_type=STRING_TYPE)
