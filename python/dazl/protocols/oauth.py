@@ -3,7 +3,7 @@
 
 from ..model.network import OAuthSettings
 import requests
-
+import logging
 
 async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
     """
@@ -25,12 +25,12 @@ async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
         try:
             response = requests.post(settings.token_uri, headers=headers, data=data, auth=None)
         except Exception as ex:
-            print(ex)
-            raise ValueError('the token must be directly supplied at this time')
+            logging.info(ex)
+            raise ValueError('Unable to get token at this time')
 
         if response.status_code != 200:
             logging.error("ERROR: Unable to retrieve token. Exiting")
-            raise ValueError('Unable to get token frpm oAuth source')
+            raise ValueError('Unable to get token from oAuth source')
 
         json = response.json()
         return_settings = OAuthSettings(
@@ -44,5 +44,8 @@ async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
             redirect_uri=settings.redirect_uri
         )
 
+        return return_settings
+
     else:
         return settings
+
