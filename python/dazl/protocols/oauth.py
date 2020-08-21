@@ -44,5 +44,5 @@ async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
             redirect_uri=settings.redirect_uri
         )
 
-    else
+    else:
         return settings
