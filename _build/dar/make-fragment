@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
 #
 # Output a Make fragment that builds the dars in the _fixtures/src directory.
 
