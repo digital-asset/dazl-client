@@ -28,7 +28,7 @@ async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
 
         response = None
         try:
-            response = requests.post(settings.token_uri, headers=headers, data=data, auth=None)
+            response = requests.post(settings.token_uri, headers=headers, data=data, auth=None, verify=settings.auth_ca_file)
         except Exception as ex:
             logging.info(ex)
             raise ValueError('Unable to get token at this time')
