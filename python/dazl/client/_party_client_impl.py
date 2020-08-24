@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 from asyncio import ensure_future, gather, get_event_loop, wait, Future
@@ -23,7 +23,7 @@ from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings, OAuthSettings
 from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEvent, OffsetEvent, \
     TransactionFilter, ContractCreateEvent, ContractArchiveEvent, \
-    InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent
+    InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent, ContractFilter
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from ..protocols import LedgerNetwork, LedgerClient
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
@@ -216,7 +216,21 @@ class _PartyClientImpl:
         """
         LOG.info('Calling read_acs(%r, %r) for party: %r', until_offset, raise_events, self.party)
         client = await self._client_fut
-        acs = await client.active_contracts()
+        metadata = await self._pool.ledger()
+
+        # TODO: Calculating this repeatedly could be wasteful, but we're also guarding against
+        #  the potential for packages to come in only after the loop has started. Separately,
+        #  there is a potential bug where we hear of an offset before the package is known;
+        #  fixing this involves coupling transaction stream processing to package processing,
+        #  which requires a larger refactor of the stream processor
+        templates = metadata.store.get_templates_for_packages(self._config.package_ids) \
+            if self._config.package_ids is not None else None
+
+        contract_filter = ContractFilter(
+            templates=[t.data_type.name for t in templates] if templates is not None else None,
+            party_groups=self._config.party_groups)
+
+        acs = await client.active_contracts(contract_filter)
         for acs_evt in acs:
             await self._process_transaction_stream_event(acs_evt, False)
         LOG.info('read_acs() finished at offset %r for party: %r', self._reader.offset, self.party)
@@ -267,13 +281,19 @@ class _PartyClientImpl:
                 self._known_packages.update(all_packages)
                 await self.emit_event(pkg_event)
 
+            # TODO: Calculating this repeatedly could be wasteful, but we're also guarding against
+            #  the potential for packages to come in only after the loop has started. Separately,
+            #  there is a potential bug where we hear of an offset before the package is known;
+            #  fixing this involves coupling transaction stream processing to package processing,
+            #  which requires a larger refactor of the stream processor
+            templates = metadata.store.get_templates_for_packages(self._config.package_ids) \
+                if self._config.package_ids is not None else None
+
             # prepare a call to /events
             transaction_filter = TransactionFilter(
-                ledger_id=metadata.ledger_id,
                 current_offset=self._reader.offset,
                 destination_offset=until_offset,
-                templates=None,
-                max_blocks=None,
+                templates=[t.data_type.name for t in templates] if templates is not None else None,
                 party_groups=self._config.party_groups)
 
             transaction_events = await client.events(transaction_filter)

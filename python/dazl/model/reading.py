@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 # TODO: `automodule reading` directive doesn't appear to work here, have to list each class individually.
@@ -253,13 +253,15 @@ def create_dispatch(
 
 
 @dataclass(frozen=True)
-class TransactionFilter:
-    ledger_id: str
-    current_offset: Optional[str]
-    destination_offset: Optional[str]
-    templates: Optional[Collection[Type]]
-    max_blocks: Optional[int]
-    party_groups: Optional[Collection[str]]
+class ContractFilter:
+    templates: 'Optional[Collection[TypeReference]]' = None
+    party_groups: 'Optional[Collection[Party]]' = None
+
+
+@dataclass(frozen=True)
+class TransactionFilter(ContractFilter):
+    current_offset: 'Optional[str]' = None
+    destination_offset: 'Optional[str]' = None
 
     def __post_init__(self):
         if self.current_offset is not None and self.destination_offset is not None:

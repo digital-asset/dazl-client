@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -17,7 +17,7 @@ from ...damlast.daml_lf_1 import ModuleRef, PackageRef, DottedName, TypeConName
 from ...model.core import ContractId
 from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
     TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
-    ContractExercisedEvent, ActiveContractSetEvent
+    ContractExercisedEvent, ActiveContractSetEvent, ContractFilter
 from ...model.core import Party
 from ...model.types import RecordType, Type, VariantType, ContractIdType, ListType, \
     TypeEvaluationContext, type_evaluate_dispatch_default_error, TextMapType, OptionalType, TypeReference
@@ -120,36 +120,37 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties)
 
 
-def serialize_transactions_request(transaction_filter: TransactionFilter, party: str) \
+def serialize_transactions_request(f: 'TransactionFilter', ledger_id: str, party: str) \
         -> 'G.GetTransactionsRequest':
     from . import model as G
-    if transaction_filter.current_offset is not None:
+
+    if f.current_offset is not None:
         ledger_offset = G.LedgerOffset()
-        ledger_offset.absolute = transaction_filter.current_offset
+        ledger_offset.absolute = f.current_offset
     else:
         ledger_offset = G.LedgerOffset()
         ledger_offset.boundary = 0
 
-    if transaction_filter.destination_offset is not None:
+    if f.destination_offset is not None:
         final_offset = G.LedgerOffset()
-        final_offset.absolute = transaction_filter.destination_offset
+        final_offset.absolute = f.destination_offset
     else:
         final_offset = G.LedgerOffset()
         final_offset.boundary = 1
 
-    filters_by_party = {party: G.Filters()}
-
-    # add the party groups in the filters by party
-    if transaction_filter.party_groups is not None:
-        for party_group in transaction_filter.party_groups:
-            filters_by_party[party_group] = G.Filters()
-
-    tr_filter = G.TransactionFilter(filters_by_party=filters_by_party)
     return G.GetTransactionsRequest(
-        ledger_id=transaction_filter.ledger_id,
+        ledger_id=ledger_id,
         begin=ledger_offset,
         end=final_offset,
-        filter=tr_filter)
+        filter=serialize_transaction_filter(f, party))
+
+
+def serialize_acs_request(f: 'ContractFilter', ledger_id: str, party: str) -> 'G.GetActiveContractsRequest':
+    from . import model as G
+
+    return G.GetActiveContractsRequest(
+        ledger_id=ledger_id,
+        filter=serialize_transaction_filter(f, party))
 
 
 def serialize_event_id_request(ledger_id: str, event_id: str, requesting_parties: 'Sequence[str]') \
@@ -160,20 +161,31 @@ def serialize_event_id_request(ledger_id: str, event_id: str, requesting_parties
                                             requesting_parties=requesting_parties)
 
 
-def serialize_acs_request(ledger_id: str, party: str):
+def serialize_transaction_filter(contract_filter: 'ContractFilter', party: str) -> 'G.TransactionFilter':
     from . import model as G
+    from .pb_ser_command import as_identifier
 
-    filters_by_party = {party: G.Filters()}
-    tr_filter = G.TransactionFilter(filters_by_party=filters_by_party)
-    return G.GetActiveContractsRequest(
-        ledger_id=ledger_id,
-        filter=tr_filter)
+    identifiers = [as_identifier(tt) for tt in contract_filter.templates] \
+        if contract_filter.templates is not None else None
+
+    parties = [party]
+    if contract_filter.party_groups is not None:
+        parties.extend(contract_filter.party_groups)
+
+    filters_by_party = {}
+    for party in parties:
+        if identifiers is not None:
+            filters_by_party[party] = G.Filters(inclusive=G.InclusiveFilters(template_ids=identifiers))
+        else:
+            filters_by_party[party] = G.Filters()
+
+    return G.TransactionFilter(filters_by_party=filters_by_party)
 
 
 def to_transaction_events(
         context: 'BaseEventDeserializationContext',
         tx_stream_pb: 'Iterable[G.GetTransactionsResponse]',
-        tt_stream_pb: 'Iterable[G.GetTransactionTreesResponse]',
+        tt_stream_pb: 'Optional[Iterable[G.GetTransactionTreesResponse]]',
         last_offset_override: 'Optional[str]') -> 'Sequence[BaseEvent]':
     """
     Convert a stream of :class:`GetTransactionsResponse` into a sequence of events.
@@ -184,8 +196,9 @@ def to_transaction_events(
     :param tx_stream_pb:
         A stream of :class:`GetTransactionsResponse`.
     :param tt_stream_pb:
-        A stream of :class:`GetTransactionTreesResponse`. Transactions included in this message
-        that are _not_ in ``tx_stream_pb`` will be discarded.
+        An optional stream of :class:`GetTransactionTreesResponse`, used to enrich the stream with
+        exercise events. Transactions included in this message that are _not_ in ``tx_stream_pb``
+        will be discarded.
     :param last_offset_override:
         An optional last offset, that, if specified AND different from the last offset of the
         stream, causes a synthetic :class:`OffsetEvent` to be created at the end.
@@ -199,11 +212,12 @@ def to_transaction_events(
             events_by_offset[transaction_pb.offset] = list(
                 to_transaction_chunk(context, transaction_pb))
 
-    for transaction_tree_pb in tt_stream_pb:
-        for transaction_pb in transaction_tree_pb.transactions:
-            tx_events = events_by_offset.get(transaction_pb.offset)
-            if tx_events is not None:
-                tx_events[-1:-1] = from_transaction_tree(context, transaction_pb)
+    if tt_stream_pb is not None:
+        for transaction_tree_pb in tt_stream_pb:
+            for transaction_pb in transaction_tree_pb.transactions:
+                tx_events = events_by_offset.get(transaction_pb.offset)
+                if tx_events is not None:
+                    tx_events[-1:-1] = from_transaction_tree(context, transaction_pb)
 
     for tx_events in events_by_offset.values():
         events.extend(tx_events)
