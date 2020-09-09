@@ -76,7 +76,7 @@ class GRPCv1LedgerClient(LedgerClient):
         # Filtering by package must disable the ability to handle exercise nodes; we may want to
         # consider dropping client-side support for exercise events anyway because they are not
         # widely used
-        if not transaction_filter.templates:
+        if transaction_filter.templates is None:
             tst_future = self.connection.invoker.run_in_executor(
                 lambda: self.connection.transaction_service.GetTransactionTrees(request))
         else:
