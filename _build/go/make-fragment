@@ -54,7 +54,13 @@ def generate(manifest_file):
         print('')
         print(f'$(go_gen_dir)/{k}.pb.go: $(go_proto_src) COPYRIGHT')
         print(f'\tmkdir -p $(@D)')
-        print(f'\tcd go/v7 && protoc --proto_path=../../.cache/go-protos --go_out=pkg/generated --go_opt=paths=source_relative ../../.cache/go-protos/{k}.proto')
+        print(f'\tcd go/v7 && protoc \\')
+        print(f'\t  --proto_path=../../.cache/go-protos \\')
+        print(f'\t  --go_out=pkg/generated \\')
+        print(f'\t  --go-grpc_out=pkg/generated \\')
+        print(f'\t  --go_opt=paths=source_relative \\')
+        print(f'\t  --go-grpc_opt=paths=source_relative \\')
+        print(f'\t  ../../.cache/go-protos/{k}.proto')
         print('')
 
 
