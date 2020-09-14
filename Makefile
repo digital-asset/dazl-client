@@ -12,7 +12,7 @@ python := $(shell cd python && poetry env info -p)/bin/python3
 
 # Go requires that GOBIN be an absolute path
 export GOBIN := $(shell pwd)/.cache/bin
-export PATH := ${GOBIN}:${PATH}
+export PATH := $(shell go env GOPATH)/bin:${GOBIN}:${PATH}
 
 
 $(download_protos_zip):
@@ -92,6 +92,7 @@ gen-go: .cache/make/go.mk
 
 .PHONY: gen-go-clean
 gen-go-clean:
+	echo $(PATH)
 	rm -fr .cache/make/go.mk .cache/go-protos go/v7/pkg
 
 
