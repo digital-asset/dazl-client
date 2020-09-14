@@ -10,6 +10,11 @@ proto_dir := $(cache_dir)/protos
 proto_manifest := $(proto_dir)/manifest.json
 python := $(shell cd python && poetry env info -p)/bin/python3
 
+# Go requires that GOBIN be an absolute path
+export GOBIN := $(shell pwd)/.cache/bin
+export PATH := ${GOBIN}:${PATH}
+
+
 $(download_protos_zip):
 	@mkdir -p $(@D)
 	curl -sSL https://github.com/digital-asset/daml/releases/download/v$(daml_proto_version)/protobufs-$(daml_proto_version).zip -o $@
@@ -81,7 +86,26 @@ fetch-protos: .cache/protos/protobufs-$(daml_proto_version).zip
 gen-python: .cache/make/python.mk  ## Rebuild Python code-generated files.
 
 
+.PHONY: gen-go
+gen-go: .cache/make/go.mk
+
+
+.PHONY: gen-go-clean
+gen-go-clean:
+	rm -fr .cache/make/go.mk .cache/go-protos go/v7/pkg
+
+
 .cache/make/dars.mk: _build/dar/make-fragment
+	mkdir -p $(@D)
+	$^ > $@
+	
+
+.cache/bin/protoc-gen-go:
+	mkdir -p $(@D)
+	go install google.golang.org/protobuf/cmd/protoc-gen-go
+
+	
+.cache/make/go.mk: _build/go/make-fragment $(proto_manifest)
 	mkdir -p $(@D)
 	$^ > $@
 
@@ -92,4 +116,5 @@ gen-python: .cache/make/python.mk  ## Rebuild Python code-generated files.
 
 
 include .cache/make/dars.mk
+include .cache/make/go.mk
 include .cache/make/python.mk
