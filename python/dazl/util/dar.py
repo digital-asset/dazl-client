@@ -10,7 +10,7 @@ from ..util.path_util import pathify
 
 if TYPE_CHECKING:
     from ..model.core import Dar
-    from ..model.types import PackageId
+    from ..model.types import PackageId, PackageIdSet
     from ..model.types_store import PackageStore, PackageProvider
 
 
@@ -115,6 +115,26 @@ class DarFile:
         manifest = self.get_manifest()
         return manifest.get('Sdk-Version') if manifest is not None else None
 
+    def get_package_ids(self) -> 'PackageIdSet':
+        """
+        Return the set of package IDs from this DAR.
+        """
+        # In order to make this call perform more quickly, we read the Archive object, but not any
+        # of its contents.
+        package_ids = set()
+        for dalf_name in self.get_dalf_names():
+            from ..model.types import PackageId
+            from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import Archive
+
+            contents = self.dar_contents.read(dalf_name)
+
+            a = Archive()
+            a.ParseFromString(contents)
+
+            package_ids.add(PackageId(a.hash))
+
+        return frozenset(package_ids)
+
     def get_package_provider(self) -> 'PackageProvider':
         from typing import Dict
         from ..model.types_store import MemoryPackageProvider
@@ -145,7 +165,7 @@ def parse_dalf(contents: bytes) -> 'PackageStore':
 
 def get_dar_package_ids(dar: 'Dar') -> 'Collection[PackageId]':
     with DarFile(dar) as dar_file:
-        return dar_file.read_metadata().package_ids()
+        return dar_file.get_package_ids()
 
 
 class DamlcPackageError(Exception):

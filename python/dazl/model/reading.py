@@ -57,11 +57,11 @@ This module contains models used on the read-side of the Ledger API.
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Callable, Collection, Optional, Sequence, TypeVar, Union, Tuple
+from typing import Any, Callable, Collection, Optional, Sequence, TypeVar, Union
 
 from .core import ContractId, ContractData, ContractContextualData, Party
 from .lookup import template_reverse_globs, validate_template
-from .types import Type, TypeReference
+from .types import TypeReference
 from .types_store import PackageStore
 
 
@@ -364,11 +364,12 @@ class EventKey:
         return tuple(f'{prefix}/{g}' for g in template_reverse_globs(primary_only, m, t))
 
 
-def max_offset(offsets: 'Collection[str]') -> 'Optional[str]':
+def max_offset(offsets: 'Collection[Optional[str]]') -> 'Optional[str]':
     """
     Return the most "recent" offset from a collection of offsets.
 
     :param offsets: A collection of offsets to examine.
     :return: The largest offset, or ``None`` if unknown.
     """
-    return max(offsets) if offsets else None
+    non_none_offsets = [offset for offset in offsets if offset is not None]
+    return max(non_none_offsets) if non_none_offsets else None

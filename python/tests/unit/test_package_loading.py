@@ -4,6 +4,8 @@
 """
 Tests to ensure that packages can be loaded.
 """
+import logging
+import time
 from operator import setitem
 
 import pytest
@@ -17,8 +19,14 @@ from .dars import AllKindsOf
 @pytest.mark.asyncio
 async def test_package_loading(sandbox):
     d = {}
+
+    start_time = time.time()
     with DarFile(AllKindsOf) as dar:
         expected_package_ids = dar.get_package_provider().get_package_ids()
+    end_time = time.time()
+
+    logging.info("Total package load time: %0.2f ms", (end_time - start_time) * 1000)
+    logging.info("Package IDs (%s total): %s", len(expected_package_ids), sorted(expected_package_ids))
 
     async with async_network(url=sandbox, dars=AllKindsOf) as network:
         client = network.aio_new_party()
