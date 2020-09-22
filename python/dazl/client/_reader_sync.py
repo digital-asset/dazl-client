@@ -48,38 +48,35 @@ async def run_iteration(party_impls: 'Collection[_PartyClientImpl]') \
     return final_offset, [fut for fut in read_coroutines if not fut.done()]
 
 
-async def read_initial_acs(
-        party_impls: 'Collection[_PartyClientImpl]',
-        use_acs_service: bool) -> 'Optional[str]':
+async def read_initial_acs(party_impls: 'Collection[_PartyClientImpl]') -> 'Optional[str]':
     """
     Perform the initial synchronization of the Active Contract Set with the server, using the
     Active Contract Set service.
 
     :param party_impls:
         A collection of _PartyClientImpl's whose offset and ACS state need to be updated.
-    :param use_acs_service:
-        ``True`` to bootstrap initial state off of the Active Contract Set service; ``False`` to
-        instead read the transaction stream from the beginning.
     :return:
         The ending offset that all parties have reached, or ``None`` if no calls were actually
         made.
     """
-    LOG.info('Reading current ledger state from the Active Contract Set service...')
+    LOG.info('Reading current ledger state...')
 
     # Fetch the ACS as every single client.
     if not party_impls:
         return None
 
-    if use_acs_service:
-        offsets = [offset for offset, _ in
-                   await gather(*[party_impl.read_acs(None, False) for party_impl in party_impls])]
-        offset = max_offset(offsets)
-    else:
-        offset = None
+    offset = max_offset(
+        [offset
+         for offset, _ in
+         await gather(*[party_impl.read_acs(None, False) for party_impl in party_impls])])
 
     # Find the most recent offset among all of those clients, and use the transaction stream
     # to catch up all clients to the same point.
+    LOG.info('Catching up...')
     await gather(*[party_impl.read_transactions(offset, False) for party_impl in party_impls])
+    LOG.info('Finished catching up.')
+
+    LOG.info('Finished reading current ledger state.')
     return offset
 
 

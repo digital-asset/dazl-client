@@ -96,6 +96,7 @@ class _NetworkImpl:
         with self._lock:
             self.invoker.set_context_as_current()
             config = self.resolved_config()
+            LOG.debug("Resolved config: %s", config)
 
         # From this point on, we're assuming we're on an asyncio event loop so locking is no longer
         # required
@@ -328,10 +329,7 @@ class _NetworkImpl:
     async def upload_package(self, contents: bytes, timeout: 'TimeDeltaConvertible') -> None:
         """
         Ensure packages specified by the given byte array are loaded on the remote server. This
-        method only returns once packages are reported by the package services.
-
-        If an admin URL is specified, dazl will attempt to upload packages to that URL, and wait
-        for the package to be reported by the package service.
+        method only returns once packages are reported by the Package Service.
 
         :param contents: Contents to attempt to upload.
         :param timeout: Length of time before giving up.
@@ -509,8 +507,7 @@ class _NetworkRunner:
         #  resolve
 
         from ._reader_sync import read_initial_acs
-        use_acs_service = self._config.use_acs_service
-        offset = await read_initial_acs(party_impls, use_acs_service)
+        offset = await read_initial_acs(party_impls)
 
         LOG.debug('Preparing to raise the "ready" event...')
         # Raise the 'ready' event.

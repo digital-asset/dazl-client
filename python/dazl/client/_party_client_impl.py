@@ -196,7 +196,7 @@ class _PartyClientImpl:
     # region Read Path
 
     async def read_acs(self, until_offset: 'Optional[str]', raise_events: bool) \
-            -> 'Tuple[str, Future]':
+            -> 'Tuple[Optional[str], Future]':
         """
         Initial bootstrap of events from the read side. Only one instance of this coroutine
         should be active at a time per client. An initial block of events is read using the
@@ -213,7 +213,18 @@ class _PartyClientImpl:
         :return:
             The ledger offset that the reader ended at and a Future that is resolved when all event
             handlers' follow-ups have either successfully or unsuccessfully completed.
+
+            If the PartyClient is _not_ configured to use the ActiveContractService, this function
+            immediately returns `None`, and a resolved future.
         """
+        if not self._config.use_acs_service:
+            LOG.info('read_acs(%r, %r) aborted for party %r because it was configured to not use '
+                     'the ACS service', until_offset, raise_events, self.party)
+            from asyncio import get_event_loop
+            fut = get_event_loop().create_future()
+            fut.set_result(None)
+            return None, fut
+
         LOG.info('Calling read_acs(%r, %r) for party: %r', until_offset, raise_events, self.party)
         client = await self._client_fut
         metadata = await self._pool.ledger()

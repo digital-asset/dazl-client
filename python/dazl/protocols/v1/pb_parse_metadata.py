@@ -51,9 +51,13 @@ def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageRef]' =
     final_time = time.time()
     total_millis = (final_time - current_time) * 1000
     if package_id is None:
-        LOG.info('Parsed %s bytes of metadata in %2.f ms.', len(raw_bytes), total_millis)
+        import inspect, traceback
+        frame = inspect.currentframe()
+        stack_trace = traceback.format_stack(frame)
+        LOG.debug(stack_trace[:-1])
+        LOG.info('Parsed %s bytes of metadata in %0.2f ms.', len(raw_bytes), total_millis)
     else:
-        LOG.info('Parsed %s bytes of metadata (package ID %r) in %2.f ms.', len(raw_bytes), package_id, total_millis)
+        LOG.info('Parsed %s bytes of metadata (package ID %r) in %0.2f ms.', len(raw_bytes), package_id, total_millis)
 
     return archive_payload
 
@@ -185,6 +189,7 @@ def parse_daml_metadata_pb(package_id: 'PackageRef', metadata_pb: Any) -> 'Packa
     :return:
         A :class:`PackageStore` with additional entries resulting from the parse of this archive.
     """
+    LOG.debug("Parsing package ID: %r", package_id)
     from ...damlast.pb_parse import ProtobufParser
 
     parser = ProtobufParser(package_id)

@@ -19,7 +19,6 @@ specific party.
 # other the way that the documentation says they are.
 from asyncio import get_event_loop, ensure_future
 from contextlib import contextmanager
-from datetime import datetime
 from functools import wraps
 from logging import INFO
 from pathlib import Path
@@ -116,8 +115,12 @@ class async_network:
         if url:
             self.network.set_config(url=url)
         self.dars = as_list(dars)  # type: List[Dar]
+
+        LOG.debug("Analyzing package_id config...")
         self.package_ids = {pkg_id for dar in self.dars for pkg_id in get_dar_package_ids(dar)} \
             if self.dars else None
+        LOG.debug("Package id analysis done.")
+
         if self.package_ids:
             self.network.set_config(package_ids=self.package_ids)
 
