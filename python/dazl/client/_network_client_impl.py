@@ -9,6 +9,7 @@ from datetime import timedelta, datetime
 from threading import RLock, Thread, current_thread
 from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
     Union, overload
+
 try:
     from typing import Literal
 except ImportError:
@@ -22,6 +23,7 @@ from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING, NONE_IF_MISS
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
+from .pkg_cache import PackageCache
 from ..metrics import MetricEvents
 from ..model.core import Party, DazlPartyMissingError
 from ..model.ledger import LedgerMetadata
@@ -40,11 +42,12 @@ class _NetworkImpl:
 
     __slots__ = ('_lock', '_main_thread', 'invoker', '_party_clients', '_global_impls',
                  '_party_impls', 'bots', '_config', '_pool', '_pool_init',
-                 '_cached_metadata', '_metrics')
+                 '_cached_metadata', '_metrics', '_pkg_cache')
 
     def __init__(self, metrics: 'Optional[MetricEvents]' = None):
         self.invoker = Invoker()
         self._lock = RLock()
+        self._pkg_cache = PackageCache()
         self._main_thread = None  # type: Optional[Thread]
         self._pool = None  # type: Optional[LedgerNetwork]
         self._pool_init = self.invoker.create_future()
@@ -109,7 +112,8 @@ class _NetworkImpl:
             if connect_timeout <= timedelta(0):
                 connect_timeout = None
 
-            options = LedgerConnectionOptions(connect_timeout=connect_timeout)
+            options = LedgerConnectionOptions(
+                connect_timeout=connect_timeout, pkg_cache=self._pkg_cache)
 
             self._pool = pool = AutodetectLedgerNetwork(self.invoker, options)
             self._pool_init.set_result(pool)
@@ -336,6 +340,7 @@ class _NetworkImpl:
         """
         pool = await self._pool_init
         await self.connect_anonymous()
+        self._pkg_cache.set_connection(pool._first_connection)
         package_ids = await self.invoker.run_in_executor(lambda: get_dar_package_ids(contents))
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)

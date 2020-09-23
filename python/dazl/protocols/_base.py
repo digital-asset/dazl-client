@@ -10,6 +10,7 @@ from datetime import timedelta
 from typing import Optional, Sequence, Union
 
 from .. import LOG
+from ..client.pkg_cache import PackageCache
 from ..model.core import Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
@@ -22,6 +23,7 @@ from ..util.typing import safe_optional_cast, safe_cast
 @dataclass(frozen=True)
 class LedgerConnectionOptions:
     connect_timeout: 'Optional[timedelta]'
+    pkg_cache: 'PackageCache'
 
 
 class LedgerNetwork:

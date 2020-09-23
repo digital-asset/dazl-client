@@ -30,6 +30,7 @@ from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice,
     RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, TextMapType, \
     EnumType, scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch
 from .types_store import PackageStore
+from ..client.pkg_cache import PackageCache
 from ..util.prim_types import DEFAULT_TYPE_CONVERTER
 from ..util.typing import safe_cast, safe_optional_cast
 
@@ -453,20 +454,20 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
     Implementation of :class:`Serializer` that helps enforce that all possible cases of type
     serialization have been implemented.
     """
-    def __init__(self, store: PackageStore, type_context: 'Optional[TypeEvaluationContext]' = None):
-        self.store = safe_cast(PackageStore, store)
+    def __init__(self, pkg_cache: 'PackageCache', type_context: 'Optional[TypeEvaluationContext]' = None):
+        self.pkg_cache = safe_cast(PackageCache, pkg_cache)
         self.type_context = safe_optional_cast(TypeEvaluationContext, type_context) or \
             DEFAULT_TYPE_CONVERTER
 
     def serialize_value(self, tt: Type, obj: Any) -> TValue:
-        context = TypeEvaluationContext.from_store(self.store)
+        context = TypeEvaluationContext.from_package_cache(self.pkg_cache)
         try:
             return self._serialize_dispatch(context, tt, obj)
         except:
             from ..util.fmt_py import python_example_object
 
             LOG.warning("Expected something like:")
-            for line in str.splitlines(python_example_object(self.store, tt)):
+            for line in str.splitlines(python_example_object(self.pkg_cache, tt)):
                 LOG.warning('    %s', line)
 
             LOG.warning("But got this instead:")
@@ -478,41 +479,29 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
 
     def serialize_command(self, command: 'Command') -> 'TCommand':
         if isinstance(command, CreateCommand):
-            tt = _resolve_template_type(self.store, command.template)
+            tt = self.pkg_cache.resolve_type_from_cache(command.template)
             value = self.serialize_value(tt, command.arguments)
             return self.serialize_create_command(tt, value)
-        elif isinstance(command, ExerciseCommand):
-            template_type_ref = command.contract.template_id
-            choice_name = command.choice
-            choice_opts = self.store.resolve_choice(template_type_ref, choice_name)
-            if len(choice_opts) == 0:
-                msg = f'Could not resolve {template_type_ref} {choice_name} to any valid choices'
-                LOG.error(msg)
-                raise ValueError(msg)
-            if len(choice_opts) > 1:
-                msg = f'Could not uniquely resolve {template_type_ref} {choice_name} ' \
-                    f'to a single valid choice'
-                LOG.error(msg)
-                raise ValueError(msg)
-            tt, choice = next(iter(choice_opts.items()))
 
+        elif isinstance(command, ExerciseCommand):
+            choice = self.pkg_cache.resolve_choice_from_cache(command.contract.template_id, command.choice)
             args = self.serialize_value(choice.type, command.arguments)
             return self.serialize_exercise_command(command.contract, choice, args)
+
         elif isinstance(command, CreateAndExerciseCommand):
-            tt = _resolve_template_type(self.store, command.template)
+            tt = self.pkg_cache.resolve_type_from_cache(command.template)
+            choice = self.pkg_cache.resolve_choice_from_cache(tt, command.choice)
             create_value = self.serialize_value(tt, command.arguments)
-            _, choice_info = next(iter(self.store.resolve_choice(tt, command.choice).items()))
-            choice_args = self.serialize_value(choice_info.type, command.choice_argument)
-            return self.serialize_create_and_exercise_command(
-                tt, create_value, choice_info, choice_args)
+            choice_args = self.serialize_value(choice.type, command.choice_argument)
+            return self.serialize_create_and_exercise_command(tt, create_value, choice, choice_args)
+
         elif isinstance(command, ExerciseByKeyCommand):
-            template, = self.store.resolve_template(command.template)
+            template = self.pkg_cache.resolve_template_from_cache(command.template)
             key_value = self.serialize_value(template.key_type, command.contract_key)
-            choices = self.store.resolve_choice(template, command.choice)
-            _, choice_info = next(iter(choices.items()))
-            choice_args = self.serialize_value(choice_info.type, command.choice_argument)
+            choice = self.pkg_cache.resolve_choice_from_cache(template, command.choice)
+            choice_args = self.serialize_value(choice.type, command.choice_argument)
             return self.serialize_exercise_by_key_command(
-                template.data_type.name, key_value, choice_info, choice_args)
+                template.data_type.name, key_value, choice, choice_args)
         else:
             raise ValueError(f'unknown Command type: {command!r}')
 

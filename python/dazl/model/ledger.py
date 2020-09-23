@@ -8,8 +8,8 @@ Types that describe the behavior of the ledger itself.
 from dataclasses import dataclass
 from typing import Any
 
-from .types_store import PackageStore
 from .writing import Serializer
+from ..client.pkg_cache import PackageCache
 
 
 @dataclass(frozen=True)
@@ -18,6 +18,6 @@ class LedgerMetadata:
     Attributes that are invariant with respect to any party on the ledger.
     """
     ledger_id: str
-    store: PackageStore
-    serializer: Serializer[Any, Any]
+    pkg_cache: 'PackageCache'
+    serializer: 'Serializer[Any, Any]'
     protocol_version: str

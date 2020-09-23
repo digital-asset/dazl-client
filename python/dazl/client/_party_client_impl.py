@@ -12,6 +12,7 @@ from typing import Any, Awaitable, Collection, List, Optional, Sequence, Set, Tu
 import reprlib
 import uuid
 
+from .pkg_cache import PackageNotFoundError, TypeNotFoundError
 from .. import LOG
 from .bots import Bot, BotCollection, BotCallback, BotFilter
 from .config import NetworkConfig, PartyConfig
@@ -20,6 +21,7 @@ from ._writer_verify import ValidateSerializer
 from ..model.core import ContractMatch, ContractsState, ContractId, \
     ContractContextualData, ContractContextualDataCollection, Party
 from ..model.ledger import LedgerMetadata
+from ..model.lookup import validate_template
 from ..model.network import connection_settings, OAuthSettings
 from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEvent, OffsetEvent, \
     TransactionFilter, ContractCreateEvent, ContractArchiveEvent, \
@@ -468,8 +470,10 @@ class _PartyClientImpl:
                     default_command_id=None)
                 cps = p.command.build(defaults)
                 if cps:
-                    commands = [replace(cp, commands=validator.serialize_commands(cp.commands))
-                                for cp in cps]  # type: Sequence[CommandPayload]
+                    commands = await metadata.pkg_cache.do_with_retry(
+                        lambda _: [replace(cp, commands=validator.serialize_commands(cp.commands))
+                                   for cp in cps])
+
                     command_payloads.append((p, commands))
                     await submit_command_async(client, p, commands)
                 else:

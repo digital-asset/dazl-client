@@ -4,20 +4,17 @@
 """
 Support for the gRPC-based Ledger API.
 """
-from asyncio import gather, get_event_loop
 from datetime import datetime
 from threading import Event
-from typing import Awaitable, Iterable, Optional, Sequence
+from typing import Iterable, Optional, Sequence
 
 # noinspection PyPackageRequirements
-from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credentials, RpcError, \
-    StatusCode
+from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credentials, RpcError
 
 from ... import LOG
 from .._base import LedgerClient, _LedgerConnection, LedgerConnectionOptions
 from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
     to_acs_events, to_transaction_events, BaseEventDeserializationContext
-from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, find_dependencies
 from ...model.core import Party, UserTerminateRequest, ConnectionTimeoutError
 from ...model.ledger import LedgerMetadata
 from ...model.network import HTTPConnectionSettings
@@ -48,27 +45,15 @@ class GRPCv1LedgerClient(LedgerClient):
             None, self.ledger.store, self.party, self.ledger.ledger_id)
         acs_stream = await self.connection.invoker.run_in_executor(
             lambda: self.connection.active_contract_set_service.GetActiveContracts(request))
-        acs_events = to_acs_events(context, acs_stream)
-        return acs_events
 
-    def events(self, transaction_filter: 'TransactionFilter') \
-            -> Awaitable[Sequence[BaseEvent]]:
-        results_future = get_event_loop().create_future()
+        return await self.ledger.pkg_cache.do_with_retry(
+            lambda _: to_acs_events(context, acs_stream))
+
+    async def events(self, transaction_filter: 'TransactionFilter') -> 'Sequence[BaseEvent]':
         request = serialize_transactions_request(
             transaction_filter, self.ledger.ledger_id, self.party)
         context = BaseEventDeserializationContext(
             None, self.ledger.store, self.party, self.ledger.ledger_id)
-
-        def on_events_done(fut):
-            try:
-                tx_stream, tt_stream = fut.result()
-                events = to_transaction_events(
-                    context, tx_stream, tt_stream, transaction_filter.destination_offset)
-            except Exception as ex:
-                LOG.exception('Failed to parse data coming back from an event!')
-                results_future.set_exception(ex)
-                return
-            results_future.set_result(events)
 
         ts_future = self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetTransactions(request))
@@ -77,16 +62,16 @@ class GRPCv1LedgerClient(LedgerClient):
         # consider dropping client-side support for exercise events anyway because they are not
         # widely used
         if transaction_filter.templates is None:
-            tst_future = self.connection.invoker.run_in_executor(
+            tt_stream = await self.connection.invoker.run_in_executor(
                 lambda: self.connection.transaction_service.GetTransactionTrees(request))
         else:
-            tst_future = get_event_loop().create_future()
-            tst_future.set_result(None)
+            tt_stream = None
 
-        t_fut = gather(ts_future, tst_future)
-        t_fut.add_done_callback(on_events_done)
+        tx_stream = await ts_future
 
-        return results_future
+        return await self.ledger.pkg_cache.do_with_retry(
+            lambda _: to_transaction_events(
+                context, tx_stream, tt_stream, transaction_filter.destination_offset))
 
     async def events_end(self) -> str:
         from . import model as G
@@ -163,27 +148,15 @@ def grpc_detect_ledger_id(connection: 'GRPCv1Connection') -> str:
 def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterable[LedgerMetadata]':
     from .pb_ser_command import ProtobufSerializer
 
-    store = PackageStore.empty()
-
-    package_provider = GRPCPackageProvider(connection, ledger_id)
-
-    # TODO: We could probably disable package syncing if expected packages are provided AND we have
-    #  fetched metadata for them all.
-    grpc_package_sync(package_provider, store)
+    connection.options.pkg_cache.set_connection(GRPCPackageProvider(connection, ledger_id))
 
     yield LedgerMetadata(
         ledger_id=ledger_id,
-        store=store,
-        serializer=ProtobufSerializer(store),
+        pkg_cache=connection.options.pkg_cache,
+        serializer=ProtobufSerializer(connection.options.pkg_cache),
         protocol_version="v1")
 
-    # poll for package updates once a second
-    while not connection._closed.wait(1):
-        try:
-            grpc_package_sync(package_provider, store)
-        except Exception as ex:
-            if not isinstance(ex, RpcError) or ex.code() != StatusCode.CANCELLED:
-                LOG.warning('Package syncing raised an exception.', exc_info=True)
+    connection._closed.wait()
 
     LOG.debug('The gRPC monitor thread is now shutting down.')
     yield None
@@ -206,36 +179,11 @@ class GRPCPackageProvider(PackageProvider):
         package_info = self.connection.package_service.GetPackage(request)
         return package_info.archive_payload
 
+    def fetch_package_bytes(self, package_id: 'PackageId') -> bytes:
+        return self.fetch_package(package_id)
 
-def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore') -> 'None':
-    LOG.verbose("grpc_package_sync started...")
-
-    all_package_ids = package_provider.get_package_ids()
-    loaded_package_ids = {a.hash for a in store.archives()}
-    expected_package_ids = store.expected_package_ids()
-
-    missing_package_ids = all_package_ids - loaded_package_ids
-
-    def should_load(package_id: str) -> bool:
-        # TODO: Filtering by expected package IDs may cause packages to never fully load due to
-        #  transitive dependencies; here we put the onus on the app writer to ensure that they
-        #  supply the complete graph, and we don't even warn them if there is an issue (but
-        #  we could only actually warn them if we parse the archive, which is the expensive
-        #  operation we're trying to avoid).
-        return (expected_package_ids is None or package_id in expected_package_ids) and \
-            package_id not in loaded_package_ids
-
-    metadatas_pb = {}
-    for package_id in all_package_ids:
-        if should_load(package_id):
-            archive_payload = package_provider.fetch_package(package_id)
-            metadatas_pb[package_id] = parse_archive_payload(archive_payload, package_id)
-
-    metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
-    for package_id, archive_payload in metadatas_pb.sorted_archives.items():
-        store.register_all(parse_daml_metadata_pb(package_id, archive_payload))
-
-    LOG.verbose("grpc_package_sync ended.")
+    def fetch_package_ids(self) -> 'PackageIdSet':
+        return self.get_package_ids()
 
 
 def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
