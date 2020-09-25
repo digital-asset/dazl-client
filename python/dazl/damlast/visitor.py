@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Generic, TypeVar
+from typing import Generic, Optional, TypeVar
 from .daml_lf_1 import Expr, Type, ValName, BuiltinFunction, PrimCon, PrimLit, Case, Block, Update, \
     Scenario, Package, Module, FieldWithType, FieldWithExpr, VarWithType, Binding
 

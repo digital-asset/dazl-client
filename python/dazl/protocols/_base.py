@@ -45,7 +45,7 @@ class LedgerNetwork:
         for any reason (such as fetching initial ledger metadata).
         """
 
-    async def ledger(self) -> LedgerMetadata:
+    async def ledger(self) -> 'LedgerMetadata':
         """
         Return information about the entire ledger.
         """

@@ -667,7 +667,7 @@ class TypeEvaluationContext:
     def resolve_var(self, var: TypeVariable) -> Type:
         return self.variables[var]
 
-    def with_vars(self, new_vars: Dict[TypeVariable, Type]) -> 'TypeEvaluationContext':
+    def with_vars(self, new_vars: 'Dict[TypeVariable, Type]') -> 'TypeEvaluationContext':
         confirmed_new_vars = {}
         for new_var, new_var_value in new_vars.items():
             if new_var == new_var_value:
