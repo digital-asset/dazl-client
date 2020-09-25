@@ -473,10 +473,10 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
             LOG.warning('    %r', obj)
             raise
 
-    def serialize_commands(self, commands: Sequence[Command]) -> Sequence[TCommand]:
+    def serialize_commands(self, commands: 'Sequence[Command]') -> 'Sequence[TCommand]':
         return [self.serialize_command(cmd) for cmd in commands]
 
-    def serialize_command(self, command: Command) -> TCommand:
+    def serialize_command(self, command: 'Command') -> 'TCommand':
         if isinstance(command, CreateCommand):
             tt = _resolve_template_type(self.store, command.template)
             value = self.serialize_value(tt, command.arguments)

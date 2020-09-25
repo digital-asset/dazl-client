@@ -15,6 +15,7 @@ from typing import overload, Any, Mapping, Tuple, Union
 TimeDeltaConvertible = Union[int, float, Decimal, str, timedelta]
 
 DATETIME_ISO8601_Z_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
+_VARIANT_KEYS = frozenset(["tag", "value"])
 
 
 @overload
@@ -194,9 +195,12 @@ class PrimitiveTypeConverter:
     to_timedelta = staticmethod(to_timedelta)
 
 
-def decode_variant_dict(obj: Any) -> Tuple[str, Any]:
-    if not isinstance(obj, dict):
+def decode_variant_dict(obj: Any) -> 'Tuple[str, Any]':
+    from collections.abc import Mapping
+    if not isinstance(obj, Mapping):
         raise ValueError(f'cannot coerce {obj!r} to a variant')
+    if _VARIANT_KEYS == obj.keys():
+        return obj["tag"], obj["value"]
     if len(obj) != 1:
         raise ValueError(f'variants must be encoded as single-key dicts (got {obj!r} instead)')
     key = list(obj)[0]

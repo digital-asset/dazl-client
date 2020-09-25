@@ -11,10 +11,23 @@ from toposort import toposort_flatten
 
 from ... import LOG
 from ...damlast.daml_lf_1 import Archive, DefDataType, DottedName, ModuleRef, PackageRef, TypeConName, ValName
+from ...damlast.pb_parse import ProtobufParser
 from ...damlast.types import get_old_type
 from ...model.types import TypeReference, RecordType, VariantType, EnumType, SCALAR_TYPE_UNIT, \
-    NamedArgumentList, ScalarType, TypeVariable, TemplateChoice, Template
+    NamedArgumentList, ScalarType, TypeVariable, TemplateChoice, Template, PackageId
 from ...model.types_store import PackageStore, PackageStoreBuilder
+
+
+def parse_archive(package_id: 'PackageId', archive_bytes: bytes) -> 'Archive':
+    """
+    Convert ``bytes`` into an :class:`Archive`.
+    """
+    archive_pb = parse_archive_payload(archive_bytes, package_id)
+
+    parser = ProtobufParser(package_id)
+    package = parser.parse_Package(archive_pb.daml_lf_1)
+
+    return Archive(package_id, package)
 
 
 def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageRef]' = None) -> 'G.ArchivePayload':
@@ -190,6 +203,7 @@ def parse_daml_metadata_pb(package_id: 'PackageRef', metadata_pb: Any) -> 'Packa
         A :class:`PackageStore` with additional entries resulting from the parse of this archive.
     """
     LOG.debug("Parsing package ID: %r", package_id)
+
     from ...damlast.pb_parse import ProtobufParser
 
     parser = ProtobufParser(package_id)
