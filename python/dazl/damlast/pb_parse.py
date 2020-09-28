@@ -2,7 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
+from typing import Optional, Sequence
+
 from .daml_lf_1 import *
+
+__all__ = ['ProtobufParser']
 
 
 # noinspection PyPep8Naming,PyMethodMayBeStatic
