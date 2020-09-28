@@ -166,11 +166,3 @@ def parse_dalf(contents: bytes) -> 'PackageStore':
 def get_dar_package_ids(dar: 'Dar') -> 'Collection[PackageId]':
     with DarFile(dar) as dar_file:
         return dar_file.get_package_ids()
-
-
-class DamlcPackageError(Exception):
-    """
-    Raised when DAMLC fails to compile a DAR.
-    """
-    def __init__(self, exit_code):
-        self.exit_code = exit_code

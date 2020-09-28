@@ -13,7 +13,6 @@ from .. import LOG, Network
 from ..client.config import configure_parser, AnonymousNetworkConfig
 from ..model.core import UserTerminateRequest, ConnectionTimeoutError
 from ..model.types_store import PackageStore
-from ..util.dar import DamlcPackageError
 from ..util.dar_repo import LocalDarRepository
 from ..pretty import get_pretty_printer, PrettyOptions
 
@@ -48,13 +47,9 @@ class PrintMetadataCommand(CliCommand):
     @staticmethod
     def execute_static_metadata(files: Collection[str], options: PrettyOptions) -> int:
         repo = LocalDarRepository()
-        try:
-            repo.add_source(*files)
-            _process_metadata(repo.store, options)
-            return 0
-
-        except DamlcPackageError as ex:
-            return ex.exit_code
+        repo.add_source(*files)
+        _process_metadata(repo.store, options)
+        return 0
 
     @staticmethod
     def execute_runtime_metadata(config: 'AnonymousNetworkConfig', options: PrettyOptions) -> int:
