@@ -1,9 +1,22 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+"""
+DAML-LF Archive types
+---------------------
+"""
+
 # NOTE TO IMPLEMENTORS: A future version of this file is intended to be code-generated instead of
 # manually maintained. The makeup of this file is intentionally highly formulaic in order to
 # facilitate a smooth transition to automatically-generated data structures.
+#
+# On a similar note, it is important to be careful about imports in this file; it is simpler to
+# validate an automatically generated file with no dependencies. Also, this file is imported in a
+# lot of places in the dazl codebase, so imports in this file could frequently lead to import
+# cycles.
+#
+# The few local imports in this file should be inlined by a codegen process instead to keep this
+# file self-contained.
 
 from dataclasses import dataclass
 from enum import Enum
@@ -11,7 +24,15 @@ from io import StringIO
 from typing import Callable, NewType, Optional, Sequence, Tuple, Union
 
 from ._base import MISSING, T
-from ..util.typing import safe_cast
+
+__all__ = [
+    'Archive', 'Binding', 'Block', 'BuiltinFunction', 'Case', 'CaseAlt', 'DefDataType',
+    'DefTemplate', 'DefTypeSyn', 'DefValue', 'DottedName', 'Expr', 'FeatureFlags', 'FieldWithExpr',
+    'FieldWithType', 'KeyExpr', 'Kind', 'Location', 'Module', 'ModuleRef', 'Package',
+    'PackageMetadata', 'PackageRef', 'PrimCon', 'PrimLit', 'PrimType', 'Pure', 'Scenario',
+    'TemplateChoice', 'Type', 'TypeConName', 'TypeSynName', 'TypeVarWithKind', 'UNIT', 'Unit',
+    'Update', 'ValName', 'VarWithType',
+]
 
 
 class Unit:
@@ -19,7 +40,6 @@ class Unit:
 
 
 UNIT = Unit()
-
 
 # Reference to a package via a package identifier. The identifier is the ascii7
 # lowercase hex-encoded hash of the package contents found in the DAML LF Archive.
@@ -55,6 +75,7 @@ class ModuleRef:
     __slots__ = '_package_id', '_module_name'
 
     def __init__(self, package_id: 'PackageRef', module_name: 'DottedName'):
+        from ..util.typing import safe_cast
         self._package_id = PackageRef(safe_cast(str, package_id))
         self._module_name = safe_cast(DottedName, module_name)
 
@@ -87,7 +108,7 @@ class ModuleRef:
 
     def __repr__(self):
         return f'ModuleRef(package_id={self._package_id!r}, ' \
-            f'module_name={self._module_name})'
+               f'module_name={self._module_name})'
 
 
 class _Name:
@@ -105,6 +126,7 @@ class _Name:
 
     def __init__(self, module: 'ModuleRef', name: 'Sequence[str]'):
         from collections.abc import Collection
+        from ..util.typing import safe_cast
         if not isinstance(name, Collection):
             raise TypeError(f'Tuple of strings required here (got {name!r} instead)')
 
@@ -262,23 +284,23 @@ class Kind:
 
 
 class PrimType(Enum):
-    UNIT = 0          # arity = 0
-    BOOL = 1          # arity = 0
-    INT64 = 2         # arity = 0
-    DECIMAL = 3       # arity = 0
-    CHAR = 4          # arity = 0, we have removed this in favor of TEXT for everything text related
-    TEXT = 5          # arity = 0
-    TIMESTAMP = 6     # arity = 0
-    RELTIME = 7       # we removed this in favor of INT64.
-    PARTY = 8         # arity = 0
-    LIST = 9          # arity = 1
-    UPDATE = 10       # arity = 1
-    SCENARIO = 11     # arity = 1
-    DATE = 12         # arity = 0, days since the unix epoch
+    UNIT = 0  # arity = 0
+    BOOL = 1  # arity = 0
+    INT64 = 2  # arity = 0
+    DECIMAL = 3  # arity = 0
+    CHAR = 4  # arity = 0, we have removed this in favor of TEXT for everything text related
+    TEXT = 5  # arity = 0
+    TIMESTAMP = 6  # arity = 0
+    RELTIME = 7  # we removed this in favor of INT64.
+    PARTY = 8  # arity = 0
+    LIST = 9  # arity = 1
+    UPDATE = 10  # arity = 1
+    SCENARIO = 11  # arity = 1
+    DATE = 12  # arity = 0, days since the unix epoch
     CONTRACT_ID = 13  # arity = 1
-    OPTIONAL = 14     # arity = 1
-    ARROW = 15        # arity = 2
-    TEXTMAP = 16      # arity = 1
+    OPTIONAL = 14  # arity = 1
+    ARROW = 15  # arity = 2
+    TEXTMAP = 16  # arity = 1
     NUMERIC = 17
     ANY = 18
     TYPE_REP = 19
@@ -287,7 +309,6 @@ class PrimType(Enum):
 
 # noinspection PyShadowingBuiltins
 class Type:
-
     @dataclass(frozen=True)
     class Var:
         var: 'str'
@@ -466,7 +487,6 @@ class Type:
 
 
 class PrimLit:
-
     __slots__ = ('_Sum_name', '_Sum_value')
 
     def __init__(
@@ -557,7 +577,6 @@ class PrimLit:
 
 # noinspection PyShadowingBuiltins
 class Location:
-
     class Range:
         __slots__ = ('start_line', 'start_col', 'end_line', 'end_col')
 
@@ -587,7 +606,6 @@ class Location:
 
 # noinspection PyShadowingBuiltins
 class Expr:
-
     class RecCon:
         tycon: 'Type.Con'
         fields: 'Sequence[FieldWithExpr]'
@@ -668,6 +686,7 @@ class Expr:
         types: 'Sequence[Type]'  # length > 0
 
         def __init__(self, expr: 'Expr', types: 'Sequence[Type]'):
+            from ..util.typing import safe_cast
             object.__setattr__(self, 'expr', safe_cast(Expr, expr))
             object.__setattr__(self, 'types', tuple(types))
 
@@ -679,6 +698,7 @@ class Expr:
         body: 'Expr'
 
         def __init__(self, param: 'Sequence[VarWithType]', body: 'Expr'):
+            from ..util.typing import safe_cast
             object.__setattr__(self, 'param', param)
             object.__setattr__(self, 'body', safe_cast(Expr, body))
 
@@ -1263,7 +1283,6 @@ class Pure:
 
 
 class Update:
-
     class Create:
         template: 'TypeConName'
         expr: 'Expr'
@@ -1858,6 +1877,9 @@ class DefTemplate:
 
 
 class DefDataType:
+    """
+    A record, variant, or enum data type definition.
+    """
 
     class Fields:
         fields: 'Sequence[FieldWithType]'
