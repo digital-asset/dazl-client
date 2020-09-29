@@ -6,5 +6,4 @@
 ==========================
 """
 
-from .evaluate import Evaluator
 from .visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVisitor, IdentityTypeVisitor
