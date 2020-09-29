@@ -152,9 +152,11 @@ class TypeVisitor(Generic[RT]):
             self.visit_type_var,
             self.visit_type_con,
             self.visit_type_prim,
+            self.visit_type_tysyn,
             self.visit_type_forall,
             self.visit_type_tuple,
-            self.visit_type_nat)
+            self.visit_type_nat,
+            self.visit_type_syn)
 
     def visit_type_var(self, var: 'Type.Var') -> 'RT':
         raise NotImplementedError
@@ -165,6 +167,9 @@ class TypeVisitor(Generic[RT]):
     def visit_type_prim(self, prim: 'Type.Prim') -> 'RT':
         raise NotImplementedError
 
+    def visit_type_tysyn(self, tysyn: 'Type.Syn') -> 'RT':
+        raise NotImplementedError
+
     def visit_type_forall(self, forall: 'Type.Forall') -> 'RT':
         raise NotImplementedError
 
@@ -172,6 +177,9 @@ class TypeVisitor(Generic[RT]):
         raise NotImplementedError
 
     def visit_type_nat(self, nat: int) -> 'RT':
+        raise NotImplementedError
+
+    def visit_type_syn(self, syn: 'Type.Syn') -> 'RT':
         raise NotImplementedError
 
 
