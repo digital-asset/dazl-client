@@ -6,20 +6,20 @@ from typing import Collection, Mapping, Optional
 
 from .builtins import builtins
 from .daml_lf_1 import Block, Expr, Type, ValName
+from .protocols import SymbolLookup
 from .util import package_local_name
 from .visitor import IdentityVisitor
-from ..model.types_store import PackageStore
 
 
 class RewriteVisitor(IdentityVisitor):
     def __init__(
             self,
-            store: 'PackageStore',
+            lookup: 'SymbolLookup',
             always_expand: bool = False,
             val_blacklist: 'Optional[Collection[ValName]]' = None,
             expr_args: 'Optional[Mapping[str, Expr]]' = None,
             type_args: 'Optional[Mapping[str, Type]]' = None):
-        self.store = store
+        self.lookup = lookup
         self.always_expand = always_expand
         self.val_blacklist = frozenset(val_blacklist) if val_blacklist is not None else ()
         self.expr_args = MappingProxyType(expr_args or {})  # type: Mapping[str, Expr]
@@ -27,26 +27,26 @@ class RewriteVisitor(IdentityVisitor):
 
     def with_expr_var(self, var: str, value: 'Expr') -> 'RewriteVisitor':
         return type(self)(
-            self.store, self.always_expand, self.val_blacklist,
+            self.lookup, self.always_expand, self.val_blacklist,
             {**self.expr_args, var: value}, self.type_args)
 
     def with_expr_vars(self, var_values: 'Mapping[str, Expr]') -> 'RewriteVisitor':
         return type(self)(
-            self.store, self.always_expand, self.val_blacklist,
+            self.lookup, self.always_expand, self.val_blacklist,
             {**self.expr_args, **var_values}, self.type_args)
 
     def with_type_vars(self, type_values: 'Mapping[str, Type]') -> 'RewriteVisitor':
         return type(self)(
-            self.store, self.always_expand, self.val_blacklist,
+            self.lookup, self.always_expand, self.val_blacklist,
             self.expr_args, {**self.type_args, **type_values})
 
     def without_val(self, val: 'ValName') -> 'RewriteVisitor':
         return type(self)(
-            self.store, self.always_expand, {*self.val_blacklist, val},
+            self.lookup, self.always_expand, {*self.val_blacklist, val},
             self.expr_args, self.type_args)
 
     def resolve_val(self, val: 'ValName') -> 'Optional[Expr]':
-        return self.store.resolve_value_reference(val) if val not in self.val_blacklist else None
+        return self.lookup.value(val).expr if val not in self.val_blacklist else None
 
     def resolve_type_arg(self, type_arg: str) -> 'Optional[Type]':
         return self.type_args.get(type_arg)
@@ -68,7 +68,7 @@ class ExpandVisitor(RewriteVisitor):
         builtin = builtins.resolve(val)
         if builtin is not None:
             return Expr(val=val)
-        if self.always_expand or val.name[0][0] == '$' or package_local_name(val) == 'DA.Internal.Template:toParties':
+        if self.always_expand or val._name[0][0] == '$' or package_local_name(val) == 'DA.Internal.Template:toParties':
             val_expr = self.resolve_val(val)
             if val_expr is not None:
                 child = self.without_val(val)

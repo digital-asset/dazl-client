@@ -17,6 +17,7 @@ from .bots import Bot, BotCollection, BotCallback, BotFilter
 from .config import NetworkConfig, PartyConfig
 from .state import ActiveContractSet
 from ._writer_verify import ValidateSerializer
+from ..damlast.daml_lf_1 import TypeConName
 from ..model.core import ContractMatch, ContractsState, ContractId, \
     ContractContextualData, ContractContextualDataCollection, Party
 from ..model.ledger import LedgerMetadata
@@ -54,7 +55,7 @@ class _PartyClientImpl:
         self._ready_fut = self.invoker.create_future()
         self._known_packages = set()  # type: Set[str]
 
-        self._acs = ActiveContractSet(self.invoker)
+        self._acs = ActiveContractSet(self.invoker, self.parent.lookup)
         self.bots = BotCollection(party)
         self._reader = _PartyClientReaderState()
         self._writer = _PartyClientWriterState()
@@ -114,7 +115,6 @@ class _PartyClientImpl:
         :param metadata:
             Information about the connected ledger.
         """
-        self._acs.metadata_future.set_result(metadata._store)
         evt = InitEvent(
             self, self.party, current_time, metadata.ledger_id, self.parent.lookup, metadata._store)
         return self.emit_event(evt)
@@ -162,7 +162,7 @@ class _PartyClientImpl:
         """
         ready_event = ReadyEvent(
             self, self.party, time, metadata.ledger_id, self.parent.lookup, metadata._store, offset)
-        self._known_packages.update(metadata._store.package_ids())
+        self._known_packages.update(self.parent.lookup.package_ids())
         await self.emit_event(ready_event)
 
         pkg_event = PackagesAddedEvent(
@@ -230,19 +230,9 @@ class _PartyClientImpl:
 
         LOG.info('Calling read_acs(%r, %r) for party: %r', until_offset, raise_events, self.party)
         client = await self._client_fut
-        metadata = await self._pool.ledger()
-
-        # TODO: Calculating this repeatedly could be wasteful, but we're also guarding against
-        #  the potential for packages to come in only after the loop has started. Separately,
-        #  there is a potential bug where we hear of an offset before the package is known;
-        #  fixing this involves coupling transaction stream processing to package processing,
-        #  which requires a larger refactor of the stream processor
-        templates = metadata._store.get_templates_for_packages(self._config.package_ids) \
-            if self._config.package_ids is not None else None
 
         contract_filter = ContractFilter(
-            templates=[t.data_type.name for t in templates] if templates is not None else None,
-            party_groups=self._config.party_groups)
+            templates=await self._template_filter(), party_groups=self._config.party_groups)
 
         acs = await client.active_contracts(contract_filter)
         for acs_evt in acs:
@@ -287,7 +277,7 @@ class _PartyClientImpl:
             # TODO: Find a more appropriate place to raise these events (or change the name of this
             #  method to make it clearer that it has a bigger mandate than simply transaction
             #  events)
-            all_packages = set(metadata._store.package_ids())
+            all_packages = set(self.parent.lookup.package_ids())
             new_package_ids = all_packages - self._known_packages
             if new_package_ids:
                 pkg_event = PackagesAddedEvent(
@@ -296,19 +286,11 @@ class _PartyClientImpl:
                 self._known_packages.update(all_packages)
                 await self.emit_event(pkg_event)
 
-            # TODO: Calculating this repeatedly could be wasteful, but we're also guarding against
-            #  the potential for packages to come in only after the loop has started. Separately,
-            #  there is a potential bug where we hear of an offset before the package is known;
-            #  fixing this involves coupling transaction stream processing to package processing,
-            #  which requires a larger refactor of the stream processor
-            templates = metadata._store.get_templates_for_packages(self._config.package_ids) \
-                if self._config.package_ids is not None else None
-
             # prepare a call to /events
             transaction_filter = TransactionFilter(
                 current_offset=self._reader.offset,
                 destination_offset=until_offset,
-                templates=[t.data_type.name for t in templates] if templates is not None else None,
+                templates=await self._template_filter(),
                 party_groups=self._config.party_groups)
 
             transaction_events = await client.events(transaction_filter)
@@ -335,6 +317,19 @@ class _PartyClientImpl:
     async def read_end(self) -> str:
         client = await self._client_fut
         return await client.events_end()
+
+    async def _template_filter(self) -> 'Optional[Collection[TypeConName]]':
+        if self._config.package_ids is not None:
+            # first, ensure the packages we require are loaded
+            metadata = await self._pool.ledger()
+            await gather(*[metadata.package_loader.load(ref) for ref in self._config.package_ids])
+
+            # now build a filter of the template names for all of the packages that we found
+            names = [name for ref in self._config.package_ids
+                     for name in self.parent.lookup.template_names(f"{ref}:*")]
+            return names
+        else:
+            return None
 
     def _process_transaction_stream_event(self, event: Any, raise_events: bool) -> Future:
         """
@@ -444,7 +439,7 @@ class _PartyClientImpl:
 
         client = self._client_fut.result()  # type: LedgerClient
         metadata = ledger_fut.result()  # type: LedgerMetadata
-        validator = ValidateSerializer(metadata._store)
+        validator = ValidateSerializer(self.parent.lookup)
 
         self._writer.pending_commands.start()
 
@@ -472,8 +467,8 @@ class _PartyClientImpl:
                     default_command_id=None)
                 cps = p.command.build(defaults)
                 if cps:
-                    commands = [replace(cp, commands=validator.serialize_commands(cp.commands))
-                                for cp in cps]  # type: Sequence[CommandPayload]
+                    commands = await metadata.package_loader.do_with_retry(
+                        lambda: [replace(cp, commands=validator.serialize_commands(cp.commands)) for cp in cps])
                     command_payloads.append((p, commands))
                     await submit_command_async(client, p, commands)
                 else:

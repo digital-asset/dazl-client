@@ -31,6 +31,7 @@ from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
 from ..damlast import get_dar_package_ids
+from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
 from ..model.core import ContractsState, ContractMatch, \
     ContractContextualData, ContractContextualDataCollection, Dar
@@ -155,6 +156,14 @@ class Network:
             admin_url: 'Optional[str]' = None,
             **kwargs):
         self._impl.set_config(*config, url=url, admin_url=admin_url, **kwargs)
+
+    @property
+    def lookup(self) -> 'SymbolLookup':
+        """
+        Return a :class:`SymbolLookup` that provides type and package information for known
+        packages.
+        """
+        return self._impl.lookup
 
     def resolved_config(self) -> 'NetworkConfig':
         """

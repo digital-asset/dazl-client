@@ -183,7 +183,7 @@ class Context:
                 # still the canonical form of a ContractId until the deprecated version is dropped
                 return DeprecatedContractId(contract_id.value, element_type.con.tycon)
             else:
-                return ContractId(element_type.con.tycon, contract_id)
+                return DeprecatedContractId(contract_id, element_type.con.tycon)
 
     def resolve_data_type(self, con: 'Type.Con') -> 'DefDataType':
         """

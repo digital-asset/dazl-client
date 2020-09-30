@@ -69,7 +69,7 @@ class DarFile(_DarFile):
         """
         warnings.warn(
             'get_archives is deprecated; there is no replacement.',
-            DeprecationWarning)
+            DeprecationWarning, stacklevel=2)
         return {a.hash: a.payload for a in self._pb_archives()}
 
     def get_dalf_names(self) -> 'Sequence[str]':

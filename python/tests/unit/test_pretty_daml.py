@@ -1,9 +1,10 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from dazl.damlast.daml_lf_1 import DottedName, ModuleRef, PackageRef, TypeConName
-from dazl.damlast import daml_types as daml
+from dazl.damlast import daml_types as daml, DarFile
+from dazl.damlast.lookup import MultiPackageLookup
 from dazl.pretty import DamlPrettyPrinter, PrettyOptions
-from dazl.util.dar import DarFile
 from .dars import Pending
 
 
@@ -77,5 +78,5 @@ def test_render_update_of_contract_type_con_new():
 
 def test_render_metadata():
     with DarFile(Pending) as dar:
-        pp = DamlPrettyPrinter(store=dar.read_metadata(), context=PrettyOptions(show_hidden_types=True))
+        pp = DamlPrettyPrinter(lookup=MultiPackageLookup(dar.archives()), context=PrettyOptions(show_hidden_types=True))
         pp.render_store()

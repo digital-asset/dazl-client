@@ -58,8 +58,6 @@ class Stage1LedgerInit:
 
     async def on_ready(self, event):
         await self.network.aio_global().ensure_dar(SimpleDar)
-        while not event.package_store.resolve_template(Simple.OperatorRole):
-            await sleep(1)
 
         return create(Simple.OperatorRole, {'operator': event.party})
 

@@ -8,15 +8,15 @@ from typing import Callable, Dict, Optional, Type as TType, Sequence, Union
 from .options import PrettyOptions
 from .util import maybe_parentheses, is_hidden_module_name
 from .. import LOG
-from ..prim import to_date, to_datetime
 from ..damlast.daml_lf_1 import Block, BuiltinFunction, Case, CaseAlt, DefDataType, DefTemplate, \
     Expr, Module, Package, PrimCon, PrimLit, Scenario, Type, TypeVarWithKind, ValName, \
     Update, DefValue, Unit
+from ..damlast.protocols import SymbolLookup
 from ..damlast.util import unpack_arrow_type, package_local_name
 from ..damlast.visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVisitor
 from ..model.definition import DamlDataType, DamlTemplate
 from ..model.types import ModuleRef
-from ..model.types_store import PackageStore
+from ..prim import to_date, to_datetime
 
 
 # noinspection PyMethodMayBeStatic
@@ -27,9 +27,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
 
     def __init__(
             self,
-            store: 'Optional[PackageStore]' = None,
+            lookup: 'Optional[SymbolLookup]' = None,
             context: 'Union[None, CodeContext, PrettyOptions]' = None):
-        self.store = store
+        self.lookup = lookup
         if context is None:
             self.context = CodeContext.top_level()
         elif isinstance(context, CodeContext):
@@ -61,19 +61,15 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         """
         Render everything in a :class:`PackageStore`.
         """
-        store = self.store
-        if store is None:
-            raise Exception('cannot render_store because a PackageStore was not provided')
-
         with StringIO() as buf:
             buf.write('from dazl import create, exercise, module, TemplateMeta, ChoiceMeta\n\n')
-            for package in store.packages():
-                buf.write(self.visit_package(package))
+            for archive in self.lookup.archives():
+                buf.write(self.visit_package(archive.package))
                 buf.write('\n')
             return buf.getvalue()
 
     def with_module(self, module_ref: 'ModuleRef'):
-        return type(self)(store=self.store, context=self.context.with_module(module_ref))
+        return type(self)(lookup=self.lookup, context=self.context.with_module(module_ref))
 
     def with_decl(self, decl_name: Sequence[str], decl_type: Type):
         """
@@ -84,19 +80,19 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         :param decl_type: The type of the declaration.
         :return: An instance of this type.
         """
-        return type(self)(store=self.store, context=self.context.with_decl(decl_name, decl_type))
+        return type(self)(lookup=self.lookup, context=self.context.with_decl(decl_name, decl_type))
 
     def with_type_abs(self, type_abs: 'Sequence[TypeVarWithKind]'):
-        return type(self)(store=self.store, context=self.context.with_type_abs(type_abs))
+        return type(self)(lookup=self.lookup, context=self.context.with_type_abs(type_abs))
 
     def with_type_app(self, type_app: 'Sequence[Type]'):
-        return type(self)(store=self.store, context=self.context.with_type_app(type_app))
+        return type(self)(lookup=self.lookup, context=self.context.with_type_app(type_app))
 
     def with_expression(self):
-        return type(self)(store=self.store, context=self.context.with_expression())
+        return type(self)(lookup=self.lookup, context=self.context.with_expression())
 
     def with_statement_block(self):
-        return type(self)(store=self.store, context=self.context.with_statement_block())
+        return type(self)(lookup=self.lookup, context=self.context.with_statement_block())
 
     def visit_package(self, package: 'Package') -> 'str':
         """

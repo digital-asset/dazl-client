@@ -18,7 +18,7 @@ async def test_dar_uploads_near_startup(sandbox):
     async def upload_dars_and_verify():
         await upload_test_dars(network)
         metadata = await network.aio_global().metadata()
-        package_ids.extend(metadata.store.package_ids())
+        package_ids.extend(network.lookup.package_ids())
 
     await network.aio_run(upload_dars_and_verify(), keep_open=False)
 
@@ -49,6 +49,7 @@ async def test_package_events(sandbox):
         # client is running and # operational
         await client.ready()
         await upload_test_dars(network)
+        await (await network.aio_global().metadata()).package_loader.load_all()
 
         # give the client some time to pick up the new packages; unfortunately there isn't
         # much more to do here except wait

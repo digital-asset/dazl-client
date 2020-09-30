@@ -33,8 +33,12 @@ class ListAllCommand(CliCommand):
 
         network = Network()
         network.set_config(final_config)
+        network.set_config(eager_package_fetch=False)
         if include_archived:
             network.set_config(use_acs_service=False)
+
+        for party in args.parties:
+            network.aio_party(party)
 
         network.run_until_complete(self._main(network, fmt, include_archived))
         return 0
@@ -42,8 +46,11 @@ class ListAllCommand(CliCommand):
     async def _main(self, network: 'Network', fmt: str, include_archived: bool):
         import sys
 
+        LOG.debug('Starting our parties...')
         for party in network.parties():
             await network.aio_party(party).ready()
+            LOG.debug('Party %s is ready.', party)
         metadata = await network.aio_global().metadata()
+        LOG.debug('Our parties are now ready.')
 
         write_acs(sys.stdout, network, metadata.store, fmt=fmt, include_archived=include_archived)
