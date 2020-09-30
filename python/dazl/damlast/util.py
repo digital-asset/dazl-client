@@ -1,6 +1,6 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
+import warnings
 from typing import Mapping, Optional, Sequence, Union, TYPE_CHECKING
 from .daml_lf_1 import DefValue, Expr, ModuleRef, Type, PrimType, Kind, UNIT, TypeVarWithKind, _Name, PackageRef, \
     DottedName
@@ -10,12 +10,10 @@ if TYPE_CHECKING:
     from ..model.types_store import PackageStore
 
 
-STRING = Type(prim=Type.Prim(prim=PrimType.TEXT, args=()))
-PARTY_TYPE = Type(prim=Type.Prim(prim=PrimType.PARTY, args=()))
-
-
 def var(var: str) -> 'Type':
-    return Type(var=Type.Var(var, ()))
+    warnings.warn('dazl.damlast.util.var is deprecated; use dazl.damlast.daml_types.var instead.')
+    from .daml_types import var as _var
+    return _var(var)
 
 
 def values_by_module(store: 'PackageStore') \
@@ -73,14 +71,20 @@ def arrow_type(input: 'Type', output: 'Type') -> 'Type':
     Convenience function for constructing a :class:`Type` of ``prim`` that is an abstraction taking
     the input type and returning the output type.
     """
-    return Type(prim=Type.Prim(PrimType.ARROW, (input, output)))
+    warnings.warn(
+        'arrow_type is deprecated; Use dazl.damlast.daml_types.Arrow instead', DeprecationWarning)
+    from .daml_types import Arrow
+    return Arrow(input, output)
 
 
 def list_type(elem_type: 'Type') -> 'Type':
     """
     Convenience function for constructing a :class:`Type` of ``prim`` list.
     """
-    return Type(prim=Type.Prim(PrimType.LIST, (elem_type,)))
+    warnings.warn(
+        'list_type is deprecated; Use dazl.damlast.daml_types.List instead', DeprecationWarning)
+    from .daml_types import List
+    return List(elem_type)
 
 
 def type_var_with_kind(var: str, type: Kind = Kind(star = UNIT)):

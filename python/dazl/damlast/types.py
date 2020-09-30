@@ -1,7 +1,6 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
-
+import warnings
 from typing import Callable, Optional
 
 from ._base import T
@@ -10,11 +9,10 @@ from ..util.typing import safe_cast
 from .daml_lf_1 import Type, PrimType
 
 
-STRING = Type(prim=Type.Prim(prim=PrimType.TEXT, args=()))
-
-
 def var(var_: str) -> 'Type':
-    return Type(var=Type.Var(var_, ()))
+    warnings.warn('dazl.damlast.types.var is deprecated; use dazl.damlast.daml_types.var instead.')
+    from .daml_types import var as _var
+    return _var(var_)
 
 
 def match_prim_type(

@@ -10,7 +10,7 @@ from typing import Any, Optional, Sequence
 
 from ._builtins_meta import BuiltinTable, Builtin
 from .daml_lf_1 import BuiltinFunction, Expr, PrimLit, Type
-from .util import list_type, var, STRING
+from . import daml_types as daml
 
 builtins = BuiltinTable()
 
@@ -18,7 +18,7 @@ builtins = BuiltinTable()
 @builtins.add
 class Concat(Builtin):
     name = 'DA.Internal.Prelude:concat'
-    args = list_type(list_type(var('x'))),
+    args = daml.List(daml.List(daml.var('x'))),
 
     def evaluate(self, _: 'Sequence[Type]', args: 'Sequence[Any]') -> 'Any':
         xxs = args[0]
@@ -42,7 +42,7 @@ class Concat(Builtin):
 @builtins.add
 class Show(Builtin):
     name = 'GHC.Show:show'
-    args = (STRING, STRING)
+    args = (daml.Text, daml.Text)
 
     def evaluate(self, _: 'Sequence[Type]', args: 'Sequence[Any]') -> 'Any':
         return str(args[1])
@@ -54,7 +54,7 @@ class Show(Builtin):
 @builtins.add
 class AppendText(Builtin):
     builtin = BuiltinFunction.APPEND_TEXT
-    args = (STRING, STRING)
+    args = (daml.Text, daml.Text)
 
     def evaluate(self, _: 'Sequence[Type]', args: 'Sequence[Any]') -> 'Any':
         return args[0] + args[1]

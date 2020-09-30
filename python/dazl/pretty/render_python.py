@@ -9,8 +9,9 @@ from .util import maybe_parentheses, indent
 from .. import LOG
 from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, Type, Case, Block, \
     Update, Scenario, PrimType, TypeConName
-from ..damlast.util import def_value, list_type, module_name, PARTY_TYPE
-from ..model.types import ModuleRef, Type as OldType, TypeReference
+from ..damlast import daml_types as daml
+from ..damlast.util import def_value, module_name
+from ..model.types import ModuleRef, Type as OldType
 from ..model.types_store import PackageStore
 
 
@@ -60,7 +61,7 @@ class PythonPrettyPrint(PrettyPrintBase):
         template_full_name = str(TypeConName(self.context.current_module, def_data_type.name.segments))
         template_name = def_data_type.name.segments[-1]
         slot_names = tuple(fwt.field for fwt in def_data_type.record.fields) if def_data_type.record else ()
-        signatories_def = def_value('signatories', list_type(PARTY_TYPE), template.signatories) if template is not None else None
+        signatories_def = def_value('signatories', daml.List(daml.Party), template.signatories) if template is not None else None
 
         if template is not None:
             lines = []
