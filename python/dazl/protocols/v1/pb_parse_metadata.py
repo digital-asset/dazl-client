@@ -1,8 +1,7 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import sys
-import time
+import warnings
 from collections import OrderedDict, defaultdict
 from typing import Any, Collection, Mapping, Optional, Set, Union
 
@@ -11,68 +10,23 @@ from toposort import toposort_flatten
 
 from ... import LOG
 from ...damlast.daml_lf_1 import Archive, DefDataType, DottedName, ModuleRef, PackageRef, TypeConName, ValName
-from ...damlast.pb_parse import ProtobufParser
 from ...damlast.types import get_old_type
 from ...model.types import TypeReference, RecordType, VariantType, EnumType, SCALAR_TYPE_UNIT, \
-    NamedArgumentList, ScalarType, TypeVariable, TemplateChoice, Template, PackageId
+    NamedArgumentList, ScalarType, TypeVariable, TemplateChoice, Template
 from ...model.types_store import PackageStore, PackageStoreBuilder
 
 
-def parse_archive(package_id: 'PackageId', archive_bytes: bytes) -> 'Archive':
-    """
-    Convert ``bytes`` into an :class:`Archive`.
-    """
-    archive_pb = parse_archive_payload(archive_bytes, package_id)
-
-    parser = ProtobufParser(package_id)
-    package = parser.parse_Package(archive_pb.daml_lf_1)
-
-    return Archive(package_id, package)
-
-
-def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageRef]' = None) -> 'G.ArchivePayload':
+def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageRef]' = None):
     """
     Convert ``bytes`` into a :class:`G.ArchivePayload`.
 
     Note that this function will temporarily increase Python's recursion limit to handle cases where
     parsing a DAML-LF archive requires deeper recursion limits.
     """
-    # noinspection PyPackageRequirements
-    from google.protobuf.message import DecodeError
-    from . import model as G
+    warnings.warn('Use dazl.damlast.parse.parse_archive_payload instead.', DeprecationWarning)
 
-    current_time = time.time()
-
-    prev_recursion_limit = sys.getrecursionlimit()
-    sys.setrecursionlimit(5000)
-    archive_payload = G.ArchivePayload()
-    try:
-        archive_payload.ParseFromString(raw_bytes)
-    except DecodeError:
-        # noinspection PyPackageRequirements
-        from google.protobuf.internal import api_implementation
-        if api_implementation.Type() == 'cpp':
-            LOG.error('Failed to decode metadata. This may be due to bugs in the native Protobuf')
-            LOG.error('implementation as exposed through Python, so setting an environment')
-            LOG.error('variable to force a non-native implementation may help work around this')
-            LOG.error('problem:')
-            LOG.error('    export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python')
-        raise
-    finally:
-        sys.setrecursionlimit(prev_recursion_limit)
-
-    final_time = time.time()
-    total_millis = (final_time - current_time) * 1000
-    if package_id is None:
-        import inspect, traceback
-        frame = inspect.currentframe()
-        stack_trace = traceback.format_stack(frame)
-        LOG.debug(stack_trace[:-1])
-        LOG.info('Parsed %s bytes of metadata in %0.2f ms.', len(raw_bytes), total_millis)
-    else:
-        LOG.info('Parsed %s bytes of metadata (package ID %r) in %0.2f ms.', len(raw_bytes), package_id, total_millis)
-
-    return archive_payload
+    from ...damlast.parse import parse_archive_payload
+    return parse_archive_payload(package_id, raw_bytes)
 
 
 @dataclass(frozen=True)
@@ -209,11 +163,15 @@ def parse_daml_metadata_pb(package_id: 'PackageRef', metadata_pb: Any) -> 'Packa
     parser = ProtobufParser(package_id)
     package = parser.parse_Package(metadata_pb.daml_lf_1)
 
-    psb = PackageStoreBuilder()
-    psb.add_archive(Archive(package_id, package))
+    return _parse_daml_metadata_pb(Archive(package_id, package))
 
-    for module in package.modules:
-        current_module = ModuleRef(package_id, DottedName(module.name.segments))
+
+def _parse_daml_metadata_pb(archive: 'Archive') -> 'PackageStore':
+    psb = PackageStoreBuilder()
+    psb.add_archive(archive)
+
+    for module in archive.package.modules:
+        current_module = ModuleRef(archive.hash, DottedName(module.name.segments))
         for vv in module.values:
             vt = ValName(current_module, vv.name_with_type.name)
             psb.add_value(vt, vv.expr)
@@ -252,7 +210,7 @@ def parse_daml_metadata_pb(package_id: 'PackageRef', metadata_pb: Any) -> 'Packa
                     'The template %s was of type %s; only records are supported for templates',
                     con, data_type)
 
-    LOG.debug('Fully registered all types for package ID %r', package_id)
+    LOG.debug('Fully registered all types for package ID %r', archive.hash)
     return psb.build()
 
 
