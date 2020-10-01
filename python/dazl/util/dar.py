@@ -156,10 +156,11 @@ class DarFile:
 
 def parse_dalf(contents: bytes) -> 'PackageStore':
     from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import Archive
-    from ..protocols.v1.pb_parse_metadata import parse_archive_payload, parse_daml_metadata_pb
+    from ..damlast.parse import parse_archive_payload
+    from ..protocols.v1.pb_parse_metadata import parse_daml_metadata_pb
     a = Archive()
     a.ParseFromString(contents)
-    p = parse_archive_payload(a.payload)
+    p = parse_archive_payload(a.hash, a.payload)
     return parse_daml_metadata_pb(a.hash, p)
 
 

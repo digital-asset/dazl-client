@@ -277,10 +277,10 @@ class EventKey:
         on_offset=lambda _: EventKey.offset(),
         on_transaction_start=lambda _: EventKey.transaction_start(),
         on_transaction_end=lambda _: EventKey.transaction_end(),
-        on_contract_created=lambda event: EventKey.contract_created(False, event.cid.template_id),
+        on_contract_created=lambda event: EventKey.contract_created(False, event.cid.value_type),
         on_contract_exercised=lambda event: EventKey.contract_exercised(
-            False, event.cid.template_id, event.choice),
-        on_contract_archived=lambda event: EventKey.contract_archived(False, event.cid.template_id),
+            False, event.cid.value_type, event.choice),
+        on_contract_archived=lambda event: EventKey.contract_archived(False, event.cid.value_type),
         on_packages_added=lambda event: EventKey.packages_added(
             initial=event.initial, changed=not event.initial))
 

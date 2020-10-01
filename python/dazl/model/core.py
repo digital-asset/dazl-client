@@ -19,8 +19,10 @@ from typing import Any, BinaryIO, Callable, Collection, Dict, NewType, Optional,
     Union, TYPE_CHECKING
 from datetime import datetime
 
+from ..damlast.daml_lf_1 import TypeConName
+
 if TYPE_CHECKING:
-    from .types import Type
+    from .types import Type, TypeReference
 
 T = TypeVar('T')
 
@@ -44,53 +46,78 @@ class ContractId:
 
     Instance members:
     """
-    __slots__ = ('contract_id', 'template_id')
+    __slots__ = ('_value', '_value_type', '_value_type_deprecated')
 
-    def __init__(self, contract_id: str, template_id: 'Union[None, str, Type]' = None):
-        from .types import Type, UnresolvedTypeReference
+    def __init__(self, contract_id: str, template_id: 'Union[str, Type, TypeConName]'):
+        from ..damlast.compat import parse_template
+
         if not isinstance(contract_id, str):
             raise ValueError('contract_id must be a string')
 
-        if template_id is None:
-            warnings.warn('Untyped ContractId support will be removed with the removal of '
-                          'the deprecated REST API.', DeprecationWarning, stacklevel=2)
-        else:
-            if isinstance(template_id, str):
-                template_id = UnresolvedTypeReference(template_id)
-            elif not isinstance(template_id, Type):
-                raise ValueError(f'template_id must either be unspecified or a template identifier '
-                                 f'(got {repr(template_id)})')
-
-        self.contract_id = contract_id
-        self.template_id = template_id
+        self._value = contract_id
+        self._value_type, self._value_type_deprecated = parse_template(template_id)
 
     def __str__(self):
         """
         Return the contract ID without a type adornment.
         """
-        return self.contract_id
+        return self.value
 
     def __repr__(self):
-        if self.template_id is not None:
-            return '<ContractId("{}<{}>")>'.format(self.contract_id, self.template_id)
-        else:
-            return '<ContractId("{}")>'.format(self.contract_id)
+        return f'ContractId(value_type={self.value_type}, value={self.value!r})'
 
     def __eq__(self, other):
         """
         Returns whether this contract is the same as the other one. Template
         type is NOT considered in equality.
         """
-        return isinstance(other, ContractId) and self.contract_id == other.contract_id
+        return isinstance(other, ContractId) and self.value == other.value
 
     def __format__(self, format_spec):
-        return ('{:' + format_spec + 's}').format(self.contract_id)
+        return ('{:' + format_spec + 's}').format(self.value)
 
     def __hash__(self):
         """
         Returns a hash of the ContractId (based on the value of ContractId).
         """
-        return hash(self.contract_id)
+        return hash(self.value)
+
+    @property
+    def value(self) -> str:
+        """
+        Get the raw contract ID value (for example, ``"#4:1"``).
+        """
+        return self._value
+
+    @property
+    def value_type(self) -> 'TypeConName':
+        """
+        Get the type of template that is pointed to by this :class:`ContractId`.
+        """
+        return self._value_type
+
+    @property
+    def contract_id(self) -> str:
+        """
+        Get the raw contract ID value (for example, ``"#4:1"``).
+        """
+        warnings.warn("ContractId.contract_id is deprecated; use ContractId.value instead.",
+                      DeprecationWarning, stacklevel=2)
+        return self.value
+
+    @property
+    def template_id(self) -> 'TypeReference':
+        """
+        Get the type of template that is pointed to by this :class:`ContractId` as a
+        :class:`TypeReference`. Note that usage of :class:`Type` and :class:`TypeReference` are
+        deprecated, and :meth:`value_type` should be used instead.
+
+        As of dazl 7.3.0, the :class:`TemplateId` is always normalized to a :class:`TypeReference`,
+        regardless of what the :class:`ContractId` was constructed with.
+        """
+        warnings.warn("ContractId.template_id is deprecated; use ContractId.value_type instead.",
+                      DeprecationWarning, stacklevel=2)
+        return self._value_type_deprecated
 
     def exercise(self, choice_name, arguments=None):
         """
@@ -109,16 +136,19 @@ class ContractId:
         """
         Return a new :class:`ContractId` instance replacing specified fields with values.
         """
+        warnings.warn(
+            "ContractId.replace is deprecated; simply construct a ContractId with the desired "
+            "values instead.", DeprecationWarning, stacklevel=2)
         return ContractId(
-            contract_id if contract_id is not None else self.contract_id,
-            template_id if template_id is not None else self.template_id)
+            contract_id if contract_id is not None else self.value,
+            template_id if template_id is not None else self.value_type)
 
     def for_json(self):
         """
         Return the JSON representation of this contract. This is currently just the contract ID
         string itself.
         """
-        return self.contract_id
+        return self.value
 
 
 ContractData = Dict[str, Any]

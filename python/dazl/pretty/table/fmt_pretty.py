@@ -14,9 +14,7 @@ from typing import Iterable, Mapping, Sequence, AbstractSet, Callable
 from .model import Formatter, RowBuilder
 from ...damlast.daml_lf_1 import TypeConName
 from ...model.core import Party
-from ...model.types import TypeReference
 from ...model.types_store import PackageStore
-from ...util.typing import safe_cast
 
 __all__ = ['PrettyFormatter']
 
@@ -219,7 +217,6 @@ def group_by_name(entries: 'Iterable[RowBuilder]') -> 'Mapping[TypeConName, Sequ
     """
     entries_by_template = defaultdict(list)
     for entry in entries:
-        type_ref = safe_cast(TypeReference, entry.cid.template_id)
-        entries_by_template[type_ref.con].append(entry)
+        entries_by_template[entry.cid.value_type].append(entry)
 
     return {name: entries_by_template[name] for name in sorted(entries_by_template)}

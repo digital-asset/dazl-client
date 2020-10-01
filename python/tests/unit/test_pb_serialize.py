@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 from dazl import CreateCommand, ExerciseCommand, CreateAndExerciseCommand, ExerciseByKeyCommand, \
     ContractId
-from dazl.model.types import TypeReference
+from dazl.damlast.daml_lf_1 import TypeConName
 from dazl.model.types_store import PackageStore
 from dazl.protocols.v1.pb_ser_command import ProtobufSerializer, as_identifier
 from dazl.protocols.v1 import model as G
@@ -21,10 +21,10 @@ class DarFixture:
     dar: DarFile
     store: PackageStore
 
-    def get_template_type(self, identifier: str) -> 'TypeReference':
+    def get_template_type(self, identifier: str) -> 'TypeConName':
         templates = self.store.resolve_template(identifier)
         for template in templates:
-            return template.data_type.name
+            return template.data_type.name.con
 
         raise AssertionError(f'Unknown template name: {identifier!r}')
 
