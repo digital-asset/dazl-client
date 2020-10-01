@@ -60,6 +60,18 @@ class DottedName:
     def __eq__(self, other):
         return isinstance(other, DottedName) and self.segments == other.segments
 
+    def __lt__(self, other):
+        return self.segments < other.segments
+
+    def __le__(self, other):
+        return self.segments <= other.segments
+
+    def __gt__(self, other):
+        return self.segments > other.segments
+
+    def __ge__(self, other):
+        return self.segments >= other.segments
+
     def __hash__(self):
         return hash(self.segments)
 
@@ -85,20 +97,20 @@ class ModuleRef:
                self._module_name == other._module_name
 
     def __lt__(self, other):
-        return self._package_id < other.package_id or \
-               (self._package_id == other.package_id and self._module_name < other.module_name)
+        return self._package_id < other._package_id or \
+               (self._package_id == other._package_id and self._module_name < other._module_name)
 
     def __le__(self, other):
-        return self._package_id < other.package_id or \
-               (self._package_id == other.package_id and self._module_name <= other.module_name)
+        return self._package_id < other._package_id or \
+               (self._package_id == other._package_id and self._module_name <= other._module_name)
 
     def __gt__(self, other):
-        return self._package_id > other.package_id or \
-               (self._package_id == other.package_id and self._module_name > other.module_name)
+        return self._package_id > other._package_id or \
+               (self._package_id == other._package_id and self._module_name > other._module_name)
 
     def __ge__(self, other):
-        return self._package_id > other.package_id or \
-               (self._package_id == other.package_id and self._module_name >= other.module_name)
+        return self._package_id > other._package_id or \
+               (self._package_id == other._package_id and self._module_name >= other._module_name)
 
     def __hash__(self):
         return hash(self._package_id) ^ hash(self._module_name)

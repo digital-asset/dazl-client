@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-from asyncio import gather
 from argparse import ArgumentParser
 
 from .. import LOG, Network
@@ -34,14 +33,17 @@ class ListAllCommand(CliCommand):
 
         network = Network()
         network.set_config(final_config)
+        if include_archived:
+            network.set_config(use_acs_service=False)
 
-        global_ready = gather(*[network.aio_party(party).ready() for party in args.parties])
-        network.run_until_complete(self._main(network, global_ready, fmt, include_archived))
+        network.run_until_complete(self._main(network, fmt, include_archived))
         return 0
 
-    async def _main(self, network, global_ready, fmt, include_archived):
+    async def _main(self, network: 'Network', fmt: str, include_archived: bool):
         import sys
-        await global_ready
+
+        for party in network.parties():
+            await network.aio_party(party).ready()
 
         write_acs(sys.stdout, network, fmt=fmt, include_archived=include_archived)
-        network.shutdown()
+        await network.shutdown()

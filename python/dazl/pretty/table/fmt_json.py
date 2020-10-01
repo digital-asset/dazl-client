@@ -5,44 +5,44 @@
 Formatting module for outputting captures.
 """
 
-from typing import Iterable
+from typing import Iterable, AbstractSet
 
-from .client_app import LedgerCapture
+from .model import Formatter, TableBuilder
+from ...model.core import Party
+from ...model.types_store import PackageStore
 from ...protocols.v0.json_ser_command import LedgerJSONEncoder
 from ...util.tools import boundary_iter
 
 
-def format_error(error: str) -> Iterable[str]:
-    encode = LedgerJSONEncoder().encode
-    return encode(dict(errors=[error]))
+class JsonFormatter(Formatter):
 
+    def render(
+            self,
+            store: 'PackageStore',
+            parties: 'AbstractSet[Party]',
+            entries: 'Iterable[TableBuilder]'):
+        """
+        Return a list of strings that, when taken together, constitute a JSON document that lists
+        all of the entries of the ledger.
 
-def format_entries(capture: LedgerCapture, parties=None, entries=None, **kwargs) -> 'Iterable[str]':
-    """
-    Return a list of strings that, when taken together, constitute a JSON document that lists
-    all of the entries of the ledger.
+        :param store:
+            The contents to render.
+        :param parties:
+            The list of of parties.
+        :param entries:
+            The entries to render.
+        """
+        encode = LedgerJSONEncoder().encode
 
-    :param capture:
-        The contents to render.
-    :param parties:
-        The list of of parties.
-    :param entries:
-        The entries to render.
-    :param kwargs:
-        Additional parameters. Because all formatters have different arguments, these extra
-        unknown parameters are ignored.
-    """
-    encode = LedgerJSONEncoder().encode
+        party_list = sorted(parties)
 
-    yield "{{ \"parties\": {},".format(encode(parties))
-    yield "  \"contracts\": ["
+        yield "{{ \"parties\": {},".format(encode(party_list))
+        yield "  \"contracts\": ["
 
-    for is_last, entry in boundary_iter(entries):
-        party_list = sorted(entry.parties.keys())
+        for is_last, entry in boundary_iter(party_list):
+            yield '  {{ "contract_id": "{}",'.format(entry.contract_id)
+            yield '    "template": {},'.format(encode(entry.contract_id.template_id))
+            yield '    "parties": {},'.format(encode(party_list))
+            yield '    "arguments": {} }}{}'.format(encode(entry.contract_args), '' if is_last else ',')
 
-        yield '  {{ "contract_id": "{}",'.format(entry.contract_id)
-        yield '    "template": {},'.format(encode(entry.template_id.full_name))
-        yield '    "parties": {},'.format(encode(party_list))
-        yield '    "arguments": {} }}{}'.format(encode(entry.contract_args), '' if is_last else ',')
-
-    yield "  ] }"
+        yield "  ] }"
