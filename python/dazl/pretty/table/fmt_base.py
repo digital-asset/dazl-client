@@ -1,11 +1,14 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from .model import Formatter
+
+__all__ = ['DEFAULT_FORMATTER_NAME', 'get_formatter']
 
 DEFAULT_FORMATTER_NAME = 'pretty'
 
 
-def get_formatter(fmt):
+def get_formatter(fmt) -> 'Formatter':
     """
     Return a formatter of the specified name.
     """
@@ -13,10 +16,10 @@ def get_formatter(fmt):
         fmt = DEFAULT_FORMATTER_NAME
 
     if fmt == 'json':
-        from . import fmt_json
-        return fmt_json
+        from .fmt_json import JsonFormatter
+        return JsonFormatter()
     elif fmt == 'pretty':
-        from . import fmt_pretty
-        return fmt_pretty
+        from .fmt_pretty import PrettyFormatter
+        return PrettyFormatter()
     else:
         raise ValueError('unknown format: {}'.format(fmt))

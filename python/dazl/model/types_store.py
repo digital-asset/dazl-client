@@ -201,7 +201,7 @@ class PackageStore:
         return self._cache.templates.lookup(package_id, template_name)
 
     def resolve_template_type(
-            self, template: 'Union[None, str, TypeReference, UnresolvedTypeReference]') \
+            self, template: 'Union[None, str, TypeReference, UnresolvedTypeReference, TypeConName]') \
             -> Dict[TypeReference, Type]:
         """
         Return a collection of types that match for the template.
