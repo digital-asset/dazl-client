@@ -10,6 +10,7 @@ from typing import Any, Optional, Tuple
 from ... import LOG
 # noinspection PyPep8Naming
 from . import model as G
+from ...damlast.daml_lf_1 import TypeConName
 from ...model.core import ContractId
 from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
     UnsupportedType, TemplateChoice, TypeReference, TypeEvaluationContext, SCALAR_TYPE_UNIT, \
@@ -50,10 +51,17 @@ def as_api_duration(t: timedelta) -> Duration:
     return d
 
 
-def as_identifier(tref: 'TypeReference') -> 'G.Identifier':
-    identifier = G.Identifier()
-    _set_template(identifier, tref)
-    return identifier
+def as_identifier(tref: 'Union[TypeReference, TypeConName]') -> 'G.Identifier':
+    if isinstance(tref, TypeReference):
+        tref = tref.con
+
+    if isinstance(tref, TypeConName):
+        identifier = G.Identifier()
+        _set_template(identifier, tref)
+        return identifier
+
+    else:
+        raise TypeError('as_identifier requires a TypeConName or a TypeReference')
 
 
 def pb_get_date(obj: date) -> int:
@@ -100,19 +108,19 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
             raise ValueError('Template values must resemble records')
 
         cmd = G.CreateCommand()
-        _set_template(cmd.template_id, template_type.name)
+        _set_template(cmd.template_id, template_type.name.con)
         _set_value(cmd.create_arguments, None, create_value)
         return G.Command(create=cmd)
 
     def serialize_exercise_command(
             self, contract_id: ContractId, choice_info: TemplateChoice, choice_args: R) \
             -> G.Command:
-        type_ref = contract_id.template_id  # type: TypeReference
+        type_ref = contract_id.value_type
         ctor, value = choice_args
 
         cmd = G.ExerciseCommand()
         _set_template(cmd.template_id, type_ref)
-        cmd.contract_id = contract_id.contract_id
+        cmd.contract_id = contract_id.value
         cmd.choice = choice_info.name
         _set_value(cmd.choice_argument, ctor, value)
         return G.Command(exercise=cmd)
@@ -124,7 +132,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         choice_ctor, choice_value = choice_arguments
 
         cmd = G.ExerciseByKeyCommand()
-        _set_template(cmd.template_id, template_ref)
+        _set_template(cmd.template_id, template_ref.con)
         _set_value(cmd.contract_key, key_ctor, key_value)
         cmd.choice = choice_info.name
         _set_value(cmd.choice_argument, choice_ctor, choice_value)
@@ -139,7 +147,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         choice_ctor, choice_value = choice_arguments
 
         cmd = G.CreateAndExerciseCommand()
-        _set_template(cmd.template_id, template_type.name)
+        _set_template(cmd.template_id, template_type.name.con)
         _set_value(cmd.create_arguments, None, create_value)
         cmd.choice = choice_info.name
         _set_value(cmd.choice_argument, choice_ctor, choice_value)
@@ -271,11 +279,11 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         raise Exception(f'UnsupportedType {tt} is not serializable in gRPC')
 
 
-def _set_template(message: G.Identifier, tref: TypeReference) -> None:
+def _set_template(message: G.Identifier, name: 'TypeConName') -> None:
     from ...damlast.util import package_ref, module_name, module_local_name
-    message.package_id = package_ref(tref)
-    message.module_name = str(module_name(tref))
-    message.entity_name = module_local_name(tref)
+    message.package_id = package_ref(name)
+    message.module_name = str(module_name(name))
+    message.entity_name = module_local_name(name)
 
 
 def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:

@@ -4,6 +4,8 @@
 """
 Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic types.
 """
+import warnings
+
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
@@ -328,10 +330,10 @@ def to_created_event(
         context: 'Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]',
         cr: 'event_pb2.CreatedEvent') \
         -> 'Optional[ContractCreateEvent]':
-    type_ref = to_type_ref(cr.template_id)
-    candidates = context.store.resolve_template_type(type_ref)
+    name = to_type_con_name(cr.template_id)
+    candidates = context.store.resolve_template_type(name)
     if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', type_ref)
+        LOG.warning('Could not find metadata for %s!', name)
         return None
     elif len(candidates) > 1:
         LOG.error('The template identifier %s is not unique within its metadata!', candidates)
@@ -341,7 +343,7 @@ def to_created_event(
 
     tt_context = TypeEvaluationContext.from_store(context.store)
 
-    cid = ContractId(cr.contract_id, type_ref)
+    cid = ContractId(cr.contract_id, name)
     cdata = to_record(tt_context, tt, cr.create_arguments)
     event_id = cr.event_id
     witness_parties = tuple(cr.witness_parties)
@@ -353,29 +355,13 @@ def to_exercised_event(
         context: 'TransactionEventDeserializationContext',
         er: 'event_pb2.ExercisedEvent') \
         -> 'Optional[ContractExercisedEvent]':
-    type_ref = to_type_ref(er.template_id)
-    candidates = context.store.resolve_template_type(type_ref)
-    if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', type_ref)
-        return None
-    elif len(candidates) > 1:
-        LOG.error('The template identifier %s is not unique within its metadata!', candidates)
-        return None
-
-    ((type_ref, tt),) = candidates.items()
-
+    name = to_type_con_name(er.template_id)
     tt_context = TypeEvaluationContext.from_store(context.store)
-    choice_candidates = context.store.resolve_choice(type_ref, er.choice)
-    if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', type_ref)
-        return None
-    elif len(candidates) > 1:
-        LOG.error('The template identifier %s is not unique within its metadata!', candidates)
-        return None
+    choice_candidates = context.store.resolve_choice(name, er.choice)
 
     ((choice_ref, cc),) = choice_candidates.items()
 
-    cid = ContractId(er.contract_id, type_ref)
+    cid = ContractId(er.contract_id, name)
     event_id = er.event_id
     witness_parties = tuple(er.witness_parties)
     try:
@@ -398,24 +384,19 @@ def to_archived_event(
         context: 'TransactionEventDeserializationContext',
         ar: 'event_pb2.ArchivedEvent') \
         -> 'Optional[ContractArchiveEvent]':
-    type_ref = to_type_ref(ar.template_id)
-    candidates = context.store.resolve_template_type(type_ref)
-    if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', type_ref)
-        return None
-    elif len(candidates) > 1:
-        LOG.error('The template identifier %s is not unique within its metadata!', candidates)
-        return None
-
-    ((type_ref, tt),) = candidates.items()
+    name = to_type_con_name(ar.template_id)
     event_id = ar.event_id
     witness_parties = tuple(ar.witness_parties)
 
-    cid = ContractId(ar.contract_id, type_ref)
+    cid = ContractId(ar.contract_id, name)
     return context.contract_archived_event(cid, None, event_id, witness_parties)
 
 
 def to_type_ref(identifier: 'value_pb2.Identifier') -> 'TypeReference':
+    warnings.warn(
+        'dazl.model.types.TypeReference is deprecated; '
+        'use dazl.damlast.daml_lf_1.TypeConName instead.',
+        DeprecationWarning, stacklevel=2)
     return TypeReference(to_type_con_name(identifier))
 
 

@@ -17,7 +17,8 @@ from ... import LOG
 from .._base import LedgerClient, _LedgerConnection, LedgerConnectionOptions
 from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
     to_acs_events, to_transaction_events, BaseEventDeserializationContext
-from .pb_parse_metadata import parse_daml_metadata_pb, parse_archive_payload, find_dependencies
+from .pb_parse_metadata import parse_daml_metadata_pb, find_dependencies
+from ...damlast.parse import parse_archive_payload
 from ...model.core import Party, UserTerminateRequest, ConnectionTimeoutError
 from ...model.ledger import LedgerMetadata
 from ...model.network import HTTPConnectionSettings
@@ -229,7 +230,7 @@ def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore'
     for package_id in all_package_ids:
         if should_load(package_id):
             archive_payload = package_provider.fetch_package(package_id)
-            metadatas_pb[package_id] = parse_archive_payload(archive_payload, package_id)
+            metadatas_pb[package_id] = parse_archive_payload(package_id, archive_payload)
 
     metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
     for package_id, archive_payload in metadatas_pb.sorted_archives.items():

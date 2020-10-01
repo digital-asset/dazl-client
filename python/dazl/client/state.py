@@ -8,10 +8,10 @@ from collections import defaultdict
 from typing import Awaitable, Dict, List, Optional, Union, Collection, cast
 
 from ..client._reader_match import is_match
+from ..damlast.daml_lf_1 import TypeConName
 from ..model.core import ContractId, ContractsState, ContractMatch, \
     UnknownTemplateWarning, ContractContextualData, ContractContextualDataCollection
 from ..model.reading import ContractCreateEvent, ContractArchiveEvent
-from ..model.types import TypeReference
 from ..model.types_store import PackageStore
 from ..scheduler import Invoker
 from ..util.asyncio_util import await_then, completed, propagate
@@ -21,13 +21,13 @@ class ActiveContractSet:
     def __init__(self, invoker: 'Invoker'):
         self.invoker = invoker
         self.metadata_future = invoker.create_future()
-        self._tcdata = defaultdict(TemplateContractData)  # type: Dict[TypeReference, TemplateContractData]
+        self._tcdata = defaultdict(TemplateContractData)  # type: Dict[TypeConName, TemplateContractData]
 
     def handle_create(self, event: ContractCreateEvent) -> None:
-        self._tcdata[event.cid.template_id].handle_create(event)
+        self._tcdata[event.cid.value_type].handle_create(event)
 
     def handle_archive(self, event: ContractArchiveEvent) -> None:
-        self._tcdata[event.cid.template_id].handle_archive(event)
+        self._tcdata[event.cid.value_type].handle_archive(event)
 
     def get(self, cid: 'Union[str, ContractId]') -> 'Optional[ContractContextualData]':
         """
@@ -36,7 +36,7 @@ class ActiveContractSet:
         :param cid: Either a ContractId or a string that represents a ContractId.
         :return: Contract information for the specified contract ID.
         """
-        tcd = self._tcdata.get(cid.template_id) if isinstance(cid, ContractId) else None
+        tcd = self._tcdata.get(cid.value_type) if isinstance(cid, ContractId) else None
         if tcd is not None:
             return tcd.get(cid)
         else:
@@ -66,11 +66,13 @@ class ActiveContractSet:
     def read_async(self, template_name: str, match: ContractMatch = None, min_count: int = 1) \
             -> Awaitable[ContractsState]:
         if self.metadata_future.done():
+            # TODO: The upcoming SymbolLookup implementation should take this opportunity to fetch
+            #  package IDs if they do not exist
             unfiltered = self._get_template_state(self.metadata_future.result(), template_name)
             if len(unfiltered) > 1:
                 warnings.warn('Wildcard searches are not supported on async ACS queries',
                               UnknownTemplateWarning, stacklevel=3)
-                unfiltered = dict()  # type: Dict[TypeReference, TemplateContractData]
+                unfiltered = dict()  # type: Dict[TypeConName, TemplateContractData]
 
             if len(unfiltered) == 0:
                 # TODO: A slightly smarter implementation could hang around until/if a matching
@@ -98,10 +100,10 @@ class ActiveContractSet:
             return future
 
     def _get_template_state(self, store: PackageStore, template_name: str) -> \
-            'Dict[TypeReference, TemplateContractData]':
+            'Dict[TypeConName, TemplateContractData]':
         matching_templates = store.resolve_template_type(template_name)
         if matching_templates:
-            return {tt: self._tcdata[tt] for tt in matching_templates}
+            return {tt.con: self._tcdata[tt.con] for tt in matching_templates}
         else:
             warnings.warn(f'Unknown template name: {template_name}', UnknownTemplateWarning,
                           stacklevel=4)
@@ -119,7 +121,7 @@ class TemplateContractData:
         self._queries = list()  # type: List[PendingQuery]
 
     def handle_create(self, event: ContractCreateEvent) -> None:
-        self._data[event.cid.contract_id] = ContractContextualData(
+        self._data[event.cid.value] = ContractContextualData(
             cid=event.cid,
             cdata=event.cdata,
             effective_at=event.time,
@@ -129,9 +131,9 @@ class TemplateContractData:
         self._queries = [q for q in self._queries if not q.check_ready(self)]
 
     def handle_archive(self, event: ContractArchiveEvent) -> None:
-        existing_data = self._data.get(event.cid.contract_id)
+        existing_data = self._data.get(event.cid.value)
         effective_at = existing_data.effective_at if existing_data is not None else None
-        self._data[event.cid.contract_id] = ContractContextualData(
+        self._data[event.cid.value] = ContractContextualData(
             cid=event.cid,
             cdata=None,
             effective_at=effective_at,
@@ -140,7 +142,7 @@ class TemplateContractData:
 
     def get(self, cid: 'Union[str, ContractId]') -> 'Optional[ContractContextualData]':
         if isinstance(cid, ContractId):
-            cid = cid.contract_id
+            cid = cid.value
         return self._data.get(cid)
 
     def subset(self, match: 'ContractMatch', include_archived: bool) -> 'Collection[ContractContextualData]':

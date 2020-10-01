@@ -23,7 +23,9 @@ def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageRef]' =
     Note that this function will temporarily increase Python's recursion limit to handle cases where
     parsing a DAML-LF archive requires deeper recursion limits.
     """
-    warnings.warn('Use dazl.damlast.parse.parse_archive_payload instead.', DeprecationWarning)
+    warnings.warn(
+        'Use dazl.damlast.parse.parse_archive_payload instead.', DeprecationWarning,
+        stacklevel=2)
 
     from ...damlast.parse import parse_archive_payload
     return parse_archive_payload(package_id, raw_bytes)

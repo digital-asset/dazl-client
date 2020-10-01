@@ -4,13 +4,15 @@
 
 from unittest import TestCase
 
+from dazl.damlast.lookup import parse_type_con_name
 from dazl.model.core import ContractId, Party
-from dazl.model.types import UnresolvedTypeReference
 from dazl.model.writing import create, CommandBuilder, CommandDefaults, CommandPayload, CreateCommand, \
     ExerciseCommand
 
+
+SOME_TEMPLATE_NAME = parse_type_con_name('Sample:Untyped')
 SOME_PARTY = Party('SomeParty')
-SOME_CONTRACT_ID = ContractId('#0:0', UnresolvedTypeReference('Sample.Untyped'))
+SOME_CONTRACT_ID = ContractId('#0:0', SOME_TEMPLATE_NAME)
 DEFAULTS = CommandDefaults(
     default_party=SOME_PARTY,
     default_ledger_id='some_ledger',
@@ -25,7 +27,7 @@ class TestCommandBuilderTest(TestCase):
     """
 
     def test_single_create_untyped(self):
-        expr = create('Sample.Untyped', {"arg": 1})
+        expr = create('Sample:Untyped', {"arg": 1})
 
         expected = [CommandPayload(
             party=SOME_PARTY,
@@ -33,7 +35,7 @@ class TestCommandBuilderTest(TestCase):
             workflow_id=DEFAULTS.default_workflow_id,
             application_id=DEFAULTS.default_application_id,
             command_id=DEFAULTS.default_command_id,
-            commands=[CreateCommand(UnresolvedTypeReference('Sample.Untyped'), dict(arg=1))]
+            commands=[CreateCommand(SOME_TEMPLATE_NAME, dict(arg=1))]
         )]
         actual = CommandBuilder.coerce(expr).build(DEFAULTS)
 
@@ -49,7 +51,7 @@ class TestCommandBuilderTest(TestCase):
             workflow_id=DEFAULTS.default_workflow_id,
             application_id=DEFAULTS.default_application_id,
             command_id=DEFAULTS.default_command_id,
-            commands=[CreateCommand(UnresolvedTypeReference('Sample.Untyped'), dict(arg=1))]
+            commands=[CreateCommand(SOME_TEMPLATE_NAME, dict(arg=1))]
         )]
         actual = builder.build(DEFAULTS)
 
@@ -67,7 +69,7 @@ class TestCommandBuilderTest(TestCase):
                 workflow_id=DEFAULTS.default_workflow_id,
                 application_id=DEFAULTS.default_application_id,
                 command_id=DEFAULTS.default_command_id,
-                commands=[CreateCommand(UnresolvedTypeReference('Sample.Untyped'), dict(arg=1))]),
+                commands=[CreateCommand(SOME_TEMPLATE_NAME, dict(arg=1))]),
             CommandPayload(
                 party=SOME_PARTY,
                 ledger_id=DEFAULTS.default_ledger_id,
@@ -93,7 +95,7 @@ class TestCommandBuilderTest(TestCase):
             application_id=DEFAULTS.default_application_id,
             command_id=DEFAULTS.default_command_id,
             commands=[
-                CreateCommand(UnresolvedTypeReference('Sample.Untyped'), dict(arg=1)),
+                CreateCommand(SOME_TEMPLATE_NAME, dict(arg=1)),
                 ExerciseCommand(SOME_CONTRACT_ID, "SomeChoice", {"choiceArg": "value"})
             ]
         )]

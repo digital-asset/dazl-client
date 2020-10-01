@@ -471,7 +471,7 @@ def _parse_args_dict(d: 'Mapping[str, Any]') -> 'Mapping[str, Any]':
             for key in param.deprecated_aliases:
                 if d.get(key) is not None:
                     warnings.warn(f'The {key} option is deprecated. Please use {fld.name} instead.',
-                                  DeprecationWarning)
+                                  DeprecationWarning, stacklevel=2)
                     value = d.get(key)
                     break
 

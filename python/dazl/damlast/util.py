@@ -72,7 +72,8 @@ def arrow_type(input: 'Type', output: 'Type') -> 'Type':
     the input type and returning the output type.
     """
     warnings.warn(
-        'arrow_type is deprecated; Use dazl.damlast.daml_types.Arrow instead', DeprecationWarning)
+        'arrow_type is deprecated; Use dazl.damlast.daml_types.Arrow instead', DeprecationWarning,
+        stacklevel=2)
     from .daml_types import Arrow
     return Arrow(input, output)
 
@@ -82,7 +83,8 @@ def list_type(elem_type: 'Type') -> 'Type':
     Convenience function for constructing a :class:`Type` of ``prim`` list.
     """
     warnings.warn(
-        'list_type is deprecated; Use dazl.damlast.daml_types.List instead', DeprecationWarning)
+        'list_type is deprecated; Use dazl.damlast.daml_types.List instead', DeprecationWarning,
+        stacklevel=2)
     from .daml_types import List
     return List(elem_type)
 
