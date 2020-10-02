@@ -4,10 +4,9 @@
 """
 Support for the gRPC-based Ledger API.
 """
-from asyncio import gather, get_event_loop
 from datetime import datetime
 from threading import Event
-from typing import Awaitable, Iterable, Optional, Sequence
+from typing import Iterable, Optional, Sequence
 
 # noinspection PyPackageRequirements
 from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credentials, RpcError, \
@@ -52,42 +51,29 @@ class GRPCv1LedgerClient(LedgerClient):
         acs_events = to_acs_events(context, acs_stream)
         return acs_events
 
-    def events(self, transaction_filter: 'TransactionFilter') \
-            -> Awaitable[Sequence[BaseEvent]]:
-        results_future = get_event_loop().create_future()
+    async def events(self, transaction_filter: 'TransactionFilter') -> 'Sequence[BaseEvent]':
         request = serialize_transactions_request(
             transaction_filter, self.ledger.ledger_id, self.party)
         context = BaseEventDeserializationContext(
             None, self.ledger.store, self.party, self.ledger.ledger_id)
 
-        def on_events_done(fut):
-            try:
-                tx_stream, tt_stream = fut.result()
-                events = to_transaction_events(
-                    context, tx_stream, tt_stream, transaction_filter.destination_offset)
-            except Exception as ex:
-                LOG.exception('Failed to parse data coming back from an event!')
-                results_future.set_exception(ex)
-                return
-            results_future.set_result(events)
-
-        ts_future = self.connection.invoker.run_in_executor(
+        tx_future = self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetTransactions(request))
 
-        # Filtering by package must disable the ability to handle exercise nodes; we may want to
-        # consider dropping client-side support for exercise events anyway because they are not
-        # widely used
         if transaction_filter.templates is None:
-            tst_future = self.connection.invoker.run_in_executor(
+            # Filtering by package must disable the ability to handle exercise nodes; we may want to
+            # consider dropping client-side support for exercise events anyway because they are not
+            # widely used
+            tt_stream = await self.connection.invoker.run_in_executor(
                 lambda: self.connection.transaction_service.GetTransactionTrees(request))
         else:
-            tst_future = get_event_loop().create_future()
-            tst_future.set_result(None)
+            tt_stream = None
 
-        t_fut = gather(ts_future, tst_future)
-        t_fut.add_done_callback(on_events_done)
+        tx_stream = await tx_future
 
-        return results_future
+        events = to_transaction_events(
+            context, tx_stream, tt_stream, transaction_filter.destination_offset)
+        return events
 
     async def events_end(self) -> str:
         from . import model as G
