@@ -12,9 +12,6 @@ DAZL_ROOT = find_nearest_ancestor('.dazl-root', Path(__file__).resolve()).parent
 DAML_ROOT = DAZL_ROOT / 'python' / 'tests' / 'resources'
 
 
-setup_default_logger(logging.DEBUG)
-
-
 def load_dars() -> 'Mapping[str, Path]':
     """
     Ensure that the DARs in the test project are all pre-cooked.
