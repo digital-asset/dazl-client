@@ -17,6 +17,7 @@ from .dars import AllKindsOf
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip('This test is no longer valid, as we do not force packages to be loaded on startup')
 async def test_package_loading(sandbox):
     d = {}
 
