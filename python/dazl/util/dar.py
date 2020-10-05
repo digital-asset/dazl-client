@@ -1,16 +1,16 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-from io import BytesIO
-from os import path
-from pathlib import Path
-from typing import Dict, Collection, Mapping, Optional, Sequence, TYPE_CHECKING
-from zipfile import ZipFile
 
-from ..util.path_util import pathify
+import warnings
+from io import BytesIO
+from typing import AbstractSet, Collection, Mapping, Optional, Sequence, TYPE_CHECKING
+
+
+from ..damlast.daml_lf_1 import PackageRef
+from ..damlast.parse import parse_archive
+from ..damlast.pkgfile import Dar, DarFile as _DarFile
 
 if TYPE_CHECKING:
-    from ..model.core import Dar
-    from ..model.types import PackageId, PackageIdSet
     from ..model.types_store import PackageStore, PackageProvider
 
 
@@ -18,152 +18,122 @@ def get_archives(contents: bytes) -> 'Mapping[str, bytes]':
     """
     Attempt to parse the specified contents as either a DALF or a DAR, and return a mapping of
     package IDs to DALF bytes.
+    This class is deprecated as it assumes and expose use of a :class:`PackageStore` and
+
+    :class:`Type`, all of which are deprecated.
 
     :param contents: A byte array to attempt to parse.
     :return: Return a mapping from package ID to byte contents.
     """
+    warnings.warn(
+        'get_archives is deprecated. For DAR parsing, use dazl.damlast.DarFile instead. '
+        'There is no replacement for DALF parsing.', DeprecationWarning, stacklevel=2)
+
     if contents[0:4] == b'PK\03\04':
         with BytesIO(contents) as buf:
-            with DarFile(buf) as dar:
-                return dar.get_archives()
-    else:
-        # parse as a single DALF
-        from ..protocols.v1.pb_parse_metadata import parse_archive_payload
-        a = parse_archive_payload(contents)
-        return {a.hash: contents}
+            with _DarFile(buf) as dar:
+                # noinspection PyProtectedMember
+                return {name: dar._zip.read(name) for name in dar._dalf_names()}
+
+    raise Exception(
+        'get_archives(...) only works on DAR files, and is additionally deprecated. '
+        'Use dazl.damlast.DarFile instead.')
 
 
-class DarFile:
+class DarFile(_DarFile):
     """
     Provides access to the contents of a .dar file.
     """
     def __init__(self, dar: 'Dar'):
-        if isinstance(dar, (str, Path)):
-            self._buf = None
-            self.dar_path = pathify(dar)
-            self.dar_contents = ZipFile(str(self.dar_path))
-        elif isinstance(dar, bytes):
-            self._buf = BytesIO(dar)
-            self.dar_path = None
-            self.dar_contents = ZipFile(self._buf)
-        else:
-            self._buf = None
-            self.dar_path = None
-            self.dar_contents = ZipFile(dar)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self._buf is not None:
-            self._buf.close()
-        self.close()
-
-    def close(self):
-        self.dar_contents.close()
+        super().__init__(dar)
+        warnings.warn(
+            'dazl.util.dar.DarFile is deprecated; please use dazl.damlast.DarFile instead.',
+            DeprecationWarning, stacklevel=2)
 
     def read_metadata(self) -> 'PackageStore':
+        warnings.warn(
+            'read_metadata is deprecated. For DAR parsing, use dazl.damlast.DarFile instead. '
+            'There is no replacement for DALF parsing.', DeprecationWarning, stacklevel=2)
+        # noinspection PyProtectedMember
+        from ..protocols.v1.pb_parse_metadata import _parse_daml_metadata_pb
         from ..model.types_store import PackageStore
         store = PackageStore.empty()
-        dalf_names = self.get_dalf_names()
-        for dalf_name in dalf_names:
-            contents = self.dar_contents.read(dalf_name)
-            store.register_all(parse_dalf(contents))
+
+        for archive in self.archives():
+            store.register_all(_parse_daml_metadata_pb(archive))
         return store
 
     def get_archives(self) -> 'Mapping[str, bytes]':
         """
         Return a mapping from package ID to byte contents.
         """
-        from ..protocols.v1.pb_parse_metadata import parse_archive_payload
-        archives = {}  # type: Dict[str, bytes]
-        for dalf_name in self.get_dalf_names():
-            contents = self.dar_contents.read(dalf_name)
-            payload = parse_archive_payload(contents)
-            archives[payload.hash] = contents
-        return archives
+        warnings.warn(
+            'get_archives is deprecated; there is no replacement.',
+            DeprecationWarning)
+        return {a.hash: a.payload for a in self._pb_archives()}
 
     def get_dalf_names(self) -> 'Sequence[str]':
-        dalf_names = []
-        for name in self.dar_contents.namelist():
-            _, ext = path.splitext(name)
-            if ext == '.dalf':
-                dalf_names.append(name)
-        return dalf_names
+        warnings.warn(
+            'get_dalf_names is deprecated; there is no replacement.',
+            DeprecationWarning, stacklevel=2)
+        return list(self._dalf_names())
 
     def get_manifest(self) -> 'Optional[Mapping[str, str]]':
         """
         Return the contents of the manifest of this DAR.
-        :return:
         """
-        names = self.dar_contents.namelist()
-        if 'META-INF/MANIFEST.MF' in names:
-            manifest_bytes = self.dar_contents.read('META-INF/MANIFEST.MF')
-            manifest = {}
-            for line in manifest_bytes.decode('utf-8').splitlines():
-                print(line)
-                name, _, value = line.partition(':')
-                manifest[name] = value.strip()
-            return manifest
-        else:
-            return None
+        warnings.warn(
+            'get_manifest() is deprecated; use manifest() instead.',
+            DeprecationWarning, stacklevel=2)
+        return self.manifest()
 
     def get_sdk_version(self) -> 'Optional[str]':
         """
         Return the SDK version used to compile this dar (if this information is available).
-        """
-        manifest = self.get_manifest()
-        return manifest.get('Sdk-Version') if manifest is not None else None
 
-    def get_package_ids(self) -> 'PackageIdSet':
+        This method is deprecated; use dazl.damlast..DarFile
+        """
+        warnings.warn(
+            'get_sdk_version() is deprecated; use sdk_versions() instead.',
+            DeprecationWarning, stacklevel=2)
+        return self.sdk_version()
+
+    def get_package_ids(self) -> 'AbstractSet[PackageRef]':
         """
         Return the set of package IDs from this DAR.
         """
-        # In order to make this call perform more quickly, we read the Archive object, but not any
-        # of its contents.
-        package_ids = set()
-        for dalf_name in self.get_dalf_names():
-            from ..model.types import PackageId
-            from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import Archive
-
-            contents = self.dar_contents.read(dalf_name)
-
-            a = Archive()
-            a.ParseFromString(contents)
-
-            package_ids.add(PackageId(a.hash))
-
-        return frozenset(package_ids)
+        warnings.warn(
+            'get_package_ids() is deprecated; please use package_ids() instead.',
+            DeprecationWarning, stacklevel=2)
+        return self.package_ids()
 
     def get_package_provider(self) -> 'PackageProvider':
-        from typing import Dict
+        warnings.warn(
+            'get_package_provider() is deprecated; use the methods of the '
+            'dazl.damlast.PackageProvider protocol as implemented on DarFile directly.',
+            DeprecationWarning)
         from ..model.types_store import MemoryPackageProvider
-        from ..damlast.daml_lf_1 import PackageRef
-        from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import Archive
-
-        packages = {}  # type: Dict[PackageRef, bytes]
-        dalf_names = self.get_dalf_names()
-        for dalf_name in dalf_names:
-            contents = self.dar_contents.read(dalf_name)
-
-            a = Archive()
-            a.ParseFromString(contents)
-
-            packages[a.hash] = a.payload
-
-        return MemoryPackageProvider(packages)
+        return MemoryPackageProvider(self.get_archives())
 
 
 def parse_dalf(contents: bytes) -> 'PackageStore':
+    warnings.warn(
+        'parse_dalf is deprecated, as PackageStore and Type are deprecated.',
+        DeprecationWarning, stacklevel=2)
+    # noinspection PyProtectedMember
+    from ..protocols.v1.pb_parse_metadata import _parse_daml_metadata_pb
     from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import Archive
-    from ..damlast.parse import parse_archive_payload
-    from ..protocols.v1.pb_parse_metadata import parse_daml_metadata_pb
     a = Archive()
     a.ParseFromString(contents)
-    p = parse_archive_payload(a.hash, a.payload)
-    return parse_daml_metadata_pb(a.hash, p)
+    return _parse_daml_metadata_pb(parse_archive(a.hash, a.payload))
 
 
-def get_dar_package_ids(dar: 'Dar') -> 'Collection[PackageId]':
-    with DarFile(dar) as dar_file:
-        return dar_file.get_package_ids()
+def get_dar_package_ids(dar: 'Dar') -> 'Collection[PackageRef]':
+    warnings.warn(
+        'dazl.util.dar.get_dar_package_ids is deprecated; '
+        'please use dazl.damlast.get_dar_package_ids instead.', DeprecationWarning, stacklevel=2)
+
+    # This is a local import to get around circular dependencies; also the replacement function
+    # is the same name as our own
+    from ..damlast.pkgfile import get_dar_package_ids
+    return get_dar_package_ids(dar)

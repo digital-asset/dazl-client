@@ -44,6 +44,6 @@ class ListAllCommand(CliCommand):
 
         for party in network.parties():
             await network.aio_party(party).ready()
+        metadata = await network.aio_global().metadata()
 
-        write_acs(sys.stdout, network, fmt=fmt, include_archived=include_archived)
-        await network.shutdown()
+        write_acs(sys.stdout, network, metadata.store, fmt=fmt, include_archived=include_archived)

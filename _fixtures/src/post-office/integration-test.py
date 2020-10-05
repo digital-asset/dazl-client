@@ -11,8 +11,6 @@ from pathlib import Path
 
 from dazl import create, exercise, Network, write_acs
 
-logging.basicConfig()
-
 LOG = logging.getLogger('integration_test')
 
 POSTMAN_PARTY = 'Postman'
@@ -138,6 +136,9 @@ def _main():
     """
     import argparse
     import subprocess
+
+    logging.basicConfig(level=logging.INFO)
+
     from dazl.util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
 
     argparser = argparse.ArgumentParser()
