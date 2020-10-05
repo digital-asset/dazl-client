@@ -25,13 +25,12 @@ from typing import Any, Collection, Generic, List, Mapping, Optional, Sequence, 
 from dataclasses import dataclass, fields
 
 from .. import LOG
-from .core import ContractId, Party
 from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice, \
     RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, TextMapType, \
     EnumType, scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch
 from .types_store import PackageStore
 from ..damlast.daml_lf_1 import TypeConName
-from ..util.prim_types import DEFAULT_TYPE_CONVERTER
+from ..prim import ContractId, Party
 from ..util.typing import safe_cast, safe_optional_cast
 
 TCommand = TypeVar('TCommand')
@@ -498,8 +497,7 @@ class AbstractSerializer(Serializer[TCommand, TValue]):
     """
     def __init__(self, store: PackageStore, type_context: 'Optional[TypeEvaluationContext]' = None):
         self.store = safe_cast(PackageStore, store)
-        self.type_context = safe_optional_cast(TypeEvaluationContext, type_context) or \
-            DEFAULT_TYPE_CONVERTER
+        self.type_context = safe_optional_cast(TypeEvaluationContext, type_context)
 
     def serialize_value(self, tt: Type, obj: Any) -> TValue:
         context = TypeEvaluationContext.from_store(self.store)

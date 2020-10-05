@@ -11,7 +11,7 @@ from .model.core import ContractId, ContractData, DazlError, Party
 from .model.writing import create, exercise, exercise_by_key, create_and_exercise, \
     Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, CreateAndExerciseCommand
 from .util.logging import setup_default_logger
-from .util.prim_types import frozendict
+from .prim import FrozenDict as frozendict
 from .pretty.table import write_acs
 
 

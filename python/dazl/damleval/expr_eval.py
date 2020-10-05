@@ -7,12 +7,11 @@ from datetime import datetime, date, timedelta, timezone
 from decimal import Decimal
 from typing import Any, Union
 
+from ..prim import FrozenDict, Party
 from ..damlast.builtins import builtins
 from ..damlast import ExprVisitor, IdentityTypeVisitor
 from ..damlast.daml_lf_1 import Block, BuiltinFunction, Case, Expr, PrimCon, PrimLit, Scenario, \
     Type, Update, ValName
-from ..model.core import Party
-from ..util.prim_types import frozendict
 
 
 @dataclass(frozen=True)
@@ -71,7 +70,7 @@ class ExpressionEvaluator(ExprVisitor[Any], IdentityTypeVisitor):
             raise ValueError(f'unknown PrimLit value: {prim_lit}')
 
     def visit_expr_rec_con(self, rec_con: 'Expr.RecCon') -> 'Any':
-        return frozendict({fwt.field: self.visit_expr(fwt.expr) for fwt in rec_con.fields})
+        return FrozenDict({fwt.field: self.visit_expr(fwt.expr) for fwt in rec_con.fields})
 
     def visit_expr_rec_proj(self, rec_proj: 'Expr.RecProj') -> 'Any':
         record_expr = self.visit_expr(rec_proj.record)
@@ -80,10 +79,10 @@ class ExpressionEvaluator(ExprVisitor[Any], IdentityTypeVisitor):
     def visit_expr_variant_con(self, variant_con: 'Expr.VariantCon') -> 'Any':
         ctor = variant_con.variant_con
         value = self.visit_expr(variant_con.variant_arg)
-        return frozendict({ctor: value})
+        return FrozenDict({ctor: value})
 
     def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'Any':
-        return frozendict({fwt.field: self.visit_expr(fwt.expr) for fwt in struct_con.fields})
+        return FrozenDict({fwt.field: self.visit_expr(fwt.expr) for fwt in struct_con.fields})
 
     def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'Any':
         tuple_expr = self.visit_expr(struct_proj.tuple)

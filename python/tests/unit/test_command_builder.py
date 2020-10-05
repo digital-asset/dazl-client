@@ -5,14 +5,14 @@
 from unittest import TestCase
 
 from dazl.damlast.lookup import parse_type_con_name
-from dazl.model.core import ContractId, Party
 from dazl.model.writing import create, CommandBuilder, CommandDefaults, CommandPayload, CreateCommand, \
     ExerciseCommand
+from dazl.prim import ContractId, Party
 
 
 SOME_TEMPLATE_NAME = parse_type_con_name('Sample:Untyped')
 SOME_PARTY = Party('SomeParty')
-SOME_CONTRACT_ID = ContractId('#0:0', SOME_TEMPLATE_NAME)
+SOME_CONTRACT_ID = ContractId(SOME_TEMPLATE_NAME, '#0:0')
 DEFAULTS = CommandDefaults(
     default_party=SOME_PARTY,
     default_ledger_id='some_ledger',

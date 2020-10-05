@@ -8,6 +8,7 @@ from typing import Callable, Dict, Optional, Type as TType, Sequence, Union
 from .options import PrettyOptions
 from .util import maybe_parentheses, is_hidden_module_name
 from .. import LOG
+from ..prim import to_date, to_datetime
 from ..damlast.daml_lf_1 import Block, BuiltinFunction, Case, CaseAlt, DefDataType, DefTemplate, \
     Expr, Module, Package, PrimCon, PrimLit, Scenario, Type, TypeVarWithKind, ValName, \
     Update, DefValue, Unit
@@ -16,7 +17,6 @@ from ..damlast.visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVi
 from ..model.definition import DamlDataType, DamlTemplate
 from ..model.types import ModuleRef
 from ..model.types_store import PackageStore
-from ..util.prim_types import to_date, to_datetime
 
 
 # noinspection PyMethodMayBeStatic

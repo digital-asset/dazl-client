@@ -31,18 +31,18 @@ from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
 from ..metrics import MetricEvents
-from ..model.core import ContractId, ContractData, ContractsState, ContractMatch, \
-    ContractContextualData, ContractContextualDataCollection, Party, Dar
+from ..model.core import ContractsState, ContractMatch, \
+    ContractContextualData, ContractContextualDataCollection, Dar
 from ..model.ledger import LedgerMetadata
 from ..model.reading import InitEvent, ReadyEvent, ContractCreateEvent, ContractExercisedEvent, \
     ContractArchiveEvent, TransactionStartEvent, TransactionEndEvent, PackagesAddedEvent, EventKey
 from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
+from ..prim import ContractId, ContractData, Party, TimeDeltaLike, to_party
 from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
 from ..util.dar import get_dar_package_ids
 from ..util.io import get_bytes
-from ..util.prim_types import TimeDeltaConvertible
 from ._events import EventHandler, AEventHandler, EventHandlerDecorator, AEventHandlerDecorator, \
     fluentize
 from ._network_client_impl import _NetworkImpl
@@ -189,7 +189,7 @@ class Network:
 
         :param party: The party to get a client for.
         """
-        return self._impl.party_impl(Party(party), SimplePartyClient)
+        return self._impl.party_impl(to_party(party), SimplePartyClient)
 
     def simple_new_party(self) -> 'SimplePartyClient':
         """
@@ -368,7 +368,7 @@ class AIOGlobalClient(GlobalClient):
     async def ensure_dar(
             self,
             contents: 'Union[str, Path, bytes, BinaryIO]',
-            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
         Throw an exception if the specified DARs do not exist within the specified timeout.
@@ -382,7 +382,7 @@ class AIOGlobalClient(GlobalClient):
     async def ensure_packages(
             self,
             package_ids: 'Collection[str]',
-            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
         Validate that packages with the specified package IDs exist on the ledger. Throw an
         exception if the specified packages do not exist within the specified timeout.
@@ -404,7 +404,7 @@ class SimpleGlobalClient(GlobalClient):
     def ensure_dar(
             self,
             contents: 'Union[str, Path, bytes, BinaryIO]',
-            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
         Throw an exception if the specified DARs do not exist within the specified timeout.
@@ -419,7 +419,7 @@ class SimpleGlobalClient(GlobalClient):
     def ensure_packages(
             self,
             package_ids: 'Collection[str]',
-            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
         Validate that packages with the specified package IDs exist on the ledger. Throw an
         exception if the specified packages do not exist within the specified timeout.
@@ -430,7 +430,7 @@ class SimpleGlobalClient(GlobalClient):
         return self._impl.invoker.run_in_loop(
             lambda: self._impl.ensure_package_ids(package_ids, timeout))
 
-    def metadata(self, timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) \
+    def metadata(self, timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) \
             -> 'LedgerMetadata':
         """
         Return the current set of known packages.
@@ -703,7 +703,7 @@ class AIOPartyClient(PartyClient):
             self,
             commands: 'EventHandlerResponse',
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> 'Awaitable[None]':
         """
         Submit commands to the ledger.
@@ -728,7 +728,7 @@ class AIOPartyClient(PartyClient):
             template_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> 'Awaitable[None]':
         """
         Submit a single create command. Equivalent to calling :meth:`submit` with a single
@@ -760,7 +760,7 @@ class AIOPartyClient(PartyClient):
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> 'Awaitable[None]':
         """
         Submit a single exercise choice. Equivalent to calling :meth:`submit` with a single
@@ -796,7 +796,7 @@ class AIOPartyClient(PartyClient):
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> 'Awaitable[None]':
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -831,7 +831,7 @@ class AIOPartyClient(PartyClient):
             choice_name: str,
             choice_arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> 'Awaitable[None]':
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
@@ -968,7 +968,7 @@ class AIOPartyClient(PartyClient):
     async def ensure_dar(
             self,
             contents: 'Union[str, Path, bytes, BinaryIO]',
-            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
         Throw an exception if the specified DARs do not exist within the specified timeout.
@@ -1277,7 +1277,7 @@ class SimplePartyClient(PartyClient):
             self,
             commands,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> None:
         """
         Submit commands to the ledger.
@@ -1303,7 +1303,7 @@ class SimplePartyClient(PartyClient):
             template_name: 'TemplateNameLike',
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> None:
         """
         Synchronously submit a single create command. Equivalent to calling :meth:`submit` with a
@@ -1332,7 +1332,7 @@ class SimplePartyClient(PartyClient):
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1365,7 +1365,7 @@ class SimplePartyClient(PartyClient):
             choice_name: str,
             arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
@@ -1400,7 +1400,7 @@ class SimplePartyClient(PartyClient):
             choice_name: str,
             choice_arguments: 'Optional[dict]' = None,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> None:
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
@@ -1542,7 +1542,7 @@ class SimplePartyClient(PartyClient):
     def ensure_dar(
             self,
             contents: 'Union[str, Path, bytes, BinaryIO]',
-            timeout: 'TimeDeltaConvertible' = DEFAULT_TIMEOUT_SECONDS) -> None:
+            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
         Throw an exception if the specified DARs do not exist within the specified timeout.

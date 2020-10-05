@@ -6,7 +6,8 @@ import random
 import uuid
 from asyncio import sleep, new_event_loop, set_event_loop
 
-from dazl import create, exercise, Network, Party
+from dazl import create, exercise, Network
+from dazl.prim import to_party
 from .dars import Simple as SimpleDar
 
 NOTIFICATION_COUNT = 20
@@ -45,7 +46,7 @@ class Stage1LedgerInit:
         self.network.set_config(url=url)
 
         # TODO: These should be party allocations instead of just random strings.
-        self.user_parties = frozenset(Party(str(uuid.uuid4())) for _ in range(0, PARTY_COUNT))
+        self.user_parties = frozenset(to_party(uuid.uuid4()) for _ in range(0, PARTY_COUNT))
 
         operator = self.network.aio_new_party()
         operator.add_ledger_ready(self.on_ready)

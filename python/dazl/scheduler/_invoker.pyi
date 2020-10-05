@@ -15,7 +15,7 @@ from concurrent.futures import Executor
 from typing import Awaitable, Callable, List, Optional, TypeVar, overload
 
 from . import RunLevel
-from ..util.prim_types import TimeDeltaConvertible
+from ..prim import TimeDeltaLike
 
 T = TypeVar('T', covariant=True)
 
@@ -38,7 +38,7 @@ class Invoker:
 
     async def shutdown(
             self,
-            timeout: 'TimeDeltaConvertible' = ...,
+            timeout: 'TimeDeltaLike' = ...,
             exception: 'Optional[Exception]' = None) -> None: ...
 
     def set_context_as_current(self) -> None: ...

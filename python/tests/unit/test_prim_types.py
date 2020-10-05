@@ -3,15 +3,15 @@
 
 from datetime import datetime, timezone
 
-from dazl.model.core import ContractId
-from dazl.util.prim_types import to_datetime
+from dazl.damlast.lookup import parse_type_con_name
+from dazl.prim import ContractId, to_datetime
 
-DUMMY_TEMPLATE_ID = 'DummyTemplate'
+DUMMY_TEMPLATE_ID = parse_type_con_name('00:DummyModule:DummyTemplate')
 
 
 def test_contract_id_as_dict_key():
-    cid_a = ContractId(template_id=DUMMY_TEMPLATE_ID, contract_id='1')
-    cid_b = ContractId(template_id=DUMMY_TEMPLATE_ID, contract_id='1')
+    cid_a = ContractId(DUMMY_TEMPLATE_ID, '1')
+    cid_b = ContractId(DUMMY_TEMPLATE_ID, '1')
     test_dict = dict()
     test_dict[cid_a] = 'hello world'
 

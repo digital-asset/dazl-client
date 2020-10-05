@@ -6,10 +6,10 @@ from typing import Mapping
 
 from dataclasses import dataclass
 
-from dazl import CreateCommand, ExerciseCommand, CreateAndExerciseCommand, ExerciseByKeyCommand, \
-    ContractId
+from dazl import CreateCommand, ExerciseCommand, CreateAndExerciseCommand, ExerciseByKeyCommand
 from dazl.damlast.daml_lf_1 import TypeConName
 from dazl.model.types_store import PackageStore
+from dazl.prim import ContractId
 from dazl.protocols.v1.pb_ser_command import ProtobufSerializer, as_identifier
 from dazl.protocols.v1 import model as G
 from dazl.util.dar import DarFile
@@ -59,7 +59,7 @@ def test_serialize_exercise(dar_fixture):
     sut = ProtobufSerializer(dar_fixture.store)
 
     tref = dar_fixture.get_template_type('Pending:AccountRequest')
-    cid = ContractId('#1:0', tref)
+    cid = ContractId(tref, '#1:0')
     command = ExerciseCommand(cid, 'CreateAccount', dict(accountId=42))
 
     expected = G.Command()

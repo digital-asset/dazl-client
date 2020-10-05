@@ -6,53 +6,31 @@ Methods for serializing domain objects and other things into basic primitive
 types over the wire on the REST interface using JSON.
 """
 
-import abc
-import json
-
-from datetime import datetime, timezone, date
+import warnings
+from datetime import datetime, date
 from decimal import Decimal
 from typing import Union, Dict, Any, List
 
-from ... import LOG
-from ...model.core import ContractId
-from ...model.types import ScalarType, ListType, RecordType, VariantType, \
+from ...model.types import ListType, RecordType, VariantType, \
     ContractIdType, UnsupportedType, as_contract_id, TemplateChoice, TextMapType
 from ...model.writing import CommandPayload, AbstractSerializer, TypeEvaluationContext
-from ...util.prim_types import to_boolean, to_date, to_str, to_decimal, decode_variant_dict, \
-    to_int, to_datetime, to_timedelta
+from ...prim import ContractId, JSONEncoder, to_bool, to_date, to_datetime, to_decimal, \
+    to_int, to_str, to_timedelta, to_variant
 
 R = Union[bool, str, date, datetime, int, float, Decimal, List['R'], Dict[str, 'R']]
 
 
-class BodyDecoder(abc.ABC):
-    @abc.abstractmethod
-    def parse(self, code, buf):
-        """
-
-        :param code: The HTTP status code associated with the body.
-        :param buf:
-        :return:
-        """
-
-
-class LedgerJSONEncoder(json.JSONEncoder):
+class LedgerJSONEncoder(JSONEncoder):
     """
     Convert some known Ledger API primitive types into their appropriate JSON
     representations.
     """
-    def default(self, o):
-        # pylint: disable=E0202
-        # bug in pylint https://github.com/PyCQA/pylint/issues/414)
-        if isinstance(o, datetime):
-            return _datetime_to_api_datetime(o)
-        elif isinstance(o, date):
-            return _date_to_api_date(o)
-        elif isinstance(o, ContractId):
-            return o.contract_id
-        elif isinstance(o, Decimal):
-            return _NoStringDecimal(o)
 
-        return json.JSONEncoder.default(self, o)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        warnings.warn(
+            'dazl.protocols.v0.json_ser_command.LedgerJSONEncoder is deprecated; '
+            'use dazl.prim.JSONEncoder instead.', DeprecationWarning, stacklevel=2)
 
 
 def to_api_datetime(obj):
@@ -65,109 +43,11 @@ def to_api_datetime(obj):
         datetime will be converted to UTC before serializing.
     :return: An ISO8601 string that represents the time in UTC.
     """
-    if isinstance(obj, datetime):
-        return _datetime_to_api_datetime(obj)
-    elif isinstance(obj, str):
-        # attempt to understand this string as a datetime
-        pass
-    return obj
-
-
-def _date_to_api_date(obj: date) -> str:
-    """
-    Convert date to a JSON string that represents a date.
-    """
-    return obj.isoformat()
-
-
-def _datetime_to_api_datetime(obj: datetime) -> str:
-    """
-    Convert timezone "aware" dates to UTC.
-    """
-    if obj.tzinfo is not None and obj.tzinfo.utcoffset(obj) is not None:
-        # aware time; translate to UTC
-        obj = obj.astimezone(timezone.utc)
-    obj = obj.replace(tzinfo=None)
-    return obj.isoformat() + 'Z'
-
-
-class _NoStringDecimal(float):
-    def __new__(cls, decimal_value):
-        # noinspection PyArgumentList
-        return float.__new__(cls, float(decimal_value))
-
-    def __init__(self, decimal_value):
-        float.__init__(float(decimal_value))
-        self.decimal_value = decimal_value
-
-    def __repr__(self):
-        return str(self.decimal_value)
-
-
-####################################################################################################
-# for_json support
-####################################################################################################
-
-
-def timedelta_for_json(value):
-    from datetime import timedelta
-    if isinstance(value, timedelta):
-        # TODO: Implementation
-        raise NotImplementedError('reltime are not currently supported')
-    # TODO: Some light coercion is probably required here
-    return value
-
-
-def date_for_json(value):
-    """
-    Return a Python ``date``, and rely on the JSON encoder in
-    :class:`LedgerJSONEncoder` to do the appropriate conversion.
-    """
-    return value
-
-
-def time_for_json(value):
-    """
-    Return a Python ``datetime``, and rely on the JSON encoder in
-    :mod:`da.protocols.ser_json` to do the appropriate conversion.
-    """
-    return value
-
-
-def _weakbound_for_json(value):
-    """
-    Simply call `for_json` on the underlying value if it exists; otherwise, return the underlying
-    value.
-    """
-    return value.for_json() if hasattr(value, 'for_json') else value
-
-
-def _define_scalar_formatters():
-    """
-    Produce a dict whose keys are :class:`ScalarType` and values are methods that can take a
-    value and convert them to a JSON representation.
-    """
-    formatters = {
-        "Bool": bool,
-        "Char": str,
-        "Integer": int,
-        "Decimal": Decimal,
-        "Numeric": Decimal,
-        "Text": str,
-        "Party": str,
-        "RelTime": timedelta_for_json,
-        "Date": date_for_json,
-        "Time": time_for_json,
-        "Any": str,
-    }
-
-    if len(ScalarType.BUILTINS) != len(formatters):
-        LOG.error('Programmer error. Formatters: %r, builtins: %r', formatters, ScalarType.BUILTINS)
-        raise Exception('library configuration error')
-    return {scalar_type: formatters[scalar_type.name] for scalar_type in ScalarType.BUILTINS}
-
-
-_SCALAR_FORMATTERS = _define_scalar_formatters()
+    from ...prim import datetime_to_str
+    warnings.warn(
+        'dazl.protocols.v0.json_ser_command.to_api_datetime is deprecated; use dazl.prim.datetime_to_str instead.',
+        DeprecationWarning, stacklevel=2)
+    return datetime_to_str(obj) if isinstance(obj, datetime) else obj
 
 
 class JsonSerializer(AbstractSerializer[dict, R]):
@@ -191,9 +71,9 @@ class JsonSerializer(AbstractSerializer[dict, R]):
             'arguments': template_args}}
 
     def serialize_exercise_command(
-            self, contract_id: ContractId, choice_info: TemplateChoice, choice_args: R) -> dict:
+            self, contract_id: 'ContractId', choice_info: TemplateChoice, choice_args: R) -> dict:
         return {'exercise': {
-            'contract': contract_id.contract_id,
+            'contract': str(contract_id.value_type),
             'choice': choice_info.name,
             'arguments': choice_args}}
 
@@ -205,7 +85,7 @@ class JsonSerializer(AbstractSerializer[dict, R]):
         return dict()
 
     def serialize_bool(self, context: TypeEvaluationContext, obj: Any) -> R:
-        return to_boolean(obj)
+        return to_bool(obj)
 
     def serialize_text(self, context: TypeEvaluationContext, obj: Any) -> R:
         return to_str(obj)
@@ -246,7 +126,7 @@ class JsonSerializer(AbstractSerializer[dict, R]):
                 for arg, arg_type in tt.named_args}
 
     def serialize_variant(self, context: TypeEvaluationContext, tt: VariantType, obj: Any) -> R:
-        obj_ctor, obj_value = decode_variant_dict(obj)
+        obj_ctor, obj_value = to_variant(obj)
         value_ctor = tt.field_type(obj_ctor)
 
         new_value = self._serialize_dispatch(context.append_path(obj_ctor), value_ctor, obj_value)

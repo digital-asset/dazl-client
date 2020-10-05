@@ -24,7 +24,7 @@ from ...model.core import Party
 from ...model.types import RecordType, Type, VariantType, ContractIdType, ListType, \
     TypeEvaluationContext, type_evaluate_dispatch_default_error, TextMapType, OptionalType, TypeReference
 from ...model.types_store import PackageStore
-from ...util.prim_types import to_date, to_datetime
+from ...prim import to_date, to_datetime
 from ..._gen.com.daml.ledger.api.v1 import \
     active_contracts_service_pb2 as acs_pb2, \
     event_pb2, \
@@ -343,7 +343,9 @@ def to_created_event(
 
     tt_context = TypeEvaluationContext.from_store(context.store)
 
-    cid = ContractId(cr.contract_id, name)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        cid = ContractId(cr.contract_id, name)
     cdata = to_record(tt_context, tt, cr.create_arguments)
     event_id = cr.event_id
     witness_parties = tuple(cr.witness_parties)
@@ -361,7 +363,9 @@ def to_exercised_event(
 
     ((choice_ref, cc),) = choice_candidates.items()
 
-    cid = ContractId(er.contract_id, name)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        cid = ContractId(er.contract_id, name)
     event_id = er.event_id
     witness_parties = tuple(er.witness_parties)
     try:
@@ -388,7 +392,9 @@ def to_archived_event(
     event_id = ar.event_id
     witness_parties = tuple(ar.witness_parties)
 
-    cid = ContractId(ar.contract_id, name)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        cid = ContractId(ar.contract_id, name)
     return context.contract_archived_event(cid, None, event_id, witness_parties)
 
 
@@ -494,7 +500,11 @@ def to_map(context: 'TypeEvaluationContext', tt: 'Type', map_pb: 'value_pb2.Map'
 
 def to_contract_id(context: 'TypeEvaluationContext', tt: 'Type', contract_id: str) -> 'ContractId':
     def process(_: 'TypeEvaluationContext', ct: 'ContractIdType') -> 'ContractId':
-        return ContractId(contract_id, ct.type_parameter)
+        # TODO: Construct the non-deprecated dazl.prim.ContractId
+        #  once dazl.model.core.ContractId is removed
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+            return ContractId(contract_id, ct.type_parameter)
 
     return type_evaluate_dispatch_default_error(on_contract_id=process)(context, tt)
 

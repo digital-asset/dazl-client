@@ -9,8 +9,7 @@ from ..model.types import Type, UnsupportedType, VariantType, RecordType, ListTy
     TypeReference, EnumType
 from ..model.writing import Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, \
     CreateAndExerciseCommand, AbstractSerializer
-from ..util.prim_types import to_int, to_str, to_decimal, to_date, to_datetime, \
-    unflatten_dotted_keys
+from ..prim import to_int, to_str, to_decimal, to_date, to_datetime, to_record
 
 
 class ValidateError(ValueError):
@@ -127,7 +126,7 @@ class ValidateSerializer(AbstractSerializer[Command, Any]):
         from collections.abc import Mapping
         if isinstance(obj, Mapping):
             # pull out any specialized dotted-field mappings
-            reformatted = unflatten_dotted_keys(obj)
+            reformatted = dict(to_record(obj))
             missing_keys = set()
             for name, field_type in tt.named_args:
                 if name in reformatted:
@@ -147,7 +146,7 @@ class ValidateSerializer(AbstractSerializer[Command, Any]):
         if isinstance(obj, Mapping):
             proposed_variants = {}
             error_variants = {}
-            reformatted = unflatten_dotted_keys(obj)
+            reformatted = to_record(obj)
             for name, field_type in tt.named_args:
                 if name in reformatted:
                     try:
