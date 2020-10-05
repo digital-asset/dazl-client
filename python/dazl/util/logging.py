@@ -3,52 +3,24 @@
 
 """
 Utilities for working with the built-in `logging` module.
+
+This module will be removed soon!
 """
 import logging
-import threading
-from typing import cast
+import warnings
 
-from ..util.io import StdoutStreamWrapper
+from .._logging import configure, VERBOSE
 
-VERBOSE = 5
 
-LOG_LOCK = threading.Lock()
-_default_logger_init = False
+__all__ = ['VERBOSE', 'setup_default_logger']
 
 
 def setup_default_logger(level=logging.INFO):
     """
     Sets up a default logger with sensible defaults.
+
+    This function is deprecated, and there is no replacement; you should instead configure your own
+    logging output as suitable for your needs (``logging.basicConfig()`` may suffice).
     """
-    root = logging.getLogger()
-    global _default_logger_init
-    if not _default_logger_init:
-        _default_logger_init = True
-    else:
-        root.warning('setup_default_logger being called more than once!')
-        return
-
-    logging.captureWarnings(True)
-
-    root.setLevel(level)
-    stream_handler = logging.StreamHandler(StdoutStreamWrapper())
-    formatter = logging.Formatter("[%(levelname)7s] %(asctime)s | %(name)-7s | %(message)s")
-    stream_handler.setFormatter(formatter)
-    root.addHandler(stream_handler)
-
-
-def log_verbose(logger: 'logging.Logger', msg, *args, **kwargs) -> None:
-    return logger.log(5, msg, *args, **kwargs)
-
-
-class _LoggerWithVerbose:
-    def verbose(self, msg, *args, **kwargs) -> None:
-        logger = cast(logging.Logger, self)
-        return log_verbose(logger, msg, *args, **kwargs)
-
-
-class LoggerWithVerbose(logging.Logger, _LoggerWithVerbose):
-    pass
-
-
-logging.addLevelName(VERBOSE, 'VERBOSE')
+    warnings.warn("dazl.setup_default_logger is deprecated", DeprecationWarning, stacklevel=2)
+    configure(level)

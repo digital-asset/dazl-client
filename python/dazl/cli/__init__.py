@@ -8,13 +8,13 @@ Simple command-line handlers.
 import logging
 from typing import List, Sequence
 
-from .. import setup_default_logger
 from ..model.core import ConfigurationError
 from ._base import CliCommand
 from .ls import ListAllCommand
 from .metadata import PrintMetadataCommand
 from .upload import UploadCommand
 from .version import VersionCommand
+from .._logging import configure as configure_logger
 
 COMMANDS = [
     ListAllCommand(),
@@ -60,7 +60,7 @@ def run(cmd, args) -> int:
     if log_level is None:
         log_level = logging.WARNING
 
-    setup_default_logger(level=log_level)
+    configure_logger(level=log_level)
     return cmd.execute(parsed_args)
 
 

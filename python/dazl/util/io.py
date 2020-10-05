@@ -6,11 +6,9 @@ Utilities for dealing with the file system.
 """
 
 import socket
-import sys
-from io import BufferedIOBase, SEEK_SET
+from io import BufferedIOBase
 from pathlib import Path
-from types import TracebackType
-from typing import BinaryIO, TextIO, Optional, Type, Iterator, Iterable, List, Union, overload
+from typing import BinaryIO, Optional, Union, overload
 
 
 @overload
@@ -94,99 +92,3 @@ def find_nearest_ancestor(file_name: str, relative_to: Union[str, Path]) -> 'Opt
                 return None
             else:
                 relative_to = new_relative_to
-
-
-class StdoutStreamWrapper(TextIO):
-    """
-    Wrapper for ``sys.stdout`` that can cope with it being reassigned at will (like the ``unittest``
-    module does). This allows for log output to be more usefully associated with tests.
-    """
-
-    def __enter__(self) -> TextIO:
-        return sys.stdout.__enter__()
-
-    @property
-    def buffer(self):
-        return sys.stdout.buffer
-
-    def closed(self):
-        return sys.stdout.closed
-
-    def close(self) -> None:
-        return sys.stdout.close()
-
-    @property
-    def name(self):
-        return sys.stdout.name
-
-    @property
-    def encoding(self):
-        return sys.stdout.encoding
-
-    @property
-    def errors(self):
-        return sys.stdout.errors
-
-    @property
-    def mode(self):
-        return sys.stdout.mode
-
-    @property
-    def newlines(self):
-        return sys.stdout.newlines
-
-    @property
-    def line_buffering(self):
-        return sys.stdout.line_buffering
-
-    def fileno(self) -> int:
-        return sys.stdout.fileno()
-
-    def flush(self) -> None:
-        sys.stdout.flush()
-
-    def isatty(self) -> bool:
-        return sys.stdout.isatty()
-
-    def read(self, size: int = -1) -> str:
-        return sys.stdout.read(size)
-
-    def readable(self) -> bool:
-        return sys.stdout.readable()
-
-    def readline(self, limit: int = -1) -> str:
-        return sys.stdout.readline(limit)
-
-    def readlines(self, hint: int = -1) -> List[str]:
-        return sys.stdout.readlines(hint)
-
-    def seek(self, offset: int, whence: int = SEEK_SET) -> int:
-        return sys.stdout.seek(offset, whence)
-
-    def seekable(self) -> bool:
-        return sys.stdout.seekable()
-
-    def tell(self) -> int:
-        return sys.stdout.tell()
-
-    def truncate(self, size: Optional[int] = None) -> int:
-        return sys.stdout.truncate(size)
-
-    def writable(self) -> bool:
-        return sys.stdout.writable()
-
-    def write(self, s: str) -> int:
-        return sys.stdout.write(s)
-
-    def writelines(self, lines: Iterable[str]) -> None:
-        return sys.stdout.writelines(lines)
-
-    def __next__(self) -> str:
-        return next(sys.stdout)
-
-    def __iter__(self) -> Iterator[str]:
-        return iter(sys.stdout)
-
-    def __exit__(self, t: Optional[Type[BaseException]], value: Optional[BaseException],
-                 traceback: Optional[TracebackType]) -> bool:
-        return sys.stdout.__exit__(t, value, traceback)

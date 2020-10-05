@@ -4,46 +4,33 @@
 """
 This module contains the Python API for interacting with the Ledger API.
 """
-from typing import TYPE_CHECKING
+from ._logging import LOG
 
-if TYPE_CHECKING:
-    from .util.logging import LoggerWithVerbose
+from .client import run, simple_client, async_network, Network, SimplePartyClient, AIOPartyClient
+from .model.core import ContractId, ContractData, DazlError, Party
+from .model.writing import create, exercise, exercise_by_key, create_and_exercise, \
+    Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, CreateAndExerciseCommand
+from .util.logging import setup_default_logger
+from .util.prim_types import frozendict
+from .pretty.table import write_acs
 
 
-def _initialize_logger() -> 'LoggerWithVerbose':
-    import logging
-    from .util.logging import _LoggerWithVerbose, log_verbose
+try:
+    # This method is undocumented, but is required to read large size of model files when using
+    # the C++ implementation.
+    # noinspection PyPackageRequirements,PyUnresolvedReferences,PyProtectedMember
+    from google.protobuf.pyext import _message
+    _message.SetAllowOversizeProtos(True)
 
-    try:
-        # noinspection PyPackageRequirements
-        import google
-
-        # This method is undocumented, but is required to read large size of model files when using
-        # the C++ implementation.
-        # noinspection PyPackageRequirements,PyUnresolvedReferences,PyProtectedMember
-        from google.protobuf.pyext import _message
-        _message.SetAllowOversizeProtos(True)
-
-    except ImportError:
-        pass
-
-    original_logger = logging.getLoggerClass()  # type: type
-
-    class CombinedLogger(original_logger, _LoggerWithVerbose):
-        pass
-
-    logging.setLoggerClass(CombinedLogger)
-    dazl_logger = logging.getLogger('dazl')
-    if not hasattr(dazl_logger, 'verbose'):
-        from functools import partial
-        dazl_logger.verbose = partial(log_verbose, dazl_logger)
-    logging.setLoggerClass(original_logger)
-    return dazl_logger  # type: ignore
+except ImportError:
+    # ImportError for the Protobuf libraries is likely fatal, but this would not be the most helpful
+    # place to throw an ImportError.
+    pass
 
 
 def _get_version() -> str:
     """
-    Used to make the version of this library easily accessible programatically.
+    Used to make the version of this library easily accessible programmatically.
     Two techniques are tried:
      1. Try to read it from the current package definition. This is what is used
         when trying to look up version information if dazl is installed via a
@@ -68,18 +55,8 @@ def _get_version() -> str:
         if 'tool.poetry' in config:
             poetry_section = config['tool.poetry']
             return literal_eval(poetry_section['version'])
-    except Exception:
+    except Exception:  # noqa
         return 'unknown'
 
 
-LOG = _initialize_logger()  # type: LoggerWithVerbose
 __version__ = _get_version()
-
-
-from .client import run, simple_client, async_network, Network, SimplePartyClient, AIOPartyClient  # noqa
-from .model.core import ContractId, ContractData, DazlError, Party  # noqa
-from .model.writing import create, exercise, exercise_by_key, create_and_exercise, \
-    Command, CreateCommand, ExerciseCommand, ExerciseByKeyCommand, CreateAndExerciseCommand  # noqa
-from .util.logging import setup_default_logger  # noqa
-from .util.prim_types import frozendict  # noqa
-from .pretty.table import write_acs  # noqa

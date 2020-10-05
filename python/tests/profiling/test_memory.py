@@ -1,3 +1,6 @@
+# Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Test to check for memory leaks on long-running clients when connected to a ledger that isn't really
 doing much other than ticking time.
@@ -11,7 +14,9 @@ import sys
 from asyncio import get_event_loop
 from datetime import datetime
 
-from dazl import create, setup_default_logger, Network
+from dazl import create, Network
+# noinspection PyProtectedMember
+from dazl._logging import configure as configure_logger
 from dazl.model.reading import ContractCreateEvent, ReadyEvent
 from pympler import muppy, summary
 
@@ -51,5 +56,5 @@ def dump_state():
 
 
 if __name__ == '__main__':
-    setup_default_logger()
+    configure_logger()
     main(sys.argv[1])

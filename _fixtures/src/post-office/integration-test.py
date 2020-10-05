@@ -9,9 +9,9 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from dazl import create, exercise, setup_default_logger, Network, write_acs
+from dazl import create, exercise, Network, write_acs
 
-setup_default_logger()
+logging.basicConfig()
 
 LOG = logging.getLogger('integration_test')
 

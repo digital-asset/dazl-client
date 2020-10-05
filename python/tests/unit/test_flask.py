@@ -6,14 +6,12 @@ import logging
 from threading import Thread
 from time import sleep
 
-from dazl import create, LOG, setup_default_logger, Network, SimplePartyClient
+from dazl import create, LOG, Network, SimplePartyClient
 from dazl.model.reading import ReadyEvent
 from .dars import PostOffice
 
 
 def test_simple_flask_integration(sandbox):
-    setup_default_logger(logging.INFO)
-
     network = Network()
     network.set_config(url=sandbox)
     client = network.simple_new_party()
