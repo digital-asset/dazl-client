@@ -4,7 +4,7 @@
 from pathlib import Path
 
 from dazl import LOG
-from dazl.util.dar import DarFile
+from dazl.damlast import DarFile
 
 ARCHIVES: Path = Path(__file__).absolute().parent.parent.parent.parent / '_fixtures' / 'archives'
 
@@ -17,7 +17,7 @@ def test_dar_version_compatibility(subtests):
         short_dar = dar.relative_to(ARCHIVES)
         with subtests.test(str(short_dar)):
             dar_file = DarFile(dar)
-            metadata = dar_file.read_metadata()
-            LOG.info('Successfully read %s with package IDs %r.', short_dar,
-                     metadata.package_ids())
+            archives = dar_file.archives()
+            LOG.info('Successfully read %s with package IDs %r.',
+                     short_dar, [a.hash for a in archives])
 

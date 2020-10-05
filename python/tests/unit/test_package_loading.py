@@ -11,8 +11,8 @@ from operator import setitem
 import pytest
 
 from dazl import async_network
+from dazl.damlast import DarFile
 from dazl.model.types_store import PackageStore
-from dazl.util.dar import DarFile
 from .dars import AllKindsOf
 
 

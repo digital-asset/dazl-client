@@ -9,6 +9,7 @@ from typing import Optional, TextIO, TYPE_CHECKING
 
 from .fmt_base import get_formatter
 from .model import TableBuilder
+from ...model.types_store import PackageStore
 
 if TYPE_CHECKING:
     from ...client import Network
@@ -19,6 +20,7 @@ __all__ = ['write_acs']
 def write_acs(
         buf: 'TextIO',
         network: 'Network',
+        store: 'PackageStore' = None,
         fmt: 'Optional[str]' = None,
         include_archived: bool = False) \
         -> None:
@@ -29,6 +31,7 @@ def write_acs(
         The buffer to write to.
     :param network:
         The network to write data from.
+    :param store:
     :param fmt:
         Format of the output; currently either ``"json"`` or ``"pretty"``.
     :param include_archived:
@@ -48,6 +51,8 @@ def write_acs(
             for cid, cdata in client.find_active('*').items():
                 table.add(party, cid, cdata, None)
 
-    metadata = network.simple_global().metadata()
-    for line in formatter.render(metadata.store, parties, table):
+    if store is None:
+        store = network.simple_global().metadata().store
+
+    for line in formatter.render(store, parties, table):
         buf.write(line + '\n')
