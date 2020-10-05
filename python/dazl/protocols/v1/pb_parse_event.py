@@ -8,7 +8,6 @@ import warnings
 
 from dataclasses import dataclass
 from datetime import datetime
-from decimal import Decimal
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Union
 
 # noinspection PyPackageRequirements
@@ -20,11 +19,10 @@ from ...model.core import ContractId
 from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
     TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
     ContractExercisedEvent, ActiveContractSetEvent, ContractFilter
-from ...model.core import Party
 from ...model.types import RecordType, Type, VariantType, ContractIdType, ListType, \
     TypeEvaluationContext, type_evaluate_dispatch_default_error, TextMapType, OptionalType, TypeReference
 from ...model.types_store import PackageStore
-from ...prim import to_date, to_datetime
+from ...prim import Party, to_bool, to_date, to_datetime, to_decimal, to_int, to_party, to_str
 from ..._gen.com.daml.ledger.api.v1 import \
     active_contracts_service_pb2 as acs_pb2, \
     event_pb2, \
@@ -433,11 +431,11 @@ def to_natural_type(context: 'TypeEvaluationContext', data_type: 'Type', obj: 'v
     elif ctor == 'enum':
         return to_enum(obj.enum)
     elif ctor == 'int64':
-        return to_int64(obj.int64)
+        return to_int(obj.int64)
     elif ctor == 'numeric':
         return to_decimal(obj.numeric)
     elif ctor == 'text':
-        return to_text(obj.text)
+        return to_str(obj.text)
     elif ctor == 'date':
         return to_date(obj.date)
     elif ctor == 'timestamp':
@@ -527,26 +525,6 @@ def to_optional(context: 'TypeEvaluationContext', tt: 'Type', optional: 'value_p
 
 def to_enum(enum: 'Union[str, value_pb2.Enum]') -> str:
     return getattr(enum, 'constructor', enum)
-
-
-def to_int64(int64: int) -> int:
-    return int64
-
-
-def to_decimal(decimal: str) -> Decimal:
-    return Decimal(decimal)
-
-
-def to_text(text: str) -> str:
-    return text
-
-
-def to_party(party: str) -> str:
-    return party
-
-
-def to_bool(bool_: bool) -> bool:
-    return bool_
 
 
 def to_unit(_: Empty) -> dict:

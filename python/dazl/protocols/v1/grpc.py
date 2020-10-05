@@ -25,7 +25,7 @@ from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ...model.types import PackageId, PackageIdSet
 from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
-from ...prim import Party, to_party
+from ...prim import Party, datetime_to_timestamp, to_party
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
@@ -85,7 +85,6 @@ class GRPCv1LedgerClient(LedgerClient):
 
 def grpc_set_time(connection: 'GRPCv1Connection', ledger_id: str, new_datetime: datetime) -> None:
     from . import model as G
-    from .pb_ser_command import as_api_timestamp
 
     request = G.GetTimeRequest(ledger_id=ledger_id)
     response = connection.time_service.GetTime(request)
@@ -94,7 +93,7 @@ def grpc_set_time(connection: 'GRPCv1Connection', ledger_id: str, new_datetime: 
     request = G.SetTimeRequest(
         ledger_id=ledger_id,
         current_time=ts.current_time,
-        new_time=as_api_timestamp(new_datetime))
+        new_time=datetime_to_timestamp(new_datetime))
     connection.time_service.SetTime(request)
     LOG.info('Time on the server changed by the local client to %s.', new_datetime)
 

@@ -6,18 +6,26 @@ from decimal import Decimal
 from functools import partial
 from typing import Any, Union
 
+# noinspection PyPackageRequirements
+from google.protobuf.duration_pb2 import Duration
+# noinspection PyPackageRequirements
+from google.protobuf.timestamp_pb2 import Timestamp
+
 __all__ = [
     'DATETIME_ISO8601_Z_FORMAT', 'DATE_FORMATS', 'DATETIME_FORMATS', 'TimeDeltaLike',
-    'date_to_str', 'datetime_to_str',
+    'date_to_int', 'date_to_str', 'datetime_to_str', 'datetime_to_epoch_microseconds',
+    'datetime_to_epoch_timedelta', 'datetime_to_timestamp', 'timedelta_to_duration',
     'to_date', 'to_datetime', 'to_timedelta',
     # these are only exposed until dazl.util.prim_types is removed
     '_parse', '_parse_nano_format'
 ]
 
-
 TimeDeltaLike = Union[int, float, Decimal, str, timedelta]
 
 DATETIME_ISO8601_Z_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
+
+_NANOS_PER_MICROSECOND = 1000
+_SECONDS_PER_DAY = 24 * 3600
 
 
 def _parse(fmt: str, value: str) -> 'datetime':
@@ -71,21 +79,10 @@ def to_datetime(obj: 'Any') -> datetime:
     """
     Convert any of the common wire representations of a ``datetime`` to a ``datetime``.
     """
-    try:
-        # noinspection PyPackageRequirements
-        from google.protobuf.timestamp_pb2 import Timestamp
-    except ImportError:
-        # noinspection PyPep8Naming
-        Timestamp = None
-
-    if obj is None:
-        # noinspection PyTypeChecker
-        return None
-
     if isinstance(obj, datetime):
         # trivially return datetime objects untouched
         return obj
-    elif Timestamp is not None and isinstance(obj, Timestamp):
+    elif isinstance(obj, Timestamp):
         # straight from a Google Timestamp
         dt = obj.ToDatetime()
         return dt.replace(tzinfo=timezone.utc)
@@ -135,9 +132,16 @@ def to_timedelta(obj: 'Any') -> 'timedelta':
         raise TypeError('could not convert {obj!r} to timedelta')
 
 
+def date_to_int(obj: 'date') -> int:
+    """
+    Return the Python ``datetime.date`` as the number of days since 1970 Jan 1.
+    """
+    return (obj - date(1970, 1, 1)).days
+
+
 def date_to_str(obj: 'date') -> str:
     """
-    Convert date to a JSON string that represents a date.
+    Convert a date to a JSON string that represents a date.
     """
     return obj.isoformat()
 
@@ -157,3 +161,51 @@ def datetime_to_str(obj: 'datetime') -> str:
         obj = obj.astimezone(timezone.utc)
     obj = obj.replace(tzinfo=None)
     return obj.isoformat() + 'Z'
+
+
+def datetime_to_timestamp(obj: 'datetime') -> 'Timestamp':
+    """
+    Convert the ``datetime`` to a Protobuf ``google.protobuf.Timestamp``.
+
+    :param obj:
+        A datetime. If the datetime is "naive" (no timezone information), it is
+        assumed to refer to UTC. If the datetime has timezone information, the
+        datetime will be converted to UTC before serializing.
+    :return: A :class:`Timestamp`.
+    """
+    td = datetime_to_epoch_timedelta(obj)
+    ts = Timestamp()
+    ts.seconds = td.seconds + td.days * _SECONDS_PER_DAY
+    ts.nanos = td.microseconds * _NANOS_PER_MICROSECOND
+    return ts
+
+
+def datetime_to_epoch_microseconds(obj: 'datetime') -> float:
+    """
+    Return the Python ``datetime.datetime`` as number of microseconds since
+    1970 Jan 1 midnight, UTC.
+    """
+    td = datetime_to_epoch_timedelta(obj)
+    return (td.days * 86400 + td.seconds) * 10 ** 6 + td.microseconds
+
+
+def datetime_to_epoch_timedelta(obj: 'datetime') -> 'timedelta':
+    """
+    Return the Python ``datetime.datetime`` as an elapsed time from
+    1970 Jan 1 midnight, UTC.
+    """
+    if obj.tzinfo is not None and obj.tzinfo.utcoffset(obj) is not None:
+        # aware time; translate to UTC
+        obj = obj.astimezone(timezone.utc)
+    obj = obj.replace(tzinfo=None)
+    return obj - datetime(1970, 1, 1, 0, 0, 0)
+
+
+def timedelta_to_duration(obj: 'timedelta') -> 'Duration':
+    """
+    Return the Python ``timestamp`` as a Protobuf ``google.protobuf.Duration``.
+    """
+    d = Duration()
+    d.seconds = obj.total_seconds()
+    d.nanos = obj.microseconds * 1000
+    return d

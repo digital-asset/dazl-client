@@ -4,51 +4,24 @@
 """
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
-from datetime import date, datetime, timedelta, timezone
 from typing import Any, Optional, Tuple, Union
 
-from ... import LOG
+# noinspection PyPackageRequirements
+from google.protobuf.empty_pb2 import Empty
+
 # noinspection PyPep8Naming
 from . import model as G
+from ... import LOG
 from ...damlast.daml_lf_1 import TypeConName
 from ...model.core import ContractId
 from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
     UnsupportedType, TemplateChoice, TypeReference, TypeEvaluationContext, SCALAR_TYPE_UNIT, \
     TextMapType, OptionalType, EnumType
 from ...model.writing import AbstractSerializer, CommandPayload
-from ...prim import decimal_to_str, to_bool, to_date, to_datetime, to_decimal, to_int, to_str, \
-    to_variant
-
-# noinspection PyPackageRequirements
-from google.protobuf.empty_pb2 import Empty
-# noinspection PyPackageRequirements
-from google.protobuf.duration_pb2 import Duration
-# noinspection PyPackageRequirements
-from google.protobuf.timestamp_pb2 import Timestamp
-
+from ...prim import date_to_int, datetime_to_epoch_microseconds, decimal_to_str, \
+    timedelta_to_duration, to_bool, to_date, to_datetime, to_decimal, to_int, to_str, to_variant
 
 R = Tuple[str, Any]
-
-
-_NANOS_PER_MICROSECOND = 1000
-_SECONDS_PER_DAY = 24 * 3600
-
-
-def as_api_timestamp(dt: datetime) -> Timestamp:
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
-    td = dt - datetime(1970, 1, 1, tzinfo=timezone.utc)
-    ts = Timestamp()
-    ts.seconds = td.seconds + td.days * _SECONDS_PER_DAY
-    ts.nanos = td.microseconds * _NANOS_PER_MICROSECOND
-    return ts
-
-
-def as_api_duration(t: timedelta) -> Duration:
-    d = Duration()
-    d.seconds = t.total_seconds()
-    d.nanos = t.microseconds * 1000
-    return d
 
 
 def as_identifier(tref: 'Union[TypeReference, TypeConName]') -> 'G.Identifier':
@@ -62,26 +35,6 @@ def as_identifier(tref: 'Union[TypeReference, TypeConName]') -> 'G.Identifier':
 
     else:
         raise TypeError('as_identifier requires a TypeConName or a TypeReference')
-
-
-def pb_get_date(obj: date) -> int:
-    """
-    Return the Python ``datetime.date`` as the number of days since 1970 Jan 1.
-    """
-    return (obj - date(1970, 1, 1)).days
-
-
-def pb_get_timestamp(obj: datetime) -> float:
-    """
-    Return the Python ``datetime.datetime`` as number of microseconds since
-    1970 Jan 1 midnight, UTC.
-    """
-    if obj.tzinfo is not None and obj.tzinfo.utcoffset(obj) is not None:
-        # aware time; translate to UTC
-        obj = obj.astimezone(timezone.utc)
-    obj = obj.replace(tzinfo=None)
-    td: timedelta = obj - datetime(1970, 1, 1, 0, 0, 0)
-    return (td.days * 86400 + td.seconds) * 10 ** 6 + td.microseconds
 
 
 class ProtobufSerializer(AbstractSerializer[G.Command, R]):
@@ -99,7 +52,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
             command_id=command_payload.command_id,
             party=command_payload.party,
             commands=commands,
-            deduplication_time=(as_api_duration(command_payload.deduplication_time)
+            deduplication_time=(timedelta_to_duration(command_payload.deduplication_time)
                                 if command_payload.deduplication_time is not None else None)))
 
     def serialize_create_command(self, template_type: RecordType, template_args: R) -> G.Command:
@@ -176,10 +129,10 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'party', to_str(obj)
 
     def serialize_date(self, context: TypeEvaluationContext, obj: Any) -> R:
-        return 'date', pb_get_date(to_date(obj))
+        return 'date', date_to_int(to_date(obj))
 
     def serialize_datetime(self, context: TypeEvaluationContext, obj: Any) -> R:
-        return 'timestamp', pb_get_timestamp(to_datetime(obj))
+        return 'timestamp', datetime_to_epoch_microseconds(to_datetime(obj))
 
     def serialize_timedelta(self, context: TypeEvaluationContext, obj: Any) -> R:
         raise ValueError('RelTime types are not supported by the gRPC API')
@@ -250,7 +203,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
                 # we'll allow for some convenience representations of this case
                 obj_ctor, vt = tt.named_args[0]
                 if (isinstance(vt, (RecordType, VariantType)) and len(vt.named_args) == 0) or \
-                   vt == SCALAR_TYPE_UNIT:
+                        vt == SCALAR_TYPE_UNIT:
                     obj_value = {}
                 else:
                     LOG.error('Could not find a helpful representation of the single-variant case '
