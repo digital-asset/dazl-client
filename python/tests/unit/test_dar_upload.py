@@ -31,6 +31,10 @@ async def test_dar_uploads_near_startup(sandbox):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip(
+    'Background package polling will soon be disabled, and packages will be loaded on an as-needed '
+    'basis. When this happens, PackagesAddedEvent will be dropped. If this is still a use-case you '
+    'need, please write your own poller around lookup.package_ids.')
 async def test_package_events(sandbox):
     initial_events = []
     follow_up_events = []

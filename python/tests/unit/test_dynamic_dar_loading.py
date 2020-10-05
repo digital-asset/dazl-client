@@ -3,12 +3,15 @@
 
 from pathlib import Path
 
+import pytest
+
 from dazl.model.types_store import PackageStore, PackageProvider, MemoryPackageProvider
 from dazl.protocols.v1.grpc import grpc_package_sync
 from dazl.util.dar import DarFile
 from .dars import AllKindsOf, Pending
 
 
+@pytest.mark.skip('PackageStore is deprecated; this functionality will soon be removed')
 def test_package_sync_multiple_loads():
     store = PackageStore.empty()
 
