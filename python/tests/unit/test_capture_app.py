@@ -3,12 +3,12 @@
 
 from datetime import datetime
 
-from dazl import ContractId
 from dazl.damlast.daml_lf_1 import TypeConName, ModuleRef, PackageRef, DottedName
 from dazl.model.types import dotted_name
 from dazl.model.types_store import PackageStore
 from dazl.pretty.table.fmt_pretty import PrettyFormatter
 from dazl.pretty.table.model import TableBuilder
+from dazl.prim import ContractId
 
 
 def test_capture_handles_unknown_templates():
@@ -21,7 +21,7 @@ def test_capture_handles_unknown_templates():
         dotted_name("SomeUnknownTemplate"))
 
     table = TableBuilder()
-    table.add('A', ContractId('0:0', name), dict(some_field='some_value'), datetime.utcnow())
+    table.add('A', ContractId(name, '0:0'), dict(some_field='some_value'), datetime.utcnow())
 
     lines = formatter.render(store, parties, table)
     output = '\n'.join(lines) + '\n'

@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 from subprocess import Popen, TimeoutExpired
 from threading import Event, Thread
-from .prim_types import TimeDeltaConvertible, to_timedelta
+from ..prim.datetime import TimeDeltaLike, to_timedelta
 
 
 def kill_process_tree(process: 'Popen'):
@@ -45,7 +45,7 @@ def kill_process_tree(process: 'Popen'):
         process.communicate()
 
 
-def wait_for_process_port(process: 'Popen', port: int, timeout: 'TimeDeltaConvertible') -> None:
+def wait_for_process_port(process: 'Popen', port: int, timeout: 'TimeDeltaLike') -> None:
     from ..model.core import ProcessDiedException
     from .io import is_port_alive
 

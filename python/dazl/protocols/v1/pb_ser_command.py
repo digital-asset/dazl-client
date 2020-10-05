@@ -5,7 +5,7 @@
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
 from datetime import date, datetime, timedelta, timezone
-from typing import Any, Optional, Tuple
+from typing import Any, Optional, Tuple, Union
 
 from ... import LOG
 # noinspection PyPep8Naming
@@ -16,8 +16,8 @@ from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
     UnsupportedType, TemplateChoice, TypeReference, TypeEvaluationContext, SCALAR_TYPE_UNIT, \
     TextMapType, OptionalType, EnumType
 from ...model.writing import AbstractSerializer, CommandPayload
-from ...util.prim_types import to_boolean, to_date, to_datetime, to_decimal, to_int, to_str, \
-    to_ledger_api_decimal, decode_variant_dict
+from ...prim import decimal_to_str, to_bool, to_date, to_datetime, to_decimal, to_int, to_str, \
+    to_variant
 
 # noinspection PyPackageRequirements
 from google.protobuf.empty_pb2 import Empty
@@ -161,7 +161,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'unit', Empty()
 
     def serialize_bool(self, context: TypeEvaluationContext, obj: Any) -> R:
-        return 'bool', to_boolean(obj)
+        return 'bool', to_bool(obj)
 
     def serialize_text(self, context: TypeEvaluationContext, obj: Any) -> R:
         return 'text', to_str(obj)
@@ -170,7 +170,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         return 'int64', to_int(obj)
 
     def serialize_decimal(self, context: TypeEvaluationContext, obj: Any) -> R:
-        return 'numeric', to_ledger_api_decimal(to_decimal(obj))
+        return 'numeric', decimal_to_str(to_decimal(obj))
 
     def serialize_party(self, context: TypeEvaluationContext, obj: Any) -> R:
         return 'party', to_str(obj)
@@ -243,7 +243,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
     def serialize_variant(self, context: TypeEvaluationContext, tt: VariantType, obj: Any) -> R:
         from ..._gen.com.daml.ledger.api.v1.value_pb2 import Variant
         try:
-            obj_ctor, obj_value = decode_variant_dict(obj)
+            obj_ctor, obj_value = to_variant(obj)
         except ValueError:
             if len(tt.named_args) == 1:
                 # there is only one variation on this variant; under very specific circumstances

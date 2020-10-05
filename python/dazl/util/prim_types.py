@@ -5,17 +5,22 @@
 The :mod:`dazl.util.prim_types` module contains functions for converting arbitrary objects and
 on-wire formats to/from canonical Python types.
 """
+import warnings
 from decimal import Decimal
 
-from datetime import datetime, timezone, date, timedelta
-from functools import partial
+from datetime import datetime, date, timedelta
 from typing import overload, Any, Mapping, Tuple, Union
+from ..prim.datetime import TimeDeltaLike as TimeDeltaConvertible, DATETIME_ISO8601_Z_FORMAT
 
+warnings.warn(
+    'dazl.util.prim_types is deprecated; use dazl.prim instead.', DeprecationWarning, stacklevel=2)
 
-TimeDeltaConvertible = Union[int, float, Decimal, str, timedelta]
-
-DATETIME_ISO8601_Z_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
-_VARIANT_KEYS = frozenset(["tag", "value"])
+__all__ = [
+    'to_boolean', 'to_str', 'to_int', 'to_date', 'to_datetime', 'to_decimal', 'to_ledger_api_decimal',
+    'to_timedelta', 'PrimitiveTypeConverter', 'decode_variant_dict', 'standard_format', 'nano_format',
+    'unflatten_dotted_keys', 'DEFAULT_TYPE_CONVERTER', 'DATETIME_ISO8601_Z_FORMAT',
+    'frozendict', 'to_hashable'
+]
 
 
 @overload
@@ -26,283 +31,126 @@ def to_boolean(obj: 'Union[bool, str]') -> bool: ...
 def to_boolean(obj: None) -> None: ...
 
 
-def to_boolean(obj) -> bool:
-    """
-    Convert any of the common wire representations of a ``bool`` to a ``bool``.
-    """
-    if obj is None:
-        # noinspection PyTypeChecker
-        return None
+def to_boolean(obj):
+    from ..prim import to_bool
+    warnings.warn(
+        'dazl.util.prim_types.to_boolean is deprecated; use dazl.prim.to_bool instead.',
+        DeprecationWarning, stacklevel=2)
+    return to_bool(obj) if obj is not None else None
 
-    if isinstance(obj, bool):
-        return obj
-    elif isinstance(obj, str):
-        lobj = obj.lower().strip()
-        if lobj == 'true':
-            return True
-        elif lobj == 'false':
-            return False
-        else:
-            raise ValueError(f"Could not parse a string as a boolean: {obj!r}")
-    raise ValueError(f'Could not parse as a boolean: {obj!r}')
+
+def to_str(obj: Any) -> str:
+    from ..prim import to_str
+    warnings.warn(
+        'dazl.util.prim_types.to_str is deprecated; use dazl.prim.to_str instead.',
+        DeprecationWarning, stacklevel=2)
+    return to_str(obj) if obj is not None else None
+
+
+def to_int(obj: Any) -> int:
+    from ..prim import to_int
+    warnings.warn(
+        "dazl.util.prim_types.to_int is deprecated; use dazl.prim.to_int instead.",
+        DeprecationWarning, stacklevel=2)
+    return to_int(obj) if obj is not None else None
+
+
+def to_date(obj: Any) -> date:
+    from ..prim import to_date
+    warnings.warn(
+        "dazl.util.prim_types.to_date is deprecated; use dazl.prim.to_date instead.",
+        DeprecationWarning, stacklevel=2)
+    return to_date(obj) if obj is not None else None
+
+
+def to_datetime(obj: Any) -> datetime:
+    from ..prim import to_datetime
+    warnings.warn(
+        "dazl.util.prim_types.to_datetime is deprecated; use dazl.prim.to_datetime instead.",
+        DeprecationWarning, stacklevel=2)
+    return to_datetime(obj) if obj is not None else None
+
+
+def to_decimal(obj: Any) -> Decimal:
+    from ..prim import to_decimal
+    warnings.warn(
+        "dazl.util.prim_types.to_decimal is deprecated; use dazl.prim.to_decimal instead.",
+        DeprecationWarning, stacklevel=2)
+    return to_decimal(obj) if obj is not None else None
 
 
 def to_ledger_api_decimal(obj: 'Decimal') -> str:
-    precision = max(0, -obj.as_tuple().exponent)
-    return format(obj, f'.{precision}f')
+    from ..prim import decimal_to_str
+    warnings.warn(
+        'dazl.util.prim_types.to_ledger_api_decimal is deprecated; use dazl.prim.decimal_to_str instead.',
+        DeprecationWarning, stacklevel=2)
+    return decimal_to_str(obj)
 
 
-@overload
-def to_timedelta(obj: TimeDeltaConvertible) -> timedelta: ...
-
-
-@overload
-def to_timedelta(obj: None) -> None: ...
-
-
-def to_timedelta(obj) -> timedelta:
-    """
-    Convert an object to a timedelta. If the object is a timedelta, it is returned; if it is a
-    numeric type, the value is interpreted as seconds and that is returned.
-
-    :param obj: The object to convert.
-    :return: A timedelta.
-
-    >>> to_timedelta(timedelta(minutes=1, seconds=2))
-    timedelta(minutes=1, seconds=2)
-    >>> to_timedelta(30)
-    timedelta(seconds=30)
-    >>> to_timedelta(30.0)
-    timedelta(seconds=30)
-    >>> to_timedelta(Decimal(30))
-    timedelta(seconds=30)
-    """
-    if obj is None:
-        raise ValueError('obj cannot be None')
-    if isinstance(obj, timedelta):
-        return obj
-    elif isinstance(obj, (int, float)):
-        return timedelta(seconds=obj)
-    elif isinstance(obj, Decimal):
-        return timedelta(seconds=float(obj))
-    elif isinstance(obj, str):
-        return timedelta(seconds=float(obj))
-    else:
-        raise TypeError('could not convert {obj!r} to timedelta')
+def to_timedelta(obj: TimeDeltaConvertible) -> 'timedelta':
+    from ..prim import to_timedelta
+    warnings.warn(
+        'dazl.util.prim_types.to_timedelta is deprecated; use dazl.prim.to_timedelta instead.',
+        DeprecationWarning, stacklevel=2)
+    return to_timedelta(obj)
 
 
 class PrimitiveTypeConverter:
     to_boolean = staticmethod(to_boolean)
-
-    def to_int(self, obj: Any) -> int:
-        if obj is None:
-            # noinspection PyTypeChecker
-            return None
-
-        if isinstance(obj, int):
-            return obj
-        elif isinstance(obj, str):
-            return int(obj)
-        elif isinstance(obj, Decimal):
-            return int(obj)
-        raise ValueError(f'Could not parse as an int: {obj!r}')
-
-    def to_decimal(self, obj: Any) -> Decimal:
-        """
-        Convert any of the common wire representations of a ``Decimal`` to a ``Decimal``.
-        """
-        if obj is None:
-            # noinspection PyTypeChecker
-            return None
-
-        if isinstance(obj, Decimal):
-            return obj
-        elif isinstance(obj, (int, float)):
-            return Decimal(str(obj))
-        elif isinstance(obj, str):
-            return Decimal(obj)
-        raise ValueError(f'Could not parse as a Decimal: {obj!r}')
-
-    def to_str(self, obj: Any) -> str:
-        if obj is None:
-            # noinspection PyTypeChecker
-            return None
-
-        if isinstance(obj, str):
-            return obj
-        else:
-            return str(obj)
-
-    def to_date(self, obj: Any) -> date:
-        """
-        Convert any of the common wire representations of a ``date`` to a ``date``.
-        """
-        if obj is None:
-            # noinspection PyTypeChecker
-            return None
-
-        if isinstance(obj, date):
-            return obj
-        elif isinstance(obj, datetime):
-            return obj.date()
-        elif isinstance(obj, (int, float)):
-            return date(1970, 1, 1) + timedelta(days=obj)
-        elif isinstance(obj, str):
-            for fmt in _KNOWN_DATE_FORMATS:
-                try:
-                    return fmt(obj).date()
-                except ValueError:
-                    pass
-
-        raise ValueError(f'Could not parse as a date: {obj!r}')
-
-    def to_datetime(self, obj: Any) -> datetime:
-        """
-        Convert any of the common wire representations of a ``datetime`` to a ``datetime``.
-        """
-        try:
-            # noinspection PyPackageRequirements
-            from google.protobuf.timestamp_pb2 import Timestamp
-        except ImportError:
-            # noinspection PyPep8Naming
-            Timestamp = None
-
-        if obj is None:
-            # noinspection PyTypeChecker
-            return None
-
-        if isinstance(obj, datetime):
-            # trivially return datetime objects untouched
-            return obj
-        elif Timestamp is not None and isinstance(obj, Timestamp):
-            # straight from a Google Timestamp
-            dt = obj.ToDatetime()
-            return dt.replace(tzinfo=timezone.utc)
-        elif isinstance(obj, (int, float)):
-            # from the gRPC Ledger API; interpret as microseconds from the GMT epoch
-            return datetime.utcfromtimestamp(obj / 1e6).replace(tzinfo=timezone.utc)
-        elif isinstance(obj, str):
-            # from the REST Ledger API or an end user; give preference to the unambiguous wire
-            # format ISO8601, but otherwise try to parse in a variety of formats
-            for fmt in _KNOWN_TIME_FORMATS:
-                try:
-                    return fmt(obj)
-                except ValueError:
-                    pass
-
-        raise ValueError(f'Could not parse as a datetime: {obj!r}')
-
+    to_str = staticmethod(to_str)
+    to_int = staticmethod(to_int)
+    to_decimal = staticmethod(to_decimal)
+    to_date = staticmethod(to_date)
+    to_datetime = staticmethod(to_datetime)
     to_timedelta = staticmethod(to_timedelta)
 
 
-def decode_variant_dict(obj: Any) -> 'Tuple[str, Any]':
-    from collections.abc import Mapping
-    if not isinstance(obj, Mapping):
-        raise ValueError(f'cannot coerce {obj!r} to a variant')
-    if _VARIANT_KEYS == obj.keys():
-        return obj["tag"], obj["value"]
-    if len(obj) != 1:
-        raise ValueError(f'variants must be encoded as single-key dicts (got {obj!r} instead)')
-    key = list(obj)[0]
-    value = obj.get(key)
-    return key, value
+def decode_variant_dict(obj: 'Any') -> 'Tuple[str, Any]':
+    from ..prim import to_variant
+    warnings.warn(
+        'dazl.util.prim_types.decode_variant_dict is deprecated; use dazl.prim.to_variant instead.',
+        DeprecationWarning, stacklevel=2)
+    return to_variant(obj)
 
 
 def standard_format(fmt, value):
-    return datetime.strptime(value, fmt).replace(tzinfo=timezone.utc)
+    from ..prim.datetime import _parse
+    warnings.warn(
+        'dazl.util.prim_types.nano_format is deprecated; there is no replacement.',
+        DeprecationWarning, stacklevel=2)
+    return _parse(fmt, value)
 
 
 def nano_format(value):
-    if value.endswith('Z'):
-        return standard_format(DATETIME_ISO8601_Z_FORMAT, value[0:-4] + 'Z')
-    else:
-        raise ValueError('could not parse')
+    from ..prim.datetime import _parse_nano_format
+    warnings.warn(
+        'dazl.util.prim_types.nano_format is deprecated; there is no replacement.',
+        DeprecationWarning, stacklevel=2)
+    return _parse_nano_format(value)
 
 
-def unflatten_dotted_keys(m: Mapping[str, Any]):
-    if m is None:
-        return None
-
-    # pull out any specialized dotted-field mappings
-    reformatted = dict()
-    for key, value in m.items():
-        k1, d, k2 = key.partition('.')
-        if d:
-            v = reformatted.get(k1)
-            if v is None:
-                v = dict()
-                reformatted[k1] = v
-            v[k2] = value
-        else:
-            reformatted[key] = value
-
-    return reformatted
+def unflatten_dotted_keys(m: 'Mapping[str, Any]'):
+    from ..prim import to_record
+    warnings.warn(
+        'dazl.util.prim_types.unflatten_dotted_keys is deprecated; use dazl.prim.to_record instead.',
+        DeprecationWarning, stacklevel=2)
+    return to_record(m) if m is not None else None
 
 
 DEFAULT_TYPE_CONVERTER = PrimitiveTypeConverter()
-to_int = DEFAULT_TYPE_CONVERTER.to_int
-to_decimal = DEFAULT_TYPE_CONVERTER.to_decimal
-to_str = DEFAULT_TYPE_CONVERTER.to_str
-to_date = DEFAULT_TYPE_CONVERTER.to_date
-to_datetime = DEFAULT_TYPE_CONVERTER.to_datetime
-
-
-_KNOWN_DATE_FORMATS = [
-    partial(standard_format, '%Y-%m-%d'),
-    partial(standard_format, '%Y.%m.%d'),
-]
-
-
-_KNOWN_TIME_FORMATS = [
-    partial(standard_format, DATETIME_ISO8601_Z_FORMAT),
-    nano_format,
-    partial(standard_format, '%Y-%m-%dT%H:%M:%S.%f'),
-    partial(standard_format, '%Y-%m-%d %H:%M:%S.%f'),
-    partial(standard_format, '%Y-%m-%dT%H:%M:%SZ'),
-    partial(standard_format, '%Y-%m-%dT%H:%M:%S'),
-    partial(standard_format, '%Y-%m-%d %H:%M:%S'),
-]
 
 
 def frozendict(*args, **kwargs):
-    """
-    Create a :class:`FrozenDict`, a special subclass of `dict` that is immutable and hashable.
-    """
-    class HackyDict(dict):
-        def __hash__(self):
-            return 0
-
-        def __delitem__(self, *args, **kwargs):
-            raise RuntimeError('frozendicts are immutable')
-
-        def __setitem__(self, key, value):
-            raise RuntimeError('frozendicts are immutable')
-
-        def pop(self, *args, **kwargs):
-            raise RuntimeError('frozendicts are immutable')
-
-        def popitem(self, *args, **kwargs):
-            raise RuntimeError('frozendicts are immutable')
-
-        def setdefault(self, *args, **kwargs):
-            raise RuntimeError('frozendicts are immutable')
-
-        def update(self, *args, **kwargs):
-            raise RuntimeError('frozendicts are immutable')
-
-        def clear(self, *args, **kwargs):
-            raise RuntimeError('frozendicts are immutable')
-
-    return HackyDict(*args, **kwargs)
+    from ..prim.map import FrozenDict
+    warnings.warn(
+        "dazl.util.prim_types.frozendict is deprecated; use dazl.prim.map.FrozenDict instead.",
+        DeprecationWarning, stacklevel=2)
+    return FrozenDict(*args, **kwargs)
 
 
-def to_hashable(obj):
-    from collections import Mapping, Collection
-    if isinstance(obj, Mapping):
-        return frozendict(obj)
-    elif isinstance(obj, str):
-        return obj
-    elif isinstance(obj, Collection):
-        return tuple(obj)
-    else:
-        return obj
+def to_hashable(*args, **kwargs):
+    from ..prim.map import to_hashable
+    warnings.warn(
+        "dazl.util.prim_types.to_hashable is deprecated; use dazl.prim.map.to_hashable instead.",
+        DeprecationWarning, stacklevel=2)
+    return to_hashable(*args, **kwargs)

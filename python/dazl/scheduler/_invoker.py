@@ -11,8 +11,8 @@ from datetime import timedelta
 import signal
 
 from ._base import RunLevel
+from ..prim import to_timedelta
 from ..util.asyncio_util import safe_create_future, execute_in_loop
-from ..util.prim_types import to_timedelta
 
 DEFAULT_TIMEOUT = timedelta(seconds=30)
 

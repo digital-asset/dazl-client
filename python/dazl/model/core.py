@@ -15,11 +15,12 @@ import warnings
 from pathlib import Path
 
 from dataclasses import dataclass
-from typing import Any, BinaryIO, Callable, Collection, Dict, NewType, Optional, Tuple, TypeVar, \
-    Union, TYPE_CHECKING
+from typing import BinaryIO, Callable, Collection, Dict, Optional, Tuple, TypeVar, Union, \
+    TYPE_CHECKING
 from datetime import datetime
 
 from ..damlast.daml_lf_1 import TypeConName
+from ..prim import ContractId as ContractId_, ContractData, Party
 
 if TYPE_CHECKING:
     from .types import Type, TypeReference
@@ -27,74 +28,23 @@ if TYPE_CHECKING:
 T = TypeVar('T')
 
 
-class ContractId:
-    """
-    There are two kinds of contract IDs: those that know the template type of the underlying
-    contract instance and those that don't. Contract IDs that arise from event processing are always
-    tagged with their type when they are read off the event stream. Contract IDs that are
-    parameters to a template are not currently tagged with a template type.
-
-    Instance attributes:
-
-    .. attribute:: ContractId.contract_id
-
-        A ``str`` reference to a contract.
-
-    .. attribute:: ContractId.template_id
-
-        An optional ``str`` template ID.
-
-    Instance members:
-    """
-    __slots__ = ('_value', '_value_type', '_value_type_deprecated')
+class ContractId(ContractId_):
+    __slots__ = '_value_type_deprecated',
 
     def __init__(self, contract_id: str, template_id: 'Union[str, Type, TypeConName]'):
+        warnings.warn(
+            'dazl.model.core.ContractId is deprecated; use dazl.prim.ContractId instead.',
+            DeprecationWarning, stacklevel=2)
         from ..damlast.compat import parse_template
 
         if not isinstance(contract_id, str):
             raise ValueError('contract_id must be a string')
 
-        self._value = contract_id
-        self._value_type, self._value_type_deprecated = parse_template(template_id)
+        value = contract_id
+        value_type, value_type_deprecated = parse_template(template_id)
 
-    def __str__(self):
-        """
-        Return the contract ID without a type adornment.
-        """
-        return self.value
-
-    def __repr__(self):
-        return f'ContractId(value_type={self.value_type}, value={self.value!r})'
-
-    def __eq__(self, other):
-        """
-        Returns whether this contract is the same as the other one. Template
-        type is NOT considered in equality.
-        """
-        return isinstance(other, ContractId) and self.value == other.value
-
-    def __format__(self, format_spec):
-        return ('{:' + format_spec + 's}').format(self.value)
-
-    def __hash__(self):
-        """
-        Returns a hash of the ContractId (based on the value of ContractId).
-        """
-        return hash(self.value)
-
-    @property
-    def value(self) -> str:
-        """
-        Get the raw contract ID value (for example, ``"#4:1"``).
-        """
-        return self._value
-
-    @property
-    def value_type(self) -> 'TypeConName':
-        """
-        Get the type of template that is pointed to by this :class:`ContractId`.
-        """
-        return self._value_type
+        super().__init__(value_type, value)
+        object.__setattr__(self, '_value_type_deprecated', value_type_deprecated)
 
     @property
     def contract_id(self) -> str:
@@ -139,9 +89,11 @@ class ContractId:
         warnings.warn(
             "ContractId.replace is deprecated; simply construct a ContractId with the desired "
             "values instead.", DeprecationWarning, stacklevel=2)
-        return ContractId(
-            contract_id if contract_id is not None else self.value,
-            template_id if template_id is not None else self.value_type)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return ContractId(
+                contract_id if contract_id is not None else self.value,
+                template_id if template_id is not None else self.value_type)
 
     def for_json(self):
         """
@@ -151,11 +103,9 @@ class ContractId:
         return self.value
 
 
-ContractData = Dict[str, Any]
 ContractMatch = Union[None, Callable[[ContractData], bool], ContractData]
 ContractsState = Dict[ContractId, ContractData]
 ContractsHistoricalState = Dict[ContractId, Tuple[ContractData, bool]]
-Party = NewType('Party', str)
 
 
 class ContractContextualDataCollection(tuple):

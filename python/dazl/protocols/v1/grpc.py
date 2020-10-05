@@ -18,13 +18,14 @@ from .pb_parse_event import serialize_acs_request, serialize_transactions_reques
     to_acs_events, to_transaction_events, BaseEventDeserializationContext
 from .pb_parse_metadata import parse_daml_metadata_pb, find_dependencies
 from ...damlast.parse import parse_archive_payload
-from ...model.core import Party, UserTerminateRequest, ConnectionTimeoutError
+from ...model.core import UserTerminateRequest, ConnectionTimeoutError
 from ...model.ledger import LedgerMetadata
 from ...model.network import HTTPConnectionSettings
 from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ...model.types import PackageId, PackageIdSet
 from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
+from ...prim import Party, to_party
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
@@ -34,7 +35,7 @@ class GRPCv1LedgerClient(LedgerClient):
     def __init__(self, connection: 'GRPCv1Connection', ledger: LedgerMetadata, party: Party):
         self.connection = safe_cast(GRPCv1Connection, connection)
         self.ledger = safe_cast(LedgerMetadata, ledger)
-        self.party = Party(safe_cast(str, party))
+        self.party = to_party(party)
 
     def commands(self, commands: CommandPayload) -> None:
         serializer = self.ledger.serializer

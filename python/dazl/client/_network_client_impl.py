@@ -27,11 +27,11 @@ from ..model.core import Party, DazlPartyMissingError
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import InitEvent, ReadyEvent, BaseEvent
+from ..prim.datetime import TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
 from ..scheduler import Invoker, RunLevel
 from ..util.dar import get_dar_package_ids
-from ..util.prim_types import to_timedelta, TimeDeltaConvertible
 
 T = TypeVar('T')
 
@@ -306,7 +306,7 @@ class _NetworkImpl:
                     return bot
         return None
 
-    def simple_metadata(self, timeout: 'TimeDeltaConvertible') -> LedgerMetadata:
+    def simple_metadata(self, timeout: 'TimeDeltaLike') -> 'LedgerMetadata':
         """
         Retrieve metadata about the ledger.
 
@@ -319,14 +319,14 @@ class _NetworkImpl:
         with self._lock:
             return self.invoker.run_in_loop(self._pool.ledger, timeout=timeout)
 
-    async def aio_metadata(self) -> LedgerMetadata:
+    async def aio_metadata(self) -> 'LedgerMetadata':
         """
         Coroutine version of :meth:`metadata`.
         """
         pool = await self._pool_init
         return await pool.ledger()
 
-    async def upload_package(self, contents: bytes, timeout: 'TimeDeltaConvertible') -> None:
+    async def upload_package(self, contents: bytes, timeout: 'TimeDeltaLike') -> None:
         """
         Ensure packages specified by the given byte array are loaded on the remote server. This
         method only returns once packages are reported by the Package Service.
@@ -340,8 +340,7 @@ class _NetworkImpl:
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)
 
-    async def ensure_package_ids(
-            self, package_ids: 'Collection[str]', timeout: 'TimeDeltaConvertible'):
+    async def ensure_package_ids(self, package_ids: 'Collection[str]', timeout: 'TimeDeltaLike'):
         from asyncio import wait_for, TimeoutError
         timeout = to_timedelta(timeout)
         expire_time = datetime.max #datetime.utcnow() + timeout

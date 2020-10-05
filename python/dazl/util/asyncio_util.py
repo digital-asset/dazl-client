@@ -17,7 +17,7 @@ from typing import Any, Awaitable, Callable, Generator, Generic, Iterable, List,
     Sequence, TypeVar, Union
 
 from .. import LOG
-from .prim_types import to_timedelta, TimeDeltaConvertible
+from ..prim.datetime import TimeDeltaLike, to_timedelta
 
 T = TypeVar('T', covariant=True)
 U = TypeVar('U')
@@ -163,7 +163,7 @@ class FailedInvocation:
 def execute_in_loop(
         loop: AbstractEventLoop,
         coro_fn: 'Callable[[], Union[Awaitable[T], T]]',
-        timeout: 'Optional[TimeDeltaConvertible]' = 30.0) -> T:
+        timeout: 'Optional[TimeDeltaLike]' = 30.0) -> T:
     """
     Run a coroutine in a target loop. Exceptions thrown by the coroutine are
     propagated to the caller. Must NOT be called from a coroutine on the same
