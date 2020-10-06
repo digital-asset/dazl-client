@@ -2,19 +2,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from asyncio import gather, ensure_future, sleep
+from asyncio import gather, ensure_future, sleep, wait_for
 from collections import defaultdict
-from dataclasses import fields
-from datetime import timedelta, datetime
+from dataclasses import asdict, fields
+from datetime import timedelta
 from threading import RLock, Thread, current_thread
 from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
     Union, overload
+
 try:
     from typing import Literal
 except ImportError:
     from typing_extensions import Literal
-
-from dataclasses import asdict
 
 from .. import LOG
 from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING, NONE_IF_MISSING, \
@@ -22,6 +21,8 @@ from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING, NONE_IF_MISS
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
+from ..damlast.lookup import MultiPackageLookup
+from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
 from ..model.core import Party, DazlPartyMissingError
 from ..model.ledger import LedgerMetadata
@@ -31,19 +32,20 @@ from ..prim.datetime import TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
 from ..scheduler import Invoker, RunLevel
-from ..util.dar import get_dar_package_ids
 
 T = TypeVar('T')
 
 
 class _NetworkImpl:
 
-    __slots__ = ('_lock', '_main_thread', 'invoker', '_party_clients', '_global_impls',
-                 '_party_impls', 'bots', '_config', '_pool', '_pool_init',
+    __slots__ = ('lookup', 'invoker', '_lock', '_main_thread', '_party_clients',
+                 '_global_impls', '_party_impls', 'bots', '_config', '_pool', '_pool_init',
                  '_cached_metadata', '_metrics')
 
     def __init__(self, metrics: 'Optional[MetricEvents]' = None):
+        self.lookup = MultiPackageLookup()
         self.invoker = Invoker()
+
         self._lock = RLock()
         self._main_thread = None  # type: Optional[Thread]
         self._pool = None  # type: Optional[LedgerNetwork]
@@ -109,7 +111,15 @@ class _NetworkImpl:
             if connect_timeout <= timedelta(0):
                 connect_timeout = None
 
-            options = LedgerConnectionOptions(connect_timeout=connect_timeout)
+            package_lookup_timeout = to_timedelta(config.package_lookup_timeout)
+            if package_lookup_timeout <= timedelta(0):
+                package_lookup_timeout = None
+
+            options = LedgerConnectionOptions(
+                lookup=self.lookup,
+                connect_timeout=connect_timeout,
+                package_lookup_timeout=package_lookup_timeout,
+                eager_package_fetch=config.eager_package_fetch)
 
             self._pool = pool = AutodetectLedgerNetwork(self.invoker, options)
             self._pool_init.set_result(pool)
@@ -340,16 +350,17 @@ class _NetworkImpl:
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)
 
-    async def ensure_package_ids(self, package_ids: 'Collection[str]', timeout: 'TimeDeltaLike'):
-        from asyncio import wait_for, TimeoutError
-        timeout = to_timedelta(timeout)
-        expire_time = datetime.max #datetime.utcnow() + timeout
-        metadata = await wait_for(self.aio_metadata(), timeout.total_seconds())
+    async def ensure_package_ids(
+            self, package_ids: 'Collection[str]', timeout: 'TimeDeltaLike'):
+        await wait_for(self.__ensure_package_ids(package_ids), to_timedelta(timeout).total_seconds())
+
+    async def __ensure_package_ids(self, package_ids: 'Collection[str]'):
+        from asyncio import sleep
+        metadata = await self.aio_metadata()
         package_id_set = set(package_ids)
-        while datetime.utcnow() < expire_time:
-            if package_id_set.issubset(set(metadata.store.package_ids())):
-                return
-        raise TimeoutError()
+        while not package_id_set.issubset(metadata._store.package_ids()):
+            # just sit here, waiting for our packages to show up in the store
+            await sleep(1)
 
     # region Event Handler Management
 
@@ -496,7 +507,8 @@ class _NetworkRunner:
         # Raise the 'init' event.
         init_futs = []
         if first_offset is None:
-            evt = InitEvent(None, None, None, metadata.ledger_id, metadata.store)
+            evt = InitEvent(
+                None, None, None, metadata.ledger_id, self._network_impl.lookup, metadata._store)
             init_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
             init_futs.append(ensure_future(party_impl.initialize(None, metadata)))
@@ -512,7 +524,9 @@ class _NetworkRunner:
         # Raise the 'ready' event.
         ready_futs = []
         if first_offset is None:
-            evt = ReadyEvent(None, None, None, metadata.ledger_id, metadata.store, offset)
+            evt = ReadyEvent(
+                None, None, None, metadata.ledger_id, self._network_impl.lookup, metadata._store,
+                offset)
             ready_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
             ready_futs.append(ensure_future(party_impl.emit_ready(metadata, None, offset)))

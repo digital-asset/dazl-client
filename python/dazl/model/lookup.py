@@ -40,9 +40,10 @@ def validate_template(template: Any) -> 'Tuple[str, str]':
             return pkgid, f'{m}:{e}'
 
         elif len(components) == 2:
-            # one colon, so assume the package ID is unspecified
+            # one colon, so assume the package ID is unspecified UNLESS the second component is a
+            # wildcard; then we assume the wildcard means any module name and entity name
             m, e = components
-            return '*', f'{m}:{e}'
+            return ('*', f'{m}:{e}') if e != '*' else (m, '*')
 
         elif len(components) == 1:
             # no colon whatsoever

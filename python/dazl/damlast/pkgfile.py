@@ -109,9 +109,26 @@ class DarFile:
         in a DAR are to be accessed, or use a :class:`CachedDarFile` instance if random access of
         packages by package ID are needed.
         """
+        payload = self.package_bytes(package_id)
+        return parse_archive(package_id, payload).package
+
+    def package_bytes(self, package_id: 'PackageRef') -> bytes:
+        """
+        Return bytes corresponding to the specified :class:`PackageRef`. If this DAR were to be
+        uploaded to a ledger, these are the bytes that would be returned for the specified
+        :class:`PackageRef`.
+
+        Note that this NOT the same as simply returning a ``.dalf`` file within a DAR, because a
+        ``.dalf`` contains an envelope in the form of ``ArchivePayload`` messages, and it is the
+        _contents_ of this message that are persisted by Ledger API implementations.
+        """
         for a in self._pb_archives():
             if a.hash == package_id:
-                return parse_archive(a.hash, a.payload).package
+                return a.payload
+
+        # We do not raise PackageNotFoundError here (even though it seems like it would be a more
+        # apt error) because PackageNotFoundError implies the operation is retryable
+        raise Exception(f'package not found in a DAR: {package_id!r}')
 
     def package_ids(self) -> 'AbstractSet[PackageRef]':
         """

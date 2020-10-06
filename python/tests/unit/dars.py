@@ -1,11 +1,9 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
 from pathlib import Path
 from typing import Mapping
 
-from dazl import setup_default_logger
 from dazl.util.io import find_nearest_ancestor
 
 DAZL_ROOT = find_nearest_ancestor('.dazl-root', Path(__file__).resolve()).parent

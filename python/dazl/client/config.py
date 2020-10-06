@@ -72,6 +72,16 @@ class URLConfig:
         param_type=SECONDS_TYPE,
         default_value=DEFAULT_CONNECT_TIMEOUT_SECONDS)
 
+    eager_package_fetch: Optional[bool] = config_field(
+        'whether to fetch all packages on startup',
+        param_type=BOOLEAN_TYPE,
+        default_value=True)
+
+    package_lookup_timeout: Optional[float] = config_field(
+        'number of seconds before giving up on a package',
+        param_type=SECONDS_TYPE,
+        default_value=DEFAULT_CONNECT_TIMEOUT_SECONDS)
+
     application_name: Optional[str] = config_field(
         'The name that this application uses to identify itself to the ledger.',
         param_type=STRING_TYPE,
