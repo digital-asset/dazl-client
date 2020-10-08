@@ -4,10 +4,11 @@
 """
 Support for the gRPC-based Ledger API.
 """
+import warnings
 from asyncio import gather
 from datetime import datetime
 from threading import Event
-from typing import Iterable, Optional, Sequence
+from typing import AbstractSet, Iterable, Optional, Sequence
 
 # noinspection PyPackageRequirements
 from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credentials, RpcError, \
@@ -16,20 +17,24 @@ from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credenti
 from ... import LOG
 from .._base import LedgerClient, _LedgerConnection, LedgerConnectionOptions
 from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
-    to_acs_events, to_transaction_events, BaseEventDeserializationContext, to_type_con_name
-from .pb_parse_metadata import parse_daml_metadata_pb, find_dependencies
+    to_acs_events, to_transaction_events, BaseEventDeserializationContext
+from ...damlast.daml_lf_1 import PackageRef
 from ...damlast.parse import parse_archive_payload
 from ...model.core import UserTerminateRequest, ConnectionTimeoutError
 from ...model.ledger import LedgerMetadata
 from ...model.network import HTTPConnectionSettings
 from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
-from ...model.types import PackageId, PackageIdSet
-from ...model.types_store import PackageStore, PackageProvider
 from ...model.writing import CommandPayload
 from ...prim import Party, datetime_to_timestamp, to_party
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', DeprecationWarning)
+
+    from .pb_parse_metadata import parse_daml_metadata_pb, find_dependencies
+    from ...model.types_store import PackageStore, PackageProvider
 
 
 class GRPCv1LedgerClient(LedgerClient):
@@ -180,12 +185,14 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterabl
 
     LOG.info('grpc_main_thread...')
 
-    store = PackageStore.empty()
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        store = PackageStore.empty()
 
-    package_provider = GRPCPackageProvider(connection, ledger_id)
+        package_provider = GRPCPackageProvider(connection, ledger_id)
 
-    if connection.options.eager_package_fetch:
-        grpc_package_sync(package_provider, store)
+        if connection.options.eager_package_fetch:
+            grpc_package_sync(package_provider, store)
 
     yield LedgerMetadata(
         ledger_id=ledger_id,
@@ -201,7 +208,9 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterabl
     while not connection._closed.wait(1):
         try:
             if connection.options.eager_package_fetch:
-                grpc_package_sync(package_provider, store)
+                with warnings.catch_warnings():
+                    warnings.simplefilter('ignore', DeprecationWarning)
+                    grpc_package_sync(package_provider, store)
         except Exception as ex:
             if not isinstance(ex, RpcError) or ex.code() != StatusCode.CANCELLED:
                 LOG.warning('Package syncing raised an exception.', exc_info=True)
@@ -215,54 +224,61 @@ class GRPCPackageProvider(PackageProvider):
         self.connection = connection
         self.ledger_id = ledger_id
 
-    def package_ids(self) -> 'PackageIdSet':
+    def package_ids(self) -> 'AbstractSet[PackageRef]':
         from . import model as G
         request = G.ListPackagesRequest(ledger_id=self.ledger_id)
         response = self.connection.package_service.ListPackages(request)
         return frozenset(response.package_ids)
 
-    def package_bytes(self, package_id: 'PackageId') -> bytes:
+    def package_bytes(self, package_id: 'PackageRef') -> bytes:
         from . import model as G
         request = G.GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
         package_info = self.connection.package_service.GetPackage(request)
         return package_info.archive_payload
 
-    def get_package_ids(self) -> 'PackageIdSet':
+    def get_package_ids(self) -> 'AbstractSet[PackageRef]':
         return self.package_ids()
 
-    def fetch_package(self, package_id: 'PackageId') -> bytes:
+    def fetch_package(self, package_id: 'PackageRef') -> bytes:
         return self.package_bytes(package_id)
 
 
 def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore') -> 'None':
-    LOG.debug("grpc_package_sync started...")
+    warnings.warn(
+        'grpc_package_sync is deprecated; there is no replacement',
+        DeprecationWarning, stacklevel=2)
 
-    all_package_ids = package_provider.get_package_ids()
-    loaded_package_ids = {a.hash for a in store.archives()}
-    expected_package_ids = store.expected_package_ids()
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
 
-    missing_package_ids = all_package_ids - loaded_package_ids
+        LOG.debug("grpc_package_sync started...")
 
-    def should_load(package_id: str) -> bool:
-        # TODO: Filtering by expected package IDs may cause packages to never fully load due to
-        #  transitive dependencies; here we put the onus on the app writer to ensure that they
-        #  supply the complete graph, and we don't even warn them if there is an issue (but
-        #  we could only actually warn them if we parse the archive, which is the expensive
-        #  operation we're trying to avoid).
-        return (expected_package_ids is None or package_id in expected_package_ids) and \
-               package_id not in loaded_package_ids
+        all_package_ids = package_provider.get_package_ids()
+        loaded_package_ids = {a.hash for a in store.archives()}
+        expected_package_ids = store.expected_package_ids()
 
-    metadatas_pb = {}
-    for package_id in all_package_ids:
-        if should_load(package_id):
-            archive_payload = package_provider.fetch_package(package_id)
-            metadatas_pb[package_id] = parse_archive_payload(package_id, archive_payload)
+        missing_package_ids = all_package_ids - loaded_package_ids
 
-    metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
-    for package_id, archive_payload in metadatas_pb.sorted_archives.items():
-        store.register_all(parse_daml_metadata_pb(package_id, archive_payload))
+        def should_load(package_id: str) -> bool:
+            # TODO: Filtering by expected package IDs may cause packages to never fully load due to
+            #  transitive dependencies; here we put the onus on the app writer to ensure that they
+            #  supply the complete graph, and we don't even warn them if there is an issue (but
+            #  we could only actually warn them if we parse the archive, which is the expensive
+            #  operation we're trying to avoid).
+            return (expected_package_ids is None or package_id in expected_package_ids) and \
+                   package_id not in loaded_package_ids
 
-    LOG.debug("grpc_package_sync ended.")
+        metadatas_pb = {}
+        for package_id in all_package_ids:
+            if should_load(package_id):
+                archive_payload = package_provider.fetch_package(package_id)
+                metadatas_pb[package_id] = parse_archive_payload(package_id, archive_payload)
+
+        metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
+        for package_id, archive_payload in metadatas_pb.sorted_archives.items():
+            store.register_all(parse_daml_metadata_pb(package_id, archive_payload))
+
+        LOG.debug("grpc_package_sync ended.")
 
 
 def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:

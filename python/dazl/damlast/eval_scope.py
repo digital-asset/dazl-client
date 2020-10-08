@@ -1,12 +1,18 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
+import warnings
 from types import MappingProxyType
 from typing import Collection, Mapping, Optional
 
-from ..damlast.daml_lf_1 import ValName
-from ..model.types_store import PackageStore
-from .daml_lf_1 import Expr, Type
+from .daml_lf_1 import Expr, Type, ValName
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', DeprecationWarning)
+    from ..model.types_store import PackageStore
+
+
+warnings.warn('dazl.damlast.eval_scope is deprecated; there is no replacement.',
+              DeprecationWarning, stacklevel=2)
 
 
 class EvaluationScope:
@@ -16,6 +22,8 @@ class EvaluationScope:
             bindings: 'Mapping[str, Expr]',
             blocked_value_refs: 'Collection[ValName]' = (),
             depth: int = 0):
+        warnings.warn('EvaluationScope is deprecated; there is no replacement.',
+                      DeprecationWarning, stacklevel=2)
         self.store = store
         self.depth = depth
         self._vars = MappingProxyType(dict(bindings))

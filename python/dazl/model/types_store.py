@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+import warnings
 from collections import defaultdict
 from functools import reduce
 from operator import add
@@ -11,13 +12,20 @@ from dataclasses import dataclass
 from typing import Any, Collection, Dict, Generic, Iterable, List, Mapping, Optional, TypeVar, Union
 
 from ..damlast.daml_lf_1 import Archive, Expr, Package, PackageRef, ValName, TypeConName, _Name
-from .types import Template, TemplateChoice, Type, TypeReference, UnresolvedTypeReference, \
-    ConcreteType, PackageIdSet
 from ..util.typing import safe_cast, safe_dict_cast
 
 
 K = TypeVar('K', bound=_Name)
 T = TypeVar('T')
+
+warnings.warn(
+    'The types of dazl.model.types_store are deprecated', DeprecationWarning, stacklevel=2)
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', DeprecationWarning)
+
+    from .types import Template, TemplateChoice, Type, TypeReference, UnresolvedTypeReference, \
+        ConcreteType, PackageIdSet
 
 
 class PackageStoreBuilder:
@@ -26,6 +34,10 @@ class PackageStoreBuilder:
     """
 
     def __init__(self):
+        warnings.warn(
+            'PackageStoreBuilder is deprecated; there is no direct replacement.',
+            DeprecationWarning, stacklevel=2)
+
         self._archives = list()  # type: List[Archive]
         self._value_types = dict()  # type: Dict[ValName, Expr]
         self._data_types = dict()  # type: Dict[TypeConName, Type]
@@ -68,6 +80,10 @@ class PackageStore:
         """
         Create an empty store.
         """
+        warnings.warn(
+            'PackageStore is deprecated; use PackageLoader/SymbolLookup instead',
+            DeprecationWarning, stacklevel=2)
+
         return cls([], {}, {}, {}, None)
 
     def __init__(
@@ -77,6 +93,9 @@ class PackageStore:
             data_types: 'Dict[TypeConName, Type]',
             templates: 'Dict[TypeConName, Template]',
             expected_package_ids: 'Optional[Collection[str]]' = None):
+        warnings.warn(
+            'PackageStore is deprecated; use PackageLoader/SymbolLookup instead',
+            DeprecationWarning, stacklevel=2)
         self._lock = RLock()
         self._archives = list(archives)
         self._cache = PackageStoreCache(EMPTY_TYPE_CACHE, EMPTY_TYPE_CACHE, EMPTY_TYPE_CACHE)
@@ -89,6 +108,10 @@ class PackageStore:
         """
         Return a copy of the collection of the set of loaded :class:`Archive`s.
         """
+        warnings.warn(
+            'PackageStore.archives() is deprecated; use SymbolLookup.archives() instead',
+            DeprecationWarning, stacklevel=2)
+
         with self._lock:
             return list(self._archives)
 
@@ -96,6 +119,10 @@ class PackageStore:
         """
         Return a copy of the collection of the set of loaded :class:`Package`s.
         """
+        warnings.warn(
+            'PackageStore.packages() is deprecated; use SymbolLookup.archives() instead',
+            DeprecationWarning, stacklevel=2)
+
         with self._lock:
             return [a.package for a in self._archives]
 
@@ -103,6 +130,10 @@ class PackageStore:
         """
         Return a copy of the collection of the set of loaded :class:`Package`s.
         """
+        warnings.warn(
+            'PackageStore.package_ids() is deprecated; use SymbolLookup.package_ids() instead',
+            DeprecationWarning, stacklevel=2)
+
         with self._lock:
             return [a.hash for a in self._archives]
 
@@ -110,6 +141,9 @@ class PackageStore:
         """
         Return package IDs that are expected to be found on the ledger.
         """
+        warnings.warn(
+            'PackageStore.expected_package_ids() is deprecated; there is no replacement.',
+            DeprecationWarning, stacklevel=2)
         return self._expected_package_ids
 
     def register_all(self, other_store: 'PackageStore') -> 'PackageStore':
@@ -119,6 +153,10 @@ class PackageStore:
         :param other_store: A package store to copy types, templates, and choices from.
         :return: A reference to this object.
         """
+        warnings.warn(
+            'PackageStore.register_all() is deprecated; use PackageLoader instead.',
+            DeprecationWarning, stacklevel=2)
+
         if self is not other_store:
             with self._lock:
                 self._archives.extend(other_store._archives)
@@ -132,6 +170,10 @@ class PackageStore:
         return self
 
     def resolve_value_reference(self, value_ref: 'ValName') -> 'Expr':
+        warnings.warn(
+            'PackageStore.resolve_value_reference() is deprecated; '
+            'use SymbolLookup.value() instead.', DeprecationWarning, stacklevel=2)
+
         with self._lock:
             return self._value_types[value_ref]
 
@@ -146,6 +188,10 @@ class PackageStore:
         :raise KeyError:
             If the :class:`TypeReference` does not have a corresponding value in this store.
         """
+        warnings.warn(
+            'PackageStore.resolve_value_reference() is deprecated; '
+            'use SymbolLookup.data_type() instead.', DeprecationWarning, stacklevel=2)
+
         if isinstance(template_ref, TypeReference):
             con = template_ref.con
         elif isinstance(template_ref, TypeConName):
@@ -157,6 +203,10 @@ class PackageStore:
             return self._data_types[con]
 
     def types(self) -> 'Mapping[TypeConName, ConcreteType]':
+        warnings.warn(
+            'PackageStore.types() is deprecated; use SymbolLookup.data_type("*") instead.',
+            DeprecationWarning, stacklevel=2)
+
         with self._lock:
             return MappingProxyType(dict(self._data_types))
 
@@ -170,6 +220,11 @@ class PackageStore:
             A collection of matching templates, or an empty collection if none match. This method
             never returns ``None``.
         """
+        warnings.warn(
+            'PackageStore.get_templates_for_packages() is deprecated; '
+            'use [SymbolLookup.templates(f"{pkg}:*") for pkg in package_ids] instead.',
+            DeprecationWarning, stacklevel=2)
+
         match = []
         for pkg_id in package_ids:
             match.extend(self._cache.templates.lookup(pkg_id, '*'))
@@ -190,6 +245,10 @@ class PackageStore:
             A collection of matching templates, or an empty collection if none match. This method
             never returns ``None``.
         """
+        warnings.warn(
+            'PackageStore.resolve_template() is deprecated; use SymbolLookup.template() instead.',
+            DeprecationWarning, stacklevel=2)
+
         from .lookup import validate_template
 
         if isinstance(template, Template):
@@ -212,26 +271,45 @@ class PackageStore:
             A dictionary of possible matches, or empty if there are no matches. This method never
             returns ``None``.
         """
-        return {template.data_type.name: template.data_type
-                for template in self.resolve_template(template)}
+        warnings.warn(
+            'PackageStore.resolve_template() is deprecated; use SymbolLookup.template() instead.',
+            DeprecationWarning, stacklevel=2)
+
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+
+            return {template.data_type.name: template.data_type
+                    for template in self.resolve_template(template)}
 
     def resolve_choice(self, template: Any, choice: str) -> Dict[TypeReference, TemplateChoice]:
         """
         Return all possible choices for the combination of template identifier and choice name.
         If template is ``'*'`` or ``None``, all choices with the specified name are returned.
         """
-        matches = dict()
-        for t in self.resolve_template(template):
-            for c in t.choices:
-                if c.name == choice:
-                    matches[t.data_type.name] = c
-        return matches
+        warnings.warn(
+            'PackageStore.resolve_choice() is deprecated; use SymbolLookup.template("*") instead, '
+            'and lookup the choice within the returned Template.',
+            DeprecationWarning, stacklevel=2)
+
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+
+            matches = dict()
+            for t in self.resolve_template(template):
+                for c in t.choices:
+                    if c.name == choice:
+                        matches[t.data_type.name] = c
+            return matches
 
 
 class PackageProvider:
     """
     Interface to an object that can provide package information.
     """
+
+    def __init__(self):
+        warnings.warn('PackageProvider is deprecated; use PackageLookup instead.',
+                      DeprecationWarning, stacklevel=2)
 
     def get_package_ids(self) -> 'PackageIdSet':
         """
@@ -246,11 +324,18 @@ class PackageProvider:
         raise NotImplementedError
 
     def get_all_packages(self) -> 'Mapping[PackageRef, bytes]':
-        return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+            return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
 
 
 class MemoryPackageProvider(PackageProvider):
     def __init__(self, mapping: 'Mapping[PackageRef, bytes]'):
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+            super().__init__()
+        warnings.warn('MemoryPackageProvider is deprecated; there is no replacement.',
+                      DeprecationWarning, stacklevel=2)
         self.mapping = mapping
 
     def get_package_ids(self) -> 'PackageIdSet':

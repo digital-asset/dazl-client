@@ -18,7 +18,9 @@ from typing import Tuple, Union, TYPE_CHECKING
 if TYPE_CHECKING:
     # avoid import cycles; `dazl.model` should depend on `dazl.damlast`, and not the other way
     # around
-    from ..model.types import Type as DeprecatedType, TypeReference as DeprecatedTypeReference
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from ..model.types import Type as DeprecatedType, TypeReference as DeprecatedTypeReference
 
 
 def parse_template(template_id: 'Union[str, DeprecatedType, TypeConName]') \
@@ -29,8 +31,10 @@ def parse_template(template_id: 'Union[str, DeprecatedType, TypeConName]') \
     deprecated (particularly, constructors for types that are NOT to be deprecated as part of this
     transition).
     """
-    from ..model.types import Type as DeprecatedType, TypeReference as DeprecatedTypeReference, \
-        UnresolvedTypeReference, RecordType
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from ..model.types import Type as DeprecatedType, \
+            TypeReference as DeprecatedTypeReference, UnresolvedTypeReference, RecordType
     from ..damlast.lookup import parse_type_con_name
 
     if isinstance(template_id, str):

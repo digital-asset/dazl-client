@@ -9,13 +9,12 @@ from .options import PrettyOptions
 from .util import maybe_parentheses, is_hidden_module_name
 from .. import LOG
 from ..damlast.daml_lf_1 import Block, BuiltinFunction, Case, CaseAlt, DefDataType, DefTemplate, \
-    Expr, Module, Package, PrimCon, PrimLit, Scenario, Type, TypeVarWithKind, ValName, \
+    Expr, Module, ModuleRef, Package, PrimCon, PrimLit, Scenario, Type, TypeVarWithKind, ValName, \
     Update, DefValue, Unit
 from ..damlast.protocols import SymbolLookup
 from ..damlast.util import unpack_arrow_type, package_local_name
 from ..damlast.visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVisitor
 from ..model.definition import DamlDataType, DamlTemplate
-from ..model.types import ModuleRef
 from ..prim import to_date, to_datetime
 
 

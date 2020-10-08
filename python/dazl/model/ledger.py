@@ -9,12 +9,14 @@ import warnings
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from .types_store import PackageStore
 from .writing import Serializer
 
 
 if TYPE_CHECKING:
     from ..client.pkg_loader import PackageLoader
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from .types_store import PackageStore
 
 
 @dataclass(init=False, frozen=True)

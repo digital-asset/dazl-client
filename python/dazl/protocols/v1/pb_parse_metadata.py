@@ -11,9 +11,16 @@ from toposort import toposort_flatten
 from ... import LOG
 from ...damlast.daml_lf_1 import Archive, DefDataType, DottedName, ModuleRef, PackageRef, TypeConName, ValName
 from ...damlast.types import get_old_type
-from ...model.types import TypeReference, RecordType, VariantType, EnumType, SCALAR_TYPE_UNIT, \
-    NamedArgumentList, ScalarType, TypeVariable, TemplateChoice, Template
-from ...model.types_store import PackageStore, PackageStoreBuilder
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', DeprecationWarning)
+    from ...model.types import TypeReference, RecordType, VariantType, EnumType, SCALAR_TYPE_UNIT, \
+        NamedArgumentList, ScalarType, TypeVariable, TemplateChoice, Template
+    from ...model.types_store import PackageStore, PackageStoreBuilder
+
+warnings.warn(
+    'The symbols in dazl.protocols.v1.pb_parse_metadata are deprecated',
+    DeprecationWarning, stacklevel=2)
 
 
 def parse_archive_payload(raw_bytes: bytes, package_id: 'Optional[PackageRef]' = None):
@@ -52,6 +59,10 @@ def find_dependencies(
         A topologically-sorted dictionary of package IDs to ArchivePayload objects. Iterations
         through the dictionary are guaranteed to be in the correct order.
     """
+    warnings.warn(
+        'find_dependencies is deprecated; there is no replacement.',
+        DeprecationWarning, stacklevel=2)
+
     dependencies = defaultdict(set)
     for package_id, archive_payload in metadatas_pb.items():
         for module_pb in archive_payload.daml_lf_1.modules:
@@ -101,50 +112,71 @@ def find_dependencies(
 
 
 def find_dependencies_of_fwts(fwts_pb) -> 'Set[str]':
-    dependencies = set()
-    for fwt in fwts_pb:
-        dependencies.update(find_dependencies_of_fwt(fwt))
-    return dependencies
+    warnings.warn(
+        'find_dependencies_of_fwts is deprecated; there is no replacement.',
+        DeprecationWarning, stacklevel=2)
+
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+
+        dependencies = set()
+        for fwt in fwts_pb:
+            dependencies.update(find_dependencies_of_fwt(fwt))
+        return dependencies
 
 
 def find_dependencies_of_fwt(fwt_pb) -> 'Collection[str]':
-    return find_dependencies_of_type(fwt_pb.type)
+    warnings.warn(
+        'find_dependencies_of_fwt is deprecated; there is no replacement.',
+        DeprecationWarning, stacklevel=2)
+
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+
+        return find_dependencies_of_type(fwt_pb.type)
 
 
 def find_dependencies_of_type(type_pb) -> 'Collection[str]':
-    t = type_pb.WhichOneof('Sum')  # type: str
-    if t == 'prim':
-        dependencies = set()  # type: Set[str]
-        for arg in type_pb.prim.args:
-            dependencies.update(find_dependencies_of_type(arg))
-        return sorted(dependencies)
-    elif t == 'con':
-        dependencies = set()  # type: Set[str]
-        if type_pb.con.tycon.module.package_ref.WhichOneof('Sum') == 'package_id':
-            dependencies.add(type_pb.con.tycon.module.package_ref.package_id)
-        for arg in type_pb.con.args:
-            dependencies.update(find_dependencies_of_type(arg))
-        return sorted(dependencies)
-    elif t == 'var':
-        dependencies = set()  # type: Set[str]
-        for arg in type_pb.var.args:
-            dependencies.update(find_dependencies_of_type(arg))
-        return sorted(dependencies)
-    elif t == 'fun':
-        dependencies = set()  # type: Set[str]
-        for arg in type_pb.fun.params:
-            dependencies.update(find_dependencies_of_type(arg))
-        dependencies.update(find_dependencies_of_type(type_pb.fun.result))
-        return dependencies
-    elif t == 'forall':
-        return find_dependencies_of_type(type_pb.forall.body)
-    elif t == 'tuple':
-        return find_dependencies_of_fwts(type_pb.tuple.fields)
-    elif t == 'nat':
-        return ()
-    else:
-        LOG.warning('Unknown DAML-LF Type: %s (when evaluating %s)', t, type_pb)
-        return ()
+    warnings.warn(
+        'find_dependencies_of_type is deprecated; there is no replacement.',
+        DeprecationWarning, stacklevel=2)
+
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+
+        t = type_pb.WhichOneof('Sum')  # type: str
+        if t == 'prim':
+            dependencies = set()  # type: Set[str]
+            for arg in type_pb.prim.args:
+                dependencies.update(find_dependencies_of_type(arg))
+            return sorted(dependencies)
+        elif t == 'con':
+            dependencies = set()  # type: Set[str]
+            if type_pb.con.tycon.module.package_ref.WhichOneof('Sum') == 'package_id':
+                dependencies.add(type_pb.con.tycon.module.package_ref.package_id)
+            for arg in type_pb.con.args:
+                dependencies.update(find_dependencies_of_type(arg))
+            return sorted(dependencies)
+        elif t == 'var':
+            dependencies = set()  # type: Set[str]
+            for arg in type_pb.var.args:
+                dependencies.update(find_dependencies_of_type(arg))
+            return sorted(dependencies)
+        elif t == 'fun':
+            dependencies = set()  # type: Set[str]
+            for arg in type_pb.fun.params:
+                dependencies.update(find_dependencies_of_type(arg))
+            dependencies.update(find_dependencies_of_type(type_pb.fun.result))
+            return dependencies
+        elif t == 'forall':
+            return find_dependencies_of_type(type_pb.forall.body)
+        elif t == 'tuple':
+            return find_dependencies_of_fwts(type_pb.tuple.fields)
+        elif t == 'nat':
+            return ()
+        else:
+            LOG.warning('Unknown DAML-LF Type: %s (when evaluating %s)', t, type_pb)
+            return ()
 
 
 def parse_daml_metadata_pb(package_id: 'PackageRef', metadata_pb: Any) -> 'PackageStore':
@@ -158,6 +190,10 @@ def parse_daml_metadata_pb(package_id: 'PackageRef', metadata_pb: Any) -> 'Packa
     :return:
         A :class:`PackageStore` with additional entries resulting from the parse of this archive.
     """
+    warnings.warn(
+        'parse_daml_metadata_pb and PackageStore are deprecated; '
+        'use dazl.damlast.parse_archive instead', DeprecationWarning, stacklevel=2)
+
     LOG.debug("Parsing package ID: %r", package_id)
 
     from ...damlast.pb_parse import ProtobufParser
@@ -169,55 +205,62 @@ def parse_daml_metadata_pb(package_id: 'PackageRef', metadata_pb: Any) -> 'Packa
 
 
 def _parse_daml_metadata_pb(archive: 'Archive') -> 'PackageStore':
-    psb = PackageStoreBuilder()
-    psb.add_archive(archive)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
 
-    for module in archive.package.modules:
-        current_module = ModuleRef(archive.hash, DottedName(module.name.segments))
-        for vv in module.values:
-            vt = ValName(current_module, vv.name_with_type.name)
-            psb.add_value(vt, vv.expr)
+        psb = PackageStoreBuilder()
+        psb.add_archive(archive)
 
-        for dt in module.data_types:
-            tt = create_data_type(current_module, dt)
-            if isinstance(tt, (RecordType, VariantType, EnumType)):
-                psb.add_type(tt.name.con, tt)
-            else:
-                LOG.warning('Unexpected non-complex type will be ignored: %r', tt)
+        for module in archive.package.modules:
+            current_module = ModuleRef(archive.hash, DottedName(module.name.segments))
+            for vv in module.values:
+                vt = ValName(current_module, vv.name_with_type.name)
+                psb.add_value(vt, vv.expr)
 
-        for template_pb in module.templates:
-            con = TypeConName(current_module, template_pb.tycon.segments)
-            data_type = psb.get_type(con)
-            if isinstance(data_type, RecordType):
-                psb.add_template(Template(
-                    data_type=data_type,
-                    key_type=get_old_type(template_pb.key.type) if template_pb.key is not None else None,
-                    choices=[
-                        TemplateChoice(
-                            c.name,
-                            c.consuming,
-                            get_old_type(c.arg_binder.type),
-                            get_old_type(c.ret_type),
-                            c.controllers)
-                        for c in template_pb.choices],
-                    observers=template_pb.observers,
-                    signatories=template_pb.signatories,
-                    agreement=template_pb.agreement,
-                    ensure=template_pb.precond))
-            elif data_type is None:
-                LOG.warning('The template %s did not have a corresponding data definition; '
-                            'it will be ignored', con)
-            else:
-                LOG.warning(
-                    'The template %s was of type %s; only records are supported for templates',
-                    con, data_type)
+            for dt in module.data_types:
+                tt = create_data_type(current_module, dt)
+                if isinstance(tt, (RecordType, VariantType, EnumType)):
+                    psb.add_type(tt.name.con, tt)
+                else:
+                    LOG.warning('Unexpected non-complex type will be ignored: %r', tt)
 
-    LOG.debug('Fully registered all types for package ID %r', archive.hash)
-    return psb.build()
+            for template_pb in module.templates:
+                con = TypeConName(current_module, template_pb.tycon.segments)
+                data_type = psb.get_type(con)
+                if isinstance(data_type, RecordType):
+                    psb.add_template(Template(
+                        data_type=data_type,
+                        key_type=get_old_type(template_pb.key.type) if template_pb.key is not None else None,
+                        choices=[
+                            TemplateChoice(
+                                c.name,
+                                c.consuming,
+                                get_old_type(c.arg_binder.type),
+                                get_old_type(c.ret_type),
+                                c.controllers)
+                            for c in template_pb.choices],
+                        observers=template_pb.observers,
+                        signatories=template_pb.signatories,
+                        agreement=template_pb.agreement,
+                        ensure=template_pb.precond))
+                elif data_type is None:
+                    LOG.warning('The template %s did not have a corresponding data definition; '
+                                'it will be ignored', con)
+                else:
+                    LOG.warning(
+                        'The template %s was of type %s; only records are supported for templates',
+                        con, data_type)
+
+        LOG.debug('Fully registered all types for package ID %r', archive.hash)
+        return psb.build()
 
 
 def create_data_type(current_module_ref: 'ModuleRef', dt: 'DefDataType') \
         -> 'Union[RecordType, VariantType, EnumType, ScalarType]':
+    warnings.warn(
+        'create_data_type is deprecated; there is no replacement.',
+        DeprecationWarning, stacklevel=2)
+
     from ...damlast.types import get_old_type
 
     type_vars = tuple(TypeVariable(type_var.var) for type_var in dt.params)

@@ -15,15 +15,17 @@ import warnings
 from pathlib import Path
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import BinaryIO, Callable, Collection, Dict, Optional, Tuple, TypeVar, Union, \
     TYPE_CHECKING
-from datetime import datetime
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..prim import ContractId as ContractId_, ContractData, Party
 
 if TYPE_CHECKING:
-    from .types import Type, TypeReference
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from .types import Type, TypeReference
 
 T = TypeVar('T')
 

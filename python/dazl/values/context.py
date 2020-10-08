@@ -112,7 +112,12 @@ class Context:
             # path
             raise ValueError(f'value at {".".join(self.path)} has an invalid value: {obj}') from ex
 
-    def convert_list(self, element_type: 'Type', elements: 'Sequence[Any]') -> 'List[Any]':
+    def convert_list(
+            self,
+            element_type: 'Type',
+            elements: 'Sequence[Any]',
+            mapper: 'Optional[ValueMapper]' = None) \
+            -> 'List[Any]':
         """
         Convert a _list_ of elements, each of an assumed type.
 
@@ -126,11 +131,18 @@ class Context:
             The :class:`Type` of the element.
         :param elements:
             An iterable collection of objects to convert.
+        :param mapper:
+            If not ``None``, an alternate mapper to use when descending down the object.
         """
-        return [self.append_path(f'[{i}').convert(element_type, elem)
+        return [self.append_path(f'[{i}', mapper=mapper).convert(element_type, elem)
                 for i, elem in enumerate(elements)]
 
-    def convert_optional(self, element_type: 'Type', element: 'Optional[Any]') -> 'List[Any]':
+    def convert_optional(
+            self,
+            element_type: 'Type',
+            element: 'Optional[Any]',
+            mapper: 'Optional[ValueMapper]' = None) \
+            -> 'List[Any]':
         """
         Convert a _list_ of elements, each of an assumed type.
 
@@ -144,12 +156,19 @@ class Context:
             The :class:`Type` of the element.
         :param element:
             An object to convert.
+        :param mapper:
+            If not ``None``, an alternate mapper to use when descending down the object.
         :return:
             The converted object, or ``None`` if the value of the object is ``None``.
         """
-        return self.append_path('?').convert(element_type, element) if element is not None else None
+        return self.append_path('?', mapper=mapper).convert(element_type, element) \
+            if element is not None else None
 
-    def convert_text_map(self, element_type: 'Type', elements: 'Mapping[str, Any]') \
+    def convert_text_map(
+            self,
+            element_type: 'Type',
+            elements: 'Mapping[str, Any]',
+            mapper: 'Optional[ValueMapper]' = None) \
             -> 'Dict[str, Any]':
         """
         Convert a _map_ of elements, each of an assumed type.
@@ -164,8 +183,10 @@ class Context:
             The :class:`Type` of the element.
         :param elements:
             A mapping of keys to values.
+        :param mapper:
+            If not ``None``, an alternate mapper to use when descending down the object.
         """
-        return {key: self.append_path(key).convert(element_type, value)
+        return {key: self.append_path(key, mapper=mapper).convert(element_type, value)
                 for key, value in elements.items()}
 
     def convert_contract_id(self, element_type: 'Type', contract_id: 'Any') -> 'ContractId':
@@ -232,14 +253,19 @@ class Context:
         else:
             raise ValueError('unknown DefDataType cannot have variables applied to them')
 
-    def append_path(self, path: str) -> 'Context':
+    def append_path(self, path: str, mapper: 'Optional[ValueMapper]' = None) -> 'Context':
         """
         Return a new :class:`Context` marked at a deeper path within an object hierarchy.
 
-        :param path: The path to append to the current :class:`Context`'s path.
-        :return: A new :class:`Context` with a modified path.
+        :param path:
+            The path to append to the current :class:`Context`'s path.
+        :param mapper:
+            If not ``None``, an alternate mapper to use when descending down the object.
+        :return:
+            A new :class:`Context` with a modified path and possibly a modified mapper.
         """
-        return Context(self.mapper, self.lookup, self.path + (path,))
+        return Context(
+            mapper if mapper is not None else self.mapper, self.lookup, self.path + (path,))
 
     def value_validate_enum(self, value: 'Any', enum: 'DefDataType.EnumConstructors') -> str:
         """

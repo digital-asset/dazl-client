@@ -6,8 +6,8 @@ from typing import AbstractSet, Dict, Iterable, Iterator, Optional
 
 __all__ = ['Formatter', 'RowBuilder', 'TableBuilder']
 
-from ...model.core import ContractId, ContractData, Party
-from ...model.types_store import PackageStore
+from ...damlast.protocols import SymbolLookup
+from ...prim import ContractId, ContractData, Party
 
 
 class Formatter:
@@ -18,13 +18,13 @@ class Formatter:
 
     def render(
             self,
-            store: 'PackageStore',
+            lookup: 'SymbolLookup',
             parties: 'AbstractSet[Party]',
             entries: 'Iterable[RowBuilder]') -> 'Iterator[str]':
         """
         Render the set of entries.
 
-        :param store: The store that contains type information.
+        :param lookup: The store that contains type information.
         :param parties: Set of parties to render.
         :param entries: A list of entries to render.
         :return: An asynchronous generator over string lines that make up the rendering.

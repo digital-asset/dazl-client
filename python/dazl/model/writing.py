@@ -24,7 +24,6 @@ from typing import Any, Collection, List, Mapping, Optional, Sequence, Union, TY
 
 from dataclasses import dataclass, fields
 
-from .types import Type, UnresolvedTypeReference, TypeReference
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.daml_types import con
 from ..damlast.lookup import find_choice
@@ -33,6 +32,10 @@ from ..prim import ContractId, Party
 from ..util.typing import safe_cast
 
 if TYPE_CHECKING:
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from .types import Type, TypeReference
+
     from ..values import Context, ValueMapper
 
 CommandsOrCommandSequence = Union[None, 'Command', Sequence[Optional['Command']]]
@@ -80,7 +83,7 @@ class CreateCommand(Command):
             DeprecationWarning, stacklevel=2)
         return self._template_type_deprecated
 
-    def replace(self, template: Union[None, str, Type] = None, arguments=None):
+    def replace(self, template: 'Union[None, str, Type]' = None, arguments=None):
         """
         Create a new :class:`CreateCommand` with the same identifier as this command, but with new
         values for its parameters.
@@ -93,12 +96,18 @@ class CreateCommand(Command):
         warnings.warn(
             "CreateCommand.replace is deprecated; simply construct a CreateCommand with the "
             "desired values instead.", DeprecationWarning, stacklevel=2)
-        if template is not None:
-            template = template if isinstance(template, Type) \
-                else UnresolvedTypeReference(template)
-        return CreateCommand(
-            template if template is not None else self.template_type,
-            arguments if arguments is not None else self.arguments)
+
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+
+            from .types import Type, UnresolvedTypeReference
+
+            if template is not None:
+                template = template if isinstance(template, Type) \
+                    else UnresolvedTypeReference(template)
+            return CreateCommand(
+                template if template is not None else self.template_type,
+                arguments if arguments is not None else self.arguments)
 
     def __repr__(self):
         return f'<create {self.template_type} {self.arguments}>'
@@ -478,7 +487,7 @@ class AbstractSerializer(Serializer):
     def mapper(self) -> 'ValueMapper':
         raise NotImplementedError(f'{type(self)}.mapper() must be defined')
 
-    def serialize_value(self, tt: Type, obj: Any) -> 'Any':
+    def serialize_value(self, tt: 'Type', obj: Any) -> 'Any':
         from ..values import Context
         return Context(self.mapper, self.lookup).convert(tt, obj)
 

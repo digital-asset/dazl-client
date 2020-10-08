@@ -5,12 +5,14 @@
 Formatting module for outputting captures.
 """
 
+import json
 from typing import Iterable, AbstractSet
 
-from .model import Formatter, TableBuilder
-from ...model.core import Party
-from ...model.types_store import PackageStore
-from ...protocols.v0.json_ser_command import LedgerJSONEncoder
+from .model import Formatter, RowBuilder
+from ...damlast.daml_types import con
+from ...damlast.protocols import SymbolLookup
+from ...prim import Party
+from ...values import JsonEncoder, Context
 from ...util.tools import boundary_iter
 
 
@@ -18,31 +20,33 @@ class JsonFormatter(Formatter):
 
     def render(
             self,
-            store: 'PackageStore',
+            lookup: 'SymbolLookup',
             parties: 'AbstractSet[Party]',
-            entries: 'Iterable[TableBuilder]'):
+            entries: 'Iterable[RowBuilder]'):
         """
         Return a list of strings that, when taken together, constitute a JSON document that lists
         all of the entries of the ledger.
 
-        :param store:
+        :param lookup:
             The contents to render.
         :param parties:
             The list of of parties.
         :param entries:
             The entries to render.
         """
-        encode = LedgerJSONEncoder().encode
+        context = Context(JsonEncoder(), lookup)
 
         party_list = sorted(parties)
 
-        yield "{{ \"parties\": {},".format(encode(party_list))
+        yield "{{ \"parties\": {},".format(json.dumps(party_list))
         yield "  \"contracts\": ["
 
-        for is_last, entry in boundary_iter(party_list):
-            yield '  {{ "contract_id": "{}",'.format(entry.contract_id)
-            yield '    "template": {},'.format(encode(entry.contract_id.template_id))
-            yield '    "parties": {},'.format(encode(party_list))
-            yield '    "arguments": {} }}{}'.format(encode(entry.contract_args), '' if is_last else ',')
+        for is_last, entry in boundary_iter(entries):
+            cid = entry.cid
+            yield f'  {{ "contract_id": "{cid.value}",'
+            yield f'    "template": {json.dumps(str(cid.value_type))},'
+            yield f'    "parties": {json.dumps(party_list)},'
+            yield f'    "arguments": {json.dumps(context.convert(con(cid.value_type), entry.cdata))} }}' + \
+                  ("" if is_last else ",")
 
         yield "  ] }"

@@ -27,6 +27,7 @@ system.
 .. autoclass:: VariantType
 .. autoclass:: UnsupportedType
 """
+import warnings
 from typing import AbstractSet, Any, Callable, Collection, Dict, Mapping, NewType, Optional, \
     Sequence, Tuple, TypeVar, Union, TYPE_CHECKING
 
@@ -34,6 +35,9 @@ from .. import LOG
 from ..damlast.daml_lf_1 import DottedName, Expr, ModuleRef, PackageRef, TypeConName
 from ..model.core import ContractData, Party
 from ..util.typing import safe_cast, safe_dict_cast, safe_optional_cast
+
+
+warnings.warn('The symbols in dazl.model.types are deprecated', DeprecationWarning, stacklevel=2)
 
 DottedNameish = Union[str, Sequence[str]]
 
@@ -209,6 +213,11 @@ class Type:
     A DAML-defined type.
     """
 
+    def __init__(self):
+        warnings.warn(
+            'dazl.model.types.Type and its subclasses are deprecated. '
+            'Use dazl.damlast.daml_lf_1.Type instead.', DeprecationWarning, stacklevel=2)
+
     def __str__(self):
         from ..pretty import DAML_PRETTY_PRINTER
         return DAML_PRETTY_PRINTER.visit_type(self)
@@ -222,6 +231,8 @@ class TypeApp(Type):
     """
 
     def __init__(self, body: Type, arguments: Sequence[Type]):
+        super().__init__()
+
         if not isinstance(body, Type):
             raise ValueError(f'a Type is required here (got {body} instead)')
         if not arguments:

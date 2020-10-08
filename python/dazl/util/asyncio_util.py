@@ -27,7 +27,6 @@ _CANCELLED = 'CANCELLED'
 _FINISHED = 'FINISHED'
 
 
-
 def non_reentrant(async_fn):
     if not iscoroutinefunction(async_fn):
         raise ValueError('expected a coroutine function')

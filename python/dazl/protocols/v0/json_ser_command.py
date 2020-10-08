@@ -7,15 +7,13 @@ types over the wire on the REST interface using JSON.
 """
 
 import warnings
-from datetime import datetime, date
-from decimal import Decimal
+from datetime import datetime
 from typing import Any
 
-from ... import LOG
 from ...damlast.daml_lf_1 import TypeConName
-from ...prim import ContractId
-from ...model.types import ScalarType
+from ...prim import ContractId, JSONEncoder
 from ...model.writing import CommandPayload, AbstractSerializer
+from ...values.json import JsonEncoder
 
 
 class LedgerJSONEncoder(JSONEncoder):
@@ -43,20 +41,21 @@ def to_api_datetime(obj):
     """
     from ...prim import datetime_to_str
     warnings.warn(
-        'dazl.protocols.v0.json_ser_command.to_api_datetime is deprecated; use dazl.prim.datetime_to_str instead.',
+        'dazl.protocols.v0.json_ser_command.to_api_datetime is deprecated; '
+        'use dazl.prim.datetime_to_str instead.',
         DeprecationWarning, stacklevel=2)
     return datetime_to_str(obj) if isinstance(obj, datetime) else obj
 
 
 class JsonSerializer(AbstractSerializer):
 
-    def mapper(self):
-        from ...values.json import ENCODER
-        return ENCODER
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        warnings.warn(
+            'dazl.protocols.v0.json_ser_command.JsonSerializer is deprecated; '
+            'there is no replacement.', DeprecationWarning, stacklevel=2)
 
-    ################################################################################################
-    # COMMAND serializers
-    ################################################################################################
+    mapper = JsonEncoder()
 
     def serialize_command_request(self, command_payload: CommandPayload) -> dict:
         commands = [self.serialize_command(command) for command in command_payload.commands]

@@ -53,4 +53,4 @@ class ListAllCommand(CliCommand):
         metadata = await network.aio_global().metadata()
         LOG.debug('Our parties are now ready.')
 
-        write_acs(sys.stdout, network, metadata.store, fmt=fmt, include_archived=include_archived)
+        write_acs(sys.stdout, network, fmt=fmt, include_archived=include_archived)

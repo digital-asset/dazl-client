@@ -4,6 +4,7 @@
 """
 Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic types.
 """
+import warnings
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Union
@@ -24,11 +25,12 @@ from ...damlast.protocols import SymbolLookup
 from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
     TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
     ContractExercisedEvent, ActiveContractSetEvent, ContractFilter
-from ...model.types_store import PackageStore
 from ...prim import Party, to_datetime
 from ...values import Context, ProtobufDecoder
 
-# noinspection PyPackageRequirements
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', DeprecationWarning)
+    from ...model.types_store import PackageStore
 
 
 DECODER = ProtobufDecoder()
