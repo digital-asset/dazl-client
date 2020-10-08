@@ -1,9 +1,10 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 import warnings
 from typing import Mapping, Optional, Sequence, Union, TYPE_CHECKING
-from .daml_lf_1 import DefValue, Expr, ModuleRef, Type, PrimType, Kind, UNIT, TypeVarWithKind, _Name, PackageRef, \
-    DottedName
+from .daml_lf_1 import DefValue, Expr, ModuleRef, Type, PrimType, Kind, UNIT, TypeVarWithKind, \
+    _Name, PackageRef, DottedName, DefDataType
 
 if TYPE_CHECKING:
     from ..model.types import Type as OldType, TypeReference
@@ -187,3 +188,10 @@ def module_local_name(obj: 'Union[_Name, TypeReference]') -> str:
     else:
         raise ValueError(f"Could not extract a module_local_name from {obj!r}")
 
+
+def find_variant_type(dt: 'DefDataType', variant: 'DefDataType.Fields', constructor: str) -> 'Type':
+    for fld_metadata in variant.fields:
+        if fld_metadata.field == constructor:
+            return fld_metadata.type
+
+    raise ValueError(f'{constructor} is not a field of {dt.name}')

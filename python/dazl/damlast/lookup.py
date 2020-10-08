@@ -23,7 +23,9 @@ from .errors import NameNotFoundError, PackageNotFoundError
 from .protocols import SymbolLookup
 from ..model.lookup import validate_template
 
-__all__ = ['parse_type_con_name', 'EmptyLookup', 'PackageLookup', 'MultiPackageLookup']
+__all__ = [
+    'find_choice', 'parse_type_con_name', 'EmptyLookup', 'PackageLookup', 'MultiPackageLookup'
+]
 
 
 def parse_type_con_name(val: str) -> 'TypeConName':
