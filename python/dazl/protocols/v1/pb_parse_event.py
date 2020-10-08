@@ -15,7 +15,6 @@ from google.protobuf.empty_pb2 import Empty
 
 from ... import LOG
 from ...damlast.daml_lf_1 import ModuleRef, PackageRef, DottedName, TypeConName
-from ...damlast.daml_types import con
 from ...damlast.protocols import SymbolLookup
 from ...model.core import ContractId
 from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
@@ -351,7 +350,7 @@ def to_created_event(
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', DeprecationWarning)
         cid = ContractId(cr.contract_id, name)
-    cdata = cdata = to_record(tt_context, tt, cr.create_arguments)
+    cdata = to_record(tt_context, tt, cr.create_arguments)
     event_id = cr.event_id
     witness_parties = tuple(cr.witness_parties)
 

@@ -4,7 +4,7 @@
 """
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Tuple, Union
 
 # noinspection PyPackageRequirements
 from google.protobuf.empty_pb2 import Empty
@@ -20,6 +20,7 @@ from ...model.types import VariantType, RecordType, ListType, ContractIdType, \
 from ...model.writing import AbstractSerializer, CommandPayload
 from ...prim import date_to_int, datetime_to_epoch_microseconds, decimal_to_str, \
     timedelta_to_duration, to_bool, to_date, to_datetime, to_decimal, to_int, to_str, to_variant
+from ...values.protobuf import set_value
 
 R = Tuple[str, Any]
 
@@ -62,7 +63,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
 
         cmd = G.CreateCommand()
         _set_template(cmd.template_id, template_type.name.con)
-        _set_value(cmd.create_arguments, None, create_value)
+        set_value(cmd.create_arguments, None, create_value)
         return G.Command(create=cmd)
 
     def serialize_exercise_command(
@@ -75,7 +76,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         _set_template(cmd.template_id, type_ref)
         cmd.contract_id = contract_id.value
         cmd.choice = choice_info.name
-        _set_value(cmd.choice_argument, ctor, value)
+        set_value(cmd.choice_argument, ctor, value)
         return G.Command(exercise=cmd)
 
     def serialize_exercise_by_key_command(
@@ -86,9 +87,9 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
 
         cmd = G.ExerciseByKeyCommand()
         _set_template(cmd.template_id, template_ref.con)
-        _set_value(cmd.contract_key, key_ctor, key_value)
+        set_value(cmd.contract_key, key_ctor, key_value)
         cmd.choice = choice_info.name
-        _set_value(cmd.choice_argument, choice_ctor, choice_value)
+        set_value(cmd.choice_argument, choice_ctor, choice_value)
         return G.Command(exerciseByKey=cmd)
 
     def serialize_create_and_exercise_command(
@@ -101,9 +102,9 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
 
         cmd = G.CreateAndExerciseCommand()
         _set_template(cmd.template_id, template_type.name.con)
-        _set_value(cmd.create_arguments, None, create_value)
+        set_value(cmd.create_arguments, None, create_value)
         cmd.choice = choice_info.name
-        _set_value(cmd.choice_argument, choice_ctor, choice_value)
+        set_value(cmd.choice_argument, choice_ctor, choice_value)
         return G.Command(createAndExercise=cmd)
 
     ################################################################################################
@@ -148,7 +149,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         optional_message = Optional()
         if obj is not None:
             ctor, val = self._serialize_dispatch(context.append_path('?'), ut, obj)
-            _set_value(optional_message.value, ctor, val)
+            set_value(optional_message.value, ctor, val)
         return 'optional', optional_message
 
     def serialize_list(self, context: TypeEvaluationContext, tt: ListType, obj: Any) -> R:
@@ -159,7 +160,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
         for i, item in enumerate(obj):
             value = list_message.elements.add()
             ctor, val = self._serialize_dispatch(context.append_path(f'[{i}]'), ut, item)
-            _set_value(value, ctor, val)
+            set_value(value, ctor, val)
         return 'list', list_message
 
     def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> R:
@@ -171,7 +172,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
             entry = map_message.entries.add()
             entry.key = key
             ctor, val = self._serialize_dispatch(context.append_path(f'[{key}]'), vt, value)
-            _set_value(entry.value, ctor, val)
+            set_value(entry.value, ctor, val)
         return 'map', map_message
 
     def serialize_record(self, context: TypeEvaluationContext, tt: RecordType, obj: Any) -> R:
@@ -188,7 +189,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
             ctor, value = self._serialize_dispatch(context.append_path(key), vt, obj.get(key))
             field = record_message.fields.add()
             field.label = key
-            _set_value(field.value, ctor, value)
+            set_value(field.value, ctor, value)
         if did_fail:
             raise ValueError('Failed to parse a record; check the logs for more information.')
         return 'record', record_message
@@ -218,7 +219,7 @@ class ProtobufSerializer(AbstractSerializer[G.Command, R]):
 
         variant_message = Variant()
         variant_message.constructor = obj_ctor
-        _set_value(variant_message.value, ctor, value)
+        set_value(variant_message.value, ctor, value)
         return 'variant', variant_message
 
     def serialize_enum(self, context: TypeEvaluationContext, tt: EnumType, obj: Any) -> R:
@@ -237,30 +238,3 @@ def _set_template(message: G.Identifier, name: 'TypeConName') -> None:
     message.package_id = package_ref(name)
     message.module_name = str(module_name(name))
     message.entity_name = module_local_name(name)
-
-
-def _set_value(message: G.Value, ctor: 'Optional[str]', value) -> None:
-    """
-    Work around the somewhat crazy API of Python's gRPC library to apply a known value to a
-    :class:`Value`.
-
-    :param message:
-        The :class:`Value` object to modify.
-    :param ctor:
-        The actual field to apply to, or ``None`` to interpret the entire message as a ``Record``
-        instead.
-    :param value:
-        The actual value to set. Must be compatible with the appropriate field.
-    """
-    try:
-        if ctor is None:
-            message.MergeFrom(value)
-        elif ctor == 'unit':
-            message.unit.SetInParent()
-        elif ctor in ('record', 'variant', 'list', 'optional', 'enum', 'map', 'gen_map'):
-            getattr(message, ctor).MergeFrom(value)
-        else:
-            setattr(message, ctor, value)
-    except:  # noqa
-        LOG.error('Failed to set a value %s, %s', ctor, value)
-        raise
