@@ -50,9 +50,6 @@ def create_initial_state(event: 'ReadyEvent'):
     try:
         LOG.info('Uploading our DAR...')
         event.client.ensure_dar(PostOffice)
-        while not event.package_store.resolve_template('Main:PostmanRole'):
-            logging.info("Waiting for our DAR to be uploaded...")
-            sleep(1)
 
         LOG.info('DAR uploaded. Creating the initial postman role contract...')
         return create('Main:PostmanRole', dict(postman=event.party))

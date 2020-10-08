@@ -7,41 +7,34 @@ from typing import Mapping
 from dataclasses import dataclass
 
 from dazl import CreateCommand, ExerciseCommand, CreateAndExerciseCommand, ExerciseByKeyCommand
-from dazl.damlast.daml_lf_1 import TypeConName
-from dazl.model.types_store import PackageStore
+from dazl.damlast import DarFile
+from dazl.damlast.lookup import MultiPackageLookup
+from dazl.damlast.protocols import SymbolLookup
 from dazl.prim import ContractId
 from dazl.protocols.v1.pb_ser_command import ProtobufSerializer, as_identifier
 from dazl.protocols.v1 import model as G
-from dazl.util.dar import DarFile
 from .dars import Pending
 
 
 @dataclass(frozen=True)
 class DarFixture:
     dar: DarFile
-    store: PackageStore
-
-    def get_template_type(self, identifier: str) -> 'TypeConName':
-        templates = self.store.resolve_template(identifier)
-        for template in templates:
-            return template.data_type.name.con
-
-        raise AssertionError(f'Unknown template name: {identifier!r}')
+    lookup: SymbolLookup
 
     def get_identifier(self, identifier: str) -> 'Mapping[str, str]':
-        return as_identifier(self.get_template_type(identifier))
+        return as_identifier(self.lookup.data_type_name(identifier))
 
 
 @pytest.fixture(scope='module')
 def dar_fixture() -> 'DarFixture':
     with DarFile(Pending) as dar:
-        store = dar.read_metadata()
+        lookup = MultiPackageLookup(dar.archives())
 
-        yield DarFixture(dar, store)
+        yield DarFixture(dar, lookup)
 
 
 def test_serialize_create(dar_fixture):
-    sut = ProtobufSerializer(dar_fixture.store)
+    sut = ProtobufSerializer(dar_fixture.lookup)
 
     command = CreateCommand('Pending:AccountRequest', dict(owner='SomeParty'))
 
@@ -56,9 +49,9 @@ def test_serialize_create(dar_fixture):
 
 
 def test_serialize_exercise(dar_fixture):
-    sut = ProtobufSerializer(dar_fixture.store)
+    sut = ProtobufSerializer(dar_fixture.lookup)
 
-    tref = dar_fixture.get_template_type('Pending:AccountRequest')
+    tref = dar_fixture.lookup.data_type_name('Pending:AccountRequest')
     cid = ContractId(tref, '#1:0')
     command = ExerciseCommand(cid, 'CreateAccount', dict(accountId=42))
 
@@ -75,7 +68,7 @@ def test_serialize_exercise(dar_fixture):
 
 
 def test_serialize_exercise_by_key(dar_fixture):
-    sut = ProtobufSerializer(dar_fixture.store)
+    sut = ProtobufSerializer(dar_fixture.lookup)
 
     command = ExerciseByKeyCommand('Pending:Counter', 'SomeParty', 'Increment', {})
 
@@ -91,7 +84,7 @@ def test_serialize_exercise_by_key(dar_fixture):
 
 
 def test_serialize_create_and_exercise(dar_fixture):
-    sut = ProtobufSerializer(dar_fixture.store)
+    sut = ProtobufSerializer(dar_fixture.lookup)
 
     command = CreateAndExerciseCommand(
         'Pending:AccountRequest', dict(owner='SomeParty'), 'CreateAccount', dict(accountId=42))

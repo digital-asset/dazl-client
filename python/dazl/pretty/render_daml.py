@@ -7,7 +7,7 @@ from typing import Optional, Sequence, Union
 from ._render_base import PrettyPrintBase
 from .util import maybe_parentheses
 from ..damlast.daml_lf_1 import DefDataType, DefTemplate, Expr, ModuleRef, PrimType, \
-    Type as NewType, Scenario, Pure, Block, Update
+    Type as NewType, Scenario, Pure, Block, Update, TypeConName
 from ..damlast.util import package_local_name, module_name
 from ..model.types import Type as OldType, ScalarType, ContractIdType, ListType, OptionalType, \
     TextMapType, RecordType, TypeApp, TypeVariable, TypeReference, UpdateType, VariantType, \
@@ -57,8 +57,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
         local_name = '.'.join(def_data_type.name.segments)
 
         from ..damlast.expand import ExpandVisitor, SimplifyVisitor
-        ex = ExpandVisitor(self.store)
-        sp = SimplifyVisitor(self.store)
+        ex = ExpandVisitor(self.lookup)
+        sp = SimplifyVisitor(self.lookup)
 
         def render(expr: Expr) -> str:
             #return self.visit_expr(expr)
@@ -285,7 +285,7 @@ class DamlPrettyPrinter(PrettyPrintBase):
 
     # region visit_type_* methods
 
-    def visit_type(self, type: 'Union[str, NewType, OldType]', parenthesize: bool = False) -> str:
+    def visit_type(self, type: 'Union[str, NewType, OldType, TypeConName]', parenthesize: bool = False) -> str:
         from ..model.types import TypeReference
         from ..damlast.daml_lf_1 import TypeConName
         if isinstance(type, str):

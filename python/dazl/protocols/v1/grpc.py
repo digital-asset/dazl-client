@@ -4,6 +4,7 @@
 """
 Support for the gRPC-based Ledger API.
 """
+from asyncio import gather
 from datetime import datetime
 from threading import Event
 from typing import Iterable, Optional, Sequence
@@ -15,7 +16,7 @@ from grpc import Channel, secure_channel, insecure_channel, ssl_channel_credenti
 from ... import LOG
 from .._base import LedgerClient, _LedgerConnection, LedgerConnectionOptions
 from .pb_parse_event import serialize_acs_request, serialize_transactions_request, \
-    to_acs_events, to_transaction_events, BaseEventDeserializationContext
+    to_acs_events, to_transaction_events, BaseEventDeserializationContext, to_type_con_name
 from .pb_parse_metadata import parse_daml_metadata_pb, find_dependencies
 from ...damlast.parse import parse_archive_payload
 from ...model.core import UserTerminateRequest, ConnectionTimeoutError
@@ -44,14 +45,38 @@ class GRPCv1LedgerClient(LedgerClient):
             lambda: self.connection.command_service.SubmitAndWait(request))
 
     async def active_contracts(self, contract_filter: 'ContractFilter') -> 'Sequence[BaseEvent]':
-        request = serialize_acs_request(contract_filter, self.ledger.ledger_id, self.party)
-        context = BaseEventDeserializationContext(
-            None, self.connection.options.lookup, self.ledger._store, self.party,
-            self.ledger.ledger_id)
-        acs_stream = await self.connection.invoker.run_in_executor(
-            lambda: self.connection.active_contract_set_service.GetActiveContracts(request))
-        acs_events = to_acs_events(context, acs_stream)
-        return acs_events
+        with LOG.info_timed("ACS request serialization"):
+            request = serialize_acs_request(contract_filter, self.ledger.ledger_id, self.party)
+            context = BaseEventDeserializationContext(
+                None, self.connection.options.lookup, self.ledger._store, self.party,
+                self.ledger.ledger_id)
+
+        with LOG.info_timed("ACS request initial stream"):
+            acs_stream = await self.connection.invoker.run_in_executor(
+                lambda: self.connection.active_contract_set_service.GetActiveContracts(request))
+
+        with LOG.info_timed("ACS request consume full stream"):
+            # Consume a stream of events from the Active Contract Set service and store these results fully
+            # in memory; return the full set of events as well as a set of package IDs that need to be
+            # available in order to fully understand the contents of the Active Contract Set service.
+            acs_stream = list(acs_stream)
+
+        with LOG.info_timed("ACS find all required packages"):
+            pkg_refs = {create_evt.template_id.package_id
+                        for acs_response_pb in acs_stream
+                        for create_evt in acs_response_pb.active_contracts}
+
+        if pkg_refs:
+            with LOG.info_timed(f"ACS load {len(pkg_refs)} new package(s)"):
+                # Preload packages that are DIRECTLY referenced by packages in the message
+                await gather(*(self.ledger.package_loader.load(pkg_ref) for pkg_ref in pkg_refs))
+
+        with LOG.info_timed("ACS transform the message"):
+            # Now load all the events. Note that do_with_retry is still required because the
+            # packages that contained templates might have references to other packages that are
+            # also required to understand the individual fields in a template.
+            return await self.ledger.package_loader.do_with_retry(
+                lambda: to_acs_events(context, acs_stream))
 
     async def events(self, transaction_filter: 'TransactionFilter') -> 'Sequence[BaseEvent]':
         request = serialize_transactions_request(
@@ -74,9 +99,9 @@ class GRPCv1LedgerClient(LedgerClient):
 
         tx_stream = await tx_future
 
-        events = to_transaction_events(
-            context, tx_stream, tt_stream, transaction_filter.destination_offset)
-        return events
+        return await self.ledger.package_loader.do_with_retry(
+            lambda: to_transaction_events(
+                context, tx_stream, tt_stream, transaction_filter.destination_offset))
 
     async def events_end(self) -> str:
         from . import model as G
@@ -153,13 +178,14 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterabl
     from ...client.pkg_loader import PackageLoader
     from .pb_ser_command import ProtobufSerializer
 
+    LOG.info('grpc_main_thread...')
+
     store = PackageStore.empty()
 
     package_provider = GRPCPackageProvider(connection, ledger_id)
 
-    # TODO: We could probably disable package syncing if expected packages are provided AND we have
-    #  fetched metadata for them all.
-    grpc_package_sync(package_provider, store)
+    if connection.options.eager_package_fetch:
+        grpc_package_sync(package_provider, store)
 
     yield LedgerMetadata(
         ledger_id=ledger_id,
@@ -168,13 +194,14 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterabl
             package_lookup=connection.options.lookup,
             conn=package_provider,
             timeout=connection.options.connect_timeout),
-        serializer=ProtobufSerializer(store),
+        serializer=ProtobufSerializer(connection.options.lookup),
         protocol_version="v1")
 
     # poll for package updates once a second
     while not connection._closed.wait(1):
         try:
-            grpc_package_sync(package_provider, store)
+            if connection.options.eager_package_fetch:
+                grpc_package_sync(package_provider, store)
         except Exception as ex:
             if not isinstance(ex, RpcError) or ex.code() != StatusCode.CANCELLED:
                 LOG.warning('Package syncing raised an exception.', exc_info=True)
@@ -223,7 +250,7 @@ def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore'
         #  we could only actually warn them if we parse the archive, which is the expensive
         #  operation we're trying to avoid).
         return (expected_package_ids is None or package_id in expected_package_ids) and \
-            package_id not in loaded_package_ids
+               package_id not in loaded_package_ids
 
     metadatas_pb = {}
     for package_id in all_package_ids:
@@ -261,7 +288,7 @@ def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
             client_id=settings.oauth.client_id,
             client_secret=settings.oauth.client_secret)
 
-        ssl_credentials=None
+        ssl_credentials = None
         if settings.ssl_settings:
             cert_chain = read_file_bytes(settings.ssl_settings.cert_file)
             cert = read_file_bytes(settings.ssl_settings.cert_key_file)
@@ -277,7 +304,8 @@ def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
                 root_certificates=ca_cert,
                 private_key=cert,
                 certificate_chain=cert_chain)
-        return secure_authorized_channel(credentials, RefreshRequester(), target, ssl_credentials=ssl_credentials, options=options)
+        return secure_authorized_channel(credentials, RefreshRequester(), target, ssl_credentials=ssl_credentials,
+                                         options=options)
 
     if settings.ssl_settings:
         cert_chain = read_file_bytes(settings.ssl_settings.cert_file)

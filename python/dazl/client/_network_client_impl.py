@@ -355,12 +355,8 @@ class _NetworkImpl:
         await wait_for(self.__ensure_package_ids(package_ids), to_timedelta(timeout).total_seconds())
 
     async def __ensure_package_ids(self, package_ids: 'Collection[str]'):
-        from asyncio import sleep
         metadata = await self.aio_metadata()
-        package_id_set = set(package_ids)
-        while not package_id_set.issubset(metadata._store.package_ids()):
-            # just sit here, waiting for our packages to show up in the store
-            await sleep(1)
+        await gather(*(metadata.package_loader.load(pkg_ref) for pkg_ref in package_ids))
 
     # region Event Handler Management
 

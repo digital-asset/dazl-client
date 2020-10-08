@@ -1,26 +1,25 @@
 # Copyright (c) 2017-2020 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import asyncio
 import warnings
-from asyncio import Future
+from asyncio import Future, sleep
 from collections import defaultdict
 from typing import Awaitable, Dict, List, Optional, Union, Collection, cast
 
 from ..client._reader_match import is_match
 from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.protocols import SymbolLookup
 from ..model.core import ContractId, ContractsState, ContractMatch, \
     UnknownTemplateWarning, ContractContextualData, ContractContextualDataCollection
 from ..model.reading import ContractCreateEvent, ContractArchiveEvent
-from ..model.types_store import PackageStore
 from ..scheduler import Invoker
-from ..util.asyncio_util import await_then, completed, propagate
+from ..util.asyncio_util import await_then
 
 
 class ActiveContractSet:
-    def __init__(self, invoker: 'Invoker'):
+    def __init__(self, invoker: 'Invoker', lookup: 'SymbolLookup'):
         self.invoker = invoker
-        self.metadata_future = invoker.create_future()
+        self.lookup = lookup
         self._tcdata = defaultdict(TemplateContractData)  # type: Dict[TypeConName, TemplateContractData]
 
     def handle_create(self, event: ContractCreateEvent) -> None:
@@ -54,60 +53,60 @@ class ActiveContractSet:
                   template_name: str,
                   match: ContractMatch = None,
                   include_archived: bool = False) -> ContractContextualDataCollection:
-        if not self.metadata_future.done():
-            return ContractContextualDataCollection()
-
-        unfiltered = self._get_template_state(self.metadata_future.result(), template_name)
+        unfiltered = self._get_template_state(template_name)
         all_items = [item
                      for tcd in unfiltered.values()
                      for item in tcd.subset(match, include_archived)]
         return ContractContextualDataCollection(all_items)
 
-    def read_async(self, template_name: str, match: ContractMatch = None, min_count: int = 1) \
-            -> Awaitable[ContractsState]:
-        if self.metadata_future.done():
-            # TODO: The upcoming SymbolLookup implementation should take this opportunity to fetch
-            #  package IDs if they do not exist
-            unfiltered = self._get_template_state(self.metadata_future.result(), template_name)
-            if len(unfiltered) > 1:
-                warnings.warn('Wildcard searches are not supported on async ACS queries',
-                              UnknownTemplateWarning, stacklevel=3)
-                unfiltered = dict()  # type: Dict[TypeConName, TemplateContractData]
+    async def read_async(
+            self, template_name: str, match: ContractMatch = None, min_count: int = 1) \
+            -> 'ContractsState':
+        from .. import LOG
 
-            if len(unfiltered) == 0:
-                # TODO: A slightly smarter implementation could hang around until/if a matching
-                #  template shows up
-                return completed({})
+        # Fetch matching names; we may need to wait for a package to be fetched in order to do this.
+        # Note that this loop may never terminate; in this case, this behavior is actually
+        # acceptable because it is what enables us to wait indefinitely for the creation of a
+        # contract of a specific type. Because we need type information available to parse data
+        # from the read stream, by the time data ends up in the ACS, the lookup will definitely
+        # know of the template name.
+        names = []
+        fail_count = 0
+        while not names:
+            names = self.lookup.template_names(template_name)
+            if not names:
+                fail_count += 1
+                await sleep(1)
 
-            (tt, tcd), = unfiltered.items()
+                if fail_count % 15 == 0:
+                    LOG.warning(
+                        'ACS read_async(%r) is still waiting for a package that contains that '
+                        'template. If this is taking longer than you expect, it might be because '
+                        'the relevant package is not loaded on your ledger.', template_name)
 
-            query = PendingQuery(self.invoker, match, min_count)
-            # if the current state is already a match, then don't remember the query since we're
-            # already done
-            if tcd is None or not query.check_ready(tcd):
-                tcd.register_query(query)
+        unfiltered = self._get_template_state(template_name)
+        if len(unfiltered) > 1:
+            warnings.warn('Wildcard searches are not supported on async ACS queries',
+                          UnknownTemplateWarning, stacklevel=3)
+            unfiltered = dict()  # type: Dict[TypeConName, TemplateContractData]
 
-            return await_then(query.future, lambda cxds: {cxd.cid: cxd.cdata for cxd in cxds})
-        else:
-            # delay the invocation of this entire method call until metadata is made available to us
-            future = self.invoker.create_future()
+        (tt, tcd), = unfiltered.items()
 
-            def delayed_invoke(_):
-                propagate(
-                    asyncio.ensure_future(self.read_async(template_name, match, min_count)), future)
+        query = PendingQuery(self.invoker, match, min_count)
+        # if the current state is already a match, then don't remember the query since we're
+        # already done
+        if tcd is None or not query.check_ready(tcd):
+            tcd.register_query(query)
 
-            self.metadata_future.add_done_callback(delayed_invoke)
-            return future
+        return await await_then(query.future, lambda cxds: {cxd.cid: cxd.cdata for cxd in cxds})
 
-    def _get_template_state(self, store: PackageStore, template_name: str) -> \
-            'Dict[TypeConName, TemplateContractData]':
-        matching_templates = store.resolve_template_type(template_name)
-        if matching_templates:
-            return {tt.con: self._tcdata[tt.con] for tt in matching_templates}
-        else:
+    def _get_template_state(self, template_name: str) -> 'Dict[TypeConName, TemplateContractData]':
+        names = self.lookup.template_names(template_name)
+        if not names:
             warnings.warn(f'Unknown template name: {template_name}', UnknownTemplateWarning,
                           stacklevel=4)
-            return {}
+
+        return {name: self._tcdata[name] for name in names}
 
 
 class TemplateContractData:

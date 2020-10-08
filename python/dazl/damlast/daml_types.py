@@ -54,6 +54,9 @@ def con(tycon: 'TypeConName', *args: 'Type') -> 'Type':
     :param tycon: The fully-qualified name of the type constructor.
     :param args: Type arguments (only applicable if the type is a generic type).
     """
+    if tycon is None:
+        raise ValueError('tycon is required')
+
     return Type(con=Type.Con(tycon=tycon, args=tuple(args)))
 
 

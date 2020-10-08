@@ -20,22 +20,20 @@ Ledger API.
 import uuid
 import warnings
 from datetime import timedelta
-from typing import Any, Collection, Generic, List, Mapping, Optional, Sequence, TypeVar, Union
+from typing import Any, Collection, List, Mapping, Optional, Sequence, Union, TYPE_CHECKING
 
 from dataclasses import dataclass, fields
 
-from .. import LOG
-from .types import Type, TypeReference, UnresolvedTypeReference, TemplateChoice, \
-    RecordType, UnsupportedType, VariantType, ContractIdType, ListType, OptionalType, TextMapType, \
-    EnumType, scalar_type_dispatch_table, TypeEvaluationContext, type_evaluate_dispatch
-from .types_store import PackageStore
+from .types import Type, UnresolvedTypeReference, TypeReference
 from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.daml_types import con
+from ..damlast.lookup import find_choice
+from ..damlast.protocols import SymbolLookup
 from ..prim import ContractId, Party
-from ..util.typing import safe_cast, safe_optional_cast
+from ..util.typing import safe_cast
 
-TCommand = TypeVar('TCommand')
-TValue = TypeVar('TValue')
-
+if TYPE_CHECKING:
+    from ..values import Context, ValueMapper
 
 CommandsOrCommandSequence = Union[None, 'Command', Sequence[Optional['Command']]]
 EventHandlerResponse = Union[CommandsOrCommandSequence, 'CommandBuilder', 'CommandPayload']
@@ -328,7 +326,7 @@ class CommandBuilder:
             raise ValueError('defaults must currently be specified')
 
         command_id = defaults.default_command_id or self._defaults.default_command_id or \
-            uuid.uuid4().hex
+                     uuid.uuid4().hex
 
         return [CommandPayload(
             party=defaults.default_party or self._defaults.default_party,
@@ -455,223 +453,86 @@ def create_and_exercise(template, create_arguments, choice_name, choice_argument
     return CreateAndExerciseCommand(template, create_arguments, choice_name, choice_argument)
 
 
-####################################################################################################
-# argument iteration support
-####################################################################################################
-
-
-def arg_iter(value):
-    """
-    Produce an iterator that walks over an argument tree and all of its values, recursing into
-    lists and record/variant fields.
-    """
-    if isinstance(value, str):
-        # str is a common case, and it's also iterable (which we don't want to exploit here)
-        yield value
-    elif isinstance(value, dict):
-        for sub_value in value.values():
-            yield sub_value
-    elif hasattr(value, '__iter__'):
-        for sub_value in value:
-            yield sub_value
-    else:
-        yield value
-
-
-class Serializer(Generic[TCommand, TValue]):
+class Serializer:
     """
     Serializer interface for objects on the write-side of the API.
     """
 
-    def serialize_value(self, type_token: Type, obj: Any) -> TValue:
+    def serialize_value(self, tt: 'Type', obj: 'Any') -> 'Any':
         raise NotImplementedError('serialize_value requires an implementation')
 
-    def serialize_command(self, command: Command) -> TCommand:
+    def serialize_command(self, command: 'Any') -> 'Any':
         raise NotImplementedError('serialize_command requires an implementation')
 
 
-class AbstractSerializer(Serializer[TCommand, TValue]):
+class AbstractSerializer(Serializer):
     """
     Implementation of :class:`Serializer` that helps enforce that all possible cases of type
     serialization have been implemented.
     """
-    def __init__(self, store: PackageStore, type_context: 'Optional[TypeEvaluationContext]' = None):
-        self.store = safe_cast(PackageStore, store)
-        self.type_context = safe_optional_cast(TypeEvaluationContext, type_context)
 
-    def serialize_value(self, tt: Type, obj: Any) -> TValue:
-        context = TypeEvaluationContext.from_store(self.store)
-        try:
-            return self._serialize_dispatch(context, tt, obj)
-        except:
-            from ..util.fmt_py import python_example_object
+    def __init__(self, lookup: 'SymbolLookup'):
+        self.lookup = lookup
 
-            LOG.warning("Expected something like:")
-            for line in str.splitlines(python_example_object(self.store, tt)):
-                LOG.warning('    %s', line)
+    @property
+    def mapper(self) -> 'ValueMapper':
+        raise NotImplementedError(f'{type(self)}.mapper() must be defined')
 
-            LOG.warning("But got this instead:")
-            LOG.warning('    %r', obj)
-            raise
+    def serialize_value(self, tt: Type, obj: Any) -> 'Any':
+        from ..values import Context
+        return Context(self.mapper, self.lookup).convert(tt, obj)
 
-    def serialize_commands(self, commands: 'Sequence[Command]') -> 'Sequence[TCommand]':
+    def serialize_commands(self, commands: 'Sequence[Command]') -> 'Sequence[Any]':
         return [self.serialize_command(cmd) for cmd in commands]
 
-    def serialize_command(self, command: 'Command') -> 'TCommand':
+    def serialize_command(self, command: 'Command') -> 'Any':
         if isinstance(command, CreateCommand):
-            tt = _resolve_template_type(self.store, command.template_type)
-            value = self.serialize_value(tt, command.arguments)
-            return self.serialize_create_command(tt, value)
-        elif isinstance(command, ExerciseCommand):
-            name = command.contract.value_type
-            choice_name = command.choice
-            choice_opts = self.store.resolve_choice(name, choice_name)
-            if len(choice_opts) == 0:
-                msg = f'Could not resolve {name} {choice_name} to any valid choices'
-                LOG.error(msg)
-                raise ValueError(msg)
-            if len(choice_opts) > 1:
-                msg = f'Could not uniquely resolve {name} {choice_name} ' \
-                    f'to a single valid choice'
-                LOG.error(msg)
-                raise ValueError(msg)
-            tt, choice = next(iter(choice_opts.items()))
+            name = self.lookup.template_name(command.template_type)
+            value = self.serialize_value(con(name), command.arguments)
+            return self.serialize_create_command(name, value)
 
-            args = self.serialize_value(choice.type, command.arguments)
-            return self.serialize_exercise_command(command.contract, choice, args)
+        elif isinstance(command, ExerciseCommand):
+            template = self.lookup.template(command.contract.value_type)
+            choice = find_choice(template, command.choice)
+            args = self.serialize_value(choice.arg_binder.type, command.arguments)
+            return self.serialize_exercise_command(command.contract, choice.name, args)
+
         elif isinstance(command, CreateAndExerciseCommand):
-            tt = _resolve_template_type(self.store, command.template_type)
-            create_value = self.serialize_value(tt, command.arguments)
-            _, choice_info = next(iter(self.store.resolve_choice(tt, command.choice).items()))
-            choice_args = self.serialize_value(choice_info.type, command.choice_argument)
+            name = self.lookup.template_name(command.template_type)
+            template = self.lookup.template(name)
+            create_value = self.serialize_value(con(name), command.arguments)
+            choice = find_choice(template, command.choice)
+            choice_args = self.serialize_value(choice.arg_binder.type, command.choice_argument)
             return self.serialize_create_and_exercise_command(
-                tt, create_value, choice_info, choice_args)
+                name, create_value, choice.name, choice_args)
+
         elif isinstance(command, ExerciseByKeyCommand):
-            template, = self.store.resolve_template(command.template_type)
-            key_value = self.serialize_value(template.key_type, command.contract_key)
-            choices = self.store.resolve_choice(template, command.choice)
-            _, choice_info = next(iter(choices.items()))
-            choice_args = self.serialize_value(choice_info.type, command.choice_argument)
+            name = self.lookup.template_name(command.template_type)
+            template = self.lookup.template(name)
+            key_value = self.serialize_value(template.key.type, command.contract_key)
+            choice = find_choice(template, command.choice)
+            choice_args = self.serialize_value(choice.arg_binder.type, command.choice_argument)
             return self.serialize_exercise_by_key_command(
-                template.data_type.name, key_value, choice_info, choice_args)
+                name, key_value, choice.name, choice_args)
+
         else:
             raise ValueError(f'unknown Command type: {command!r}')
 
-    def serialize_create_command(
-            self, template_type: RecordType, template_args: TValue) \
-            -> TCommand:
+    def serialize_create_command(self, name: 'TypeConName', template_args: 'Any') -> 'Any':
         raise NotImplementedError('serialize_create_command requires an implementation')
 
     def serialize_exercise_command(
-            self, contract_id: ContractId, choice_info: TemplateChoice, choice_args: TValue) \
-            -> TCommand:
+            self, contract_id: 'ContractId', choice_name: str, choice_args: 'Any') -> 'Any':
         raise NotImplementedError('serialize_exercise_command requires an implementation')
 
     def serialize_exercise_by_key_command(
-            self, template_ref: TypeReference, key_arguments: Any,
-            choice_info: TemplateChoice, choice_arguments: Any) -> TCommand:
+            self, name: 'TypeConName', key_arguments: 'Any',
+            choice_name: str, choice_arguments: 'Any') -> 'Any':
         raise NotImplementedError(
             'serialize_exercise_by_key_command requires an implementation')
 
     def serialize_create_and_exercise_command(
-            self, template_type: RecordType, create_arguments: Any,
-            choice_info: TemplateChoice, choice_arguments: Any) -> TCommand:
+            self, name: 'TypeConName', create_args: 'Any',
+            choice_name: str, choice_arguments: 'Any') -> 'Any':
         raise NotImplementedError(
             'serialize_create_and_exercise_command requires an implementation')
-
-    def serialize_unit(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_unit requires an implementation')
-
-    def serialize_bool(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_bool requires an implementation')
-
-    def serialize_text(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_bool requires an implementation')
-
-    def serialize_int(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_bool requires an implementation')
-
-    def serialize_decimal(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_bool requires an implementation')
-
-    def serialize_party(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_bool requires an implementation')
-
-    def serialize_date(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_bool requires an implementation')
-
-    def serialize_datetime(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_bool requires an implementation')
-
-    def serialize_timedelta(self, context: TypeEvaluationContext, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_bool requires an implementation')
-
-    def serialize_contract_id(self, context: TypeEvaluationContext, tt: ContractIdType, obj: Any) \
-            -> TValue:
-        raise NotImplementedError('serialize_contract_id requires an implementation')
-
-    def serialize_optional(self, context: TypeEvaluationContext, tt: OptionalType, obj: Any) \
-            -> TValue:
-        raise NotImplementedError('serialize_optional requires an implementation')
-
-    def serialize_list(self, context: TypeEvaluationContext, tt: ListType, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_list requires an implementation')
-
-    def serialize_map(self, context: TypeEvaluationContext, tt: TextMapType, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_map requires an implementation')
-
-    def serialize_record(self, context: TypeEvaluationContext, tt: RecordType, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_record requires an implementation')
-
-    def serialize_variant(self, context: TypeEvaluationContext, tt: VariantType, obj: Any) \
-            -> TValue:
-        raise NotImplementedError('serialize_variant requires an implementation')
-
-    def serialize_enum(self, context: TypeEvaluationContext, tt: EnumType, obj: Any) -> TValue:
-        raise NotImplementedError('serialize_enum requires an implementation')
-
-    def serialize_unsupported(self, context: TypeEvaluationContext, tt: UnsupportedType, obj: Any) \
-            -> TValue:
-        raise NotImplementedError('serialize_unsupported requires an implementation')
-
-    def _serialize_dispatch(self, context: TypeEvaluationContext, tt: Type, obj: Any) -> TValue:
-        eval_fn = type_evaluate_dispatch(
-            lambda c, st: scalar_type_dispatch_table(
-                lambda: self.serialize_unit(c, obj),
-                lambda: self.serialize_bool(c, obj),
-                lambda: self.serialize_text(c, obj),
-                lambda: self.serialize_int(c, obj),
-                lambda: self.serialize_decimal(c, obj),
-                lambda: self.serialize_party(c, obj),
-                lambda: self.serialize_date(c, obj),
-                lambda: self.serialize_datetime(c, obj),
-                lambda: self.serialize_timedelta(c, obj))(st),
-            lambda c, ct: self.serialize_contract_id(c, ct, obj),
-            lambda c, ot: self.serialize_optional(c, ot, obj),
-            lambda c, lt: self.serialize_list(c, lt, obj),
-            lambda c, mt: self.serialize_map(c, mt, obj),
-            lambda c, rt: self.serialize_record(c, rt, obj),
-            lambda c, vt: self.serialize_variant(c, vt, obj),
-            lambda c, et: self.serialize_enum(c, et, obj),
-            lambda c, ut: self.serialize_unsupported(c, ut, obj))
-        return eval_fn(context, tt)
-
-
-def _resolve_template_type(store: 'PackageStore', template) -> 'RecordType':
-    candidates = store.resolve_template_type(template)
-    if len(candidates) == 0:
-        msg = f'Could not resolve {template} to any valid types'
-        LOG.error(msg)
-        raise ValueError(msg)
-    elif len(candidates) > 1:
-        msg = f'Could not uniquely resolve {template} to a single valid type'
-        LOG.error(msg)
-        raise ValueError(msg)
-
-    tt, = candidates.values()
-    if not isinstance(tt, RecordType):
-        msg = f'CreateCommand requires a type that is a record (got {tt} instead)'
-        LOG.error(msg)
-        raise ValueError(msg)
-
-    return tt

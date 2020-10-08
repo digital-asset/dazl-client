@@ -4,26 +4,11 @@
 """
 Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic types.
 """
-import warnings
-
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Union
-
-# noinspection PyPackageRequirements
-from google.protobuf.empty_pb2 import Empty
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Union
 
 from ... import LOG
-from ...damlast.daml_lf_1 import ModuleRef, PackageRef, DottedName, TypeConName
-from ...damlast.protocols import SymbolLookup
-from ...model.core import ContractId
-from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
-    TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
-    ContractExercisedEvent, ActiveContractSetEvent, ContractFilter
-from ...model.types import RecordType, Type, VariantType, ContractIdType, ListType, \
-    TypeEvaluationContext, type_evaluate_dispatch_default_error, TextMapType, OptionalType, TypeReference
-from ...model.types_store import PackageStore
-from ...prim import Party, to_bool, to_date, to_datetime, to_decimal, to_int, to_party, to_str
 from ..._gen.com.daml.ledger.api.v1 import \
     active_contracts_service_pb2 as acs_pb2, \
     event_pb2, \
@@ -32,6 +17,21 @@ from ..._gen.com.daml.ledger.api.v1 import \
     transaction_filter_pb2 as txf_pb2, \
     transaction_service_pb2 as txs_pb2, \
     value_pb2
+from ...damlast.daml_lf_1 import ModuleRef, PackageRef, DottedName, TypeConName
+from ...damlast.daml_types import con
+from ...damlast.lookup import find_choice
+from ...damlast.protocols import SymbolLookup
+from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
+    TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
+    ContractExercisedEvent, ActiveContractSetEvent, ContractFilter
+from ...model.types_store import PackageStore
+from ...prim import Party, to_datetime
+from ...values import Context, ProtobufDecoder
+
+# noinspection PyPackageRequirements
+
+
+DECODER = ProtobufDecoder()
 
 
 @dataclass(frozen=True)
@@ -44,6 +44,9 @@ class BaseEventDeserializationContext:
     store: 'PackageStore'
     party: 'Party'
     ledger_id: str
+
+    def deserializer_context(self) -> 'Context':
+        return Context(DECODER, self.lookup)
 
     def offset_event(self, time: datetime, offset: str) -> OffsetEvent:
         return OffsetEvent(
@@ -334,23 +337,11 @@ def to_created_event(
         context: 'Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]',
         cr: 'event_pb2.CreatedEvent') \
         -> 'Optional[ContractCreateEvent]':
-    name = to_type_con_name(cr.template_id)
-    candidates = context.store.resolve_template_type(name)
-    if len(candidates) == 0:
-        LOG.warning('Could not find metadata for %s!', name)
-        return None
-    elif len(candidates) > 1:
-        LOG.error('The template identifier %s is not unique within its metadata!', candidates)
-        return None
+    tt = con(to_type_con_name(cr.template_id))
 
-    ((type_ref, tt),) = candidates.items()
-
-    tt_context = TypeEvaluationContext.from_store(context.store)
-
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', DeprecationWarning)
-        cid = ContractId(cr.contract_id, name)
-    cdata = to_record(tt_context, tt, cr.create_arguments)
+    ctx = context.deserializer_context()
+    cid = ctx.convert_contract_id(tt, cr.contract_id)
+    cdata = ctx.convert(tt, cr.create_arguments)
     event_id = cr.event_id
     witness_parties = tuple(cr.witness_parties)
 
@@ -362,52 +353,42 @@ def to_exercised_event(
         er: 'event_pb2.ExercisedEvent') \
         -> 'Optional[ContractExercisedEvent]':
     name = to_type_con_name(er.template_id)
-    tt_context = TypeEvaluationContext.from_store(context.store)
-    choice_candidates = context.store.resolve_choice(name, er.choice)
+    tt = con(name)
 
-    ((choice_ref, cc),) = choice_candidates.items()
+    template = context.lookup.template(name)
+    choice = find_choice(template, er.choice)
 
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', DeprecationWarning)
-        cid = ContractId(er.contract_id, name)
+    ctx = context.deserializer_context()
+
+    cid = ctx.convert_contract_id(tt, er.contract_id)
     event_id = er.event_id
     witness_parties = tuple(er.witness_parties)
     try:
         contract_creating_event_id = er.contract_creating_event_id
     except AttributeError:
         contract_creating_event_id = None
-    choice = er.choice
-    choice_args = to_natural_type(tt_context, cc.data_type, er.choice_argument)
+    choice_args = ctx.convert(choice.arg_binder.type, er.choice_argument)
     acting_parties = tuple(er.acting_parties)
     consuming = er.consuming
     child_event_ids = er.child_event_ids
-    exercise_result = to_natural_type(tt_context, cc.return_type, er.exercise_result)
+    exercise_result = ctx.convert(choice.ret_type, er.exercise_result)
 
     return context.contract_exercised_event(
         cid, None, event_id, witness_parties, contract_creating_event_id,
-        choice, choice_args, acting_parties, consuming, child_event_ids, exercise_result)
+        er.choice, choice_args, acting_parties, consuming, child_event_ids, exercise_result)
 
 
 def to_archived_event(
         context: 'TransactionEventDeserializationContext',
         ar: 'event_pb2.ArchivedEvent') \
         -> 'Optional[ContractArchiveEvent]':
-    name = to_type_con_name(ar.template_id)
+    tt = con(to_type_con_name(ar.template_id))
     event_id = ar.event_id
     witness_parties = tuple(ar.witness_parties)
 
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', DeprecationWarning)
-        cid = ContractId(ar.contract_id, name)
+    ctx = context.deserializer_context()
+    cid = ctx.convert_contract_id(tt, ar.contract_id)
     return context.contract_archived_event(cid, None, event_id, witness_parties)
-
-
-def to_type_ref(identifier: 'value_pb2.Identifier') -> 'TypeReference':
-    warnings.warn(
-        'dazl.model.types.TypeReference is deprecated; '
-        'use dazl.damlast.daml_lf_1.TypeConName instead.',
-        DeprecationWarning, stacklevel=2)
-    return TypeReference(to_type_con_name(identifier))
 
 
 def to_type_con_name(identifier: 'value_pb2.Identifier') -> 'TypeConName':
@@ -417,121 +398,3 @@ def to_type_con_name(identifier: 'value_pb2.Identifier') -> 'TypeConName':
             DottedName(identifier.module_name.split('.'))
         ),
         DottedName(identifier.entity_name.split('.')).segments)
-
-
-def to_natural_type(context: 'TypeEvaluationContext', data_type: 'Type', obj: 'value_pb2.Value') \
-        -> 'Any':
-    ctor = obj.WhichOneof('Sum')
-    if ctor == 'record':
-        return to_record(context, data_type, obj.record)
-    elif ctor == 'variant':
-        return to_variant(context, data_type, obj.variant)
-    elif ctor == 'map':
-        return to_map(context, data_type, obj.map)
-    elif ctor == 'contract_id':
-        return to_contract_id(context, data_type, obj.contract_id)
-    elif ctor == 'list':
-        return to_list(context, data_type, obj.list)
-    elif ctor == 'optional':
-        return to_optional(context, data_type, obj.optional)
-    elif ctor == 'enum':
-        return to_enum(obj.enum)
-    elif ctor == 'int64':
-        return to_int(obj.int64)
-    elif ctor == 'numeric':
-        return to_decimal(obj.numeric)
-    elif ctor == 'text':
-        return to_str(obj.text)
-    elif ctor == 'date':
-        return to_date(obj.date)
-    elif ctor == 'timestamp':
-        return to_datetime(obj.timestamp)
-    elif ctor == 'party':
-        return to_party(obj.party)
-    elif ctor == 'bool':
-        return to_bool(obj.bool)
-    elif ctor == 'unit':
-        return to_unit(obj.unit)
-    elif ctor is None:
-        return None
-    else:
-        raise ValueError(f'unhandled value type: {ctor!r}')
-
-
-def to_record(context: 'TypeEvaluationContext', tt: 'Type', record: 'value_pb2.Record') -> dict:
-    def process(child_context: 'TypeEvaluationContext', rt: 'RecordType') -> dict:
-        args_list = rt.as_args_list()
-
-        natural = dict()
-        for (name, field_type), field in zip(args_list, record.fields):
-            natural[name] = to_natural_type(
-                child_context.append_path(name), field_type, field.value)
-        return natural
-
-    return type_evaluate_dispatch_default_error(on_record=process)(context, tt)
-
-
-def to_variant(context: 'TypeEvaluationContext', tt: 'Type', variant: 'value_pb2.Variant') -> 'Any':
-    """
-    Convert an on-the-wire :class:`G.Variant` to a Python type.
-
-    :param context: The :class:`TypeEvaluationContext`
-    :param tt: The DAML :class:`Type` to convert to.
-    :param variant: The on-the-wire :class:`G.Variant` Protobuf message.
-    :return: The native Python representation of this variant.
-    """
-
-    def process(child_context: 'TypeEvaluationContext', vt: 'VariantType') -> dict:
-        ctor = variant.constructor
-        field_type = vt.field_type(ctor)
-        return {ctor: to_natural_type(child_context.append_path(ctor), field_type, variant.value)}
-
-    return type_evaluate_dispatch_default_error(on_variant=process)(context, tt)
-
-
-def to_map(context: 'TypeEvaluationContext', tt: 'Type', map_pb: 'value_pb2.Map') \
-        -> 'Mapping[str, Any]':
-    def process(child_context: 'TypeEvaluationContext', mt: 'TextMapType') -> dict:
-        return {
-            entry_pb.key:
-                to_natural_type(child_context.append_path(f'[{entry_pb.key}]'),
-                                mt.value_type,
-                                entry_pb.value)
-            for entry_pb in map_pb.entries}
-
-    return type_evaluate_dispatch_default_error(on_text_map=process)(context, tt)
-
-
-def to_contract_id(context: 'TypeEvaluationContext', tt: 'Type', contract_id: str) -> 'ContractId':
-    def process(_: 'TypeEvaluationContext', ct: 'ContractIdType') -> 'ContractId':
-        # TODO: Construct the non-deprecated dazl.prim.ContractId
-        #  once dazl.model.core.ContractId is removed
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore', DeprecationWarning)
-            return ContractId(contract_id, ct.type_parameter)
-
-    return type_evaluate_dispatch_default_error(on_contract_id=process)(context, tt)
-
-
-def to_list(context: 'TypeEvaluationContext', tt: 'Type', list_: 'value_pb2.List') -> list:
-    def process(child_context: 'TypeEvaluationContext', lt: 'ListType') -> list:
-        return [to_natural_type(child_context.append_path(f'[{i}]'), lt.type_parameter, element)
-                for i, element in enumerate(list_.elements)]
-
-    return type_evaluate_dispatch_default_error(on_list=process)(context, tt)
-
-
-def to_optional(context: 'TypeEvaluationContext', tt: 'Type', optional: 'value_pb2.Optional') \
-        -> 'Any':
-    def process(child_context: 'TypeEvaluationContext', ot: OptionalType) -> list:
-        return to_natural_type(child_context.append_path(f'?'), ot.type_parameter, optional.value)
-
-    return type_evaluate_dispatch_default_error(on_optional=process)(context, tt)
-
-
-def to_enum(enum: 'Union[str, value_pb2.Enum]') -> str:
-    return getattr(enum, 'constructor', enum)
-
-
-def to_unit(_: Empty) -> dict:
-    return {}

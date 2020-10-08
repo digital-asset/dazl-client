@@ -63,8 +63,8 @@ from .core import ContractId, ContractData, ContractContextualData, Party
 from .lookup import template_reverse_globs, validate_template
 from .types import TypeReference
 from .types_store import PackageStore
+from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.protocols import SymbolLookup
-
 
 T = TypeVar('T')
 
@@ -256,7 +256,7 @@ def create_dispatch(
 
 @dataclass(frozen=True)
 class ContractFilter:
-    templates: 'Optional[Collection[TypeReference]]' = None
+    templates: 'Optional[Collection[TypeConName]]' = None
     party_groups: 'Optional[Collection[Party]]' = None
 
 
