@@ -30,6 +30,7 @@ from .. import LOG
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
+from ..damlast import get_dar_package_ids
 from ..metrics import MetricEvents
 from ..model.core import ContractsState, ContractMatch, \
     ContractContextualData, ContractContextualDataCollection, Dar
@@ -41,7 +42,6 @@ from ..model.writing import EventHandlerResponse
 from ..prim import ContractId, ContractData, Party, TimeDeltaLike, to_party
 from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
-from ..util.dar import get_dar_package_ids
 from ..util.io import get_bytes
 from ._events import EventHandler, AEventHandler, EventHandlerDecorator, AEventHandlerDecorator, \
     fluentize

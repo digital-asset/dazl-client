@@ -21,10 +21,14 @@ encoding and decoding of values, see :mod:`dazl.values`.
 :mod:`dazl.damlast.parse`:
     Functions for parsing a DAML-LF Archive from its Protobuf definition.
 
+:mod:`dazl.damlast.protocols`:
+    Protocols (interfaces) for components in this package.
+
 :mod:`dazl.damlast.errors`:
     Subclasses of :class:`Error` that may be thrown by classes in this package.
 
 .. automodule:: dazl.damlast.daml_lf_1
+
     :members:
 .. automodule:: dazl.damlast.daml_types
     :members:
@@ -33,6 +37,8 @@ encoding and decoding of values, see :mod:`dazl.values`.
 .. automodule:: dazl.damlast.parse
     :members:
 .. automodule:: dazl.damlast.errors
+.. automodule:: dazl.damlast.protocols
+
 """
 
 from .pkgfile import DarFile, CachedDarFile, get_dar_package_ids

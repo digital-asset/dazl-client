@@ -15,6 +15,8 @@ from google.protobuf.empty_pb2 import Empty
 
 from ... import LOG
 from ...damlast.daml_lf_1 import ModuleRef, PackageRef, DottedName, TypeConName
+from ...damlast.daml_types import con
+from ...damlast.protocols import SymbolLookup
 from ...model.core import ContractId
 from ...model.reading import BaseEvent, TransactionFilter, ContractCreateEvent, \
     TransactionStartEvent, TransactionEndEvent, ContractArchiveEvent, OffsetEvent, \
@@ -38,24 +40,26 @@ class BaseEventDeserializationContext:
     """
     Attributes required throughout the deserialization of an event stream.
     """
-    client: Any
-    store: PackageStore
-    party: Party
+    client: 'Any'
+    lookup: 'SymbolLookup'
+    store: 'PackageStore'
+    party: 'Party'
     ledger_id: str
 
     def offset_event(self, time: datetime, offset: str) -> OffsetEvent:
-        return OffsetEvent(self.client, self.party, time, self.ledger_id, self.store, offset)
+        return OffsetEvent(
+            self.client, self.party, time, self.ledger_id, self.lookup, self.store, offset)
 
     def active_contract_set(self, offset: str, workflow_id: str) \
             -> 'ActiveContractSetEventDeserializationContext':
         return ActiveContractSetEventDeserializationContext(
-            self.client, self.store, self.party, self.ledger_id,
+            self.client, self.lookup, self.store, self.party, self.ledger_id,
             offset, workflow_id)
 
     def transaction(self, time: datetime, offset: str, command_id: str, workflow_id: str) \
             -> 'TransactionEventDeserializationContext':
         return TransactionEventDeserializationContext(
-            self.client, self.store, self.party, self.ledger_id,
+            self.client, self.lookup, self.store, self.party, self.ledger_id,
             time, offset, command_id, workflow_id)
 
 
@@ -69,13 +73,14 @@ class ActiveContractSetEventDeserializationContext(BaseEventDeserializationConte
 
     def active_contract_set_event(self, contract_events: 'Sequence[ContractCreateEvent]') \
             -> 'ActiveContractSetEvent':
-        return ActiveContractSetEvent(self.client, self.party, None, self.ledger_id, self.store,
-                                      self.offset, contract_events)
+        return ActiveContractSetEvent(
+            self.client, self.party, None, self.ledger_id, self.lookup, self.store, self.offset,
+            contract_events)
 
     def contract_created_event(self, cid, cdata, event_id, witness_parties) -> ContractCreateEvent:
         return ContractCreateEvent(
             client=self.client, party=self.party, time=None, ledger_id=self.ledger_id,
-            package_store=self.store, offset=self.offset,
+            lookup=self.lookup, package_store=self.store, offset=self.offset,
             command_id='', workflow_id=self.workflow_id,
             cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties)
 
@@ -91,17 +96,19 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
     workflow_id: str
 
     def transaction_start_event(self, contract_events) -> TransactionStartEvent:
-        return TransactionStartEvent(self.client, self.party, self.time, self.ledger_id, self.store,
-                                     self.offset, self.command_id, self.workflow_id, contract_events)
+        return TransactionStartEvent(
+            self.client, self.party, self.time, self.ledger_id, self.lookup, self.store,
+            self.offset, self.command_id, self.workflow_id, contract_events)
 
     def transaction_end_event(self, contract_events) -> TransactionEndEvent:
-        return TransactionEndEvent(self.client, self.party, self.time, self.ledger_id, self.store,
-                                   self.offset, self.command_id, self.workflow_id, contract_events)
+        return TransactionEndEvent(
+            self.client, self.party, self.time, self.ledger_id, self.lookup, self.store,
+            self.offset, self.command_id, self.workflow_id, contract_events)
 
     def contract_created_event(self, cid, cdata, event_id, witness_parties) -> ContractCreateEvent:
         return ContractCreateEvent(
             client=self.client, party=self.party, time=self.time, ledger_id=self.ledger_id,
-            package_store=self.store, offset=self.offset,
+            package_store=self.store, lookup=self.lookup, offset=self.offset,
             command_id=self.command_id, workflow_id=self.workflow_id,
             cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties)
 
@@ -111,7 +118,7 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             -> ContractExercisedEvent:
         return ContractExercisedEvent(
             client=self.client, party=self.party, time=self.time, ledger_id=self.ledger_id,
-            package_store=self.store, offset=self.offset,
+            package_store=self.store, lookup=self.lookup, offset=self.offset,
             command_id=self.command_id, workflow_id=self.workflow_id,
             cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties,
             contract_creating_event_id=contract_creating_event_id, acting_parties=acting_parties,
@@ -123,7 +130,7 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             -> ContractArchiveEvent:
         return ContractArchiveEvent(
             client=self.client, party=self.party, time=self.time, ledger_id=self.ledger_id,
-            package_store=self.store, offset=self.offset,
+            package_store=self.store, lookup=self.lookup, offset=self.offset,
             command_id=self.command_id, workflow_id=self.workflow_id,
             cid=cid, cdata=cdata, event_id=event_id, witness_parties=witness_parties)
 
@@ -344,7 +351,7 @@ def to_created_event(
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', DeprecationWarning)
         cid = ContractId(cr.contract_id, name)
-    cdata = to_record(tt_context, tt, cr.create_arguments)
+    cdata = cdata = to_record(tt_context, tt, cr.create_arguments)
     event_id = cr.event_id
     witness_parties = tuple(cr.witness_parties)
 

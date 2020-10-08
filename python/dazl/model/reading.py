@@ -63,6 +63,7 @@ from .core import ContractId, ContractData, ContractContextualData, Party
 from .lookup import template_reverse_globs, validate_template
 from .types import TypeReference
 from .types_store import PackageStore
+from ..damlast.protocols import SymbolLookup
 
 
 T = TypeVar('T')
@@ -75,10 +76,11 @@ class BaseEvent:
     """
 
     client: 'Any'
-    party: Optional[Party]
-    time: Optional[datetime]
+    party: 'Optional[Party]'
+    time: 'Optional[datetime]'
     ledger_id: str
-    package_store: PackageStore
+    lookup: 'SymbolLookup'
+    package_store: 'PackageStore'
 
     def acs_find_active(self, template: Union[TypeReference, str], match=None):
         return self.client.find_active(template, match)

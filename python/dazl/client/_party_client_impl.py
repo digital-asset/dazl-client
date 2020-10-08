@@ -25,10 +25,10 @@ from ..model.reading import BaseEvent, TransactionStartEvent, TransactionEndEven
     TransactionFilter, ContractCreateEvent, ContractArchiveEvent, \
     InitEvent, ReadyEvent, ActiveContractSetEvent, PackagesAddedEvent, ContractFilter
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
+from ..prim import TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork, LedgerClient
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
-from ..util.prim_types import TimeDeltaConvertible, to_timedelta
 from ..util.typing import safe_cast
 
 if TYPE_CHECKING:
@@ -114,8 +114,9 @@ class _PartyClientImpl:
         :param metadata:
             Information about the connected ledger.
         """
-        self._acs.metadata_future.set_result(metadata.store)
-        evt = InitEvent(self, self.party, current_time, metadata.ledger_id, metadata.store)
+        self._acs.metadata_future.set_result(metadata._store)
+        evt = InitEvent(
+            self, self.party, current_time, metadata.ledger_id, self.parent.lookup, metadata._store)
         return self.emit_event(evt)
 
     def ready(self) -> Awaitable[None]:
@@ -159,11 +160,13 @@ class _PartyClientImpl:
             Nothing. This method "returns" when all events have been raised and their follow-ups
             have been processed.
         """
-        ready_event = ReadyEvent(self, self.party, time, metadata.ledger_id, metadata.store, offset)
-        self._known_packages.update(metadata.store.package_ids())
+        ready_event = ReadyEvent(
+            self, self.party, time, metadata.ledger_id, self.parent.lookup, metadata._store, offset)
+        self._known_packages.update(metadata._store.package_ids())
         await self.emit_event(ready_event)
 
-        pkg_event = PackagesAddedEvent(self, self.party, time, metadata.ledger_id, metadata.store, True)
+        pkg_event = PackagesAddedEvent(
+            self, self.party, time, metadata.ledger_id, self.parent.lookup, metadata._store, True)
         await self.emit_event(pkg_event)
 
     # endregion
@@ -234,7 +237,7 @@ class _PartyClientImpl:
         #  there is a potential bug where we hear of an offset before the package is known;
         #  fixing this involves coupling transaction stream processing to package processing,
         #  which requires a larger refactor of the stream processor
-        templates = metadata.store.get_templates_for_packages(self._config.package_ids) \
+        templates = metadata._store.get_templates_for_packages(self._config.package_ids) \
             if self._config.package_ids is not None else None
 
         contract_filter = ContractFilter(
@@ -284,11 +287,12 @@ class _PartyClientImpl:
             # TODO: Find a more appropriate place to raise these events (or change the name of this
             #  method to make it clearer that it has a bigger mandate than simply transaction
             #  events)
-            all_packages = set(metadata.store.package_ids())
+            all_packages = set(metadata._store.package_ids())
             new_package_ids = all_packages - self._known_packages
             if new_package_ids:
                 pkg_event = PackagesAddedEvent(
-                    self, self.party, None, metadata.ledger_id, metadata.store, False)
+                    self, self.party, None, metadata.ledger_id, self.parent.lookup, metadata._store,
+                    False)
                 self._known_packages.update(all_packages)
                 await self.emit_event(pkg_event)
 
@@ -297,7 +301,7 @@ class _PartyClientImpl:
             #  there is a potential bug where we hear of an offset before the package is known;
             #  fixing this involves coupling transaction stream processing to package processing,
             #  which requires a larger refactor of the stream processor
-            templates = metadata.store.get_templates_for_packages(self._config.package_ids) \
+            templates = metadata._store.get_templates_for_packages(self._config.package_ids) \
                 if self._config.package_ids is not None else None
 
             # prepare a call to /events
@@ -379,7 +383,7 @@ class _PartyClientImpl:
             commands: EventHandlerResponse,
             ignore_errors: bool = False,
             workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaConvertible]' = None) \
+            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
             -> Awaitable[None]:
         """
         Submit a command or list of commands.
@@ -440,7 +444,7 @@ class _PartyClientImpl:
 
         client = self._client_fut.result()  # type: LedgerClient
         metadata = ledger_fut.result()  # type: LedgerMetadata
-        validator = ValidateSerializer(metadata.store)
+        validator = ValidateSerializer(metadata._store)
 
         self._writer.pending_commands.start()
 

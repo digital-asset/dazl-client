@@ -3,6 +3,7 @@
 
 import logging
 import os
+from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import timedelta
 
 import pytest
@@ -65,3 +66,9 @@ def sandbox() -> str:
         # sure that we find and destroy them too if the parent process doesn't kill its own children
         # quickly enough.
         kill_process_tree(process)
+
+
+@pytest.fixture()
+def executor() -> 'ThreadPoolExecutor':
+    with ThreadPoolExecutor(3) as executor:
+        yield executor

@@ -46,7 +46,8 @@ class GRPCv1LedgerClient(LedgerClient):
     async def active_contracts(self, contract_filter: 'ContractFilter') -> 'Sequence[BaseEvent]':
         request = serialize_acs_request(contract_filter, self.ledger.ledger_id, self.party)
         context = BaseEventDeserializationContext(
-            None, self.ledger.store, self.party, self.ledger.ledger_id)
+            None, self.connection.options.lookup, self.ledger._store, self.party,
+            self.ledger.ledger_id)
         acs_stream = await self.connection.invoker.run_in_executor(
             lambda: self.connection.active_contract_set_service.GetActiveContracts(request))
         acs_events = to_acs_events(context, acs_stream)
@@ -56,7 +57,8 @@ class GRPCv1LedgerClient(LedgerClient):
         request = serialize_transactions_request(
             transaction_filter, self.ledger.ledger_id, self.party)
         context = BaseEventDeserializationContext(
-            None, self.ledger.store, self.party, self.ledger.ledger_id)
+            None, self.connection.options.lookup, self.ledger._store, self.party,
+            self.ledger.ledger_id)
 
         tx_future = self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetTransactions(request))
@@ -148,6 +150,7 @@ def grpc_detect_ledger_id(connection: 'GRPCv1Connection') -> str:
 
 
 def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterable[LedgerMetadata]':
+    from ...client.pkg_loader import PackageLoader
     from .pb_ser_command import ProtobufSerializer
 
     store = PackageStore.empty()
@@ -161,6 +164,10 @@ def grpc_main_thread(connection: 'GRPCv1Connection', ledger_id: str) -> 'Iterabl
     yield LedgerMetadata(
         ledger_id=ledger_id,
         store=store,
+        package_loader=PackageLoader(
+            package_lookup=connection.options.lookup,
+            conn=package_provider,
+            timeout=connection.options.connect_timeout),
         serializer=ProtobufSerializer(store),
         protocol_version="v1")
 
@@ -181,21 +188,27 @@ class GRPCPackageProvider(PackageProvider):
         self.connection = connection
         self.ledger_id = ledger_id
 
-    def get_package_ids(self) -> 'PackageIdSet':
+    def package_ids(self) -> 'PackageIdSet':
         from . import model as G
         request = G.ListPackagesRequest(ledger_id=self.ledger_id)
         response = self.connection.package_service.ListPackages(request)
         return frozenset(response.package_ids)
 
-    def fetch_package(self, package_id: 'PackageId') -> bytes:
+    def package_bytes(self, package_id: 'PackageId') -> bytes:
         from . import model as G
         request = G.GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
         package_info = self.connection.package_service.GetPackage(request)
         return package_info.archive_payload
 
+    def get_package_ids(self) -> 'PackageIdSet':
+        return self.package_ids()
+
+    def fetch_package(self, package_id: 'PackageId') -> bytes:
+        return self.package_bytes(package_id)
+
 
 def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore') -> 'None':
-    LOG.verbose("grpc_package_sync started...")
+    LOG.debug("grpc_package_sync started...")
 
     all_package_ids = package_provider.get_package_ids()
     loaded_package_ids = {a.hash for a in store.archives()}
@@ -222,7 +235,7 @@ def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore'
     for package_id, archive_payload in metadatas_pb.sorted_archives.items():
         store.register_all(parse_daml_metadata_pb(package_id, archive_payload))
 
-    LOG.verbose("grpc_package_sync ended.")
+    LOG.debug("grpc_package_sync ended.")
 
 
 def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
