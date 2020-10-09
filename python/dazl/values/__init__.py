@@ -14,3 +14,4 @@ from .canonical import CanonicalMapper
 from .mapper import ValueMapper
 from .json import JsonDecoder, JsonEncoder
 from .protobuf import ProtobufDecoder, ProtobufEncoder
+from .string import ArrayStringMapper, FlatStringMapper

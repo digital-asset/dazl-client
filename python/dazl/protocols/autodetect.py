@@ -9,9 +9,10 @@ from .. import LOG
 from ._base import LedgerNetwork, LedgerClient, LedgerConnectionOptions
 from .v1.grpc import GRPCv1Connection
 from .oauth import oauth_flow
-from ..model.core import Party, UserTerminateRequest, ConnectionTimeoutError
+from ..model.core import UserTerminateRequest, ConnectionTimeoutError
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
+from ..prim import Party
 from ..scheduler import Invoker
 
 

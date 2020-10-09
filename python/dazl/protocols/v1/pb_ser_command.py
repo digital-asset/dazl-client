@@ -4,20 +4,27 @@
 """
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
+import warnings
 from typing import Any, Union
 
 # noinspection PyPep8Naming
 from . import model as G
 from ...damlast.daml_lf_1 import TypeConName
-from ...model.core import ContractId
-from ...model.types import TypeReference
 from ...model.writing import AbstractSerializer, CommandPayload
-from ...prim import timedelta_to_duration
+from ...prim import ContractId, timedelta_to_duration
 from ...values.protobuf import ProtobufEncoder, set_value
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', DeprecationWarning)
+    from ...model.types import TypeReference
 
 
 def as_identifier(tref: 'Union[TypeReference, TypeConName]') -> 'G.Identifier':
     if isinstance(tref, TypeReference):
+        warnings.warn(
+            'as_identifier(TypeReference) is deprecated; use as_identifier(TypeConName) instead.',
+            DeprecationWarning, stacklevel=2)
+
         tref = tref.con
 
     if isinstance(tref, TypeConName):

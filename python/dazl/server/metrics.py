@@ -5,7 +5,7 @@ from dataclasses import dataclass, asdict
 from typing import Collection, Mapping
 
 from ..client import _NetworkImpl
-from ..model.core import Party
+from ..prim import Party
 
 
 def build_routes(network_impl: '_NetworkImpl', registry=None) -> 'Collection[web.AbstractRouteDef]':

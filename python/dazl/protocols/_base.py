@@ -11,11 +11,11 @@ from typing import Optional, Sequence, Union
 
 from .. import LOG
 from ..damlast.protocols import SymbolLookup
-from ..model.core import Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
 from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ..model.writing import CommandPayload
+from ..prim import Party
 from ..scheduler import Invoker
 from ..util.typing import safe_optional_cast, safe_cast
 

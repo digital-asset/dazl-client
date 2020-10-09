@@ -55,16 +55,21 @@ This module contains models used on the read-side of the Ledger API.
 
 """
 
+import warnings
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Callable, Collection, Optional, Sequence, TypeVar, Union
 
 from .core import ContractId, ContractData, ContractContextualData, Party
 from .lookup import template_reverse_globs, validate_template
-from .types import TypeReference
-from .types_store import PackageStore
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.protocols import SymbolLookup
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', DeprecationWarning)
+
+    from .types import TypeReference
+    from .types_store import PackageStore
 
 T = TypeVar('T')
 
@@ -272,7 +277,6 @@ class TransactionFilter(ContractFilter):
 
 
 class EventKey:
-
     from_event = create_dispatch(
         on_init=lambda _: EventKey.init(),
         on_ready=lambda _: EventKey.ready(),

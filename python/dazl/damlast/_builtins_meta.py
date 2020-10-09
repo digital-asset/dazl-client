@@ -6,12 +6,15 @@ This module contains supporting infrastructure for built-in method definitions f
 DAML-LF files.
 """
 
-
+import warnings
 from typing import Any, Optional, Sequence, Union
 
 from .daml_lf_1 import BuiltinFunction, Expr, Type, ValName
 from .util import package_local_name
-from ..model.types import TypeReference
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', DeprecationWarning)
+    from ..model.types import TypeReference
 
 
 class _BuiltinMeta(type):
