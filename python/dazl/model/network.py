@@ -17,6 +17,7 @@ class HTTPConnectionSettings(NamedTuple):
     verify_ssl: str
     ssl_settings: 'SSLSettings'
     oauth: 'OAuthSettings'
+    enable_http_proxy: bool
 
     def url(self, *path_components: str):
         """
@@ -70,7 +71,8 @@ def connection_settings(url: str,
                         verify_ssl=None,
                         ca_file=None,
                         cert_file=None,
-                        cert_key_file=None) -> Tuple[HTTPConnectionSettings, str]:
+                        cert_key_file=None,
+                        enable_http_proxy=True) -> 'Tuple[HTTPConnectionSettings, str]':
     if url is None:
         if party is not None:
             raise ValueError('URL is required for party %s' % party)
@@ -100,7 +102,8 @@ def connection_settings(url: str,
             ssl_settings=SSLSettings(
                 ca_file=ca_file,
                 cert_file=cert_file,
-                cert_key_file=cert_key_file))
+                cert_key_file=cert_key_file),
+            enable_http_proxy=enable_http_proxy)
         return (settings, components.path.rstrip('/'))
     except ValueError:
         raise ValueError('Could not parse {}'.format(url))

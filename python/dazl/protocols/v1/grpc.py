@@ -281,10 +281,13 @@ def grpc_package_sync(package_provider: 'PackageProvider', store: 'PackageStore'
         LOG.debug("grpc_package_sync ended.")
 
 
-def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
+def grpc_create_channel(settings: 'HTTPConnectionSettings') -> Channel:
     target = f'{settings.host}:{settings.port}'
     options = [('grpc.max_send_message_length', -1),
                ('grpc.max_receive_message_length', -1)]
+    
+    if not settings.enable_http_proxy:
+        options.append(('grpc.enable_http_proxy', 0))
 
     if settings.oauth:
         # noinspection PyPackageRequirements

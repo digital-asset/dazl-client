@@ -383,7 +383,8 @@ class _NetworkImpl:
             verify_ssl=config.verify_ssl,
             ca_file=config.ca_file,
             cert_file=config.cert_file,
-            cert_key_file=config.cert_key_file)
+            cert_key_file=config.cert_key_file,
+            enable_http_proxy=config.enable_http_proxy)
         await self._pool.connect_anonymous(settings, url_prefix)
 
 

@@ -77,6 +77,11 @@ class URLConfig:
         param_type=BOOLEAN_TYPE,
         default_value=True)
 
+    enable_http_proxy: Optional[bool] = config_field(
+        'whether to allow the use of HTTP proxies',
+        param_type=BOOLEAN_TYPE,
+        default_value=True)
+
     package_lookup_timeout: Optional[float] = config_field(
         'number of seconds before giving up on a package',
         param_type=SECONDS_TYPE,
