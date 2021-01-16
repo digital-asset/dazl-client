@@ -24,6 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.daml.ledger.api.v1',
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\"CommandCompletionServiceOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  create_key=_descriptor._internal_create_key,
   serialized_pb=b'\n7com/daml/ledger/api/v1/command_completion_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\'com/daml/ledger/api/v1/completion.proto\x1a*com/daml/ledger/api/v1/ledger_offset.proto\x1a*com/daml/ledger/api/v1/trace_context.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8b\x01\n\x17\x43ompletionStreamRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\x12\x16\n\x0e\x61pplication_id\x18\x02 \x01(\t\x12\x0f\n\x07parties\x18\x03 \x03(\t\x12\x34\n\x06offset\x18\x04 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffset\"\x8b\x01\n\x18\x43ompletionStreamResponse\x12\x36\n\ncheckpoint\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.Checkpoint\x12\x37\n\x0b\x63ompletions\x18\x02 \x03(\x0b\x32\".com.daml.ledger.api.v1.Completion\"s\n\nCheckpoint\x12/\n\x0brecord_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x06offset\x18\x02 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffset\"g\n\x14\x43ompletionEndRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext\"M\n\x15\x43ompletionEndResponse\x12\x34\n\x06offset\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffset2\x81\x02\n\x18\x43ommandCompletionService\x12w\n\x10\x43ompletionStream\x12/.com.daml.ledger.api.v1.CompletionStreamRequest\x1a\x30.com.daml.ledger.api.v1.CompletionStreamResponse0\x01\x12l\n\rCompletionEnd\x12,.com.daml.ledger.api.v1.CompletionEndRequest\x1a-.com.daml.ledger.api.v1.CompletionEndResponseBU\n\x16\x63om.daml.ledger.api.v1B\"CommandCompletionServiceOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_completion__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_ledger__offset__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
@@ -37,6 +38,7 @@ _COMPLETIONSTREAMREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='ledger_id', full_name='com.daml.ledger.api.v1.CompletionStreamRequest.ledger_id', index=0,
@@ -44,28 +46,28 @@ _COMPLETIONSTREAMREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='application_id', full_name='com.daml.ledger.api.v1.CompletionStreamRequest.application_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='parties', full_name='com.daml.ledger.api.v1.CompletionStreamRequest.parties', index=2,
       number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='offset', full_name='com.daml.ledger.api.v1.CompletionStreamRequest.offset', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -89,6 +91,7 @@ _COMPLETIONSTREAMRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='checkpoint', full_name='com.daml.ledger.api.v1.CompletionStreamResponse.checkpoint', index=0,
@@ -96,14 +99,14 @@ _COMPLETIONSTREAMRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='completions', full_name='com.daml.ledger.api.v1.CompletionStreamResponse.completions', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -127,6 +130,7 @@ _CHECKPOINT = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='record_time', full_name='com.daml.ledger.api.v1.Checkpoint.record_time', index=0,
@@ -134,14 +138,14 @@ _CHECKPOINT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='offset', full_name='com.daml.ledger.api.v1.Checkpoint.offset', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -165,6 +169,7 @@ _COMPLETIONENDREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='ledger_id', full_name='com.daml.ledger.api.v1.CompletionEndRequest.ledger_id', index=0,
@@ -172,14 +177,14 @@ _COMPLETIONENDREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.CompletionEndRequest.trace_context', index=1,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -203,6 +208,7 @@ _COMPLETIONENDRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='offset', full_name='com.daml.ledger.api.v1.CompletionEndResponse.offset', index=0,
@@ -210,7 +216,7 @@ _COMPLETIONENDRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -285,6 +291,7 @@ _COMMANDCOMPLETIONSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
+  create_key=_descriptor._internal_create_key,
   serialized_start=831,
   serialized_end=1088,
   methods=[
@@ -296,6 +303,7 @@ _COMMANDCOMPLETIONSERVICE = _descriptor.ServiceDescriptor(
     input_type=_COMPLETIONSTREAMREQUEST,
     output_type=_COMPLETIONSTREAMRESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='CompletionEnd',
@@ -305,6 +313,7 @@ _COMMANDCOMPLETIONSERVICE = _descriptor.ServiceDescriptor(
     input_type=_COMPLETIONENDREQUEST,
     output_type=_COMPLETIONENDRESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_COMMANDCOMPLETIONSERVICE)

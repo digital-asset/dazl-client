@@ -11,6 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // ActiveContractsServiceClient is the client API for ActiveContractsService service.
@@ -21,6 +22,11 @@ type ActiveContractsServiceClient interface {
 	// If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
 	// Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
 	// Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (filters by party cannot be empty)
 	GetActiveContracts(ctx context.Context, in *GetActiveContractsRequest, opts ...grpc.CallOption) (ActiveContractsService_GetActiveContractsClient, error)
 }
 
@@ -32,13 +38,8 @@ func NewActiveContractsServiceClient(cc grpc.ClientConnInterface) ActiveContract
 	return &activeContractsServiceClient{cc}
 }
 
-var activeContractsServiceGetActiveContractsStreamDesc = &grpc.StreamDesc{
-	StreamName:    "GetActiveContracts",
-	ServerStreams: true,
-}
-
 func (c *activeContractsServiceClient) GetActiveContracts(ctx context.Context, in *GetActiveContractsRequest, opts ...grpc.CallOption) (ActiveContractsService_GetActiveContractsClient, error) {
-	stream, err := c.cc.NewStream(ctx, activeContractsServiceGetActiveContractsStreamDesc, "/com.daml.ledger.api.v1.ActiveContractsService/GetActiveContracts", opts...)
+	stream, err := c.cc.NewStream(ctx, &ActiveContractsService_ServiceDesc.Streams[0], "/com.daml.ledger.api.v1.ActiveContractsService/GetActiveContracts", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,27 +70,50 @@ func (x *activeContractsServiceGetActiveContractsClient) Recv() (*GetActiveContr
 	return m, nil
 }
 
-// ActiveContractsServiceService is the service API for ActiveContractsService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterActiveContractsServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type ActiveContractsServiceService struct {
+// ActiveContractsServiceServer is the server API for ActiveContractsService service.
+// All implementations must embed UnimplementedActiveContractsServiceServer
+// for forward compatibility
+type ActiveContractsServiceServer interface {
 	// Returns a stream of the latest snapshot of active contracts.
 	// If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
 	// Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
 	// Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
-	GetActiveContracts func(*GetActiveContractsRequest, ActiveContractsService_GetActiveContractsServer) error
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (filters by party cannot be empty)
+	GetActiveContracts(*GetActiveContractsRequest, ActiveContractsService_GetActiveContractsServer) error
+	mustEmbedUnimplementedActiveContractsServiceServer()
 }
 
-func (s *ActiveContractsServiceService) getActiveContracts(_ interface{}, stream grpc.ServerStream) error {
-	if s.GetActiveContracts == nil {
-		return status.Errorf(codes.Unimplemented, "method GetActiveContracts not implemented")
-	}
+// UnimplementedActiveContractsServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedActiveContractsServiceServer struct {
+}
+
+func (UnimplementedActiveContractsServiceServer) GetActiveContracts(*GetActiveContractsRequest, ActiveContractsService_GetActiveContractsServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetActiveContracts not implemented")
+}
+func (UnimplementedActiveContractsServiceServer) mustEmbedUnimplementedActiveContractsServiceServer() {
+}
+
+// UnsafeActiveContractsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ActiveContractsServiceServer will
+// result in compilation errors.
+type UnsafeActiveContractsServiceServer interface {
+	mustEmbedUnimplementedActiveContractsServiceServer()
+}
+
+func RegisterActiveContractsServiceServer(s grpc.ServiceRegistrar, srv ActiveContractsServiceServer) {
+	s.RegisterService(&ActiveContractsService_ServiceDesc, srv)
+}
+
+func _ActiveContractsService_GetActiveContracts_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetActiveContractsRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return s.GetActiveContracts(m, &activeContractsServiceGetActiveContractsServer{stream})
+	return srv.(ActiveContractsServiceServer).GetActiveContracts(m, &activeContractsServiceGetActiveContractsServer{stream})
 }
 
 type ActiveContractsService_GetActiveContractsServer interface {
@@ -105,48 +129,19 @@ func (x *activeContractsServiceGetActiveContractsServer) Send(m *GetActiveContra
 	return x.ServerStream.SendMsg(m)
 }
 
-// RegisterActiveContractsServiceService registers a service implementation with a gRPC server.
-func RegisterActiveContractsServiceService(s grpc.ServiceRegistrar, srv *ActiveContractsServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.ActiveContractsService",
-		Methods:     []grpc.MethodDesc{},
-		Streams: []grpc.StreamDesc{
-			{
-				StreamName:    "GetActiveContracts",
-				Handler:       srv.getActiveContracts,
-				ServerStreams: true,
-			},
+// ActiveContractsService_ServiceDesc is the grpc.ServiceDesc for ActiveContractsService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ActiveContractsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.ActiveContractsService",
+	HandlerType: (*ActiveContractsServiceServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetActiveContracts",
+			Handler:       _ActiveContractsService_GetActiveContracts_Handler,
+			ServerStreams: true,
 		},
-		Metadata: "com/daml/ledger/api/v1/active_contracts_service.proto",
-	}
-
-	s.RegisterService(&sd, nil)
-}
-
-// NewActiveContractsServiceService creates a new ActiveContractsServiceService containing the
-// implemented methods of the ActiveContractsService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewActiveContractsServiceService(s interface{}) *ActiveContractsServiceService {
-	ns := &ActiveContractsServiceService{}
-	if h, ok := s.(interface {
-		GetActiveContracts(*GetActiveContractsRequest, ActiveContractsService_GetActiveContractsServer) error
-	}); ok {
-		ns.GetActiveContracts = h.GetActiveContracts
-	}
-	return ns
-}
-
-// UnstableActiveContractsServiceService is the service API for ActiveContractsService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableActiveContractsServiceService interface {
-	// Returns a stream of the latest snapshot of active contracts.
-	// If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
-	// Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
-	// Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
-	GetActiveContracts(*GetActiveContractsRequest, ActiveContractsService_GetActiveContractsServer) error
+	},
+	Metadata: "com/daml/ledger/api/v1/active_contracts_service.proto",
 }

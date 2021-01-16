@@ -466,7 +466,6 @@ class ProtobufParser:
             template=self.parse_TypeConName(pb.template),
             choice=self._resolve_string(pb.choice_str, pb.choice_interned_str),
             cid=self.parse_Expr(pb.cid),
-            actor=self.parse_Expr(pb.actor, optional=True),
             arg=self.parse_Expr(pb.arg))
 
     def parse_Update_Fetch(self, pb) -> 'Update.Fetch':

@@ -11,6 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // LedgerConfigurationServiceClient is the client API for LedgerConfigurationService service.
@@ -18,6 +19,10 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LedgerConfigurationServiceClient interface {
 	// Returns the latest configuration as the first response, and publishes configuration updates in the same stream.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
 	GetLedgerConfiguration(ctx context.Context, in *GetLedgerConfigurationRequest, opts ...grpc.CallOption) (LedgerConfigurationService_GetLedgerConfigurationClient, error)
 }
 
@@ -29,13 +34,8 @@ func NewLedgerConfigurationServiceClient(cc grpc.ClientConnInterface) LedgerConf
 	return &ledgerConfigurationServiceClient{cc}
 }
 
-var ledgerConfigurationServiceGetLedgerConfigurationStreamDesc = &grpc.StreamDesc{
-	StreamName:    "GetLedgerConfiguration",
-	ServerStreams: true,
-}
-
 func (c *ledgerConfigurationServiceClient) GetLedgerConfiguration(ctx context.Context, in *GetLedgerConfigurationRequest, opts ...grpc.CallOption) (LedgerConfigurationService_GetLedgerConfigurationClient, error) {
-	stream, err := c.cc.NewStream(ctx, ledgerConfigurationServiceGetLedgerConfigurationStreamDesc, "/com.daml.ledger.api.v1.LedgerConfigurationService/GetLedgerConfiguration", opts...)
+	stream, err := c.cc.NewStream(ctx, &LedgerConfigurationService_ServiceDesc.Streams[0], "/com.daml.ledger.api.v1.LedgerConfigurationService/GetLedgerConfiguration", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -66,24 +66,46 @@ func (x *ledgerConfigurationServiceGetLedgerConfigurationClient) Recv() (*GetLed
 	return m, nil
 }
 
-// LedgerConfigurationServiceService is the service API for LedgerConfigurationService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterLedgerConfigurationServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type LedgerConfigurationServiceService struct {
+// LedgerConfigurationServiceServer is the server API for LedgerConfigurationService service.
+// All implementations must embed UnimplementedLedgerConfigurationServiceServer
+// for forward compatibility
+type LedgerConfigurationServiceServer interface {
 	// Returns the latest configuration as the first response, and publishes configuration updates in the same stream.
-	GetLedgerConfiguration func(*GetLedgerConfigurationRequest, LedgerConfigurationService_GetLedgerConfigurationServer) error
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	GetLedgerConfiguration(*GetLedgerConfigurationRequest, LedgerConfigurationService_GetLedgerConfigurationServer) error
+	mustEmbedUnimplementedLedgerConfigurationServiceServer()
 }
 
-func (s *LedgerConfigurationServiceService) getLedgerConfiguration(_ interface{}, stream grpc.ServerStream) error {
-	if s.GetLedgerConfiguration == nil {
-		return status.Errorf(codes.Unimplemented, "method GetLedgerConfiguration not implemented")
-	}
+// UnimplementedLedgerConfigurationServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedLedgerConfigurationServiceServer struct {
+}
+
+func (UnimplementedLedgerConfigurationServiceServer) GetLedgerConfiguration(*GetLedgerConfigurationRequest, LedgerConfigurationService_GetLedgerConfigurationServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetLedgerConfiguration not implemented")
+}
+func (UnimplementedLedgerConfigurationServiceServer) mustEmbedUnimplementedLedgerConfigurationServiceServer() {
+}
+
+// UnsafeLedgerConfigurationServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to LedgerConfigurationServiceServer will
+// result in compilation errors.
+type UnsafeLedgerConfigurationServiceServer interface {
+	mustEmbedUnimplementedLedgerConfigurationServiceServer()
+}
+
+func RegisterLedgerConfigurationServiceServer(s grpc.ServiceRegistrar, srv LedgerConfigurationServiceServer) {
+	s.RegisterService(&LedgerConfigurationService_ServiceDesc, srv)
+}
+
+func _LedgerConfigurationService_GetLedgerConfiguration_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetLedgerConfigurationRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return s.GetLedgerConfiguration(m, &ledgerConfigurationServiceGetLedgerConfigurationServer{stream})
+	return srv.(LedgerConfigurationServiceServer).GetLedgerConfiguration(m, &ledgerConfigurationServiceGetLedgerConfigurationServer{stream})
 }
 
 type LedgerConfigurationService_GetLedgerConfigurationServer interface {
@@ -99,45 +121,19 @@ func (x *ledgerConfigurationServiceGetLedgerConfigurationServer) Send(m *GetLedg
 	return x.ServerStream.SendMsg(m)
 }
 
-// RegisterLedgerConfigurationServiceService registers a service implementation with a gRPC server.
-func RegisterLedgerConfigurationServiceService(s grpc.ServiceRegistrar, srv *LedgerConfigurationServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.LedgerConfigurationService",
-		Methods:     []grpc.MethodDesc{},
-		Streams: []grpc.StreamDesc{
-			{
-				StreamName:    "GetLedgerConfiguration",
-				Handler:       srv.getLedgerConfiguration,
-				ServerStreams: true,
-			},
+// LedgerConfigurationService_ServiceDesc is the grpc.ServiceDesc for LedgerConfigurationService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var LedgerConfigurationService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.LedgerConfigurationService",
+	HandlerType: (*LedgerConfigurationServiceServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetLedgerConfiguration",
+			Handler:       _LedgerConfigurationService_GetLedgerConfiguration_Handler,
+			ServerStreams: true,
 		},
-		Metadata: "com/daml/ledger/api/v1/ledger_configuration_service.proto",
-	}
-
-	s.RegisterService(&sd, nil)
-}
-
-// NewLedgerConfigurationServiceService creates a new LedgerConfigurationServiceService containing the
-// implemented methods of the LedgerConfigurationService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewLedgerConfigurationServiceService(s interface{}) *LedgerConfigurationServiceService {
-	ns := &LedgerConfigurationServiceService{}
-	if h, ok := s.(interface {
-		GetLedgerConfiguration(*GetLedgerConfigurationRequest, LedgerConfigurationService_GetLedgerConfigurationServer) error
-	}); ok {
-		ns.GetLedgerConfiguration = h.GetLedgerConfiguration
-	}
-	return ns
-}
-
-// UnstableLedgerConfigurationServiceService is the service API for LedgerConfigurationService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableLedgerConfigurationServiceService interface {
-	// Returns the latest configuration as the first response, and publishes configuration updates in the same stream.
-	GetLedgerConfiguration(*GetLedgerConfigurationRequest, LedgerConfigurationService_GetLedgerConfigurationServer) error
+	},
+	Metadata: "com/daml/ledger/api/v1/ledger_configuration_service.proto",
 }

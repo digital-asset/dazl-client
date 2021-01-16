@@ -11,6 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // ConfigManagementServiceClient is the client API for ConfigManagementService service.
@@ -18,17 +19,22 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ConfigManagementServiceClient interface {
 	// Return the currently active time model and the current configuration generation.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
 	GetTimeModel(ctx context.Context, in *GetTimeModelRequest, opts ...grpc.CallOption) (*GetTimeModelResponse, error)
 	// Set the ledger time model.
-	// In case of failure this method responds with:
-	// - INVALID_ARGUMENT if arguments are invalid, or the provided configuration generation
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if arguments are invalid, or the provided configuration generation
 	//   does not match the current active configuration generation. The caller is expected
 	//   to retry by again fetching current time model using 'GetTimeModel', applying changes
 	//   and resubmitting.
-	// - ABORTED if the request is rejected or times out. Note that a timed out request may
+	// - ``ABORTED``: if the request is rejected or times out. Note that a timed out request may
 	//   have still been committed to the ledger. Application should re-query the current
 	//   time model before retrying.
-	// - UNIMPLEMENTED if this method is not supported by the backing ledger.
+	// - ``UNIMPLEMENTED``: if this method is not supported by the backing ledger.
 	SetTimeModel(ctx context.Context, in *SetTimeModelRequest, opts ...grpc.CallOption) (*SetTimeModelResponse, error)
 }
 
@@ -40,10 +46,6 @@ func NewConfigManagementServiceClient(cc grpc.ClientConnInterface) ConfigManagem
 	return &configManagementServiceClient{cc}
 }
 
-var configManagementServiceGetTimeModelStreamDesc = &grpc.StreamDesc{
-	StreamName: "GetTimeModel",
-}
-
 func (c *configManagementServiceClient) GetTimeModel(ctx context.Context, in *GetTimeModelRequest, opts ...grpc.CallOption) (*GetTimeModelResponse, error) {
 	out := new(GetTimeModelResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.admin.ConfigManagementService/GetTimeModel", in, out, opts...)
@@ -51,10 +53,6 @@ func (c *configManagementServiceClient) GetTimeModel(ctx context.Context, in *Ge
 		return nil, err
 	}
 	return out, nil
-}
-
-var configManagementServiceSetTimeModelStreamDesc = &grpc.StreamDesc{
-	StreamName: "SetTimeModel",
 }
 
 func (c *configManagementServiceClient) SetTimeModel(ctx context.Context, in *SetTimeModelRequest, opts ...grpc.CallOption) (*SetTimeModelResponse, error) {
@@ -66,125 +64,107 @@ func (c *configManagementServiceClient) SetTimeModel(ctx context.Context, in *Se
 	return out, nil
 }
 
-// ConfigManagementServiceService is the service API for ConfigManagementService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterConfigManagementServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type ConfigManagementServiceService struct {
+// ConfigManagementServiceServer is the server API for ConfigManagementService service.
+// All implementations must embed UnimplementedConfigManagementServiceServer
+// for forward compatibility
+type ConfigManagementServiceServer interface {
 	// Return the currently active time model and the current configuration generation.
-	GetTimeModel func(context.Context, *GetTimeModelRequest) (*GetTimeModelResponse, error)
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	GetTimeModel(context.Context, *GetTimeModelRequest) (*GetTimeModelResponse, error)
 	// Set the ledger time model.
-	// In case of failure this method responds with:
-	// - INVALID_ARGUMENT if arguments are invalid, or the provided configuration generation
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if arguments are invalid, or the provided configuration generation
 	//   does not match the current active configuration generation. The caller is expected
 	//   to retry by again fetching current time model using 'GetTimeModel', applying changes
 	//   and resubmitting.
-	// - ABORTED if the request is rejected or times out. Note that a timed out request may
+	// - ``ABORTED``: if the request is rejected or times out. Note that a timed out request may
 	//   have still been committed to the ledger. Application should re-query the current
 	//   time model before retrying.
-	// - UNIMPLEMENTED if this method is not supported by the backing ledger.
-	SetTimeModel func(context.Context, *SetTimeModelRequest) (*SetTimeModelResponse, error)
+	// - ``UNIMPLEMENTED``: if this method is not supported by the backing ledger.
+	SetTimeModel(context.Context, *SetTimeModelRequest) (*SetTimeModelResponse, error)
+	mustEmbedUnimplementedConfigManagementServiceServer()
 }
 
-func (s *ConfigManagementServiceService) getTimeModel(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.GetTimeModel == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method GetTimeModel not implemented")
-	}
+// UnimplementedConfigManagementServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedConfigManagementServiceServer struct {
+}
+
+func (UnimplementedConfigManagementServiceServer) GetTimeModel(context.Context, *GetTimeModelRequest) (*GetTimeModelResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTimeModel not implemented")
+}
+func (UnimplementedConfigManagementServiceServer) SetTimeModel(context.Context, *SetTimeModelRequest) (*SetTimeModelResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetTimeModel not implemented")
+}
+func (UnimplementedConfigManagementServiceServer) mustEmbedUnimplementedConfigManagementServiceServer() {
+}
+
+// UnsafeConfigManagementServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ConfigManagementServiceServer will
+// result in compilation errors.
+type UnsafeConfigManagementServiceServer interface {
+	mustEmbedUnimplementedConfigManagementServiceServer()
+}
+
+func RegisterConfigManagementServiceServer(s grpc.ServiceRegistrar, srv ConfigManagementServiceServer) {
+	s.RegisterService(&ConfigManagementService_ServiceDesc, srv)
+}
+
+func _ConfigManagementService_GetTimeModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetTimeModelRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return s.GetTimeModel(ctx, in)
+		return srv.(ConfigManagementServiceServer).GetTimeModel(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
-		Server:     s,
+		Server:     srv,
 		FullMethod: "/com.daml.ledger.api.v1.admin.ConfigManagementService/GetTimeModel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.GetTimeModel(ctx, req.(*GetTimeModelRequest))
+		return srv.(ConfigManagementServiceServer).GetTimeModel(ctx, req.(*GetTimeModelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
-func (s *ConfigManagementServiceService) setTimeModel(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.SetTimeModel == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method SetTimeModel not implemented")
-	}
+
+func _ConfigManagementService_SetTimeModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetTimeModelRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return s.SetTimeModel(ctx, in)
+		return srv.(ConfigManagementServiceServer).SetTimeModel(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
-		Server:     s,
+		Server:     srv,
 		FullMethod: "/com.daml.ledger.api.v1.admin.ConfigManagementService/SetTimeModel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.SetTimeModel(ctx, req.(*SetTimeModelRequest))
+		return srv.(ConfigManagementServiceServer).SetTimeModel(ctx, req.(*SetTimeModelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// RegisterConfigManagementServiceService registers a service implementation with a gRPC server.
-func RegisterConfigManagementServiceService(s grpc.ServiceRegistrar, srv *ConfigManagementServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.admin.ConfigManagementService",
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "GetTimeModel",
-				Handler:    srv.getTimeModel,
-			},
-			{
-				MethodName: "SetTimeModel",
-				Handler:    srv.setTimeModel,
-			},
+// ConfigManagementService_ServiceDesc is the grpc.ServiceDesc for ConfigManagementService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ConfigManagementService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.admin.ConfigManagementService",
+	HandlerType: (*ConfigManagementServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetTimeModel",
+			Handler:    _ConfigManagementService_GetTimeModel_Handler,
 		},
-		Streams:  []grpc.StreamDesc{},
-		Metadata: "com/daml/ledger/api/v1/admin/config_management_service.proto",
-	}
-
-	s.RegisterService(&sd, nil)
-}
-
-// NewConfigManagementServiceService creates a new ConfigManagementServiceService containing the
-// implemented methods of the ConfigManagementService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewConfigManagementServiceService(s interface{}) *ConfigManagementServiceService {
-	ns := &ConfigManagementServiceService{}
-	if h, ok := s.(interface {
-		GetTimeModel(context.Context, *GetTimeModelRequest) (*GetTimeModelResponse, error)
-	}); ok {
-		ns.GetTimeModel = h.GetTimeModel
-	}
-	if h, ok := s.(interface {
-		SetTimeModel(context.Context, *SetTimeModelRequest) (*SetTimeModelResponse, error)
-	}); ok {
-		ns.SetTimeModel = h.SetTimeModel
-	}
-	return ns
-}
-
-// UnstableConfigManagementServiceService is the service API for ConfigManagementService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableConfigManagementServiceService interface {
-	// Return the currently active time model and the current configuration generation.
-	GetTimeModel(context.Context, *GetTimeModelRequest) (*GetTimeModelResponse, error)
-	// Set the ledger time model.
-	// In case of failure this method responds with:
-	// - INVALID_ARGUMENT if arguments are invalid, or the provided configuration generation
-	//   does not match the current active configuration generation. The caller is expected
-	//   to retry by again fetching current time model using 'GetTimeModel', applying changes
-	//   and resubmitting.
-	// - ABORTED if the request is rejected or times out. Note that a timed out request may
-	//   have still been committed to the ledger. Application should re-query the current
-	//   time model before retrying.
-	// - UNIMPLEMENTED if this method is not supported by the backing ledger.
-	SetTimeModel(context.Context, *SetTimeModelRequest) (*SetTimeModelResponse, error)
+		{
+			MethodName: "SetTimeModel",
+			Handler:    _ConfigManagementService_SetTimeModel_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "com/daml/ledger/api/v1/admin/config_management_service.proto",
 }

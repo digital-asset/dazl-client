@@ -11,6 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // LedgerIdentityServiceClient is the client API for LedgerIdentityService service.
@@ -18,6 +19,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LedgerIdentityServiceClient interface {
 	// Clients may call this RPC to return the identifier of the ledger they are connected to.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
 	GetLedgerIdentity(ctx context.Context, in *GetLedgerIdentityRequest, opts ...grpc.CallOption) (*GetLedgerIdentityResponse, error)
 }
 
@@ -29,10 +33,6 @@ func NewLedgerIdentityServiceClient(cc grpc.ClientConnInterface) LedgerIdentityS
 	return &ledgerIdentityServiceClient{cc}
 }
 
-var ledgerIdentityServiceGetLedgerIdentityStreamDesc = &grpc.StreamDesc{
-	StreamName: "GetLedgerIdentity",
-}
-
 func (c *ledgerIdentityServiceClient) GetLedgerIdentity(ctx context.Context, in *GetLedgerIdentityRequest, opts ...grpc.CallOption) (*GetLedgerIdentityResponse, error) {
 	out := new(GetLedgerIdentityResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.LedgerIdentityService/GetLedgerIdentity", in, out, opts...)
@@ -42,74 +42,68 @@ func (c *ledgerIdentityServiceClient) GetLedgerIdentity(ctx context.Context, in 
 	return out, nil
 }
 
-// LedgerIdentityServiceService is the service API for LedgerIdentityService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterLedgerIdentityServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type LedgerIdentityServiceService struct {
+// LedgerIdentityServiceServer is the server API for LedgerIdentityService service.
+// All implementations must embed UnimplementedLedgerIdentityServiceServer
+// for forward compatibility
+type LedgerIdentityServiceServer interface {
 	// Clients may call this RPC to return the identifier of the ledger they are connected to.
-	GetLedgerIdentity func(context.Context, *GetLedgerIdentityRequest) (*GetLedgerIdentityResponse, error)
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	GetLedgerIdentity(context.Context, *GetLedgerIdentityRequest) (*GetLedgerIdentityResponse, error)
+	mustEmbedUnimplementedLedgerIdentityServiceServer()
 }
 
-func (s *LedgerIdentityServiceService) getLedgerIdentity(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.GetLedgerIdentity == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method GetLedgerIdentity not implemented")
-	}
+// UnimplementedLedgerIdentityServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedLedgerIdentityServiceServer struct {
+}
+
+func (UnimplementedLedgerIdentityServiceServer) GetLedgerIdentity(context.Context, *GetLedgerIdentityRequest) (*GetLedgerIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLedgerIdentity not implemented")
+}
+func (UnimplementedLedgerIdentityServiceServer) mustEmbedUnimplementedLedgerIdentityServiceServer() {}
+
+// UnsafeLedgerIdentityServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to LedgerIdentityServiceServer will
+// result in compilation errors.
+type UnsafeLedgerIdentityServiceServer interface {
+	mustEmbedUnimplementedLedgerIdentityServiceServer()
+}
+
+func RegisterLedgerIdentityServiceServer(s grpc.ServiceRegistrar, srv LedgerIdentityServiceServer) {
+	s.RegisterService(&LedgerIdentityService_ServiceDesc, srv)
+}
+
+func _LedgerIdentityService_GetLedgerIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetLedgerIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return s.GetLedgerIdentity(ctx, in)
+		return srv.(LedgerIdentityServiceServer).GetLedgerIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
-		Server:     s,
+		Server:     srv,
 		FullMethod: "/com.daml.ledger.api.v1.LedgerIdentityService/GetLedgerIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.GetLedgerIdentity(ctx, req.(*GetLedgerIdentityRequest))
+		return srv.(LedgerIdentityServiceServer).GetLedgerIdentity(ctx, req.(*GetLedgerIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// RegisterLedgerIdentityServiceService registers a service implementation with a gRPC server.
-func RegisterLedgerIdentityServiceService(s grpc.ServiceRegistrar, srv *LedgerIdentityServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.LedgerIdentityService",
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "GetLedgerIdentity",
-				Handler:    srv.getLedgerIdentity,
-			},
+// LedgerIdentityService_ServiceDesc is the grpc.ServiceDesc for LedgerIdentityService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var LedgerIdentityService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.LedgerIdentityService",
+	HandlerType: (*LedgerIdentityServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetLedgerIdentity",
+			Handler:    _LedgerIdentityService_GetLedgerIdentity_Handler,
 		},
-		Streams:  []grpc.StreamDesc{},
-		Metadata: "com/daml/ledger/api/v1/ledger_identity_service.proto",
-	}
-
-	s.RegisterService(&sd, nil)
-}
-
-// NewLedgerIdentityServiceService creates a new LedgerIdentityServiceService containing the
-// implemented methods of the LedgerIdentityService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewLedgerIdentityServiceService(s interface{}) *LedgerIdentityServiceService {
-	ns := &LedgerIdentityServiceService{}
-	if h, ok := s.(interface {
-		GetLedgerIdentity(context.Context, *GetLedgerIdentityRequest) (*GetLedgerIdentityResponse, error)
-	}); ok {
-		ns.GetLedgerIdentity = h.GetLedgerIdentity
-	}
-	return ns
-}
-
-// UnstableLedgerIdentityServiceService is the service API for LedgerIdentityService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableLedgerIdentityServiceService interface {
-	// Clients may call this RPC to return the identifier of the ledger they are connected to.
-	GetLedgerIdentity(context.Context, *GetLedgerIdentityRequest) (*GetLedgerIdentityResponse, error)
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "com/daml/ledger/api/v1/ledger_identity_service.proto",
 }

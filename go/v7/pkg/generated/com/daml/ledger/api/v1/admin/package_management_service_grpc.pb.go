@@ -11,15 +11,17 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // PackageManagementServiceClient is the client API for PackageManagementService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PackageManagementServiceClient interface {
-	// Returns the details of all DAML-LF packages known to the backing
-	// participant.
-	// This request will always succeed.
+	// Returns the details of all Daml-LF packages known to the backing participant.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
 	ListKnownPackages(ctx context.Context, in *ListKnownPackagesRequest, opts ...grpc.CallOption) (*ListKnownPackagesResponse, error)
 	// Upload a DAR file to the backing participant.
 	// Depending on the ledger implementation this might also make the package
@@ -29,10 +31,12 @@ type PackageManagementServiceClient interface {
 	// This call may:
 	// - Succeed, if the package was successfully uploaded, or if the same package
 	//   was already uploaded before.
-	// - Respond with UNIMPLEMENTED, if DAR package uploading is not supported by
-	//   the backing participant.
-	// - Respond with INVALID_ARGUMENT, if the DAR file is too big or malformed.
-	// The maximum supported size is implementation specific.
+	// - Respond with a gRPC error
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``UNIMPLEMENTED``: if DAR package uploading is not supported by the backing participant
+	// - ``INVALID_ARGUMENT``: if the DAR file is too big or malformed. The maximum supported size is implementation specific.
 	UploadDarFile(ctx context.Context, in *UploadDarFileRequest, opts ...grpc.CallOption) (*UploadDarFileResponse, error)
 }
 
@@ -44,10 +48,6 @@ func NewPackageManagementServiceClient(cc grpc.ClientConnInterface) PackageManag
 	return &packageManagementServiceClient{cc}
 }
 
-var packageManagementServiceListKnownPackagesStreamDesc = &grpc.StreamDesc{
-	StreamName: "ListKnownPackages",
-}
-
 func (c *packageManagementServiceClient) ListKnownPackages(ctx context.Context, in *ListKnownPackagesRequest, opts ...grpc.CallOption) (*ListKnownPackagesResponse, error) {
 	out := new(ListKnownPackagesResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.admin.PackageManagementService/ListKnownPackages", in, out, opts...)
@@ -55,10 +55,6 @@ func (c *packageManagementServiceClient) ListKnownPackages(ctx context.Context, 
 		return nil, err
 	}
 	return out, nil
-}
-
-var packageManagementServiceUploadDarFileStreamDesc = &grpc.StreamDesc{
-	StreamName: "UploadDarFile",
 }
 
 func (c *packageManagementServiceClient) UploadDarFile(ctx context.Context, in *UploadDarFileRequest, opts ...grpc.CallOption) (*UploadDarFileResponse, error) {
@@ -70,121 +66,14 @@ func (c *packageManagementServiceClient) UploadDarFile(ctx context.Context, in *
 	return out, nil
 }
 
-// PackageManagementServiceService is the service API for PackageManagementService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterPackageManagementServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type PackageManagementServiceService struct {
-	// Returns the details of all DAML-LF packages known to the backing
-	// participant.
-	// This request will always succeed.
-	ListKnownPackages func(context.Context, *ListKnownPackagesRequest) (*ListKnownPackagesResponse, error)
-	// Upload a DAR file to the backing participant.
-	// Depending on the ledger implementation this might also make the package
-	// available on the whole ledger. This call might not be supported by some
-	// ledger implementations. Canton could be an example, where uploading a DAR
-	// is not sufficient to render it usable, it must be activated first.
-	// This call may:
-	// - Succeed, if the package was successfully uploaded, or if the same package
-	//   was already uploaded before.
-	// - Respond with UNIMPLEMENTED, if DAR package uploading is not supported by
-	//   the backing participant.
-	// - Respond with INVALID_ARGUMENT, if the DAR file is too big or malformed.
-	// The maximum supported size is implementation specific.
-	UploadDarFile func(context.Context, *UploadDarFileRequest) (*UploadDarFileResponse, error)
-}
-
-func (s *PackageManagementServiceService) listKnownPackages(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.ListKnownPackages == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method ListKnownPackages not implemented")
-	}
-	in := new(ListKnownPackagesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return s.ListKnownPackages(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/com.daml.ledger.api.v1.admin.PackageManagementService/ListKnownPackages",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.ListKnownPackages(ctx, req.(*ListKnownPackagesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-func (s *PackageManagementServiceService) uploadDarFile(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.UploadDarFile == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method UploadDarFile not implemented")
-	}
-	in := new(UploadDarFileRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return s.UploadDarFile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/com.daml.ledger.api.v1.admin.PackageManagementService/UploadDarFile",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.UploadDarFile(ctx, req.(*UploadDarFileRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-// RegisterPackageManagementServiceService registers a service implementation with a gRPC server.
-func RegisterPackageManagementServiceService(s grpc.ServiceRegistrar, srv *PackageManagementServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.admin.PackageManagementService",
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "ListKnownPackages",
-				Handler:    srv.listKnownPackages,
-			},
-			{
-				MethodName: "UploadDarFile",
-				Handler:    srv.uploadDarFile,
-			},
-		},
-		Streams:  []grpc.StreamDesc{},
-		Metadata: "com/daml/ledger/api/v1/admin/package_management_service.proto",
-	}
-
-	s.RegisterService(&sd, nil)
-}
-
-// NewPackageManagementServiceService creates a new PackageManagementServiceService containing the
-// implemented methods of the PackageManagementService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewPackageManagementServiceService(s interface{}) *PackageManagementServiceService {
-	ns := &PackageManagementServiceService{}
-	if h, ok := s.(interface {
-		ListKnownPackages(context.Context, *ListKnownPackagesRequest) (*ListKnownPackagesResponse, error)
-	}); ok {
-		ns.ListKnownPackages = h.ListKnownPackages
-	}
-	if h, ok := s.(interface {
-		UploadDarFile(context.Context, *UploadDarFileRequest) (*UploadDarFileResponse, error)
-	}); ok {
-		ns.UploadDarFile = h.UploadDarFile
-	}
-	return ns
-}
-
-// UnstablePackageManagementServiceService is the service API for PackageManagementService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstablePackageManagementServiceService interface {
-	// Returns the details of all DAML-LF packages known to the backing
-	// participant.
-	// This request will always succeed.
+// PackageManagementServiceServer is the server API for PackageManagementService service.
+// All implementations must embed UnimplementedPackageManagementServiceServer
+// for forward compatibility
+type PackageManagementServiceServer interface {
+	// Returns the details of all Daml-LF packages known to the backing participant.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
 	ListKnownPackages(context.Context, *ListKnownPackagesRequest) (*ListKnownPackagesResponse, error)
 	// Upload a DAR file to the backing participant.
 	// Depending on the ledger implementation this might also make the package
@@ -194,9 +83,92 @@ type UnstablePackageManagementServiceService interface {
 	// This call may:
 	// - Succeed, if the package was successfully uploaded, or if the same package
 	//   was already uploaded before.
-	// - Respond with UNIMPLEMENTED, if DAR package uploading is not supported by
-	//   the backing participant.
-	// - Respond with INVALID_ARGUMENT, if the DAR file is too big or malformed.
-	// The maximum supported size is implementation specific.
+	// - Respond with a gRPC error
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``UNIMPLEMENTED``: if DAR package uploading is not supported by the backing participant
+	// - ``INVALID_ARGUMENT``: if the DAR file is too big or malformed. The maximum supported size is implementation specific.
 	UploadDarFile(context.Context, *UploadDarFileRequest) (*UploadDarFileResponse, error)
+	mustEmbedUnimplementedPackageManagementServiceServer()
+}
+
+// UnimplementedPackageManagementServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedPackageManagementServiceServer struct {
+}
+
+func (UnimplementedPackageManagementServiceServer) ListKnownPackages(context.Context, *ListKnownPackagesRequest) (*ListKnownPackagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListKnownPackages not implemented")
+}
+func (UnimplementedPackageManagementServiceServer) UploadDarFile(context.Context, *UploadDarFileRequest) (*UploadDarFileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UploadDarFile not implemented")
+}
+func (UnimplementedPackageManagementServiceServer) mustEmbedUnimplementedPackageManagementServiceServer() {
+}
+
+// UnsafePackageManagementServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to PackageManagementServiceServer will
+// result in compilation errors.
+type UnsafePackageManagementServiceServer interface {
+	mustEmbedUnimplementedPackageManagementServiceServer()
+}
+
+func RegisterPackageManagementServiceServer(s grpc.ServiceRegistrar, srv PackageManagementServiceServer) {
+	s.RegisterService(&PackageManagementService_ServiceDesc, srv)
+}
+
+func _PackageManagementService_ListKnownPackages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListKnownPackagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PackageManagementServiceServer).ListKnownPackages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.admin.PackageManagementService/ListKnownPackages",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PackageManagementServiceServer).ListKnownPackages(ctx, req.(*ListKnownPackagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PackageManagementService_UploadDarFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UploadDarFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PackageManagementServiceServer).UploadDarFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.admin.PackageManagementService/UploadDarFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PackageManagementServiceServer).UploadDarFile(ctx, req.(*UploadDarFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// PackageManagementService_ServiceDesc is the grpc.ServiceDesc for PackageManagementService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var PackageManagementService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.admin.PackageManagementService",
+	HandlerType: (*PackageManagementServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ListKnownPackages",
+			Handler:    _PackageManagementService_ListKnownPackages_Handler,
+		},
+		{
+			MethodName: "UploadDarFile",
+			Handler:    _PackageManagementService_UploadDarFile_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "com/daml/ledger/api/v1/admin/package_management_service.proto",
 }
