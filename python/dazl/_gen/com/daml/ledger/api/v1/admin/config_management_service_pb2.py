@@ -22,6 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.daml.ledger.api.v1.admin',
   syntax='proto3',
   serialized_options=b'\n\034com.daml.ledger.api.v1.adminB!ConfigManagementServiceOuterClass\252\002\034Com.Daml.Ledger.Api.V1.Admin',
+  create_key=_descriptor._internal_create_key,
   serialized_pb=b'\n<com/daml/ledger/api/v1/admin/config_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x15\n\x13GetTimeModelRequest\"u\n\x14GetTimeModelResponse\x12 \n\x18\x63onfiguration_generation\x18\x01 \x01(\x03\x12;\n\ntime_model\x18\x02 \x01(\x0b\x32\'.com.daml.ledger.api.v1.admin.TimeModel\"\xc8\x01\n\x13SetTimeModelRequest\x12\x15\n\rsubmission_id\x18\x01 \x01(\t\x12\x37\n\x13maximum_record_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12 \n\x18\x63onfiguration_generation\x18\x03 \x01(\x03\x12?\n\x0enew_time_model\x18\x04 \x01(\x0b\x32\'.com.daml.ledger.api.v1.admin.TimeModel\"8\n\x14SetTimeModelResponse\x12 \n\x18\x63onfiguration_generation\x18\x01 \x01(\x03\"\xb3\x01\n\tTimeModel\x12:\n\x17\x61vg_transaction_latency\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08min_skew\x18\x05 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08max_skew\x18\x06 \x01(\x0b\x32\x19.google.protobuf.DurationJ\x04\x08\x01\x10\x02J\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04\x32\x87\x02\n\x17\x43onfigManagementService\x12u\n\x0cGetTimeModel\x12\x31.com.daml.ledger.api.v1.admin.GetTimeModelRequest\x1a\x32.com.daml.ledger.api.v1.admin.GetTimeModelResponse\x12u\n\x0cSetTimeModel\x12\x31.com.daml.ledger.api.v1.admin.SetTimeModelRequest\x1a\x32.com.daml.ledger.api.v1.admin.SetTimeModelResponseB`\n\x1c\x63om.daml.ledger.api.v1.adminB!ConfigManagementServiceOuterClass\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
@@ -35,6 +36,7 @@ _GETTIMEMODELREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
   ],
   extensions=[
@@ -59,6 +61,7 @@ _GETTIMEMODELRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='configuration_generation', full_name='com.daml.ledger.api.v1.admin.GetTimeModelResponse.configuration_generation', index=0,
@@ -66,14 +69,14 @@ _GETTIMEMODELRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='time_model', full_name='com.daml.ledger.api.v1.admin.GetTimeModelResponse.time_model', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -97,6 +100,7 @@ _SETTIMEMODELREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='submission_id', full_name='com.daml.ledger.api.v1.admin.SetTimeModelRequest.submission_id', index=0,
@@ -104,28 +108,28 @@ _SETTIMEMODELREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='maximum_record_time', full_name='com.daml.ledger.api.v1.admin.SetTimeModelRequest.maximum_record_time', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='configuration_generation', full_name='com.daml.ledger.api.v1.admin.SetTimeModelRequest.configuration_generation', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='new_time_model', full_name='com.daml.ledger.api.v1.admin.SetTimeModelRequest.new_time_model', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -149,6 +153,7 @@ _SETTIMEMODELRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='configuration_generation', full_name='com.daml.ledger.api.v1.admin.SetTimeModelResponse.configuration_generation', index=0,
@@ -156,7 +161,7 @@ _SETTIMEMODELRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -180,6 +185,7 @@ _TIMEMODEL = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='avg_transaction_latency', full_name='com.daml.ledger.api.v1.admin.TimeModel.avg_transaction_latency', index=0,
@@ -187,21 +193,21 @@ _TIMEMODEL = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='min_skew', full_name='com.daml.ledger.api.v1.admin.TimeModel.min_skew', index=1,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='max_skew', full_name='com.daml.ledger.api.v1.admin.TimeModel.max_skew', index=2,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -275,6 +281,7 @@ _CONFIGMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
+  create_key=_descriptor._internal_create_key,
   serialized_start=745,
   serialized_end=1008,
   methods=[
@@ -286,6 +293,7 @@ _CONFIGMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
     input_type=_GETTIMEMODELREQUEST,
     output_type=_GETTIMEMODELRESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='SetTimeModel',
@@ -295,6 +303,7 @@ _CONFIGMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
     input_type=_SETTIMEMODELREQUEST,
     output_type=_SETTIMEMODELRESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_CONFIGMANAGEMENTSERVICE)

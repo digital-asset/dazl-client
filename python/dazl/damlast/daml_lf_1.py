@@ -1307,16 +1307,13 @@ class Update:
         template: 'TypeConName'
         choice: str
         cid: 'Expr'
-        actor: 'Optional[Expr]'
         arg: 'Expr'
 
         def __init__(
-                self, template: 'TypeConName', choice: str, cid: 'Expr', actor: 'Optional[Expr]',
-                arg: 'Expr'):
+                self, template: 'TypeConName', choice: str, cid: 'Expr', arg: 'Expr'):
             self.template = template
             self.choice = choice
             self.cid = cid
-            self.actor = actor
             self.arg = arg
 
     class Fetch:
@@ -1682,6 +1679,7 @@ class BuiltinFunction(Enum):
     FROM_TEXT_INT64 = 103  # Available Since version 1.5
     FROM_TEXT_DECIMAL = 104  # Available Since version 1.5
     FROM_TEXT_NUMERIC = 117
+    TO_TEXT_CONTRACT_ID = 136
     SHA256_TEXT = 93  # Available Since version 1.2
 
     DATE_TO_UNIX_DAYS = 72  # Date -> Int64
@@ -1709,7 +1707,12 @@ class BuiltinFunction(Enum):
     EQUAL_CONTRACT_ID = 86
     EQUAL_LIST = 87
     EQUAL_TYPE_REP = 123
+
     EQUAL = 131
+    LESS_EQ = 132
+    LESS = 133
+    GREATER_EQ = 134
+    GREATER = 135
 
     TRACE = 88
 

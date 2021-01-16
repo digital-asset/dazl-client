@@ -12,6 +12,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // CommandSubmissionServiceClient is the client API for CommandSubmissionService service.
@@ -19,6 +20,13 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommandSubmissionServiceClient interface {
 	// Submit a single composite command.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+	// - ``RESOURCE_EXHAUSTED``: if the participant or the ledger is overloaded. Clients should back off exponentially and retry.
 	Submit(ctx context.Context, in *SubmitRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
@@ -30,10 +38,6 @@ func NewCommandSubmissionServiceClient(cc grpc.ClientConnInterface) CommandSubmi
 	return &commandSubmissionServiceClient{cc}
 }
 
-var commandSubmissionServiceSubmitStreamDesc = &grpc.StreamDesc{
-	StreamName: "Submit",
-}
-
 func (c *commandSubmissionServiceClient) Submit(ctx context.Context, in *SubmitRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.CommandSubmissionService/Submit", in, out, opts...)
@@ -43,74 +47,73 @@ func (c *commandSubmissionServiceClient) Submit(ctx context.Context, in *SubmitR
 	return out, nil
 }
 
-// CommandSubmissionServiceService is the service API for CommandSubmissionService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterCommandSubmissionServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type CommandSubmissionServiceService struct {
+// CommandSubmissionServiceServer is the server API for CommandSubmissionService service.
+// All implementations must embed UnimplementedCommandSubmissionServiceServer
+// for forward compatibility
+type CommandSubmissionServiceServer interface {
 	// Submit a single composite command.
-	Submit func(context.Context, *SubmitRequest) (*empty.Empty, error)
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+	// - ``RESOURCE_EXHAUSTED``: if the participant or the ledger is overloaded. Clients should back off exponentially and retry.
+	Submit(context.Context, *SubmitRequest) (*empty.Empty, error)
+	mustEmbedUnimplementedCommandSubmissionServiceServer()
 }
 
-func (s *CommandSubmissionServiceService) submit(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.Submit == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method Submit not implemented")
-	}
+// UnimplementedCommandSubmissionServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedCommandSubmissionServiceServer struct {
+}
+
+func (UnimplementedCommandSubmissionServiceServer) Submit(context.Context, *SubmitRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Submit not implemented")
+}
+func (UnimplementedCommandSubmissionServiceServer) mustEmbedUnimplementedCommandSubmissionServiceServer() {
+}
+
+// UnsafeCommandSubmissionServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CommandSubmissionServiceServer will
+// result in compilation errors.
+type UnsafeCommandSubmissionServiceServer interface {
+	mustEmbedUnimplementedCommandSubmissionServiceServer()
+}
+
+func RegisterCommandSubmissionServiceServer(s grpc.ServiceRegistrar, srv CommandSubmissionServiceServer) {
+	s.RegisterService(&CommandSubmissionService_ServiceDesc, srv)
+}
+
+func _CommandSubmissionService_Submit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SubmitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return s.Submit(ctx, in)
+		return srv.(CommandSubmissionServiceServer).Submit(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
-		Server:     s,
+		Server:     srv,
 		FullMethod: "/com.daml.ledger.api.v1.CommandSubmissionService/Submit",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.Submit(ctx, req.(*SubmitRequest))
+		return srv.(CommandSubmissionServiceServer).Submit(ctx, req.(*SubmitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// RegisterCommandSubmissionServiceService registers a service implementation with a gRPC server.
-func RegisterCommandSubmissionServiceService(s grpc.ServiceRegistrar, srv *CommandSubmissionServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.CommandSubmissionService",
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "Submit",
-				Handler:    srv.submit,
-			},
+// CommandSubmissionService_ServiceDesc is the grpc.ServiceDesc for CommandSubmissionService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var CommandSubmissionService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.CommandSubmissionService",
+	HandlerType: (*CommandSubmissionServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Submit",
+			Handler:    _CommandSubmissionService_Submit_Handler,
 		},
-		Streams:  []grpc.StreamDesc{},
-		Metadata: "com/daml/ledger/api/v1/command_submission_service.proto",
-	}
-
-	s.RegisterService(&sd, nil)
-}
-
-// NewCommandSubmissionServiceService creates a new CommandSubmissionServiceService containing the
-// implemented methods of the CommandSubmissionService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewCommandSubmissionServiceService(s interface{}) *CommandSubmissionServiceService {
-	ns := &CommandSubmissionServiceService{}
-	if h, ok := s.(interface {
-		Submit(context.Context, *SubmitRequest) (*empty.Empty, error)
-	}); ok {
-		ns.Submit = h.Submit
-	}
-	return ns
-}
-
-// UnstableCommandSubmissionServiceService is the service API for CommandSubmissionService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableCommandSubmissionServiceService interface {
-	// Submit a single composite command.
-	Submit(context.Context, *SubmitRequest) (*empty.Empty, error)
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "com/daml/ledger/api/v1/command_submission_service.proto",
 }

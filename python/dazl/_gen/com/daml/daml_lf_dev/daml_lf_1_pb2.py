@@ -21,7 +21,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='daml_lf_1',
   syntax='proto3',
   serialized_options=b'\n\024com.daml.daml_lf_dev\252\002\034Com.Daml.Daml_Lf_Dev.DamlLf1',
-  serialized_pb=b'\n$com/daml/daml_lf_dev/daml_lf_1.proto\x12\tdaml_lf_1\"\x06\n\x04Unit\"q\n\nPackageRef\x12\x1f\n\x04self\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x18\n\x0epackage_id_str\x18\x02 \x01(\tH\x00\x12!\n\x17package_id_interned_str\x18\x03 \x01(\x05H\x00\x42\x05\n\x03Sum\"\x1e\n\nDottedName\x12\x10\n\x08segments\x18\x01 \x03(\t\"\xa0\x01\n\tModuleRef\x12*\n\x0bpackage_ref\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.PackageRef\x12\x32\n\x11module_name_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12$\n\x1amodule_name_interned_dname\x18\x03 \x01(\x05H\x00\x42\r\n\x0bmodule_name\"\x87\x01\n\x0bTypeConName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12+\n\nname_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x03 \x01(\x05H\x00\x42\x06\n\x04name\"\x87\x01\n\x0bTypeSynName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12+\n\nname_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x03 \x01(\x05H\x00\x42\x06\n\x04name\"`\n\x07ValName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12\x12\n\nname_dname\x18\x02 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\"j\n\rFieldWithType\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x07\n\x05\x66ield\"b\n\x0bVarWithType\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\"f\n\x0fTypeVarWithKind\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04kind\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03var\"j\n\rFieldWithExpr\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\"Q\n\x07\x42inding\x12&\n\x06\x62inder\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1e\n\x05\x62ound\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc1\x01\n\x04Kind\x12\x1f\n\x04star\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12&\n\x05\x61rrow\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.Kind.ArrowH\x00\x12\x1e\n\x03nat\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x1aI\n\x05\x41rrow\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Kind\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03Sum\"\xce\x06\n\x04Type\x12\"\n\x03var\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.VarH\x00\x12\"\n\x03\x63on\x18\x02 \x01(\x0b\x32\x13.daml_lf_1.Type.ConH\x00\x12$\n\x04prim\x18\x03 \x01(\x0b\x32\x14.daml_lf_1.Type.PrimH\x00\x12\"\n\x03\x66un\x18\x04 \x01(\x0b\x32\x13.daml_lf_1.Type.FunH\x00\x12(\n\x06\x66orall\x18\x05 \x01(\x0b\x32\x16.daml_lf_1.Type.ForallH\x00\x12(\n\x06struct\x18\x07 \x01(\x0b\x32\x16.daml_lf_1.Type.StructH\x00\x12\r\n\x03nat\x18\x0b \x01(\x12H\x00\x12\"\n\x03syn\x18\x0c \x01(\x0b\x32\x13.daml_lf_1.Type.SynH\x00\x1aZ\n\x03Var\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\x1aK\n\x03\x43on\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03Syn\x12%\n\x05tysyn\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeSynName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aH\n\x04Prim\x12!\n\x04prim\x18\x01 \x01(\x0e\x32\x13.daml_lf_1.PrimType\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aG\n\x03\x46un\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aQ\n\x06\x46orall\x12(\n\x04vars\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x32\n\x06Struct\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithTypeB\x05\n\x03SumJ\x04\x08\x06\x10\x07J\x04\x08\x08\x10\tJ\x04\x08\t\x10\nJ\x04\x08\n\x10\x0b\"\xed\x01\n\x07PrimLit\x12\x0f\n\x05int64\x18\x01 \x01(\x12H\x00\x12\x15\n\x0b\x64\x65\x63imal_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14numeric_interned_str\x18\n \x01(\x05H\x00\x12\x12\n\x08text_str\x18\x04 \x01(\tH\x00\x12\x1b\n\x11text_interned_str\x18\x0b \x01(\x05H\x00\x12\x13\n\ttimestamp\x18\x05 \x01(\x10H\x00\x12\x13\n\tparty_str\x18\x07 \x01(\tH\x00\x12\x1c\n\x12party_interned_str\x18\x0c \x01(\x05H\x00\x12\x0e\n\x04\x64\x61te\x18\x08 \x01(\x05H\x00\x42\x05\n\x03SumJ\x04\x08\x03\x10\x04J\x04\x08\x06\x10\x07\"\xad\x01\n\x08Location\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12(\n\x05range\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.Location.Range\x1aQ\n\x05Range\x12\x12\n\nstart_line\x18\x01 \x01(\x05\x12\x11\n\tstart_col\x18\x02 \x01(\x05\x12\x10\n\x08\x65nd_line\x18\x03 \x01(\x05\x12\x0f\n\x07\x65nd_col\x18\x04 \x01(\x05\"\x89\x17\n\x04\x45xpr\x12%\n\x08location\x18\x19 \x01(\x0b\x32\x13.daml_lf_1.Location\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x1d \x01(\x05H\x00\x12!\n\x03val\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.ValNameH\x00\x12-\n\x07\x62uiltin\x18\x03 \x01(\x0e\x32\x1a.daml_lf_1.BuiltinFunctionH\x00\x12&\n\x08prim_con\x18\x04 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12&\n\x08prim_lit\x18\x05 \x01(\x0b\x32\x12.daml_lf_1.PrimLitH\x00\x12)\n\x07rec_con\x18\x06 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecConH\x00\x12+\n\x08rec_proj\x18\x07 \x01(\x0b\x32\x17.daml_lf_1.Expr.RecProjH\x00\x12)\n\x07rec_upd\x18\x16 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecUpdH\x00\x12\x31\n\x0bvariant_con\x18\x08 \x01(\x0b\x32\x1a.daml_lf_1.Expr.VariantConH\x00\x12+\n\x08\x65num_con\x18\x1c \x01(\x0b\x32\x17.daml_lf_1.Expr.EnumConH\x00\x12/\n\nstruct_con\x18\t \x01(\x0b\x32\x19.daml_lf_1.Expr.StructConH\x00\x12\x31\n\x0bstruct_proj\x18\n \x01(\x0b\x32\x1a.daml_lf_1.Expr.StructProjH\x00\x12/\n\nstruct_upd\x18\x17 \x01(\x0b\x32\x19.daml_lf_1.Expr.StructUpdH\x00\x12\"\n\x03\x61pp\x18\x0b \x01(\x0b\x32\x13.daml_lf_1.Expr.AppH\x00\x12\'\n\x06ty_app\x18\x0c \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAppH\x00\x12\"\n\x03\x61\x62s\x18\r \x01(\x0b\x32\x13.daml_lf_1.Expr.AbsH\x00\x12\'\n\x06ty_abs\x18\x0e \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAbsH\x00\x12\x1f\n\x04\x63\x61se\x18\x0f \x01(\x0b\x32\x0f.daml_lf_1.CaseH\x00\x12\x1f\n\x03let\x18\x10 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12\"\n\x03nil\x18\x11 \x01(\x0b\x32\x13.daml_lf_1.Expr.NilH\x00\x12$\n\x04\x63ons\x18\x12 \x01(\x0b\x32\x14.daml_lf_1.Expr.ConsH\x00\x12#\n\x06update\x18\x14 \x01(\x0b\x32\x11.daml_lf_1.UpdateH\x00\x12\'\n\x08scenario\x18\x15 \x01(\x0b\x32\x13.daml_lf_1.ScenarioH\x00\x12\x35\n\roptional_none\x18\x1a \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalNoneH\x00\x12\x35\n\roptional_some\x18\x1b \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalSomeH\x00\x12\'\n\x06to_any\x18\x1e \x01(\x0b\x32\x15.daml_lf_1.Expr.ToAnyH\x00\x12+\n\x08\x66rom_any\x18\x1f \x01(\x0b\x32\x17.daml_lf_1.Expr.FromAnyH\x00\x12#\n\x08type_rep\x18  \x01(\x0b\x32\x0f.daml_lf_1.TypeH\x00\x1aV\n\x06RecCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12(\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1a\x8a\x01\n\x07RecProj\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xaa\x01\n\x06RecUpd\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x05 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xa4\x01\n\nVariantCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x19\n\x0fvariant_con_str\x18\x02 \x01(\tH\x00\x12\"\n\x18variant_con_interned_str\x18\x04 \x01(\x05H\x00\x12$\n\x0bvariant_arg\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\r\n\x0bvariant_con\x1au\n\x07\x45numCon\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x16\n\x0c\x65num_con_str\x18\x02 \x01(\tH\x00\x12\x1f\n\x15\x65num_con_interned_str\x18\x03 \x01(\x05H\x00\x42\n\n\x08\x65num_con\x1a\x35\n\tStructCon\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1ai\n\nStructProj\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x89\x01\n\tStructUpd\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x42\n\x03\x41pp\x12\x1c\n\x03\x66un\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x46\n\x05TyApp\x12\x1d\n\x04\x65xpr\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05types\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03\x41\x62s\x12%\n\x05param\x18\x01 \x03(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aQ\n\x05TyAbs\x12)\n\x05param\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a$\n\x03Nil\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x64\n\x04\x43ons\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1e\n\x05\x66ront\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04tail\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a-\n\x0cOptionalNone\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aL\n\x0cOptionalSome\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x45\n\x05ToAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aG\n\x07\x46romAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03SumJ\x04\x08\x13\x10\x14J\x04\x08\x18\x10\x19\"\x95\x07\n\x07\x43\x61seAlt\x12\"\n\x07\x64\x65\x66\x61ult\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12-\n\x07variant\x18\x02 \x01(\x0b\x32\x1a.daml_lf_1.CaseAlt.VariantH\x00\x12&\n\x08prim_con\x18\x03 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12\x1e\n\x03nil\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\'\n\x04\x63ons\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.ConsH\x00\x12(\n\roptional_none\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\roptional_some\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.CaseAlt.OptionalSomeH\x00\x12\'\n\x04\x65num\x18\t \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.EnumH\x00\x12\x1d\n\x04\x62ody\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xaf\x01\n\x07Variant\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x15\n\x0bvariant_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14variant_interned_str\x18\x04 \x01(\x05H\x00\x12\x14\n\nbinder_str\x18\x03 \x01(\tH\x01\x12\x1d\n\x13\x62inder_interned_str\x18\x05 \x01(\x05H\x01\x42\t\n\x07variantB\x08\n\x06\x62inder\x1ay\n\x04\x45num\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x19\n\x0f\x63onstructor_str\x18\x02 \x01(\tH\x00\x12\"\n\x18\x63onstructor_interned_str\x18\x03 \x01(\x05H\x00\x42\r\n\x0b\x63onstructor\x1a\x90\x01\n\x04\x43ons\x12\x16\n\x0cvar_head_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_head_interned_str\x18\x03 \x01(\x05H\x00\x12\x16\n\x0cvar_tail_str\x18\x02 \x01(\tH\x01\x12\x1f\n\x15var_tail_interned_str\x18\x04 \x01(\x05H\x01\x42\n\n\x08var_headB\n\n\x08var_tail\x1aS\n\x0cOptionalSome\x12\x16\n\x0cvar_body_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_body_interned_str\x18\x02 \x01(\x05H\x00\x42\n\n\x08var_bodyB\x05\n\x03Sum\"H\n\x04\x43\x61se\x12\x1e\n\x05scrut\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12 \n\x04\x61lts\x18\x02 \x03(\x0b\x32\x12.daml_lf_1.CaseAlt\"L\n\x05\x42lock\x12$\n\x08\x62indings\x18\x01 \x03(\x0b\x32\x12.daml_lf_1.Binding\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"D\n\x04Pure\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc4\x07\n\x06Update\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12*\n\x06\x63reate\x18\x03 \x01(\x0b\x32\x18.daml_lf_1.Update.CreateH\x00\x12.\n\x08\x65xercise\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Update.ExerciseH\x00\x12(\n\x05\x66\x65tch\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.Update.FetchH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\rlookup_by_key\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x37\n\x0c\x66\x65tch_by_key\x18\t \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x31\n\nembed_expr\x18\x07 \x01(\x0b\x32\x1b.daml_lf_1.Update.EmbedExprH\x00\x1aQ\n\x06\x43reate\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xcf\x01\n\x08\x45xercise\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x14\n\nchoice_str\x18\x02 \x01(\tH\x00\x12\x1d\n\x13\x63hoice_interned_str\x18\x06 \x01(\x05H\x00\x12\x1c\n\x03\x63id\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05\x61\x63tor\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1c\n\x03\x61rg\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x08\n\x06\x63hoice\x1aU\n\x05\x46\x65tch\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03\x63id\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprJ\x04\x08\x03\x10\x04\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aW\n\rRetrieveByKey\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03key\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\x8d\x04\n\x08Scenario\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12,\n\x06\x63ommit\x18\x03 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x30\n\nmustFailAt\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x1f\n\x04pass\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12$\n\tget_party\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12\x33\n\nembed_expr\x18\x08 \x01(\x0b\x32\x1d.daml_lf_1.Scenario.EmbedExprH\x00\x1aj\n\x06\x43ommit\x12\x1e\n\x05party\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12!\n\x08ret_type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\xe7\x02\n\x0eTemplateChoice\x12\x12\n\x08name_str\x18\x01 \x01(\tH\x00\x12\x1b\n\x11name_interned_str\x18\t \x01(\x05H\x00\x12\x11\n\tconsuming\x18\x02 \x01(\x08\x12$\n\x0b\x63ontrollers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\narg_binder\x18\x04 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12!\n\x08ret_type\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06update\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x0fself_binder_str\x18\x07 \x01(\tH\x01\x12\"\n\x18self_binder_interned_str\x18\n \x01(\x05H\x01\x12%\n\x08location\x18\x08 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04nameB\r\n\x0bself_binder\"\xf0\x03\n\x07KeyExpr\x12\x35\n\x0bprojections\x18\x01 \x01(\x0b\x32\x1e.daml_lf_1.KeyExpr.ProjectionsH\x00\x12+\n\x06record\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.KeyExpr.RecordH\x00\x1al\n\nProjection\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x42\x07\n\x05\x66ield\x1a\x41\n\x0bProjections\x12\x32\n\x0bprojections\x18\x02 \x03(\x0b\x32\x1d.daml_lf_1.KeyExpr.Projection\x1ak\n\x0bRecordField\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12 \n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprB\x07\n\x05\x66ield\x1a\\\n\x06Record\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12.\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x1e.daml_lf_1.KeyExpr.RecordFieldB\x05\n\x03Sum\"\xdc\x04\n\x0b\x44\x65\x66Template\x12,\n\x0btycon_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1e\n\x14tycon_interned_dname\x18\x0c \x01(\x05H\x00\x12\x13\n\tparam_str\x18\x02 \x01(\tH\x01\x12\x1c\n\x12param_interned_str\x18\x0b \x01(\x05H\x01\x12 \n\x07precond\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12$\n\x0bsignatories\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\"\n\tagreement\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\x07\x63hoices\x18\x07 \x03(\x0b\x32\x19.daml_lf_1.TemplateChoice\x12\"\n\tobservers\x18\x08 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12%\n\x08location\x18\t \x01(\x0b\x32\x13.daml_lf_1.Location\x12*\n\x03key\x18\n \x01(\x0b\x32\x1d.daml_lf_1.DefTemplate.DefKey\x1a\xa4\x01\n\x06\x44\x65\x66Key\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12!\n\x03key\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprH\x00\x12&\n\x0b\x63omplex_key\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12$\n\x0bmaintainers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\n\n\x08key_exprB\x07\n\x05tyconB\x07\n\x05paramJ\x04\x08\x03\x10\x04\"\xf7\x03\n\x0b\x44\x65\x66\x44\x61taType\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12/\n\x06record\x18\x03 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x30\n\x07variant\x18\x04 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x37\n\x04\x65num\x18\x07 \x01(\x0b\x32\'.daml_lf_1.DefDataType.EnumConstructorsH\x01\x12\x14\n\x0cserializable\x18\x05 \x01(\x08\x12%\n\x08location\x18\x06 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a\x32\n\x06\x46ields\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithType\x1aO\n\x10\x45numConstructors\x12\x18\n\x10\x63onstructors_str\x18\x01 \x03(\t\x12!\n\x19\x63onstructors_interned_str\x18\x02 \x03(\x05\x42\x06\n\x04nameB\n\n\x08\x44\x61taCons\"\xd2\x01\n\nDefTypeSyn\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12%\n\x08location\x18\x04 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04name\"\x96\x02\n\x08\x44\x65\x66Value\x12\x38\n\x0ename_with_type\x18\x01 \x01(\x0b\x32 .daml_lf_1.DefValue.NameWithType\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x11no_party_literals\x18\x03 \x01(\x08\x12\x0f\n\x07is_test\x18\x04 \x01(\x08\x12%\n\x08location\x18\x05 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a^\n\x0cNameWithType\x12\x12\n\nname_dname\x18\x01 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\"\x90\x01\n\x0c\x46\x65\x61tureFlags\x12\x1b\n\x13\x66orbidPartyLiterals\x18\x01 \x01(\x08\x12/\n\'dontDivulgeContractIdsInCreateArguments\x18\x02 \x01(\x08\x12\x32\n*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\x08\"\xb5\x02\n\x06Module\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12&\n\x05\x66lags\x18\x04 \x01(\x0b\x32\x17.daml_lf_1.FeatureFlags\x12\'\n\x08synonyms\x18\t \x03(\x0b\x32\x15.daml_lf_1.DefTypeSyn\x12*\n\ndata_types\x18\x05 \x03(\x0b\x32\x16.daml_lf_1.DefDataType\x12#\n\x06values\x18\x06 \x03(\x0b\x32\x13.daml_lf_1.DefValue\x12)\n\ttemplates\x18\x07 \x03(\x0b\x32\x16.daml_lf_1.DefTemplateB\x06\n\x04nameJ\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04\"3\n\x12InternedDottedName\x12\x1d\n\x15segments_interned_str\x18\x01 \x03(\x05\"J\n\x0fPackageMetadata\x12\x19\n\x11name_interned_str\x18\x01 \x01(\x05\x12\x1c\n\x14version_interned_str\x18\x02 \x01(\x05\"\xb3\x01\n\x07Package\x12\"\n\x07modules\x18\x01 \x03(\x0b\x32\x11.daml_lf_1.Module\x12\x18\n\x10interned_strings\x18\x02 \x03(\t\x12<\n\x15interned_dotted_names\x18\x03 \x03(\x0b\x32\x1d.daml_lf_1.InternedDottedName\x12,\n\x08metadata\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.PackageMetadata*\xef\x01\n\x08PrimType\x12\x08\n\x04UNIT\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x03\x12\x08\n\x04TEXT\x10\x05\x12\r\n\tTIMESTAMP\x10\x06\x12\t\n\x05PARTY\x10\x08\x12\x08\n\x04LIST\x10\t\x12\n\n\x06UPDATE\x10\n\x12\x0c\n\x08SCENARIO\x10\x0b\x12\x08\n\x04\x44\x41TE\x10\x0c\x12\x0f\n\x0b\x43ONTRACT_ID\x10\r\x12\x0c\n\x08OPTIONAL\x10\x0e\x12\t\n\x05\x41RROW\x10\x0f\x12\x0b\n\x07TEXTMAP\x10\x10\x12\x0b\n\x07NUMERIC\x10\x11\x12\x07\n\x03\x41NY\x10\x12\x12\x0c\n\x08TYPE_REP\x10\x13\x12\n\n\x06GENMAP\x10\x14*4\n\x07PrimCon\x12\x0c\n\x08\x43ON_UNIT\x10\x00\x12\r\n\tCON_FALSE\x10\x01\x12\x0c\n\x08\x43ON_TRUE\x10\x02*\xd4\x10\n\x0f\x42uiltinFunction\x12\x0f\n\x0b\x41\x44\x44_DECIMAL\x10\x00\x12\x0f\n\x0bSUB_DECIMAL\x10\x01\x12\x0f\n\x0bMUL_DECIMAL\x10\x02\x12\x0f\n\x0b\x44IV_DECIMAL\x10\x03\x12\x11\n\rROUND_DECIMAL\x10\x06\x12\x0f\n\x0b\x41\x44\x44_NUMERIC\x10k\x12\x0f\n\x0bSUB_NUMERIC\x10l\x12\x0f\n\x0bMUL_NUMERIC\x10m\x12\x0f\n\x0b\x44IV_NUMERIC\x10n\x12\x11\n\rROUND_NUMERIC\x10o\x12\x10\n\x0c\x43\x41ST_NUMERIC\x10y\x12\x11\n\rSHIFT_NUMERIC\x10z\x12\r\n\tADD_INT64\x10\x07\x12\r\n\tSUB_INT64\x10\x08\x12\r\n\tMUL_INT64\x10\t\x12\r\n\tDIV_INT64\x10\n\x12\r\n\tMOD_INT64\x10\x0b\x12\r\n\tEXP_INT64\x10\x0c\x12\t\n\x05\x46OLDL\x10\x14\x12\t\n\x05\x46OLDR\x10\x15\x12\x11\n\rTEXTMAP_EMPTY\x10`\x12\x12\n\x0eTEXTMAP_INSERT\x10\x61\x12\x12\n\x0eTEXTMAP_LOOKUP\x10\x62\x12\x12\n\x0eTEXTMAP_DELETE\x10\x63\x12\x13\n\x0fTEXTMAP_TO_LIST\x10\x64\x12\x10\n\x0cTEXTMAP_SIZE\x10\x65\x12\x10\n\x0cGENMAP_EMPTY\x10|\x12\x11\n\rGENMAP_INSERT\x10}\x12\x11\n\rGENMAP_LOOKUP\x10~\x12\x11\n\rGENMAP_DELETE\x10\x7f\x12\x10\n\x0bGENMAP_KEYS\x10\x80\x01\x12\x12\n\rGENMAP_VALUES\x10\x81\x01\x12\x10\n\x0bGENMAP_SIZE\x10\x82\x01\x12\x10\n\x0c\x45XPLODE_TEXT\x10\x17\x12\x0f\n\x0b\x41PPEND_TEXT\x10\x18\x12\t\n\x05\x45RROR\x10\x19\x12\r\n\tLEQ_INT64\x10!\x12\x0f\n\x0bLEQ_DECIMAL\x10\"\x12\x0f\n\x0bLEQ_NUMERIC\x10p\x12\x0c\n\x08LEQ_TEXT\x10$\x12\x11\n\rLEQ_TIMESTAMP\x10%\x12\x0c\n\x08LEQ_DATE\x10\x43\x12\r\n\tLEQ_PARTY\x10Y\x12\x0e\n\nLESS_INT64\x10\'\x12\x10\n\x0cLESS_DECIMAL\x10(\x12\x10\n\x0cLESS_NUMERIC\x10q\x12\r\n\tLESS_TEXT\x10*\x12\x12\n\x0eLESS_TIMESTAMP\x10+\x12\r\n\tLESS_DATE\x10\x44\x12\x0e\n\nLESS_PARTY\x10Z\x12\r\n\tGEQ_INT64\x10-\x12\x0f\n\x0bGEQ_DECIMAL\x10.\x12\x0f\n\x0bGEQ_NUMERIC\x10r\x12\x0c\n\x08GEQ_TEXT\x10\x30\x12\x11\n\rGEQ_TIMESTAMP\x10\x31\x12\x0c\n\x08GEQ_DATE\x10\x45\x12\r\n\tGEQ_PARTY\x10[\x12\x11\n\rGREATER_INT64\x10\x33\x12\x13\n\x0fGREATER_DECIMAL\x10\x34\x12\x13\n\x0fGREATER_NUMERIC\x10s\x12\x10\n\x0cGREATER_TEXT\x10\x36\x12\x15\n\x11GREATER_TIMESTAMP\x10\x37\x12\x10\n\x0cGREATER_DATE\x10\x46\x12\x11\n\rGREATER_PARTY\x10\\\x12\x11\n\rTO_TEXT_INT64\x10\x39\x12\x13\n\x0fTO_TEXT_DECIMAL\x10:\x12\x13\n\x0fTO_TEXT_NUMERIC\x10t\x12\x10\n\x0cTO_TEXT_TEXT\x10<\x12\x15\n\x11TO_TEXT_TIMESTAMP\x10=\x12\x10\n\x0cTO_TEXT_DATE\x10G\x12\x18\n\x14TO_QUOTED_TEXT_PARTY\x10?\x12\x11\n\rTO_TEXT_PARTY\x10^\x12\x13\n\x0f\x46ROM_TEXT_PARTY\x10_\x12\x13\n\x0f\x46ROM_TEXT_INT64\x10g\x12\x15\n\x11\x46ROM_TEXT_DECIMAL\x10h\x12\x15\n\x11\x46ROM_TEXT_NUMERIC\x10u\x12\x0f\n\x0bSHA256_TEXT\x10]\x12\x15\n\x11\x44\x41TE_TO_UNIX_DAYS\x10H\x12\x15\n\x11UNIX_DAYS_TO_DATE\x10I\x12\"\n\x1eTIMESTAMP_TO_UNIX_MICROSECONDS\x10J\x12\"\n\x1eUNIX_MICROSECONDS_TO_TIMESTAMP\x10K\x12\x14\n\x10INT64_TO_DECIMAL\x10L\x12\x14\n\x10\x44\x45\x43IMAL_TO_INT64\x10M\x12\x14\n\x10INT64_TO_NUMERIC\x10v\x12\x14\n\x10NUMERIC_TO_INT64\x10w\x12\x10\n\x0cIMPLODE_TEXT\x10N\x12\x0f\n\x0b\x45QUAL_INT64\x10O\x12\x11\n\rEQUAL_DECIMAL\x10P\x12\x11\n\rEQUAL_NUMERIC\x10x\x12\x0e\n\nEQUAL_TEXT\x10Q\x12\x13\n\x0f\x45QUAL_TIMESTAMP\x10R\x12\x0e\n\nEQUAL_DATE\x10S\x12\x0f\n\x0b\x45QUAL_PARTY\x10T\x12\x0e\n\nEQUAL_BOOL\x10U\x12\x15\n\x11\x45QUAL_CONTRACT_ID\x10V\x12\x0e\n\nEQUAL_LIST\x10W\x12\x12\n\x0e\x45QUAL_TYPE_REP\x10{\x12\n\n\x05\x45QUAL\x10\x83\x01\x12\x0c\n\x07LESS_EQ\x10\x84\x01\x12\t\n\x04LESS\x10\x85\x01\x12\x0f\n\nGREATER_EQ\x10\x86\x01\x12\x0c\n\x07GREATER\x10\x87\x01\x12\t\n\x05TRACE\x10X\x12\x16\n\x12\x43OERCE_CONTRACT_ID\x10\x66\x12\x19\n\x15TEXT_FROM_CODE_POINTS\x10i\x12\x17\n\x13TEXT_TO_CODE_POINTS\x10j\x12\x12\n\rTEXT_TO_UPPER\x10\xadM\x12\x12\n\rTEXT_TO_LOWER\x10\xaeM\x12\x0f\n\nTEXT_SLICE\x10\xafM\x12\x15\n\x10TEXT_SLICE_INDEX\x10\xb0M\x12\x17\n\x12TEXT_CONTAINS_ONLY\x10\xb1M\x12\x13\n\x0eTEXT_REPLICATE\x10\xb2M\x12\x12\n\rTEXT_SPLIT_ON\x10\xb3M\x12\x15\n\x10TEXT_INTERCALATE\x10\xb4MB5\n\x14\x63om.daml.daml_lf_dev\xaa\x02\x1c\x43om.Daml.Daml_Lf_Dev.DamlLf1b\x06proto3'
+  create_key=_descriptor._internal_create_key,
+  serialized_pb=b'\n$com/daml/daml_lf_dev/daml_lf_1.proto\x12\tdaml_lf_1\"\x06\n\x04Unit\"q\n\nPackageRef\x12\x1f\n\x04self\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x18\n\x0epackage_id_str\x18\x02 \x01(\tH\x00\x12!\n\x17package_id_interned_str\x18\x03 \x01(\x05H\x00\x42\x05\n\x03Sum\"\x1e\n\nDottedName\x12\x10\n\x08segments\x18\x01 \x03(\t\"\xa0\x01\n\tModuleRef\x12*\n\x0bpackage_ref\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.PackageRef\x12\x32\n\x11module_name_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12$\n\x1amodule_name_interned_dname\x18\x03 \x01(\x05H\x00\x42\r\n\x0bmodule_name\"\x87\x01\n\x0bTypeConName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12+\n\nname_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x03 \x01(\x05H\x00\x42\x06\n\x04name\"\x87\x01\n\x0bTypeSynName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12+\n\nname_dname\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x03 \x01(\x05H\x00\x42\x06\n\x04name\"`\n\x07ValName\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12\x12\n\nname_dname\x18\x02 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\"j\n\rFieldWithType\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x07\n\x05\x66ield\"b\n\x0bVarWithType\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\"f\n\x0fTypeVarWithKind\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04kind\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03var\"j\n\rFieldWithExpr\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\"Q\n\x07\x42inding\x12&\n\x06\x62inder\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1e\n\x05\x62ound\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc1\x01\n\x04Kind\x12\x1f\n\x04star\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12&\n\x05\x61rrow\x18\x02 \x01(\x0b\x32\x15.daml_lf_1.Kind.ArrowH\x00\x12\x1e\n\x03nat\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x1aI\n\x05\x41rrow\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Kind\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.KindB\x05\n\x03Sum\"\xc4\x06\n\x04Type\x12\"\n\x03var\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.VarH\x00\x12\"\n\x03\x63on\x18\x02 \x01(\x0b\x32\x13.daml_lf_1.Type.ConH\x00\x12$\n\x04prim\x18\x03 \x01(\x0b\x32\x14.daml_lf_1.Type.PrimH\x00\x12(\n\x06\x66orall\x18\x05 \x01(\x0b\x32\x16.daml_lf_1.Type.ForallH\x00\x12(\n\x06struct\x18\x07 \x01(\x0b\x32\x16.daml_lf_1.Type.StructH\x00\x12\r\n\x03nat\x18\x0b \x01(\x12H\x00\x12\"\n\x03syn\x18\x0c \x01(\x0b\x32\x13.daml_lf_1.Type.SynH\x00\x12\x12\n\x08interned\x18\r \x01(\x05H\x00\x1aZ\n\x03Var\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x03 \x01(\x05H\x00\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.TypeB\x05\n\x03var\x1aK\n\x03\x43on\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03Syn\x12%\n\x05tysyn\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeSynName\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aH\n\x04Prim\x12!\n\x04prim\x18\x01 \x01(\x0e\x32\x13.daml_lf_1.PrimType\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aG\n\x03\x46un\x12\x1f\n\x06params\x18\x01 \x03(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06result\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aQ\n\x06\x46orall\x12(\n\x04vars\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x32\n\x06Struct\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithTypeB\x05\n\x03SumJ\x04\x08\x04\x10\x05J\x04\x08\x06\x10\x07J\x04\x08\x08\x10\tJ\x04\x08\t\x10\nJ\x04\x08\n\x10\x0b\"\xed\x01\n\x07PrimLit\x12\x0f\n\x05int64\x18\x01 \x01(\x12H\x00\x12\x15\n\x0b\x64\x65\x63imal_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14numeric_interned_str\x18\n \x01(\x05H\x00\x12\x12\n\x08text_str\x18\x04 \x01(\tH\x00\x12\x1b\n\x11text_interned_str\x18\x0b \x01(\x05H\x00\x12\x13\n\ttimestamp\x18\x05 \x01(\x10H\x00\x12\x13\n\tparty_str\x18\x07 \x01(\tH\x00\x12\x1c\n\x12party_interned_str\x18\x0c \x01(\x05H\x00\x12\x0e\n\x04\x64\x61te\x18\x08 \x01(\x05H\x00\x42\x05\n\x03SumJ\x04\x08\x03\x10\x04J\x04\x08\x06\x10\x07\"\xad\x01\n\x08Location\x12$\n\x06module\x18\x01 \x01(\x0b\x32\x14.daml_lf_1.ModuleRef\x12(\n\x05range\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.Location.Range\x1aQ\n\x05Range\x12\x12\n\nstart_line\x18\x01 \x01(\x05\x12\x11\n\tstart_col\x18\x02 \x01(\x05\x12\x10\n\x08\x65nd_line\x18\x03 \x01(\x05\x12\x0f\n\x07\x65nd_col\x18\x04 \x01(\x05\"\xd0\x1a\n\x04\x45xpr\x12%\n\x08location\x18\x19 \x01(\x0b\x32\x13.daml_lf_1.Location\x12\x11\n\x07var_str\x18\x01 \x01(\tH\x00\x12\x1a\n\x10var_interned_str\x18\x1d \x01(\x05H\x00\x12!\n\x03val\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.ValNameH\x00\x12-\n\x07\x62uiltin\x18\x03 \x01(\x0e\x32\x1a.daml_lf_1.BuiltinFunctionH\x00\x12&\n\x08prim_con\x18\x04 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12&\n\x08prim_lit\x18\x05 \x01(\x0b\x32\x12.daml_lf_1.PrimLitH\x00\x12)\n\x07rec_con\x18\x06 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecConH\x00\x12+\n\x08rec_proj\x18\x07 \x01(\x0b\x32\x17.daml_lf_1.Expr.RecProjH\x00\x12)\n\x07rec_upd\x18\x16 \x01(\x0b\x32\x16.daml_lf_1.Expr.RecUpdH\x00\x12\x31\n\x0bvariant_con\x18\x08 \x01(\x0b\x32\x1a.daml_lf_1.Expr.VariantConH\x00\x12+\n\x08\x65num_con\x18\x1c \x01(\x0b\x32\x17.daml_lf_1.Expr.EnumConH\x00\x12/\n\nstruct_con\x18\t \x01(\x0b\x32\x19.daml_lf_1.Expr.StructConH\x00\x12\x31\n\x0bstruct_proj\x18\n \x01(\x0b\x32\x1a.daml_lf_1.Expr.StructProjH\x00\x12/\n\nstruct_upd\x18\x17 \x01(\x0b\x32\x19.daml_lf_1.Expr.StructUpdH\x00\x12\"\n\x03\x61pp\x18\x0b \x01(\x0b\x32\x13.daml_lf_1.Expr.AppH\x00\x12\'\n\x06ty_app\x18\x0c \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAppH\x00\x12\"\n\x03\x61\x62s\x18\r \x01(\x0b\x32\x13.daml_lf_1.Expr.AbsH\x00\x12\'\n\x06ty_abs\x18\x0e \x01(\x0b\x32\x15.daml_lf_1.Expr.TyAbsH\x00\x12\x1f\n\x04\x63\x61se\x18\x0f \x01(\x0b\x32\x0f.daml_lf_1.CaseH\x00\x12\x1f\n\x03let\x18\x10 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12\"\n\x03nil\x18\x11 \x01(\x0b\x32\x13.daml_lf_1.Expr.NilH\x00\x12$\n\x04\x63ons\x18\x12 \x01(\x0b\x32\x14.daml_lf_1.Expr.ConsH\x00\x12#\n\x06update\x18\x14 \x01(\x0b\x32\x11.daml_lf_1.UpdateH\x00\x12\'\n\x08scenario\x18\x15 \x01(\x0b\x32\x13.daml_lf_1.ScenarioH\x00\x12\x35\n\roptional_none\x18\x1a \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalNoneH\x00\x12\x35\n\roptional_some\x18\x1b \x01(\x0b\x32\x1c.daml_lf_1.Expr.OptionalSomeH\x00\x12\'\n\x06to_any\x18\x1e \x01(\x0b\x32\x15.daml_lf_1.Expr.ToAnyH\x00\x12+\n\x08\x66rom_any\x18\x1f \x01(\x0b\x32\x17.daml_lf_1.Expr.FromAnyH\x00\x12#\n\x08type_rep\x18  \x01(\x0b\x32\x0f.daml_lf_1.TypeH\x00\x12:\n\x10to_any_exception\x18! \x01(\x0b\x32\x1e.daml_lf_1.Expr.ToAnyExceptionH\x00\x12>\n\x12\x66rom_any_exception\x18\" \x01(\x0b\x32 .daml_lf_1.Expr.FromAnyExceptionH\x00\x12&\n\x05throw\x18# \x01(\x0b\x32\x15.daml_lf_1.Expr.ThrowH\x00\x1aV\n\x06RecCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12(\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1a\x8a\x01\n\x07RecProj\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xaa\x01\n\x06RecUpd\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x05 \x01(\x05H\x00\x12\x1f\n\x06record\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\xa4\x01\n\nVariantCon\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x19\n\x0fvariant_con_str\x18\x02 \x01(\tH\x00\x12\"\n\x18variant_con_interned_str\x18\x04 \x01(\x05H\x00\x12$\n\x0bvariant_arg\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\r\n\x0bvariant_con\x1au\n\x07\x45numCon\x12%\n\x05tycon\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x16\n\x0c\x65num_con_str\x18\x02 \x01(\tH\x00\x12\x1f\n\x15\x65num_con_interned_str\x18\x03 \x01(\x05H\x00\x42\n\n\x08\x65num_con\x1a\x35\n\tStructCon\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithExpr\x1ai\n\nStructProj\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x89\x01\n\tStructUpd\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x04 \x01(\x05H\x00\x12\x1f\n\x06struct\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1f\n\x06update\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x07\n\x05\x66ield\x1a\x42\n\x03\x41pp\x12\x1c\n\x03\x66un\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x46\n\x05TyApp\x12\x1d\n\x04\x65xpr\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1e\n\x05types\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Type\x1aK\n\x03\x41\x62s\x12%\n\x05param\x18\x01 \x03(\x0b\x32\x16.daml_lf_1.VarWithType\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aQ\n\x05TyAbs\x12)\n\x05param\x18\x01 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a$\n\x03Nil\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1a\x64\n\x04\x43ons\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1e\n\x05\x66ront\x18\x02 \x03(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04tail\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a-\n\x0cOptionalNone\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aL\n\x0cOptionalSome\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x45\n\x05ToAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aG\n\x07\x46romAny\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aN\n\x0eToAnyException\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aP\n\x10\x46romAnyException\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x7f\n\x05Throw\x12$\n\x0breturn_type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\'\n\x0e\x65xception_type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\'\n\x0e\x65xception_expr\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03SumJ\x04\x08\x13\x10\x14J\x04\x08\x18\x10\x19\"\x95\x07\n\x07\x43\x61seAlt\x12\"\n\x07\x64\x65\x66\x61ult\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12-\n\x07variant\x18\x02 \x01(\x0b\x32\x1a.daml_lf_1.CaseAlt.VariantH\x00\x12&\n\x08prim_con\x18\x03 \x01(\x0e\x32\x12.daml_lf_1.PrimConH\x00\x12\x1e\n\x03nil\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\'\n\x04\x63ons\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.ConsH\x00\x12(\n\roptional_none\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\roptional_some\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.CaseAlt.OptionalSomeH\x00\x12\'\n\x04\x65num\x18\t \x01(\x0b\x32\x17.daml_lf_1.CaseAlt.EnumH\x00\x12\x1d\n\x04\x62ody\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xaf\x01\n\x07Variant\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x15\n\x0bvariant_str\x18\x02 \x01(\tH\x00\x12\x1e\n\x14variant_interned_str\x18\x04 \x01(\x05H\x00\x12\x14\n\nbinder_str\x18\x03 \x01(\tH\x01\x12\x1d\n\x13\x62inder_interned_str\x18\x05 \x01(\x05H\x01\x42\t\n\x07variantB\x08\n\x06\x62inder\x1ay\n\x04\x45num\x12#\n\x03\x63on\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x19\n\x0f\x63onstructor_str\x18\x02 \x01(\tH\x00\x12\"\n\x18\x63onstructor_interned_str\x18\x03 \x01(\x05H\x00\x42\r\n\x0b\x63onstructor\x1a\x90\x01\n\x04\x43ons\x12\x16\n\x0cvar_head_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_head_interned_str\x18\x03 \x01(\x05H\x00\x12\x16\n\x0cvar_tail_str\x18\x02 \x01(\tH\x01\x12\x1f\n\x15var_tail_interned_str\x18\x04 \x01(\x05H\x01\x42\n\n\x08var_headB\n\n\x08var_tail\x1aS\n\x0cOptionalSome\x12\x16\n\x0cvar_body_str\x18\x01 \x01(\tH\x00\x12\x1f\n\x15var_body_interned_str\x18\x02 \x01(\x05H\x00\x42\n\n\x08var_bodyB\x05\n\x03Sum\"H\n\x04\x43\x61se\x12\x1e\n\x05scrut\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12 \n\x04\x61lts\x18\x02 \x03(\x0b\x32\x12.daml_lf_1.CaseAlt\"L\n\x05\x42lock\x12$\n\x08\x62indings\x18\x01 \x03(\x0b\x32\x12.daml_lf_1.Binding\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"D\n\x04Pure\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xc1\n\n\x06Update\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12*\n\x06\x63reate\x18\x03 \x01(\x0b\x32\x18.daml_lf_1.Update.CreateH\x00\x12.\n\x08\x65xercise\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Update.ExerciseH\x00\x12:\n\x0f\x65xercise_by_key\x18\n \x01(\x0b\x32\x1f.daml_lf_1.Update.ExerciseByKeyH\x00\x12(\n\x05\x66\x65tch\x18\x05 \x01(\x0b\x32\x17.daml_lf_1.Update.FetchH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12\x38\n\rlookup_by_key\x18\x08 \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x37\n\x0c\x66\x65tch_by_key\x18\t \x01(\x0b\x32\x1f.daml_lf_1.Update.RetrieveByKeyH\x00\x12\x31\n\nembed_expr\x18\x07 \x01(\x0b\x32\x1b.daml_lf_1.Update.EmbedExprH\x00\x12/\n\ttry_catch\x18\x0b \x01(\x0b\x32\x1a.daml_lf_1.Update.TryCatchH\x00\x1aQ\n\x06\x43reate\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\xb5\x01\n\x08\x45xercise\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x14\n\nchoice_str\x18\x02 \x01(\tH\x00\x12\x1d\n\x13\x63hoice_interned_str\x18\x06 \x01(\x05H\x00\x12\x1c\n\x03\x63id\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1c\n\x03\x61rg\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x08\n\x06\x63hoiceJ\x04\x08\x04\x10\x05\x1a\x92\x01\n\rExerciseByKey\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1b\n\x13\x63hoice_interned_str\x18\x02 \x01(\x05\x12\x1c\n\x03key\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1c\n\x03\x61rg\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aU\n\x05\x46\x65tch\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03\x63id\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprJ\x04\x08\x03\x10\x04\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1aW\n\rRetrieveByKey\x12(\n\x08template\x18\x01 \x01(\x0b\x32\x16.daml_lf_1.TypeConName\x12\x1c\n\x03key\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x1a\x92\x01\n\x08TryCatch\x12$\n\x0breturn_type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12!\n\x08try_expr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x18\n\x10var_interned_str\x18\x03 \x01(\x05\x12#\n\ncatch_expr\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\x8d\x04\n\x08Scenario\x12\x1f\n\x04pure\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.PureH\x00\x12!\n\x05\x62lock\x18\x02 \x01(\x0b\x32\x10.daml_lf_1.BlockH\x00\x12,\n\x06\x63ommit\x18\x03 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x30\n\nmustFailAt\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.Scenario.CommitH\x00\x12\x1f\n\x04pass\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12#\n\x08get_time\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.UnitH\x00\x12$\n\tget_party\x18\x07 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12\x33\n\nembed_expr\x18\x08 \x01(\x0b\x32\x1d.daml_lf_1.Scenario.EmbedExprH\x00\x1aj\n\x06\x43ommit\x12\x1e\n\x05party\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12!\n\x08ret_type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x1aI\n\tEmbedExpr\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1d\n\x04\x62ody\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\x05\n\x03Sum\"\x8b\x03\n\x0eTemplateChoice\x12\x12\n\x08name_str\x18\x01 \x01(\tH\x00\x12\x1b\n\x11name_interned_str\x18\t \x01(\x05H\x00\x12\x11\n\tconsuming\x18\x02 \x01(\x08\x12$\n\x0b\x63ontrollers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\"\n\tobservers\x18\x0b \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\narg_binder\x18\x04 \x01(\x0b\x32\x16.daml_lf_1.VarWithType\x12!\n\x08ret_type\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12\x1f\n\x06update\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x0fself_binder_str\x18\x07 \x01(\tH\x01\x12\"\n\x18self_binder_interned_str\x18\n \x01(\x05H\x01\x12%\n\x08location\x18\x08 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04nameB\r\n\x0bself_binder\"\xf0\x03\n\x07KeyExpr\x12\x35\n\x0bprojections\x18\x01 \x01(\x0b\x32\x1e.daml_lf_1.KeyExpr.ProjectionsH\x00\x12+\n\x06record\x18\x02 \x01(\x0b\x32\x19.daml_lf_1.KeyExpr.RecordH\x00\x1al\n\nProjection\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12\x13\n\tfield_str\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x42\x07\n\x05\x66ield\x1a\x41\n\x0bProjections\x12\x32\n\x0bprojections\x18\x02 \x03(\x0b\x32\x1d.daml_lf_1.KeyExpr.Projection\x1ak\n\x0bRecordField\x12\x13\n\tfield_str\x18\x01 \x01(\tH\x00\x12\x1c\n\x12\x66ield_interned_str\x18\x03 \x01(\x05H\x00\x12 \n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprB\x07\n\x05\x66ield\x1a\\\n\x06Record\x12\"\n\x05tycon\x18\x01 \x01(\x0b\x32\x13.daml_lf_1.Type.Con\x12.\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x1e.daml_lf_1.KeyExpr.RecordFieldB\x05\n\x03Sum\"\xdc\x04\n\x0b\x44\x65\x66Template\x12,\n\x0btycon_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1e\n\x14tycon_interned_dname\x18\x0c \x01(\x05H\x00\x12\x13\n\tparam_str\x18\x02 \x01(\tH\x01\x12\x1c\n\x12param_interned_str\x18\x0b \x01(\x05H\x01\x12 \n\x07precond\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12$\n\x0bsignatories\x18\x05 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\"\n\tagreement\x18\x06 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12*\n\x07\x63hoices\x18\x07 \x03(\x0b\x32\x19.daml_lf_1.TemplateChoice\x12\"\n\tobservers\x18\x08 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12%\n\x08location\x18\t \x01(\x0b\x32\x13.daml_lf_1.Location\x12*\n\x03key\x18\n \x01(\x0b\x32\x1d.daml_lf_1.DefTemplate.DefKey\x1a\xa4\x01\n\x06\x44\x65\x66Key\x12\x1d\n\x04type\x18\x01 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12!\n\x03key\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.KeyExprH\x00\x12&\n\x0b\x63omplex_key\x18\x04 \x01(\x0b\x32\x0f.daml_lf_1.ExprH\x00\x12$\n\x0bmaintainers\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.ExprB\n\n\x08key_exprB\x07\n\x05tyconB\x07\n\x05paramJ\x04\x08\x03\x10\x04\"t\n\x0c\x44\x65\x66\x45xception\x12\x1b\n\x13name_interned_dname\x18\x01 \x01(\x05\x12%\n\x08location\x18\x02 \x01(\x0b\x32\x13.daml_lf_1.Location\x12 \n\x07message\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Expr\"\xf7\x03\n\x0b\x44\x65\x66\x44\x61taType\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12/\n\x06record\x18\x03 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x30\n\x07variant\x18\x04 \x01(\x0b\x32\x1d.daml_lf_1.DefDataType.FieldsH\x01\x12\x37\n\x04\x65num\x18\x07 \x01(\x0b\x32\'.daml_lf_1.DefDataType.EnumConstructorsH\x01\x12\x14\n\x0cserializable\x18\x05 \x01(\x08\x12%\n\x08location\x18\x06 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a\x32\n\x06\x46ields\x12(\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x18.daml_lf_1.FieldWithType\x1aO\n\x10\x45numConstructors\x12\x18\n\x10\x63onstructors_str\x18\x01 \x03(\t\x12!\n\x19\x63onstructors_interned_str\x18\x02 \x03(\x05\x42\x06\n\x04nameB\n\n\x08\x44\x61taCons\"\xd2\x01\n\nDefTypeSyn\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.daml_lf_1.TypeVarWithKind\x12\x1d\n\x04type\x18\x03 \x01(\x0b\x32\x0f.daml_lf_1.Type\x12%\n\x08location\x18\x04 \x01(\x0b\x32\x13.daml_lf_1.LocationB\x06\n\x04name\"\x96\x02\n\x08\x44\x65\x66Value\x12\x38\n\x0ename_with_type\x18\x01 \x01(\x0b\x32 .daml_lf_1.DefValue.NameWithType\x12\x1d\n\x04\x65xpr\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Expr\x12\x19\n\x11no_party_literals\x18\x03 \x01(\x08\x12\x0f\n\x07is_test\x18\x04 \x01(\x08\x12%\n\x08location\x18\x05 \x01(\x0b\x32\x13.daml_lf_1.Location\x1a^\n\x0cNameWithType\x12\x12\n\nname_dname\x18\x01 \x03(\t\x12\x1b\n\x13name_interned_dname\x18\x03 \x01(\x05\x12\x1d\n\x04type\x18\x02 \x01(\x0b\x32\x0f.daml_lf_1.Type\"\x90\x01\n\x0c\x46\x65\x61tureFlags\x12\x1b\n\x13\x66orbidPartyLiterals\x18\x01 \x01(\x08\x12/\n\'dontDivulgeContractIdsInCreateArguments\x18\x02 \x01(\x08\x12\x32\n*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\x08\"\xe2\x02\n\x06Module\x12+\n\nname_dname\x18\x01 \x01(\x0b\x32\x15.daml_lf_1.DottedNameH\x00\x12\x1d\n\x13name_interned_dname\x18\x08 \x01(\x05H\x00\x12&\n\x05\x66lags\x18\x04 \x01(\x0b\x32\x17.daml_lf_1.FeatureFlags\x12\'\n\x08synonyms\x18\t \x03(\x0b\x32\x15.daml_lf_1.DefTypeSyn\x12*\n\ndata_types\x18\x05 \x03(\x0b\x32\x16.daml_lf_1.DefDataType\x12#\n\x06values\x18\x06 \x03(\x0b\x32\x13.daml_lf_1.DefValue\x12)\n\ttemplates\x18\x07 \x03(\x0b\x32\x16.daml_lf_1.DefTemplate\x12+\n\nexceptions\x18\n \x03(\x0b\x32\x17.daml_lf_1.DefExceptionB\x06\n\x04nameJ\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04\"3\n\x12InternedDottedName\x12\x1d\n\x15segments_interned_str\x18\x01 \x03(\x05\"J\n\x0fPackageMetadata\x12\x19\n\x11name_interned_str\x18\x01 \x01(\x05\x12\x1c\n\x14version_interned_str\x18\x02 \x01(\x05\"\xdc\x01\n\x07Package\x12\"\n\x07modules\x18\x01 \x03(\x0b\x32\x11.daml_lf_1.Module\x12\x18\n\x10interned_strings\x18\x02 \x03(\t\x12<\n\x15interned_dotted_names\x18\x03 \x03(\x0b\x32\x1d.daml_lf_1.InternedDottedName\x12,\n\x08metadata\x18\x04 \x01(\x0b\x32\x1a.daml_lf_1.PackageMetadata\x12\'\n\x0einterned_types\x18\x05 \x03(\x0b\x32\x0f.daml_lf_1.Type*\xbf\x02\n\x08PrimType\x12\x08\n\x04UNIT\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x03\x12\x08\n\x04TEXT\x10\x05\x12\r\n\tTIMESTAMP\x10\x06\x12\t\n\x05PARTY\x10\x08\x12\x08\n\x04LIST\x10\t\x12\n\n\x06UPDATE\x10\n\x12\x0c\n\x08SCENARIO\x10\x0b\x12\x08\n\x04\x44\x41TE\x10\x0c\x12\x0f\n\x0b\x43ONTRACT_ID\x10\r\x12\x0c\n\x08OPTIONAL\x10\x0e\x12\t\n\x05\x41RROW\x10\x0f\x12\x0b\n\x07TEXTMAP\x10\x10\x12\x0b\n\x07NUMERIC\x10\x11\x12\x07\n\x03\x41NY\x10\x12\x12\x0c\n\x08TYPE_REP\x10\x13\x12\n\n\x06GENMAP\x10\x14\x12\x11\n\rANY_EXCEPTION\x10\x15\x12\x11\n\rGENERAL_ERROR\x10\x16\x12\x14\n\x10\x41RITHMETIC_ERROR\x10\x17\x12\x12\n\x0e\x43ONTRACT_ERROR\x10\x18*4\n\x07PrimCon\x12\x0c\n\x08\x43ON_UNIT\x10\x00\x12\r\n\tCON_FALSE\x10\x01\x12\x0c\n\x08\x43ON_TRUE\x10\x02*\xb1\x12\n\x0f\x42uiltinFunction\x12\x0f\n\x0b\x41\x44\x44_DECIMAL\x10\x00\x12\x0f\n\x0bSUB_DECIMAL\x10\x01\x12\x0f\n\x0bMUL_DECIMAL\x10\x02\x12\x0f\n\x0b\x44IV_DECIMAL\x10\x03\x12\x11\n\rROUND_DECIMAL\x10\x06\x12\x0f\n\x0b\x41\x44\x44_NUMERIC\x10k\x12\x0f\n\x0bSUB_NUMERIC\x10l\x12\x0f\n\x0bMUL_NUMERIC\x10m\x12\x0f\n\x0b\x44IV_NUMERIC\x10n\x12\x11\n\rROUND_NUMERIC\x10o\x12\x10\n\x0c\x43\x41ST_NUMERIC\x10y\x12\x11\n\rSHIFT_NUMERIC\x10z\x12\r\n\tADD_INT64\x10\x07\x12\r\n\tSUB_INT64\x10\x08\x12\r\n\tMUL_INT64\x10\t\x12\r\n\tDIV_INT64\x10\n\x12\r\n\tMOD_INT64\x10\x0b\x12\r\n\tEXP_INT64\x10\x0c\x12\t\n\x05\x46OLDL\x10\x14\x12\t\n\x05\x46OLDR\x10\x15\x12\x11\n\rTEXTMAP_EMPTY\x10`\x12\x12\n\x0eTEXTMAP_INSERT\x10\x61\x12\x12\n\x0eTEXTMAP_LOOKUP\x10\x62\x12\x12\n\x0eTEXTMAP_DELETE\x10\x63\x12\x13\n\x0fTEXTMAP_TO_LIST\x10\x64\x12\x10\n\x0cTEXTMAP_SIZE\x10\x65\x12\x10\n\x0cGENMAP_EMPTY\x10|\x12\x11\n\rGENMAP_INSERT\x10}\x12\x11\n\rGENMAP_LOOKUP\x10~\x12\x11\n\rGENMAP_DELETE\x10\x7f\x12\x10\n\x0bGENMAP_KEYS\x10\x80\x01\x12\x12\n\rGENMAP_VALUES\x10\x81\x01\x12\x10\n\x0bGENMAP_SIZE\x10\x82\x01\x12\x10\n\x0c\x45XPLODE_TEXT\x10\x17\x12\x0f\n\x0b\x41PPEND_TEXT\x10\x18\x12\t\n\x05\x45RROR\x10\x19\x12\x1a\n\x15\x41NY_EXCEPTION_MESSAGE\x10\x89\x01\x12\x17\n\x12MAKE_GENERAL_ERROR\x10\x8a\x01\x12\x1a\n\x15GENERAL_ERROR_MESSAGE\x10\x8b\x01\x12\x1a\n\x15MAKE_ARITHMETIC_ERROR\x10\x8c\x01\x12\x1d\n\x18\x41RITHMETIC_ERROR_MESSAGE\x10\x8d\x01\x12\x18\n\x13MAKE_CONTRACT_ERROR\x10\x8e\x01\x12\x1b\n\x16\x43ONTRACT_ERROR_MESSAGE\x10\x8f\x01\x12\r\n\tLEQ_INT64\x10!\x12\x0f\n\x0bLEQ_DECIMAL\x10\"\x12\x0f\n\x0bLEQ_NUMERIC\x10p\x12\x0c\n\x08LEQ_TEXT\x10$\x12\x11\n\rLEQ_TIMESTAMP\x10%\x12\x0c\n\x08LEQ_DATE\x10\x43\x12\r\n\tLEQ_PARTY\x10Y\x12\x0e\n\nLESS_INT64\x10\'\x12\x10\n\x0cLESS_DECIMAL\x10(\x12\x10\n\x0cLESS_NUMERIC\x10q\x12\r\n\tLESS_TEXT\x10*\x12\x12\n\x0eLESS_TIMESTAMP\x10+\x12\r\n\tLESS_DATE\x10\x44\x12\x0e\n\nLESS_PARTY\x10Z\x12\r\n\tGEQ_INT64\x10-\x12\x0f\n\x0bGEQ_DECIMAL\x10.\x12\x0f\n\x0bGEQ_NUMERIC\x10r\x12\x0c\n\x08GEQ_TEXT\x10\x30\x12\x11\n\rGEQ_TIMESTAMP\x10\x31\x12\x0c\n\x08GEQ_DATE\x10\x45\x12\r\n\tGEQ_PARTY\x10[\x12\x11\n\rGREATER_INT64\x10\x33\x12\x13\n\x0fGREATER_DECIMAL\x10\x34\x12\x13\n\x0fGREATER_NUMERIC\x10s\x12\x10\n\x0cGREATER_TEXT\x10\x36\x12\x15\n\x11GREATER_TIMESTAMP\x10\x37\x12\x10\n\x0cGREATER_DATE\x10\x46\x12\x11\n\rGREATER_PARTY\x10\\\x12\x11\n\rTO_TEXT_INT64\x10\x39\x12\x13\n\x0fTO_TEXT_DECIMAL\x10:\x12\x13\n\x0fTO_TEXT_NUMERIC\x10t\x12\x10\n\x0cTO_TEXT_TEXT\x10<\x12\x15\n\x11TO_TEXT_TIMESTAMP\x10=\x12\x10\n\x0cTO_TEXT_DATE\x10G\x12\x18\n\x14TO_QUOTED_TEXT_PARTY\x10?\x12\x11\n\rTO_TEXT_PARTY\x10^\x12\x13\n\x0f\x46ROM_TEXT_PARTY\x10_\x12\x13\n\x0f\x46ROM_TEXT_INT64\x10g\x12\x15\n\x11\x46ROM_TEXT_DECIMAL\x10h\x12\x15\n\x11\x46ROM_TEXT_NUMERIC\x10u\x12\x18\n\x13TO_TEXT_CONTRACT_ID\x10\x88\x01\x12\x0f\n\x0bSHA256_TEXT\x10]\x12\x15\n\x11\x44\x41TE_TO_UNIX_DAYS\x10H\x12\x15\n\x11UNIX_DAYS_TO_DATE\x10I\x12\"\n\x1eTIMESTAMP_TO_UNIX_MICROSECONDS\x10J\x12\"\n\x1eUNIX_MICROSECONDS_TO_TIMESTAMP\x10K\x12\x14\n\x10INT64_TO_DECIMAL\x10L\x12\x14\n\x10\x44\x45\x43IMAL_TO_INT64\x10M\x12\x14\n\x10INT64_TO_NUMERIC\x10v\x12\x14\n\x10NUMERIC_TO_INT64\x10w\x12\x10\n\x0cIMPLODE_TEXT\x10N\x12\x0f\n\x0b\x45QUAL_INT64\x10O\x12\x11\n\rEQUAL_DECIMAL\x10P\x12\x11\n\rEQUAL_NUMERIC\x10x\x12\x0e\n\nEQUAL_TEXT\x10Q\x12\x13\n\x0f\x45QUAL_TIMESTAMP\x10R\x12\x0e\n\nEQUAL_DATE\x10S\x12\x0f\n\x0b\x45QUAL_PARTY\x10T\x12\x0e\n\nEQUAL_BOOL\x10U\x12\x15\n\x11\x45QUAL_CONTRACT_ID\x10V\x12\x0e\n\nEQUAL_LIST\x10W\x12\x12\n\x0e\x45QUAL_TYPE_REP\x10{\x12\n\n\x05\x45QUAL\x10\x83\x01\x12\x0c\n\x07LESS_EQ\x10\x84\x01\x12\t\n\x04LESS\x10\x85\x01\x12\x0f\n\nGREATER_EQ\x10\x86\x01\x12\x0c\n\x07GREATER\x10\x87\x01\x12\t\n\x05TRACE\x10X\x12\x16\n\x12\x43OERCE_CONTRACT_ID\x10\x66\x12\x19\n\x15TEXT_FROM_CODE_POINTS\x10i\x12\x17\n\x13TEXT_TO_CODE_POINTS\x10j\x12\x12\n\rTEXT_TO_UPPER\x10\xadM\x12\x12\n\rTEXT_TO_LOWER\x10\xaeM\x12\x0f\n\nTEXT_SLICE\x10\xafM\x12\x15\n\x10TEXT_SLICE_INDEX\x10\xb0M\x12\x17\n\x12TEXT_CONTAINS_ONLY\x10\xb1M\x12\x13\n\x0eTEXT_REPLICATE\x10\xb2M\x12\x12\n\rTEXT_SPLIT_ON\x10\xb3M\x12\x15\n\x10TEXT_INTERCALATE\x10\xb4MB5\n\x14\x63om.daml.daml_lf_dev\xaa\x02\x1c\x43om.Daml.Daml_Lf_Dev.DamlLf1b\x06proto3'
 )
 
 _PRIMTYPE = _descriptor.EnumDescriptor(
@@ -29,88 +30,128 @@ _PRIMTYPE = _descriptor.EnumDescriptor(
   full_name='daml_lf_1.PrimType',
   filename=None,
   file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
       name='UNIT', index=0, number=0,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='BOOL', index=1, number=1,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='INT64', index=2, number=2,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='DECIMAL', index=3, number=3,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TEXT', index=4, number=5,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TIMESTAMP', index=5, number=6,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='PARTY', index=6, number=8,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='LIST', index=7, number=9,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='UPDATE', index=8, number=10,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='SCENARIO', index=9, number=11,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='DATE', index=10, number=12,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='CONTRACT_ID', index=11, number=13,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='OPTIONAL', index=12, number=14,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='ARROW', index=13, number=15,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TEXTMAP', index=14, number=16,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='NUMERIC', index=15, number=17,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='ANY', index=16, number=18,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TYPE_REP', index=17, number=19,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='GENMAP', index=18, number=20,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='ANY_EXCEPTION', index=19, number=21,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='GENERAL_ERROR', index=20, number=22,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='ARITHMETIC_ERROR', index=21, number=23,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='CONTRACT_ERROR', index=22, number=24,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=11539,
-  serialized_end=11778,
+  serialized_start=12605,
+  serialized_end=12924,
 )
 _sym_db.RegisterEnumDescriptor(_PRIMTYPE)
 
@@ -120,24 +161,28 @@ _PRIMCON = _descriptor.EnumDescriptor(
   full_name='daml_lf_1.PrimCon',
   filename=None,
   file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
       name='CON_UNIT', index=0, number=0,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='CON_FALSE', index=1, number=1,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='CON_TRUE', index=2, number=2,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=11780,
-  serialized_end=11832,
+  serialized_start=12926,
+  serialized_end=12978,
 )
 _sym_db.RegisterEnumDescriptor(_PRIMCON)
 
@@ -147,468 +192,623 @@ _BUILTINFUNCTION = _descriptor.EnumDescriptor(
   full_name='daml_lf_1.BuiltinFunction',
   filename=None,
   file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
       name='ADD_DECIMAL', index=0, number=0,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='SUB_DECIMAL', index=1, number=1,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='MUL_DECIMAL', index=2, number=2,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='DIV_DECIMAL', index=3, number=3,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='ROUND_DECIMAL', index=4, number=6,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='ADD_NUMERIC', index=5, number=107,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='SUB_NUMERIC', index=6, number=108,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='MUL_NUMERIC', index=7, number=109,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='DIV_NUMERIC', index=8, number=110,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='ROUND_NUMERIC', index=9, number=111,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='CAST_NUMERIC', index=10, number=121,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='SHIFT_NUMERIC', index=11, number=122,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='ADD_INT64', index=12, number=7,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='SUB_INT64', index=13, number=8,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='MUL_INT64', index=14, number=9,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='DIV_INT64', index=15, number=10,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='MOD_INT64', index=16, number=11,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='EXP_INT64', index=17, number=12,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='FOLDL', index=18, number=20,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='FOLDR', index=19, number=21,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TEXTMAP_EMPTY', index=20, number=96,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TEXTMAP_INSERT', index=21, number=97,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TEXTMAP_LOOKUP', index=22, number=98,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TEXTMAP_DELETE', index=23, number=99,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TEXTMAP_TO_LIST', index=24, number=100,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='TEXTMAP_SIZE', index=25, number=101,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='GENMAP_EMPTY', index=26, number=124,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='GENMAP_INSERT', index=27, number=125,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='GENMAP_LOOKUP', index=28, number=126,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='GENMAP_DELETE', index=29, number=127,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='GENMAP_KEYS', index=30, number=128,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='GENMAP_VALUES', index=31, number=129,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='GENMAP_SIZE', index=32, number=130,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='EXPLODE_TEXT', index=33, number=23,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='APPEND_TEXT', index=34, number=24,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='ERROR', index=35, number=25,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_INT64', index=36, number=33,
+      name='ANY_EXCEPTION_MESSAGE', index=36, number=137,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_DECIMAL', index=37, number=34,
+      name='MAKE_GENERAL_ERROR', index=37, number=138,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_NUMERIC', index=38, number=112,
+      name='GENERAL_ERROR_MESSAGE', index=38, number=139,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_TEXT', index=39, number=36,
+      name='MAKE_ARITHMETIC_ERROR', index=39, number=140,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_TIMESTAMP', index=40, number=37,
+      name='ARITHMETIC_ERROR_MESSAGE', index=40, number=141,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_DATE', index=41, number=67,
+      name='MAKE_CONTRACT_ERROR', index=41, number=142,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LEQ_PARTY', index=42, number=89,
+      name='CONTRACT_ERROR_MESSAGE', index=42, number=143,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS_INT64', index=43, number=39,
+      name='LEQ_INT64', index=43, number=33,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS_DECIMAL', index=44, number=40,
+      name='LEQ_DECIMAL', index=44, number=34,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS_NUMERIC', index=45, number=113,
+      name='LEQ_NUMERIC', index=45, number=112,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS_TEXT', index=46, number=42,
+      name='LEQ_TEXT', index=46, number=36,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS_TIMESTAMP', index=47, number=43,
+      name='LEQ_TIMESTAMP', index=47, number=37,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS_DATE', index=48, number=68,
+      name='LEQ_DATE', index=48, number=67,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS_PARTY', index=49, number=90,
+      name='LEQ_PARTY', index=49, number=89,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_INT64', index=50, number=45,
+      name='LESS_INT64', index=50, number=39,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_DECIMAL', index=51, number=46,
+      name='LESS_DECIMAL', index=51, number=40,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_NUMERIC', index=52, number=114,
+      name='LESS_NUMERIC', index=52, number=113,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_TEXT', index=53, number=48,
+      name='LESS_TEXT', index=53, number=42,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_TIMESTAMP', index=54, number=49,
+      name='LESS_TIMESTAMP', index=54, number=43,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_DATE', index=55, number=69,
+      name='LESS_DATE', index=55, number=68,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GEQ_PARTY', index=56, number=91,
+      name='LESS_PARTY', index=56, number=90,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_INT64', index=57, number=51,
+      name='GEQ_INT64', index=57, number=45,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_DECIMAL', index=58, number=52,
+      name='GEQ_DECIMAL', index=58, number=46,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_NUMERIC', index=59, number=115,
+      name='GEQ_NUMERIC', index=59, number=114,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_TEXT', index=60, number=54,
+      name='GEQ_TEXT', index=60, number=48,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_TIMESTAMP', index=61, number=55,
+      name='GEQ_TIMESTAMP', index=61, number=49,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_DATE', index=62, number=70,
+      name='GEQ_DATE', index=62, number=69,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_PARTY', index=63, number=92,
+      name='GEQ_PARTY', index=63, number=91,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_INT64', index=64, number=57,
+      name='GREATER_INT64', index=64, number=51,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_DECIMAL', index=65, number=58,
+      name='GREATER_DECIMAL', index=65, number=52,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_NUMERIC', index=66, number=116,
+      name='GREATER_NUMERIC', index=66, number=115,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_TEXT', index=67, number=60,
+      name='GREATER_TEXT', index=67, number=54,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_TIMESTAMP', index=68, number=61,
+      name='GREATER_TIMESTAMP', index=68, number=55,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_DATE', index=69, number=71,
+      name='GREATER_DATE', index=69, number=70,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TO_QUOTED_TEXT_PARTY', index=70, number=63,
+      name='GREATER_PARTY', index=70, number=92,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TO_TEXT_PARTY', index=71, number=94,
+      name='TO_TEXT_INT64', index=71, number=57,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='FROM_TEXT_PARTY', index=72, number=95,
+      name='TO_TEXT_DECIMAL', index=72, number=58,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='FROM_TEXT_INT64', index=73, number=103,
+      name='TO_TEXT_NUMERIC', index=73, number=116,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='FROM_TEXT_DECIMAL', index=74, number=104,
+      name='TO_TEXT_TEXT', index=74, number=60,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='FROM_TEXT_NUMERIC', index=75, number=117,
+      name='TO_TEXT_TIMESTAMP', index=75, number=61,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SHA256_TEXT', index=76, number=93,
+      name='TO_TEXT_DATE', index=76, number=71,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='DATE_TO_UNIX_DAYS', index=77, number=72,
+      name='TO_QUOTED_TEXT_PARTY', index=77, number=63,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='UNIX_DAYS_TO_DATE', index=78, number=73,
+      name='TO_TEXT_PARTY', index=78, number=94,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TIMESTAMP_TO_UNIX_MICROSECONDS', index=79, number=74,
+      name='FROM_TEXT_PARTY', index=79, number=95,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='UNIX_MICROSECONDS_TO_TIMESTAMP', index=80, number=75,
+      name='FROM_TEXT_INT64', index=80, number=103,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='INT64_TO_DECIMAL', index=81, number=76,
+      name='FROM_TEXT_DECIMAL', index=81, number=104,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='DECIMAL_TO_INT64', index=82, number=77,
+      name='FROM_TEXT_NUMERIC', index=82, number=117,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='INT64_TO_NUMERIC', index=83, number=118,
+      name='TO_TEXT_CONTRACT_ID', index=83, number=136,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='NUMERIC_TO_INT64', index=84, number=119,
+      name='SHA256_TEXT', index=84, number=93,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='IMPLODE_TEXT', index=85, number=78,
+      name='DATE_TO_UNIX_DAYS', index=85, number=72,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_INT64', index=86, number=79,
+      name='UNIX_DAYS_TO_DATE', index=86, number=73,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_DECIMAL', index=87, number=80,
+      name='TIMESTAMP_TO_UNIX_MICROSECONDS', index=87, number=74,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_NUMERIC', index=88, number=120,
+      name='UNIX_MICROSECONDS_TO_TIMESTAMP', index=88, number=75,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_TEXT', index=89, number=81,
+      name='INT64_TO_DECIMAL', index=89, number=76,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_TIMESTAMP', index=90, number=82,
+      name='DECIMAL_TO_INT64', index=90, number=77,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_DATE', index=91, number=83,
+      name='INT64_TO_NUMERIC', index=91, number=118,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_PARTY', index=92, number=84,
+      name='NUMERIC_TO_INT64', index=92, number=119,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_BOOL', index=93, number=85,
+      name='IMPLODE_TEXT', index=93, number=78,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_CONTRACT_ID', index=94, number=86,
+      name='EQUAL_INT64', index=94, number=79,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_LIST', index=95, number=87,
+      name='EQUAL_DECIMAL', index=95, number=80,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL_TYPE_REP', index=96, number=123,
+      name='EQUAL_NUMERIC', index=96, number=120,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='EQUAL', index=97, number=131,
+      name='EQUAL_TEXT', index=97, number=81,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS_EQ', index=98, number=132,
+      name='EQUAL_TIMESTAMP', index=98, number=82,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='LESS', index=99, number=133,
+      name='EQUAL_DATE', index=99, number=83,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER_EQ', index=100, number=134,
+      name='EQUAL_PARTY', index=100, number=84,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GREATER', index=101, number=135,
+      name='EQUAL_BOOL', index=101, number=85,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TRACE', index=102, number=88,
+      name='EQUAL_CONTRACT_ID', index=102, number=86,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='COERCE_CONTRACT_ID', index=103, number=102,
+      name='EQUAL_LIST', index=103, number=87,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_FROM_CODE_POINTS', index=104, number=105,
+      name='EQUAL_TYPE_REP', index=104, number=123,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_TO_CODE_POINTS', index=105, number=106,
+      name='EQUAL', index=105, number=131,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_TO_UPPER', index=106, number=9901,
+      name='LESS_EQ', index=106, number=132,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_TO_LOWER', index=107, number=9902,
+      name='LESS', index=107, number=133,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_SLICE', index=108, number=9903,
+      name='GREATER_EQ', index=108, number=134,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_SLICE_INDEX', index=109, number=9904,
+      name='GREATER', index=109, number=135,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_CONTAINS_ONLY', index=110, number=9905,
+      name='TRACE', index=110, number=88,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_REPLICATE', index=111, number=9906,
+      name='COERCE_CONTRACT_ID', index=111, number=102,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_SPLIT_ON', index=112, number=9907,
+      name='TEXT_FROM_CODE_POINTS', index=112, number=105,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='TEXT_INTERCALATE', index=113, number=9908,
+      name='TEXT_TO_CODE_POINTS', index=113, number=106,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_TO_UPPER', index=114, number=9901,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_TO_LOWER', index=115, number=9902,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_SLICE', index=116, number=9903,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_SLICE_INDEX', index=117, number=9904,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_CONTAINS_ONLY', index=118, number=9905,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_REPLICATE', index=119, number=9906,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_SPLIT_ON', index=120, number=9907,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='TEXT_INTERCALATE', index=121, number=9908,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=11835,
-  serialized_end=13967,
+  serialized_start=12981,
+  serialized_end=15334,
 )
 _sym_db.RegisterEnumDescriptor(_BUILTINFUNCTION)
 
@@ -632,6 +832,10 @@ NUMERIC = 17
 ANY = 18
 TYPE_REP = 19
 GENMAP = 20
+ANY_EXCEPTION = 21
+GENERAL_ERROR = 22
+ARITHMETIC_ERROR = 23
+CONTRACT_ERROR = 24
 CON_UNIT = 0
 CON_FALSE = 1
 CON_TRUE = 2
@@ -671,6 +875,13 @@ GENMAP_SIZE = 130
 EXPLODE_TEXT = 23
 APPEND_TEXT = 24
 ERROR = 25
+ANY_EXCEPTION_MESSAGE = 137
+MAKE_GENERAL_ERROR = 138
+GENERAL_ERROR_MESSAGE = 139
+MAKE_ARITHMETIC_ERROR = 140
+ARITHMETIC_ERROR_MESSAGE = 141
+MAKE_CONTRACT_ERROR = 142
+CONTRACT_ERROR_MESSAGE = 143
 LEQ_INT64 = 33
 LEQ_DECIMAL = 34
 LEQ_NUMERIC = 112
@@ -711,6 +922,7 @@ FROM_TEXT_PARTY = 95
 FROM_TEXT_INT64 = 103
 FROM_TEXT_DECIMAL = 104
 FROM_TEXT_NUMERIC = 117
+TO_TEXT_CONTRACT_ID = 136
 SHA256_TEXT = 93
 DATE_TO_UNIX_DAYS = 72
 UNIX_DAYS_TO_DATE = 73
@@ -758,6 +970,7 @@ _UNIT = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
   ],
   extensions=[
@@ -782,6 +995,7 @@ _PACKAGEREF = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='self', full_name='daml_lf_1.PackageRef.self', index=0,
@@ -789,21 +1003,21 @@ _PACKAGEREF = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='package_id_str', full_name='daml_lf_1.PackageRef.package_id_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='package_id_interned_str', full_name='daml_lf_1.PackageRef.package_id_interned_str', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -817,7 +1031,9 @@ _PACKAGEREF = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.PackageRef.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=59,
   serialized_end=172,
@@ -830,6 +1046,7 @@ _DOTTEDNAME = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='segments', full_name='daml_lf_1.DottedName.segments', index=0,
@@ -837,7 +1054,7 @@ _DOTTEDNAME = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -861,6 +1078,7 @@ _MODULEREF = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='package_ref', full_name='daml_lf_1.ModuleRef.package_ref', index=0,
@@ -868,21 +1086,21 @@ _MODULEREF = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='module_name_dname', full_name='daml_lf_1.ModuleRef.module_name_dname', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='module_name_interned_dname', full_name='daml_lf_1.ModuleRef.module_name_interned_dname', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -896,7 +1114,9 @@ _MODULEREF = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='module_name', full_name='daml_lf_1.ModuleRef.module_name',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=207,
   serialized_end=367,
@@ -909,6 +1129,7 @@ _TYPECONNAME = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='module', full_name='daml_lf_1.TypeConName.module', index=0,
@@ -916,21 +1137,21 @@ _TYPECONNAME = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_dname', full_name='daml_lf_1.TypeConName.name_dname', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_interned_dname', full_name='daml_lf_1.TypeConName.name_interned_dname', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -944,7 +1165,9 @@ _TYPECONNAME = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='name', full_name='daml_lf_1.TypeConName.name',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=370,
   serialized_end=505,
@@ -957,6 +1180,7 @@ _TYPESYNNAME = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='module', full_name='daml_lf_1.TypeSynName.module', index=0,
@@ -964,21 +1188,21 @@ _TYPESYNNAME = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_dname', full_name='daml_lf_1.TypeSynName.name_dname', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_interned_dname', full_name='daml_lf_1.TypeSynName.name_interned_dname', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -992,7 +1216,9 @@ _TYPESYNNAME = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='name', full_name='daml_lf_1.TypeSynName.name',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=508,
   serialized_end=643,
@@ -1005,6 +1231,7 @@ _VALNAME = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='module', full_name='daml_lf_1.ValName.module', index=0,
@@ -1012,21 +1239,21 @@ _VALNAME = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_dname', full_name='daml_lf_1.ValName.name_dname', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_interned_dname', full_name='daml_lf_1.ValName.name_interned_dname', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1050,6 +1277,7 @@ _FIELDWITHTYPE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='field_str', full_name='daml_lf_1.FieldWithType.field_str', index=0,
@@ -1057,21 +1285,21 @@ _FIELDWITHTYPE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_interned_str', full_name='daml_lf_1.FieldWithType.field_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.FieldWithType.type', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1085,7 +1313,9 @@ _FIELDWITHTYPE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='field', full_name='daml_lf_1.FieldWithType.field',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=743,
   serialized_end=849,
@@ -1098,6 +1328,7 @@ _VARWITHTYPE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='var_str', full_name='daml_lf_1.VarWithType.var_str', index=0,
@@ -1105,21 +1336,21 @@ _VARWITHTYPE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_interned_str', full_name='daml_lf_1.VarWithType.var_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.VarWithType.type', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1133,7 +1364,9 @@ _VARWITHTYPE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='var', full_name='daml_lf_1.VarWithType.var',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=851,
   serialized_end=949,
@@ -1146,6 +1379,7 @@ _TYPEVARWITHKIND = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='var_str', full_name='daml_lf_1.TypeVarWithKind.var_str', index=0,
@@ -1153,21 +1387,21 @@ _TYPEVARWITHKIND = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_interned_str', full_name='daml_lf_1.TypeVarWithKind.var_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='kind', full_name='daml_lf_1.TypeVarWithKind.kind', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1181,7 +1415,9 @@ _TYPEVARWITHKIND = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='var', full_name='daml_lf_1.TypeVarWithKind.var',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=951,
   serialized_end=1053,
@@ -1194,6 +1430,7 @@ _FIELDWITHEXPR = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='field_str', full_name='daml_lf_1.FieldWithExpr.field_str', index=0,
@@ -1201,21 +1438,21 @@ _FIELDWITHEXPR = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_interned_str', full_name='daml_lf_1.FieldWithExpr.field_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.FieldWithExpr.expr', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1229,7 +1466,9 @@ _FIELDWITHEXPR = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='field', full_name='daml_lf_1.FieldWithExpr.field',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=1055,
   serialized_end=1161,
@@ -1242,6 +1481,7 @@ _BINDING = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='binder', full_name='daml_lf_1.Binding.binder', index=0,
@@ -1249,14 +1489,14 @@ _BINDING = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='bound', full_name='daml_lf_1.Binding.bound', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1280,6 +1520,7 @@ _KIND_ARROW = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='params', full_name='daml_lf_1.Kind.Arrow.params', index=0,
@@ -1287,14 +1528,14 @@ _KIND_ARROW = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='result', full_name='daml_lf_1.Kind.Arrow.result', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1317,6 +1558,7 @@ _KIND = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='star', full_name='daml_lf_1.Kind.star', index=0,
@@ -1324,21 +1566,21 @@ _KIND = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='arrow', full_name='daml_lf_1.Kind.arrow', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='nat', full_name='daml_lf_1.Kind.nat', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1352,7 +1594,9 @@ _KIND = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.Kind.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=1247,
   serialized_end=1440,
@@ -1365,6 +1609,7 @@ _TYPE_VAR = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='var_str', full_name='daml_lf_1.Type.Var.var_str', index=0,
@@ -1372,21 +1617,21 @@ _TYPE_VAR = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_interned_str', full_name='daml_lf_1.Type.Var.var_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='args', full_name='daml_lf_1.Type.Var.args', index=2,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1400,10 +1645,12 @@ _TYPE_VAR = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='var', full_name='daml_lf_1.Type.Var.var',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=1732,
-  serialized_end=1822,
+  serialized_start=1716,
+  serialized_end=1806,
 )
 
 _TYPE_CON = _descriptor.Descriptor(
@@ -1412,6 +1659,7 @@ _TYPE_CON = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon', full_name='daml_lf_1.Type.Con.tycon', index=0,
@@ -1419,14 +1667,14 @@ _TYPE_CON = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='args', full_name='daml_lf_1.Type.Con.args', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1439,8 +1687,8 @@ _TYPE_CON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1824,
-  serialized_end=1899,
+  serialized_start=1808,
+  serialized_end=1883,
 )
 
 _TYPE_SYN = _descriptor.Descriptor(
@@ -1449,6 +1697,7 @@ _TYPE_SYN = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tysyn', full_name='daml_lf_1.Type.Syn.tysyn', index=0,
@@ -1456,14 +1705,14 @@ _TYPE_SYN = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='args', full_name='daml_lf_1.Type.Syn.args', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1476,8 +1725,8 @@ _TYPE_SYN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1901,
-  serialized_end=1976,
+  serialized_start=1885,
+  serialized_end=1960,
 )
 
 _TYPE_PRIM = _descriptor.Descriptor(
@@ -1486,6 +1735,7 @@ _TYPE_PRIM = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='prim', full_name='daml_lf_1.Type.Prim.prim', index=0,
@@ -1493,14 +1743,14 @@ _TYPE_PRIM = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='args', full_name='daml_lf_1.Type.Prim.args', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1513,8 +1763,8 @@ _TYPE_PRIM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1978,
-  serialized_end=2050,
+  serialized_start=1962,
+  serialized_end=2034,
 )
 
 _TYPE_FUN = _descriptor.Descriptor(
@@ -1523,6 +1773,7 @@ _TYPE_FUN = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='params', full_name='daml_lf_1.Type.Fun.params', index=0,
@@ -1530,14 +1781,14 @@ _TYPE_FUN = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='result', full_name='daml_lf_1.Type.Fun.result', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1550,8 +1801,8 @@ _TYPE_FUN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2052,
-  serialized_end=2123,
+  serialized_start=2036,
+  serialized_end=2107,
 )
 
 _TYPE_FORALL = _descriptor.Descriptor(
@@ -1560,6 +1811,7 @@ _TYPE_FORALL = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='vars', full_name='daml_lf_1.Type.Forall.vars', index=0,
@@ -1567,14 +1819,14 @@ _TYPE_FORALL = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='body', full_name='daml_lf_1.Type.Forall.body', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1587,8 +1839,8 @@ _TYPE_FORALL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2125,
-  serialized_end=2206,
+  serialized_start=2109,
+  serialized_end=2190,
 )
 
 _TYPE_STRUCT = _descriptor.Descriptor(
@@ -1597,6 +1849,7 @@ _TYPE_STRUCT = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='fields', full_name='daml_lf_1.Type.Struct.fields', index=0,
@@ -1604,7 +1857,7 @@ _TYPE_STRUCT = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1617,8 +1870,8 @@ _TYPE_STRUCT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2208,
-  serialized_end=2258,
+  serialized_start=2192,
+  serialized_end=2242,
 )
 
 _TYPE = _descriptor.Descriptor(
@@ -1627,6 +1880,7 @@ _TYPE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='var', full_name='daml_lf_1.Type.var', index=0,
@@ -1634,56 +1888,56 @@ _TYPE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='con', full_name='daml_lf_1.Type.con', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='prim', full_name='daml_lf_1.Type.prim', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='fun', full_name='daml_lf_1.Type.fun', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='forall', full_name='daml_lf_1.Type.forall', index=4,
+      name='forall', full_name='daml_lf_1.Type.forall', index=3,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='struct', full_name='daml_lf_1.Type.struct', index=5,
+      name='struct', full_name='daml_lf_1.Type.struct', index=4,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='nat', full_name='daml_lf_1.Type.nat', index=6,
+      name='nat', full_name='daml_lf_1.Type.nat', index=5,
       number=11, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='syn', full_name='daml_lf_1.Type.syn', index=7,
+      name='syn', full_name='daml_lf_1.Type.syn', index=6,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='interned', full_name='daml_lf_1.Type.interned', index=7,
+      number=13, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1697,10 +1951,12 @@ _TYPE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.Type.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=1443,
-  serialized_end=2289,
+  serialized_end=2279,
 )
 
 
@@ -1710,6 +1966,7 @@ _PRIMLIT = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='int64', full_name='daml_lf_1.PrimLit.int64', index=0,
@@ -1717,63 +1974,63 @@ _PRIMLIT = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='decimal_str', full_name='daml_lf_1.PrimLit.decimal_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='numeric_interned_str', full_name='daml_lf_1.PrimLit.numeric_interned_str', index=2,
       number=10, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='text_str', full_name='daml_lf_1.PrimLit.text_str', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='text_interned_str', full_name='daml_lf_1.PrimLit.text_interned_str', index=4,
       number=11, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='timestamp', full_name='daml_lf_1.PrimLit.timestamp', index=5,
       number=5, type=16, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='party_str', full_name='daml_lf_1.PrimLit.party_str', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='party_interned_str', full_name='daml_lf_1.PrimLit.party_interned_str', index=7,
       number=12, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='date', full_name='daml_lf_1.PrimLit.date', index=8,
       number=8, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1787,10 +2044,12 @@ _PRIMLIT = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.PrimLit.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=2292,
-  serialized_end=2529,
+  serialized_start=2282,
+  serialized_end=2519,
 )
 
 
@@ -1800,6 +2059,7 @@ _LOCATION_RANGE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='start_line', full_name='daml_lf_1.Location.Range.start_line', index=0,
@@ -1807,28 +2067,28 @@ _LOCATION_RANGE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='start_col', full_name='daml_lf_1.Location.Range.start_col', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='end_line', full_name='daml_lf_1.Location.Range.end_line', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='end_col', full_name='daml_lf_1.Location.Range.end_col', index=3,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1841,8 +2101,8 @@ _LOCATION_RANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2624,
-  serialized_end=2705,
+  serialized_start=2614,
+  serialized_end=2695,
 )
 
 _LOCATION = _descriptor.Descriptor(
@@ -1851,6 +2111,7 @@ _LOCATION = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='module', full_name='daml_lf_1.Location.module', index=0,
@@ -1858,14 +2119,14 @@ _LOCATION = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='range', full_name='daml_lf_1.Location.range', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1878,8 +2139,8 @@ _LOCATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2532,
-  serialized_end=2705,
+  serialized_start=2522,
+  serialized_end=2695,
 )
 
 
@@ -1889,6 +2150,7 @@ _EXPR_RECCON = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon', full_name='daml_lf_1.Expr.RecCon.tycon', index=0,
@@ -1896,14 +2158,14 @@ _EXPR_RECCON = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='fields', full_name='daml_lf_1.Expr.RecCon.fields', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1916,8 +2178,8 @@ _EXPR_RECCON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3945,
-  serialized_end=4031,
+  serialized_start=4099,
+  serialized_end=4185,
 )
 
 _EXPR_RECPROJ = _descriptor.Descriptor(
@@ -1926,6 +2188,7 @@ _EXPR_RECPROJ = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon', full_name='daml_lf_1.Expr.RecProj.tycon', index=0,
@@ -1933,28 +2196,28 @@ _EXPR_RECPROJ = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_str', full_name='daml_lf_1.Expr.RecProj.field_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_interned_str', full_name='daml_lf_1.Expr.RecProj.field_interned_str', index=2,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='record', full_name='daml_lf_1.Expr.RecProj.record', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1968,10 +2231,12 @@ _EXPR_RECPROJ = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='field', full_name='daml_lf_1.Expr.RecProj.field',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=4034,
-  serialized_end=4172,
+  serialized_start=4188,
+  serialized_end=4326,
 )
 
 _EXPR_RECUPD = _descriptor.Descriptor(
@@ -1980,6 +2245,7 @@ _EXPR_RECUPD = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon', full_name='daml_lf_1.Expr.RecUpd.tycon', index=0,
@@ -1987,35 +2253,35 @@ _EXPR_RECUPD = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_str', full_name='daml_lf_1.Expr.RecUpd.field_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_interned_str', full_name='daml_lf_1.Expr.RecUpd.field_interned_str', index=2,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='record', full_name='daml_lf_1.Expr.RecUpd.record', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='update', full_name='daml_lf_1.Expr.RecUpd.update', index=4,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2029,10 +2295,12 @@ _EXPR_RECUPD = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='field', full_name='daml_lf_1.Expr.RecUpd.field',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=4175,
-  serialized_end=4345,
+  serialized_start=4329,
+  serialized_end=4499,
 )
 
 _EXPR_VARIANTCON = _descriptor.Descriptor(
@@ -2041,6 +2309,7 @@ _EXPR_VARIANTCON = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon', full_name='daml_lf_1.Expr.VariantCon.tycon', index=0,
@@ -2048,28 +2317,28 @@ _EXPR_VARIANTCON = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant_con_str', full_name='daml_lf_1.Expr.VariantCon.variant_con_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant_con_interned_str', full_name='daml_lf_1.Expr.VariantCon.variant_con_interned_str', index=2,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant_arg', full_name='daml_lf_1.Expr.VariantCon.variant_arg', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2083,10 +2352,12 @@ _EXPR_VARIANTCON = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='variant_con', full_name='daml_lf_1.Expr.VariantCon.variant_con',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=4348,
-  serialized_end=4512,
+  serialized_start=4502,
+  serialized_end=4666,
 )
 
 _EXPR_ENUMCON = _descriptor.Descriptor(
@@ -2095,6 +2366,7 @@ _EXPR_ENUMCON = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon', full_name='daml_lf_1.Expr.EnumCon.tycon', index=0,
@@ -2102,21 +2374,21 @@ _EXPR_ENUMCON = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='enum_con_str', full_name='daml_lf_1.Expr.EnumCon.enum_con_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='enum_con_interned_str', full_name='daml_lf_1.Expr.EnumCon.enum_con_interned_str', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2130,10 +2402,12 @@ _EXPR_ENUMCON = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='enum_con', full_name='daml_lf_1.Expr.EnumCon.enum_con',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=4514,
-  serialized_end=4631,
+  serialized_start=4668,
+  serialized_end=4785,
 )
 
 _EXPR_STRUCTCON = _descriptor.Descriptor(
@@ -2142,6 +2416,7 @@ _EXPR_STRUCTCON = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='fields', full_name='daml_lf_1.Expr.StructCon.fields', index=0,
@@ -2149,7 +2424,7 @@ _EXPR_STRUCTCON = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2162,8 +2437,8 @@ _EXPR_STRUCTCON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4633,
-  serialized_end=4686,
+  serialized_start=4787,
+  serialized_end=4840,
 )
 
 _EXPR_STRUCTPROJ = _descriptor.Descriptor(
@@ -2172,6 +2447,7 @@ _EXPR_STRUCTPROJ = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='field_str', full_name='daml_lf_1.Expr.StructProj.field_str', index=0,
@@ -2179,21 +2455,21 @@ _EXPR_STRUCTPROJ = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_interned_str', full_name='daml_lf_1.Expr.StructProj.field_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='struct', full_name='daml_lf_1.Expr.StructProj.struct', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2207,10 +2483,12 @@ _EXPR_STRUCTPROJ = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='field', full_name='daml_lf_1.Expr.StructProj.field',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=4688,
-  serialized_end=4793,
+  serialized_start=4842,
+  serialized_end=4947,
 )
 
 _EXPR_STRUCTUPD = _descriptor.Descriptor(
@@ -2219,6 +2497,7 @@ _EXPR_STRUCTUPD = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='field_str', full_name='daml_lf_1.Expr.StructUpd.field_str', index=0,
@@ -2226,28 +2505,28 @@ _EXPR_STRUCTUPD = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_interned_str', full_name='daml_lf_1.Expr.StructUpd.field_interned_str', index=1,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='struct', full_name='daml_lf_1.Expr.StructUpd.struct', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='update', full_name='daml_lf_1.Expr.StructUpd.update', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2261,10 +2540,12 @@ _EXPR_STRUCTUPD = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='field', full_name='daml_lf_1.Expr.StructUpd.field',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=4796,
-  serialized_end=4933,
+  serialized_start=4950,
+  serialized_end=5087,
 )
 
 _EXPR_APP = _descriptor.Descriptor(
@@ -2273,6 +2554,7 @@ _EXPR_APP = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='fun', full_name='daml_lf_1.Expr.App.fun', index=0,
@@ -2280,14 +2562,14 @@ _EXPR_APP = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='args', full_name='daml_lf_1.Expr.App.args', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2300,8 +2582,8 @@ _EXPR_APP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4935,
-  serialized_end=5001,
+  serialized_start=5089,
+  serialized_end=5155,
 )
 
 _EXPR_TYAPP = _descriptor.Descriptor(
@@ -2310,6 +2592,7 @@ _EXPR_TYAPP = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.Expr.TyApp.expr', index=0,
@@ -2317,14 +2600,14 @@ _EXPR_TYAPP = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='types', full_name='daml_lf_1.Expr.TyApp.types', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2337,8 +2620,8 @@ _EXPR_TYAPP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5003,
-  serialized_end=5073,
+  serialized_start=5157,
+  serialized_end=5227,
 )
 
 _EXPR_ABS = _descriptor.Descriptor(
@@ -2347,6 +2630,7 @@ _EXPR_ABS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='param', full_name='daml_lf_1.Expr.Abs.param', index=0,
@@ -2354,14 +2638,14 @@ _EXPR_ABS = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='body', full_name='daml_lf_1.Expr.Abs.body', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2374,8 +2658,8 @@ _EXPR_ABS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5075,
-  serialized_end=5150,
+  serialized_start=5229,
+  serialized_end=5304,
 )
 
 _EXPR_TYABS = _descriptor.Descriptor(
@@ -2384,6 +2668,7 @@ _EXPR_TYABS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='param', full_name='daml_lf_1.Expr.TyAbs.param', index=0,
@@ -2391,14 +2676,14 @@ _EXPR_TYABS = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='body', full_name='daml_lf_1.Expr.TyAbs.body', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2411,8 +2696,8 @@ _EXPR_TYABS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5152,
-  serialized_end=5233,
+  serialized_start=5306,
+  serialized_end=5387,
 )
 
 _EXPR_NIL = _descriptor.Descriptor(
@@ -2421,6 +2706,7 @@ _EXPR_NIL = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Expr.Nil.type', index=0,
@@ -2428,7 +2714,7 @@ _EXPR_NIL = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2441,8 +2727,8 @@ _EXPR_NIL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5235,
-  serialized_end=5271,
+  serialized_start=5389,
+  serialized_end=5425,
 )
 
 _EXPR_CONS = _descriptor.Descriptor(
@@ -2451,6 +2737,7 @@ _EXPR_CONS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Expr.Cons.type', index=0,
@@ -2458,21 +2745,21 @@ _EXPR_CONS = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='front', full_name='daml_lf_1.Expr.Cons.front', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='tail', full_name='daml_lf_1.Expr.Cons.tail', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2485,8 +2772,8 @@ _EXPR_CONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5273,
-  serialized_end=5373,
+  serialized_start=5427,
+  serialized_end=5527,
 )
 
 _EXPR_OPTIONALNONE = _descriptor.Descriptor(
@@ -2495,6 +2782,7 @@ _EXPR_OPTIONALNONE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Expr.OptionalNone.type', index=0,
@@ -2502,7 +2790,7 @@ _EXPR_OPTIONALNONE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2515,8 +2803,8 @@ _EXPR_OPTIONALNONE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5375,
-  serialized_end=5420,
+  serialized_start=5529,
+  serialized_end=5574,
 )
 
 _EXPR_OPTIONALSOME = _descriptor.Descriptor(
@@ -2525,6 +2813,7 @@ _EXPR_OPTIONALSOME = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Expr.OptionalSome.type', index=0,
@@ -2532,14 +2821,14 @@ _EXPR_OPTIONALSOME = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='body', full_name='daml_lf_1.Expr.OptionalSome.body', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2552,8 +2841,8 @@ _EXPR_OPTIONALSOME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5422,
-  serialized_end=5498,
+  serialized_start=5576,
+  serialized_end=5652,
 )
 
 _EXPR_TOANY = _descriptor.Descriptor(
@@ -2562,6 +2851,7 @@ _EXPR_TOANY = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Expr.ToAny.type', index=0,
@@ -2569,14 +2859,14 @@ _EXPR_TOANY = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.Expr.ToAny.expr', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2589,8 +2879,8 @@ _EXPR_TOANY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5500,
-  serialized_end=5569,
+  serialized_start=5654,
+  serialized_end=5723,
 )
 
 _EXPR_FROMANY = _descriptor.Descriptor(
@@ -2599,6 +2889,7 @@ _EXPR_FROMANY = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Expr.FromAny.type', index=0,
@@ -2606,14 +2897,14 @@ _EXPR_FROMANY = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.Expr.FromAny.expr', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2626,8 +2917,129 @@ _EXPR_FROMANY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5571,
-  serialized_end=5642,
+  serialized_start=5725,
+  serialized_end=5796,
+)
+
+_EXPR_TOANYEXCEPTION = _descriptor.Descriptor(
+  name='ToAnyException',
+  full_name='daml_lf_1.Expr.ToAnyException',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='type', full_name='daml_lf_1.Expr.ToAnyException.type', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='expr', full_name='daml_lf_1.Expr.ToAnyException.expr', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5798,
+  serialized_end=5876,
+)
+
+_EXPR_FROMANYEXCEPTION = _descriptor.Descriptor(
+  name='FromAnyException',
+  full_name='daml_lf_1.Expr.FromAnyException',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='type', full_name='daml_lf_1.Expr.FromAnyException.type', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='expr', full_name='daml_lf_1.Expr.FromAnyException.expr', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5878,
+  serialized_end=5958,
+)
+
+_EXPR_THROW = _descriptor.Descriptor(
+  name='Throw',
+  full_name='daml_lf_1.Expr.Throw',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='return_type', full_name='daml_lf_1.Expr.Throw.return_type', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='exception_type', full_name='daml_lf_1.Expr.Throw.exception_type', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='exception_expr', full_name='daml_lf_1.Expr.Throw.exception_expr', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5960,
+  serialized_end=6087,
 )
 
 _EXPR = _descriptor.Descriptor(
@@ -2636,6 +3048,7 @@ _EXPR = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='location', full_name='daml_lf_1.Expr.location', index=0,
@@ -2643,214 +3056,235 @@ _EXPR = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_str', full_name='daml_lf_1.Expr.var_str', index=1,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_interned_str', full_name='daml_lf_1.Expr.var_interned_str', index=2,
       number=29, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='val', full_name='daml_lf_1.Expr.val', index=3,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='builtin', full_name='daml_lf_1.Expr.builtin', index=4,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='prim_con', full_name='daml_lf_1.Expr.prim_con', index=5,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='prim_lit', full_name='daml_lf_1.Expr.prim_lit', index=6,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='rec_con', full_name='daml_lf_1.Expr.rec_con', index=7,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='rec_proj', full_name='daml_lf_1.Expr.rec_proj', index=8,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='rec_upd', full_name='daml_lf_1.Expr.rec_upd', index=9,
       number=22, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant_con', full_name='daml_lf_1.Expr.variant_con', index=10,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='enum_con', full_name='daml_lf_1.Expr.enum_con', index=11,
       number=28, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='struct_con', full_name='daml_lf_1.Expr.struct_con', index=12,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='struct_proj', full_name='daml_lf_1.Expr.struct_proj', index=13,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='struct_upd', full_name='daml_lf_1.Expr.struct_upd', index=14,
       number=23, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='app', full_name='daml_lf_1.Expr.app', index=15,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='ty_app', full_name='daml_lf_1.Expr.ty_app', index=16,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='abs', full_name='daml_lf_1.Expr.abs', index=17,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='ty_abs', full_name='daml_lf_1.Expr.ty_abs', index=18,
       number=14, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='case', full_name='daml_lf_1.Expr.case', index=19,
       number=15, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='let', full_name='daml_lf_1.Expr.let', index=20,
       number=16, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='nil', full_name='daml_lf_1.Expr.nil', index=21,
       number=17, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='cons', full_name='daml_lf_1.Expr.cons', index=22,
       number=18, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='update', full_name='daml_lf_1.Expr.update', index=23,
       number=20, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='scenario', full_name='daml_lf_1.Expr.scenario', index=24,
       number=21, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='optional_none', full_name='daml_lf_1.Expr.optional_none', index=25,
       number=26, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='optional_some', full_name='daml_lf_1.Expr.optional_some', index=26,
       number=27, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='to_any', full_name='daml_lf_1.Expr.to_any', index=27,
       number=30, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='from_any', full_name='daml_lf_1.Expr.from_any', index=28,
       number=31, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='type_rep', full_name='daml_lf_1.Expr.type_rep', index=29,
       number=32, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='to_any_exception', full_name='daml_lf_1.Expr.to_any_exception', index=30,
+      number=33, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='from_any_exception', full_name='daml_lf_1.Expr.from_any_exception', index=31,
+      number=34, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='throw', full_name='daml_lf_1.Expr.throw', index=32,
+      number=35, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
-  nested_types=[_EXPR_RECCON, _EXPR_RECPROJ, _EXPR_RECUPD, _EXPR_VARIANTCON, _EXPR_ENUMCON, _EXPR_STRUCTCON, _EXPR_STRUCTPROJ, _EXPR_STRUCTUPD, _EXPR_APP, _EXPR_TYAPP, _EXPR_ABS, _EXPR_TYABS, _EXPR_NIL, _EXPR_CONS, _EXPR_OPTIONALNONE, _EXPR_OPTIONALSOME, _EXPR_TOANY, _EXPR_FROMANY, ],
+  nested_types=[_EXPR_RECCON, _EXPR_RECPROJ, _EXPR_RECUPD, _EXPR_VARIANTCON, _EXPR_ENUMCON, _EXPR_STRUCTCON, _EXPR_STRUCTPROJ, _EXPR_STRUCTUPD, _EXPR_APP, _EXPR_TYAPP, _EXPR_ABS, _EXPR_TYABS, _EXPR_NIL, _EXPR_CONS, _EXPR_OPTIONALNONE, _EXPR_OPTIONALSOME, _EXPR_TOANY, _EXPR_FROMANY, _EXPR_TOANYEXCEPTION, _EXPR_FROMANYEXCEPTION, _EXPR_THROW, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -2860,10 +3294,12 @@ _EXPR = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.Expr.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=2708,
-  serialized_end=5661,
+  serialized_start=2698,
+  serialized_end=6106,
 )
 
 
@@ -2873,6 +3309,7 @@ _CASEALT_VARIANT = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='con', full_name='daml_lf_1.CaseAlt.Variant.con', index=0,
@@ -2880,35 +3317,35 @@ _CASEALT_VARIANT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant_str', full_name='daml_lf_1.CaseAlt.Variant.variant_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant_interned_str', full_name='daml_lf_1.CaseAlt.Variant.variant_interned_str', index=2,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='binder_str', full_name='daml_lf_1.CaseAlt.Variant.binder_str', index=3,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='binder_interned_str', full_name='daml_lf_1.CaseAlt.Variant.binder_interned_str', index=4,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2922,13 +3359,17 @@ _CASEALT_VARIANT = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='variant', full_name='daml_lf_1.CaseAlt.Variant.variant',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
     _descriptor.OneofDescriptor(
       name='binder', full_name='daml_lf_1.CaseAlt.Variant.binder',
-      index=1, containing_type=None, fields=[]),
+      index=1, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=6044,
-  serialized_end=6219,
+  serialized_start=6489,
+  serialized_end=6664,
 )
 
 _CASEALT_ENUM = _descriptor.Descriptor(
@@ -2937,6 +3378,7 @@ _CASEALT_ENUM = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='con', full_name='daml_lf_1.CaseAlt.Enum.con', index=0,
@@ -2944,21 +3386,21 @@ _CASEALT_ENUM = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='constructor_str', full_name='daml_lf_1.CaseAlt.Enum.constructor_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='constructor_interned_str', full_name='daml_lf_1.CaseAlt.Enum.constructor_interned_str', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2972,10 +3414,12 @@ _CASEALT_ENUM = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='constructor', full_name='daml_lf_1.CaseAlt.Enum.constructor',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=6221,
-  serialized_end=6342,
+  serialized_start=6666,
+  serialized_end=6787,
 )
 
 _CASEALT_CONS = _descriptor.Descriptor(
@@ -2984,6 +3428,7 @@ _CASEALT_CONS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='var_head_str', full_name='daml_lf_1.CaseAlt.Cons.var_head_str', index=0,
@@ -2991,28 +3436,28 @@ _CASEALT_CONS = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_head_interned_str', full_name='daml_lf_1.CaseAlt.Cons.var_head_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_tail_str', full_name='daml_lf_1.CaseAlt.Cons.var_tail_str', index=2,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_tail_interned_str', full_name='daml_lf_1.CaseAlt.Cons.var_tail_interned_str', index=3,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3026,13 +3471,17 @@ _CASEALT_CONS = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='var_head', full_name='daml_lf_1.CaseAlt.Cons.var_head',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
     _descriptor.OneofDescriptor(
       name='var_tail', full_name='daml_lf_1.CaseAlt.Cons.var_tail',
-      index=1, containing_type=None, fields=[]),
+      index=1, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=6345,
-  serialized_end=6489,
+  serialized_start=6790,
+  serialized_end=6934,
 )
 
 _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
@@ -3041,6 +3490,7 @@ _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='var_body_str', full_name='daml_lf_1.CaseAlt.OptionalSome.var_body_str', index=0,
@@ -3048,14 +3498,14 @@ _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='var_body_interned_str', full_name='daml_lf_1.CaseAlt.OptionalSome.var_body_interned_str', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3069,10 +3519,12 @@ _CASEALT_OPTIONALSOME = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='var_body', full_name='daml_lf_1.CaseAlt.OptionalSome.var_body',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=6491,
-  serialized_end=6574,
+  serialized_start=6936,
+  serialized_end=7019,
 )
 
 _CASEALT = _descriptor.Descriptor(
@@ -3081,6 +3533,7 @@ _CASEALT = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='default', full_name='daml_lf_1.CaseAlt.default', index=0,
@@ -3088,63 +3541,63 @@ _CASEALT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant', full_name='daml_lf_1.CaseAlt.variant', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='prim_con', full_name='daml_lf_1.CaseAlt.prim_con', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='nil', full_name='daml_lf_1.CaseAlt.nil', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='cons', full_name='daml_lf_1.CaseAlt.cons', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='optional_none', full_name='daml_lf_1.CaseAlt.optional_none', index=5,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='optional_some', full_name='daml_lf_1.CaseAlt.optional_some', index=6,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='enum', full_name='daml_lf_1.CaseAlt.enum', index=7,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='body', full_name='daml_lf_1.CaseAlt.body', index=8,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3158,10 +3611,12 @@ _CASEALT = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.CaseAlt.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=5664,
-  serialized_end=6581,
+  serialized_start=6109,
+  serialized_end=7026,
 )
 
 
@@ -3171,6 +3626,7 @@ _CASE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='scrut', full_name='daml_lf_1.Case.scrut', index=0,
@@ -3178,14 +3634,14 @@ _CASE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='alts', full_name='daml_lf_1.Case.alts', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3198,8 +3654,8 @@ _CASE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6583,
-  serialized_end=6655,
+  serialized_start=7028,
+  serialized_end=7100,
 )
 
 
@@ -3209,6 +3665,7 @@ _BLOCK = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='bindings', full_name='daml_lf_1.Block.bindings', index=0,
@@ -3216,14 +3673,14 @@ _BLOCK = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='body', full_name='daml_lf_1.Block.body', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3236,8 +3693,8 @@ _BLOCK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6657,
-  serialized_end=6733,
+  serialized_start=7102,
+  serialized_end=7178,
 )
 
 
@@ -3247,6 +3704,7 @@ _PURE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Pure.type', index=0,
@@ -3254,14 +3712,14 @@ _PURE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.Pure.expr', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3274,8 +3732,8 @@ _PURE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6735,
-  serialized_end=6803,
+  serialized_start=7180,
+  serialized_end=7248,
 )
 
 
@@ -3285,6 +3743,7 @@ _UPDATE_CREATE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='template', full_name='daml_lf_1.Update.Create.template', index=0,
@@ -3292,14 +3751,14 @@ _UPDATE_CREATE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.Update.Create.expr', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3312,8 +3771,8 @@ _UPDATE_CREATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7221,
-  serialized_end=7302,
+  serialized_start=7775,
+  serialized_end=7856,
 )
 
 _UPDATE_EXERCISE = _descriptor.Descriptor(
@@ -3322,6 +3781,7 @@ _UPDATE_EXERCISE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='template', full_name='daml_lf_1.Update.Exercise.template', index=0,
@@ -3329,42 +3789,35 @@ _UPDATE_EXERCISE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='choice_str', full_name='daml_lf_1.Update.Exercise.choice_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='choice_interned_str', full_name='daml_lf_1.Update.Exercise.choice_interned_str', index=2,
       number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='cid', full_name='daml_lf_1.Update.Exercise.cid', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='actor', full_name='daml_lf_1.Update.Exercise.actor', index=4,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='arg', full_name='daml_lf_1.Update.Exercise.arg', index=5,
+      name='arg', full_name='daml_lf_1.Update.Exercise.arg', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3378,10 +3831,64 @@ _UPDATE_EXERCISE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='choice', full_name='daml_lf_1.Update.Exercise.choice',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=7305,
-  serialized_end=7512,
+  serialized_start=7859,
+  serialized_end=8040,
+)
+
+_UPDATE_EXERCISEBYKEY = _descriptor.Descriptor(
+  name='ExerciseByKey',
+  full_name='daml_lf_1.Update.ExerciseByKey',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='template', full_name='daml_lf_1.Update.ExerciseByKey.template', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='choice_interned_str', full_name='daml_lf_1.Update.ExerciseByKey.choice_interned_str', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='key', full_name='daml_lf_1.Update.ExerciseByKey.key', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='arg', full_name='daml_lf_1.Update.ExerciseByKey.arg', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=8043,
+  serialized_end=8189,
 )
 
 _UPDATE_FETCH = _descriptor.Descriptor(
@@ -3390,6 +3897,7 @@ _UPDATE_FETCH = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='template', full_name='daml_lf_1.Update.Fetch.template', index=0,
@@ -3397,14 +3905,14 @@ _UPDATE_FETCH = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='cid', full_name='daml_lf_1.Update.Fetch.cid', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3417,8 +3925,8 @@ _UPDATE_FETCH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7514,
-  serialized_end=7599,
+  serialized_start=8191,
+  serialized_end=8276,
 )
 
 _UPDATE_EMBEDEXPR = _descriptor.Descriptor(
@@ -3427,6 +3935,7 @@ _UPDATE_EMBEDEXPR = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Update.EmbedExpr.type', index=0,
@@ -3434,14 +3943,14 @@ _UPDATE_EMBEDEXPR = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='body', full_name='daml_lf_1.Update.EmbedExpr.body', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3454,8 +3963,8 @@ _UPDATE_EMBEDEXPR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7601,
-  serialized_end=7674,
+  serialized_start=8278,
+  serialized_end=8351,
 )
 
 _UPDATE_RETRIEVEBYKEY = _descriptor.Descriptor(
@@ -3464,6 +3973,7 @@ _UPDATE_RETRIEVEBYKEY = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='template', full_name='daml_lf_1.Update.RetrieveByKey.template', index=0,
@@ -3471,14 +3981,14 @@ _UPDATE_RETRIEVEBYKEY = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='key', full_name='daml_lf_1.Update.RetrieveByKey.key', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3491,8 +4001,60 @@ _UPDATE_RETRIEVEBYKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7676,
-  serialized_end=7763,
+  serialized_start=8353,
+  serialized_end=8440,
+)
+
+_UPDATE_TRYCATCH = _descriptor.Descriptor(
+  name='TryCatch',
+  full_name='daml_lf_1.Update.TryCatch',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='return_type', full_name='daml_lf_1.Update.TryCatch.return_type', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='try_expr', full_name='daml_lf_1.Update.TryCatch.try_expr', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='var_interned_str', full_name='daml_lf_1.Update.TryCatch.var_interned_str', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='catch_expr', full_name='daml_lf_1.Update.TryCatch.catch_expr', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=8443,
+  serialized_end=8589,
 )
 
 _UPDATE = _descriptor.Descriptor(
@@ -3501,6 +4063,7 @@ _UPDATE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='pure', full_name='daml_lf_1.Update.pure', index=0,
@@ -3508,67 +4071,81 @@ _UPDATE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='block', full_name='daml_lf_1.Update.block', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='create', full_name='daml_lf_1.Update.create', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='exercise', full_name='daml_lf_1.Update.exercise', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='fetch', full_name='daml_lf_1.Update.fetch', index=4,
+      name='exercise_by_key', full_name='daml_lf_1.Update.exercise_by_key', index=4,
+      number=10, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='fetch', full_name='daml_lf_1.Update.fetch', index=5,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='get_time', full_name='daml_lf_1.Update.get_time', index=5,
+      name='get_time', full_name='daml_lf_1.Update.get_time', index=6,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='lookup_by_key', full_name='daml_lf_1.Update.lookup_by_key', index=6,
+      name='lookup_by_key', full_name='daml_lf_1.Update.lookup_by_key', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='fetch_by_key', full_name='daml_lf_1.Update.fetch_by_key', index=7,
+      name='fetch_by_key', full_name='daml_lf_1.Update.fetch_by_key', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='embed_expr', full_name='daml_lf_1.Update.embed_expr', index=8,
+      name='embed_expr', full_name='daml_lf_1.Update.embed_expr', index=9,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='try_catch', full_name='daml_lf_1.Update.try_catch', index=10,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
-  nested_types=[_UPDATE_CREATE, _UPDATE_EXERCISE, _UPDATE_FETCH, _UPDATE_EMBEDEXPR, _UPDATE_RETRIEVEBYKEY, ],
+  nested_types=[_UPDATE_CREATE, _UPDATE_EXERCISE, _UPDATE_EXERCISEBYKEY, _UPDATE_FETCH, _UPDATE_EMBEDEXPR, _UPDATE_RETRIEVEBYKEY, _UPDATE_TRYCATCH, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -3578,10 +4155,12 @@ _UPDATE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.Update.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=6806,
-  serialized_end=7770,
+  serialized_start=7251,
+  serialized_end=8596,
 )
 
 
@@ -3591,6 +4170,7 @@ _SCENARIO_COMMIT = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='party', full_name='daml_lf_1.Scenario.Commit.party', index=0,
@@ -3598,21 +4178,21 @@ _SCENARIO_COMMIT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.Scenario.Commit.expr', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='ret_type', full_name='daml_lf_1.Scenario.Commit.ret_type', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3625,8 +4205,8 @@ _SCENARIO_COMMIT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8110,
-  serialized_end=8216,
+  serialized_start=8936,
+  serialized_end=9042,
 )
 
 _SCENARIO_EMBEDEXPR = _descriptor.Descriptor(
@@ -3635,6 +4215,7 @@ _SCENARIO_EMBEDEXPR = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.Scenario.EmbedExpr.type', index=0,
@@ -3642,14 +4223,14 @@ _SCENARIO_EMBEDEXPR = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='body', full_name='daml_lf_1.Scenario.EmbedExpr.body', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3662,8 +4243,8 @@ _SCENARIO_EMBEDEXPR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7601,
-  serialized_end=7674,
+  serialized_start=8278,
+  serialized_end=8351,
 )
 
 _SCENARIO = _descriptor.Descriptor(
@@ -3672,6 +4253,7 @@ _SCENARIO = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='pure', full_name='daml_lf_1.Scenario.pure', index=0,
@@ -3679,56 +4261,56 @@ _SCENARIO = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='block', full_name='daml_lf_1.Scenario.block', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='commit', full_name='daml_lf_1.Scenario.commit', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='mustFailAt', full_name='daml_lf_1.Scenario.mustFailAt', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='pass', full_name='daml_lf_1.Scenario.pass', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='get_time', full_name='daml_lf_1.Scenario.get_time', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='get_party', full_name='daml_lf_1.Scenario.get_party', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='embed_expr', full_name='daml_lf_1.Scenario.embed_expr', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3742,10 +4324,12 @@ _SCENARIO = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.Scenario.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=7773,
-  serialized_end=8298,
+  serialized_start=8599,
+  serialized_end=9124,
 )
 
 
@@ -3755,6 +4339,7 @@ _TEMPLATECHOICE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='name_str', full_name='daml_lf_1.TemplateChoice.name_str', index=0,
@@ -3762,70 +4347,77 @@ _TEMPLATECHOICE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_interned_str', full_name='daml_lf_1.TemplateChoice.name_interned_str', index=1,
       number=9, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='consuming', full_name='daml_lf_1.TemplateChoice.consuming', index=2,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='controllers', full_name='daml_lf_1.TemplateChoice.controllers', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='arg_binder', full_name='daml_lf_1.TemplateChoice.arg_binder', index=4,
+      name='observers', full_name='daml_lf_1.TemplateChoice.observers', index=4,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='arg_binder', full_name='daml_lf_1.TemplateChoice.arg_binder', index=5,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='ret_type', full_name='daml_lf_1.TemplateChoice.ret_type', index=5,
+      name='ret_type', full_name='daml_lf_1.TemplateChoice.ret_type', index=6,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='update', full_name='daml_lf_1.TemplateChoice.update', index=6,
+      name='update', full_name='daml_lf_1.TemplateChoice.update', index=7,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='self_binder_str', full_name='daml_lf_1.TemplateChoice.self_binder_str', index=7,
+      name='self_binder_str', full_name='daml_lf_1.TemplateChoice.self_binder_str', index=8,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='self_binder_interned_str', full_name='daml_lf_1.TemplateChoice.self_binder_interned_str', index=8,
+      name='self_binder_interned_str', full_name='daml_lf_1.TemplateChoice.self_binder_interned_str', index=9,
       number=10, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='location', full_name='daml_lf_1.TemplateChoice.location', index=9,
+      name='location', full_name='daml_lf_1.TemplateChoice.location', index=10,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3839,13 +4431,17 @@ _TEMPLATECHOICE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='name', full_name='daml_lf_1.TemplateChoice.name',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
     _descriptor.OneofDescriptor(
       name='self_binder', full_name='daml_lf_1.TemplateChoice.self_binder',
-      index=1, containing_type=None, fields=[]),
+      index=1, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=8301,
-  serialized_end=8660,
+  serialized_start=9127,
+  serialized_end=9522,
 )
 
 
@@ -3855,6 +4451,7 @@ _KEYEXPR_PROJECTION = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon', full_name='daml_lf_1.KeyExpr.Projection.tycon', index=0,
@@ -3862,21 +4459,21 @@ _KEYEXPR_PROJECTION = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_str', full_name='daml_lf_1.KeyExpr.Projection.field_str', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_interned_str', full_name='daml_lf_1.KeyExpr.Projection.field_interned_str', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3890,10 +4487,12 @@ _KEYEXPR_PROJECTION = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='field', full_name='daml_lf_1.KeyExpr.Projection.field',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=8774,
-  serialized_end=8882,
+  serialized_start=9636,
+  serialized_end=9744,
 )
 
 _KEYEXPR_PROJECTIONS = _descriptor.Descriptor(
@@ -3902,6 +4501,7 @@ _KEYEXPR_PROJECTIONS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='projections', full_name='daml_lf_1.KeyExpr.Projections.projections', index=0,
@@ -3909,7 +4509,7 @@ _KEYEXPR_PROJECTIONS = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3922,8 +4522,8 @@ _KEYEXPR_PROJECTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8884,
-  serialized_end=8949,
+  serialized_start=9746,
+  serialized_end=9811,
 )
 
 _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
@@ -3932,6 +4532,7 @@ _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='field_str', full_name='daml_lf_1.KeyExpr.RecordField.field_str', index=0,
@@ -3939,21 +4540,21 @@ _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='field_interned_str', full_name='daml_lf_1.KeyExpr.RecordField.field_interned_str', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.KeyExpr.RecordField.expr', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -3967,10 +4568,12 @@ _KEYEXPR_RECORDFIELD = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='field', full_name='daml_lf_1.KeyExpr.RecordField.field',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=8951,
-  serialized_end=9058,
+  serialized_start=9813,
+  serialized_end=9920,
 )
 
 _KEYEXPR_RECORD = _descriptor.Descriptor(
@@ -3979,6 +4582,7 @@ _KEYEXPR_RECORD = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon', full_name='daml_lf_1.KeyExpr.Record.tycon', index=0,
@@ -3986,14 +4590,14 @@ _KEYEXPR_RECORD = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='fields', full_name='daml_lf_1.KeyExpr.Record.fields', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4006,8 +4610,8 @@ _KEYEXPR_RECORD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9060,
-  serialized_end=9152,
+  serialized_start=9922,
+  serialized_end=10014,
 )
 
 _KEYEXPR = _descriptor.Descriptor(
@@ -4016,6 +4620,7 @@ _KEYEXPR = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='projections', full_name='daml_lf_1.KeyExpr.projections', index=0,
@@ -4023,14 +4628,14 @@ _KEYEXPR = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='record', full_name='daml_lf_1.KeyExpr.record', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4044,10 +4649,12 @@ _KEYEXPR = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='Sum', full_name='daml_lf_1.KeyExpr.Sum',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=8663,
-  serialized_end=9159,
+  serialized_start=9525,
+  serialized_end=10021,
 )
 
 
@@ -4057,6 +4664,7 @@ _DEFTEMPLATE_DEFKEY = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.DefTemplate.DefKey.type', index=0,
@@ -4064,28 +4672,28 @@ _DEFTEMPLATE_DEFKEY = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='key', full_name='daml_lf_1.DefTemplate.DefKey.key', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='complex_key', full_name='daml_lf_1.DefTemplate.DefKey.complex_key', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='maintainers', full_name='daml_lf_1.DefTemplate.DefKey.maintainers', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4099,10 +4707,12 @@ _DEFTEMPLATE_DEFKEY = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='key_expr', full_name='daml_lf_1.DefTemplate.DefKey.key_expr',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=9578,
-  serialized_end=9742,
+  serialized_start=10440,
+  serialized_end=10604,
 )
 
 _DEFTEMPLATE = _descriptor.Descriptor(
@@ -4111,6 +4721,7 @@ _DEFTEMPLATE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='tycon_dname', full_name='daml_lf_1.DefTemplate.tycon_dname', index=0,
@@ -4118,77 +4729,77 @@ _DEFTEMPLATE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='tycon_interned_dname', full_name='daml_lf_1.DefTemplate.tycon_interned_dname', index=1,
       number=12, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='param_str', full_name='daml_lf_1.DefTemplate.param_str', index=2,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='param_interned_str', full_name='daml_lf_1.DefTemplate.param_interned_str', index=3,
       number=11, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='precond', full_name='daml_lf_1.DefTemplate.precond', index=4,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='signatories', full_name='daml_lf_1.DefTemplate.signatories', index=5,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='agreement', full_name='daml_lf_1.DefTemplate.agreement', index=6,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='choices', full_name='daml_lf_1.DefTemplate.choices', index=7,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='observers', full_name='daml_lf_1.DefTemplate.observers', index=8,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='location', full_name='daml_lf_1.DefTemplate.location', index=9,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='key', full_name='daml_lf_1.DefTemplate.key', index=10,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4202,13 +4813,63 @@ _DEFTEMPLATE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='tycon', full_name='daml_lf_1.DefTemplate.tycon',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
     _descriptor.OneofDescriptor(
       name='param', full_name='daml_lf_1.DefTemplate.param',
-      index=1, containing_type=None, fields=[]),
+      index=1, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=9162,
-  serialized_end=9766,
+  serialized_start=10024,
+  serialized_end=10628,
+)
+
+
+_DEFEXCEPTION = _descriptor.Descriptor(
+  name='DefException',
+  full_name='daml_lf_1.DefException',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name_interned_dname', full_name='daml_lf_1.DefException.name_interned_dname', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='location', full_name='daml_lf_1.DefException.location', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='message', full_name='daml_lf_1.DefException.message', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=10630,
+  serialized_end=10746,
 )
 
 
@@ -4218,6 +4879,7 @@ _DEFDATATYPE_FIELDS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='fields', full_name='daml_lf_1.DefDataType.Fields.fields', index=0,
@@ -4225,7 +4887,7 @@ _DEFDATATYPE_FIELDS = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4238,8 +4900,8 @@ _DEFDATATYPE_FIELDS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10121,
-  serialized_end=10171,
+  serialized_start=11101,
+  serialized_end=11151,
 )
 
 _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
@@ -4248,6 +4910,7 @@ _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='constructors_str', full_name='daml_lf_1.DefDataType.EnumConstructors.constructors_str', index=0,
@@ -4255,14 +4918,14 @@ _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='constructors_interned_str', full_name='daml_lf_1.DefDataType.EnumConstructors.constructors_interned_str', index=1,
       number=2, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4275,8 +4938,8 @@ _DEFDATATYPE_ENUMCONSTRUCTORS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10173,
-  serialized_end=10252,
+  serialized_start=11153,
+  serialized_end=11232,
 )
 
 _DEFDATATYPE = _descriptor.Descriptor(
@@ -4285,6 +4948,7 @@ _DEFDATATYPE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='name_dname', full_name='daml_lf_1.DefDataType.name_dname', index=0,
@@ -4292,56 +4956,56 @@ _DEFDATATYPE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_interned_dname', full_name='daml_lf_1.DefDataType.name_interned_dname', index=1,
       number=8, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='params', full_name='daml_lf_1.DefDataType.params', index=2,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='record', full_name='daml_lf_1.DefDataType.record', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant', full_name='daml_lf_1.DefDataType.variant', index=4,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='enum', full_name='daml_lf_1.DefDataType.enum', index=5,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='serializable', full_name='daml_lf_1.DefDataType.serializable', index=6,
       number=5, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='location', full_name='daml_lf_1.DefDataType.location', index=7,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4355,13 +5019,17 @@ _DEFDATATYPE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='name', full_name='daml_lf_1.DefDataType.name',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
     _descriptor.OneofDescriptor(
       name='DataCons', full_name='daml_lf_1.DefDataType.DataCons',
-      index=1, containing_type=None, fields=[]),
+      index=1, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=9769,
-  serialized_end=10272,
+  serialized_start=10749,
+  serialized_end=11252,
 )
 
 
@@ -4371,6 +5039,7 @@ _DEFTYPESYN = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='name_dname', full_name='daml_lf_1.DefTypeSyn.name_dname', index=0,
@@ -4378,35 +5047,35 @@ _DEFTYPESYN = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_interned_dname', full_name='daml_lf_1.DefTypeSyn.name_interned_dname', index=1,
       number=8, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='params', full_name='daml_lf_1.DefTypeSyn.params', index=2,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.DefTypeSyn.type', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='location', full_name='daml_lf_1.DefTypeSyn.location', index=4,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4420,10 +5089,12 @@ _DEFTYPESYN = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='name', full_name='daml_lf_1.DefTypeSyn.name',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=10275,
-  serialized_end=10485,
+  serialized_start=11255,
+  serialized_end=11465,
 )
 
 
@@ -4433,6 +5104,7 @@ _DEFVALUE_NAMEWITHTYPE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='name_dname', full_name='daml_lf_1.DefValue.NameWithType.name_dname', index=0,
@@ -4440,21 +5112,21 @@ _DEFVALUE_NAMEWITHTYPE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_interned_dname', full_name='daml_lf_1.DefValue.NameWithType.name_interned_dname', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='type', full_name='daml_lf_1.DefValue.NameWithType.type', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4467,8 +5139,8 @@ _DEFVALUE_NAMEWITHTYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10672,
-  serialized_end=10766,
+  serialized_start=11652,
+  serialized_end=11746,
 )
 
 _DEFVALUE = _descriptor.Descriptor(
@@ -4477,6 +5149,7 @@ _DEFVALUE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='name_with_type', full_name='daml_lf_1.DefValue.name_with_type', index=0,
@@ -4484,35 +5157,35 @@ _DEFVALUE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expr', full_name='daml_lf_1.DefValue.expr', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='no_party_literals', full_name='daml_lf_1.DefValue.no_party_literals', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='is_test', full_name='daml_lf_1.DefValue.is_test', index=3,
       number=4, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='location', full_name='daml_lf_1.DefValue.location', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4525,8 +5198,8 @@ _DEFVALUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10488,
-  serialized_end=10766,
+  serialized_start=11468,
+  serialized_end=11746,
 )
 
 
@@ -4536,6 +5209,7 @@ _FEATUREFLAGS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='forbidPartyLiterals', full_name='daml_lf_1.FeatureFlags.forbidPartyLiterals', index=0,
@@ -4543,21 +5217,21 @@ _FEATUREFLAGS = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='dontDivulgeContractIdsInCreateArguments', full_name='daml_lf_1.FeatureFlags.dontDivulgeContractIdsInCreateArguments', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='dontDiscloseNonConsumingChoicesToObservers', full_name='daml_lf_1.FeatureFlags.dontDiscloseNonConsumingChoicesToObservers', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4570,8 +5244,8 @@ _FEATUREFLAGS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10769,
-  serialized_end=10913,
+  serialized_start=11749,
+  serialized_end=11893,
 )
 
 
@@ -4581,6 +5255,7 @@ _MODULE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='name_dname', full_name='daml_lf_1.Module.name_dname', index=0,
@@ -4588,49 +5263,56 @@ _MODULE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='name_interned_dname', full_name='daml_lf_1.Module.name_interned_dname', index=1,
       number=8, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='flags', full_name='daml_lf_1.Module.flags', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='synonyms', full_name='daml_lf_1.Module.synonyms', index=3,
       number=9, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='data_types', full_name='daml_lf_1.Module.data_types', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='values', full_name='daml_lf_1.Module.values', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='templates', full_name='daml_lf_1.Module.templates', index=6,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='exceptions', full_name='daml_lf_1.Module.exceptions', index=7,
+      number=10, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4644,10 +5326,12 @@ _MODULE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='name', full_name='daml_lf_1.Module.name',
-      index=0, containing_type=None, fields=[]),
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=10916,
-  serialized_end=11225,
+  serialized_start=11896,
+  serialized_end=12250,
 )
 
 
@@ -4657,6 +5341,7 @@ _INTERNEDDOTTEDNAME = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='segments_interned_str', full_name='daml_lf_1.InternedDottedName.segments_interned_str', index=0,
@@ -4664,7 +5349,7 @@ _INTERNEDDOTTEDNAME = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4677,8 +5362,8 @@ _INTERNEDDOTTEDNAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11227,
-  serialized_end=11278,
+  serialized_start=12252,
+  serialized_end=12303,
 )
 
 
@@ -4688,6 +5373,7 @@ _PACKAGEMETADATA = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='name_interned_str', full_name='daml_lf_1.PackageMetadata.name_interned_str', index=0,
@@ -4695,14 +5381,14 @@ _PACKAGEMETADATA = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='version_interned_str', full_name='daml_lf_1.PackageMetadata.version_interned_str', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4715,8 +5401,8 @@ _PACKAGEMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11280,
-  serialized_end=11354,
+  serialized_start=12305,
+  serialized_end=12379,
 )
 
 
@@ -4726,6 +5412,7 @@ _PACKAGE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='modules', full_name='daml_lf_1.Package.modules', index=0,
@@ -4733,28 +5420,35 @@ _PACKAGE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='interned_strings', full_name='daml_lf_1.Package.interned_strings', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='interned_dotted_names', full_name='daml_lf_1.Package.interned_dotted_names', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='metadata', full_name='daml_lf_1.Package.metadata', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='interned_types', full_name='daml_lf_1.Package.interned_types', index=4,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -4767,8 +5461,8 @@ _PACKAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11357,
-  serialized_end=11536,
+  serialized_start=12382,
+  serialized_end=12602,
 )
 
 _PACKAGEREF.fields_by_name['self'].message_type = _UNIT
@@ -4879,7 +5573,6 @@ _TYPE_STRUCT.containing_type = _TYPE
 _TYPE.fields_by_name['var'].message_type = _TYPE_VAR
 _TYPE.fields_by_name['con'].message_type = _TYPE_CON
 _TYPE.fields_by_name['prim'].message_type = _TYPE_PRIM
-_TYPE.fields_by_name['fun'].message_type = _TYPE_FUN
 _TYPE.fields_by_name['forall'].message_type = _TYPE_FORALL
 _TYPE.fields_by_name['struct'].message_type = _TYPE_STRUCT
 _TYPE.fields_by_name['syn'].message_type = _TYPE_SYN
@@ -4893,9 +5586,6 @@ _TYPE.oneofs_by_name['Sum'].fields.append(
   _TYPE.fields_by_name['prim'])
 _TYPE.fields_by_name['prim'].containing_oneof = _TYPE.oneofs_by_name['Sum']
 _TYPE.oneofs_by_name['Sum'].fields.append(
-  _TYPE.fields_by_name['fun'])
-_TYPE.fields_by_name['fun'].containing_oneof = _TYPE.oneofs_by_name['Sum']
-_TYPE.oneofs_by_name['Sum'].fields.append(
   _TYPE.fields_by_name['forall'])
 _TYPE.fields_by_name['forall'].containing_oneof = _TYPE.oneofs_by_name['Sum']
 _TYPE.oneofs_by_name['Sum'].fields.append(
@@ -4907,6 +5597,9 @@ _TYPE.fields_by_name['nat'].containing_oneof = _TYPE.oneofs_by_name['Sum']
 _TYPE.oneofs_by_name['Sum'].fields.append(
   _TYPE.fields_by_name['syn'])
 _TYPE.fields_by_name['syn'].containing_oneof = _TYPE.oneofs_by_name['Sum']
+_TYPE.oneofs_by_name['Sum'].fields.append(
+  _TYPE.fields_by_name['interned'])
+_TYPE.fields_by_name['interned'].containing_oneof = _TYPE.oneofs_by_name['Sum']
 _PRIMLIT.oneofs_by_name['Sum'].fields.append(
   _PRIMLIT.fields_by_name['int64'])
 _PRIMLIT.fields_by_name['int64'].containing_oneof = _PRIMLIT.oneofs_by_name['Sum']
@@ -5024,6 +5717,16 @@ _EXPR_TOANY.containing_type = _EXPR
 _EXPR_FROMANY.fields_by_name['type'].message_type = _TYPE
 _EXPR_FROMANY.fields_by_name['expr'].message_type = _EXPR
 _EXPR_FROMANY.containing_type = _EXPR
+_EXPR_TOANYEXCEPTION.fields_by_name['type'].message_type = _TYPE
+_EXPR_TOANYEXCEPTION.fields_by_name['expr'].message_type = _EXPR
+_EXPR_TOANYEXCEPTION.containing_type = _EXPR
+_EXPR_FROMANYEXCEPTION.fields_by_name['type'].message_type = _TYPE
+_EXPR_FROMANYEXCEPTION.fields_by_name['expr'].message_type = _EXPR
+_EXPR_FROMANYEXCEPTION.containing_type = _EXPR
+_EXPR_THROW.fields_by_name['return_type'].message_type = _TYPE
+_EXPR_THROW.fields_by_name['exception_type'].message_type = _TYPE
+_EXPR_THROW.fields_by_name['exception_expr'].message_type = _EXPR
+_EXPR_THROW.containing_type = _EXPR
 _EXPR.fields_by_name['location'].message_type = _LOCATION
 _EXPR.fields_by_name['val'].message_type = _VALNAME
 _EXPR.fields_by_name['builtin'].enum_type = _BUILTINFUNCTION
@@ -5052,6 +5755,9 @@ _EXPR.fields_by_name['optional_some'].message_type = _EXPR_OPTIONALSOME
 _EXPR.fields_by_name['to_any'].message_type = _EXPR_TOANY
 _EXPR.fields_by_name['from_any'].message_type = _EXPR_FROMANY
 _EXPR.fields_by_name['type_rep'].message_type = _TYPE
+_EXPR.fields_by_name['to_any_exception'].message_type = _EXPR_TOANYEXCEPTION
+_EXPR.fields_by_name['from_any_exception'].message_type = _EXPR_FROMANYEXCEPTION
+_EXPR.fields_by_name['throw'].message_type = _EXPR_THROW
 _EXPR.oneofs_by_name['Sum'].fields.append(
   _EXPR.fields_by_name['var_str'])
 _EXPR.fields_by_name['var_str'].containing_oneof = _EXPR.oneofs_by_name['Sum']
@@ -5139,6 +5845,15 @@ _EXPR.fields_by_name['from_any'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _EXPR.oneofs_by_name['Sum'].fields.append(
   _EXPR.fields_by_name['type_rep'])
 _EXPR.fields_by_name['type_rep'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+_EXPR.oneofs_by_name['Sum'].fields.append(
+  _EXPR.fields_by_name['to_any_exception'])
+_EXPR.fields_by_name['to_any_exception'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+_EXPR.oneofs_by_name['Sum'].fields.append(
+  _EXPR.fields_by_name['from_any_exception'])
+_EXPR.fields_by_name['from_any_exception'].containing_oneof = _EXPR.oneofs_by_name['Sum']
+_EXPR.oneofs_by_name['Sum'].fields.append(
+  _EXPR.fields_by_name['throw'])
+_EXPR.fields_by_name['throw'].containing_oneof = _EXPR.oneofs_by_name['Sum']
 _CASEALT_VARIANT.fields_by_name['con'].message_type = _TYPECONNAME
 _CASEALT_VARIANT.containing_type = _CASEALT
 _CASEALT_VARIANT.oneofs_by_name['variant'].fields.append(
@@ -5225,7 +5940,6 @@ _UPDATE_CREATE.fields_by_name['expr'].message_type = _EXPR
 _UPDATE_CREATE.containing_type = _UPDATE
 _UPDATE_EXERCISE.fields_by_name['template'].message_type = _TYPECONNAME
 _UPDATE_EXERCISE.fields_by_name['cid'].message_type = _EXPR
-_UPDATE_EXERCISE.fields_by_name['actor'].message_type = _EXPR
 _UPDATE_EXERCISE.fields_by_name['arg'].message_type = _EXPR
 _UPDATE_EXERCISE.containing_type = _UPDATE
 _UPDATE_EXERCISE.oneofs_by_name['choice'].fields.append(
@@ -5234,6 +5948,10 @@ _UPDATE_EXERCISE.fields_by_name['choice_str'].containing_oneof = _UPDATE_EXERCIS
 _UPDATE_EXERCISE.oneofs_by_name['choice'].fields.append(
   _UPDATE_EXERCISE.fields_by_name['choice_interned_str'])
 _UPDATE_EXERCISE.fields_by_name['choice_interned_str'].containing_oneof = _UPDATE_EXERCISE.oneofs_by_name['choice']
+_UPDATE_EXERCISEBYKEY.fields_by_name['template'].message_type = _TYPECONNAME
+_UPDATE_EXERCISEBYKEY.fields_by_name['key'].message_type = _EXPR
+_UPDATE_EXERCISEBYKEY.fields_by_name['arg'].message_type = _EXPR
+_UPDATE_EXERCISEBYKEY.containing_type = _UPDATE
 _UPDATE_FETCH.fields_by_name['template'].message_type = _TYPECONNAME
 _UPDATE_FETCH.fields_by_name['cid'].message_type = _EXPR
 _UPDATE_FETCH.containing_type = _UPDATE
@@ -5243,15 +5961,21 @@ _UPDATE_EMBEDEXPR.containing_type = _UPDATE
 _UPDATE_RETRIEVEBYKEY.fields_by_name['template'].message_type = _TYPECONNAME
 _UPDATE_RETRIEVEBYKEY.fields_by_name['key'].message_type = _EXPR
 _UPDATE_RETRIEVEBYKEY.containing_type = _UPDATE
+_UPDATE_TRYCATCH.fields_by_name['return_type'].message_type = _TYPE
+_UPDATE_TRYCATCH.fields_by_name['try_expr'].message_type = _EXPR
+_UPDATE_TRYCATCH.fields_by_name['catch_expr'].message_type = _EXPR
+_UPDATE_TRYCATCH.containing_type = _UPDATE
 _UPDATE.fields_by_name['pure'].message_type = _PURE
 _UPDATE.fields_by_name['block'].message_type = _BLOCK
 _UPDATE.fields_by_name['create'].message_type = _UPDATE_CREATE
 _UPDATE.fields_by_name['exercise'].message_type = _UPDATE_EXERCISE
+_UPDATE.fields_by_name['exercise_by_key'].message_type = _UPDATE_EXERCISEBYKEY
 _UPDATE.fields_by_name['fetch'].message_type = _UPDATE_FETCH
 _UPDATE.fields_by_name['get_time'].message_type = _UNIT
 _UPDATE.fields_by_name['lookup_by_key'].message_type = _UPDATE_RETRIEVEBYKEY
 _UPDATE.fields_by_name['fetch_by_key'].message_type = _UPDATE_RETRIEVEBYKEY
 _UPDATE.fields_by_name['embed_expr'].message_type = _UPDATE_EMBEDEXPR
+_UPDATE.fields_by_name['try_catch'].message_type = _UPDATE_TRYCATCH
 _UPDATE.oneofs_by_name['Sum'].fields.append(
   _UPDATE.fields_by_name['pure'])
 _UPDATE.fields_by_name['pure'].containing_oneof = _UPDATE.oneofs_by_name['Sum']
@@ -5264,6 +5988,9 @@ _UPDATE.fields_by_name['create'].containing_oneof = _UPDATE.oneofs_by_name['Sum'
 _UPDATE.oneofs_by_name['Sum'].fields.append(
   _UPDATE.fields_by_name['exercise'])
 _UPDATE.fields_by_name['exercise'].containing_oneof = _UPDATE.oneofs_by_name['Sum']
+_UPDATE.oneofs_by_name['Sum'].fields.append(
+  _UPDATE.fields_by_name['exercise_by_key'])
+_UPDATE.fields_by_name['exercise_by_key'].containing_oneof = _UPDATE.oneofs_by_name['Sum']
 _UPDATE.oneofs_by_name['Sum'].fields.append(
   _UPDATE.fields_by_name['fetch'])
 _UPDATE.fields_by_name['fetch'].containing_oneof = _UPDATE.oneofs_by_name['Sum']
@@ -5279,6 +6006,9 @@ _UPDATE.fields_by_name['fetch_by_key'].containing_oneof = _UPDATE.oneofs_by_name
 _UPDATE.oneofs_by_name['Sum'].fields.append(
   _UPDATE.fields_by_name['embed_expr'])
 _UPDATE.fields_by_name['embed_expr'].containing_oneof = _UPDATE.oneofs_by_name['Sum']
+_UPDATE.oneofs_by_name['Sum'].fields.append(
+  _UPDATE.fields_by_name['try_catch'])
+_UPDATE.fields_by_name['try_catch'].containing_oneof = _UPDATE.oneofs_by_name['Sum']
 _SCENARIO_COMMIT.fields_by_name['party'].message_type = _EXPR
 _SCENARIO_COMMIT.fields_by_name['expr'].message_type = _EXPR
 _SCENARIO_COMMIT.fields_by_name['ret_type'].message_type = _TYPE
@@ -5319,6 +6049,7 @@ _SCENARIO.oneofs_by_name['Sum'].fields.append(
   _SCENARIO.fields_by_name['embed_expr'])
 _SCENARIO.fields_by_name['embed_expr'].containing_oneof = _SCENARIO.oneofs_by_name['Sum']
 _TEMPLATECHOICE.fields_by_name['controllers'].message_type = _EXPR
+_TEMPLATECHOICE.fields_by_name['observers'].message_type = _EXPR
 _TEMPLATECHOICE.fields_by_name['arg_binder'].message_type = _VARWITHTYPE
 _TEMPLATECHOICE.fields_by_name['ret_type'].message_type = _TYPE
 _TEMPLATECHOICE.fields_by_name['update'].message_type = _EXPR
@@ -5395,6 +6126,8 @@ _DEFTEMPLATE.fields_by_name['param_str'].containing_oneof = _DEFTEMPLATE.oneofs_
 _DEFTEMPLATE.oneofs_by_name['param'].fields.append(
   _DEFTEMPLATE.fields_by_name['param_interned_str'])
 _DEFTEMPLATE.fields_by_name['param_interned_str'].containing_oneof = _DEFTEMPLATE.oneofs_by_name['param']
+_DEFEXCEPTION.fields_by_name['location'].message_type = _LOCATION
+_DEFEXCEPTION.fields_by_name['message'].message_type = _EXPR
 _DEFDATATYPE_FIELDS.fields_by_name['fields'].message_type = _FIELDWITHTYPE
 _DEFDATATYPE_FIELDS.containing_type = _DEFDATATYPE
 _DEFDATATYPE_ENUMCONSTRUCTORS.containing_type = _DEFDATATYPE
@@ -5440,6 +6173,7 @@ _MODULE.fields_by_name['synonyms'].message_type = _DEFTYPESYN
 _MODULE.fields_by_name['data_types'].message_type = _DEFDATATYPE
 _MODULE.fields_by_name['values'].message_type = _DEFVALUE
 _MODULE.fields_by_name['templates'].message_type = _DEFTEMPLATE
+_MODULE.fields_by_name['exceptions'].message_type = _DEFEXCEPTION
 _MODULE.oneofs_by_name['name'].fields.append(
   _MODULE.fields_by_name['name_dname'])
 _MODULE.fields_by_name['name_dname'].containing_oneof = _MODULE.oneofs_by_name['name']
@@ -5449,6 +6183,7 @@ _MODULE.fields_by_name['name_interned_dname'].containing_oneof = _MODULE.oneofs_
 _PACKAGE.fields_by_name['modules'].message_type = _MODULE
 _PACKAGE.fields_by_name['interned_dotted_names'].message_type = _INTERNEDDOTTEDNAME
 _PACKAGE.fields_by_name['metadata'].message_type = _PACKAGEMETADATA
+_PACKAGE.fields_by_name['interned_types'].message_type = _TYPE
 DESCRIPTOR.message_types_by_name['Unit'] = _UNIT
 DESCRIPTOR.message_types_by_name['PackageRef'] = _PACKAGEREF
 DESCRIPTOR.message_types_by_name['DottedName'] = _DOTTEDNAME
@@ -5475,6 +6210,7 @@ DESCRIPTOR.message_types_by_name['Scenario'] = _SCENARIO
 DESCRIPTOR.message_types_by_name['TemplateChoice'] = _TEMPLATECHOICE
 DESCRIPTOR.message_types_by_name['KeyExpr'] = _KEYEXPR
 DESCRIPTOR.message_types_by_name['DefTemplate'] = _DEFTEMPLATE
+DESCRIPTOR.message_types_by_name['DefException'] = _DEFEXCEPTION
 DESCRIPTOR.message_types_by_name['DefDataType'] = _DEFDATATYPE
 DESCRIPTOR.message_types_by_name['DefTypeSyn'] = _DEFTYPESYN
 DESCRIPTOR.message_types_by_name['DefValue'] = _DEFVALUE
@@ -5799,6 +6535,27 @@ Expr = _reflection.GeneratedProtocolMessageType('Expr', (_message.Message,), {
     # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.FromAny)
     })
   ,
+
+  'ToAnyException' : _reflection.GeneratedProtocolMessageType('ToAnyException', (_message.Message,), {
+    'DESCRIPTOR' : _EXPR_TOANYEXCEPTION,
+    '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.ToAnyException)
+    })
+  ,
+
+  'FromAnyException' : _reflection.GeneratedProtocolMessageType('FromAnyException', (_message.Message,), {
+    'DESCRIPTOR' : _EXPR_FROMANYEXCEPTION,
+    '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.FromAnyException)
+    })
+  ,
+
+  'Throw' : _reflection.GeneratedProtocolMessageType('Throw', (_message.Message,), {
+    'DESCRIPTOR' : _EXPR_THROW,
+    '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Expr.Throw)
+    })
+  ,
   'DESCRIPTOR' : _EXPR,
   '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
   # @@protoc_insertion_point(class_scope:daml_lf_1.Expr)
@@ -5822,6 +6579,9 @@ _sym_db.RegisterMessage(Expr.OptionalNone)
 _sym_db.RegisterMessage(Expr.OptionalSome)
 _sym_db.RegisterMessage(Expr.ToAny)
 _sym_db.RegisterMessage(Expr.FromAny)
+_sym_db.RegisterMessage(Expr.ToAnyException)
+_sym_db.RegisterMessage(Expr.FromAnyException)
+_sym_db.RegisterMessage(Expr.Throw)
 
 CaseAlt = _reflection.GeneratedProtocolMessageType('CaseAlt', (_message.Message,), {
 
@@ -5899,6 +6659,13 @@ Update = _reflection.GeneratedProtocolMessageType('Update', (_message.Message,),
     })
   ,
 
+  'ExerciseByKey' : _reflection.GeneratedProtocolMessageType('ExerciseByKey', (_message.Message,), {
+    'DESCRIPTOR' : _UPDATE_EXERCISEBYKEY,
+    '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Update.ExerciseByKey)
+    })
+  ,
+
   'Fetch' : _reflection.GeneratedProtocolMessageType('Fetch', (_message.Message,), {
     'DESCRIPTOR' : _UPDATE_FETCH,
     '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
@@ -5919,6 +6686,13 @@ Update = _reflection.GeneratedProtocolMessageType('Update', (_message.Message,),
     # @@protoc_insertion_point(class_scope:daml_lf_1.Update.RetrieveByKey)
     })
   ,
+
+  'TryCatch' : _reflection.GeneratedProtocolMessageType('TryCatch', (_message.Message,), {
+    'DESCRIPTOR' : _UPDATE_TRYCATCH,
+    '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
+    # @@protoc_insertion_point(class_scope:daml_lf_1.Update.TryCatch)
+    })
+  ,
   'DESCRIPTOR' : _UPDATE,
   '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
   # @@protoc_insertion_point(class_scope:daml_lf_1.Update)
@@ -5926,9 +6700,11 @@ Update = _reflection.GeneratedProtocolMessageType('Update', (_message.Message,),
 _sym_db.RegisterMessage(Update)
 _sym_db.RegisterMessage(Update.Create)
 _sym_db.RegisterMessage(Update.Exercise)
+_sym_db.RegisterMessage(Update.ExerciseByKey)
 _sym_db.RegisterMessage(Update.Fetch)
 _sym_db.RegisterMessage(Update.EmbedExpr)
 _sym_db.RegisterMessage(Update.RetrieveByKey)
+_sym_db.RegisterMessage(Update.TryCatch)
 
 Scenario = _reflection.GeneratedProtocolMessageType('Scenario', (_message.Message,), {
 
@@ -6013,6 +6789,13 @@ DefTemplate = _reflection.GeneratedProtocolMessageType('DefTemplate', (_message.
   })
 _sym_db.RegisterMessage(DefTemplate)
 _sym_db.RegisterMessage(DefTemplate.DefKey)
+
+DefException = _reflection.GeneratedProtocolMessageType('DefException', (_message.Message,), {
+  'DESCRIPTOR' : _DEFEXCEPTION,
+  '__module__' : 'com.daml.daml_lf_dev.daml_lf_1_pb2'
+  # @@protoc_insertion_point(class_scope:daml_lf_1.DefException)
+  })
+_sym_db.RegisterMessage(DefException)
 
 DefDataType = _reflection.GeneratedProtocolMessageType('DefDataType', (_message.Message,), {
 

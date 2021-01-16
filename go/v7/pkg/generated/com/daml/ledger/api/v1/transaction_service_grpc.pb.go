@@ -11,6 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // TransactionServiceClient is the client API for TransactionService service.
@@ -18,25 +19,60 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TransactionServiceClient interface {
 	// Read the ledger's filtered transaction stream for a set of parties.
+	// Lists only creates and archives, but not other events.
+	// Omits all events on transient contracts, i.e., contracts that were both created and archived in the same transaction.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or if the ledger has been pruned before ``begin``
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if ``before`` is not before ``end``)
+	// - ``OUT_OF_RANGE``: if the ``begin`` parameter value is not before the end of the ledger
 	GetTransactions(ctx context.Context, in *GetTransactionsRequest, opts ...grpc.CallOption) (TransactionService_GetTransactionsClient, error)
 	// Read the ledger's complete transaction tree stream for a set of parties.
+	// The stream can be filtered only by parties, but not templates (template filter must be empty).
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or if the ledger has been pruned before ``begin``
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if ``before`` is not before ``end``)
+	// - ``OUT_OF_RANGE``: if the ``begin`` parameter value is not before the end of the ledger
 	GetTransactionTrees(ctx context.Context, in *GetTransactionsRequest, opts ...grpc.CallOption) (TransactionService_GetTransactionTreesClient, error)
 	// Lookup a transaction tree by the ID of an event that appears within it.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
 	// For looking up a transaction instead of a transaction tree, please see GetFlatTransactionByEventId
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
 	GetTransactionByEventId(ctx context.Context, in *GetTransactionByEventIdRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error)
 	// Lookup a transaction tree by its ID.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
 	// For looking up a transaction instead of a transaction tree, please see GetFlatTransactionById
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
 	GetTransactionById(ctx context.Context, in *GetTransactionByIdRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error)
 	// Lookup a transaction by the ID of an event that appears within it.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
 	GetFlatTransactionByEventId(ctx context.Context, in *GetTransactionByEventIdRequest, opts ...grpc.CallOption) (*GetFlatTransactionResponse, error)
 	// Lookup a transaction by its ID.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
 	GetFlatTransactionById(ctx context.Context, in *GetTransactionByIdRequest, opts ...grpc.CallOption) (*GetFlatTransactionResponse, error)
 	// Get the current ledger end.
 	// Subscriptions started with the returned offset will serve transactions created after this RPC was called.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
 	GetLedgerEnd(ctx context.Context, in *GetLedgerEndRequest, opts ...grpc.CallOption) (*GetLedgerEndResponse, error)
 }
 
@@ -48,13 +84,8 @@ func NewTransactionServiceClient(cc grpc.ClientConnInterface) TransactionService
 	return &transactionServiceClient{cc}
 }
 
-var transactionServiceGetTransactionsStreamDesc = &grpc.StreamDesc{
-	StreamName:    "GetTransactions",
-	ServerStreams: true,
-}
-
 func (c *transactionServiceClient) GetTransactions(ctx context.Context, in *GetTransactionsRequest, opts ...grpc.CallOption) (TransactionService_GetTransactionsClient, error) {
-	stream, err := c.cc.NewStream(ctx, transactionServiceGetTransactionsStreamDesc, "/com.daml.ledger.api.v1.TransactionService/GetTransactions", opts...)
+	stream, err := c.cc.NewStream(ctx, &TransactionService_ServiceDesc.Streams[0], "/com.daml.ledger.api.v1.TransactionService/GetTransactions", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -85,13 +116,8 @@ func (x *transactionServiceGetTransactionsClient) Recv() (*GetTransactionsRespon
 	return m, nil
 }
 
-var transactionServiceGetTransactionTreesStreamDesc = &grpc.StreamDesc{
-	StreamName:    "GetTransactionTrees",
-	ServerStreams: true,
-}
-
 func (c *transactionServiceClient) GetTransactionTrees(ctx context.Context, in *GetTransactionsRequest, opts ...grpc.CallOption) (TransactionService_GetTransactionTreesClient, error) {
-	stream, err := c.cc.NewStream(ctx, transactionServiceGetTransactionTreesStreamDesc, "/com.daml.ledger.api.v1.TransactionService/GetTransactionTrees", opts...)
+	stream, err := c.cc.NewStream(ctx, &TransactionService_ServiceDesc.Streams[1], "/com.daml.ledger.api.v1.TransactionService/GetTransactionTrees", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,10 +148,6 @@ func (x *transactionServiceGetTransactionTreesClient) Recv() (*GetTransactionTre
 	return m, nil
 }
 
-var transactionServiceGetTransactionByEventIdStreamDesc = &grpc.StreamDesc{
-	StreamName: "GetTransactionByEventId",
-}
-
 func (c *transactionServiceClient) GetTransactionByEventId(ctx context.Context, in *GetTransactionByEventIdRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error) {
 	out := new(GetTransactionResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.TransactionService/GetTransactionByEventId", in, out, opts...)
@@ -133,10 +155,6 @@ func (c *transactionServiceClient) GetTransactionByEventId(ctx context.Context, 
 		return nil, err
 	}
 	return out, nil
-}
-
-var transactionServiceGetTransactionByIdStreamDesc = &grpc.StreamDesc{
-	StreamName: "GetTransactionById",
 }
 
 func (c *transactionServiceClient) GetTransactionById(ctx context.Context, in *GetTransactionByIdRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error) {
@@ -148,10 +166,6 @@ func (c *transactionServiceClient) GetTransactionById(ctx context.Context, in *G
 	return out, nil
 }
 
-var transactionServiceGetFlatTransactionByEventIdStreamDesc = &grpc.StreamDesc{
-	StreamName: "GetFlatTransactionByEventId",
-}
-
 func (c *transactionServiceClient) GetFlatTransactionByEventId(ctx context.Context, in *GetTransactionByEventIdRequest, opts ...grpc.CallOption) (*GetFlatTransactionResponse, error) {
 	out := new(GetFlatTransactionResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.TransactionService/GetFlatTransactionByEventId", in, out, opts...)
@@ -159,10 +173,6 @@ func (c *transactionServiceClient) GetFlatTransactionByEventId(ctx context.Conte
 		return nil, err
 	}
 	return out, nil
-}
-
-var transactionServiceGetFlatTransactionByIdStreamDesc = &grpc.StreamDesc{
-	StreamName: "GetFlatTransactionById",
 }
 
 func (c *transactionServiceClient) GetFlatTransactionById(ctx context.Context, in *GetTransactionByIdRequest, opts ...grpc.CallOption) (*GetFlatTransactionResponse, error) {
@@ -174,10 +184,6 @@ func (c *transactionServiceClient) GetFlatTransactionById(ctx context.Context, i
 	return out, nil
 }
 
-var transactionServiceGetLedgerEndStreamDesc = &grpc.StreamDesc{
-	StreamName: "GetLedgerEnd",
-}
-
 func (c *transactionServiceClient) GetLedgerEnd(ctx context.Context, in *GetLedgerEndRequest, opts ...grpc.CallOption) (*GetLedgerEndResponse, error) {
 	out := new(GetLedgerEndResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.TransactionService/GetLedgerEnd", in, out, opts...)
@@ -187,153 +193,113 @@ func (c *transactionServiceClient) GetLedgerEnd(ctx context.Context, in *GetLedg
 	return out, nil
 }
 
-// TransactionServiceService is the service API for TransactionService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterTransactionServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type TransactionServiceService struct {
+// TransactionServiceServer is the server API for TransactionService service.
+// All implementations must embed UnimplementedTransactionServiceServer
+// for forward compatibility
+type TransactionServiceServer interface {
 	// Read the ledger's filtered transaction stream for a set of parties.
-	GetTransactions func(*GetTransactionsRequest, TransactionService_GetTransactionsServer) error
+	// Lists only creates and archives, but not other events.
+	// Omits all events on transient contracts, i.e., contracts that were both created and archived in the same transaction.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or if the ledger has been pruned before ``begin``
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if ``before`` is not before ``end``)
+	// - ``OUT_OF_RANGE``: if the ``begin`` parameter value is not before the end of the ledger
+	GetTransactions(*GetTransactionsRequest, TransactionService_GetTransactionsServer) error
 	// Read the ledger's complete transaction tree stream for a set of parties.
-	GetTransactionTrees func(*GetTransactionsRequest, TransactionService_GetTransactionTreesServer) error
+	// The stream can be filtered only by parties, but not templates (template filter must be empty).
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or if the ledger has been pruned before ``begin``
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if ``before`` is not before ``end``)
+	// - ``OUT_OF_RANGE``: if the ``begin`` parameter value is not before the end of the ledger
+	GetTransactionTrees(*GetTransactionsRequest, TransactionService_GetTransactionTreesServer) error
 	// Lookup a transaction tree by the ID of an event that appears within it.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
 	// For looking up a transaction instead of a transaction tree, please see GetFlatTransactionByEventId
-	GetTransactionByEventId func(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionResponse, error)
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
+	GetTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionResponse, error)
 	// Lookup a transaction tree by its ID.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
 	// For looking up a transaction instead of a transaction tree, please see GetFlatTransactionById
-	GetTransactionById func(context.Context, *GetTransactionByIdRequest) (*GetTransactionResponse, error)
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
+	GetTransactionById(context.Context, *GetTransactionByIdRequest) (*GetTransactionResponse, error)
 	// Lookup a transaction by the ID of an event that appears within it.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
-	GetFlatTransactionByEventId func(context.Context, *GetTransactionByEventIdRequest) (*GetFlatTransactionResponse, error)
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
+	GetFlatTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetFlatTransactionResponse, error)
 	// Lookup a transaction by its ID.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
-	GetFlatTransactionById func(context.Context, *GetTransactionByIdRequest) (*GetFlatTransactionResponse, error)
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
+	GetFlatTransactionById(context.Context, *GetTransactionByIdRequest) (*GetFlatTransactionResponse, error)
 	// Get the current ledger end.
 	// Subscriptions started with the returned offset will serve transactions created after this RPC was called.
-	GetLedgerEnd func(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error)
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+	GetLedgerEnd(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error)
+	mustEmbedUnimplementedTransactionServiceServer()
 }
 
-func (s *TransactionServiceService) getTransactions(_ interface{}, stream grpc.ServerStream) error {
-	if s.GetTransactions == nil {
-		return status.Errorf(codes.Unimplemented, "method GetTransactions not implemented")
-	}
+// UnimplementedTransactionServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedTransactionServiceServer struct {
+}
+
+func (UnimplementedTransactionServiceServer) GetTransactions(*GetTransactionsRequest, TransactionService_GetTransactionsServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetTransactions not implemented")
+}
+func (UnimplementedTransactionServiceServer) GetTransactionTrees(*GetTransactionsRequest, TransactionService_GetTransactionTreesServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetTransactionTrees not implemented")
+}
+func (UnimplementedTransactionServiceServer) GetTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionByEventId not implemented")
+}
+func (UnimplementedTransactionServiceServer) GetTransactionById(context.Context, *GetTransactionByIdRequest) (*GetTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionById not implemented")
+}
+func (UnimplementedTransactionServiceServer) GetFlatTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetFlatTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFlatTransactionByEventId not implemented")
+}
+func (UnimplementedTransactionServiceServer) GetFlatTransactionById(context.Context, *GetTransactionByIdRequest) (*GetFlatTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFlatTransactionById not implemented")
+}
+func (UnimplementedTransactionServiceServer) GetLedgerEnd(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLedgerEnd not implemented")
+}
+func (UnimplementedTransactionServiceServer) mustEmbedUnimplementedTransactionServiceServer() {}
+
+// UnsafeTransactionServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to TransactionServiceServer will
+// result in compilation errors.
+type UnsafeTransactionServiceServer interface {
+	mustEmbedUnimplementedTransactionServiceServer()
+}
+
+func RegisterTransactionServiceServer(s grpc.ServiceRegistrar, srv TransactionServiceServer) {
+	s.RegisterService(&TransactionService_ServiceDesc, srv)
+}
+
+func _TransactionService_GetTransactions_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetTransactionsRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return s.GetTransactions(m, &transactionServiceGetTransactionsServer{stream})
-}
-func (s *TransactionServiceService) getTransactionTrees(_ interface{}, stream grpc.ServerStream) error {
-	if s.GetTransactionTrees == nil {
-		return status.Errorf(codes.Unimplemented, "method GetTransactionTrees not implemented")
-	}
-	m := new(GetTransactionsRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return s.GetTransactionTrees(m, &transactionServiceGetTransactionTreesServer{stream})
-}
-func (s *TransactionServiceService) getTransactionByEventId(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.GetTransactionByEventId == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method GetTransactionByEventId not implemented")
-	}
-	in := new(GetTransactionByEventIdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return s.GetTransactionByEventId(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetTransactionByEventId",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.GetTransactionByEventId(ctx, req.(*GetTransactionByEventIdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-func (s *TransactionServiceService) getTransactionById(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.GetTransactionById == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method GetTransactionById not implemented")
-	}
-	in := new(GetTransactionByIdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return s.GetTransactionById(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetTransactionById",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.GetTransactionById(ctx, req.(*GetTransactionByIdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-func (s *TransactionServiceService) getFlatTransactionByEventId(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.GetFlatTransactionByEventId == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method GetFlatTransactionByEventId not implemented")
-	}
-	in := new(GetTransactionByEventIdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return s.GetFlatTransactionByEventId(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetFlatTransactionByEventId",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.GetFlatTransactionByEventId(ctx, req.(*GetTransactionByEventIdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-func (s *TransactionServiceService) getFlatTransactionById(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.GetFlatTransactionById == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method GetFlatTransactionById not implemented")
-	}
-	in := new(GetTransactionByIdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return s.GetFlatTransactionById(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetFlatTransactionById",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.GetFlatTransactionById(ctx, req.(*GetTransactionByIdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-func (s *TransactionServiceService) getLedgerEnd(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.GetLedgerEnd == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method GetLedgerEnd not implemented")
-	}
-	in := new(GetLedgerEndRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return s.GetLedgerEnd(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetLedgerEnd",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.GetLedgerEnd(ctx, req.(*GetLedgerEndRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(TransactionServiceServer).GetTransactions(m, &transactionServiceGetTransactionsServer{stream})
 }
 
 type TransactionService_GetTransactionsServer interface {
@@ -349,6 +315,14 @@ func (x *transactionServiceGetTransactionsServer) Send(m *GetTransactionsRespons
 	return x.ServerStream.SendMsg(m)
 }
 
+func _TransactionService_GetTransactionTrees_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetTransactionsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(TransactionServiceServer).GetTransactionTrees(m, &transactionServiceGetTransactionTreesServer{stream})
+}
+
 type TransactionService_GetTransactionTreesServer interface {
 	Send(*GetTransactionTreesResponse) error
 	grpc.ServerStream
@@ -362,120 +336,135 @@ func (x *transactionServiceGetTransactionTreesServer) Send(m *GetTransactionTree
 	return x.ServerStream.SendMsg(m)
 }
 
-// RegisterTransactionServiceService registers a service implementation with a gRPC server.
-func RegisterTransactionServiceService(s grpc.ServiceRegistrar, srv *TransactionServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.TransactionService",
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "GetTransactionByEventId",
-				Handler:    srv.getTransactionByEventId,
-			},
-			{
-				MethodName: "GetTransactionById",
-				Handler:    srv.getTransactionById,
-			},
-			{
-				MethodName: "GetFlatTransactionByEventId",
-				Handler:    srv.getFlatTransactionByEventId,
-			},
-			{
-				MethodName: "GetFlatTransactionById",
-				Handler:    srv.getFlatTransactionById,
-			},
-			{
-				MethodName: "GetLedgerEnd",
-				Handler:    srv.getLedgerEnd,
-			},
-		},
-		Streams: []grpc.StreamDesc{
-			{
-				StreamName:    "GetTransactions",
-				Handler:       srv.getTransactions,
-				ServerStreams: true,
-			},
-			{
-				StreamName:    "GetTransactionTrees",
-				Handler:       srv.getTransactionTrees,
-				ServerStreams: true,
-			},
-		},
-		Metadata: "com/daml/ledger/api/v1/transaction_service.proto",
+func _TransactionService_GetTransactionByEventId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionByEventIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-
-	s.RegisterService(&sd, nil)
+	if interceptor == nil {
+		return srv.(TransactionServiceServer).GetTransactionByEventId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetTransactionByEventId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TransactionServiceServer).GetTransactionByEventId(ctx, req.(*GetTransactionByEventIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-// NewTransactionServiceService creates a new TransactionServiceService containing the
-// implemented methods of the TransactionService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewTransactionServiceService(s interface{}) *TransactionServiceService {
-	ns := &TransactionServiceService{}
-	if h, ok := s.(interface {
-		GetTransactions(*GetTransactionsRequest, TransactionService_GetTransactionsServer) error
-	}); ok {
-		ns.GetTransactions = h.GetTransactions
+func _TransactionService_GetTransactionById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	if h, ok := s.(interface {
-		GetTransactionTrees(*GetTransactionsRequest, TransactionService_GetTransactionTreesServer) error
-	}); ok {
-		ns.GetTransactionTrees = h.GetTransactionTrees
+	if interceptor == nil {
+		return srv.(TransactionServiceServer).GetTransactionById(ctx, in)
 	}
-	if h, ok := s.(interface {
-		GetTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionResponse, error)
-	}); ok {
-		ns.GetTransactionByEventId = h.GetTransactionByEventId
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetTransactionById",
 	}
-	if h, ok := s.(interface {
-		GetTransactionById(context.Context, *GetTransactionByIdRequest) (*GetTransactionResponse, error)
-	}); ok {
-		ns.GetTransactionById = h.GetTransactionById
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TransactionServiceServer).GetTransactionById(ctx, req.(*GetTransactionByIdRequest))
 	}
-	if h, ok := s.(interface {
-		GetFlatTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetFlatTransactionResponse, error)
-	}); ok {
-		ns.GetFlatTransactionByEventId = h.GetFlatTransactionByEventId
-	}
-	if h, ok := s.(interface {
-		GetFlatTransactionById(context.Context, *GetTransactionByIdRequest) (*GetFlatTransactionResponse, error)
-	}); ok {
-		ns.GetFlatTransactionById = h.GetFlatTransactionById
-	}
-	if h, ok := s.(interface {
-		GetLedgerEnd(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error)
-	}); ok {
-		ns.GetLedgerEnd = h.GetLedgerEnd
-	}
-	return ns
+	return interceptor(ctx, in, info, handler)
 }
 
-// UnstableTransactionServiceService is the service API for TransactionService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableTransactionServiceService interface {
-	// Read the ledger's filtered transaction stream for a set of parties.
-	GetTransactions(*GetTransactionsRequest, TransactionService_GetTransactionsServer) error
-	// Read the ledger's complete transaction tree stream for a set of parties.
-	GetTransactionTrees(*GetTransactionsRequest, TransactionService_GetTransactionTreesServer) error
-	// Lookup a transaction tree by the ID of an event that appears within it.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
-	// For looking up a transaction instead of a transaction tree, please see GetFlatTransactionByEventId
-	GetTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionResponse, error)
-	// Lookup a transaction tree by its ID.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
-	// For looking up a transaction instead of a transaction tree, please see GetFlatTransactionById
-	GetTransactionById(context.Context, *GetTransactionByIdRequest) (*GetTransactionResponse, error)
-	// Lookup a transaction by the ID of an event that appears within it.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
-	GetFlatTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetFlatTransactionResponse, error)
-	// Lookup a transaction by its ID.
-	// Returns ``NOT_FOUND`` if no such transaction exists.
-	GetFlatTransactionById(context.Context, *GetTransactionByIdRequest) (*GetFlatTransactionResponse, error)
-	// Get the current ledger end.
-	// Subscriptions started with the returned offset will serve transactions created after this RPC was called.
-	GetLedgerEnd(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error)
+func _TransactionService_GetFlatTransactionByEventId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionByEventIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TransactionServiceServer).GetFlatTransactionByEventId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetFlatTransactionByEventId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TransactionServiceServer).GetFlatTransactionByEventId(ctx, req.(*GetTransactionByEventIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TransactionService_GetFlatTransactionById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TransactionServiceServer).GetFlatTransactionById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetFlatTransactionById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TransactionServiceServer).GetFlatTransactionById(ctx, req.(*GetTransactionByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TransactionService_GetLedgerEnd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLedgerEndRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TransactionServiceServer).GetLedgerEnd(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.TransactionService/GetLedgerEnd",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TransactionServiceServer).GetLedgerEnd(ctx, req.(*GetLedgerEndRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// TransactionService_ServiceDesc is the grpc.ServiceDesc for TransactionService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var TransactionService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.TransactionService",
+	HandlerType: (*TransactionServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetTransactionByEventId",
+			Handler:    _TransactionService_GetTransactionByEventId_Handler,
+		},
+		{
+			MethodName: "GetTransactionById",
+			Handler:    _TransactionService_GetTransactionById_Handler,
+		},
+		{
+			MethodName: "GetFlatTransactionByEventId",
+			Handler:    _TransactionService_GetFlatTransactionByEventId_Handler,
+		},
+		{
+			MethodName: "GetFlatTransactionById",
+			Handler:    _TransactionService_GetFlatTransactionById_Handler,
+		},
+		{
+			MethodName: "GetLedgerEnd",
+			Handler:    _TransactionService_GetLedgerEnd_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetTransactions",
+			Handler:       _TransactionService_GetTransactions_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetTransactionTrees",
+			Handler:       _TransactionService_GetTransactionTrees_Handler,
+			ServerStreams: true,
+		},
+	},
+	Metadata: "com/daml/ledger/api/v1/transaction_service.proto",
 }

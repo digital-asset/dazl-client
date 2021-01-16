@@ -22,6 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.daml.ledger.api.v1',
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\030PackageServiceOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  create_key=_descriptor._internal_create_key,
   serialized_pb=b'\n,com/daml/ledger/api/v1/package_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a*com/daml/ledger/api/v1/trace_context.proto\"f\n\x13ListPackagesRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext\"+\n\x14ListPackagesResponse\x12\x13\n\x0bpackage_ids\x18\x01 \x03(\t\"x\n\x11GetPackageRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\x12\x12\n\npackage_id\x18\x02 \x01(\t\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext\"x\n\x12GetPackageResponse\x12;\n\rhash_function\x18\x01 \x01(\x0e\x32$.com.daml.ledger.api.v1.HashFunction\x12\x17\n\x0f\x61rchive_payload\x18\x02 \x01(\x0c\x12\x0c\n\x04hash\x18\x03 \x01(\t\"~\n\x17GetPackageStatusRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\x12\x12\n\npackage_id\x18\x02 \x01(\t\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext\"Y\n\x18GetPackageStatusResponse\x12=\n\x0epackage_status\x18\x01 \x01(\x0e\x32%.com.daml.ledger.api.v1.PackageStatus*,\n\rPackageStatus\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0e\n\nREGISTERED\x10\x01*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x32\xd7\x02\n\x0ePackageService\x12i\n\x0cListPackages\x12+.com.daml.ledger.api.v1.ListPackagesRequest\x1a,.com.daml.ledger.api.v1.ListPackagesResponse\x12\x63\n\nGetPackage\x12).com.daml.ledger.api.v1.GetPackageRequest\x1a*.com.daml.ledger.api.v1.GetPackageResponse\x12u\n\x10GetPackageStatus\x12/.com.daml.ledger.api.v1.GetPackageStatusRequest\x1a\x30.com.daml.ledger.api.v1.GetPackageStatusResponseBK\n\x16\x63om.daml.ledger.api.v1B\x18PackageServiceOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,])
@@ -31,15 +32,18 @@ _PACKAGESTATUS = _descriptor.EnumDescriptor(
   full_name='com.daml.ledger.api.v1.PackageStatus',
   filename=None,
   file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
       name='UNKNOWN', index=0, number=0,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
       name='REGISTERED', index=1, number=1,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
@@ -54,11 +58,13 @@ _HASHFUNCTION = _descriptor.EnumDescriptor(
   full_name='com.daml.ledger.api.v1.HashFunction',
   filename=None,
   file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
       name='SHA256', index=0, number=0,
       serialized_options=None,
-      type=None),
+      type=None,
+      create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
@@ -80,6 +86,7 @@ _LISTPACKAGESREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='ledger_id', full_name='com.daml.ledger.api.v1.ListPackagesRequest.ledger_id', index=0,
@@ -87,14 +94,14 @@ _LISTPACKAGESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.ListPackagesRequest.trace_context', index=1,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -118,6 +125,7 @@ _LISTPACKAGESRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='package_ids', full_name='com.daml.ledger.api.v1.ListPackagesResponse.package_ids', index=0,
@@ -125,7 +133,7 @@ _LISTPACKAGESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -149,6 +157,7 @@ _GETPACKAGEREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='ledger_id', full_name='com.daml.ledger.api.v1.GetPackageRequest.ledger_id', index=0,
@@ -156,21 +165,21 @@ _GETPACKAGEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='package_id', full_name='com.daml.ledger.api.v1.GetPackageRequest.package_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.GetPackageRequest.trace_context', index=2,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -194,6 +203,7 @@ _GETPACKAGERESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='hash_function', full_name='com.daml.ledger.api.v1.GetPackageResponse.hash_function', index=0,
@@ -201,21 +211,21 @@ _GETPACKAGERESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='archive_payload', full_name='com.daml.ledger.api.v1.GetPackageResponse.archive_payload', index=1,
       number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=b"",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='hash', full_name='com.daml.ledger.api.v1.GetPackageResponse.hash', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -239,6 +249,7 @@ _GETPACKAGESTATUSREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='ledger_id', full_name='com.daml.ledger.api.v1.GetPackageStatusRequest.ledger_id', index=0,
@@ -246,21 +257,21 @@ _GETPACKAGESTATUSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='package_id', full_name='com.daml.ledger.api.v1.GetPackageStatusRequest.package_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.GetPackageStatusRequest.trace_context', index=2,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -284,6 +295,7 @@ _GETPACKAGESTATUSRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='package_status', full_name='com.daml.ledger.api.v1.GetPackageStatusResponse.package_status', index=0,
@@ -291,7 +303,7 @@ _GETPACKAGESTATUSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -374,6 +386,7 @@ _PACKAGESERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
+  create_key=_descriptor._internal_create_key,
   serialized_start=803,
   serialized_end=1146,
   methods=[
@@ -385,6 +398,7 @@ _PACKAGESERVICE = _descriptor.ServiceDescriptor(
     input_type=_LISTPACKAGESREQUEST,
     output_type=_LISTPACKAGESRESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='GetPackage',
@@ -394,6 +408,7 @@ _PACKAGESERVICE = _descriptor.ServiceDescriptor(
     input_type=_GETPACKAGEREQUEST,
     output_type=_GETPACKAGERESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='GetPackageStatus',
@@ -403,6 +418,7 @@ _PACKAGESERVICE = _descriptor.ServiceDescriptor(
     input_type=_GETPACKAGESTATUSREQUEST,
     output_type=_GETPACKAGESTATUSRESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_PACKAGESERVICE)

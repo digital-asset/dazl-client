@@ -23,6 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.daml.ledger.api.v1',
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B ActiveContractsServiceOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  create_key=_descriptor._internal_create_key,
   serialized_pb=b'\n5com/daml/ledger/api/v1/active_contracts_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/event.proto\x1a/com/daml/ledger/api/v1/transaction_filter.proto\x1a*com/daml/ledger/api/v1/trace_context.proto\"\xb8\x01\n\x19GetActiveContractsRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\x12\x39\n\x06\x66ilter\x18\x02 \x01(\x0b\x32).com.daml.ledger.api.v1.TransactionFilter\x12\x0f\n\x07verbose\x18\x03 \x01(\x08\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext\"\xbf\x01\n\x1aGetActiveContractsResponse\x12\x0e\n\x06offset\x18\x01 \x01(\t\x12\x13\n\x0bworkflow_id\x18\x02 \x01(\t\x12>\n\x10\x61\x63tive_contracts\x18\x03 \x03(\x0b\x32$.com.daml.ledger.api.v1.CreatedEvent\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext2\x97\x01\n\x16\x41\x63tiveContractsService\x12}\n\x12GetActiveContracts\x12\x31.com.daml.ledger.api.v1.GetActiveContractsRequest\x1a\x32.com.daml.ledger.api.v1.GetActiveContractsResponse0\x01\x42S\n\x16\x63om.daml.ledger.api.v1B ActiveContractsServiceOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_event__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__filter__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,])
@@ -36,6 +37,7 @@ _GETACTIVECONTRACTSREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='ledger_id', full_name='com.daml.ledger.api.v1.GetActiveContractsRequest.ledger_id', index=0,
@@ -43,28 +45,28 @@ _GETACTIVECONTRACTSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='filter', full_name='com.daml.ledger.api.v1.GetActiveContractsRequest.filter', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='verbose', full_name='com.daml.ledger.api.v1.GetActiveContractsRequest.verbose', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.GetActiveContractsRequest.trace_context', index=3,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -88,6 +90,7 @@ _GETACTIVECONTRACTSRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='offset', full_name='com.daml.ledger.api.v1.GetActiveContractsResponse.offset', index=0,
@@ -95,28 +98,28 @@ _GETACTIVECONTRACTSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='workflow_id', full_name='com.daml.ledger.api.v1.GetActiveContractsResponse.workflow_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='active_contracts', full_name='com.daml.ledger.api.v1.GetActiveContractsResponse.active_contracts', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.GetActiveContractsResponse.trace_context', index=3,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -164,6 +167,7 @@ _ACTIVECONTRACTSSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
+  create_key=_descriptor._internal_create_key,
   serialized_start=592,
   serialized_end=743,
   methods=[
@@ -175,6 +179,7 @@ _ACTIVECONTRACTSSERVICE = _descriptor.ServiceDescriptor(
     input_type=_GETACTIVECONTRACTSREQUEST,
     output_type=_GETACTIVECONTRACTSRESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_ACTIVECONTRACTSSERVICE)

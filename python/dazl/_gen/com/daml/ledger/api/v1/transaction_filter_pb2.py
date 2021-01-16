@@ -21,6 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.daml.ledger.api.v1',
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\033TransactionFilterOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  create_key=_descriptor._internal_create_key,
   serialized_pb=b'\n/com/daml/ledger/api/v1/transaction_filter.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/value.proto\"\xc4\x01\n\x11TransactionFilter\x12W\n\x10\x66ilters_by_party\x18\x01 \x03(\x0b\x32=.com.daml.ledger.api.v1.TransactionFilter.FiltersByPartyEntry\x1aV\n\x13\x46iltersByPartyEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12.\n\x05value\x18\x02 \x01(\x0b\x32\x1f.com.daml.ledger.api.v1.Filters:\x02\x38\x01\"F\n\x07\x46ilters\x12;\n\tinclusive\x18\x01 \x01(\x0b\x32(.com.daml.ledger.api.v1.InclusiveFilters\"L\n\x10InclusiveFilters\x12\x38\n\x0ctemplate_ids\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.IdentifierBN\n\x16\x63om.daml.ledger.api.v1B\x1bTransactionFilterOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_value__pb2.DESCRIPTOR,])
@@ -34,6 +35,7 @@ _TRANSACTIONFILTER_FILTERSBYPARTYENTRY = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='key', full_name='com.daml.ledger.api.v1.TransactionFilter.FiltersByPartyEntry.key', index=0,
@@ -41,14 +43,14 @@ _TRANSACTIONFILTER_FILTERSBYPARTYENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='value', full_name='com.daml.ledger.api.v1.TransactionFilter.FiltersByPartyEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -71,6 +73,7 @@ _TRANSACTIONFILTER = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='filters_by_party', full_name='com.daml.ledger.api.v1.TransactionFilter.filters_by_party', index=0,
@@ -78,7 +81,7 @@ _TRANSACTIONFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -102,6 +105,7 @@ _FILTERS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='inclusive', full_name='com.daml.ledger.api.v1.Filters.inclusive', index=0,
@@ -109,7 +113,7 @@ _FILTERS = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -133,6 +137,7 @@ _INCLUSIVEFILTERS = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='template_ids', full_name='com.daml.ledger.api.v1.InclusiveFilters.template_ids', index=0,
@@ -140,7 +145,7 @@ _INCLUSIVEFILTERS = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],

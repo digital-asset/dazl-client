@@ -21,6 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.daml.ledger.api.v1',
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\037LedgerIdentityServiceOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  create_key=_descriptor._internal_create_key,
   serialized_pb=b'\n4com/daml/ledger/api/v1/ledger_identity_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a*com/daml/ledger/api/v1/trace_context.proto\"X\n\x18GetLedgerIdentityRequest\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext\".\n\x19GetLedgerIdentityResponse\x12\x11\n\tledger_id\x18\x01 \x01(\t2\x91\x01\n\x15LedgerIdentityService\x12x\n\x11GetLedgerIdentity\x12\x30.com.daml.ledger.api.v1.GetLedgerIdentityRequest\x1a\x31.com.daml.ledger.api.v1.GetLedgerIdentityResponseBR\n\x16\x63om.daml.ledger.api.v1B\x1fLedgerIdentityServiceOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,])
@@ -34,6 +35,7 @@ _GETLEDGERIDENTITYREQUEST = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.GetLedgerIdentityRequest.trace_context', index=0,
@@ -41,7 +43,7 @@ _GETLEDGERIDENTITYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -65,6 +67,7 @@ _GETLEDGERIDENTITYRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='ledger_id', full_name='com.daml.ledger.api.v1.GetLedgerIdentityResponse.ledger_id', index=0,
@@ -72,7 +75,7 @@ _GETLEDGERIDENTITYRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -117,6 +120,7 @@ _LEDGERIDENTITYSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
+  create_key=_descriptor._internal_create_key,
   serialized_start=263,
   serialized_end=408,
   methods=[
@@ -128,6 +132,7 @@ _LEDGERIDENTITYSERVICE = _descriptor.ServiceDescriptor(
     input_type=_GETLEDGERIDENTITYREQUEST,
     output_type=_GETLEDGERIDENTITYRESPONSE,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_LEDGERIDENTITYSERVICE)

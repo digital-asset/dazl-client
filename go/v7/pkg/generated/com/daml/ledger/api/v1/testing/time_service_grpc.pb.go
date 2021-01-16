@@ -12,6 +12,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // TimeServiceClient is the client API for TimeService service.
@@ -23,6 +24,8 @@ type TimeServiceClient interface {
 	// Subsequent responses are emitted whenever the ledger server's time is updated.
 	GetTime(ctx context.Context, in *GetTimeRequest, opts ...grpc.CallOption) (TimeService_GetTimeClient, error)
 	// Allows clients to change the ledger's clock in an atomic get-and-set operation.
+	// Errors:
+	// - ``INVALID_ARGUMENT``: if ``current_time`` is invalid (it MUST precisely match the current time as it's known to the ledger server)
 	SetTime(ctx context.Context, in *SetTimeRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
@@ -34,13 +37,8 @@ func NewTimeServiceClient(cc grpc.ClientConnInterface) TimeServiceClient {
 	return &timeServiceClient{cc}
 }
 
-var timeServiceGetTimeStreamDesc = &grpc.StreamDesc{
-	StreamName:    "GetTime",
-	ServerStreams: true,
-}
-
 func (c *timeServiceClient) GetTime(ctx context.Context, in *GetTimeRequest, opts ...grpc.CallOption) (TimeService_GetTimeClient, error) {
-	stream, err := c.cc.NewStream(ctx, timeServiceGetTimeStreamDesc, "/com.daml.ledger.api.v1.testing.TimeService/GetTime", opts...)
+	stream, err := c.cc.NewStream(ctx, &TimeService_ServiceDesc.Streams[0], "/com.daml.ledger.api.v1.testing.TimeService/GetTime", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -71,10 +69,6 @@ func (x *timeServiceGetTimeClient) Recv() (*GetTimeResponse, error) {
 	return m, nil
 }
 
-var timeServiceSetTimeStreamDesc = &grpc.StreamDesc{
-	StreamName: "SetTime",
-}
-
 func (c *timeServiceClient) SetTime(ctx context.Context, in *SetTimeRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.testing.TimeService/SetTime", in, out, opts...)
@@ -84,48 +78,50 @@ func (c *timeServiceClient) SetTime(ctx context.Context, in *SetTimeRequest, opt
 	return out, nil
 }
 
-// TimeServiceService is the service API for TimeService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterTimeServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type TimeServiceService struct {
+// TimeServiceServer is the server API for TimeService service.
+// All implementations must embed UnimplementedTimeServiceServer
+// for forward compatibility
+type TimeServiceServer interface {
 	// Returns a stream of time updates.
 	// Always returns at least one response, where the first one is the current time.
 	// Subsequent responses are emitted whenever the ledger server's time is updated.
-	GetTime func(*GetTimeRequest, TimeService_GetTimeServer) error
+	GetTime(*GetTimeRequest, TimeService_GetTimeServer) error
 	// Allows clients to change the ledger's clock in an atomic get-and-set operation.
-	SetTime func(context.Context, *SetTimeRequest) (*empty.Empty, error)
+	// Errors:
+	// - ``INVALID_ARGUMENT``: if ``current_time`` is invalid (it MUST precisely match the current time as it's known to the ledger server)
+	SetTime(context.Context, *SetTimeRequest) (*empty.Empty, error)
+	mustEmbedUnimplementedTimeServiceServer()
 }
 
-func (s *TimeServiceService) getTime(_ interface{}, stream grpc.ServerStream) error {
-	if s.GetTime == nil {
-		return status.Errorf(codes.Unimplemented, "method GetTime not implemented")
-	}
+// UnimplementedTimeServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedTimeServiceServer struct {
+}
+
+func (UnimplementedTimeServiceServer) GetTime(*GetTimeRequest, TimeService_GetTimeServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetTime not implemented")
+}
+func (UnimplementedTimeServiceServer) SetTime(context.Context, *SetTimeRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetTime not implemented")
+}
+func (UnimplementedTimeServiceServer) mustEmbedUnimplementedTimeServiceServer() {}
+
+// UnsafeTimeServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to TimeServiceServer will
+// result in compilation errors.
+type UnsafeTimeServiceServer interface {
+	mustEmbedUnimplementedTimeServiceServer()
+}
+
+func RegisterTimeServiceServer(s grpc.ServiceRegistrar, srv TimeServiceServer) {
+	s.RegisterService(&TimeService_ServiceDesc, srv)
+}
+
+func _TimeService_GetTime_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetTimeRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return s.GetTime(m, &timeServiceGetTimeServer{stream})
-}
-func (s *TimeServiceService) setTime(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.SetTime == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method SetTime not implemented")
-	}
-	in := new(SetTimeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return s.SetTime(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/com.daml.ledger.api.v1.testing.TimeService/SetTime",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.SetTime(ctx, req.(*SetTimeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(TimeServiceServer).GetTime(m, &timeServiceGetTimeServer{stream})
 }
 
 type TimeService_GetTimeServer interface {
@@ -141,59 +137,42 @@ func (x *timeServiceGetTimeServer) Send(m *GetTimeResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-// RegisterTimeServiceService registers a service implementation with a gRPC server.
-func RegisterTimeServiceService(s grpc.ServiceRegistrar, srv *TimeServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.testing.TimeService",
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "SetTime",
-				Handler:    srv.setTime,
-			},
-		},
-		Streams: []grpc.StreamDesc{
-			{
-				StreamName:    "GetTime",
-				Handler:       srv.getTime,
-				ServerStreams: true,
-			},
-		},
-		Metadata: "com/daml/ledger/api/v1/testing/time_service.proto",
+func _TimeService_SetTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetTimeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-
-	s.RegisterService(&sd, nil)
+	if interceptor == nil {
+		return srv.(TimeServiceServer).SetTime(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.testing.TimeService/SetTime",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TimeServiceServer).SetTime(ctx, req.(*SetTimeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-// NewTimeServiceService creates a new TimeServiceService containing the
-// implemented methods of the TimeService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewTimeServiceService(s interface{}) *TimeServiceService {
-	ns := &TimeServiceService{}
-	if h, ok := s.(interface {
-		GetTime(*GetTimeRequest, TimeService_GetTimeServer) error
-	}); ok {
-		ns.GetTime = h.GetTime
-	}
-	if h, ok := s.(interface {
-		SetTime(context.Context, *SetTimeRequest) (*empty.Empty, error)
-	}); ok {
-		ns.SetTime = h.SetTime
-	}
-	return ns
-}
-
-// UnstableTimeServiceService is the service API for TimeService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableTimeServiceService interface {
-	// Returns a stream of time updates.
-	// Always returns at least one response, where the first one is the current time.
-	// Subsequent responses are emitted whenever the ledger server's time is updated.
-	GetTime(*GetTimeRequest, TimeService_GetTimeServer) error
-	// Allows clients to change the ledger's clock in an atomic get-and-set operation.
-	SetTime(context.Context, *SetTimeRequest) (*empty.Empty, error)
+// TimeService_ServiceDesc is the grpc.ServiceDesc for TimeService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var TimeService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.testing.TimeService",
+	HandlerType: (*TimeServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SetTime",
+			Handler:    _TimeService_SetTime_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetTime",
+			Handler:       _TimeService_GetTime_Handler,
+			ServerStreams: true,
+		},
+	},
+	Metadata: "com/daml/ledger/api/v1/testing/time_service.proto",
 }

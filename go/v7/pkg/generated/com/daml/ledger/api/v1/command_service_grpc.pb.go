@@ -12,6 +12,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // CommandServiceClient is the client API for CommandService service.
@@ -19,20 +20,44 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommandServiceClient interface {
 	// Submits a single composite command and waits for its result.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
+	// Propagates the gRPC error of failed submissions including Daml interpretation errors.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
 	SubmitAndWait(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Submits a single composite command, waits for its result, and returns the transaction id.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
+	// Propagates the gRPC error of failed submissions including Daml interpretation errors.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
 	SubmitAndWaitForTransactionId(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionIdResponse, error)
 	// Submits a single composite command, waits for its result, and returns the transaction.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
+	// Propagates the gRPC error of failed submissions including Daml interpretation errors.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
 	SubmitAndWaitForTransaction(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionResponse, error)
 	// Submits a single composite command, waits for its result, and returns the transaction tree.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
+	// Propagates the gRPC error of failed submissions including Daml interpretation errors.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
 	SubmitAndWaitForTransactionTree(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionTreeResponse, error)
 }
 
@@ -44,10 +69,6 @@ func NewCommandServiceClient(cc grpc.ClientConnInterface) CommandServiceClient {
 	return &commandServiceClient{cc}
 }
 
-var commandServiceSubmitAndWaitStreamDesc = &grpc.StreamDesc{
-	StreamName: "SubmitAndWait",
-}
-
 func (c *commandServiceClient) SubmitAndWait(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.CommandService/SubmitAndWait", in, out, opts...)
@@ -55,10 +76,6 @@ func (c *commandServiceClient) SubmitAndWait(ctx context.Context, in *SubmitAndW
 		return nil, err
 	}
 	return out, nil
-}
-
-var commandServiceSubmitAndWaitForTransactionIdStreamDesc = &grpc.StreamDesc{
-	StreamName: "SubmitAndWaitForTransactionId",
 }
 
 func (c *commandServiceClient) SubmitAndWaitForTransactionId(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionIdResponse, error) {
@@ -70,10 +87,6 @@ func (c *commandServiceClient) SubmitAndWaitForTransactionId(ctx context.Context
 	return out, nil
 }
 
-var commandServiceSubmitAndWaitForTransactionStreamDesc = &grpc.StreamDesc{
-	StreamName: "SubmitAndWaitForTransaction",
-}
-
 func (c *commandServiceClient) SubmitAndWaitForTransaction(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionResponse, error) {
 	out := new(SubmitAndWaitForTransactionResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.CommandService/SubmitAndWaitForTransaction", in, out, opts...)
@@ -81,10 +94,6 @@ func (c *commandServiceClient) SubmitAndWaitForTransaction(ctx context.Context, 
 		return nil, err
 	}
 	return out, nil
-}
-
-var commandServiceSubmitAndWaitForTransactionTreeStreamDesc = &grpc.StreamDesc{
-	StreamName: "SubmitAndWaitForTransactionTree",
 }
 
 func (c *commandServiceClient) SubmitAndWaitForTransactionTree(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionTreeResponse, error) {
@@ -96,189 +105,178 @@ func (c *commandServiceClient) SubmitAndWaitForTransactionTree(ctx context.Conte
 	return out, nil
 }
 
-// CommandServiceService is the service API for CommandService service.
-// Fields should be assigned to their respective handler implementations only before
-// RegisterCommandServiceService is called.  Any unassigned fields will result in the
-// handler for that method returning an Unimplemented error.
-type CommandServiceService struct {
+// CommandServiceServer is the server API for CommandService service.
+// All implementations must embed UnimplementedCommandServiceServer
+// for forward compatibility
+type CommandServiceServer interface {
 	// Submits a single composite command and waits for its result.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
-	SubmitAndWait func(context.Context, *SubmitAndWaitRequest) (*empty.Empty, error)
+	// Propagates the gRPC error of failed submissions including Daml interpretation errors.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+	SubmitAndWait(context.Context, *SubmitAndWaitRequest) (*empty.Empty, error)
 	// Submits a single composite command, waits for its result, and returns the transaction id.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
-	SubmitAndWaitForTransactionId func(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionIdResponse, error)
+	// Propagates the gRPC error of failed submissions including Daml interpretation errors.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+	SubmitAndWaitForTransactionId(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionIdResponse, error)
 	// Submits a single composite command, waits for its result, and returns the transaction.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
-	SubmitAndWaitForTransaction func(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionResponse, error)
+	// Propagates the gRPC error of failed submissions including Daml interpretation errors.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+	SubmitAndWaitForTransaction(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionResponse, error)
 	// Submits a single composite command, waits for its result, and returns the transaction tree.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
-	SubmitAndWaitForTransactionTree func(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionTreeResponse, error)
+	// Propagates the gRPC error of failed submissions including Daml interpretation errors.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``NOT_FOUND``: if the request does not include a valid ledger id
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+	// - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+	// - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+	SubmitAndWaitForTransactionTree(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionTreeResponse, error)
+	mustEmbedUnimplementedCommandServiceServer()
 }
 
-func (s *CommandServiceService) submitAndWait(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.SubmitAndWait == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWait not implemented")
-	}
+// UnimplementedCommandServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedCommandServiceServer struct {
+}
+
+func (UnimplementedCommandServiceServer) SubmitAndWait(context.Context, *SubmitAndWaitRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWait not implemented")
+}
+func (UnimplementedCommandServiceServer) SubmitAndWaitForTransactionId(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForTransactionId not implemented")
+}
+func (UnimplementedCommandServiceServer) SubmitAndWaitForTransaction(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForTransaction not implemented")
+}
+func (UnimplementedCommandServiceServer) SubmitAndWaitForTransactionTree(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionTreeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForTransactionTree not implemented")
+}
+func (UnimplementedCommandServiceServer) mustEmbedUnimplementedCommandServiceServer() {}
+
+// UnsafeCommandServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CommandServiceServer will
+// result in compilation errors.
+type UnsafeCommandServiceServer interface {
+	mustEmbedUnimplementedCommandServiceServer()
+}
+
+func RegisterCommandServiceServer(s grpc.ServiceRegistrar, srv CommandServiceServer) {
+	s.RegisterService(&CommandService_ServiceDesc, srv)
+}
+
+func _CommandService_SubmitAndWait_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SubmitAndWaitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return s.SubmitAndWait(ctx, in)
+		return srv.(CommandServiceServer).SubmitAndWait(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
-		Server:     s,
+		Server:     srv,
 		FullMethod: "/com.daml.ledger.api.v1.CommandService/SubmitAndWait",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.SubmitAndWait(ctx, req.(*SubmitAndWaitRequest))
+		return srv.(CommandServiceServer).SubmitAndWait(ctx, req.(*SubmitAndWaitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
-func (s *CommandServiceService) submitAndWaitForTransactionId(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.SubmitAndWaitForTransactionId == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForTransactionId not implemented")
-	}
+
+func _CommandService_SubmitAndWaitForTransactionId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SubmitAndWaitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return s.SubmitAndWaitForTransactionId(ctx, in)
+		return srv.(CommandServiceServer).SubmitAndWaitForTransactionId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
-		Server:     s,
+		Server:     srv,
 		FullMethod: "/com.daml.ledger.api.v1.CommandService/SubmitAndWaitForTransactionId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.SubmitAndWaitForTransactionId(ctx, req.(*SubmitAndWaitRequest))
+		return srv.(CommandServiceServer).SubmitAndWaitForTransactionId(ctx, req.(*SubmitAndWaitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
-func (s *CommandServiceService) submitAndWaitForTransaction(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.SubmitAndWaitForTransaction == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForTransaction not implemented")
-	}
+
+func _CommandService_SubmitAndWaitForTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SubmitAndWaitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return s.SubmitAndWaitForTransaction(ctx, in)
+		return srv.(CommandServiceServer).SubmitAndWaitForTransaction(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
-		Server:     s,
+		Server:     srv,
 		FullMethod: "/com.daml.ledger.api.v1.CommandService/SubmitAndWaitForTransaction",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.SubmitAndWaitForTransaction(ctx, req.(*SubmitAndWaitRequest))
+		return srv.(CommandServiceServer).SubmitAndWaitForTransaction(ctx, req.(*SubmitAndWaitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
-func (s *CommandServiceService) submitAndWaitForTransactionTree(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	if s.SubmitAndWaitForTransactionTree == nil {
-		return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForTransactionTree not implemented")
-	}
+
+func _CommandService_SubmitAndWaitForTransactionTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SubmitAndWaitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return s.SubmitAndWaitForTransactionTree(ctx, in)
+		return srv.(CommandServiceServer).SubmitAndWaitForTransactionTree(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
-		Server:     s,
+		Server:     srv,
 		FullMethod: "/com.daml.ledger.api.v1.CommandService/SubmitAndWaitForTransactionTree",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.SubmitAndWaitForTransactionTree(ctx, req.(*SubmitAndWaitRequest))
+		return srv.(CommandServiceServer).SubmitAndWaitForTransactionTree(ctx, req.(*SubmitAndWaitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// RegisterCommandServiceService registers a service implementation with a gRPC server.
-func RegisterCommandServiceService(s grpc.ServiceRegistrar, srv *CommandServiceService) {
-	sd := grpc.ServiceDesc{
-		ServiceName: "com.daml.ledger.api.v1.CommandService",
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "SubmitAndWait",
-				Handler:    srv.submitAndWait,
-			},
-			{
-				MethodName: "SubmitAndWaitForTransactionId",
-				Handler:    srv.submitAndWaitForTransactionId,
-			},
-			{
-				MethodName: "SubmitAndWaitForTransaction",
-				Handler:    srv.submitAndWaitForTransaction,
-			},
-			{
-				MethodName: "SubmitAndWaitForTransactionTree",
-				Handler:    srv.submitAndWaitForTransactionTree,
-			},
+// CommandService_ServiceDesc is the grpc.ServiceDesc for CommandService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var CommandService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "com.daml.ledger.api.v1.CommandService",
+	HandlerType: (*CommandServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SubmitAndWait",
+			Handler:    _CommandService_SubmitAndWait_Handler,
 		},
-		Streams:  []grpc.StreamDesc{},
-		Metadata: "com/daml/ledger/api/v1/command_service.proto",
-	}
-
-	s.RegisterService(&sd, nil)
-}
-
-// NewCommandServiceService creates a new CommandServiceService containing the
-// implemented methods of the CommandService service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewCommandServiceService(s interface{}) *CommandServiceService {
-	ns := &CommandServiceService{}
-	if h, ok := s.(interface {
-		SubmitAndWait(context.Context, *SubmitAndWaitRequest) (*empty.Empty, error)
-	}); ok {
-		ns.SubmitAndWait = h.SubmitAndWait
-	}
-	if h, ok := s.(interface {
-		SubmitAndWaitForTransactionId(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionIdResponse, error)
-	}); ok {
-		ns.SubmitAndWaitForTransactionId = h.SubmitAndWaitForTransactionId
-	}
-	if h, ok := s.(interface {
-		SubmitAndWaitForTransaction(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionResponse, error)
-	}); ok {
-		ns.SubmitAndWaitForTransaction = h.SubmitAndWaitForTransaction
-	}
-	if h, ok := s.(interface {
-		SubmitAndWaitForTransactionTree(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionTreeResponse, error)
-	}); ok {
-		ns.SubmitAndWaitForTransactionTree = h.SubmitAndWaitForTransactionTree
-	}
-	return ns
-}
-
-// UnstableCommandServiceService is the service API for CommandService service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableCommandServiceService interface {
-	// Submits a single composite command and waits for its result.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
-	SubmitAndWait(context.Context, *SubmitAndWaitRequest) (*empty.Empty, error)
-	// Submits a single composite command, waits for its result, and returns the transaction id.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
-	SubmitAndWaitForTransactionId(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionIdResponse, error)
-	// Submits a single composite command, waits for its result, and returns the transaction.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
-	SubmitAndWaitForTransaction(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionResponse, error)
-	// Submits a single composite command, waits for its result, and returns the transaction tree.
-	// Returns ``RESOURCE_EXHAUSTED`` if the number of in-flight commands reached the maximum (if a limit is configured).
-	// Propagates the gRPC error of failed submissions including DAML interpretation errors.
-	SubmitAndWaitForTransactionTree(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionTreeResponse, error)
+		{
+			MethodName: "SubmitAndWaitForTransactionId",
+			Handler:    _CommandService_SubmitAndWaitForTransactionId_Handler,
+		},
+		{
+			MethodName: "SubmitAndWaitForTransaction",
+			Handler:    _CommandService_SubmitAndWaitForTransaction_Handler,
+		},
+		{
+			MethodName: "SubmitAndWaitForTransactionTree",
+			Handler:    _CommandService_SubmitAndWaitForTransactionTree_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "com/daml/ledger/api/v1/command_service.proto",
 }
