@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 cache_dir=.cache
-daml_proto_version=1.3.0
+daml_proto_version=1.9.0-snapshot.20210113.6060.0.9ed787cb
 
 download_protos_zip := $(cache_dir)/download/protobufs-$(daml_proto_version).zip
 download_status_proto := $(cache_dir)/download/google/rpc/status.proto
@@ -27,8 +27,8 @@ $(download_status_proto):
 
 $(proto_manifest): $(download_protos_zip) $(download_status_proto)
 	_build/unpack.py \
-	  -i $(download_protos_zip):protos-$(daml_proto_version) \
-	  -i $(download_status_proto):$(cache_dir)/download \
+	  -i $(download_protos_zip) \
+	  -i $(download_status_proto) \
 	  -o $(@D) -m $@
 
 
