@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 cache_dir=.cache
-daml_proto_version=1.9.0-snapshot.20210113.6060.0.9ed787cb
+daml_proto_version=1.9.0
 
 download_protos_zip := $(cache_dir)/download/protobufs-$(daml_proto_version).zip
 download_status_proto := $(cache_dir)/download/google/rpc/status.proto
