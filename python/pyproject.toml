@@ -28,9 +28,10 @@ toposort = "*"
 typing_extensions = { version = "*", python = "<3.8.0" }
 
 [tool.poetry.dev-dependencies]
+black = "^20.8b1"
 flask = "^1.0"
 grpcio-tools = ">=1.32.0"
-isort = "^5.3.0"
+isort = "^5"
 mypy = "*"
 pympler = "*"
 pytest = "^5"
@@ -40,7 +41,6 @@ setuptools = "==40.8.0"
 sphinx = "*"
 sphinx-markdown-builder = "^0.5.1"
 watchdog = "*"
-yapf = "*"
 
 [tool.poetry.extras]
 oauth = ["google-auth", "oauthlib"]
@@ -50,3 +50,6 @@ server = ["aiohttp"]
 
 [tool.poetry.scripts]
 dazl = 'dazl.cli:main'
+
+[tool.black]
+line-length = 100
