@@ -5,63 +5,24 @@
 This module contains the logic for fuzzy lookups (specifically, template references) are performed
 in dazl.
 """
-
 from typing import Any, Iterator, Tuple
+import warnings
+
+from ..damlast.daml_lf_1 import PackageRef
 
 
-def validate_template(template: Any) -> "Tuple[str, str]":
-    """
-    Return a module and type name component from something that can be interpreted as a template.
-
-    :param template:
-        Any object that can be interpreted as an identifier for a template.
-    :return:
-        A tuple of package ID and ``Module.Name:EntityName`` (the package-scoped identifier for the
-        type). The special value ``'*'`` is used if either the package ID, module name, or both
-        should be wildcarded.
-    :raise ValueError:
-        If the object could not be interpreted as a thing referring to a template.
-    """
-    from ..damlast.daml_lf_1 import TypeConName
-    from ..damlast.util import package_local_name, package_ref
-    from .types import RecordType, TypeReference, UnresolvedTypeReference
+def validate_template(template: "Any") -> "Tuple[PackageRef, str]":
+    warnings.warn(
+        "validate_template is deprecated; use dazl.damlast.lookup.validate_template",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    from ..damlast.lookup import validate_template as validate_template_new
 
     if template == "*" or template is None:
         return "*", "*"
 
-    if isinstance(template, UnresolvedTypeReference):
-        template = template.name
-
-    if isinstance(template, str):
-        components = template.split(":")
-        if len(components) == 3:
-            # correct number of colons for a fully-qualified name
-            pkgid, m, e = components
-            return pkgid, f"{m}:{e}"
-
-        elif len(components) == 2:
-            # one colon, so assume the package ID is unspecified UNLESS the second component is a
-            # wildcard; then we assume the wildcard means any module name and entity name
-            m, e = components
-            return ("*", f"{m}:{e}") if e != "*" else (m, "*")
-
-        elif len(components) == 1:
-            # no colon whatsoever
-            # TODO: Add a deprecation warning in the appropriate place
-            m, _, e = components[0].rpartition(".")
-            return "*", f"{m}:{e}"
-            # raise ValueError('string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY')
-
-    elif isinstance(template, RecordType):
-        template = template.name
-
-    if isinstance(template, TypeReference):
-        template = template.con
-
-    if isinstance(template, TypeConName):
-        return package_ref(template), package_local_name(template)
-    else:
-        raise ValueError(f"Don't know how to convert {template!r} into a template")
+    return validate_template_new(template, allow_deprecated_identifiers=True)
 
 
 def template_reverse_globs(primary_only: bool, package_id: str, type_name: str) -> "Iterator[str]":

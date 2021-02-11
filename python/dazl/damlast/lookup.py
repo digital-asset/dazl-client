@@ -37,22 +37,21 @@ from .protocols import SymbolLookup
 __all__ = [
     "find_choice",
     "parse_type_con_name",
+    "validate_template",
     "EmptyLookup",
+    "MultiPackageLookup",
     "PackageLookup",
     "MultiPackageLookup",
 ]
 
+STAR = PackageRef("*")
 
-def parse_type_con_name(val: str) -> "TypeConName":
+
+def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) -> "TypeConName":
     """
     Parse the given string as a type constructor.
     """
-    # TODO: validate_template should be deprecated and some of its remaining bits be moved in-line
-    #  but it's used too heavily in its current form at the moment. This is a local import to avoid
-    #  import cycles between dazl.damlast and dazl.model.
-    from ..model.lookup import validate_template
-
-    pkg, name = validate_template(val)
+    pkg, name = validate_template(val, allow_deprecated_identifiers=allow_deprecated_identifiers)
     module_name, _, entity_name = name.rpartition(":")
     module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
     return TypeConName(module_ref, entity_name.split("."))
@@ -60,10 +59,68 @@ def parse_type_con_name(val: str) -> "TypeConName":
 
 def empty_lookup_impl(ref: "Any") -> "NoReturn":
     pkg, _ = validate_template(ref)
-    if pkg != "*":
+    if pkg != STAR:
         raise PackageNotFoundError(pkg)
     else:
         raise NameNotFoundError(ref)
+
+
+def validate_template(
+    template: "Any", allow_deprecated_identifiers: bool = False
+) -> "Tuple[PackageRef, str]":
+    """
+    Return a module and type name component from something that can be interpreted as a template.
+
+    :param template:
+        Any object that can be interpreted as an identifier for a template.
+    :param allow_deprecated_identifiers:
+        Allow deprecated identifiers (:class:`UnresolvedTypeReference` and a period delimiter
+        instead of a colon between module names and entity names).
+    :return:
+        A tuple of package ID and ``Module.Name:EntityName`` (the package-scoped identifier for the
+        type). The special value ``'*'`` is used if either the package ID, module name, or both
+        should be wildcarded.
+    :raise ValueError:
+        If the object could not be interpreted as a thing referring to a template.
+    """
+    from ..damlast.daml_lf_1 import TypeConName
+    from ..damlast.util import package_local_name, package_ref
+
+    if template == "*" or template is None:
+        return STAR, "*"
+
+    if allow_deprecated_identifiers:
+        from ..model.types import UnresolvedTypeReference
+
+        if isinstance(template, UnresolvedTypeReference):
+            template = template.name
+
+    if isinstance(template, str):
+        components = template.split(":")
+        if len(components) == 3:
+            # correct number of colons for a fully-qualified name
+            pkgid, m, e = components
+            return pkgid, f"{m}:{e}"
+
+        elif len(components) == 2:
+            # one colon, so assume the package ID is unspecified UNLESS the second component is a
+            # wildcard; then we assume the wildcard means any module name and entity name
+            m, e = components
+            return (STAR, f"{m}:{e}") if e != "*" else (PackageRef(m), "*")
+
+        elif len(components) == 1 and allow_deprecated_identifiers:
+            # no colon whatsoever
+            # TODO: Add a deprecation warning in the appropriate place
+            m, _, e = components[0].rpartition(".")
+            return STAR, f"{m}:{e}"
+
+        else:
+            raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")
+
+    if isinstance(template, TypeConName):
+        return package_ref(template), package_local_name(template)
+    else:
+        raise ValueError(f"Don't know how to convert {template!r} into a template")
 
 
 class EmptyLookup(SymbolLookup):
@@ -79,6 +136,12 @@ class EmptyLookup(SymbolLookup):
 
     __slots__ = ()
 
+    def archives(self) -> "Collection[Archive]":
+        return frozenset()
+
+    def package_ids(self) -> "AbstractSet[PackageRef]":
+        return frozenset()
+
     def data_type_name(self, ref: "Any") -> "NoReturn":
         return empty_lookup_impl(ref)
 
@@ -87,6 +150,9 @@ class EmptyLookup(SymbolLookup):
 
     def value(self, ref: "Any") -> "NoReturn":
         return empty_lookup_impl(ref)
+
+    def template_names(self, ref: "Any") -> "Collection[TypeConName]":
+        return frozenset()
 
     def template_name(self, ref: "Any") -> "NoReturn":
         return empty_lookup_impl(ref)
@@ -133,7 +199,7 @@ class PackageLookup(SymbolLookup):
 
     def data_type_name(self, ref: "Any") -> "TypeConName":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == "*":
+        if pkg == self.archive.hash or pkg == STAR:
             dt_name = self.local_data_type_name(name)
             if dt_name is not None:
                 return dt_name
@@ -142,7 +208,7 @@ class PackageLookup(SymbolLookup):
 
     def data_type(self, ref: "Any") -> "DefDataType":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == "*":
+        if pkg == self.archive.hash or pkg == STAR:
             dt = self.local_data_type(name)
             if dt is not None:
                 return dt
@@ -172,7 +238,7 @@ class PackageLookup(SymbolLookup):
 
     def value(self, ref: "Any") -> "DefValue":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == "*":
+        if pkg == self.archive.hash or pkg == STAR:
             dt = self.local_value(name)
             if dt is not None:
                 return dt
@@ -198,7 +264,7 @@ class PackageLookup(SymbolLookup):
 
     def template_names(self, ref: "Any") -> "Collection[TypeConName]":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == "*":
+        if pkg == self.archive.hash or pkg == STAR:
             if name == "*":
                 return self.local_template_names()
             elif name in self._templates:
@@ -208,7 +274,7 @@ class PackageLookup(SymbolLookup):
 
     def template_name(self, ref: "Any") -> "TypeConName":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == "*":
+        if pkg == self.archive.hash or pkg == STAR:
             tmpl = self.local_template_name(name)
             if tmpl is not None:
                 return tmpl
@@ -217,7 +283,7 @@ class PackageLookup(SymbolLookup):
 
     def template(self, ref: "Any") -> "DefTemplate":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == "*":
+        if pkg == self.archive.hash or pkg == STAR:
             tmpl = self.local_template(name)
             if tmpl is not None:
                 return tmpl

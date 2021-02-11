@@ -11,6 +11,7 @@ from typing import Any, Collection, Dict, Generic, Iterable, List, Mapping, Opti
 import warnings
 
 from ..damlast.daml_lf_1 import Archive, Expr, Package, PackageRef, TypeConName, ValName, _Name
+from ..damlast.lookup import validate_template
 from ..util.typing import safe_cast, safe_dict_cast
 
 K = TypeVar("K", bound=_Name)
@@ -292,14 +293,12 @@ class PackageStore:
             stacklevel=2,
         )
 
-        from .lookup import validate_template
-
         if isinstance(template, Template):
             # if we were given a Template for some strange reason, just simply return a single-item
             # tuple of that given Template
             return [template]
 
-        package_id, template_name = validate_template(template)
+        package_id, template_name = validate_template(template, allow_deprecated_identifiers=True)
         return self._cache.templates.lookup(package_id, template_name)
 
     def resolve_template_type(

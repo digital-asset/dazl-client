@@ -10,10 +10,9 @@ from typing import AbstractSet, Awaitable, Callable, Dict, Set, TypeVar
 from .. import LOG
 from ..damlast.daml_lf_1 import Archive, Package, PackageRef
 from ..damlast.errors import NameNotFoundError, PackageNotFoundError
-from ..damlast.lookup import MultiPackageLookup
+from ..damlast.lookup import MultiPackageLookup, validate_template
 from ..damlast.pkgfile import Dar
 from ..model.core import DazlError
-from ..model.lookup import validate_template
 
 if sys.version_info >= (3, 7):
     from typing import Protocol
@@ -106,7 +105,7 @@ class PackageLoader:
                     )
                     raise
 
-                pkg_id, name = validate_template(ex.ref)
+                pkg_id, name = validate_template(ex.ref, allow_deprecated_identifiers=True)
                 if pkg_id == "*":
                     # we don't know what package contains this type, so we have no
                     # choice but to look in all known packages
