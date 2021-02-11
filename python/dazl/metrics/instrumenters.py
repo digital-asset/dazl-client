@@ -8,11 +8,9 @@ from typing import Callable, Optional
 
 
 class AioLoopPerfMonitor:
-
     def __init__(
-            self,
-            callback: 'Callable[[timedelta], None]',
-            loop: 'Optional[AbstractEventLoop]' = None):
+        self, callback: "Callable[[timedelta], None]", loop: "Optional[AbstractEventLoop]" = None
+    ):
         self.callback = callback
         self.loop = loop
         self.started = False
@@ -35,7 +33,7 @@ class AioLoopPerfMonitor:
     def stop(self):
         self.started = False
 
-    def _tick(self, loop: 'AbstractEventLoop') -> None:
+    def _tick(self, loop: "AbstractEventLoop") -> None:
         """
         Schedule a _tock.
 
@@ -44,7 +42,7 @@ class AioLoopPerfMonitor:
         if self.started:
             loop.call_soon(self._tock, loop, datetime.utcnow())
 
-    def _tock(self, loop: 'AbstractEventLoop', dt: 'datetime') -> None:
+    def _tock(self, loop: "AbstractEventLoop", dt: "datetime") -> None:
         """
         Measure the length of time from the last _tick and record that time; then schedule a _tock
         in one second.

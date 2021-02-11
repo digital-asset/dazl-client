@@ -2,12 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import asyncio
+from asyncio import new_event_loop, set_event_loop, sleep
 import random
 import uuid
-from asyncio import sleep, new_event_loop, set_event_loop
 
-from dazl import create, exercise, Network
+from dazl import Network, create, exercise
 from dazl.prim import to_party
+
 from .dars import Simple as SimpleDar
 
 NOTIFICATION_COUNT = 20
@@ -15,8 +16,8 @@ PARTY_COUNT = 10
 
 
 class Simple:
-    OperatorRole = 'Simple:OperatorRole'
-    OperatorNotification = 'Simple:OperatorNotification'
+    OperatorRole = "Simple:OperatorRole"
+    OperatorNotification = "Simple:OperatorNotification"
 
 
 def test_event_order(sandbox):
@@ -31,7 +32,6 @@ def test_event_order(sandbox):
 
 
 class Stage1LedgerInit:
-
     def __init__(self):
         self.network = Network()
         self.operator_party = None
@@ -59,24 +59,25 @@ class Stage1LedgerInit:
     async def on_ready(self, event):
         await self.network.aio_global().ensure_dar(SimpleDar)
 
-        return create(Simple.OperatorRole, {'operator': event.party})
+        return create(Simple.OperatorRole, {"operator": event.party})
 
     @staticmethod
     def on_operator(event):
-        return [exercise(event.cid, 'Publish', {"text": n}) for n in range(0, NOTIFICATION_COUNT)]
+        return [exercise(event.cid, "Publish", {"text": n}) for n in range(0, NOTIFICATION_COUNT)]
 
     def on_notification(self, event):
         if self.evt_count == 25:
             self.done.set()
         else:
             self.evt_count += 1
-            missing_parties = self.user_parties.difference(event.cdata['theObservers'])
+            missing_parties = self.user_parties.difference(event.cdata["theObservers"])
             if missing_parties:
-                return exercise(event.cid, 'Share', {'sharingParty': random.choice(list(missing_parties))})
+                return exercise(
+                    event.cid, "Share", {"sharingParty": random.choice(list(missing_parties))}
+                )
 
 
 class Stage2LedgerVerify:
-
     def __init__(self):
         self.store = {}
         self.events = []
@@ -92,15 +93,15 @@ class Stage2LedgerVerify:
         operator.add_ledger_created(Simple.OperatorNotification, self.on_notification_created)
         operator.add_ledger_archived(Simple.OperatorNotification, self.on_notification_archived)
         network.run_until_complete()
-        self.events.append(('finished', (), ()))
+        self.events.append(("finished", (), ()))
 
     def on_ready(self, _):
-        self.events.append(('ready', (), ()))
+        self.events.append(("ready", (), ()))
 
     def on_notification_created(self, event):
-        self.events.append(('created', event.cid, event.cdata))
+        self.events.append(("created", event.cid, event.cdata))
         self.store[event.cid] = event.cdata
 
     def on_notification_archived(self, event):
-        self.events.append(('archived', event.cid, ()))
+        self.events.append(("archived", event.cid, ()))
         del self.store[event.cid]

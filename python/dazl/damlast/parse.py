@@ -15,15 +15,14 @@ in turn contain templates, data types, and values.
 import sys
 import time
 
+from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import ArchivePayload
 from .daml_lf_1 import Archive, PackageRef
 from .pb_parse import ProtobufParser
-from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import ArchivePayload
+
+__all__ = ["parse_archive", "parse_archive_payload"]
 
 
-__all__ = ['parse_archive', 'parse_archive_payload']
-
-
-def parse_archive(package_id: 'PackageRef', archive_bytes: bytes) -> 'Archive':
+def parse_archive(package_id: "PackageRef", archive_bytes: bytes) -> "Archive":
     """
     Convert ``bytes`` into an :class:`Archive`.
     """
@@ -35,7 +34,7 @@ def parse_archive(package_id: 'PackageRef', archive_bytes: bytes) -> 'Archive':
     return Archive(package_id, package)
 
 
-def parse_archive_payload(package_id: 'PackageRef', archive_bytes: bytes) -> 'ArchivePayload':
+def parse_archive_payload(package_id: "PackageRef", archive_bytes: bytes) -> "ArchivePayload":
     """
     Convert ``bytes`` into a :class:`G.ArchivePayload`.
 
@@ -44,6 +43,7 @@ def parse_archive_payload(package_id: 'PackageRef', archive_bytes: bytes) -> 'Ar
     """
     # noinspection PyPackageRequirements
     from google.protobuf.message import DecodeError
+
     from .. import LOG
 
     current_time = time.time()
@@ -56,12 +56,13 @@ def parse_archive_payload(package_id: 'PackageRef', archive_bytes: bytes) -> 'Ar
     except DecodeError:
         # noinspection PyPackageRequirements
         from google.protobuf.internal import api_implementation
-        if api_implementation.Type() == 'cpp':
-            LOG.error('Failed to decode metadata. This may be due to bugs in the native Protobuf')
-            LOG.error('implementation as exposed through Python, so setting an environment')
-            LOG.error('variable to force a non-native implementation may help work around this')
-            LOG.error('problem:')
-            LOG.error('    export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python')
+
+        if api_implementation.Type() == "cpp":
+            LOG.error("Failed to decode metadata. This may be due to bugs in the native Protobuf")
+            LOG.error("implementation as exposed through Python, so setting an environment")
+            LOG.error("variable to force a non-native implementation may help work around this")
+            LOG.error("problem:")
+            LOG.error("    export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python")
         raise
     finally:
         sys.setrecursionlimit(prev_recursion_limit)
@@ -69,9 +70,13 @@ def parse_archive_payload(package_id: 'PackageRef', archive_bytes: bytes) -> 'Ar
     final_time = time.time()
     total_millis = (final_time - current_time) * 1000
     if package_id is None:
-        LOG.info('Parsed %s bytes of metadata in %0.2f ms.', len(archive_bytes), total_millis)
+        LOG.info("Parsed %s bytes of metadata in %0.2f ms.", len(archive_bytes), total_millis)
     else:
-        LOG.info('Parsed %s bytes of metadata (package ID %r) in %0.2f ms.',
-                 len(archive_bytes), package_id, total_millis)
+        LOG.info(
+            "Parsed %s bytes of metadata (package ID %r) in %0.2f ms.",
+            len(archive_bytes),
+            package_id,
+            total_millis,
+        )
 
     return archive_payload

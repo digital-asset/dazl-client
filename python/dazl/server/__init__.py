@@ -2,10 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from aiohttp import web
+
 from ..client import _NetworkImpl
 
 
-def get_app(network: '_NetworkImpl') -> 'web.Application':
+def get_app(network: "_NetworkImpl") -> "web.Application":
     from .management import build_routes as build_management_routes
     from .metrics import build_routes as build_metrics_routes
 

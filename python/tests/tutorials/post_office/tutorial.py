@@ -10,28 +10,26 @@ in the documentation folder.
 """
 
 
-import unittest
-from dazl import setup_default_logger
-from dazl.client import ExitCode  # noqa
-from dazl.client.config import LedgerNodeConfiguration
-
 # These imports are included in the documentation EXACTLY AS IS.
 # Only add imports here if they are used as part of the tutorial's documentation.
 # DOC_BEGIN: IMPORTS_CONSTANTS
 from os import path
+import unittest
 
-from dazl import create, sandbox
+from dazl import create, sandbox, setup_default_logger
+from dazl.client import ExitCode  # noqa
 from dazl.client import create_client
+from dazl.client.config import LedgerNodeConfiguration
 
-DAML_FILE = path.realpath(path.join(path.dirname(__file__), './Main.daml'))
+DAML_FILE = path.realpath(path.join(path.dirname(__file__), "./Main.daml"))
 
-POSTMAN_PARTY = 'Postman'
+POSTMAN_PARTY = "Postman"
 MEMBER_PARTY_COUNT = 10
 # DOC_END: IMPORTS_CONSTANTS
 
 
 setup_default_logger()
-LedgerNodeConfiguration._defaults['poll_interval'] = 1.0
+LedgerNodeConfiguration._defaults["poll_interval"] = 1.0
 
 
 def create_postman():
@@ -42,10 +40,12 @@ def create_postman():
         with create_client(parties=all_parties, participant_url=url) as client_mgr:
             postman_client = client_mgr.new_client(POSTMAN_PARTY)
             postman_client.on_ready(
-                lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
+                lambda _, __: create("Main:PostmanRole", dict(postman=POSTMAN_PARTY))
+            )
 
             ledger_run = client_mgr.run_until_complete()
             return ledger_run.exit_code
+
     # DOC_END: CREATE_POSTMAN
     return run_test
 
@@ -62,7 +62,8 @@ def inspect_ledger():
             try:
                 postman_client = client_mgr.new_client(POSTMAN_PARTY)
                 postman_client.on_ready(
-                    lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
+                    lambda _, __: create("Main:PostmanRole", dict(postman=POSTMAN_PARTY))
+                )
 
                 client_mgr.register(inspector)
 
@@ -70,6 +71,7 @@ def inspect_ledger():
                 return ledger_run.exit_code
             finally:
                 inspector.dump_all()
+
     # DOC_END: INSPECT_LEDGER
     return run_test
 
@@ -79,9 +81,10 @@ def invite_participants():
 
     # DOC_BEGIN: INVITE_PARTICIPANTS
     def run_test(url):
-        members = [dict(party=f'Member {i}', address=address(i)) for i in
-                   range(0, MEMBER_PARTY_COUNT)]
-        all_parties = [POSTMAN_PARTY] + [member['party'] for member in members]
+        members = [
+            dict(party=f"Member {i}", address=address(i)) for i in range(0, MEMBER_PARTY_COUNT)
+        ]
+        all_parties = [POSTMAN_PARTY] + [member["party"] for member in members]
 
         with create_client(parties=all_parties, participant_url=url) as client_mgr:
             inspector = LedgerCapturePlugin.stdout()
@@ -97,13 +100,16 @@ def invite_participants():
     def set_up(client_mgr, members):
         postman_client = client_mgr.new_client(POSTMAN_PARTY)
         postman_client.on_ready(
-            lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
+            lambda _, __: create("Main:PostmanRole", dict(postman=POSTMAN_PARTY))
+        )
         postman_client.on_created(
-            'Main:PostmanRole',
-            lambda cid, cdata: [cid.exercise('InviteParticipant', m) for m in members])
+            "Main:PostmanRole",
+            lambda cid, cdata: [cid.exercise("InviteParticipant", m) for m in members],
+        )
 
     def address(index):
-        return '{} Member Lane'.format(index)
+        return "{} Member Lane".format(index)
+
     # DOC_END: INVITE_PARTICIPANTS
     return run_test
 
@@ -112,12 +118,13 @@ def final_run_test(set_up):
     from dazl.plugins import LedgerCapturePlugin
 
     def address(index):
-        return f'{index} Member Lane'
+        return f"{index} Member Lane"
 
     def run_test(url):
-        members = [dict(party=f'Member {i}', address=address(i))
-                   for i in range(0, MEMBER_PARTY_COUNT)]
-        all_parties = [POSTMAN_PARTY] + [member['party'] for member in members]
+        members = [
+            dict(party=f"Member {i}", address=address(i)) for i in range(0, MEMBER_PARTY_COUNT)
+        ]
+        all_parties = [POSTMAN_PARTY] + [member["party"] for member in members]
 
         with create_client(parties=all_parties, participant_url=url) as client_mgr:
             inspector = LedgerCapturePlugin.stdout()
@@ -138,25 +145,31 @@ def accept_invites():
     def set_up(client_mgr, members):
         postman_client = client_mgr.new_client(POSTMAN_PARTY)
         postman_client.on_ready(
-            lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
+            lambda _, __: create("Main:PostmanRole", dict(postman=POSTMAN_PARTY))
+        )
         postman_client.on_created(
-            'Main:PostmanRole',
-            lambda cid, cdata: [cid.exercise('InviteParticipant', m) for m in members])
+            "Main:PostmanRole",
+            lambda cid, cdata: [cid.exercise("InviteParticipant", m) for m in members],
+        )
 
-        member_clients = [client_mgr.new_client(m['party']) for m in members]
+        member_clients = [client_mgr.new_client(m["party"]) for m in members]
         for member_client in member_clients:
             # every member automatically accepts
             member_client.on_created(
-                'Main:InviteAuthorRole', lambda cid, cdata: cid.exercise('AcceptInviteAuthorRole'))
+                "Main:InviteAuthorRole", lambda cid, cdata: cid.exercise("AcceptInviteAuthorRole")
+            )
             member_client.on_created(
-                'Main:InviteReceiverRole', lambda cid, cdata: cid.exercise('AcceptInviteReceiverRole'))
+                "Main:InviteReceiverRole",
+                lambda cid, cdata: cid.exercise("AcceptInviteReceiverRole"),
+            )
+
     # DOC_END: ACCEPT_INVITES
     return final_run_test(set_up)
 
 
 def send_letters():
     def address(index):
-        return f'{index} Member Lane'
+        return f"{index} Member Lane"
 
     # DOC_BEGIN: SEND_LETTERS
     from functools import partial
@@ -164,41 +177,52 @@ def send_letters():
     def set_up(client_mgr, members):
         postman_client = client_mgr.new_client(POSTMAN_PARTY)
         postman_client.on_ready(
-            lambda _, __: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
+            lambda _, __: create("Main:PostmanRole", dict(postman=POSTMAN_PARTY))
+        )
         postman_client.on_created(
-            'Main:PostmanRole',
-            lambda cid, cdata: [cid.exercise('InviteParticipant', m) for m in members])
+            "Main:PostmanRole",
+            lambda cid, cdata: [cid.exercise("InviteParticipant", m) for m in members],
+        )
 
-        member_clients = [client_mgr.new_client(m['party']) for m in members]
+        member_clients = [client_mgr.new_client(m["party"]) for m in members]
         for member_client in member_clients:
             # every member automatically accepts
             member_client.on_created(
-                'Main:InviteAuthorRole', lambda cid, cdata: cid.exercise('AcceptInviteAuthorRole'))
+                "Main:InviteAuthorRole", lambda cid, cdata: cid.exercise("AcceptInviteAuthorRole")
+            )
             member_client.on_created(
-                'Main:InviteReceiverRole', lambda cid, cdata: cid.exercise('AcceptInviteReceiverRole'))
+                "Main:InviteReceiverRole",
+                lambda cid, cdata: cid.exercise("AcceptInviteReceiverRole"),
+            )
             member_client.on_created(
-                'Main:AuthorRole', partial(send_five_letters, member_client.party_name))
+                "Main:AuthorRole", partial(send_five_letters, member_client.party_name)
+            )
 
     def send_five_letters(party_name, cid, cdata):
-        if party_name == cdata['author']:
-            party_index = int(party_name.split(' ')[1])
-            addresses = map(lambda i: address(i % MEMBER_PARTY_COUNT), range(party_index + 1, party_index + 6))
+        if party_name == cdata["author"]:
+            party_index = int(party_name.split(" ")[1])
+            addresses = map(
+                lambda i: address(i % MEMBER_PARTY_COUNT), range(party_index + 1, party_index + 6)
+            )
 
             # exercise the same non-consuming choice repeatedly
-            return [cid.exercise(
-                'CreateLetter',
-                dict(address=address, content=f'I am a letter from {party_name} to {address}'))
-                for address in addresses]
+            return [
+                cid.exercise(
+                    "CreateLetter",
+                    dict(address=address, content=f"I am a letter from {party_name} to {address}"),
+                )
+                for address in addresses
+            ]
 
     # DOC_END: SEND_LETTERS
     return final_run_test(set_up)
 
 
 def main_boilerplate(globals_, run_test):
-    __name__ = globals_['__name__']
+    __name__ = globals_["__name__"]
 
     # DOC_BEGIN: MAIN-BOILERPLATE
-    if __name__ == '__main__':
+    if __name__ == "__main__":
         import sys
 
         with sandbox(DAML_FILE) as server:

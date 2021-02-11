@@ -6,5 +6,5 @@ This module contains implementations for the different protocols and serializati
 supported by this client library.
 """
 
-from ._base import LedgerNetwork, LedgerClient, LedgerConnectionOptions
+from ._base import LedgerClient, LedgerConnectionOptions, LedgerNetwork
 from .v1 import grpc

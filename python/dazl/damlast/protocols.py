@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import sys
-from typing import AbstractSet, Any, TYPE_CHECKING, Collection
+from typing import TYPE_CHECKING, AbstractSet, Any, Collection
 
 if sys.version_info >= (3, 7):
     from typing import Protocol, runtime_checkable
@@ -10,9 +10,17 @@ else:
     from typing_extensions import Protocol, runtime_checkable
 
 if TYPE_CHECKING:
-    from .daml_lf_1 import DefDataType, DefTemplate, DefValue, Package, PackageRef, TypeConName, Archive
+    from .daml_lf_1 import (
+        Archive,
+        DefDataType,
+        DefTemplate,
+        DefValue,
+        Package,
+        PackageRef,
+        TypeConName,
+    )
 
-__all__ = ['PackageProvider', 'SymbolLookup']
+__all__ = ["PackageProvider", "SymbolLookup"]
 
 
 @runtime_checkable
@@ -24,7 +32,7 @@ class PackageProvider(Protocol):
     functions of this protocol should never return ``None``.
     """
 
-    def package(self, ref: 'PackageRef') -> 'Package':
+    def package(self, ref: "PackageRef") -> "Package":
         """
         Return the :class:`Package` for the specified :class:`PackageRef`.
 
@@ -35,9 +43,9 @@ class PackageProvider(Protocol):
         :raises PackageNotFoundError:
             if the package could not be found
         """
-        raise NotImplementedError('PackageProvider.package must be implemented')
+        raise NotImplementedError("PackageProvider.package must be implemented")
 
-    def package_ids(self) -> 'AbstractSet[PackageRef]':
+    def package_ids(self) -> "AbstractSet[PackageRef]":
         """
         Return all package IDs that are known to this :class:`PackageProvider`.
 
@@ -47,7 +55,7 @@ class PackageProvider(Protocol):
         :return:
             A set of package IDs.
         """
-        raise NotImplementedError('PackageProvider.package_ids must be implemented')
+        raise NotImplementedError("PackageProvider.package_ids must be implemented")
 
 
 @runtime_checkable
@@ -62,19 +70,19 @@ class SymbolLookup(Protocol):
     if they do not currently exist, will NEVER exist).
     """
 
-    def archives(self) -> 'Collection[Archive]':
+    def archives(self) -> "Collection[Archive]":
         """
         Return the archives that are known to this lookup.
         """
-        raise NotImplementedError('SymbolLookup.archives must be implemented')
+        raise NotImplementedError("SymbolLookup.archives must be implemented")
 
-    def package_ids(self) -> 'AbstractSet[PackageRef]':
+    def package_ids(self) -> "AbstractSet[PackageRef]":
         """
         Return the package IDs that are known to this lookup.
         """
-        raise NotImplementedError('SymbolLookup.package_ids must be implemented')
+        raise NotImplementedError("SymbolLookup.package_ids must be implemented")
 
-    def data_type_name(self, ref: 'Any') -> 'TypeConName':
+    def data_type_name(self, ref: "Any") -> "TypeConName":
         """
         Return the :class:`TypeConName` that refers to a :class:`DefDataType` that is known to
         exist in this lookup.
@@ -82,21 +90,21 @@ class SymbolLookup(Protocol):
         If this method succeeds, :meth:`data_type` with the returned :class:`TypeConName` as an
         argument should also always succeed.
         """
-        raise NotImplementedError('SymbolLookup.data_type_name must be implemented')
+        raise NotImplementedError("SymbolLookup.data_type_name must be implemented")
 
-    def data_type(self, ref: 'Any') -> 'DefDataType':
+    def data_type(self, ref: "Any") -> "DefDataType":
         """
         Return the :class:`DefDataType` for the specified name.
         """
-        raise NotImplementedError('SymbolLookup.data_type must be implemented')
+        raise NotImplementedError("SymbolLookup.data_type must be implemented")
 
-    def value(self, ref: 'Any') -> 'DefValue':
+    def value(self, ref: "Any") -> "DefValue":
         """
         Return the :class:`DefValue` for the specified name.
         """
-        raise NotImplementedError('SymbolLookup.value must be implemented')
+        raise NotImplementedError("SymbolLookup.value must be implemented")
 
-    def template_names(self, ref: 'Any') -> 'Collection[TypeConName]':
+    def template_names(self, ref: "Any") -> "Collection[TypeConName]":
         """
         Return all template names that are currently known that are a match for the query. Either
         :class:`PackageRef` or the template name can be `*`.
@@ -105,9 +113,9 @@ class SymbolLookup(Protocol):
         case of a match failure; :class:`PackageNotFoundError` or :class:`NameNotFoundError` are
         never thrown.
         """
-        raise NotImplementedError('SymbolLookup.template_names must be implemented')
+        raise NotImplementedError("SymbolLookup.template_names must be implemented")
 
-    def template_name(self, ref: 'Any') -> 'TypeConName':
+    def template_name(self, ref: "Any") -> "TypeConName":
         """
         Return the :class:`TypeConName` that refers to a :class:`DefTemplate` that is known to
         exist in this lookup.
@@ -115,10 +123,10 @@ class SymbolLookup(Protocol):
         If this method succeeds, :meth:`data_type` with the returned :class:`TypeConName` as an
         argument should also always succeed.
         """
-        raise NotImplementedError('SymbolLookup.template_name must be implemented')
+        raise NotImplementedError("SymbolLookup.template_name must be implemented")
 
-    def template(self, ref: 'Any') -> 'DefTemplate':
+    def template(self, ref: "Any") -> "DefTemplate":
         """
         Return the :class:`DefTemplate` for the specified name.
         """
-        raise NotImplementedError('SymbolLookup.template must be implemented')
+        raise NotImplementedError("SymbolLookup.template must be implemented")

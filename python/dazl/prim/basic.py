@@ -3,10 +3,10 @@
 
 from typing import Any
 
-__all__ = ['to_bool', 'to_str']
+__all__ = ["to_bool", "to_str"]
 
 
-def to_bool(obj: 'Any') -> bool:
+def to_bool(obj: "Any") -> bool:
     """
     Convert any of the common wire representations of a ``bool`` to a ``bool``.
     """
@@ -18,16 +18,16 @@ def to_bool(obj: 'Any') -> bool:
         return obj
     elif isinstance(obj, str):
         lobj = obj.lower().strip()
-        if lobj == 'true':
+        if lobj == "true":
             return True
-        elif lobj == 'false':
+        elif lobj == "false":
             return False
         else:
             raise ValueError(f"Could not parse a string as a boolean: {obj!r}")
-    raise ValueError(f'Could not parse as a boolean: {obj!r}')
+    raise ValueError(f"Could not parse as a boolean: {obj!r}")
 
 
-def to_str(obj: 'Any') -> str:
+def to_str(obj: "Any") -> str:
     """
     Convert any object to a string. This simply calls ``str`` on the object to produce a string
     representation.

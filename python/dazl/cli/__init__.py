@@ -8,13 +8,13 @@ Simple command-line handlers.
 import logging
 from typing import List, Sequence
 
+from .._logging import configure as configure_logger
 from ..model.core import ConfigurationError
 from ._base import CliCommand
 from .ls import ListAllCommand
 from .metadata import PrintMetadataCommand
 from .upload import UploadCommand
 from .version import VersionCommand
-from .._logging import configure as configure_logger
 
 COMMANDS = [
     ListAllCommand(),
@@ -29,10 +29,11 @@ def main():
     Executes one of the known commands.
     """
     from sys import argv, exit
+
     exit(_main(argv))
 
 
-def _main(argv: 'Sequence[str]') -> int:
+def _main(argv: "Sequence[str]") -> int:
     if len(argv) > 1:
         command = argv[1]
         command_args = argv[2:]
@@ -56,7 +57,7 @@ def run(cmd, args) -> int:
     parser = cmd.parser()
     parsed_args = parser.parse_args(args)
 
-    log_level = getattr(parsed_args, 'log_level', logging.WARNING)
+    log_level = getattr(parsed_args, "log_level", logging.WARNING)
     if log_level is None:
         log_level = logging.WARNING
 

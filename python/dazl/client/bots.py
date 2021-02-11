@@ -1,25 +1,38 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import inspect
-import operator
 from abc import abstractmethod
-from asyncio import ensure_future, Future, gather, get_event_loop, InvalidStateError
+from asyncio import Future, InvalidStateError, ensure_future, gather, get_event_loop
 from collections import defaultdict
 from dataclasses import dataclass, field, replace
 from datetime import timedelta
-from enum import auto, Enum
+from enum import Enum, auto
 from functools import wraps
+import inspect
+import operator
 from threading import RLock
-from typing import overload, AbstractSet, Any, Awaitable, Callable, Collection, DefaultDict, List, \
-    Optional, Sequence, TypeVar, Union, TYPE_CHECKING
+from typing import (
+    TYPE_CHECKING,
+    AbstractSet,
+    Any,
+    Awaitable,
+    Callable,
+    Collection,
+    DefaultDict,
+    List,
+    Optional,
+    Sequence,
+    TypeVar,
+    Union,
+    overload,
+)
 from uuid import uuid4
 
 from .. import LOG
 from ..model.core import Party, SourceLocation
 from ..model.reading import BaseEvent, EventKey
 from ..model.writing import Command, CommandBuilder
-from ..util.asyncio_util import LongRunningAwaitable, completed, propagate, failed, Signal
+from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
 
 if TYPE_CHECKING:
     from .api import PartyClient
@@ -27,7 +40,7 @@ if TYPE_CHECKING:
 DEFAULT_BOT_STOP_TIMEOUT = timedelta(seconds=30)
 
 
-E = TypeVar('E', bound=BaseEvent)
+E = TypeVar("E", bound=BaseEvent)
 BotCallback = Callable[[E], Any]
 BotFilter = Callable[[E], bool]
 
@@ -39,7 +52,7 @@ class _BotRunLevel(Enum):
 
 
 class Bot:
-    def __init__(self, party_client: 'Optional[PartyClient]', name: str):
+    def __init__(self, party_client: "Optional[PartyClient]", name: str):
         self._handlers: DefaultDict[str, List[BotEntry]] = defaultdict(list)
         self._party_client = party_client
         self._id = uuid4().hex
@@ -49,18 +62,21 @@ class Bot:
         self._idle = True
         self._run_level = _BotRunLevel.CONTINUE
 
-    def event_keys(self) -> 'AbstractSet[str]':
+    def event_keys(self) -> "AbstractSet[str]":
         """
         Return the set of keys that event handlers in this bot are configured to handle.
         """
         return frozenset(self._handlers)
 
-    def wants_any_keys(self, keys: 'Collection[str]') -> bool:
+    def wants_any_keys(self, keys: "Collection[str]") -> bool:
         return bool(set(keys).intersection(self._handlers))
 
     def add_event_handler(
-            self, keys: 'Union[str, Collection[str]]', handler: 'BotCallback',
-            filter_fn: 'Optional[BotFilter]' = None) -> None:
+        self,
+        keys: "Union[str, Collection[str]]",
+        handler: "BotCallback",
+        filter_fn: "Optional[BotFilter]" = None,
+    ) -> None:
         """
         Add a new event handler to this bot for the specified event.
 
@@ -78,9 +94,9 @@ class Bot:
             keys = tuple(keys)
             for key in keys:
                 if not isinstance(key, str):
-                    raise ValueError('expected a string key')
+                    raise ValueError("expected a string key")
         if not callable(handler):
-            raise ValueError('handler must be callable')
+            raise ValueError("handler must be callable")
 
         # noinspection PyBroadException
         try:
@@ -89,7 +105,9 @@ class Bot:
             end_line = start_line + len(lines)
             source_loc = SourceLocation(source_file, start_line, end_line)
         except Exception:  # noqa
-            LOG.warning('Could not compute original source information for %r', handler, exc_info=True)
+            LOG.warning(
+                "Could not compute original source information for %r", handler, exc_info=True
+            )
             source_loc = None
 
         if self._party_client is not None:
@@ -103,6 +121,7 @@ class Bot:
     def ledger_created(self, template: Any):
         def _register_created(fn):
             self.add_event_handler(EventKey.contract_created(True, template), fn)
+
         return _register_created
 
     async def _main(self):
@@ -124,15 +143,17 @@ class Bot:
                         propagate(fut, invocation.future)
                         await invocation.future
                     except Exception:  # noqa
-                        LOG.exception(f'An event handler in a bot has thrown an exception! '
-                                      f'(offending event: {invocation.event})')
+                        LOG.exception(
+                            f"An event handler in a bot has thrown an exception! "
+                            f"(offending event: {invocation.event})"
+                        )
                 self._idle = True
                 await self._signal.wait()
             self._signal = None
         except Exception:  # noqa
-            LOG.exception('A bot thread died abnormally.')
+            LOG.exception("A bot thread died abnormally.")
 
-    async def _handle_event(self, event: 'BaseEvent') -> None:
+    async def _handle_event(self, event: "BaseEvent") -> None:
         """
         Process an event, mostly by calling appropriate callbacks.
 
@@ -147,7 +168,7 @@ class Bot:
             new_event = event
 
         for event_key in EventKey.from_event(new_event):
-            LOG.debug('Party %s dispatching event %r to its bots...', self.party, event_key)
+            LOG.debug("Party %s dispatching event %r to its bots...", self.party, event_key)
             handlers = self._handlers.get(event_key)
             if handlers is not None:
                 for handler in handlers:
@@ -158,10 +179,10 @@ class Bot:
                             if inspect.isawaitable(fut):
                                 await fut
                     except Exception:  # noqa
-                        LOG.exception('An event handler in a bot has thrown an exception!')
-        LOG.debug('Party %s finished handling events.', self.party)
+                        LOG.exception("An event handler in a bot has thrown an exception!")
+        LOG.debug("Party %s finished handling events.", self.party)
 
-    def notify(self, event: 'BaseEvent') -> 'Awaitable[None]':
+    def notify(self, event: "BaseEvent") -> "Awaitable[None]":
         """
         Notifies handler(s) associated with this bot that the given event has occurred. Note that
         this notification is asynchronous: in other words, event handlers will not have processed
@@ -170,17 +191,17 @@ class Bot:
         :param event: The event to raise.
         """
         if not isinstance(event, BaseEvent):
-            raise ValueError('expected a BaseEvent')
+            raise ValueError("expected a BaseEvent")
 
         if self._queue is None:
-            raise InvalidStateError('Cannot notify on a bot whose main method is not running')
+            raise InvalidStateError("Cannot notify on a bot whose main method is not running")
         bot_invocation = BotInvocation(event)
         self._queue.append(bot_invocation)
         if self._signal is not None:
             self._signal.notify_all()
         return bot_invocation.future
 
-    def _dispatch(self, event: 'BaseEvent') -> None:
+    def _dispatch(self, event: "BaseEvent") -> None:
         for event_key in EventKey.from_event(event):
             self._handlers.get(event_key)
 
@@ -192,7 +213,7 @@ class Bot:
         invocations. The event handler currently running is allowed to complete. When that is
         completed, the state is changed to ``PAUSED``.
         """
-        LOG.info('Pausing the bot thread for party %r...', self.party)
+        LOG.info("Pausing the bot thread for party %r...", self.party)
         self._run_level = _BotRunLevel.SUSPEND
         if self._signal is not None:
             self._signal.notify_all()
@@ -203,7 +224,7 @@ class Bot:
         queued up while the bot was paused. When this queue is fully drained, the state is changed
         to ``RUNNING``.
         """
-        LOG.info('Resuming the bot thread for party %r...', self.party)
+        LOG.info("Resuming the bot thread for party %r...", self.party)
         self._run_level = _BotRunLevel.CONTINUE
         if self._signal is not None:
             self._signal.notify_all()
@@ -213,7 +234,7 @@ class Bot:
         Permanently stop this bot. If you need to be able to "restart" a stopped bot, use
         :meth:`pause` and :meth:`resume` instead.
         """
-        LOG.info('Stopping the bot thread for party %r...', self.party)
+        LOG.info("Stopping the bot thread for party %r...", self.party)
         self._run_level = _BotRunLevel.TERMINATE
         if self._signal is not None:
             self._signal.notify_all()
@@ -237,13 +258,13 @@ class Bot:
         return self._name
 
     @property
-    def party(self) -> 'Party':
+    def party(self) -> "Party":
         """
         Primary party that this bot receives events for (and potentially generates commands for).
         """
         return self._party_client.party if self._party_client is not None else None
 
-    def entries(self) -> 'Sequence[BotEntry]':
+    def entries(self) -> "Sequence[BotEntry]":
         """
         The collection of individual event handlers in a bot, in the order that they will be
         executed.
@@ -251,7 +272,7 @@ class Bot:
         return tuple(entry for collection in self._handlers.values() for entry in collection)
 
     @property
-    def state(self) -> 'BotState':
+    def state(self) -> "BotState":
         """
         Current running state of the bot.
         """
@@ -267,8 +288,9 @@ class Bot:
         """
         Return ``True`` if this bot is currently processing events.
         """
-        return self._signal is not None and \
-            (self._run_level == _BotRunLevel.CONTINUE or not self._idle)
+        return self._signal is not None and (
+            self._run_level == _BotRunLevel.CONTINUE or not self._idle
+        )
 
     # </editor-fold>
 
@@ -284,7 +306,7 @@ class BotCollection(Sequence[Bot]):
     caller).
     """
 
-    def __init__(self, party: 'Optional[Party]'):
+    def __init__(self, party: "Optional[Party]"):
         self.party = party
         self._bots = []  # type: List[Bot]
         self._fut = None  # type: Optional[LongRunningAwaitable]
@@ -296,11 +318,13 @@ class BotCollection(Sequence[Bot]):
 
     @overload
     @abstractmethod
-    def __getitem__(self, i: int) -> Bot: ...
+    def __getitem__(self, i: int) -> Bot:
+        ...
 
     @overload
     @abstractmethod
-    def __getitem__(self, s: slice) -> Sequence[Bot]: ...
+    def __getitem__(self, s: slice) -> Sequence[Bot]:
+        ...
 
     def __getitem__(self, i: int) -> Bot:
         with self._lock:
@@ -311,7 +335,7 @@ class BotCollection(Sequence[Bot]):
             bots = list(self._bots)
         return iter(bots)
 
-    def add_new(self, name: str, party_client: 'Optional[PartyClient]' = None) -> 'Bot':
+    def add_new(self, name: str, party_client: "Optional[PartyClient]" = None) -> "Bot":
         bot = Bot(party_client, name)
         with self._lock:
             self._bots.append(bot)
@@ -323,12 +347,13 @@ class BotCollection(Sequence[Bot]):
         return bot
 
     def add_single(
-            self,
-            keys: 'Union[str, Sequence[str]]',
-            handler: 'BotCallback',
-            filter_fn: 'Optional[BotFilter]' = None,
-            name: 'Optional[str]' = None,
-            party_client: 'Optional[PartyClient]' = None) -> 'Bot':
+        self,
+        keys: "Union[str, Sequence[str]]",
+        handler: "BotCallback",
+        filter_fn: "Optional[BotFilter]" = None,
+        name: "Optional[str]" = None,
+        party_client: "Optional[PartyClient]" = None,
+    ) -> "Bot":
         """
         Convenience method for creating a bot with a single event handler.
         """
@@ -344,7 +369,7 @@ class BotCollection(Sequence[Bot]):
             bot.add_event_handler(key, handler, filter_fn)
         return bot
 
-    def notify(self, event: 'BaseEvent'):
+    def notify(self, event: "BaseEvent"):
         futures = []
         try:
             event_keys = EventKey.from_event(event)
@@ -354,7 +379,7 @@ class BotCollection(Sequence[Bot]):
         except:  # noqa
             # This exception indicates a problem with the scheduling code and not user bot code.
             # Exceptions thrown by user code would be propagated through the Future
-            LOG.exception('Failed to notify event for party %s: %r', self.party, event)
+            LOG.exception("Failed to notify event for party %s: %r", self.party, event)
             raise
 
         if len(futures) == 0:
@@ -366,9 +391,9 @@ class BotCollection(Sequence[Bot]):
 
     async def _main(self):
         if self.party is not None:
-            LOG.info('Party %s bots coroutine started.', self.party)
+            LOG.info("Party %s bots coroutine started.", self.party)
         else:
-            LOG.info('Network bots coroutine started.')
+            LOG.info("Network bots coroutine started.")
 
         with self._lock:
             self._fut = LongRunningAwaitable()
@@ -381,9 +406,9 @@ class BotCollection(Sequence[Bot]):
             self._fut = None
 
         if self.party is not None:
-            LOG.info('Party %s bots coroutine finished.', self.party)
+            LOG.info("Party %s bots coroutine finished.", self.party)
         else:
-            LOG.info('Network bots coroutine finished.')
+            LOG.info("Network bots coroutine finished.")
 
     def stop_all(self):
         with self._lock:
@@ -418,18 +443,19 @@ class BotState(Enum):
     Possible states of a :class:`Bot`.
     """
 
-    STARTING = 'STARTING'  #: The bot is starting (has not yet received the "ready" event).
-    PAUSING = 'PAUSING'  #: This bot has been told to pause, but has not yet completed processing events in flight.
-    PAUSED = 'PAUSED'  #:
-    RESUMING = 'RESUMING'
-    RUNNING = 'RUNNING'
-    STOPPING = 'STOPPING'
-    STOPPED = 'STOPPED'
+    STARTING = "STARTING"  #: The bot is starting (has not yet received the "ready" event).
+    PAUSING = "PAUSING"  #: This bot has been told to pause, but has not yet completed processing events in flight.
+    PAUSED = "PAUSED"  #:
+    RESUMING = "RESUMING"
+    RUNNING = "RUNNING"
+    STOPPING = "STOPPING"
+    STOPPED = "STOPPED"
 
 
 # noinspection PyShadowingBuiltins
-def wrap_as_command_submission(submit_fn, callback, filter) \
-        -> Callable[[BaseEvent], Awaitable[Any]]:
+def wrap_as_command_submission(
+    submit_fn, callback, filter
+) -> Callable[[BaseEvent], Awaitable[Any]]:
     """
     Normalize a callback to something that takes a single contract ID and contract data, and
     return an awaitable that is resolved when the underlying command has been fully submitted.
@@ -444,7 +470,7 @@ def wrap_as_command_submission(submit_fn, callback, filter) \
         try:
             ret = callback(*args, **kwargs)
         except BaseException as exception:
-            LOG.exception('The callback %r threw an exception!', callback)
+            LOG.exception("The callback %r threw an exception!", callback)
             return failed(exception)
 
         if ret is None:
@@ -453,8 +479,11 @@ def wrap_as_command_submission(submit_fn, callback, filter) \
             try:
                 ret_fut = submit_fn(ret)
             except BaseException as exception:
-                LOG.exception('The callback %r returned commands that could not be submitted! (%s)',
-                              callback, ret)
+                LOG.exception(
+                    "The callback %r returned commands that could not be submitted! (%s)",
+                    callback,
+                    ret,
+                )
                 return failed(exception)
             return ret_fut
         elif inspect.isawaitable(ret):
@@ -481,15 +510,16 @@ def wrap_as_command_submission(submit_fn, callback, filter) \
                     elif isinstance(ret, (CommandBuilder, Command, list, tuple)):
                         propagate(ensure_future(submit_fn(ret)), fut)
                     elif inspect.isawaitable(ret):
-                        LOG.error('A callback cannot return an Awaitable of an Awaitable')
+                        LOG.error("A callback cannot return an Awaitable of an Awaitable")
                         raise InvalidStateError(
-                            'A callback cannot return an Awaitable of an Awaitable')
+                            "A callback cannot return an Awaitable of an Awaitable"
+                        )
 
                 cmd_fut.add_done_callback(cmd_future_finished)
 
                 return fut
         else:
-            LOG.error('the callback %r returned a value of an unexpected type: %s', callback, ret)
-            raise ValueError('unexpected return type from a callback')
+            LOG.error("the callback %r returned a value of an unexpected type: %s", callback, ret)
+            raise ValueError("unexpected return type from a callback")
 
     return implementation

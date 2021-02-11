@@ -1,22 +1,22 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, NoReturn, Optional, Sequence
 import warnings
-from typing import Any, List, Dict, Mapping, NoReturn, Optional, Sequence, TYPE_CHECKING
 
-from .mapper import ValueMapper
 from ..damlast import IdentityTypeVisitor
 from ..damlast.daml_lf_1 import DefDataType, FieldWithType, PrimType, Type
 from ..damlast.lookup import EmptyLookup
 from ..damlast.protocols import SymbolLookup
 from ..model.core import DazlError
-from ..prim import ContractId, to_variant, to_str
+from ..prim import ContractId, to_str, to_variant
+from .mapper import ValueMapper
 
 if TYPE_CHECKING:
     from .mapper import ValueMapper
 
 
-__all__ = ['Context', 'UnboundVarError']
+__all__ = ["Context", "UnboundVarError"]
 
 
 # Context is designed to be subclassable, so avoid making methods that could be static, static.
@@ -32,10 +32,11 @@ class Context:
     """
 
     def __init__(
-            self,
-            mapper: 'ValueMapper',
-            lookup: 'Optional[SymbolLookup]' = None,
-            path: 'Sequence[str]' = ()):
+        self,
+        mapper: "ValueMapper",
+        lookup: "Optional[SymbolLookup]" = None,
+        path: "Sequence[str]" = (),
+    ):
         """
         Initialize a Context.
 
@@ -51,7 +52,7 @@ class Context:
         self.lookup = lookup if lookup is not None else EmptyLookup()
         self.path = tuple(path)
 
-    def convert(self, item_type: 'Type', obj: 'Any'):
+    def convert(self, item_type: "Type", obj: "Any"):
         """
         Convert a value from one representation to another.
 
@@ -103,9 +104,10 @@ class Context:
                     return self.mapper.prim_numeric(self, item_type.prim.args[0].nat, obj)
                 elif item_type.prim.prim == PrimType.GENMAP:
                     return self.mapper.prim_gen_map(
-                        self, item_type.prim.args[0], item_type.prim.args[1], obj)
+                        self, item_type.prim.args[0], item_type.prim.args[1], obj
+                    )
 
-            raise ValueError(f'could not process type: {item_type}')
+            raise ValueError(f"could not process type: {item_type}")
 
         except ValueError as ex:
             # re-raise ValueErrors with a more descriptive string that includes the current context
@@ -113,11 +115,11 @@ class Context:
             raise ValueError(f'value at {".".join(self.path)} has an invalid value: {obj}') from ex
 
     def convert_list(
-            self,
-            element_type: 'Type',
-            elements: 'Sequence[Any]',
-            mapper: 'Optional[ValueMapper]' = None) \
-            -> 'List[Any]':
+        self,
+        element_type: "Type",
+        elements: "Sequence[Any]",
+        mapper: "Optional[ValueMapper]" = None,
+    ) -> "List[Any]":
         """
         Convert a _list_ of elements, each of an assumed type.
 
@@ -134,15 +136,14 @@ class Context:
         :param mapper:
             If not ``None``, an alternate mapper to use when descending down the object.
         """
-        return [self.append_path(f'[{i}', mapper=mapper).convert(element_type, elem)
-                for i, elem in enumerate(elements)]
+        return [
+            self.append_path(f"[{i}", mapper=mapper).convert(element_type, elem)
+            for i, elem in enumerate(elements)
+        ]
 
     def convert_optional(
-            self,
-            element_type: 'Type',
-            element: 'Optional[Any]',
-            mapper: 'Optional[ValueMapper]' = None) \
-            -> 'List[Any]':
+        self, element_type: "Type", element: "Optional[Any]", mapper: "Optional[ValueMapper]" = None
+    ) -> "List[Any]":
         """
         Convert a _list_ of elements, each of an assumed type.
 
@@ -161,15 +162,18 @@ class Context:
         :return:
             The converted object, or ``None`` if the value of the object is ``None``.
         """
-        return self.append_path('?', mapper=mapper).convert(element_type, element) \
-            if element is not None else None
+        return (
+            self.append_path("?", mapper=mapper).convert(element_type, element)
+            if element is not None
+            else None
+        )
 
     def convert_text_map(
-            self,
-            element_type: 'Type',
-            elements: 'Mapping[str, Any]',
-            mapper: 'Optional[ValueMapper]' = None) \
-            -> 'Dict[str, Any]':
+        self,
+        element_type: "Type",
+        elements: "Mapping[str, Any]",
+        mapper: "Optional[ValueMapper]" = None,
+    ) -> "Dict[str, Any]":
         """
         Convert a _map_ of elements, each of an assumed type.
 
@@ -186,17 +190,20 @@ class Context:
         :param mapper:
             If not ``None``, an alternate mapper to use when descending down the object.
         """
-        return {key: self.append_path(key, mapper=mapper).convert(element_type, value)
-                for key, value in elements.items()}
+        return {
+            key: self.append_path(key, mapper=mapper).convert(element_type, value)
+            for key, value in elements.items()
+        }
 
-    def convert_contract_id(self, element_type: 'Type', contract_id: 'Any') -> 'ContractId':
+    def convert_contract_id(self, element_type: "Type", contract_id: "Any") -> "ContractId":
         """
         Convert a contract ID string to a :class:`ContractId`.
         """
         with warnings.catch_warnings():
             # TODO: Drop this and switch to new-style ContractIds
-            warnings.simplefilter('ignore', DeprecationWarning)
+            warnings.simplefilter("ignore", DeprecationWarning)
             from ..model.core import ContractId as DeprecatedContractId
+
             if isinstance(contract_id, DeprecatedContractId):
                 return contract_id
             elif isinstance(contract_id, ContractId):
@@ -206,7 +213,7 @@ class Context:
             else:
                 return DeprecatedContractId(contract_id, element_type.con.tycon)
 
-    def resolve_data_type(self, con: 'Type.Con') -> 'DefDataType':
+    def resolve_data_type(self, con: "Type.Con") -> "DefDataType":
         """
         Resolve a :class:`DefDataType`, including applying any type parameters.
 
@@ -218,7 +225,7 @@ class Context:
             # every time we encounter DefDataType, we expect to be given its type arguments in the
             # same place; there are no other constructs in DAML-LF that express type application,
             # so failure to supply type arguments here is an error
-            raise ValueError('partially-applied types are not allowed')
+            raise ValueError("partially-applied types are not allowed")
 
         # without type arguments, simply return the original DefDataType; it does not need to be
         # modified
@@ -235,25 +242,28 @@ class Context:
             return DefDataType(
                 record=self._replace_all_type_vars(type_vars, dt.record),
                 serializable=dt.serializable,
-                location=dt.location)
+                location=dt.location,
+            )
 
         elif dt.variant is not None:
             return DefDataType(
                 variant=self._replace_all_type_vars(type_vars, dt.variant),
                 serializable=dt.serializable,
-                location=dt.location)
+                location=dt.location,
+            )
 
         elif dt.enum is not None:
             return DefDataType(enum=dt.enum, serializable=dt.serializable, location=dt.location)
 
         elif dt.synonym is not None:
             return DefDataType(
-                synonym=dt.synonym, serializable=dt.serializable, location=dt.location)
+                synonym=dt.synonym, serializable=dt.serializable, location=dt.location
+            )
 
         else:
-            raise ValueError('unknown DefDataType cannot have variables applied to them')
+            raise ValueError("unknown DefDataType cannot have variables applied to them")
 
-    def append_path(self, path: str, mapper: 'Optional[ValueMapper]' = None) -> 'Context':
+    def append_path(self, path: str, mapper: "Optional[ValueMapper]" = None) -> "Context":
         """
         Return a new :class:`Context` marked at a deeper path within an object hierarchy.
 
@@ -265,9 +275,10 @@ class Context:
             A new :class:`Context` with a modified path and possibly a modified mapper.
         """
         return Context(
-            mapper if mapper is not None else self.mapper, self.lookup, self.path + (path,))
+            mapper if mapper is not None else self.mapper, self.lookup, self.path + (path,)
+        )
 
-    def value_validate_enum(self, value: 'Any', enum: 'DefDataType.EnumConstructors') -> str:
+    def value_validate_enum(self, value: "Any", enum: "DefDataType.EnumConstructors") -> str:
         """
         Return either a confirmed valid value from the list of possible enums, or throw an error.
 
@@ -281,6 +292,7 @@ class Context:
             if the value could not be understood as one of the enum constructors.
         """
         from collections.abc import Mapping
+
         if isinstance(value, Mapping):
             ctor, _ = to_variant(value)
         else:
@@ -289,38 +301,43 @@ class Context:
         if ctor in enum.constructors:
             return ctor
 
-        self.value_error(value, f'expected one of {enum.constructors}')
+        self.value_error(value, f"expected one of {enum.constructors}")
 
-    def value_warn(self, value: 'Any', message: str) -> 'None':
+    def value_warn(self, value: "Any", message: str) -> "None":
         """
         Raise a :class:`ValueWarning`, enriched with information in the current context.
         """
         warnings.warn(
             f'value at {".".join(self.path)} has a possibly invalid value: {value} ({message})',
-            ValueWarning, stacklevel=2)
+            ValueWarning,
+            stacklevel=2,
+        )
 
-    def value_error(self, value: 'Any', message: str) -> 'NoReturn':
+    def value_error(self, value: "Any", message: str) -> "NoReturn":
         """
         Raise a :class:`ValueError`, enriched with information in the current context.
         """
-        raise ValueError(f'value at {".".join(self.path)} has an invalid value: {value} ({message})')
+        raise ValueError(
+            f'value at {".".join(self.path)} has an invalid value: {value} ({message})'
+        )
 
     def _replace_all_type_vars(
-            self, type_vars: 'Mapping[str, Type]', fields: 'DefDataType.Fields') \
-            -> 'DefDataType.Fields':
+        self, type_vars: "Mapping[str, Type]", fields: "DefDataType.Fields"
+    ) -> "DefDataType.Fields":
         """
         Substitute type variables from the given mapping into each of the provided fields.
         """
         tv = ReplacingTypeVisitor(type_vars)
         return DefDataType.Fields(
-            [FieldWithType(f.field, tv.visit_type(f.type)) for f in fields.fields])
+            [FieldWithType(f.field, tv.visit_type(f.type)) for f in fields.fields]
+        )
 
 
 class ReplacingTypeVisitor(IdentityTypeVisitor):
-    def __init__(self, type_vars: 'Mapping[str, Type]'):
+    def __init__(self, type_vars: "Mapping[str, Type]"):
         self.type_vars = type_vars
 
-    def resolve_type(self, var: 'str') -> 'Optional[Type]':
+    def resolve_type(self, var: "str") -> "Optional[Type]":
         replacement = self.type_vars.get(var)
         if replacement is None:
             raise UnboundVarError(var)

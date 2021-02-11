@@ -17,46 +17,76 @@ specific party.
 # for a more concise representation of the various flavors of the API. The unit test
 # ``test_api_consistency.py`` verifies that these implementations are generally in sync with each
 # other the way that the documentation says they are.
-from asyncio import get_event_loop, ensure_future
+from asyncio import ensure_future, get_event_loop
 from contextlib import contextmanager
 from functools import wraps
 from logging import INFO
 from pathlib import Path
+from typing import (
+    Any,
+    Awaitable,
+    BinaryIO,
+    Collection,
+    ContextManager,
+    List,
+    Optional,
+    Tuple,
+    Union,
+)
 from uuid import uuid4
-from typing import Any, Awaitable, BinaryIO, Collection, ContextManager, List, Optional, \
-    Tuple, Union
 
 from .. import LOG
-from .bots import Bot, BotCollection
-from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
-from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING
 from ..damlast import get_dar_package_ids
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
-from ..model.core import ContractsState, ContractMatch, \
-    ContractContextualData, ContractContextualDataCollection, Dar
+from ..model.core import (
+    ContractContextualData,
+    ContractContextualDataCollection,
+    ContractMatch,
+    ContractsState,
+    Dar,
+)
 from ..model.ledger import LedgerMetadata
-from ..model.reading import InitEvent, ReadyEvent, ContractCreateEvent, ContractExercisedEvent, \
-    ContractArchiveEvent, TransactionStartEvent, TransactionEndEvent, PackagesAddedEvent, EventKey
+from ..model.reading import (
+    ContractArchiveEvent,
+    ContractCreateEvent,
+    ContractExercisedEvent,
+    EventKey,
+    InitEvent,
+    PackagesAddedEvent,
+    ReadyEvent,
+    TransactionEndEvent,
+    TransactionStartEvent,
+)
 from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
-from ..prim import ContractId, ContractData, Party, TimeDeltaLike, to_party
+from ..prim import ContractData, ContractId, Party, TimeDeltaLike, to_party
 from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
 from ..util.io import get_bytes
-from ._events import EventHandler, AEventHandler, EventHandlerDecorator, AEventHandlerDecorator, \
-    fluentize
+from ..util.tools import as_list
+from ._base_model import CREATE_IF_MISSING, IfMissingPartyBehavior
+from ._events import (
+    AEventHandler,
+    AEventHandlerDecorator,
+    EventHandler,
+    EventHandlerDecorator,
+    fluentize,
+)
 from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
-from ..util.tools import as_list
+from .bots import Bot, BotCollection
+from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 
 DEFAULT_TIMEOUT_SECONDS = 30
 
 
 @contextmanager
-def simple_client(url: 'Optional[str]' = None, party: 'Union[None, str, Party]' = None,
-                  log_level: 'Optional[int]' = INFO) \
-        -> 'ContextManager[SimplePartyClient]':
+def simple_client(
+    url: "Optional[str]" = None,
+    party: "Union[None, str, Party]" = None,
+    log_level: "Optional[int]" = INFO,
+) -> "ContextManager[SimplePartyClient]":
     """
     Start up a single client connecting to a single specific party.
 
@@ -75,19 +105,23 @@ def simple_client(url: 'Optional[str]' = None, party: 'Union[None, str, Party]' 
     """
     if log_level is not None:
         from .. import setup_default_logger
+
         setup_default_logger(log_level)
 
     import os
-    if url is None:
-        url = os.getenv('DAML_LEDGER_URL')
-    if not url:
-        raise ValueError('url must be specified, or the DAML_LEDGER_URL environment variable '
-                         'must be set')
-    if not party:
-        raise ValueError('party must be specified, or the DAML_LEDGER_PARTY environment variable '
-                         'must be set')
 
-    LOG.info('Starting a simple_client with to %s with party %r...', url, party)
+    if url is None:
+        url = os.getenv("DAML_LEDGER_URL")
+    if not url:
+        raise ValueError(
+            "url must be specified, or the DAML_LEDGER_URL environment variable " "must be set"
+        )
+    if not party:
+        raise ValueError(
+            "party must be specified, or the DAML_LEDGER_PARTY environment variable " "must be set"
+        )
+
+    LOG.info("Starting a simple_client with to %s with party %r...", url, party)
 
     network = Network()
     network.set_config(url=url)
@@ -107,33 +141,36 @@ class async_network:
     """
     Create a :class:`Network` and ensure that it has the given set of DARs loaded.
     """
+
     def __init__(
-            self,
-            url: 'Optional[str]' = None,
-            dars: 'Optional[Union[Dar, Collection[Dar]]]' = None):
-        LOG.debug('async_network.__init__')
+        self, url: "Optional[str]" = None, dars: "Optional[Union[Dar, Collection[Dar]]]" = None
+    ):
+        LOG.debug("async_network.__init__")
         self.network = Network()
         if url:
             self.network.set_config(url=url)
         self.dars = as_list(dars)  # type: List[Dar]
 
         LOG.debug("Analyzing package_id config...")
-        self.package_ids = {pkg_id for dar in self.dars for pkg_id in get_dar_package_ids(dar)} \
-            if self.dars else None
+        self.package_ids = (
+            {pkg_id for dar in self.dars for pkg_id in get_dar_package_ids(dar)}
+            if self.dars
+            else None
+        )
         LOG.debug("Package id analysis done.")
 
         if self.package_ids:
             self.network.set_config(package_ids=self.package_ids)
 
     async def __aenter__(self):
-        LOG.debug('async_network.__aenter__')
+        LOG.debug("async_network.__aenter__")
 
         for dar in self.dars:
             await self.network.aio_global().ensure_dar(dar)
         return self.network
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        LOG.debug('async_network.__aexit__')
+        LOG.debug("async_network.__aexit__")
         fut = self.network.shutdown()
         if fut is not None:
             await fut
@@ -145,27 +182,28 @@ class Network:
     instances.
     """
 
-    def __init__(self, metrics: 'Optional[MetricEvents]' = None):
+    def __init__(self, metrics: "Optional[MetricEvents]" = None):
         self._impl = _NetworkImpl(metrics)
         self._main_fut = None
 
     def set_config(
-            self,
-            *config: 'Union[NetworkConfig, AnonymousNetworkConfig]',
-            url: 'Optional[str]' = None,
-            admin_url: 'Optional[str]' = None,
-            **kwargs):
+        self,
+        *config: "Union[NetworkConfig, AnonymousNetworkConfig]",
+        url: "Optional[str]" = None,
+        admin_url: "Optional[str]" = None,
+        **kwargs
+    ):
         self._impl.set_config(*config, url=url, admin_url=admin_url, **kwargs)
 
     @property
-    def lookup(self) -> 'SymbolLookup':
+    def lookup(self) -> "SymbolLookup":
         """
         Return a :class:`SymbolLookup` that provides type and package information for known
         packages.
         """
         return self._impl.lookup
 
-    def resolved_config(self) -> 'NetworkConfig':
+    def resolved_config(self) -> "NetworkConfig":
         """
         Calculate the configuration that will be used for this client when it is instantiated.
         """
@@ -173,14 +211,14 @@ class Network:
 
     # <editor-fold desc="Global/Party client creation">
 
-    def simple_global(self) -> 'SimpleGlobalClient':
+    def simple_global(self) -> "SimpleGlobalClient":
         """
         Return a :class:`GlobalClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
         """
         return self._impl.global_impl(SimpleGlobalClient)
 
-    def aio_global(self) -> 'AIOGlobalClient':
+    def aio_global(self) -> "AIOGlobalClient":
         """
         Return a :class:`GlobalClient` that works on an asyncio event loop.
 
@@ -191,7 +229,7 @@ class Network:
         self._impl.freeze()
         return client
 
-    def simple_party(self, party: 'Union[str, Party]') -> 'SimplePartyClient':
+    def simple_party(self, party: "Union[str, Party]") -> "SimplePartyClient":
         """
         Return a :class:`PartyClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
@@ -200,14 +238,14 @@ class Network:
         """
         return self._impl.party_impl(to_party(party), SimplePartyClient)
 
-    def simple_new_party(self) -> 'SimplePartyClient':
+    def simple_new_party(self) -> "SimplePartyClient":
         """
         Return a :class:`PartyClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
         """
         return self.simple_party(str(uuid4()))
 
-    def aio_party(self, party: 'Union[str, Party]') -> 'AIOPartyClient':
+    def aio_party(self, party: "Union[str, Party]") -> "AIOPartyClient":
         """
         Return a :class:`PartyClient` that works on an asyncio event loop.
 
@@ -215,7 +253,7 @@ class Network:
         """
         return self._impl.party_impl(Party(party), AIOPartyClient)
 
-    def aio_new_party(self) -> 'AIOPartyClient':
+    def aio_new_party(self) -> "AIOPartyClient":
         """
         Return a :class:`PartyClient` for a random party that works on an asyncio event loop.
         This will never return the same object twice.
@@ -223,9 +261,8 @@ class Network:
         return self.aio_party(str(uuid4()))
 
     def party_bots(
-            self,
-            party: 'Union[str, Party]',
-            if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING) -> 'BotCollection':
+        self, party: "Union[str, Party]", if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING
+    ) -> "BotCollection":
         """
         Return the collection of bots associated with a party.
 
@@ -242,7 +279,8 @@ class Network:
     # <editor-fold desc="Daemon thread-based scheduling API">
 
     def start_in_background(
-            self, daemon: bool = True, install_signal_handlers: 'Optional[bool]' = None) -> None:
+        self, daemon: bool = True, install_signal_handlers: "Optional[bool]" = None
+    ) -> None:
         """
         Connect to the ledger in a background thread.
 
@@ -254,7 +292,7 @@ class Network:
             self._impl.invoker.install_signal_handlers()
         return self._impl.start(daemon)
 
-    def shutdown(self) -> 'Optional[Awaitable[None]]':
+    def shutdown(self) -> "Optional[Awaitable[None]]":
         """
         Gracefully shut down all network connections and notify all clients that they are about to
         be terminated.
@@ -268,7 +306,7 @@ class Network:
         self._impl.shutdown()
         return self._main_fut
 
-    def join(self, timeout: 'Optional[float]' = None) -> None:
+    def join(self, timeout: "Optional[float]" = None) -> None:
         """
         Block the current thread until the client is shut down.
 
@@ -288,9 +326,8 @@ class Network:
         self._main_fut = ensure_future(self.aio_run(keep_open=False))
 
     def run_until_complete(
-            self, *coroutines: 'Awaitable[None]',
-            install_signal_handlers: 'Optional[bool]' = None) \
-            -> None:
+        self, *coroutines: "Awaitable[None]", install_signal_handlers: "Optional[bool]" = None
+    ) -> None:
         """
         Block the main thread and run the application in an event loop on the main thread. The loop
         terminates when the given (optional) coroutines terminate OR :meth:`shutdown` is called AND
@@ -310,12 +347,11 @@ class Network:
         if validate_install_signal_handlers(install_signal_handlers):
             self._impl.invoker.install_signal_handlers()
         self._impl.invoker.loop.run_until_complete(self.aio_run(*coroutines))
-        LOG.info('The internal run_until_complete event loop has now completed.')
+        LOG.info("The internal run_until_complete event loop has now completed.")
 
     def run_forever(
-            self, *coroutines: 'Awaitable[None]',
-            install_signal_handlers: 'Optional[bool]' = None) \
-            -> None:
+        self, *coroutines: "Awaitable[None]", install_signal_handlers: "Optional[bool]" = None
+    ) -> None:
         """
         Block the main thread and run the application in an event loop on the main thread. The loop
         terminates when :meth:`shutdown` is called AND all active command submissions and event
@@ -325,7 +361,7 @@ class Network:
         if validate_install_signal_handlers(install_signal_handlers):
             self._impl.invoker.install_signal_handlers()
         self._impl.invoker.loop.run_until_complete(self.aio_run(*coroutines))
-        LOG.info('The internal run_forever event loop has been shut down.')
+        LOG.info("The internal run_forever event loop has been shut down.")
 
     async def aio_run(self, *coroutines, keep_open: bool = True) -> None:
         """
@@ -341,17 +377,17 @@ class Network:
         if not keep_open:
             self._impl.invoker.level = RunLevel.RUN_UNTIL_IDLE
         await self._impl.aio_run(*coroutines)
-        LOG.info('The aio_run coroutine has completed.')
+        LOG.info("The aio_run coroutine has completed.")
 
     # </editor-fold>
 
-    def parties(self) -> 'Collection[Party]':
+    def parties(self) -> "Collection[Party]":
         """
         Return a snapshot of the set of parties that exist right now.
         """
         return self._impl.parties()
 
-    def bots(self) -> 'Collection[Bot]':
+    def bots(self) -> "Collection[Bot]":
         return self._impl.bots()
 
     def __enter__(self):
@@ -368,16 +404,16 @@ class GlobalClient:
     management and current time.
     """
 
-    def __init__(self, impl: '_NetworkImpl'):
+    def __init__(self, impl: "_NetworkImpl"):
         self._impl = impl
 
 
 class AIOGlobalClient(GlobalClient):
-
     async def ensure_dar(
-            self,
-            contents: 'Union[str, Path, bytes, BinaryIO]',
-            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        self,
+        contents: "Union[str, Path, bytes, BinaryIO]",
+        timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS,
+    ) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
         Throw an exception if the specified DARs do not exist within the specified timeout.
@@ -389,9 +425,8 @@ class AIOGlobalClient(GlobalClient):
         return await self._impl.upload_package(raw_bytes, timeout)
 
     async def ensure_packages(
-            self,
-            package_ids: 'Collection[str]',
-            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        self, package_ids: "Collection[str]", timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS
+    ) -> None:
         """
         Validate that packages with the specified package IDs exist on the ledger. Throw an
         exception if the specified packages do not exist within the specified timeout.
@@ -409,11 +444,11 @@ class AIOGlobalClient(GlobalClient):
 
 
 class SimpleGlobalClient(GlobalClient):
-
     def ensure_dar(
-            self,
-            contents: 'Union[str, Path, bytes, BinaryIO]',
-            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        self,
+        contents: "Union[str, Path, bytes, BinaryIO]",
+        timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS,
+    ) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
         Throw an exception if the specified DARs do not exist within the specified timeout.
@@ -422,13 +457,11 @@ class SimpleGlobalClient(GlobalClient):
         :param timeout: The maximum length of time to wait before giving up.
         """
         raw_bytes = get_bytes(contents)
-        return self._impl.invoker.run_in_loop(
-            lambda: self._impl.upload_package(raw_bytes, timeout))
+        return self._impl.invoker.run_in_loop(lambda: self._impl.upload_package(raw_bytes, timeout))
 
     def ensure_packages(
-            self,
-            package_ids: 'Collection[str]',
-            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        self, package_ids: "Collection[str]", timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS
+    ) -> None:
         """
         Validate that packages with the specified package IDs exist on the ledger. Throw an
         exception if the specified packages do not exist within the specified timeout.
@@ -437,10 +470,10 @@ class SimpleGlobalClient(GlobalClient):
         :param timeout: The maximum length of time to wait before giving up.
         """
         return self._impl.invoker.run_in_loop(
-            lambda: self._impl.ensure_package_ids(package_ids, timeout))
+            lambda: self._impl.ensure_package_ids(package_ids, timeout)
+        )
 
-    def metadata(self, timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) \
-            -> 'LedgerMetadata':
+    def metadata(self, timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS) -> "LedgerMetadata":
         """
         Return the current set of known packages.
         """
@@ -453,19 +486,19 @@ class PartyClient:
     with a Ledger API implementation from the perspective of a single client.
     """
 
-    def __init__(self, impl: '_PartyClientImpl'):
+    def __init__(self, impl: "_PartyClientImpl"):
         self._impl = impl
 
     # <editor-fold desc="Ledger/client metadata">
 
     @property
-    def party(self) -> 'Party':
+    def party(self) -> "Party":
         """
         Return the party serviced by this client.
         """
         return self._impl.party
 
-    def resolved_config(self) -> 'PartyConfig':
+    def resolved_config(self) -> "PartyConfig":
         """
         Calculate the configuration that will be used for this client when it is instantiated.
         """
@@ -482,14 +515,14 @@ class AIOPartyClient(PartyClient):
 
     # <editor-fold desc="Event handler registration">
 
-    def ledger_init(self) -> 'AEventHandlerDecorator[InitEvent]':
+    def ledger_init(self) -> "AEventHandlerDecorator[InitEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` has been
         instructed to begin, but before any network activity is started.
         """
         return fluentize(self.add_ledger_init)
 
-    def add_ledger_init(self, handler: 'AEventHandler[InitEvent]') -> None:
+    def add_ledger_init(self, handler: "AEventHandler[InitEvent]") -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` has been instructed to
         begin, but before any network activity is started.
@@ -501,7 +534,7 @@ class AIOPartyClient(PartyClient):
         for key in EventKey.init():
             self._impl.add_event_handler(key, handler, None, self)
 
-    def ledger_ready(self) -> 'AEventHandlerDecorator[ReadyEvent]':
+    def ledger_ready(self) -> "AEventHandlerDecorator[ReadyEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` has caught
         up to the head of the ledger, but before any :meth:`ledger_create` or :meth:`ledger_archive`
@@ -509,7 +542,7 @@ class AIOPartyClient(PartyClient):
         """
         return fluentize(self.add_ledger_ready)
 
-    def add_ledger_ready(self, handler: 'AEventHandler[ReadyEvent]') -> None:
+    def add_ledger_ready(self, handler: "AEventHandler[ReadyEvent]") -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` has caught up to the head of
         the ledger, but before any :meth:`ledger_create` or :meth:`ledger_archive` callbacks are
@@ -522,8 +555,9 @@ class AIOPartyClient(PartyClient):
         for key in EventKey.ready():
             self._impl.add_event_handler(key, handler, None, self)
 
-    def ledger_packages_added(self, initial: bool = False) \
-            -> 'AEventHandlerDecorator[PackagesAddedEvent]':
+    def ledger_packages_added(
+        self, initial: bool = False
+    ) -> "AEventHandlerDecorator[PackagesAddedEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` has
         detected new packages added to the ledger.
@@ -539,7 +573,8 @@ class AIOPartyClient(PartyClient):
         return fluentize(self.add_ledger_packages_added, initial=initial)
 
     def add_ledger_packages_added(
-            self, handler: 'AEventHandler[PackagesAddedEvent]', initial: bool = False) -> None:
+        self, handler: "AEventHandler[PackagesAddedEvent]", initial: bool = False
+    ) -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` has detected new packages
         added to the ledger.
@@ -558,7 +593,7 @@ class AIOPartyClient(PartyClient):
         for key in EventKey.packages_added(initial=initial, changed=True):
             self._impl.add_event_handler(key, handler, None, self)
 
-    def ledger_transaction_start(self) -> 'AEventHandlerDecorator[TransactionStartEvent]':
+    def ledger_transaction_start(self) -> "AEventHandlerDecorator[TransactionStartEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` receives a
         new transaction. Called before individual :meth:`ledger_create` and :meth:`ledger_archive`
@@ -566,7 +601,7 @@ class AIOPartyClient(PartyClient):
         """
         return fluentize(self.add_ledger_transaction_start)
 
-    def add_ledger_transaction_start(self, handler: 'AEventHandler[TransactionStartEvent]') -> None:
+    def add_ledger_transaction_start(self, handler: "AEventHandler[TransactionStartEvent]") -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` receives a new transaction.
         Called before individual :meth:`ledger_create` and :meth:`ledger_archive` callbacks.
@@ -578,7 +613,7 @@ class AIOPartyClient(PartyClient):
         for key in EventKey.transaction_start():
             self._impl.add_event_handler(key, handler, None, self)
 
-    def ledger_transaction_end(self) -> 'AEventHandlerDecorator[TransactionEndEvent]':
+    def ledger_transaction_end(self) -> "AEventHandlerDecorator[TransactionEndEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` receives a
         new transaction. Called after individual :meth:`ledger_create` and :meth:`ledger_archive`
@@ -586,7 +621,7 @@ class AIOPartyClient(PartyClient):
         """
         return fluentize(self.add_ledger_transaction_end)
 
-    def add_ledger_transaction_end(self, handler: 'AEventHandler[TransactionEndEvent]') -> None:
+    def add_ledger_transaction_end(self, handler: "AEventHandler[TransactionEndEvent]") -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` receives a new transaction.
         Called after individual :meth:`ledger_create` and :meth:`ledger_archive` callbacks.
@@ -598,8 +633,9 @@ class AIOPartyClient(PartyClient):
         for key in EventKey.transaction_end():
             self._impl.add_event_handler(key, handler, None, self)
 
-    def ledger_created(self, template: Any, match: 'Optional[ContractMatch]' = None) \
-            -> 'AEventHandlerDecorator[ContractCreateEvent]':
+    def ledger_created(
+        self, template: Any, match: "Optional[ContractMatch]" = None
+    ) -> "AEventHandlerDecorator[ContractCreateEvent]":
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters a newly created
         template.
@@ -609,16 +645,21 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
-        def _register_created(cb: 'AEventHandler[ContractCreateEvent]') \
-                -> 'AEventHandler[ContractCreateEvent]':
+
+        def _register_created(
+            cb: "AEventHandler[ContractCreateEvent]",
+        ) -> "AEventHandler[ContractCreateEvent]":
             self.add_ledger_created(template, match=match, handler=cb)
             return cb
 
         return _register_created
 
     def add_ledger_created(
-            self, template: Any, handler: 'AEventHandler[ContractCreateEvent]',
-            match: 'Optional[ContractMatch]' = None) -> 'Bot':
+        self,
+        template: Any,
+        handler: "AEventHandler[ContractCreateEvent]",
+        match: "Optional[ContractMatch]" = None,
+    ) -> "Bot":
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters a newly created
         contract instance of a template.
@@ -634,8 +675,9 @@ class AIOPartyClient(PartyClient):
         bot.add_event_handler(EventKey.contract_created(True, template), handler, match)
         return bot
 
-    def ledger_exercised(self, template: Any, choice: str) \
-            -> 'AEventHandlerDecorator[ContractExercisedEvent]':
+    def ledger_exercised(
+        self, template: Any, choice: str
+    ) -> "AEventHandlerDecorator[ContractExercisedEvent]":
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters an exercised
         choice event.
@@ -645,16 +687,18 @@ class AIOPartyClient(PartyClient):
         :param choice:
             The name of the choice to listen for exercises on.
         """
-        def _register_exercised(cb: 'AEventHandler[ContractExercisedEvent]') \
-                -> 'AEventHandler[ContractExercisedEvent]':
+
+        def _register_exercised(
+            cb: "AEventHandler[ContractExercisedEvent]",
+        ) -> "AEventHandler[ContractExercisedEvent]":
             self.add_ledger_exercised(template, choice, handler=cb)
             return cb
 
         return _register_exercised
 
     def add_ledger_exercised(
-            self, template: Any, choice: str, handler: 'AEventHandler[ContractExercisedEvent]') \
-            -> None:
+        self, template: Any, choice: str, handler: "AEventHandler[ContractExercisedEvent]"
+    ) -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters an exercised
         choice event.
@@ -669,8 +713,9 @@ class AIOPartyClient(PartyClient):
         for key in EventKey.contract_exercised(True, template, choice):
             self._impl.add_event_handler(key, handler, None, self)
 
-    def ledger_archived(self, template: Any, match: 'Optional[ContractMatch]' = None) \
-            -> 'AEventHandlerDecorator[ContractArchiveEvent]':
+    def ledger_archived(
+        self, template: Any, match: "Optional[ContractMatch]" = None
+    ) -> "AEventHandlerDecorator[ContractArchiveEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` encounters
         a newly archived contract instance of a template.
@@ -680,16 +725,21 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
-        def _register_archived(cb: 'AEventHandler[ContractArchiveEvent]') \
-                -> 'AEventHandler[ContractArchiveEvent]':
+
+        def _register_archived(
+            cb: "AEventHandler[ContractArchiveEvent]",
+        ) -> "AEventHandler[ContractArchiveEvent]":
             self.add_ledger_archived(template, match=match, handler=cb)
             return cb
 
         return _register_archived
 
     def add_ledger_archived(
-            self, template: Any, handler: 'AEventHandler[ContractArchiveEvent]',
-            match: 'Optional[ContractMatch]' = None) -> None:
+        self,
+        template: Any,
+        handler: "AEventHandler[ContractArchiveEvent]",
+        match: "Optional[ContractMatch]" = None,
+    ) -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters a newly archived
         contract instance of a template.
@@ -709,11 +759,11 @@ class AIOPartyClient(PartyClient):
     # <editor-fold desc="Command submission">
 
     def submit(
-            self,
-            commands: 'EventHandlerResponse',
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> 'Awaitable[None]':
+        self,
+        commands: "EventHandlerResponse",
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> "Awaitable[None]":
         """
         Submit commands to the ledger.
 
@@ -730,15 +780,16 @@ class AIOPartyClient(PartyClient):
             occurred when trying to process them.
         """
         return self._impl.write_commands(
-            commands, workflow_id=workflow_id, deduplication_time=deduplication_time)
+            commands, workflow_id=workflow_id, deduplication_time=deduplication_time
+        )
 
     def submit_create(
-            self,
-            template_name: str,
-            arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> 'Awaitable[None]':
+        self,
+        template_name: str,
+        arguments: "Optional[dict]" = None,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> "Awaitable[None]":
         """
         Submit a single create command. Equivalent to calling :meth:`submit` with a single
         ``create``.
@@ -758,19 +809,21 @@ class AIOPartyClient(PartyClient):
             occurred when trying to process them.
         """
         from .. import create
+
         return self.submit(
             create(template_name, arguments),
             workflow_id=workflow_id,
-            deduplication_time=deduplication_time)
+            deduplication_time=deduplication_time,
+        )
 
     def submit_exercise(
-            self,
-            cid: 'ContractId',
-            choice_name: str,
-            arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> 'Awaitable[None]':
+        self,
+        cid: "ContractId",
+        choice_name: str,
+        arguments: "Optional[dict]" = None,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> "Awaitable[None]":
         """
         Submit a single exercise choice. Equivalent to calling :meth:`submit` with a single
         ``exercise``.
@@ -793,20 +846,22 @@ class AIOPartyClient(PartyClient):
             occurred when trying to process them.
         """
         from .. import exercise
+
         return self.submit(
             exercise(cid, choice_name, arguments),
             workflow_id=workflow_id,
-            deduplication_time=deduplication_time)
+            deduplication_time=deduplication_time,
+        )
 
     def submit_exercise_by_key(
-            self,
-            template_name: 'TemplateNameLike',
-            contract_key: 'Any',
-            choice_name: str,
-            arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> 'Awaitable[None]':
+        self,
+        template_name: "TemplateNameLike",
+        contract_key: "Any",
+        choice_name: str,
+        arguments: "Optional[dict]" = None,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> "Awaitable[None]":
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
         single ``exercise_by_key``.
@@ -828,20 +883,22 @@ class AIOPartyClient(PartyClient):
             return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise_by_key
+
         return self.submit(
             exercise_by_key(template_name, contract_key, choice_name, arguments),
             workflow_id=workflow_id,
-            deduplication_time=deduplication_time)
+            deduplication_time=deduplication_time,
+        )
 
     def submit_create_and_exercise(
-            self,
-            template_name: 'TemplateNameLike',
-            arguments: 'dict',
-            choice_name: str,
-            choice_arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> 'Awaitable[None]':
+        self,
+        template_name: "TemplateNameLike",
+        arguments: "dict",
+        choice_name: str,
+        choice_arguments: "Optional[dict]" = None,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> "Awaitable[None]":
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
         :meth:`submit` with a single ``create_and_exercise``.
@@ -862,26 +919,26 @@ class AIOPartyClient(PartyClient):
             return an ``ALREADY_EXISTS`` error.
         """
         from .. import create_and_exercise
+
         return self.submit(
             create_and_exercise(template_name, arguments, choice_name, choice_arguments),
             workflow_id=workflow_id,
-            deduplication_time=deduplication_time)
+            deduplication_time=deduplication_time,
+        )
 
     # </editor-fold>
 
     # <editor-fold desc="Active contract set">
 
-    def find_by_id(self, cid: 'Union[str, ContractId]') -> 'Optional[ContractContextualData]':
+    def find_by_id(self, cid: "Union[str, ContractId]") -> "Optional[ContractContextualData]":
         return self._impl.find_by_id(cid)
 
-    def find(self,
-             template: Any,
-             match: 'ContractMatch' = None,
-             include_archived: bool = False) \
-            -> ContractContextualDataCollection:
+    def find(
+        self, template: Any, match: "ContractMatch" = None, include_archived: bool = False
+    ) -> ContractContextualDataCollection:
         return self._impl.find(template, match, include_archived=include_archived)
 
-    def find_active(self, template: Any, match: 'ContractMatch' = None) -> 'ContractsState':
+    def find_active(self, template: Any, match: "ContractMatch" = None) -> "ContractsState":
         """
         Immediately return data from the current active contract set.
 
@@ -902,8 +959,9 @@ class AIOPartyClient(PartyClient):
         """
         return self._impl.find_active(template, match)
 
-    def find_historical(self, template: Any, match: 'ContractMatch' = None) \
-            -> 'ContractContextualDataCollection':
+    def find_historical(
+        self, template: Any, match: "ContractMatch" = None
+    ) -> "ContractContextualDataCollection":
         """
         Immediately return data from the current active and historical contract set as
         a contextual data collection
@@ -924,9 +982,9 @@ class AIOPartyClient(PartyClient):
         """
         return self._impl.find_historical(template, match)
 
-    def find_one(self, template: Any, match: 'ContractMatch' = None,
-                 timeout: float = DEFAULT_TIMEOUT_SECONDS) \
-            -> 'Awaitable[Tuple[ContractId, ContractData]]':
+    def find_one(
+        self, template: Any, match: "ContractMatch" = None, timeout: float = DEFAULT_TIMEOUT_SECONDS
+    ) -> "Awaitable[Tuple[ContractId, ContractData]]":
         """
         Return data from the current active contract set when at least some amount of rows exist in
         the active contract set.
@@ -943,12 +1001,16 @@ class AIOPartyClient(PartyClient):
         """
         return await_then(
             self.find_nonempty(template, match, min_count=1, timeout=timeout),
-            lambda state: next(iter(state.items())))
+            lambda state: next(iter(state.items())),
+        )
 
     def find_nonempty(
-            self, template: 'Any', match: 'ContractMatch', min_count: int = 1,
-            timeout: float = DEFAULT_TIMEOUT_SECONDS) \
-            -> 'Awaitable[ContractsState]':
+        self,
+        template: "Any",
+        match: "ContractMatch",
+        min_count: int = 1,
+        timeout: float = DEFAULT_TIMEOUT_SECONDS,
+    ) -> "Awaitable[ContractsState]":
         """
         Return data from the current active contract set when at least some amount of rows exist in
         the active contract set.
@@ -971,13 +1033,14 @@ class AIOPartyClient(PartyClient):
 
     # <editor-fold desc="Ledger/client metadata">
 
-    def set_config(self, url: 'Optional[str]', **kwargs):
+    def set_config(self, url: "Optional[str]", **kwargs):
         self._impl.set_config(url=url, **kwargs)
 
     async def ensure_dar(
-            self,
-            contents: 'Union[str, Path, bytes, BinaryIO]',
-            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        self,
+        contents: "Union[str, Path, bytes, BinaryIO]",
+        timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS,
+    ) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
         Throw an exception if the specified DARs do not exist within the specified timeout.
@@ -988,7 +1051,7 @@ class AIOPartyClient(PartyClient):
         raw_bytes = get_bytes(contents)
         return await self._impl.parent.upload_package(raw_bytes, timeout)
 
-    def ready(self) -> 'Awaitable[None]':
+    def ready(self) -> "Awaitable[None]":
         """
         Block until the ledger client has caught up to the current head and is ready to send
         commands.
@@ -1010,14 +1073,14 @@ class SimplePartyClient(PartyClient):
 
     # <editor-fold desc="Event handler registration">
 
-    def ledger_init(self) -> 'EventHandlerDecorator[InitEvent]':
+    def ledger_init(self) -> "EventHandlerDecorator[InitEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` has been
         instructed to begin, but before any network activity is started.
         """
         return fluentize(self.add_ledger_init)
 
-    def add_ledger_init(self, handler: 'EventHandler[InitEvent]') -> None:
+    def add_ledger_init(self, handler: "EventHandler[InitEvent]") -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` has been instructed to
         begin, but before any network activity is started.
@@ -1026,14 +1089,15 @@ class SimplePartyClient(PartyClient):
             The handler to register. May return anything that can be successfully coerced into a
             :class:`CommandPayload`.
         """
+
         @wraps(handler)
-        def _background_ledger_init(event: 'InitEvent') -> 'Awaitable[EventHandlerResponse]':
+        def _background_ledger_init(event: "InitEvent") -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.init():
             self._impl.add_event_handler(key, _background_ledger_init, None, self)
 
-    def ledger_ready(self) -> 'EventHandlerDecorator[ReadyEvent]':
+    def ledger_ready(self) -> "EventHandlerDecorator[ReadyEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` has caught
         up to the head of the ledger, but before any :meth:`ledger_create` or :meth:`ledger_archive`
@@ -1041,7 +1105,7 @@ class SimplePartyClient(PartyClient):
         """
         return fluentize(self.add_ledger_ready)
 
-    def add_ledger_ready(self, handler: 'EventHandler[ReadyEvent]') -> None:
+    def add_ledger_ready(self, handler: "EventHandler[ReadyEvent]") -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` has caught up to the head of
         the ledger, but before any :meth:`ledger_create` or :meth:`ledger_archive` callbacks are
@@ -1051,15 +1115,17 @@ class SimplePartyClient(PartyClient):
             The handler to register. May return anything that can be successfully coerced into a
             :class:`CommandPayload`.
         """
+
         @wraps(handler)
-        def _background_ledger_ready(event: 'ReadyEvent') -> 'Awaitable[EventHandlerResponse]':
+        def _background_ledger_ready(event: "ReadyEvent") -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.ready():
             self._impl.add_event_handler(key, _background_ledger_ready, None, self)
 
-    def ledger_packages_added(self, initial: bool = False) \
-            -> 'EventHandlerDecorator[PackagesAddedEvent]':
+    def ledger_packages_added(
+        self, initial: bool = False
+    ) -> "EventHandlerDecorator[PackagesAddedEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` has
         detected new packages added to the ledger.
@@ -1075,7 +1141,8 @@ class SimplePartyClient(PartyClient):
         return fluentize(self.add_ledger_packages_added, initial=initial)
 
     def add_ledger_packages_added(
-            self, handler: 'EventHandler[PackagesAddedEvent]', initial: bool = False) -> None:
+        self, handler: "EventHandler[PackagesAddedEvent]", initial: bool = False
+    ) -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` has detected new packages
         added to the ledger.
@@ -1091,15 +1158,17 @@ class SimplePartyClient(PartyClient):
             uploaded after this client has started.
         :return:
         """
+
         @wraps(handler)
-        def _background_ledger_packages_added(event: 'PackagesAddedEvent') \
-                -> 'Awaitable[EventHandlerResponse]':
+        def _background_ledger_packages_added(
+            event: "PackagesAddedEvent",
+        ) -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.packages_added(initial=initial, changed=True):
             self._impl.add_event_handler(key, _background_ledger_packages_added, None, self)
 
-    def ledger_transaction_start(self) -> 'EventHandlerDecorator[TransactionStartEvent]':
+    def ledger_transaction_start(self) -> "EventHandlerDecorator[TransactionStartEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` receives a
         new transaction. Called before individual :meth:`ledger_create` and :meth:`ledger_archive`
@@ -1107,7 +1176,7 @@ class SimplePartyClient(PartyClient):
         """
         return fluentize(self.add_ledger_transaction_start)
 
-    def add_ledger_transaction_start(self, handler: 'EventHandler[TransactionStartEvent]') -> None:
+    def add_ledger_transaction_start(self, handler: "EventHandler[TransactionStartEvent]") -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` receives a new transaction.
         Called before individual :meth:`ledger_create` and :meth:`ledger_archive` callbacks.
@@ -1116,29 +1185,32 @@ class SimplePartyClient(PartyClient):
             The handler to register. This can either be a coroutine or a normal function, and may
             return anything that can be successfully coerced into a :class:`CommandPayload`.
         """
+
         @wraps(handler)
-        def _background_ledger_transaction_start(event: TransactionStartEvent) \
-                -> Awaitable[EventHandlerResponse]:
+        def _background_ledger_transaction_start(
+            event: TransactionStartEvent,
+        ) -> Awaitable[EventHandlerResponse]:
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.transaction_start():
             self._impl.add_event_handler(key, _background_ledger_transaction_start, None, self)
 
-    def ledger_transaction_end(self) -> 'EventHandlerDecorator[TransactionEndEvent]':
+    def ledger_transaction_end(self) -> "EventHandlerDecorator[TransactionEndEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` receives a
         new transaction. Called after individual :meth:`ledger_create` and :meth:`ledger_archive`
         callbacks.
         """
 
-        def _register_transaction_end(cb: 'EventHandler[TransactionEndEvent]') \
-                -> 'EventHandler[TransactionEndEvent]':
+        def _register_transaction_end(
+            cb: "EventHandler[TransactionEndEvent]",
+        ) -> "EventHandler[TransactionEndEvent]":
             self.add_ledger_transaction_end(cb)
             return cb
 
         return _register_transaction_end
 
-    def add_ledger_transaction_end(self, handler: 'EventHandler[TransactionEndEvent]') -> None:
+    def add_ledger_transaction_end(self, handler: "EventHandler[TransactionEndEvent]") -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` receives a new transaction.
         Called after individual :meth:`ledger_create` and :meth:`ledger_archive` callbacks.
@@ -1147,16 +1219,19 @@ class SimplePartyClient(PartyClient):
             The handler to register. This can either be a coroutine or a normal function, and may
             return anything that can be successfully coerced into a :class:`CommandPayload`.
         """
+
         @wraps(handler)
-        def _background_ledger_transaction_end(event: 'TransactionEndEvent') \
-                -> 'Awaitable[EventHandlerResponse]':
+        def _background_ledger_transaction_end(
+            event: "TransactionEndEvent",
+        ) -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.transaction_end():
             self._impl.add_event_handler(key, _background_ledger_transaction_end, None, self)
 
-    def ledger_created(self, template: Any, match: 'Optional[ContractMatch]' = None) \
-            -> 'EventHandlerDecorator[ContractCreateEvent]':
+    def ledger_created(
+        self, template: Any, match: "Optional[ContractMatch]" = None
+    ) -> "EventHandlerDecorator[ContractCreateEvent]":
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters a newly created
         template.
@@ -1167,16 +1242,20 @@ class SimplePartyClient(PartyClient):
             An (optional) parameter that filters the templates to be received by the callback.
         """
 
-        def _register_created(cb: 'EventHandler[ContractCreateEvent]') \
-                -> 'EventHandler[ContractCreateEvent]':
+        def _register_created(
+            cb: "EventHandler[ContractCreateEvent]",
+        ) -> "EventHandler[ContractCreateEvent]":
             self.add_ledger_created(template, match=match, handler=cb)
             return cb
 
         return _register_created
 
     def add_ledger_created(
-            self, template: 'Any', handler: 'EventHandler[ContractCreateEvent]',
-            match: 'Optional[ContractMatch]' = None) -> None:
+        self,
+        template: "Any",
+        handler: "EventHandler[ContractCreateEvent]",
+        match: "Optional[ContractMatch]" = None,
+    ) -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters a newly created
         contract instance of a template.
@@ -1188,16 +1267,19 @@ class SimplePartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
+
         @wraps(handler)
-        def _background_ledger_contract_create(event: 'ContractCreateEvent') \
-                -> 'Awaitable[EventHandlerResponse]':
+        def _background_ledger_contract_create(
+            event: "ContractCreateEvent",
+        ) -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.contract_created(True, template):
             self._impl.add_event_handler(key, _background_ledger_contract_create, match, self)
 
-    def ledger_exercised(self, template: 'Any', choice: str) \
-            -> 'EventHandlerDecorator[ContractExercisedEvent]':
+    def ledger_exercised(
+        self, template: "Any", choice: str
+    ) -> "EventHandlerDecorator[ContractExercisedEvent]":
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters an exercised
         choice event.
@@ -1208,16 +1290,17 @@ class SimplePartyClient(PartyClient):
             The name of the choice to listen for exercises on.
         """
 
-        def _register_exercised(cb: 'EventHandler[ContractExercisedEvent]') \
-                -> 'EventHandler[ContractExercisedEvent]':
+        def _register_exercised(
+            cb: "EventHandler[ContractExercisedEvent]",
+        ) -> "EventHandler[ContractExercisedEvent]":
             self.add_ledger_exercised(template, choice, handler=cb)
             return cb
 
         return _register_exercised
 
     def add_ledger_exercised(
-            self, template: Any, choice: str, handler: 'EventHandler[ContractExercisedEvent]') \
-            -> None:
+        self, template: Any, choice: str, handler: "EventHandler[ContractExercisedEvent]"
+    ) -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters an exercised
         choice event.
@@ -1229,16 +1312,19 @@ class SimplePartyClient(PartyClient):
         :param handler:
             The callback to invoke whenever a matching template is exercised.
         """
+
         @wraps(handler)
-        def _background_ledger_contract_exercised(event: 'ContractExercisedEvent') \
-                -> 'Awaitable[EventHandlerResponse]':
+        def _background_ledger_contract_exercised(
+            event: "ContractExercisedEvent",
+        ) -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.contract_exercised(True, template, choice):
             self._impl.add_event_handler(key, _background_ledger_contract_exercised, None, self)
 
-    def ledger_archived(self, template: 'Any', match: 'Optional[ContractMatch]' = None) \
-            -> 'EventHandlerDecorator[ContractArchiveEvent]':
+    def ledger_archived(
+        self, template: "Any", match: "Optional[ContractMatch]" = None
+    ) -> "EventHandlerDecorator[ContractArchiveEvent]":
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` encounters
         a newly archived contract instance of a template.
@@ -1249,16 +1335,20 @@ class SimplePartyClient(PartyClient):
             An (optional) parameter that filters the templates to be received by the callback.
         """
 
-        def _register_archived(cb: 'EventHandler[ContractArchiveEvent]') \
-                -> 'EventHandler[ContractArchiveEvent]':
+        def _register_archived(
+            cb: "EventHandler[ContractArchiveEvent]",
+        ) -> "EventHandler[ContractArchiveEvent]":
             self.add_ledger_archived(template, match=match, handler=cb)
             return cb
 
         return _register_archived
 
     def add_ledger_archived(
-            self, template: 'Any', handler: 'EventHandler[ContractArchiveEvent]',
-            match: 'Optional[ContractMatch]' = None) -> None:
+        self,
+        template: "Any",
+        handler: "EventHandler[ContractArchiveEvent]",
+        match: "Optional[ContractMatch]" = None,
+    ) -> None:
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters a newly archived
         contract instance of a template.
@@ -1270,9 +1360,11 @@ class SimplePartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
+
         @wraps(handler)
-        def _background_ledger_contract_archived(event: 'ContractArchiveEvent') \
-                -> 'Awaitable[EventHandlerResponse]':
+        def _background_ledger_contract_archived(
+            event: "ContractArchiveEvent",
+        ) -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.contract_archived(True, template):
@@ -1283,11 +1375,11 @@ class SimplePartyClient(PartyClient):
     # region Command submission
 
     def submit(
-            self,
-            commands,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> None:
+        self,
+        commands,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> None:
         """
         Submit commands to the ledger.
 
@@ -1305,15 +1397,17 @@ class SimplePartyClient(PartyClient):
         """
         return self._impl.invoker.run_in_loop(
             lambda: self._impl.write_commands(
-                commands, workflow_id=workflow_id, deduplication_time=deduplication_time))
+                commands, workflow_id=workflow_id, deduplication_time=deduplication_time
+            )
+        )
 
     def submit_create(
-            self,
-            template_name: 'TemplateNameLike',
-            arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> None:
+        self,
+        template_name: "TemplateNameLike",
+        arguments: "Optional[dict]" = None,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> None:
         """
         Synchronously submit a single create command. Equivalent to calling :meth:`submit` with a
         single ``create``.
@@ -1330,19 +1424,21 @@ class SimplePartyClient(PartyClient):
             return an ``ALREADY_EXISTS`` error.
         """
         from .. import create
+
         return self.submit(
             create(template_name, arguments),
             workflow_id=workflow_id,
-            deduplication_time=deduplication_time)
+            deduplication_time=deduplication_time,
+        )
 
     def submit_exercise(
-            self,
-            cid: 'ContractId',
-            choice_name: str,
-            arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> None:
+        self,
+        cid: "ContractId",
+        choice_name: str,
+        arguments: "Optional[dict]" = None,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
         single ``exercise``.
@@ -1362,20 +1458,22 @@ class SimplePartyClient(PartyClient):
             return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise
+
         return self.submit(
             exercise(cid, choice_name, arguments),
             workflow_id=workflow_id,
-            deduplication_time=deduplication_time)
+            deduplication_time=deduplication_time,
+        )
 
     def submit_exercise_by_key(
-            self,
-            template_name: 'TemplateNameLike',
-            contract_key: 'Any',
-            choice_name: str,
-            arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> None:
+        self,
+        template_name: "TemplateNameLike",
+        contract_key: "Any",
+        choice_name: str,
+        arguments: "Optional[dict]" = None,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> None:
         """
         Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
         single ``exercise_by_key``.
@@ -1397,20 +1495,22 @@ class SimplePartyClient(PartyClient):
             return an ``ALREADY_EXISTS`` error.
         """
         from .. import exercise_by_key
+
         return self.submit(
             exercise_by_key(template_name, contract_key, choice_name, arguments),
             workflow_id=workflow_id,
-            deduplication_time=deduplication_time)
+            deduplication_time=deduplication_time,
+        )
 
     def submit_create_and_exercise(
-            self,
-            template_name: 'TemplateNameLike',
-            arguments: 'dict',
-            choice_name: str,
-            choice_arguments: 'Optional[dict]' = None,
-            workflow_id: 'Optional[str]' = None,
-            deduplication_time: 'Optional[TimeDeltaLike]' = None) \
-            -> None:
+        self,
+        template_name: "TemplateNameLike",
+        arguments: "dict",
+        choice_name: str,
+        choice_arguments: "Optional[dict]" = None,
+        workflow_id: "Optional[str]" = None,
+        deduplication_time: "Optional[TimeDeltaLike]" = None,
+    ) -> None:
         """
         Synchronously submit a single create-and-exercise command. Equivalent to calling
         :meth:`submit` with a single ``create_and_exercise``.
@@ -1431,25 +1531,26 @@ class SimplePartyClient(PartyClient):
             return an ``ALREADY_EXISTS`` error.
         """
         from .. import create_and_exercise
+
         return self.submit(
             create_and_exercise(template_name, arguments, choice_name, choice_arguments),
             workflow_id=workflow_id,
-            deduplication_time=deduplication_time)
+            deduplication_time=deduplication_time,
+        )
 
     # endregion
 
     # <editor-fold desc="Active contract set">
 
-    def find_by_id(self, cid: 'Union[str, ContractId]') -> 'Optional[ContractContextualData]':
+    def find_by_id(self, cid: "Union[str, ContractId]") -> "Optional[ContractContextualData]":
         return self._impl.invoker.run_in_loop(lambda: self._impl.find_by_id(cid))
 
-    def find(self,
-             template: Any,
-             match: ContractMatch = None,
-             include_archived: bool = False) \
-            -> ContractContextualDataCollection:
+    def find(
+        self, template: Any, match: ContractMatch = None, include_archived: bool = False
+    ) -> ContractContextualDataCollection:
         return self._impl.invoker.run_in_loop(
-            lambda: self._impl.find(template, match, include_archived=include_archived))
+            lambda: self._impl.find(template, match, include_archived=include_archived)
+        )
 
     def find_active(self, template: Any, match: ContractMatch = None) -> ContractsState:
         """
@@ -1475,8 +1576,9 @@ class SimplePartyClient(PartyClient):
         """
         return self._impl.invoker.run_in_loop(lambda: self._impl.find_active(template, match))
 
-    def find_historical(self, template: Any, match: ContractMatch = None) \
-            -> ContractContextualDataCollection:
+    def find_historical(
+        self, template: Any, match: ContractMatch = None
+    ) -> ContractContextualDataCollection:
         """
         Immediately return data from the current active and historical contract set.
 
@@ -1499,9 +1601,9 @@ class SimplePartyClient(PartyClient):
         """
         return self._impl.invoker.run_in_loop(lambda: self._impl.find_historical(template, match))
 
-    def find_one(self, template: Any, match: ContractMatch = None,
-                 timeout: float = DEFAULT_TIMEOUT_SECONDS) \
-            -> Tuple[ContractId, ContractData]:
+    def find_one(
+        self, template: Any, match: ContractMatch = None, timeout: float = DEFAULT_TIMEOUT_SECONDS
+    ) -> Tuple[ContractId, ContractData]:
         """
         Return data from the current active contract set when at least some amount of rows exist in
         the active contract set.
@@ -1519,9 +1621,13 @@ class SimplePartyClient(PartyClient):
         state = self.find_nonempty(template, match, min_count=1, timeout=timeout)
         return next(iter(state.items()))
 
-    def find_nonempty(self, template: Any, match: ContractMatch, min_count: int = 1,
-                      timeout: float = DEFAULT_TIMEOUT_SECONDS) \
-            -> ContractsState:
+    def find_nonempty(
+        self,
+        template: Any,
+        match: ContractMatch,
+        min_count: int = 1,
+        timeout: float = DEFAULT_TIMEOUT_SECONDS,
+    ) -> ContractsState:
         """
         Return data from the current active contract set when at least some amount of rows exist in
         the active contract set.
@@ -1539,7 +1645,8 @@ class SimplePartyClient(PartyClient):
             values are corresponding contract data that match the current query.
         """
         return self._impl.invoker.run_in_loop(
-            lambda: self._impl.find_nonempty(template, match, min_count=min_count, timeout=timeout))
+            lambda: self._impl.find_nonempty(template, match, min_count=min_count, timeout=timeout)
+        )
 
     # </editor-fold>
 
@@ -1549,9 +1656,10 @@ class SimplePartyClient(PartyClient):
         self._impl.set_config(url=url, **kwargs)
 
     def ensure_dar(
-            self,
-            contents: 'Union[str, Path, bytes, BinaryIO]',
-            timeout: 'TimeDeltaLike' = DEFAULT_TIMEOUT_SECONDS) -> None:
+        self,
+        contents: "Union[str, Path, bytes, BinaryIO]",
+        timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS,
+    ) -> None:
         """
         Validate that the ledger has the packages specified by the given contents (as a byte array).
         Throw an exception if the specified DARs do not exist within the specified timeout.
@@ -1561,7 +1669,8 @@ class SimplePartyClient(PartyClient):
         """
         raw_bytes = get_bytes(contents)
         return self._impl.invoker.run_in_loop(
-            lambda: self._impl.parent.upload_package(raw_bytes, timeout))
+            lambda: self._impl.parent.upload_package(raw_bytes, timeout)
+        )
 
     def ready(self) -> None:
         """
@@ -1569,10 +1678,11 @@ class SimplePartyClient(PartyClient):
         """
         # TODO: Improve on this implementation; this spin loop is unnecessarily ugly
         from time import sleep
+
         while self._impl.invoker.loop is None:
             sleep(0.1)
 
-        LOG.debug('Waiting for the underlying implementation to be ready...')
+        LOG.debug("Waiting for the underlying implementation to be ready...")
         return self._impl.invoker.run_in_loop(lambda: self._impl.ready())
 
     # </editor-fold>

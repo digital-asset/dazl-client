@@ -13,77 +13,102 @@ from .visitor import IdentityVisitor
 
 class RewriteVisitor(IdentityVisitor):
     def __init__(
-            self,
-            lookup: 'SymbolLookup',
-            always_expand: bool = False,
-            val_blacklist: 'Optional[Collection[ValName]]' = None,
-            expr_args: 'Optional[Mapping[str, Expr]]' = None,
-            type_args: 'Optional[Mapping[str, Type]]' = None):
+        self,
+        lookup: "SymbolLookup",
+        always_expand: bool = False,
+        val_blacklist: "Optional[Collection[ValName]]" = None,
+        expr_args: "Optional[Mapping[str, Expr]]" = None,
+        type_args: "Optional[Mapping[str, Type]]" = None,
+    ):
         self.lookup = lookup
         self.always_expand = always_expand
         self.val_blacklist = frozenset(val_blacklist) if val_blacklist is not None else ()
         self.expr_args = MappingProxyType(expr_args or {})  # type: Mapping[str, Expr]
         self.type_args = MappingProxyType(type_args or {})  # type: Mapping[str, Type]
 
-    def with_expr_var(self, var: str, value: 'Expr') -> 'RewriteVisitor':
+    def with_expr_var(self, var: str, value: "Expr") -> "RewriteVisitor":
         return type(self)(
-            self.lookup, self.always_expand, self.val_blacklist,
-            {**self.expr_args, var: value}, self.type_args)
+            self.lookup,
+            self.always_expand,
+            self.val_blacklist,
+            {**self.expr_args, var: value},
+            self.type_args,
+        )
 
-    def with_expr_vars(self, var_values: 'Mapping[str, Expr]') -> 'RewriteVisitor':
+    def with_expr_vars(self, var_values: "Mapping[str, Expr]") -> "RewriteVisitor":
         return type(self)(
-            self.lookup, self.always_expand, self.val_blacklist,
-            {**self.expr_args, **var_values}, self.type_args)
+            self.lookup,
+            self.always_expand,
+            self.val_blacklist,
+            {**self.expr_args, **var_values},
+            self.type_args,
+        )
 
-    def with_type_vars(self, type_values: 'Mapping[str, Type]') -> 'RewriteVisitor':
+    def with_type_vars(self, type_values: "Mapping[str, Type]") -> "RewriteVisitor":
         return type(self)(
-            self.lookup, self.always_expand, self.val_blacklist,
-            self.expr_args, {**self.type_args, **type_values})
+            self.lookup,
+            self.always_expand,
+            self.val_blacklist,
+            self.expr_args,
+            {**self.type_args, **type_values},
+        )
 
-    def without_val(self, val: 'ValName') -> 'RewriteVisitor':
+    def without_val(self, val: "ValName") -> "RewriteVisitor":
         return type(self)(
-            self.lookup, self.always_expand, {*self.val_blacklist, val},
-            self.expr_args, self.type_args)
+            self.lookup,
+            self.always_expand,
+            {*self.val_blacklist, val},
+            self.expr_args,
+            self.type_args,
+        )
 
-    def resolve_val(self, val: 'ValName') -> 'Optional[Expr]':
+    def resolve_val(self, val: "ValName") -> "Optional[Expr]":
         return self.lookup.value(val).expr if val not in self.val_blacklist else None
 
-    def resolve_type_arg(self, type_arg: str) -> 'Optional[Type]':
+    def resolve_type_arg(self, type_arg: str) -> "Optional[Type]":
         return self.type_args.get(type_arg)
 
-    def visit_expr_var(self, var: str) -> 'Expr':
+    def visit_expr_var(self, var: str) -> "Expr":
         expr = self.expr_args.get(var)
         return expr if expr is not None else Expr(var=var)
 
-    def visit_type_var(self, var: 'Type.Var') -> 'Type':
+    def visit_type_var(self, var: "Type.Var") -> "Type":
         base_type = self.resolve_type_arg(var.var)
         if var.args:
-            raise ValueError('higher kinded types are not yet currently supported')
+            raise ValueError("higher kinded types are not yet currently supported")
         return base_type if base_type is not None else Type(var=var)
 
 
 class ExpandVisitor(RewriteVisitor):
-
-    def visit_expr_val(self, val: 'ValName') -> 'Expr':
+    def visit_expr_val(self, val: "ValName") -> "Expr":
         builtin = builtins.resolve(val)
         if builtin is not None:
             return Expr(val=val)
-        if self.always_expand or val._name[0][0] == '$' or package_local_name(val) == 'DA.Internal.Template:toParties':
+        if (
+            self.always_expand
+            or val._name[0][0] == "$"
+            or package_local_name(val) == "DA.Internal.Template:toParties"
+        ):
             val_expr = self.resolve_val(val)
             if val_expr is not None:
                 child = self.without_val(val)
                 return child.visit_expr(val_expr)
             else:
-                print(f'Failed to resolve {package_local_name(val)} against blacklist {self.val_blacklist}')
+                print(
+                    f"Failed to resolve {package_local_name(val)} against blacklist {self.val_blacklist}"
+                )
 
         return super(ExpandVisitor, self).visit_expr_val(val)
 
-    def visit_expr_ty_app(self, ty_app: 'Expr.TyApp') -> 'Expr':
+    def visit_expr_ty_app(self, ty_app: "Expr.TyApp") -> "Expr":
         if ty_app.expr.ty_abs is not None:
             # perform type substitutions on the body, and remove the outer layers
-            fn_vars = {p.var: self.visit_type(body) for p, body in zip(ty_app.expr.ty_abs.param, ty_app.types)}
-            unapplied_args = ty_app.types[len(ty_app.expr.ty_abs.param):]
-            remaining_fn_args = ty_app.expr.ty_abs.param[len(ty_app.types):]
+            fn_vars = {
+                p.var: self.visit_type(body)
+                for p, body in zip(ty_app.expr.ty_abs.param, ty_app.types)
+            }
+            unapplied_args = ty_app.types[len(ty_app.expr.ty_abs.param) :]
+            remaining_fn_args = ty_app.expr.ty_abs.param[len(ty_app.types) :]
             scope = self.with_type_vars(fn_vars)
             eval_body = scope.visit_expr(ty_app.expr.ty_abs.body)
 
@@ -126,26 +151,26 @@ class ExpandVisitor(RewriteVisitor):
     # def visit_expr_case(self, case: 'Case') -> 'Expr':
     #     case.scrut
 
-    def visit_expr_let(self, let: 'Block') -> 'Expr':
+    def visit_expr_let(self, let: "Block") -> "Expr":
         new_body = let.body
         for binding in reversed(let.bindings):
             scope = self.with_expr_var(binding.binder.var, binding.bound)
             new_body = scope.visit_expr(new_body)
         return new_body
 
-    def visit_type_forall(self, forall: 'Type.Forall') -> 'Type':
+    def visit_type_forall(self, forall: "Type.Forall") -> "Type":
         new_vars = [tvwk for tvwk in forall.vars if tvwk.var not in self.type_args]
         new_body = self.visit_type(forall.body)
         return Type(forall=Type.Forall(vars=new_vars, body=new_body))
 
 
 class SimplifyVisitor(RewriteVisitor):
-
-    def visit_expr_app(self, app: 'Expr.App'):
+    def visit_expr_app(self, app: "Expr.App"):
         # first, if this is a built-in function, immediately apply its simplification logic on its
         # evaluated arguments
         if app.fun.ty_app is not None and app.fun.ty_app.expr.val is not None:
             from .builtins import builtins
+
             builtin = builtins.resolve(app.fun.ty_app.expr.val)
             if builtin is not None:
                 type_args = app.fun.ty_app.types
@@ -186,8 +211,8 @@ class SimplifyVisitor(RewriteVisitor):
 
             new_args = [self.visit_expr(arg) for arg in app.args]
             fn_vars = {p.var: self.visit_expr(body) for p, body in zip(new_fun.abs.param, new_args)}
-            unapplied_args = new_args[len(new_fun.abs.param):]
-            remaining_fn_args = new_fun.abs.param[len(new_args):]
+            unapplied_args = new_args[len(new_fun.abs.param) :]
+            remaining_fn_args = new_fun.abs.param[len(new_args) :]
             scope = self.with_expr_vars(fn_vars)
             eval_body = scope.visit_expr(new_fun.abs.body)
 
@@ -210,32 +235,39 @@ class SimplifyVisitor(RewriteVisitor):
         else:
             return super(SimplifyVisitor, self).visit_expr_app(app)
 
-    def visit_expr_cons(self, cons: 'Expr.Cons'):
+    def visit_expr_cons(self, cons: "Expr.Cons"):
         new_fronts = [self.visit_expr(front) for front in cons.front]
         new_tail = self.visit_expr(cons.tail)
         if new_tail.cons:
             new_fronts.extend(new_tail.cons.front)
-            return Expr(cons=Expr.Cons(type=cons.type, front=tuple(new_fronts),
-                                       tail=Expr(nil=Expr.Nil(type=new_tail.cons.type))))
+            return Expr(
+                cons=Expr.Cons(
+                    type=cons.type,
+                    front=tuple(new_fronts),
+                    tail=Expr(nil=Expr.Nil(type=new_tail.cons.type)),
+                )
+            )
         else:
             return Expr(cons=Expr.Cons(type=cons.type, front=tuple(new_fronts), tail=new_tail))
 
-    def visit_expr_rec_proj(self, rec_proj: 'Expr.RecProj'):
+    def visit_expr_rec_proj(self, rec_proj: "Expr.RecProj"):
         new_record = self.visit_expr(rec_proj.record)
         if new_record.rec_con is not None:
             for fwt in new_record.rec_con.fields:
                 if fwt.field == rec_proj.field:
                     return self.visit_expr(fwt.expr)
-            raise RuntimeError('rec_proj over a rec_con that did not have the necessary field')
+            raise RuntimeError("rec_proj over a rec_con that did not have the necessary field")
         else:
-            return Expr(rec_proj=Expr.RecProj(tycon=rec_proj.tycon, field=rec_proj.field, record=new_record))
+            return Expr(
+                rec_proj=Expr.RecProj(tycon=rec_proj.tycon, field=rec_proj.field, record=new_record)
+            )
 
-    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj'):
+    def visit_expr_struct_proj(self, struct_proj: "Expr.StructProj"):
         new_tuple = self.visit_expr(struct_proj.tuple)
         if new_tuple.struct_con is not None:
             for fwt in new_tuple.struct_con.fields:
                 if fwt.field == struct_proj.field:
                     return self.visit_expr(fwt.expr)
-            raise RuntimeError('rec_proj over a rec_con that did not have the necessary field')
+            raise RuntimeError("rec_proj over a rec_con that did not have the necessary field")
         else:
             return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, tuple=new_tuple))

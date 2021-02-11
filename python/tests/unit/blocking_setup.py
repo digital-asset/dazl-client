@@ -1,11 +1,11 @@
-from asyncio import set_event_loop, new_event_loop
+from asyncio import new_event_loop, set_event_loop
 from threading import Thread
 
-from dazl import Party, Network
+from dazl import Network, Party
 from dazl.model.core import Dar
 
 
-def blocking_setup(url: str, dar: Dar) -> 'Party':
+def blocking_setup(url: str, dar: Dar) -> "Party":
     """
     Set up a ledger for a test in a completely blocking fashion.
 

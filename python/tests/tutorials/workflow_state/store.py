@@ -4,7 +4,7 @@
 import asyncio
 import logging
 
-LOG = logging.getLogger('store')
+LOG = logging.getLogger("store")
 
 
 class ContractStore:
@@ -15,7 +15,7 @@ class ContractStore:
 
     def save(self, name, cid, cdata):
         if self.verbose:
-            LOG.critical('Saving %s %s %s', name, cid, cdata)
+            LOG.critical("Saving %s %s %s", name, cid, cdata)
         name = self._resolve_name(name)
         future = self.binds.get(name)
         if future is None or future.done():
@@ -31,9 +31,9 @@ class ContractStore:
         :return: A ``Future`` that resolves to a (cid, cdata) tuple.
         """
         if self.verbose:
-            LOG.critical('Finding in store %s', name)
+            LOG.critical("Finding in store %s", name)
         else:
-            LOG.info('Finding in store %s', name)
+            LOG.info("Finding in store %s", name)
         name = self._resolve_name(name)
         future = self.binds.get(name)
         if future is None:
@@ -43,7 +43,7 @@ class ContractStore:
 
     def delete(self, name):
         if self.verbose:
-            LOG.critical('Deleting from store %s', name)
+            LOG.critical("Deleting from store %s", name)
         name = self._resolve_name(name)
         future = self.binds.get(name)
         if future is not None:
@@ -63,7 +63,7 @@ class ContractStore:
 
     def _resolve_name(self, name):
         if isinstance(name, list):
-            return '_'.join(name)
+            return "_".join(name)
         return name
 
     def match(self, is_match):

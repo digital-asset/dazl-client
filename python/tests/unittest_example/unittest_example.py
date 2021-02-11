@@ -1,15 +1,16 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Optional
 from pathlib import Path
-daml_project_root = Path(__file__).parent.parent.parent.parent / '_fixtures/src/post-office'
+from typing import Optional
+
+daml_project_root = Path(__file__).parent.parent.parent.parent / "_fixtures/src/post-office"
 
 
-import dazl
 import subprocess
 import unittest
 
+import dazl
 
 # DOC_BEGIN: EXAMPLE
 # Change this to point to your DAML project directory.
@@ -30,7 +31,8 @@ def setUpModule():
 
     sandbox_proc = subprocess.Popen(
         ["daml", "start", "--start-navigator=no", "--open-browser=no", f"--sandbox-port={port}"],
-        cwd=daml_project_root)
+        cwd=daml_project_root,
+    )
     sandbox_url = f"http://localhost:{port}"
 
 
@@ -40,7 +42,6 @@ def tearDownModule():
 
 
 class ExampleTest(unittest.TestCase):
-
     def setUp(self) -> None:
         self.network = dazl.Network()
         self.network.set_config(url=sandbox_url)
@@ -54,7 +55,8 @@ class ExampleTest(unittest.TestCase):
         client = self.network.simple_new_party()
         client.ready()
 
-        client.submit_create('Main:PostmanRole', {'postman': client.party})
-        self.assertEqual(len(client.find_active('Main:PostmanRole')), 1)
+        client.submit_create("Main:PostmanRole", {"postman": client.party})
+        self.assertEqual(len(client.find_active("Main:PostmanRole")), 1)
+
 
 # DOC_END: EXAMPLE

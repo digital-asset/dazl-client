@@ -3,4 +3,4 @@
 
 import warnings
 
-warnings.warn('dazl.protocols.v0 is deprecated', DeprecationWarning, stacklevel=2)
+warnings.warn("dazl.protocols.v0 is deprecated", DeprecationWarning, stacklevel=2)

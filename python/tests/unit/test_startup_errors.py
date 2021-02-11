@@ -1,9 +1,9 @@
 import asyncio
-from asyncio import wait_for, ensure_future, CancelledError
+from asyncio import CancelledError, ensure_future, wait_for
 
 import pytest
 
-from dazl import Network, LOG
+from dazl import LOG, Network
 
 
 @pytest.mark.asyncio
@@ -14,7 +14,7 @@ async def test_startup_errors_should_halt_ready():
     network = Network()
     network.set_config(url="http://nowhere.at.all.localdomain:6865/", connect_timeout=1)
 
-    client = network.aio_party('SillyParty')
+    client = network.aio_party("SillyParty")
 
     # place the ready() call BEFORE the run
     f = ensure_future(wait_for(client.ready(), 2))
@@ -27,10 +27,12 @@ async def test_startup_errors_should_halt_ready():
     try:
         await f
         raise AssertionError(
-            'client.ready() should not have ended because there is nothing to connect to')
+            "client.ready() should not have ended because there is nothing to connect to"
+        )
     except asyncio.TimeoutError:
         raise AssertionError(
-            'client.ready() did not abort with an appropriate exception and was killed because '
-            'it was taking too long')
+            "client.ready() did not abort with an appropriate exception and was killed because "
+            "it was taking too long"
+        )
     except CancelledError:
-        LOG.info('Successfully terminated because ready() was cancelled.')
+        LOG.info("Successfully terminated because ready() was cancelled.")

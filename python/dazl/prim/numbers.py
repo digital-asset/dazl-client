@@ -4,20 +4,20 @@
 from decimal import Decimal
 from typing import Any
 
-__all__ = ['to_int', 'to_decimal', 'decimal_to_str']
+__all__ = ["to_int", "to_decimal", "decimal_to_str"]
 
 
-def to_int(obj: 'Any') -> int:
+def to_int(obj: "Any") -> int:
     if isinstance(obj, int):
         return obj
     elif isinstance(obj, str):
         return int(obj)
     elif isinstance(obj, Decimal):
         return int(obj)
-    raise ValueError(f'Could not parse as an int: {obj!r}')
+    raise ValueError(f"Could not parse as an int: {obj!r}")
 
 
-def to_decimal(obj: 'Any') -> 'Decimal':
+def to_decimal(obj: "Any") -> "Decimal":
     """
     Convert any of the common wire representations of a ``Decimal`` to a ``Decimal``.
     """
@@ -31,13 +31,13 @@ def to_decimal(obj: 'Any') -> 'Decimal':
         return Decimal(str(obj))
     elif isinstance(obj, str):
         return Decimal(obj)
-    raise ValueError(f'Could not parse as a Decimal: {obj!r}')
+    raise ValueError(f"Could not parse as a Decimal: {obj!r}")
 
 
-def decimal_to_str(d: 'Decimal') -> str:
+def decimal_to_str(d: "Decimal") -> str:
     """
     Return a string representation of a :class:`Decimal` that is safe to be used over the
     Ledger API. Concretely, this means staying away from scientific notation.
     """
     precision = max(0, -d.as_tuple().exponent)
-    return format(d, f'.{precision}f')
+    return format(d, f".{precision}f")

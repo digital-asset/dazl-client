@@ -9,6 +9,7 @@ class RunState:
     """
     Manage the current run level of the client.
     """
+
     def __init__(self, level=RunLevel.RUN_FOREVER):
         self._terminate = Event()
         self.level = level

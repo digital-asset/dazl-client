@@ -7,31 +7,29 @@ from .types import ModuleRef
 
 
 class DamlDeclaration:
-    """
+    """"""
 
-    """
     module: ModuleRef
     name: Sequence[str]
 
 
 class DamlDataType(DamlDeclaration):
-    """
+    """"""
 
-    """
     module: ModuleRef
     name: Sequence[str]
-    fields: 'Sequence[FieldWithType]'
-    eq_instance: 'Optional[Expr]'
-    ord_instance: 'Optional[Expr]'
-    show_instance: 'Optional[Expr]'
+    fields: "Sequence[FieldWithType]"
+    eq_instance: "Optional[Expr]"
+    ord_instance: "Optional[Expr]"
+    show_instance: "Optional[Expr]"
 
 
 class DamlTemplate(DamlDataType):
-    signatories: 'Expr'
-    observers: 'Expr'
-    agreement: 'Expr'
-    precondition: 'Expr'
-    choices: 'Sequence[DamlChoice]'
+    signatories: "Expr"
+    observers: "Expr"
+    agreement: "Expr"
+    precondition: "Expr"
+    choices: "Sequence[DamlChoice]"
 
 
 class DamlChoice:

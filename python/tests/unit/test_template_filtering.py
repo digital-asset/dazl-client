@@ -1,6 +1,7 @@
-from dazl import create, async_network
-
 import pytest
+
+from dazl import async_network, create
+
 from .dars import AllParty, PostOffice
 
 
@@ -17,13 +18,15 @@ async def test_template_filtering(sandbox):
         party = client.party
 
         network.start()
-        await client.submit([
-            create('AllParty:PrivateContract', {'someParty': party}),
-            create('AllParty:PrivateContract', {'someParty': party}),
-            create('AllParty:PrivateContract', {'someParty': party}),
-            create('Main:PostmanRole', {'postman': party}),
-            create('Main:PostmanRole', {'postman': party}),
-        ])
+        await client.submit(
+            [
+                create("AllParty:PrivateContract", {"someParty": party}),
+                create("AllParty:PrivateContract", {"someParty": party}),
+                create("AllParty:PrivateContract", {"someParty": party}),
+                create("Main:PostmanRole", {"postman": party}),
+                create("Main:PostmanRole", {"postman": party}),
+            ]
+        )
 
         # The ACS should only contain the five contracts we created: two from Post Office, and three
         # from AllKindsOf.

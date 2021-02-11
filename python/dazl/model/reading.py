@@ -55,23 +55,23 @@ This module contains models used on the read-side of the Ledger API.
 
 """
 
-import warnings
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Callable, Collection, Optional, Sequence, TypeVar, Union
+import warnings
 
-from .core import ContractId, ContractData, ContractContextualData, Party
-from .lookup import template_reverse_globs, validate_template
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.protocols import SymbolLookup
+from .core import ContractContextualData, ContractData, ContractId, Party
+from .lookup import template_reverse_globs, validate_template
 
 with warnings.catch_warnings():
-    warnings.simplefilter('ignore', DeprecationWarning)
+    warnings.simplefilter("ignore", DeprecationWarning)
 
     from .types import TypeReference
     from .types_store import PackageStore
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 @dataclass(frozen=True)
@@ -80,12 +80,12 @@ class BaseEvent:
     Superclass of all dazl events.
     """
 
-    client: 'Any'
-    party: 'Optional[Party]'
-    time: 'Optional[datetime]'
+    client: "Any"
+    party: "Optional[Party]"
+    time: "Optional[datetime]"
     ledger_id: str
-    lookup: 'SymbolLookup'
-    package_store: 'PackageStore'
+    lookup: "SymbolLookup"
+    package_store: "PackageStore"
 
     def acs_find_active(self, template: Union[TypeReference, str], match=None):
         return self.client.find_active(template, match)
@@ -103,10 +103,12 @@ class BaseEvent:
         return self.client.find_nonempty(template, match=match)
 
     def __repr__(self):
-        fields = ', '.join(f"{k}={v!r}" for k, v in self.__dict__.items()
-                           if not k.startswith('_') and k != 'client' and k != 'package_store' and
-                           k != 'ledger_id')
-        return f'{self.__class__.__name__}({fields})'
+        fields = ", ".join(
+            f"{k}={v!r}"
+            for k, v in self.__dict__.items()
+            if not k.startswith("_") and k != "client" and k != "package_store" and k != "ledger_id"
+        )
+        return f"{self.__class__.__name__}({fields})"
 
 
 @dataclass(frozen=True)
@@ -140,7 +142,8 @@ class ActiveContractSetEvent(OffsetEvent):
     """
     Event raised on initial read of the active contract set.
     """
-    contract_events: 'Sequence[ContractCreateEvent]'
+
+    contract_events: "Sequence[ContractCreateEvent]"
 
 
 @dataclass(frozen=True)
@@ -149,6 +152,7 @@ class BaseTransactionEvent(OffsetEvent):
     Event raised when dazl encounters a new transaction. This is raised before any corresponding
     :class:`ContractCreateEvent` or :class:`ContractArchiveEvent`.
     """
+
     command_id: str
     workflow_id: str
 
@@ -159,7 +163,8 @@ class TransactionStartEvent(BaseTransactionEvent):
     Event raised when dazl encounters a new transaction. This is raised before any corresponding
     :class:`ContractCreateEvent` or :class:`ContractArchiveEvent`.
     """
-    contract_events: 'Sequence[ContractEvent]'
+
+    contract_events: "Sequence[ContractEvent]"
 
 
 @dataclass(frozen=True)
@@ -168,7 +173,8 @@ class TransactionEndEvent(BaseTransactionEvent):
     Event raised when dazl encounters the end of a transaction. This is raised after any
     corresponding :class:`ContractCreateEvent` or :class:`ContractArchiveEvent`.
     """
-    contract_events: 'Sequence[ContractEvent]'
+
+    contract_events: "Sequence[ContractEvent]"
 
 
 @dataclass(frozen=True)
@@ -177,6 +183,7 @@ class ContractEvent(BaseTransactionEvent):
     Event raised when dazl automation detects a new create or an archive. The Active Contract Set
     (ACS) reflects this event, as well as all other events that occurred in the same transaction.
     """
+
     cid: ContractId
     cdata: ContractData
     command_id: str
@@ -198,6 +205,7 @@ class ContractExercisedEvent(ContractEvent):
     """
     Event raised when dazl automation detects a contract exercised.
     """
+
     contract_creating_event_id: str
     choice: str
     choice_args: Any
@@ -220,20 +228,21 @@ class PackagesAddedEvent(BaseEvent):
     """
     Event raised when new packages have been detected.
     """
+
     initial: bool
 
 
 def create_dispatch(
-        on_init: Callable[[InitEvent], T],
-        on_ready: Callable[[ReadyEvent], T],
-        on_offset: Callable[[OffsetEvent], T],
-        on_transaction_start: Callable[[TransactionStartEvent], T],
-        on_transaction_end: Callable[[TransactionEndEvent], T],
-        on_contract_created: Callable[[ContractCreateEvent], T],
-        on_contract_exercised: Callable[[ContractExercisedEvent], T],
-        on_contract_archived: Callable[[ContractArchiveEvent], T],
-        on_packages_added: Callable[[PackagesAddedEvent], T]) \
-        -> Callable[[BaseEvent], T]:
+    on_init: Callable[[InitEvent], T],
+    on_ready: Callable[[ReadyEvent], T],
+    on_offset: Callable[[OffsetEvent], T],
+    on_transaction_start: Callable[[TransactionStartEvent], T],
+    on_transaction_end: Callable[[TransactionEndEvent], T],
+    on_contract_created: Callable[[ContractCreateEvent], T],
+    on_contract_exercised: Callable[[ContractExercisedEvent], T],
+    on_contract_archived: Callable[[ContractArchiveEvent], T],
+    on_packages_added: Callable[[PackagesAddedEvent], T],
+) -> Callable[[BaseEvent], T]:
     def handle(event: BaseEvent) -> T:
         if isinstance(event, ContractCreateEvent):
             return on_contract_created(event)
@@ -254,26 +263,28 @@ def create_dispatch(
         elif isinstance(event, PackagesAddedEvent):
             return on_packages_added(event)
         else:
-            raise ValueError(f'unknown subclass of BaseEvent: {event!r}')
+            raise ValueError(f"unknown subclass of BaseEvent: {event!r}")
 
     return handle
 
 
 @dataclass(frozen=True)
 class ContractFilter:
-    templates: 'Optional[Collection[TypeConName]]' = None
-    party_groups: 'Optional[Collection[Party]]' = None
+    templates: "Optional[Collection[TypeConName]]" = None
+    party_groups: "Optional[Collection[Party]]" = None
 
 
 @dataclass(frozen=True)
 class TransactionFilter(ContractFilter):
-    current_offset: 'Optional[str]' = None
-    destination_offset: 'Optional[str]' = None
+    current_offset: "Optional[str]" = None
+    destination_offset: "Optional[str]" = None
 
     def __post_init__(self):
         if self.current_offset is not None and self.destination_offset is not None:
             if self.current_offset > self.destination_offset:
-                raise ValueError('current_offset must be before destination_offset if both are specified')
+                raise ValueError(
+                    "current_offset must be before destination_offset if both are specified"
+                )
 
 
 class EventKey:
@@ -285,10 +296,13 @@ class EventKey:
         on_transaction_end=lambda _: EventKey.transaction_end(),
         on_contract_created=lambda event: EventKey.contract_created(False, event.cid.value_type),
         on_contract_exercised=lambda event: EventKey.contract_exercised(
-            False, event.cid.value_type, event.choice),
+            False, event.cid.value_type, event.choice
+        ),
         on_contract_archived=lambda event: EventKey.contract_archived(False, event.cid.value_type),
         on_packages_added=lambda event: EventKey.packages_added(
-            initial=event.initial, changed=not event.initial))
+            initial=event.initial, changed=not event.initial
+        ),
+    )
 
     @staticmethod
     def init() -> Collection[str]:
@@ -296,7 +310,7 @@ class EventKey:
         Return the names of events that get raised in response to an :class:`InitEvent`. This is
         currently only ``'init'``.
         """
-        return 'init',
+        return ("init",)
 
     @staticmethod
     def ready() -> Collection[str]:
@@ -304,7 +318,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`ReadyEvent`. This is
         currently only ``'ready'``.
         """
-        return 'ready',
+        return ("ready",)
 
     @staticmethod
     def offset() -> Collection[str]:
@@ -312,7 +326,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`OffsetEvent`. This is
         currently only ``'offset'``.
         """
-        return 'offset',
+        return ("offset",)
 
     @staticmethod
     def transaction_start() -> Collection[str]:
@@ -320,7 +334,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`TransactionStartEvent`.
         This is currently only ``'transaction-start'``.
         """
-        return 'transaction-start',
+        return ("transaction-start",)
 
     @staticmethod
     def transaction_end() -> Collection[str]:
@@ -328,7 +342,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`TransactionEndEvent`.
         This is currently only ``'transaction-end'``.
         """
-        return 'transaction-end',
+        return ("transaction-end",)
 
     @staticmethod
     def contract_created(primary_only: bool, template: Any) -> Collection[str]:
@@ -336,7 +350,7 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`ContractCreateEvent`
         of the specified template type.
         """
-        return EventKey._contract(primary_only, 'create', template)
+        return EventKey._contract(primary_only, "create", template)
 
     @staticmethod
     def contract_exercised(primary_only: bool, template: Any, choice: Any) -> Collection[str]:
@@ -344,8 +358,9 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`ContractExercisedEvent`
         of the specified choice.
         """
-        return [f'{key}/{choice}'
-                for key in EventKey._contract(primary_only, 'exercised', template)]
+        return [
+            f"{key}/{choice}" for key in EventKey._contract(primary_only, "exercised", template)
+        ]
 
     @staticmethod
     def contract_archived(primary_only: bool, template: Any) -> Collection[str]:
@@ -353,24 +368,24 @@ class EventKey:
         Return the names of events that get raised in response to a :class:`ContractCreateEvent`
         of the specified template type.
         """
-        return EventKey._contract(primary_only, 'archive', template)
+        return EventKey._contract(primary_only, "archive", template)
 
     @staticmethod
-    def packages_added(initial: bool, changed: bool) -> 'Collection[str]':
+    def packages_added(initial: bool, changed: bool) -> "Collection[str]":
         keys = []
         if initial:
-            keys.append('packages-added/initial')
+            keys.append("packages-added/initial")
         if changed:
-            keys.append('packages-added/changed')
+            keys.append("packages-added/changed")
         return tuple(keys)
 
     @staticmethod
     def _contract(primary_only: bool, prefix: str, template: Any) -> Collection[str]:
         m, t = validate_template(template)
-        return tuple(f'{prefix}/{g}' for g in template_reverse_globs(primary_only, m, t))
+        return tuple(f"{prefix}/{g}" for g in template_reverse_globs(primary_only, m, t))
 
 
-def max_offset(offsets: 'Collection[Optional[str]]') -> 'Optional[str]':
+def max_offset(offsets: "Collection[Optional[str]]") -> "Optional[str]":
     """
     Return the most "recent" offset from a collection of offsets.
 

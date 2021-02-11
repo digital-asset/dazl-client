@@ -3,6 +3,7 @@
 
 from typing import NamedTuple, Optional, Tuple, Union
 from urllib.parse import urlparse
+
 from .core import Party
 
 
@@ -11,12 +12,13 @@ class HTTPConnectionSettings(NamedTuple):
     Defines the unique settings that determine whether an HTTP connection can be shared across
     multiple clients.
     """
+
     scheme: str
     host: str
     port: int
     verify_ssl: str
-    ssl_settings: 'SSLSettings'
-    oauth: 'OAuthSettings'
+    ssl_settings: "SSLSettings"
+    oauth: "OAuthSettings"
     enable_http_proxy: bool
 
     def url(self, *path_components: str):
@@ -26,19 +28,19 @@ class HTTPConnectionSettings(NamedTuple):
         """
         base_url = "{}://{}:{}".format(self.scheme, self.host, self.port)
         for component in path_components:
-            cmp = component.lstrip('/')
-            base_url = base_url.rstrip('/') + '/' + cmp
+            cmp = component.lstrip("/")
+            base_url = base_url.rstrip("/") + "/" + cmp
         return base_url
 
     def __repr__(self):
-        url = f'{self.scheme}://{self.host}:{self.port}'
+        url = f"{self.scheme}://{self.host}:{self.port}"
         ssl_args = {}
         if self.verify_ssl:
-            ssl_args['verify_ssl'] = self.verify_ssl
+            ssl_args["verify_ssl"] = self.verify_ssl
         if self.ssl_settings:
             ssl_args.update(self.ssl_settings._asdict())
         if ssl_args:
-            return f'{url} ({ssl_args})'
+            return f"{url} ({ssl_args})"
         else:
             return url
 
@@ -64,32 +66,35 @@ class OAuthSettings(NamedTuple):
     auth_ca_file: Optional[str]
     auth_audience: Optional[str]
 
-def connection_settings(url: str,
-                        party: 'Union[None, str, Party]',
-                        oauth=None,
-                        default_scheme=None,
-                        verify_ssl=None,
-                        ca_file=None,
-                        cert_file=None,
-                        cert_key_file=None,
-                        enable_http_proxy=True) -> 'Tuple[HTTPConnectionSettings, str]':
+
+def connection_settings(
+    url: str,
+    party: "Union[None, str, Party]",
+    oauth=None,
+    default_scheme=None,
+    verify_ssl=None,
+    ca_file=None,
+    cert_file=None,
+    cert_key_file=None,
+    enable_http_proxy=True,
+) -> "Tuple[HTTPConnectionSettings, str]":
     if url is None:
         if party is not None:
-            raise ValueError('URL is required for party %s' % party)
+            raise ValueError("URL is required for party %s" % party)
         else:
-            raise ValueError('URL is required')
+            raise ValueError("URL is required")
     try:
         # relative URLs have no meaning in this context; enforce that all URLs passed to us are
         # absolute so that things parse properly
-        if '//' not in url:
-            url = '//' + url
+        if "//" not in url:
+            url = "//" + url
 
         if not default_scheme:
-            default_scheme = 'https' if ca_file or cert_file or cert_key_file else 'http'
+            default_scheme = "https" if ca_file or cert_file or cert_key_file else "http"
 
         components = urlparse(url, scheme=default_scheme, allow_fragments=False)
         if components.port is None:
-            port = 443 if components.scheme in ('https', 'grpcs') else 80
+            port = 443 if components.scheme in ("https", "grpcs") else 80
         else:
             port = components.port
 
@@ -100,10 +105,10 @@ def connection_settings(url: str,
             verify_ssl=verify_ssl,
             oauth=oauth,
             ssl_settings=SSLSettings(
-                ca_file=ca_file,
-                cert_file=cert_file,
-                cert_key_file=cert_key_file),
-            enable_http_proxy=enable_http_proxy)
-        return (settings, components.path.rstrip('/'))
+                ca_file=ca_file, cert_file=cert_file, cert_key_file=cert_key_file
+            ),
+            enable_http_proxy=enable_http_proxy,
+        )
+        return (settings, components.path.rstrip("/"))
     except ValueError:
-        raise ValueError('Could not parse {}'.format(url))
+        raise ValueError("Could not parse {}".format(url))

@@ -9,7 +9,5 @@ Module that exposes general utility functions.
 """
 
 from . import dar, io
-
-
 from .io import find_free_port
-from .proc_util import ProcessLogger, wait_for_process_port, kill_process_tree
+from .proc_util import ProcessLogger, kill_process_tree, wait_for_process_port

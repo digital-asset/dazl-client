@@ -5,18 +5,20 @@
 Utilities for dealing with the file system.
 """
 
-import socket
 from io import BufferedIOBase
 from pathlib import Path
+import socket
 from typing import BinaryIO, Optional, Union, overload
 
 
 @overload
-def get_bytes(_: None) -> None: ...
+def get_bytes(_: None) -> None:
+    ...
 
 
 @overload
-def get_bytes(_: 'Union[bytes, str, Path, BinaryIO]') -> bytes: ...
+def get_bytes(_: "Union[bytes, str, Path, BinaryIO]") -> bytes:
+    ...
 
 
 def get_bytes(src):
@@ -27,7 +29,7 @@ def get_bytes(src):
     if src is None:
         return None
     elif isinstance(src, str):
-        with open(src, 'rb') as f:
+        with open(src, "rb") as f:
             return f.read()
     elif isinstance(src, bytes):
         return src
@@ -36,12 +38,12 @@ def get_bytes(src):
     elif isinstance(src, BufferedIOBase):
         return src.read(-1)
     else:
-        raise ValueError('src must be a string path, a Path, or a BytesIO')
+        raise ValueError("src must be a string path, a Path, or a BytesIO")
 
 
 def read_file_bytes(file_path: Optional[str]) -> Optional[bytes]:
     if file_path is not None:
-        with open(file_path, 'rb') as f:
+        with open(file_path, "rb") as f:
             return f.read()
     else:
         return None
@@ -50,7 +52,7 @@ def read_file_bytes(file_path: Optional[str]) -> Optional[bytes]:
 def find_free_port() -> int:
     sock = socket.socket()
     try:
-        sock.bind(('', 0))
+        sock.bind(("", 0))
         return sock.getsockname()[1]
     finally:
         sock.close()
@@ -59,13 +61,13 @@ def find_free_port() -> int:
 def is_port_alive(port: int) -> bool:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        result = sock.connect_ex(('127.0.0.1', port))
+        result = sock.connect_ex(("127.0.0.1", port))
         return result == 0
     finally:
         sock.close()
 
 
-def find_nearest_ancestor(file_name: str, relative_to: Union[str, Path]) -> 'Optional[Path]':
+def find_nearest_ancestor(file_name: str, relative_to: Union[str, Path]) -> "Optional[Path]":
     """
     Return a path to a file that has the specified file name, or ``None`` if no ancestor could be
     found.
@@ -75,7 +77,7 @@ def find_nearest_ancestor(file_name: str, relative_to: Union[str, Path]) -> 'Opt
     :return: A :class:`Path` that matches the specified file name.
     """
     if relative_to is None:
-        raise ValueError('A relative_to path is required')
+        raise ValueError("A relative_to path is required")
 
     relative_to = Path(relative_to)
     if relative_to.is_file():

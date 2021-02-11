@@ -11,16 +11,14 @@ from ..model.network import OAuthSettings
 
 class OAuthHandler:
 
-    AUTH_ROUTE = '/auth/callback'
+    AUTH_ROUTE = "/auth/callback"
 
     def __init__(self, url_prefix: str):
         from aiohttp.web import get
 
         self.url_prefix = url_prefix
         self.callbacks = {}  # type: Dict[str, OAuthAuthorizationCodeGrantRequest]
-        self.routes = [
-            get(self.AUTH_ROUTE, self.oauth_callback)
-        ]
+        self.routes = [get(self.AUTH_ROUTE, self.oauth_callback)]
 
     async def auth_flow(self, settings: OAuthSettings) -> OAuthSettings:
         """
@@ -38,9 +36,9 @@ class OAuthHandler:
         # wait until the callback has been called
         return await oauth_req.future
 
-    async def oauth_callback(self, request: 'web.Request') -> 'web.Response':
-        code = request.query.get('code')
-        state = request.query.get('state')
+    async def oauth_callback(self, request: "web.Request") -> "web.Response":
+        code = request.query.get("code")
+        state = request.query.get("state")
         oauth_req = self.callbacks.pop(state)
         if oauth_req is not None:
             try:
@@ -51,10 +49,10 @@ class OAuthHandler:
         else:
             return await self._invalid_state(request)
 
-    async def _auth_finished(self, request: 'web.Request') -> 'web.Response':
+    async def _auth_finished(self, request: "web.Request") -> "web.Response":
         pass
 
-    async def _invalid_state(self, request: 'web.Request') -> 'web.Response':
+    async def _invalid_state(self, request: "web.Request") -> "web.Response":
         pass
 
 
@@ -72,7 +70,8 @@ class OAuthAuthorizationCodeGrantRequest:
 
     async def start(self) -> None:
         uri = self.client.prepare_request_uri(
-            self.settings.token_uri, redirect_uri=self.redirect_uri, state=self.state)
+            self.settings.token_uri, redirect_uri=self.redirect_uri, state=self.state
+        )
         body = self.client.prepare_request_body()
 
         async with self.session.post(uri, data=body) as response:
@@ -84,19 +83,16 @@ class OAuthAuthorizationCodeGrantRequest:
 
         kwargs = {}
         if self.settings.client_secret:
-            kwargs['client_secret'] = self.settings.client_secret
+            kwargs["client_secret"] = self.settings.client_secret
 
         uri = self.settings.token_uri
-        body = self.client.prepare_request_body(
-            code=code, redirect_uri=self.redirect_uri, **kwargs)
+        body = self.client.prepare_request_body(code=code, redirect_uri=self.redirect_uri, **kwargs)
 
         # fetch token
 
         self.client.parse_request_body_response(response_body)
 
-        new_settings = OAuthSettings(
-
-        )
+        new_settings = OAuthSettings()
 
         self.future.set_result(new_settings)
         return new_settings

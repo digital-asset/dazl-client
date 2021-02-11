@@ -1,14 +1,25 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
-from asyncio import gather, ensure_future, sleep, wait_for
+from asyncio import ensure_future, gather, sleep, wait_for
 from collections import defaultdict
 from dataclasses import asdict, fields
 from datetime import timedelta
+import logging
 from threading import RLock, Thread, current_thread
-from typing import Any, Callable, Dict, Optional, TypeVar, Collection, Awaitable, Set, Tuple, \
-    Union, overload
+from typing import (
+    Any,
+    Awaitable,
+    Callable,
+    Collection,
+    Dict,
+    Optional,
+    Set,
+    Tuple,
+    TypeVar,
+    Union,
+    overload,
+)
 
 try:
     from typing import Literal
@@ -16,33 +27,49 @@ except ImportError:
     from typing_extensions import Literal
 
 from .. import LOG
-from ._base_model import IfMissingPartyBehavior, CREATE_IF_MISSING, NONE_IF_MISSING, \
-    EXCEPTION_IF_MISSING
-from ._party_client_impl import _PartyClientImpl
-from .bots import Bot, BotCollection
-from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
-from ..model.core import Party, DazlPartyMissingError
+from ..model.core import DazlPartyMissingError, Party
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
-from ..model.reading import InitEvent, ReadyEvent, BaseEvent
+from ..model.reading import BaseEvent, InitEvent, ReadyEvent
 from ..prim.datetime import TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
 from ..scheduler import Invoker, RunLevel
+from ._base_model import (
+    CREATE_IF_MISSING,
+    EXCEPTION_IF_MISSING,
+    NONE_IF_MISSING,
+    IfMissingPartyBehavior,
+)
+from ._party_client_impl import _PartyClientImpl
+from .bots import Bot, BotCollection
+from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class _NetworkImpl:
 
-    __slots__ = ('lookup', 'invoker', '_lock', '_main_thread', '_party_clients',
-                 '_global_impls', '_party_impls', 'bots', '_config', '_pool', '_pool_init',
-                 '_cached_metadata', '_metrics')
+    __slots__ = (
+        "lookup",
+        "invoker",
+        "_lock",
+        "_main_thread",
+        "_party_clients",
+        "_global_impls",
+        "_party_impls",
+        "bots",
+        "_config",
+        "_pool",
+        "_pool_init",
+        "_cached_metadata",
+        "_metrics",
+    )
 
-    def __init__(self, metrics: 'Optional[MetricEvents]' = None):
+    def __init__(self, metrics: "Optional[MetricEvents]" = None):
         self.lookup = MultiPackageLookup()
         self.invoker = Invoker()
 
@@ -55,6 +82,7 @@ class _NetworkImpl:
             try:
                 # noinspection PyUnresolvedReferences
                 from ..metrics.prometheus import PrometheusMetricEvents
+
                 self._metrics = PrometheusMetricEvents.default()
             except ImportError:
                 self._metrics = MetricEvents()
@@ -70,23 +98,25 @@ class _NetworkImpl:
         self._config = dict()
         self.bots = BotCollection(None)
 
-    def set_config(self, *configs: 'Union[NetworkConfig, AnonymousNetworkConfig]', **kwargs):
+    def set_config(self, *configs: "Union[NetworkConfig, AnonymousNetworkConfig]", **kwargs):
         for config in configs:
             self._config.update({k: v for k, v in asdict(config).items() if v is not None})
         self._config.update({k: v for k, v in kwargs.items() if v is not None})
-        LOG.debug('Configuration for this network: %r', self._config)
+        LOG.debug("Configuration for this network: %r", self._config)
 
     def get_config_raw(self, key: str, default: Any) -> Any:
         return self._config.get(key, default)
 
-    def resolved_config(self) -> 'NetworkConfig':
+    def resolved_config(self) -> "NetworkConfig":
         config = self.resolved_anonymous_config()
         return NetworkConfig(
             **asdict(config),
-            parties=tuple(party_impl.resolved_config()
-                          for party_impl in self._party_impls.values()))
+            parties=tuple(
+                party_impl.resolved_config() for party_impl in self._party_impls.values()
+            ),
+        )
 
-    def resolved_anonymous_config(self) -> 'AnonymousNetworkConfig':
+    def resolved_anonymous_config(self) -> "AnonymousNetworkConfig":
         return AnonymousNetworkConfig.parse_kwargs(**self._config)
 
     def freeze(self):
@@ -119,7 +149,8 @@ class _NetworkImpl:
                 lookup=self.lookup,
                 connect_timeout=connect_timeout,
                 package_lookup_timeout=package_lookup_timeout,
-                eager_package_fetch=config.eager_package_fetch)
+                eager_package_fetch=config.eager_package_fetch,
+            )
 
             self._pool = pool = AutodetectLedgerNetwork(self.invoker, options)
             self._pool_init.set_result(pool)
@@ -141,18 +172,22 @@ class _NetworkImpl:
         site = None
         with AioLoopPerfMonitor(self._metrics.loop_responsiveness):
             if config.server_port is not None:
-                LOG.info('Opening port %s for metrics...', config.server_port)
+                LOG.info("Opening port %s for metrics...", config.server_port)
                 from aiohttp import web
+
                 from ..server import get_app
+
                 app = get_app(self)
                 runner = web.AppRunner(app)
                 await runner.setup()
                 site = web.TCPSite(runner, config.server_host, config.server_port)
                 ensure_future(site.start())
-                LOG.info('Listening on %s:%s for metrics.', config.server_host, config.server_port)
+                LOG.info("Listening on %s:%s for metrics.", config.server_host, config.server_port)
             else:
-                LOG.info('No server_port configuration was specified, so metrics and other stats '
-                         'will not be served.')
+                LOG.info(
+                    "No server_port configuration was specified, so metrics and other stats "
+                    "will not be served."
+                )
 
             try:
                 runner = _NetworkRunner(self._pool, self, coroutines)
@@ -171,7 +206,7 @@ class _NetworkImpl:
         from asyncio import new_event_loop, set_event_loop
 
         def background_main():
-            LOG.info('Starting an event loop on a background thread %r...', current_thread().name)
+            LOG.info("Starting an event loop on a background thread %r...", current_thread().name)
 
             try:
                 loop = new_event_loop()
@@ -179,15 +214,16 @@ class _NetworkImpl:
 
                 loop.run_until_complete(self.aio_run())
             except:
-                LOG.exception('The main event loop died!')
+                LOG.exception("The main event loop died!")
 
-            LOG.info('The main event loop has finished.')
+            LOG.info("The main event loop has finished.")
 
         with self._lock:
             if self._main_thread is not None:
-                raise RuntimeError('start() called more than once')
+                raise RuntimeError("start() called more than once")
             self._main_thread = Thread(
-                target=background_main, daemon=daemon, name=f'dazl:main-{id(self):016x}')
+                target=background_main, daemon=daemon, name=f"dazl:main-{id(self):016x}"
+            )
 
         self._main_thread.start()
 
@@ -199,7 +235,7 @@ class _NetworkImpl:
         This method can safely be called from any thread, but it must be called after start().
         """
         with self._lock:
-            LOG.info('Shutting down...')
+            LOG.info("Shutting down...")
             self.invoker.handle_sigint()
 
     def abort(self) -> None:
@@ -209,7 +245,7 @@ class _NetworkImpl:
         This method can safely be called from any thread, but it must be called after start().
         """
         with self._lock:
-            LOG.info('Aborting...')
+            LOG.info("Aborting...")
             self.invoker.handle_sigquit()
 
     def join(self, timeout=None):
@@ -224,7 +260,7 @@ class _NetworkImpl:
         if thread is not None:
             thread.join(timeout=timeout)
 
-    def global_impl(self, ctor: 'Callable[[_NetworkImpl], T]') -> T:
+    def global_impl(self, ctor: "Callable[[_NetworkImpl], T]") -> T:
         with self._lock:
             inst = self._global_impls.get(ctor)  # type: ignore
             if inst is None:
@@ -234,27 +270,36 @@ class _NetworkImpl:
 
     @overload
     def party_impl(
-            self, party: Party, ctor: None = None,
-            if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING) -> \
-        _PartyClientImpl: ...
+        self,
+        party: Party,
+        ctor: None = None,
+        if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING,
+    ) -> _PartyClientImpl:
+        ...
 
     @overload
     def party_impl(
-            self, party: Party, ctor: None = None,
-            if_missing: NONE_IF_MISSING = CREATE_IF_MISSING) -> \
-        Optional[_PartyClientImpl]: ...
+        self, party: Party, ctor: None = None, if_missing: NONE_IF_MISSING = CREATE_IF_MISSING
+    ) -> Optional[_PartyClientImpl]:
+        ...
 
     @overload
     def party_impl(
-            self, party: Party, ctor: 'Callable[[_PartyClientImpl], T]',
-            if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING) -> \
-        T: ...
+        self,
+        party: Party,
+        ctor: "Callable[[_PartyClientImpl], T]",
+        if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING,
+    ) -> T:
+        ...
 
     @overload
     def party_impl(
-            self, party: Party, ctor: 'Callable[[_PartyClientImpl], T]',
-            if_missing: NONE_IF_MISSING = CREATE_IF_MISSING) -> \
-        Optional[T]: ...
+        self,
+        party: Party,
+        ctor: "Callable[[_PartyClientImpl], T]",
+        if_missing: NONE_IF_MISSING = CREATE_IF_MISSING,
+    ) -> Optional[T]:
+        ...
 
     def party_impl(self, party, ctor=None, if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING):
         """
@@ -295,18 +340,18 @@ class _NetworkImpl:
                 mm[party] = inst
             return inst
 
-    def parties(self) -> 'Collection[Party]':
+    def parties(self) -> "Collection[Party]":
         """
         Return a snapshot of the set of parties that exist right now.
         """
         with self._lock:
             return list(self._party_impls)
 
-    def party_impls(self) -> 'Collection[_PartyClientImpl]':
+    def party_impls(self) -> "Collection[_PartyClientImpl]":
         with self._lock:
             return list(self._party_impls.values())
 
-    def find_bot(self, bot_id) -> 'Optional[Bot]':
+    def find_bot(self, bot_id) -> "Optional[Bot]":
         """
         Return the bot of the specified ID, or ``None`` if no matching bot is found.
         """
@@ -316,7 +361,7 @@ class _NetworkImpl:
                     return bot
         return None
 
-    def simple_metadata(self, timeout: 'TimeDeltaLike') -> 'LedgerMetadata':
+    def simple_metadata(self, timeout: "TimeDeltaLike") -> "LedgerMetadata":
         """
         Retrieve metadata about the ledger.
 
@@ -329,14 +374,14 @@ class _NetworkImpl:
         with self._lock:
             return self.invoker.run_in_loop(self._pool.ledger, timeout=timeout)
 
-    async def aio_metadata(self) -> 'LedgerMetadata':
+    async def aio_metadata(self) -> "LedgerMetadata":
         """
         Coroutine version of :meth:`metadata`.
         """
         pool = await self._pool_init
         return await pool.ledger()
 
-    async def upload_package(self, contents: bytes, timeout: 'TimeDeltaLike') -> None:
+    async def upload_package(self, contents: bytes, timeout: "TimeDeltaLike") -> None:
         """
         Ensure packages specified by the given byte array are loaded on the remote server. This
         method only returns once packages are reported by the Package Service.
@@ -350,11 +395,12 @@ class _NetworkImpl:
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)
 
-    async def ensure_package_ids(
-            self, package_ids: 'Collection[str]', timeout: 'TimeDeltaLike'):
-        await wait_for(self.__ensure_package_ids(package_ids), to_timedelta(timeout).total_seconds())
+    async def ensure_package_ids(self, package_ids: "Collection[str]", timeout: "TimeDeltaLike"):
+        await wait_for(
+            self.__ensure_package_ids(package_ids), to_timedelta(timeout).total_seconds()
+        )
 
-    async def __ensure_package_ids(self, package_ids: 'Collection[str]'):
+    async def __ensure_package_ids(self, package_ids: "Collection[str]"):
         metadata = await self.aio_metadata()
         await gather(*(metadata.package_loader.load(pkg_ref) for pkg_ref in package_ids))
 
@@ -362,14 +408,14 @@ class _NetworkImpl:
 
     # noinspection PyShadowingBuiltins
 
-    def add_event_handler(self, key, handler: 'Callable[[BaseEvent], None]') -> 'Bot':
+    def add_event_handler(self, key, handler: "Callable[[BaseEvent], None]") -> "Bot":
         """
         Add an event handler to a specific event. Unlike event listeners on party clients, these
         event handlers are not allowed to return anything in response to handling an event.
         """
         return self.bots.add_single(key, handler, None)
 
-    def emit_event(self, data: BaseEvent) -> 'Awaitable[Any]':
+    def emit_event(self, data: BaseEvent) -> "Awaitable[Any]":
         return self.bots.notify(data)
 
     # endregion
@@ -384,12 +430,13 @@ class _NetworkImpl:
             ca_file=config.ca_file,
             cert_file=config.cert_file,
             cert_key_file=config.cert_key_file,
-            enable_http_proxy=config.enable_http_proxy)
+            enable_http_proxy=config.enable_http_proxy,
+        )
         await self._pool.connect_anonymous(settings, url_prefix)
 
 
 class _NetworkRunner:
-    def __init__(self, pool: LedgerNetwork, network_impl: '_NetworkImpl', user_coroutines):
+    def __init__(self, pool: LedgerNetwork, network_impl: "_NetworkImpl", user_coroutines):
         self.pool = pool
         self.initialized_parties = set()  # type: Set[Party]
         self._network_impl = network_impl
@@ -400,7 +447,7 @@ class _NetworkRunner:
         self._writers = []
 
     async def run(self):
-        LOG.debug('Running a Network with config: %r', self._config)
+        LOG.debug("Running a Network with config: %r", self._config)
         prev_offset = None
         keep_running = True
 
@@ -416,7 +463,9 @@ class _NetworkRunner:
             uninitialized_parties = set(party_impls) - self.initialized_parties
             # TODO: Also handle removed parties at some point
             if uninitialized_parties:
-                await self._init([party_impls[party] for party in uninitialized_parties], prev_offset)
+                await self._init(
+                    [party_impls[party] for party in uninitialized_parties], prev_offset
+                )
             self.initialized_parties |= uninitialized_parties
 
             current_offset, keep_running = await self.beat(list(party_impls.values()))
@@ -427,67 +476,77 @@ class _NetworkRunner:
                     prev_offset = current_offset
 
         # prohibit any more command submissions
-        LOG.debug('network_run: stopping bots gracefully...')
+        LOG.debug("network_run: stopping bots gracefully...")
         for pi in self._network_impl.party_impls():
             pi.bots.stop_all()
         self._network_impl.bots.stop_all()
 
-        LOG.debug('network_run: stopping its writers gracefully...')
+        LOG.debug("network_run: stopping its writers gracefully...")
         # TODO: This needs to be coordinated better among the list of writers we ACTUALLY started
         for pi in self._network_impl.party_impls():
             pi.stop_writer()
 
         # wait for writers to finish their writing
         await gather(*self._writers, return_exceptions=True)
-        LOG.info('network_run: finished.')
+        LOG.info("network_run: finished.")
         self._writers = []
 
-    async def beat(self, party_impls: 'Collection[_PartyClientImpl]') -> Tuple[str, bool]:
+    async def beat(self, party_impls: "Collection[_PartyClientImpl]") -> Tuple[str, bool]:
         """
         Called periodically to schedule reads and writes.
         """
         from ._reader_sync import run_iteration
+
         offset, completions = await run_iteration(party_impls)
 
-        self._read_completions = [fut for fut in (*self._read_completions, *completions)
-                                  if not fut.done()]
+        self._read_completions = [
+            fut for fut in (*self._read_completions, *completions) if not fut.done()
+        ]
         self._user_coroutines = [fut for fut in self._user_coroutines if not fut.done()]
 
         # If there are no more commands in flight, there is no more activity
         if self._network_impl.invoker.level >= RunLevel.TERMINATE_GRACEFULLY:
-            LOG.info('network_run terminating on user request...')
+            LOG.info("network_run terminating on user request...")
             return offset, False
         elif self._network_impl.invoker.level >= RunLevel.RUN_UNTIL_IDLE:
             if not self._read_completions and not self._user_coroutines:
                 if all(pi.writer_idle() for pi in party_impls):
-                    LOG.info('network_run: terminating because all writers are idle and all '
-                             'clients have caught up to offset %s', offset)
+                    LOG.info(
+                        "network_run: terminating because all writers are idle and all "
+                        "clients have caught up to offset %s",
+                        offset,
+                    )
                     return offset, False
 
         return offset, True
 
     async def _init(
-            self, party_impls: 'Collection[_PartyClientImpl]',
-            first_offset: 'Optional[str]') -> Optional[str]:
+        self, party_impls: "Collection[_PartyClientImpl]", first_offset: "Optional[str]"
+    ) -> Optional[str]:
         # region log
         if LOG.isEnabledFor(logging.DEBUG):
             parties = [pi.party for pi in party_impls]
             if first_offset is None:
-                LOG.debug('Starting first-time initialization for parties: %s', parties)
+                LOG.debug("Starting first-time initialization for parties: %s", parties)
             else:
-                LOG.debug('Starting initialization for parties: %s, advancing to offset: %s', parties, first_offset)
+                LOG.debug(
+                    "Starting initialization for parties: %s, advancing to offset: %s",
+                    parties,
+                    first_offset,
+                )
         # endregion
 
         # establish ledger connections
         if party_impls:
             # noinspection PyProtectedMember
-            self._bot_coroutines.extend(ensure_future(party_impl.bots._main())
-                                        for party_impl in party_impls)
+            self._bot_coroutines.extend(
+                ensure_future(party_impl.bots._main()) for party_impl in party_impls
+            )
             await gather(*(party_impl.connect_in(self.pool) for party_impl in party_impls))
         elif first_offset is None:
             # establish a single null connection that will be used only to ensure that metadata can be
             # fetched
-            party_impl = _PartyClientImpl(self._network_impl, Party('\x00'))
+            party_impl = _PartyClientImpl(self._network_impl, Party("\x00"))
             await party_impl.connect_in(self.pool)
         else:
             # trivially, there is nothing to do for init because there are no parties to initialize
@@ -505,7 +564,8 @@ class _NetworkRunner:
         init_futs = []
         if first_offset is None:
             evt = InitEvent(
-                None, None, None, metadata.ledger_id, self._network_impl.lookup, metadata._store)
+                None, None, None, metadata.ledger_id, self._network_impl.lookup, metadata._store
+            )
             init_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
             init_futs.append(ensure_future(party_impl.initialize(None, metadata)))
@@ -515,6 +575,7 @@ class _NetworkRunner:
         #  resolve
 
         from ._reader_sync import read_initial_acs
+
         offset = await read_initial_acs(party_impls)
 
         LOG.debug('Preparing to raise the "ready" event...')
@@ -522,8 +583,14 @@ class _NetworkRunner:
         ready_futs = []
         if first_offset is None:
             evt = ReadyEvent(
-                None, None, None, metadata.ledger_id, self._network_impl.lookup, metadata._store,
-                offset)
+                None,
+                None,
+                None,
+                metadata.ledger_id,
+                self._network_impl.lookup,
+                metadata._store,
+                offset,
+            )
             ready_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
             ready_futs.append(ensure_future(party_impl.emit_ready(metadata, None, offset)))
@@ -535,5 +602,5 @@ class _NetworkRunner:
         #  resolve
 
         # Return the metadata offset for later
-        LOG.debug('Raised the ready event, and caught up to %s.', offset)
+        LOG.debug("Raised the ready event, and caught up to %s.", offset)
         return offset

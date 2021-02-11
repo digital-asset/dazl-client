@@ -9,6 +9,7 @@ class OrderedEnum(Enum):
     An enum that supports ordering semantics.
     (Taken from https://docs.python.org/3/library/enum.html#orderedenum)
     """
+
     def __ge__(self, other):
         if self.__class__ is other.__class__:
             return self.value >= other.value

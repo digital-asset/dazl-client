@@ -1,17 +1,17 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
-import os
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import timedelta
+import logging
+import os
+import subprocess
 
 import pytest
-import subprocess
 
 from dazl.util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
 
-DEFAULT_SDK_VERSION = '1.3.0'
+DEFAULT_SDK_VERSION = "1.3.0"
 SANDBOX_START_TIMEOUT = timedelta(seconds=10)
 
 
@@ -32,11 +32,9 @@ def sandbox() -> str:
          DAML_SDK_VERSION=1.0.0 make test
          ```
     """
-    url = os.environ.get('DAZL_TEST_DAML_LEDGER_URL')
+    url = os.environ.get("DAZL_TEST_DAML_LEDGER_URL")
     if url:
-        logging.info(
-            'Using the sandbox at %s because `DAZL_TEST_DAML_LEDGER_URL` is defined',
-            url)
+        logging.info("Using the sandbox at %s because `DAZL_TEST_DAML_LEDGER_URL` is defined", url)
         yield url
         return
 
@@ -45,20 +43,21 @@ def sandbox() -> str:
     env = os.environ.copy()
     # Running dazl's tests against a different Sandbox merely requires the DAML_SDK_VERSION
     # variable be set to a different value
-    if 'DAML_SDK_VERSION' not in env:
-        env['DAML_SDK_VERSION'] = DEFAULT_SDK_VERSION
+    if "DAML_SDK_VERSION" not in env:
+        env["DAML_SDK_VERSION"] = DEFAULT_SDK_VERSION
 
     process = subprocess.Popen(
-        ['daml', 'sandbox', '--port', str(port)],
+        ["daml", "sandbox", "--port", str(port)],
         env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True)
+        universal_newlines=True,
+    )
     try:
-        ProcessLogger(process, logging.getLogger('sandbox')).start()
+        ProcessLogger(process, logging.getLogger("sandbox")).start()
         wait_for_process_port(process, port, SANDBOX_START_TIMEOUT)
 
-        yield f'http://localhost:{port}'
+        yield f"http://localhost:{port}"
 
     finally:
         # Clean up the process that we started. Note that some versions of the SDK have issues that
@@ -69,6 +68,6 @@ def sandbox() -> str:
 
 
 @pytest.fixture()
-def executor() -> 'ThreadPoolExecutor':
+def executor() -> "ThreadPoolExecutor":
     with ThreadPoolExecutor(3) as executor:
         yield executor

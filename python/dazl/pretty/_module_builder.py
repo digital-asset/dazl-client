@@ -10,11 +10,11 @@ from ..model.types import ModuleRef
 
 
 class ModuleHierarchy:
-    START = 'START'
-    ITEM = 'ITEM'
-    END = 'END'
+    START = "START"
+    ITEM = "ITEM"
+    END = "END"
 
-    def __init__(self, package_id, module_name: 'Sequence[str]' = ()):
+    def __init__(self, package_id, module_name: "Sequence[str]" = ()):
         self.ref = ModuleRef(package_id, DottedName(module_name))
         self._items = dict()  # type: Dict[str, ModuleHierarchy]
         self._modules = list()  # type: List[Module]
@@ -29,13 +29,15 @@ class ModuleHierarchy:
         if mb is None:
             mn = module_name(self.ref)
             # TODO: Revisit in dazl 7.0.0 when the internal structures of ModuleRef and DottedName change
-            mb = ModuleHierarchy(package_ref(self.ref), (f"{mn}.{item}" if mn else str(mn)).split('.'))
+            mb = ModuleHierarchy(
+                package_ref(self.ref), (f"{mn}.{item}" if mn else str(mn)).split(".")
+            )
             self._items[item] = mb
         return mb
 
-    def add_module(self, module: 'Module') -> None:
+    def add_module(self, module: "Module") -> None:
         obj = self
-        components = str(module.name).split('.')
+        components = str(module.name).split(".")
         for component in components:
             obj = obj[component]
         obj._modules.append(module)
@@ -109,5 +111,4 @@ class ModuleHierarchy:
     #             yield line
 
     def __repr__(self):
-        return f'ModuleBuilder(ref={self.ref}, items={self._items})'
-
+        return f"ModuleBuilder(ref={self.ref}, items={self._items})"

@@ -33,4 +33,4 @@ class PrettyOptions:
 
     column_width: Optional[int] = None
     show_hidden_types: bool = False
-    format: str = 'daml'
+    format: str = "daml"

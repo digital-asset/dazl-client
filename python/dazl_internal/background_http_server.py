@@ -12,7 +12,7 @@ class TestHTTPServer:
 
     def __init__(self, handler, port=0):
         self._thread = Thread(target=self._run)
-        self.server = HTTPServer(('localhost', port), handler)
+        self.server = HTTPServer(("localhost", port), handler)
 
     @property
     def port(self):

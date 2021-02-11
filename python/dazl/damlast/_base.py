@@ -9,11 +9,12 @@ class _Missing:
     """
     Sentinel object used to denote that a value was unspecified in a sum type in the AST.
     """
+
     __slots__ = ()
 
     def __repr__(self):
-        return 'MISSING'
+        return "MISSING"
 
 
 MISSING = _Missing()
-T = TypeVar('T')
+T = TypeVar("T")

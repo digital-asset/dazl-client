@@ -7,6 +7,7 @@ This model contains definitions for the data classes used at the client layer of
 
 from enum import IntEnum
 from typing import NamedTuple, Optional
+
 try:
     from typing import Literal  # type: ignore
 except ImportError:
@@ -17,6 +18,7 @@ class ExitCode(IntEnum):
     """
     The different ways that a run of a dazl script can terminate.
     """
+
     SUCCESS = 0
     ABORT = 1
     ERROR = 2
@@ -41,6 +43,7 @@ class LedgerRun(NamedTuple):
 
         The block height of the first block NOT consumed by the run.
     """
+
     exit_code: ExitCode
     block_start_height: Optional[int]
     block_end_height: Optional[int]

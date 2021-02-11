@@ -5,13 +5,23 @@
 This module contains miscellaneous utility methods that don't really fit anywhere else.
 """
 
-from typing import Callable, Collection, Generator, Iterable, List, Mapping, Optional, Tuple, \
-    TypeVar, Union
+from typing import (
+    Callable,
+    Collection,
+    Generator,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+)
 
-T = TypeVar('T')
-K = TypeVar('K')
-V = TypeVar('V')
-E = TypeVar('E', bound=Exception)
+T = TypeVar("T")
+K = TypeVar("K")
+V = TypeVar("V")
+E = TypeVar("E", bound=Exception)
 
 
 def boundary_iter(obj: Iterable[T]) -> Generator[Tuple[bool, T], None, None]:
@@ -55,7 +65,7 @@ def flatten(obj):
     return ret
 
 
-def as_list(obj: 'Union[None, T, Collection[Union[None, T]]]') -> 'List[T]':
+def as_list(obj: "Union[None, T, Collection[Union[None, T]]]") -> "List[T]":
     """
     Convert an object that is either nothing, a single object, or a collection, to a list of type
     of that object.
@@ -76,8 +86,9 @@ def as_list(obj: 'Union[None, T, Collection[Union[None, T]]]') -> 'List[T]':
         return [obj]
 
 
-def get_matches(mapping: 'Mapping[K, V]', key: 'K', exc_class: 'Optional[Callable[[K], E]]' = KeyError) \
-        -> 'Collection[V]':
+def get_matches(
+    mapping: "Mapping[K, V]", key: "K", exc_class: "Optional[Callable[[K], E]]" = KeyError
+) -> "Collection[V]":
     """
     Return the value (as a singleton collection) associated with a key. If the key is equal to the
     special value ``"*"``, then all values are returned. If there is no mapping for the specified
@@ -99,7 +110,7 @@ def get_matches(mapping: 'Mapping[K, V]', key: 'K', exc_class: 'Optional[Callabl
         * A collection of one if a match is found for the supplied key;
         * All values of the mapping if the key is `""*""`.
     """
-    if key == '*':
+    if key == "*":
         return tuple(mapping.values())
 
     value = mapping.get(key)

@@ -32,5 +32,6 @@ def test_quarter_quadrillion():
 
 
 def test_quarter_quadrillion_and_a_bit():
-    assert decimal_to_str(Decimal("250000000000000.0000000000011")) == "250000000000000.0000000000011"
-
+    assert (
+        decimal_to_str(Decimal("250000000000000.0000000000011")) == "250000000000000.0000000000011"
+    )

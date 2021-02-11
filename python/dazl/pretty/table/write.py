@@ -5,7 +5,7 @@
 This module contains utilities for deterministically outputting contract information.
 """
 
-from typing import Optional, TextIO, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional, TextIO
 
 from .fmt_base import get_formatter
 from .model import TableBuilder
@@ -13,15 +13,12 @@ from .model import TableBuilder
 if TYPE_CHECKING:
     from ...client import Network
 
-__all__ = ['write_acs']
+__all__ = ["write_acs"]
 
 
 def write_acs(
-        buf: 'TextIO',
-        network: 'Network',
-        fmt: 'Optional[str]' = None,
-        include_archived: bool = False) \
-        -> None:
+    buf: "TextIO", network: "Network", fmt: "Optional[str]" = None, include_archived: bool = False
+) -> None:
     """
     Write all entries tabled by the plugin to the provided buffer.
 
@@ -42,11 +39,11 @@ def write_acs(
         client = network.aio_party(party)
 
         if include_archived:
-            for cxdata in client.find_historical('*'):
+            for cxdata in client.find_historical("*"):
                 table.add(party, cxdata.cid, cxdata.cdata, cxdata.effective_at)
         else:
-            for cid, cdata in client.find_active('*').items():
+            for cid, cdata in client.find_active("*").items():
                 table.add(party, cid, cdata, None)
 
     for line in formatter.render(network.lookup, parties, table):
-        buf.write(line + '\n')
+        buf.write(line + "\n")

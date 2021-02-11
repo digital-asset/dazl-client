@@ -27,28 +27,40 @@ system.
 .. autoclass:: VariantType
 .. autoclass:: UnsupportedType
 """
+from typing import (
+    TYPE_CHECKING,
+    AbstractSet,
+    Any,
+    Callable,
+    Collection,
+    Dict,
+    Mapping,
+    NewType,
+    Optional,
+    Sequence,
+    Tuple,
+    TypeVar,
+    Union,
+)
 import warnings
-from typing import AbstractSet, Any, Callable, Collection, Dict, Mapping, NewType, Optional, \
-    Sequence, Tuple, TypeVar, Union, TYPE_CHECKING
 
 from .. import LOG
 from ..damlast.daml_lf_1 import DottedName, Expr, ModuleRef, PackageRef, TypeConName
 from ..model.core import ContractData, Party
 from ..util.typing import safe_cast, safe_dict_cast, safe_optional_cast
 
-
-warnings.warn('The symbols in dazl.model.types are deprecated', DeprecationWarning, stacklevel=2)
+warnings.warn("The symbols in dazl.model.types are deprecated", DeprecationWarning, stacklevel=2)
 
 DottedNameish = Union[str, Sequence[str]]
 
-T_co = TypeVar('T_co', covariant=True)
+T_co = TypeVar("T_co", covariant=True)
 
 if TYPE_CHECKING:
     from .types_store import PackageStore
 
 
 # Reference to a ledger ID.
-LedgerId = NewType('LedgerId', str)
+LedgerId = NewType("LedgerId", str)
 
 # Reference to a package via a package identifier. The identifier is the ascii7
 # lowercase hex-encoded hash of the package contents found in the DAML LF Archive.
@@ -61,7 +73,7 @@ PackageId = PackageRef
 PackageIdSet = AbstractSet[PackageId]
 
 
-def type_ref(s: str) -> 'TypeReference':
+def type_ref(s: str) -> "TypeReference":
     """
     Convenience method for creating a fully-qualified :class:`TypeReference`. A few formats are
     supported:
@@ -71,29 +83,29 @@ def type_ref(s: str) -> 'TypeReference':
     "module.entity@pkgid"
     """
     # Attempt to parse in an older format still used by Navigator for display purposes.
-    me, is_at, pkgid = s.partition('@')
+    me, is_at, pkgid = s.partition("@")
     if is_at:
         # encourage people to use the new format
-        m, has_colon, e = me.partition(':')
+        m, has_colon, e = me.partition(":")
         if not has_colon:
-            m, _, e = me.rpartition('.')
+            m, _, e = me.rpartition(".")
 
         pkg_ref = PackageRef(pkgid)
-        module_name = DottedName(m.split('.'))
-        entity_name = e.split('.')
+        module_name = DottedName(m.split("."))
+        entity_name = e.split(".")
     else:
-        components = s.split(':')
+        components = s.split(":")
         if len(components) != 3:
             raise ValueError(f"could not parse as a template reference: {s!r}")
 
         pkg_ref = PackageRef(components[0])
-        module_name = DottedName(components[1].split('.'))
-        entity_name = components[2].split('.')
+        module_name = DottedName(components[1].split("."))
+        entity_name = components[2].split(".")
 
     return TypeReference(con=TypeConName(module=ModuleRef(pkg_ref, module_name), name=entity_name))
 
 
-def dotted_name(obj: DottedNameish) -> 'Sequence[str]':
+def dotted_name(obj: DottedNameish) -> "Sequence[str]":
     """
     Sanitize a string or a tuple of strings to a dotted name.
 
@@ -101,16 +113,16 @@ def dotted_name(obj: DottedNameish) -> 'Sequence[str]':
     :return: A tuple of strings.
     """
     if obj is None:
-        raise ValueError('DottedName must be a non-None value')
+        raise ValueError("DottedName must be a non-None value")
     if isinstance(obj, str):
-        return tuple(obj.split('.'))
+        return tuple(obj.split("."))
     if isinstance(obj, Collection):
         for item in obj:
             if not isinstance(item, str):
                 raise ValueError("DottedName's components must all be strings")
         return tuple(obj)
     else:
-        raise ValueError('could not convert to a sequence of str: {obj!r}')
+        raise ValueError("could not convert to a sequence of str: {obj!r}")
 
 
 class NamedArgumentList(tuple):
@@ -124,18 +136,19 @@ class NamedArgumentList(tuple):
 
 
 def type_dispatch_table(
-        on_type_ref: Callable[['TypeReference'], T_co],
-        on_type_var: Callable[['TypeVariable'], T_co],
-        on_type_app: Callable[['TypeApp'], T_co],
-        on_scalar: Callable[['ScalarType'], T_co],
-        on_contract_id: Callable[['ContractIdType'], T_co],
-        on_optional: Callable[['OptionalType'], T_co],
-        on_list: Callable[['ListType'], T_co],
-        on_text_map: 'Callable[[TextMapType], T_co]',
-        on_record: Callable[['RecordType'], T_co],
-        on_variant: Callable[['VariantType'], T_co],
-        on_enum: 'Callable[[EnumType], T_co]',
-        on_unsupported: Callable[['UnsupportedType'], T_co]) -> Callable[['Type'], T_co]:
+    on_type_ref: Callable[["TypeReference"], T_co],
+    on_type_var: Callable[["TypeVariable"], T_co],
+    on_type_app: Callable[["TypeApp"], T_co],
+    on_scalar: Callable[["ScalarType"], T_co],
+    on_contract_id: Callable[["ContractIdType"], T_co],
+    on_optional: Callable[["OptionalType"], T_co],
+    on_list: Callable[["ListType"], T_co],
+    on_text_map: "Callable[[TextMapType], T_co]",
+    on_record: Callable[["RecordType"], T_co],
+    on_variant: Callable[["VariantType"], T_co],
+    on_enum: "Callable[[EnumType], T_co]",
+    on_unsupported: Callable[["UnsupportedType"], T_co],
+) -> Callable[["Type"], T_co]:
     def _impl(tt: Type):
         if isinstance(tt, TypeReference):
             return on_type_ref(tt)
@@ -164,21 +177,23 @@ def type_dispatch_table(
         else:
             # note to maintainers: if you modify the Type hierarchy, you must also maintain this
             # poor man's pattern match over the hierarchy
-            LOG.error('Incomplete implementation of type_match! (when handling %r)', tt)
-            raise Exception(f'unknown Type subclass: {tt!r}')
+            LOG.error("Incomplete implementation of type_match! (when handling %r)", tt)
+            raise Exception(f"unknown Type subclass: {tt!r}")
+
     return _impl
 
 
 def scalar_type_dispatch_table(
-        on_unit: 'Callable[[], T_co]',
-        on_bool: 'Callable[[], T_co]',
-        on_text: 'Callable[[], T_co]',
-        on_int: 'Callable[[], T_co]',
-        on_decimal: 'Callable[[], T_co]',
-        on_party: 'Callable[[], T_co]',
-        on_date: 'Callable[[], T_co]',
-        on_datetime: 'Callable[[], T_co]',
-        on_timedelta: 'Callable[[], T_co]') -> 'Callable[[ScalarType], T_co]':
+    on_unit: "Callable[[], T_co]",
+    on_bool: "Callable[[], T_co]",
+    on_text: "Callable[[], T_co]",
+    on_int: "Callable[[], T_co]",
+    on_decimal: "Callable[[], T_co]",
+    on_party: "Callable[[], T_co]",
+    on_date: "Callable[[], T_co]",
+    on_datetime: "Callable[[], T_co]",
+    on_timedelta: "Callable[[], T_co]",
+) -> "Callable[[ScalarType], T_co]":
     def _impl(tt: ScalarType):
         st = safe_cast(ScalarType, tt)
         if st == SCALAR_TYPE_UNIT:
@@ -202,9 +217,11 @@ def scalar_type_dispatch_table(
         else:
             # note to maintainers: if you modify the set of ScalarType instances, you must also
             # maintain this poor man's pattern match over the hierarchy
-            LOG.error('Incomplete implementation of scalar_type_dispatch_table! (when handling %r)',
-                      tt)
-            raise Exception(f'unknown ScalarType: {tt!r}')
+            LOG.error(
+                "Incomplete implementation of scalar_type_dispatch_table! (when handling %r)", tt
+            )
+            raise Exception(f"unknown ScalarType: {tt!r}")
+
     return _impl
 
 
@@ -215,11 +232,15 @@ class Type:
 
     def __init__(self):
         warnings.warn(
-            'dazl.model.types.Type and its subclasses are deprecated. '
-            'Use dazl.damlast.daml_lf_1.Type instead.', DeprecationWarning, stacklevel=2)
+            "dazl.model.types.Type and its subclasses are deprecated. "
+            "Use dazl.damlast.daml_lf_1.Type instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
     def __str__(self):
         from ..pretty import DAML_PRETTY_PRINTER
+
         return DAML_PRETTY_PRINTER.visit_type(self)
 
 
@@ -234,9 +255,9 @@ class TypeApp(Type):
         super().__init__()
 
         if not isinstance(body, Type):
-            raise ValueError(f'a Type is required here (got {body} instead)')
+            raise ValueError(f"a Type is required here (got {body} instead)")
         if not arguments:
-            raise ValueError('at least one type argument is required in a TypeApp')
+            raise ValueError("at least one type argument is required in a TypeApp")
         self.body = body
         self.arguments = tuple(arguments)
 
@@ -248,7 +269,8 @@ class TypeVariable(Type):
     """
     An unbound type in a Type expression.
     """
-    __slots__ = 'name',
+
+    __slots__ = ("name",)
 
     def __init__(self, name: str):
         self.name = safe_cast(str, name)
@@ -267,7 +289,7 @@ class TypeVariable(Type):
 
 
 class TypeReference(Type):
-    def __init__(self, con: 'TypeConName'):
+    def __init__(self, con: "TypeConName"):
         self.con = con
 
     def __str__(self):
@@ -292,7 +314,7 @@ class UnresolvedTypeReference(Type):
         return self.name
 
     def __repr__(self):
-        return f'<UnresolvedTypeReference({self.name!r})>'
+        return f"<UnresolvedTypeReference({self.name!r})>"
 
     def __eq__(self, other):
         return isinstance(other, UnresolvedTypeReference) and self.name == other.name
@@ -311,7 +333,7 @@ class ScalarType(ConcreteType):
     construct instances of this directly; all scalar types are builtins.
     """
 
-    __slots__ = 'name',
+    __slots__ = ("name",)
 
     def __init__(self, name: str):
         """
@@ -339,14 +361,15 @@ class _BuiltInParameterizedType(ConcreteType):
     Convenience class that encapsulates commonalities for the built-in types that have one type
     parameter.
     """
-    __slots__ = ('type_parameter',)
+
+    __slots__ = ("type_parameter",)
 
     def __init__(self, type_parameter: Type):
         self.type_parameter = safe_cast(Type, type_parameter)
 
     def __repr__(self):
         py_type = type(self).__name__
-        return f'<{py_type}({self.type_parameter!r})>'
+        return f"<{py_type}({self.type_parameter!r})>"
 
 
 class ContractIdType(_BuiltInParameterizedType):
@@ -371,14 +394,15 @@ class TextMapType(ConcreteType):
 
         The type of values in this map.
     """
-    __slots__ = 'value_type',
+
+    __slots__ = ("value_type",)
 
     def __init__(self, value_type: Type):
         self.value_type = safe_cast(Type, value_type)
 
     def __repr__(self):
         py_type = type(self).__name__
-        return f'<{py_type}({self.value_type!r})>'
+        return f"<{py_type}({self.value_type!r})>"
 
 
 class GenMapType(ConcreteType):
@@ -395,7 +419,8 @@ class GenMapType(ConcreteType):
 
         The type of values in this map.
     """
-    __slots__ = 'key_type', 'value_type'
+
+    __slots__ = "key_type", "value_type"
 
     def __init__(self, key_type: Type, value_type: Type):
         self.key_type = safe_cast(Type, key_type)
@@ -403,7 +428,7 @@ class GenMapType(ConcreteType):
 
     def __repr__(self):
         py_type = type(self).__name__
-        return f'<{py_type}({self.key_type!r}, {self.value_type!r})>'
+        return f"<{py_type}({self.key_type!r}, {self.value_type!r})>"
 
 
 class OptionalType(_BuiltInParameterizedType):
@@ -428,7 +453,7 @@ class ForAllType(Type):
         self.body_type = body_type
 
     def __repr__(self):
-        return f'<ForAllType({self.type_vars}, {self.body_type})>'
+        return f"<ForAllType({self.type_vars}, {self.body_type})>"
 
 
 class _CompositeDataType(ConcreteType):
@@ -436,16 +461,18 @@ class _CompositeDataType(ConcreteType):
     Either a :class:`RecordType` (product type) or a :class:`VariantType` (sum type).
     """
 
-    def __init__(self,
-                 named_args: 'NamedArgumentList',
-                 name: 'Optional[TypeReference]',
-                 type_args: 'Sequence[TypeVariable]'):
+    def __init__(
+        self,
+        named_args: "NamedArgumentList",
+        name: "Optional[TypeReference]",
+        type_args: "Sequence[TypeVariable]",
+    ):
         if type(self) == _CompositeDataType:
-            raise Exception('_CompositeDataType cannot be constructed')
+            raise Exception("_CompositeDataType cannot be constructed")
         if not isinstance(named_args, NamedArgumentList):
-            raise TypeError('NamedArgumentList required here')
+            raise TypeError("NamedArgumentList required here")
         if name is not None and not isinstance(name, TypeReference):
-            raise TypeError('name must be a TypeReference or None')
+            raise TypeError("name must be a TypeReference or None")
 
         self.named_args = named_args
         self.name = name
@@ -456,15 +483,15 @@ class _CompositeDataType(ConcreteType):
             if key == name:
                 return value_type
 
-        raise ValueError(f'field or constructor {name!r} not found in {self}')
+        raise ValueError(f"field or constructor {name!r} not found in {self}")
 
     def __repr__(self):
         py_type = type(self).__name__
 
-        name = '(anonymous)' if self.name is None else self.name
-        full_name = ''.join(f' {v}' for v in ((name,) + self.type_args))
+        name = "(anonymous)" if self.name is None else self.name
+        full_name = "".join(f" {v}" for v in ((name,) + self.type_args))
 
-        return f'<{py_type}:{full_name} {self.named_args}>'
+        return f"<{py_type}:{full_name} {self.named_args}>"
 
 
 class FunctionType(Type):
@@ -474,31 +501,31 @@ class FunctionType(Type):
     Instances of this type aren't practically usable from this library. They are merely recorded in
     order to faithfully pretty-print metadata.
     """
+
     def __init__(self, parameters: Sequence[Type], result: Type):
         self.parameters = tuple(parameters)
         self.result = safe_cast(Type, result)
 
     def __str__(self):
         from io import StringIO
+
         with StringIO() as buf:
             for param in self.parameters:
                 buf.write(str(param))
-                buf.write(' -> ')
+                buf.write(" -> ")
             buf.write(str(self.result))
             return buf.getvalue()
 
     def __repr__(self):
-        return f'<FunctionType({self})>'
+        return f"<FunctionType({self})>"
 
 
 class RecordType(_CompositeDataType):
-
     def as_args_list(self):
         return self.named_args
 
 
 class VariantType(_CompositeDataType):
-
     def as_args_list(self):
         return self.named_args
 
@@ -508,9 +535,9 @@ class VariantType(_CompositeDataType):
 
 class EnumType(ConcreteType):
 
-    __slots__ = 'constructors',
+    __slots__ = ("constructors",)
 
-    def __init__(self, name: 'Optional[TypeReference]', constructors: 'Collection[str]'):
+    def __init__(self, name: "Optional[TypeReference]", constructors: "Collection[str]"):
         self.name = name
         self.constructors = constructors
 
@@ -519,13 +546,14 @@ class UnsupportedType(Type):
     """
     A DAML type that is currently unparseable by the Python client library.
     """
-    __slots__ = ('name',)
+
+    __slots__ = ("name",)
 
     def __init__(self, name):
         self.name = safe_cast(str, name)
 
     def __repr__(self):
-        return f'<UnsupportedType({self.name})>'
+        return f"<UnsupportedType({self.name})>"
 
 
 class Template:
@@ -534,17 +562,19 @@ class Template:
     """
 
     def __init__(
-            self,
-            data_type: 'RecordType',
-            key_type: 'Optional[Type]',
-            choices: 'Collection[TemplateChoice]',
-            observers: 'Expr',
-            signatories: 'Expr',
-            agreement: 'Expr',
-            ensure: 'Expr'):
+        self,
+        data_type: "RecordType",
+        key_type: "Optional[Type]",
+        choices: "Collection[TemplateChoice]",
+        observers: "Expr",
+        signatories: "Expr",
+        agreement: "Expr",
+        ensure: "Expr",
+    ):
         if not isinstance(data_type, RecordType) or data_type.name is None:
-            raise ValueError(f'data_type is required and must be a named record type '
-                             f'(got {data_type})')
+            raise ValueError(
+                f"data_type is required and must be a named record type " f"(got {data_type})"
+            )
         self.data_type = safe_cast(RecordType, data_type)
         self.key_type = safe_optional_cast(Type, key_type)
         self.choices = choices
@@ -555,9 +585,11 @@ class Template:
 
 
 class TemplateChoice:
-    __slots__ = ('name', 'consuming', 'data_type', 'return_type', '_controllers')
+    __slots__ = ("name", "consuming", "data_type", "return_type", "_controllers")
 
-    def __init__(self, name: str, consuming: bool, data_type: Type, return_type: Type, controllers: 'Expr'):
+    def __init__(
+        self, name: str, consuming: bool, data_type: Type, return_type: Type, controllers: "Expr"
+    ):
         self.name = name
         self.consuming = consuming
         self.data_type = data_type
@@ -603,7 +635,7 @@ def as_commands(commands_ish, allow_callables=False):
         elif isinstance(command, Command):
             cmds.append(command)
         else:
-            raise TypeError(f'{command!r} is not a Command')
+            raise TypeError(f"{command!r} is not a Command")
     return tuple(cmds)
 
 
@@ -615,27 +647,27 @@ def as_contract_id(cid, template_id=None):
     from .core import ContractId
 
     if cid is None:
-        raise ValueError('cid is required')
+        raise ValueError("cid is required")
     elif isinstance(cid, str):
         return ContractId(cid, template_id)
     elif isinstance(cid, ContractId):
         return cid
 
-    raise TypeError('Could not serialize an object to a contract ID: {!r}'.format(cid))
+    raise TypeError("Could not serialize an object to a contract ID: {!r}".format(cid))
 
 
-SCALAR_TYPE_UNIT = ScalarType('Unit')
-SCALAR_TYPE_BOOL = ScalarType('Bool')
-SCALAR_TYPE_CHAR = ScalarType('Char')
-SCALAR_TYPE_INTEGER = ScalarType('Integer')
-SCALAR_TYPE_DECIMAL = ScalarType('Decimal')
-SCALAR_TYPE_NUMERIC = ScalarType('Numeric')
-SCALAR_TYPE_TEXT = ScalarType('Text')
-SCALAR_TYPE_PARTY = ScalarType('Party')
-SCALAR_TYPE_RELTIME = ScalarType('RelTime')
-SCALAR_TYPE_DATE = ScalarType('Date')
-SCALAR_TYPE_TIME = ScalarType('Time')
-SCALAR_TYPE_ANY = ScalarType('Any')
+SCALAR_TYPE_UNIT = ScalarType("Unit")
+SCALAR_TYPE_BOOL = ScalarType("Bool")
+SCALAR_TYPE_CHAR = ScalarType("Char")
+SCALAR_TYPE_INTEGER = ScalarType("Integer")
+SCALAR_TYPE_DECIMAL = ScalarType("Decimal")
+SCALAR_TYPE_NUMERIC = ScalarType("Numeric")
+SCALAR_TYPE_TEXT = ScalarType("Text")
+SCALAR_TYPE_PARTY = ScalarType("Party")
+SCALAR_TYPE_RELTIME = ScalarType("RelTime")
+SCALAR_TYPE_DATE = ScalarType("Date")
+SCALAR_TYPE_TIME = ScalarType("Time")
+SCALAR_TYPE_ANY = ScalarType("Any")
 SCALAR_TYPE_DATETIME = SCALAR_TYPE_TIME
 
 ScalarType.BUILTINS = [
@@ -658,27 +690,28 @@ class TypeEvaluationContext:
     variables: Dict[TypeVariable, Type]
     path: Sequence[Union[TypeReference, str]]
 
-    __slots__ = ('references', 'variables', 'path')
+    __slots__ = ("references", "variables", "path")
 
     @classmethod
-    def from_store(cls, store: 'PackageStore') -> 'TypeEvaluationContext':
+    def from_store(cls, store: "PackageStore") -> "TypeEvaluationContext":
         return cls(store.types(), {}, ())
 
-    def __init__(self, references: 'Mapping[TypeConName, ConcreteType]', variables, path):
+    def __init__(self, references: "Mapping[TypeConName, ConcreteType]", variables, path):
         self.references = safe_dict_cast(TypeConName, ConcreteType, references)
         self.variables = safe_dict_cast(TypeVariable, Type, variables)
         self.path = path
 
-    def append_path(self, component: Union[TypeReference, str]) -> 'TypeEvaluationContext':
+    def append_path(self, component: Union[TypeReference, str]) -> "TypeEvaluationContext":
         return TypeEvaluationContext(
             references=self.references,
             variables=self.variables,
-            path=tuple((*self.path, component)))
+            path=tuple((*self.path, component)),
+        )
 
     def resolve_var(self, var: TypeVariable) -> Type:
         return self.variables[var]
 
-    def with_vars(self, new_vars: 'Dict[TypeVariable, Type]') -> 'TypeEvaluationContext':
+    def with_vars(self, new_vars: "Dict[TypeVariable, Type]") -> "TypeEvaluationContext":
         confirmed_new_vars = {}
         for new_var, new_var_value in new_vars.items():
             if new_var == new_var_value:
@@ -689,20 +722,21 @@ class TypeEvaluationContext:
         return TypeEvaluationContext(
             references=self.references,
             variables={**self.variables, **confirmed_new_vars},
-            path=self.path)
+            path=self.path,
+        )
 
 
 def type_evaluate_dispatch(
-        on_scalar: 'Callable[[TypeEvaluationContext, ScalarType], T_co]',
-        on_contract_id: 'Callable[[TypeEvaluationContext,  ContractIdType], T_co]',
-        on_optional: 'Callable[[TypeEvaluationContext, OptionalType], T_co]',
-        on_list: 'Callable[[TypeEvaluationContext, ListType], T_co]',
-        on_text_map: 'Callable[[TypeEvaluationContext, TextMapType], T_co]',
-        on_record: 'Callable[[TypeEvaluationContext, RecordType], T_co]',
-        on_variant: 'Callable[[TypeEvaluationContext, VariantType], T_co]',
-        on_enum: 'Callable[[TypeEvaluationContext, EnumType], T_co]',
-        on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T_co]') \
-            -> 'Callable[[TypeEvaluationContext, Type], T_co]':
+    on_scalar: "Callable[[TypeEvaluationContext, ScalarType], T_co]",
+    on_contract_id: "Callable[[TypeEvaluationContext,  ContractIdType], T_co]",
+    on_optional: "Callable[[TypeEvaluationContext, OptionalType], T_co]",
+    on_list: "Callable[[TypeEvaluationContext, ListType], T_co]",
+    on_text_map: "Callable[[TypeEvaluationContext, TextMapType], T_co]",
+    on_record: "Callable[[TypeEvaluationContext, RecordType], T_co]",
+    on_variant: "Callable[[TypeEvaluationContext, VariantType], T_co]",
+    on_enum: "Callable[[TypeEvaluationContext, EnumType], T_co]",
+    on_unsupported: "Callable[[TypeEvaluationContext, UnsupportedType], T_co]",
+) -> "Callable[[TypeEvaluationContext, Type], T_co]":
     """
     Produce a function that defers handling of core types to the passed in functions.
 
@@ -711,20 +745,24 @@ def type_evaluate_dispatch(
     deep, and the produced function may need to be called multiple types at multiple depths of an
     object or type hierarchy.
     """
+
     def _impl(context, tt):
         resolve_depth = 0
         while isinstance(tt, (TypeReference, TypeVariable, TypeApp)):
             context, tt = single_reduce(context, tt)
             resolve_depth += 1
             if resolve_depth > 10:
-                raise Exception('hit our max resolve depth, which is probably not so great')
+                raise Exception("hit our max resolve depth, which is probably not so great")
 
-        def error(_: Any) -> 'T_co': raise Exception()
+        def error(_: Any) -> "T_co":
+            raise Exception()
 
         context, tt = annotate_context(context, tt)
 
         return type_dispatch_table(
-            error, error, error,
+            error,
+            error,
+            error,
             lambda st: on_scalar(context, st),
             lambda ct: on_contract_id(context, ct),
             lambda ot: on_optional(context, ot),
@@ -733,7 +771,9 @@ def type_evaluate_dispatch(
             lambda rt: on_record(context, rt),
             lambda vt: on_variant(context, vt),
             lambda et: on_enum(context, et),
-            lambda ut: on_unsupported(context, tt))(tt)
+            lambda ut: on_unsupported(context, tt),
+        )(tt)
+
     return _impl
 
 
@@ -742,28 +782,39 @@ def _type_evaluate_dispatch_error(_, __):
 
 
 def type_evaluate_dispatch_default_error(
-        on_scalar: 'Callable[[TypeEvaluationContext, ScalarType], T_co]' = _type_evaluate_dispatch_error,
-        on_contract_id: 'Callable[[TypeEvaluationContext,  ContractIdType], T_co]' = _type_evaluate_dispatch_error,
-        on_optional: 'Callable[[TypeEvaluationContext,  OptionalType], T_co]' = _type_evaluate_dispatch_error,
-        on_list: 'Callable[[TypeEvaluationContext, ListType], T_co]' = _type_evaluate_dispatch_error,
-        on_text_map: 'Callable[[TypeEvaluationContext, TextMapType], T_co]' = _type_evaluate_dispatch_error,
-        on_record: 'Callable[[TypeEvaluationContext, RecordType], T_co]' = _type_evaluate_dispatch_error,
-        on_variant: 'Callable[[TypeEvaluationContext, VariantType], T_co]' = _type_evaluate_dispatch_error,
-        on_enum: 'Callable[[TypeEvaluationContext, EnumType], T_co]' = _type_evaluate_dispatch_error,
-        on_unsupported: 'Callable[[TypeEvaluationContext, UnsupportedType], T_co]' = _type_evaluate_dispatch_error):
+    on_scalar: "Callable[[TypeEvaluationContext, ScalarType], T_co]" = _type_evaluate_dispatch_error,
+    on_contract_id: "Callable[[TypeEvaluationContext,  ContractIdType], T_co]" = _type_evaluate_dispatch_error,
+    on_optional: "Callable[[TypeEvaluationContext,  OptionalType], T_co]" = _type_evaluate_dispatch_error,
+    on_list: "Callable[[TypeEvaluationContext, ListType], T_co]" = _type_evaluate_dispatch_error,
+    on_text_map: "Callable[[TypeEvaluationContext, TextMapType], T_co]" = _type_evaluate_dispatch_error,
+    on_record: "Callable[[TypeEvaluationContext, RecordType], T_co]" = _type_evaluate_dispatch_error,
+    on_variant: "Callable[[TypeEvaluationContext, VariantType], T_co]" = _type_evaluate_dispatch_error,
+    on_enum: "Callable[[TypeEvaluationContext, EnumType], T_co]" = _type_evaluate_dispatch_error,
+    on_unsupported: "Callable[[TypeEvaluationContext, UnsupportedType], T_co]" = _type_evaluate_dispatch_error,
+):
     return type_evaluate_dispatch(
-        on_scalar, on_contract_id, on_optional, on_list, on_text_map, on_record, on_variant,
-        on_enum, on_unsupported)
+        on_scalar,
+        on_contract_id,
+        on_optional,
+        on_list,
+        on_text_map,
+        on_record,
+        on_variant,
+        on_enum,
+        on_unsupported,
+    )
 
 
-def single_reduce(context: TypeEvaluationContext, tt: Type) -> 'Tuple[TypeEvaluationContext, Type]':
+def single_reduce(context: TypeEvaluationContext, tt: Type) -> "Tuple[TypeEvaluationContext, Type]":
     """
     Apply a single substitution/reduction/unwrapping. The context may be augmented with additional
     variables if a TypeApp is encountered.
     """
-    def identity(t): return context, t
 
-    def reduce_app(ta: TypeApp) -> 'Tuple[TypeEvaluationContext, Type]':
+    def identity(t):
+        return context, t
+
+    def reduce_app(ta: TypeApp) -> "Tuple[TypeEvaluationContext, Type]":
         body = context.references[ta.body.con] if isinstance(ta.body, TypeReference) else ta.body
         if not isinstance(body, (RecordType, VariantType)):
             raise Exception("Can't apply types to non-generic data structures")
@@ -782,20 +833,36 @@ def single_reduce(context: TypeEvaluationContext, tt: Type) -> 'Tuple[TypeEvalua
         identity,
         identity,
         identity,
-        identity)(tt)
+        identity,
+    )(tt)
 
 
-def annotate_context(context: TypeEvaluationContext, tt: Type) -> Tuple[TypeEvaluationContext, Type]:
-    def identity(t): return context, t
+def annotate_context(
+    context: TypeEvaluationContext, tt: Type
+) -> Tuple[TypeEvaluationContext, Type]:
+    def identity(t):
+        return context, t
 
-    def error(_: Any) -> Any: raise Exception()
+    def error(_: Any) -> Any:
+        raise Exception()
 
     def annotate_path(t: Union[RecordType, VariantType]) -> Tuple[TypeEvaluationContext, Type]:
         return context.append_path(t.name), t
 
     return type_dispatch_table(
-        error, error, error, identity, identity, identity, identity, identity,
-        annotate_path, annotate_path, identity, identity)(tt)
+        error,
+        error,
+        error,
+        identity,
+        identity,
+        identity,
+        identity,
+        identity,
+        annotate_path,
+        annotate_path,
+        identity,
+        identity,
+    )(tt)
 
 
 # types that can be used to refer to templates

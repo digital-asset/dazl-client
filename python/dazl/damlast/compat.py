@@ -10,21 +10,22 @@ deprecated :class:`dazl.model.types.Type` hierarchy to :class:`dazl.damlast.daml
 These functions will be removed WITHOUT an intermediate deprecation warning, as they are considered
 internal only.
 """
+from typing import TYPE_CHECKING, Tuple, Union
 import warnings
 
 from .daml_lf_1 import TypeConName
-from typing import Tuple, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
     # avoid import cycles; `dazl.model` should depend on `dazl.damlast`, and not the other way
     # around
     with warnings.catch_warnings():
-        warnings.simplefilter('ignore', DeprecationWarning)
+        warnings.simplefilter("ignore", DeprecationWarning)
         from ..model.types import Type as DeprecatedType, TypeReference as DeprecatedTypeReference
 
 
-def parse_template(template_id: 'Union[str, DeprecatedType, TypeConName]') \
-        -> 'Tuple[TypeConName, DeprecatedTypeReference]':
+def parse_template(
+    template_id: "Union[str, DeprecatedType, TypeConName]",
+) -> "Tuple[TypeConName, DeprecatedTypeReference]":
     """
     Return both the "new-style" Type and the "old-style" Type for _either_ a string, "new-style"
     Type, or "old-style" Type. This is used in places where we can't easily mark a symbol as
@@ -32,9 +33,13 @@ def parse_template(template_id: 'Union[str, DeprecatedType, TypeConName]') \
     transition).
     """
     with warnings.catch_warnings():
-        warnings.simplefilter('ignore', DeprecationWarning)
-        from ..model.types import Type as DeprecatedType, \
-            TypeReference as DeprecatedTypeReference, UnresolvedTypeReference, RecordType
+        warnings.simplefilter("ignore", DeprecationWarning)
+        from ..model.types import (
+            Type as DeprecatedType,
+            TypeReference as DeprecatedTypeReference,
+            UnresolvedTypeReference,
+            RecordType,
+        )
     from ..damlast.lookup import parse_type_con_name
 
     if isinstance(template_id, str):
@@ -46,8 +51,10 @@ def parse_template(template_id: 'Union[str, DeprecatedType, TypeConName]') \
 
     elif isinstance(template_id, DeprecatedType):
         warnings.warn(
-            'usage of dazl.model.types.Type is deprecated; use TypeConName instead',
-            DeprecationWarning, stacklevel=3)
+            "usage of dazl.model.types.Type is deprecated; use TypeConName instead",
+            DeprecationWarning,
+            stacklevel=3,
+        )
 
         if isinstance(template_id, DeprecatedTypeReference):
             return template_id.con, template_id
@@ -59,8 +66,9 @@ def parse_template(template_id: 'Union[str, DeprecatedType, TypeConName]') \
         elif isinstance(template_id, RecordType):
             if template_id.name is None:
                 raise ValueError(
-                    'template_id must point to a named record that corresponds to a template')
+                    "template_id must point to a named record that corresponds to a template"
+                )
 
             return template_id.name.con, DeprecatedTypeReference(template_id.name.con)
     else:
-        raise ValueError('template_id must be a TypeConName')
+        raise ValueError("template_id must be a TypeConName")

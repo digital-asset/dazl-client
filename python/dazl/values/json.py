@@ -10,13 +10,12 @@ https://docs.daml.com/json-api/lf-value-specification.html
 
 from typing import Any
 
+from ..damlast.daml_lf_1 import DefDataType, Type as DamlType
+from ..prim import date_to_str, datetime_to_str, decimal_to_str, to_date, to_datetime, to_decimal
 from .canonical import CanonicalMapper
 from .context import Context
-from ..damlast.daml_lf_1 import Type as DamlType, DefDataType
-from ..prim import date_to_str, datetime_to_str, decimal_to_str, to_date, to_datetime, \
-    to_decimal
 
-__all__ = ['JsonDecoder', 'JsonEncoder']
+__all__ = ["JsonDecoder", "JsonEncoder"]
 
 
 class JsonDecoder(CanonicalMapper):
@@ -33,21 +32,26 @@ class JsonEncoder(CanonicalMapper):
     Convert native Python types to DAML-LF JSON encoded types.
     """
 
-    def prim_timestamp(self, context: 'Context', obj: 'Any') -> 'Any':
+    def prim_timestamp(self, context: "Context", obj: "Any") -> "Any":
         return datetime_to_str(to_datetime(obj))
 
-    def prim_date(self, context: 'Context', obj: 'Any') -> 'Any':
+    def prim_date(self, context: "Context", obj: "Any") -> "Any":
         return date_to_str(to_date(obj))
 
-    def prim_contract_id(self, context: 'Context', item_type: 'DamlType', obj: 'Any') -> 'Any':
+    def prim_contract_id(self, context: "Context", item_type: "DamlType", obj: "Any") -> "Any":
         return obj.contract_id
 
-    def prim_numeric(self, context: 'Context', nat: int, obj: 'Any') -> 'Any':
+    def prim_numeric(self, context: "Context", nat: int, obj: "Any") -> "Any":
         return decimal_to_str(to_decimal(obj))
 
     def _ctor_value_to_variant(
-            self, context: 'Context', dt: 'DefDataType', variant: 'DefDataType.Fields', ctor: str,
-            value: 'Any') -> 'Any':
+        self,
+        context: "Context",
+        dt: "DefDataType",
+        variant: "DefDataType.Fields",
+        ctor: str,
+        value: "Any",
+    ) -> "Any":
         """
         Format a variant according to the DAML-LF JSON spec (an object with a "tag" and "value"
         field).
