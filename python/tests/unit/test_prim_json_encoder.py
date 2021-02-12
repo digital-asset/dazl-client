@@ -4,7 +4,7 @@
 import json
 
 from dazl.damlast.lookup import parse_type_con_name
-from dazl.prim import JSONEncoder, ContractId
+from dazl.prim import ContractId, JSONEncoder
 
 
 def test_contract_id():

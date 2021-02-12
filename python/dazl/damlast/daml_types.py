@@ -9,32 +9,45 @@ Constants and constructor functions for the various primitive DAML types.
 """
 from typing import Mapping
 
-from .daml_lf_1 import PrimType, Type, TypeConName, FieldWithType, TypeSynName
+from .daml_lf_1 import FieldWithType, PrimType, Type, TypeConName, TypeSynName
 
 __all__ = [
     # Type.Var
-    'var',
-
+    "var",
     # Type.Con
-    'con',
-
+    "con",
     # Type.Prim
-    'Unit', 'Bool', 'Int', 'Decimal', 'Text', 'Time', 'Party', 'List', 'Update', 'Scenario',
-    'Date', 'ContractId', 'Optional', 'Arrow', 'TextMap', 'Numeric', 'Any', 'TypeRep', 'Map',
-
+    "Unit",
+    "Bool",
+    "Int",
+    "Decimal",
+    "Text",
+    "Time",
+    "Party",
+    "List",
+    "Update",
+    "Scenario",
+    "Date",
+    "ContractId",
+    "Optional",
+    "Arrow",
+    "TextMap",
+    "Numeric",
+    "Any",
+    "TypeRep",
+    "Map",
     # Type.Struct
-    'struct',
-
+    "struct",
     # Type.ForAll (intentionally omitted)
-
     # Type.Syn
-    'syn',
+    "syn",
 ]
 
 
 # region Variables (Type.Var)
 
-def var(a: str, *args: 'Type') -> 'Type':
+
+def var(a: str, *args: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``a`` (a type variable of the specified
     name).
@@ -46,7 +59,8 @@ def var(a: str, *args: 'Type') -> 'Type':
 
 # region Constructors (Type.Con)
 
-def con(tycon: 'TypeConName', *args: 'Type') -> 'Type':
+
+def con(tycon: "TypeConName", *args: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is a reference to a :class:`DefDataType` (a record, variant,
     or enum).
@@ -55,7 +69,7 @@ def con(tycon: 'TypeConName', *args: 'Type') -> 'Type':
     :param args: Type arguments (only applicable if the type is a generic type).
     """
     if tycon is None:
-        raise ValueError('tycon is required')
+        raise ValueError("tycon is required")
 
     return Type(con=Type.Con(tycon=tycon, args=tuple(args)))
 
@@ -64,7 +78,8 @@ def con(tycon: 'TypeConName', *args: 'Type') -> 'Type':
 
 # region Primitive types (Type.Prim)
 
-def _prim_type(pt: 'PrimType', *a: 'Type') -> 'Type':
+
+def _prim_type(pt: "PrimType", *a: "Type") -> "Type":
     return Type(prim=Type.Prim(prim=pt, args=tuple(a)))
 
 
@@ -92,7 +107,7 @@ Party = _prim_type(PrimType.PARTY)
 
 
 # noinspection PyPep8Naming
-def List(a: 'Type') -> 'Type':
+def List(a: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``[a]`` (a list of objects).
     """
@@ -100,7 +115,7 @@ def List(a: 'Type') -> 'Type':
 
 
 # noinspection PyPep8Naming
-def Update(a: 'Type') -> 'Type':
+def Update(a: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``Update a``.
 
@@ -111,7 +126,7 @@ def Update(a: 'Type') -> 'Type':
 
 
 # noinspection PyPep8Naming
-def Scenario(a: 'Type') -> 'Type':
+def Scenario(a: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``Scenario a``.
 
@@ -126,7 +141,7 @@ Date = _prim_type(PrimType.DATE)
 
 
 # noinspection PyPep8Naming
-def ContractId(a: 'Type') -> 'Type':
+def ContractId(a: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``ContractId a``.
 
@@ -136,7 +151,7 @@ def ContractId(a: 'Type') -> 'Type':
 
 
 # noinspection PyPep8Naming
-def Optional(a: 'Type') -> 'Type':
+def Optional(a: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``Optional a`` (either ``Some a`` or
     ``None``).
@@ -145,7 +160,7 @@ def Optional(a: 'Type') -> 'Type':
 
 
 # noinspection PyPep8Naming
-def Arrow(a: 'Type', b: 'Type') -> 'Type':
+def Arrow(a: "Type", b: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``a -> b`` (a function type).
 
@@ -156,7 +171,7 @@ def Arrow(a: 'Type', b: 'Type') -> 'Type':
 
 
 # noinspection PyPep8Naming
-def TextMap(a: 'Type') -> 'Type':
+def TextMap(a: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``TextMap a``.
     """
@@ -164,7 +179,7 @@ def TextMap(a: 'Type') -> 'Type':
 
 
 # noinspection PyPep8Naming
-def Numeric(n: int) -> 'Type':
+def Numeric(n: int) -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``Numeric n``.
     """
@@ -185,7 +200,7 @@ TypeRep = _prim_type(PrimType.TYPE_REP)
 
 
 # noinspection PyPep8Naming
-def Map(k: 'Type', v: 'Type') -> 'Type':
+def Map(k: "Type", v: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is equivalent to ``Map k v``.
     """
@@ -202,7 +217,8 @@ def Map(k: 'Type', v: 'Type') -> 'Type':
 
 # region Type.Struct
 
-def struct(fields: 'Mapping[str, Type]'):
+
+def struct(fields: "Mapping[str, Type]"):
     """
     Construct a DAML :class:`Type` that is equivalent to a structural tuple type (``(a, b, ...)``).
 
@@ -210,15 +226,17 @@ def struct(fields: 'Mapping[str, Type]'):
         A map of field names to their types. DAML-LF structs generally define structs as having
         field names ``"_1"``, ``"_2"``, ``"_3"``, and so on.
     """
-    return Type(tuple=Type.Tuple(fields=tuple(
-        [FieldWithType(field, typ) for field, typ in fields.items()])))
+    return Type(
+        tuple=Type.Tuple(fields=tuple([FieldWithType(field, typ) for field, typ in fields.items()]))
+    )
 
 
 # endregion
 
 # region Type.Syn
 
-def syn(tysyn: 'TypeSynName', *args: 'Type') -> 'Type':
+
+def syn(tysyn: "TypeSynName", *args: "Type") -> "Type":
     """
     Construct a DAML :class:`Type` that is a reference to another type.
 
@@ -226,5 +244,6 @@ def syn(tysyn: 'TypeSynName', *args: 'Type') -> 'Type':
     :param args: Type arguments (only applicable if the type is a generic type).
     """
     return Type(syn=Type.Syn(tysyn=tysyn, args=tuple(args)))
+
 
 # endregion

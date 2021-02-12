@@ -3,10 +3,10 @@
 
 
 from datetime import timedelta
-from typing import ClassVar, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar, Optional
 
-from .api import MetricEvents
 from ..model.core import Party
+from .api import MetricEvents
 
 if TYPE_CHECKING:
     from prometheus_client import Gauge
@@ -23,22 +23,24 @@ class PrometheusMetricEvents(MetricEvents):
             return PrometheusMetricEvents._DEFAULT
         else:
             from prometheus_client import REGISTRY
+
             PrometheusMetricEvents._DEFAULT = PrometheusMetricEvents(REGISTRY)
             return PrometheusMetricEvents._DEFAULT
 
-    def __init__(self, registry: 'Optional[CollectorRegistry]' = None):
-        from prometheus_client import Gauge, REGISTRY
+    def __init__(self, registry: "Optional[CollectorRegistry]" = None):
+        from prometheus_client import REGISTRY, Gauge
 
         if registry is None:
             registry = REGISTRY
 
         self._loop_responsiveness_seconds = Gauge(
-            'dazl_network_loop_responsiveness_seconds',
-            'Number of seconds to immediately schedule and execute a no-op on the event loop',
-            registry=registry)
+            "dazl_network_loop_responsiveness_seconds",
+            "Number of seconds to immediately schedule and execute a no-op on the event loop",
+            registry=registry,
+        )
 
-    def loop_responsiveness(self, responsiveness: 'timedelta') -> None:
+    def loop_responsiveness(self, responsiveness: "timedelta") -> None:
         self._loop_responsiveness_seconds.set(responsiveness.total_seconds())
 
-    def party_offset(self, party: 'Party', offset: str) -> None:
+    def party_offset(self, party: "Party", offset: str) -> None:
         pass

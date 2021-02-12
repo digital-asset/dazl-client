@@ -1,12 +1,14 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import async_network, create, exercise
-from .dars import Simple
 import pytest
 
-OperatorRole = 'Simple:OperatorRole'
-OperatorNotification = 'Simple:OperatorNotification'
+from dazl import async_network, create, exercise
+
+from .dars import Simple
+
+OperatorRole = "Simple:OperatorRole"
+OperatorNotification = "Simple:OperatorNotification"
 
 
 @pytest.mark.asyncio
@@ -16,7 +18,7 @@ async def test_select_template_retrieves_contracts(sandbox):
 
         network.start()
 
-        await client.submit_create(OperatorRole, {'operator': client.party})
+        await client.submit_create(OperatorRole, {"operator": client.party})
 
         data = client.find_active(OperatorRole)
 
@@ -30,9 +32,9 @@ async def test_select_unknown_template_retrieves_empty_set(sandbox):
 
         network.start()
 
-        await client.submit_create(OperatorRole, {'operator': client.party})
+        await client.submit_create(OperatorRole, {"operator": client.party})
 
-        data = client.find_active('NonExistentModule:NonExistentTemplate')
+        data = client.find_active("NonExistentModule:NonExistentTemplate")
 
     assert len(data) == 0
 
@@ -52,8 +54,10 @@ async def test_select_operates_on_acs_before_event_handlers(sandbox):
 
     async with async_network(url=sandbox, dars=Simple) as network:
         client = network.aio_new_party()
-        client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': client.party}))
-        client.add_ledger_created(OperatorRole, lambda e: exercise(e.cid, 'PublishMany', dict(count=3)))
+        client.add_ledger_ready(lambda e: create(OperatorRole, {"operator": client.party}))
+        client.add_ledger_created(
+            OperatorRole, lambda e: exercise(e.cid, "PublishMany", dict(count=3))
+        )
         client.add_ledger_created(OperatorNotification, on_notification_contract)
 
         network.start()
@@ -76,9 +80,11 @@ async def test_select_reflects_archive_events(sandbox):
 
     async with async_network(url=sandbox, dars=Simple) as network:
         client = network.aio_new_party()
-        client.add_ledger_ready(lambda e: create(OperatorRole, {'operator': client.party}))
-        client.add_ledger_created(OperatorRole, lambda e: exercise(e.cid, 'PublishMany', dict(count=3)))
-        client.add_ledger_created(OperatorNotification, lambda e: exercise(e.cid, 'Archive'))
+        client.add_ledger_ready(lambda e: create(OperatorRole, {"operator": client.party}))
+        client.add_ledger_created(
+            OperatorRole, lambda e: exercise(e.cid, "PublishMany", dict(count=3))
+        )
+        client.add_ledger_created(OperatorNotification, lambda e: exercise(e.cid, "Archive"))
         client.add_ledger_created(OperatorNotification, on_notification_contract)
 
         network.start()

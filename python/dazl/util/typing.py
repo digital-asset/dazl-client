@@ -8,9 +8,9 @@ This module contains helper utilities for working within the constraints of Pyth
 from types import MappingProxyType
 from typing import Any, Dict, Optional, Type, TypeVar
 
-K = TypeVar('K')
-V = TypeVar('V')
-T = TypeVar('T')
+K = TypeVar("K")
+V = TypeVar("V")
+T = TypeVar("T")
 
 
 def safe_cast(typ: Type[T], val: Any) -> T:
@@ -22,9 +22,9 @@ def safe_cast(typ: Type[T], val: Any) -> T:
         if isinstance(val, typ):
             return val
         else:
-            raise ValueError(f'expected a value of type {typ} here (got {val} instead)')
+            raise ValueError(f"expected a value of type {typ} here (got {val} instead)")
     else:
-        raise Exception(f'safe_cast can only be used with actual types (got {typ})')
+        raise Exception(f"safe_cast can only be used with actual types (got {typ})")
 
 
 def safe_optional_cast(typ: Type[T], val: Any) -> Optional[T]:
@@ -39,9 +39,9 @@ def safe_optional_cast(typ: Type[T], val: Any) -> Optional[T]:
         if isinstance(val, typ):
             return val
         else:
-            raise ValueError(f'expected a value of type {typ} here (got {val} instead)')
+            raise ValueError(f"expected a value of type {typ} here (got {val} instead)")
     else:
-        raise Exception('safe_cast can only be used with actual types')
+        raise Exception("safe_cast can only be used with actual types")
 
 
 def safe_dict_cast(key_type: Type[K], value_type: Type[V], val: Any) -> Dict[K, V]:
@@ -51,7 +51,7 @@ def safe_dict_cast(key_type: Type[K], value_type: Type[V], val: Any) -> Dict[K, 
             safe_cast(value_type, value)
         return val  # type: ignore
     else:
-        raise ValueError(f'expected a dict (got {val} instead)')
+        raise ValueError(f"expected a dict (got {val} instead)")
 
 
 def unpack_optional(typ: Any) -> Optional[Any]:

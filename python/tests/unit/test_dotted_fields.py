@@ -4,12 +4,14 @@
 import pytest
 
 from dazl import async_network
+
 from .dars import DottedFields
 
 
 @pytest.mark.asyncio
 @pytest.mark.skip(
-    'These tests are temporarily disabled because the new encoder does not support this.')
+    "These tests are temporarily disabled because the new encoder does not support this."
+)
 async def test_record_dotted_fields_submit(sandbox):
     async with async_network(url=sandbox, dars=DottedFields) as network:
         client = network.aio_new_party()
@@ -17,21 +19,25 @@ async def test_record_dotted_fields_submit(sandbox):
         network.start()
 
         await client.ready()
-        await client.submit_create('DottedFields:American', {
-            'person': client.party,
-            'address.address': '1 Test Place',
-            'address.city': 'Somewhere',
-            'address.state': 'ZZ',
-            'address.zip': '99999'
-        })
+        await client.submit_create(
+            "DottedFields:American",
+            {
+                "person": client.party,
+                "address.address": "1 Test Place",
+                "address.city": "Somewhere",
+                "address.state": "ZZ",
+                "address.zip": "99999",
+            },
+        )
 
-        items = client.find_active('DottedFields:American')
+        items = client.find_active("DottedFields:American")
         assert len(items) == 1
 
 
 @pytest.mark.asyncio
 @pytest.mark.skip(
-    'These tests are temporarily disabled because the new encoder does not support this.')
+    "These tests are temporarily disabled because the new encoder does not support this."
+)
 async def test_variant_dotted_fields_submit(sandbox):
     async with async_network(url=sandbox, dars=DottedFields) as network:
         client = network.aio_new_party()
@@ -39,18 +45,21 @@ async def test_variant_dotted_fields_submit(sandbox):
         network.start()
 
         await client.ready()
-        await client.submit_create('DottedFields:Person', {
-            'person': client.party,
-            'address.US.address': '1 Test Place',
-            'address.US.city': 'Somewhere',
-            'address.US.state': 'ZZ',
-            'address.US.zip': '99999',
-            'address.UK.address': '',
-            'address.UK.locality': '',
-            'address.UK.city': '',
-            'address.UK.state': '',
-            'address.UK.postcode': '',
-        })
+        await client.submit_create(
+            "DottedFields:Person",
+            {
+                "person": client.party,
+                "address.US.address": "1 Test Place",
+                "address.US.city": "Somewhere",
+                "address.US.state": "ZZ",
+                "address.US.zip": "99999",
+                "address.UK.address": "",
+                "address.UK.locality": "",
+                "address.UK.city": "",
+                "address.UK.state": "",
+                "address.UK.postcode": "",
+            },
+        )
 
-        items = client.find_active('DottedFields:Person')
+        items = client.find_active("DottedFields:Person")
         assert len(items) == 1

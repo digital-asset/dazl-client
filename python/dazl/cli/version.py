@@ -2,12 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from argparse import ArgumentParser
+
 from .. import __version__ as version
 from ._base import CliCommand
 
 
 class VersionCommand(CliCommand):
-    name = 'version'
+    name = "version"
 
     def parser(self) -> ArgumentParser:
         return ArgumentParser()

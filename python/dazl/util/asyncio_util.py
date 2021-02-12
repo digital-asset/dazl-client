@@ -4,32 +4,51 @@
 """
 This module contains utilities to help work with ``asyncio``.
 """
-import sys
-import threading
-
-from asyncio import ensure_future, gather, get_event_loop, new_event_loop, \
-    AbstractEventLoop, AbstractEventLoopPolicy, CancelledError, Future, InvalidStateError
+from asyncio import (
+    AbstractEventLoop,
+    AbstractEventLoopPolicy,
+    CancelledError,
+    Future,
+    InvalidStateError,
+    ensure_future,
+    gather,
+    get_event_loop,
+    new_event_loop,
+)
 from dataclasses import dataclass
 from functools import partial, wraps
 from inspect import isawaitable, iscoroutinefunction
 from queue import Queue
-from typing import Any, Awaitable, Callable, Generator, Generic, Iterable, List, Optional, \
-    Sequence, TypeVar, Union
+import sys
+import threading
+from typing import (
+    Any,
+    Awaitable,
+    Callable,
+    Generator,
+    Generic,
+    Iterable,
+    List,
+    Optional,
+    Sequence,
+    TypeVar,
+    Union,
+)
 
 from .. import LOG
 from ..prim.datetime import TimeDeltaLike, to_timedelta
 
-T = TypeVar('T', covariant=True)
-U = TypeVar('U')
+T = TypeVar("T", covariant=True)
+U = TypeVar("U")
 
-_PENDING = 'PENDING'
-_CANCELLED = 'CANCELLED'
-_FINISHED = 'FINISHED'
+_PENDING = "PENDING"
+_CANCELLED = "CANCELLED"
+_FINISHED = "FINISHED"
 
 
 def non_reentrant(async_fn):
     if not iscoroutinefunction(async_fn):
-        raise ValueError('expected a coroutine function')
+        raise ValueError("expected a coroutine function")
 
     calls = []
 
@@ -42,7 +61,7 @@ def non_reentrant(async_fn):
             finally:
                 calls.pop()
         else:
-            raise InvalidStateError('calls to %r cannot be re-entrant', async_fn)
+            raise InvalidStateError("calls to %r cannot be re-entrant", async_fn)
 
     return _wrap
 
@@ -102,7 +121,7 @@ def isolated_async(async_fn):
     return invoke
 
 
-def await_then(awaitable: 'Awaitable[T]', func: 'Callable[[T], U]') -> 'Awaitable[U]':
+def await_then(awaitable: "Awaitable[T]", func: "Callable[[T], U]") -> "Awaitable[U]":
     """
     Call a function on the result of an Awaitable, and then return an Awaitable that is resolved
     with that result.
@@ -121,7 +140,7 @@ def await_then(awaitable: 'Awaitable[T]', func: 'Callable[[T], U]') -> 'Awaitabl
     try:
         fut = ensure_future(awaitable)
     except TypeError:
-        raise TypeError(f'expected a valid awaitable (got {awaitable} instead)')
+        raise TypeError(f"expected a valid awaitable (got {awaitable} instead)")
     if fut.done():
         if fut.cancelled() or fut.exception() is not None:
             return fut
@@ -156,13 +175,15 @@ class FailedInvocation:
     by coro_fn through the result queue in a way that can be easily detected
     by the queue's reader.
     """
+
     ex: Exception
 
 
 def execute_in_loop(
-        loop: AbstractEventLoop,
-        coro_fn: 'Callable[[], Union[Awaitable[T], T]]',
-        timeout: 'Optional[TimeDeltaLike]' = 30.0) -> T:
+    loop: AbstractEventLoop,
+    coro_fn: "Callable[[], Union[Awaitable[T], T]]",
+    timeout: "Optional[TimeDeltaLike]" = 30.0,
+) -> T:
     """
     Run a coroutine in a target loop. Exceptions thrown by the coroutine are
     propagated to the caller. Must NOT be called from a coroutine on the same
@@ -175,10 +196,11 @@ def execute_in_loop(
     """
     from functools import wraps
     from queue import Queue
+
     q = Queue()
 
     def coro_fn_complete(fut):
-        LOG.debug('coro_fn_complete: %s', fut)
+        LOG.debug("coro_fn_complete: %s", fut)
         if fut.exception() is None:
             q.put_nowait(fut.result())
         else:
@@ -202,7 +224,7 @@ def execute_in_loop(
             else:
                 q.put_nowait(result)
         else:
-            raise ValueError('Received an unknown kind of callback')
+            raise ValueError("Received an unknown kind of callback")
 
     loop.call_soon_threadsafe(run)
 
@@ -243,9 +265,9 @@ def propagate(from_: Future, to: Future) -> None:
 
 def copy_result(from_: Future, to: Future) -> None:
     if not from_.done():
-        raise ValueError('from_ must be a completed Future')
+        raise ValueError("from_ must be a completed Future")
     if to.done():
-        raise ValueError('to must NOT be a completed Future')
+        raise ValueError("to must NOT be a completed Future")
 
     if from_.cancelled():
         to.cancel()
@@ -285,7 +307,7 @@ def to_coroutine(callback: Callable[..., Any]) -> Callable[..., Future]:
         A coroutine that calls the specified function.
     """
     if not callable(callback):
-        raise ValueError('callback must be callable')
+        raise ValueError("callback must be callable")
 
     @wraps(callback)
     def invoke_sync(*args, **kwargs) -> Future:
@@ -315,6 +337,7 @@ class LongRunningAwaitable:
     An :class:`Awaitable` that "finishes" once all of the futures that have been added to it are
     finished.
     """
+
     def __init__(self, awaitables: Optional[Iterable[Awaitable[Any]]] = None):
         self._fut = get_event_loop().create_future()
         self._coros = list()
@@ -340,9 +363,7 @@ class LongRunningAwaitable:
 
 
 class ServiceQueue(Generic[T]):
-    """
-
-    """
+    """"""
 
     def __init__(self):
         self._q = []
@@ -364,6 +385,7 @@ class ServiceQueue(Generic[T]):
         """
         if not self._service_fut.done():
             from asyncio import Queue
+
             existing_items = self._q
             self._q = Queue()
             for item in existing_items:
@@ -372,7 +394,7 @@ class ServiceQueue(Generic[T]):
 
     def stop(self):
         if not self._service_fut.done():
-            raise RuntimeError('Cannot stop an unstarted ServiceQueue')
+            raise RuntimeError("Cannot stop an unstarted ServiceQueue")
 
         loop = get_event_loop()
         fut = loop.create_future()
@@ -451,9 +473,10 @@ class ContextFreeFuture(Awaitable[T]):
         :param loop: An optional loop to assign to the :class:`ContextFreeFuture`.
         """
         if loop is not None and not isinstance(loop, AbstractEventLoop):
-            raise ValueError('The provided loop must be a valid event loop')
+            raise ValueError("The provided loop must be a valid event loop")
 
         from threading import RLock
+
         self._lock = RLock()
         self._callbacks = []  # type: List[Callable[[ContextFreeFuture[T]], None]]
         self._state = _PENDING
@@ -488,7 +511,7 @@ class ContextFreeFuture(Awaitable[T]):
             if self.__loop is None:
                 self.__loop = loop
             elif self.__loop is not loop:
-                raise InvalidStateError('This future is already associated with a specific loop.')
+                raise InvalidStateError("This future is already associated with a specific loop.")
 
     def cancel(self) -> bool:
         """
@@ -512,7 +535,7 @@ class ContextFreeFuture(Awaitable[T]):
         """
         with self._lock:
             if self._state != _PENDING:
-                raise InvalidStateError('{}: {!r}'.format(self._state, self))
+                raise InvalidStateError("{}: {!r}".format(self._state, self))
             self._result = result
             self._state = _FINISHED
             self._schedule_callbacks()
@@ -525,18 +548,20 @@ class ContextFreeFuture(Awaitable[T]):
         """
         with self._lock:
             if self._state != _PENDING:
-                raise InvalidStateError('{}: {!r}'.format(self._state, self))
+                raise InvalidStateError("{}: {!r}".format(self._state, self))
             if isinstance(exception, type):
                 exception = exception()
             if type(exception) is StopIteration:
-                raise TypeError("StopIteration interacts badly with generators "
-                                "and cannot be raised into a Future")
+                raise TypeError(
+                    "StopIteration interacts badly with generators "
+                    "and cannot be raised into a Future"
+                )
             self._exception = exception
             self._state = _FINISHED
             self._schedule_callbacks()
             self._log_traceback = True
 
-    def add_done_callback(self, fn: 'Callable[[ContextFreeFuture[T]], None]', context=None) -> None:
+    def add_done_callback(self, fn: "Callable[[ContextFreeFuture[T]], None]", context=None) -> None:
         if context is not None:
             LOG.warning("ContextFreeFutures do not support the use of contexts.")
         with self._lock:
@@ -584,7 +609,7 @@ class ContextFreeFuture(Awaitable[T]):
             if self._state == _CANCELLED:
                 raise CancelledError
             if self._state != _FINISHED:
-                raise InvalidStateError('Result is not ready.')
+                raise InvalidStateError("Result is not ready.")
             self._log_traceback = False
             if self._exception is not None:
                 raise self._exception
@@ -602,7 +627,7 @@ class ContextFreeFuture(Awaitable[T]):
             if self._state == _CANCELLED:
                 raise CancelledError
             if self._state != _FINISHED:
-                raise InvalidStateError('Exception is not set.')
+                raise InvalidStateError("Exception is not set.")
             self._log_traceback = False
             return self._exception
 
@@ -619,11 +644,12 @@ class DeferredStartTask:
     A :class:`Task`-like object that delays starting its coroutine until the :meth:`start` method is
     called.
     """
+
     _asyncio_future_blocking = False
 
     def __init__(self, cb: Callable[[], Future], start=False, name=None):
         if not callable(cb):
-            raise ValueError('cb must be callable')
+            raise ValueError("cb must be callable")
 
         if start:
             self._future = cb()
@@ -664,7 +690,7 @@ class DeferredStartTask:
     def exception(self) -> Optional[BaseException]:
         return self._future.exception()
 
-    def add_done_callback(self, callback: 'Callable[[Future], Any]', context=None) -> None:
+    def add_done_callback(self, callback: "Callable[[Future], Any]", context=None) -> None:
         if context is None:
             self._future.add_done_callback(callback)
         else:
@@ -674,13 +700,14 @@ class DeferredStartTask:
         return self._future.__await__()
 
     def __repr__(self):
-        state = self._future._state if self.started() else 'NOT_STARTED'
-        return f'DeferredStartTask({self._name!r}, state={state})'
+        state = self._future._state if self.started() else "NOT_STARTED"
+        return f"DeferredStartTask({self._name!r}, state={state})"
 
 
 def get_running_loop() -> Optional[AbstractEventLoop]:
     try:
         from asyncio import get_running_loop
+
         try:
             return get_running_loop()
         except RuntimeError:
@@ -688,6 +715,7 @@ def get_running_loop() -> Optional[AbstractEventLoop]:
     except ImportError:
         # noinspection PyProtectedMember
         from asyncio import _get_running_loop
+
         return _get_running_loop()
 
 
@@ -698,7 +726,7 @@ def safe_create_future():
 
 def named_gather(name: str, *awaitables, return_exceptions=False):
     g = gather(*awaitables, return_exceptions=return_exceptions)
-    g.__repr__ = staticmethod(lambda _: f'<Gather {name}>')
+    g.__repr__ = staticmethod(lambda _: f"<Gather {name}>")
     return g
 
 
@@ -706,6 +734,7 @@ class Signal:
     """
     A simple guard that "wakes" up a coroutine from another coroutine.
     """
+
     def __init__(self):
         self._fut = safe_create_future()
 
@@ -717,7 +746,7 @@ class Signal:
             self._fut.set_result(None)
             self._fut = None
 
-    def wait(self) -> 'Awaitable[None]':
+    def wait(self) -> "Awaitable[None]":
         if self._fut is None:
             self._fut = safe_create_future()
         return self._fut
@@ -725,17 +754,16 @@ class Signal:
 
 class UnsettableEventLoopPolicy(AbstractEventLoopPolicy):
     def get_event_loop(self) -> AbstractEventLoop:
-        raise Exception('Called get_event_loop')
+        raise Exception("Called get_event_loop")
 
     def set_event_loop(self, loop: AbstractEventLoop) -> None:
-        raise Exception('Called set_event_loop')
+        raise Exception("Called set_event_loop")
 
     def new_event_loop(self) -> AbstractEventLoop:
-        raise Exception('Called new_event_loop')
+        raise Exception("Called new_event_loop")
 
     def get_child_watcher(self) -> Any:
-        raise Exception('get_child_watcher')
+        raise Exception("get_child_watcher")
 
     def set_child_watcher(self, watcher: Any) -> None:
-        raise Exception('set_child_watcher')
-
+        raise Exception("set_child_watcher")

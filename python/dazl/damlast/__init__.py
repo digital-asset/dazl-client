@@ -41,5 +41,5 @@ encoding and decoding of values, see :mod:`dazl.values`.
 
 """
 
-from .pkgfile import DarFile, CachedDarFile, get_dar_package_ids
-from .visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVisitor, IdentityTypeVisitor
+from .pkgfile import CachedDarFile, DarFile, get_dar_package_ids
+from .visitor import ExprVisitor, IdentityTypeVisitor, ModuleVisitor, PackageVisitor, TypeVisitor

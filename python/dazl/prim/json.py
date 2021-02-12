@@ -1,12 +1,13 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import json
 from datetime import date, datetime
-from .datetime import date_to_str, datetime_to_str
-from .contracts import ContractId
+import json
 
-__all__ = ['JSONEncoder']
+from .contracts import ContractId
+from .datetime import date_to_str, datetime_to_str
+
+__all__ = ["JSONEncoder"]
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -32,6 +33,7 @@ class UnquotedDecimal(float):
     A specialized number that is used just for JSON serialization; it suppresses quotes that would
     otherwise appear if ``JSONEncoder.default`` returned a string where it intended to use a number.
     """
+
     def __new__(cls, decimal_value):
         # noinspection PyArgumentList
         return float.__new__(cls, float(decimal_value))

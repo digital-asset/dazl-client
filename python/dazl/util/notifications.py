@@ -10,16 +10,15 @@ from typing import Any, Callable
 
 from .. import LOG
 
-
 _HANDLER_LOCK = RLock()
 _HANDLERS = defaultdict(list)
 
 
 def add_handler(key: str, cb: Callable[[Any], None]):
     if key is None:
-        raise ValueError('key is required')
+        raise ValueError("key is required")
     if cb is None:
-        raise ValueError('callable is required')
+        raise ValueError("callable is required")
 
     with _HANDLER_LOCK:
         _HANDLERS[key].append(cb)
@@ -27,9 +26,9 @@ def add_handler(key: str, cb: Callable[[Any], None]):
 
 def remove_handler(key: str, cb: Callable[[Any], None]):
     if key is None:
-        raise ValueError('key is required')
+        raise ValueError("key is required")
     if cb is None:
-        raise ValueError('callable is required')
+        raise ValueError("callable is required")
 
     with _HANDLER_LOCK:
         _HANDLERS[key].remove(cb)

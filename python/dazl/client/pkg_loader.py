@@ -1,17 +1,17 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import sys
-from asyncio import ensure_future, get_event_loop, gather, wait_for, sleep
-from datetime import timedelta
+from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
 from concurrent.futures import ThreadPoolExecutor
+from datetime import timedelta
+import sys
 from typing import AbstractSet, Awaitable, Callable, Dict, Set, TypeVar
 
 from .. import LOG
 from ..damlast.daml_lf_1 import Archive, Package, PackageRef
-from ..damlast.pkgfile import Dar
-from ..damlast.errors import PackageNotFoundError, NameNotFoundError
+from ..damlast.errors import NameNotFoundError, PackageNotFoundError
 from ..damlast.lookup import MultiPackageLookup
+from ..damlast.pkgfile import Dar
 from ..model.core import DazlError
 from ..model.lookup import validate_template
 
@@ -21,10 +21,10 @@ else:
     from typing_extensions import Protocol
 
 
-__all__ = ['SyncPackageService', 'PackageLoader']
+__all__ = ["SyncPackageService", "PackageLoader"]
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 DEFAULT_TIMEOUT = timedelta(seconds=30)
 
@@ -34,11 +34,11 @@ class SyncPackageService(Protocol):
     A service that synchronously provides package information.
     """
 
-    def package_bytes(self, package_id: 'PackageRef') -> bytes:
-        raise NotImplementedError('SyncPackageService.package_bytes requires an implementation')
+    def package_bytes(self, package_id: "PackageRef") -> bytes:
+        raise NotImplementedError("SyncPackageService.package_bytes requires an implementation")
 
-    def package_ids(self) -> 'AbstractSet[PackageRef]':
-        raise NotImplementedError('SyncPackageService.package_ids requires an implementation')
+    def package_ids(self) -> "AbstractSet[PackageRef]":
+        raise NotImplementedError("SyncPackageService.package_ids requires an implementation")
 
 
 class PackageLoader:
@@ -51,10 +51,11 @@ class PackageLoader:
     """
 
     def __init__(
-            self,
-            package_lookup: 'MultiPackageLookup',
-            conn: 'SyncPackageService' = None,
-            timeout: 'timedelta' = DEFAULT_TIMEOUT):
+        self,
+        package_lookup: "MultiPackageLookup",
+        conn: "SyncPackageService" = None,
+        timeout: "timedelta" = DEFAULT_TIMEOUT,
+    ):
         self._package_lookup = package_lookup
         self._conn = conn
         self._timeout = timeout
@@ -65,7 +66,7 @@ class PackageLoader:
     def set_connection(self, conn):
         self._conn = conn
 
-    async def do_with_retry(self, fn: 'Callable[[], T]') -> 'T':
+    async def do_with_retry(self, fn: "Callable[[], T]") -> "T":
         """
         Perform a synchronous action that assumes the existence of one or more packages. In the
         event the function raises :class:`PackageNotFoundError` or a wildcarded
@@ -101,16 +102,19 @@ class PackageLoader:
                     LOG.verbose(
                         "Failed to find name %s in all known packages, "
                         "even after fetching the latest.",
-                        ex.ref)
+                        ex.ref,
+                    )
                     raise
 
                 pkg_id, name = validate_template(ex.ref)
-                if pkg_id == '*':
+                if pkg_id == "*":
                     # we don't know what package contains this type, so we have no
                     # choice but to look in all known packages
                     LOG.verbose(
                         "Failed to find name %s in all known packages, "
-                        "so loading ALL packages...", name)
+                        "so loading ALL packages...",
+                        name,
+                    )
                     failed_types.add(ex.ref)
                     await self.load_all()
                 else:
@@ -119,7 +123,7 @@ class PackageLoader:
                     LOG.warning("Found package %s, but it did not include type %s", pkg_id, name)
                     raise
 
-    async def preload(self, *contents: 'Dar') -> None:
+    async def preload(self, *contents: "Dar") -> None:
         """
         Populate a :class:`PackageCache` with types from DARs.
 
@@ -127,7 +131,7 @@ class PackageLoader:
             One or more DARs to load into a local package cache.
         """
 
-    async def load(self, ref: 'PackageRef') -> 'Package':
+    async def load(self, ref: "PackageRef") -> "Package":
         """
         Load a package ID from the remote server. If the package has additional dependencies, they
         are also loaded.
@@ -154,7 +158,7 @@ class PackageLoader:
 
         return package
 
-    async def _load_and_parse_package(self, package_id: 'PackageRef') -> 'Package':
+    async def _load_and_parse_package(self, package_id: "PackageRef") -> "Package":
         from ..damlast.parse import parse_archive
 
         LOG.info("Loading package: %s", package_id)
@@ -162,10 +166,11 @@ class PackageLoader:
         loop = get_event_loop()
         conn = self._conn
         if conn is None:
-            raise DazlError('a connection is not configured')
+            raise DazlError("a connection is not configured")
 
         archive_bytes = await wait_for(
-            self.__fetch_package_bytes(conn, package_id), timeout=self._timeout.total_seconds())
+            self.__fetch_package_bytes(conn, package_id), timeout=self._timeout.total_seconds()
+        )
 
         LOG.info("Loaded for package: %s, %d bytes", package_id, len(archive_bytes))
 
@@ -173,8 +178,11 @@ class PackageLoader:
         # attempts to load a package in flight (though this shouldn't happen either)
         fut = self._parsing_futs.get(package_id)
         if fut is None:
-            fut = ensure_future(loop.run_in_executor(
-                self._executor, lambda: parse_archive(package_id, archive_bytes)))
+            fut = ensure_future(
+                loop.run_in_executor(
+                    self._executor, lambda: parse_archive(package_id, archive_bytes)
+                )
+            )
             self._parsing_futs[package_id] = fut
 
         archive = await fut
@@ -189,7 +197,8 @@ class PackageLoader:
             # noinspection PyBroadException
             try:
                 return await loop.run_in_executor(
-                    self._executor, lambda: conn.package_bytes(package_id))
+                    self._executor, lambda: conn.package_bytes(package_id)
+                )
             except Exception:
                 # We tried fetching the package but got an error. Retry, backing off to waiting as
                 # much as 30 seconds between each attempt.

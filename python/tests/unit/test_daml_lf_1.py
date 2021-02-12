@@ -1,4 +1,4 @@
-from dazl.damlast.daml_lf_1 import TypeConName, ModuleRef, PackageRef, DottedName
+from dazl.damlast.daml_lf_1 import DottedName, ModuleRef, PackageRef, TypeConName
 
 
 def test_type_con_name():

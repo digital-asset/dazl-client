@@ -13,8 +13,9 @@ from dazl.damlast.util import package_ref
 
 from .dars import AllKindsOf
 
-
-ALL_KINDS_OF_PKG_REF = PackageRef("e32da8a173e9667e1cd6557a12bf3edbbb6e5a9eb017c3363280ba0b22100bc4")
+ALL_KINDS_OF_PKG_REF = PackageRef(
+    "e32da8a173e9667e1cd6557a12bf3edbbb6e5a9eb017c3363280ba0b22100bc4"
+)
 
 
 class PackageLoaderTest:
@@ -27,7 +28,7 @@ class PackageLoaderTest:
         # the lookup should always start out empty
         assert len(self.lookup.archives()) == 0
 
-    def some_fn(self) -> 'TypeConName':
+    def some_fn(self) -> "TypeConName":
         try:
             name = self.lookup.template_name(self.template_name)
             self.call_order.append("good call")
@@ -48,7 +49,7 @@ async def test_pkg_loader_do_with_retry_unspecified_package():
     # first, we had to have an exception raised; then we get the call that succeeds
     assert len(test.lookup.archives()) == 1
     assert package_ref(name) == ALL_KINDS_OF_PKG_REF
-    assert test.call_order == ['exception', 'good call']
+    assert test.call_order == ["exception", "good call"]
 
 
 @pytest.mark.asyncio
@@ -62,12 +63,12 @@ async def test_pkg_loader_do_with_retry_specified_package():
     # first, we had to have an exception raised; then we get the call that succeeds
     assert len(test.lookup.archives()) > 1
     assert package_ref(name) == ALL_KINDS_OF_PKG_REF
-    assert test.call_order == ['exception', 'good call']
+    assert test.call_order == ["exception", "good call"]
 
 
 @pytest.mark.asyncio
 async def test_pkg_loader_do_with_retry_will_fail_on_unknown_templates():
-    test = PackageLoaderTest('*:Nonsense:Nonsense')
+    test = PackageLoaderTest("*:Nonsense:Nonsense")
 
     # call a function with a loader wrapper
     try:
@@ -83,4 +84,4 @@ async def test_pkg_loader_do_with_retry_will_fail_on_unknown_templates():
     # all packages will have been loaded; the function will have been called twice, and raise
     # exceptions both times
     assert len(test.lookup.archives()) >= 1
-    assert test.call_order == ['exception', 'exception']
+    assert test.call_order == ["exception", "exception"]

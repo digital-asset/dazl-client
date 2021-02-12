@@ -6,11 +6,11 @@ from decimal import Decimal
 
 import pytest
 
-from dazl import create, async_network
+from dazl import async_network, create
+
 from .dars import AllKindsOf
 
-
-TEMPLATE = 'AllKindsOf:OneOfEverything'
+TEMPLATE = "AllKindsOf:OneOfEverything"
 SOME_ARGS = dict(
     operator=None,  # this is filled in by each of the tests because Party allocation is random
     someBoolean=True,
@@ -24,10 +24,13 @@ SOME_ARGS = dict(
     someSimpleList=[1, 2, 3],
     someSimplePair=dict(left=1, right=2),
     someNestedPair=dict(left=dict(left=1, right=2), right=dict(left=3, right=4)),
-    someUglyNesting=dict(Both=dict(Left=dict(left=dict(left=1, right=2), right=dict(left=3, right=4)))),
+    someUglyNesting=dict(
+        Both=dict(Left=dict(left=dict(left=1, right=2), right=dict(left=3, right=4)))
+    ),
     someMeasurement=Decimal(10.0),
-    someEnum='Green',
-    theUnit=dict())
+    someEnum="Green",
+    theUnit=dict(),
+)
 
 
 @pytest.mark.asyncio
@@ -41,17 +44,17 @@ async def test_all_types(sandbox):
 
         network.start()
 
-    assert test_case.found_instance is not None, \
-        'Expected to find an instance of OneOfEverything!'
+    assert test_case.found_instance is not None, "Expected to find an instance of OneOfEverything!"
 
-    assert SOME_ARGS.keys() == test_case.found_instance.keys(), \
-        'There are either extra fields or missing fields!'
+    assert (
+        SOME_ARGS.keys() == test_case.found_instance.keys()
+    ), "There are either extra fields or missing fields!"
 
     for key in SOME_ARGS:
-        if key != 'operator':
+        if key != "operator":
             expected = SOME_ARGS.get(key)
             actual = test_case.found_instance.get(key)
-            assert expected == actual, f'Failed to compare types for key: {key}'
+            assert expected == actual, f"Failed to compare types for key: {key}"
 
 
 @pytest.mark.asyncio
@@ -61,10 +64,9 @@ async def test_maps(sandbox):
 
         network.start()
 
-        await client.submit_create('AllKindsOf:MappyContract', {
-            'operator': client.party,
-            'value': {'Map_internal': []}
-        })
+        await client.submit_create(
+            "AllKindsOf:MappyContract", {"operator": client.party, "value": {"Map_internal": []}}
+        )
 
 
 class AllTypesTestCase:
@@ -79,6 +81,6 @@ class AllTypesTestCase:
     def on_one_of_everything(self, event):
         if event.cdata is not None:
             self.found_instance = event.cdata
-            return event.cid.exercise('Accept')
+            return event.cid.exercise("Accept")
         else:
             self.archive_done = True

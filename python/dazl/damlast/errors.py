@@ -9,14 +9,14 @@ Error types
 .. autoclass:: NameNotFoundError
 """
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from ..model.core import DazlError
 
 if TYPE_CHECKING:
     from . import daml_lf_1
 
-__all__ = ['PackageNotFoundError', 'NameNotFoundError']
+__all__ = ["PackageNotFoundError", "NameNotFoundError"]
 
 
 class PackageNotFoundError(DazlError):
@@ -28,7 +28,7 @@ class PackageNotFoundError(DazlError):
     the original option retried.
     """
 
-    def __init__(self, ref: 'daml_lf_1.PackageRef'):
+    def __init__(self, ref: "daml_lf_1.PackageRef"):
         super().__init__(ref)
         self.ref = ref
 
@@ -42,6 +42,6 @@ class NameNotFoundError(DazlError):
     package IDs are immutable, this error is not normally retryable.
     """
 
-    def __init__(self, ref: 'Any'):
+    def __init__(self, ref: "Any"):
         super().__init__(ref)
         self.ref = ref

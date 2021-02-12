@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import get_event_loop, ensure_future, sleep
+from asyncio import ensure_future, get_event_loop, sleep
 from threading import Event
 
 # noinspection PyPackageRequirements
@@ -14,8 +14,9 @@ from dazl.damlast.lookup import MultiPackageLookup
 
 from .dars import AllKindsOf
 
-
-ALL_KINDS_OF_PKG_REF = PackageRef("e32da8a173e9667e1cd6557a12bf3edbbb6e5a9eb017c3363280ba0b22100bc4")
+ALL_KINDS_OF_PKG_REF = PackageRef(
+    "e32da8a173e9667e1cd6557a12bf3edbbb6e5a9eb017c3363280ba0b22100bc4"
+)
 
 
 def load_some_bytes():
@@ -34,7 +35,7 @@ async def test_pkg_loader_only_fetches_once(executor):
         def __init__(self):
             self.call_count = 0
 
-        def package_bytes(self, package_id: 'PackageRef') -> bytes:
+        def package_bytes(self, package_id: "PackageRef") -> bytes:
             self.call_count += 1
             if package_id != pkg_ref:
                 raise Exception
@@ -71,7 +72,7 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
         def __init__(self):
             self.call_count = 0
 
-        def package_bytes(self, package_id: 'PackageRef') -> bytes:
+        def package_bytes(self, package_id: "PackageRef") -> bytes:
             self.call_count += 1
             if package_id != pkg_ref:
                 raise Exception
@@ -116,4 +117,3 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
     # expensive but they are also immutable, so the two calls should return the same instance
     # as an optimization
     assert pkg1 is pkg2
-

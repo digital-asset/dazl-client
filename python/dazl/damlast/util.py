@@ -1,25 +1,41 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from typing import TYPE_CHECKING, Mapping, Optional, Sequence, Union
 import warnings
-from typing import Mapping, Optional, Sequence, Union, TYPE_CHECKING
-from .daml_lf_1 import DefValue, Expr, ModuleRef, Type, PrimType, Kind, UNIT, TypeVarWithKind, \
-    _Name, PackageRef, DottedName, DefDataType
+
+from .daml_lf_1 import (
+    UNIT,
+    DefDataType,
+    DefValue,
+    DottedName,
+    Expr,
+    Kind,
+    ModuleRef,
+    PackageRef,
+    PrimType,
+    Type,
+    TypeVarWithKind,
+    _Name,
+)
 
 if TYPE_CHECKING:
     from ..model.types import Type as OldType, TypeReference
     from ..model.types_store import PackageStore
 
 
-def var(var: str) -> 'Type':
-    warnings.warn('dazl.damlast.util.var is deprecated; use dazl.damlast.daml_types.var instead.')
+def var(var: str) -> "Type":
+    warnings.warn("dazl.damlast.util.var is deprecated; use dazl.damlast.daml_types.var instead.")
     from .daml_types import var as _var
+
     return _var(var)
 
 
-def values_by_module(store: 'PackageStore') \
-        -> 'Mapping[ModuleRef, Mapping[Sequence[str], Union[Expr, OldType]]]':
+def values_by_module(
+    store: "PackageStore",
+) -> "Mapping[ModuleRef, Mapping[Sequence[str], Union[Expr, OldType]]]":
     from collections import defaultdict
+
     d = defaultdict(defaultdict)
     for vn, vv in store._value_types.items():
         d[vn.module][vn.name] = vv
@@ -29,7 +45,7 @@ def values_by_module(store: 'PackageStore') \
 
 
 # noinspection PyShadowingBuiltins
-def unpack_arrow_type(type: 'Optional[Type]') -> 'Sequence[Type]':
+def unpack_arrow_type(type: "Optional[Type]") -> "Sequence[Type]":
     """
     Unwind an arrow type the sequence of constituent types.
 
@@ -52,7 +68,7 @@ def unpack_arrow_type(type: 'Optional[Type]') -> 'Sequence[Type]':
 
 
 # noinspection PyShadowingBuiltins
-def pack_arrow_type(types: 'Sequence[Type]') -> 'Optional[Type]':
+def pack_arrow_type(types: "Sequence[Type]") -> "Optional[Type]":
     """
     Compute the arrow type that is the result of repeatedly applying values to a function and
     returning it.
@@ -67,45 +83,52 @@ def pack_arrow_type(types: 'Sequence[Type]') -> 'Optional[Type]':
 
 
 # noinspection PyShadowingBuiltins
-def arrow_type(input: 'Type', output: 'Type') -> 'Type':
+def arrow_type(input: "Type", output: "Type") -> "Type":
     """
     Convenience function for constructing a :class:`Type` of ``prim`` that is an abstraction taking
     the input type and returning the output type.
     """
     warnings.warn(
-        'arrow_type is deprecated; Use dazl.damlast.daml_types.Arrow instead', DeprecationWarning,
-        stacklevel=2)
+        "arrow_type is deprecated; Use dazl.damlast.daml_types.Arrow instead",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     from .daml_types import Arrow
+
     return Arrow(input, output)
 
 
-def list_type(elem_type: 'Type') -> 'Type':
+def list_type(elem_type: "Type") -> "Type":
     """
     Convenience function for constructing a :class:`Type` of ``prim`` list.
     """
     warnings.warn(
-        'list_type is deprecated; Use dazl.damlast.daml_types.List instead', DeprecationWarning,
-        stacklevel=2)
+        "list_type is deprecated; Use dazl.damlast.daml_types.List instead",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     from .daml_types import List
+
     return List(elem_type)
 
 
-def type_var_with_kind(var: str, type: Kind = Kind(star = UNIT)):
+def type_var_with_kind(var: str, type: Kind = Kind(star=UNIT)):
     return TypeVarWithKind(var, type)
 
 
-def def_value(name: 'Union[str, Sequence[str]]', daml_type: 'Type', expr: 'Expr') -> 'DefValue':
+def def_value(name: "Union[str, Sequence[str]]", daml_type: "Type", expr: "Expr") -> "DefValue":
     if isinstance(name, str):
         name = (name,)
     name_with_type = DefValue.NameWithType(name=name, type=daml_type)
     return DefValue(name_with_type, expr, True, False, None)
 
 
-def package_ref(obj: 'Union[ModuleRef, _Name, TypeReference]') -> 'PackageRef':
+def package_ref(obj: "Union[ModuleRef, _Name, TypeReference]") -> "PackageRef":
     """
     Return the package ID for a :class:`ModuleRef` or a DAML name.
     """
     from ..model.types import TypeReference
+
     # TODO: Rewrite for dazl 7.0.0 when the internal structure of a ModuleRef is changed.
     if isinstance(obj, ModuleRef):
         # noinspection PyProtectedMember
@@ -120,11 +143,12 @@ def package_ref(obj: 'Union[ModuleRef, _Name, TypeReference]') -> 'PackageRef':
         raise ValueError(f"Could not extract a package_ref from {obj!r}")
 
 
-def module_name(obj: 'Union[ModuleRef, _Name, TypeReference]') -> 'DottedName':
+def module_name(obj: "Union[ModuleRef, _Name, TypeReference]") -> "DottedName":
     """
     Return the module name of a :class:`ModuleRef` or a DAML name.
     """
     from ..model.types import TypeReference
+
     # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     if isinstance(obj, ModuleRef):
         # noinspection PyProtectedMember
@@ -139,11 +163,12 @@ def module_name(obj: 'Union[ModuleRef, _Name, TypeReference]') -> 'DottedName':
         raise ValueError(f"Could not extract a module_name from {obj!r}")
 
 
-def module_ref(obj: 'Union[_Name, TypeReference]') -> 'ModuleRef':
+def module_ref(obj: "Union[_Name, TypeReference]") -> "ModuleRef":
     """
     Return the :class:`ModuleRef` of a DAML name.
     """
     from ..model.types import TypeReference
+
     # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     if isinstance(obj, _Name):
         # noinspection PyProtectedMember
@@ -155,12 +180,13 @@ def module_ref(obj: 'Union[_Name, TypeReference]') -> 'ModuleRef':
         raise ValueError(f"Could not extract a module_ref from {obj!r}")
 
 
-def package_local_name(obj: 'Union[_Name, TypeReference]') -> str:
+def package_local_name(obj: "Union[_Name, TypeReference]") -> str:
     """
     Return the name of a DAML object, assuming that the referent exists in the same package as the
     target (i.e., _not_ scoped with a package ID).
     """
     from ..model.types import TypeReference
+
     # TODO: Rewrite for dazl 7.0.0 when the internal structure of a ModuleRef is changed.
     if isinstance(obj, TypeReference):
         obj = obj.con
@@ -172,26 +198,27 @@ def package_local_name(obj: 'Union[_Name, TypeReference]') -> str:
         raise ValueError(f"Could not extract a package_local_name from {obj!r}")
 
 
-def module_local_name(obj: 'Union[_Name, TypeReference]') -> str:
+def module_local_name(obj: "Union[_Name, TypeReference]") -> str:
     """
     Return the name of a DAML object, assuming that the referent exists in the same module as the
     target (i.e., in the same package and in the same module).
     """
     # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     from ..model.types import TypeReference
+
     if isinstance(obj, _Name):
         # noinspection PyProtectedMember
-        return '.'.join(obj._name)
+        return ".".join(obj._name)
     elif isinstance(obj, TypeReference):
         # noinspection PyProtectedMember
-        return '.'.join(obj.con._name)
+        return ".".join(obj.con._name)
     else:
         raise ValueError(f"Could not extract a module_local_name from {obj!r}")
 
 
-def find_variant_type(dt: 'DefDataType', variant: 'DefDataType.Fields', constructor: str) -> 'Type':
+def find_variant_type(dt: "DefDataType", variant: "DefDataType.Fields", constructor: str) -> "Type":
     for fld_metadata in variant.fields:
         if fld_metadata.field == constructor:
             return fld_metadata.type
 
-    raise ValueError(f'{constructor} is not a field of {dt.name}')
+    raise ValueError(f"{constructor} is not a field of {dt.name}")

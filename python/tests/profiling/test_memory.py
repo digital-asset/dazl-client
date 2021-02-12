@@ -10,26 +10,28 @@ active contract set information, and not additional things about transactions. L
 test are more likely to be the fault of infrastructural code.
 """
 
-import sys
 from asyncio import get_event_loop
 from datetime import datetime
+import sys
 
-from dazl import create, Network
+from pympler import muppy, summary
+
+from dazl import Network, create
+
 # noinspection PyProtectedMember
 from dazl._logging import configure as configure_logger
 from dazl.model.reading import ContractCreateEvent, ReadyEvent
-from pympler import muppy, summary
 
 
 def main(url: str):
     network = Network()
     network.set_config(url=url)
 
-    test_party = network.aio_party('TestA')
+    test_party = network.aio_party("TestA")
     test_party.add_ledger_ready(ready)
-    test_party.add_ledger_created('Main:PostmanRole', created)
+    test_party.add_ledger_created("Main:PostmanRole", created)
 
-    other_party = network.aio_party('TestB')
+    other_party = network.aio_party("TestB")
     other_party.add_ledger_ready(ready)
 
     dump_state()
@@ -38,12 +40,12 @@ def main(url: str):
 
 
 def ready(event: ReadyEvent):
-    print('The ledger is now ready.')
-    return create('Main:PostmanRole', {'postman': event.party})
+    print("The ledger is now ready.")
+    return create("Main:PostmanRole", {"postman": event.party})
 
 
 def created(event: ContractCreateEvent):
-    print(f'Created happened for {event.cdata}')
+    print(f"Created happened for {event.cdata}")
 
 
 def dump_state():
@@ -55,6 +57,6 @@ def dump_state():
     loop.call_later(10, dump_state)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     configure_logger()
     main(sys.argv[1])

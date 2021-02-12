@@ -23,4 +23,3 @@ async def test_event_handler_exceptions(sandbox):
 
 class MagicException(Exception):
     pass
-

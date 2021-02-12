@@ -5,19 +5,19 @@
 Simple methods for instantiating an application written against dazl that incorporate common usage
 patterns.
 """
-import warnings
 from argparse import ArgumentParser
 from typing import Callable
+import warnings
 
 from ..client.api import Network
-from ..client.config import configure_parser, NetworkConfig
+from ..client.config import NetworkConfig, configure_parser
 
 
-def run(init: 'Callable[[Network], None]'):
+def run(init: "Callable[[Network], None]"):
     warnings.warn("dazl.run is deprecated", DeprecationWarning, stacklevel=2)
 
     if init is None:
-        raise ValueError('The init callback cannot be None')
+        raise ValueError("The init callback cannot be None")
 
     arg_parser = ArgumentParser()
 

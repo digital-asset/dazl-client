@@ -5,20 +5,22 @@
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Sequence
+
 from .. import Network
+from ..client.config import AnonymousNetworkConfig, configure_parser
 from ._base import CliCommand
-from ..client.config import configure_parser, AnonymousNetworkConfig
 
 
 class UploadCommand(CliCommand):
-    name = 'upload'
+    name = "upload"
 
     def parser(self) -> ArgumentParser:
-        arg_parser = ArgumentParser('dazl upload')
+        arg_parser = ArgumentParser("dazl upload")
 
         configure_parser(arg_parser, config_file_support=True)
         arg_parser.add_argument(
-            'files', metavar='FILE', nargs='+', help='DAR files to upload to the remote DAML ledger')
+            "files", metavar="FILE", nargs="+", help="DAR files to upload to the remote DAML ledger"
+        )
 
         return arg_parser
 

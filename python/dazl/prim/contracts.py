@@ -5,7 +5,7 @@ from typing import Any, Mapping
 
 from ..damlast.daml_lf_1 import TypeConName
 
-__all__ = ['ContractId', 'ContractData']
+__all__ = ["ContractId", "ContractData"]
 
 
 class ContractId:
@@ -23,16 +23,17 @@ class ContractId:
         The type of template that is pointed to by this :class:`ContractId`.
 
     """
-    __slots__ = 'value', 'value_type'
 
-    def __init__(self, value_type: 'TypeConName', value: str):
+    __slots__ = "value", "value_type"
+
+    def __init__(self, value_type: "TypeConName", value: str):
         if not isinstance(value_type, TypeConName):
-            raise ValueError('value_type must be a TypeConName')
+            raise ValueError("value_type must be a TypeConName")
         if not isinstance(value, str):
-            raise ValueError('value must be a string')
+            raise ValueError("value must be a string")
 
-        object.__setattr__(self, 'value_type', value_type)
-        object.__setattr__(self, 'value', value)
+        object.__setattr__(self, "value_type", value_type)
+        object.__setattr__(self, "value", value)
 
     def __str__(self):
         """
@@ -44,7 +45,7 @@ class ContractId:
         """
         Return a more detailed view of the ContractId.
         """
-        return f'ContractId({self.value_type}, {self.value!r})'
+        return f"ContractId({self.value_type}, {self.value!r})"
 
     def __eq__(self, other):
         """
@@ -57,7 +58,7 @@ class ContractId:
         """
         Format the ContractId according to the spec.
         """
-        return ('{:' + format_spec + 's}').format(self.value)
+        return ("{:" + format_spec + "s}").format(self.value)
 
     def __hash__(self):
         """
@@ -69,7 +70,7 @@ class ContractId:
         """
         Overridden to make ContractId instances read-only.
         """
-        raise AttributeError('ContractId instances are read-only')
+        raise AttributeError("ContractId instances are read-only")
 
 
 ContractData = Mapping[str, Any]

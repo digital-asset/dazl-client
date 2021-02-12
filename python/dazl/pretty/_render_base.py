@@ -1,21 +1,39 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import json
 from io import StringIO
-from typing import Callable, Dict, Optional, Type as TType, Sequence, Union
+import json
+from typing import Callable, Dict, Optional, Sequence, Type as TType, Union
 
-from .options import PrettyOptions
-from .util import maybe_parentheses, is_hidden_module_name
 from .. import LOG
-from ..damlast.daml_lf_1 import Block, BuiltinFunction, Case, CaseAlt, DefDataType, DefTemplate, \
-    Expr, Module, ModuleRef, Package, PrimCon, PrimLit, Scenario, Type, TypeVarWithKind, ValName, \
-    Update, DefValue, Unit
+from ..damlast.daml_lf_1 import (
+    Block,
+    BuiltinFunction,
+    Case,
+    CaseAlt,
+    DefDataType,
+    DefTemplate,
+    DefValue,
+    Expr,
+    Module,
+    ModuleRef,
+    Package,
+    PrimCon,
+    PrimLit,
+    Scenario,
+    Type,
+    TypeVarWithKind,
+    Unit,
+    Update,
+    ValName,
+)
 from ..damlast.protocols import SymbolLookup
-from ..damlast.util import unpack_arrow_type, package_local_name
-from ..damlast.visitor import PackageVisitor, ModuleVisitor, ExprVisitor, TypeVisitor
+from ..damlast.util import package_local_name, unpack_arrow_type
+from ..damlast.visitor import ExprVisitor, ModuleVisitor, PackageVisitor, TypeVisitor
 from ..model.definition import DamlDataType, DamlTemplate
 from ..prim import to_date, to_datetime
+from .options import PrettyOptions
+from .util import is_hidden_module_name, maybe_parentheses
 
 
 # noinspection PyMethodMayBeStatic
@@ -25,9 +43,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     """
 
     def __init__(
-            self,
-            lookup: 'Optional[SymbolLookup]' = None,
-            context: 'Union[None, CodeContext, PrettyOptions]' = None):
+        self,
+        lookup: "Optional[SymbolLookup]" = None,
+        context: "Union[None, CodeContext, PrettyOptions]" = None,
+    ):
         self.lookup = lookup
         if context is None:
             self.context = CodeContext.top_level()
@@ -36,7 +55,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         elif isinstance(context, PrettyOptions):
             self.context = CodeContext.from_options(context)
         else:
-            raise TypeError('a CodeContext object required here')
+            raise TypeError("a CodeContext object required here")
 
     def lexer(self):
         """
@@ -51,23 +70,23 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         cm = self.context.current_module
         if cm is not None:
             mn = module_name(cm)
-            indent_level = str(mn).count('.') if mn else 0
-            return ' ' * (indent_level * 4)
+            indent_level = str(mn).count(".") if mn else 0
+            return " " * (indent_level * 4)
         else:
-            return ''
+            return ""
 
     def render_store(self) -> str:
         """
         Render everything in a :class:`PackageStore`.
         """
         with StringIO() as buf:
-            buf.write('from dazl import create, exercise, module, TemplateMeta, ChoiceMeta\n\n')
+            buf.write("from dazl import create, exercise, module, TemplateMeta, ChoiceMeta\n\n")
             for archive in self.lookup.archives():
                 buf.write(self.visit_package(archive.package))
-                buf.write('\n')
+                buf.write("\n")
             return buf.getvalue()
 
-    def with_module(self, module_ref: 'ModuleRef'):
+    def with_module(self, module_ref: "ModuleRef"):
         return type(self)(lookup=self.lookup, context=self.context.with_module(module_ref))
 
     def with_decl(self, decl_name: Sequence[str], decl_type: Type):
@@ -81,10 +100,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         """
         return type(self)(lookup=self.lookup, context=self.context.with_decl(decl_name, decl_type))
 
-    def with_type_abs(self, type_abs: 'Sequence[TypeVarWithKind]'):
+    def with_type_abs(self, type_abs: "Sequence[TypeVarWithKind]"):
         return type(self)(lookup=self.lookup, context=self.context.with_type_abs(type_abs))
 
-    def with_type_app(self, type_app: 'Sequence[Type]'):
+    def with_type_app(self, type_app: "Sequence[Type]"):
         return type(self)(lookup=self.lookup, context=self.context.with_type_app(type_app))
 
     def with_expression(self):
@@ -93,7 +112,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def with_statement_block(self):
         return type(self)(lookup=self.lookup, context=self.context.with_statement_block())
 
-    def visit_package(self, package: 'Package') -> 'str':
+    def visit_package(self, package: "Package") -> "str":
         """
         Simply render each package as the contents of its constituent models.
 
@@ -103,10 +122,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
             The string representation of the package, as defined by the string representation of
             each of its modules.
         """
-        LOG.info('Printing a package with %d modules:', len(package.modules))
+        LOG.info("Printing a package with %d modules:", len(package.modules))
         from ._module_builder import ModuleHierarchy
 
-        module_map = ModuleHierarchy('')
+        module_map = ModuleHierarchy("")
         for module in package.modules:
             if self.context.show_hidden_types or not is_hidden_module_name(module.name.segments):
                 module_map.add_module(module)
@@ -118,15 +137,16 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
             elif event_kind == ModuleHierarchy.ITEM:
                 child = self.with_module(ref)
                 indent = child.module_indent()
-                module_contents = '\n'.join(indent + line
-                                            for line in child.visit_module(module).splitlines())
-                lines.append(module_contents or (indent + 'pass'))
+                module_contents = "\n".join(
+                    indent + line for line in child.visit_module(module).splitlines()
+                )
+                lines.append(module_contents or (indent + "pass"))
             elif event_kind == ModuleHierarchy.END:
                 lines.append(self.visit_module_ref_end(ref))
 
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
-    def visit_module(self, module: 'Module') -> 'str':
+    def visit_module(self, module: "Module") -> "str":
         """
         Attempt to render the contents of a module.
 
@@ -138,13 +158,13 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         lines = []
         # render raw values
         for value in module.values:
-            if self.context.show_hidden_types or not value.name_with_type.name[0].startswith('$'):
+            if self.context.show_hidden_types or not value.name_with_type.name[0].startswith("$"):
                 at_least_one = True
-                lines.append(self.visit_def_value(value) + '\n\n')
+                lines.append(self.visit_def_value(value) + "\n\n")
 
         # now render data (and templates)
-        data_types_by_name = {'.'.join(dt.name.segments): dt for dt in module.data_types}
-        templates_by_name = {'.'.join(t.tycon.segments): t for t in module.templates}
+        data_types_by_name = {".".join(dt.name.segments): dt for dt in module.data_types}
+        templates_by_name = {".".join(t.tycon.segments): t for t in module.templates}
 
         bare_data_types = {}
         template_data_types = {}
@@ -157,36 +177,37 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
                 template_data_types[key] = (template, data_type)
 
         for template, data_type in (*bare_data_types.values(), *template_data_types.values()):
-            if self.context.show_hidden_types or not data_type.name.segments[0].startswith('$'):
+            if self.context.show_hidden_types or not data_type.name.segments[0].startswith("$"):
                 at_least_one = True
                 lines.append(self.visit_def_template(template, data_type))
-                lines.append('')
+                lines.append("")
 
         if not at_least_one:
             self.visit_empty_block_body()
 
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
     def visit_empty_block_body(self):
-        return ''
+        return ""
 
-    def visit_module_ref_start(self, module_ref: 'ModuleRef') -> 'str':
+    def visit_module_ref_start(self, module_ref: "ModuleRef") -> "str":
         """
         Render the "start" of a module.
         """
-        return ''
+        return ""
 
-    def visit_module_ref_end(self, module_ref: 'ModuleRef') -> 'str':
+    def visit_module_ref_end(self, module_ref: "ModuleRef") -> "str":
         """
         Render the "end" of a module.
         """
-        return ''
+        return ""
 
-    def visit_def_data_type(self, def_data_type: 'DefDataType') -> str:
+    def visit_def_data_type(self, def_data_type: "DefDataType") -> str:
         return self.visit_def_template(None, def_data_type)
 
     def visit_def_template(
-            self, template: 'DefTemplate', def_data_type: 'Optional[DefDataType]' = None) -> str:
+        self, template: "DefTemplate", def_data_type: "Optional[DefDataType]" = None
+    ) -> str:
         """
         Attempt to render the :class:`DefTemplate`. If this method successfully returns, then the
         corresponding :class:`DefValue` and :class:`DefDataType` objects are skipped.
@@ -212,24 +233,26 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         """
         raise NotImplementedError
 
-    def visit_def_value(self, def_value: 'DefValue') -> str:
+    def visit_def_value(self, def_value: "DefValue") -> str:
         scope = self.with_decl(def_value.name_with_type.name, def_value.name_with_type.type)
         return scope.visit_expr(def_value.expr)
 
-    def visit_expr(self, expr: 'Expr') -> 'str':
+    def visit_expr(self, expr: "Expr") -> "str":
         try:
             expr_text = super(PrettyPrintBase, self).visit_expr(expr)
             if expr_text is None:
-                LOG.warning('All visit_expr_* methods should return something (expr_%s did not)',
-                            expr._Sum_name)
+                LOG.warning(
+                    "All visit_expr_* methods should return something (expr_%s did not)",
+                    expr._Sum_name,
+                )
                 return self._visit_expr_default()
             else:
                 return expr_text
         except:
-            LOG.exception('Could not render an expression!')
+            LOG.exception("Could not render an expression!")
             return self._visit_expr_default()
 
-    def visit_expr_var(self, var: str) -> 'str':
+    def visit_expr_var(self, var: str) -> "str":
         """
         Render the variable. The default implementation merely returns the variable, unchanged.
 
@@ -242,39 +265,39 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         else:
             return self.visit_expr_var_inline(var)
 
-    def visit_expr_var_decl(self, var: str, context: 'CodeContext') -> 'str':
+    def visit_expr_var_decl(self, var: str, context: "CodeContext") -> "str":
         return self._visit_expr_decl(context, self.visit_expr_var_inline(var))
 
-    def visit_expr_var_inline(self, var: str) -> 'str':
+    def visit_expr_var_inline(self, var: str) -> "str":
         return var
 
-    def visit_expr_val(self, val: 'ValName') -> 'str':
+    def visit_expr_val(self, val: "ValName") -> "str":
         if self.context.decl_name is not None:
             child = self.with_statement_block()
             return child.visit_expr_val_decl(val, self.context)
         else:
             return self.visit_expr_val_inline(val)
 
-    def visit_expr_val_decl(self, val: 'ValName', context: 'CodeContext') -> 'str':
+    def visit_expr_val_decl(self, val: "ValName", context: "CodeContext") -> "str":
         return self._visit_expr_decl(context, self.visit_expr_val_inline(val))
 
-    def visit_expr_val_inline(self, val: 'ValName'):
+    def visit_expr_val_inline(self, val: "ValName"):
         return package_local_name(val)
 
-    def visit_expr_builtin(self, builtin: 'BuiltinFunction') -> 'str':
+    def visit_expr_builtin(self, builtin: "BuiltinFunction") -> "str":
         return builtin.name
 
-    def visit_expr_prim_con(self, prim_con: 'PrimCon') -> 'str':
+    def visit_expr_prim_con(self, prim_con: "PrimCon") -> "str":
         if self.context.decl_name is not None:
             child = self.with_statement_block()
             return child.visit_expr_prim_con_decl(prim_con, self.context)
         else:
             return self.visit_expr_prim_con_inline(prim_con)
 
-    def visit_expr_prim_con_decl(self, prim_con: 'PrimCon', context: 'CodeContext') -> str:
+    def visit_expr_prim_con_decl(self, prim_con: "PrimCon", context: "CodeContext") -> str:
         return self._visit_expr_decl(context, self.visit_expr_prim_con_inline(prim_con))
 
-    def visit_expr_prim_con_inline(self, prim_con: 'PrimCon') -> 'str':
+    def visit_expr_prim_con_inline(self, prim_con: "PrimCon") -> "str":
         if PrimCon.CON_UNIT == prim_con:
             return self.visit_expr_prim_con_inline_unit()
         elif PrimCon.CON_TRUE == prim_con:
@@ -284,16 +307,16 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         else:
             return repr(prim_con)
 
-    def visit_expr_prim_con_inline_true(self) -> 'str':
-        return 'True'
+    def visit_expr_prim_con_inline_true(self) -> "str":
+        return "True"
 
-    def visit_expr_prim_con_inline_false(self) -> 'str':
-        return 'False'
+    def visit_expr_prim_con_inline_false(self) -> "str":
+        return "False"
 
-    def visit_expr_prim_con_inline_unit(self) -> 'str':
-        return 'Unit'
+    def visit_expr_prim_con_inline_unit(self) -> "str":
+        return "Unit"
 
-    def visit_expr_prim_lit(self, prim_lit: 'PrimLit') -> 'str':
+    def visit_expr_prim_lit(self, prim_lit: "PrimLit") -> "str":
         """
         Visit a primitive literal.
         """
@@ -303,10 +326,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         else:
             return self.visit_expr_prim_lit_inline(prim_lit)
 
-    def visit_expr_prim_lit_decl(self, prim_lit: 'PrimLit', context: 'CodeContext') -> str:
+    def visit_expr_prim_lit_decl(self, prim_lit: "PrimLit", context: "CodeContext") -> str:
         return self._visit_expr_decl(context, self.visit_expr_prim_lit_inline(prim_lit))
 
-    def visit_expr_prim_lit_inline(self, prim_lit: 'PrimLit') -> str:
+    def visit_expr_prim_lit_inline(self, prim_lit: "PrimLit") -> str:
         if prim_lit.text is not None:
             return self.visit_expr_prim_lit_inline_text(prim_lit.text)
         elif prim_lit.int64 is not None:
@@ -368,36 +391,36 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_prim_lit_inline_timestamp(self, timestamp: float) -> str:
         return to_datetime(timestamp).isoformat()
 
-    def visit_expr_rec_con(self, rec_con: 'Expr.RecCon') -> 'str':
+    def visit_expr_rec_con(self, rec_con: "Expr.RecCon") -> "str":
         if self.context.decl_name is not None:
             child = self.with_statement_block()
             return child.visit_expr_rec_con_decl(rec_con, self.context)
         else:
             return self.visit_expr_rec_con_inline(rec_con)
 
-    def visit_expr_rec_con_decl(self, rec_con: 'Expr.RecCon', context: 'CodeContext') -> 'str':
+    def visit_expr_rec_con_decl(self, rec_con: "Expr.RecCon", context: "CodeContext") -> "str":
         expr_text = self.visit_expr_rec_con_inline(rec_con)
         return self._visit_expr_decl(context, expr_text)
 
-    def visit_expr_rec_con_inline(self, rec_con: 'Expr.RecCon') -> 'str':
+    def visit_expr_rec_con_inline(self, rec_con: "Expr.RecCon") -> "str":
         raise NotImplementedError
 
-    def visit_expr_rec_proj(self, rec_proj: 'Expr.RecProj') -> 'str':
+    def visit_expr_rec_proj(self, rec_proj: "Expr.RecProj") -> "str":
         pass
 
-    def visit_expr_enum_con(self, enum_con: 'Expr.EnumCon') -> 'str':
+    def visit_expr_enum_con(self, enum_con: "Expr.EnumCon") -> "str":
         return enum_con.enum_con
 
-    def visit_expr_variant_con(self, variant_con: 'Expr.VariantCon') -> 'str':
+    def visit_expr_variant_con(self, variant_con: "Expr.VariantCon") -> "str":
         pass
 
-    def visit_expr_struct_con(self, struct_con: 'Expr.StructCon') -> 'str':
+    def visit_expr_struct_con(self, struct_con: "Expr.StructCon") -> "str":
         pass
 
-    def visit_expr_struct_proj(self, struct_proj: 'Expr.StructProj') -> 'str':
+    def visit_expr_struct_proj(self, struct_proj: "Expr.StructProj") -> "str":
         pass
 
-    def visit_expr_app(self, app: 'Expr.App') -> 'str':
+    def visit_expr_app(self, app: "Expr.App") -> "str":
         """
         Visit an application (function called with one or more arguments).
         """
@@ -407,7 +430,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         else:
             return self.visit_expr_app_inline(app)
 
-    def visit_expr_app_decl(self, app: 'Expr.App', context: 'CodeContext'):
+    def visit_expr_app_decl(self, app: "Expr.App", context: "CodeContext"):
         """
         Visit the declaration of a field whose value is the application of a function with one or
         more parameters. The default implementation assumes that the declaration is identical to the
@@ -424,13 +447,13 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         expr_text = self.visit_expr_app_inline(app)
         return self._visit_expr_decl(context, expr_text)
 
-    def visit_expr_app_inline(self, app: 'Expr.App') -> str:
+    def visit_expr_app_inline(self, app: "Expr.App") -> str:
         """
         Visit an application used in the middle of an expression.
         """
-        raise NotImplementedError('visit_expr_app_inline needs an implementation')
+        raise NotImplementedError("visit_expr_app_inline needs an implementation")
 
-    def visit_expr_ty_app(self, ty_app: 'Expr.TyApp') -> 'str':
+    def visit_expr_ty_app(self, ty_app: "Expr.TyApp") -> "str":
         """
         Visit the application of a type parameter with a body parameterized on type.
 
@@ -444,7 +467,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         """
         return self.with_type_app(ty_app.types).visit_expr(ty_app.expr)
 
-    def visit_expr_abs(self, abs_: 'Expr.Abs') -> 'str':
+    def visit_expr_abs(self, abs_: "Expr.Abs") -> "str":
         """
         Visit an abstraction (function).
         """
@@ -454,7 +477,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         else:
             return self.visit_expr_abs_inline(abs_)
 
-    def visit_expr_abs_decl(self, abs_: 'Expr.Abs', context: 'CodeContext'):
+    def visit_expr_abs_decl(self, abs_: "Expr.Abs", context: "CodeContext"):
         """
         Visit the declaration of an abstraction (function). The default implementation assumes that
         function declarations are identical to the inline case (which is not normally the case in
@@ -471,7 +494,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         expr_text = self.visit_expr_abs_inline(abs_)
         return self._visit_expr_decl(context, expr_text)
 
-    def visit_expr_abs_decl_eq(self, abs_: 'Expr.Abs', context: 'CodeContext'):
+    def visit_expr_abs_decl_eq(self, abs_: "Expr.Abs", context: "CodeContext"):
         """
         Visit the declaration of an abstraction (function) that is the implementation of the
         equality check in the ``GHC.Classes.Eq`` typeclass.
@@ -490,7 +513,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         expr_text = self.visit_expr_abs_inline(abs_)
         return self._visit_expr_decl(context, expr_text)
 
-    def visit_expr_abs_decl_ne(self, abs_: 'Expr.Abs', context: 'CodeContext'):
+    def visit_expr_abs_decl_ne(self, abs_: "Expr.Abs", context: "CodeContext"):
         """
         Visit the declaration of an abstraction (function) that is the implementation of the
         equality check in the ``GHC.Classes.Eq`` typeclass.
@@ -509,13 +532,13 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         expr_text = self.visit_expr_abs_inline(abs_)
         return self._visit_expr_decl(context, expr_text)
 
-    def visit_expr_abs_inline(self, abs_: 'Expr.Abs') -> str:
+    def visit_expr_abs_inline(self, abs_: "Expr.Abs") -> str:
         """
         Visit an inline function used in the middle of an expression.
         """
-        raise NotImplementedError('visit_expr_abs_inline needs an implementation')
+        raise NotImplementedError("visit_expr_abs_inline needs an implementation")
 
-    def visit_expr_ty_abs(self, ty_abs: 'Expr.TyAbs') -> 'str':
+    def visit_expr_ty_abs(self, ty_abs: "Expr.TyAbs") -> "str":
         """
         Visit the abstraction of a type parameter with a body parameterized on type.
 
@@ -529,10 +552,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         """
         return self.with_type_abs(ty_abs.param).visit_expr(ty_abs.body)
 
-    def visit_expr_case(self, case: 'Case') -> 'str':
+    def visit_expr_case(self, case: "Case") -> "str":
         return None
 
-    def visit_expr_casealt(self, alt: 'CaseAlt', type: 'Optional[Type]' = None) -> str:
+    def visit_expr_casealt(self, alt: "CaseAlt", type: "Optional[Type]" = None) -> str:
         pattern_text = alt.Sum_match(
             self.visit_expr_casealt_default,
             self.visit_expr_casealt_variant,
@@ -541,85 +564,92 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
             self.visit_expr_casealt_cons,
             self.visit_expr_casealt_optional_none,
             self.visit_expr_casealt_optional_some,
-            self.visit_expr_casealt_enum)
+            self.visit_expr_casealt_enum,
+        )
         body_text = self.visit_expr(alt.body)
         return self._visit_expr_casealt(pattern_text, body_text)
 
     def _visit_expr_casealt(self, pattern_text: str, body_text: str) -> str:
-        return f'{pattern_text} -> {maybe_parentheses(body_text)}'
+        return f"{pattern_text} -> {maybe_parentheses(body_text)}"
 
-    def visit_expr_casealt_default(self, default: 'Unit'):
-        return '_'
+    def visit_expr_casealt_default(self, default: "Unit"):
+        return "_"
 
-    def visit_expr_casealt_variant(self, variant: 'CaseAlt.Variant'):
+    def visit_expr_casealt_variant(self, variant: "CaseAlt.Variant"):
         var_con = Expr.VariantCon(
             # TODO: Probably not correct
             tycon=Type.Con(tycon=variant.con, args=()),
             variant_con=variant.variant,
-            variant_arg=Expr(var=variant.binder))
+            variant_arg=Expr(var=variant.binder),
+        )
         return self.visit_expr_variant_con(var_con)
 
-    def visit_expr_casealt_prim_con(self, prim_con: 'PrimCon'):
+    def visit_expr_casealt_prim_con(self, prim_con: "PrimCon"):
         return self.visit_expr_prim_con(prim_con)
 
-    def visit_expr_casealt_nil(self, nil: 'Unit', type: 'Optional[Type]' = None):
+    def visit_expr_casealt_nil(self, nil: "Unit", type: "Optional[Type]" = None):
         return self.visit_expr_nil(Expr.Nil(type))
 
-    def visit_expr_casealt_cons(self, cons: 'CaseAlt.Cons', type: 'Optional[Type]' = None):
-        return self.visit_expr_cons(Expr.Cons(
-            front=(Expr(var=cons.var_head),),
-            tail=Expr(var=cons.var_tail),
-            type=type))
+    def visit_expr_casealt_cons(self, cons: "CaseAlt.Cons", type: "Optional[Type]" = None):
+        return self.visit_expr_cons(
+            Expr.Cons(front=(Expr(var=cons.var_head),), tail=Expr(var=cons.var_tail), type=type)
+        )
 
-    def visit_expr_casealt_optional_none(self, optional_none: 'Unit', type: 'Optional[Type]' = None):
+    def visit_expr_casealt_optional_none(
+        self, optional_none: "Unit", type: "Optional[Type]" = None
+    ):
         return self.visit_expr_optional_none(Expr.OptionalNone(type=type))
 
-    def visit_expr_casealt_optional_some(self, optional_some: 'CaseAlt.OptionalSome', type: 'Optional[Type]' = None):
-        return self.visit_expr_optional_some(Expr.OptionalSome(type=type, body=Expr(var=optional_some.var_body)))
+    def visit_expr_casealt_optional_some(
+        self, optional_some: "CaseAlt.OptionalSome", type: "Optional[Type]" = None
+    ):
+        return self.visit_expr_optional_some(
+            Expr.OptionalSome(type=type, body=Expr(var=optional_some.var_body))
+        )
 
-    def visit_expr_casealt_enum(self, enum: 'CaseAlt.Enum'):
+    def visit_expr_casealt_enum(self, enum: "CaseAlt.Enum"):
         return self.visit_expr_enum_con(Expr.EnumCon(enum.con, enum.constructor))
 
-    def visit_expr_let(self, let: 'Block') -> 'str':
+    def visit_expr_let(self, let: "Block") -> "str":
         pass
 
-    def visit_expr_nil(self, nil: 'Expr.Nil') -> 'str':
+    def visit_expr_nil(self, nil: "Expr.Nil") -> "str":
         if self.context.decl_name is not None:
             child = self.with_statement_block()
             return child.visit_expr_nil_decl(nil, self.context)
         else:
             return self.visit_expr_nil_inline(nil)
 
-    def visit_expr_nil_decl(self, nil: 'Expr.Nil', context: 'CodeContext') -> str:
+    def visit_expr_nil_decl(self, nil: "Expr.Nil", context: "CodeContext") -> str:
         expr_text = self.visit_expr_nil_inline(nil)
         return self._visit_expr_decl(context, expr_text)
 
-    def visit_expr_nil_inline(self, nil: 'Expr.Nil'):
+    def visit_expr_nil_inline(self, nil: "Expr.Nil"):
         raise NotImplementedError
 
-    def visit_expr_cons(self, cons: 'Expr.Cons') -> 'str':
+    def visit_expr_cons(self, cons: "Expr.Cons") -> "str":
         pass
 
-    def visit_expr_update(self, update: 'Update') -> 'str':
+    def visit_expr_update(self, update: "Update") -> "str":
         pass
 
-    def visit_expr_scenario(self, scenario: 'Scenario') -> 'str':
+    def visit_expr_scenario(self, scenario: "Scenario") -> "str":
         pass
 
-    def visit_expr_rec_upd(self, rec_upd: 'Expr.RecUpd') -> 'str':
+    def visit_expr_rec_upd(self, rec_upd: "Expr.RecUpd") -> "str":
         pass
 
-    def visit_expr_struct_upd(self, struct_upd: 'Expr.StructUpd') -> 'str':
+    def visit_expr_struct_upd(self, struct_upd: "Expr.StructUpd") -> "str":
         pass
 
-    def visit_expr_optional_none(self, optional_none: 'Expr.OptionalNone') -> 'str':
+    def visit_expr_optional_none(self, optional_none: "Expr.OptionalNone") -> "str":
         pass
 
-    def visit_expr_optional_some(self, optional_some: 'Expr.OptionalSome') -> 'str':
+    def visit_expr_optional_some(self, optional_some: "Expr.OptionalSome") -> "str":
         pass
 
     # noinspection PyBroadException
-    def visit_type(self, type: 'Type') -> 'str':
+    def visit_type(self, type: "Type") -> "str":
         """
         Return the string representation of the :class:`Type`, or ``var`` if it could not be
         computed. This implementation tries very hard to not fail.
@@ -632,7 +662,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
                 try:
                     type_str = super(PrettyPrintBase, self).visit_type(unpacked_type)
                 except:  # noqa
-                    LOG.exception('Failed to render a Type!')
+                    LOG.exception("Failed to render a Type!")
                     type_str = None
                 unpacked_types.append(type_str if type_str is not None else default_type)
             if len(unpacked_types) == 1:
@@ -641,10 +671,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
                 ret = self._visit_type_function(unpacked_types[0:-1], unpacked_types[-1])
             return ret if ret is not None else default_type
         except:  # noqa
-            LOG.exception('Failed to render a Type!')
+            LOG.exception("Failed to render a Type!")
             return default_type
 
-    def visit_type_var(self, var: 'Union[str, Type.Var]') -> 'str':
+    def visit_type_var(self, var: "Union[str, Type.Var]") -> "str":
         """
         Render a type variable. The default implementation simply returns the original type
         variable.
@@ -657,27 +687,27 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         elif isinstance(var, str):
             return var
         else:
-            raise TypeError('visit_type_var(...) expects either a Type.Var or a str')
+            raise TypeError("visit_type_var(...) expects either a Type.Var or a str")
 
-    def visit_type_con(self, con: 'Type.Con') -> 'str':
+    def visit_type_con(self, con: "Type.Con") -> "str":
         pass
 
-    def visit_type_prim(self, prim: 'Type.Prim') -> 'str':
+    def visit_type_prim(self, prim: "Type.Prim") -> "str":
         pass
 
-    def visit_type_syn(self, tysyn: 'Type.Syn') -> str:
+    def visit_type_syn(self, tysyn: "Type.Syn") -> str:
         pass
 
-    def visit_type_forall(self, forall: 'Type.Forall') -> 'str':
+    def visit_type_forall(self, forall: "Type.Forall") -> "str":
         pass
 
-    def visit_type_tuple(self, tuple: 'Type.Tuple') -> 'str':
+    def visit_type_tuple(self, tuple: "Type.Tuple") -> "str":
         pass
 
-    def visit_type_nat(self, nat: int) -> 'str':
+    def visit_type_nat(self, nat: int) -> "str":
         return str(nat)
 
-    def _visit_type_function(self, arguments: 'Sequence[Type]', return_type: 'Type') -> str:
+    def _visit_type_function(self, arguments: "Sequence[Type]", return_type: "Type") -> str:
         """
         Render a function type with the specified arguments and return type.
 
@@ -694,7 +724,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         """
         Overridden to return a string to use when failing to render an expression.
         """
-        return '...'
+        return "..."
 
     def _visit_expr_decl(self, context, expr_text):
         """
@@ -710,14 +740,14 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         :return:
             A string that represents the definition of a value with the name specified by context.
         """
-        local_name = '.'.join(context.decl_name)
-        return f'{local_name} = {expr_text}'
+        local_name = ".".join(context.decl_name)
+        return f"{local_name} = {expr_text}"
 
     def _visit_type_default(self) -> str:
         """
         Overridden to return a string to use when failing to render a type.
         """
-        return '...'
+        return "..."
 
 
 class CodeContext:
@@ -726,7 +756,7 @@ class CodeContext:
     """
 
     @classmethod
-    def top_level(cls) -> 'CodeContext':
+    def top_level(cls) -> "CodeContext":
         return cls()
 
     @classmethod
@@ -734,15 +764,16 @@ class CodeContext:
         return cls(show_hidden_types=context.show_hidden_types)
 
     def __init__(
-            self,
-            *,
-            in_expression: bool = False,
-            show_hidden_types: bool = False,
-            current_module: Optional[ModuleRef] = None,
-            decl_name: Optional[Sequence[str]] = None,
-            decl_type: Optional[Type] = None,
-            type_abs: Optional[Sequence[TypeVarWithKind]] = None,
-            type_app: Optional[Sequence[Type]] = None):
+        self,
+        *,
+        in_expression: bool = False,
+        show_hidden_types: bool = False,
+        current_module: Optional[ModuleRef] = None,
+        decl_name: Optional[Sequence[str]] = None,
+        decl_type: Optional[Type] = None,
+        type_abs: Optional[Sequence[TypeVarWithKind]] = None,
+        type_app: Optional[Sequence[Type]] = None,
+    ):
         self.in_expression = in_expression
         self.show_hidden_types = show_hidden_types
         self.current_module = current_module
@@ -751,10 +782,14 @@ class CodeContext:
         self.type_abs = type_abs
         self.type_app = type_app
 
-    def with_module(self, module: ModuleRef) -> 'CodeContext':
-        if self.decl_name is not None or self.decl_type is not None or self.type_abs is not None \
-                or self.type_app is not None:
-            raise RuntimeError('Cannot declare a module inside a declaration')
+    def with_module(self, module: ModuleRef) -> "CodeContext":
+        if (
+            self.decl_name is not None
+            or self.decl_type is not None
+            or self.type_abs is not None
+            or self.type_app is not None
+        ):
+            raise RuntimeError("Cannot declare a module inside a declaration")
         return CodeContext(
             in_expression=False,
             show_hidden_types=self.show_hidden_types,
@@ -762,9 +797,10 @@ class CodeContext:
             decl_name=None,
             decl_type=None,
             type_abs=None,
-            type_app=None)
+            type_app=None,
+        )
 
-    def with_decl(self, decl_name: Sequence[str], decl_type: 'Type') -> 'CodeContext':
+    def with_decl(self, decl_name: Sequence[str], decl_type: "Type") -> "CodeContext":
         return CodeContext(
             in_expression=False,
             show_hidden_types=self.show_hidden_types,
@@ -772,7 +808,8 @@ class CodeContext:
             decl_name=decl_name,
             decl_type=decl_type,
             type_abs=self.type_abs,
-            type_app=self.type_app)
+            type_app=self.type_app,
+        )
 
     def with_type_abs(self, type_abs: Optional[Sequence[TypeVarWithKind]]):
         return CodeContext(
@@ -782,10 +819,11 @@ class CodeContext:
             decl_name=self.decl_name,
             decl_type=self.decl_type,
             type_abs=(self.type_abs or ()) + tuple(type_abs),
-            type_app=self.type_app)
+            type_app=self.type_app,
+        )
         pass
 
-    def with_type_app(self, type_app: 'Optional[Sequence[Type]]'):
+    def with_type_app(self, type_app: "Optional[Sequence[Type]]"):
         return CodeContext(
             in_expression=True,
             show_hidden_types=self.show_hidden_types,
@@ -793,7 +831,8 @@ class CodeContext:
             decl_name=None,
             decl_type=None,
             type_abs=None,
-            type_app=(self.type_app or ()) + tuple(type_app))
+            type_app=(self.type_app or ()) + tuple(type_app),
+        )
 
     def with_expression(self):
         return CodeContext(
@@ -803,7 +842,8 @@ class CodeContext:
             decl_name=None,
             decl_type=None,
             type_abs=None,
-            type_app=None)
+            type_app=None,
+        )
 
     def with_statement_block(self):
         return CodeContext(
@@ -813,15 +853,26 @@ class CodeContext:
             decl_name=None,
             decl_type=None,
             type_abs=None,
-            type_app=self.type_app)
+            type_app=self.type_app,
+        )
 
 
 def decode_special_chars(pp: str) -> str:
-    return pp.replace('$u002b', '+').replace('$u005b', '[').replace('$u005d', ']'). \
-        replace('$u003c', '<').replace('$u003e', '>').replace('$u003a', ':'). \
-        replace('$u0022', '"').replace('$u0028', '(').replace('$u0029', ')'). \
-        replace('$u002f', '/').replace('$u002c', ',').replace('$u003d', '='). \
-        replace('$u002a', '*')
+    return (
+        pp.replace("$u002b", "+")
+        .replace("$u005b", "[")
+        .replace("$u005d", "]")
+        .replace("$u003c", "<")
+        .replace("$u003e", ">")
+        .replace("$u003a", ":")
+        .replace("$u0022", '"')
+        .replace("$u0028", "(")
+        .replace("$u0029", ")")
+        .replace("$u002f", "/")
+        .replace("$u002c", ",")
+        .replace("$u003d", "=")
+        .replace("$u002a", "*")
+    )
 
 
 class _PrettyPrinters:
@@ -833,11 +884,11 @@ class _PrettyPrinters:
         self._printers = {}  # type: Dict[str, TType[PrettyPrintBase]]
 
     # noinspection PyShadowingBuiltins
-    def register(self, format: str, pp_type: 'TType[PrettyPrintBase]') -> None:
+    def register(self, format: str, pp_type: "TType[PrettyPrintBase]") -> None:
         self._printers[format] = pp_type
 
     # noinspection PyShadowingBuiltins
-    def get(self, format: str) -> 'TType[PrettyPrintBase]':
+    def get(self, format: str) -> "TType[PrettyPrintBase]":
         for key, format_type in self._printers.items():
             if key.startswith(format):
                 return format_type
@@ -849,7 +900,7 @@ get_pretty_printer_type = _PRETTY_PRINTERS.get
 register_pretty_printer = _PRETTY_PRINTERS.register
 
 
-def pretty_print_syntax(fmt: str) -> 'Callable[[TType[PrettyPrintBase]], TType[PrettyPrintBase]]':
+def pretty_print_syntax(fmt: str) -> "Callable[[TType[PrettyPrintBase]], TType[PrettyPrintBase]]":
     def impl(pp):
         register_pretty_printer(fmt, pp)
         return pp

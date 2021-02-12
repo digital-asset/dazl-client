@@ -17,14 +17,14 @@ from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ..model.writing import CommandPayload
 from ..prim import Party
 from ..scheduler import Invoker
-from ..util.typing import safe_optional_cast, safe_cast
+from ..util.typing import safe_cast, safe_optional_cast
 
 
 @dataclass(frozen=True)
 class LedgerConnectionOptions:
-    lookup: 'SymbolLookup'
-    connect_timeout: 'Optional[timedelta]'
-    package_lookup_timeout: 'Optional[timedelta]'
+    lookup: "SymbolLookup"
+    connect_timeout: "Optional[timedelta]"
+    package_lookup_timeout: "Optional[timedelta]"
     eager_package_fetch: bool
 
 
@@ -34,26 +34,30 @@ class LedgerNetwork:
     """
 
     async def connect(
-            self, party: 'Union[str, Party]', settings: HTTPConnectionSettings, context_path: 'Optional[str]') \
-            -> 'LedgerClient':
+        self,
+        party: "Union[str, Party]",
+        settings: HTTPConnectionSettings,
+        context_path: "Optional[str]",
+    ) -> "LedgerClient":
         """
         Establish a connection to a Party.
         """
-        raise NotImplementedError('connect must be implemented')
+        raise NotImplementedError("connect must be implemented")
 
     async def connect_anonymous(
-            self, settings: 'HTTPConnectionSettings', context_path: 'Optional[str]') -> None:
+        self, settings: "HTTPConnectionSettings", context_path: "Optional[str]"
+    ) -> None:
         """
         Establish a single no-Party connection (but only if no other connections have already been
         established). This is used by specialized setups that do not require Parties to be supplied
         for any reason (such as fetching initial ledger metadata).
         """
 
-    async def ledger(self) -> 'LedgerMetadata':
+    async def ledger(self) -> "LedgerMetadata":
         """
         Return information about the entire ledger.
         """
-        raise NotImplementedError('ledger must be implemented')
+        raise NotImplementedError("ledger must be implemented")
 
     async def sync_time(self) -> None:
         """
@@ -81,7 +85,7 @@ class LedgerNetwork:
         property should start as ``False`` when the pool is constructed, and ``True`` some time
         after ``close()`` is called.
         """
-        raise NotImplementedError('closed must be implemented')
+        raise NotImplementedError("closed must be implemented")
 
 
 class LedgerClient:
@@ -89,7 +93,7 @@ class LedgerClient:
     Abstract base class that defines the required methods to define a protocol over the Ledger API.
     """
 
-    async def commands(self, command_payload: 'CommandPayload') -> None:
+    async def commands(self, command_payload: "CommandPayload") -> None:
         """
         Submit a command to the ledger.
 
@@ -98,20 +102,20 @@ class LedgerClient:
 
         :param command_payload: Payload of data to submit asynchronously.
         """
-        raise NotImplementedError('commands must be implemented')
+        raise NotImplementedError("commands must be implemented")
 
-    async def active_contracts(self, contract_filter: 'ContractFilter') -> 'Sequence[BaseEvent]':
+    async def active_contracts(self, contract_filter: "ContractFilter") -> "Sequence[BaseEvent]":
         """
         Return the current active contract set.
         """
-        raise NotImplementedError('active contract set fetch must be implemented')
+        raise NotImplementedError("active contract set fetch must be implemented")
 
-    async def events(self, transaction_filter: 'TransactionFilter') -> 'Sequence[BaseEvent]':
+    async def events(self, transaction_filter: "TransactionFilter") -> "Sequence[BaseEvent]":
         """
         Return events from a certain offset in the ledger. The number of blocks
         returned is implementation-defined.
         """
-        raise NotImplementedError('events must be implemented')
+        raise NotImplementedError("events must be implemented")
 
     async def events_end(self) -> str:
         """
@@ -120,12 +124,14 @@ class LedgerClient:
 
 
 class _LedgerConnection:
-    def __init__(self,
-                 invoker: 'Invoker',
-                 options: 'LedgerConnectionOptions',
-                 settings: HTTPConnectionSettings,
-                 context_path: Optional[str]):
-        LOG.debug('Creating a gRPC channel for %s...', settings)
+    def __init__(
+        self,
+        invoker: "Invoker",
+        options: "LedgerConnectionOptions",
+        settings: HTTPConnectionSettings,
+        context_path: Optional[str],
+    ):
+        LOG.debug("Creating a gRPC channel for %s...", settings)
         import threading
 
         self.invoker = safe_cast(Invoker, invoker)

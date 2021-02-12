@@ -8,34 +8,33 @@ This module prints the metadata obtained from a remote server.
 from argparse import ArgumentParser
 from typing import Collection
 
-from ._base import CliCommand
 from .. import LOG, Network
-from ..client.config import configure_parser, AnonymousNetworkConfig
-from ..model.core import UserTerminateRequest, ConnectionTimeoutError
+from ..client.config import AnonymousNetworkConfig, configure_parser
+from ..model.core import ConnectionTimeoutError, UserTerminateRequest
 from ..model.types_store import PackageStore
+from ..pretty import PrettyOptions, get_pretty_printer
 from ..util.dar_repo import LocalDarRepository
-from ..pretty import get_pretty_printer, PrettyOptions
+from ._base import CliCommand
 
 
 class PrintMetadataCommand(CliCommand):
-    name = 'metadata'
+    name = "metadata"
 
     def parser(self) -> ArgumentParser:
         arg_parser = ArgumentParser()
 
         configure_parser(arg_parser, parties=False)
-        arg_parser.add_argument('--file', help='path to a DAR file', action='append')
-        arg_parser.add_argument('--show-hidden', help='show hidden types', action='store_true')
-        arg_parser.add_argument('--format', help='one of \"daml\" or \"python\"', default='daml')
+        arg_parser.add_argument("--file", help="path to a DAR file", action="append")
+        arg_parser.add_argument("--show-hidden", help="show hidden types", action="store_true")
+        arg_parser.add_argument("--format", help='one of "daml" or "python"', default="daml")
         return arg_parser
 
     def execute(self, args) -> int:
-        LOG.debug('Executing a metadata fetch...')
+        LOG.debug("Executing a metadata fetch...")
 
         options = PrettyOptions(
-            column_width=80,
-            show_hidden_types=args.show_hidden,
-            format=args.format)
+            column_width=80, show_hidden_types=args.show_hidden, format=args.format
+        )
 
         if args.file:
             return self.execute_static_metadata(args.file, options)
@@ -52,7 +51,7 @@ class PrintMetadataCommand(CliCommand):
         return 0
 
     @staticmethod
-    def execute_runtime_metadata(config: 'AnonymousNetworkConfig', options: PrettyOptions) -> int:
+    def execute_runtime_metadata(config: "AnonymousNetworkConfig", options: PrettyOptions) -> int:
         try:
             network = Network()
             network.set_config(config)
@@ -72,10 +71,12 @@ async def _main(network: Network, options):
 
 def _process_metadata(store: PackageStore, options: PrettyOptions):
     import sys
+
     if sys.stdout.isatty():
         try:
             import pygments
             from pygments.formatters.terminal256 import Terminal256Formatter
+
             formatter = Terminal256Formatter()
         except ImportError:
             pygments = None
@@ -92,4 +93,3 @@ def _process_metadata(store: PackageStore, options: PrettyOptions):
         print(pygments.highlight(code, lexer, formatter))
     else:
         print(code)
-

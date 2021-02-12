@@ -10,9 +10,9 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 import signal
 
-from ._base import RunLevel
 from ..prim import to_timedelta
-from ..util.asyncio_util import safe_create_future, execute_in_loop
+from ..util.asyncio_util import execute_in_loop, safe_create_future
+from ._base import RunLevel
 
 DEFAULT_TIMEOUT = timedelta(seconds=30)
 
@@ -95,7 +95,7 @@ class Invoker:
         """
         # TODO: the awful awful witchcraft required to remove these checks
         if self.loop is None:
-            raise InvalidStateError('loop must be set before calling these methods')
+            raise InvalidStateError("loop must be set before calling these methods")
         return execute_in_loop(self.loop, func, timeout=timeout)
 
     def run_in_executor(self, func):
@@ -105,7 +105,7 @@ class Invoker:
         """
         # TODO: the awful awful witchcraft required to remove these checks
         if self.loop is None or self.executor is None:
-            raise InvalidStateError('loop must be set before calling these methods')
+            raise InvalidStateError("loop must be set before calling these methods")
 
         return self.loop.run_in_executor(self.executor, func)
 

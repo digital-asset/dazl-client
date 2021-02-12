@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from datetime import date
+
 from dazl.damlast import daml_types as daml
 from dazl.prim import Party
-from dazl.values import Context, CanonicalMapper
+from dazl.values import CanonicalMapper, Context
 
 
 def test_values_canonical_bool():

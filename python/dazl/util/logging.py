@@ -9,10 +9,9 @@ This module will be removed soon!
 import logging
 import warnings
 
-from .._logging import configure, VERBOSE
+from .._logging import VERBOSE, configure
 
-
-__all__ = ['VERBOSE', 'setup_default_logger']
+__all__ = ["VERBOSE", "setup_default_logger"]
 
 
 def setup_default_logger(level=logging.INFO):

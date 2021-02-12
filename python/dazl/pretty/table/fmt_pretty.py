@@ -7,32 +7,30 @@ representation.
 """
 
 from collections import defaultdict
-from typing import AbstractSet, Iterable, Mapping, Sequence, Generator
+from typing import AbstractSet, Generator, Iterable, Mapping, Sequence
 
-from .model import Formatter, RowBuilder
 from ... import LOG
-from ...damlast.daml_lf_1 import TypeConName, Type
+from ...damlast.daml_lf_1 import Type, TypeConName
 from ...damlast.daml_types import con
 from ...damlast.protocols import SymbolLookup
 from ...prim import Party
 from ...values import ArrayStringMapper, Context
+from .model import Formatter, RowBuilder
 
-__all__ = ['PrettyFormatter']
+__all__ = ["PrettyFormatter"]
 
-BOX_B3 = '|'
-BOX_C4 = '-'
-BOX_DA = '+'
+BOX_B3 = "|"
+BOX_C4 = "-"
+BOX_DA = "+"
 
 
 class PrettyFormatter(Formatter):
     def render(
-            self,
-            lookup: 'SymbolLookup',
-            parties: 'AbstractSet[Party]',
-            entries: 'Iterable[RowBuilder]'):
+        self, lookup: "SymbolLookup", parties: "AbstractSet[Party]", entries: "Iterable[RowBuilder]"
+    ):
         sort = ByPartySort(parties)
 
-        col_spacer = '  '
+        col_spacer = "  "
 
         entries_by_template = group_by_name(entries)
         entry_count = sum(len(entries) for entries in entries_by_template.values())
@@ -44,17 +42,24 @@ class PrettyFormatter(Formatter):
         for name, entries in entries_by_template.items():
             # for each column for all entries in the data set, determine the most
             # compact representation here
-            yield ''
+            yield ""
 
             tt = con(name)
             context = Context(ArrayStringMapper(), lookup)
-            header_row = ['', '#cid', *(expand_record_field_names(context, Type.Con(name, ())))]
+            header_row = ["", "#cid", *(expand_record_field_names(context, Type.Con(name, ())))]
 
             with LOG.debug_timed("Render entries as strings"):
                 rows = [
-                    (sort.key(entry),
-                     [render_parties(parties, entry), str(entry.cid), *context.convert(tt, entry.cdata)])
-                    for entry in entries]
+                    (
+                        sort.key(entry),
+                        [
+                            render_parties(parties, entry),
+                            str(entry.cid),
+                            *context.convert(tt, entry.cdata),
+                        ],
+                    )
+                    for entry in entries
+                ]
 
             with LOG.debug_timed("Sort rows"):
                 rows.sort(key=lambda val: val[0])
@@ -73,20 +78,23 @@ class PrettyFormatter(Formatter):
                 header_len = sum(cell_sizes) + (len(cell_sizes) - 1) * len(col_spacer)
                 header = f"{name} ({contract_count(len(entries))}) "
 
-                yield header + '-' * max(3, header_len - len(header))
+                yield header + "-" * max(3, header_len - len(header))
                 for row in rows:
-                    yield col_spacer.join(cell.ljust(cell_size) for cell_size, cell in zip(cell_sizes, row))
+                    yield col_spacer.join(
+                        cell.ljust(cell_size) for cell_size, cell in zip(cell_sizes, row)
+                    )
 
 
 def contract_count(c: int) -> str:
     if c == 1:
-        return '1 contract'
+        return "1 contract"
     else:
-        return f'{c} contracts'
+        return f"{c} contracts"
 
 
-def expand_record_field_names(context: 'Context', con: 'Type.Con', path: 'Sequence[str]' = ()) \
-        -> 'Generator[str, None, None]':
+def expand_record_field_names(
+    context: "Context", con: "Type.Con", path: "Sequence[str]" = ()
+) -> "Generator[str, None, None]":
     """
     From a starting :class:`Type.Con`, return a string list of field names, additionally expanding
     sub-record fields.
@@ -106,9 +114,9 @@ def expand_record_field_names(context: 'Context', con: 'Type.Con', path: 'Sequen
                 if child_fields:
                     yield from child_fields
                 else:
-                    yield '.'.join(subpath)
+                    yield ".".join(subpath)
             else:
-                yield '.'.join(subpath)
+                yield ".".join(subpath)
 
 
 def party_header(parties):
@@ -118,7 +126,7 @@ def party_header(parties):
     for index, party in enumerate(parties):
         ascii_art = (BOX_B3 * index) + BOX_DA + (BOX_C4 * (party_count - index - 1))
         yield f"{ascii_art} party '{party}'"
-    yield '|' * party_count
+    yield "|" * party_count
 
 
 class ByPartySort:
@@ -127,20 +135,20 @@ class ByPartySort:
 
     def key(self, entry):
         party_vis = [1 if entry.parties.get(party) is not None else 0 for party in self.parties]
-        return sum(party_vis), ''.join(map(str, reversed(party_vis)))
+        return sum(party_vis), "".join(map(str, reversed(party_vis)))
 
 
 def render_parties(all_parties, entry):
-    return ''.join(_render_party_bool(entry.parties.get(party)) for party in all_parties)
+    return "".join(_render_party_bool(entry.parties.get(party)) for party in all_parties)
 
 
 def _render_party_bool(value):
     if value is not None:
-        return 'C' if value else 'A'
-    return ' '
+        return "C" if value else "A"
+    return " "
 
 
-def group_by_name(entries: 'Iterable[RowBuilder]') -> 'Mapping[TypeConName, Sequence[RowBuilder]]':
+def group_by_name(entries: "Iterable[RowBuilder]") -> "Mapping[TypeConName, Sequence[RowBuilder]]":
     """
     Organize the entries by their template name. The returned mapping where the keys are in sorted
     order.

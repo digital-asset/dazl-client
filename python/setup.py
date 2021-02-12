@@ -15,6 +15,7 @@ from ast import literal_eval
 from configparser import ConfigParser
 from pathlib import Path
 from typing import Collection
+
 from setuptools import setup
 
 
@@ -23,40 +24,40 @@ def get_setup_args():
     setup_kwargs = dict()
 
     config = ConfigParser()
-    config.read(root_path / 'pyproject.toml')
+    config.read(root_path / "pyproject.toml")
 
-    if 'tool.poetry' in config:
-        poetry_section = config['tool.poetry']
-        name = setup_kwargs['name'] = parse_value(poetry_section['name'])
-        setup_kwargs['version'] = parse_value(poetry_section['version'])
-        setup_kwargs['description'] = parse_value(poetry_section['description'])
+    if "tool.poetry" in config:
+        poetry_section = config["tool.poetry"]
+        name = setup_kwargs["name"] = parse_value(poetry_section["name"])
+        setup_kwargs["version"] = parse_value(poetry_section["version"])
+        setup_kwargs["description"] = parse_value(poetry_section["description"])
     else:
         name = None
 
-    if 'tool.poetry.dependencies' in config:
+    if "tool.poetry.dependencies" in config:
         install_requires = []
-        for dep, ver in config['tool.poetry.dependencies'].items():
-            if dep != name and dep != 'python':
-                install_requires.append(f'{dep}')
+        for dep, ver in config["tool.poetry.dependencies"].items():
+            if dep != name and dep != "python":
+                install_requires.append(f"{dep}")
         if install_requires:
-            setup_kwargs['install_requires'] = install_requires
+            setup_kwargs["install_requires"] = install_requires
 
-    if 'tool.poetry.scripts' in config:
-        entry_points = {'console_scripts': []}
-        for key, entrypoint in config['tool.poetry.scripts'].items():
-            entry_points['console_scripts'].append(f'{key}={parse_value(entrypoint)}')
-        setup_kwargs['entry_points'] = entry_points
+    if "tool.poetry.scripts" in config:
+        entry_points = {"console_scripts": []}
+        for key, entrypoint in config["tool.poetry.scripts"].items():
+            entry_points["console_scripts"].append(f"{key}={parse_value(entrypoint)}")
+        setup_kwargs["entry_points"] = entry_points
 
-    setup_kwargs['packages'] = _find_packages(root_path)
+    setup_kwargs["packages"] = _find_packages(root_path)
 
     return setup_kwargs
 
 
-def _find_packages(path: Path) -> 'Collection[str]':
+def _find_packages(path: Path) -> "Collection[str]":
     packages = []
-    for proposed_package in path.glob('**/__init__.py'):
+    for proposed_package in path.glob("**/__init__.py"):
         p = proposed_package.relative_to(path)
-        if not str(p).startswith('.'):
+        if not str(p).startswith("."):
             packages.append(str(p.parent))
     return packages
 

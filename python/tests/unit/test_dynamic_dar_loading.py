@@ -5,13 +5,14 @@ from pathlib import Path
 
 import pytest
 
-from dazl.model.types_store import PackageStore, PackageProvider, MemoryPackageProvider
+from dazl.model.types_store import MemoryPackageProvider, PackageProvider, PackageStore
 from dazl.protocols.v1.grpc import grpc_package_sync
 from dazl.util.dar import DarFile
+
 from .dars import AllKindsOf, Pending
 
 
-@pytest.mark.skip('PackageStore is deprecated; this functionality will soon be removed')
+@pytest.mark.skip("PackageStore is deprecated; this functionality will soon be removed")
 def test_package_sync_multiple_loads():
     store = PackageStore.empty()
 
@@ -24,7 +25,7 @@ def test_package_sync_multiple_loads():
     print(store.package_ids())
 
 
-def create_package_provider(dar_file: 'Path') -> 'PackageProvider':
+def create_package_provider(dar_file: "Path") -> "PackageProvider":
     data = {}
     with DarFile(dar_file) as dar:
         data.update(dar.get_package_provider().get_all_packages())

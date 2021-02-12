@@ -1,10 +1,12 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import pytest
 from asyncio import sleep
 
+import pytest
+
 from dazl import Network
+
 from .dars import UploadTest
 
 
@@ -32,9 +34,10 @@ async def test_dar_uploads_near_startup(sandbox):
 
 @pytest.mark.asyncio
 @pytest.mark.skip(
-    'Background package polling will soon be disabled, and packages will be loaded on an as-needed '
-    'basis. When this happens, PackagesAddedEvent will be dropped. If this is still a use-case you '
-    'need, please write your own poller around lookup.package_ids.')
+    "Background package polling will soon be disabled, and packages will be loaded on an as-needed "
+    "basis. When this happens, PackagesAddedEvent will be dropped. If this is still a use-case you "
+    "need, please write your own poller around lookup.package_ids."
+)
 async def test_package_events(sandbox):
     initial_events = []
     follow_up_events = []
@@ -64,6 +67,6 @@ async def test_package_events(sandbox):
     assert len(follow_up_events) == 1
 
 
-async def upload_test_dars(network: 'Network'):
+async def upload_test_dars(network: "Network"):
     g = network.aio_global()
     await g.ensure_dar(UploadTest)

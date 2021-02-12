@@ -11,54 +11,67 @@ the Ledger API.
 .. autoclass:: ContractId
    :members:
 """
-import warnings
-from pathlib import Path
-
 from dataclasses import dataclass
 from datetime import datetime
-from typing import BinaryIO, Callable, Collection, Dict, Optional, Tuple, TypeVar, Union, \
-    TYPE_CHECKING
+from pathlib import Path
+from typing import (
+    TYPE_CHECKING,
+    BinaryIO,
+    Callable,
+    Collection,
+    Dict,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+)
+import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
-from ..prim import ContractId as ContractId_, ContractData, Party
+from ..prim import ContractData, ContractId as ContractId_, Party
 
 if TYPE_CHECKING:
     with warnings.catch_warnings():
-        warnings.simplefilter('ignore', DeprecationWarning)
+        warnings.simplefilter("ignore", DeprecationWarning)
         from .types import Type, TypeReference
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class ContractId(ContractId_):
-    __slots__ = '_value_type_deprecated',
+    __slots__ = ("_value_type_deprecated",)
 
-    def __init__(self, contract_id: str, template_id: 'Union[str, Type, TypeConName]'):
+    def __init__(self, contract_id: str, template_id: "Union[str, Type, TypeConName]"):
         warnings.warn(
-            'dazl.model.core.ContractId is deprecated; use dazl.prim.ContractId instead.',
-            DeprecationWarning, stacklevel=2)
+            "dazl.model.core.ContractId is deprecated; use dazl.prim.ContractId instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         from ..damlast.compat import parse_template
 
         if not isinstance(contract_id, str):
-            raise ValueError('contract_id must be a string')
+            raise ValueError("contract_id must be a string")
 
         value = contract_id
         value_type, value_type_deprecated = parse_template(template_id)
 
         super().__init__(value_type, value)
-        object.__setattr__(self, '_value_type_deprecated', value_type_deprecated)
+        object.__setattr__(self, "_value_type_deprecated", value_type_deprecated)
 
     @property
     def contract_id(self) -> str:
         """
         Get the raw contract ID value (for example, ``"#4:1"``).
         """
-        warnings.warn("ContractId.contract_id is deprecated; use ContractId.value instead.",
-                      DeprecationWarning, stacklevel=2)
+        warnings.warn(
+            "ContractId.contract_id is deprecated; use ContractId.value instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self.value
 
     @property
-    def template_id(self) -> 'TypeReference':
+    def template_id(self) -> "TypeReference":
         """
         Get the type of template that is pointed to by this :class:`ContractId` as a
         :class:`TypeReference`. Note that usage of :class:`Type` and :class:`TypeReference` are
@@ -67,8 +80,11 @@ class ContractId(ContractId_):
         As of dazl 7.3.0, the :class:`TemplateId` is always normalized to a :class:`TypeReference`,
         regardless of what the :class:`ContractId` was constructed with.
         """
-        warnings.warn("ContractId.template_id is deprecated; use ContractId.value_type instead.",
-                      DeprecationWarning, stacklevel=2)
+        warnings.warn(
+            "ContractId.template_id is deprecated; use ContractId.value_type instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self._value_type_deprecated
 
     def exercise(self, choice_name, arguments=None):
@@ -82,6 +98,7 @@ class ContractId(ContractId_):
             (optional) A ``dict`` of named values to send as parameters to the choice exercise.
         """
         from .writing import ExerciseCommand
+
         return ExerciseCommand(self, choice_name, arguments=arguments)
 
     def replace(self, contract_id=None, template_id=None):
@@ -90,12 +107,16 @@ class ContractId(ContractId_):
         """
         warnings.warn(
             "ContractId.replace is deprecated; simply construct a ContractId with the desired "
-            "values instead.", DeprecationWarning, stacklevel=2)
+            "values instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             return ContractId(
                 contract_id if contract_id is not None else self.value,
-                template_id if template_id is not None else self.value_type)
+                template_id if template_id is not None else self.value_type,
+            )
 
     def for_json(self):
         """
@@ -111,10 +132,9 @@ ContractsHistoricalState = Dict[ContractId, Tuple[ContractData, bool]]
 
 
 class ContractContextualDataCollection(tuple):
-
     def __getitem__(self, index: Union[int, str, ContractId]):
         if index is None:
-            raise ValueError('the index cannot be None')
+            raise ValueError("the index cannot be None")
         elif isinstance(index, int):
             return tuple.__getitem__(self, index)
         elif isinstance(index, str):
@@ -134,9 +154,9 @@ class ContractContextualDataCollection(tuple):
 @dataclass(frozen=True)
 class ContractContextualData:
     cid: ContractId
-    cdata: 'Optional[ContractData]'
+    cdata: "Optional[ContractData]"
     effective_at: datetime
-    archived_at: 'Optional[datetime]'
+    archived_at: "Optional[datetime]"
     active: bool
 
 
@@ -168,8 +188,9 @@ class DazlPartyMissingError(DazlError):
     Error raised when a party or some information about a party is requested, and that party is not
     found.
     """
+
     def __init__(self, party: Party):
-        super().__init__(f'party {party!r} does not have a defined client')
+        super().__init__(f"party {party!r} does not have a defined client")
         self.party = party
 
 
@@ -177,6 +198,7 @@ class DazlImportError(ImportError, DazlError):
     """
     Import error raised when an optional dependency could not be found.
     """
+
     def __init__(self, missing_module, message):
         super().__init__(message)
         self.missing_module = missing_module
@@ -208,7 +230,8 @@ class ConfigurationError(DazlError):
 
         A collection of reasons for a failure.
     """
-    def __init__(self, reasons: 'Union[str, Collection[str]]'):
+
+    def __init__(self, reasons: "Union[str, Collection[str]]"):
         if reasons is None:
             self.reasons = []  # type: Collection[str]
         elif isinstance(reasons, str):

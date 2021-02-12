@@ -8,19 +8,19 @@ simplicity.
 
 from typing import Any, Optional, Sequence
 
-from ._builtins_meta import BuiltinTable, Builtin
-from .daml_lf_1 import BuiltinFunction, Expr, PrimLit, Type
 from . import daml_types as daml
+from ._builtins_meta import Builtin, BuiltinTable
+from .daml_lf_1 import BuiltinFunction, Expr, PrimLit, Type
 
 builtins = BuiltinTable()
 
 
 @builtins.add
 class Concat(Builtin):
-    name = 'DA.Internal.Prelude:concat'
-    args = daml.List(daml.List(daml.var('x'))),
+    name = "DA.Internal.Prelude:concat"
+    args = (daml.List(daml.List(daml.var("x"))),)
 
-    def evaluate(self, _: 'Sequence[Type]', args: 'Sequence[Any]') -> 'Any':
+    def evaluate(self, _: "Sequence[Type]", args: "Sequence[Any]") -> "Any":
         xxs = args[0]
 
         result = []
@@ -28,7 +28,7 @@ class Concat(Builtin):
             result.extend(xs)
         return result
 
-    def simplify(self, _: 'Sequence[Type]', args: 'Sequence[Expr]') -> 'Optional[Expr]':
+    def simplify(self, _: "Sequence[Type]", args: "Sequence[Expr]") -> "Optional[Expr]":
         xxs = args[0]
 
         # if there is a single-element list as an arg to concat, simply remove the function call
@@ -41,13 +41,13 @@ class Concat(Builtin):
 
 @builtins.add
 class Show(Builtin):
-    name = 'GHC.Show:show'
+    name = "GHC.Show:show"
     args = (daml.Text, daml.Text)
 
-    def evaluate(self, _: 'Sequence[Type]', args: 'Sequence[Any]') -> 'Any':
+    def evaluate(self, _: "Sequence[Type]", args: "Sequence[Any]") -> "Any":
         return str(args[1])
 
-    def simplify(self, _: 'Sequence[Type]', args: 'Sequence[Expr]') -> 'Optional[Expr]':
+    def simplify(self, _: "Sequence[Type]", args: "Sequence[Expr]") -> "Optional[Expr]":
         return None
 
 
@@ -56,12 +56,9 @@ class AppendText(Builtin):
     builtin = BuiltinFunction.APPEND_TEXT
     args = (daml.Text, daml.Text)
 
-    def evaluate(self, _: 'Sequence[Type]', args: 'Sequence[Any]') -> 'Any':
+    def evaluate(self, _: "Sequence[Type]", args: "Sequence[Any]") -> "Any":
         return args[0] + args[1]
 
-    def simplify(self, _: 'Sequence[Type]', args: 'Sequence[Expr]') -> 'Expr':
+    def simplify(self, _: "Sequence[Type]", args: "Sequence[Expr]") -> "Expr":
         if args[0].prim_lit is not None and args[1].prim_lit is not None:
             return Expr(prim_lit=PrimLit(text=args[0].prim_lit.text + args[1].prim_lit.text))
-
-
-

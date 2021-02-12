@@ -1,10 +1,10 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import time
 from contextlib import ExitStack
 from pathlib import Path
-from typing import Union, List, Sequence
+import time
+from typing import List, Sequence, Union
 
 from .. import LOG
 from ..model.types_store import PackageStore
@@ -22,26 +22,26 @@ class LocalDarRepository:
     def _add_source(self, path: Path) -> None:
         ext = path.suffix.lower()
 
-        if ext == '.daml':
-            LOG.error('Reading metadata directly from a DAML file is not supported.')
-            raise ValueError('Unsupported extension: .daml')
+        if ext == ".daml":
+            LOG.error("Reading metadata directly from a DAML file is not supported.")
+            raise ValueError("Unsupported extension: .daml")
 
-        elif ext == '.dalf':
-            LOG.error('Reading metadata directly from a DALF file is not supported.')
-            raise ValueError('Unsupported extension: .dalf')
+        elif ext == ".dalf":
+            LOG.error("Reading metadata directly from a DALF file is not supported.")
+            raise ValueError("Unsupported extension: .dalf")
 
-        elif ext == '.dar':
+        elif ext == ".dar":
             dar_parse_start_time = time.time()
             dar = self._context.enter_context(DarFile(path))
             dar_package = dar.read_metadata()
             self._dar_paths.append(path)
             self.store.register_all(dar_package)
             dar_parse_end_time = time.time()
-            LOG.debug('Parsed a dar in %s seconds.', dar_parse_end_time - dar_parse_start_time)
+            LOG.debug("Parsed a dar in %s seconds.", dar_parse_end_time - dar_parse_start_time)
 
         else:
-            LOG.error('Unknown extension: %s', ext)
-            raise ValueError(f'Unknown extension: {ext}')
+            LOG.error("Unknown extension: %s", ext)
+            raise ValueError(f"Unknown extension: {ext}")
 
     def add_source(self, *files: Union[str, Path]) -> None:
         """

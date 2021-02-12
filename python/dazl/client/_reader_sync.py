@@ -1,8 +1,8 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import ensure_future, gather, sleep, Future
-from typing import Collection, List, Optional, Tuple, TYPE_CHECKING
+from asyncio import Future, ensure_future, gather, sleep
+from typing import TYPE_CHECKING, Collection, List, Optional, Tuple
 
 from .. import LOG
 from ..model.reading import max_offset
@@ -17,8 +17,9 @@ as practical.
 """
 
 
-async def run_iteration(party_impls: 'Collection[_PartyClientImpl]') \
-        -> 'Tuple[str, Collection[Future]]':
+async def run_iteration(
+    party_impls: "Collection[_PartyClientImpl]",
+) -> "Tuple[str, Collection[Future]]":
     """
     Read the next set of transactions for the set of parties. This coroutine ends when all
     parties are caught up to the same offset.
@@ -48,7 +49,7 @@ async def run_iteration(party_impls: 'Collection[_PartyClientImpl]') \
     return final_offset, [fut for fut in read_coroutines if not fut.done()]
 
 
-async def read_initial_acs(party_impls: 'Collection[_PartyClientImpl]') -> 'Optional[str]':
+async def read_initial_acs(party_impls: "Collection[_PartyClientImpl]") -> "Optional[str]":
     """
     Perform the initial synchronization of the Active Contract Set with the server, using the
     Active Contract Set service.
@@ -59,30 +60,35 @@ async def read_initial_acs(party_impls: 'Collection[_PartyClientImpl]') -> 'Opti
         The ending offset that all parties have reached, or ``None`` if no calls were actually
         made.
     """
-    LOG.info('Reading current ledger state...')
+    LOG.info("Reading current ledger state...")
 
     # Fetch the ACS as every single client.
     if not party_impls:
         return None
 
     offset = max_offset(
-        [offset
-         for offset, _ in
-         await gather(*[party_impl.read_acs(None, False) for party_impl in party_impls])])
+        [
+            offset
+            for offset, _ in await gather(
+                *[party_impl.read_acs(None, False) for party_impl in party_impls]
+            )
+        ]
+    )
 
     # Find the most recent offset among all of those clients, and use the transaction stream
     # to catch up all clients to the same point.
-    LOG.info('Catching up...')
+    LOG.info("Catching up...")
     await gather(*[party_impl.read_transactions(offset, False) for party_impl in party_impls])
-    LOG.info('Finished catching up.')
+    LOG.info("Finished catching up.")
 
-    LOG.info('Finished reading current ledger state.')
+    LOG.info("Finished reading current ledger state.")
     return offset
 
 
 async def read_transaction_event_stream(
-        party_impls: 'Collection[_PartyClientImpl]') -> 'Optional[str]':
-    LOG.info('Reading current ledger state...')
+    party_impls: "Collection[_PartyClientImpl]",
+) -> "Optional[str]":
+    LOG.info("Reading current ledger state...")
     if not party_impls:
         return None
 
@@ -94,9 +100,8 @@ async def read_transaction_event_stream(
 
 
 async def read_transactions(
-        party_impls: 'Collection[_PartyClientImpl]',
-        until_offset: 'Optional[str]',
-        raise_events: bool) -> 'Tuple[Collection[str], Future]':
+    party_impls: "Collection[_PartyClientImpl]", until_offset: "Optional[str]", raise_events: bool
+) -> "Tuple[Collection[str], Future]":
     """
     Read transactions from a collection of PartyImpls.
 

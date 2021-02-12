@@ -15,20 +15,35 @@ DAML-LF fast lookups
 
 import threading
 from types import MappingProxyType
-from typing import Any, Collection, Dict, NoReturn, Iterable, Optional, Tuple, AbstractSet
+from typing import AbstractSet, Any, Collection, Dict, Iterable, NoReturn, Optional, Tuple
 
-from .daml_lf_1 import Archive, DefDataType, DefValue, DefTemplate, DottedName, ModuleRef, \
-    PackageRef, TemplateChoice, TypeConName, ValName, Package
+from ..model.lookup import validate_template
+from .daml_lf_1 import (
+    Archive,
+    DefDataType,
+    DefTemplate,
+    DefValue,
+    DottedName,
+    ModuleRef,
+    Package,
+    PackageRef,
+    TemplateChoice,
+    TypeConName,
+    ValName,
+)
 from .errors import NameNotFoundError, PackageNotFoundError
 from .protocols import SymbolLookup
-from ..model.lookup import validate_template
 
 __all__ = [
-    'find_choice', 'parse_type_con_name', 'EmptyLookup', 'PackageLookup', 'MultiPackageLookup'
+    "find_choice",
+    "parse_type_con_name",
+    "EmptyLookup",
+    "PackageLookup",
+    "MultiPackageLookup",
 ]
 
 
-def parse_type_con_name(val: str) -> 'TypeConName':
+def parse_type_con_name(val: str) -> "TypeConName":
     """
     Parse the given string as a type constructor.
     """
@@ -38,14 +53,14 @@ def parse_type_con_name(val: str) -> 'TypeConName':
     from ..model.lookup import validate_template
 
     pkg, name = validate_template(val)
-    module_name, _, entity_name = name.rpartition(':')
-    module_ref = ModuleRef(pkg, DottedName(module_name.split('.')))
-    return TypeConName(module_ref, entity_name.split('.'))
+    module_name, _, entity_name = name.rpartition(":")
+    module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
+    return TypeConName(module_ref, entity_name.split("."))
 
 
-def empty_lookup_impl(ref: 'Any') -> 'NoReturn':
+def empty_lookup_impl(ref: "Any") -> "NoReturn":
     pkg, _ = validate_template(ref)
-    if pkg != '*':
+    if pkg != "*":
         raise PackageNotFoundError(pkg)
     else:
         raise NameNotFoundError(ref)
@@ -64,19 +79,19 @@ class EmptyLookup(SymbolLookup):
 
     __slots__ = ()
 
-    def data_type_name(self, ref: 'Any') -> 'NoReturn':
+    def data_type_name(self, ref: "Any") -> "NoReturn":
         return empty_lookup_impl(ref)
 
-    def data_type(self, ref: 'Any') -> 'NoReturn':
+    def data_type(self, ref: "Any") -> "NoReturn":
         return empty_lookup_impl(ref)
 
-    def value(self, ref: 'Any') -> 'NoReturn':
+    def value(self, ref: "Any") -> "NoReturn":
         return empty_lookup_impl(ref)
 
-    def template_name(self, ref: 'Any') -> 'NoReturn':
+    def template_name(self, ref: "Any") -> "NoReturn":
         return empty_lookup_impl(ref)
 
-    def template(self, ref: 'Any') -> 'NoReturn':
+    def template(self, ref: "Any") -> "NoReturn":
         return empty_lookup_impl(ref)
 
 
@@ -85,7 +100,7 @@ class PackageLookup(SymbolLookup):
     Caching structure to make lookups on type names within a :class:`Package` faster.
     """
 
-    def __init__(self, archive: 'Archive'):
+    def __init__(self, archive: "Archive"):
         self.archive = archive
 
         data_types = {}  # type: Dict[str, Tuple[TypeConName, DefDataType]]
@@ -96,49 +111,49 @@ class PackageLookup(SymbolLookup):
 
             for dt in module.data_types:
                 dt_name = TypeConName(module_ref, dt.name.segments)
-                data_types[f'{module.name}:{dt.name}'] = (dt_name, dt)
+                data_types[f"{module.name}:{dt.name}"] = (dt_name, dt)
 
             for value in module.values:
                 value_name = ValName(module_ref, value.name_with_type.name)
-                values[f'{module.name}:{value.name_with_type.name}'] = (value_name, value)
+                values[f"{module.name}:{value.name_with_type.name}"] = (value_name, value)
 
             for tmpl in module.templates:
                 tmpl_name = TypeConName(module_ref, tmpl.tycon.segments)
-                templates[f'{module.name}:{tmpl.tycon}'] = (tmpl_name, tmpl)
+                templates[f"{module.name}:{tmpl.tycon}"] = (tmpl_name, tmpl)
 
         self._data_types = MappingProxyType(data_types)
         self._values = MappingProxyType(values)
         self._templates = MappingProxyType(templates)
 
-    def archives(self) -> 'Collection[Archive]':
+    def archives(self) -> "Collection[Archive]":
         return [self.archive]
 
-    def package_ids(self) -> 'AbstractSet[PackageRef]':
+    def package_ids(self) -> "AbstractSet[PackageRef]":
         return frozenset([self.archive.hash])
 
-    def data_type_name(self, ref: 'Any') -> 'TypeConName':
+    def data_type_name(self, ref: "Any") -> "TypeConName":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == '*':
+        if pkg == self.archive.hash or pkg == "*":
             dt_name = self.local_data_type_name(name)
             if dt_name is not None:
                 return dt_name
 
         raise NameNotFoundError(ref)
 
-    def data_type(self, ref: 'Any') -> 'DefDataType':
+    def data_type(self, ref: "Any") -> "DefDataType":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == '*':
+        if pkg == self.archive.hash or pkg == "*":
             dt = self.local_data_type(name)
             if dt is not None:
                 return dt
 
         raise NameNotFoundError(ref)
 
-    def local_data_type_name(self, name: str) -> 'Optional[TypeConName]':
+    def local_data_type_name(self, name: str) -> "Optional[TypeConName]":
         r = self._data_types.get(name)
         return r[0] if r is not None else None
 
-    def local_data_type(self, name: str) -> 'Optional[DefDataType]':
+    def local_data_type(self, name: str) -> "Optional[DefDataType]":
         """
         Variation of :meth:`data_type` that assumes the name is already scoped to this package.
         Unlike :meth:`data_type`, this method returns ``None`` in the case of no match.
@@ -155,16 +170,16 @@ class PackageLookup(SymbolLookup):
         r = self._data_types.get(name)
         return r[1] if r is not None else None
 
-    def value(self, ref: 'Any') -> 'DefValue':
+    def value(self, ref: "Any") -> "DefValue":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == '*':
+        if pkg == self.archive.hash or pkg == "*":
             dt = self.local_value(name)
             if dt is not None:
                 return dt
 
         raise NameNotFoundError(ref)
 
-    def local_value(self, name: str) -> 'Optional[DefValue]':
+    def local_value(self, name: str) -> "Optional[DefValue]":
         """
         Variation of :meth:`data_type` that assumes the name is already scoped to this package.
         Unlike :meth:`data_type`, this method returns ``None`` in the case of no match.
@@ -181,42 +196,42 @@ class PackageLookup(SymbolLookup):
         r = self._values.get(name)
         return r[1] if r is not None else None
 
-    def template_names(self, ref: 'Any') -> 'Collection[TypeConName]':
+    def template_names(self, ref: "Any") -> "Collection[TypeConName]":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == '*':
-            if name == '*':
+        if pkg == self.archive.hash or pkg == "*":
+            if name == "*":
                 return self.local_template_names()
             elif name in self._templates:
                 n, _ = self._templates.get(name)
                 return n
         return []
 
-    def template_name(self, ref: 'Any') -> 'TypeConName':
+    def template_name(self, ref: "Any") -> "TypeConName":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == '*':
+        if pkg == self.archive.hash or pkg == "*":
             tmpl = self.local_template_name(name)
             if tmpl is not None:
                 return tmpl
 
         raise NameNotFoundError(ref)
 
-    def template(self, ref: 'Any') -> 'DefTemplate':
+    def template(self, ref: "Any") -> "DefTemplate":
         pkg, name = validate_template(ref)
-        if pkg == self.archive.hash or pkg == '*':
+        if pkg == self.archive.hash or pkg == "*":
             tmpl = self.local_template(name)
             if tmpl is not None:
                 return tmpl
 
         raise NameNotFoundError(ref)
 
-    def local_template_names(self) -> 'Collection[TypeConName]':
+    def local_template_names(self) -> "Collection[TypeConName]":
         return [n for n, _ in self._templates.values()]
 
-    def local_template_name(self, name: str) -> 'Optional[TypeConName]':
+    def local_template_name(self, name: str) -> "Optional[TypeConName]":
         r = self._templates.get(name)
         return r[0] if r is not None else None
 
-    def local_template(self, name: str) -> 'Optional[DefTemplate]':
+    def local_template(self, name: str) -> "Optional[DefTemplate]":
         """
         Variation of :meth:`data_type` that assumes the name is already scoped to this package.
         Unlike :meth:`data_type`, this method returns ``None`` in the case of no match.
@@ -239,19 +254,19 @@ class MultiPackageLookup(SymbolLookup):
     Combines lookups across multiple archives.
     """
 
-    def __init__(self, archives: 'Optional[Collection[Archive]]' = None):
+    def __init__(self, archives: "Optional[Collection[Archive]]" = None):
         self._lock = threading.Lock()
         self._cache = {}  # type: Dict[PackageRef, PackageLookup]
         if archives is not None:
             self.add_archive(*archives)
 
-    def archives(self) -> 'Collection[Archive]':
+    def archives(self) -> "Collection[Archive]":
         """
         Return the list of known archives.
         """
         return [lookup.archive for lookup in self._cache.values()]
 
-    def add_archive(self, *a: 'Archive') -> None:
+    def add_archive(self, *a: "Archive") -> None:
         """
         Add one or more :class:`Archive`s to this lookup.
 
@@ -267,17 +282,17 @@ class MultiPackageLookup(SymbolLookup):
             # APIs, always prefer the existing cache to provide stability to callers.
             self._cache = {**new_lookups, **self._cache}
 
-    def package_ids(self) -> 'AbstractSet[PackageRef]':
+    def package_ids(self) -> "AbstractSet[PackageRef]":
         return set(self._cache)
 
-    def package(self, ref: 'PackageRef') -> 'Package':
+    def package(self, ref: "PackageRef") -> "Package":
         lookup = self._cache.get(ref)
         if lookup is not None:
             return lookup.archive.package
 
         raise PackageNotFoundError(ref)
 
-    def data_type_name(self, ref: 'Any') -> 'TypeConName':
+    def data_type_name(self, ref: "Any") -> "TypeConName":
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):
             dt_name = lookup.local_data_type_name(name)
@@ -286,7 +301,7 @@ class MultiPackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
-    def data_type(self, ref: 'Any') -> 'DefDataType':
+    def data_type(self, ref: "Any") -> "DefDataType":
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):
             dt = lookup.local_data_type(name)
@@ -295,7 +310,7 @@ class MultiPackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
-    def value(self, ref: 'Any') -> 'DefValue':
+    def value(self, ref: "Any") -> "DefValue":
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):
             val = lookup.local_value(name)
@@ -304,12 +319,12 @@ class MultiPackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
-    def template_names(self, ref: 'Any') -> 'Collection[TypeConName]':
+    def template_names(self, ref: "Any") -> "Collection[TypeConName]":
         names = []
 
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):
-            if name == '*':
+            if name == "*":
                 names.extend(lookup.local_template_names())
             else:
                 n = lookup.local_template_name(name)
@@ -318,7 +333,7 @@ class MultiPackageLookup(SymbolLookup):
 
         return names
 
-    def template_name(self, ref: 'Any') -> 'TypeConName':
+    def template_name(self, ref: "Any") -> "TypeConName":
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):
             n = lookup.local_template_name(name)
@@ -327,7 +342,7 @@ class MultiPackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
-    def template(self, ref: 'Any') -> 'DefTemplate':
+    def template(self, ref: "Any") -> "DefTemplate":
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):
             tmpl = lookup.local_template(name)
@@ -336,7 +351,7 @@ class MultiPackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
-    def _lookups(self, ref: 'PackageRef') -> 'Iterable[PackageLookup]':
+    def _lookups(self, ref: "PackageRef") -> "Iterable[PackageLookup]":
         """
         Return the individual :class:`PackageLookup` objects that should be consulted based on the
         :class:`PackageRef`.
@@ -349,17 +364,17 @@ class MultiPackageLookup(SymbolLookup):
         :raises PackageNotFoundError:
             if the :class:`PackageRef` points to a package that is not present in this lookup.
         """
-        if ref == '*':
+        if ref == "*":
             return self._cache.values()
 
         lookup = self._cache.get(ref)
         if lookup is not None:
-            return lookup,
+            return (lookup,)
 
         raise PackageNotFoundError(ref)
 
 
-def find_choice(template: 'DefTemplate', name: str) -> 'TemplateChoice':
+def find_choice(template: "DefTemplate", name: str) -> "TemplateChoice":
     """
     Find a choice in a :class:`DefTemplate`. If the choice could not be found,
     :class:`NameNotFoundError` is raised.
@@ -368,4 +383,4 @@ def find_choice(template: 'DefTemplate', name: str) -> 'TemplateChoice':
         if choice.name == name:
             return choice
 
-    raise NameNotFoundError(f'choice {name}')
+    raise NameNotFoundError(f"choice {name}")
