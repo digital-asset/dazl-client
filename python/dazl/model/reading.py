@@ -61,9 +61,10 @@ from typing import Any, Callable, Collection, Optional, Sequence, TypeVar, Union
 import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.lookup import validate_template
 from ..damlast.protocols import SymbolLookup
 from .core import ContractContextualData, ContractData, ContractId, Party
-from .lookup import template_reverse_globs, validate_template
+from .lookup import template_reverse_globs
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
@@ -381,7 +382,7 @@ class EventKey:
 
     @staticmethod
     def _contract(primary_only: bool, prefix: str, template: Any) -> Collection[str]:
-        m, t = validate_template(template)
+        m, t = validate_template(template, allow_deprecated_identifiers=True)
         return tuple(f"{prefix}/{g}" for g in template_reverse_globs(primary_only, m, t))
 
 

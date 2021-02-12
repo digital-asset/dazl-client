@@ -43,7 +43,7 @@ def parse_template(
     from ..damlast.lookup import parse_type_con_name
 
     if isinstance(template_id, str):
-        name = parse_type_con_name(template_id)
+        name = parse_type_con_name(template_id, allow_deprecated_identifiers=True)
         return name, DeprecatedTypeReference(name)
 
     elif isinstance(template_id, TypeConName):
@@ -60,7 +60,7 @@ def parse_template(
             return template_id.con, template_id
 
         elif isinstance(template_id, UnresolvedTypeReference):
-            name = parse_type_con_name(template_id.name)
+            name = parse_type_con_name(template_id.name, allow_deprecated_identifiers=True)
             return name, DeprecatedTypeReference(name)
 
         elif isinstance(template_id, RecordType):
