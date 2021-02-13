@@ -4,7 +4,9 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from . import config_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2
+from . import (
+    config_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2,
+)
 
 
 class ConfigManagementServiceStub(object):
@@ -23,15 +25,15 @@ class ConfigManagementServiceStub(object):
             channel: A grpc.Channel.
         """
         self.GetTimeModel = channel.unary_unary(
-                '/com.daml.ledger.api.v1.admin.ConfigManagementService/GetTimeModel',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.admin.ConfigManagementService/GetTimeModel",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelResponse.FromString,
+        )
         self.SetTimeModel = channel.unary_unary(
-                '/com.daml.ledger.api.v1.admin.ConfigManagementService/SetTimeModel',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.admin.ConfigManagementService/SetTimeModel",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelResponse.FromString,
+        )
 
 
 class ConfigManagementServiceServicer(object):
@@ -50,8 +52,8 @@ class ConfigManagementServiceServicer(object):
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def SetTimeModel(self, request, context):
         """Set the ledger time model.
@@ -68,29 +70,30 @@ class ConfigManagementServiceServicer(object):
         - ``UNIMPLEMENTED``: if this method is not supported by the backing ledger.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_ConfigManagementServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetTimeModel': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTimeModel,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelResponse.SerializeToString,
-            ),
-            'SetTimeModel': grpc.unary_unary_rpc_method_handler(
-                    servicer.SetTimeModel,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelResponse.SerializeToString,
-            ),
+        "GetTimeModel": grpc.unary_unary_rpc_method_handler(
+            servicer.GetTimeModel,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelResponse.SerializeToString,
+        ),
+        "SetTimeModel": grpc.unary_unary_rpc_method_handler(
+            servicer.SetTimeModel,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'com.daml.ledger.api.v1.admin.ConfigManagementService', rpc_method_handlers)
+        "com.daml.ledger.api.v1.admin.ConfigManagementService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class ConfigManagementService(object):
     """Status: experimental interface, will change before it is deemed production
     ready
@@ -101,35 +104,59 @@ class ConfigManagementService(object):
     """
 
     @staticmethod
-    def GetTimeModel(request,
+    def GetTimeModel(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.ConfigManagementService/GetTimeModel',
+            "/com.daml.ledger.api.v1.admin.ConfigManagementService/GetTimeModel",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.GetTimeModelResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def SetTimeModel(request,
+    def SetTimeModel(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.ConfigManagementService/SetTimeModel',
+            "/com.daml.ledger.api.v1.admin.ConfigManagementService/SetTimeModel",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2.SetTimeModelResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )

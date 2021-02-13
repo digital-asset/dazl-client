@@ -4,7 +4,9 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from . import package_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2
+from . import (
+    package_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2,
+)
 
 
 class PackageManagementServiceStub(object):
@@ -23,15 +25,15 @@ class PackageManagementServiceStub(object):
             channel: A grpc.Channel.
         """
         self.ListKnownPackages = channel.unary_unary(
-                '/com.daml.ledger.api.v1.admin.PackageManagementService/ListKnownPackages',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.admin.PackageManagementService/ListKnownPackages",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesResponse.FromString,
+        )
         self.UploadDarFile = channel.unary_unary(
-                '/com.daml.ledger.api.v1.admin.PackageManagementService/UploadDarFile',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.admin.PackageManagementService/UploadDarFile",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileResponse.FromString,
+        )
 
 
 class PackageManagementServiceServicer(object):
@@ -50,8 +52,8 @@ class PackageManagementServiceServicer(object):
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def UploadDarFile(self, request, context):
         """Upload a DAR file to the backing participant.
@@ -70,29 +72,30 @@ class PackageManagementServiceServicer(object):
         - ``INVALID_ARGUMENT``: if the DAR file is too big or malformed. The maximum supported size is implementation specific.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_PackageManagementServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ListKnownPackages': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListKnownPackages,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesResponse.SerializeToString,
-            ),
-            'UploadDarFile': grpc.unary_unary_rpc_method_handler(
-                    servicer.UploadDarFile,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileResponse.SerializeToString,
-            ),
+        "ListKnownPackages": grpc.unary_unary_rpc_method_handler(
+            servicer.ListKnownPackages,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesResponse.SerializeToString,
+        ),
+        "UploadDarFile": grpc.unary_unary_rpc_method_handler(
+            servicer.UploadDarFile,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'com.daml.ledger.api.v1.admin.PackageManagementService', rpc_method_handlers)
+        "com.daml.ledger.api.v1.admin.PackageManagementService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class PackageManagementService(object):
     """Status: experimental interface, will change before it is deemed production
     ready
@@ -103,35 +106,59 @@ class PackageManagementService(object):
     """
 
     @staticmethod
-    def ListKnownPackages(request,
+    def ListKnownPackages(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.PackageManagementService/ListKnownPackages',
+            "/com.daml.ledger.api.v1.admin.PackageManagementService/ListKnownPackages",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.ListKnownPackagesResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def UploadDarFile(request,
+    def UploadDarFile(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.PackageManagementService/UploadDarFile',
+            "/com.daml.ledger.api.v1.admin.PackageManagementService/UploadDarFile",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_package__management__service__pb2.UploadDarFileResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )

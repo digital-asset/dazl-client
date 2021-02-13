@@ -17,9 +17,6 @@ import sys
 from pympler import muppy, summary
 
 from dazl import Network, create
-
-# noinspection PyProtectedMember
-from dazl._logging import configure as configure_logger
 from dazl.model.reading import ContractCreateEvent, ReadyEvent
 
 
@@ -58,5 +55,8 @@ def dump_state():
 
 
 if __name__ == "__main__":
+    # noinspection PyProtectedMember
+    from dazl._logging import configure as configure_logger
+
     configure_logger()
     main(sys.argv[1])

@@ -4,7 +4,9 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from . import command_completion_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2
+from . import (
+    command_completion_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2,
+)
 
 
 class CommandCompletionServiceStub(object):
@@ -33,15 +35,15 @@ class CommandCompletionServiceStub(object):
             channel: A grpc.Channel.
         """
         self.CompletionStream = channel.unary_stream(
-                '/com.daml.ledger.api.v1.CommandCompletionService/CompletionStream',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.CommandCompletionService/CompletionStream",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
+        )
         self.CompletionEnd = channel.unary_unary(
-                '/com.daml.ledger.api.v1.CommandCompletionService/CompletionEnd',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.CommandCompletionService/CompletionEnd",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndResponse.FromString,
+        )
 
 
 class CommandCompletionServiceServicer(object):
@@ -73,8 +75,8 @@ class CommandCompletionServiceServicer(object):
         - ``OUT_OF_RANGE``: if the absolute offset is not before the end of the ledger
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def CompletionEnd(self, request, context):
         """Returns the offset after the latest completion.
@@ -84,29 +86,30 @@ class CommandCompletionServiceServicer(object):
         - ``NOT_FOUND``: if the request does not include a valid ledger id
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_CommandCompletionServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CompletionStream': grpc.unary_stream_rpc_method_handler(
-                    servicer.CompletionStream,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamResponse.SerializeToString,
-            ),
-            'CompletionEnd': grpc.unary_unary_rpc_method_handler(
-                    servicer.CompletionEnd,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndResponse.SerializeToString,
-            ),
+        "CompletionStream": grpc.unary_stream_rpc_method_handler(
+            servicer.CompletionStream,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamResponse.SerializeToString,
+        ),
+        "CompletionEnd": grpc.unary_unary_rpc_method_handler(
+            servicer.CompletionEnd,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'com.daml.ledger.api.v1.CommandCompletionService', rpc_method_handlers)
+        "com.daml.ledger.api.v1.CommandCompletionService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class CommandCompletionService(object):
     """Allows clients to observe the status of their submissions.
     Commands may be submitted via the Command Submission Service.
@@ -127,35 +130,59 @@ class CommandCompletionService(object):
     """
 
     @staticmethod
-    def CompletionStream(request,
+    def CompletionStream(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_stream(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/com.daml.ledger.api.v1.CommandCompletionService/CompletionStream',
+            "/com.daml.ledger.api.v1.CommandCompletionService/CompletionStream",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def CompletionEnd(request,
+    def CompletionEnd(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.CommandCompletionService/CompletionEnd',
+            "/com.daml.ledger.api.v1.CommandCompletionService/CompletionEnd",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_command__completion__service__pb2.CompletionEndResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
