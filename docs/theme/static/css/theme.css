@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
 
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Lato", "Helvetica", "Arial", sans-serif;
     display: flex;
     flex-flow: row wrap;
     background: #F2F3F7;
@@ -36,4 +37,12 @@ main {
 
 footer {
     flex: 1 100%;
+}
+
+.highlight .k {
+    color: blue;
+}
+
+.highlight .s1 {
+    color: green;
 }
