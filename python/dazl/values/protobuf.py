@@ -3,10 +3,7 @@
 
 from typing import Any, Optional, Type, TypeVar
 
-# noinspection PyPackageRequirements
 from google.protobuf import timestamp_pb2
-
-# noinspection PyPackageRequirements
 from google.protobuf.empty_pb2 import Empty
 
 from .._gen.com.daml.ledger.api.v1 import value_pb2

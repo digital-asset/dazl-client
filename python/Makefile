@@ -41,6 +41,16 @@ clean:
 .PHONY: deps
 deps: $(poetry_install_marker)
 
+.PHONY: format
+format:
+	poetry run isort .
+	poetry run black .
+
+.PHONY: format-check
+format-check:
+	poetry run isort . --check-only
+	poetry run black . --check
+
 .PHONY: build
 build: package
 

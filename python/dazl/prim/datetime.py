@@ -6,10 +6,7 @@ from decimal import Decimal
 from functools import partial
 from typing import Any, Union
 
-# noinspection PyPackageRequirements
 from google.protobuf.duration_pb2 import Duration
-
-# noinspection PyPackageRequirements
 from google.protobuf.timestamp_pb2 import Timestamp
 
 __all__ = [

@@ -4,12 +4,13 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from . import active_contracts_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2
+from . import (
+    active_contracts_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2,
+)
 
 
 class ActiveContractsServiceStub(object):
-    """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
-    """
+    """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation."""
 
     def __init__(self, channel):
         """Constructor.
@@ -18,15 +19,14 @@ class ActiveContractsServiceStub(object):
             channel: A grpc.Channel.
         """
         self.GetActiveContracts = channel.unary_stream(
-                '/com.daml.ledger.api.v1.ActiveContractsService/GetActiveContracts',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.ActiveContractsService/GetActiveContracts",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsResponse.FromString,
+        )
 
 
 class ActiveContractsServiceServicer(object):
-    """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
-    """
+    """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation."""
 
     def GetActiveContracts(self, request, context):
         """Returns a stream of the latest snapshot of active contracts.
@@ -40,41 +40,53 @@ class ActiveContractsServiceServicer(object):
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (filters by party cannot be empty)
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_ActiveContractsServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetActiveContracts': grpc.unary_stream_rpc_method_handler(
-                    servicer.GetActiveContracts,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsResponse.SerializeToString,
-            ),
+        "GetActiveContracts": grpc.unary_stream_rpc_method_handler(
+            servicer.GetActiveContracts,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'com.daml.ledger.api.v1.ActiveContractsService', rpc_method_handlers)
+        "com.daml.ledger.api.v1.ActiveContractsService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class ActiveContractsService(object):
-    """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
-    """
+    """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation."""
 
     @staticmethod
-    def GetActiveContracts(request,
+    def GetActiveContracts(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_stream(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/com.daml.ledger.api.v1.ActiveContractsService/GetActiveContracts',
+            "/com.daml.ledger.api.v1.ActiveContractsService/GetActiveContracts",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2.GetActiveContractsResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )

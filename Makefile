@@ -68,6 +68,11 @@ publish:  ## Publish everything.
 	make -C python publish
 
 
+.PHONY: python-format-check
+python-format-check:
+	make -C python format-check
+
+
 .PHONY: python-test
 python-test: dars
 	$(MAKE) -C python test

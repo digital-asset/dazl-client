@@ -10,7 +10,6 @@ from threading import Event
 from typing import AbstractSet, Iterable, Optional, Sequence
 import warnings
 
-# noinspection PyPackageRequirements
 from grpc import (
     Channel,
     RpcError,
@@ -336,13 +335,8 @@ def grpc_create_channel(settings: "HTTPConnectionSettings") -> Channel:
         options.append(("grpc.enable_http_proxy", 0))
 
     if settings.oauth:
-        # noinspection PyPackageRequirements
         from google.auth.transport.grpc import secure_authorized_channel
-
-        # noinspection PyPackageRequirements
         from google.auth.transport.requests import Request as RefreshRequester
-
-        # noinspection PyPackageRequirements
         from google.oauth2.credentials import Credentials as OAuthCredentials
 
         LOG.debug("Using a secure gRPC connection over OAuth:")

@@ -43,6 +43,10 @@ jobs:
           paths:
             - "python/.venv"
       - run:
+          name: Python format checks
+          command: |
+            make python-format-check
+      - run:
           name: Python unit tests
           environment:
             DAZL_TEST_DAML_LEDGER_URL: http://localhost:6865

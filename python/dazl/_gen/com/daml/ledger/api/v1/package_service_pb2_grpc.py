@@ -4,12 +4,13 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from . import package_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2
+from . import (
+    package_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2,
+)
 
 
 class PackageServiceStub(object):
-    """Allows clients to query the Daml-LF packages that are supported by the server.
-    """
+    """Allows clients to query the Daml-LF packages that are supported by the server."""
 
     def __init__(self, channel):
         """Constructor.
@@ -18,25 +19,24 @@ class PackageServiceStub(object):
             channel: A grpc.Channel.
         """
         self.ListPackages = channel.unary_unary(
-                '/com.daml.ledger.api.v1.PackageService/ListPackages',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.PackageService/ListPackages",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesResponse.FromString,
+        )
         self.GetPackage = channel.unary_unary(
-                '/com.daml.ledger.api.v1.PackageService/GetPackage',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.PackageService/GetPackage",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageResponse.FromString,
+        )
         self.GetPackageStatus = channel.unary_unary(
-                '/com.daml.ledger.api.v1.PackageService/GetPackageStatus',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusResponse.FromString,
-                )
+            "/com.daml.ledger.api.v1.PackageService/GetPackageStatus",
+            request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusRequest.SerializeToString,
+            response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusResponse.FromString,
+        )
 
 
 class PackageServiceServicer(object):
-    """Allows clients to query the Daml-LF packages that are supported by the server.
-    """
+    """Allows clients to query the Daml-LF packages that are supported by the server."""
 
     def ListPackages(self, request, context):
         """Returns the identifiers of all supported packages.
@@ -46,8 +46,8 @@ class PackageServiceServicer(object):
         - ``NOT_FOUND``: if the request does not include a valid ledger id
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GetPackage(self, request, context):
         """Returns the contents of a single package.
@@ -57,8 +57,8 @@ class PackageServiceServicer(object):
         - ``NOT_FOUND``: if the requested package is unknown
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GetPackageStatus(self, request, context):
         """Returns the status of a single package.
@@ -68,85 +68,121 @@ class PackageServiceServicer(object):
         - ``NOT_FOUND``: if the requested package is unknown
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_PackageServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ListPackages': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListPackages,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesResponse.SerializeToString,
-            ),
-            'GetPackage': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetPackage,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageResponse.SerializeToString,
-            ),
-            'GetPackageStatus': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetPackageStatus,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusResponse.SerializeToString,
-            ),
+        "ListPackages": grpc.unary_unary_rpc_method_handler(
+            servicer.ListPackages,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesResponse.SerializeToString,
+        ),
+        "GetPackage": grpc.unary_unary_rpc_method_handler(
+            servicer.GetPackage,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageResponse.SerializeToString,
+        ),
+        "GetPackageStatus": grpc.unary_unary_rpc_method_handler(
+            servicer.GetPackageStatus,
+            request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusRequest.FromString,
+            response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'com.daml.ledger.api.v1.PackageService', rpc_method_handlers)
+        "com.daml.ledger.api.v1.PackageService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class PackageService(object):
-    """Allows clients to query the Daml-LF packages that are supported by the server.
-    """
+    """Allows clients to query the Daml-LF packages that are supported by the server."""
 
     @staticmethod
-    def ListPackages(request,
+    def ListPackages(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.PackageService/ListPackages',
+            "/com.daml.ledger.api.v1.PackageService/ListPackages",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.ListPackagesResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def GetPackage(request,
+    def GetPackage(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.PackageService/GetPackage',
+            "/com.daml.ledger.api.v1.PackageService/GetPackage",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def GetPackageStatus(request,
+    def GetPackageStatus(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.PackageService/GetPackageStatus',
+            "/com.daml.ledger.api.v1.PackageService/GetPackageStatus",
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_package__service__pb2.GetPackageStatusResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
