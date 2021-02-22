@@ -1,11 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
-"""
-This module contains the public API for interacting with the ledger from the perspective of a
-specific party.
-"""
-
+#
 # NOTE TO IMPLEMENTORS
 #
 # This file contains only public API definitions, overloads, and documentation. (This file should
@@ -17,6 +12,11 @@ specific party.
 # for a more concise representation of the various flavors of the API. The unit test
 # ``test_api_consistency.py`` verifies that these implementations are generally in sync with each
 # other the way that the documentation says they are.
+"""
+This module contains the public API for interacting with the ledger from the perspective of a
+specific party.
+"""
+
 from asyncio import ensure_future, get_event_loop
 from contextlib import contextmanager
 from functools import wraps
@@ -34,6 +34,7 @@ from typing import (
     Union,
 )
 from uuid import uuid4
+import warnings
 
 from .. import LOG
 from ..damlast import get_dar_package_ids
@@ -271,6 +272,11 @@ class Network:
             Specify the behavior to use in the case where no client has been yet requested for this
             party. The default behavior is CREATE_IF_MISSING.
         """
+        warnings.warn(
+            "bot introspection is deprecated and will be removed in dazl v8",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         party_impl = self._impl.party_impl(party, if_missing=if_missing)
         return party_impl.bots if party_impl is not None else None
 
@@ -304,7 +310,14 @@ class Network:
             corresponds to dazl's "main" is returned.
         """
         self._impl.shutdown()
-        return self._main_fut
+        if self._main_fut is not None:
+            warnings.warn(
+                "shutdown() in conjunction with start() is deprecated; use aio_run() directly "
+                "and await on the returned coroutine instead",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            return self._main_fut
 
     def join(self, timeout: "Optional[float]" = None) -> None:
         """
@@ -323,6 +336,9 @@ class Network:
         """
         Start the coroutine that spawns callbacks for listeners on event streams.
         """
+        warnings.warn(
+            "start() is deprecated; use aio_run() directly", DeprecationWarning, stacklevel=2
+        )
         self._main_fut = ensure_future(self.aio_run(keep_open=False))
 
     def run_until_complete(
@@ -388,10 +404,23 @@ class Network:
         return self._impl.parties()
 
     def bots(self) -> "Collection[Bot]":
+        """
+        Return a collection of bots.
+
+        Note that bot introspection will not be a part of the dazl v8 API.
+        """
+        warnings.warn(
+            "bot introspection is deprecated and will be removed in dazl v8",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self._impl.bots()
 
     def __enter__(self):
-        pass
+        """
+        Allows for use of a :class:`Network` as a context manager.
+        """
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.shutdown()
