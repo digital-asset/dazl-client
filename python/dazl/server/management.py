@@ -9,7 +9,8 @@ from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Collection, Sequence
 
 from ..client import Bot, _NetworkImpl
-from ..model.core import DazlImportError, Party, SourceLocation
+from ..model.core import DazlImportError, SourceLocation
+from ..prim import Party
 
 if TYPE_CHECKING:
     from aiohttp import web

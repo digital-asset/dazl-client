@@ -26,10 +26,8 @@ from ..damlast.daml_lf_1 import TypeConName
 from ..model.core import (
     ContractContextualData,
     ContractContextualDataCollection,
-    ContractId,
     ContractMatch,
     ContractsState,
-    Party,
 )
 from ..model.ledger import LedgerMetadata
 from ..model.network import OAuthSettings, connection_settings
@@ -48,7 +46,7 @@ from ..model.reading import (
     TransactionStartEvent,
 )
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
-from ..prim import TimeDeltaLike, to_timedelta
+from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerClient, LedgerNetwork
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
@@ -207,7 +205,7 @@ class _PartyClientImpl:
 
     # region Active/Historical Contract Set management
 
-    def find_by_id(self, cid: ContractId) -> ContractContextualData:
+    def find_by_id(self, cid: "ContractId") -> "ContractContextualData":
         return self._acs.get(cid)
 
     def find(

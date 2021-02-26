@@ -1,20 +1,19 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import Future, ensure_future, gather, sleep
-from typing import TYPE_CHECKING, Collection, List, Optional, Tuple
-
-from .. import LOG
-from ..model.reading import max_offset
-from ..util.asyncio_util import completed, named_gather
-
-if TYPE_CHECKING:
-    from ._party_client_impl import _PartyClientImpl
-
 """
 Functions for ensuring that readers across different parties remain as close in sync to each other
 as practical.
 """
+
+from asyncio import Future, ensure_future, gather, sleep
+from typing import TYPE_CHECKING, Collection, List, Optional, Tuple
+
+from .. import LOG
+from ..util.asyncio_util import completed, named_gather
+
+if TYPE_CHECKING:
+    from ._party_client_impl import _PartyClientImpl
 
 
 async def run_iteration(
@@ -124,3 +123,14 @@ async def read_transactions(
         return offsets, futures[0]
     else:
         return offsets, named_gather(repr(futures), *futures, return_exceptions=True)
+
+
+def max_offset(offsets: "Collection[Optional[str]]") -> "Optional[str]":
+    """
+    Return the most "recent" offset from a collection of offsets.
+
+    :param offsets: A collection of offsets to examine.
+    :return: The largest offset, or ``None`` if unknown.
+    """
+    non_none_offsets = [offset for offset in offsets if offset is not None]
+    return max(non_none_offsets) if non_none_offsets else None

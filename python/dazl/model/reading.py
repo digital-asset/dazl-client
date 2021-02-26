@@ -384,14 +384,3 @@ class EventKey:
     def _contract(primary_only: bool, prefix: str, template: Any) -> Collection[str]:
         m, t = validate_template(template, allow_deprecated_identifiers=True)
         return tuple(f"{prefix}/{g}" for g in template_reverse_globs(primary_only, m, t))
-
-
-def max_offset(offsets: "Collection[Optional[str]]") -> "Optional[str]":
-    """
-    Return the most "recent" offset from a collection of offsets.
-
-    :param offsets: A collection of offsets to examine.
-    :return: The largest offset, or ``None`` if unknown.
-    """
-    non_none_offsets = [offset for offset in offsets if offset is not None]
-    return max(non_none_offsets) if non_none_offsets else None

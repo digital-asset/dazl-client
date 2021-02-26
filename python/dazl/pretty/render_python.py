@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from io import StringIO
-from typing import Mapping, Optional, Sequence, Union
+from typing import Optional, Sequence
 
 from .. import LOG
 from ..damlast import daml_types as daml
@@ -12,6 +12,7 @@ from ..damlast.daml_lf_1 import (
     DefDataType,
     DefTemplate,
     Expr,
+    ModuleRef,
     PrimType,
     Scenario,
     Type,
@@ -19,23 +20,10 @@ from ..damlast.daml_lf_1 import (
     Update,
 )
 from ..damlast.util import def_value, module_name
-from ..model.types import ModuleRef, Type as OldType
-from ..model.types_store import PackageStore
 from ._render_base import PrettyPrintBase, pretty_print_syntax
 from .util import indent, maybe_parentheses
 
-
-def values_by_module(
-    store: "PackageStore",
-) -> "Mapping[ModuleRef, Mapping[Sequence[str], Union[Expr, OldType]]]":
-    from collections import defaultdict
-
-    d = defaultdict(defaultdict)
-    for vn, vv in store._value_types.items():
-        d[vn.module][vn.name] = vv
-    for vn, vv in store._data_types.items():
-        d[vn.module][vn.name] = vv
-    return d
+__all__ = ["PythonPrettyPrint"]
 
 
 @pretty_print_syntax("python")

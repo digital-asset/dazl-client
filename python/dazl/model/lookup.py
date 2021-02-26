@@ -20,7 +20,7 @@ def validate_template(template: "Any") -> "Tuple[PackageRef, str]":
     from ..damlast.lookup import validate_template as validate_template_new
 
     if template == "*" or template is None:
-        return "*", "*"
+        return PackageRef("*"), "*"
 
     return validate_template_new(template, allow_deprecated_identifiers=True)
 
