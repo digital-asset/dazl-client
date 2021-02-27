@@ -563,9 +563,7 @@ class _NetworkRunner:
         # Raise the 'init' event.
         init_futs = []
         if first_offset is None:
-            evt = InitEvent(
-                None, None, None, metadata.ledger_id, self._network_impl.lookup, metadata._store
-            )
+            evt = InitEvent(None, None, None, metadata.ledger_id, self._network_impl.lookup)
             init_futs.append(ensure_future(self._network_impl.emit_event(evt)))
         for party_impl in party_impls:
             init_futs.append(ensure_future(party_impl.initialize(None, metadata)))
@@ -588,7 +586,6 @@ class _NetworkRunner:
                 None,
                 metadata.ledger_id,
                 self._network_impl.lookup,
-                metadata._store,
                 offset,
             )
             ready_futs.append(ensure_future(self._network_impl.emit_event(evt)))

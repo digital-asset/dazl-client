@@ -13,7 +13,7 @@ This module contains utilities for pretty-printing various types in dazl.
 
 from typing import TYPE_CHECKING, Optional, Type
 
-from ..model.types_store import PackageStore
+from ..damlast.protocols import SymbolLookup
 from ._render_base import PrettyPrintBase, pretty_print_syntax
 from .options import PrettyOptions
 from .render_csharp import CSharpPrettyPrint
@@ -43,9 +43,9 @@ ALL_PRINTER_TYPES = [CSharpPrettyPrint, DamlPrettyPrinter, PythonPrettyPrint]
 
 # noinspection PyShadowingBuiltins,PyShadowingNames
 def get_pretty_printer(
-    format: str, options: "PrettyOptions", store: "PackageStore"
+    format: str, options: "PrettyOptions", lookup: "SymbolLookup"
 ) -> "Optional[PrettyPrintBase]":
     for printer in ALL_PRINTER_TYPES:
         if printer.syntax.startswith(format):
-            return printer(store, options)
+            return printer(lookup, options)
     return None

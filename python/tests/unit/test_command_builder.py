@@ -51,7 +51,7 @@ class TestCommandBuilderTest(TestCase):
 
     def test_object_create_untyped(self):
         builder = CommandBuilder()
-        builder.create("Sample.Untyped", {"arg": 1})
+        builder.create("Sample:Untyped", {"arg": 1})
 
         expected = [
             CommandPayload(
@@ -69,7 +69,7 @@ class TestCommandBuilderTest(TestCase):
 
     def test_object_atomic_default_false(self):
         builder = CommandBuilder(atomic_default=False)
-        builder.create("Sample.Untyped", {"arg": 1})
+        builder.create("Sample:Untyped", {"arg": 1})
         builder.exercise(SOME_CONTRACT_ID, "SomeChoice", {"choiceArg": "value"})
 
         expected = [
@@ -97,7 +97,7 @@ class TestCommandBuilderTest(TestCase):
 
     def test_object_atomic_default_true(self):
         builder = CommandBuilder(atomic_default=True)
-        builder.create("Sample.Untyped", {"arg": 1})
+        builder.create("Sample:Untyped", {"arg": 1})
         builder.exercise(SOME_CONTRACT_ID, "SomeChoice", {"choiceArg": "value"})
 
         expected = [
