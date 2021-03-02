@@ -29,9 +29,10 @@ from typing import (
 from uuid import uuid4
 
 from .. import LOG
-from ..model.core import Party, SourceLocation
+from ..model.core import SourceLocation
 from ..model.reading import BaseEvent, EventKey
 from ..model.writing import Command, CommandBuilder
+from ..prim import Party
 from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
 
 if TYPE_CHECKING:

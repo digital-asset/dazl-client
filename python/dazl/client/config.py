@@ -11,7 +11,8 @@ from typing import TYPE_CHECKING, Any, Collection, List, Mapping, Optional, Sequ
 import warnings
 
 from .. import LOG
-from ..model.core import ConfigurationError, Party
+from ..model.core import ConfigurationError
+from ..prim import Party
 from ..util.config_meta import (
     BOOLEAN_TYPE,
     COUNT_TYPE,

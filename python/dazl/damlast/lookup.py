@@ -17,7 +17,6 @@ import threading
 from types import MappingProxyType
 from typing import AbstractSet, Any, Collection, Dict, Iterable, NoReturn, Optional, Tuple
 
-from ..model.lookup import validate_template
 from .daml_lf_1 import (
     Archive,
     DefDataType,

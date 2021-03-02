@@ -4,9 +4,8 @@
 
 from typing import Dict, List, Sequence
 
-from ..damlast.daml_lf_1 import DottedName, Module
+from ..damlast.daml_lf_1 import DottedName, Module, ModuleRef
 from ..damlast.util import module_name, package_ref
-from ..model.types import ModuleRef
 
 
 class ModuleHierarchy:

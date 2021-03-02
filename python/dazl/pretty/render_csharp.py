@@ -3,8 +3,6 @@
 
 from typing import Mapping, Optional, Sequence, Union
 
-from dazl.model.definition import DamlTemplate
-
 from ..damlast.daml_lf_1 import (
     Block,
     BuiltinFunction,
@@ -21,12 +19,7 @@ from ..damlast.daml_lf_1 import (
     ValName,
 )
 from ..damlast.util import pack_arrow_type, unpack_arrow_type
-from ._render_base import (
-    CodeContext,
-    PrettyPrintBase,
-    decode_special_chars,
-    register_pretty_printer,
-)
+from ._render_base import CodeContext, PrettyPrintBase, decode_special_chars
 
 
 class CSharpPrettyPrint(PrettyPrintBase):
