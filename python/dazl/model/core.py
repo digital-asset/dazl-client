@@ -11,11 +11,23 @@ the Ledger API.
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import BinaryIO, Callable, Collection, Dict, Optional, Tuple, TypeVar, Union
+from typing import BinaryIO, Callable, Dict, Optional, Tuple, TypeVar, Union
+import warnings
 
-from ..prim import ContractData, ContractId, Party
+from ..prim import ContractData, ContractId, DazlError, DazlWarning, Party
 
 T = TypeVar("T")
+
+
+__all__ = [
+    "ContractMatch",
+    "ContractsState",
+    "ContractsHistoricalState",
+    "ContractContextualDataCollection",
+    "ContractContextualData",
+    "DazlError",
+    "DazlWarning",
+]
 
 
 ContractMatch = Union[None, Callable[[ContractData], bool], ContractData]
@@ -56,73 +68,22 @@ class ContractContextualData:
 Dar = Union[bytes, str, Path, BinaryIO]
 
 
-class DazlError(Exception):
-    """
-    Superclass of errors raised by dazl.
-    """
+# TODO: Import dazl.client.errors types here when the circular references between the broader
+#  dazl.client and dazl.model packages are resolved:
+#       * ConfigurationError
+#       * DazlPartyMissingError
+#       * UnknownTemplateWarning
 
 
-class DazlWarning(Warning):
-    """
-    Superclass of warnings raised by dazl.
-    """
+# TODO: Import dazl.protocol.errors types here when the circular references between the broader
+#  dazl.protocol and dazl.model packages are resolved:
+#       * ConnectionTimeoutError
+#       * UserTerminateRequest
 
 
-class DazlPartyMissingError(DazlError):
-    """
-    Error raised when a party or some information about a party is requested, and that party is not
-    found.
-    """
-
-    def __init__(self, party: Party):
-        super().__init__(f"party {party!r} does not have a defined client")
-        self.party = party
-
-
-class DazlImportError(ImportError, DazlError):
-    """
-    Import error raised when an optional dependency could not be found.
-    """
-
-    def __init__(self, missing_module, message):
-        super().__init__(message)
-        self.missing_module = missing_module
-
-
-class UserTerminateRequest(DazlError):
-    """
-    Raised when the user has initiated a request to terminate the application.
-    """
-
-
-class ConnectionTimeoutError(DazlError):
-    """
-    Raised when a connection failed to be established before the connection timeout elapsed.
-    """
-
-
-class CommandTimeoutError(DazlError):
-    """
-    Raised when a corresponding event for a command was not seen in the appropriate time window.
-    """
-
-
-class ConfigurationError(DazlError):
-    """
-    Raised when a configuration error prevents a client from being started.
-
-    .. attribute:: ConfigurationError.reasons
-
-        A collection of reasons for a failure.
-    """
-
-    def __init__(self, reasons: "Union[str, Collection[str]]"):
-        if reasons is None:
-            self.reasons = []  # type: Collection[str]
-        elif isinstance(reasons, str):
-            self.reasons = [reasons]
-        else:
-            self.reasons = reasons  # type: Collection[str]
+# TODO: Import dazl.util.proc_util error types here when the circular references between the broader
+#  dazl.util and dazl.model packages are resolved:
+#       * ProcessDiedException
 
 
 class ConnectionClosedError(DazlError):
@@ -131,12 +92,9 @@ class ConnectionClosedError(DazlError):
     closed.
     """
 
-
-class UnknownTemplateWarning(DazlWarning):
-    """
-    Raised when trying to do something with a template name that is unknown.
-    """
-
-
-class ProcessDiedException(DazlError):
-    pass
+    def __init__(self):
+        warnings.warn(
+            "This error is never raised; this symbol will be removed in dazl v9",
+            DeprecationWarning,
+            stacklevel=2,
+        )

@@ -11,7 +11,6 @@ from typing import TYPE_CHECKING, Any, Collection, List, Mapping, Optional, Sequ
 import warnings
 
 from .. import LOG
-from ..model.core import ConfigurationError
 from ..prim import Party
 from ..util.config_meta import (
     BOOLEAN_TYPE,
@@ -29,6 +28,7 @@ from ..util.config_meta import (
     config_field,
     config_fields,
 )
+from .errors import ConfigurationError
 
 # If this environment variable is set, is used in place of a configuration file if none is supplied
 # on the command-line.
