@@ -13,44 +13,13 @@ from ..damlast.daml_lf_1 import (
     PrimType,
     Pure,
     Scenario,
-    Type as NewType,
+    Type,
     TypeConName,
     Update,
 )
 from ..damlast.util import module_name, package_local_name
-from ..model.types import (
-    SCALAR_TYPE_BOOL,
-    SCALAR_TYPE_CHAR,
-    SCALAR_TYPE_DATE,
-    SCALAR_TYPE_DECIMAL,
-    SCALAR_TYPE_INTEGER,
-    SCALAR_TYPE_PARTY,
-    SCALAR_TYPE_RELTIME,
-    SCALAR_TYPE_TEXT,
-    SCALAR_TYPE_TIME,
-    SCALAR_TYPE_UNIT,
-    ContractIdType,
-    EnumType,
-    ForAllType,
-    ListType,
-    OptionalType,
-    RecordType,
-    ScalarType,
-    TextMapType,
-    Type as OldType,
-    TypeApp,
-    TypeReference,
-    TypeVariable,
-    UpdateType,
-    VariantType,
-    type_dispatch_table,
-)
 from ._render_base import PrettyPrintBase
 from .util import maybe_parentheses
-
-_OldTypePrim = Union[
-    ScalarType, ContractIdType, ListType, OptionalType, TextMapType, UpdateType, NewType.Prim
-]
 
 
 class DamlPrettyPrinter(PrettyPrintBase):
@@ -341,15 +310,12 @@ class DamlPrettyPrinter(PrettyPrintBase):
 
     # region visit_type_* methods
 
-    def visit_type(
-        self, type: "Union[str, NewType, OldType, TypeConName]", parenthesize: bool = False
-    ) -> str:
+    def visit_type(self, type: "Union[str, Type, TypeConName]", parenthesize: bool = False) -> str:
         from ..damlast.daml_lf_1 import TypeConName
-        from ..model.types import TypeReference
 
         if isinstance(type, str):
             type_str = type
-        elif isinstance(type, NewType):
+        elif isinstance(type, Type):
             type_str = type.Sum_match(
                 var=self.visit_type_var,
                 con=self.visit_type_con,
@@ -360,107 +326,63 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 nat=self.visit_type_nat,
                 syn=self.visit_type_syn,
             )
-        elif isinstance(type, UpdateType):
-            type_str = self.visit_type_prim(type)
-        elif isinstance(type, ForAllType):
-            type_str = self.visit_type_forall(type)
-        elif isinstance(type, OldType):
-            type_str = type_dispatch_table(
-                on_type_var=self.visit_type_var,
-                on_type_ref=self.visit_type_con,
-                on_scalar=self.visit_type_prim,
-                on_contract_id=self.visit_type_prim,
-                on_list=self.visit_type_prim,
-                on_optional=self.visit_type_prim,
-                on_text_map=self.visit_type_prim,
-                on_record=self.visit_type_con,
-                on_variant=self.visit_type_con,
-                on_enum=self.visit_type_con,
-                on_type_app=self._visit_type_app,
-                on_unsupported=repr,
-            )(type)
         elif isinstance(type, TypeConName):
-            type_str = self.visit_type_con(TypeReference(type))
+            type_str = self.visit_type_con(type)
         else:
             raise TypeError(f"A DAML Type is required here (got {type!r} instead")
 
         return maybe_parentheses(type_str) if parenthesize else type_str
 
-    def visit_type_var(self, var: "Union[str, TypeVariable, NewType.Var]"):
-        if isinstance(var, NewType.Var):
+    def visit_type_var(self, var: "Union[str, Type.Var]"):
+        if isinstance(var, Type.Var):
             return self._visit_type_app((var.var, *var.args))
-        elif isinstance(var, TypeVariable):
-            return var.name
         elif isinstance(var, str):
             return var
         else:
             raise TypeError(f"A DAML Type variable is required here (got {var!r} instead")
 
-    def visit_type_con(
-        self, con: "Union[TypeReference, RecordType, VariantType, EnumType, NewType.Con]"
-    ) -> str:
-        if isinstance(con, TypeReference):
-            return package_local_name(con.con)
-        elif isinstance(con, (RecordType, VariantType, EnumType)):
-            if con.name is None:
-                raise ValueError("A named Record, Variant, or Enum type is required here")
-            return package_local_name(con.name.con)
-        elif isinstance(con, NewType.Con):
+    def visit_type_con(self, con: "Union[Type.Con]") -> str:
+        if isinstance(con, Type.Con):
             return self._visit_type_app((package_local_name(con.tycon), *con.args))
         else:
             raise TypeError(f"A DAML Type constructor is required here (got {con!r} instead")
 
-    def visit_type_prim(self, prim: "_OldTypePrim") -> str:
-        prim_type = prim.prim if isinstance(prim, NewType.Prim) else None
+    def visit_type_prim(self, prim: "Type.Prim") -> str:
+        prim_type = prim.prim if isinstance(prim, Type.Prim) else None
 
-        if PrimType.UNIT == prim_type or SCALAR_TYPE_UNIT == prim:
-            return "Unit"
-        elif PrimType.BOOL == prim_type or SCALAR_TYPE_BOOL == prim:
+        if PrimType.UNIT == prim_type:
+            return "()"
+        elif PrimType.BOOL == prim_type:
             return "Bool"
-        elif PrimType.INT64 == prim_type or SCALAR_TYPE_INTEGER == prim:
+        elif PrimType.INT64 == prim_type:
             return "Int"
-        elif PrimType.DECIMAL == prim_type or SCALAR_TYPE_DECIMAL == prim:
+        elif PrimType.DECIMAL == prim_type:
             return "Decimal"
-        elif PrimType.CHAR == prim_type or SCALAR_TYPE_CHAR == prim:
+        elif PrimType.CHAR == prim_type:
             return "Char"
-        elif PrimType.TEXT == prim_type or SCALAR_TYPE_TEXT == prim:
+        elif PrimType.TEXT == prim_type:
             return "Text"
-        elif PrimType.TIMESTAMP == prim_type or SCALAR_TYPE_TIME == prim:
+        elif PrimType.TIMESTAMP == prim_type:
             return "Time"
-        elif PrimType.RELTIME == prim_type or SCALAR_TYPE_RELTIME == prim:
+        elif PrimType.RELTIME == prim_type:
             return "RelTime"
-        elif PrimType.PARTY == prim_type or SCALAR_TYPE_PARTY == prim:
+        elif PrimType.PARTY == prim_type:
             return "Party"
-
         elif PrimType.LIST == prim_type:
             if len(prim.args) == 0:
                 return "List"
             else:
                 return f"[{self.visit_type(prim.args[0])}]"
-        elif isinstance(prim, ListType):
-            return f"[{self.visit_type(prim.type_parameter)}]"
-
         elif PrimType.UPDATE == prim_type:
             return self._visit_type_app(("Update", *prim.args))
-        elif isinstance(prim, UpdateType):
-            return self._visit_type_app(("Update", prim.type_parameter))
-
         elif PrimType.SCENARIO == prim_type:
             return self._visit_type_app(("Scenario", *prim.args))
-
-        elif PrimType.DATE == prim_type or SCALAR_TYPE_DATE == prim:
+        elif PrimType.DATE == prim_type:
             return "Date"
-
         elif PrimType.CONTRACT_ID == prim_type:
             return self._visit_type_app(("ContractId", *prim.args))
-        elif isinstance(prim, ContractIdType):
-            return self._visit_type_app(("ContractId", prim.type_parameter))
-
         elif PrimType.OPTIONAL == prim_type:
             return self._visit_type_app(("Optional", *prim.args))
-        elif isinstance(prim, OptionalType):
-            return self._visit_type_app(("Optional", prim.type_parameter))
-
         elif PrimType.ARROW == prim_type:
             arrow_operator = " -> "
             return arrow_operator.join(
@@ -482,25 +404,17 @@ class DamlPrettyPrinter(PrettyPrintBase):
         else:
             raise TypeError(f"A DAML Type primitive is required here (got {prim!r} instead")
 
-    def visit_type_forall(self, forall: "Union[ForAllType, NewType.Forall]") -> str:
-        if isinstance(forall, NewType.Forall):
+    def visit_type_forall(self, forall: "Type.Forall") -> str:
+        if isinstance(forall, Type.Forall):
             return f'forall {" ".join(self.visit_type_var(v.var) for v in forall.vars)}. {self.visit_type(forall.body)}'
-        elif isinstance(forall, ForAllType):
-            return (
-                f'forall {" ".join(self.visit_type_var(v.var) for v in forall.type_vars)}. '
-                f"{self.visit_type(forall.body_type)}"
-            )
         else:
             raise TypeError(f"A DAML forall Type is required here (got {forall!r} instead")
 
     # noinspection PyShadowingBuiltins
-    def visit_type_tuple(self, tuple: "NewType.Tuple") -> str:
+    def visit_type_tuple(self, tuple: "Type.Tuple") -> str:
         return "(" + ",".join(self.visit_type(t.type) for t in tuple.fields) + ")"
 
-    def _visit_type_app(self, types: "Union[TypeApp, Sequence[Union[str, NewType, OldType]]]"):
-        if isinstance(types, TypeApp):
-            types = (types.body, *types.arguments)
-
+    def _visit_type_app(self, types: "Sequence[Union[str, Type]]"):
         return " ".join(self.visit_type(c, True) for c in types)
 
     # endregion

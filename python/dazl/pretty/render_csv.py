@@ -3,11 +3,10 @@
 from io import StringIO
 from typing import Dict, List, Tuple
 
-from dazl.model.types import ContractIdType, ListType, RecordType, Type, TypeReference
-from dazl.model.types_store import PackageStore
+from ..damlast.protocols import SymbolLookup
 
 
-def write_csv(store: PackageStore) -> str:
+def write_csv(lookup: "SymbolLookup") -> str:
     templates = {
         template.data_type.name.full_name: template for template in store.resolve_template("*")
     }

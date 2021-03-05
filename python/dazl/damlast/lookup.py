@@ -46,11 +46,11 @@ __all__ = [
 STAR = PackageRef("*")
 
 
-def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) -> "TypeConName":
+def parse_type_con_name(val: str) -> "TypeConName":
     """
     Parse the given string as a type constructor.
     """
-    pkg, name = validate_template(val, allow_deprecated_identifiers=allow_deprecated_identifiers)
+    pkg, name = validate_template(val)
     module_name, _, entity_name = name.rpartition(":")
     module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
     return TypeConName(module_ref, entity_name.split("."))
@@ -64,17 +64,12 @@ def empty_lookup_impl(ref: "Any") -> "NoReturn":
         raise NameNotFoundError(ref)
 
 
-def validate_template(
-    template: "Any", allow_deprecated_identifiers: bool = False
-) -> "Tuple[PackageRef, str]":
+def validate_template(template: "Any") -> "Tuple[PackageRef, str]":
     """
     Return a module and type name component from something that can be interpreted as a template.
 
     :param template:
         Any object that can be interpreted as an identifier for a template.
-    :param allow_deprecated_identifiers:
-        Allow deprecated identifiers (:class:`UnresolvedTypeReference` and a period delimiter
-        instead of a colon between module names and entity names).
     :return:
         A tuple of package ID and ``Module.Name:EntityName`` (the package-scoped identifier for the
         type). The special value ``'*'`` is used if either the package ID, module name, or both
@@ -88,12 +83,6 @@ def validate_template(
     if template == "*" or template is None:
         return STAR, "*"
 
-    if allow_deprecated_identifiers:
-        from ..model.types import UnresolvedTypeReference
-
-        if isinstance(template, UnresolvedTypeReference):
-            template = template.name
-
     if isinstance(template, str):
         components = template.split(":")
         if len(components) == 3:
@@ -106,12 +95,6 @@ def validate_template(
             # wildcard; then we assume the wildcard means any module name and entity name
             m, e = components
             return (STAR, f"{m}:{e}") if e != "*" else (PackageRef(m), "*")
-
-        elif len(components) == 1 and allow_deprecated_identifiers:
-            # no colon whatsoever
-            # TODO: Add a deprecation warning in the appropriate place
-            m, _, e = components[0].rpartition(".")
-            return STAR, f"{m}:{e}"
 
         else:
             raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")
