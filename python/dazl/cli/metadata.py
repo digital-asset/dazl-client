@@ -13,8 +13,8 @@ from ..damlast.daml_lf_1 import Archive
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import DarFile
 from ..damlast.protocols import SymbolLookup
-from ..model.core import ConnectionTimeoutError, UserTerminateRequest
 from ..pretty import PrettyOptions, get_pretty_printer
+from ..protocols.errors import ConnectionTimeoutError, UserTerminateRequest
 from ._base import CliCommand
 
 

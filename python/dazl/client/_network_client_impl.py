@@ -30,7 +30,6 @@ from .. import LOG
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
-from ..model.core import DazlPartyMissingError
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import BaseEvent, InitEvent, ReadyEvent
@@ -47,6 +46,7 @@ from ._base_model import (
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
+from .errors import DazlPartyMissingError
 
 T = TypeVar("T")
 

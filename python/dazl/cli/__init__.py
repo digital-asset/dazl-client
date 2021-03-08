@@ -9,7 +9,7 @@ import logging
 from typing import List, Sequence
 
 from .._logging import configure as configure_logger
-from ..model.core import ConfigurationError
+from ..client.errors import ConfigurationError
 from ._base import CliCommand
 from .ls import ListAllCommand
 from .metadata import PrintMetadataCommand
