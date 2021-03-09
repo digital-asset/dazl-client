@@ -4,16 +4,17 @@
 """
 This module prints the metadata obtained from a remote server.
 """
-
 from argparse import ArgumentParser
-from typing import Collection
+from typing import Collection, List
 
 from .. import LOG, Network
 from ..client.config import AnonymousNetworkConfig, configure_parser
-from ..model.core import ConnectionTimeoutError, UserTerminateRequest
-from ..model.types_store import PackageStore
+from ..damlast.daml_lf_1 import Archive
+from ..damlast.lookup import MultiPackageLookup
+from ..damlast.pkgfile import DarFile
+from ..damlast.protocols import SymbolLookup
 from ..pretty import PrettyOptions, get_pretty_printer
-from ..util.dar_repo import LocalDarRepository
+from ..protocols.errors import ConnectionTimeoutError, UserTerminateRequest
 from ._base import CliCommand
 
 
@@ -44,10 +45,13 @@ class PrintMetadataCommand(CliCommand):
         return self.execute_runtime_metadata(config, options)
 
     @staticmethod
-    def execute_static_metadata(files: Collection[str], options: PrettyOptions) -> int:
-        repo = LocalDarRepository()
-        repo.add_source(*files)
-        _process_metadata(repo.store, options)
+    def execute_static_metadata(files: "Collection[str]", options: PrettyOptions) -> int:
+        archives = []  # type: List[Archive]
+        for file in files:
+            dar_file = DarFile(file)
+            archives.extend(dar_file.archives())
+        lookup = MultiPackageLookup(archives)
+        _process_metadata(lookup, options)
         return 0
 
     @staticmethod
@@ -66,10 +70,11 @@ class PrintMetadataCommand(CliCommand):
 
 async def _main(network: Network, options):
     metadata = await network.aio_global().metadata()
-    _process_metadata(metadata.store, options)
+    await metadata.package_loader.load_all()
+    _process_metadata(network.lookup, options)
 
 
-def _process_metadata(store: PackageStore, options: PrettyOptions):
+def _process_metadata(store: "SymbolLookup", options: PrettyOptions):
     import sys
 
     if sys.stdout.isatty():

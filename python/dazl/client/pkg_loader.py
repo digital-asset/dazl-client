@@ -105,7 +105,7 @@ class PackageLoader:
                     )
                     raise
 
-                pkg_id, name = validate_template(ex.ref, allow_deprecated_identifiers=True)
+                pkg_id, name = validate_template(ex.ref)
                 if pkg_id == "*":
                     # we don't know what package contains this type, so we have no
                     # choice but to look in all known packages

@@ -38,6 +38,7 @@ import warnings
 
 from .. import LOG
 from ..damlast import get_dar_package_ids
+from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
 from ..model.core import (
@@ -52,14 +53,12 @@ from ..model.reading import (
     ContractArchiveEvent,
     ContractCreateEvent,
     ContractExercisedEvent,
-    EventKey,
     InitEvent,
     PackagesAddedEvent,
     ReadyEvent,
     TransactionEndEvent,
     TransactionStartEvent,
 )
-from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
 from ..prim import ContractData, ContractId, Party, TimeDeltaLike, to_party
 from ..scheduler import RunLevel, validate_install_signal_handlers
@@ -78,6 +77,7 @@ from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
+from .events import EventKey
 
 DEFAULT_TIMEOUT_SECONDS = 30
 
@@ -884,7 +884,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_exercise_by_key(
         self,
-        template_name: "TemplateNameLike",
+        template_name: "Union[str, TypeConName]",
         contract_key: "Any",
         choice_name: str,
         arguments: "Optional[dict]" = None,
@@ -921,7 +921,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create_and_exercise(
         self,
-        template_name: "TemplateNameLike",
+        template_name: "Union[str, TypeConName]",
         arguments: "dict",
         choice_name: str,
         choice_arguments: "Optional[dict]" = None,
@@ -1432,7 +1432,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: "TemplateNameLike",
+        template_name: "Union[str, TypeConName]",
         arguments: "Optional[dict]" = None,
         workflow_id: "Optional[str]" = None,
         deduplication_time: "Optional[TimeDeltaLike]" = None,
@@ -1496,7 +1496,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_exercise_by_key(
         self,
-        template_name: "TemplateNameLike",
+        template_name: "Union[str, TypeConName]",
         contract_key: "Any",
         choice_name: str,
         arguments: "Optional[dict]" = None,
@@ -1533,7 +1533,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_create_and_exercise(
         self,
-        template_name: "TemplateNameLike",
+        template_name: "Union[str, TypeConName]",
         arguments: "dict",
         choice_name: str,
         choice_arguments: "Optional[dict]" = None,

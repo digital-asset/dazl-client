@@ -5,10 +5,11 @@
 This module contains functions for testing contract data against a match object.
 """
 
-from ..model.core import ContractData, ContractMatch
+from ..model.core import ContractMatch
+from ..prim import ContractData
 
 
-def is_match(predicate: ContractMatch, cdata: ContractData) -> bool:
+def is_match(predicate: "ContractMatch", cdata: "ContractData") -> bool:
     """
     Determine whether a contract matches a predicate expression.
     """
