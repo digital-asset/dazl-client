@@ -17,6 +17,7 @@ class ProtobufParser:
         self.current_package = current_package
         self.interned_strings = []  # type: List[str]
         self.interned_dotted_names = []  # type: List[List[int]]
+        self.interned_types = []  # type: List[Type]
 
     # noinspection PyUnusedLocal
     def parse_Unit(self, pb) -> "Unit":
@@ -123,6 +124,8 @@ class ProtobufParser:
             return Type(nat=pb.nat)
         elif sum_name == "syn":
             return Type(syn=self.parse_Type_Syn(pb.syn))
+        elif sum_name == "interned":
+            return self.interned_types[pb.interned]
         else:
             raise ValueError(f"unknown sum type value: {sum_name!r}")
 
@@ -674,6 +677,11 @@ class ProtobufParser:
         ]
 
         self.interned_dotted_names.extend(indices)
+
+        # types in the type intern table are allowed to refer to previously interned types, so we
+        # must parse, then add each type individually
+        for type_pb in pb.interned_types:
+            self.interned_types.append(self.parse_Type(type_pb))
 
         return Package(
             modules=tuple(self.parse_Module(module) for module in pb.modules),
