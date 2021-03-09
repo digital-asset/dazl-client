@@ -12,7 +12,7 @@ MINIMUM_SDK_VERSION = SdkVersion(0, 13, 0)
 def main():
     sdk_versions = []
 
-    with urlopen('https://api.github.com/repos/digital-asset/daml/releases') as f:
+    with urlopen('https://api.github.com/repos/digital-asset/daml/releases?per_page=100') as f:
         releases = json.load(f)
         for release in releases:
             if not release['prerelease']:
