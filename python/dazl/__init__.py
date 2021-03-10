@@ -7,7 +7,9 @@ This module contains the Python API for interacting with the Ledger API.
 from ._logging import LOG
 from .client import AIOPartyClient, Network, SimplePartyClient, async_network, run, simple_client
 from .model.core import ContractData, ContractId, DazlError, Party
-from .model.writing import (
+from .pretty.table import write_acs
+from .prim import FrozenDict as frozendict
+from .protocols.commands import (
     Command,
     CreateAndExerciseCommand,
     CreateCommand,
@@ -18,8 +20,6 @@ from .model.writing import (
     exercise,
     exercise_by_key,
 )
-from .pretty.table import write_acs
-from .prim import FrozenDict as frozendict
 from .util.logging import setup_default_logger
 
 try:

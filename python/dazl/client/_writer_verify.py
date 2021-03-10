@@ -4,14 +4,14 @@
 from typing import Any
 
 from ..damlast.daml_lf_1 import TypeConName
-from ..model.writing import (
+from ..prim import ContractId
+from ..protocols.commands import (
     AbstractSerializer,
     CreateAndExerciseCommand,
     CreateCommand,
     ExerciseByKeyCommand,
     ExerciseCommand,
 )
-from ..prim import ContractId
 from ..values import CanonicalMapper
 
 

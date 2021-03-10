@@ -6,13 +6,12 @@ from asyncio import ensure_future, get_event_loop
 import datetime
 import json
 import logging
-
-from dazl.damlast.daml_types import con
-from dazl.values import CanonicalMapper, Context, JsonDecoder
+from typing import Optional
 
 from .. import LOG, Network
 from ..client.config import NetworkConfig, configure_parser
-from ..pretty.table import DEFAULT_FORMATTER_NAME, write_acs
+from ..damlast.daml_types import con
+from ..values import Context, JsonDecoder
 from ._base import CliCommand
 
 
@@ -99,7 +98,6 @@ class TailCommand(CliCommand):
             PLOG.info(f"Archive - {pprint_cid(event, args)}")
 
     async def _main(self, args):
-
         final_config = NetworkConfig.get_config(args)
 
         network = Network()

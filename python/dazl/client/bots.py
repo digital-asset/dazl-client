@@ -29,8 +29,8 @@ from typing import (
 from uuid import uuid4
 
 from .. import LOG
-from ..model.writing import Command, CommandBuilder
 from ..prim import Party
+from ..protocols.commands import Command, CommandBuilder
 from ..protocols.events import BaseEvent
 from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
 from .events import EventKey

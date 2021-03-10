@@ -42,8 +42,8 @@ from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.pkgfile import Dar
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
-from ..model.writing import EventHandlerResponse
 from ..prim import ContractData, ContractId, Party, TimeDeltaLike, to_party
+from ..protocols.commands import EventHandlerResponse
 from ..protocols.events import (
     ContractArchiveEvent,
     ContractCreateEvent,

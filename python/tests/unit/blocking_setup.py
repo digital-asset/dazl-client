@@ -2,7 +2,7 @@ from asyncio import new_event_loop, set_event_loop
 from threading import Thread
 
 from dazl import Network, Party
-from dazl.model.core import Dar
+from dazl.damlast.pkgfile import Dar
 
 
 def blocking_setup(url: str, dar: Dar) -> "Party":
