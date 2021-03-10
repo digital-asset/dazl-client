@@ -4,7 +4,9 @@
 
 from datetime import timedelta
 
-from ..model.core import Party
+from ..prim import Party
+
+__all__ = ["MetricEvents"]
 
 
 class MetricEvents:

@@ -5,12 +5,15 @@
 from datetime import timedelta
 from typing import TYPE_CHECKING, ClassVar, Optional
 
-from ..model.core import Party
+from ..prim import Party
 from .api import MetricEvents
 
 if TYPE_CHECKING:
     from prometheus_client import Gauge
     from prometheus_client.registry import CollectorRegistry
+
+
+__all__ = ["PrometheusMetricEvents"]
 
 
 class PrometheusMetricEvents(MetricEvents):

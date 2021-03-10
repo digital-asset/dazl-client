@@ -29,10 +29,8 @@ The most important classes:
 .. automodule:: dazl.model.core
 .. automodule:: dazl.model.ledger
 .. automodule:: dazl.model.reading
-.. automodule:: dazl.model.types
-.. automodule:: dazl.model.types_store
 .. automodule:: dazl.model.writing
 
 """
 
-from . import core, ledger, network, reading, types, writing
+from . import core, ledger, network, reading, writing

@@ -29,10 +29,11 @@ from typing import (
 from uuid import uuid4
 
 from .. import LOG
-from ..model.core import Party, SourceLocation
-from ..model.reading import BaseEvent, EventKey
+from ..model.reading import BaseEvent
 from ..model.writing import Command, CommandBuilder
+from ..prim import Party
 from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
+from .events import EventKey
 
 if TYPE_CHECKING:
     from .api import PartyClient
@@ -43,6 +44,13 @@ DEFAULT_BOT_STOP_TIMEOUT = timedelta(seconds=30)
 E = TypeVar("E", bound=BaseEvent)
 BotCallback = Callable[[E], Any]
 BotFilter = Callable[[E], bool]
+
+
+@dataclass(frozen=True)
+class SourceLocation:
+    file_name: str
+    start_line: int
+    end_line: int
 
 
 class _BotRunLevel(Enum):

@@ -21,20 +21,15 @@ from dataclasses import dataclass, fields
 from datetime import timedelta
 from typing import TYPE_CHECKING, Any, Collection, List, Mapping, Optional, Sequence, Union
 import uuid
-import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.daml_types import con
-from ..damlast.lookup import find_choice
+from ..damlast.lookup import find_choice, parse_type_con_name
 from ..damlast.protocols import SymbolLookup
 from ..prim import ContractId, Party
 from ..util.typing import safe_cast
 
 if TYPE_CHECKING:
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
-        from .types import Type, TypeReference
-
     from ..values import Context, ValueMapper
 
 CommandsOrCommandSequence = Union[None, "Command", Sequence[Optional["Command"]]]
@@ -62,59 +57,14 @@ class CreateCommand(Command):
         The arguments to the create (as a ``dict``).
     """
 
-    __slots__ = ("template_type", "arguments", "_template_type_deprecated")
+    __slots__ = ("template_type", "arguments")
 
     template_type: "TypeConName"
     arguments: "Mapping[str, Any]"
-    _template_type_deprecated: "TypeReference"
 
-    def __init__(self, template: "Union[str, TypeConName, Type]", arguments=None):
-        from ..damlast.compat import parse_template
-
-        template_type, template_type_deprecated = parse_template(template)
-        object.__setattr__(self, "template_type", template_type)
+    def __init__(self, template: "Union[str, TypeConName]", arguments=None):
+        object.__setattr__(self, "template_type", validate_template_id(template))
         object.__setattr__(self, "arguments", arguments or dict())
-        object.__setattr__(self, "_template_type_deprecated", template_type_deprecated)
-
-    @property
-    def template(self) -> "TypeReference":
-        warnings.warn(
-            "CreateCommand.template is deprecated; use CreateCommand.template_type instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._template_type_deprecated
-
-    def replace(self, template: "Union[None, str, Type]" = None, arguments=None):
-        """
-        Create a new :class:`CreateCommand` with the same identifier as this command, but with new
-        values for its parameters.
-
-        :param template:
-            The new value of the `template` field, or `None` to reuse the existing value.
-        :param arguments:
-            The new value of the `arguments` field, or `None` to reuse the existing value.
-        """
-        warnings.warn(
-            "CreateCommand.replace is deprecated; simply construct a CreateCommand with the "
-            "desired values instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-
-            from .types import Type, UnresolvedTypeReference
-
-            if template is not None:
-                template = (
-                    template if isinstance(template, Type) else UnresolvedTypeReference(template)
-                )
-            return CreateCommand(
-                template if template is not None else self.template_type,
-                arguments if arguments is not None else self.arguments,
-            )
 
     def __repr__(self):
         return f"<create {self.template_type} {self.arguments}>"
@@ -161,31 +111,6 @@ class ExerciseCommand(Command):
         object.__setattr__(self, "choice", safe_cast(str, choice))
         object.__setattr__(self, "arguments", dict(arguments) if arguments is not None else dict())
 
-    def replace(self, contract=None, choice=None, arguments=None):
-        """
-        Create a new :class:`ExerciseCommand` with the same identifier as this command, but with new
-        values for its parameters.
-
-        :param contract:
-            The new value of the `contract` field, or `None` to reuse the existing value.
-            The same type coercion rules used in the constructor apply here.
-        :param choice:
-            The new value of the `choice` field, or `None` to reuse the existing value.
-            The same type coercion rules used in the constructor apply here.
-        :param arguments:
-            The new value of the `choice` field, or `None` to reuse the existing value.
-        """
-        warnings.warn(
-            "ExerciseCommand.replace is deprecated; simply construct a ExerciseCommand with the "
-            "desired values instead.",
-            DeprecationWarning,
-        )
-        return ExerciseCommand(
-            contract if contract is not None else self.contract,
-            choice if choice is not None else self.choice,
-            arguments if arguments is not None else self.arguments,
-        )
-
     def __repr__(self):
         return f"<exercise '{self.contract.value}' {self.choice} with {self.arguments}>"
 
@@ -196,33 +121,18 @@ class ExerciseByKeyCommand(Command):
     contract_key: "Any"
     choice: str
     choice_argument: "Any"
-    _template_type_deprecated: "TypeReference"
 
     def __init__(
         self,
-        template: "Union[str, TypeConName, TypeReference]",
+        template: "Union[str, TypeConName]",
         contract_key: "Any",
         choice: str,
         choice_argument: "Any",
     ):
-        from ..damlast.compat import parse_template
-
-        template_type, template_type_deprecated = parse_template(template)
-        object.__setattr__(self, "template_type", template_type)
+        object.__setattr__(self, "template_type", validate_template_id(template))
         object.__setattr__(self, "contract_key", contract_key)
         object.__setattr__(self, "choice", choice)
         object.__setattr__(self, "choice_argument", choice_argument)
-        object.__setattr__(self, "_template_type_deprecated", template_type_deprecated)
-
-    @property
-    def template(self) -> "TypeReference":
-        warnings.warn(
-            "ExerciseByKeyCommand.template is deprecated; use ExerciseByKeyCommand.template_type "
-            "instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._template_type_deprecated
 
 
 @dataclass(init=False, frozen=True)
@@ -231,33 +141,18 @@ class CreateAndExerciseCommand(Command):
     arguments: "Mapping[str, Any]"
     choice: str
     choice_argument: "Any"
-    _template_type_deprecated: "TypeReference"
 
     def __init__(
         self,
-        template: "Union[str, TypeConName, TypeReference]",
+        template: "Union[str, TypeConName]",
         arguments: "Mapping[str, Any]",
         choice: str,
         choice_argument: "Any",
     ):
-        from ..damlast.compat import parse_template
-
-        template_type, template_type_deprecated = parse_template(template)
-        object.__setattr__(self, "template_type", template_type)
+        object.__setattr__(self, "template_type", validate_template_id(template))
         object.__setattr__(self, "arguments", arguments)
         object.__setattr__(self, "choice", choice)
         object.__setattr__(self, "choice_argument", choice_argument)
-        object.__setattr__(self, "_template_type_deprecated", template_type_deprecated)
-
-    @property
-    def template(self) -> "TypeReference":
-        warnings.warn(
-            "CreateAndExerciseCommand.template is deprecated; use "
-            "CreateAndExerciseCommand.template_type instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._template_type_deprecated
 
 
 class CommandBuilder:
@@ -488,7 +383,7 @@ def create(template, arguments=None):
 def exercise(contract, choice, arguments=None):
     if not isinstance(choice, str):
         raise ValueError(
-            "choice must be a string name, a template type, " "or an instantiated template"
+            "choice must be a string name, a template type, or an instantiated template"
         )
 
     return ExerciseCommand(contract, choice, arguments)
@@ -587,3 +482,10 @@ class AbstractSerializer(Serializer):
         raise NotImplementedError(
             "serialize_create_and_exercise_command requires an implementation"
         )
+
+
+def validate_template_id(value: "Union[str, TypeConName]") -> "TypeConName":
+    if isinstance(value, TypeConName):
+        return value
+    else:
+        return parse_type_con_name(value)
