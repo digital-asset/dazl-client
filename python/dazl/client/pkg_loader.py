@@ -12,7 +12,7 @@ from ..damlast.daml_lf_1 import Archive, Package, PackageRef
 from ..damlast.errors import NameNotFoundError, PackageNotFoundError
 from ..damlast.lookup import MultiPackageLookup, validate_template
 from ..damlast.pkgfile import Dar
-from ..model.core import DazlError
+from ..prim import DazlError
 
 if sys.version_info >= (3, 7):
     from typing import Protocol

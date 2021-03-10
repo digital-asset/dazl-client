@@ -7,17 +7,19 @@ process that implements the Ledger API.
 """
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import Optional, Sequence, Union
+from typing import TYPE_CHECKING, Optional, Sequence, Union
 
 from .. import LOG
 from ..damlast.protocols import SymbolLookup
-from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
 from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ..model.writing import CommandPayload
 from ..prim import Party
 from ..scheduler import Invoker
 from ..util.typing import safe_cast, safe_optional_cast
+
+if TYPE_CHECKING:
+    from ..client.ledger import LedgerMetadata
 
 
 @dataclass(frozen=True)
@@ -128,8 +130,8 @@ class _LedgerConnection:
         self,
         invoker: "Invoker",
         options: "LedgerConnectionOptions",
-        settings: HTTPConnectionSettings,
-        context_path: Optional[str],
+        settings: "HTTPConnectionSettings",
+        context_path: "Optional[str]",
     ):
         LOG.debug("Creating a gRPC channel for %s...", settings)
         import threading
