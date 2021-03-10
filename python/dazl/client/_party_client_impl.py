@@ -23,7 +23,6 @@ import uuid
 
 from .. import LOG
 from ..damlast.daml_lf_1 import TypeConName
-from ..model.core import ContractContextualData, ContractContextualDataCollection, ContractsState
 from ..model.network import OAuthSettings, connection_settings
 from ..model.reading import (
     ActiveContractSetEvent,
@@ -50,7 +49,12 @@ from ._writer_verify import ValidateSerializer
 from .bots import Bot, BotCallback, BotCollection, BotFilter
 from .config import NetworkConfig, PartyConfig
 from .ledger import LedgerMetadata
-from .state import ActiveContractSet
+from .state import (
+    ActiveContractSet,
+    ContractContextualData,
+    ContractContextualDataCollection,
+    ContractsState,
+)
 
 if TYPE_CHECKING:
     from ._network_client_impl import _NetworkImpl
@@ -203,20 +207,20 @@ class _PartyClientImpl:
         return self._acs.get(cid)
 
     def find(
-        self, template: Any, match: ContractMatch = None, include_archived: bool = False
-    ) -> ContractContextualDataCollection:
+        self, template: Any, match: "ContractMatch" = None, include_archived: bool = False
+    ) -> "ContractContextualDataCollection":
         return self._acs.read_full(template, match, include_archived=include_archived)
 
-    def find_active(self, template: Any, match: ContractMatch = None) -> ContractsState:
+    def find_active(self, template: Any, match: "ContractMatch" = None) -> "ContractsState":
         return self._acs.read_active(template, match)
 
     def find_historical(
-        self, template: Any, match: ContractMatch = None
-    ) -> ContractContextualDataCollection:
+        self, template: Any, match: "ContractMatch" = None
+    ) -> "ContractContextualDataCollection":
         return self._acs.read_full(template, match, include_archived=True)
 
     def find_nonempty(
-        self, template: Any, match: ContractMatch, min_count: int = 1, timeout: float = 30
+        self, template: Any, match: "ContractMatch", min_count: int = 1, timeout: float = 30
     ):
         return self._acs.read_async(template, match, min_count=min_count)
 

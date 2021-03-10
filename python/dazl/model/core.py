@@ -8,10 +8,8 @@ Core types
 The :mod:`dazl.model.core` module contains classes used on both the read-side and the write-side of
 the Ledger API.
 """
-from dataclasses import dataclass
-from datetime import datetime
 from pathlib import Path
-from typing import BinaryIO, Dict, Optional, Tuple, TypeVar, Union
+from typing import BinaryIO, TypeVar, Union
 import warnings
 
 from ..prim import ContractData, ContractId, DazlError, DazlWarning, Party
@@ -24,47 +22,18 @@ __all__ = [
     "ContractId",
     "ContractData",
     "ContractMatch",
-    "ContractsState",
-    "ContractsHistoricalState",
-    "ContractContextualDataCollection",
-    "ContractContextualData",
     "DazlError",
     "DazlWarning",
     "Party",
 ]
 
 
-ContractsState = Dict[ContractId, ContractData]
-ContractsHistoricalState = Dict[ContractId, Tuple[ContractData, bool]]
-
-
-class ContractContextualDataCollection(tuple):
-    def __getitem__(self, index: Union[int, str, ContractId]):
-        if index is None:
-            raise ValueError("the index cannot be None")
-        elif isinstance(index, int):
-            return tuple.__getitem__(self, index)
-        elif isinstance(index, str):
-            for cxd in self:
-                if cxd.cid.contract_id == index:
-                    return cxd
-            raise KeyError(index)
-        elif isinstance(index, ContractId):
-            for cxd in self:
-                if cxd.cid == index:
-                    return cxd
-            raise KeyError(index)
-        else:
-            raise TypeError("cannot index into a ContractContextualDataCollection with {index!r}")
-
-
-@dataclass(frozen=True)
-class ContractContextualData:
-    cid: "ContractId"
-    cdata: "Optional[ContractData]"
-    effective_at: datetime
-    archived_at: "Optional[datetime]"
-    active: bool
+# TODO: Import dazl.client.state types here when the circular references between the broader
+#  dazl.client and dazl.model packages are resolved:
+#       * ContractsState
+#       * ContractsHistoricalState
+#       * ContractContextualData
+#       * ContractContextualDataCollection
 
 
 # Wherever the API expects a DAR, we can take a file path, `bytes`, or a byte buffer.
