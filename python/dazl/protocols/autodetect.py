@@ -6,7 +6,6 @@ from threading import Event, RLock, Thread
 from typing import TYPE_CHECKING, Awaitable, Dict, Iterable, Optional, Union
 
 from .. import LOG
-from ..model.network import HTTPConnectionSettings
 from ..prim import Party
 from ..scheduler import Invoker
 from ._base import LedgerClient, LedgerConnectionOptions, LedgerNetwork
@@ -15,6 +14,7 @@ from .oauth import oauth_flow
 from .v1.grpc import GRPCv1Connection
 
 if TYPE_CHECKING:
+    from ..client._conn_settings import HTTPConnectionSettings
     from ..client.ledger import LedgerMetadata
 
 

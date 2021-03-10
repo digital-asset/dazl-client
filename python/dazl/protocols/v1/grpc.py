@@ -13,7 +13,6 @@ from grpc import Channel, RpcError, insecure_channel, secure_channel, ssl_channe
 
 from ... import LOG
 from ...damlast.daml_lf_1 import PackageRef
-from ...model.network import HTTPConnectionSettings
 from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ...model.writing import CommandPayload
 from ...prim import Party, datetime_to_timestamp, to_party
@@ -31,6 +30,7 @@ from .pb_parse_event import (
 )
 
 if TYPE_CHECKING:
+    from ...client._conn_settings import HTTPConnectionSettings
     from ...client.ledger import LedgerMetadata
 
 

@@ -7,11 +7,11 @@ process that implements the Ledger API.
 """
 from dataclasses import dataclass
 from datetime import timedelta
+import threading
 from typing import TYPE_CHECKING, Optional, Sequence, Union
 
 from .. import LOG
 from ..damlast.protocols import SymbolLookup
-from ..model.network import HTTPConnectionSettings
 from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ..model.writing import CommandPayload
 from ..prim import Party
@@ -19,7 +19,10 @@ from ..scheduler import Invoker
 from ..util.typing import safe_cast, safe_optional_cast
 
 if TYPE_CHECKING:
+    from ..client._conn_settings import HTTPConnectionSettings
     from ..client.ledger import LedgerMetadata
+
+__all__ = ["LedgerConnectionOptions", "LedgerNetwork", "LedgerClient"]
 
 
 @dataclass(frozen=True)
@@ -38,7 +41,7 @@ class LedgerNetwork:
     async def connect(
         self,
         party: "Union[str, Party]",
-        settings: HTTPConnectionSettings,
+        settings: "HTTPConnectionSettings",
         context_path: "Optional[str]",
     ) -> "LedgerClient":
         """
@@ -133,8 +136,9 @@ class _LedgerConnection:
         settings: "HTTPConnectionSettings",
         context_path: "Optional[str]",
     ):
+        from ..client._conn_settings import HTTPConnectionSettings
+
         LOG.debug("Creating a gRPC channel for %s...", settings)
-        import threading
 
         self.invoker = safe_cast(Invoker, invoker)
         self.options = safe_cast(LedgerConnectionOptions, options)

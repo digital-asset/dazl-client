@@ -30,7 +30,6 @@ from .. import LOG
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
-from ..model.network import connection_settings
 from ..model.reading import BaseEvent, InitEvent, ReadyEvent
 from ..prim import Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
@@ -42,6 +41,7 @@ from ._base_model import (
     NONE_IF_MISSING,
     IfMissingPartyBehavior,
 )
+from ._conn_settings import connection_settings
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig

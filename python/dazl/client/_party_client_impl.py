@@ -23,7 +23,6 @@ import uuid
 
 from .. import LOG
 from ..damlast.daml_lf_1 import TypeConName
-from ..model.network import OAuthSettings, connection_settings
 from ..model.reading import (
     ActiveContractSetEvent,
     BaseEvent,
@@ -45,6 +44,7 @@ from ..query import ContractMatch
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast
+from ._conn_settings import OAuthSettings, connection_settings
 from ._writer_verify import ValidateSerializer
 from .bots import Bot, BotCallback, BotCollection, BotFilter
 from .config import NetworkConfig, PartyConfig
