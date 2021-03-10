@@ -6,7 +6,7 @@ Types that describe the behavior of the ledger itself.
 """
 from dataclasses import dataclass
 
-from ..model.writing import Serializer
+from ..protocols.commands import Serializer
 from .pkg_loader import PackageLoader
 
 

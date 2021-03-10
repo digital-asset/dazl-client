@@ -13,12 +13,12 @@ from grpc import Channel, RpcError, insecure_channel, secure_channel, ssl_channe
 
 from ... import LOG
 from ...damlast.daml_lf_1 import PackageRef
-from ...model.writing import CommandPayload
 from ...prim import Party, datetime_to_timestamp, to_party
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
 from .._base import LedgerClient, LedgerConnectionOptions, _LedgerConnection
+from ..commands import CommandPayload
 from ..errors import ConnectionTimeoutError, UserTerminateRequest
 from ..events import BaseEvent, ContractFilter, TransactionFilter
 from .pb_parse_event import (

@@ -23,9 +23,14 @@ import uuid
 
 from .. import LOG
 from ..damlast.daml_lf_1 import TypeConName
-from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerClient, LedgerNetwork
+from ..protocols.commands import (
+    CommandBuilder,
+    CommandDefaults,
+    CommandPayload,
+    EventHandlerResponse,
+)
 from ..protocols.events import (
     ActiveContractSetEvent,
     BaseEvent,

@@ -19,18 +19,16 @@ Ledger API.
 """
 from dataclasses import dataclass, fields
 from datetime import timedelta
-from typing import TYPE_CHECKING, Any, Collection, List, Mapping, Optional, Sequence, Union
+from typing import Any, Collection, List, Mapping, Optional, Sequence, Union
 import uuid
 
-from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.daml_lf_1 import Type, TypeConName
 from ..damlast.daml_types import con
 from ..damlast.lookup import find_choice, parse_type_con_name
 from ..damlast.protocols import SymbolLookup
 from ..prim import ContractId, Party
 from ..util.typing import safe_cast
-
-if TYPE_CHECKING:
-    from ..values import Context, ValueMapper
+from ..values import ValueMapper
 
 CommandsOrCommandSequence = Union[None, "Command", Sequence[Optional["Command"]]]
 EventHandlerResponse = Union[CommandsOrCommandSequence, "CommandBuilder", "CommandPayload"]

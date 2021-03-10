@@ -5,7 +5,8 @@
 from unittest import TestCase
 
 from dazl.damlast.lookup import parse_type_con_name
-from dazl.model.writing import (
+from dazl.prim import ContractId, Party
+from dazl.protocols.commands import (
     CommandBuilder,
     CommandDefaults,
     CommandPayload,
@@ -13,7 +14,6 @@ from dazl.model.writing import (
     ExerciseCommand,
     create,
 )
-from dazl.prim import ContractId, Party
 
 SOME_TEMPLATE_NAME = parse_type_con_name("Sample:Untyped")
 SOME_PARTY = Party("SomeParty")

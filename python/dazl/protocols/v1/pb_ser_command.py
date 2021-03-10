@@ -9,9 +9,9 @@ from typing import Any
 # noinspection PyPep8Naming
 from . import model as G
 from ...damlast.daml_lf_1 import TypeConName
-from ...model.writing import AbstractSerializer, CommandPayload
 from ...prim import ContractId, timedelta_to_duration
 from ...values.protobuf import ProtobufEncoder, set_value
+from ..commands import AbstractSerializer, CommandPayload
 
 
 def as_identifier(tref: "TypeConName") -> "G.Identifier":
