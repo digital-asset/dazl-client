@@ -4,7 +4,7 @@
 from typing import NamedTuple, Optional, Tuple, Union
 from urllib.parse import urlparse
 
-from .core import Party
+from dazl.model.core import Party
 
 
 class HTTPConnectionSettings(NamedTuple):
