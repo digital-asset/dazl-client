@@ -5,7 +5,7 @@
 This module contains tests for testing contract data against a match object.
 """
 
-from dazl.client._reader_match import is_match
+from dazl.query import is_match
 
 
 def test_match_of_partial_keys():

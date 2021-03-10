@@ -6,18 +6,17 @@ from collections import defaultdict
 from typing import Awaitable, Collection, Dict, List, Optional, Union, cast
 import warnings
 
-from ..client._reader_match import is_match
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.protocols import SymbolLookup
 from ..model.core import (
     ContractContextualData,
     ContractContextualDataCollection,
-    ContractMatch,
     ContractsState,
     UnknownTemplateWarning,
 )
 from ..model.reading import ContractArchiveEvent, ContractCreateEvent
 from ..prim import ContractId
+from ..query import ContractMatch, is_match
 from ..scheduler import Invoker
 from ..util.asyncio_util import await_then
 
