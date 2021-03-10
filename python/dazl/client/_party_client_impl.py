@@ -29,7 +29,6 @@ from ..model.core import (
     ContractMatch,
     ContractsState,
 )
-from ..model.ledger import LedgerMetadata
 from ..model.network import OAuthSettings, connection_settings
 from ..model.reading import (
     ActiveContractSetEvent,
@@ -54,6 +53,7 @@ from ..util.typing import safe_cast
 from ._writer_verify import ValidateSerializer
 from .bots import Bot, BotCallback, BotCollection, BotFilter
 from .config import NetworkConfig, PartyConfig
+from .ledger import LedgerMetadata
 from .state import ActiveContractSet
 
 if TYPE_CHECKING:

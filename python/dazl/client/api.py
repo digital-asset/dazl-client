@@ -39,6 +39,7 @@ import warnings
 from .. import LOG
 from ..damlast import get_dar_package_ids
 from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.pkgfile import Dar
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
 from ..model.core import (
@@ -46,9 +47,7 @@ from ..model.core import (
     ContractContextualDataCollection,
     ContractMatch,
     ContractsState,
-    Dar,
 )
-from ..model.ledger import LedgerMetadata
 from ..model.reading import (
     ContractArchiveEvent,
     ContractCreateEvent,
@@ -78,6 +77,7 @@ from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from .events import EventKey
+from .ledger import LedgerMetadata
 
 DEFAULT_TIMEOUT_SECONDS = 30
 

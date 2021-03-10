@@ -7,13 +7,12 @@ Support for the gRPC-based Ledger API.
 from asyncio import gather
 from datetime import datetime
 from threading import Event
-from typing import AbstractSet, Iterable, Optional, Sequence
+from typing import TYPE_CHECKING, AbstractSet, Iterable, Optional, Sequence
 
 from grpc import Channel, RpcError, insecure_channel, secure_channel, ssl_channel_credentials
 
 from ... import LOG
 from ...damlast.daml_lf_1 import PackageRef
-from ...model.ledger import LedgerMetadata
 from ...model.network import HTTPConnectionSettings
 from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ...model.writing import CommandPayload
@@ -31,9 +30,14 @@ from .pb_parse_event import (
     to_transaction_events,
 )
 
+if TYPE_CHECKING:
+    from ...client.ledger import LedgerMetadata
+
 
 class GRPCv1LedgerClient(LedgerClient):
-    def __init__(self, connection: "GRPCv1Connection", ledger: LedgerMetadata, party: Party):
+    def __init__(self, connection: "GRPCv1Connection", ledger: "LedgerMetadata", party: "Party"):
+        from ...client.ledger import LedgerMetadata
+
         self.connection = safe_cast(GRPCv1Connection, connection)
         self.ledger = safe_cast(LedgerMetadata, ledger)
         self.party = to_party(party)
@@ -204,6 +208,7 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
 
 
 def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterable[LedgerMetadata]":
+    from ...client.ledger import LedgerMetadata
     from ...client.pkg_loader import PackageLoader
     from .pb_ser_command import ProtobufSerializer
 
