@@ -2,60 +2,62 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-Core types
-----------
-
-The :mod:`dazl.model.core` module contains classes used on both the read-side and the write-side of
-the Ledger API.
+This module has been relocated to ``dazl.client``, ``dazl.damlast``, ``dazl.protocols``, or
+``dazl.query``.
 """
-from pathlib import Path
-from typing import BinaryIO, TypeVar, Union
+from typing import TypeVar
 import warnings
 
+from ..client.errors import ConfigurationError, DazlPartyMissingError, UnknownTemplateWarning
+from ..client.state import (
+    ContractContextualData,
+    ContractContextualDataCollection,
+    ContractsHistoricalState,
+    ContractsState,
+)
+from ..damlast.pkgfile import Dar
 from ..prim import ContractData, ContractId, DazlError, DazlWarning, Party
+from ..prim.errors import DazlImportError
+from ..protocols.errors import ConnectionTimeoutError, UserTerminateRequest
 from ..query import ContractMatch
+from ..util.proc_util import ProcessDiedException
 
 T = TypeVar("T")
 
 
 __all__ = [
-    "ContractId",
+    "ConfigurationError",
+    "ConnectionTimeoutError",
+    "ContractContextualData",
+    "ContractContextualDataCollection",
     "ContractData",
+    "ContractId",
     "ContractMatch",
+    "ContractsHistoricalState",
+    "ContractsState",
+    "Dar",
     "DazlError",
+    "DazlImportError",
+    "DazlPartyMissingError",
     "DazlWarning",
     "Party",
+    "ProcessDiedException",
+    "UnknownTemplateWarning",
+    "UserTerminateRequest",
 ]
 
 
-# TODO: Import dazl.client.state types here when the circular references between the broader
-#  dazl.client and dazl.model packages are resolved:
-#       * ContractsState
-#       * ContractsHistoricalState
-#       * ContractContextualData
-#       * ContractContextualDataCollection
+class CommandTimeoutError(DazlError):
+    """
+    Raised when a corresponding event for a command was not seen in the appropriate time window.
+    """
 
-
-# Wherever the API expects a DAR, we can take a file path, `bytes`, or a byte buffer.
-Dar = Union[bytes, str, Path, BinaryIO]
-
-
-# TODO: Import dazl.client.errors types here when the circular references between the broader
-#  dazl.client and dazl.model packages are resolved:
-#       * ConfigurationError
-#       * DazlPartyMissingError
-#       * UnknownTemplateWarning
-
-
-# TODO: Import dazl.protocol.errors types here when the circular references between the broader
-#  dazl.protocol and dazl.model packages are resolved:
-#       * ConnectionTimeoutError
-#       * UserTerminateRequest
-
-
-# TODO: Import dazl.util.proc_util error types here when the circular references between the broader
-#  dazl.util and dazl.model packages are resolved:
-#       * ProcessDiedException
+    def __init__(self):
+        warnings.warn(
+            "This error is never raised; this symbol will be removed in dazl v9",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
 
 class ConnectionClosedError(DazlError):
