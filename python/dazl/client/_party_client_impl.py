@@ -23,12 +23,7 @@ import uuid
 
 from .. import LOG
 from ..damlast.daml_lf_1 import TypeConName
-from ..model.core import (
-    ContractContextualData,
-    ContractContextualDataCollection,
-    ContractMatch,
-    ContractsState,
-)
+from ..model.core import ContractContextualData, ContractContextualDataCollection, ContractsState
 from ..model.network import OAuthSettings, connection_settings
 from ..model.reading import (
     ActiveContractSetEvent,
@@ -47,6 +42,7 @@ from ..model.reading import (
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerClient, LedgerNetwork
+from ..query import ContractMatch
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast

@@ -11,10 +11,11 @@ the Ledger API.
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import BinaryIO, Callable, Dict, Optional, Tuple, TypeVar, Union
+from typing import BinaryIO, Dict, Optional, Tuple, TypeVar, Union
 import warnings
 
 from ..prim import ContractData, ContractId, DazlError, DazlWarning, Party
+from ..query import ContractMatch
 
 T = TypeVar("T")
 
@@ -33,7 +34,6 @@ __all__ = [
 ]
 
 
-ContractMatch = Union[None, Callable[[ContractData], bool], ContractData]
 ContractsState = Dict[ContractId, ContractData]
 ContractsHistoricalState = Dict[ContractId, Tuple[ContractData, bool]]
 

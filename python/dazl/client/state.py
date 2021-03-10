@@ -8,17 +8,12 @@ import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.protocols import SymbolLookup
-from ..model.core import (
-    ContractContextualData,
-    ContractContextualDataCollection,
-    ContractMatch,
-    ContractsState,
-)
+from ..model.core import ContractContextualData, ContractContextualDataCollection, ContractsState
 from ..model.reading import ContractArchiveEvent, ContractCreateEvent
 from ..prim import ContractId
+from ..query import ContractMatch, is_match
 from ..scheduler import Invoker
 from ..util.asyncio_util import await_then
-from ._reader_match import is_match
 from .errors import UnknownTemplateWarning
 
 
