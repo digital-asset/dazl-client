@@ -6,9 +6,8 @@ This module contains the Python API for interacting with the Ledger API.
 """
 from ._logging import LOG
 from .client import AIOPartyClient, Network, SimplePartyClient, async_network, run, simple_client
-from .model.core import ContractData, ContractId, DazlError, Party
 from .pretty.table import write_acs
-from .prim import FrozenDict as frozendict
+from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
 from .protocols.commands import (
     Command,
     CreateAndExerciseCommand,
