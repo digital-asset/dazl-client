@@ -42,12 +42,7 @@ from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.pkgfile import Dar
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
-from ..model.core import (
-    ContractContextualData,
-    ContractContextualDataCollection,
-    ContractMatch,
-    ContractsState,
-)
+from ..model.core import ContractMatch
 from ..model.reading import (
     ContractArchiveEvent,
     ContractCreateEvent,
@@ -78,6 +73,7 @@ from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from .events import EventKey
 from .ledger import LedgerMetadata
+from .state import ContractContextualData, ContractContextualDataCollection, ContractsState
 
 DEFAULT_TIMEOUT_SECONDS = 30
 
@@ -107,7 +103,9 @@ def simple_client(
     if log_level is not None:
         from .. import setup_default_logger
 
-        setup_default_logger(log_level)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            setup_default_logger(log_level)
 
     import os
 
@@ -964,7 +962,7 @@ class AIOPartyClient(PartyClient):
 
     def find(
         self, template: Any, match: "ContractMatch" = None, include_archived: bool = False
-    ) -> ContractContextualDataCollection:
+    ) -> "ContractContextualDataCollection":
         return self._impl.find(template, match, include_archived=include_archived)
 
     def find_active(self, template: Any, match: "ContractMatch" = None) -> "ContractsState":
@@ -1576,12 +1574,12 @@ class SimplePartyClient(PartyClient):
 
     def find(
         self, template: Any, match: ContractMatch = None, include_archived: bool = False
-    ) -> ContractContextualDataCollection:
+    ) -> "ContractContextualDataCollection":
         return self._impl.invoker.run_in_loop(
             lambda: self._impl.find(template, match, include_archived=include_archived)
         )
 
-    def find_active(self, template: Any, match: ContractMatch = None) -> ContractsState:
+    def find_active(self, template: Any, match: ContractMatch = None) -> "ContractsState":
         """
         Immediately return data from the current active contract set.
 

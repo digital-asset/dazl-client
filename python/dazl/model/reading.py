@@ -57,11 +57,14 @@ This module contains models used on the read-side of the Ledger API.
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Collection, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Any, Collection, Optional, Sequence, Union
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.protocols import SymbolLookup
-from .core import ContractContextualData, ContractData, ContractId, Party
+from ..prim import ContractData, ContractId, Party
+
+if TYPE_CHECKING:
+    from ..client.state import ContractContextualData
 
 __all__ = [
     "BaseEvent",
