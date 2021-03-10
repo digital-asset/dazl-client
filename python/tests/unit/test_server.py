@@ -7,8 +7,7 @@ import logging
 from aiohttp import ClientSession
 import pytest
 
-from dazl import Network, async_network, create, exercise_by_key
-from dazl.model.core import Party
+from dazl import Network, Party, async_network, create, exercise_by_key
 
 from .dars import TestServer as TestServerDar
 

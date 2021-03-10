@@ -37,14 +37,13 @@ Connect to the ledger as a single party, print all contracts, and close::
 
 Connect to the ledger using asynchronous callbacks::
 
-    from dazl.model.reading import ReadyEvent
     network = dazl.Network()
     network.set_config(url='http://localhost:6865')
 
     alice = network.aio_party('Alice')
 
     @alice.ledger_ready()
-    async def onReady(event: ReadyEvent):
+    async def onReady(event):
       contracts = await event.acs_find_one('Main.Asset')
       print(contracts)
 
