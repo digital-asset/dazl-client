@@ -10,8 +10,8 @@ import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.protocols import SymbolLookup
-from ..model.reading import ContractArchiveEvent, ContractCreateEvent
 from ..prim import ContractData, ContractId
+from ..protocols.events import ContractArchiveEvent, ContractCreateEvent
 from ..query import ContractMatch, is_match
 from ..scheduler import Invoker
 from ..util.asyncio_util import await_then

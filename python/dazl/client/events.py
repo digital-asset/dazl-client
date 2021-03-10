@@ -6,7 +6,7 @@ from typing import Any, Callable, Collection, Iterator, TypeVar
 __all__ = ["EventKey", "template_reverse_globs"]
 
 from ..damlast.lookup import validate_template
-from ..model.reading import (
+from ..protocols.events import (
     BaseEvent,
     ContractArchiveEvent,
     ContractCreateEvent,

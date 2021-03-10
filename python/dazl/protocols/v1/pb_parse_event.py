@@ -22,7 +22,9 @@ from ...damlast.daml_lf_1 import DottedName, ModuleRef, PackageRef, TypeConName
 from ...damlast.daml_types import con
 from ...damlast.lookup import find_choice
 from ...damlast.protocols import SymbolLookup
-from ...model.reading import (
+from ...prim import Party, to_datetime
+from ...values import Context, ProtobufDecoder
+from ..events import (
     ActiveContractSetEvent,
     BaseEvent,
     ContractArchiveEvent,
@@ -34,8 +36,6 @@ from ...model.reading import (
     TransactionFilter,
     TransactionStartEvent,
 )
-from ...prim import Party, to_datetime
-from ...values import Context, ProtobufDecoder
 
 DECODER = ProtobufDecoder()
 

@@ -30,10 +30,10 @@ from .. import LOG
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
-from ..model.reading import BaseEvent, InitEvent, ReadyEvent
 from ..prim import Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
+from ..protocols.events import BaseEvent, InitEvent, ReadyEvent
 from ..scheduler import Invoker, RunLevel
 from ._base_model import (
     CREATE_IF_MISSING,

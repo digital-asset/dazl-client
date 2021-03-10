@@ -23,7 +23,10 @@ import uuid
 
 from .. import LOG
 from ..damlast.daml_lf_1 import TypeConName
-from ..model.reading import (
+from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
+from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
+from ..protocols import LedgerClient, LedgerNetwork
+from ..protocols.events import (
     ActiveContractSetEvent,
     BaseEvent,
     ContractArchiveEvent,
@@ -37,9 +40,6 @@ from ..model.reading import (
     TransactionFilter,
     TransactionStartEvent,
 )
-from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
-from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
-from ..protocols import LedgerClient, LedgerNetwork
 from ..query import ContractMatch
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
