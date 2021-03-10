@@ -57,16 +57,19 @@ print(contract_dict)
 Connect to the ledger using asynchronous callbacks:
 
 ```py
-from dazl.model.reading import ReadyEvent
+from dazl.protocols.reading import ReadyEvent
+
 network = dazl.Network()
 network.set_config(url='http://localhost:6865')
 
 alice = network.aio_party('Alice')
 
+
 @alice.ledger_ready()
 async def onReady(event: ReadyEvent):
-  contracts = await event.acs_find_one('Main.Asset')
-  print(contracts)
+    contracts = await event.acs_find_one('Main.Asset')
+    print(contracts)
+
 
 network.run_until_complete()
 ```

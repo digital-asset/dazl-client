@@ -12,11 +12,11 @@ from typing import TYPE_CHECKING, Optional, Sequence, Union
 
 from .. import LOG
 from ..damlast.protocols import SymbolLookup
-from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
 from ..model.writing import CommandPayload
 from ..prim import Party
 from ..scheduler import Invoker
 from ..util.typing import safe_cast, safe_optional_cast
+from .events import BaseEvent, ContractFilter, TransactionFilter
 
 if TYPE_CHECKING:
     from ..client._conn_settings import HTTPConnectionSettings

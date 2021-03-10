@@ -42,8 +42,9 @@ from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.pkgfile import Dar
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
-from ..model.core import ContractMatch
-from ..model.reading import (
+from ..model.writing import EventHandlerResponse
+from ..prim import ContractData, ContractId, Party, TimeDeltaLike, to_party
+from ..protocols.events import (
     ContractArchiveEvent,
     ContractCreateEvent,
     ContractExercisedEvent,
@@ -53,8 +54,7 @@ from ..model.reading import (
     TransactionEndEvent,
     TransactionStartEvent,
 )
-from ..model.writing import EventHandlerResponse
-from ..prim import ContractData, ContractId, Party, TimeDeltaLike, to_party
+from ..query import ContractMatch
 from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
 from ..util.io import get_bytes
