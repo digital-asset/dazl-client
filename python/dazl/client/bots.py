@@ -30,9 +30,10 @@ from uuid import uuid4
 
 from .. import LOG
 from ..prim import Party
-from ..protocols.commands import Command, CommandBuilder
+from ..protocols.commands import Command
 from ..protocols.events import BaseEvent
 from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
+from .commands import CommandBuilder
 from .events import EventKey
 
 if TYPE_CHECKING:

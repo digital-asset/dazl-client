@@ -4,16 +4,10 @@
 
 from unittest import TestCase
 
+from dazl.client.commands import CommandBuilder, CommandDefaults, CommandPayload, create
 from dazl.damlast.lookup import parse_type_con_name
 from dazl.prim import ContractId, Party
-from dazl.protocols.commands import (
-    CommandBuilder,
-    CommandDefaults,
-    CommandPayload,
-    CreateCommand,
-    ExerciseCommand,
-    create,
-)
+from dazl.protocols.commands import CreateCommand, ExerciseCommand
 
 SOME_TEMPLATE_NAME = parse_type_con_name("Sample:Untyped")
 SOME_PARTY = Party("SomeParty")

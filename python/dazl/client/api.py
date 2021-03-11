@@ -43,7 +43,6 @@ from ..damlast.pkgfile import Dar
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
 from ..prim import ContractData, ContractId, Party, TimeDeltaLike, to_party
-from ..protocols.commands import EventHandlerResponse
 from ..protocols.events import (
     ContractArchiveEvent,
     ContractCreateEvent,
@@ -70,6 +69,7 @@ from ._events import (
 from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
+from .commands import EventHandlerResponse
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from .events import EventKey
 from .ledger import LedgerMetadata

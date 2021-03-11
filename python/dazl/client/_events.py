@@ -3,8 +3,8 @@
 
 from typing import Awaitable, Callable, TypeVar, Union
 
-from ..protocols.commands import EventHandlerResponse
 from ..protocols.events import BaseEvent
+from .commands import EventHandlerResponse
 
 E = TypeVar("E", bound=BaseEvent)
 T = TypeVar("T")

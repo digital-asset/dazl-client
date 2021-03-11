@@ -18,7 +18,6 @@ from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
 from .._base import LedgerClient, LedgerConnectionOptions, _LedgerConnection
-from ..commands import CommandPayload
 from ..errors import ConnectionTimeoutError, UserTerminateRequest
 from ..events import BaseEvent, ContractFilter, TransactionFilter
 from .pb_parse_event import (
@@ -31,6 +30,7 @@ from .pb_parse_event import (
 
 if TYPE_CHECKING:
     from ...client._conn_settings import HTTPConnectionSettings
+    from ...client.commands import CommandPayload
     from ...client.ledger import LedgerMetadata
 
 
@@ -42,7 +42,7 @@ class GRPCv1LedgerClient(LedgerClient):
         self.ledger = safe_cast(LedgerMetadata, ledger)
         self.party = to_party(party)
 
-    def commands(self, commands: CommandPayload) -> None:
+    def commands(self, commands: "CommandPayload") -> None:
         serializer = self.ledger.serializer
         request = serializer.serialize_command_request(commands)
         return self.connection.invoker.run_in_executor(

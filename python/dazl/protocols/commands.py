@@ -17,21 +17,25 @@ Ledger API.
 .. autoclass:: ExerciseCommand
    :members:
 """
-from dataclasses import dataclass, fields
-from datetime import timedelta
-from typing import Any, Collection, List, Mapping, Optional, Sequence, Union
-import uuid
+from typing import Any, Mapping, NoReturn, Optional, Sequence, Union
 
 from ..damlast.daml_lf_1 import Type, TypeConName
 from ..damlast.daml_types import con
 from ..damlast.lookup import find_choice, parse_type_con_name
 from ..damlast.protocols import SymbolLookup
-from ..prim import ContractId, Party
+from ..prim import ContractData, ContractId
 from ..util.typing import safe_cast
 from ..values import ValueMapper
 
-CommandsOrCommandSequence = Union[None, "Command", Sequence[Optional["Command"]]]
-EventHandlerResponse = Union[CommandsOrCommandSequence, "CommandBuilder", "CommandPayload"]
+__all__ = [
+    "Command",
+    "CreateCommand",
+    "CreateAndExerciseCommand",
+    "ExerciseCommand",
+    "ExerciseByKeyCommand",
+    "Serializer",
+    "AbstractSerializer",
+]
 
 
 class Command:
@@ -39,360 +43,244 @@ class Command:
     Base class for write-side commands.
     """
 
+    def __setattr__(self, key, value) -> "NoReturn":
+        """
+        Raise :class:`AttributeError`; instances of this class are immutable.
+        """
+        raise AttributeError("Command instances are read-only")
 
-@dataclass(init=False, frozen=True)
+
 class CreateCommand(Command):
     """
     A command that creates a contract without any predecessors.
-
-    .. attribute:: CreateCommand.template
-
-        Refers to the type of a template. This can be passed in as a ``str`` to the constructor,
-        where it assumed to represent the ID or name of a template.
-
-    .. attribute:: CreateCommand.arguments
-
-        The arguments to the create (as a ``dict``).
     """
 
-    __slots__ = ("template_type", "arguments")
+    __slots__ = ("_template_id", "_payload")
 
-    template_type: "TypeConName"
-    arguments: "Mapping[str, Any]"
+    def __init__(self, template_id: "Union[str, TypeConName]", payload: "ContractData"):
+        """
+        Initialize a :class:`CreateCommand`.
 
-    def __init__(self, template: "Union[str, TypeConName]", arguments=None):
-        object.__setattr__(self, "template_type", validate_template_id(template))
-        object.__setattr__(self, "arguments", arguments or dict())
+        :param template_id:
+            The template of the contract to be created.
+        :param payload:
+            The template arguments for the contract to be created.
+        """
+        object.__setattr__(self, "_template_id", validate_template_id(template_id))
+        object.__setattr__(self, "_payload", payload)
 
-    def __repr__(self):
-        return f"<create {self.template_type} {self.arguments}>"
+    @property
+    def template_id(self) -> "TypeConName":
+        """
+        Return the template of the contract to be created.
+        """
+        return self._template_id
+
+    @property
+    def payload(self) -> "Mapping[str, Any]":
+        """
+        Return the template arguments for the contract to be created.
+        """
+        return self._payload
+
+    def __repr__(self) -> str:
+        return f"CreateCommand({self.template_id}, {self.payload})"
+
+    def __eq__(self, other: "Any") -> bool:
+        return (
+            isinstance(other, CreateCommand)
+            and self.template_id == other.template_id
+            and self.payload == other.payload
+        )
 
 
-@dataclass(init=False, frozen=True)
+class CreateAndExerciseCommand(Command):
+    __slots__ = ("_template_id", "_payload", "_choice", "_argument")
+
+    def __init__(
+        self,
+        template_id: "Union[str, TypeConName]",
+        payload: "ContractData",
+        choice: str,
+        argument: "Optional[Any]" = None,
+    ):
+        """
+        Initialize a :class:`CreateAndExerciseCommand`.
+
+        :param template_id:
+            The template of the contract to be created.
+        :param payload:
+            The template arguments for the contract to be created.
+        :param choice:
+            The choice to exercise.
+        :param argument:
+            The choice arguments. Can be omitted for choices that take no arguments.
+        """
+        object.__setattr__(self, "_template_id", validate_template_id(template_id))
+        object.__setattr__(self, "_payload", payload)
+        object.__setattr__(self, "_choice", choice)
+        object.__setattr__(self, "_argument", argument)
+
+    @property
+    def template_id(self) -> "TypeConName":
+        """
+        Return the template of the contract to be created.
+        """
+        return self._template_id
+
+    @property
+    def payload(self) -> "ContractData":
+        """
+        Return the template arguments for the contract to be created.
+        """
+        return self._payload
+
+    @property
+    def choice(self) -> str:
+        """
+        Return the choice to exercise.
+        """
+        return self._choice
+
+    @property
+    def argument(self) -> "Any":
+        """
+        Return the choice arguments.
+        """
+        return self._argument
+
+    def __eq__(self, other: "Any") -> bool:
+        return (
+            isinstance(other, CreateAndExerciseCommand)
+            and self.template_id == other.template_id
+            and self.payload == other.payload
+            and self.choice == other.choice
+            and self.argument == other.argument
+        )
+
+
 class ExerciseCommand(Command):
     """
-    A command that exercises a choice on a pre-existing contract.
-
-    .. attribute:: ExerciseCommand.contract
-
-        The :class:`ContractId` on which a choice is being exercised.
-
-    .. attribute:: ExerciseCommand.choice
-
-        Refers to a choice (either a :class:`ChoiceRef` or a :class:`ChoiceMetadata`).
-        This can be passed in as a ``str`` to the constructor, where it assumed to represent the
-        name of a choice.
-
-    .. attribute:: ExerciseCommand.arguments
-
-        The arguments to the exercise choice (as a ``dict``).
-
-    Note that when an ``ExerciseCommand`` is created, an additional ``template_id`` parameter can
-    be supplied to the constructor to aid in disambiguation of the specific choice being invoked.
-    In some situations involving composite commands, a ``template_id`` must eventually be supplied
-    before a choice can be exercised. If this ``template_id`` is specified, the ``contract`` and
-    ``choice`` are both tagged with this ID.
-
-    Instance methods:
-
-    .. automethod:: replace
+    A command that exercises a choice on a contract identified by its contract ID.
     """
 
-    __slots__ = ("contract", "choice", "arguments")
+    __slots__ = ("_choice", "_contract_id", "_argument")
 
-    contract: "ContractId"
-    choice: str
-    arguments: "Optional[Any]"
+    def __init__(self, contract_id: "ContractId", choice: str, argument: "Optional[Any]" = None):
+        """
+        Initialize an :class:`ExerciseCommand`.
 
-    def __init__(self, contract: "ContractId", choice: str, arguments: "Optional[Any]" = None):
-        object.__setattr__(self, "contract", safe_cast(ContractId, contract))
-        object.__setattr__(self, "choice", safe_cast(str, choice))
-        object.__setattr__(self, "arguments", dict(arguments) if arguments is not None else dict())
+        :param contract_id:
+            The contract ID of the contract to exercise.
+        :param choice:
+            The choice to exercise.
+        :param argument:
+            The choice arguments. Can be omitted for choices that take no arguments.
+        """
+        object.__setattr__(self, "_choice", safe_cast(str, choice))
+        object.__setattr__(self, "_contract_id", safe_cast(ContractId, contract_id))
+        object.__setattr__(self, "_argument", dict(argument) if argument is not None else dict())
+
+    @property
+    def contract_id(self) -> "ContractId":
+        """
+        Return the contract ID of the contract to exercise.
+        """
+        return self._contract_id
+
+    @property
+    def choice(self) -> str:
+        """
+        Return the choice to exercise.
+        """
+        return self._choice
+
+    @property
+    def argument(self) -> "Any":
+        """
+        Return the choice arguments.
+        """
+        return self._argument
 
     def __repr__(self):
-        return f"<exercise '{self.contract.value}' {self.choice} with {self.arguments}>"
+        return f"ExerciseCommand({self.choice!r}, {self.contract_id}, {self.argument}>"
+
+    def __eq__(self, other: "Any") -> bool:
+        return (
+            isinstance(other, ExerciseCommand)
+            and self.choice == other.choice
+            and self.contract_id == other.contract_id
+            and self.argument == other.argument
+        )
 
 
-@dataclass(init=False, frozen=True)
 class ExerciseByKeyCommand(Command):
-    template_type: "TypeConName"
-    contract_key: "Any"
-    choice: str
-    choice_argument: "Any"
+    """
+    A command that exercises a choice on a contract identified by its contract key.
+    """
+
+    __slots__ = ("_template_id", "_key", "_choice", "_argument")
 
     def __init__(
         self,
-        template: "Union[str, TypeConName]",
-        contract_key: "Any",
+        template_id: "Union[str, TypeConName]",
+        key: "Any",
         choice: str,
-        choice_argument: "Any",
+        argument: "Optional[Any]",
     ):
-        object.__setattr__(self, "template_type", validate_template_id(template))
-        object.__setattr__(self, "contract_key", contract_key)
-        object.__setattr__(self, "choice", choice)
-        object.__setattr__(self, "choice_argument", choice_argument)
-
-
-@dataclass(init=False, frozen=True)
-class CreateAndExerciseCommand(Command):
-    template_type: "TypeConName"
-    arguments: "Mapping[str, Any]"
-    choice: str
-    choice_argument: "Any"
-
-    def __init__(
-        self,
-        template: "Union[str, TypeConName]",
-        arguments: "Mapping[str, Any]",
-        choice: str,
-        choice_argument: "Any",
-    ):
-        object.__setattr__(self, "template_type", validate_template_id(template))
-        object.__setattr__(self, "arguments", arguments)
-        object.__setattr__(self, "choice", choice)
-        object.__setattr__(self, "choice_argument", choice_argument)
-
-
-class CommandBuilder:
-    """
-    Builder class for generating commands to be sent to the ledger.
-    """
-
-    @classmethod
-    def coerce(cls, obj, atomic_default=False) -> "CommandBuilder":
         """
-        Create a :class:`CommandBuilder` from the objects that an event handler is allowed to
-        return.
+        Initialize an :class:`ExerciseByKeyCommand`.
 
-        :param obj:
-        :param atomic_default:
-        :return:
+        :param template_id:
+            The contract template type.
+        :param key:
+            The contract key of the contract to exercise.
+        :param choice:
+            The choice to exercise.
+        :param argument:
+            The choice arguments. Can be omitted for choices that take no arguments.
         """
-        if isinstance(obj, CommandBuilder):
-            return obj
+        object.__setattr__(self, "_template_id", validate_template_id(template_id))
+        object.__setattr__(self, "_key", key)
+        object.__setattr__(self, "_choice", choice)
+        object.__setattr__(self, "_argument", argument)
 
-        builder = CommandBuilder(atomic_default=atomic_default)
-        if obj is not None:
-            builder.append(obj)
-        return builder
+    @property
+    def template_id(self) -> "TypeConName":
+        """
+        Return the contract template type.
+        """
+        return self._template_id
 
-    def __init__(self, atomic_default=False):
-        self._atomic_default = atomic_default
-        self._commands = [[]]  # type: List[List[Command]]
-        self._defaults = CommandDefaults()
+    @property
+    def key(self) -> "Any":
+        """
+        Return the contract key of the contract to exercise.
+        """
+        return self._key
 
-    def defaults(
-        self,
-        party: Optional[Party] = None,
-        ledger_id: Optional[str] = None,
-        workflow_id: Optional[str] = None,
-        application_id: Optional[str] = None,
-        command_id: Optional[str] = None,
-        deduplication_time: Optional[timedelta] = None,
-    ) -> None:
-        if party is not None:
-            self._defaults.default_party = party
-        if ledger_id is not None:
-            self._defaults.ledger_id = ledger_id
-        if workflow_id is not None:
-            self._defaults.default_workflow_id = workflow_id
-        if application_id is not None:
-            self._defaults.default_application_id = application_id
-        if command_id is not None:
-            self._defaults.default_command_id = command_id
-        if deduplication_time is not None:
-            self._defaults.default_deduplication_time = deduplication_time
+    @property
+    def choice(self) -> str:
+        """
+        Return the choice to exercise.
+        """
+        return self._choice
 
-    def create(self, template, arguments=None) -> "CommandBuilder":
-        return self.append(create(template, arguments=arguments))
+    @property
+    def argument(self) -> "Any":
+        """
+        Return the choice arguments.
+        """
+        return self._argument
 
-    def exercise(self, contract, choice, arguments=None) -> "CommandBuilder":
-        return self.append(exercise(contract, choice, arguments=arguments))
-
-    def create_and_exercise(
-        self, template, create_arguments, choice_name, choice_arguments=None
-    ) -> "CommandBuilder":
-        return self.append(
-            create_and_exercise(template, create_arguments, choice_name, choice_arguments)
+    def __eq__(self, other: "Any") -> bool:
+        return (
+            isinstance(other, ExerciseByKeyCommand)
+            and self.template_id == other.template_id
+            and self.key == other.key
+            and self.choice == other.choice
+            and self.argument == other.argument
         )
-
-    def append(self, *commands: CommandsOrCommandSequence) -> "CommandBuilder":
-        """
-        Append one or more commands, or list of commands to the :class:`CommandBuilder` in flight.
-        This method respects the value of ``atomic_default`` that this object was constructed with.
-        In order to force commands to be submitted either atomically, use :meth:`append_atomically`.
-        To allow these commands to be submitted in parallel use :meth:`append_nonatomically`.
-
-        :param commands: One or more commands, or list of commands to be submitted to the ledger.
-        :return: This object.
-        """
-        if self._atomic_default:
-            # a command builder that defaults to being atomic will put all commands in a single
-            # transaction; build on the very first transaction
-            self._commands[0].extend(flatten_command_sequence(commands))
-            return self
-        else:
-            return self.append_nonatomically(*commands)
-
-    def append_atomically(self, *commands: Union[Command, Sequence[Command]]) -> "CommandBuilder":
-        self._commands.extend([flatten_command_sequence(commands)])
-        return self
-
-    def append_nonatomically(
-        self, *commands: Union[Command, Sequence[Command]]
-    ) -> "CommandBuilder":
-        self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
-        return self
-
-    def build(self, defaults: "Optional[CommandDefaults]" = None) -> "Collection[CommandPayload]":
-        """
-        Return a collection of commands.
-        """
-        if defaults is None:
-            raise ValueError("defaults must currently be specified")
-
-        command_id = (
-            defaults.default_command_id or self._defaults.default_command_id or uuid.uuid4().hex
-        )
-
-        return [
-            CommandPayload(
-                party=defaults.default_party or self._defaults.default_party,
-                ledger_id=defaults.default_ledger_id or self._defaults.default_ledger_id,
-                workflow_id=defaults.default_workflow_id or self._defaults.default_workflow_id,
-                application_id=defaults.default_application_id
-                or self._defaults.default_application_id,
-                command_id=command_id,
-                deduplication_time=defaults.default_deduplication_time
-                or self._defaults.default_deduplication_time,
-                commands=commands,
-            )
-            for i, commands in enumerate(self._commands)
-            if commands
-        ]
-
-    def __format__(self, format_spec):
-        if format_spec == "c":
-            return str(self._commands)
-        else:
-            return repr(self)
-
-    def __repr__(self):
-        return f"CommandBuilder({self._commands})"
-
-
-def flatten_command_sequence(commands: Sequence[CommandsOrCommandSequence]) -> List[Command]:
-    """
-    Convert a list of mixed commands, ``None``, and list of commands into an ordered sequence of
-    non-``None`` commands.
-    """
-    ret = []  # type: List[Command]
-    errors = []
-
-    for i, obj in enumerate(commands):
-        if obj is not None:
-            if isinstance(obj, Command):
-                ret.append(obj)
-            else:
-                try:
-                    cmd_iter = iter(obj)
-                except TypeError:
-                    errors.append(((i,), obj))
-                    continue
-                for j, cmd in enumerate(cmd_iter):
-                    if isinstance(cmd, Command):
-                        ret.append(cmd)
-                    else:
-                        errors.append(((i, j), cmd))
-    if errors:
-        raise ValueError(
-            f"Failed to interpret some elements as Commands in the list: " f"$[{index}] = {command}"
-            for index, command in errors
-        )
-    return ret
-
-
-@dataclass
-class CommandDefaults:
-    """
-    Values to use for a :class:`Command` when no value is specified with the creation of the
-    command.
-    """
-
-    default_party: Optional[Party] = None
-    default_ledger_id: Optional[str] = None
-    default_workflow_id: Optional[str] = None
-    default_application_id: Optional[str] = None
-    default_command_id: Optional[str] = None
-    default_deduplication_time: Optional[timedelta] = None
-
-
-@dataclass(frozen=True)
-class CommandPayload:
-    """
-    A request to mutate active state of the ledger.
-
-    .. attribute:: CommandPayload.party
-        The party submitting the request.
-    .. attribute:: CommandPayload.application_id:
-        An optional application ID to accompany the request.
-    .. attribute:: CommandPayload.command_id:
-        A hash that represents the BIM commitment.
-    .. attribute:: CommandPayload.deduplication_time:
-        The maximum time interval before the client should consider this command expired.
-    .. attribute:: CommandPayload.commands
-        A sequence of commands to submit to the ledger. These commands are submitted atomically
-        (in other words, they all succeed or they all fail).
-    .. attribute:: CommandPayload.deduplication_time:
-        The length of the time window during which all commands with the same party and command ID
-        will be deduplicated. Duplicate commands submitted before the end of this window return an
-        ``ALREADY_EXISTS`` error.
-    """
-
-    party: Party
-    ledger_id: str
-    workflow_id: str
-    application_id: str
-    command_id: str
-    commands: "Sequence[Command]"
-    deduplication_time: "Optional[timedelta]" = None
-
-    def __post_init__(self):
-        missing_fields = [
-            field.name
-            for field in fields(self)
-            if field.name != "deduplication_time" and getattr(self, field.name) is None
-        ]
-        if missing_fields:
-            raise ValueError(
-                f"Some fields are set to None when they are required: " f"{missing_fields}"
-            )
-
-
-def create(template, arguments=None):
-    if not isinstance(template, str):
-        raise ValueError(
-            "template must be a string name, a template type, or an instantiated template"
-        )
-
-    return CreateCommand(template, arguments)
-
-
-def exercise(contract, choice, arguments=None):
-    if not isinstance(choice, str):
-        raise ValueError(
-            "choice must be a string name, a template type, or an instantiated template"
-        )
-
-    return ExerciseCommand(contract, choice, arguments)
-
-
-def exercise_by_key(template, contract_key, choice_name, choice_argument):
-    return ExerciseByKeyCommand(template, contract_key, choice_name, choice_argument)
-
-
-def create_and_exercise(template, create_arguments, choice_name, choice_argument):
-    return CreateAndExerciseCommand(template, create_arguments, choice_name, choice_argument)
 
 
 class Serializer:
@@ -430,32 +318,32 @@ class AbstractSerializer(Serializer):
 
     def serialize_command(self, command: "Command") -> "Any":
         if isinstance(command, CreateCommand):
-            name = self.lookup.template_name(command.template_type)
-            value = self.serialize_value(con(name), command.arguments)
+            name = self.lookup.template_name(command.template_id)
+            value = self.serialize_value(con(name), command.payload)
             return self.serialize_create_command(name, value)
 
         elif isinstance(command, ExerciseCommand):
-            template = self.lookup.template(command.contract.value_type)
+            template = self.lookup.template(command.contract_id.value_type)
             choice = find_choice(template, command.choice)
-            args = self.serialize_value(choice.arg_binder.type, command.arguments)
-            return self.serialize_exercise_command(command.contract, choice.name, args)
+            args = self.serialize_value(choice.arg_binder.type, command.argument)
+            return self.serialize_exercise_command(command.contract_id, choice.name, args)
 
         elif isinstance(command, CreateAndExerciseCommand):
-            name = self.lookup.template_name(command.template_type)
+            name = self.lookup.template_name(command.template_id)
             template = self.lookup.template(name)
-            create_value = self.serialize_value(con(name), command.arguments)
+            create_value = self.serialize_value(con(name), command.payload)
             choice = find_choice(template, command.choice)
-            choice_args = self.serialize_value(choice.arg_binder.type, command.choice_argument)
+            choice_args = self.serialize_value(choice.arg_binder.type, command.argument)
             return self.serialize_create_and_exercise_command(
                 name, create_value, choice.name, choice_args
             )
 
         elif isinstance(command, ExerciseByKeyCommand):
-            name = self.lookup.template_name(command.template_type)
+            name = self.lookup.template_name(command.template_id)
             template = self.lookup.template(name)
-            key_value = self.serialize_value(template.key.type, command.contract_key)
+            key_value = self.serialize_value(template.key.type, command.key)
             choice = find_choice(template, command.choice)
-            choice_args = self.serialize_value(choice.arg_binder.type, command.choice_argument)
+            choice_args = self.serialize_value(choice.arg_binder.type, command.argument)
             return self.serialize_exercise_by_key_command(name, key_value, choice.name, choice_args)
 
         else:
