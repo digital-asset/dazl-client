@@ -4,12 +4,43 @@
 """
 This module contains the Python API for interacting with the Ledger API.
 """
+from ast import literal_eval
+from configparser import ConfigParser
+from pathlib import Path
+
+import pkg_resources
+
+__all__ = [
+    "AIOPartyClient",
+    "Command",
+    "ContractData",
+    "ContractId",
+    "CreateAndExerciseCommand",
+    "CreateCommand",
+    "DazlError",
+    "ExerciseByKeyCommand",
+    "ExerciseCommand",
+    "LOG",
+    "Network",
+    "Party",
+    "SimplePartyClient",
+    "__version__",
+    "async_network",
+    "create",
+    "create_and_exercise",
+    "exercise",
+    "exercise_by_key",
+    "frozendict",
+    "run",
+    "setup_default_logger",
+    "simple_client",
+    "write_acs",
+]
+
+
 from ._logging import LOG
 from .client import AIOPartyClient, Network, SimplePartyClient, async_network, run, simple_client
-from .pretty.table import write_acs
-from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
-from .protocols.commands import (
-    Command,
+from .client.commands import (
     CreateAndExerciseCommand,
     CreateCommand,
     ExerciseByKeyCommand,
@@ -19,6 +50,9 @@ from .protocols.commands import (
     exercise,
     exercise_by_key,
 )
+from .pretty.table import write_acs
+from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
+from .protocols.commands import Command
 from .util.logging import setup_default_logger
 
 try:
@@ -45,12 +79,6 @@ def _get_version() -> str:
      2. Use the value from the local pyproject.toml file (this is used when
         running dazl from source).
     """
-    from ast import literal_eval
-    from configparser import ConfigParser
-    from pathlib import Path
-
-    import pkg_resources
-
     try:
         return pkg_resources.require("dazl")[0].version
     except pkg_resources.DistributionNotFound:

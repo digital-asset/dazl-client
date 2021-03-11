@@ -6,24 +6,26 @@ This module has been relocated to ``dazl.client.commands``, though if possible y
 ``dazl.protocol.commands``.
 """
 
-from ..protocols.commands import (
-    AbstractSerializer,
-    Command,
+from ..client.commands import (
     CommandBuilder,
     CommandDefaults,
     CommandPayload,
     CommandsOrCommandSequence,
-    CreateAndExerciseCommand,
-    CreateCommand,
     EventHandlerResponse,
-    ExerciseByKeyCommand,
-    ExerciseCommand,
-    Serializer,
     create,
     create_and_exercise,
     exercise,
     exercise_by_key,
     flatten_command_sequence,
+)
+from ..protocols.commands import (
+    AbstractSerializer,
+    Command,
+    CreateAndExerciseCommand,
+    CreateCommand,
+    ExerciseByKeyCommand,
+    ExerciseCommand,
+    Serializer,
 )
 
 __all__ = [

@@ -4,14 +4,20 @@
 """
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 # noinspection PyPep8Naming
 from . import model as G
 from ...damlast.daml_lf_1 import TypeConName
 from ...prim import ContractId, timedelta_to_duration
 from ...values.protobuf import ProtobufEncoder, set_value
-from ..commands import AbstractSerializer, CommandPayload
+from ..commands import AbstractSerializer
+
+if TYPE_CHECKING:
+    from ...client.commands import CommandPayload
+
+
+__all__ = ["as_identifier", "ProtobufSerializer"]
 
 
 def as_identifier(tref: "TypeConName") -> "G.Identifier":
@@ -32,7 +38,7 @@ class ProtobufSerializer(AbstractSerializer):
     # COMMAND serializers
     ################################################################################################
 
-    def serialize_command_request(self, command_payload: CommandPayload) -> G.SubmitRequest:
+    def serialize_command_request(self, command_payload: "CommandPayload") -> G.SubmitRequest:
         commands = [self.serialize_command(command) for command in command_payload.commands]
         return G.SubmitRequest(
             commands=G.Commands(

@@ -1,6 +1,5 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
 from asyncio import Future, ensure_future, gather, get_event_loop, wait
 from concurrent.futures import ALL_COMPLETED
 from dataclasses import asdict, dataclass, field, fields, replace
@@ -20,17 +19,12 @@ from typing import (
     TypeVar,
 )
 import uuid
+import warnings
 
 from .. import LOG
 from ..damlast.daml_lf_1 import TypeConName
 from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerClient, LedgerNetwork
-from ..protocols.commands import (
-    CommandBuilder,
-    CommandDefaults,
-    CommandPayload,
-    EventHandlerResponse,
-)
 from ..protocols.events import (
     ActiveContractSetEvent,
     BaseEvent,
@@ -52,6 +46,7 @@ from ..util.typing import safe_cast
 from ._conn_settings import OAuthSettings, connection_settings
 from ._writer_verify import ValidateSerializer
 from .bots import Bot, BotCallback, BotCollection, BotFilter
+from .commands import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from .config import NetworkConfig, PartyConfig
 from .ledger import LedgerMetadata
 from .state import (
@@ -455,7 +450,7 @@ class _PartyClientImpl:
 
     def write_commands(
         self,
-        commands: EventHandlerResponse,
+        commands: "EventHandlerResponse",
         ignore_errors: bool = False,
         workflow_id: "Optional[str]" = None,
         deduplication_time: "Optional[TimeDeltaLike]" = None,
@@ -481,7 +476,9 @@ class _PartyClientImpl:
         """
         if workflow_id is None:
             workflow_id = uuid.uuid4().hex
-        cb = CommandBuilder.coerce(commands, atomic_default=True)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cb = CommandBuilder.coerce(commands, atomic_default=True)
         cb.defaults(
             workflow_id=workflow_id,
             deduplication_time=(
