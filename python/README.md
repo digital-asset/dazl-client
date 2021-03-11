@@ -25,7 +25,7 @@ pip install --user dazl
 
 Requirements
 ------------
-* Python 3.6+
+* Python 3.8+
 * GNU Make
 * [Poetry](https://python-poetry.org/) for build/dependency management
 * [DAML SDK](https://www.daml.com)

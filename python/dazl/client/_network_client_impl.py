@@ -13,6 +13,7 @@ from typing import (
     Callable,
     Collection,
     Dict,
+    Literal,
     Optional,
     Set,
     Tuple,
@@ -20,11 +21,6 @@ from typing import (
     Union,
     overload,
 )
-
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
 
 from .. import LOG
 from ..damlast.lookup import MultiPackageLookup
@@ -35,12 +31,7 @@ from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
 from ..protocols.events import BaseEvent, InitEvent, ReadyEvent
 from ..scheduler import Invoker, RunLevel
-from ._base_model import (
-    CREATE_IF_MISSING,
-    EXCEPTION_IF_MISSING,
-    NONE_IF_MISSING,
-    IfMissingPartyBehavior,
-)
+from ._base_model import CREATE_IF_MISSING, NONE_IF_MISSING, IfMissingPartyBehavior
 from ._conn_settings import connection_settings
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
@@ -273,14 +264,14 @@ class _NetworkImpl:
         self,
         party: Party,
         ctor: None = None,
-        if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING,
-    ) -> _PartyClientImpl:
+        if_missing: "IfPartyMissingBehavior" = CREATE_IF_MISSING,
+    ) -> "_PartyClientImpl":
         ...
 
     @overload
     def party_impl(
         self, party: Party, ctor: None = None, if_missing: NONE_IF_MISSING = CREATE_IF_MISSING
-    ) -> Optional[_PartyClientImpl]:
+    ) -> "Optional[_PartyClientImpl]":
         ...
 
     @overload
@@ -288,8 +279,8 @@ class _NetworkImpl:
         self,
         party: Party,
         ctor: "Callable[[_PartyClientImpl], T]",
-        if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING,
-    ) -> T:
+        if_missing: "Literal[1, 3]" = CREATE_IF_MISSING,
+    ) -> "T":
         ...
 
     @overload
@@ -297,8 +288,8 @@ class _NetworkImpl:
         self,
         party: Party,
         ctor: "Callable[[_PartyClientImpl], T]",
-        if_missing: NONE_IF_MISSING = CREATE_IF_MISSING,
-    ) -> Optional[T]:
+        if_missing: "NONE_IF_MISSING" = CREATE_IF_MISSING,
+    ) -> "Optional[T]":
         ...
 
     def party_impl(self, party, ctor=None, if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING):
