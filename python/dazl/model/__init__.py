@@ -5,32 +5,25 @@
 :mod:`dazl.model` package
 =========================
 
-The :mod:`dazl.model` module is the low-level domain model for the Ledger. Most of the time, these
-classes will not be instantiated directly, but will frequently be passed to your code to work with.
-
-The most important classes:
-
-:mod:`dazl.model.core`:
-    :class:`~dazl.model.core.ContractId`
-
-:mod:`dazl.model.writing`:
-    Subclasses of :class:`~dazl.model.writing.Command` for the Write API:
-    :class:`~dazl.model.writing.CreateCommand` and
-    :class:`~dazl.model.writing.ExerciseCommand`
-
-:mod:`dazl.model.types`:
-    Type description classes:
-    Subclasses of :class:`~dazl.model.types.Type`:
-    :class:`~dazl.model.types.ScalarType`,
-    :class:`~dazl.model.types.ListType`,
-    :class:`~dazl.model.types.RecordType`,
-    :class:`~dazl.model.types.VariantType`
+This module is deprecated. These types have generally moved to :mod:`dazl.client` (for the API
+introduced in dazl v5) or :mod:`dazl.protocols` (for the API introduced in dazl v8).
 
 .. automodule:: dazl.model.core
 .. automodule:: dazl.model.ledger
+.. automodule:: dazl.model.lookup
+.. automodule:: dazl.model.network
 .. automodule:: dazl.model.reading
 .. automodule:: dazl.model.writing
 
 """
 
-from . import core, ledger
+import warnings
+
+from . import core, ledger, lookup, network, reading, writing
+
+__all__ = ["core", "ledger", "lookup", "network", "reading", "writing"]
+
+warnings.warn(
+    "dazl.model is deprecated; these types have moved to either dazl.protocols or dazl.client.",
+    DeprecationWarning,
+)
