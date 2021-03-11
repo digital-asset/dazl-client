@@ -4,8 +4,7 @@
 from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
-import sys
-from typing import AbstractSet, Awaitable, Callable, Dict, Set, TypeVar
+from typing import AbstractSet, Awaitable, Callable, Dict, Protocol, Set, TypeVar
 
 from .. import LOG
 from ..damlast.daml_lf_1 import Archive, Package, PackageRef
@@ -13,12 +12,6 @@ from ..damlast.errors import NameNotFoundError, PackageNotFoundError
 from ..damlast.lookup import MultiPackageLookup, validate_template
 from ..damlast.pkgfile import Dar
 from ..prim import DazlError
-
-if sys.version_info >= (3, 7):
-    from typing import Protocol
-else:
-    from typing_extensions import Protocol
-
 
 __all__ = ["SyncPackageService", "PackageLoader"]
 

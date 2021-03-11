@@ -122,6 +122,7 @@ $(poetry_build_marker): $(build_dir) pyproject.toml $(dazl_files)
 	touch $@
 
 $(poetry_install_marker): $(build_dir) poetry.lock
+	poetry run pip install -U pip
 	poetry install -E oauth -E prometheus -E pygments -E server
 	touch $@
 
