@@ -7,7 +7,7 @@ Types that describe the behavior of the ledger itself.
 from dataclasses import dataclass
 
 from ..protocols.commands import Serializer
-from .pkg_loader import PackageLoader
+from ..protocols.pkgloader_aio import PackageLoader
 
 
 @dataclass(init=False, frozen=True)
