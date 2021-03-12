@@ -23,12 +23,12 @@ the gRPC Ledger API and HTTP JSON API.
 .. autoclass:: ExerciseByKeyCommand
    :members:
 """
-from typing import AbstractSet, Any, Collection, Mapping, NoReturn, Optional, Union
+from typing import AbstractSet, Any, Collection, Mapping, NoReturn, Optional, Sequence, Union
 
-from dazl.damlast.daml_lf_1 import TypeConName
-from dazl.damlast.lookup import parse_type_con_name
-from dazl.prim import ContractData, ContractId, Party
-from dazl.util.typing import safe_cast
+from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.lookup import parse_type_con_name
+from ..prim import ContractData, ContractId, Party
+from ..util.typing import safe_cast
 
 __all__ = [
     "Command",
@@ -38,6 +38,8 @@ __all__ = [
     "ExerciseByKeyCommand",
     "CreateEvent",
     "ArchiveEvent",
+    "ExerciseResponse",
+    "PartyInfo",
 ]
 
 
@@ -365,6 +367,55 @@ class ArchiveEvent:
     @property
     def contract_id(self) -> "ContractId":
         return self._contract_id
+
+
+class ExerciseResponse:
+    __slots__ = "_result", "_events"
+
+    _result: "Optional[Any]"
+    _events: "Sequence[Union[CreateEvent, ArchiveEvent]]"
+
+    def __init__(
+        self, result: "Optional[Any]", events: "Sequence[Union[CreateEvent, ArchiveEvent]]"
+    ):
+        object.__setattr__(self, "_result", result)
+        object.__setattr__(self, "_events", tuple(events))
+
+    @property
+    def result(self) -> "Optional[Any]":
+        return self._result
+
+    @property
+    def events(self) -> "Sequence[Union[CreateEvent, ArchiveEvent]]":
+        return self._events
+
+    def __repr__(self):
+        return f"ExerciseResponse(result={self.result}, events={self.events})"
+
+
+class PartyInfo:
+    __slots__ = "_party", "_display_name", "_is_local"
+
+    _party: "Party"
+    _display_name: str
+    _is_local: bool
+
+    def __init__(self, party: "Party", display_name: str, is_local: bool):
+        object.__setattr__(self, "_party", party)
+        object.__setattr__(self, "_display_name", display_name)
+        object.__setattr__(self, "_is_local", is_local)
+
+    @property
+    def party(self) -> "Party":
+        return self._party
+
+    @property
+    def display_name(self) -> str:
+        return self._display_name
+
+    @property
+    def is_local(self) -> bool:
+        return self._is_local
 
 
 def validate_template_id(value: "Union[str, TypeConName]") -> "TypeConName":

@@ -5,10 +5,12 @@
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
 from typing import TYPE_CHECKING, Any
+import warnings
 
 # noinspection PyPep8Naming
 from . import model as G
 from ...damlast.daml_lf_1 import TypeConName
+from ...ledger.grpc.codec_aio import Codec
 from ...prim import ContractId, timedelta_to_duration
 from ...values.protobuf import ProtobufEncoder, set_value
 from ..serializers import AbstractSerializer
@@ -21,13 +23,8 @@ __all__ = ["as_identifier", "ProtobufSerializer"]
 
 
 def as_identifier(tref: "TypeConName") -> "G.Identifier":
-    if isinstance(tref, TypeConName):
-        identifier = G.Identifier()
-        _set_template(identifier, tref)
-        return identifier
-
-    else:
-        raise TypeError("as_identifier requires a TypeConName")
+    warnings.warn("Use Codec.encode_identifier instead.", DeprecationWarning, stacklevel=2)
+    return Codec.encode_identifier(tref)
 
 
 class ProtobufSerializer(AbstractSerializer):
