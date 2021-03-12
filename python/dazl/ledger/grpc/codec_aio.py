@@ -11,7 +11,7 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 # References:
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 
-from typing import Any, List, Optional, Sequence, Tuple, Union
+from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple, Union
 
 from ..._gen.com.daml.ledger.api.v1.admin.party_management_service_pb2 import (
     PartyDetails as G_PartyDetails,
@@ -62,7 +62,10 @@ from ..api_types import (
     PartyInfo,
 )
 from ..pkgcache import SHARED_PACKAGE_DATABASE
-from ..pkgloader_aio import PackageLoader, PackageService
+from ..pkgloader_aio import PackageLoader
+
+if TYPE_CHECKING:
+    from .conn_aio import Connection
 
 __all__ = ["Codec"]
 

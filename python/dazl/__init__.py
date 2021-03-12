@@ -50,6 +50,7 @@ from .client.commands import (
     exercise_by_key,
 )
 from .ledger import Command
+from .ledger.grpc import connect
 from .pretty.table import write_acs
 from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
 from .util.logging import setup_default_logger
