@@ -6,7 +6,7 @@ import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..prim import ContractId
-from ..protocols.commands import AbstractSerializer
+from ..protocols.serializers import AbstractSerializer
 from ..values import CanonicalMapper
 from .commands import CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
 

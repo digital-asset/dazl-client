@@ -13,8 +13,9 @@ import sys
 from typing import AbstractSet
 import warnings
 
-from ..damlast.daml_lf_1 import PackageRef
-from ..damlast.lookup import MultiPackageLookup
+from dazl.damlast.daml_lf_1 import PackageRef
+from dazl.damlast.lookup import MultiPackageLookup
+
 from .pkgloader_aio import DEFAULT_TIMEOUT, PackageLoader as NewPackageLoader
 
 if sys.version_info >= (3, 7):

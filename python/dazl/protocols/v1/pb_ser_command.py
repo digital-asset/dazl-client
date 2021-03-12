@@ -11,7 +11,7 @@ from . import model as G
 from ...damlast.daml_lf_1 import TypeConName
 from ...prim import ContractId, timedelta_to_duration
 from ...values.protobuf import ProtobufEncoder, set_value
-from ..commands import AbstractSerializer
+from ..serializers import AbstractSerializer
 
 if TYPE_CHECKING:
     from ...client.commands import CommandPayload

@@ -6,8 +6,9 @@ Types that describe the behavior of the ledger itself.
 """
 from dataclasses import dataclass
 
-from ..protocols.commands import Serializer
-from ..protocols.pkgloader_aio import PackageLoader
+from dazl.ledger.pkgloader_aio import PackageLoader
+
+from ..protocols.serializers import Serializer
 
 
 @dataclass(init=False, frozen=True)

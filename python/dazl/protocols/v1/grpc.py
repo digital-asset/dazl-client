@@ -209,8 +209,9 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
 
 
 def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterable[LedgerMetadata]":
+    from dazl.ledger.pkgloader_aio_compat import PackageLoader
+
     from ...client.ledger import LedgerMetadata
-    from ..pkgloader_aio_compat import PackageLoader
     from .pb_ser_command import ProtobufSerializer
 
     LOG.info("grpc_main_thread...")

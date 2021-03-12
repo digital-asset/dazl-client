@@ -37,7 +37,6 @@ __all__ = [
     "write_acs",
 ]
 
-
 from ._logging import LOG
 from .client import AIOPartyClient, Network, SimplePartyClient, async_network, run, simple_client
 from .client.commands import (
@@ -50,9 +49,9 @@ from .client.commands import (
     exercise,
     exercise_by_key,
 )
+from .ledger import Command
 from .pretty.table import write_acs
 from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
-from .protocols.commands import Command
 from .util.logging import setup_default_logger
 
 try:

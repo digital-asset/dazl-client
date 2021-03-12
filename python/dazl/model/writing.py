@@ -3,7 +3,7 @@
 
 """
 This module has been relocated to ``dazl.client.commands``, though if possible you should move to
-``dazl.protocol.commands``.
+the command types defined in ``dazl.ledger`` instead.
 """
 
 from ..client.commands import (
@@ -18,15 +18,14 @@ from ..client.commands import (
     exercise_by_key,
     flatten_command_sequence,
 )
-from ..protocols.commands import (
-    AbstractSerializer,
+from ..ledger import (
     Command,
     CreateAndExerciseCommand,
     CreateCommand,
     ExerciseByKeyCommand,
     ExerciseCommand,
-    Serializer,
 )
+from ..protocols.serializers import AbstractSerializer, Serializer
 
 __all__ = [
     "AbstractSerializer",
