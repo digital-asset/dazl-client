@@ -6,12 +6,16 @@ This model contains definitions for the data classes used at the client layer of
 """
 
 from enum import IntEnum
-from typing import NamedTuple, Optional
+from typing import Literal, NamedTuple, Optional
 
-try:
-    from typing import Literal  # type: ignore
-except ImportError:
-    from typing_extensions import Literal  # type: ignore
+__all__ = [
+    "ExitCode",
+    "LedgerRun",
+    "CREATE_IF_MISSING",
+    "NONE_IF_MISSING",
+    "EXCEPTION_IF_MISSING",
+    "IfMissingPartyBehavior",
+]
 
 
 class ExitCode(IntEnum):
@@ -53,4 +57,4 @@ CREATE_IF_MISSING = Literal[1]
 NONE_IF_MISSING = Literal[2]
 EXCEPTION_IF_MISSING = Literal[3]
 
-IfMissingPartyBehavior = Literal[CREATE_IF_MISSING, NONE_IF_MISSING, EXCEPTION_IF_MISSING]
+IfMissingPartyBehavior = Literal[1, 2, 3]

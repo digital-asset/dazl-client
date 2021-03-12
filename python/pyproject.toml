@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "dazl"
-version = "7.3.6"
+version = "8.0.0"
 description = "high-level Ledger API client for DAML ledgers"
 license = "Apache-2.0"
 authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]
@@ -13,9 +13,8 @@ homepage = "https://github.com/digital-asset/dazl-client"
 keywords = ["daml", "blockchain", "dlt", "distributed ledger", "digital asset"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 aiohttp = { version = "*", optional = true }
-dataclasses = { version = "*", python = "~=3.6.0" }
 google-auth = { version = "*", optional = true }
 grpcio = ">=1.32.0"
 oauthlib = { version = "*", optional = true }
@@ -25,7 +24,6 @@ pygments = { version = "*", optional = true }
 requests = "*"
 semver = "*"
 toposort = "*"
-typing_extensions = { version = "*", python = "<3.8.0" }
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"

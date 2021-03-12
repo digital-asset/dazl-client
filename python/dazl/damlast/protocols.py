@@ -1,13 +1,7 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import sys
-from typing import TYPE_CHECKING, AbstractSet, Any, Collection
-
-if sys.version_info >= (3, 7):
-    from typing import Protocol, runtime_checkable
-else:
-    from typing_extensions import Protocol, runtime_checkable
+from typing import TYPE_CHECKING, AbstractSet, Any, Collection, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
     from .daml_lf_1 import (
