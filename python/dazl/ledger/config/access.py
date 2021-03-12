@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 from collections.abc import MutableSet as MutableSetBase, Set as SetBase
 import json
+from logging import Logger
 import os
 from pathlib import Path
 from typing import (
@@ -64,12 +65,12 @@ def create_access(
     application_name: Optional[str] = None,
     oauth_token: Optional[str] = None,
     oauth_token_file: Optional[str] = None,
+    logger: Optional[Logger] = None,
 ) -> AccessConfig:
     """
     Create an appropriate instance of :class:`AccessConfig`.
 
     See :meth:`Config.create` for a more detailed description of these parameters.
-
     """
     # admin = None is effectively the same as admin = False in this context
     is_property_based = read_as or act_as or admin or ledger_id or application_name
@@ -88,7 +89,7 @@ def create_access(
         raise ConfigError("no oauth token access or read_as/act_as/admin was specified")
 
     # how do they configure thee? let me count the ways...
-    if sum(map(int, (is_property_based, oauth_token, oauth_token_file))):
+    if sum(map(int, (bool(is_property_based), bool(oauth_token), bool(oauth_token_file)))) > 1:
         raise ConfigError(
             "must specify ONE of read_as/act_as/admin, oauth_token, or oauth_token_file"
         )
