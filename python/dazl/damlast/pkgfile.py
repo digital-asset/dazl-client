@@ -135,6 +135,26 @@ class DarFile:
         """
         return frozenset(a.hash for a in self._pb_archives())
 
+    async def get_package(self, package_id: "PackageRef") -> bytes:
+        """
+        Return bytes corresponding to the specified :class:`PackageRef`. If this DAR were to be
+        uploaded to a ledger, these are the bytes that would be returned for the specified
+        :class:`PackageRef`.
+
+        This method is not actually async; it merely has an async signature to comply with the
+        PackageLoader protocol.
+        """
+        return self.package_bytes(package_id)
+
+    async def list_package_ids(self):
+        """
+        Return the set of package IDs from this DAR.
+
+        This method is not actually async; it merely has an async signature to comply with the
+        PackageLoader protocol.
+        """
+        return self.package_ids()
+
     def _dalf_names(self) -> "Generator[str, None, None]":
         """
         Return a generator over the names of DALF files in this DarFile.

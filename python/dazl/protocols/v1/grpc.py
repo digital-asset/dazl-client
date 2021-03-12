@@ -8,6 +8,7 @@ from asyncio import gather
 from datetime import datetime
 from threading import Event
 from typing import TYPE_CHECKING, AbstractSet, Iterable, Optional, Sequence
+import warnings
 
 from grpc import Channel, RpcError, insecure_channel, secure_channel, ssl_channel_credentials
 
@@ -209,23 +210,25 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
 
 def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterable[LedgerMetadata]":
     from ...client.ledger import LedgerMetadata
-    from ...client.pkg_loader import PackageLoader
+    from ..pkgloader_aio_compat import PackageLoader
     from .pb_ser_command import ProtobufSerializer
 
     LOG.info("grpc_main_thread...")
 
     package_provider = GRPCPackageProvider(connection, ledger_id)
 
-    yield LedgerMetadata(
-        ledger_id=ledger_id,
-        package_loader=PackageLoader(
-            package_lookup=connection.options.lookup,
-            conn=package_provider,
-            timeout=connection.options.connect_timeout,
-        ),
-        serializer=ProtobufSerializer(connection.options.lookup),
-        protocol_version="v1",
-    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        yield LedgerMetadata(
+            ledger_id=ledger_id,
+            package_loader=PackageLoader(
+                package_lookup=connection.options.lookup,
+                conn=package_provider,
+                timeout=connection.options.connect_timeout,
+            ),
+            serializer=ProtobufSerializer(connection.options.lookup),
+            protocol_version="v1",
+        )
 
     while not connection._closed.wait(1):
         pass
