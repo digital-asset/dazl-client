@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from dataclasses import dataclass
-from typing import Mapping
 
 import pytest
 
@@ -10,9 +9,10 @@ from dazl import CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, 
 from dazl.damlast import DarFile
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.protocols import SymbolLookup
+from dazl.ledger.grpc.codec_aio import Codec
 from dazl.prim import ContractId
 from dazl.protocols.v1 import model as G
-from dazl.protocols.v1.pb_ser_command import ProtobufSerializer, as_identifier
+from dazl.protocols.v1.pb_ser_command import ProtobufSerializer
 
 from .dars import Pending
 
@@ -22,8 +22,8 @@ class DarFixture:
     dar: DarFile
     lookup: SymbolLookup
 
-    def get_identifier(self, identifier: str) -> "Mapping[str, str]":
-        return as_identifier(self.lookup.data_type_name(identifier))
+    def get_identifier(self, identifier: str):
+        return Codec.encode_identifier(self.lookup.data_type_name(identifier))
 
 
 @pytest.fixture(scope="module")

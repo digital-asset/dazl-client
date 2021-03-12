@@ -300,6 +300,12 @@ class PackageLookup(SymbolLookup):
 class MultiPackageLookup(SymbolLookup):
     """
     Combines lookups across multiple archives.
+
+    This class is thread-safe. When calling :meth:`add_archive` and any of the other read-only
+    methods concurrently, read-only methods will NOT block; they will return the previous state
+    of the lookup.
+
+    Packages can only be added; they cannot be removed once added.
     """
 
     def __init__(self, archives: "Optional[Collection[Archive]]" = None):
