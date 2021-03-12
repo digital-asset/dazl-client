@@ -12,8 +12,8 @@ import uuid
 import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
+from ..ledger import api_types
 from ..prim import ContractData, ContractId, Party
-from ..protocols import commands as pcmd
 
 __all__ = [
     "CommandBuilder",
@@ -33,7 +33,7 @@ __all__ = [
 ]
 
 
-class CreateCommand(pcmd.CreateCommand):
+class CreateCommand(api_types.CreateCommand):
     """
     A command that creates a contract without any predecessors.
     """
@@ -43,9 +43,9 @@ class CreateCommand(pcmd.CreateCommand):
     ):
         warnings.warn(
             "dazl.client.commands.CreateCommand is deprecated; "
-            "prefer calling dazl.protocols.ledgerapi.Connection.create or "
+            "prefer calling dazl.ledger.Connection.create or "
             "dazl.client.PartyClient.submit_create, "
-            "or use dazl.protocols.commands.CreateCommand instead.",
+            "or use dazl.ledger.CreateCommand instead.",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -76,7 +76,7 @@ class CreateCommand(pcmd.CreateCommand):
         return self.payload
 
 
-class CreateAndExerciseCommand(pcmd.CreateAndExerciseCommand):
+class CreateAndExerciseCommand(api_types.CreateAndExerciseCommand):
     """
     A command that exercises a choice on a newly-created contract, in a single transaction.
     """
@@ -90,9 +90,9 @@ class CreateAndExerciseCommand(pcmd.CreateAndExerciseCommand):
     ):
         warnings.warn(
             "dazl.client.commands.CreateAndExerciseCommand is deprecated; "
-            "prefer calling dazl.protocols.ledgerapi.Connection.create_and_exercise or "
+            "prefer calling dazl.ledger.Connection.create_and_exercise or "
             "dazl.client.PartyClient.submit_create_and_exercise, "
-            "or use dazl.protocols.commands.CreateAndExerciseCommand instead.",
+            "or use dazl.ledger.CreateAndExerciseCommand instead.",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -138,7 +138,7 @@ class CreateAndExerciseCommand(pcmd.CreateAndExerciseCommand):
         return self.argument
 
 
-class ExerciseCommand(pcmd.ExerciseCommand):
+class ExerciseCommand(api_types.ExerciseCommand):
     """
     A command that exercises a choice on a contract identified by its contract ID.
     """
@@ -146,9 +146,9 @@ class ExerciseCommand(pcmd.ExerciseCommand):
     def __init__(self, contract: "ContractId", choice: str, arguments: "Optional[Any]" = None):
         warnings.warn(
             "dazl.client.commands.ExerciseCommand is deprecated; "
-            "prefer calling dazl.protocols.ledgerapi.Connection.exercise or "
+            "prefer calling dazl.ledger.Connection.exercise or "
             "dazl.client.PartyClient.submit_exercise, "
-            "or use dazl.protocols.commands.ExerciseCommand instead.",
+            "or use dazl.ledger.ExerciseCommand instead.",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -178,7 +178,7 @@ class ExerciseCommand(pcmd.ExerciseCommand):
         return self.argument
 
 
-class ExerciseByKeyCommand(pcmd.ExerciseByKeyCommand):
+class ExerciseByKeyCommand(api_types.ExerciseByKeyCommand):
     def __init__(
         self,
         template: "Union[str, TypeConName]",
@@ -188,9 +188,9 @@ class ExerciseByKeyCommand(pcmd.ExerciseByKeyCommand):
     ):
         warnings.warn(
             "dazl.client.commands.ExerciseByKeyCommand is deprecated; "
-            "prefer calling dazl.protocols.ledgerapi.Connection.exercise_by_key or "
+            "prefer calling dazl.ledger.Connection.exercise_by_key or "
             "dazl.client.PartyClient.submit_exercise_by_key, "
-            "or use dazl.protocols.commands.ExerciseByKeyCommand instead.",
+            "or use dazl.ledger.ExerciseByKeyCommand instead.",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -237,7 +237,7 @@ class ExerciseByKeyCommand(pcmd.ExerciseByKeyCommand):
         return self.argument
 
 
-CommandsOrCommandSequence = Union[None, pcmd.Command, Sequence[Optional[pcmd.Command]]]
+CommandsOrCommandSequence = Union[None, api_types.Command, Sequence[Optional[api_types.Command]]]
 
 
 # noinspection PyDeprecation
@@ -258,7 +258,7 @@ class CommandBuilder:
         """
         warnings.warn(
             "CommandBuilder is deprecated; "
-            "prefer calling dazl.protocols.ledgerapi.Connection.commands, "
+            "prefer calling dazl.ledger.Connection.commands, "
             "dazl.client.PartyClient.submit, or construct commands explicitly instead.",
             DeprecationWarning,
             stacklevel=2,
@@ -276,13 +276,13 @@ class CommandBuilder:
     def __init__(self, atomic_default: bool = False):
         warnings.warn(
             "CommandBuilder is deprecated; "
-            "prefer calling dazl.protocols.ledgerapi.Connection.commands, "
+            "prefer calling dazl.ledger.Connection.commands, "
             "dazl.client.PartyClient.submit, or construct commands explicitly instead.",
             DeprecationWarning,
             stacklevel=2,
         )
         self._atomic_default = atomic_default
-        self._commands = [[]]  # type: List[List[pcmd.Command]]
+        self._commands = [[]]  # type: List[List[api_types.Command]]
         self._defaults = CommandDefaults()
 
     def defaults(
@@ -345,13 +345,13 @@ class CommandBuilder:
             return self.append_nonatomically(*commands)
 
     def append_atomically(
-        self, *commands: "Union[pcmd.Command, Sequence[pcmd.Command]]"
+        self, *commands: "Union[api_types.Command, Sequence[api_types.Command]]"
     ) -> "CommandBuilder":
         self._commands.extend([flatten_command_sequence(commands)])
         return self
 
     def append_nonatomically(
-        self, *commands: "Union[pcmd.Command, Sequence[pcmd.Command]]"
+        self, *commands: "Union[api_types.Command, Sequence[api_types.Command]]"
     ) -> "CommandBuilder":
         self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
         return self
@@ -395,17 +395,17 @@ class CommandBuilder:
 
 def flatten_command_sequence(
     commands: "Sequence[CommandsOrCommandSequence]",
-) -> "List[pcmd.Command]":
+) -> "List[api_types.Command]":
     """
     Convert a list of mixed commands, ``None``, and list of commands into an ordered sequence of
     non-``None`` commands.
     """
-    ret = []  # type: List[pcmd.Command]
+    ret = []  # type: List[api_types.Command]
     errors = []
 
     for i, obj in enumerate(commands):
         if obj is not None:
-            if isinstance(obj, pcmd.Command):
+            if isinstance(obj, api_types.Command):
                 ret.append(obj)
             else:
                 try:
@@ -414,7 +414,7 @@ def flatten_command_sequence(
                     errors.append(((i,), obj))
                     continue
                 for j, cmd in enumerate(cmd_iter):
-                    if isinstance(cmd, pcmd.Command):
+                    if isinstance(cmd, api_types.Command):
                         ret.append(cmd)
                     else:
                         errors.append(((i, j), cmd))
@@ -468,7 +468,7 @@ class CommandPayload:
     workflow_id: str
     application_id: str
     command_id: str
-    commands: "Sequence[pcmd.Command]"
+    commands: "Sequence[api_types.Command]"
     deduplication_time: "Optional[timedelta]" = None
 
     def __post_init__(self):
@@ -487,9 +487,9 @@ class CommandPayload:
 def create(template, arguments=None):
     warnings.warn(
         "dazl.client.commands.create is deprecated; "
-        "prefer calling dazl.protocols.ledgerapi.Connection.create or "
+        "prefer calling dazl.ledger.Connection.create or "
         "dazl.client.PartyClient.submit_create, "
-        "or use dazl.protocols.commands.CreateCommand instead.",
+        "or use dazl.ledger.CreateCommand instead.",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -507,9 +507,9 @@ def create(template, arguments=None):
 def create_and_exercise(template, create_arguments, choice_name, choice_argument):
     warnings.warn(
         "dazl.client.commands.CreateAndExerciseCommand is deprecated; "
-        "prefer calling dazl.protocols.ledgerapi.Connection.create_and_exercise or "
+        "prefer calling dazl.ledger.Connection.create_and_exercise or "
         "dazl.client.PartyClient.submit_create_and_exercise, "
-        "or use dazl.protocols.commands.CreateAndExerciseCommand instead.",
+        "or use dazl.ledger.CreateAndExerciseCommand instead.",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -523,9 +523,9 @@ def create_and_exercise(template, create_arguments, choice_name, choice_argument
 def exercise(contract, choice, arguments=None):
     warnings.warn(
         "dazl.client.commands.exercise is deprecated; "
-        "prefer calling dazl.protocols.ledgerapi.Connection.exercise or "
+        "prefer calling dazl.ledger.Connection.exercise or "
         "dazl.client.PartyClient.submit_exercise, "
-        "or use dazl.protocols.commands.ExerciseCommand instead.",
+        "or use dazl.ledger.ExerciseCommand instead.",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -544,9 +544,9 @@ def exercise(contract, choice, arguments=None):
 def exercise_by_key(template, contract_key, choice_name, choice_argument):
     warnings.warn(
         "dazl.client.commands.ExerciseByKeyCommand is deprecated; "
-        "prefer calling dazl.protocols.ledgerapi.Connection.exercise_by_key or "
+        "prefer calling dazl.ledger.Connection.exercise_by_key or "
         "dazl.client.PartyClient.submit_exercise_by_key, "
-        "or use dazl.protocols.commands.ExerciseByKeyCommand instead.",
+        "or use dazl.ledger.ExerciseByKeyCommand instead.",
         DeprecationWarning,
         stacklevel=2,
     )

@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-Write-Side types
-----------------
+Protocol basic object definitions
+---------------------------------
 
-The :mod:`dazl.model.writing` module contains the Python classes used on the write-side of the
-Ledger API.
+The :mod:`dazl.protocols.obj` module contains the objects that define a common set of fields across
+the gRPC Ledger API and HTTP JSON API.
 
 .. autoclass:: Command
    :members:
@@ -14,18 +14,21 @@ Ledger API.
 .. autoclass:: CreateCommand
    :members:
 
+.. autoclass:: CreateAndExerciseCommand
+   :members:
+
 .. autoclass:: ExerciseCommand
    :members:
-"""
-from typing import Any, Mapping, NoReturn, Optional, Sequence, Union
 
-from ..damlast.daml_lf_1 import Type, TypeConName
-from ..damlast.daml_types import con
-from ..damlast.lookup import find_choice, parse_type_con_name
-from ..damlast.protocols import SymbolLookup
-from ..prim import ContractData, ContractId
-from ..util.typing import safe_cast
-from ..values import ValueMapper
+.. autoclass:: ExerciseByKeyCommand
+   :members:
+"""
+from typing import AbstractSet, Any, Collection, Mapping, NoReturn, Optional, Union
+
+from dazl.damlast.daml_lf_1 import TypeConName
+from dazl.damlast.lookup import parse_type_con_name
+from dazl.prim import ContractData, ContractId, Party
+from dazl.util.typing import safe_cast
 
 __all__ = [
     "Command",
@@ -33,8 +36,8 @@ __all__ = [
     "CreateAndExerciseCommand",
     "ExerciseCommand",
     "ExerciseByKeyCommand",
-    "Serializer",
-    "AbstractSerializer",
+    "CreateEvent",
+    "ArchiveEvent",
 ]
 
 
@@ -283,91 +286,85 @@ class ExerciseByKeyCommand(Command):
         )
 
 
-class Serializer:
+class CreateEvent:
     """
-    Serializer interface for objects on the write-side of the API.
-    """
-
-    def serialize_value(self, tt: "Type", obj: "Any") -> "Any":
-        raise NotImplementedError("serialize_value requires an implementation")
-
-    def serialize_command(self, command: "Any") -> "Any":
-        raise NotImplementedError("serialize_command requires an implementation")
-
-
-class AbstractSerializer(Serializer):
-    """
-    Implementation of :class:`Serializer` that helps enforce that all possible cases of type
-    serialization have been implemented.
+    An event that indicates a newly-created contract.
     """
 
-    def __init__(self, lookup: "SymbolLookup"):
-        self.lookup = lookup
+    __slots__ = (
+        "_contract_id",
+        "_payload",
+        "_signatories",
+        "_observers",
+        "_agreement_text",
+        "_key",
+    )
+
+    def __init__(
+        self,
+        contract_id: "ContractId",
+        payload: "ContractData",
+        signatories: "Collection[Party]",
+        observers: "Collection[Party]",
+        agreement_text: "Optional[str]",
+        key: "Optional[Any]",
+    ):
+        object.__setattr__(self, "_contract_id", contract_id)
+        object.__setattr__(self, "_payload", payload)
+        object.__setattr__(self, "_signatories", frozenset(signatories))
+        object.__setattr__(self, "_observers", frozenset(observers))
+        object.__setattr__(self, "_agreement_text", agreement_text)
+        object.__setattr__(self, "_key", key)
 
     @property
-    def mapper(self) -> "ValueMapper":
-        raise NotImplementedError(f"{type(self)}.mapper() must be defined")
+    def contract_id(self) -> "ContractId":
+        return self._contract_id
 
-    def serialize_value(self, tt: "Type", obj: Any) -> "Any":
-        from ..values import Context
+    @property
+    def payload(self) -> "ContractData":
+        return self._payload
 
-        return Context(self.mapper, self.lookup).convert(tt, obj)
+    @property
+    def signatories(self) -> "AbstractSet[Party]":
+        return self._signatories
 
-    def serialize_commands(self, commands: "Sequence[Command]") -> "Sequence[Any]":
-        return [self.serialize_command(cmd) for cmd in commands]
+    @property
+    def observers(self) -> "AbstractSet[Party]":
+        return self._observers
 
-    def serialize_command(self, command: "Command") -> "Any":
-        if isinstance(command, CreateCommand):
-            name = self.lookup.template_name(command.template_id)
-            value = self.serialize_value(con(name), command.payload)
-            return self.serialize_create_command(name, value)
+    @property
+    def agreement_text(self) -> "Optional[str]":
+        return self._agreement_text
 
-        elif isinstance(command, ExerciseCommand):
-            template = self.lookup.template(command.contract_id.value_type)
-            choice = find_choice(template, command.choice)
-            args = self.serialize_value(choice.arg_binder.type, command.argument)
-            return self.serialize_exercise_command(command.contract_id, choice.name, args)
+    @property
+    def key(self) -> "Optional[Any]":
+        return self._key
 
-        elif isinstance(command, CreateAndExerciseCommand):
-            name = self.lookup.template_name(command.template_id)
-            template = self.lookup.template(name)
-            create_value = self.serialize_value(con(name), command.payload)
-            choice = find_choice(template, command.choice)
-            choice_args = self.serialize_value(choice.arg_binder.type, command.argument)
-            return self.serialize_create_and_exercise_command(
-                name, create_value, choice.name, choice_args
-            )
-
-        elif isinstance(command, ExerciseByKeyCommand):
-            name = self.lookup.template_name(command.template_id)
-            template = self.lookup.template(name)
-            key_value = self.serialize_value(template.key.type, command.key)
-            choice = find_choice(template, command.choice)
-            choice_args = self.serialize_value(choice.arg_binder.type, command.argument)
-            return self.serialize_exercise_by_key_command(name, key_value, choice.name, choice_args)
-
-        else:
-            raise ValueError(f"unknown Command type: {command!r}")
-
-    def serialize_create_command(self, name: "TypeConName", template_args: "Any") -> "Any":
-        raise NotImplementedError("serialize_create_command requires an implementation")
-
-    def serialize_exercise_command(
-        self, contract_id: "ContractId", choice_name: str, choice_args: "Any"
-    ) -> "Any":
-        raise NotImplementedError("serialize_exercise_command requires an implementation")
-
-    def serialize_exercise_by_key_command(
-        self, name: "TypeConName", key_arguments: "Any", choice_name: str, choice_arguments: "Any"
-    ) -> "Any":
-        raise NotImplementedError("serialize_exercise_by_key_command requires an implementation")
-
-    def serialize_create_and_exercise_command(
-        self, name: "TypeConName", create_args: "Any", choice_name: str, choice_arguments: "Any"
-    ) -> "Any":
-        raise NotImplementedError(
-            "serialize_create_and_exercise_command requires an implementation"
+    def __eq__(self, other: "Any") -> bool:
+        return (
+            isinstance(other, CreateEvent)
+            and self.contract_id == other.contract_id
+            and self.payload == other.payload
+            and self.signatories == other.signatories
+            and self.observers == other.observers
+            and self.agreement_text == other.agreement_text
+            and self.key == other.key
         )
+
+
+class ArchiveEvent:
+    """
+    An event that indicates a contract was archived.
+    """
+
+    __slots__ = ("_contract_id",)
+
+    def __init__(self, contract_id: "ContractId"):
+        object.__setattr__(self, "_contract_id", contract_id)
+
+    @property
+    def contract_id(self) -> "ContractId":
+        return self._contract_id
 
 
 def validate_template_id(value: "Union[str, TypeConName]") -> "TypeConName":
