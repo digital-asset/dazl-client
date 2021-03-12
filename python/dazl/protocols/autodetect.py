@@ -79,19 +79,6 @@ class AutodetectLedgerNetwork(LedgerNetwork):
             lambda: grpc_upload_package(self._first_connection, dar_contents)
         )
 
-    async def set_time(self, new_time: datetime):
-        ledger = await self.ledger()
-        if ledger.protocol_version == "v1":
-            from .v1.grpc import grpc_set_time
-
-            return await self._invoker.run_in_executor(
-                lambda: grpc_set_time(self._first_connection, ledger.ledger_id, new_time)
-            )
-        elif ledger.protocol_version == "v0":
-            raise RuntimeError(f"Unsupported protocol version: {ledger.protocol_version}")
-        else:
-            raise RuntimeError(f"Unknown protocol version: {ledger.protocol_version}")
-
     async def close(self) -> None:
         with self._lock:
             connections = list(self._connections.values())

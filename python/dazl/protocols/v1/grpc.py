@@ -133,22 +133,6 @@ class GRPCv1LedgerClient(LedgerClient):
         )
 
 
-def grpc_set_time(connection: "GRPCv1Connection", ledger_id: str, new_datetime: datetime) -> None:
-    from . import model as G
-
-    request = G.GetTimeRequest(ledger_id=ledger_id)
-    response = connection.time_service.GetTime(request)
-    ts = next(iter(response))
-
-    request = G.SetTimeRequest(
-        ledger_id=ledger_id,
-        current_time=ts.current_time,
-        new_time=datetime_to_timestamp(new_datetime),
-    )
-    connection.time_service.SetTime(request)
-    LOG.info("Time on the server changed by the local client to %s.", new_datetime)
-
-
 def grpc_upload_package(connection: "GRPCv1Connection", dar_contents: bytes) -> None:
     from . import model as G
 
