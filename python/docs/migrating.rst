@@ -5,6 +5,50 @@
 Migrate
 #######
 
+Migrating to dazl v8
+====================
+
+Command-line changes
+--------------------
+
+Commands such as ``dazl ls``, ``dazl tail``, or options provided for your application by calling
+``dazl.run`` have changed:
+
+* ``-p`` is now used to denote the Ledger API port and **not** ``Party``. In dazl v8, supplying a
+  string argument to ``-p`` will be still interpreted as a ``Party`` but you will get a warning;
+  switch to ``--act-as`` or ``--read-as`` instead. This backwards compatible behavior will be
+  removed in dazl v9.
+
+* ``--party``/``--parties`` has been renamed to ``--act-as`` (``-u``); ``--party-groups`` has been
+  renamed to ``--read-as`` (``-r``). Both ``--act-as`` and ``--read-as`` take a comma-separated list
+  of parties, or as an alternative can be specified multiple times. This matches the terminology
+  used in multi-party submissions as added in Daml Connect 1.9. The older forms of these flags will
+  be removed in dazl v9.
+
+* ``--package-fetch-poll-interval`` replaces ``--eager-package-fetch``.
+  If unspecified or zero, package polling is disabled. Note that ``dazl`` will still generally
+  discover packages as it needs to. This is really only of value if you are explicitly interested
+  in keeping metadata up-to-date because you are using package metadata, and you should generally
+  NOT use this for performance reasons.
+
+  Setting ``-eager-package-fetch`` is the same as specifying ``--package-fetch-poll-interval=1``,
+  as dazl previously polled for package updates once a second.
+
+* ``--enable-http-proxy`` has been renamed to ``--use-http-proxy``; the old flag will be removed in
+  dazl v9.
+
+* The following flags have no effect in dazl v8 and will be removed in dazl v9::
+   - ``--idle-timeout``
+   - ``--max-command-batch-timeout``
+   - ``--max-connection-batch-size``
+   - ``--max-connection-count``
+   - ``--max-consequence-depth``
+   - ``--max-event-block-size``
+   - ``--poll-interval``
+   - ``--quiet-count``
+   - ``--use-acs-service``
+
+
 Migrating from dazl v6 from v7
 ==============================
 
