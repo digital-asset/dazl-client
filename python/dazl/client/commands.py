@@ -54,7 +54,7 @@ class CreateCommand(api_types.CreateCommand):
     @property
     def template_type(self) -> "TypeConName":
         """
-        Use :prop:`template_id` instead.
+        Use :meth:`template_id` instead.
         """
         warnings.warn(
             "CreateCommand.template_type is deprecated; use CreateCommand.template_id instead.",
@@ -66,7 +66,7 @@ class CreateCommand(api_types.CreateCommand):
     @property
     def arguments(self) -> "Mapping[str, Any]":
         """
-        Use :prop:`payload` instead.
+        Use :meth:`payload` instead.
         """
         warnings.warn(
             "CreateCommand.arguments is deprecated; use CreateCommand.payload instead.",
@@ -101,7 +101,7 @@ class CreateAndExerciseCommand(api_types.CreateAndExerciseCommand):
     @property
     def template_type(self) -> "TypeConName":
         """
-        Use :prop:`template_id` instead.
+        Use :meth:`template_id` instead.
         """
         warnings.warn(
             "CreateAndExerciseCommand.template_type is deprecated; "
@@ -114,7 +114,7 @@ class CreateAndExerciseCommand(api_types.CreateAndExerciseCommand):
     @property
     def arguments(self) -> "Any":
         """
-        Use :prop:`payload` instead.
+        Use :meth:`payload` instead.
         """
         warnings.warn(
             "CreateAndExerciseCommand.arguments is deprecated; "
@@ -127,7 +127,7 @@ class CreateAndExerciseCommand(api_types.CreateAndExerciseCommand):
     @property
     def choice_argument(self) -> "Any":
         """
-        Use :prop:`argument` instead.
+        Use :meth:`argument` instead.
         """
         warnings.warn(
             "CreateAndExerciseCommand.choice_argument is deprecated; "
@@ -157,7 +157,7 @@ class ExerciseCommand(api_types.ExerciseCommand):
     @property
     def contract(self) -> "ContractId":
         """
-        Use :prop:`contract_id` instead.
+        Use :meth:`contract_id` instead.
         """
         warnings.warn(
             "ExerciseCommand.contract is deprecated; use ExerciseCommand.contract_id instead.",
@@ -168,7 +168,7 @@ class ExerciseCommand(api_types.ExerciseCommand):
 
     def arguments(self) -> "Any":
         """
-        Use :prop:`argument` instead.
+        Use :meth:`argument` instead.
         """
         warnings.warn(
             "ExerciseCommand.arguments is deprecated; use ExerciseCommand.argument instead.",
@@ -199,7 +199,7 @@ class ExerciseByKeyCommand(api_types.ExerciseByKeyCommand):
     @property
     def template_type(self) -> "TypeConName":
         """
-        Use :prop:`template_id` instead.
+        Use :meth:`template_id` instead.
         """
         warnings.warn(
             "ExerciseByKeyCommand.template_type is deprecated; "
@@ -212,7 +212,7 @@ class ExerciseByKeyCommand(api_types.ExerciseByKeyCommand):
     @property
     def contract_key(self) -> "Any":
         """
-        Use :prop:`argument` instead.
+        Use :meth:`argument` instead.
         """
         warnings.warn(
             "ExerciseByKeyCommand.contract_key is deprecated; "
@@ -226,7 +226,7 @@ class ExerciseByKeyCommand(api_types.ExerciseByKeyCommand):
     @property
     def choice_argument(self) -> "Any":
         """
-        Use :prop:`argument` instead.
+        Use :meth:`argument` instead.
         """
         warnings.warn(
             "ExerciseByKeyCommand.choice_argument is deprecated; "
