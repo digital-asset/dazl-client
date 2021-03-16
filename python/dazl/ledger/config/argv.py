@@ -21,7 +21,19 @@ __all__ = ["configure_parser", "EXAMPLES"]
 # Implementation notes:
 #
 # A common trick employed throughout this file is to add an "argument" to a parser that is not
-# directly used. Calling ``add_arguments(...)`` with an argumen
+# directly used. Calling ``add_arguments(...)`` with a "name" of a completely arbitrary string that
+# is not practically possible to be called from the command line (for example,
+# ``add_arguments("--my-special-flag SOMETHING | -m BLAH")`` is entirely allowed. This also renders
+# as-is in the help strings. Additionally, passing nargs=SUPPRESS essentially prevents the flag from
+# being used during parsing, but does NOT remove it from help! The opposite (passing help=SUPPRESS)
+# can be used to hide the "real" arguments from the help string that would otherwise render in an
+# ugly way. This leads to this:
+#
+#   # argparse does not support different metavars for different arguments, so one arg for the
+#   # help string we want, and two more args for the two different cases
+#   parser.add_argument("--something STUFF | --something-file TOKEN", nargs=SUPPRESS)
+#   parser.add_argument("--something", help=SUPPRESS, ...)
+#   parser.add_argument("--something-file", help=SUPPRESS, ...)
 
 # An example string that can be used to help illustrate how to use common flags.
 EXAMPLES = """
@@ -111,7 +123,7 @@ def _configure_access(parser: ArgumentParser):
     group_p.add_argument(
         "--application-name",
         metavar="NAME",
-        help="application name",
+        help="application name; uniquely identifies this client to the server",
     )
 
     group_t = parser.add_argument_group("Access configuration (token-based)")

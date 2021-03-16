@@ -232,76 +232,141 @@ def connect(
 
     :param url:
         The URL to connect to. Can be used as an alternative to supplying ``host``, ``port``,
-        and ``scheme`` as individual values. Can alternatively be supplied via the environment
-        variable ``DAML_LEDGER_URL``.
+        and ``scheme`` as individual values.
+
+        If none of of ``url``, ``host``, ``port`` or ``scheme`` are specified, the value from the
+        environment variable ``DAML_LEDGER_URL`` is used instead.
+
     :param host:
         The host to connect to. Can be used as an alternative to supplying ``url`` as a combined
-        value. Can alternatively be supplied via the environment variable ``DAML_LEDGER_HOST``.
+        value.
+
+        If none of of ``url``, ``host``, ``port`` or ``scheme`` are specified, the value from the
+        environment variable ``DAML_LEDGER_HOST`` is used instead.
+
     :param port:
         The port to connect to. Can be used as an alternative to supplying ``url`` as a combined
-        value. Can alternatively be supplied via the environment variable ``DAML_LEDGER_PORT``.
+        value.
+
+        If none of of ``url``, ``host``, ``port`` or ``scheme`` are specified, the value from the
+        environment variable ``DAML_LEDGER_PORT`` is used instead.
+
     :param scheme:
         The scheme to connect to. Can be used as an alternative to supplying ``url`` as a
-        combined value. Can alternatively be supplied via the environment variable
-        ``DAML_LEDGER_SCHEME``.
+        combined value.
+
+        If none of of ``url``, ``host``, ``port`` or ``scheme`` are specified, the value from the
+        environment variable ``DAML_LEDGER_SCHEME`` is used instead.
+
     :param connect_timeout:
         Length of time to wait before giving up connecting to the remote and declaring an error.
         The default value is 30 seconds.
+
     :param use_http_proxy:
         ``True`` to use an HTTP(S) proxy server if configured; ``False`` to avoid using any
         configured server. If unspecified and the host is ``localhost``, the proxy server is
         avoided; otherwise the proxy server is used.
+
     :param ca:
         A certificate authority to use to validate the server's certificate. If not supplied,
         the operating system's default trust store is used. Cannot be specified with
         ``ca_file``.
+
     :param ca_file:
         A file containing the certificate authority to use to validate the server's certificate.
         If not supplied, the operating system's default trust store is used. Cannot be specified
         with ``ca``.
+
     :param cert:
         A client-side certificate to be used when connecting to a server that requires mutual
         TLS. Cannot be specified with ``cert_file``.
+
     :param cert_file:
         A file containing the client-side certificate to be used when connecting to a server
         that requires mutual TLS. Cannot be specified with ``cert``.
+
     :param cert_key:
         A client-side private key to be used when connecting to a server that requires mutual
         TLS. Cannot be specified with ``cert_key_file``.
+
     :param cert_key_file:
         A client-side private key to be used when connecting to a server that requires mutual
         TLS. Cannot be specified with ``cert_key``.
+
     :param read_as:
         A party or set of parties on whose behalf (in addition to all parties listed in
-        ``act_as``) contracts can be retrieved. Cannot be specified if ``oauth_token`` or
-        ``oauth_token_file`` is specified.
+        ``act_as``) contracts can be retrieved.
+
+        Cannot be specified if ``oauth_token`` or ``oauth_token_file`` is specified.
+
+        If none of of ``read_as``, ``act_as``, ``admin``, ``ledger_id``, ``application_name``,
+        ``oauth_token``, or ``oauth_token_file`` are specified, the value from the environment
+        variable ``DAML_LEDGER_ACT_AS`` is used instead.
+
     :param act_as:
         A party or set of parties on whose behalf commands should be executed. Parties here are
-        also implicitly granted ``read_as`` access as well. Cannot be specified if
-        ``oauth_token`` or ``oauth_token_file`` is specified.
+        also implicitly granted ``read_as`` access as well.
+
+        Cannot be specified if ``oauth_token`` or ``oauth_token_file`` is specified.
+
+        If none of of ``read_as``, ``act_as``, ``admin``, ``ledger_id``, ``application_name``,
+        ``oauth_token``, or ``oauth_token_file`` are specified, the value from the environment
+        variable ``DAML_LEDGER_ACT_AS`` is used instead.
+
     :param admin:
         HTTP JSON API only: allow admin endpoints to be used. This flag is ignored when
-        connecting to gRPC Ledger API implementations. Cannot be specified if ``oauth_token`` or
-        ``oauth_token_file`` is specified.
+        connecting to gRPC Ledger API implementations.
+
+        Cannot be specified if ``oauth_token`` or ``oauth_token_file`` is specified.
+
     :param ledger_id:
         The ledger ID to connect to. For the HTTP JSON API, this value is required. For the gRPC
         Ledger API, if this value is _not_ supplied, its value will be retrieved from the
-        server. Cannot be specified if ``oauth_token`` or ``oauth_token_file`` is specified.
+        server.
+
+        Cannot be specified if ``oauth_token`` or ``oauth_token_file`` is specified.
+
+        If none of of ``read_as``, ``act_as``, ``admin``, ``ledger_id``, ``application_name``,
+        ``oauth_token``, or ``oauth_token_file`` are specified, the value from the environment
+        variable ``DAML_LEDGER_ID`` is used instead.
+
     :param application_name:
         A string that identifies this application. This is used for tracing purposes on the
-        server-side. Cannot be specified if ``oauth_token`` or ``oauth_token_file`` is
-        specified.
+        server-side.
+
+        Cannot be specified if ``oauth_token`` or ``oauth_token_file`` is specified.
+
+        If none of of ``read_as``, ``act_as``, ``admin``, ``ledger_id``, ``application_name``,
+        ``oauth_token``, or ``oauth_token_file`` are specified, the value from the environment
+        variable ``DAML_LEDGER_APPLICATION_NAME`` is used instead.
+
     :param oauth_token:
-        The OAuth bearer token to be used on all requests. If specified, no other access
-        parameters can be specified.
+        The OAuth bearer token to be used on all requests.
+
+        Cannot be specified if ``read_as``, ``act_as``, ``admin``, ``ledger_id``,
+        ``application_name``, or ``oauth_token_file`` is specified.
+
+        If none of of ``read_as``, ``act_as``, ``admin``, ``ledger_id``, ``application_name``,
+        ``oauth_token``, or ``oauth_token_file`` are specified, the value from the environment
+        variable ``DAML_LEDGER_OAUTH_TOKEN`` is used instead.
+
     :param oauth_token_file:
-        A file that contains the OAuth bearer token to be used on all requests. If specified, no
-        other access parameters can be specified.
+        A file that contains the OAuth bearer token to be used on all requests.
+
+        Cannot be specified if ``read_as``, ``act_as``, ``admin``, ``ledger_id``,
+        ``application_name``, or ``oauth_token`` is specified.
+
+        If none of of ``read_as``, ``act_as``, ``admin``, ``ledger_id``, ``application_name``,
+        ``oauth_token``, or ``oauth_token_file`` are specified, the value from the environment
+        variable ``DAML_LEDGER_OAUTH_TOKEN_FILE`` is used instead.
+
     :param logger:
         The logger to use for connections created from this configuration. If not supplied, a
         logger will be created.
+
     :param logger_name:
         The name of the logger. Only used if ``logger`` is not provided.
+
     :param log_level:
         The logging level for the logger. The default is ``warn``. Only used if ``logger`` is
         not provided.
