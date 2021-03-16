@@ -210,9 +210,9 @@ def connect(
     | ``oauth_token``, or ``oauth_token_file`` causes *all* of these environment variables to be   |
     | ignored                                                                                      |
     +----------------------+-----------------------------------------------------------------------+
-    | ``act_as``           | ``DAML_LEDGER_ACT_AS``                                                |
+    | ``act_as``           | ``DAML_LEDGER_ACT_AS`` (as a comma-separated list of parties)         |
     +----------------------+-----------------------------------------------------------------------+
-    | ``read_as``          | ``DAML_LEDGER_READ_AS``                                               |
+    | ``read_as``          | ``DAML_LEDGER_READ_AS`` (as a comma-separated list of parties)        |
     +----------------------+-----------------------------------------------------------------------+
     | ``ledger_id``        | ``DAML_LEDGER_ID``                                                    |
     +----------------------+-----------------------------------------------------------------------+

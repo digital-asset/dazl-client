@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 import ipaddress
+from logging import Logger, getLogger
 import os
 from reprlib import repr
 from types import MappingProxyType
@@ -30,6 +31,12 @@ KNOWN_SCHEME_PORTS = MappingProxyType(
     {"http": (80, 7575, 8080), "https": (443, 8443), "grpc": (6865,), "grpcs": ()}
 )
 
+# some environment variables that we frequently refer to
+DAML_LEDGER_URL = "DAML_LEDGER_URL"
+DAML_LEDGER_HOST = "DAML_LEDGER_HOST"
+DAML_LEDGER_PORT = "DAML_LEDGER_PORT"
+DAML_LEDGER_SCHEME = "DAML_LEDGER_SCHEME"
+
 
 def create_url(
     *,
@@ -39,6 +46,7 @@ def create_url(
     scheme: Optional[str] = None,
     connect_timeout: Optional[TimeDeltaLike] = None,
     use_http_proxy: Optional[bool] = None,
+    logger: Optional[Logger] = None,
 ):
     """
     Create an instance of :class:`URLConfig`, possibly with values taken from environment variables,
@@ -46,16 +54,43 @@ def create_url(
 
     See :meth:`Config.create` for a more detailed description of these parameters.
     """
+    if logger is None:
+        logger = getLogger("dazl.conn")
+
     if not url and not host and not port and not scheme:
         # use environment variables to provide default values
-        url = os.getenv("DAML_LEDGER_URL")
-        host = os.getenv("DAML_LEDGER_HOST")
-        port = os.getenv("DAML_LEDGER_PORT")
-        scheme = os.getenv("DAML_LEDGER_SCHEME")
+        url = os.getenv(DAML_LEDGER_URL)
+        host = os.getenv(DAML_LEDGER_HOST)
+        port = os.getenv(DAML_LEDGER_PORT)
+        scheme = os.getenv(DAML_LEDGER_SCHEME)
+        if host or port or scheme:
+            if url:
+                logger.error("Found conflicting environment variables:")
+                logger.error("     %s=%s", DAML_LEDGER_URL, url)
+                logger.error("     %s=%s", DAML_LEDGER_HOST, host)
+                logger.error("     %s=%s", DAML_LEDGER_PORT, port)
+                logger.error("     %s=%s", DAML_LEDGER_SCHEME, scheme)
+                logger.error(
+                    f"Specify ONLY either {DAML_LEDGER_URL} OR "
+                    "{DAML_LEDGER_HOST}/{DAML_LEDGER_PORT}/{DAML_LEDGER_SCHEME}"
+                )
+            else:
+                logger.info("Using URL configuration from the environment:")
+                logger.info("     %s=%s", DAML_LEDGER_HOST, host)
+                logger.info("     %s=%s", DAML_LEDGER_PORT, port)
+                logger.info("     %s=%s", DAML_LEDGER_SCHEME, scheme)
+        elif url:
+            logger.info("Using URL configuration from the environment:")
+            logger.info("     %s=%s", DAML_LEDGER_URL, url)
 
     if not url and not host and not port and not scheme:
         # if no values are supplied _and_ no environment variables are specified either, then
         # fall back to default values
+        logger.info(
+            'Configuring a connection to "localhost" because neither url/host/port/scheme nor '
+            f"the environment variables {DAML_LEDGER_URL}, {DAML_LEDGER_HOST}, {DAML_LEDGER_PORT}, "
+            f"or {DAML_LEDGER_SCHEME} are defined"
+        )
         url = "localhost"
 
     if url:
@@ -67,6 +102,11 @@ def create_url(
 
     if use_http_proxy is None:
         use_http_proxy = not is_localhost(urlparse(url).hostname)
+
+    logger.debug("Building a URL configuration:")
+    logger.debug("    url=%s", url)
+    logger.debug("    connect_timeout=%s", connect_timeout)
+    logger.debug("    use_http_proxy=%s", use_http_proxy)
 
     return SimpleURLConfig(
         url=url,

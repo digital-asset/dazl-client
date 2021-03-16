@@ -322,6 +322,7 @@ class Config:
             scheme=scheme,
             connect_timeout=connect_timeout,
             use_http_proxy=use_http_proxy,
+            logger=logger,
         )
 
         access_config = create_access(
@@ -332,6 +333,7 @@ class Config:
             application_name=application_name,
             oauth_token=oauth_token,
             oauth_token_file=oauth_token_file,
+            logger=logger,
         )
 
         ssl_config = SSLConfig(
@@ -341,6 +343,7 @@ class Config:
             cert_file=cert_file,
             cert_key=cert_key,
             cert_key_file=cert_key_file,
+            logger=logger,
         )
 
         return cls(access_config, ssl_config, url_config, logger)
