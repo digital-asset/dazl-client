@@ -18,13 +18,13 @@ Example:
 +-----------------------------------+--------------------------------------------------------------+
 | :class:`CreateCommand`            | create a contract                                            |
 +-----------------------------------+--------------------------------------------------------------+
-| :class:`CreateAndExerciseCommand` | create a contract and immediately exercise a choice in a     |
-|                                   | single transaction                                           |
+| :class:`CreateAndExerciseCommand` | create a contract and immediately exercise a choice on the   |
+|                                   | newly created contract in a single transaction               |
 +-----------------------------------+--------------------------------------------------------------+
-| :class:`ExerciseCommand`          | exercises a choice on a contract identified by its contract  |
+| :class:`ExerciseCommand`          | exercise a choice on a contract identified by its contract   |
 |                                   | ID                                                           |
 +-----------------------------------+--------------------------------------------------------------+
-| :class:`ExerciseByKeyCommand`     | exercises a choice on a contract identified by its contract  |
+| :class:`ExerciseByKeyCommand`     | exercise a choice on a contract identified by its contract   |
 |                                   | key                                                          |
 +-----------------------------------+--------------------------------------------------------------+
 | Events and Responses                                                                             |
@@ -46,8 +46,13 @@ Example:
 | :class:`PartyInfo`                | metadata about a party                                       |
 +-----------------------------------+--------------------------------------------------------------+
 
-Command types
--------------
+Write-side types
+----------------
+
+Daml ledger state can be updated by submitting commands to the ledger. You should prefer using
+:meth:`Connection.create`, :meth:`Connection.create_and_exercise`, :meth:`Connection.exercise`, and
+:meth:`Connection.exercise_by_key` over constructing instances of these commands, as those methods
+can give you more information about what happened.
 
 .. autoclass:: Command
 
@@ -63,17 +68,24 @@ Command types
 .. autoclass:: ExerciseByKeyCommand
    :members:
 
-Event types
------------
+Read-side types
+---------------
+
+An ``Event`` in a transaction is either a :class:`CreateEvent` or an `ArchiveEvent``.
+
+You can resume a stream of events from a previous point by using ``stream.items()`` and looking for
+``Boundary`` objects.
+
+More detailed information about exercises, including the return value and events that occurred as
+a result of an exercise, is available from ``ExerciseResponse`` objects as returned from
+:meth:`Connection.create_and_exercise`, :meth:`Connection.exercise`, and
+:meth:`Connection.exercise_by_key`.
 
 .. autoclass:: CreateEvent
    :members:
 
 .. autoclass:: ArchiveEvent
    :members:
-
-Other read-side types
----------------------
 
 .. autoclass:: Boundary
    :members:
