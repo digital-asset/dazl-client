@@ -1,29 +1,19 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-"""
-Protocol basic object definitions
----------------------------------
+from __future__ import annotations
 
-The :mod:`dazl.protocols.obj` module contains the objects that define a common set of fields across
-the gRPC Ledger API and HTTP JSON API.
-
-.. autoclass:: Command
-   :members:
-
-.. autoclass:: CreateCommand
-   :members:
-
-.. autoclass:: CreateAndExerciseCommand
-   :members:
-
-.. autoclass:: ExerciseCommand
-   :members:
-
-.. autoclass:: ExerciseByKeyCommand
-   :members:
-"""
-from typing import AbstractSet, Any, Collection, Mapping, NoReturn, Optional, Sequence, Union
+from typing import (
+    TYPE_CHECKING,
+    AbstractSet,
+    Any,
+    Collection,
+    Mapping,
+    NoReturn,
+    Optional,
+    Sequence,
+    Union,
+)
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
@@ -40,15 +30,18 @@ __all__ = [
     "ArchiveEvent",
     "ExerciseResponse",
     "PartyInfo",
+    "Boundary",
 ]
 
 
 class Command:
     """
     Base class for write-side commands.
+
+    This class provides no functionality on its own.
     """
 
-    def __setattr__(self, key, value) -> "NoReturn":
+    def __setattr__(self, key, value) -> NoReturn:
         """
         Raise :class:`AttributeError`; instances of this class are immutable.
         """
@@ -61,8 +54,11 @@ class CreateCommand(Command):
     """
 
     __slots__ = ("_template_id", "_payload")
+    if TYPE_CHECKING:
+        _template_id: TypeConName
+        _payload: ContractData
 
-    def __init__(self, template_id: "Union[str, TypeConName]", payload: "ContractData"):
+    def __init__(self, template_id: Union[str, TypeConName], payload: ContractData):
         """
         Initialize a :class:`CreateCommand`.
 
@@ -75,14 +71,14 @@ class CreateCommand(Command):
         object.__setattr__(self, "_payload", payload)
 
     @property
-    def template_id(self) -> "TypeConName":
+    def template_id(self) -> TypeConName:
         """
         Return the template of the contract to be created.
         """
         return self._template_id
 
     @property
-    def payload(self) -> "Mapping[str, Any]":
+    def payload(self) -> Mapping[str, Any]:
         """
         Return the template arguments for the contract to be created.
         """
@@ -100,14 +96,27 @@ class CreateCommand(Command):
 
 
 class CreateAndExerciseCommand(Command):
+    """
+    A command that exercises a choice on a newly-created contract in a single transaction.
+
+    Instead of creating an instance of this command and submitting it with :meth:`Connection.submit`,
+    consider using :meth:`Connection.create_and_exercise` instead, which also gives you access to
+    the result of exercising the choice.
+    """
+
     __slots__ = ("_template_id", "_payload", "_choice", "_argument")
+    if TYPE_CHECKING:
+        _template_id: TypeConName
+        _payload: ContractData
+        _choice: str
+        _argument: Optional[Any]
 
     def __init__(
         self,
-        template_id: "Union[str, TypeConName]",
-        payload: "ContractData",
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
         choice: str,
-        argument: "Optional[Any]" = None,
+        argument: Optional[Any] = None,
     ):
         """
         Initialize a :class:`CreateAndExerciseCommand`.
@@ -127,34 +136,34 @@ class CreateAndExerciseCommand(Command):
         object.__setattr__(self, "_argument", argument)
 
     @property
-    def template_id(self) -> "TypeConName":
+    def template_id(self) -> TypeConName:
         """
-        Return the template of the contract to be created.
+        The template of the contract to be created.
         """
         return self._template_id
 
     @property
-    def payload(self) -> "ContractData":
+    def payload(self) -> ContractData:
         """
-        Return the template arguments for the contract to be created.
+        The template arguments for the contract to be created.
         """
         return self._payload
 
     @property
     def choice(self) -> str:
         """
-        Return the choice to exercise.
+        The choice to exercise.
         """
         return self._choice
 
     @property
-    def argument(self) -> "Any":
+    def argument(self) -> Any:
         """
-        Return the choice arguments.
+        The choice arguments.
         """
         return self._argument
 
-    def __eq__(self, other: "Any") -> bool:
+    def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, CreateAndExerciseCommand)
             and self.template_id == other.template_id
@@ -167,11 +176,19 @@ class CreateAndExerciseCommand(Command):
 class ExerciseCommand(Command):
     """
     A command that exercises a choice on a contract identified by its contract ID.
+
+    Instead of creating an instance of this command and submitting it with :meth:`Connection.submit`,
+    consider using :meth:`Connection.exercise` instead, which also gives you access to the result of
+    exercising the choice.
     """
 
     __slots__ = ("_choice", "_contract_id", "_argument")
+    if TYPE_CHECKING:
+        _choice: str
+        _contract_id: ContractId
+        _argument: Optional[Any]
 
-    def __init__(self, contract_id: "ContractId", choice: str, argument: "Optional[Any]" = None):
+    def __init__(self, contract_id: ContractId, choice: str, argument: Optional[Any] = None):
         """
         Initialize an :class:`ExerciseCommand`.
 
@@ -187,30 +204,30 @@ class ExerciseCommand(Command):
         object.__setattr__(self, "_argument", dict(argument) if argument is not None else dict())
 
     @property
-    def contract_id(self) -> "ContractId":
+    def contract_id(self) -> ContractId:
         """
-        Return the contract ID of the contract to exercise.
+        The contract ID of the contract to exercise.
         """
         return self._contract_id
 
     @property
     def choice(self) -> str:
         """
-        Return the choice to exercise.
+        The choice to exercise.
         """
         return self._choice
 
     @property
-    def argument(self) -> "Any":
+    def argument(self) -> Any:
         """
-        Return the choice arguments.
+        The choice arguments.
         """
         return self._argument
 
     def __repr__(self):
         return f"ExerciseCommand({self.choice!r}, {self.contract_id}, {self.argument}>"
 
-    def __eq__(self, other: "Any") -> bool:
+    def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, ExerciseCommand)
             and self.choice == other.choice
@@ -222,16 +239,25 @@ class ExerciseCommand(Command):
 class ExerciseByKeyCommand(Command):
     """
     A command that exercises a choice on a contract identified by its contract key.
+
+    Instead of creating an instance of this command and submitting it with :meth:`Connection.submit`,
+    consider using :meth:`Connection.exercise_by_key` instead, which also gives you access to the
+    result of exercising the choice.
     """
 
     __slots__ = ("_template_id", "_key", "_choice", "_argument")
+    if TYPE_CHECKING:
+        _template_id: TypeConName
+        _key: Any
+        _choice: str
+        _argument: Optional[Any]
 
     def __init__(
         self,
-        template_id: "Union[str, TypeConName]",
-        key: "Any",
+        template_id: Union[str, TypeConName],
+        key: Any,
         choice: str,
-        argument: "Optional[Any]",
+        argument: Optional[Any] = None,
     ):
         """
         Initialize an :class:`ExerciseByKeyCommand`.
@@ -251,34 +277,34 @@ class ExerciseByKeyCommand(Command):
         object.__setattr__(self, "_argument", argument)
 
     @property
-    def template_id(self) -> "TypeConName":
+    def template_id(self) -> TypeConName:
         """
-        Return the contract template type.
+        The contract template type.
         """
         return self._template_id
 
     @property
-    def key(self) -> "Any":
+    def key(self) -> Any:
         """
-        Return the contract key of the contract to exercise.
+        The contract key of the contract to exercise.
         """
         return self._key
 
     @property
     def choice(self) -> str:
         """
-        Return the choice to exercise.
+        The choice to exercise.
         """
         return self._choice
 
     @property
-    def argument(self) -> "Any":
+    def argument(self) -> Any:
         """
-        Return the choice arguments.
+        The choice arguments.
         """
         return self._argument
 
-    def __eq__(self, other: "Any") -> bool:
+    def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, ExerciseByKeyCommand)
             and self.template_id == other.template_id
@@ -301,15 +327,22 @@ class CreateEvent:
         "_agreement_text",
         "_key",
     )
+    if TYPE_CHECKING:
+        _contract_id: ContractId
+        _payload: ContractData
+        _signatories: AbstractSet[Party]
+        _observers: AbstractSet[Party]
+        _agreement_text: Optional[str]
+        _key: Optional[Any]
 
     def __init__(
         self,
-        contract_id: "ContractId",
-        payload: "ContractData",
-        signatories: "Collection[Party]",
-        observers: "Collection[Party]",
-        agreement_text: "Optional[str]",
-        key: "Optional[Any]",
+        contract_id: ContractId,
+        payload: ContractData,
+        signatories: Collection[Party],
+        observers: Collection[Party],
+        agreement_text: Optional[str],
+        key: Optional[Any],
     ):
         object.__setattr__(self, "_contract_id", contract_id)
         object.__setattr__(self, "_payload", payload)
@@ -319,30 +352,53 @@ class CreateEvent:
         object.__setattr__(self, "_key", key)
 
     @property
-    def contract_id(self) -> "ContractId":
+    def contract_id(self) -> ContractId:
+        """
+        The ID of the created contract.
+        """
         return self._contract_id
 
     @property
-    def payload(self) -> "ContractData":
+    def payload(self) -> ContractData:
+        """
+        The `parameters <https://docs.daml.com/daml/reference/templates.html#template-parameters>`_
+        that were used to create the contract.
+        """
         return self._payload
 
     @property
-    def signatories(self) -> "AbstractSet[Party]":
+    def signatories(self) -> AbstractSet[Party]:
+        """
+        The `signatories <https://docs.daml.com/daml/reference/templates.html#signatory-parties>`_
+        for this contract as specified by the template.
+        """
         return self._signatories
 
     @property
-    def observers(self) -> "AbstractSet[Party]":
+    def observers(self) -> AbstractSet[Party]:
+        """
+        The `observers <https://docs.daml.com/daml/reference/templates.html#observers>`_ for this
+        contract as specified explicitly by the template or implicitly as choice controllers.
+        """
         return self._observers
 
     @property
-    def agreement_text(self) -> "Optional[str]":
+    def agreement_text(self) -> Optional[str]:
+        """
+        The `agreement text <https://docs.daml.com/daml/reference/templates.html#agreements>`_ of
+        the contract.
+        """
         return self._agreement_text
 
     @property
-    def key(self) -> "Optional[Any]":
+    def key(self) -> Optional[Any]:
+        """
+        The `key <https://docs.daml.com/daml/reference/templates.html#contract-keys-and-maintainers>`_
+        of the contract, if defined.
+        """
         return self._key
 
-    def __eq__(self, other: "Any") -> bool:
+    def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, CreateEvent)
             and self.contract_id == other.contract_id
@@ -360,33 +416,81 @@ class ArchiveEvent:
     """
 
     __slots__ = ("_contract_id",)
+    if TYPE_CHECKING:
+        _contract_id: ContractId
 
-    def __init__(self, contract_id: "ContractId"):
+    def __init__(self, contract_id: ContractId):
         object.__setattr__(self, "_contract_id", contract_id)
 
     @property
-    def contract_id(self) -> "ContractId":
+    def contract_id(self) -> ContractId:
+        """
+        The contract ID of the archived contract.
+        """
         return self._contract_id
 
 
+class Boundary:
+    """
+    An event that indicates a boundary in a query stream where events can be resumed.
+    """
+
+    __slots__ = ("_offset",)
+    if TYPE_CHECKING:
+        _offset: Optional[str]
+
+    def __init__(self, offset: Optional[str]):
+        object.__setattr__(self, "_offset", offset)
+
+    @property
+    def offset(self) -> Optional[str]:
+        """
+        The offset at which this boundary occurred.
+
+        If this is ``None``, that indicates that an active contract set was requested, but the
+        ledger is completely empty.
+        """
+        return self._offset
+
+    def __eq__(self, other: Any) -> bool:
+        return isinstance(other, Boundary) and self.offset == other.offset
+
+    def __hash__(self):
+        return hash(self._offset)
+
+    def __repr__(self):
+        return f"Boundary({self._offset!r})"
+
+
 class ExerciseResponse:
-    __slots__ = "_result", "_events"
+    """
+    Returned when directly exercising a choice using :meth:`Connection.create_and_exercise`,
+    :meth:`Connection.exercise`, or :meth:`Connection.exercise_by_key`.
+    """
 
-    _result: "Optional[Any]"
-    _events: "Sequence[Union[CreateEvent, ArchiveEvent]]"
+    __slots__ = ("_result", "_events")
+    if TYPE_CHECKING:
+        _result: Optional[Any]
+        _events: Sequence[Union[CreateEvent, ArchiveEvent]]
 
-    def __init__(
-        self, result: "Optional[Any]", events: "Sequence[Union[CreateEvent, ArchiveEvent]]"
-    ):
+    def __init__(self, result: Optional[Any], events: Sequence[Union[CreateEvent, ArchiveEvent]]):
         object.__setattr__(self, "_result", result)
         object.__setattr__(self, "_events", tuple(events))
 
     @property
-    def result(self) -> "Optional[Any]":
+    def result(self) -> Optional[Any]:
+        """
+        The return value of the choice.
+        """
         return self._result
 
     @property
-    def events(self) -> "Sequence[Union[CreateEvent, ArchiveEvent]]":
+    def events(self) -> Sequence[Union[CreateEvent, ArchiveEvent]]:
+        """
+        All of the events that occurred as a result of exercising the choice, including the archive
+        event for the contract if the choice is consuming (or otherwise archives it as part of its
+        execution).
+        """
         return self._events
 
     def __repr__(self):
@@ -394,31 +498,44 @@ class ExerciseResponse:
 
 
 class PartyInfo:
-    __slots__ = "_party", "_display_name", "_is_local"
+    """
+    Full information about a ``Party``.
+    """
 
-    _party: "Party"
-    _display_name: str
-    _is_local: bool
+    __slots__ = ("_party", "_display_name", "_is_local")
+    if TYPE_CHECKING:
+        _party: Party
+        _display_name: str
+        _is_local: bool
 
-    def __init__(self, party: "Party", display_name: str, is_local: bool):
+    def __init__(self, party: Party, display_name: str, is_local: bool):
         object.__setattr__(self, "_party", party)
         object.__setattr__(self, "_display_name", display_name)
         object.__setattr__(self, "_is_local", is_local)
 
     @property
     def party(self) -> "Party":
+        """
+        The stable unique identifier of a Daml ``Party``.
+        """
         return self._party
 
     @property
     def display_name(self) -> str:
+        """
+        The human-readable name associated with the ``Party``.
+        """
         return self._display_name
 
     @property
     def is_local(self) -> bool:
+        """
+        Indicates if the ``Party`` is hosted by the backing participant.
+        """
         return self._is_local
 
 
-def validate_template_id(value: "Union[str, TypeConName]") -> "TypeConName":
+def validate_template_id(value: Union[str, TypeConName]) -> TypeConName:
     if isinstance(value, TypeConName):
         return value
     else:
