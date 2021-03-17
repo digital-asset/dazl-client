@@ -3,6 +3,8 @@
 """
 This module contains the mapping between gRPC calls and Python/dazl types.
 """
+from __future__ import annotations
+
 import asyncio
 from typing import AbstractSet, Any, AsyncIterable, Collection, Mapping, Optional, Sequence, Union
 import uuid
@@ -52,7 +54,7 @@ from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import (
 )
 from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import TransactionServiceStub
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
-from ...prim import ContractData, ContractId, Party
+from ...prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party
 from ...query import Query
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
 from ..config import Config
@@ -66,27 +68,28 @@ __all__ = ["Connection"]
 
 
 class Connection:
-    def __init__(self, config: "Config"):
+    def __init__(self, config: Config):
         self._config = config
+        self._logger = config.logger
         self._channel = create_channel(config)
         self._codec = Codec(self)
 
     @property
-    def config(self) -> "Config":
+    def config(self) -> Config:
         return self._config
 
     @property
-    def channel(self) -> "Channel":
+    def channel(self) -> Channel:
         """
         Provides access to the underlying gRPC channel.
         """
         return self._channel
 
     @property
-    def codec(self) -> "Codec":
+    def codec(self) -> Codec:
         return self._codec
 
-    async def __aenter__(self) -> "Connection":
+    async def __aenter__(self) -> Connection:
         await self.open()
         return self
 
@@ -104,9 +107,10 @@ class Connection:
             stub = LedgerIdentityServiceStub(self._channel)
             response = await stub.GetLedgerIdentity(G_GetLedgerIdentityRequest())
             if isinstance(self._config.access, PropertyBasedAccessConfig):
+                self._logger.info("Connected to gRPC Ledger API, ledger ID: %s", response.ledger_id)
                 self._config.access.ledger_id = response.ledger_id
             else:
-                raise ValueError("token-based access must supply tokens that provide ledger ID")
+                raise ValueError("when using token-based access, the token must contain ledger ID")
 
     async def close(self) -> None:
         """
@@ -119,10 +123,10 @@ class Connection:
 
     async def do_commands(
         self,
-        commands: "Union[Command, Sequence[Command]]",
+        commands: Union[Command, Sequence[Command]],
         *,
-        workflow_id: "Optional[str]" = None,
-        command_id: "Optional[str]" = None,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
     ) -> "None":
         """
         Submit one or more commands to the Ledger API.
@@ -161,12 +165,12 @@ class Connection:
 
     async def create(
         self,
-        template_id: "Union[str, TypeConName]",
-        payload: "ContractData",
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
         *,
-        workflow_id: "Optional[str]" = None,
-        command_id: "Optional[str]" = None,
-    ) -> "CreateEvent":
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> CreateEvent:
         """
         Create a contract for a given template.
 
@@ -195,13 +199,13 @@ class Connection:
 
     async def exercise(
         self,
-        contract_id: "ContractId",
+        contract_id: ContractId,
         choice_name: str,
-        argument: "Optional[ContractData]" = None,
+        argument: Optional[ContractData] = None,
         *,
-        workflow_id: "Optional[str]" = None,
-        command_id: "Optional[str]" = None,
-    ) -> "ExerciseResponse":
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
         """
         Exercise a choice on a contract identified by its contract ID.
 
@@ -222,14 +226,14 @@ class Connection:
 
     async def create_and_exercise(
         self,
-        template_id: "Union[str, TypeConName]",
-        payload: "ContractData",
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
         choice_name: str,
-        argument: "Optional[ContractData]" = None,
+        argument: Optional[ContractData] = None,
         *,
-        workflow_id: "Optional[str]" = None,
-        command_id: "Optional[str]" = None,
-    ) -> "ExerciseResponse":
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
         stub = CommandServiceStub(self.channel)
 
         commands = [
@@ -244,13 +248,13 @@ class Connection:
 
     async def exercise_by_key(
         self,
-        template_id: "Union[str, TypeConName]",
+        template_id: Union[str, TypeConName],
         choice_name: str,
-        key: "Any",
-        argument: "Optional[ContractData]" = None,
+        key: Any,
+        argument: Optional[ContractData] = None,
         *,
-        workflow_id: "Optional[str]" = None,
-        command_id: "Optional[str]" = None,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
     ) -> "ExerciseResponse":
         stub = CommandServiceStub(self.channel)
 
@@ -264,39 +268,44 @@ class Connection:
 
         return await self._codec.decode_exercise_response(response.transaction)
 
-    async def archive(self, contract_id: "ContractId") -> "ArchiveEvent":
+    async def archive(self, contract_id: ContractId) -> ArchiveEvent:
         await self.exercise(contract_id, "Archive")
         return ArchiveEvent(contract_id)
 
-    async def archive_by_key(self, template_id: str, key: "Any") -> "ArchiveEvent":
+    async def archive_by_key(self, template_id: str, key: Any) -> ArchiveEvent:
         response = await self.exercise_by_key(template_id, "Archive", key)
         return next(iter(event for event in response.events if isinstance(event, ArchiveEvent)))
 
-    def _ensure_act_as(self) -> "Party":
+    def _ensure_act_as(self) -> Party:
         act_as_party = next(iter(self._config.access.act_as), None)
         if not act_as_party:
             raise ValueError("current access rights do not include any act-as parties")
         return act_as_party
 
     @staticmethod
-    def _workflow_id(workflow_id: str) -> str:
+    def _workflow_id(workflow_id: Optional[str]) -> Optional[str]:
         if workflow_id:
-            # TODO: workflow_id must be a LedgerString; we could enforce some minimal validation
-            #  here to make for a more obvious error than failing on the server-side
+            if not LEDGER_STRING_REGEX.match(workflow_id):
+                raise ValueError("workflow_id must be a valid ledger string")
             return workflow_id
+        else:
+            return None
 
     @staticmethod
-    def _command_id(command_id: "Optional[str]") -> str:
-        # TODO: command_id must be a LedgerString; we could enforce some minimal validation
-        #  here to make for a more obvious error than failing on the server-side
-        return command_id or uuid.uuid4().hex
+    def _command_id(command_id: Optional[str]) -> str:
+        if command_id:
+            if not LEDGER_STRING_REGEX.match(command_id):
+                raise ValueError("command_id must be a valid ledger string")
+            return command_id
+        else:
+            return uuid.uuid4().hex
 
     def _submit_and_wait_request(
         self,
-        commands: "Collection[G_Command]",
-        workflow_id: "Optional[str]" = None,
-        command_id: "Optional[str]" = None,
-    ) -> "G_SubmitAndWaitRequest":
+        commands: Collection[G_Command],
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> G_SubmitAndWaitRequest:
         return G_SubmitAndWaitRequest(
             commands=G_Commands(
                 ledger_id=self._config.access.ledger_id,
@@ -314,16 +323,16 @@ class Connection:
 
     # region Read API
 
-    def query(self, template_id: str = "*", query: "Query" = None) -> "QueryStream":
+    def query(self, template_id: str = "*", query: Query = None) -> QueryStream:
         return QueryStream(self, {template_id: query}, False)
 
-    def query_many(self, queries: "Optional[Mapping[str, Query]]" = None) -> "QueryStream":
+    def query_many(self, queries: Optional[Mapping[str, Query]] = None) -> QueryStream:
         return QueryStream(self, queries, False)
 
-    def stream(self, template_id: str = "*", query: "Query" = None) -> "QueryStream":
+    def stream(self, template_id: str = "*", query: Query = None) -> QueryStream:
         return QueryStream(self, {template_id: query}, True)
 
-    def stream_many(self, queries: "Optional[Mapping[str, Query]]" = None) -> "QueryStream":
+    def stream_many(self, queries: Optional[Mapping[str, Query]] = None) -> QueryStream:
         return QueryStream(self, queries, True)
 
     # endregion
@@ -341,7 +350,7 @@ class Connection:
         response = await stub.AllocateParty(request)
         return Codec.decode_party_info(response.party_details)
 
-    async def list_known_parties(self) -> "Sequence[PartyInfo]":
+    async def list_known_parties(self) -> Sequence[PartyInfo]:
         stub = PartyManagementServiceStub(self.channel)
         response = await stub.ListKnownParties()
         return [Codec.decode_party_info(pd) for pd in response.party_details]
@@ -350,7 +359,7 @@ class Connection:
 
     # region Package Management calls
 
-    async def get_package(self, package_id: "PackageRef") -> bytes:
+    async def get_package(self, package_id: PackageRef) -> bytes:
         stub = PackageServiceStub(self.channel)
         request = G_GetPackageRequest(
             ledger_id=self._config.access.ledger_id, package_id=str(package_id)
@@ -358,7 +367,7 @@ class Connection:
         response = await stub.GetPackage(request)
         return response.archive_payload
 
-    async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+    async def list_package_ids(self) -> AbstractSet[PackageRef]:
         stub = PackageServiceStub(self.channel)
         request = G_ListPackagesRequest(ledger_id=self._config.access.ledger_id)
         response = await stub.ListPackages(request)
@@ -376,8 +385,8 @@ class Connection:
 class QueryStream(QueryStreamBase):
     def __init__(
         self,
-        conn: "Connection",
-        queries: "Optional[Mapping[str, Query]]",
+        conn: Connection,
+        queries: Optional[Mapping[str, Query]],
         continue_stream: bool,
     ):
         self.conn = conn
@@ -443,8 +452,8 @@ class QueryStream(QueryStreamBase):
             await self.close()
 
     async def _acs_events(
-        self, filter_pb: "G_TransactionFilter"
-    ) -> "AsyncIterable[Union[CreateEvent, Boundary]]":
+        self, filter_pb: G_TransactionFilter
+    ) -> AsyncIterable[Union[CreateEvent, Boundary]]:
         stub = ActiveContractsServiceStub(self.conn.channel)
 
         request = G_GetActiveContractsRequest(
@@ -461,8 +470,8 @@ class QueryStream(QueryStreamBase):
         yield Boundary(offset)
 
     async def _tx_events(
-        self, filter_pb: "G_TransactionFilter", begin_offset: "Optional[str]"
-    ) -> "AsyncIterable[Union[CreateEvent, ArchiveEvent, Boundary]]":
+        self, filter_pb: G_TransactionFilter, begin_offset: Optional[str]
+    ) -> AsyncIterable[Union[CreateEvent, ArchiveEvent, Boundary]]:
         stub = TransactionServiceStub(self.conn.channel)
 
         request = G_GetTransactionsRequest(
