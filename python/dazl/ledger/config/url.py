@@ -5,8 +5,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 import ipaddress
-from logging import Logger, getLogger
-import os
+from logging import Logger
 from reprlib import repr
 import sys
 from types import MappingProxyType
@@ -15,6 +14,7 @@ from urllib.parse import urlparse
 import warnings
 
 from ...prim import TimeDeltaLike, to_timedelta
+from ._validate import Validator
 from .exc import ConfigError, ConfigWarning
 
 if sys.version_info >= (3, 8):
@@ -62,52 +62,23 @@ def create_url(
 
     See :meth:`Config.create` for a more detailed description of these parameters.
     """
-    if logger is None:
-        logger = getLogger("dazl.conn")
+    validator = Validator(logger)
 
-    if not url and not host and not port and not scheme:
-        # use environment variables to provide default values
-        url = os.getenv(DAML_LEDGER_URL)
-        host = os.getenv(DAML_LEDGER_HOST)
-        port_str = os.getenv(DAML_LEDGER_PORT)
-        port = int(port_str) if port_str else None
-        scheme = os.getenv(DAML_LEDGER_SCHEME)
-        if host or port or scheme:
-            if url:
-                logger.error("Found conflicting environment variables:")
-                logger.error("     %s=%s", DAML_LEDGER_URL, url)
-                logger.error("     %s=%s", DAML_LEDGER_HOST, host)
-                logger.error("     %s=%s", DAML_LEDGER_PORT, port)
-                logger.error("     %s=%s", DAML_LEDGER_SCHEME, scheme)
-                logger.error(
-                    f"Specify ONLY either {DAML_LEDGER_URL} OR "
-                    "{DAML_LEDGER_HOST}/{DAML_LEDGER_PORT}/{DAML_LEDGER_SCHEME}"
-                )
-            else:
-                logger.info("Using URL configuration from the environment:")
-                logger.info("     %s=%s", DAML_LEDGER_HOST, host)
-                logger.info("     %s=%s", DAML_LEDGER_PORT, port)
-                logger.info("     %s=%s", DAML_LEDGER_SCHEME, scheme)
-        elif url:
-            logger.info("Using URL configuration from the environment:")
-            logger.info("     %s=%s", DAML_LEDGER_URL, url)
+    with validator.new_case("URL") as case:
+        url_field = case.string("url", url, "DAML_LEDGER_URL")
 
-    if not url and not host and not port and not scheme:
-        # if no values are supplied _and_ no environment variables are specified either, then
-        # fall back to default values
-        logger.info(
-            'Configuring a connection to "localhost" because neither url/host/port/scheme nor '
-            f"the environment variables {DAML_LEDGER_URL}, {DAML_LEDGER_HOST}, {DAML_LEDGER_PORT}, "
-            f"or {DAML_LEDGER_SCHEME} are defined"
-        )
-        url = "localhost"
+    with validator.new_case("URL parts") as case:
+        host_field = case.string("host", host, "DAML_LEDGER_HOST")
+        port_field = case.int("port", port, "DAML_LEDGER_PORT")
+        scheme_field = case.string("scheme", scheme, "DAML_LEDGER_SCHEME")
 
-    if url:
-        if host or port or scheme:
-            raise ValueError("url or host/port/scheme must be specified, but not both")
-        url = sanitize_url(url)
+    case_name = validator.validate()
+    if case_name == "URL":
+        url = sanitize_url(url_field.value)
+    elif case_name == "URL parts":
+        url = build_url(host_field.value, port_field.value, scheme_field.value)
     else:
-        url = build_url(host, port, scheme)
+        url = build_url("localhost", None, None)
 
     if use_http_proxy is None:
         hostname = urlparse(url).hostname
@@ -115,20 +86,15 @@ def create_url(
             # this shouldn't have happened because we validate hostnames above
             raise ValueError("hostname of None unexpected here")
 
-        use_http_proxy = not is_localhost(hostname)
-
-    logger.debug("Building a URL configuration:")
-    logger.debug("    url=%s", url)
-    logger.debug("    connect_timeout=%s", connect_timeout)
-    logger.debug("    use_http_proxy=%s", use_http_proxy)
-
-    return SimpleURLConfig(
+    cfg = SimpleURLConfig(
         url=url,
         connect_timeout=to_timedelta(connect_timeout)
         if connect_timeout is not None
         else DEFAULT_CONNECT_TIMEOUT,
         use_http_proxy=use_http_proxy,
     )
+    validator.logger.debug("Created config: %r", cfg)
+    return cfg
 
 
 @runtime_checkable

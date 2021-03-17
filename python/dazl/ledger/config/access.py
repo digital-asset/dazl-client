@@ -25,6 +25,7 @@ import warnings
 
 from ... import _repr
 from ...prim import Party
+from ._validate import Validator
 from .exc import ConfigError
 
 if sys.version_info >= (3, 8):
@@ -65,8 +66,8 @@ def parties_from_env(*env_vars: str) -> AbstractSet[Party]:
 #  anyway.
 def create_access(
     *,
-    read_as: Union[None, Party, Collection[Party]] = None,
     act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Union[None, Party, Collection[Party]] = None,
     admin: Optional[bool] = None,
     ledger_id: Optional[str] = None,
     application_name: Optional[str] = None,
@@ -79,40 +80,44 @@ def create_access(
 
     See :meth:`Config.create` for a more detailed description of these parameters.
     """
-    # admin = None is effectively the same as admin = False in this context
-    is_property_based = read_as or act_as or admin or ledger_id or application_name
-    if not is_property_based and not oauth_token and not oauth_token_file:
-        # none of the access-related parameters were passed in, so try to read some from the
-        # environment
-        act_as = parties_from_env("DAML_LEDGER_ACT_AS", "DAML_LEDGER_PARTY")
-        read_as = parties_from_env("DAML_LEDGER_READ_AS", "DABL_PUBLIC_PARTY")
-        ledger_id = os.getenv("DAML_LEDGER_ID", "")
-        application_name = os.getenv("DAML_LEDGER_APPLICATION_NAME")
-        oauth_token = os.getenv("DAML_LEDGER_OAUTH_TOKEN")
-        oauth_token_file = os.getenv("DAML_LEDGER_OAUTH_TOKEN_FILE")
+    validator = Validator(logger)
 
-    is_property_based = read_as or act_as or admin or ledger_id or application_name
-    if not is_property_based and not oauth_token and not oauth_token_file:
-        raise ConfigError("no oauth token access or read_as/act_as/admin was specified")
+    property_based_access = "Property-based access"
+    token_based_access = "Token-based access"
+    token_file_based_access = "Token file-based access"
 
-    # how do they configure thee? let me count the ways...
-    if sum(map(int, (bool(is_property_based), bool(oauth_token), bool(oauth_token_file)))) > 1:
-        raise ConfigError(
-            "must specify ONE of read_as/act_as/admin, oauth_token, or oauth_token_file"
+    with validator.new_case(property_based_access) as case:
+        act_as_field = case.parties("act_as", act_as, "DAML_LEDGER_ACT_AS", "DAML_LEDGER_PARTY")
+        read_as_field = case.parties("read_as", read_as, "DAML_LEDGER_READ_AS", "DABL_PUBLIC_PARTY")
+        admin_field = case.boolean("admin", admin)
+        ledger_id_field = case.string("ledger_id", ledger_id, "DAML_LEDGER_ID")
+        application_name_field = case.string(
+            "application_name", application_name, "DAML_LEDGER_APPLICATION_NAME"
         )
 
-    if oauth_token_file:
-        return TokenFileBasedAccessConfig(oauth_token_file)
-    elif oauth_token:
-        return TokenBasedAccessConfig(oauth_token)
-    else:
+    with validator.new_case(token_based_access) as case:
+        oauth_token_field = case.string("oauth_token", oauth_token, "DAML_LEDGER_OAUTH_TOKEN")
+
+    with validator.new_case(token_file_based_access) as case:
+        oauth_token_file_field = case.string(
+            "oauth_token_file", oauth_token_file, "DAML_LEDGER_OAUTH_TOKEN_FILE"
+        )
+
+    case_name = validator.validate()
+    if case_name == property_based_access:
         return PropertyBasedAccessConfig(
-            read_as=read_as,
-            act_as=act_as,
-            admin=admin,
-            ledger_id=ledger_id,
-            application_name=application_name,
+            act_as=act_as_field.value,
+            read_as=read_as_field.value,
+            admin=admin_field.value,
+            ledger_id=ledger_id_field.value,
+            application_name=application_name_field.value,
         )
+    elif case_name == token_based_access:
+        return TokenBasedAccessConfig(oauth_token_field.value)
+    elif case_name == token_file_based_access:
+        return TokenFileBasedAccessConfig(oauth_token_file_field.value)
+    else:
+        raise ConfigError("no oauth token access or read_as/act_as/admin was specified")
 
 
 @runtime_checkable
@@ -365,17 +370,18 @@ class PropertyBasedAccessConfig(AccessConfig):
         Initialize a property-based access configuration.
 
         :param read_as:
-            A party or set of parties on whose behalf (in addition to all parties listed in ``act_as``)
-            contracts can be retrieved.
+            A party or set of parties on whose behalf (in addition to all parties listed in
+            ``act_as``) contracts can be retrieved.
         :param act_as:
-            A party or set of parties on whose behalf commands should be executed. Parties here are also
-            implicitly granted ``read_as`` access as well.
+            A party or set of parties on whose behalf commands should be executed. Parties here are
+            also implicitly granted ``read_as`` access as well.
         :param admin:
-            HTTP JSON API only: allow admin endpoints to be used. This flag is ignored when connecting
-            to gRPC Ledger API implementations.
+            HTTP JSON API only: allow admin endpoints to be used. This flag is ignored when
+            connecting to gRPC Ledger API implementations.
         :param ledger_id:
             The ledger ID to connect to. For the HTTP JSON API, this value is required. For the gRPC
-            Ledger API, if this value is _not_ supplied, its value will be retrieved from the server.
+            Ledger API, if this value is _not_ supplied, its value will be retrieved from the
+            server.
         :param application_name:
             A string that identifies this application. This is used for tracing purposes on the
             server-side.
