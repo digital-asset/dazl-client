@@ -28,6 +28,7 @@ from ..._gen.com.daml.ledger.api.v1.event_pb2 import (
     CreatedEvent as G_CreatedEvent,
     ExercisedEvent as G_ExercisedEvent,
 )
+from ..._gen.com.daml.ledger.api.v1.ledger_offset_pb2 import LedgerOffset as G_LedgerOffset
 from ..._gen.com.daml.ledger.api.v1.transaction_filter_pb2 import (
     Filters as G_Filters,
     InclusiveFilters as G_InclusiveFilters,
@@ -78,7 +79,7 @@ class Codec:
     identify package contents.
     """
 
-    def __init__(self, conn: "PackageService", lookup: "Optional[SymbolLookup]" = None):
+    def __init__(self, conn: PackageService, lookup: Optional[SymbolLookup] = None):
         self.conn = conn
         self._lookup = lookup or SHARED_PACKAGE_DATABASE
         self._loader = PackageLoader(self._lookup, conn)
@@ -86,10 +87,10 @@ class Codec:
         self._decode_context = Context(ProtobufDecoder(), self._lookup)
 
     @property
-    def lookup(self) -> "SymbolLookup":
+    def lookup(self) -> SymbolLookup:
         return self._lookup
 
-    async def encode_command(self, cmd: "Command") -> "G_Command":
+    async def encode_command(self, cmd: Command) -> G_Command:
         if isinstance(cmd, CreateCommand):
             return await self.encode_create_command(cmd.template_id, cmd.payload)
         elif isinstance(cmd, ExerciseCommand):
@@ -105,9 +106,7 @@ class Codec:
         else:
             raise ValueError()
 
-    async def encode_create_command(
-        self, template_id: "Any", payload: "ContractData"
-    ) -> "G_Command":
+    async def encode_create_command(self, template_id: Any, payload: ContractData) -> G_Command:
         item_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)
         )
@@ -120,10 +119,10 @@ class Codec:
 
     async def encode_exercise_command(
         self,
-        contract_id: "ContractId",
+        contract_id: ContractId,
         choice_name: str,
-        argument: "Optional[Any]" = None,
-    ) -> "G_ExerciseCommand":
+        argument: Optional[Any] = None,
+    ) -> G_ExerciseCommand:
         item_type, _, choice = await self._look_up_choice(contract_id.value_type, choice_name)
 
         cmd_pb = G_ExerciseCommand(
@@ -138,11 +137,11 @@ class Codec:
 
     async def encode_create_and_exercise_command(
         self,
-        template_id: "TypeConName",
-        payload: "ContractData",
+        template_id: TypeConName,
+        payload: ContractData,
         choice_name: str,
-        argument: "Optional[Any]" = None,
-    ) -> "G_CreateAndExerciseCommand":
+        argument: Optional[Any] = None,
+    ) -> G_CreateAndExerciseCommand:
         item_type, _, choice = await self._look_up_choice(template_id, choice_name)
 
         cmd_pb = G_CreateAndExerciseCommand(
@@ -157,11 +156,11 @@ class Codec:
 
     async def encode_exercise_by_key_command(
         self,
-        template_id: "TypeConName",
+        template_id: TypeConName,
         choice_name: str,
-        key: "Any",
-        argument: "Optional[ContractData]" = None,
-    ) -> "G_ExerciseByKeyCommand":
+        key: Any,
+        argument: Optional[ContractData] = None,
+    ) -> G_ExerciseByKeyCommand:
         item_type, template, choice = await self._look_up_choice(template_id, choice_name)
 
         cmd_pb = G_ExerciseByKeyCommand(
@@ -174,7 +173,7 @@ class Codec:
 
         return G_Command(exerciseByKey=cmd_pb)
 
-    async def encode_filters(self, template_ids: "Sequence[Any]") -> "G_Filters":
+    async def encode_filters(self, template_ids: Sequence[Any]) -> G_Filters:
         # Search for a reference to the "wildcard" template; if any of the requested template_ids
         # is "*", then return results for all templates. We do this first because resolving template
         # IDs otherwise requires do_with_retry, which can be expensive.
@@ -198,7 +197,7 @@ class Codec:
             )
         )
 
-    async def encode_value(self, item_type: "Type", obj: "Any") -> "Tuple[str, Optional[Any]]":
+    async def encode_value(self, item_type: Type, obj: Any) -> Tuple[str, Optional[Any]]:
         """
         Convert a dazl/Python value to its Protobuf equivalent.
         """
@@ -207,14 +206,18 @@ class Codec:
         )
 
     @staticmethod
-    def encode_identifier(name: "TypeConName") -> "G_Identifier":
+    def encode_identifier(name: TypeConName) -> G_Identifier:
         return G_Identifier(
             package_id=package_ref(name),
             module_name=str(module_name(name)),
             entity_name=module_local_name(name),
         )
 
-    async def decode_created_event(self, event: "G_CreatedEvent") -> "CreateEvent":
+    @staticmethod
+    def encode_begin_offset(offset: Optional[str]) -> G_LedgerOffset:
+        return G_LedgerOffset(absolute=offset) if offset is not None else G_LedgerOffset(boundary=0)
+
+    async def decode_created_event(self, event: G_CreatedEvent) -> CreateEvent:
         cid = self.decode_contract_id(event)
         cdata = await self.decode_value(con(cid.value_type), event.create_arguments)
         template = self._lookup.template(cid.value_type)
@@ -226,11 +229,11 @@ class Codec:
             cid, cdata, event.signatories, event.observers, event.agreement_text.Value, key
         )
 
-    async def decode_archived_event(self, event: "G_ArchivedEvent") -> "ArchiveEvent":
+    async def decode_archived_event(self, event: G_ArchivedEvent) -> ArchiveEvent:
         cid = self.decode_contract_id(event)
         return ArchiveEvent(cid)
 
-    async def decode_exercise_response(self, tree: "G_TransactionTree") -> "ExerciseResponse":
+    async def decode_exercise_response(self, tree: G_TransactionTree) -> ExerciseResponse:
         """
         Convert a Protobuf TransactionTree response to an ExerciseResponse. The TransactionTree is
         expected to only contain a single exercise node at the root level.
@@ -276,8 +279,8 @@ class Codec:
         return ExerciseResponse(result, events)
 
     async def _decode_exercised_child_events(
-        self, tree: "G_TransactionTree", event_ids: "Sequence[str]"
-    ) -> "Sequence[Union[CreateEvent, ArchiveEvent]]":
+        self, tree: G_TransactionTree, event_ids: Sequence[str]
+    ) -> Sequence[Union[CreateEvent, ArchiveEvent]]:
         from ... import LOG
 
         events = []  # type: List[Union[CreateEvent, ArchiveEvent]]
@@ -298,7 +301,7 @@ class Codec:
                 LOG.warning("Received an unknown event type: %s", event_pb_type)
         return events
 
-    async def decode_value(self, item_type: "Type", obj: "Any") -> "Optional[Any]":
+    async def decode_value(self, item_type: Type, obj: Any) -> Optional[Any]:
         """
         Convert a Protobuf Ledger API value to its dazl/Python equivalent.
         """
@@ -308,13 +311,13 @@ class Codec:
 
     @staticmethod
     def decode_contract_id(
-        event: "Union[G_CreatedEvent, G_ExercisedEvent, G_ArchivedEvent]",
-    ) -> "ContractId":
+        event: Union[G_CreatedEvent, G_ExercisedEvent, G_ArchivedEvent],
+    ) -> ContractId:
         vt = Codec.decode_identifier(event.template_id)
         return ContractId(vt, event.contract_id)
 
     @staticmethod
-    def decode_identifier(identifier: "G_Identifier") -> "TypeConName":
+    def decode_identifier(identifier: G_Identifier) -> TypeConName:
         return TypeConName(
             ModuleRef(
                 PackageRef(identifier.package_id), DottedName(identifier.module_name.split("."))
@@ -323,12 +326,12 @@ class Codec:
         )
 
     @staticmethod
-    def decode_party_info(party_details: "G_PartyDetails") -> "PartyInfo":
+    def decode_party_info(party_details: G_PartyDetails) -> PartyInfo:
         return PartyInfo(party_details.party, party_details.display_name, party_details.is_local)
 
     async def _look_up_choice(
-        self, template_id: "Any", choice_name: str
-    ) -> "Tuple[TypeConName, DefTemplate, TemplateChoice]":
+        self, template_id: Any, choice_name: str
+    ) -> Tuple[TypeConName, DefTemplate, TemplateChoice]:
         template_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)
         )
