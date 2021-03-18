@@ -417,6 +417,9 @@ class QueryStream(QueryStreamBase):
         :return:
             A stream of responses, where each response contains one or more events at a particular
             offset.
+
+            At least one initial :class:`Boundary` is always returned, even if the stream is empty.
+            In this case, the first returned object is a :class:`Boundary` with ``offset=None``.
         """
         filters = await self.conn.codec.encode_filters(self._queries)
         filters_by_party = {party: filters for party in self.conn.config.access.read_as}
