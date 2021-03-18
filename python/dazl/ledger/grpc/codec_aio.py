@@ -226,7 +226,7 @@ class Codec:
             key = await self.decode_value(template.key.type, event.key)
 
         return CreateEvent(
-            cid, cdata, event.signatories, event.observers, event.agreement_text.Value, key
+            cid, cdata, event.signatories, event.observers, event.agreement_text.value, key
         )
 
     async def decode_archived_event(self, event: G_ArchivedEvent) -> ArchiveEvent:

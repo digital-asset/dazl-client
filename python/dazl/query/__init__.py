@@ -2,6 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-__all__ = ["ContractMatch", "is_match"]
+__all__ = ["ContractMatch", "is_match", "Query"]
 
-from .query import ContractMatch, is_match
+from .query import ContractMatch, Query, is_match

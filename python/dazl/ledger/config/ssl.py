@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+from logging import Logger
 from os import PathLike, fspath
 from typing import TYPE_CHECKING, Optional
 
@@ -25,6 +26,7 @@ class SSLConfig:
         cert_file: "Optional[PathLike]" = None,
         cert_key: "Optional[bytes]" = None,
         cert_key_file: "Optional[PathLike]" = None,
+        logger: Optional[Logger] = None,
     ):
         self._ca: Optional[bytes]
         self._cert: Optional[bytes]
