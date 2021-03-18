@@ -3,97 +3,50 @@
 
 from collections import defaultdict
 from inspect import iscoroutine
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    DefaultDict,
-    List,
-    TypeVar,
-    Union,
-    overload,
-)
+from typing import Any, Callable, TypeVar, Union
 import warnings
 
-from .api_types import ArchiveEvent, Boundary, CreateEvent
+from ..client.events import template_reverse_globs
+from ..damlast.daml_lf_1 import TypeConName
+from .api_types import ArchiveEvent, Boundary, CreateEvent, Event
 from .errors import CallbackReturnWarning
 
 __all__ = ["QueryStreamBase"]
+
+from ..damlast.lookup import validate_template
 
 CREATE_EVENT = "create"
 ARCHIVE_EVENT = "archive"
 BOUNDARY = "boundary"
 
-Self = TypeVar("Self")
+E = TypeVar("E", bound=Event)
 
 
 class QueryStreamBase:
     @property
-    def _callbacks(
-        self,
-    ) -> "DefaultDict[str, List[Union[Callable[[Any], None], Callable[[Any], Awaitable[None]]]]]":
+    def _callbacks(self):
         cb = getattr(self, "__cb", None)
         if cb is None:
             cb = defaultdict(list)
             object.__setattr__(self, "__cb", cb)
         return cb
 
-    @overload
-    def on_boundary(self, fn: "Callable[[Boundary], None]") -> "Callable[[Boundary], None]":
-        ...
+    def on_boundary(self, *args):
+        register(self, BOUNDARY, *args)
 
-    @overload
-    def on_boundary(
-        self, fn: "Callable[[Boundary], Awaitable[None]]"
-    ) -> "Callable[[Boundary], Awaitable[None]]":
-        ...
+    def on_create(self, *args):
+        register(self, CREATE_EVENT, *args)
 
-    def on_boundary(self, fn):
-        if not callable(fn):
-            raise ValueError("fn must be a callable")
+    def on_archive(self, *args):
+        register(self, ARCHIVE_EVENT, *args)
 
-        self._callbacks[BOUNDARY].append(fn)
-
-    @overload
-    def on_create(self, fn: "Callable[[CreateEvent], None]") -> "Callable[[CreateEvent], None]":
-        ...
-
-    @overload
-    def on_create(
-        self, fn: "Callable[[CreateEvent], Awaitable[None]]"
-    ) -> "Callable[[CreateEvent], Awaitable[None]]":
-        ...
-
-    def on_create(self, fn):
-        if not callable(fn):
-            raise ValueError("fn must be a callable")
-
-        self._callbacks[CREATE_EVENT].append(fn)
-
-    @overload
-    def on_archive(self, fn: "Callable[[ArchiveEvent], None]") -> "Callable[[ArchiveEvent], None]":
-        ...
-
-    @overload
-    def on_archive(
-        self, fn: "Callable[[ArchiveEvent], Awaitable[None]]"
-    ) -> "Callable[[ArchiveEvent], Awaitable[None]]":
-        ...
-
-    def on_archive(self, fn):
-        if not callable(fn):
-            raise ValueError("fn must be a callable")
-
-        self._callbacks[ARCHIVE_EVENT].append(fn)
-
-    async def __aenter__(self: Self) -> "Self":
+    async def __aenter__(self):
         """
         Prepare the stream.
         """
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
         """
         Close the stream.
         """
@@ -111,7 +64,7 @@ class QueryStreamBase:
         async for _ in self:
             pass
 
-    async def creates(self) -> "AsyncIterator[CreateEvent]":
+    async def creates(self):
         """
         Return a stream of :class:`CreateEvent`s. This will include the contracts of the
         Active Contract Set, as well as create events over subsequent transactions.
@@ -120,7 +73,7 @@ class QueryStreamBase:
             if isinstance(item, CreateEvent):
                 yield item
 
-    async def events(self) -> "AsyncIterator[Union[CreateEvent, ArchiveEvent]]":
+    async def events(self):
         """
         Return a stream of :class:`CreateEvent`s. This will include the contracts of the
         Active Contract Set, as well as create and archive events over subsequent transactions.
@@ -129,14 +82,14 @@ class QueryStreamBase:
             if isinstance(item, CreateEvent) or isinstance(item, ArchiveEvent):
                 yield item
 
-    def items(self) -> "AsyncIterator[Union[CreateEvent, ArchiveEvent, Boundary]]":
+    def items(self):
         """
         Must be overridden by subclasses to provide a stream of events. The implementation is
         expected to call :meth:`_emit_create` and :meth:`_emit_archive` for every encountered event.
         """
         raise NotImplementedError
 
-    def __aiter__(self) -> "AsyncIterator[Union[CreateEvent, ArchiveEvent, Boundary]]":
+    def __aiter__(self):
         """
         Returns :meth:`items`, which includes all create and archive events, and boundaries.
         """
@@ -161,3 +114,59 @@ class QueryStreamBase:
 
     async def _emit_boundary(self, event: "Boundary"):
         await self._emit(BOUNDARY, event)
+
+
+def register(q: QueryStreamBase, name: str, *args):
+    if len(args) == 0:
+        return _register_decorator(q, name, None)
+    elif len(args) == 1:
+        if callable(args[0]):
+            return _register(q, name, None, args[0])
+        elif isinstance(args[0], (str, TypeConName)):
+            return _register_decorator(q, name, args[0])
+        else:
+            raise ValueError("expected a template name or a callback here")
+    elif len(args) == 2:
+        template_id, fn = args
+        _register(q, name, template_id, fn)
+    else:
+        raise ValueError("too many arguments")
+
+
+def _register(
+    q: QueryStreamBase,
+    name: str,
+    template_id: Union[None, str, TypeConName],
+    fn: Callable[[E], None],
+) -> Callable[[E], None]:
+    template_search = (
+        next(template_reverse_globs(True, *validate_template(template_id)))
+        if template_id is not None
+        else None
+    )
+    if template_search == "*:*":
+        template_search = None
+
+    def handler(event: E):
+        if template_search is not None:
+            for match in template_reverse_globs(
+                False, *validate_template(event.contract_id.value_type)
+            ):
+                if template_search == match:
+                    fn(event)
+                    return
+            return
+        else:
+            fn(event)
+
+    # noinspection PyProtectedMember
+    q._callbacks[name].append(handler)
+    return fn
+
+
+def _register_decorator(q: QueryStreamBase, name: str, template_id: Union[None, str, TypeConName]):
+    def decorator(fn):
+        _register(q, name, template_id, fn)
+        return fn
+
+    return decorator

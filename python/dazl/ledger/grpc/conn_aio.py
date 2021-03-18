@@ -64,7 +64,7 @@ from ..stream_aio import QueryStreamBase
 from .channel import create_channel
 from .codec_aio import Codec
 
-__all__ = ["Connection"]
+__all__ = ["Connection", "QueryStream"]
 
 
 class Connection:
