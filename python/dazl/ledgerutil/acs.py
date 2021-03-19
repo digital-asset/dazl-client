@@ -2,10 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-import types
-
 from collections.abc import Mapping
 from operator import delitem, setitem
+import types
 from typing import Dict, Iterator, Optional, TypeVar, Union
 
 from ..damlast.daml_lf_1 import TypeConName
@@ -17,6 +16,7 @@ __all__ = ["ACS"]
 from ..query import ContractMatch, is_match
 
 T = TypeVar("T")
+
 
 class ACS:
     """
