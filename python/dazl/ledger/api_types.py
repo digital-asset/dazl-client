@@ -21,16 +21,17 @@ from ..prim import ContractData, ContractId, Party
 from ..util.typing import safe_cast
 
 __all__ = [
-    "Command",
-    "CreateCommand",
-    "CreateAndExerciseCommand",
-    "ExerciseCommand",
-    "ExerciseByKeyCommand",
-    "CreateEvent",
     "ArchiveEvent",
+    "Boundary",
+    "Command",
+    "CreateAndExerciseCommand",
+    "CreateCommand",
+    "CreateEvent",
+    "Event",
+    "ExerciseByKeyCommand",
+    "ExerciseCommand",
     "ExerciseResponse",
     "PartyInfo",
-    "Boundary",
 ]
 
 
@@ -428,6 +429,9 @@ class ArchiveEvent:
         The contract ID of the archived contract.
         """
         return self._contract_id
+
+
+Event = Union[CreateEvent, ArchiveEvent]
 
 
 class Boundary:
