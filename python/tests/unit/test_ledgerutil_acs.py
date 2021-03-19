@@ -37,10 +37,12 @@ async def test_acs(sandbox):
             receivers = ACS.from_stream(stream, "Main:ReceiverRole")
             async for item in stream:
                 if isinstance(item, Boundary):
-                    assert len(parties) == len(authors)
-                    assert len(parties) == len(receivers)
-                    logging.info("Authors: %r", authors)
-                    logging.info("Receivers: %r", receivers)
+                    asnap = authors.snapshot()
+                    rsnap = receivers.snapshot()
+                    assert len(parties) == len(asnap)
+                    assert len(parties) == len(rsnap)
+                    logging.info("Authors: %r", asnap)
+                    logging.info("Receivers: %r", rsnap)
                     return
 
 

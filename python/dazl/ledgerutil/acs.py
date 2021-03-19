@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-from collections.abc import MutableMapping
+import types
+
+from collections.abc import Mapping
 from operator import delitem, setitem
 from typing import Dict, Iterator, Optional, TypeVar, Union
 
@@ -16,8 +18,7 @@ from ..query import ContractMatch, is_match
 
 T = TypeVar("T")
 
-
-class ACS(MutableMapping):
+class ACS:
     """
     An accumulation of active contracts up to a certain point in time over a provided stream.
 
@@ -53,7 +54,7 @@ class ACS(MutableMapping):
         class MyService:
             def __init__(self, conn):
                 self._conn = conn
-                self._widgets = ACS.empty()
+                self._widgets = ACS.empty("WidgetMod:Widget")
 
             async def run(self):
                 async with self._conn.stream("WidgetMod:Widget") as stream:
@@ -61,44 +62,44 @@ class ACS(MutableMapping):
                     await stream.run()
 
             def widget_json(self, widget_id: str):
-                return self._widgets.first_payload({"id": widget_id})
+                return self._widgets.snapshot().first_payload({"id": widget_id})
 
     """
 
     @classmethod
-    def empty(cls) -> ACS:
-        return ACS()
+    def empty(cls, template_id: Union[str, TypeConName]) -> ACS:
+        return ACS(None, template_id)
 
     @classmethod
     def from_stream(cls, stream: QueryStream, template_id: Union[str, TypeConName]):
-        acs = ACS()
-        stream.on_create(template_id, lambda e: setitem(acs._contracts, e.contract_id, e.payload))
-        stream.on_archive(template_id, lambda e: delitem(acs._contracts, e.contract_id))
+        acs = ACS(0, template_id)
+        stream.on_create(template_id, lambda e: acs._set_item(e.contract_id, e.payload))
+        stream.on_archive(template_id, lambda e: acs._del_item(e.contract_id))
         return acs
 
-    def __init__(self):
+    def __init__(self, serial_number: Optional[int], template_id: Union[str, TypeConName]):
         self._contracts = {}  # type: Dict[ContractId, ContractData]
+        self._serial_number = serial_number
+        self._template_id = template_id
 
-    def __contains__(self, key: ContractId) -> bool:
-        return key in self._contracts
+    def _notice_change(self):
+        if self._serial_number is not None:
+            self._serial_number = self._serial_number + 1
 
-    def __getitem__(self, key: ContractId) -> ContractData:
-        return self._contracts[key]
+    def _set_item(self, key: ContractId, payload: ContractData) -> None:
+        self._notice_change()
+        setitem(self._contracts, key, payload)
 
-    def __setitem__(self, key: ContractId, payload: ContractData) -> None:
-        self._contracts[key] = payload
+    def _del_item(self, key: ContractId) -> None:
+        self._notice_change()
+        delitem(self._contracts, key)
 
-    def __delitem__(self, key: ContractId) -> None:
-        del self._contracts[key]
-
-    def __iter__(self) -> Iterator[ContractId]:
-        return iter(self._contracts)
-
-    def __len__(self) -> int:
-        return len(self._contracts)
-
-    def clear(self) -> None:
-        self._contracts.clear()
+    def snapshot(self) -> Mapping[ContractId, ContractData]:
+        """
+        Create a snapshot of the _current_ state of the ACS. Useful if you need a consistent view
+        of the ACS at a point in time.
+        """
+        return types.MappingProxyType(dict(self._contracts))
 
     def first_payload(self, predicate: ContractMatch) -> Optional[ContractData]:
         for value in self._contracts.values():
@@ -107,4 +108,5 @@ class ACS(MutableMapping):
         return None
 
     def __repr__(self):
-        return f"ACS(len={len(self)})"
+        serno = self._serial_number or "EMPTY-NOT-CONNECTED"
+        return f"ACS(len={len(self)}, serial={serno}, tid={self._template_id})"
