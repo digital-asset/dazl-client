@@ -483,6 +483,8 @@ class QueryStream(QueryStreamBase):
             At least one initial :class:`Boundary` is always returned, even if the stream is empty.
             In this case, the first returned object is a :class:`Boundary` with ``offset=None``.
         """
+        log = self.conn.config.logger
+
         filters = await self.conn.codec.encode_filters(self._queries)
         filters_by_party = {party: filters for party in self.conn.config.access.read_as}
         tx_filter_pb = G_TransactionFilter(filters_by_party=filters_by_party)
@@ -493,6 +495,7 @@ class QueryStream(QueryStreamBase):
                 # when starting from the beginning of the ledger, the Active Contract Set service
                 # lets us catch up more quickly than having to parse every create/archive event
                 # ourselves
+                log.debug("Reading from the ACS...")
                 async for event in self._acs_events(tx_filter_pb):
                     if isinstance(event, CreateEvent):
                         await self._emit_create(event)
@@ -502,11 +505,17 @@ class QueryStream(QueryStreamBase):
                     else:
                         warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
                     yield event
+            else:
+                log.debug(
+                    "Skipped reading from the ACS because begin offset is %r",
+                    self._offset_range.begin,
+                )
 
             if self._offset_range != UNTIL_END:
                 # now start returning events as they come off the transaction stream; note this
                 # stream will never naturally close, so it's on the caller to call close() or to
                 # otherwise exit our current context
+                log.debug("Reading a transaction stream: %s", self._offset_range)
                 async for event in self._tx_events(tx_filter_pb, offset):
                     if isinstance(event, CreateEvent):
                         await self._emit_create(event)
@@ -517,6 +526,10 @@ class QueryStream(QueryStreamBase):
                     else:
                         warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
                     yield event
+            else:
+                log.debug(
+                    "Not reading from transaction stream because we were only asked for a snapshot."
+                )
         finally:
             await self.close()
 
