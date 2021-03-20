@@ -56,6 +56,7 @@ from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import Transact
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party
 from ...query import Query
+from .._offsets import UNTIL_END, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
 from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
@@ -323,17 +324,79 @@ class Connection:
 
     # region Read API
 
-    def query(self, template_id: str = "*", query: Query = None) -> QueryStream:
-        return QueryStream(self, {template_id: query}, False)
+    def query(self, template_id: str = "*", query: Query = None, /) -> QueryStream:
+        """
+        Return the create events from the active contract set service as a stream.
 
-    def query_many(self, queries: Optional[Mapping[str, Query]] = None) -> QueryStream:
-        return QueryStream(self, queries, False)
+        If you find yourself repeatedly calling :meth:`query` or :meth:`query_many` over the same
+        set of templates, you may want to consider :class:`ACS` instead, which is a utility class
+        that helps you maintain a "live" state of the ACS.
 
-    def stream(self, template_id: str = "*", query: Query = None) -> QueryStream:
-        return QueryStream(self, {template_id: query}, True)
+        :param template_id:
+            The name of the template for which to fetch contracts.
+        :param query:
+            A filter to apply to the set of returned contracts.
+        """
+        return QueryStream(self, {template_id: query}, UNTIL_END)
 
-    def stream_many(self, queries: Optional[Mapping[str, Query]] = None) -> QueryStream:
-        return QueryStream(self, queries, True)
+    def query_many(self, queries: Optional[Mapping[str, Query]] = None, /) -> QueryStream:
+        """
+        Return the create events from the active contract set service as a stream.
+
+        If you find yourself repeatedly calling :meth:`query` or :meth:`query_many` over the same
+        set of templates, you may want to consider :class:`ACS` instead, which is a utility class
+        that helps you maintain a "live" state of the ACS.
+
+        :param queries:
+            A map of template IDs to filter to apply to the set of returned contracts.
+        """
+        return QueryStream(self, queries, UNTIL_END)
+
+    def stream(
+        self, template_id: str = "*", query: Query = None, /, *, offset: Optional[str] = None
+    ) -> QueryStream:
+        """
+        Stream create/archive events.
+
+        When ``offset`` is ``None``, create events from the active contract set are returned first,
+        followed by a continuous stream of updates (creates/archives).
+
+        Otherwise, ``offset`` can be supplied to resume a stream from a prior point where a
+        ``Boundary`` was returned from a previous stream.
+
+        :param template_id:
+            The name of the template for which to fetch contracts.
+        :param query:
+            A filter to apply to the set of returned contracts. Note that this does not filter
+            :class:`ArchiveEvent`; readers of the stream MUST be able to cope with "mismatched"
+            archives that come from the result of applying a filter.
+        :param offset:
+            An optional offset at which to start receiving events. If ``None``, start from the
+            beginning.
+        """
+        return QueryStream(self, {template_id: query}, from_offset_until_forever(offset))
+
+    def stream_many(
+        self, queries: Optional[Mapping[str, Query]] = None, /, *, offset: Optional[str] = None
+    ) -> QueryStream:
+        """
+        Stream create/archive events from more than one template ID in the same stream.
+
+        When ``offset`` is ``None``, create events from the active contract set are returned first,
+        followed by a continuous stream of updates (creates/archives).
+
+        Otherwise, ``offset`` can be supplied to resume a stream from a prior point where a
+        ``Boundary`` was returned from a previous stream.
+
+        :param queries:
+            A map of template IDs to filter to apply to the set of returned contracts. Note that
+            this does not filter :class:`ArchiveEvent`; readers of the stream MUST be able to cope
+            with "mismatched" archives that come from the result of applying a filter.
+        :param offset:
+            An optional offset at which to start receiving events. If ``None``, start from the
+            beginning.
+        """
+        return QueryStream(self, queries, from_offset_until_forever(offset))
 
     # endregion
 
@@ -387,13 +450,12 @@ class QueryStream(QueryStreamBase):
         self,
         conn: Connection,
         queries: Optional[Mapping[str, Query]],
-        continue_stream: bool,
+        offset_range: LedgerOffsetRange,
     ):
         self.conn = conn
         self._queries = queries
-        self._continue_stream = continue_stream
+        self._offset_range = offset_range
 
-        self._offset = None
         self._filter = None
         self._response_stream = None
 
@@ -427,17 +489,21 @@ class QueryStream(QueryStreamBase):
 
         try:
             offset = None
-            async for event in self._acs_events(tx_filter_pb):
-                if isinstance(event, CreateEvent):
-                    await self._emit_create(event)
-                elif isinstance(event, Boundary):
-                    offset = event.offset
-                    await self._emit_boundary(event)
-                else:
-                    warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
-                yield event
+            if self._offset_range.begin is None:
+                # when starting from the beginning of the ledger, the Active Contract Set service
+                # lets us catch up more quickly than having to parse every create/archive event
+                # ourselves
+                async for event in self._acs_events(tx_filter_pb):
+                    if isinstance(event, CreateEvent):
+                        await self._emit_create(event)
+                    elif isinstance(event, Boundary):
+                        offset = event.offset
+                        await self._emit_boundary(event)
+                    else:
+                        warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
+                    yield event
 
-            if self._continue_stream:
+            if self._offset_range != UNTIL_END:
                 # now start returning events as they come off the transaction stream; note this
                 # stream will never naturally close, so it's on the caller to call close() or to
                 # otherwise exit our current context
