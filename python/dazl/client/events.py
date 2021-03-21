@@ -1,11 +1,14 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
 from typing import Any, Callable, Collection, Iterator, TypeVar
+import warnings
 
-__all__ = ["EventKey", "template_reverse_globs"]
-
-from ..damlast.lookup import validate_template
+from ..damlast.lookup import (
+    matching_normalizations,
+    normalize,
+    parse_type_con_name,
+    validate_template,
+)
 from ..protocols.events import (
     BaseEvent,
     ContractArchiveEvent,
@@ -18,6 +21,8 @@ from ..protocols.events import (
     TransactionEndEvent,
     TransactionStartEvent,
 )
+
+__all__ = ["EventKey", "template_reverse_globs"]
 
 T = TypeVar("T")
 
@@ -62,37 +67,33 @@ def template_reverse_globs(primary_only: bool, package_id: str, type_name: str) 
     """
     Return an iterator over strings that glob to a specified type.
     """
-    package_id = package_id or "*"
-    type_name = type_name or "*"
+    warnings.warn(
+        "template_reverse_globs is deprecated; use either "
+        "dazl.damlast.lookup.matching_normalizations (for template_reverse_globs(False, ...)) or "
+        "dazl.damlast.lookup.normalize(for template_reverse_globs(True, ...)). "
+        "Note that the new functions do NOT support periods as a delimiter between "
+        "module names and entity names; you MUST use a colon.",
+        DeprecationWarning,
+    )
 
-    if package_id != "*":
-        if type_name != "*":
-            if ":" not in type_name:
-                # this is a historical use of template name here; assume the last dot was supposed
-                # to have been a colon instead
-                m, delim, e = type_name.rpartition(".")
-                if delim:
-                    yield f"{package_id}:{m}:{e}"
-                    if primary_only:
-                        return
-            yield f"{package_id}:{type_name}"
-            if primary_only:
-                return
-        if not primary_only or type_name == "*":
-            yield f"{package_id}:*"
-    if type_name != "*":
-        if ":" not in type_name:
-            # this is a historical use of template name here; assume the last dot was supposed
-            # to have been a colon instead
-            m, delim, e = type_name.rpartition(".")
-            if delim:
-                yield f"*:{m}:{e}"
-                if primary_only:
-                    return
-        yield f"*:{type_name}"
-        if primary_only:
-            return
-    yield "*:*"
+    # support deprecated type identifiers for usages of this old API to preserve backwards
+    # compatibility
+    use_deprecated_form = False
+    if type_name != "*" and ":" not in type_name:
+        m, delim, e = type_name.rpartition(".")
+        if delim:
+            use_deprecated_form = True
+            type_name = f"{m}:{e}"
+    t = f"{package_id}:{type_name}"
+
+    if primary_only:
+        yield normalize(t)
+    else:
+        for form in matching_normalizations(t):
+            yield form
+            if use_deprecated_form and len(form.split(":")) == 3:
+                s, _, e = form.rpartition(":")
+                yield f"{s}.{e}"
 
 
 class EventKey:
@@ -190,4 +191,6 @@ class EventKey:
     @staticmethod
     def _contract(primary_only: bool, prefix: str, template: "Any") -> Collection[str]:
         m, t = validate_template(template)
-        return tuple(f"{prefix}/{g}" for g in template_reverse_globs(primary_only, m, t))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return tuple(f"{prefix}/{g}" for g in template_reverse_globs(primary_only, m, t))

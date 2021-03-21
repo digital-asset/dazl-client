@@ -6,14 +6,13 @@ from inspect import iscoroutine
 from typing import Any, Callable, TypeVar, Union
 import warnings
 
-from ..client.events import template_reverse_globs
 from ..damlast.daml_lf_1 import TypeConName
 from .api_types import ArchiveEvent, Boundary, CreateEvent, Event
 from .errors import CallbackReturnWarning
 
 __all__ = ["QueryStreamBase"]
 
-from ..damlast.lookup import validate_template
+from ..damlast.lookup import matching_normalizations, normalize
 
 CREATE_EVENT = "create"
 ARCHIVE_EVENT = "archive"
@@ -139,24 +138,10 @@ def _register(
     template_id: Union[None, str, TypeConName],
     fn: Callable[[E], None],
 ) -> Callable[[E], None]:
-    template_search = (
-        next(template_reverse_globs(True, *validate_template(template_id)))
-        if template_id is not None
-        else None
-    )
-    if template_search == "*:*":
-        template_search = None
+    template_search = normalize(template_id)
 
     def handler(event: E):
-        if template_search is not None:
-            for match in template_reverse_globs(
-                False, *validate_template(event.contract_id.value_type)
-            ):
-                if template_search == match:
-                    fn(event)
-                    return
-            return
-        else:
+        if template_search in matching_normalizations(event.contract_id.value_type):
             fn(event)
 
     # noinspection PyProtectedMember
