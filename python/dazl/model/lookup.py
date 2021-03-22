@@ -5,7 +5,8 @@
 This module has been relocated to ``dazl.client.events`` or ``dazl.damlast.lookup``.
 """
 
-__all__ = ["validate_template", "template_reverse_globs"]
-
+# noinspection PyDeprecation
 from ..client.events import template_reverse_globs
 from ..damlast.lookup import validate_template
+
+__all__ = ["validate_template", "template_reverse_globs"]

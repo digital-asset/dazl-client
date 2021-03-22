@@ -15,7 +15,18 @@ DAML-LF fast lookups
 
 import threading
 from types import MappingProxyType
-from typing import AbstractSet, Any, Collection, Dict, Iterable, NoReturn, Optional, Tuple
+from typing import (
+    AbstractSet,
+    Any,
+    Collection,
+    Dict,
+    Iterable,
+    NoReturn,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 from .daml_lf_1 import (
     Archive,
@@ -34,19 +45,22 @@ from .errors import NameNotFoundError, PackageNotFoundError
 from .protocols import SymbolLookup
 
 __all__ = [
-    "find_choice",
-    "parse_type_con_name",
-    "validate_template",
     "EmptyLookup",
     "MultiPackageLookup",
-    "PackageLookup",
     "MultiPackageLookup",
+    "PackageLookup",
+    "find_choice",
+    "matching_normalizations",
+    "normalize",
+    "parse_type_con_name",
+    "validate_template",
 ]
+
 
 STAR = PackageRef("*")
 
 
-def parse_type_con_name(val: str) -> "TypeConName":
+def parse_type_con_name(val: str) -> TypeConName:
     """
     Parse the given string as a type constructor.
     """
@@ -56,7 +70,7 @@ def parse_type_con_name(val: str) -> "TypeConName":
     return TypeConName(module_ref, entity_name.split("."))
 
 
-def empty_lookup_impl(ref: "Any") -> "NoReturn":
+def empty_lookup_impl(ref: Any) -> NoReturn:
     pkg, _ = validate_template(ref)
     if pkg != STAR:
         raise PackageNotFoundError(pkg)
@@ -64,7 +78,7 @@ def empty_lookup_impl(ref: "Any") -> "NoReturn":
         raise NameNotFoundError(ref)
 
 
-def validate_template(template: "Any") -> "Tuple[PackageRef, str]":
+def validate_template(template: Union[None, str, TypeConName]) -> Tuple[PackageRef, str]:
     """
     Return a module and type name component from something that can be interpreted as a template.
 
@@ -94,6 +108,11 @@ def validate_template(template: "Any") -> "Tuple[PackageRef, str]":
             # one colon, so assume the package ID is unspecified UNLESS the second component is a
             # wildcard; then we assume the wildcard means any module name and entity name
             m, e = components
+            if m == STAR and e != STAR:
+                # strings that look like "*:SOMETHING" are explicitly not allowed; this is almost
+                # certainly an attempt to use periods instead of colons as a delimiter between
+                # module name and entity name
+                raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")
             return (STAR, f"{m}:{e}") if e != "*" else (PackageRef(m), "*")
 
         else:
@@ -103,6 +122,35 @@ def validate_template(template: "Any") -> "Tuple[PackageRef, str]":
         return package_ref(template), package_local_name(template)
     else:
         raise ValueError(f"Don't know how to convert {template!r} into a template")
+
+
+def normalize(name: Union[None, str, TypeConName], /) -> str:
+    """
+    Return the canonical form for a string that represents a template ID or partial match of a
+    template ID.
+
+    Concretely, this function converts ``"MyMod:MyTemplate"`` to ``"*:MyMod:MyTemplate"`` and leaves
+    most other strings unchanged.
+
+    :param name:
+        A template ID, expressed in either string form or as an instance of :class:`TypeConName`.
+    :return:
+        A string in canonical form (either ``PACKAGE_REF:MODULE_NAME:ENTITY_NAME`` or
+        ``PACKAGE_REF:*``, where ``PACKAGE_REF`` is also allowed to be ``*``).
+    """
+    p, m = validate_template(name)
+    return f"{p}:{m}"
+
+
+def matching_normalizations(name: Union[str, TypeConName], /) -> Sequence[str]:
+    """
+    Return strings that are possible matches for the given template ID.
+    """
+    p, m = validate_template(name)
+
+    # throw away duplicates that arise from `name` not being fully specified (p and/or m are
+    # allowed to be asterisks too)
+    return list(dict.fromkeys([f"{p}:{m}", f"{p}:*", f"*:{m}", "*:*"]))
 
 
 class EmptyLookup(SymbolLookup):
