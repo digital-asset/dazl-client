@@ -9,7 +9,7 @@ from ..damlast.daml_lf_1 import DefDataType, Type
 if TYPE_CHECKING:
     from .context import Context
 
-if sys.version_info >= (3, 7):
+if sys.version_info >= (3, 8):
     from typing import Protocol
 else:
     from typing_extensions import Protocol
