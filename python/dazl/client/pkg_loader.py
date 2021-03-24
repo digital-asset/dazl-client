@@ -14,7 +14,7 @@ from ..damlast.lookup import MultiPackageLookup, validate_template
 from ..damlast.pkgfile import Dar
 from ..model.core import DazlError
 
-if sys.version_info >= (3, 7):
+if sys.version_info >= (3, 8):
     from typing import Protocol
 else:
     from typing_extensions import Protocol
