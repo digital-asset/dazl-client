@@ -11,20 +11,9 @@ __all__ = ["ContractId", "ContractData"]
 class ContractId:
     """
     A typed contract ID.
-
-    Instance attributes:
-
-    .. attribute:: ContractId.value
-
-        The raw contract ID value (for example, ``"#4:1"``).
-
-    .. attribute:: ContractId.value_type
-
-        The type of template that is pointed to by this :class:`ContractId`.
-
     """
 
-    __slots__ = "value", "value_type"
+    __slots__ = "_value", "_value_type"
 
     def __init__(self, value_type: "TypeConName", value: str):
         if not isinstance(value_type, TypeConName):
@@ -32,8 +21,20 @@ class ContractId:
         if not isinstance(value, str):
             raise ValueError("value must be a string")
 
-        object.__setattr__(self, "value_type", value_type)
-        object.__setattr__(self, "value", value)
+        object.__setattr__(self, "_value_type", value_type)
+        object.__setattr__(self, "_value", value)
+
+    def value(self) -> str:
+        """
+        Return the raw contract ID value (for example, ``"#4:1"``).
+        """
+        return self._value
+
+    def value_type(self) -> "TypeConName":
+        """
+        Return the type of template that is pointed to by this :class:`ContractId`.
+        """
+        return self._value_type
 
     def __str__(self):
         """
