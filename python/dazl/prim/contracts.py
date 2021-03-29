@@ -1,9 +1,10 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Any, Mapping
+from typing import Any, Mapping, TYPE_CHECKING
 
-from ..damlast.daml_lf_1 import TypeConName
+if TYPE_CHECKING:
+    from ..damlast.daml_lf_1 import TypeConName
 
 __all__ = ["ContractId", "ContractData"]
 
@@ -24,12 +25,14 @@ class ContractId:
         object.__setattr__(self, "_value_type", value_type)
         object.__setattr__(self, "_value", value)
 
+    @property
     def value(self) -> str:
         """
         Return the raw contract ID value (for example, ``"#4:1"``).
         """
         return self._value
 
+    @property
     def value_type(self) -> "TypeConName":
         """
         Return the type of template that is pointed to by this :class:`ContractId`.
