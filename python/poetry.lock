@@ -153,7 +153,7 @@ marker = "python_version >= \"3.6.0\" and python_version < \"3.7.0\" or python_v
 name = "dataclasses"
 optional = false
 python-versions = ">=3.6, <3.7"
-version = "0.8"
+version = "0.7"
 
 [[package]]
 category = "dev"
@@ -202,6 +202,19 @@ version = ">=3.1.4,<5"
 
 [package.extras]
 aiohttp = ["aiohttp (>=3.6.2,<4.0.0dev)"]
+
+[[package]]
+category = "dev"
+description = "Mypy stubs for gRPC"
+name = "grpc-stubs"
+optional = false
+python-versions = ">=3.6"
+version = "1.24.5"
+
+[package.dependencies]
+grpcio = "*"
+mypy = ">=0.730"
+typing-extensions = "*"
 
 [[package]]
 category = "main"
@@ -879,7 +892,7 @@ pygments = ["pygments"]
 server = ["aiohttp"]
 
 [metadata]
-content-hash = "1bd375f5982b51f5fba4a0c9cf00ad43284e37bc0f116efeb0e2d2fab3e504b9"
+content-hash = "58d4de82cd894b04803b49a3de31a027730bf5c6c10e7487d7546c907a8f4d25"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -970,8 +983,8 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 dataclasses = [
-    {file = "dataclasses-0.8-py3-none-any.whl", hash = "sha256:0201d89fa866f68c8ebd9d08ee6ff50c0b255f8ec63a71c16fda7af82bb887bf"},
-    {file = "dataclasses-0.8.tar.gz", hash = "sha256:8479067f342acf957dc82ec415d355ab5edb7e7646b90dc6e2fd1d96ad084c97"},
+    {file = "dataclasses-0.7-py3-none-any.whl", hash = "sha256:3459118f7ede7c8bea0fe795bff7c6c2ce287d01dd226202f7c9ebc0610a7836"},
+    {file = "dataclasses-0.7.tar.gz", hash = "sha256:494a6dcae3b8bcf80848eea2ef64c0cc5cd307ffc263e17cdf42f3e5420808e6"},
 ]
 docutils = [
     {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},
@@ -984,6 +997,10 @@ flask = [
 google-auth = [
     {file = "google-auth-1.26.0.tar.gz", hash = "sha256:26cf3e839be936bbd2f65465cbdecd41590a603a51891a9fd9077716ddc3f726"},
     {file = "google_auth-1.26.0-py2.py3-none-any.whl", hash = "sha256:4c95ef8d2a9afb11015b387a2d2d1d86d8c9170f0b89d07c0f773b852dd695de"},
+]
+grpc-stubs = [
+    {file = "grpc-stubs-1.24.5.tar.gz", hash = "sha256:d875d5827e0a1ee6003aa5848243ea5df650f89cef8cf8abd917a27493e970e7"},
+    {file = "grpc_stubs-1.24.5-py3-none-any.whl", hash = "sha256:2ce3a4ce40a7bb755620f012bf7301a63fa42cfa7d2fb715f69854d9123ceaa9"},
 ]
 grpcio = [
     {file = "grpcio-1.35.0-cp27-cp27m-macosx_10_10_x86_64.whl", hash = "sha256:95cc4d2067deced18dc807442cf8062a93389a86abf8d40741120054389d3f29"},
