@@ -6,7 +6,7 @@ Contains functions for working with "native" Python types as they correspond to 
 Ledger API.
 """
 
-from typing import Any, Mapping, Tuple
+from typing import Any, Dict, Mapping, Tuple
 
 __all__ = ["to_record", "to_variant"]
 
@@ -23,7 +23,7 @@ def to_record(obj: "Any") -> "Mapping[str, Any]":
         raise ValueError("a mapping is required")
 
     # pull out any specialized dotted-field mappings
-    reformatted = dict()
+    reformatted = dict()  # type: Dict[str, Any]
     for key, value in obj.items():
         k1, d, k2 = key.partition(".")
         if d:

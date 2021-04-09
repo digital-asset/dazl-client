@@ -288,8 +288,7 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
         )
 
     def visit_expr_enum_con(self, enum_con: "Expr.EnumCon") -> "Expr":
-        new_type_con = self.visit_type_con(enum_con.tycon).con
-        return Expr(enum_con=Expr.EnumCon(tycon=new_type_con, enum_con=enum_con.enum_con))
+        return Expr(enum_con=Expr.EnumCon(tycon=enum_con.tycon, enum_con=enum_con.enum_con))
 
     def visit_expr_struct_con(self, struct_con: "Expr.StructCon") -> "Expr":
         new_fields = tuple(
@@ -373,7 +372,7 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
 
     def visit_expr_from_any(self, from_any: "Expr.FromAny") -> "Expr":
         return Expr(
-            from_any=Expr.ToAny(
+            from_any=Expr.FromAny(
                 type=self.visit_type(from_any.type), expr=self.visit_expr(from_any.expr)
             )
         )

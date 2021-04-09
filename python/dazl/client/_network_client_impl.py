@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import ensure_future, gather, sleep, wait_for
+from asyncio import Future, ensure_future, gather, sleep, wait_for
 from collections import defaultdict
 from dataclasses import asdict, fields
 from datetime import timedelta
@@ -13,20 +13,16 @@ from typing import (
     Callable,
     Collection,
     Dict,
+    List,
     Optional,
     Set,
     Tuple,
     TypeVar,
     Union,
-    overload,
 )
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
 from .. import LOG
+from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
@@ -38,17 +34,15 @@ from ..prim.datetime import TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
 from ..scheduler import Invoker, RunLevel
-from ._base_model import (
-    CREATE_IF_MISSING,
-    EXCEPTION_IF_MISSING,
-    NONE_IF_MISSING,
-    IfMissingPartyBehavior,
-)
+from ._base_model import CREATE_IF_MISSING, NONE_IF_MISSING, IfMissingPartyBehavior
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
 
 T = TypeVar("T")
+
+
+__all__ = ["_NetworkImpl", "_NetworkRunner"]
 
 
 class _NetworkImpl:
@@ -95,7 +89,7 @@ class _NetworkImpl:
         self._global_impls = dict()  # type: Dict[type, Any]
         self._party_impls = dict()  # type: Dict[Party, _PartyClientImpl]
 
-        self._config = dict()
+        self._config = dict()  # type: Dict[str, Any]
         self.bots = BotCollection(None)
 
     def set_config(self, *configs: "Union[NetworkConfig, AnonymousNetworkConfig]", **kwargs):
@@ -268,38 +262,8 @@ class _NetworkImpl:
                 self._global_impls[ctor] = inst  # type: ignore
             return inst
 
-    @overload
-    def party_impl(
-        self,
-        party: Party,
-        ctor: None = None,
-        if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING,
-    ) -> _PartyClientImpl:
-        ...
-
-    @overload
-    def party_impl(
-        self, party: Party, ctor: None = None, if_missing: NONE_IF_MISSING = CREATE_IF_MISSING
-    ) -> Optional[_PartyClientImpl]:
-        ...
-
-    @overload
-    def party_impl(
-        self,
-        party: Party,
-        ctor: "Callable[[_PartyClientImpl], T]",
-        if_missing: Literal[CREATE_IF_MISSING, EXCEPTION_IF_MISSING] = CREATE_IF_MISSING,
-    ) -> T:
-        ...
-
-    @overload
-    def party_impl(
-        self,
-        party: Party,
-        ctor: "Callable[[_PartyClientImpl], T]",
-        if_missing: NONE_IF_MISSING = CREATE_IF_MISSING,
-    ) -> Optional[T]:
-        ...
+    def party_impl_wrapper(self, party: Party, ctor: "Callable[[_PartyClientImpl], T]") -> "T":
+        return self.party_impl(party, ctor=ctor)
 
     def party_impl(self, party, ctor=None, if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING):
         """
@@ -395,12 +359,14 @@ class _NetworkImpl:
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)
 
-    async def ensure_package_ids(self, package_ids: "Collection[str]", timeout: "TimeDeltaLike"):
+    async def ensure_package_ids(
+        self, package_ids: "Collection[PackageRef]", timeout: "TimeDeltaLike"
+    ):
         await wait_for(
             self.__ensure_package_ids(package_ids), to_timedelta(timeout).total_seconds()
         )
 
-    async def __ensure_package_ids(self, package_ids: "Collection[str]"):
+    async def __ensure_package_ids(self, package_ids: "Collection[PackageRef]"):
         metadata = await self.aio_metadata()
         await gather(*(metadata.package_loader.load(pkg_ref) for pkg_ref in package_ids))
 
@@ -441,10 +407,10 @@ class _NetworkRunner:
         self.initialized_parties = set()  # type: Set[Party]
         self._network_impl = network_impl
         self._config = self._network_impl.resolved_config()
-        self._read_completions = []
+        self._read_completions = []  # type: List[Future]
         self._user_coroutines = [ensure_future(coro) for coro in user_coroutines]
-        self._bot_coroutines = []
-        self._writers = []
+        self._bot_coroutines = []  # type: List[Future]
+        self._writers = []  # type: List[Future]
 
     async def run(self):
         LOG.debug("Running a Network with config: %r", self._config)

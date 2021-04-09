@@ -34,14 +34,13 @@ def var(var: str) -> "Type":
 def values_by_module(
     store: "PackageStore",
 ) -> "Mapping[ModuleRef, Mapping[Sequence[str], Union[Expr, OldType]]]":
-    from collections import defaultdict
+    warnings.warn(
+        "dazl.damlast.util.values_by_module is deprecated; there is no replacement.",
+        DeprecationWarning,
+    )
+    from ..pretty.render_python import values_by_module  # type: ignore
 
-    d = defaultdict(defaultdict)
-    for vn, vv in store._value_types.items():
-        d[vn.module][vn.name] = vv
-    for vn, vv in store._data_types.items():
-        d[vn.module][vn.name] = vv
-    return d
+    return values_by_module(store)  # type: ignore
 
 
 # noinspection PyShadowingBuiltins

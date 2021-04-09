@@ -15,9 +15,8 @@ DAML-LF fast lookups
 
 import threading
 from types import MappingProxyType
-from typing import AbstractSet, Any, Collection, Dict, Iterable, NoReturn, Optional, Tuple
+from typing import AbstractSet, Any, Collection, Dict, Iterable, List, NoReturn, Optional, Tuple
 
-from ..model.lookup import validate_template
 from .daml_lf_1 import (
     Archive,
     DefDataType,
@@ -100,7 +99,7 @@ def validate_template(
         if len(components) == 3:
             # correct number of colons for a fully-qualified name
             pkgid, m, e = components
-            return pkgid, f"{m}:{e}"
+            return PackageRef(pkgid), f"{m}:{e}"
 
         elif len(components) == 2:
             # one colon, so assume the package ID is unspecified UNLESS the second component is a
@@ -143,22 +142,22 @@ class EmptyLookup(SymbolLookup):
         return frozenset()
 
     def data_type_name(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
     def data_type(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
     def value(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
     def template_names(self, ref: "Any") -> "Collection[TypeConName]":
         return frozenset()
 
     def template_name(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
     def template(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
 
 class PackageLookup(SymbolLookup):
@@ -268,8 +267,8 @@ class PackageLookup(SymbolLookup):
             if name == "*":
                 return self.local_template_names()
             elif name in self._templates:
-                n, _ = self._templates.get(name)
-                return n
+                n, _ = self._templates[name]
+                return [n]
         return []
 
     def template_name(self, ref: "Any") -> "TypeConName":
@@ -386,7 +385,7 @@ class MultiPackageLookup(SymbolLookup):
         raise NameNotFoundError(ref)
 
     def template_names(self, ref: "Any") -> "Collection[TypeConName]":
-        names = []
+        names = []  # type: List[TypeConName]
 
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):

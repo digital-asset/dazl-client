@@ -1,6 +1,5 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
 from abc import abstractmethod
 from asyncio import Future, InvalidStateError, ensure_future, gather, get_event_loop
 from collections import defaultdict
@@ -27,6 +26,7 @@ from typing import (
     overload,
 )
 from uuid import uuid4
+import warnings
 
 from .. import LOG
 from ..model.core import Party, SourceLocation
@@ -130,7 +130,10 @@ class Bot:
         """
         # noinspection PyBroadException
         try:
-            self._signal = Signal()
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", DeprecationWarning)
+                # noinspection PyDeprecation
+                self._signal = Signal()
             while self._run_level != _BotRunLevel.TERMINATE:
                 # the main queue contains either events we have not yet processed yet or ``None``
                 # markers that merely indicate running status should be "re-checked"
@@ -317,12 +320,10 @@ class BotCollection(Sequence[Bot]):
             return len(self._bots)
 
     @overload
-    @abstractmethod
     def __getitem__(self, i: int) -> Bot:
         ...
 
     @overload
-    @abstractmethod
     def __getitem__(self, s: slice) -> Sequence[Bot]:
         ...
 
