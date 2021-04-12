@@ -7,7 +7,7 @@ on-wire formats to/from canonical Python types.
 """
 from datetime import date, datetime, timedelta
 from decimal import Decimal
-from typing import Any, Mapping, Tuple, Union, overload
+from typing import Any, Mapping, Optional, Tuple, Union, overload
 import warnings
 
 from ..prim.datetime import DATETIME_ISO8601_Z_FORMAT, TimeDeltaLike as TimeDeltaConvertible
@@ -58,7 +58,7 @@ def to_boolean(obj):
     return to_bool(obj) if obj is not None else None
 
 
-def to_str(obj: Any) -> str:
+def to_str(obj: "Optional[Any]") -> "Optional[str]":
     from ..prim import to_str
 
     warnings.warn(
@@ -69,7 +69,7 @@ def to_str(obj: Any) -> str:
     return to_str(obj) if obj is not None else None
 
 
-def to_int(obj: Any) -> int:
+def to_int(obj: Any) -> "Optional[int]":
     from ..prim import to_int
 
     warnings.warn(
@@ -80,7 +80,7 @@ def to_int(obj: Any) -> int:
     return to_int(obj) if obj is not None else None
 
 
-def to_date(obj: Any) -> date:
+def to_date(obj: "Optional[Any]") -> "Optional[date]":
     from ..prim import to_date
 
     warnings.warn(
@@ -91,7 +91,7 @@ def to_date(obj: Any) -> date:
     return to_date(obj) if obj is not None else None
 
 
-def to_datetime(obj: Any) -> datetime:
+def to_datetime(obj: "Optional[Any]") -> "Optional[datetime]":
     from ..prim import to_datetime
 
     warnings.warn(
@@ -102,7 +102,7 @@ def to_datetime(obj: Any) -> datetime:
     return to_datetime(obj) if obj is not None else None
 
 
-def to_decimal(obj: Any) -> Decimal:
+def to_decimal(obj: "Optional[Any]") -> "Optional[Decimal]":
     from ..prim import to_decimal
 
     warnings.warn(

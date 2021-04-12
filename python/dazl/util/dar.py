@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from ..model.types_store import PackageProvider, PackageStore
 
 
-def get_archives(contents: bytes) -> "Mapping[str, bytes]":
+def get_archives(contents: bytes) -> "Mapping[PackageRef, bytes]":
     """
     Attempt to parse the specified contents as either a DALF or a DAR, and return a mapping of
     package IDs to DALF bytes.
@@ -73,7 +73,7 @@ class DarFile(_DarFile):
             store.register_all(_parse_daml_metadata_pb(archive))
         return store
 
-    def get_archives(self) -> "Mapping[str, bytes]":
+    def get_archives(self) -> "Mapping[PackageRef, bytes]":
         """
         Return a mapping from package ID to byte contents.
         """
@@ -82,7 +82,7 @@ class DarFile(_DarFile):
         )
         return {a.hash: a.payload for a in self._pb_archives()}
 
-    def get_dalf_names(self) -> "Sequence[str]":
+    def get_dalf_names(self) -> "Sequence[PackageRef]":
         warnings.warn(
             "get_dalf_names is deprecated; there is no replacement.",
             DeprecationWarning,

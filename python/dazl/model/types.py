@@ -334,6 +334,8 @@ class ScalarType(ConcreteType):
     """
 
     __slots__ = ("name",)
+    name: str
+    BUILTINS: "Sequence[ScalarType]"
 
     def __init__(self, name: str):
         """

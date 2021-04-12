@@ -10,6 +10,7 @@ from asyncio import (
     CancelledError,
     Future,
     InvalidStateError,
+    Queue as AQueue,
     ensure_future,
     gather,
     get_event_loop,
@@ -31,14 +32,18 @@ from typing import (
     List,
     Optional,
     Sequence,
+    Tuple,
     TypeVar,
     Union,
+    no_type_check,
 )
+import warnings
 
 from .. import LOG
 from ..prim.datetime import TimeDeltaLike, to_timedelta
 
-T = TypeVar("T", covariant=True)
+T = TypeVar("T")
+T_co = TypeVar("T_co", covariant=True)
 U = TypeVar("U")
 
 _PENDING = "PENDING"
@@ -121,7 +126,7 @@ def isolated_async(async_fn):
     return invoke
 
 
-def await_then(awaitable: "Awaitable[T]", func: "Callable[[T], U]") -> "Awaitable[U]":
+def await_then(awaitable: "Awaitable[T_co]", func: "Callable[[T_co], U]") -> "Awaitable[U]":
     """
     Call a function on the result of an Awaitable, and then return an Awaitable that is resolved
     with that result.
@@ -143,14 +148,14 @@ def await_then(awaitable: "Awaitable[T]", func: "Callable[[T], U]") -> "Awaitabl
         raise TypeError(f"expected a valid awaitable (got {awaitable} instead)")
     if fut.done():
         if fut.cancelled() or fut.exception() is not None:
-            return fut
+            return fut  # type: ignore
         else:
             try:
                 return completed(func(fut.result()))
             except Exception as ex:
                 fut = get_event_loop().create_future()
                 fut.set_exception(ex)
-                return fut
+                return fut  # type: ignore
     else:
         g = get_event_loop().create_future()
 
@@ -166,7 +171,7 @@ def await_then(awaitable: "Awaitable[T]", func: "Callable[[T], U]") -> "Awaitabl
                     g.set_exception(ex2)
 
         fut.add_done_callback(_propagate)
-        return g
+        return g  # type: ignore
 
 
 @dataclass
@@ -181,9 +186,9 @@ class FailedInvocation:
 
 def execute_in_loop(
     loop: AbstractEventLoop,
-    coro_fn: "Callable[[], Union[Awaitable[T], T]]",
+    coro_fn: "Callable[[], Union[Awaitable[T_co], T_co]]",
     timeout: "Optional[TimeDeltaLike]" = 30.0,
-) -> T:
+) -> T_co:
     """
     Run a coroutine in a target loop. Exceptions thrown by the coroutine are
     propagated to the caller. Must NOT be called from a coroutine on the same
@@ -197,7 +202,7 @@ def execute_in_loop(
     from functools import wraps
     from queue import Queue
 
-    q = Queue()
+    q = Queue()  # type: ignore
 
     def coro_fn_complete(fut):
         LOG.debug("coro_fn_complete: %s", fut)
@@ -340,7 +345,7 @@ class LongRunningAwaitable:
 
     def __init__(self, awaitables: Optional[Iterable[Awaitable[Any]]] = None):
         self._fut = get_event_loop().create_future()
-        self._coros = list()
+        self._coros = []  # type: List[Awaitable[Any]]
         if awaitables is not None:
             self.extend(awaitables)
 
@@ -363,15 +368,25 @@ class LongRunningAwaitable:
 
 
 class ServiceQueue(Generic[T]):
-    """"""
 
+    # noinspection PyDeprecation
     def __init__(self):
-        self._q = []
-        self._service_fut = safe_create_future()
+        warnings.warn(
+            "ServiceQueue is deprecated; there is no planned replacement",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._q = []  # type: Union[List[Tuple[T, Future]], AQueue[Tuple[T, Future]]]
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            self._service_fut = safe_create_future()
         self._prev_fut = None
 
+    # noinspection PyDeprecation
     def put(self, value: T) -> Awaitable[None]:
-        fut = safe_create_future()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            fut = safe_create_future()
         if isinstance(self._q, list):
             self._q.append((value, fut))
         else:
@@ -384,10 +399,8 @@ class ServiceQueue(Generic[T]):
         more than once has no effect.
         """
         if not self._service_fut.done():
-            from asyncio import Queue
-
-            existing_items = self._q
-            self._q = Queue()
+            existing_items = self._q  # type: List[Tuple[T, Future]]
+            self._q = AQueue()
             for item in existing_items:
                 self._q.put_nowait(item)
             self._service_fut.set_result(None)
@@ -401,13 +414,13 @@ class ServiceQueue(Generic[T]):
         self._q.put_nowait((None, fut))
         return fut
 
-    def abort(self) -> Sequence[T]:
+    def abort(self) -> Sequence[T_co]:
         """
         Gracefully terminate the open iterator as quickly as possible and return all remaining
         elements in the queue.
         """
 
-    async def next(self) -> Optional[T]:
+    async def next(self) -> Optional[T_co]:
         if not self._service_fut.done():
             await self._service_fut
 
@@ -415,7 +428,8 @@ class ServiceQueue(Generic[T]):
             self._prev_fut.set_result(None)
             self._prev_fut = None
 
-        value, fut = await self._q.get()
+        q = self._q  # type: AQueue[Tuple[T_co, Future]]
+        value, fut = await q.get()
         if value is None:
             fut.set_result(None)
             return None
@@ -446,14 +460,14 @@ class ServiceQueue(Generic[T]):
         return repr(self._q)
 
 
-class ContextFreeFuture(Awaitable[T]):
+class ContextFreeFuture(Awaitable[T_co]):
     """
     An awaitable whose loop is defined at the time of either a :meth:`set_result` call or an
     `await`. These futures are more expensive than normal asyncio futures because they are
     thread-safe.
     """
 
-    _result: Optional[T] = None
+    _result: Optional[T_co] = None
     _exception: Optional[Exception] = None
     _log_traceback = False
     _asyncio_future_blocking = False
@@ -478,7 +492,7 @@ class ContextFreeFuture(Awaitable[T]):
         from threading import RLock
 
         self._lock = RLock()
-        self._callbacks = []  # type: List[Callable[[ContextFreeFuture[T]], None]]
+        self._callbacks = []  # type: List[Callable[[ContextFreeFuture[T_co]], None]]
         self._state = _PENDING
         self.__loop = loop  # type: Optional[AbstractEventLoop]
         self._source_traceback = None
@@ -496,7 +510,10 @@ class ContextFreeFuture(Awaitable[T]):
         to invoke :meth:`set_loop` directly.
         """
         if self.__loop is None:
-            self.__loop = get_running_loop()
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", DeprecationWarning)
+                # noinspection PyDeprecation
+                self.__loop = get_running_loop()
         return self.__loop
 
     def set_loop(self, loop: AbstractEventLoop) -> None:
@@ -561,7 +578,9 @@ class ContextFreeFuture(Awaitable[T]):
             self._schedule_callbacks()
             self._log_traceback = True
 
-    def add_done_callback(self, fn: "Callable[[ContextFreeFuture[T]], None]", context=None) -> None:
+    def add_done_callback(
+        self, fn: "Callable[[ContextFreeFuture[T_co]], None]", context=None
+    ) -> None:
         if context is not None:
             LOG.warning("ContextFreeFutures do not support the use of contexts.")
         with self._lock:
@@ -631,7 +650,7 @@ class ContextFreeFuture(Awaitable[T]):
             self._log_traceback = False
             return self._exception
 
-    def __await__(self) -> Generator[Any, None, T]:
+    def __await__(self) -> Generator[Any, None, T_co]:
         if not self.done():
             self._asyncio_future_blocking = True
             yield self  # This tells Task to wait for completion.
@@ -694,7 +713,7 @@ class DeferredStartTask:
         if context is None:
             self._future.add_done_callback(callback)
         else:
-            self._future.add_done_callback(callback, context=context)
+            self._future.add_done_callback(callback, context=context)  # type: ignore
 
     def __await__(self):
         return self._future.__await__()
@@ -704,7 +723,13 @@ class DeferredStartTask:
         return f"DeferredStartTask({self._name!r}, state={state})"
 
 
+@no_type_check
 def get_running_loop() -> Optional[AbstractEventLoop]:
+    warnings.warn(
+        "get_running_loop() is deprecated, as support for Python 3.6 will be dropped in dazl 8. "
+        "Use Python 3.7+'s asyncio.get_running_loop() instead.",
+        DeprecationWarning,
+    )
     try:
         from asyncio import get_running_loop
 
@@ -719,11 +744,18 @@ def get_running_loop() -> Optional[AbstractEventLoop]:
         return _get_running_loop()
 
 
+# noinspection PyDeprecation
 def safe_create_future():
-    loop = get_running_loop()
+    warnings.warn(
+        "safe_create_future() is deprecated; there is no planned replacement.", DeprecationWarning
+    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        loop = get_running_loop()
     return loop.create_future() if loop is not None else ContextFreeFuture()
 
 
+@no_type_check
 def named_gather(name: str, *awaitables, return_exceptions=False):
     g = gather(*awaitables, return_exceptions=return_exceptions)
     g.__repr__ = staticmethod(lambda _: f"<Gather {name}>")
@@ -735,8 +767,16 @@ class Signal:
     A simple guard that "wakes" up a coroutine from another coroutine.
     """
 
+    # noinspection PyDeprecation
     def __init__(self):
-        self._fut = safe_create_future()
+        warnings.warn(
+            "Signal is deprecated; there is no planned replacement",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            self._fut = safe_create_future()
 
     def notify_all(self) -> None:
         """
@@ -746,8 +786,11 @@ class Signal:
             self._fut.set_result(None)
             self._fut = None
 
+    # noinspection PyDeprecation
     def wait(self) -> "Awaitable[None]":
         if self._fut is None:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", DeprecationWarning)
             self._fut = safe_create_future()
         return self._fut
 
@@ -756,7 +799,7 @@ class UnsettableEventLoopPolicy(AbstractEventLoopPolicy):
     def get_event_loop(self) -> AbstractEventLoop:
         raise Exception("Called get_event_loop")
 
-    def set_event_loop(self, loop: AbstractEventLoop) -> None:
+    def set_event_loop(self, loop: Optional[AbstractEventLoop]) -> None:
         raise Exception("Called set_event_loop")
 
     def new_event_loop(self) -> AbstractEventLoop:

@@ -7,19 +7,25 @@ from functools import reduce
 from operator import add
 from threading import RLock
 from types import MappingProxyType
-from typing import Any, Collection, Dict, Generic, Iterable, List, Mapping, Optional, TypeVar, Union
+from typing import (
+    Any,
+    Collection,
+    DefaultDict,
+    Dict,
+    Generic,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    TypeVar,
+    Union,
+    no_type_check,
+)
 import warnings
 
 from ..damlast.daml_lf_1 import Archive, Expr, Package, PackageRef, TypeConName, ValName, _Name
 from ..damlast.lookup import validate_template
 from ..util.typing import safe_cast, safe_dict_cast
-
-K = TypeVar("K", bound=_Name)
-T = TypeVar("T")
-
-warnings.warn(
-    "The types of dazl.model.types_store are deprecated", DeprecationWarning, stacklevel=2
-)
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
@@ -33,6 +39,14 @@ with warnings.catch_warnings():
         TypeReference,
         UnresolvedTypeReference,
     )
+
+K = TypeVar("K", bound=_Name)
+T = TypeVar("T")
+S = TypeVar("S")
+
+warnings.warn(
+    "The types of dazl.model.types_store are deprecated", DeprecationWarning, stacklevel=2
+)
 
 
 class PackageStoreBuilder:
@@ -51,7 +65,7 @@ class PackageStoreBuilder:
         self._value_types = dict()  # type: Dict[ValName, Expr]
         self._data_types = dict()  # type: Dict[TypeConName, Type]
         self._templates = dict()  # type: Dict[TypeConName, Template]
-        self._expected_package_ids = None  # type: Optional[Collection[str]]
+        self._expected_package_ids = None  # type: Optional[Collection[PackageRef]]
 
     def add_archive(self, archive: "Archive") -> None:
         self._archives.append(archive)
@@ -65,9 +79,12 @@ class PackageStoreBuilder:
         self._value_types[name] = safe_cast(Expr, value)
 
     def add_template(self, template: Template):
-        self._templates[template.data_type.name.con] = safe_cast(Template, template)
+        name = template.data_type.name
+        if name is None:
+            raise ValueError("template cannot be defined with an anonymous type")
+        self._templates[name.con] = safe_cast(Template, template)
 
-    def add_expected_package_ids(self, expected_package_ids: "Collection[str]"):
+    def add_expected_package_ids(self, expected_package_ids: "Collection[PackageRef]"):
         self._expected_package_ids = expected_package_ids
 
     def get_type(self, name: TypeConName) -> "Optional[Type]":
@@ -107,7 +124,7 @@ class PackageStore:
         value_types: "Dict[ValName, Expr]",
         data_types: "Dict[TypeConName, Type]",
         templates: "Dict[TypeConName, Template]",
-        expected_package_ids: "Optional[Collection[str]]" = None,
+        expected_package_ids: "Optional[Collection[PackageRef]]" = None,
     ):
         warnings.warn(
             "PackageStore is deprecated; use PackageLoader/SymbolLookup instead",
@@ -161,7 +178,7 @@ class PackageStore:
         with self._lock:
             return [a.hash for a in self._archives]
 
-    def expected_package_ids(self) -> "Collection[str]":
+    def expected_package_ids(self) -> "Optional[Collection[PackageRef]]":
         """
         Return package IDs that are expected to be found on the ledger.
         """
@@ -245,7 +262,7 @@ class PackageStore:
         )
 
         with self._lock:
-            return MappingProxyType(dict(self._data_types))
+            return MappingProxyType(dict(self._data_types))  # type: ignore
 
     def get_templates_for_packages(
         self, package_ids: "Iterable[PackageRef]"
@@ -266,7 +283,7 @@ class PackageStore:
             stacklevel=2,
         )
 
-        match = []
+        match = []  # type: List[Template]
         for pkg_id in package_ids:
             match.extend(self._cache.templates.lookup(pkg_id, "*"))
         return match
@@ -325,6 +342,7 @@ class PackageStore:
             return {
                 template.data_type.name: template.data_type
                 for template in self.resolve_template(template)
+                if template.data_type.name is not None
             }
 
     def resolve_choice(self, template: Any, choice: str) -> Dict[TypeReference, TemplateChoice]:
@@ -342,10 +360,10 @@ class PackageStore:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
 
-            matches = dict()
+            matches = dict()  # type: Dict[TypeReference, TemplateChoice]
             for t in self.resolve_template(template):
                 for c in t.choices:
-                    if c.name == choice:
+                    if c.name == choice and t.data_type.name is not None:
                         matches[t.data_type.name] = c
             return matches
 
@@ -395,6 +413,10 @@ class MemoryPackageProvider(PackageProvider):
     def get_package_ids(self) -> "PackageIdSet":
         return frozenset(self.mapping.keys())
 
+    # fetch_package is actually supposed to throw an error on missing packages, but people may
+    # be reliant on the old behavior; anyway this entire file is deprecated; changing the behavior
+    # of a soon-to-be-removed class seems unnecessary
+    @no_type_check
     def fetch_package(self, package_id: "PackageRef") -> bytes:
         return self.mapping.get(package_id)
 
@@ -428,7 +450,7 @@ class TypeCache(Generic[K, T]):
     """
 
     everything: "Collection[T]"
-    by_package_lookup: "Mapping[str, Mapping[str, Collection[T]]]"
+    by_package_lookup: "Mapping[PackageRef, Mapping[str, Collection[T]]]"
     by_name_lookup: "Mapping[str, Collection[T]]"
 
     @classmethod
@@ -436,7 +458,9 @@ class TypeCache(Generic[K, T]):
         from ..damlast.util import package_local_name, package_ref
 
         everything = tuple(objects.values())
-        by_package_lookup = defaultdict(lambda: defaultdict(list))
+        by_package_lookup: DefaultDict[PackageRef, DefaultDict[str, List[T]]] = defaultdict(
+            lambda: defaultdict(list)
+        )
         by_name_lookup = defaultdict(list)
 
         for k, v in objects.items():
@@ -454,7 +478,7 @@ class TypeCache(Generic[K, T]):
             MappingProxyType({k: tuple(v) for k, v in by_name_lookup.items()}),
         )
 
-    def lookup(self, package_id: str, type_name: str) -> "Collection[T]":
+    def lookup(self, package_id: PackageRef, type_name: str) -> "Collection[T]":
         """
         Look up items based on package ID and type name. The values cannot be ``None``, but they
         can be the special-meaning ``'*'`` value.
@@ -479,8 +503,8 @@ class TypeCache(Generic[K, T]):
 
 
 def _immutable_mmc(
-    mapping: "Mapping[str, Mapping[str, Collection[T]]]",
-) -> "Mapping[str, Mapping[str, Collection[T]]]":
+    mapping: "Mapping[S, Mapping[str, Collection[T]]]",
+) -> "Mapping[S, Mapping[str, Collection[T]]]":
     """
     Create an immutable copy of :class:`TemplateStoreCache` data structures.
     """
@@ -489,5 +513,5 @@ def _immutable_mmc(
     )
 
 
-EMPTY_MAPPING = MappingProxyType({})
-EMPTY_TYPE_CACHE = TypeCache((), EMPTY_MAPPING, EMPTY_MAPPING)
+EMPTY_MAPPING = MappingProxyType({})  # type: ignore
+EMPTY_TYPE_CACHE = TypeCache((), EMPTY_MAPPING, EMPTY_MAPPING)  # type: ignore

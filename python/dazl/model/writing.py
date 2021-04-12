@@ -19,11 +19,11 @@ Ledger API.
 """
 from dataclasses import dataclass, fields
 from datetime import timedelta
-from typing import TYPE_CHECKING, Any, Collection, List, Mapping, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Any, Collection, List, Mapping, Optional, Sequence, Tuple, Union
 import uuid
 import warnings
 
-from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.daml_lf_1 import Type, TypeConName
 from ..damlast.daml_types import con
 from ..damlast.lookup import find_choice
 from ..damlast.protocols import SymbolLookup
@@ -33,7 +33,7 @@ from ..util.typing import safe_cast
 if TYPE_CHECKING:
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
-        from .types import Type, TypeReference
+        from .types import Type as DeprecatedType, TypeReference, UnresolvedTypeReference
 
     from ..values import Context, ValueMapper
 
@@ -68,7 +68,7 @@ class CreateCommand(Command):
     arguments: "Mapping[str, Any]"
     _template_type_deprecated: "TypeReference"
 
-    def __init__(self, template: "Union[str, TypeConName, Type]", arguments=None):
+    def __init__(self, template: "Union[str, TypeConName, DeprecatedType]", arguments=None):
         from ..damlast.compat import parse_template
 
         template_type, template_type_deprecated = parse_template(template)
@@ -85,7 +85,7 @@ class CreateCommand(Command):
         )
         return self._template_type_deprecated
 
-    def replace(self, template: "Union[None, str, Type]" = None, arguments=None):
+    def replace(self, template: "Union[None, str, DeprecatedType]" = None, arguments=None):
         """
         Create a new :class:`CreateCommand` with the same identifier as this command, but with new
         values for its parameters.
@@ -102,19 +102,16 @@ class CreateCommand(Command):
             stacklevel=2,
         )
 
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-
-            from .types import Type, UnresolvedTypeReference
-
-            if template is not None:
-                template = (
-                    template if isinstance(template, Type) else UnresolvedTypeReference(template)
-                )
-            return CreateCommand(
-                template if template is not None else self.template_type,
-                arguments if arguments is not None else self.arguments,
+        if template is not None:
+            template = (
+                template
+                if isinstance(template, DeprecatedType)
+                else UnresolvedTypeReference(template)
             )
+        return CreateCommand(
+            template if template is not None else self.template_type,
+            arguments if arguments is not None else self.arguments,
+        )
 
     def __repr__(self):
         return f"<create {self.template_type} {self.arguments}>"
@@ -394,7 +391,7 @@ def flatten_command_sequence(commands: Sequence[CommandsOrCommandSequence]) -> L
     non-``None`` commands.
     """
     ret = []  # type: List[Command]
-    errors = []
+    errors = []  # type: List[Tuple[Sequence[int], CommandsOrCommandSequence]]
 
     for i, obj in enumerate(commands):
         if obj is not None:
@@ -513,6 +510,9 @@ class Serializer:
     def serialize_command(self, command: "Any") -> "Any":
         raise NotImplementedError("serialize_command requires an implementation")
 
+    def serialize_command_request(self, command: "CommandPayload") -> "Any":
+        raise NotImplementedError("serialize_command_request requires an implementation")
+
 
 class AbstractSerializer(Serializer):
     """
@@ -560,7 +560,10 @@ class AbstractSerializer(Serializer):
         elif isinstance(command, ExerciseByKeyCommand):
             name = self.lookup.template_name(command.template_type)
             template = self.lookup.template(name)
-            key_value = self.serialize_value(template.key.type, command.contract_key)
+            key_type = template.key
+            if key_type is None:
+                raise ValueError(f"template {template.tycon} does not have a key")
+            key_value = self.serialize_value(key_type.type, command.contract_key)
             choice = find_choice(template, command.choice)
             choice_args = self.serialize_value(choice.arg_binder.type, command.choice_argument)
             return self.serialize_exercise_by_key_command(name, key_value, choice.name, choice_args)
@@ -587,3 +590,6 @@ class AbstractSerializer(Serializer):
         raise NotImplementedError(
             "serialize_create_and_exercise_command requires an implementation"
         )
+
+    def serialize_command_request(self, command: "CommandPayload") -> "Any":
+        raise RuntimeError("this serializer does not support serialize_command_request")
