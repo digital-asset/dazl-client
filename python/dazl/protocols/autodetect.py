@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import datetime
+from datetime import datetime
 from threading import Event, RLock, Thread
 from typing import Awaitable, Dict, Iterable, Optional, Union
 
@@ -64,7 +64,7 @@ class AutodetectLedgerNetwork(LedgerNetwork):
         if ledger.protocol_version == "v1":
             from .v1.grpc import GRPCv1LedgerClient
 
-            return GRPCv1LedgerClient(conn, ledger, party)
+            return GRPCv1LedgerClient(conn, ledger, Party(party))
         elif ledger.protocol_version == "v0":
             raise RuntimeError(f"Unsupported protocol version: {ledger.protocol_version}")
         else:

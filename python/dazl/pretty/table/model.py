@@ -2,12 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from datetime import datetime
-from typing import AbstractSet, Dict, Iterable, Iterator, Optional
-
-__all__ = ["Formatter", "RowBuilder", "TableBuilder"]
+from typing import AbstractSet, Dict, Iterable, Iterator, List, Optional
 
 from ...damlast.protocols import SymbolLookup
 from ...prim import ContractData, ContractId, Party
+
+__all__ = ["Formatter", "RowBuilder", "TableBuilder"]
 
 
 class Formatter:
@@ -42,7 +42,7 @@ class TableBuilder:
         self,
         party: "Party",
         cid: "ContractId",
-        cdata: "Optional[ContractData]",
+        cdata: "ContractData",
         time: "Optional[datetime]" = None,
     ) -> None:
         entry = self.entries.get(cid)
@@ -77,9 +77,9 @@ class RowBuilder:
         self.cid = cid
         self.cdata = cdata
         self.time = time
-        self.errors = []
+        self.errors = []  # type: List[Exception]
 
-    def extend(self, party: "Party", cdata: "ContractData") -> None:
+    def extend(self, party: "Party", cdata: "Optional[ContractData]") -> None:
         self.parties[party] = cdata is not None
 
     def is_archived(self) -> bool:

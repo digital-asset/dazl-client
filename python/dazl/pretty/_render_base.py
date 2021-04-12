@@ -79,6 +79,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         """
         Render everything in a :class:`PackageStore`.
         """
+        if self.lookup is None:
+            raise RuntimeError("render_store cannot be used unless lookup is provided")
+
         with StringIO() as buf:
             buf.write("from dazl import create, exercise, module, TemplateMeta, ChoiceMeta\n\n")
             for archive in self.lookup.archives():
@@ -876,10 +879,6 @@ def decode_special_chars(pp: str) -> str:
 
 
 class _PrettyPrinters:
-    """
-    Holder for
-    """
-
     def __init__(self):
         self._printers = {}  # type: Dict[str, TType[PrettyPrintBase]]
 
@@ -892,6 +891,7 @@ class _PrettyPrinters:
         for key, format_type in self._printers.items():
             if key.startswith(format):
                 return format_type
+        raise ValueError(f"unknown format: {format}")
 
 
 _PRETTY_PRINTERS = _PrettyPrinters()

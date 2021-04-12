@@ -4,11 +4,11 @@
 The core scheduling of logic, managing the tricky interaction between the man asyncio event loop and
 background threads.
 """
-
 from asyncio import CancelledError, Future, InvalidStateError, gather, get_event_loop, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 import signal
+import warnings
 
 from ..prim import to_timedelta
 from ..util.asyncio_util import execute_in_loop, safe_create_future
@@ -44,7 +44,9 @@ class Invoker:
             pass
 
     def create_future(self):
-        f = safe_create_future()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            f = safe_create_future()
         f.add_done_callback(self._unhook_future)
         self._futures.append(f)
         return f

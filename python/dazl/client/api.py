@@ -38,6 +38,7 @@ import warnings
 
 from .. import LOG
 from ..damlast import get_dar_package_ids
+from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
 from ..model.core import (
@@ -237,7 +238,7 @@ class Network:
 
         :param party: The party to get a client for.
         """
-        return self._impl.party_impl(to_party(party), SimplePartyClient)
+        return self._impl.party_impl_wrapper(to_party(party), SimplePartyClient)
 
     def simple_new_party(self) -> "SimplePartyClient":
         """
@@ -252,7 +253,7 @@ class Network:
 
         :param party: The party to get a client for.
         """
-        return self._impl.party_impl(Party(party), AIOPartyClient)
+        return self._impl.party_impl_wrapper(Party(party), AIOPartyClient)
 
     def aio_new_party(self) -> "AIOPartyClient":
         """
@@ -318,6 +319,8 @@ class Network:
                 stacklevel=2,
             )
             return self._main_fut
+        else:
+            return None
 
     def join(self, timeout: "Optional[float]" = None) -> None:
         """
@@ -454,7 +457,9 @@ class AIOGlobalClient(GlobalClient):
         return await self._impl.upload_package(raw_bytes, timeout)
 
     async def ensure_packages(
-        self, package_ids: "Collection[str]", timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS
+        self,
+        package_ids: "Collection[PackageRef]",
+        timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS,
     ) -> None:
         """
         Validate that packages with the specified package IDs exist on the ledger. Throw an
@@ -489,7 +494,9 @@ class SimpleGlobalClient(GlobalClient):
         return self._impl.invoker.run_in_loop(lambda: self._impl.upload_package(raw_bytes, timeout))
 
     def ensure_packages(
-        self, package_ids: "Collection[str]", timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS
+        self,
+        package_ids: "Collection[PackageRef]",
+        timeout: "TimeDeltaLike" = DEFAULT_TIMEOUT_SECONDS,
     ) -> None:
         """
         Validate that packages with the specified package IDs exist on the ledger. Throw an

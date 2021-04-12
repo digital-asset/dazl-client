@@ -12,6 +12,7 @@ from typing import (
     Any,
     Awaitable,
     Collection,
+    Dict,
     List,
     Optional,
     Sequence,
@@ -50,6 +51,7 @@ from ..model.reading import (
 from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from ..prim import TimeDeltaLike, to_timedelta
 from ..protocols import LedgerClient, LedgerNetwork
+from ..scheduler import Invoker
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast
@@ -70,10 +72,10 @@ class _PartyClientImpl:
     def __init__(self, parent: "_NetworkImpl", party: "Party"):
         self.parent = parent
         self.metrics = parent._metrics
-        self.invoker = parent.invoker
-        self.party = party
+        self.invoker = parent.invoker  # type: Invoker
+        self.party = party  # type: Party
 
-        self._config_values = dict()
+        self._config_values = dict()  # type: Dict[str, Any]
         self._config = None  # type: Optional[NetworkConfig]
         self._pool = None  # type: Optional[LedgerNetwork]
         self._pool_fut = None  # type: Optional[Awaitable[LedgerNetwork]]
@@ -177,7 +179,9 @@ class _PartyClientImpl:
         """
         return self.bots.notify(data)
 
-    async def emit_ready(self, metadata: LedgerMetadata, time: datetime, offset: str) -> None:
+    async def emit_ready(
+        self, metadata: LedgerMetadata, time: "Optional[datetime]", offset: "Optional[str]"
+    ) -> None:
         """
         Emit a ready event specific to this client. This may also emit initial create events and
         initial package added events.

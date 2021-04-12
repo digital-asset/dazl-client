@@ -1,9 +1,10 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+# type: ignore
 
 
 from asyncio import get_event_loop
-from typing import Dict
+from typing import TYPE_CHECKING, Dict
 import uuid
 
 from ..model.network import OAuthSettings

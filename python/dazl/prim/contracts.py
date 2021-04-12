@@ -1,9 +1,10 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Any, Mapping
+from typing import TYPE_CHECKING, Any, Mapping
 
-from ..damlast.daml_lf_1 import TypeConName
+if TYPE_CHECKING:
+    from ..damlast.daml_lf_1 import TypeConName
 
 __all__ = ["ContractId", "ContractData"]
 
@@ -11,29 +12,37 @@ __all__ = ["ContractId", "ContractData"]
 class ContractId:
     """
     A typed contract ID.
-
-    Instance attributes:
-
-    .. attribute:: ContractId.value
-
-        The raw contract ID value (for example, ``"#4:1"``).
-
-    .. attribute:: ContractId.value_type
-
-        The type of template that is pointed to by this :class:`ContractId`.
-
     """
 
-    __slots__ = "value", "value_type"
+    __slots__ = "_value", "_value_type"
+    if TYPE_CHECKING:
+        _value: str
+        _value_type: TypeConName
 
     def __init__(self, value_type: "TypeConName", value: str):
+        from ..damlast.daml_lf_1 import TypeConName
+
         if not isinstance(value_type, TypeConName):
             raise ValueError("value_type must be a TypeConName")
         if not isinstance(value, str):
             raise ValueError("value must be a string")
 
-        object.__setattr__(self, "value_type", value_type)
-        object.__setattr__(self, "value", value)
+        object.__setattr__(self, "_value_type", value_type)
+        object.__setattr__(self, "_value", value)
+
+    @property
+    def value(self) -> str:
+        """
+        Return the raw contract ID value (for example, ``"#4:1"``).
+        """
+        return self._value
+
+    @property
+    def value_type(self) -> "TypeConName":
+        """
+        Return the type of template that is pointed to by this :class:`ContractId`.
+        """
+        return self._value_type
 
     def __str__(self):
         """

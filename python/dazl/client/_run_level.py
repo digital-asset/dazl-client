@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 from threading import Event
 
-from ..model.core import RunLevel
+from ..scheduler import RunLevel
+
+__all__ = ["RunState"]
 
 
 class RunState:
