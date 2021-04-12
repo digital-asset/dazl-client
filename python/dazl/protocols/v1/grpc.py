@@ -44,7 +44,6 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
 
     from ...model.types_store import PackageProvider, PackageStore
-    from .pb_parse_metadata import find_dependencies, parse_daml_metadata_pb
 
 
 class GRPCv1LedgerClient(LedgerClient):
@@ -53,10 +52,10 @@ class GRPCv1LedgerClient(LedgerClient):
         self.ledger = safe_cast(LedgerMetadata, ledger)
         self.party = to_party(party)
 
-    def commands(self, commands: CommandPayload) -> None:
+    async def commands(self, commands: CommandPayload) -> None:
         serializer = self.ledger.serializer
         request = serializer.serialize_command_request(commands)
-        return self.connection.invoker.run_in_executor(
+        return await self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request)
         )
 
@@ -295,6 +294,7 @@ def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore"
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
+        from .pb_parse_metadata import find_dependencies, parse_daml_metadata_pb
 
         LOG.debug("grpc_package_sync started...")
 
@@ -302,17 +302,15 @@ def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore"
         loaded_package_ids = {a.hash for a in store.archives()}
         expected_package_ids = store.expected_package_ids()
 
-        missing_package_ids = all_package_ids - loaded_package_ids
-
-        def should_load(package_id: str) -> bool:
+        def should_load(p: str) -> bool:
             # TODO: Filtering by expected package IDs may cause packages to never fully load due to
             #  transitive dependencies; here we put the onus on the app writer to ensure that they
             #  supply the complete graph, and we don't even warn them if there is an issue (but
             #  we could only actually warn them if we parse the archive, which is the expensive
             #  operation we're trying to avoid).
             return (
-                expected_package_ids is None or package_id in expected_package_ids
-            ) and package_id not in loaded_package_ids
+                expected_package_ids is None or p in expected_package_ids
+            ) and p not in loaded_package_ids
 
         metadatas_pb = {}
         for package_id in all_package_ids:
@@ -320,8 +318,8 @@ def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore"
                 archive_payload = package_provider.fetch_package(package_id)
                 metadatas_pb[package_id] = parse_archive_payload(package_id, archive_payload)
 
-        metadatas_pb = find_dependencies(metadatas_pb, loaded_package_ids)
-        for package_id, archive_payload in metadatas_pb.sorted_archives.items():
+        adr = find_dependencies(metadatas_pb, loaded_package_ids)
+        for package_id, archive_payload in adr.sorted_archives.items():
             store.register_all(parse_daml_metadata_pb(package_id, archive_payload))
 
         LOG.debug("grpc_package_sync ended.")

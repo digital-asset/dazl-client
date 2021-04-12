@@ -6,7 +6,7 @@ Endpoints for managing parties/bots connected via a dazl client.
 """
 
 from dataclasses import asdict, dataclass
-from typing import TYPE_CHECKING, Collection, Sequence
+from typing import TYPE_CHECKING, Collection, NoReturn, Optional, Sequence
 
 from ..client import Bot, _NetworkImpl
 from ..model.core import DazlImportError, Party, SourceLocation
@@ -32,7 +32,7 @@ class BotInfo:
 @dataclass(frozen=True)
 class BotInfoEntry:
     event_key: str
-    source_location: "SourceLocation"
+    source_location: "Optional[SourceLocation]"
 
 
 def build_routes(network_impl: "_NetworkImpl") -> "Collection[web.AbstractRouteDef]":
@@ -65,7 +65,7 @@ def build_routes(network_impl: "_NetworkImpl") -> "Collection[web.AbstractRouteD
         return web.json_response(asdict(_get_bot_info(bot)))
 
     @routes.post("/bots/{bot_id}/state/{action}")
-    async def change_bot_state(request: "web.Request") -> "web.Response":
+    async def change_bot_state(request: "web.Request") -> "NoReturn":
         bot = get_bot(request)
         action = request.match_info["action"]
 

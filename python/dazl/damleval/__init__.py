@@ -2,4 +2,4 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from .expr_eval import ExpressionEvaluator
-from .type_eval import TypeComputer
+from .type_eval import TypeComputer  # type: ignore

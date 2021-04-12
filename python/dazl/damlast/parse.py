@@ -14,6 +14,7 @@ in turn contain templates, data types, and values.
 
 import sys
 import time
+from typing import Optional
 
 from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import ArchivePayload
 from .daml_lf_1 import Archive, PackageRef
@@ -34,7 +35,9 @@ def parse_archive(package_id: "PackageRef", archive_bytes: bytes) -> "Archive":
     return Archive(package_id, package)
 
 
-def parse_archive_payload(package_id: "PackageRef", archive_bytes: bytes) -> "ArchivePayload":
+def parse_archive_payload(
+    package_id: "Optional[PackageRef]", archive_bytes: bytes
+) -> "ArchivePayload":
     """
     Convert ``bytes`` into a :class:`G.ArchivePayload`.
 
@@ -55,7 +58,7 @@ def parse_archive_payload(package_id: "PackageRef", archive_bytes: bytes) -> "Ar
         archive_payload.ParseFromString(archive_bytes)
     except DecodeError:
         # noinspection PyPackageRequirements
-        from google.protobuf.internal import api_implementation
+        from google.protobuf.internal import api_implementation  # type: ignore
 
         if api_implementation.Type() == "cpp":
             LOG.error("Failed to decode metadata. This may be due to bugs in the native Protobuf")

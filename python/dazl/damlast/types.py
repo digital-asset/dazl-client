@@ -1,6 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-from typing import Callable, Optional
+from typing import Callable, Optional, no_type_check
 import warnings
 
 from ..model.types import Type as OldType
@@ -142,6 +142,7 @@ def _old_type_prim(prim: "Type.Prim") -> "OldType":
     )
 
 
+@no_type_check
 def _old_type_syn(tysyn: "Type.Syn") -> "OldType":
     from ..model.types import TypeApp, TypeReference
 

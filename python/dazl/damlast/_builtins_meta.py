@@ -6,7 +6,7 @@ This module contains supporting infrastructure for built-in method definitions f
 DAML-LF files.
 """
 
-from typing import Any, Optional, Sequence, Union
+from typing import Any, Optional, Sequence, Type as PyType, Union
 import warnings
 
 from .daml_lf_1 import BuiltinFunction, Expr, Type, ValName
@@ -47,16 +47,16 @@ class Builtin(metaclass=_BuiltinMeta):
     def evaluate(self, type_args: "Sequence[Type]", args: "Sequence[Any]") -> "Any":
         raise NotImplementedError()
 
-    def simplify(self, type_args: "Sequence[Type]", args: "Sequence[Expr]") -> "Expr":
+    def simplify(self, type_args: "Sequence[Type]", args: "Sequence[Expr]") -> "Optional[Expr]":
         raise NotImplementedError()
 
 
 class BuiltinTable:
     def __init__(self):
-        self.by_name = dict()
-        self.by_builtin = dict()
+        self.by_name = dict()  # type: [BuiltinFunction, PyType[Builtin]]
+        self.by_builtin = dict()  # type: [str, PyType[Builtin]]
 
-    def add(self, builtin: Builtin):
+    def add(self, builtin: "PyType[Builtin]"):
         if builtin.builtin is not None:
             self.by_builtin[builtin.builtin] = builtin
         elif builtin.name is not None:

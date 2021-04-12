@@ -3,12 +3,13 @@
 
 from collections import OrderedDict, defaultdict
 from dataclasses import dataclass
-from typing import Any, Collection, Mapping, Optional, Set, Union
+from typing import AbstractSet, Any, Collection, DefaultDict, List, Mapping, Optional, Set, Union
 import warnings
 
 from toposort import toposort_flatten
 
 from ... import LOG
+from ..._gen.com.daml.daml_lf_dev.daml_lf_pb2 import ArchivePayload as G_ArchivePayload
 from ...damlast.daml_lf_1 import (
     Archive,
     DefDataType,
@@ -36,6 +37,13 @@ with warnings.catch_warnings():
     )
     from ...model.types_store import PackageStore, PackageStoreBuilder
 
+__all__ = [
+    "parse_archive_payload",
+    "ArchiveDependencyResult",
+    "find_dependencies",
+    "parse_daml_metadata_pb",
+]
+
 warnings.warn(
     "The symbols in dazl.protocols.v1.pb_parse_metadata are deprecated",
     DeprecationWarning,
@@ -45,7 +53,7 @@ warnings.warn(
 
 def parse_archive_payload(raw_bytes: bytes, package_id: "Optional[PackageRef]" = None):
     """
-    Convert ``bytes`` into a :class:`G.ArchivePayload`.
+    Convert ``bytes`` into a :class:`G_ArchivePayload`.
 
     Note that this function will temporarily increase Python's recursion limit to handle cases where
     parsing a DAML-LF archive requires deeper recursion limits.
@@ -54,19 +62,21 @@ def parse_archive_payload(raw_bytes: bytes, package_id: "Optional[PackageRef]" =
         "Use dazl.damlast.parse.parse_archive_payload instead.", DeprecationWarning, stacklevel=2
     )
 
-    from ...damlast.parse import parse_archive_payload
+    from ...damlast.parse import parse_archive_payload as pav
 
-    return parse_archive_payload(package_id, raw_bytes)
+    return pav(package_id, raw_bytes)
 
 
 @dataclass(frozen=True)
 class ArchiveDependencyResult:
-    sorted_archives: "Mapping[PackageRef, G.ArchivePayload]"
-    unresolvable_archives: "Mapping[PackageRef, G.ArchivePayload]"
+    sorted_archives: "Mapping[PackageRef, G_ArchivePayload]"
+    unresolvable_archives: "Mapping[PackageRef, G_ArchivePayload]"
 
 
+# noinspection PyDeprecation
 def find_dependencies(
-    metadatas_pb: "Mapping[str, G.ArchivePayload]", existing_package_ids: "Collection[PackageRef]"
+    metadatas_pb: "Mapping[PackageRef, G_ArchivePayload]",
+    existing_package_ids: "Collection[PackageRef]",
 ) -> "ArchiveDependencyResult":
     """
     Return a topologically-sorted list of dependencies for the package IDs.
@@ -85,7 +95,7 @@ def find_dependencies(
         stacklevel=2,
     )
 
-    dependencies = defaultdict(set)
+    dependencies = defaultdict(set)  # type: DefaultDict[PackageRef, Set[PackageRef]]
     for package_id, archive_payload in metadatas_pb.items():
         for module_pb in archive_payload.daml_lf_1.modules:
             for data_type_pb in module_pb.data_types:
@@ -95,13 +105,14 @@ def find_dependencies(
                 elif data_type_pb.HasField("variant"):
                     deps = find_dependencies_of_fwts(data_type_pb.variant.fields)
                 if deps is not None:
+                    deps = set(deps)
                     deps.difference_update(existing_package_ids)
                     dependencies[package_id].update(deps)
 
     # identify any completely missing dependencies
     # TODO: This doesn't handle transitive missing dependencies; this will be a problem once
     #  DAML has proper dependency support
-    unresolvable_package_ids = []
+    unresolvable_package_ids = []  # type: List[PackageRef]
     for package_id, package_dependencies in dependencies.items():
         if not package_dependencies.issubset(metadatas_pb):
             unresolvable_package_ids.append(package_id)
@@ -137,7 +148,8 @@ def find_dependencies(
     )
 
 
-def find_dependencies_of_fwts(fwts_pb) -> "Set[str]":
+# noinspection PyDeprecation
+def find_dependencies_of_fwts(fwts_pb) -> "AbstractSet[PackageRef]":
     warnings.warn(
         "find_dependencies_of_fwts is deprecated; there is no replacement.",
         DeprecationWarning,
@@ -147,13 +159,14 @@ def find_dependencies_of_fwts(fwts_pb) -> "Set[str]":
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
 
-        dependencies = set()
+        dependencies = set()  # type: Set[PackageRef]
         for fwt in fwts_pb:
             dependencies.update(find_dependencies_of_fwt(fwt))
         return dependencies
 
 
-def find_dependencies_of_fwt(fwt_pb) -> "Collection[str]":
+# noinspection PyDeprecation
+def find_dependencies_of_fwt(fwt_pb) -> "Collection[PackageRef]":
     warnings.warn(
         "find_dependencies_of_fwt is deprecated; there is no replacement.",
         DeprecationWarning,
@@ -166,7 +179,8 @@ def find_dependencies_of_fwt(fwt_pb) -> "Collection[str]":
         return find_dependencies_of_type(fwt_pb.type)
 
 
-def find_dependencies_of_type(type_pb) -> "Collection[str]":
+# noinspection PyDeprecation
+def find_dependencies_of_type(type_pb) -> "Collection[PackageRef]":
     warnings.warn(
         "find_dependencies_of_type is deprecated; there is no replacement.",
         DeprecationWarning,
@@ -176,26 +190,23 @@ def find_dependencies_of_type(type_pb) -> "Collection[str]":
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
 
+        dependencies = set()  # type: Set[PackageRef]
         t = type_pb.WhichOneof("Sum")  # type: str
         if t == "prim":
-            dependencies = set()  # type: Set[str]
             for arg in type_pb.prim.args:
                 dependencies.update(find_dependencies_of_type(arg))
             return sorted(dependencies)
         elif t == "con":
-            dependencies = set()  # type: Set[str]
             if type_pb.con.tycon.module.package_ref.WhichOneof("Sum") == "package_id":
                 dependencies.add(type_pb.con.tycon.module.package_ref.package_id)
             for arg in type_pb.con.args:
                 dependencies.update(find_dependencies_of_type(arg))
             return sorted(dependencies)
         elif t == "var":
-            dependencies = set()  # type: Set[str]
             for arg in type_pb.var.args:
                 dependencies.update(find_dependencies_of_type(arg))
             return sorted(dependencies)
         elif t == "fun":
-            dependencies = set()  # type: Set[str]
             for arg in type_pb.fun.params:
                 dependencies.update(find_dependencies_of_type(arg))
             dependencies.update(find_dependencies_of_type(type_pb.fun.result))
@@ -239,6 +250,7 @@ def parse_daml_metadata_pb(package_id: "PackageRef", metadata_pb: Any) -> "Packa
     return _parse_daml_metadata_pb(Archive(package_id, package))
 
 
+# noinspection PyDeprecation
 def _parse_daml_metadata_pb(archive: "Archive") -> "PackageStore":
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
@@ -254,7 +266,7 @@ def _parse_daml_metadata_pb(archive: "Archive") -> "PackageStore":
 
             for dt in module.data_types:
                 tt = create_data_type(current_module, dt)
-                if isinstance(tt, (RecordType, VariantType, EnumType)):
+                if isinstance(tt, (RecordType, VariantType, EnumType)) and tt.name is not None:
                     psb.add_type(tt.name.con, tt)
                 else:
                     LOG.warning("Unexpected non-complex type will be ignored: %r", tt)

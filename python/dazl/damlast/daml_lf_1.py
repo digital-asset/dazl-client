@@ -21,9 +21,9 @@ DAML-LF Archive types
 from dataclasses import dataclass
 from enum import Enum
 from io import StringIO
-from typing import Callable, NewType, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, NewType, Optional, Sequence, Tuple, Union
 
-from ._base import MISSING, T
+from ._base import MISSING, T, _Missing
 
 __all__ = [
     "Archive",
@@ -298,7 +298,9 @@ class Binding:
 
 
 class Kind:
-    __slots__ = ("_Sum_name", "_Sum_value")
+    __slots__ = "_Sum_name", "_Sum_value"
+    _Sum_name: str
+    _Sum_value: Any
 
     class Arrow:
         params: "Sequence[Kind]"
@@ -308,7 +310,12 @@ class Kind:
             self.params = params
             self.result = result
 
-    def __init__(self, star: "Unit" = MISSING, arrow: "Arrow" = MISSING, nat: "Unit" = MISSING):
+    def __init__(
+        self,
+        star: "Union[Unit, _Missing]" = MISSING,
+        arrow: "Union[Arrow, _Missing]" = MISSING,
+        nat: "Union[Unit, _Missing]" = MISSING,
+    ):
         if star is not MISSING:
             object.__setattr__(self, "_Sum_name", "star")
             object.__setattr__(self, "_Sum_value", star)
@@ -421,16 +428,18 @@ class Type:
         args: "Sequence[Type]"
 
     __slots__ = "_Sum_name", "_Sum_value"
+    _Sum_name: str
+    _Sum_value: Any
 
     def __init__(
         self,
-        var: "Type.Var" = MISSING,
-        con: "Type.Con" = MISSING,
-        prim: "Type.Prim" = MISSING,
-        forall: "Type.Forall" = MISSING,
-        tuple: "Type.Tuple" = MISSING,
-        nat: int = MISSING,
-        syn: "Type.Syn" = MISSING,
+        var: "Union[Type.Var, _Missing]" = MISSING,
+        con: "Union[Type.Con, _Missing]" = MISSING,
+        prim: "Union[Type.Prim, _Missing]" = MISSING,
+        forall: "Union[Type.Forall, _Missing]" = MISSING,
+        tuple: "Union[Type.Tuple, _Missing]" = MISSING,
+        nat: "Union[int, _Missing]" = MISSING,
+        syn: "Union[Type.Syn, _Missing]" = MISSING,
     ):
         if var is not MISSING:
             object.__setattr__(self, "_Sum_name", "var")
@@ -546,17 +555,19 @@ class Type:
 
 
 class PrimLit:
-    __slots__ = ("_Sum_name", "_Sum_value")
+    __slots__ = "_Sum_name", "_Sum_value"
+    _Sum_name: str
+    _Sum_value: Any
 
     def __init__(
         self,
-        int64: int = MISSING,
-        decimal: str = MISSING,
-        text: str = MISSING,
-        timestamp: float = MISSING,
-        party: str = MISSING,
-        date: int = MISSING,
-        numeric: str = MISSING,
+        int64: "Union[int, _Missing]" = MISSING,
+        decimal: "Union[str, _Missing]" = MISSING,
+        text: "Union[str, _Missing]" = MISSING,
+        timestamp: "Union[float, _Missing]" = MISSING,
+        party: "Union[str, _Missing]" = MISSING,
+        date: "Union[int, _Missing]" = MISSING,
+        numeric: "Union[str, _Missing]" = MISSING,
     ):
         if int64 is not MISSING:
             object.__setattr__(self, "_Sum_name", "int64")
@@ -656,7 +667,11 @@ class Location:
     module: "ModuleRef"
     range: "Range"
 
-    def __init__(self, module: "ModuleRef" = MISSING, range: "Range" = MISSING):
+    def __init__(
+        self,
+        module: "Union[ModuleRef, _Missing]" = MISSING,
+        range: "Union[Range, _Missing]" = MISSING,
+    ):
         object.__setattr__(self, "module", module)
         object.__setattr__(self, "range", range)
 
@@ -852,39 +867,42 @@ class Expr:
             self.type = type
 
     __slots__ = "location", "_Sum_name", "_Sum_value"
+    location: Location
+    _Sum_name: str
+    _Sum_value: Any
 
     def __init__(
         self,
-        var: "str" = MISSING,
-        val: "ValName" = MISSING,
-        builtin: "BuiltinFunction" = MISSING,
-        prim_con: "PrimCon" = MISSING,
-        prim_lit: "PrimLit" = MISSING,
-        rec_con: "RecCon" = MISSING,
-        rec_proj: "RecProj" = MISSING,
-        variant_con: "VariantCon" = MISSING,
-        enum_con: "EnumCon" = MISSING,
-        struct_con: "StructCon" = MISSING,
-        struct_proj: "StructProj" = MISSING,
-        app: "App" = MISSING,
-        ty_app: "TyApp" = MISSING,
-        abs: "Abs" = MISSING,
-        ty_abs: "TyAbs" = MISSING,
-        case: "Case" = MISSING,
-        let: "Block" = MISSING,
-        nil: "Nil" = MISSING,
-        cons: "Cons" = MISSING,
-        update: "Update" = MISSING,
-        scenario: "Scenario" = MISSING,
-        rec_upd: "RecUpd" = MISSING,
-        struct_upd: "StructUpd" = MISSING,
-        optional_none: "OptionalNone" = MISSING,
-        optional_some: "OptionalSome" = MISSING,
-        location: "Location" = MISSING,
-        to_any: "ToAny" = MISSING,
-        from_any: "FromAny" = MISSING,
-        to_text_template_id: "ToTextTemplateId" = MISSING,
-        type_rep: "Type" = MISSING,
+        var: "Union[str, _Missing]" = MISSING,
+        val: "Union[ValName, _Missing]" = MISSING,
+        builtin: "Union[BuiltinFunction, _Missing]" = MISSING,
+        prim_con: "Union[PrimCon, _Missing]" = MISSING,
+        prim_lit: "Union[PrimLit, _Missing]" = MISSING,
+        rec_con: "Union[RecCon, _Missing]" = MISSING,
+        rec_proj: "Union[RecProj, _Missing]" = MISSING,
+        variant_con: "Union[VariantCon, _Missing]" = MISSING,
+        enum_con: "Union[EnumCon, _Missing]" = MISSING,
+        struct_con: "Union[StructCon, _Missing]" = MISSING,
+        struct_proj: "Union[StructProj, _Missing]" = MISSING,
+        app: "Union[App, _Missing]" = MISSING,
+        ty_app: "Union[TyApp, _Missing]" = MISSING,
+        abs: "Union[Abs, _Missing]" = MISSING,
+        ty_abs: "Union[TyAbs, _Missing]" = MISSING,
+        case: "Union[Case, _Missing]" = MISSING,
+        let: "Union[Block, _Missing]" = MISSING,
+        nil: "Union[Nil, _Missing]" = MISSING,
+        cons: "Union[Cons, _Missing]" = MISSING,
+        update: "Union[Update, _Missing]" = MISSING,
+        scenario: "Union[Scenario, _Missing]" = MISSING,
+        rec_upd: "Union[RecUpd, _Missing]" = MISSING,
+        struct_upd: "Union[StructUpd, _Missing]" = MISSING,
+        optional_none: "Union[OptionalNone, _Missing]" = MISSING,
+        optional_some: "Union[OptionalSome, _Missing]" = MISSING,
+        location: "Union[Location, _Missing]" = MISSING,
+        to_any: "Union[ToAny, _Missing]" = MISSING,
+        from_any: "Union[FromAny, _Missing]" = MISSING,
+        to_text_template_id: "Union[ToTextTemplateId, _Missing]" = MISSING,
+        type_rep: "Union[Type, _Missing]" = MISSING,
     ):
         object.__setattr__(self, "location", location)
         if var is not MISSING:
@@ -1125,68 +1143,68 @@ class Expr:
         optional_none: "Callable[[OptionalNone], T]",
         optional_some: "Callable[[OptionalSome], T]",
         to_any: "Callable[[ToAny], T]",
-        from_any: "Callable[[ToAny], T]",
+        from_any: "Callable[[FromAny], T]",
         to_text_template_id: "Callable[[ToTextTemplateId], T]",
-        type_rep: "Callable[[Type], T",
+        type_rep: "Callable[[Type], T]",
     ) -> "T":
         if self._Sum_name == "var":
-            return var(self.var)
+            return var(self.var)  # type: ignore
         elif self._Sum_name == "val":
-            return val(self.val)
+            return val(self.val)  # type: ignore
         elif self._Sum_name == "builtin":
-            return builtin(self.builtin)
+            return builtin(self.builtin)  # type: ignore
         elif self._Sum_name == "prim_con":
-            return prim_con(self.prim_con)
+            return prim_con(self.prim_con)  # type: ignore
         elif self._Sum_name == "prim_lit":
-            return prim_lit(self.prim_lit)
+            return prim_lit(self.prim_lit)  # type: ignore
         elif self._Sum_name == "rec_con":
-            return rec_con(self.rec_con)
+            return rec_con(self.rec_con)  # type: ignore
         elif self._Sum_name == "rec_proj":
-            return rec_proj(self.rec_proj)
+            return rec_proj(self.rec_proj)  # type: ignore
         elif self._Sum_name == "variant_con":
-            return variant_con(self.variant_con)
+            return variant_con(self.variant_con)  # type: ignore
         elif self._Sum_name == "enum_con":
-            return enum_con(self.enum_con)
+            return enum_con(self.enum_con)  # type: ignore
         elif self._Sum_name == "struct_con":
-            return struct_con(self.struct_con)
+            return struct_con(self.struct_con)  # type: ignore
         elif self._Sum_name == "struct_proj":
-            return struct_proj(self.struct_proj)
+            return struct_proj(self.struct_proj)  # type: ignore
         elif self._Sum_name == "app":
-            return app(self.app)
+            return app(self.app)  # type: ignore
         elif self._Sum_name == "ty_app":
-            return ty_app(self.ty_app)
+            return ty_app(self.ty_app)  # type: ignore
         elif self._Sum_name == "abs":
-            return abs(self.abs)
+            return abs(self.abs)  # type: ignore
         elif self._Sum_name == "ty_abs":
-            return ty_abs(self.ty_abs)
+            return ty_abs(self.ty_abs)  # type: ignore
         elif self._Sum_name == "case":
-            return case(self.case)
+            return case(self.case)  # type: ignore
         elif self._Sum_name == "let":
-            return let(self.let)
+            return let(self.let)  # type: ignore
         elif self._Sum_name == "nil":
-            return nil(self.nil)
+            return nil(self.nil)  # type: ignore
         elif self._Sum_name == "cons":
-            return cons(self.cons)
+            return cons(self.cons)  # type: ignore
         elif self._Sum_name == "update":
-            return update(self.update)
+            return update(self.update)  # type: ignore
         elif self._Sum_name == "scenario":
-            return scenario(self.scenario)
+            return scenario(self.scenario)  # type: ignore
         elif self._Sum_name == "rec_upd":
-            return rec_upd(self.rec_upd)
+            return rec_upd(self.rec_upd)  # type: ignore
         elif self._Sum_name == "struct_upd":
-            return struct_upd(self.struct_upd)
+            return struct_upd(self.struct_upd)  # type: ignore
         elif self._Sum_name == "optional_none":
-            return optional_none(self.optional_none)
+            return optional_none(self.optional_none)  # type: ignore
         elif self._Sum_name == "optional_some":
-            return optional_some(self.optional_some)
+            return optional_some(self.optional_some)  # type: ignore
         elif self._Sum_name == "to_any":
-            return to_any(self.to_any)
+            return to_any(self.to_any)  # type: ignore
         elif self._Sum_name == "from_any":
-            return from_any(self.from_any)
+            return from_any(self.from_any)  # type: ignore
         elif self._Sum_name == "to_text_template_id":
-            return to_text_template_id(self.to_text_template_id)
+            return to_text_template_id(self.to_text_template_id)  # type: ignore
         elif self._Sum_name == "type_rep":
-            return type_rep(self.type_rep)
+            return type_rep(self.type_rep)  # type: ignore
         else:
             raise Exception
 
@@ -1221,18 +1239,20 @@ class CaseAlt:
 
     __slots__ = "body", "_Sum_name", "_Sum_value"
     body: "Expr"
+    _Sum_name: str
+    _Sum_value: Any
 
     def __init__(
         self,
-        default: "Unit" = MISSING,
-        variant: "Variant" = MISSING,
-        prim_con: "PrimCon" = MISSING,
-        nil: "Unit" = MISSING,
-        cons: "Cons" = MISSING,
-        optional_none: "Unit" = MISSING,
-        optional_some: "OptionalSome" = MISSING,
-        body: "Expr" = MISSING,
-        enum: "Enum" = MISSING,
+        default: "Union[Unit, _Missing]" = MISSING,
+        variant: "Union[Variant, _Missing]" = MISSING,
+        prim_con: "Union[PrimCon, _Missing]" = MISSING,
+        nil: "Union[Unit, _Missing]" = MISSING,
+        cons: "Union[Cons, _Missing]" = MISSING,
+        optional_none: "Union[Unit, _Missing]" = MISSING,
+        optional_some: "Union[OptionalSome, _Missing]" = MISSING,
+        body: "Union[Expr, _Missing]" = MISSING,
+        enum: "Union[Enum, _Missing]" = MISSING,
     ):
         object.__setattr__(self, "body", body)
         if default is not MISSING:
@@ -1305,21 +1325,21 @@ class CaseAlt:
         enum: "Callable[[Enum], T]",
     ):
         if self._Sum_name == "default":
-            return default(self.default)
+            return default(self.default)  # type: ignore
         elif self._Sum_name == "variant":
-            return variant(self.variant)
+            return variant(self.variant)  # type: ignore
         elif self._Sum_name == "prim_con":
-            return prim_con(self.prim_con)
+            return prim_con(self.prim_con)  # type: ignore
         elif self._Sum_name == "nil":
-            return nil(self.nil)
+            return nil(self.nil)  # type: ignore
         elif self._Sum_name == "cons":
-            return cons(self.cons)
+            return cons(self.cons)  # type: ignore
         elif self._Sum_name == "optional_none":
-            return optional_none(self.optional_none)
+            return optional_none(self.optional_none)  # type: ignore
         elif self._Sum_name == "optional_some":
-            return optional_some(self.optional_some)
+            return optional_some(self.optional_some)  # type: ignore
         elif self._Sum_name == "enum":
-            return enum(self.enum)
+            return enum(self.enum)  # type: ignore
         else:
             raise Exception
 
@@ -1392,18 +1412,20 @@ class Update:
             self.key = key
 
     __slots__ = "_Sum_name", "_Sum_value"
+    _Sum_name: str
+    _Sum_value: Any
 
     def __init__(
         self,
-        pure: "Pure" = MISSING,
-        block: "Block" = MISSING,
-        create: "Create" = MISSING,
-        exercise: "Exercise" = MISSING,
-        fetch: "Fetch" = MISSING,
-        get_time: "Unit" = MISSING,
-        lookup_by_key: "RetrieveByKey" = MISSING,
-        fetch_by_key: "RetrieveByKey" = MISSING,
-        embed_expr: "EmbedExpr" = MISSING,
+        pure: "Union[Pure, _Missing]" = MISSING,
+        block: "Union[Block, _Missing]" = MISSING,
+        create: "Union[Create, _Missing]" = MISSING,
+        exercise: "Union[Exercise, _Missing]" = MISSING,
+        fetch: "Union[Fetch, _Missing]" = MISSING,
+        get_time: "Union[Unit, _Missing]" = MISSING,
+        lookup_by_key: "Union[RetrieveByKey, _Missing]" = MISSING,
+        fetch_by_key: "Union[RetrieveByKey, _Missing]" = MISSING,
+        embed_expr: "Union[EmbedExpr, _Missing]" = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -1437,40 +1459,40 @@ class Update:
     def pure(self) -> "Optional[Pure]":
         """this is purely for compact serialization -- specifically to
         reduce the AST depth. it adds no expressive power."""
-        return self._Sum_value if self._Sum_name == "pure" else None
+        return self._Sum_value if self._Sum_name == "pure" else None  # type: ignore
 
     @property
     def block(self) -> "Optional[Block]":
-        return self._Sum_value if self._Sum_name == "block" else None
+        return self._Sum_value if self._Sum_name == "block" else None  # type: ignore
 
     @property
     def create(self) -> "Optional[Create]":
-        return self._Sum_value if self._Sum_name == "create" else None
+        return self._Sum_value if self._Sum_name == "create" else None  # type: ignore
 
     @property
     def exercise(self) -> "Optional[Exercise]":
-        return self._Sum_value if self._Sum_name == "exercise" else None
+        return self._Sum_value if self._Sum_name == "exercise" else None  # type: ignore
 
     @property
     def fetch(self) -> "Optional[Fetch]":
-        return self._Sum_value if self._Sum_name == "fetch" else None
+        return self._Sum_value if self._Sum_name == "fetch" else None  # type: ignore
 
     @property
     def get_time(self) -> "Optional[Unit]":
-        return self._Sum_value if self._Sum_name == "get_time" else None
+        return self._Sum_value if self._Sum_name == "get_time" else None  # type: ignore
 
     @property
     def lookup_by_key(self) -> "Optional[RetrieveByKey]":
-        return self._Sum_value if self._Sum_name == "lookup_by_key" else None
+        return self._Sum_value if self._Sum_name == "lookup_by_key" else None  # type: ignore
 
     @property
     def fetch_by_key(self) -> "Optional[RetrieveByKey]":
-        return self._Sum_value if self._Sum_name == "fetch_by_key" else None
+        return self._Sum_value if self._Sum_name == "fetch_by_key" else None  # type: ignore
 
     @property
     def embed_expr(self) -> "Optional[EmbedExpr]":
         """see similar constructor in `Scenario` on why this is useful."""
-        return self._Sum_value if self._Sum_name == "embed_expr" else None
+        return self._Sum_value if self._Sum_name == "embed_expr" else None  # type: ignore
 
     def Sum_match(
         self,
@@ -1485,23 +1507,23 @@ class Update:
         embed_expr: "Callable[[EmbedExpr], T]",
     ) -> T:
         if self._Sum_name == "pure":
-            return pure(self._Sum_value)
+            return pure(self._Sum_value)  # type: ignore
         if self._Sum_name == "block":
-            return block(self._Sum_value)
+            return block(self._Sum_value)  # type: ignore
         if self._Sum_name == "create":
-            return create(self._Sum_value)
+            return create(self._Sum_value)  # type: ignore
         if self._Sum_name == "exercise":
-            return exercise(self._Sum_value)
+            return exercise(self._Sum_value)  # type: ignore
         if self._Sum_name == "fetch":
-            return fetch(self._Sum_value)
+            return fetch(self._Sum_value)  # type: ignore
         if self._Sum_name == "get_time":
-            return get_time(self._Sum_value)
+            return get_time(self._Sum_value)  # type: ignore
         if self._Sum_name == "lookup_by_key":
-            return lookup_by_key(self._Sum_value)
+            return lookup_by_key(self._Sum_value)  # type: ignore
         if self._Sum_name == "fetch_by_key":
-            return fetch_by_key(self._Sum_value)
+            return fetch_by_key(self._Sum_value)  # type: ignore
         if self._Sum_name == "embed_expr":
-            return embed_expr(self._Sum_value)
+            return embed_expr(self._Sum_value)  # type: ignore
         else:
             raise ValueError(f"Unknown Update.Sum case: {self._Sum_name}")
 
@@ -1527,17 +1549,19 @@ class Scenario:
             self.body = body
 
     __slots__ = "_Sum_name", "_Sum_value"
+    _Sum_name: str
+    _Sum_value: Any
 
     def __init__(
         self,
-        pure: "Pure" = MISSING,
-        block: "Block" = MISSING,
-        commit: "Commit" = MISSING,
-        must_fail_at: "Commit" = MISSING,
-        pass_: "Expr" = MISSING,
-        get_time: "Unit" = MISSING,
-        get_party: "Expr" = MISSING,
-        embed_expr: "EmbedExpr" = MISSING,
+        pure: "Union[Pure, _Missing]" = MISSING,
+        block: "Union[Block, _Missing]" = MISSING,
+        commit: "Union[Commit, _Missing]" = MISSING,
+        must_fail_at: "Union[Commit, _Missing]" = MISSING,
+        pass_: "Union[Expr, _Missing]" = MISSING,
+        get_time: "Union[Unit, _Missing]" = MISSING,
+        get_party: "Union[Expr, _Missing]" = MISSING,
+        embed_expr: "Union[EmbedExpr, _Missing]" = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -1902,11 +1926,17 @@ class DefTemplate:
 
         @property
         def key(self) -> "Optional[KeyExpr]":
-            return self._key_expr_value if self._key_expr_name == "key" else None
+            if self._key_expr_name == "key":
+                return self._key_expr_value  # type: ignore
+            else:
+                return None
 
         @property
         def complex_key(self) -> "Optional[Expr]":
-            return self._key_expr_value if self._key_expr_name == "complex_key" else None
+            if self._key_expr_name == "complex_key":
+                return self._key_expr_value  # type: ignore
+            else:
+                return None
 
     # The type constructor for the template, acting as both
     # the name of the template and the type of the template argument.
@@ -1960,37 +1990,37 @@ class DefDataType:
     name: DottedName
     params: "Sequence[TypeVarWithKind]"
     _DataCons_name: str
-    _DataCons_value: "Fields"
+    _DataCons_value: "Any"
     serializable: bool
     location: "Location"
 
     def __init__(
         self,
-        name: DottedName = MISSING,
-        params: "Sequence[TypeVarWithKind]" = MISSING,
-        record: "DefDataType.Fields" = MISSING,
-        variant: "DefDataType.Fields" = MISSING,
-        enum: "DefDataType.EnumConstructors" = MISSING,
-        synonym: "Type" = MISSING,
-        serializable: bool = MISSING,
-        location: "Location" = MISSING,
+        name: "Union[DottedName, _Missing]" = MISSING,
+        params: "Union[Sequence[TypeVarWithKind], _Missing]" = MISSING,
+        record: "Union[DefDataType.Fields, _Missing]" = MISSING,
+        variant: "Union[DefDataType.Fields, _Missing]" = MISSING,
+        enum: "Union[DefDataType.EnumConstructors, _Missing]" = MISSING,
+        synonym: "Union[Type, _Missing]" = MISSING,
+        serializable: "Union[bool, _Missing]" = MISSING,
+        location: "Union[Location, _Missing]" = MISSING,
     ):
-        self.name = name
-        self.params = params
+        self.name = name  # type: ignore
+        self.params = params  # type: ignore
         if record is not MISSING:
             self._DataCons_name = "record"
-            self._DataCons_value = record
+            self._DataCons_value = record  # type: ignore
         elif variant is not MISSING:
             self._DataCons_name = "variant"
-            self._DataCons_value = variant
+            self._DataCons_value = variant  # type: ignore
         elif enum is not MISSING:
             self._DataCons_name = "enum"
-            self._DataCons_value = enum
+            self._DataCons_value = enum  # type: ignore
         elif synonym is not MISSING:
             self._DataCons_name = "synonym"
-            self._DataCons_value = synonym
-        self.serializable = serializable
-        self.location = location
+            self._DataCons_value = synonym  # type: ignore
+        self.serializable = serializable  # type: ignore
+        self.location = location  # type: ignore
 
     @property
     def record(self) -> "Optional[DefDataType.Fields]":
@@ -2002,11 +2032,17 @@ class DefDataType:
 
     @property
     def enum(self) -> "Optional[DefDataType.EnumConstructors]":
-        return self._DataCons_value if self._DataCons_name == "enum" else None
+        if self._DataCons_name == "enum":
+            return self._DataCons_value  # type: ignore
+        else:
+            return None
 
     @property
     def synonym(self) -> "Optional[Type]":
-        return self._DataCons_value if self._DataCons_name == "synonym" else None
+        if self._DataCons_name == "synonym":
+            return self._DataCons_value  # type: ignore
+        else:
+            return None
 
 
 @dataclass(frozen=True)

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-from typing import Optional, Sequence
+from typing import Any, Dict, Optional, Sequence
 
 from .daml_lf_1 import *
 
@@ -16,7 +16,7 @@ class ProtobufParser:
 
         self.current_package = current_package
         self.interned_strings = []  # type: List[str]
-        self.interned_dotted_names = []  # type: List[List[int]]
+        self.interned_dotted_names = []  # type: List[Sequence[str]]
         self.interned_types = []  # type: List[Type]
 
     # noinspection PyUnusedLocal
@@ -25,10 +25,11 @@ class ProtobufParser:
 
     def parse_ModuleRef(self, pb) -> "Optional[ModuleRef]":
         sum_name = pb.package_ref.WhichOneof("Sum")
-        module_name = self._resolve_dotted_name(pb.module_name_dname, pb.module_name_interned_dname)
         if sum_name is None:
             return None
-        elif sum_name == "self":
+
+        module_name = self._resolve_dotted_name(pb.module_name_dname, pb.module_name_interned_dname)
+        if sum_name == "self":
             return ModuleRef(self.current_package, module_name)
         elif sum_name == "package_id_str":
             return ModuleRef(pb.package_ref.package_id_str, module_name)
@@ -85,11 +86,9 @@ class ProtobufParser:
     def parse_Binding(self, pb) -> "Binding":
         return Binding(self.parse_VarWithType(pb.binder), self.parse_Expr(pb.bound))
 
-    def parse_Kind(self, pb) -> "Optional[Kind]":
+    def parse_Kind(self, pb) -> "Kind":
         sum_name = pb.WhichOneof("Sum")
-        if sum_name is None:
-            return None
-        elif sum_name == "star":
+        if sum_name == "star":
             return Kind(star=self.parse_Unit(pb.star))
         elif sum_name == "arrow":
             return Kind(arrow=self.parse_Kind_Arrow(pb.arrow))
@@ -173,10 +172,8 @@ class ProtobufParser:
             args=tuple(self.parse_Type(arg) for arg in pb.args),
         )
 
-    def parse_PrimCon(self, pb) -> "Optional[PrimCon]":
-        if pb is None:
-            return None
-        elif pb == 0:
+    def parse_PrimCon(self, pb) -> "PrimCon":
+        if pb == 0:
             return PrimCon.CON_UNIT
         elif pb == 1:
             return PrimCon.CON_FALSE
@@ -185,9 +182,7 @@ class ProtobufParser:
         else:
             raise ValueError(f"unknown enum value: {pb!r}")
 
-    def parse_BuiltinFunction(self, pb) -> "Optional[BuiltinFunction]":
-        if pb is None:
-            return None
+    def parse_BuiltinFunction(self, pb) -> "BuiltinFunction":
         return BuiltinFunction(pb)
 
     def parse_PrimLit(self, pb) -> "PrimLit":
@@ -213,16 +208,13 @@ class ProtobufParser:
         else:
             raise ValueError(f"unknown Sum value: {pb!r}")
 
-    def parse_Expr(self, pb, optional: bool = False) -> "Expr":
+    def parse_Expr(self, pb) -> "Expr":
+        args = {}  # type: Dict[str, Any]
         location = self.parse_Location(pb.location) if pb.HasField("location") else None
         if location is not None:
-            args = {"location": location}
-        else:
-            args = {}
+            args["location"] = location
 
         sum_name = pb.WhichOneof("Sum")
-        if optional and sum_name is None:
-            return None
         if sum_name == "var_str":
             args["var"] = pb.var_str
         elif sum_name == "var_interned_str":
@@ -286,7 +278,7 @@ class ProtobufParser:
         else:
             raise ValueError(f"Unknown type of Expr: {sum_name!r}")
 
-        return Expr(**args)
+        return Expr(**args)  # type: ignore
 
     def parse_Expr_RecCon(self, pb) -> "Expr.RecCon":
         return Expr.RecCon(
@@ -505,7 +497,7 @@ class ProtobufParser:
         elif sum_name == "mustFailAt":
             return Scenario(must_fail_at=self.parse_Scenario_Commit(pb.mustFailAt))
         elif sum_name == "pass":
-            return Scenario(must_fail_at=self.parse_Expr(getattr(pb, "pass")))
+            return Scenario(pass_=self.parse_Expr(getattr(pb, "pass")))
         elif sum_name == "get_time":
             return Scenario(get_time=self.parse_Unit(pb.get_time))
         elif sum_name == "get_party":
@@ -695,13 +687,15 @@ class ProtobufParser:
         )
 
     def _resolve_string(self, name: "Optional[str]", interned_id: "Optional[int]") -> str:
-        return name if name else self.interned_strings[interned_id]
+        # note that we intentionally conflate None and empty string, or None and 0 because
+        # of Protobuf
+        return name if name else self.interned_strings[interned_id or 0]
 
     def _resolve_string_seq(
         self, name: "Optional[Sequence[str]]", name_interned_id: "Optional[int]"
     ) -> "Sequence[str]":
         if self.interned_dotted_names:
-            return tuple(name) if name else self.interned_dotted_names[name_interned_id]
+            return tuple(name) if name else self.interned_dotted_names[name_interned_id or 0]
         else:
             return tuple(name) if name else tuple()
 

@@ -70,5 +70,7 @@ def parse_template(
                 )
 
             return template_id.name.con, DeprecatedTypeReference(template_id.name.con)
+        else:
+            raise ValueError("unknown dazl.model.types.Type implementation")
     else:
         raise ValueError("template_id must be a TypeConName")

@@ -15,8 +15,13 @@ class ContractId:
     """
 
     __slots__ = "_value", "_value_type"
+    if TYPE_CHECKING:
+        _value: str
+        _value_type: TypeConName
 
     def __init__(self, value_type: "TypeConName", value: str):
+        from ..damlast.daml_lf_1 import TypeConName
+
         if not isinstance(value_type, TypeConName):
             raise ValueError("value_type must be a TypeConName")
         if not isinstance(value, str):

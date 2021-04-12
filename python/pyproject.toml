@@ -41,6 +41,7 @@ setuptools = "==40.8.0"
 sphinx = "*"
 sphinx-markdown-builder = "^0.5.1"
 watchdog = "*"
+grpc-stubs = "^1.24.5"
 
 [tool.poetry.extras]
 oauth = ["google-auth", "oauthlib"]
