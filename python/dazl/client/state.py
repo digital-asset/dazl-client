@@ -12,12 +12,12 @@ from ..damlast.protocols import SymbolLookup
 from ..model.core import (
     ContractContextualData,
     ContractContextualDataCollection,
-    ContractId,
     ContractMatch,
     ContractsState,
     UnknownTemplateWarning,
 )
 from ..model.reading import ContractArchiveEvent, ContractCreateEvent
+from ..prim import ContractId
 from ..scheduler import Invoker
 from ..util.asyncio_util import await_then
 
@@ -77,7 +77,7 @@ class ActiveContractSet:
         # contract of a specific type. Because we need type information available to parse data
         # from the read stream, by the time data ends up in the ACS, the lookup will definitely
         # know of the template name.
-        names = []
+        names = []  # type: Collection[TypeConName]
         fail_count = 0
         while not names:
             names = self.lookup.template_names(template_name)
@@ -100,7 +100,7 @@ class ActiveContractSet:
                 UnknownTemplateWarning,
                 stacklevel=3,
             )
-            unfiltered = dict()  # type: Dict[TypeConName, TemplateContractData]
+            unfiltered = dict()
 
         ((tt, tcd),) = unfiltered.items()
 
@@ -110,7 +110,9 @@ class ActiveContractSet:
         if tcd is None or not query.check_ready(tcd):
             tcd.register_query(query)
 
-        return await await_then(query.future, lambda cxds: {cxd.cid: cxd.cdata for cxd in cxds})
+        return await await_then(
+            query.future, lambda cxds: {cxd.cid: cxd.cdata for cxd in cxds if cxd.cdata is not None}
+        )
 
     def _get_template_state(self, template_name: str) -> "Dict[TypeConName, TemplateContractData]":
         names = self.lookup.template_names(template_name)
@@ -162,7 +164,9 @@ class TemplateContractData:
         return [
             cxd
             for cxd in self._data.values()
-            if (include_archived or cxd.active) and is_match(match, cxd.cdata)
+            if (include_archived or cxd.active)
+            and cxd.cdata is not None
+            and is_match(match, cxd.cdata)
         ]
 
     def register_query(self, query: "PendingQuery") -> None:

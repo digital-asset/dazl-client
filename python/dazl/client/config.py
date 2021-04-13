@@ -27,6 +27,7 @@ from typing import (
 import warnings
 
 from .. import LOG
+from ..damlast.daml_lf_1 import PackageRef
 from ..model.core import ConfigurationError, Party
 from ..util.config_meta import (
     BOOLEAN_TYPE,
@@ -151,7 +152,7 @@ class _PartyConfig(URLConfig):
         default_value=0.25,
     )
 
-    party_groups: Optional[Collection[str]] = config_field(  # type: ignore
+    party_groups: Optional[Collection[Party]] = config_field(  # type: ignore
         "comma-separated list of broadcast parties", param_type=PARTIES_TYPE
     )
 
@@ -204,11 +205,11 @@ class _NetworkConfig(URLConfig):
         default_value=50,
     )
 
-    party_groups: Optional[Collection[str]] = config_field(  # type: ignore
+    party_groups: Optional[Collection[Party]] = config_field(  # type: ignore
         "comma-separated list of broadcast parties", param_type=PARTIES_TYPE
     )
 
-    package_ids: Optional[Collection[str]] = config_field(  # type: ignore
+    package_ids: Optional[Collection[PackageRef]] = config_field(  # type: ignore
         "comma-separated list of package IDs to listen on", param_type=PACKAGE_IDS_TYPE
     )
 

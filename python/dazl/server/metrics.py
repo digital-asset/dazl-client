@@ -2,10 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from dataclasses import asdict, dataclass
-from typing import Collection, Mapping
+from typing import TYPE_CHECKING, Collection, Mapping
 
 from ..client import _NetworkImpl
 from ..prim import Party
+
+if TYPE_CHECKING:
+    from aiohttp import web
 
 
 def build_routes(network_impl: "_NetworkImpl", registry=None) -> "Collection[web.AbstractRouteDef]":

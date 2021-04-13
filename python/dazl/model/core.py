@@ -156,7 +156,7 @@ class ContractContextualDataCollection(tuple):
 class ContractContextualData:
     cid: ContractId
     cdata: "Optional[ContractData]"
-    effective_at: datetime
+    effective_at: "Optional[datetime]"
     archived_at: "Optional[datetime]"
     active: bool
 
@@ -167,7 +167,7 @@ Dar = Union[bytes, str, Path, BinaryIO]
 
 @dataclass(frozen=True)
 class SourceLocation:
-    file_name: str
+    file_name: "Optional[str]"
     start_line: int
     end_line: int
 

@@ -180,7 +180,13 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
                 template_data_types[key] = (template, data_type)
 
         for template, data_type in (*bare_data_types.values(), *template_data_types.values()):
-            if self.context.show_hidden_types or not data_type.name.segments[0].startswith("$"):
+            if (
+                data_type is not None
+                and data_type.name is not None
+                and (
+                    self.context.show_hidden_types or not data_type.name.segments[0].startswith("$")
+                )
+            ):
                 at_least_one = True
                 lines.append(self.visit_def_template(template, data_type))
                 lines.append("")

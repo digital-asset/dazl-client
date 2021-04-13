@@ -71,7 +71,7 @@ class ProtobufSerializer(AbstractSerializer):
 
         cmd = G.CreateCommand()
         _set_template(cmd.template_id, name)
-        set_value(cmd.create_arguments, None, create_value)
+        cmd.create_arguments.MergeFrom(create_value)
         return G.Command(create=cmd)
 
     def serialize_exercise_command(
@@ -118,7 +118,7 @@ class ProtobufSerializer(AbstractSerializer):
 
         cmd = G.CreateAndExerciseCommand()
         _set_template(cmd.template_id, template_name)
-        set_value(cmd.create_arguments, None, create_value)
+        cmd.create_arguments.MergeFrom(create_value)
         cmd.choice = choice_name
         set_value(cmd.choice_argument, choice_ctor, choice_value)
         return G.Command(createAndExercise=cmd)

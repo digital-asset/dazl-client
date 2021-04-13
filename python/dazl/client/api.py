@@ -17,22 +17,12 @@ This module contains the public API for interacting with the ledger from the per
 specific party.
 """
 
-from asyncio import ensure_future, get_event_loop
+from asyncio import Future, ensure_future, get_event_loop
 from contextlib import contextmanager
 from functools import wraps
 from logging import INFO
 from pathlib import Path
-from typing import (
-    Any,
-    Awaitable,
-    BinaryIO,
-    Collection,
-    ContextManager,
-    List,
-    Optional,
-    Tuple,
-    Union,
-)
+from typing import Any, Awaitable, BinaryIO, Collection, List, Optional, Tuple, Union
 from uuid import uuid4
 import warnings
 
@@ -88,7 +78,7 @@ def simple_client(
     url: "Optional[str]" = None,
     party: "Union[None, str, Party]" = None,
     log_level: "Optional[int]" = INFO,
-) -> "ContextManager[SimplePartyClient]":
+):
     """
     Start up a single client connecting to a single specific party.
 
@@ -186,7 +176,7 @@ class Network:
 
     def __init__(self, metrics: "Optional[MetricEvents]" = None):
         self._impl = _NetworkImpl(metrics)
-        self._main_fut = None
+        self._main_fut = None  # type: Optional[Future]
 
     def set_config(
         self,
