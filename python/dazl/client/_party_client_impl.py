@@ -19,6 +19,7 @@ from typing import (
     Set,
     Tuple,
     TypeVar,
+    Union,
 )
 import uuid
 
@@ -67,12 +68,19 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
+__all__ = ["_PartyClientImpl"]
+
+
 class _PartyClientImpl:
+    invoker: Invoker
+    party: Party
+    bots: BotCollection
+
     def __init__(self, parent: "_NetworkImpl", party: "Party"):
         self.parent = parent
         self.metrics = parent._metrics
-        self.invoker = parent.invoker  # type: Invoker
-        self.party = party  # type: Party
+        self.invoker = parent.invoker
+        self.party = party
 
         self._config_values = dict()  # type: Dict[str, Any]
         self._config = None  # type: Optional[_NetworkConfig]
@@ -212,7 +220,7 @@ class _PartyClientImpl:
 
     # region Active/Historical Contract Set management
 
-    def find_by_id(self, cid: ContractId) -> "Optional[ContractContextualData]":
+    def find_by_id(self, cid: Union[str, ContractId]) -> "Optional[ContractContextualData]":
         return self._acs.get(cid)
 
     def find(
@@ -535,10 +543,8 @@ class _PartyClientImpl:
         Main coroutine for submitting commands.
         """
         LOG.info("Writer loop for party %s is starting...", self.party)
-        ledger_fut = ensure_future(self._pool.ledger())
-
-        client = self._client_fut.result()  # type: LedgerClient
-        metadata = ledger_fut.result()  # type: LedgerMetadata
+        client = await self._client_fut  # type: LedgerClient
+        metadata = await self._pool.ledger()  # type: LedgerMetadata
         validator = ValidateSerializer(self.parent.lookup)
 
         self._writer.pending_commands.start()

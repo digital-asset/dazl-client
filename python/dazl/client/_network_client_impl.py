@@ -170,16 +170,21 @@ class _NetworkImpl:
         with AioLoopPerfMonitor(self._metrics.loop_responsiveness):
             if config.server_port is not None:
                 LOG.info("Opening port %s for metrics...", config.server_port)
-                from aiohttp import web
+                try:
+                    from aiohttp import web
 
-                from ..server import get_app
+                    from ..server import get_app
 
-                app = get_app(self)
-                app_runner = web.AppRunner(app)
-                await app_runner.setup()
-                site = web.TCPSite(app_runner, config.server_host, config.server_port)
-                ensure_future(site.start())
-                LOG.info("Listening on %s:%s for metrics.", config.server_host, config.server_port)
+                    app = get_app(self)
+                    app_runner = web.AppRunner(app)
+                    await app_runner.setup()
+                    site = web.TCPSite(app_runner, config.server_host, config.server_port)
+                    ensure_future(site.start())
+                    LOG.info(
+                        "Listening on %s:%s for metrics.", config.server_host, config.server_port
+                    )
+                except ImportError:
+                    LOG.warning("Could not start metrics because aiohttp is not installed")
             else:
                 LOG.info(
                     "No server_port configuration was specified, so metrics and other stats "

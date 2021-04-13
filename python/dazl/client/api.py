@@ -70,6 +70,18 @@ from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 
+__all__ = [
+    "DEFAULT_TIMEOUT_SECONDS",
+    "simple_client",
+    "async_network",
+    "Network",
+    "GlobalClient",
+    "AIOGlobalClient",
+    "SimpleGlobalClient",
+    "PartyClient",
+    "AIOPartyClient",
+    "SimplePartyClient",
+]
 DEFAULT_TIMEOUT_SECONDS = 30
 
 
@@ -407,7 +419,7 @@ class Network:
             DeprecationWarning,
             stacklevel=2,
         )
-        return self._impl.bots()
+        return self._impl.bots
 
     def __enter__(self):
         """

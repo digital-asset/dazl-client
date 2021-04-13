@@ -195,6 +195,38 @@ class Context:
             for key, value in elements.items()
         }
 
+    def convert_gen_map(
+        self,
+        key_type: "Type",
+        value_type: "Type",
+        elements: "Mapping[Any, Any]",
+        mapper: "Optional[ValueMapper]" = None,
+    ) -> "Dict[str, Any]":
+        """
+        Convert a _map_ of elements, each of an assumed type.
+
+        This is a convenience method for :class:`ValueMapper` implementations where DAML-LF TextMaps
+        are represented as Python dictionaries. Note that a :class:`ValueMapper` may choose to
+        implement TextMap type conversion in a completely different way instead of calling this
+        function, which may be necessary if a TextMap of DAML-LF values is encoded in a way other
+        than a Python dict (i.e., Protobuf).
+
+        :param key_type:
+            The :class:`Type` of the key.
+        :param value_type:
+            The :class:`Type` of the value.
+        :param elements:
+            A mapping of keys to values.
+        :param mapper:
+            If not ``None``, an alternate mapper to use when descending down the object.
+        """
+        return {
+            self.append_path("[i]", mapper=mapper)
+            .convert(key_type, key): self.append_path(key, mapper=mapper)
+            .convert(value_type, value)
+            for i, (key, value) in enumerate(elements.items())
+        }
+
     def convert_contract_id(self, element_type: "Type", contract_id: "Any") -> "ContractId":
         """
         Convert a contract ID string to a :class:`ContractId`.
@@ -320,6 +352,13 @@ class Context:
         raise ValueError(
             f'value at {".".join(self.path)} has an invalid value: {value} ({message})'
         )
+
+    @property
+    def depth(self) -> int:
+        """
+        Return the number of components in the path of this context.
+        """
+        return len(self.path)
 
     def _replace_all_type_vars(
         self, type_vars: "Mapping[str, Type]", fields: "DefDataType.Fields"

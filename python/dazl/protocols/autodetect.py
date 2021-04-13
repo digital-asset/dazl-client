@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from datetime import datetime
+from functools import partial
 from threading import Event, RLock, Thread
 from typing import Awaitable, Dict, Iterable, Optional, Union
 
@@ -35,8 +36,8 @@ class AutodetectLedgerNetwork(LedgerNetwork):
         self._main_thread = Thread(target=self._main, daemon=True)
         self._main_thread.start()
 
-    def ledger(self) -> "Awaitable[LedgerMetadata]":
-        return self._ledger_future
+    async def ledger(self) -> "LedgerMetadata":
+        return await self._ledger_future
 
     async def connect_anonymous(
         self, settings: "HTTPConnectionSettings", context_path: "Optional[str]"
@@ -71,24 +72,25 @@ class AutodetectLedgerNetwork(LedgerNetwork):
             raise RuntimeError(f"Unknown protocol version: {ledger.protocol_version}")
 
     async def upload_package(self, dar_contents: bytes) -> None:
+        connection = self._first_connection
+        if connection is None:
+            raise RuntimeError("cannot upload a package until a connection has been established")
+
         from .v1.grpc import grpc_upload_package
 
-        return await self._invoker.run_in_executor(
-            lambda: grpc_upload_package(self._first_connection, dar_contents)
-        )
+        await self._invoker.run_in_executor(partial(grpc_upload_package, connection, dar_contents))
 
-    async def set_time(self, new_time: datetime):
+    async def set_time(self, new_time: datetime) -> None:
+        connection = self._first_connection
+        if connection is None:
+            raise RuntimeError("cannot upload a package until a connection has been established")
+
+        from .v1.grpc import grpc_set_time
+
         ledger = await self.ledger()
-        if ledger.protocol_version == "v1":
-            from .v1.grpc import grpc_set_time
-
-            return await self._invoker.run_in_executor(
-                lambda: grpc_set_time(self._first_connection, ledger.ledger_id, new_time)
-            )
-        elif ledger.protocol_version == "v0":
-            raise RuntimeError(f"Unsupported protocol version: {ledger.protocol_version}")
-        else:
-            raise RuntimeError(f"Unknown protocol version: {ledger.protocol_version}")
+        return await self._invoker.run_in_executor(
+            partial(grpc_set_time, connection, ledger.ledger_id, new_time)
+        )
 
     async def close(self) -> None:
         with self._lock:
@@ -144,7 +146,9 @@ class AutodetectLedgerNetwork(LedgerNetwork):
                 LOG.debug("Initializing a connection to %s...", settings)
                 stub = self._connections.get(settings)
                 if stub is None:
-                    stub = AutodetectConnection(self._invoker, settings, context_path)
+                    stub = AutodetectConnection(
+                        self._invoker, self._options, settings, context_path
+                    )
                     self._connections[settings] = stub
                 return stub
         except:  # noqa

@@ -11,7 +11,7 @@ import signal
 from typing import List
 import warnings
 
-from ..prim import to_timedelta
+from ..prim import TimeDeltaLike, to_timedelta
 from ..util.asyncio_util import execute_in_loop, safe_create_future
 from ._base import RunLevel
 
@@ -93,7 +93,7 @@ class Invoker:
         if self.executor is None:
             self.executor = ThreadPoolExecutor()
 
-    def run_in_loop(self, func, timeout: float = 30.0):
+    def run_in_loop(self, func, timeout: TimeDeltaLike = 30.0):
         """
         Schedule a normal function or coroutine function to be run on the event loop, and block
         until the function has returned.

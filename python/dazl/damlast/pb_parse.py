@@ -15,6 +15,7 @@ class ProtobufParser:
         from typing import List
 
         self.current_package = current_package
+        self.current_module = None  # type: Optional[ModuleRef]
         self.interned_strings = []  # type: List[str]
         self.interned_dotted_names = []  # type: List[Sequence[str]]
         self.interned_types = []  # type: List[Type]
@@ -41,14 +42,20 @@ class ProtobufParser:
             raise ValueError(f"unknown sum type value: {sum_name!r}")
 
     def parse_TypeConName(self, pb) -> "TypeConName":
+        module_ref = self.parse_ModuleRef(pb.module)
+        if module_ref is None:
+            raise ValueError("missing a valid ModuleRef in a TypeConName definition")
         return TypeConName(
-            self.parse_ModuleRef(pb.module),
+            module_ref,
             self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments,
         )
 
     def parse_TypeSynName(self, pb) -> "TypeSynName":
+        module_ref = self.parse_ModuleRef(pb.module)
+        if module_ref is None:
+            raise ValueError("missing a valid ModuleRef in a TypeSynName definition")
         return TypeSynName(
-            self.parse_ModuleRef(pb.module),
+            module_ref,
             self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments,
         )
 
@@ -56,8 +63,11 @@ class ProtobufParser:
         return DottedName(segments=self._resolve_string_seq(pb.segments, pb.segments_interned_id))
 
     def parse_ValName(self, pb) -> "ValName":
+        module_ref = self.parse_ModuleRef(pb.module)
+        if module_ref is None:
+            raise ValueError("missing a valid ModuleRef in a ValName definition")
         return ValName(
-            self.parse_ModuleRef(pb.module),
+            module_ref,
             self._resolve_string_seq(pb.name_dname, pb.name_interned_dname),
         )
 
@@ -518,7 +528,17 @@ class ProtobufParser:
         return Scenario.EmbedExpr(type=self.parse_Type(pb.type), body=self.parse_Expr(pb.body))
 
     def parse_Location(self, pb) -> "Location":
-        return Location(self.parse_ModuleRef(pb.module), self.parse_Location_Range(pb.range))
+        module_ref = self.parse_ModuleRef(pb.module)
+        if module_ref is None:
+            module_ref = self.current_module
+        if module_ref is None:
+            # This is probably a programming mistake, since nowhere in the Daml-LF protobuf does
+            # a Location occur outside of a Module
+            raise ValueError(
+                "cannot parse a Location object without a ModuleRef outside of a Module"
+            )
+
+        return Location(module_ref, self.parse_Location_Range(pb.range))
 
     def parse_Location_Range(self, pb) -> "Location.Range":
         return Location.Range(pb.start_line, pb.start_col, pb.end_line, pb.end_col)
@@ -648,14 +668,21 @@ class ProtobufParser:
         )
 
     def parse_Module(self, pb) -> "Module":
-        return Module(
-            name=self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
-            flags=self.parse_FeatureFlags(pb.flags),
-            synonyms=tuple(self.parse_DefTypeSyn(value) for value in pb.synonyms),
-            data_types=tuple(self.parse_DefDataType(data_type) for data_type in pb.data_types),
-            values=tuple(self.parse_DefValue(value) for value in pb.values),
-            templates=tuple(self.parse_DefTemplate(template) for template in pb.templates),
-        )
+        name = self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname)
+        self.current_module = ModuleRef(self.current_package, name)
+        try:
+            module = Module(
+                name=name,
+                flags=self.parse_FeatureFlags(pb.flags),
+                synonyms=tuple(self.parse_DefTypeSyn(value) for value in pb.synonyms),
+                data_types=tuple(self.parse_DefDataType(data_type) for data_type in pb.data_types),
+                values=tuple(self.parse_DefValue(value) for value in pb.values),
+                templates=tuple(self.parse_DefTemplate(template) for template in pb.templates),
+            )
+        finally:
+            self.current_module = None
+
+        return module
 
     def parse_Package(self, pb) -> "Package":
         # TODO: this modifies state in a parser which is less than ideal; a better pattern would be

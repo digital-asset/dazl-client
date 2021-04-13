@@ -35,6 +35,7 @@ from typing import (
     Tuple,
     TypeVar,
     Union,
+    cast,
     no_type_check,
 )
 import warnings
@@ -399,7 +400,7 @@ class ServiceQueue(Generic[T]):
         more than once has no effect.
         """
         if not self._service_fut.done():
-            existing_items = self._q  # type: List[Tuple[T, Future]]
+            existing_items = cast(list, self._q)  # type: List[Tuple[T, Future]]
             self._q = AQueue()
             for item in existing_items:
                 self._q.put_nowait(item)
@@ -428,7 +429,7 @@ class ServiceQueue(Generic[T]):
             self._prev_fut.set_result(None)
             self._prev_fut = None
 
-        q = self._q  # type: AQueue[Tuple[T_co, Future]]
+        q = cast(AQueue, self._q)  # type: AQueue[Tuple[T_co, Future]]
         value, fut = await q.get()
         if value is None:
             fut.set_result(None)

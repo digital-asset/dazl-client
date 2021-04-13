@@ -338,13 +338,11 @@ class CommandBuilder:
         else:
             return self.append_nonatomically(*commands)
 
-    def append_atomically(self, *commands: Union[Command, Sequence[Command]]) -> "CommandBuilder":
+    def append_atomically(self, *commands: CommandsOrCommandSequence) -> "CommandBuilder":
         self._commands.extend([flatten_command_sequence(commands)])
         return self
 
-    def append_nonatomically(
-        self, *commands: Union[Command, Sequence[Command]]
-    ) -> "CommandBuilder":
+    def append_nonatomically(self, *commands: CommandsOrCommandSequence) -> "CommandBuilder":
         self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
         return self
 

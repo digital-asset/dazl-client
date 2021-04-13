@@ -849,6 +849,9 @@ def annotate_context(
         raise Exception()
 
     def annotate_path(t: Union[RecordType, VariantType]) -> Tuple[TypeEvaluationContext, Type]:
+        if t.name is None:
+            raise ValueError("cannot annotate a path with an anonymous type")
+
         return context.append_path(t.name), t
 
     return type_dispatch_table(

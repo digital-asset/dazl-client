@@ -8,7 +8,7 @@ This module contains utilities required by :mod:`dazl.client.config`.
 from argparse import _ActionsContainer
 from dataclasses import Field, dataclass, field, fields
 import logging
-from typing import Any, Callable, FrozenSet, Optional, Sequence, Tuple
+from typing import Any, Callable, FrozenSet, Optional, Sequence, Tuple, no_type_check
 
 from ..model.core import Party
 
@@ -41,6 +41,7 @@ def config_field(
     )
 
 
+@no_type_check
 def config_fields(class_or_instance: Any) -> "Sequence[Tuple[Field, ConfigParameter]]":
     return [(fld, fld.metadata.get("dazl.config")) for fld in fields(class_or_instance)]
 

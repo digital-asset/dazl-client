@@ -1,23 +1,31 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
 from contextlib import ExitStack
+from os import PathLike, fspath
 from pathlib import Path
 import time
 from typing import List, Sequence, Union
+import warnings
 
 from .. import LOG
-from ..model.types_store import PackageStore
-from ..util.dar import DarFile
-from ..util.path_util import pathify
 
 
 class LocalDarRepository:
     def __init__(self):
+        warnings.warn(
+            "LocalDarRepository is deprecated; use PackageLookup instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self._context = ExitStack()
         self._dar_paths = []  # type: List[Path]
         self._files = set()
-        self.store = PackageStore.empty()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+
+            from ..model.types_store import PackageStore
+
+            self.store = PackageStore.empty()
 
     def _add_source(self, path: Path) -> None:
         ext = path.suffix.lower()
@@ -32,7 +40,12 @@ class LocalDarRepository:
 
         elif ext == ".dar":
             dar_parse_start_time = time.time()
-            dar = self._context.enter_context(DarFile(path))
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", DeprecationWarning)
+
+                from ..util.dar import DarFile
+
+                dar = self._context.enter_context(DarFile(path))
             dar_package = dar.read_metadata()
             self._dar_paths.append(path)
             self.store.register_all(dar_package)
@@ -43,7 +56,7 @@ class LocalDarRepository:
             LOG.error("Unknown extension: %s", ext)
             raise ValueError(f"Unknown extension: {ext}")
 
-    def add_source(self, *files: Union[str, Path]) -> None:
+    def add_source(self, *files: Union[str, PathLike, Path]) -> None:
         """
         Add a source file (either a .daml file, .dalf file, or a .dar file).
 
@@ -52,7 +65,7 @@ class LocalDarRepository:
         :param files: Files to add to the archive.
         """
         for file in files:
-            path = pathify(file).resolve(strict=True)
+            path = Path(fspath(file)).resolve(strict=True)
             if path not in self._files:
                 self._files.add(path)
                 self._add_source(path)

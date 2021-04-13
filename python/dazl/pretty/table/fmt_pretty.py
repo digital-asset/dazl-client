@@ -49,7 +49,7 @@ class PrettyFormatter(Formatter):
             header_row = ["", "#cid", *(expand_record_field_names(context, Type.Con(name, ())))]
 
             with LOG.debug_timed("Render entries as strings"):
-                rows = [
+                orig_rows = [
                     (
                         sort.key(entry),
                         [
@@ -62,8 +62,8 @@ class PrettyFormatter(Formatter):
                 ]
 
             with LOG.debug_timed("Sort rows"):
-                rows.sort(key=lambda val: val[0])
-                rows = [row for _, row in rows]
+                orig_rows.sort(key=lambda val: val[0])
+                rows = [row for _, row in orig_rows]
                 rows.insert(0, header_row)
 
             with LOG.debug_timed("Measure entry sizes"):

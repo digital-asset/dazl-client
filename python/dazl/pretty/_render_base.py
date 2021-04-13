@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+# type: ignore
 
 from io import StringIO
 import json
@@ -30,10 +31,18 @@ from ..damlast.daml_lf_1 import (
 from ..damlast.protocols import SymbolLookup
 from ..damlast.util import package_local_name, unpack_arrow_type
 from ..damlast.visitor import ExprVisitor, ModuleVisitor, PackageVisitor, TypeVisitor
-from ..model.definition import DamlDataType, DamlTemplate
 from ..prim import to_date, to_datetime
 from .options import PrettyOptions
 from .util import is_hidden_module_name, maybe_parentheses
+
+__all__ = [
+    "PrettyPrintBase",
+    "CodeContext",
+    "decode_special_chars",
+    "get_pretty_printer_type",
+    "register_pretty_printer",
+    "pretty_print_syntax",
+]
 
 
 # noinspection PyMethodMayBeStatic
@@ -215,7 +224,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         return self.visit_def_template(None, def_data_type)
 
     def visit_def_template(
-        self, template: "DefTemplate", def_data_type: "Optional[DefDataType]" = None
+        self, template: "Optional[DefTemplate]", def_data_type: "Optional[DefDataType]" = None
     ) -> str:
         """
         Attempt to render the :class:`DefTemplate`. If this method successfully returns, then the
@@ -224,21 +233,6 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         :param template: The :class:`DefTemplate` to attempt to render.
         :param def_data_type: The corresponding :class:`DefDataType` for that template (if known).
         :return: A rendered version of the template.
-        """
-        raise NotImplementedError
-
-    def visit_daml_data_type(self, data_type: DamlDataType) -> str:
-        """
-        Render the specified data type.
-
-        :param data_type:
-        :return:
-        """
-        raise NotImplementedError
-
-    def visit_daml_template(self, template: DamlTemplate) -> str:
-        """
-        Render a template instance.
         """
         raise NotImplementedError
 
@@ -562,9 +556,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         return self.with_type_abs(ty_abs.param).visit_expr(ty_abs.body)
 
     def visit_expr_case(self, case: "Case") -> "str":
-        return None
+        raise NotImplementedError("visit_expr_case needs an implementation")
 
-    def visit_expr_casealt(self, alt: "CaseAlt", type: "Optional[Type]" = None) -> str:
+    def visit_expr_casealt(self, alt: "CaseAlt") -> str:
         pattern_text = alt.Sum_match(
             self.visit_expr_casealt_default,
             self.visit_expr_casealt_variant,
@@ -596,10 +590,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_casealt_prim_con(self, prim_con: "PrimCon"):
         return self.visit_expr_prim_con(prim_con)
 
-    def visit_expr_casealt_nil(self, nil: "Unit", type: "Optional[Type]" = None):
+    def visit_expr_casealt_nil(self, nil: "Unit", type: "Type" = None):
         return self.visit_expr_nil(Expr.Nil(type))
 
-    def visit_expr_casealt_cons(self, cons: "CaseAlt.Cons", type: "Optional[Type]" = None):
+    def visit_expr_casealt_cons(self, cons: "CaseAlt.Cons", type: "Type" = None):
         return self.visit_expr_cons(
             Expr.Cons(front=(Expr(var=cons.var_head),), tail=Expr(var=cons.var_tail), type=type)
         )

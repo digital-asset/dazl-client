@@ -5,7 +5,7 @@ from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 import sys
-from typing import AbstractSet, Awaitable, Callable, Dict, Set, TypeVar
+from typing import AbstractSet, Awaitable, Callable, Dict, Optional, Set, TypeVar
 
 from .. import LOG
 from ..damlast.daml_lf_1 import Archive, Package, PackageRef
@@ -53,11 +53,11 @@ class PackageLoader:
         self,
         package_lookup: "MultiPackageLookup",
         conn: "SyncPackageService" = None,
-        timeout: "timedelta" = DEFAULT_TIMEOUT,
+        timeout: "Optional[timedelta]" = DEFAULT_TIMEOUT,
     ):
         self._package_lookup = package_lookup
         self._conn = conn
-        self._timeout = timeout
+        self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
         self._loading_futs = dict()  # type: Dict[PackageRef, Awaitable[Package]]
         self._parsing_futs = dict()  # type: Dict[PackageRef, Awaitable[Archive]]
         self._executor = ThreadPoolExecutor(3)
