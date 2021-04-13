@@ -5,13 +5,13 @@
 This module contains the logic for fuzzy lookups (specifically, template references) are performed
 in dazl.
 """
-from typing import Any, Iterator, Tuple
+from typing import Any, Iterator, Tuple, Union
 import warnings
 
 from ..damlast.daml_lf_1 import PackageRef
 
 
-def validate_template(template: "Any") -> "Tuple[PackageRef, str]":
+def validate_template(template: "Any") -> "Tuple[Union[str, PackageRef], str]":
     warnings.warn(
         "validate_template is deprecated; use dazl.damlast.lookup.validate_template",
         DeprecationWarning,

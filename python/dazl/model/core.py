@@ -40,6 +40,7 @@ T = TypeVar("T")
 
 class ContractId(ContractId_):
     __slots__ = ("_value_type_deprecated",)
+    _value_type_deprecated: "TypeReference"
 
     def __init__(self, contract_id: str, template_id: "Union[str, Type, TypeConName]"):
         warnings.warn(
@@ -132,7 +133,7 @@ ContractsHistoricalState = Dict[ContractId, Tuple[ContractData, bool]]
 
 
 class ContractContextualDataCollection(tuple):
-    def __getitem__(self, index: Union[int, str, ContractId]):
+    def __getitem__(self, index):
         if index is None:
             raise ValueError("the index cannot be None")
         elif isinstance(index, int):
@@ -231,13 +232,15 @@ class ConfigurationError(DazlError):
         A collection of reasons for a failure.
     """
 
+    reasons: Collection[str]
+
     def __init__(self, reasons: "Union[str, Collection[str]]"):
         if reasons is None:
-            self.reasons = []  # type: Collection[str]
+            self.reasons = []
         elif isinstance(reasons, str):
             self.reasons = [reasons]
         else:
-            self.reasons = reasons  # type: Collection[str]
+            self.reasons = reasons
 
 
 class ConnectionClosedError(DazlError):
