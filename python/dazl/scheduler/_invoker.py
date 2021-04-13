@@ -8,11 +8,14 @@ from asyncio import CancelledError, Future, InvalidStateError, gather, get_event
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 import signal
+from typing import List
 import warnings
 
 from ..prim import to_timedelta
 from ..util.asyncio_util import execute_in_loop, safe_create_future
 from ._base import RunLevel
+
+__all__ = ["Invoker", "DEFAULT_TIMEOUT"]
 
 DEFAULT_TIMEOUT = timedelta(seconds=30)
 
@@ -25,11 +28,11 @@ class Invoker:
     This serves a similar purpose to Akka's ExecutionContext in Scala.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.level = RunLevel.RUN_FOREVER
         self.loop = None
         self.executor = None
-        self._futures = []
+        self._futures = []  # type: List[Future]
 
     async def __aenter__(self):
         return self
@@ -111,11 +114,7 @@ class Invoker:
 
         return self.loop.run_in_executor(self.executor, func)
 
-    def install_signal_handlers(self):
-        """
-
-        :return:
-        """
+    def install_signal_handlers(self) -> None:
         try:
             if self.loop is not None:
                 self.loop.add_signal_handler(signal.SIGINT, self.handle_sigint)
@@ -127,8 +126,8 @@ class Invoker:
             # SIGINT and SIGQUIT are not supported on Windows.
             pass
 
-    def handle_sigint(self):
+    def handle_sigint(self) -> None:
         self.level = RunLevel.TERMINATE_GRACEFULLY
 
-    def handle_sigquit(self):
+    def handle_sigquit(self) -> None:
         self.level = RunLevel.TERMINATE_IMMEDIATELY

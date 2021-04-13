@@ -59,7 +59,7 @@ class OAuthSettings(NamedTuple):
     refresh_token: Optional[str]
     id_token: Optional[str]
     token_uri: Optional[str]
-    client_id: str
+    client_id: Optional[str]
     client_secret: Optional[str]
     redirect_uri: Optional[str]
     auth_url: Optional[str]
@@ -98,6 +98,9 @@ def connection_settings(
         else:
             port = components.port
 
+        if components.hostname is None:
+            raise ValueError("missing hostname")
+
         settings = HTTPConnectionSettings(
             scheme=components.scheme,
             host=components.hostname,
@@ -111,4 +114,4 @@ def connection_settings(
         )
         return (settings, components.path.rstrip("/"))
     except ValueError:
-        raise ValueError("Could not parse {}".format(url))
+        raise ValueError(f"Could not parse {url}")

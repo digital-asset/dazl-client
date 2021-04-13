@@ -26,10 +26,11 @@ from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
-from ..model.core import DazlPartyMissingError, Party
+from ..model.core import DazlPartyMissingError
 from ..model.ledger import LedgerMetadata
 from ..model.network import connection_settings
 from ..model.reading import BaseEvent, InitEvent, ReadyEvent
+from ..prim import Party
 from ..prim.datetime import TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
@@ -162,6 +163,8 @@ class _NetworkImpl:
         from ..metrics.instrumenters import AioLoopPerfMonitor
 
         config = self.freeze()
+        if self._pool is None:
+            raise RuntimeError("freeze() did not kick off a network pool!")
 
         site = None
         with AioLoopPerfMonitor(self._metrics.loop_responsiveness):
@@ -172,9 +175,9 @@ class _NetworkImpl:
                 from ..server import get_app
 
                 app = get_app(self)
-                runner = web.AppRunner(app)
-                await runner.setup()
-                site = web.TCPSite(runner, config.server_host, config.server_port)
+                app_runner = web.AppRunner(app)
+                await app_runner.setup()
+                site = web.TCPSite(app_runner, config.server_host, config.server_port)
                 ensure_future(site.start())
                 LOG.info("Listening on %s:%s for metrics.", config.server_host, config.server_port)
             else:
@@ -335,6 +338,11 @@ class _NetworkImpl:
         if self._cached_metadata is not None:
             return self._cached_metadata
 
+        if self._pool is None:
+            raise ValueError(
+                "simple_metadata must be called only after the global connection has started"
+            )
+
         with self._lock:
             return self.invoker.run_in_loop(self._pool.ledger, timeout=timeout)
 
@@ -457,7 +465,7 @@ class _NetworkRunner:
         LOG.info("network_run: finished.")
         self._writers = []
 
-    async def beat(self, party_impls: "Collection[_PartyClientImpl]") -> Tuple[str, bool]:
+    async def beat(self, party_impls: "Collection[_PartyClientImpl]") -> Tuple[Optional[str], bool]:
         """
         Called periodically to schedule reads and writes.
         """
@@ -529,10 +537,10 @@ class _NetworkRunner:
         # Raise the 'init' event.
         init_futs = []
         if first_offset is None:
-            evt = InitEvent(
+            init_evt = InitEvent(
                 None, None, None, metadata.ledger_id, self._network_impl.lookup, metadata._store
             )
-            init_futs.append(ensure_future(self._network_impl.emit_event(evt)))
+            init_futs.append(ensure_future(self._network_impl.emit_event(init_evt)))
         for party_impl in party_impls:
             init_futs.append(ensure_future(party_impl.initialize(None, metadata)))
 
@@ -548,7 +556,7 @@ class _NetworkRunner:
         # Raise the 'ready' event.
         ready_futs = []
         if first_offset is None:
-            evt = ReadyEvent(
+            ready_evt = ReadyEvent(
                 None,
                 None,
                 None,
@@ -557,7 +565,7 @@ class _NetworkRunner:
                 metadata._store,
                 offset,
             )
-            ready_futs.append(ensure_future(self._network_impl.emit_event(evt)))
+            ready_futs.append(ensure_future(self._network_impl.emit_event(ready_evt)))
         for party_impl in party_impls:
             ready_futs.append(ensure_future(party_impl.emit_ready(metadata, None, offset)))
         for party_impl in party_impls:
