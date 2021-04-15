@@ -32,6 +32,7 @@ from typing import (
     AbstractSet,
     Any,
     Callable,
+    ClassVar,
     Collection,
     Dict,
     Mapping,
@@ -66,7 +67,7 @@ LedgerId = NewType("LedgerId", str)
 # lowercase hex-encoded hash of the package contents found in the DAML LF Archive.
 #
 # This is re-exported from the daml_lf_1 as PackageId for backwards compatibility, and will
-# be removed in dazl 7.0.0.
+# be removed in dazl v8.
 PackageId = PackageRef
 
 # A set of PackageId.
@@ -82,27 +83,35 @@ def type_ref(s: str) -> "TypeReference":
     "module:entity@pkgid"
     "module.entity@pkgid"
     """
-    # Attempt to parse in an older format still used by Navigator for display purposes.
-    me, is_at, pkgid = s.partition("@")
-    if is_at:
-        # encourage people to use the new format
-        m, has_colon, e = me.partition(":")
-        if not has_colon:
-            m, _, e = me.rpartition(".")
+    warnings.warn(
+        "type_ref is deprecated; there is no replacement", DeprecationWarning, stacklevel=2
+    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
 
-        pkg_ref = PackageRef(pkgid)
-        module_name = DottedName(m.split("."))
-        entity_name = e.split(".")
-    else:
-        components = s.split(":")
-        if len(components) != 3:
-            raise ValueError(f"could not parse as a template reference: {s!r}")
+        # Attempt to parse in an older format still used by Navigator for display purposes.
+        me, is_at, pkgid = s.partition("@")
+        if is_at:
+            # encourage people to use the new format
+            m, has_colon, e = me.partition(":")
+            if not has_colon:
+                m, _, e = me.rpartition(".")
 
-        pkg_ref = PackageRef(components[0])
-        module_name = DottedName(components[1].split("."))
-        entity_name = components[2].split(".")
+            pkg_ref = PackageRef(pkgid)
+            module_name = DottedName(m.split("."))
+            entity_name = e.split(".")
+        else:
+            components = s.split(":")
+            if len(components) != 3:
+                raise ValueError(f"could not parse as a template reference: {s!r}")
 
-    return TypeReference(con=TypeConName(module=ModuleRef(pkg_ref, module_name), name=entity_name))
+            pkg_ref = PackageRef(components[0])
+            module_name = DottedName(components[1].split("."))
+            entity_name = components[2].split(".")
+
+        return TypeReference(
+            con=TypeConName(module=ModuleRef(pkg_ref, module_name), name=entity_name)
+        )
 
 
 def dotted_name(obj: DottedNameish) -> "Sequence[str]":
@@ -252,7 +261,17 @@ class TypeApp(Type):
     """
 
     def __init__(self, body: Type, arguments: Sequence[Type]):
-        super().__init__()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+
+        warnings.warn(
+            "dazl.model.types.TypeApp and its subclasses are deprecated. "
+            "Use dazl.damlast.daml_lf_1.Type instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
         if not isinstance(body, Type):
             raise ValueError(f"a Type is required here (got {body} instead)")
@@ -273,6 +292,16 @@ class TypeVariable(Type):
     __slots__ = ("name",)
 
     def __init__(self, name: str):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+
+        warnings.warn(
+            "dazl.model.types.TypeVar is deprecated. " "Use dazl.damlast.daml_lf_1.Type instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.name = safe_cast(str, name)
 
     def __str__(self):
@@ -290,6 +319,15 @@ class TypeVariable(Type):
 
 class TypeReference(Type):
     def __init__(self, con: "TypeConName"):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+        warnings.warn(
+            "TypeReference is deprecated; in most cases, use TypeConName instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.con = con
 
     def __str__(self):
@@ -308,6 +346,15 @@ class UnresolvedTypeReference(Type):
     """
 
     def __init__(self, name: str):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+        warnings.warn(
+            "UnresolvedTypeReference is deprecated; in most cases, use TypeConName instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.name = safe_cast(str, name)
 
     def __str__(self):
@@ -335,7 +382,7 @@ class ScalarType(ConcreteType):
 
     __slots__ = ("name",)
     name: str
-    BUILTINS: "Sequence[ScalarType]"
+    BUILTINS: "ClassVar[Sequence[ScalarType]]"
 
     def __init__(self, name: str):
         """
@@ -343,6 +390,15 @@ class ScalarType(ConcreteType):
 
         :param name: The name of this type as it is known in DAML.
         """
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+        warnings.warn(
+            "ScalarType is deprecated; in most cases, use dazl.damlast.daml_lf_1 types instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.name = safe_cast(str, name)
 
     def __repr__(self):
@@ -367,6 +423,16 @@ class _BuiltInParameterizedType(ConcreteType):
     __slots__ = ("type_parameter",)
 
     def __init__(self, type_parameter: Type):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+
+        warnings.warn(
+            "ContractIdType, and ListType, TypeRefType are deprecated; use dazl.damlast.daml_lf_1 types instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.type_parameter = safe_cast(Type, type_parameter)
 
     def __repr__(self):
@@ -400,6 +466,16 @@ class TextMapType(ConcreteType):
     __slots__ = ("value_type",)
 
     def __init__(self, value_type: Type):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+        warnings.warn(
+            "TextMapType is deprecated; use dazl.damlast.daml_lf_1 types instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         self.value_type = safe_cast(Type, value_type)
 
     def __repr__(self):
@@ -425,6 +501,16 @@ class GenMapType(ConcreteType):
     __slots__ = "key_type", "value_type"
 
     def __init__(self, key_type: Type, value_type: Type):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+        warnings.warn(
+            "GenMapType is deprecated; use dazl.damlast.daml_lf_1 types instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         self.key_type = safe_cast(Type, key_type)
         self.value_type = safe_cast(Type, value_type)
 
@@ -451,6 +537,14 @@ class UpdateType(_BuiltInParameterizedType):
 
 class ForAllType(Type):
     def __init__(self, type_vars, body_type):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+        warnings.warn(
+            "ForAllType is deprecated; there is no replacement", DeprecationWarning, stacklevel=2
+        )
+
         self.type_vars = type_vars
         self.body_type = body_type
 
@@ -469,6 +563,16 @@ class _CompositeDataType(ConcreteType):
         name: "Optional[TypeReference]",
         type_args: "Sequence[TypeVariable]",
     ):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+        warnings.warn(
+            "RecordType and VariantType are deprecated; use dazl.damlast.daml_lf_1 types instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         if type(self) == _CompositeDataType:
             raise Exception("_CompositeDataType cannot be constructed")
         if not isinstance(named_args, NamedArgumentList):
@@ -505,6 +609,14 @@ class FunctionType(Type):
     """
 
     def __init__(self, parameters: Sequence[Type], result: Type):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+        warnings.warn(
+            "FunctionType is deprecated; there is no replacement", DeprecationWarning, stacklevel=2
+        )
+
         self.parameters = tuple(parameters)
         self.result = safe_cast(Type, result)
 
@@ -540,6 +652,17 @@ class EnumType(ConcreteType):
     __slots__ = ("constructors",)
 
     def __init__(self, name: "Optional[TypeReference]", constructors: "Collection[str]"):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
+
+        warnings.warn(
+            "EnumType is deprecated; use dazl.damlast.daml_lf_1 types instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         self.name = name
         self.constructors = constructors
 
@@ -646,31 +769,38 @@ def as_contract_id(cid, template_id=None):
     Convert something that resembles a contract ID to a :class:`ContractId` or
     :class:`RelativeContractRef`.
     """
-    from .core import ContractId
+    warnings.warn(
+        "as_contract_id is deprecated; there is no replacement", DeprecationWarning, stacklevel=2
+    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        from .core import ContractId
 
-    if cid is None:
-        raise ValueError("cid is required")
-    elif isinstance(cid, str):
-        return ContractId(cid, template_id)
-    elif isinstance(cid, ContractId):
-        return cid
+        if cid is None:
+            raise ValueError("cid is required")
+        elif isinstance(cid, str):
+            return ContractId(cid, template_id)
+        elif isinstance(cid, ContractId):
+            return cid
 
-    raise TypeError("Could not serialize an object to a contract ID: {!r}".format(cid))
+        raise TypeError("Could not serialize an object to a contract ID: {!r}".format(cid))
 
 
-SCALAR_TYPE_UNIT = ScalarType("Unit")
-SCALAR_TYPE_BOOL = ScalarType("Bool")
-SCALAR_TYPE_CHAR = ScalarType("Char")
-SCALAR_TYPE_INTEGER = ScalarType("Integer")
-SCALAR_TYPE_DECIMAL = ScalarType("Decimal")
-SCALAR_TYPE_NUMERIC = ScalarType("Numeric")
-SCALAR_TYPE_TEXT = ScalarType("Text")
-SCALAR_TYPE_PARTY = ScalarType("Party")
-SCALAR_TYPE_RELTIME = ScalarType("RelTime")
-SCALAR_TYPE_DATE = ScalarType("Date")
-SCALAR_TYPE_TIME = ScalarType("Time")
-SCALAR_TYPE_ANY = ScalarType("Any")
-SCALAR_TYPE_DATETIME = SCALAR_TYPE_TIME
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    SCALAR_TYPE_UNIT = ScalarType("Unit")
+    SCALAR_TYPE_BOOL = ScalarType("Bool")
+    SCALAR_TYPE_CHAR = ScalarType("Char")
+    SCALAR_TYPE_INTEGER = ScalarType("Integer")
+    SCALAR_TYPE_DECIMAL = ScalarType("Decimal")
+    SCALAR_TYPE_NUMERIC = ScalarType("Numeric")
+    SCALAR_TYPE_TEXT = ScalarType("Text")
+    SCALAR_TYPE_PARTY = ScalarType("Party")
+    SCALAR_TYPE_RELTIME = ScalarType("RelTime")
+    SCALAR_TYPE_DATE = ScalarType("Date")
+    SCALAR_TYPE_TIME = ScalarType("Time")
+    SCALAR_TYPE_ANY = ScalarType("Any")
+    SCALAR_TYPE_DATETIME = SCALAR_TYPE_TIME
 
 ScalarType.BUILTINS = [
     SCALAR_TYPE_BOOL,

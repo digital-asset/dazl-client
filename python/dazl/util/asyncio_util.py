@@ -583,7 +583,10 @@ class ContextFreeFuture(Awaitable[T_co]):
         self, fn: "Callable[[ContextFreeFuture[T_co]], None]", context=None
     ) -> None:
         if context is not None:
-            LOG.warning("ContextFreeFutures do not support the use of contexts.")
+            # This used to be a warning, but in newer versions of Python a context
+            # is sometimes supplied and nothing seems to particularly go wrong by
+            # simply doing nothing with this information.
+            pass
         with self._lock:
             if self._loop is not None and self._state != _PENDING:
                 self._loop.call_soon_threadsafe(fn, self)
