@@ -28,7 +28,7 @@ import warnings
 
 from .. import LOG
 from ..damlast import get_dar_package_ids
-from ..damlast.daml_lf_1 import PackageRef
+from ..damlast.daml_lf_1 import PackageRef, TypeConName
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
 from ..model.core import (
@@ -827,7 +827,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: str,
+        template_name: "Union[str, TypeConName]",
         arguments: "Optional[dict]" = None,
         workflow_id: "Optional[str]" = None,
         deduplication_time: "Optional[TimeDeltaLike]" = None,
@@ -850,10 +850,16 @@ class AIOPartyClient(PartyClient):
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
-        from .. import create
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.writing import create
+
+            # noinspection PyDeprecation
+            command = create(template_name, arguments)
 
         return self.submit(
-            create(template_name, arguments),
+            command,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -887,10 +893,16 @@ class AIOPartyClient(PartyClient):
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
-        from .. import exercise
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.writing import exercise
+
+            # noinspection PyDeprecation
+            command = (exercise(cid, choice_name, arguments),)
 
         return self.submit(
-            exercise(cid, choice_name, arguments),
+            command,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -924,10 +936,16 @@ class AIOPartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
-        from .. import exercise_by_key
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.writing import exercise_by_key
+
+            # noinspection PyDeprecation
+            command = exercise_by_key(template_name, contract_key, choice_name, arguments)
 
         return self.submit(
-            exercise_by_key(template_name, contract_key, choice_name, arguments),
+            command,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -960,10 +978,16 @@ class AIOPartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
-        from .. import create_and_exercise
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.writing import create_and_exercise
+
+            # noinspection PyDeprecation
+            command = create_and_exercise(template_name, arguments, choice_name, choice_arguments)
 
         return self.submit(
-            create_and_exercise(template_name, arguments, choice_name, choice_arguments),
+            command,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -1469,10 +1493,16 @@ class SimplePartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
-        from .. import create
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.writing import create
+
+            # noinspection PyDeprecation
+            command = create(template_name, arguments)
 
         return self.submit(
-            create(template_name, arguments),
+            command,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -1503,10 +1533,16 @@ class SimplePartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
-        from .. import exercise
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.writing import exercise
+
+            # noinspection PyDeprecation
+            command = exercise(cid, choice_name, arguments)
 
         return self.submit(
-            exercise(cid, choice_name, arguments),
+            command,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -1540,10 +1576,16 @@ class SimplePartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
-        from .. import exercise_by_key
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.writing import exercise_by_key
+
+            # noinspection PyDeprecation
+            command = exercise_by_key(template_name, contract_key, choice_name, arguments)
 
         return self.submit(
-            exercise_by_key(template_name, contract_key, choice_name, arguments),
+            command,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -1576,10 +1618,16 @@ class SimplePartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
-        from .. import create_and_exercise
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.writing import create_and_exercise
+
+            # noinspection PyDeprecation
+            command = create_and_exercise(template_name, arguments, choice_name, choice_arguments)
 
         return self.submit(
-            create_and_exercise(template_name, arguments, choice_name, choice_arguments),
+            command,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )

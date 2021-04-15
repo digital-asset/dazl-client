@@ -234,6 +234,8 @@ def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterabl
         if connection.options.eager_package_fetch:
             grpc_package_sync(package_provider, store)
 
+        serializer = ProtobufSerializer(connection.options.lookup)
+
     yield LedgerMetadata(
         ledger_id=ledger_id,
         store=store,
@@ -242,7 +244,7 @@ def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterabl
             conn=package_provider,
             timeout=connection.options.connect_timeout,
         ),
-        serializer=ProtobufSerializer(connection.options.lookup),
+        serializer=serializer,
         protocol_version="v1",
     )
 
