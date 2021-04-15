@@ -1,262 +1,269 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
 """
 Write-Side types
 ----------------
 
-The :mod:`dazl.model.writing` module contains the Python classes used on the write-side of the
-Ledger API.
+These types have been slightly revised and moved to :mod:`dazl.ledger.api_types`.
 
-.. autoclass:: Command
-   :members:
-
-.. autoclass:: CreateCommand
-   :members:
-
-.. autoclass:: ExerciseCommand
-   :members:
+These symbols will be removed in dazl v8.
 """
 from dataclasses import dataclass, fields
 from datetime import timedelta
-from typing import TYPE_CHECKING, Any, Collection, List, Mapping, Optional, Sequence, Tuple, Union
+from typing import Any, Collection, List, Mapping, Optional, Sequence, Tuple, Union
 import uuid
 import warnings
 
 from ..damlast.daml_lf_1 import Type, TypeConName
 from ..damlast.daml_types import con
-from ..damlast.lookup import find_choice
+from ..damlast.lookup import find_choice, validate_template
 from ..damlast.protocols import SymbolLookup
-from ..prim import ContractId, Party
-from ..util.typing import safe_cast
+from ..ledger import api_types
+from ..prim import ContractData, ContractId, Party
+from ..values import ValueMapper
 
-if TYPE_CHECKING:
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
-        from .types import Type as DeprecatedType, TypeReference, UnresolvedTypeReference
+warnings.warn(
+    "The types of dazl.model.writing are deprecated; please use types from dazl.ledger instead",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
-    from ..values import Context, ValueMapper
+__all__ = [
+    "Command",
+    "CommandBuilder",
+    "CommandDefaults",
+    "CommandPayload",
+    "CommandsOrCommandSequence",
+    "CreateAndExerciseCommand",
+    "CreateCommand",
+    "EventHandlerResponse",
+    "ExerciseByKeyCommand",
+    "ExerciseCommand",
+    "create",
+    "create_and_exercise",
+    "exercise",
+    "exercise_by_key",
+    "flatten_command_sequence",
+    "Serializer",
+    "AbstractSerializer",
+]
 
-CommandsOrCommandSequence = Union[None, "Command", Sequence[Optional["Command"]]]
-EventHandlerResponse = Union[CommandsOrCommandSequence, "CommandBuilder", "CommandPayload"]
+
+Command = api_types.Command
 
 
-class Command:
-    """
-    Base class for write-side commands.
-    """
-
-
-@dataclass(init=False, frozen=True)
-class CreateCommand(Command):
+class CreateCommand(api_types.CreateCommand):
     """
     A command that creates a contract without any predecessors.
-
-    .. attribute:: CreateCommand.template
-
-        Refers to the type of a template. This can be passed in as a ``str`` to the constructor,
-        where it assumed to represent the ID or name of a template.
-
-    .. attribute:: CreateCommand.arguments
-
-        The arguments to the create (as a ``dict``).
     """
 
-    __slots__ = ("template_type", "arguments", "_template_type_deprecated")
+    def __init__(
+        self, template: "Union[str, TypeConName]", arguments: "Optional[ContractData]" = None
+    ):
+        warnings.warn(
+            "dazl.model.writing.CreateCommand is deprecated; "
+            "prefer calling dazl.ledger.Connection.create or "
+            "dazl.client.PartyClient.submit_create, "
+            "or use dazl.ledger.CreateCommand instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if arguments is None:
+            raise ValueError("arguments must be supplied")
 
-    template_type: "TypeConName"
-    arguments: "Mapping[str, Any]"
-    _template_type_deprecated: "TypeReference"
-
-    def __init__(self, template: "Union[str, TypeConName, DeprecatedType]", arguments=None):
-        from ..damlast.compat import parse_template
-
-        template_type, template_type_deprecated = parse_template(template)
-        object.__setattr__(self, "template_type", template_type)
-        object.__setattr__(self, "arguments", arguments or dict())
-        object.__setattr__(self, "_template_type_deprecated", template_type_deprecated)
+        pkg_ref, name = validate_template(template, allow_deprecated_identifiers=True)
+        super().__init__(f"{pkg_ref}:{name}", arguments)
 
     @property
-    def template(self) -> "TypeReference":
+    def template_type(self) -> "TypeConName":
+        """
+        Use :meth:`template_id` instead.
+        """
         warnings.warn(
-            "CreateCommand.template is deprecated; use CreateCommand.template_type instead.",
+            "CreateCommand.template_type is deprecated; use CreateCommand.template_id instead.",
             DeprecationWarning,
             stacklevel=2,
         )
-        return self._template_type_deprecated
+        return self.template_id
 
-    def replace(self, template: "Union[None, str, DeprecatedType]" = None, arguments=None):
+    @property
+    def arguments(self) -> "Mapping[str, Any]":
         """
-        Create a new :class:`CreateCommand` with the same identifier as this command, but with new
-        values for its parameters.
-
-        :param template:
-            The new value of the `template` field, or `None` to reuse the existing value.
-        :param arguments:
-            The new value of the `arguments` field, or `None` to reuse the existing value.
+        Use :meth:`payload` instead.
         """
         warnings.warn(
-            "CreateCommand.replace is deprecated; simply construct a CreateCommand with the "
-            "desired values instead.",
+            "CreateCommand.arguments is deprecated; use CreateCommand.payload instead.",
             DeprecationWarning,
             stacklevel=2,
         )
-
-        if template is not None:
-            template = (
-                template
-                if isinstance(template, DeprecatedType)
-                else UnresolvedTypeReference(template)
-            )
-        return CreateCommand(
-            template if template is not None else self.template_type,
-            arguments if arguments is not None else self.arguments,
-        )
-
-    def __repr__(self):
-        return f"<create {self.template_type} {self.arguments}>"
+        return self.payload
 
 
-@dataclass(init=False, frozen=True)
-class ExerciseCommand(Command):
+class CreateAndExerciseCommand(api_types.CreateAndExerciseCommand):
     """
-    A command that exercises a choice on a pre-existing contract.
-
-    .. attribute:: ExerciseCommand.contract
-
-        The :class:`ContractId` on which a choice is being exercised.
-
-    .. attribute:: ExerciseCommand.choice
-
-        Refers to a choice (either a :class:`ChoiceRef` or a :class:`ChoiceMetadata`).
-        This can be passed in as a ``str`` to the constructor, where it assumed to represent the
-        name of a choice.
-
-    .. attribute:: ExerciseCommand.arguments
-
-        The arguments to the exercise choice (as a ``dict``).
-
-    Note that when an ``ExerciseCommand`` is created, an additional ``template_id`` parameter can
-    be supplied to the constructor to aid in disambiguation of the specific choice being invoked.
-    In some situations involving composite commands, a ``template_id`` must eventually be supplied
-    before a choice can be exercised. If this ``template_id`` is specified, the ``contract`` and
-    ``choice`` are both tagged with this ID.
-
-    Instance methods:
-
-    .. automethod:: replace
+    A command that exercises a choice on a newly-created contract, in a single transaction.
     """
-
-    __slots__ = ("contract", "choice", "arguments")
-
-    contract: "ContractId"
-    choice: str
-    arguments: "Optional[Any]"
-
-    def __init__(self, contract: "ContractId", choice: str, arguments: "Optional[Any]" = None):
-        object.__setattr__(self, "contract", safe_cast(ContractId, contract))
-        object.__setattr__(self, "choice", safe_cast(str, choice))
-        object.__setattr__(self, "arguments", dict(arguments) if arguments is not None else dict())
-
-    def replace(self, contract=None, choice=None, arguments=None):
-        """
-        Create a new :class:`ExerciseCommand` with the same identifier as this command, but with new
-        values for its parameters.
-
-        :param contract:
-            The new value of the `contract` field, or `None` to reuse the existing value.
-            The same type coercion rules used in the constructor apply here.
-        :param choice:
-            The new value of the `choice` field, or `None` to reuse the existing value.
-            The same type coercion rules used in the constructor apply here.
-        :param arguments:
-            The new value of the `choice` field, or `None` to reuse the existing value.
-        """
-        warnings.warn(
-            "ExerciseCommand.replace is deprecated; simply construct a ExerciseCommand with the "
-            "desired values instead.",
-            DeprecationWarning,
-        )
-        return ExerciseCommand(
-            contract if contract is not None else self.contract,
-            choice if choice is not None else self.choice,
-            arguments if arguments is not None else self.arguments,
-        )
-
-    def __repr__(self):
-        return f"<exercise '{self.contract.value}' {self.choice} with {self.arguments}>"
-
-
-@dataclass(init=False, frozen=True)
-class ExerciseByKeyCommand(Command):
-    template_type: "TypeConName"
-    contract_key: "Any"
-    choice: str
-    choice_argument: "Any"
-    _template_type_deprecated: "TypeReference"
 
     def __init__(
         self,
-        template: "Union[str, TypeConName, TypeReference]",
+        template: "Union[str, TypeConName]",
+        arguments: "Mapping[str, Any]",
+        choice: str,
+        choice_argument: "Optional[Any]" = None,
+    ):
+        warnings.warn(
+            "dazl.model.writing.CreateAndExerciseCommand is deprecated; "
+            "prefer dazl.client.PartyClient.submit_create_and_exercise, "
+            "or use dazl.ledger.CreateAndExerciseCommand instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
+        pkg_ref, name = validate_template(template, allow_deprecated_identifiers=True)
+        super().__init__(f"{pkg_ref}:{name}", arguments, choice, choice_argument)
+
+    @property
+    def template_type(self) -> "TypeConName":
+        """
+        Use :meth:`template_id` instead.
+        """
+        warnings.warn(
+            "CreateAndExerciseCommand.template_type is deprecated; "
+            "use CreateAndExerciseCommand.template_id instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.template_id
+
+    @property
+    def arguments(self) -> "Any":
+        """
+        Use :meth:`payload` instead.
+        """
+        warnings.warn(
+            "CreateAndExerciseCommand.arguments is deprecated; "
+            "use CreateAndExerciseCommand.payload instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.payload
+
+    @property
+    def choice_argument(self) -> "Any":
+        """
+        Use :meth:`argument` instead.
+        """
+        warnings.warn(
+            "CreateAndExerciseCommand.choice_argument is deprecated; "
+            "use CreateAndExerciseCommand.argument instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.argument
+
+
+class ExerciseCommand(api_types.ExerciseCommand):
+    """
+    A command that exercises a choice on a contract identified by its contract ID.
+    """
+
+    def __init__(self, contract: "ContractId", choice: str, arguments: "Optional[Any]" = None):
+        warnings.warn(
+            "dazl.model.writing.ExerciseCommand is deprecated; "
+            "prefer dazl.client.PartyClient.submit_exercise, "
+            "or use dazl.ledger.ExerciseCommand instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(contract, choice, arguments)
+
+    @property
+    def contract(self) -> "ContractId":
+        """
+        Use :meth:`contract_id` instead.
+        """
+        warnings.warn(
+            "ExerciseCommand.contract is deprecated; use ExerciseCommand.contract_id instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.contract_id
+
+    def arguments(self) -> "Any":
+        """
+        Use :meth:`argument` instead.
+        """
+        warnings.warn(
+            "ExerciseCommand.arguments is deprecated; use ExerciseCommand.argument instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.argument
+
+
+class ExerciseByKeyCommand(api_types.ExerciseByKeyCommand):
+    def __init__(
+        self,
+        template: "Union[str, TypeConName]",
         contract_key: "Any",
         choice: str,
         choice_argument: "Any",
     ):
-        from ..damlast.compat import parse_template
-
-        template_type, template_type_deprecated = parse_template(template)
-        object.__setattr__(self, "template_type", template_type)
-        object.__setattr__(self, "contract_key", contract_key)
-        object.__setattr__(self, "choice", choice)
-        object.__setattr__(self, "choice_argument", choice_argument)
-        object.__setattr__(self, "_template_type_deprecated", template_type_deprecated)
-
-    @property
-    def template(self) -> "TypeReference":
         warnings.warn(
-            "ExerciseByKeyCommand.template is deprecated; use ExerciseByKeyCommand.template_type "
-            "instead.",
+            "dazl.model.writing.ExerciseByKeyCommand is deprecated; "
+            "prefer dazl.client.PartyClient.submit_exercise_by_key, "
+            "or use dazl.ledger.ExerciseByKeyCommand instead.",
             DeprecationWarning,
             stacklevel=2,
         )
-        return self._template_type_deprecated
-
-
-@dataclass(init=False, frozen=True)
-class CreateAndExerciseCommand(Command):
-    template_type: "TypeConName"
-    arguments: "Mapping[str, Any]"
-    choice: str
-    choice_argument: "Any"
-    _template_type_deprecated: "TypeReference"
-
-    def __init__(
-        self,
-        template: "Union[str, TypeConName, TypeReference]",
-        arguments: "Mapping[str, Any]",
-        choice: str,
-        choice_argument: "Any",
-    ):
-        from ..damlast.compat import parse_template
-
-        template_type, template_type_deprecated = parse_template(template)
-        object.__setattr__(self, "template_type", template_type)
-        object.__setattr__(self, "arguments", arguments)
-        object.__setattr__(self, "choice", choice)
-        object.__setattr__(self, "choice_argument", choice_argument)
-        object.__setattr__(self, "_template_type_deprecated", template_type_deprecated)
+        pkg_ref, name = validate_template(template, allow_deprecated_identifiers=True)
+        super().__init__(f"{pkg_ref}:{name}", contract_key, choice, choice_argument)
 
     @property
-    def template(self) -> "TypeReference":
+    def template_type(self) -> "TypeConName":
+        """
+        Use :meth:`template_id` instead.
+        """
         warnings.warn(
-            "CreateAndExerciseCommand.template is deprecated; use "
-            "CreateAndExerciseCommand.template_type instead.",
+            "ExerciseByKeyCommand.template_type is deprecated; "
+            "use ExerciseByKeyCommand.template_id instead.",
             DeprecationWarning,
             stacklevel=2,
         )
-        return self._template_type_deprecated
+        return self.template_id
+
+    @property
+    def contract_key(self) -> "Any":
+        """
+        Use :meth:`argument` instead.
+        """
+        warnings.warn(
+            "ExerciseByKeyCommand.contract_key is deprecated; "
+            "use ExerciseByKeyCommand.key instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
+        return self.key
+
+    @property
+    def choice_argument(self) -> "Any":
+        """
+        Use :meth:`argument` instead.
+        """
+        warnings.warn(
+            "ExerciseByKeyCommand.choice_argument is deprecated; "
+            "use ExerciseByKeyCommand.argument instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.argument
 
 
+CommandsOrCommandSequence = Union[None, api_types.Command, Sequence[Optional[api_types.Command]]]
+
+
+# noinspection PyDeprecation
 class CommandBuilder:
     """
     Builder class for generating commands to be sent to the ledger.
@@ -272,32 +279,47 @@ class CommandBuilder:
         :param atomic_default:
         :return:
         """
-        if isinstance(obj, CommandBuilder):
-            return obj
+        warnings.warn(
+            "CommandBuilder is deprecated; prefer calling dazl.client.PartyClient.submit or "
+            "construct commands explicitly instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            if isinstance(obj, CommandBuilder):
+                return obj
 
-        builder = CommandBuilder(atomic_default=atomic_default)
-        if obj is not None:
-            builder.append(obj)
-        return builder
+            builder = CommandBuilder(atomic_default=atomic_default)
+            if obj is not None:
+                builder.append(obj)
+            return builder
 
-    def __init__(self, atomic_default=False):
+    def __init__(self, atomic_default: bool = False):
+        warnings.warn(
+            "CommandBuilder is deprecated; "
+            "prefer calling dazl.ledger.Connection.commands, "
+            "dazl.client.PartyClient.submit, or construct commands explicitly instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self._atomic_default = atomic_default
-        self._commands = [[]]  # type: List[List[Command]]
+        self._commands = [[]]  # type: List[List[api_types.Command]]
         self._defaults = CommandDefaults()
 
     def defaults(
         self,
-        party: Optional[Party] = None,
-        ledger_id: Optional[str] = None,
-        workflow_id: Optional[str] = None,
-        application_id: Optional[str] = None,
-        command_id: Optional[str] = None,
-        deduplication_time: Optional[timedelta] = None,
+        party: "Optional[Party]" = None,
+        ledger_id: "Optional[str]" = None,
+        workflow_id: "Optional[str]" = None,
+        application_id: "Optional[str]" = None,
+        command_id: "Optional[str]" = None,
+        deduplication_time: "Optional[timedelta]" = None,
     ) -> None:
         if party is not None:
             self._defaults.default_party = party
         if ledger_id is not None:
-            self._defaults.ledger_id = ledger_id
+            self._defaults.default_ledger_id = ledger_id
         if workflow_id is not None:
             self._defaults.default_workflow_id = workflow_id
         if application_id is not None:
@@ -308,19 +330,25 @@ class CommandBuilder:
             self._defaults.default_deduplication_time = deduplication_time
 
     def create(self, template, arguments=None) -> "CommandBuilder":
-        return self.append(create(template, arguments=arguments))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return self.append(create(template, arguments=arguments))
 
     def exercise(self, contract, choice, arguments=None) -> "CommandBuilder":
-        return self.append(exercise(contract, choice, arguments=arguments))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return self.append(exercise(contract, choice, arguments=arguments))
 
     def create_and_exercise(
         self, template, create_arguments, choice_name, choice_arguments=None
     ) -> "CommandBuilder":
-        return self.append(
-            create_and_exercise(template, create_arguments, choice_name, choice_arguments)
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return self.append(
+                create_and_exercise(template, create_arguments, choice_name, choice_arguments)
+            )
 
-    def append(self, *commands: CommandsOrCommandSequence) -> "CommandBuilder":
+    def append(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
         """
         Append one or more commands, or list of commands to the :class:`CommandBuilder` in flight.
         This method respects the value of ``atomic_default`` that this object was constructed with.
@@ -338,11 +366,11 @@ class CommandBuilder:
         else:
             return self.append_nonatomically(*commands)
 
-    def append_atomically(self, *commands: CommandsOrCommandSequence) -> "CommandBuilder":
+    def append_atomically(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
         self._commands.extend([flatten_command_sequence(commands)])
         return self
 
-    def append_nonatomically(self, *commands: CommandsOrCommandSequence) -> "CommandBuilder":
+    def append_nonatomically(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
         self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
         return self
 
@@ -353,23 +381,35 @@ class CommandBuilder:
         if defaults is None:
             raise ValueError("defaults must currently be specified")
 
+        party = defaults.default_party or self._defaults.default_party
+        ledger_id = defaults.default_ledger_id or self._defaults.default_ledger_id
         command_id = (
             defaults.default_command_id or self._defaults.default_command_id or uuid.uuid4().hex
         )
+        workflow_id = defaults.default_workflow_id or self._defaults.default_workflow_id
+        application_id = defaults.default_application_id or self._defaults.default_application_id
+
+        if party is None:
+            raise ValueError("party is missing")
+        if ledger_id is None:
+            raise ValueError("ledger_id is missing")
+        if workflow_id is None:
+            raise ValueError("workflow_id is missing")
+        if application_id is None:
+            raise ValueError("application_id is missing")
 
         return [
             CommandPayload(
-                party=defaults.default_party or self._defaults.default_party,
-                ledger_id=defaults.default_ledger_id or self._defaults.default_ledger_id,
-                workflow_id=defaults.default_workflow_id or self._defaults.default_workflow_id,
-                application_id=defaults.default_application_id
-                or self._defaults.default_application_id,
+                party=party,
+                ledger_id=ledger_id,
+                workflow_id=workflow_id,
+                application_id=application_id,
                 command_id=command_id,
                 deduplication_time=defaults.default_deduplication_time
                 or self._defaults.default_deduplication_time,
                 commands=commands,
             )
-            for i, commands in enumerate(self._commands)
+            for commands in self._commands
             if commands
         ]
 
@@ -383,17 +423,19 @@ class CommandBuilder:
         return f"CommandBuilder({self._commands})"
 
 
-def flatten_command_sequence(commands: Sequence[CommandsOrCommandSequence]) -> List[Command]:
+def flatten_command_sequence(
+    commands: "Sequence[CommandsOrCommandSequence]",
+) -> "List[api_types.Command]":
     """
     Convert a list of mixed commands, ``None``, and list of commands into an ordered sequence of
     non-``None`` commands.
     """
-    ret = []  # type: List[Command]
+    ret = []  # type: List[api_types.Command]
     errors = []  # type: List[Tuple[Sequence[int], CommandsOrCommandSequence]]
 
     for i, obj in enumerate(commands):
         if obj is not None:
-            if isinstance(obj, Command):
+            if isinstance(obj, api_types.Command):
                 ret.append(obj)
             else:
                 try:
@@ -402,7 +444,7 @@ def flatten_command_sequence(commands: Sequence[CommandsOrCommandSequence]) -> L
                     errors.append(((i,), obj))
                     continue
                 for j, cmd in enumerate(cmd_iter):
-                    if isinstance(cmd, Command):
+                    if isinstance(cmd, api_types.Command):
                         ret.append(cmd)
                     else:
                         errors.append(((i, j), cmd))
@@ -456,7 +498,7 @@ class CommandPayload:
     workflow_id: str
     application_id: str
     command_id: str
-    commands: "Sequence[Command]"
+    commands: "Sequence[api_types.Command]"
     deduplication_time: "Optional[timedelta]" = None
 
     def __post_init__(self):
@@ -471,36 +513,87 @@ class CommandPayload:
             )
 
 
+# noinspection PyDeprecation
 def create(template, arguments=None):
+    warnings.warn(
+        "dazl.model.writing.create is deprecated; "
+        "prefer calling dazl.client.PartyClient.submit_create, "
+        "or use dazl.ledger.CreateCommand instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     if not isinstance(template, (str, TypeConName)):
         raise ValueError(
             "template must be a string name, a template type, or an instantiated template"
         )
+    with warnings.catch_warnings():
 
-    return CreateCommand(template, arguments)
+        warnings.simplefilter("ignore", DeprecationWarning)
+        return CreateCommand(template, arguments)
 
 
+# noinspection PyDeprecation
+def create_and_exercise(template, create_arguments, choice_name, choice_argument):
+    warnings.warn(
+        "dazl.model.writing.CreateAndExerciseCommand is deprecated; "
+        "prefer calling dazl.client.PartyClient.submit_create_and_exercise, "
+        "or use dazl.ledger.CreateAndExerciseCommand instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        return CreateAndExerciseCommand(template, create_arguments, choice_name, choice_argument)
+
+
+# noinspection PyDeprecation
 def exercise(contract, choice, arguments=None):
+    warnings.warn(
+        "dazl.model.writing.exercise is deprecated; "
+        "prefer calling dazl.client.PartyClient.submit_exercise, "
+        "or use dazl.ledger.ExerciseCommand instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
     if not isinstance(choice, str):
         raise ValueError(
-            "choice must be a string name, a template type, " "or an instantiated template"
+            "choice must be a string name, a template type, or an instantiated template"
         )
 
-    return ExerciseCommand(contract, choice, arguments)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        return ExerciseCommand(contract, choice, arguments)
 
 
+# noinspection PyDeprecation
 def exercise_by_key(template, contract_key, choice_name, choice_argument):
-    return ExerciseByKeyCommand(template, contract_key, choice_name, choice_argument)
+    warnings.warn(
+        "dazl.model.writing.ExerciseByKeyCommand is deprecated; "
+        "prefer calling dazl.client.PartyClient.submit_exercise_by_key, "
+        "or use dazl.ledger.ExerciseByKeyCommand instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        return ExerciseByKeyCommand(template, contract_key, choice_name, choice_argument)
 
 
-def create_and_exercise(template, create_arguments, choice_name, choice_argument):
-    return CreateAndExerciseCommand(template, create_arguments, choice_name, choice_argument)
+EventHandlerResponse = Union[CommandsOrCommandSequence, CommandBuilder, CommandPayload]
 
 
 class Serializer:
     """
     Serializer interface for objects on the write-side of the API.
     """
+
+    def __init__(self):
+        warnings.warn(
+            "Serializer is deprecated; use Codec instead.", DeprecationWarning, stacklevel=2
+        )
 
     def serialize_value(self, tt: "Type", obj: "Any") -> "Any":
         raise NotImplementedError("serialize_value requires an implementation")
@@ -519,6 +612,13 @@ class AbstractSerializer(Serializer):
     """
 
     def __init__(self, lookup: "SymbolLookup"):
+        warnings.warn(
+            "AbstractSerializer is deprecated; use Codec instead.", DeprecationWarning, stacklevel=2
+        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            super().__init__()
         self.lookup = lookup
 
     @property
@@ -530,40 +630,40 @@ class AbstractSerializer(Serializer):
 
         return Context(self.mapper, self.lookup).convert(tt, obj)
 
-    def serialize_commands(self, commands: "Sequence[Command]") -> "Sequence[Any]":
+    def serialize_commands(self, commands: "Sequence[api_types.Command]") -> "Sequence[Any]":
         return [self.serialize_command(cmd) for cmd in commands]
 
-    def serialize_command(self, command: "Command") -> "Any":
-        if isinstance(command, CreateCommand):
-            name = self.lookup.template_name(command.template_type)
-            value = self.serialize_value(con(name), command.arguments)
+    def serialize_command(self, command: "api_types.Command") -> "Any":
+        if isinstance(command, api_types.CreateCommand):
+            name = self.lookup.template_name(command.template_id)
+            value = self.serialize_value(con(name), command.payload)
             return self.serialize_create_command(name, value)
 
-        elif isinstance(command, ExerciseCommand):
-            template = self.lookup.template(command.contract.value_type)
+        elif isinstance(command, api_types.ExerciseCommand):
+            template = self.lookup.template(command.contract_id.value_type)
             choice = find_choice(template, command.choice)
-            args = self.serialize_value(choice.arg_binder.type, command.arguments)
-            return self.serialize_exercise_command(command.contract, choice.name, args)
+            args = self.serialize_value(choice.arg_binder.type, command.argument)
+            return self.serialize_exercise_command(command.contract_id, choice.name, args)
 
-        elif isinstance(command, CreateAndExerciseCommand):
-            name = self.lookup.template_name(command.template_type)
+        elif isinstance(command, api_types.CreateAndExerciseCommand):
+            name = self.lookup.template_name(command.template_id)
             template = self.lookup.template(name)
-            create_value = self.serialize_value(con(name), command.arguments)
+            create_value = self.serialize_value(con(name), command.payload)
             choice = find_choice(template, command.choice)
-            choice_args = self.serialize_value(choice.arg_binder.type, command.choice_argument)
+            choice_args = self.serialize_value(choice.arg_binder.type, command.argument)
             return self.serialize_create_and_exercise_command(
                 name, create_value, choice.name, choice_args
             )
 
-        elif isinstance(command, ExerciseByKeyCommand):
-            name = self.lookup.template_name(command.template_type)
+        elif isinstance(command, api_types.ExerciseByKeyCommand):
+            name = self.lookup.template_name(command.template_id)
             template = self.lookup.template(name)
             key_type = template.key
             if key_type is None:
                 raise ValueError(f"template {template.tycon} does not have a key")
-            key_value = self.serialize_value(key_type.type, command.contract_key)
+            key_value = self.serialize_value(key_type.type, command.key)
             choice = find_choice(template, command.choice)
-            choice_args = self.serialize_value(choice.arg_binder.type, command.choice_argument)
+            choice_args = self.serialize_value(choice.arg_binder.type, command.argument)
             return self.serialize_exercise_by_key_command(name, key_value, choice.name, choice_args)
 
         else:

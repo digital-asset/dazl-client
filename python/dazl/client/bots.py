@@ -28,9 +28,10 @@ from uuid import uuid4
 import warnings
 
 from .. import LOG
+from ..ledger import Command
 from ..model.core import Party, SourceLocation
 from ..model.reading import BaseEvent, EventKey
-from ..model.writing import Command, CommandBuilder
+from ..model.writing import CommandBuilder
 from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
 
 if TYPE_CHECKING:

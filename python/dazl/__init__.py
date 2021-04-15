@@ -6,9 +6,9 @@ This module contains the Python API for interacting with the Ledger API.
 """
 from ._logging import LOG
 from .client import AIOPartyClient, Network, SimplePartyClient, async_network, run, simple_client
+from .ledger import Command
 from .model.core import ContractData, ContractId, DazlError, Party
 from .model.writing import (
-    Command,
     CreateAndExerciseCommand,
     CreateCommand,
     ExerciseByKeyCommand,
