@@ -19,7 +19,7 @@ specific party.
 
 from asyncio import Future, ensure_future, get_event_loop
 from contextlib import contextmanager
-from functools import wraps
+from functools import partial, wraps
 from logging import INFO
 from pathlib import Path
 from typing import Any, Awaitable, BinaryIO, Collection, List, Optional, Tuple, Union
@@ -52,7 +52,7 @@ from ..model.reading import (
 from ..model.types import TemplateNameLike
 from ..model.writing import EventHandlerResponse
 from ..prim import ContractData, ContractId, Party, TimeDeltaLike, to_party
-from ..query import ContractMatch
+from ..query import ContractMatch, is_match
 from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
 from ..util.io import get_bytes
@@ -709,8 +709,10 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
+        filter_fn = partial(is_match, match) if match is not None else None
+
         bot = self._impl.bots.add_new(party_client=self, name=handler.__name__)
-        bot.add_event_handler(EventKey.contract_created(True, template), handler, match)
+        bot.add_event_handler(EventKey.contract_created(True, template), handler, filter_fn)
         return bot
 
     def ledger_exercised(
@@ -789,8 +791,10 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
+        filter_fn = partial(is_match, match) if match is not None else None
+
         for key in EventKey.contract_archived(True, template):
-            self._impl.add_event_handler(key, handler, match, self)
+            self._impl.add_event_handler(key, handler, filter_fn, self)
 
     # </editor-fold>
 
@@ -1312,8 +1316,10 @@ class SimplePartyClient(PartyClient):
         ) -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
+        filter_fn = partial(is_match, match) if match is not None else None
+
         for key in EventKey.contract_created(True, template):
-            self._impl.add_event_handler(key, _background_ledger_contract_create, match, self)
+            self._impl.add_event_handler(key, _background_ledger_contract_create, filter_fn, self)
 
     def ledger_exercised(
         self, template: "Any", choice: str
@@ -1405,8 +1411,10 @@ class SimplePartyClient(PartyClient):
         ) -> "Awaitable[EventHandlerResponse]":
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
+        filter_fn = partial(is_match, match) if match is not None else None
+
         for key in EventKey.contract_archived(True, template):
-            self._impl.add_event_handler(key, _background_ledger_contract_archived, match, self)
+            self._impl.add_event_handler(key, _background_ledger_contract_archived, filter_fn, self)
 
     # </editor-fold>
 

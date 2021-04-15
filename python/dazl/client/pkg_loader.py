@@ -57,7 +57,7 @@ class PackageLoader:
     ):
         self._package_lookup = package_lookup
         self._conn = conn
-        self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
+        self._timeout = timeout or DEFAULT_TIMEOUT
         self._loading_futs = dict()  # type: Dict[PackageRef, Awaitable[Package]]
         self._parsing_futs = dict()  # type: Dict[PackageRef, Awaitable[Archive]]
         self._executor = ThreadPoolExecutor(3)
