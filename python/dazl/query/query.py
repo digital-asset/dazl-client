@@ -1,11 +1,13 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-"""
-This module contains functions for testing contract data against a match object.
-"""
+from typing import Callable, Union
 
-from ..model.core import ContractData, ContractMatch
+from ..prim import ContractData
+
+__all__ = ["ContractMatch", "is_match"]
+
+ContractMatch = Union[None, Callable[[ContractData], bool], ContractData]
 
 
 def is_match(predicate: ContractMatch, cdata: ContractData) -> bool:

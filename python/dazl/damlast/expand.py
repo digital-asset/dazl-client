@@ -175,7 +175,7 @@ class SimplifyVisitor(RewriteVisitor):
             if builtin is not None:
                 type_args = app.fun.ty_app.types
                 new_args = [self.visit_expr(arg) for arg in app.args]
-                result = builtin().simplify(type_args, new_args)
+                result = builtin.simplify(type_args, new_args)
                 if result is not None:
                     return result
 

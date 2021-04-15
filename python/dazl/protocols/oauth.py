@@ -29,6 +29,8 @@ async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
             "grant_type": "client_credentials",
         }
 
+        if settings.token_uri is None:
+            raise ValueError("missing a token URI")
         response = None
         try:
             response = requests.post(

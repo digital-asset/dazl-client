@@ -10,10 +10,11 @@ from typing import Collection
 
 from .. import LOG, Network
 from ..client.config import AnonymousNetworkConfig, configure_parser
+from ..damlast import DarFile
+from ..damlast.lookup import MultiPackageLookup
+from ..damlast.protocols import SymbolLookup
 from ..model.core import ConnectionTimeoutError, UserTerminateRequest
-from ..model.types_store import PackageStore
 from ..pretty import PrettyOptions, get_pretty_printer
-from ..util.dar_repo import LocalDarRepository
 from ._base import CliCommand
 
 
@@ -45,9 +46,11 @@ class PrintMetadataCommand(CliCommand):
 
     @staticmethod
     def execute_static_metadata(files: Collection[str], options: PrettyOptions) -> int:
-        repo = LocalDarRepository()
-        repo.add_source(*files)
-        _process_metadata(repo.store, options)
+        lookup = MultiPackageLookup()
+        for file in files:
+            with DarFile(file) as dar_file:
+                lookup.add_archive(*dar_file.archives())
+        _process_metadata(lookup, options)
         return 0
 
     @staticmethod
@@ -65,11 +68,11 @@ class PrintMetadataCommand(CliCommand):
 
 
 async def _main(network: Network, options):
-    metadata = await network.aio_global().metadata()
-    _process_metadata(metadata.store, options)
+    await network.aio_global().metadata()
+    _process_metadata(network.lookup, options)
 
 
-def _process_metadata(store: PackageStore, options: PrettyOptions) -> None:
+def _process_metadata(lookup: SymbolLookup, options: PrettyOptions) -> None:
     import sys
 
     if sys.stdout.isatty():
@@ -85,7 +88,7 @@ def _process_metadata(store: PackageStore, options: PrettyOptions) -> None:
         pygments = None
         formatter = None
 
-    pretty_printer = get_pretty_printer(options.format, options, store)
+    pretty_printer = get_pretty_printer(options.format, options, lookup)
     if pretty_printer is None:
         raise RuntimeError(f"unknown format: {options.format}")
 

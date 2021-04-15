@@ -10,7 +10,7 @@ from datetime import timedelta
 from typing import Optional, Sequence, Union
 
 from .. import LOG
-from ..damlast.protocols import SymbolLookup
+from ..damlast.lookup import MultiPackageLookup
 from ..model.ledger import LedgerMetadata
 from ..model.network import HTTPConnectionSettings
 from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
@@ -22,7 +22,7 @@ from ..util.typing import safe_cast, safe_optional_cast
 
 @dataclass(frozen=True)
 class LedgerConnectionOptions:
-    lookup: "SymbolLookup"
+    lookup: "MultiPackageLookup"
     connect_timeout: "Optional[timedelta]"
     package_lookup_timeout: "Optional[timedelta]"
     eager_package_fetch: bool

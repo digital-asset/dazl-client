@@ -61,7 +61,7 @@ class BaseEventDeserializationContext:
     def deserializer_context(self) -> "Context":
         return Context(DECODER, self.lookup)
 
-    def offset_event(self, time: datetime, offset: str) -> OffsetEvent:
+    def offset_event(self, time: Optional[datetime], offset: str) -> OffsetEvent:
         return OffsetEvent(
             self.client, self.party, time, self.ledger_id, self.lookup, self.store, offset
         )
@@ -345,10 +345,10 @@ def to_transaction_events(
 
     if tt_stream_pb is not None:
         for transaction_tree_pb in tt_stream_pb:
-            for transaction_pb in transaction_tree_pb.transactions:
-                tx_events = events_by_offset.get(transaction_pb.offset)
+            for tt_pb in transaction_tree_pb.transactions:
+                tx_events = events_by_offset.get(tt_pb.offset)
                 if tx_events is not None:
-                    tx_events[-1:-1] = from_transaction_tree(context, transaction_pb)
+                    tx_events[-1:-1] = from_transaction_tree(context, tt_pb)
 
     for tx_events in events_by_offset.values():
         events.extend(tx_events)
@@ -425,8 +425,11 @@ def to_transaction_chunk(
         workflow_id=tx_pb.workflow_id,
     )
 
-    contract_events = [to_event(t_context, evt_pb) for evt_pb in tx_pb.events]
-    contract_events = [evt for evt in contract_events if evt is not None]
+    contract_events = []  # type: List[OffsetEvent]
+    for evt_pb in tx_pb.events:
+        evt = to_event(t_context, evt_pb)
+        if evt is not None:
+            contract_events.append(evt)
 
     return [
         t_context.transaction_start_event(contract_events),
@@ -438,7 +441,7 @@ def to_transaction_chunk(
 def to_event(
     context: "Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]",
     evt_pb: "Union[event_pb2.Event, tx_pb2.TreeEvent]",
-) -> "Optional[BaseEvent]":
+) -> "Optional[OffsetEvent]":
     try:
         event_type = evt_pb.WhichOneof("event")
     except ValueError:

@@ -4,8 +4,6 @@
 
 from typing import Mapping, Optional, Sequence, Union
 
-from dazl.model.definition import DamlTemplate
-
 from ..damlast.daml_lf_1 import (
     Block,
     BuiltinFunction,

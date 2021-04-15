@@ -20,6 +20,7 @@ from grpc import (
 )
 
 from ... import LOG
+from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import GetTransactionTreesResponse
 from ...damlast.daml_lf_1 import PackageRef
 from ...damlast.parse import parse_archive_payload
 from ...model.core import ConnectionTimeoutError, UserTerminateRequest
@@ -117,6 +118,7 @@ class GRPCv1LedgerClient(LedgerClient):
             lambda: self.connection.transaction_service.GetTransactions(request)
         )
 
+        tt_stream = None  # type: Optional[Iterable[GetTransactionTreesResponse]]
         if transaction_filter.templates is None:
             # Filtering by package must disable the ability to handle exercise nodes; we may want to
             # consider dropping client-side support for exercise events anyway because they are not
@@ -124,8 +126,6 @@ class GRPCv1LedgerClient(LedgerClient):
             tt_stream = await self.connection.invoker.run_in_executor(
                 lambda: self.connection.transaction_service.GetTransactionTrees(request)
             )
-        else:
-            tt_stream = None
 
         tx_stream = await tx_future
 
@@ -258,7 +258,6 @@ def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterabl
                 LOG.warning("Package syncing raised an exception.", exc_info=True)
 
     LOG.debug("The gRPC monitor thread is now shutting down.")
-    yield None
 
 
 class GRPCPackageProvider(PackageProvider):
@@ -319,8 +318,8 @@ def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore"
                 metadatas_pb[package_id] = parse_archive_payload(package_id, archive_payload)
 
         adr = find_dependencies(metadatas_pb, loaded_package_ids)
-        for package_id, archive_payload in adr.sorted_archives.items():
-            store.register_all(parse_daml_metadata_pb(package_id, archive_payload))
+        for package_id, archive_bytes in adr.sorted_archives.items():
+            store.register_all(parse_daml_metadata_pb(package_id, archive_bytes))
 
         LOG.debug("grpc_package_sync ended.")
 
