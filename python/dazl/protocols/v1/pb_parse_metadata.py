@@ -217,6 +217,10 @@ def find_dependencies_of_type(type_pb) -> "Collection[PackageRef]":
             return find_dependencies_of_fwts(type_pb.tuple.fields)
         elif t == "nat":
             return ()
+        elif t == "interned":
+            # This isn't strictly correct, but we're catching this here to suppress errors
+            # ahead of removal of this deprecated function
+            return ()
         else:
             LOG.warning("Unknown DAML-LF Type: %s (when evaluating %s)", t, type_pb)
             return ()

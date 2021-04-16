@@ -84,18 +84,25 @@ def match_prim_type(
 
 
 def get_old_type(daml_type: "Type") -> "OldType":
-    from ..model.types import UnsupportedType
-
-    return safe_cast(Type, daml_type).Sum_match(
-        _old_type_var,
-        _old_type_con,
-        _old_type_prim,
-        _old_type_syn,
-        _old_forall_type,
-        lambda tuple_: UnsupportedType("Tuple"),
-        lambda nat: UnsupportedType("Nat"),
-        lambda _: UnsupportedType("Syn"),
+    warnings.warn(
+        "get_old_type is deprecated; use the types of dazl.damlast.daml_lf_1 instead",
+        DeprecationWarning,
+        stacklevel=2,
     )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        from ..model.types import UnsupportedType
+
+        return safe_cast(Type, daml_type).Sum_match(
+            _old_type_var,
+            _old_type_con,
+            _old_type_prim,
+            _old_type_syn,
+            _old_forall_type,
+            lambda tuple_: UnsupportedType("Tuple"),
+            lambda nat: UnsupportedType("Nat"),
+            lambda _: UnsupportedType("Syn"),
+        )
 
 
 def _old_type_var(var_: "Type.Var") -> "OldType":
