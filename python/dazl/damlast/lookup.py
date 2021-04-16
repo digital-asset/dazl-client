@@ -17,6 +17,7 @@ import threading
 from types import MappingProxyType
 from typing import AbstractSet, Any, Collection, Dict, Iterable, List, NoReturn, Optional, Tuple
 
+from .. import LOG
 from .daml_lf_1 import (
     Archive,
     DefDataType,
@@ -346,6 +347,7 @@ class MultiPackageLookup(SymbolLookup):
             # cache and the new lookups that came in. When there is a key conflict between the two
             # APIs, always prefer the existing cache to provide stability to callers.
             self._cache = {**new_lookups, **self._cache}
+            LOG.debug("Updated package cache; now contains %d packages.", len(self._cache))
 
     def package_ids(self) -> "AbstractSet[PackageRef]":
         return set(self._cache)
@@ -388,7 +390,12 @@ class MultiPackageLookup(SymbolLookup):
         names = []  # type: List[TypeConName]
 
         pkg, name = validate_template(ref)
-        for lookup in self._lookups(pkg):
+        try:
+            lookups = self._lookups(pkg)
+        except PackageNotFoundError:
+            return []
+
+        for lookup in lookups:
             if name == "*":
                 names.extend(lookup.local_template_names())
             else:

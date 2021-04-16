@@ -472,7 +472,7 @@ class CommandPayload:
 
 
 def create(template, arguments=None):
-    if not isinstance(template, str):
+    if not isinstance(template, (str, TypeConName)):
         raise ValueError(
             "template must be a string name, a template type, or an instantiated template"
         )
