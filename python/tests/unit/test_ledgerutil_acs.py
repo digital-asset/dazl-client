@@ -4,7 +4,6 @@ import logging
 import pytest
 
 from dazl import connect
-from dazl.ledger import Boundary
 from dazl.ledgerutil import ACS
 
 from .dars import PostOffice
@@ -30,20 +29,20 @@ async def test_acs(sandbox):
                 for party in parties
             ]
         )
+        logging.info("Accepting roles...")
         await gather(*[accept_roles(sandbox, party) for party in parties])
+        logging.info("Roles accepted.")
 
-        async with conn.stream_many({"Main:AuthorRole": {}, "Main:ReceiverRole": {}}) as stream:
-            authors = ACS.from_stream(stream, "Main:AuthorRole")
-            receivers = ACS.from_stream(stream, "Main:ReceiverRole")
-            async for item in stream:
-                if isinstance(item, Boundary):
-                    asnap = authors.snapshot()
-                    rsnap = receivers.snapshot()
-                    assert len(parties) == len(asnap)
-                    assert len(parties) == len(rsnap)
-                    logging.info("Authors: %r", asnap)
-                    logging.info("Receivers: %r", rsnap)
-                    return
+        async with ACS(conn, {"Main:AuthorRole": {}, "Main:ReceiverRole": {}}) as acs:
+            snapshot = acs.read_immediately()
+
+            authors = snapshot.matching_contracts("Main:AuthorRole")
+            receivers = snapshot.matching_contracts("Main:ReceiverRole")
+
+            assert len(parties) == len(authors)
+            assert len(parties) == len(receivers)
+            logging.info("Authors: %r", authors)
+            logging.info("Receivers: %r", receivers)
 
 
 async def accept_roles(sandbox, party):
