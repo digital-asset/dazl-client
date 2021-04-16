@@ -297,6 +297,8 @@ def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore"
 
         LOG.debug("grpc_package_sync started...")
 
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
         all_package_ids = package_provider.get_package_ids()
         loaded_package_ids = {a.hash for a in store.archives()}
         expected_package_ids = store.expected_package_ids()
@@ -317,6 +319,8 @@ def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore"
                 archive_payload = package_provider.fetch_package(package_id)
                 metadatas_pb[package_id] = parse_archive_payload(package_id, archive_payload)
 
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
         adr = find_dependencies(metadatas_pb, loaded_package_ids)
         for package_id, archive_bytes in adr.sorted_archives.items():
             store.register_all(parse_daml_metadata_pb(package_id, archive_bytes))

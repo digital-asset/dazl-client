@@ -14,7 +14,7 @@ OperatorNotification = "Simple:OperatorNotification"
 
 
 @pytest.mark.asyncio
-async def test_select_template_retrieves_contracts(sandbox):
+async def test_acs_find_active_retrieves_contracts(sandbox):
     seen_notifications = []
 
     async with async_network(url=sandbox, dars=Simple) as network:

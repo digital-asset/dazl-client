@@ -28,7 +28,7 @@ import warnings
 
 from .. import LOG
 from ..damlast import get_dar_package_ids
-from ..damlast.daml_lf_1 import PackageRef
+from ..damlast.daml_lf_1 import PackageRef, TypeConName
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
 from ..model.core import (
@@ -827,7 +827,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: str,
+        template_name: "Union[str, TypeConName]",
         arguments: "Optional[dict]" = None,
         workflow_id: "Optional[str]" = None,
         deduplication_time: "Optional[TimeDeltaLike]" = None,
