@@ -58,7 +58,7 @@ jobs:
           path: python/test-results
   blackduck:
     docker:
-      - image: cimg/python:3.8.7
+      - image: rappdw/docker-java-python
     steps:
       - checkout
 
@@ -70,17 +70,10 @@ jobs:
           key: jq-{{ checksum ".circleci/install-jq" }}
           paths: /home/circleci/.jq
 
-      - restore_cache:
-          key: java-{{ checksum ".circleci/install-java" }}
-      - run:
-          command: .circleci/install-java
-      - save_cache:
-          key: java-{{ checksum ".circleci/install-java" }}
-          paths: /home/circleci/.java
-
       - run:
           name: Run Blackduck Detect
           command: |
+            cp /home/circleci/.jq/bin/jq /usr/local/bin
             bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) ci-build digitalasset_dazl master --logging.level.com.synopsys.integration=DEBUG --detect.python.python3=true
           working_directory: python
           
