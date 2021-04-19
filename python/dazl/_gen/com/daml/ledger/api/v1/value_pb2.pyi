@@ -20,7 +20,7 @@ from google.protobuf.empty_pb2 import Empty
 from google.protobuf.message import Message as __Message
 
 from .......damlast.daml_lf_1 import PackageRef
-from .......damlast.daml_types import Party
+from .......prim import Party
 
 __all__ = [
     "Value",

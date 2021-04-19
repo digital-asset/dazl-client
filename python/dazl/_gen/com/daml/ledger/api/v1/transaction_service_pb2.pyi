@@ -18,7 +18,7 @@ from typing import (
 from google.protobuf.descriptor import FieldDescriptor as __FieldDescriptor
 from google.protobuf.message import Message as __Message
 
-from .......damlast.daml_types import Party
+from .......prim import Party
 from .ledger_offset_pb2 import LedgerOffset
 from .trace_context_pb2 import TraceContext
 from .transaction_filter_pb2 import TransactionFilter

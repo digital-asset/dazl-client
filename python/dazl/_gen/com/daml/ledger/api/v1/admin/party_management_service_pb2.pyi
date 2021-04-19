@@ -17,7 +17,7 @@ from typing import (
 from google.protobuf.descriptor import FieldDescriptor as __FieldDescriptor
 from google.protobuf.message import Message as __Message
 
-from ........damlast.daml_types import Party
+from ........prim import Party
 
 __all__ = [
     "GetParticipantIdRequest",
@@ -204,8 +204,8 @@ class AllocatePartyRequest(__Message):
     def _SetListener(self, message_listener: __Any) -> None: ...
 
 class AllocatePartyResponse(__Message):
-    party_details: __List[PartyDetails]
-    def __init__(self, *, party_details: __Optional[__Sequence[PartyDetails]] = ...): ...
+    party_details: PartyDetails
+    def __init__(self, *, party_details: __Optional[PartyDetails] = ...): ...
     def __eq__(self, other_msg: __Optional[__Any]) -> bool: ...
     def __str__(self) -> str: ...
     def __unicode__(self) -> str: ...
