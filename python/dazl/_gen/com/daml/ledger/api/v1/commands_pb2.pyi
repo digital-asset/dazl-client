@@ -4,12 +4,12 @@
 
 from typing import (
     Any as __Any,
+    Collection as __Sequence,
     Dict as __Map,
     List as __List,
     Literal as __Literal,
     NoReturn as __Void,
     Optional as __Optional,
-    Sequence as __Sequence,
     Tuple as __Tuple,
     overload,
 )
@@ -19,7 +19,7 @@ from google.protobuf.duration_pb2 import Duration
 from google.protobuf.message import Message as __Message
 from google.protobuf.timestamp_pb2 import Timestamp
 
-from .......damlast.daml_types import Party
+from .......prim import Party
 from .value_pb2 import Identifier, Record, Value
 
 __all__ = [
