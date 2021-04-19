@@ -11,8 +11,6 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 # References:
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 
-from __future__ import annotations
-
 from collections.abc import Mapping as _Mapping
 from typing import Any, List, Optional, Sequence, Set, Tuple, Union
 
@@ -119,7 +117,7 @@ class Codec:
             raise ValueError(f"unknown Command type: {cmd!r}")
 
     async def encode_create_command(
-        self, template_id: Any, payload: ContractData
+        self, template_id: Union[str, Any], payload: ContractData
     ) -> G_CreateCommand:
         item_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)
@@ -149,7 +147,7 @@ class Codec:
 
     async def encode_create_and_exercise_command(
         self,
-        template_id: TypeConName,
+        template_id: Union[str, TypeConName],
         payload: ContractData,
         choice_name: str,
         argument: Optional[Any] = None,
@@ -171,7 +169,7 @@ class Codec:
 
     async def encode_exercise_by_key_command(
         self,
-        template_id: TypeConName,
+        template_id: Union[str, TypeConName],
         choice_name: str,
         key: Any,
         argument: Optional[ContractData] = None,

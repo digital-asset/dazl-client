@@ -56,7 +56,7 @@ class GRPCv1LedgerClient(LedgerClient):
     async def commands(self, commands: CommandPayload) -> None:
         serializer = self.ledger.serializer
         request = serializer.serialize_command_request(commands)
-        return await self.connection.invoker.run_in_executor(
+        await self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request)
         )
 
@@ -80,12 +80,12 @@ class GRPCv1LedgerClient(LedgerClient):
             # Consume a stream of events from the Active Contract Set service and store these results fully
             # in memory; return the full set of events as well as a set of package IDs that need to be
             # available in order to fully understand the contents of the Active Contract Set service.
-            acs_stream = list(acs_stream)
+            acs_contracts = list(acs_stream)
 
         with LOG.info_timed("ACS find all required packages"):
             pkg_refs = {
                 create_evt.template_id.package_id
-                for acs_response_pb in acs_stream
+                for acs_response_pb in acs_contracts
                 for create_evt in acs_response_pb.active_contracts
             }
 
@@ -99,7 +99,7 @@ class GRPCv1LedgerClient(LedgerClient):
             # packages that contained templates might have references to other packages that are
             # also required to understand the individual fields in a template.
             return await self.ledger.package_loader.do_with_retry(
-                lambda: to_acs_events(context, acs_stream)
+                lambda: to_acs_events(context, acs_contracts)
             )
 
     async def events(self, transaction_filter: "TransactionFilter") -> "Sequence[BaseEvent]":
