@@ -18,7 +18,8 @@ import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.pkgfile import Dar
-from ..prim import ContractData, ContractId as ContractId_, Party
+from ..prim import ContractData, ContractId as ContractId_, DazlError, Party
+from ..prim.errors import DazlImportError, DazlWarning
 from ..query import ContractMatch
 
 if TYPE_CHECKING:
@@ -179,18 +180,6 @@ class SourceLocation:
     end_line: int
 
 
-class DazlError(Exception):
-    """
-    Superclass of errors raised by dazl.
-    """
-
-
-class DazlWarning(Warning):
-    """
-    Superclass of warnings raised by dazl.
-    """
-
-
 class DazlPartyMissingError(DazlError):
     """
     Error raised when a party or some information about a party is requested, and that party is not
@@ -200,16 +189,6 @@ class DazlPartyMissingError(DazlError):
     def __init__(self, party: Party):
         super().__init__(f"party {party!r} does not have a defined client")
         self.party = party
-
-
-class DazlImportError(ImportError, DazlError):
-    """
-    Import error raised when an optional dependency could not be found.
-    """
-
-    def __init__(self, missing_module, message):
-        super().__init__(message)
-        self.missing_module = missing_module
 
 
 class UserTerminateRequest(DazlError):

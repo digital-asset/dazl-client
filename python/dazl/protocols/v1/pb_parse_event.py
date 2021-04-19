@@ -9,7 +9,6 @@ from datetime import datetime
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Union, cast
 import warnings
 
-from ... import LOG
 from ..._gen.com.daml.ledger.api.v1 import (
     active_contracts_service_pb2 as acs_pb2,
     event_pb2,
@@ -42,6 +41,33 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
     from ...model.types_store import PackageStore
 
+import sys
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
+
+__all__ = [
+    "DECODER",
+    "BaseEventDeserializationContext",
+    "ActiveContractSetEventDeserializationContext",
+    "TransactionEventDeserializationContext",
+    "serialize_transactions_request",
+    "serialize_acs_request",
+    "serialize_event_id_request",
+    "serialize_transaction_filter",
+    "to_transaction_events",
+    "to_acs_events",
+    "from_transaction_tree",
+    "to_acs_event",
+    "to_transaction_chunk",
+    "to_event",
+    "to_created_event",
+    "to_exercised_event",
+    "to_archived_event",
+]
 
 DECODER = ProtobufDecoder()
 
@@ -442,14 +468,13 @@ def to_event(
     context: "Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]",
     evt_pb: "Union[event_pb2.Event, tx_pb2.TreeEvent]",
 ) -> "Optional[OffsetEvent]":
-    try:
+    event_type: Literal[None, "created", "exercised", "archived"]
+    if isinstance(evt_pb, event_pb2.Event):
         event_type = evt_pb.WhichOneof("event")
-    except ValueError:
-        try:
-            event_type = evt_pb.WhichOneof("kind")
-        except ValueError:
-            LOG.error("Deserialization error into an event of %r", evt_pb)
-            raise
+    elif isinstance(evt_pb, tx_pb2.TreeEvent):
+        event_type = evt_pb.WhichOneof("kind")
+    else:
+        raise ValueError("unknown event type")
 
     if "created" == event_type:
         return to_created_event(context, evt_pb.created)
