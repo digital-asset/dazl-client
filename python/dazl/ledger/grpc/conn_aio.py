@@ -3,7 +3,6 @@
 """
 This module contains the mapping between gRPC calls and Python/dazl types.
 """
-from __future__ import annotations
 
 import asyncio
 from typing import AbstractSet, Any, AsyncIterable, Collection, Mapping, Optional, Sequence, Union
@@ -90,7 +89,7 @@ class Connection:
     def codec(self) -> Codec:
         return self._codec
 
-    async def __aenter__(self) -> Connection:
+    async def __aenter__(self) -> "Connection":
         await self.open()
         return self
 
@@ -324,7 +323,7 @@ class Connection:
 
     # region Read API
 
-    def query(self, template_id: str = "*", query: Query = None, /) -> QueryStream:
+    def query(self, template_id: str = "*", query: Query = None) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
 
@@ -339,7 +338,7 @@ class Connection:
         """
         return QueryStream(self, {template_id: query}, UNTIL_END)
 
-    def query_many(self, queries: Optional[Mapping[str, Query]] = None, /) -> QueryStream:
+    def query_many(self, queries: Optional[Mapping[str, Query]] = None) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
 
@@ -353,8 +352,8 @@ class Connection:
         return QueryStream(self, queries, UNTIL_END)
 
     def stream(
-        self, template_id: str = "*", query: Query = None, /, *, offset: Optional[str] = None
-    ) -> QueryStream:
+        self, template_id: str = "*", query: Query = None, *, offset: Optional[str] = None
+    ) -> "QueryStream":
         """
         Stream create/archive events.
 
@@ -377,8 +376,8 @@ class Connection:
         return QueryStream(self, {template_id: query}, from_offset_until_forever(offset))
 
     def stream_many(
-        self, queries: Optional[Mapping[str, Query]] = None, /, *, offset: Optional[str] = None
-    ) -> QueryStream:
+        self, queries: Optional[Mapping[str, Query]] = None, *, offset: Optional[str] = None
+    ) -> "QueryStream":
         """
         Stream create/archive events from more than one template ID in the same stream.
 
@@ -425,7 +424,7 @@ class Connection:
     async def get_package(self, package_id: PackageRef) -> bytes:
         stub = PackageServiceStub(self.channel)
         request = G_GetPackageRequest(
-            ledger_id=self._config.access.ledger_id, package_id=str(package_id)
+            ledger_id=self._config.access.ledger_id, package_id=package_id
         )
         response = await stub.GetPackage(request)
         return response.archive_payload

@@ -42,12 +42,12 @@ clean:
 deps: $(poetry_install_marker)
 
 .PHONY: format
-format:
+format: $(poetry_install_marker)
 	poetry run isort .
 	poetry run black .
 
 .PHONY: format-check
-format-check:
+format-check: $(poetry_install_marker)
 	poetry run isort . --check-only
 	poetry run black . --check
 

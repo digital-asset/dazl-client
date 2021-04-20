@@ -4,7 +4,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/python:3.8.7
+      - image: cimg/python:3.6.11
 
       # Start an SDK image alongside the tests for purposes of running the Sandbox
       - image: digitalasset/daml-sdk:1.12.0

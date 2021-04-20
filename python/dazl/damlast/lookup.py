@@ -124,7 +124,7 @@ def validate_template(template: Union[None, str, TypeConName]) -> Tuple[PackageR
         raise ValueError(f"Don't know how to convert {template!r} into a template")
 
 
-def normalize(name: Union[None, str, TypeConName], /) -> str:
+def normalize(__name: Union[None, str, TypeConName]) -> str:
     """
     Return the canonical form for a string that represents a template ID or partial match of a
     template ID.
@@ -132,21 +132,21 @@ def normalize(name: Union[None, str, TypeConName], /) -> str:
     Concretely, this function converts ``"MyMod:MyTemplate"`` to ``"*:MyMod:MyTemplate"`` and leaves
     most other strings unchanged.
 
-    :param name:
+    :param __name:
         A template ID, expressed in either string form or as an instance of :class:`TypeConName`.
     :return:
         A string in canonical form (either ``PACKAGE_REF:MODULE_NAME:ENTITY_NAME`` or
         ``PACKAGE_REF:*``, where ``PACKAGE_REF`` is also allowed to be ``*``).
     """
-    p, m = validate_template(name)
+    p, m = validate_template(__name)
     return f"{p}:{m}"
 
 
-def matching_normalizations(name: Union[str, TypeConName], /) -> Sequence[str]:
+def matching_normalizations(__name: Union[str, TypeConName]) -> Sequence[str]:
     """
     Return strings that are possible matches for the given template ID.
     """
-    p, m = validate_template(name)
+    p, m = validate_template(__name)
 
     # throw away duplicates that arise from `name` not being fully specified (p and/or m are
     # allowed to be asterisks too)

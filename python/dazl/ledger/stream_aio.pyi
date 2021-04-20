@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+import sys
 from typing import (
     Any,
     AsyncIterator,
@@ -8,11 +9,15 @@ from typing import (
     Callable,
     DefaultDict,
     List,
-    Protocol,
     TypeVar,
     Union,
     overload,
 )
+
+if sys.version_info >= (3, 8):
+    from typing import Protocol
+else:
+    from typing_extensions import Protocol
 
 __all__ = ["QueryStreamBase"]
 

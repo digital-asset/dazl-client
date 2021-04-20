@@ -1,17 +1,17 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-from __future__ import annotations
 
 from asyncio import (
     CancelledError,
     Future,
     InvalidStateError,
     Task,
-    create_task,
+    ensure_future,
     get_event_loop,
     sleep,
 )
-from collections.abc import Mapping
+from collections.abc import Mapping as MappingBase
+import sys
 from types import MappingProxyType
 from typing import (
     AsyncIterator,
@@ -20,7 +20,7 @@ from typing import (
     Dict,
     Iterator,
     List,
-    Literal,
+    Mapping,
     Optional,
     Sequence,
     Tuple,
@@ -36,6 +36,11 @@ from ..ledger.errors import ProtocolWarning
 from ..ledger.grpc.conn_aio import Connection
 from ..prim import ContractData, ContractId
 from ..query import ContractMatch, is_match
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 __all__ = ["ACS", "Snapshot"]
 
@@ -112,7 +117,7 @@ class ACS:
         self._state = NOT_STARTED  # type: State
         self._log = conn.config.logger
 
-    def read(self) -> Awaitable[Snapshot]:
+    def read(self) -> "Awaitable[Snapshot]":
         """
         Returns a snapshot of data.
 
@@ -127,7 +132,7 @@ class ACS:
             self._snapshot_fut = get_event_loop().create_future()
         return self._snapshot_fut
 
-    def read_immediately(self) -> Optional[Snapshot]:
+    def read_immediately(self) -> "Optional[Snapshot]":
         """
         Returns the most recent snapshot of data, or ``None`` if this ACS was never started.
 
@@ -144,7 +149,8 @@ class ACS:
         # if our Snapshot future is in a failed state, this method also throws in order to make
         # any read() exceptions known
         if self._snapshot_fut is not None:
-            if (ex := self._snapshot_fut.exception()) is not None:
+            ex = self._snapshot_fut.exception()
+            if ex is not None:
                 raise ex
 
         return self._snapshot
@@ -175,7 +181,7 @@ class ACS:
         # sure the future is triggered on the very first read
         fut = self.read()
         self._state = CONNECTING
-        self._task = create_task(self._main())
+        self._task = ensure_future(self._main())
         await fut
 
     async def stop(self) -> None:
@@ -218,7 +224,7 @@ class ACS:
                 self._snapshot_fut = get_event_loop().create_future()
             self._snapshot_fut.set_exception(ex)
 
-    async def __aenter__(self) -> ACS:
+    async def __aenter__(self) -> "ACS":
         """
         Allow :class:`ACS` to be used within ``async with`` blocks.
         """
@@ -235,7 +241,7 @@ class ACS:
         return f"ACS(state={self._state})"
 
 
-async def snapshots(conn: Connection, queries) -> AsyncIterator[Tuple[State, Optional[Snapshot]]]:
+async def snapshots(conn: Connection, queries) -> "AsyncIterator[Tuple[State, Optional[Snapshot]]]":
     """
     Coroutine that returns regular "state" and "snapshot" updates aggregated over events off an
     event stream.
@@ -327,7 +333,8 @@ class Snapshot:
         that was created in the transaction stream that matches the specified filter, or ``None``
         if there are no matches.
         """
-        return ev.payload if (ev := self.earliest_create(template_id, match)) is not None else None
+        ev = self.earliest_create(template_id, match)
+        return ev.payload if ev is not None else None
 
     def matching_contracts(
         self, template_id: Union[str, TypeConName], match: Optional[ContractMatch] = None
@@ -342,7 +349,8 @@ class Snapshot:
         Return the contract that was created last in the transaction stream that matches the
         specified filter, or ``None`` if there are no matches.
         """
-        return ev.payload if (ev := self.latest_create(template_id, match)) is not None else None
+        ev = self.latest_create(template_id, match)
+        return ev.payload if ev is not None else None
 
     def earliest_create(
         self, template_id: Union[str, TypeConName], match: Optional[ContractMatch] = None
@@ -435,7 +443,7 @@ def create_snapshot(
     return Snapshot(snapshot_data, offset)
 
 
-class ContractDataView(Mapping):
+class ContractDataView(MappingBase):
     """
     A map of :class:`ContractId` -> ``ContractData``. This class is just a view over an instance of
     ``Mapping[:class:`ContractId`, :class:`CreateEvent`].
@@ -443,10 +451,10 @@ class ContractDataView(Mapping):
 
     __slots__ = ("__m",)
 
-    def __init__(self, m: Mapping[ContractId, CreateEvent], /):
+    def __init__(self, m: Mapping[ContractId, CreateEvent]):
         self.__m = m
 
-    def __getitem__(self, key: ContractId, /) -> ContractData:
+    def __getitem__(self, key: ContractId) -> ContractData:
         return self.__m[key].payload
 
     def __len__(self) -> int:
