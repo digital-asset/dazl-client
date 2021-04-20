@@ -6,6 +6,7 @@ from collections import defaultdict
 from dataclasses import asdict, fields
 from datetime import timedelta
 import logging
+import sys
 from threading import RLock, Thread, current_thread
 from typing import (
     Any,
@@ -13,7 +14,6 @@ from typing import (
     Callable,
     Collection,
     Dict,
-    Literal,
     Optional,
     Set,
     Tuple,
@@ -38,6 +38,14 @@ from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
 from .errors import DazlPartyMissingError
 from .ledger import LedgerMetadata
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
+
+__all__ = ["_NetworkImpl"]
 
 T = TypeVar("T")
 

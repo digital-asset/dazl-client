@@ -17,8 +17,6 @@ This module contains the public API for interacting with the ledger from the per
 specific party.
 """
 
-from __future__ import annotations
-
 from asyncio import ensure_future, get_event_loop
 from contextlib import contextmanager
 from functools import wraps
@@ -85,7 +83,7 @@ def simple_client(
     url: Optional[str] = None,
     party: Union[None, str, Party] = None,
     log_level: Optional[int] = INFO,
-) -> ContextManager[SimplePartyClient]:
+) -> "ContextManager[SimplePartyClient]":
     """
     Start up a single client connecting to a single specific party.
 
@@ -214,14 +212,14 @@ class Network:
 
     # <editor-fold desc="Global/Party client creation">
 
-    def simple_global(self) -> SimpleGlobalClient:
+    def simple_global(self) -> "SimpleGlobalClient":
         """
         Return a :class:`GlobalClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
         """
         return self._impl.global_impl(SimpleGlobalClient)
 
-    def aio_global(self) -> AIOGlobalClient:
+    def aio_global(self) -> "AIOGlobalClient":
         """
         Return a :class:`GlobalClient` that works on an asyncio event loop.
 
@@ -232,7 +230,7 @@ class Network:
         self._impl.freeze()
         return client
 
-    def simple_party(self, party: Union[str, Party]) -> SimplePartyClient:
+    def simple_party(self, party: Union[str, Party]) -> "SimplePartyClient":
         """
         Return a :class:`PartyClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
@@ -241,14 +239,14 @@ class Network:
         """
         return self._impl.party_impl(to_party(party), SimplePartyClient)
 
-    def simple_new_party(self) -> SimplePartyClient:
+    def simple_new_party(self) -> "SimplePartyClient":
         """
         Return a :class:`PartyClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
         """
         return self.simple_party(str(uuid4()))
 
-    def aio_party(self, party: Union[str, Party]) -> AIOPartyClient:
+    def aio_party(self, party: Union[str, Party]) -> "AIOPartyClient":
         """
         Return a :class:`PartyClient` that works on an asyncio event loop.
 
@@ -256,7 +254,7 @@ class Network:
         """
         return self._impl.party_impl(Party(party), AIOPartyClient)
 
-    def aio_new_party(self) -> AIOPartyClient:
+    def aio_new_party(self) -> "AIOPartyClient":
         """
         Return a :class:`PartyClient` for a random party that works on an asyncio event loop.
         This will never return the same object twice.

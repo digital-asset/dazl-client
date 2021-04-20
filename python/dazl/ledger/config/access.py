@@ -1,6 +1,5 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-from __future__ import annotations
 
 import base64
 from collections.abc import MutableSet as MutableSetBase, Set as SetBase
@@ -8,6 +7,7 @@ import json
 from logging import Logger
 import os
 from pathlib import Path
+import sys
 from typing import (
     TYPE_CHECKING,
     AbstractSet,
@@ -17,13 +17,16 @@ from typing import (
     Mapping,
     MutableSet,
     Optional,
-    Protocol,
     Union,
-    runtime_checkable,
 )
 
 from ...prim import Party
 from .exc import ConfigError
+
+if sys.version_info >= (3, 8):
+    from typing import Protocol, runtime_checkable
+else:
+    from typing_extensions import Protocol, runtime_checkable
 
 __all__ = [
     "AccessConfig",
@@ -66,7 +69,7 @@ def create_access(
     oauth_token: Optional[str] = None,
     oauth_token_file: Optional[str] = None,
     logger: Optional[Logger] = None,
-) -> AccessConfig:
+) -> "AccessConfig":
     """
     Create an appropriate instance of :class:`AccessConfig`.
 

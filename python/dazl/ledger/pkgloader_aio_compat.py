@@ -9,12 +9,18 @@ This file is here in order to avoid import cycles.
 from asyncio import get_event_loop
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import timedelta
-from typing import AbstractSet, Protocol
+import sys
+from typing import AbstractSet
 import warnings
 
 from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.lookup import MultiPackageLookup
 from .pkgloader_aio import DEFAULT_TIMEOUT, PackageLoader as NewPackageLoader
+
+if sys.version_info >= (3, 8):
+    from typing import Protocol
+else:
+    from typing_extensions import Protocol
 
 __all__ = ["SyncPackageService", "PackageLoader"]
 

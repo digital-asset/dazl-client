@@ -111,7 +111,6 @@ The :class:`URLConfig` protocol specifies the ledger implementation that ``dazl`
     :members:
 
 """
-from __future__ import annotations
 
 import itertools
 import logging

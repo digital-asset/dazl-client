@@ -5,7 +5,6 @@ Utilities for working with ledger offsets.
 
 This API is _not_ public!
 """
-from __future__ import annotations
 
 from typing import Any, Optional, Union
 
@@ -37,21 +36,21 @@ class LedgerOffsetRange:
     so this class actually represents the commonality between these two interfaces.
     """
 
-    def __init__(self, begin: Union[None, str], end: Union[None, END], /):
+    def __init__(self, __begin: "Union[None, str]", __end: "Union[None, End]"):
         """
         Initialize a :class:`LedgerOffsetRange`.
 
-        :param begin:
+        :param __begin:
             The start of the stream. If ``None``, then read from the beginning of the ledger.
             Otherwise, must be a legal ledger offset.
-        :param end:
+        :param __end:
             The end of the stream. If ``None``, then keep reading from the stream forever; if
             ``END``, then terminate when reaching the _current_ end of stream. Note that offsets
             are *not* allowed here, as the HTTP JSON API does not provide a mechanism for reading
             *to* a specific transaction offset.
         """
-        self.begin = begin
-        self.end = end
+        self.begin = __begin
+        self.end = __end
 
     def __eq__(self, other: Any) -> bool:
         return (

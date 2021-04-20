@@ -6,7 +6,13 @@ This model contains definitions for the data classes used at the client layer of
 """
 
 from enum import IntEnum
-from typing import Literal, NamedTuple, Optional
+import sys
+from typing import NamedTuple, Optional
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 __all__ = [
     "ExitCode",

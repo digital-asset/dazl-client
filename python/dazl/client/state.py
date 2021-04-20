@@ -1,12 +1,10 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from __future__ import annotations
-
 from asyncio import Future, get_event_loop, sleep
 from collections import defaultdict
 from dataclasses import dataclass
-import datetime
+from datetime import datetime
 from typing import Awaitable, Collection, Dict, List, Optional, Tuple, Union, cast
 import warnings
 
@@ -151,7 +149,7 @@ class ActiveContractSet:
 
         return await await_then(query.future, lambda cxds: {cxd.cid: cxd.cdata for cxd in cxds})
 
-    def _get_template_state(self, template_name: str) -> Dict[TypeConName, TemplateContractData]:
+    def _get_template_state(self, template_name: str) -> "Dict[TypeConName, TemplateContractData]":
         names = self.lookup.template_names(template_name)
         if not names:
             warnings.warn(
@@ -204,7 +202,7 @@ class TemplateContractData:
             if (include_archived or cxd.active) and is_match(match, cxd.cdata)
         ]
 
-    def register_query(self, query: PendingQuery) -> None:
+    def register_query(self, query: "PendingQuery") -> None:
         self._queries.append(query)
 
 

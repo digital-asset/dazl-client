@@ -6,6 +6,7 @@ Support for exposing dazl's configuration parameters through :mod:`argparse`.
 import argparse
 from argparse import SUPPRESS, Action, ArgumentParser
 import os
+import sys
 from typing import TYPE_CHECKING, Optional, Sequence
 import warnings
 
@@ -56,6 +57,16 @@ class WideHelpFormatter(argparse.HelpFormatter):
                 kwargs["width"] = int(col)
 
         super().__init__(prog, *args, **kwargs)
+
+    # Backport a formatting fix for Python 3.6
+    if sys.version_info < (3, 7):
+
+        def _format_args(self, action: Action, default_metavar: str) -> str:
+            if action.nargs == SUPPRESS:
+                return ""
+            else:
+                # noinspection PyProtectedMember
+                return super()._format_args(action, default_metavar)
 
 
 def configure_parser(parser: ArgumentParser, add_usage: bool = True) -> None:
