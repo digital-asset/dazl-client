@@ -13,17 +13,19 @@ introduced in dazl v5) or :mod:`dazl.protocols` (for the API introduced in dazl 
 .. automodule:: dazl.model.lookup
 .. automodule:: dazl.model.network
 .. automodule:: dazl.model.reading
+.. automodule:: dazl.model.types
+.. automodule:: dazl.model.types_store
 .. automodule:: dazl.model.writing
 
 """
 
 import warnings
 
-from . import core, ledger, lookup, network, reading, writing
+from . import core, ledger, lookup, network, reading, types, writing
 
 __all__ = ["core", "ledger", "lookup", "network", "reading", "writing"]
 
 warnings.warn(
-    "dazl.model is deprecated; these types have moved to either dazl.protocols or dazl.client.",
+    "dazl.model is deprecated; these types have moved to either dazl.ledger or dazl.client.",
     DeprecationWarning,
 )

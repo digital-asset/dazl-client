@@ -3,8 +3,11 @@
 
 import warnings
 
-from dazl.ledger.pkgloader_aio_compat import PackageLoader, SyncPackageService
+from ..ledger.pkgloader_aio_compat import PackageLoader, SyncPackageService
 
-warnings.warn("dazl.client.pkg_loader is deprecated; use dazl.protocols.pkgloader_aio instead.")
+warnings.warn(
+    "dazl.client.pkg_loader is deprecated; use dazl.protocols.pkgloader_aio instead.",
+    DeprecationWarning,
+)
 
 __all__ = ["SyncPackageService", "PackageLoader"]

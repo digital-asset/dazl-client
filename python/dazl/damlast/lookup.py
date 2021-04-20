@@ -27,6 +27,7 @@ from typing import (
     Tuple,
     Union,
 )
+import warnings
 
 from .daml_lf_1 import (
     Archive,
@@ -43,6 +44,7 @@ from .daml_lf_1 import (
 )
 from .errors import NameNotFoundError, PackageNotFoundError
 from .protocols import SymbolLookup
+from .util import package_local_name, package_ref
 
 __all__ = [
     "EmptyLookup",
@@ -56,15 +58,24 @@ __all__ = [
     "validate_template",
 ]
 
-
 STAR = PackageRef("*")
 
 
-def parse_type_con_name(val: str) -> TypeConName:
+def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) -> TypeConName:
     """
     Parse the given string as a type constructor.
     """
-    pkg, name = validate_template(val)
+    if allow_deprecated_identifiers:
+        warnings.warn(
+            "parse_type_con_name(..., allow_deprecated_identifiers=True) will be removed in dazl v8",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        pkg, name = validate_template(
+            val, allow_deprecated_identifiers=allow_deprecated_identifiers
+        )
     module_name, _, entity_name = name.rpartition(":")
     module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
     return TypeConName(module_ref, entity_name.split("."))
@@ -78,12 +89,17 @@ def empty_lookup_impl(ref: Any) -> NoReturn:
         raise NameNotFoundError(ref)
 
 
-def validate_template(template: Union[None, str, TypeConName]) -> Tuple[PackageRef, str]:
+def validate_template(
+    template: Union[None, str, TypeConName], allow_deprecated_identifiers: bool = False
+) -> Tuple[PackageRef, str]:
     """
     Return a module and type name component from something that can be interpreted as a template.
 
     :param template:
         Any object that can be interpreted as an identifier for a template.
+    :param allow_deprecated_identifiers:
+        Allow deprecated identifiers (:class:`UnresolvedTypeReference` and a period delimiter
+        instead of a colon between module names and entity names).
     :return:
         A tuple of package ID and ``Module.Name:EntityName`` (the package-scoped identifier for the
         type). The special value ``'*'`` is used if either the package ID, module name, or both
@@ -91,11 +107,22 @@ def validate_template(template: Union[None, str, TypeConName]) -> Tuple[PackageR
     :raise ValueError:
         If the object could not be interpreted as a thing referring to a template.
     """
-    from ..damlast.daml_lf_1 import TypeConName
-    from ..damlast.util import package_local_name, package_ref
-
     if template == "*" or template is None:
         return STAR, "*"
+
+    if allow_deprecated_identifiers:
+        warnings.warn(
+            "validate_template(..., allow_deprecated_identifiers=True) will be removed in dazl v8",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.types import UnresolvedTypeReference
+
+        if isinstance(template, UnresolvedTypeReference):
+            template = template.name
 
     if isinstance(template, str):
         components = template.split(":")
@@ -114,6 +141,11 @@ def validate_template(template: Union[None, str, TypeConName]) -> Tuple[PackageR
                 # module name and entity name
                 raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")
             return (STAR, f"{m}:{e}") if e != "*" else (PackageRef(m), "*")
+
+        elif len(components) == 1 and allow_deprecated_identifiers:
+            # no colon whatsoever
+            m, _, e = components[0].rpartition(".")
+            return STAR, f"{m}:{e}"
 
         else:
             raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")

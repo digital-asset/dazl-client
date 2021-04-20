@@ -61,6 +61,8 @@ def create_dispatch(
 def _template_reverse_globs(primary_only: bool, package_id: str, type_name: str) -> "Iterator[str]":
     """
     Return an iterator over strings that glob to a specified type.
+
+    This symbol is meant only for supporting the dazl v7 and is not a public API!
     """
     # support deprecated type identifiers for usages of this old API to preserve backwards
     # compatibility

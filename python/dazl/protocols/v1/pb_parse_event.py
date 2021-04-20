@@ -6,7 +6,7 @@ Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic typ
 """
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Sequence, Union
 import warnings
 
 from ... import LOG
@@ -41,6 +41,9 @@ from ..events import (
 
 DECODER = ProtobufDecoder()
 
+if TYPE_CHECKING:
+    from ...model.types_store import PackageStore
+
 
 @dataclass(frozen=True)
 class BaseEventDeserializationContext:
@@ -50,9 +53,7 @@ class BaseEventDeserializationContext:
 
     client: "Any"
     lookup: "SymbolLookup"
-
-    # TODO: Replace with PackageStore
-    store: "Any"
+    store: "PackageStore"
     party: "Party"
     ledger_id: str
 

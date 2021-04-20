@@ -2,31 +2,42 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-This module has been relocated to ``dazl.client.events`` or ``dazl.damlast.lookup``.
+This module has been relocated to ``dazl.damlast.lookup``.
 """
 
 from typing import TYPE_CHECKING, Any, Iterator, Tuple, Union
 import warnings
 
+from ..damlast.daml_lf_1 import PackageRef
+from ..damlast.lookup import validate_template as _validate_template
+
 __all__ = ["validate_template", "template_reverse_globs"]
 
 if TYPE_CHECKING:
     from ..damlast.daml_lf_1 import PackageRef
+warnings.warn(
+    "dazl.model.lookup is deprecated; use dazl.damlast.lookup instead.", DeprecationWarning
+)
 
 
-def validate_template(template: "Any") -> "Tuple[Union[str, PackageRef], str]":
-    from ..damlast.lookup import validate_template as validate_template_new
+def validate_template(template) -> "Tuple[PackageRef, str]":
+    """
+    Return a module and type name component from something that can be interpreted as a template.
 
+    This function is deprecated and will be removed in dazl v8; please use
+    ``dazl.damlast.lookup.validate_template`` instead.
+
+    :param template:
+        Any object that can be interpreted as an identifier for a template.
+    """
     warnings.warn(
-        "validate_template is deprecated; use dazl.damlast.lookup.validate_template",
+        "dazl.model.lookup.validate_template is deprecated and will be removed in dazl v8; "
+        "use dazl.damlast.lookup.validate_template instead",
         DeprecationWarning,
         stacklevel=2,
     )
 
-    if template == "*" or template is None:
-        return "*", "*"
-
-    return validate_template_new(template)
+    return _validate_template(template, allow_deprecated_identifiers=True)
 
 
 def template_reverse_globs(primary_only: bool, package_id: str, type_name: str) -> "Iterator[str]":

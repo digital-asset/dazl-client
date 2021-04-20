@@ -4,6 +4,10 @@
 """
 This module has been relocated to ``dazl.client.ledger``.
 """
+import warnings
+
 from ..client.ledger import LedgerMetadata
 
 __all__ = ["LedgerMetadata"]
+
+warnings.warn("dazl.model.ledger is deprecated; use dazl.client.ledger instead", DeprecationWarning)
