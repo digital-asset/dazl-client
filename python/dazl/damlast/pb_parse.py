@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-from typing import Optional, Sequence
+from typing import Any, Dict, Optional, Sequence
 
 from .daml_lf_1 import *
 
@@ -15,8 +15,9 @@ class ProtobufParser:
         from typing import List
 
         self.current_package = current_package
+        self.current_module = None  # type: Optional[ModuleRef]
         self.interned_strings = []  # type: List[str]
-        self.interned_dotted_names = []  # type: List[List[int]]
+        self.interned_dotted_names = []  # type: List[Sequence[str]]
         self.interned_types = []  # type: List[Type]
 
     # noinspection PyUnusedLocal
@@ -25,10 +26,11 @@ class ProtobufParser:
 
     def parse_ModuleRef(self, pb) -> "Optional[ModuleRef]":
         sum_name = pb.package_ref.WhichOneof("Sum")
-        module_name = self._resolve_dotted_name(pb.module_name_dname, pb.module_name_interned_dname)
         if sum_name is None:
             return None
-        elif sum_name == "self":
+
+        module_name = self._resolve_dotted_name(pb.module_name_dname, pb.module_name_interned_dname)
+        if sum_name == "self":
             return ModuleRef(self.current_package, module_name)
         elif sum_name == "package_id_str":
             return ModuleRef(pb.package_ref.package_id_str, module_name)
@@ -40,14 +42,20 @@ class ProtobufParser:
             raise ValueError(f"unknown sum type value: {sum_name!r}")
 
     def parse_TypeConName(self, pb) -> "TypeConName":
+        module_ref = self.parse_ModuleRef(pb.module)
+        if module_ref is None:
+            raise ValueError("missing a valid ModuleRef in a TypeConName definition")
         return TypeConName(
-            self.parse_ModuleRef(pb.module),
+            module_ref,
             self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments,
         )
 
     def parse_TypeSynName(self, pb) -> "TypeSynName":
+        module_ref = self.parse_ModuleRef(pb.module)
+        if module_ref is None:
+            raise ValueError("missing a valid ModuleRef in a TypeSynName definition")
         return TypeSynName(
-            self.parse_ModuleRef(pb.module),
+            module_ref,
             self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments,
         )
 
@@ -55,8 +63,11 @@ class ProtobufParser:
         return DottedName(segments=self._resolve_string_seq(pb.segments, pb.segments_interned_id))
 
     def parse_ValName(self, pb) -> "ValName":
+        module_ref = self.parse_ModuleRef(pb.module)
+        if module_ref is None:
+            raise ValueError("missing a valid ModuleRef in a ValName definition")
         return ValName(
-            self.parse_ModuleRef(pb.module),
+            module_ref,
             self._resolve_string_seq(pb.name_dname, pb.name_interned_dname),
         )
 
@@ -85,11 +96,9 @@ class ProtobufParser:
     def parse_Binding(self, pb) -> "Binding":
         return Binding(self.parse_VarWithType(pb.binder), self.parse_Expr(pb.bound))
 
-    def parse_Kind(self, pb) -> "Optional[Kind]":
+    def parse_Kind(self, pb) -> "Kind":
         sum_name = pb.WhichOneof("Sum")
-        if sum_name is None:
-            return None
-        elif sum_name == "star":
+        if sum_name == "star":
             return Kind(star=self.parse_Unit(pb.star))
         elif sum_name == "arrow":
             return Kind(arrow=self.parse_Kind_Arrow(pb.arrow))
@@ -173,10 +182,8 @@ class ProtobufParser:
             args=tuple(self.parse_Type(arg) for arg in pb.args),
         )
 
-    def parse_PrimCon(self, pb) -> "Optional[PrimCon]":
-        if pb is None:
-            return None
-        elif pb == 0:
+    def parse_PrimCon(self, pb) -> "PrimCon":
+        if pb == 0:
             return PrimCon.CON_UNIT
         elif pb == 1:
             return PrimCon.CON_FALSE
@@ -185,9 +192,7 @@ class ProtobufParser:
         else:
             raise ValueError(f"unknown enum value: {pb!r}")
 
-    def parse_BuiltinFunction(self, pb) -> "Optional[BuiltinFunction]":
-        if pb is None:
-            return None
+    def parse_BuiltinFunction(self, pb) -> "BuiltinFunction":
         return BuiltinFunction(pb)
 
     def parse_PrimLit(self, pb) -> "PrimLit":
@@ -213,16 +218,13 @@ class ProtobufParser:
         else:
             raise ValueError(f"unknown Sum value: {pb!r}")
 
-    def parse_Expr(self, pb, optional: bool = False) -> "Expr":
+    def parse_Expr(self, pb) -> "Expr":
+        args = {}  # type: Dict[str, Any]
         location = self.parse_Location(pb.location) if pb.HasField("location") else None
         if location is not None:
-            args = {"location": location}
-        else:
-            args = {}
+            args["location"] = location
 
         sum_name = pb.WhichOneof("Sum")
-        if optional and sum_name is None:
-            return None
         if sum_name == "var_str":
             args["var"] = pb.var_str
         elif sum_name == "var_interned_str":
@@ -286,7 +288,7 @@ class ProtobufParser:
         else:
             raise ValueError(f"Unknown type of Expr: {sum_name!r}")
 
-        return Expr(**args)
+        return Expr(**args)  # type: ignore
 
     def parse_Expr_RecCon(self, pb) -> "Expr.RecCon":
         return Expr.RecCon(
@@ -505,7 +507,7 @@ class ProtobufParser:
         elif sum_name == "mustFailAt":
             return Scenario(must_fail_at=self.parse_Scenario_Commit(pb.mustFailAt))
         elif sum_name == "pass":
-            return Scenario(must_fail_at=self.parse_Expr(getattr(pb, "pass")))
+            return Scenario(pass_=self.parse_Expr(getattr(pb, "pass")))
         elif sum_name == "get_time":
             return Scenario(get_time=self.parse_Unit(pb.get_time))
         elif sum_name == "get_party":
@@ -526,7 +528,17 @@ class ProtobufParser:
         return Scenario.EmbedExpr(type=self.parse_Type(pb.type), body=self.parse_Expr(pb.body))
 
     def parse_Location(self, pb) -> "Location":
-        return Location(self.parse_ModuleRef(pb.module), self.parse_Location_Range(pb.range))
+        module_ref = self.parse_ModuleRef(pb.module)
+        if module_ref is None:
+            module_ref = self.current_module
+        if module_ref is None:
+            # This is probably a programming mistake, since nowhere in the Daml-LF protobuf does
+            # a Location occur outside of a Module
+            raise ValueError(
+                "cannot parse a Location object without a ModuleRef outside of a Module"
+            )
+
+        return Location(module_ref, self.parse_Location_Range(pb.range))
 
     def parse_Location_Range(self, pb) -> "Location.Range":
         return Location.Range(pb.start_line, pb.start_col, pb.end_line, pb.end_col)
@@ -656,14 +668,21 @@ class ProtobufParser:
         )
 
     def parse_Module(self, pb) -> "Module":
-        return Module(
-            name=self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
-            flags=self.parse_FeatureFlags(pb.flags),
-            synonyms=tuple(self.parse_DefTypeSyn(value) for value in pb.synonyms),
-            data_types=tuple(self.parse_DefDataType(data_type) for data_type in pb.data_types),
-            values=tuple(self.parse_DefValue(value) for value in pb.values),
-            templates=tuple(self.parse_DefTemplate(template) for template in pb.templates),
-        )
+        name = self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname)
+        self.current_module = ModuleRef(self.current_package, name)
+        try:
+            module = Module(
+                name=name,
+                flags=self.parse_FeatureFlags(pb.flags),
+                synonyms=tuple(self.parse_DefTypeSyn(value) for value in pb.synonyms),
+                data_types=tuple(self.parse_DefDataType(data_type) for data_type in pb.data_types),
+                values=tuple(self.parse_DefValue(value) for value in pb.values),
+                templates=tuple(self.parse_DefTemplate(template) for template in pb.templates),
+            )
+        finally:
+            self.current_module = None
+
+        return module
 
     def parse_Package(self, pb) -> "Package":
         # TODO: this modifies state in a parser which is less than ideal; a better pattern would be
@@ -695,13 +714,15 @@ class ProtobufParser:
         )
 
     def _resolve_string(self, name: "Optional[str]", interned_id: "Optional[int]") -> str:
-        return name if name else self.interned_strings[interned_id]
+        # note that we intentionally conflate None and empty string, or None and 0 because
+        # of Protobuf
+        return name if name else self.interned_strings[interned_id or 0]
 
     def _resolve_string_seq(
         self, name: "Optional[Sequence[str]]", name_interned_id: "Optional[int]"
     ) -> "Sequence[str]":
         if self.interned_dotted_names:
-            return tuple(name) if name else self.interned_dotted_names[name_interned_id]
+            return tuple(name) if name else self.interned_dotted_names[name_interned_id or 0]
         else:
             return tuple(name) if name else tuple()
 
