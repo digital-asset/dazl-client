@@ -7,17 +7,21 @@ process that implements the Ledger API.
 """
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import Optional, Sequence, Union
+from typing import TYPE_CHECKING, Optional, Sequence, Union
 
 from .. import LOG
 from ..damlast.lookup import MultiPackageLookup
-from ..model.ledger import LedgerMetadata
-from ..model.network import HTTPConnectionSettings
-from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
-from ..model.writing import CommandPayload
 from ..prim import Party
 from ..scheduler import Invoker
-from ..util.typing import safe_cast, safe_optional_cast
+
+if TYPE_CHECKING:
+    from ..model.ledger import LedgerMetadata
+    from ..model.network import HTTPConnectionSettings
+    from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
+    from ..model.writing import CommandPayload
+
+
+__all__ = ["LedgerConnectionOptions", "LedgerNetwork", "LedgerClient", "_LedgerConnection"]
 
 
 @dataclass(frozen=True)
@@ -36,7 +40,7 @@ class LedgerNetwork:
     async def connect(
         self,
         party: "Union[str, Party]",
-        settings: HTTPConnectionSettings,
+        settings: "HTTPConnectionSettings",
         context_path: "Optional[str]",
     ) -> "LedgerClient":
         """
@@ -128,16 +132,16 @@ class _LedgerConnection:
         self,
         invoker: "Invoker",
         options: "LedgerConnectionOptions",
-        settings: HTTPConnectionSettings,
+        settings: "HTTPConnectionSettings",
         context_path: Optional[str],
     ):
         LOG.debug("Creating a gRPC channel for %s...", settings)
         import threading
 
-        self.invoker = safe_cast(Invoker, invoker)
-        self.options = safe_cast(LedgerConnectionOptions, options)
-        self.settings = safe_cast(HTTPConnectionSettings, settings)
-        self.context_path = safe_optional_cast(str, context_path)
+        self.invoker = invoker
+        self.options = options
+        self.settings = settings
+        self.context_path = context_path
         self.close_evt = threading.Event()
 
     def close(self):

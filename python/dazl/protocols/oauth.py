@@ -2,19 +2,26 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
+from typing import TYPE_CHECKING
 
-import requests
+if TYPE_CHECKING:
+    from ..model.network import OAuthSettings
 
-from ..model.network import OAuthSettings
+
+__all__ = ["oauth_flow"]
 
 
-async def oauth_flow(settings: OAuthSettings) -> OAuthSettings:
+async def oauth_flow(settings: "OAuthSettings") -> "OAuthSettings":
     """
     Implementation of an OAuth flow that ensures that a token is provided.
 
     :param settings:
     :return:
     """
+    import requests
+
+    from ..model.network import OAuthSettings
+
     if not settings.token:
 
         if settings.auth_audience == None:

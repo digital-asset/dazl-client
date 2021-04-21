@@ -19,10 +19,11 @@ from ...damlast.daml_lf_1 import (
     TypeConName,
     ValName,
 )
-from ...damlast.types import get_old_type
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
+
+    from ...damlast.types import get_old_type
     from ...model.types import (
         SCALAR_TYPE_UNIT,
         EnumType,
@@ -318,14 +319,13 @@ def _parse_daml_metadata_pb(archive: "Archive") -> "PackageStore":
         return psb.build()
 
 
+# noinspection PyDeprecation
 def create_data_type(
     current_module_ref: "ModuleRef", dt: "DefDataType"
 ) -> "Union[RecordType, VariantType, EnumType, ScalarType]":
     warnings.warn(
         "create_data_type is deprecated; there is no replacement.", DeprecationWarning, stacklevel=2
     )
-
-    from ...damlast.types import get_old_type
 
     type_vars = tuple(TypeVariable(type_var.var) for type_var in dt.params)
     tt = TypeReference(con=TypeConName(current_module_ref, dt.name.segments))

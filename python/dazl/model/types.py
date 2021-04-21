@@ -47,7 +47,7 @@ import warnings
 
 from .. import LOG
 from ..damlast.daml_lf_1 import DottedName, Expr, ModuleRef, PackageRef, TypeConName
-from ..model.core import ContractData, Party
+from ..prim import ContractData, Party
 from ..util.typing import safe_cast, safe_dict_cast, safe_optional_cast
 
 warnings.warn("The symbols in dazl.model.types are deprecated", DeprecationWarning, stacklevel=2)
