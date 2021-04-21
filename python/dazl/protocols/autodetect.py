@@ -4,17 +4,21 @@
 from datetime import datetime
 from functools import partial
 from threading import Event, RLock, Thread
-from typing import Awaitable, Dict, Iterable, Optional, Union
+from typing import TYPE_CHECKING, Dict, Iterable, Optional, Union
 
 from .. import LOG
-from ..model.core import ConnectionTimeoutError, UserTerminateRequest
-from ..model.ledger import LedgerMetadata
-from ..model.network import HTTPConnectionSettings
 from ..prim import Party
 from ..scheduler import Invoker
 from ._base import LedgerClient, LedgerConnectionOptions, LedgerNetwork
 from .oauth import oauth_flow
 from .v1.grpc import GRPCv1Connection
+
+if TYPE_CHECKING:
+    from ..model.ledger import LedgerMetadata
+    from ..model.network import HTTPConnectionSettings
+
+
+__all__ = ["AutodetectLedgerNetwork", "AutodetectConnection"]
 
 
 class AutodetectLedgerNetwork(LedgerNetwork):
@@ -125,7 +129,7 @@ class AutodetectLedgerNetwork(LedgerNetwork):
         return self._closed
 
     def _get_connection(
-        self, settings: HTTPConnectionSettings, context_path: Optional[str]
+        self, settings: "HTTPConnectionSettings", context_path: Optional[str]
     ) -> "AutodetectConnection":
 
         if not self._lock.acquire(timeout=5):
@@ -158,6 +162,8 @@ class AutodetectLedgerNetwork(LedgerNetwork):
             self._lock.release()
 
     def _main(self) -> None:
+        from ..model.core import ConnectionTimeoutError, UserTerminateRequest
+
         timeout = self._options.connect_timeout
         try:
             LOG.debug(
@@ -204,7 +210,7 @@ class AutodetectConnection(GRPCv1Connection):
     pass
 
 
-def _monitor_ledger_network(connection: AutodetectConnection) -> Iterable[LedgerMetadata]:
+def _monitor_ledger_network(connection: AutodetectConnection) -> "Iterable[LedgerMetadata]":
     """
     Monitor the very first connection established and provide general information about
     the ledger to other parties.

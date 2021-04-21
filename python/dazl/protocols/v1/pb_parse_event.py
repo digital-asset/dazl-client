@@ -244,7 +244,7 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
 
 
 def serialize_transactions_request(
-    f: "TransactionFilter", ledger_id: str, party: str
+    f: "TransactionFilter", ledger_id: str, party: Party
 ) -> "txs_pb2.GetTransactionsRequest":
     if f.current_offset is not None:
         ledger_offset = lo_pb2.LedgerOffset()
@@ -269,7 +269,7 @@ def serialize_transactions_request(
 
 
 def serialize_acs_request(
-    f: "ContractFilter", ledger_id: str, party: str
+    f: "ContractFilter", ledger_id: str, party: Party
 ) -> "acs_pb2.GetActiveContractsRequest":
     return acs_pb2.GetActiveContractsRequest(
         ledger_id=ledger_id, filter=serialize_transaction_filter(f, party)
@@ -277,7 +277,7 @@ def serialize_acs_request(
 
 
 def serialize_event_id_request(
-    ledger_id: str, event_id: str, requesting_parties: "Sequence[str]"
+    ledger_id: str, event_id: str, requesting_parties: "Sequence[Party]"
 ) -> "txs_pb2.GetTransactionByEventIdRequest":
     return txs_pb2.GetTransactionByEventIdRequest(
         ledger_id=ledger_id, event_id=event_id, requesting_parties=requesting_parties
@@ -285,7 +285,7 @@ def serialize_event_id_request(
 
 
 def serialize_transaction_filter(
-    contract_filter: "ContractFilter", party: str
+    contract_filter: "ContractFilter", party: Party
 ) -> "txf_pb2.TransactionFilter":
     from .pb_ser_command import as_identifier
 

@@ -7,13 +7,18 @@ types over the wire on the REST interface using JSON.
 """
 
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 import warnings
 
 from ...damlast.daml_lf_1 import TypeConName
-from ...model.writing import AbstractSerializer, CommandPayload
+from ...model.writing import AbstractSerializer
 from ...prim import ContractId, JSONEncoder
 from ...values.json import JsonEncoder
+
+if TYPE_CHECKING:
+    from ...model.writing import CommandPayload
+
+__all__ = ["LedgerJSONEncoder", "to_api_datetime", "JsonSerializer"]
 
 
 class LedgerJSONEncoder(JSONEncoder):
@@ -65,7 +70,7 @@ class JsonSerializer(AbstractSerializer):
 
     mapper = JsonEncoder()
 
-    def serialize_command_request(self, command_payload: CommandPayload) -> dict:
+    def serialize_command_request(self, command_payload: "CommandPayload") -> dict:
         commands = [self.serialize_command(command) for command in command_payload.commands]
         return dict(
             businessIntent=command_payload.command_id,

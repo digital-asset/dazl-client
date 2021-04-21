@@ -1,6 +1,12 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+import warnings
+
+warnings.warn(
+    "dazl.protocols.v1.model is deprecated; use the types in dazl._gen instead", DeprecationWarning
+)
+
 from ...._gen.com.daml.daml_lf_dev.daml_lf_1_pb2 import (
     DefDataType,
     DefTemplate,

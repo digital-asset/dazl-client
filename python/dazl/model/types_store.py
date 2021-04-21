@@ -5,6 +5,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from functools import reduce
 from operator import add
+import sys
 from threading import RLock
 from types import MappingProxyType
 from typing import (
@@ -26,6 +27,12 @@ import warnings
 from ..damlast.daml_lf_1 import Archive, Expr, Package, PackageRef, TypeConName, ValName, _Name
 from ..damlast.lookup import validate_template
 from ..util.typing import safe_cast, safe_dict_cast
+
+if sys.version_info >= (3, 8):
+    from typing import Protocol, runtime_checkable
+else:
+    from typing_extensions import Protocol, runtime_checkable
+
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
@@ -368,7 +375,8 @@ class PackageStore:
             return matches
 
 
-class PackageProvider:
+@runtime_checkable
+class PackageProvider(Protocol):
     """
     Interface to an object that can provide package information.
     """
@@ -393,16 +401,11 @@ class PackageProvider:
         raise NotImplementedError
 
     def get_all_packages(self) -> "Mapping[PackageRef, bytes]":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
+        raise NotImplementedError
 
 
-class MemoryPackageProvider(PackageProvider):
+class MemoryPackageProvider:
     def __init__(self, mapping: "Mapping[PackageRef, bytes]"):
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            super().__init__()
         warnings.warn(
             "MemoryPackageProvider is deprecated; there is no replacement.",
             DeprecationWarning,
@@ -419,6 +422,11 @@ class MemoryPackageProvider(PackageProvider):
     @no_type_check
     def fetch_package(self, package_id: "PackageRef") -> bytes:
         return self.mapping.get(package_id)
+
+    def get_all_packages(self) -> "Mapping[PackageRef, bytes]":
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
 
 
 @dataclass(frozen=True)

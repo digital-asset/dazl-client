@@ -7,7 +7,8 @@ Support for the gRPC-based Ledger API.
 from asyncio import gather
 from datetime import datetime
 from threading import Event
-from typing import AbstractSet, Iterable, Optional, Sequence
+from time import sleep
+from typing import TYPE_CHECKING, AbstractSet, Iterable, Mapping, Optional, Sequence
 import warnings
 
 from grpc import (
@@ -20,14 +21,47 @@ from grpc import (
 )
 
 from ... import LOG
-from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import GetTransactionTreesResponse
+from ..._gen.com.daml.ledger.api.v1.active_contracts_service_pb2_grpc import (
+    ActiveContractsServiceStub as G_ActiveContractsServiceStub,
+)
+from ..._gen.com.daml.ledger.api.v1.admin.package_management_service_pb2 import (
+    UploadDarFileRequest as G_UploadDarFileRequest,
+)
+from ..._gen.com.daml.ledger.api.v1.admin.package_management_service_pb2_grpc import (
+    PackageManagementServiceStub as G_PackageManagementServiceStub,
+)
+from ..._gen.com.daml.ledger.api.v1.command_service_pb2_grpc import (
+    CommandServiceStub as G_CommandServiceStub,
+)
+from ..._gen.com.daml.ledger.api.v1.ledger_identity_service_pb2 import (
+    GetLedgerIdentityRequest as G_GetLedgerIdentityRequest,
+)
+from ..._gen.com.daml.ledger.api.v1.ledger_identity_service_pb2_grpc import (
+    LedgerIdentityServiceStub as G_LedgerIdentityServiceStub,
+)
+from ..._gen.com.daml.ledger.api.v1.package_service_pb2 import (
+    GetPackageRequest as G_GetPackageRequest,
+    ListPackagesRequest as G_ListPackagesRequest,
+)
+from ..._gen.com.daml.ledger.api.v1.package_service_pb2_grpc import (
+    PackageServiceStub as G_PackageServiceStub,
+)
+from ..._gen.com.daml.ledger.api.v1.testing.time_service_pb2 import (
+    GetTimeRequest as G_GetTimeRequest,
+    SetTimeRequest as G_SetTimeRequest,
+)
+from ..._gen.com.daml.ledger.api.v1.testing.time_service_pb2_grpc import (
+    TimeServiceStub as G_TimeServiceStub,
+)
+from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import (
+    GetLedgerEndRequest as G_GetLedgerEndRequest,
+    GetTransactionTreesResponse as G_GetTransactionTreesResponse,
+)
+from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import (
+    TransactionServiceStub as G_TransactionServiceStub,
+)
 from ...damlast.daml_lf_1 import PackageRef
 from ...damlast.parse import parse_archive_payload
-from ...model.core import ConnectionTimeoutError, UserTerminateRequest
-from ...model.ledger import LedgerMetadata
-from ...model.network import HTTPConnectionSettings
-from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
-from ...model.writing import CommandPayload
 from ...prim import Party, datetime_to_timestamp, to_party
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
@@ -44,19 +78,37 @@ from .pb_parse_event import (
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
 
-    from ...model.types_store import PackageProvider, PackageStore
+    if TYPE_CHECKING:
+        from ...model.ledger import LedgerMetadata
+        from ...model.network import HTTPConnectionSettings
+        from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
+        from ...model.types_store import PackageProvider, PackageStore
+        from ...model.writing import CommandPayload
+
+
+__all__ = [
+    "GRPCv1LedgerClient",
+    "grpc_set_time",
+    "grpc_upload_package",
+    "grpc_detect_ledger_id",
+    "grpc_main_thread",
+    "GRPCPackageProvider",
+    "grpc_package_sync",
+    "grpc_create_channel",
+    "GRPCv1Connection",
+]
 
 
 class GRPCv1LedgerClient(LedgerClient):
-    def __init__(self, connection: "GRPCv1Connection", ledger: LedgerMetadata, party: Party):
+    def __init__(self, connection: "GRPCv1Connection", ledger: "LedgerMetadata", party: "Party"):
         self.connection = safe_cast(GRPCv1Connection, connection)
-        self.ledger = safe_cast(LedgerMetadata, ledger)
+        self.ledger = ledger
         self.party = to_party(party)
 
-    async def commands(self, commands: CommandPayload) -> None:
+    async def commands(self, commands: "CommandPayload") -> None:
         serializer = self.ledger.serializer
         request = serializer.serialize_command_request(commands)
-        return await self.connection.invoker.run_in_executor(
+        await self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request)
         )
 
@@ -80,12 +132,12 @@ class GRPCv1LedgerClient(LedgerClient):
             # Consume a stream of events from the Active Contract Set service and store these results fully
             # in memory; return the full set of events as well as a set of package IDs that need to be
             # available in order to fully understand the contents of the Active Contract Set service.
-            acs_stream = list(acs_stream)
+            acs_responses = list(acs_stream)
 
         with LOG.info_timed("ACS find all required packages"):
             pkg_refs = {
                 create_evt.template_id.package_id
-                for acs_response_pb in acs_stream
+                for acs_response_pb in acs_responses
                 for create_evt in acs_response_pb.active_contracts
             }
 
@@ -99,7 +151,7 @@ class GRPCv1LedgerClient(LedgerClient):
             # packages that contained templates might have references to other packages that are
             # also required to understand the individual fields in a template.
             return await self.ledger.package_loader.do_with_retry(
-                lambda: to_acs_events(context, acs_stream)
+                lambda: to_acs_events(context, acs_responses)
             )
 
     async def events(self, transaction_filter: "TransactionFilter") -> "Sequence[BaseEvent]":
@@ -118,7 +170,7 @@ class GRPCv1LedgerClient(LedgerClient):
             lambda: self.connection.transaction_service.GetTransactions(request)
         )
 
-        tt_stream = None  # type: Optional[Iterable[GetTransactionTreesResponse]]
+        tt_stream = None  # type: Optional[Iterable[G_GetTransactionTreesResponse]]
         if transaction_filter.templates is None:
             # Filtering by package must disable the ability to handle exercise nodes; we may want to
             # consider dropping client-side support for exercise events anyway because they are not
@@ -136,22 +188,18 @@ class GRPCv1LedgerClient(LedgerClient):
         )
 
     async def events_end(self) -> str:
-        from . import model as G
-
-        request = G.GetLedgerEndRequest(ledger_id=self.ledger.ledger_id)
+        request = G_GetLedgerEndRequest(ledger_id=self.ledger.ledger_id)
         return await self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetLedgerEnd(request).offset.absolute
         )
 
 
 def grpc_set_time(connection: "GRPCv1Connection", ledger_id: str, new_datetime: datetime) -> None:
-    from . import model as G
-
-    request = G.GetTimeRequest(ledger_id=ledger_id)
+    request = G_GetTimeRequest(ledger_id=ledger_id)
     response = connection.time_service.GetTime(request)
     ts = next(iter(response))
 
-    request = G.SetTimeRequest(
+    request = G_SetTimeRequest(
         ledger_id=ledger_id,
         current_time=ts.current_time,
         new_time=datetime_to_timestamp(new_datetime),
@@ -161,9 +209,7 @@ def grpc_set_time(connection: "GRPCv1Connection", ledger_id: str, new_datetime: 
 
 
 def grpc_upload_package(connection: "GRPCv1Connection", dar_contents: bytes) -> None:
-    from . import model as G
-
-    request = G.UploadDarFileRequest(dar_file=dar_contents)
+    request = G_UploadDarFileRequest(dar_file=dar_contents)
     connection.package_management_service.UploadDarFile(request)
 
 
@@ -180,9 +226,7 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
     a ledger ID has been successfully retrieved, or the timeout is reached (in which case an
     exception is thrown).
     """
-    from time import sleep
-
-    from . import model as G
+    from ...model.core import ConnectionTimeoutError, UserTerminateRequest
 
     LOG.debug("Starting a monitor thread for connection: %s", connection)
 
@@ -197,7 +241,7 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
 
         try:
             response = connection.ledger_identity_service.GetLedgerIdentity(
-                G.GetLedgerIdentityRequest()
+                G_GetLedgerIdentityRequest()
             )
         except RpcError as ex:
             details_str = ex.details()
@@ -219,14 +263,18 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
     )
 
 
+# noinspection PyDeprecation
 def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterable[LedgerMetadata]":
     from ...client.pkg_loader import PackageLoader
+    from ...model.ledger import LedgerMetadata
     from .pb_ser_command import ProtobufSerializer
 
     LOG.info("grpc_main_thread...")
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
+        from ...model.types_store import PackageStore
+
         store = PackageStore.empty()
 
         package_provider = GRPCPackageProvider(connection, ledger_id)
@@ -260,22 +308,18 @@ def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterabl
     LOG.debug("The gRPC monitor thread is now shutting down.")
 
 
-class GRPCPackageProvider(PackageProvider):
+class GRPCPackageProvider:
     def __init__(self, connection: "GRPCv1Connection", ledger_id: str):
         self.connection = connection
         self.ledger_id = ledger_id
 
     def package_ids(self) -> "AbstractSet[PackageRef]":
-        from . import model as G
-
-        request = G.ListPackagesRequest(ledger_id=self.ledger_id)
+        request = G_ListPackagesRequest(ledger_id=self.ledger_id)
         response = self.connection.package_service.ListPackages(request)
         return frozenset(response.package_ids)
 
     def package_bytes(self, package_id: "PackageRef") -> bytes:
-        from . import model as G
-
-        request = G.GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
+        request = G_GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
         package_info = self.connection.package_service.GetPackage(request)
         return package_info.archive_payload
 
@@ -285,7 +329,13 @@ class GRPCPackageProvider(PackageProvider):
     def fetch_package(self, package_id: "PackageRef") -> bytes:
         return self.package_bytes(package_id)
 
+    def get_all_packages(self) -> "Mapping[PackageRef, bytes]":
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
 
+
+# noinspection PyDeprecation
 def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore") -> "None":
     warnings.warn(
         "grpc_package_sync is deprecated; there is no replacement", DeprecationWarning, stacklevel=2
@@ -403,17 +453,15 @@ class GRPCv1Connection(_LedgerConnection):
         context_path: "Optional[str]",
     ):
         super(GRPCv1Connection, self).__init__(invoker, options, settings, context_path)
-        from . import model as G
-
         self._closed = Event()
         self._channel = grpc_create_channel(settings)
-        self.active_contract_set_service = G.ActiveContractsServiceStub(self._channel)
-        self.command_service = G.CommandServiceStub(self._channel)
-        self.transaction_service = G.TransactionServiceStub(self._channel)
-        self.package_service = G.PackageServiceStub(self._channel)
-        self.package_management_service = G.PackageManagementServiceStub(self._channel)
-        self.ledger_identity_service = G.LedgerIdentityServiceStub(self._channel)
-        self.time_service = G.TimeServiceStub(self._channel)
+        self.active_contract_set_service = G_ActiveContractsServiceStub(self._channel)
+        self.command_service = G_CommandServiceStub(self._channel)
+        self.transaction_service = G_TransactionServiceStub(self._channel)
+        self.package_service = G_PackageServiceStub(self._channel)
+        self.package_management_service = G_PackageManagementServiceStub(self._channel)
+        self.ledger_identity_service = G_LedgerIdentityServiceStub(self._channel)
+        self.time_service = G_TimeServiceStub(self._channel)
 
     def close(self):
         try:
