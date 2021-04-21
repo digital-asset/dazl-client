@@ -14,7 +14,7 @@ from grpc import Channel, RpcError, insecure_channel, secure_channel, ssl_channe
 
 from ... import LOG
 from ...damlast.daml_lf_1 import PackageRef
-from ...prim import Party, datetime_to_timestamp, to_party
+from ...prim import Party, to_party
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
@@ -57,6 +57,7 @@ class GRPCv1LedgerClient(LedgerClient):
                 None,
                 self.connection.options.lookup,
                 self.party,
+                self.ledger._store,
                 self.ledger.ledger_id,
             )
 
@@ -98,6 +99,7 @@ class GRPCv1LedgerClient(LedgerClient):
         context = BaseEventDeserializationContext(
             None,
             self.connection.options.lookup,
+            self.ledger._store,
             self.party,
             self.ledger.ledger_id,
         )
@@ -193,9 +195,8 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
 
 
 def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterable[LedgerMetadata]":
-    from dazl.ledger.pkgloader_aio_compat import PackageLoader
-
     from ...client.ledger import LedgerMetadata
+    from ...ledger.pkgloader_aio_compat import PackageLoader
     from .pb_ser_command import ProtobufSerializer
 
     LOG.info("grpc_main_thread...")
@@ -213,6 +214,8 @@ def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterabl
             ),
             serializer=ProtobufSerializer(connection.options.lookup),
             protocol_version="v1",
+            # TODO: Replace with PackageStore
+            store=object(),
         )
 
     while not connection._closed.wait(1):
