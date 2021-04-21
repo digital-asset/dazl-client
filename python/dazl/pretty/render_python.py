@@ -1,8 +1,9 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+# type: ignore
 
 from io import StringIO
-from typing import Optional, Sequence
+from typing import Mapping, Optional, Sequence, Union
 
 from .. import LOG
 from ..damlast import daml_types as daml
@@ -12,7 +13,6 @@ from ..damlast.daml_lf_1 import (
     DefDataType,
     DefTemplate,
     Expr,
-    ModuleRef,
     PrimType,
     Scenario,
     Type,
@@ -20,10 +20,23 @@ from ..damlast.daml_lf_1 import (
     Update,
 )
 from ..damlast.util import def_value, module_name
+from ..model.types import ModuleRef, Type as OldType
+from ..model.types_store import PackageStore
 from ._render_base import PrettyPrintBase, pretty_print_syntax
 from .util import indent, maybe_parentheses
 
-__all__ = ["PythonPrettyPrint"]
+
+def values_by_module(
+    store: "PackageStore",
+) -> "Mapping[ModuleRef, Mapping[Sequence[str], Union[Expr, OldType]]]":
+    from collections import defaultdict
+
+    d = defaultdict(defaultdict)
+    for vn, vv in store._value_types.items():
+        d[vn.module][vn.name] = vv
+    for vn, vv in store._data_types.items():
+        d[vn.module][vn.name] = vv
+    return d
 
 
 @pretty_print_syntax("python")
@@ -78,19 +91,26 @@ class PythonPrettyPrint(PrettyPrintBase):
             lines.append('    """')
             lines.append("    Example usage:")
             lines.append(f'        create({template_full_name.replace(":", ".")},')
-            lines.append(f"               {python_example_object(self.lookup, def_data_type)})")
+            lines.append(f"               {python_example_object(self.store, def_data_type)})")
             for choice in template.choices:
                 lines.append(
-                    f"        exercise(cid, {choice.name!r}, {python_example_object(self.lookup, choice.arg_binder.type)})"
+                    f"        exercise(cid, {choice.name!r}, {python_example_object(self.store, choice.arg_binder.type)})"
                 )
             lines.append('    """')
             lines.append(indent(self._visit_def_type_body(slot_names), 4))
             for choice in template.choices:
                 ct = choice.arg_binder.type
+                if ct.prim is not None and ct.prim.prim == PrimType.UNIT:
+                    choice_slot_names = ()
+                else:
+                    tt = self.store.resolve_type_reference(ct.con.tycon)
+                    choice_slot_names = (
+                        tuple(name for name, _ in tt.named_args) if tt is not None else ()
+                    )
                 lines.append(
                     f"    class {choice.name}(metaclass=ChoiceMeta, template_name={template_full_name!r}, choice_name={choice.name!r}):"
                 )
-                lines.append(indent(self._visit_def_type_body(()), 8))
+                lines.append(indent(self._visit_def_type_body(choice_slot_names), 8))
             return "\n".join(lines)
         else:
             return ""
