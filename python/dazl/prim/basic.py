@@ -1,7 +1,8 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 import re
-from typing import Any
+from typing import Any, Optional
 
 __all__ = [
     "LEDGER_STRING_REGEX",
@@ -20,7 +21,7 @@ PARTY_ID_STRING_REGEX = re.compile(r"[A-Za-z0-9:\-_ ]")
 LEDGER_STRING_REGEX = re.compile(r"[A-Za-z0-9#:\-_/ ]")
 
 
-def to_bool(obj: Any) -> bool:
+def to_bool(obj: "Optional[Any]") -> "Optional[bool]":
     """
     Convert any of the common wire representations of a ``bool`` to a ``bool``.
     """
@@ -41,7 +42,7 @@ def to_bool(obj: Any) -> bool:
     raise ValueError(f"Could not parse as a boolean: {obj!r}")
 
 
-def to_str(obj: Any) -> str:
+def to_str(obj: "Any") -> str:
     """
     Convert any object to a string. This simply calls ``str`` on the object to produce a string
     representation.

@@ -4,7 +4,7 @@
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from functools import partial
-from typing import Any, Union
+from typing import Any, Callable, Sequence, Union
 
 from google.protobuf.duration_pb2 import Duration
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -48,12 +48,12 @@ def _parse_nano_format(value: str) -> "datetime":
         raise ValueError("could not parse")
 
 
-DATE_FORMATS = [
+DATE_FORMATS: Sequence[Callable[[str], datetime]] = [
     partial(_parse, "%Y-%m-%d"),
     partial(_parse, "%Y.%m.%d"),
 ]
 
-DATETIME_FORMATS = [
+DATETIME_FORMATS: Sequence[Callable[[str], datetime]] = [
     partial(_parse, DATETIME_ISO8601_Z_FORMAT),
     _parse_nano_format,
     partial(_parse, "%Y-%m-%dT%H:%M:%S.%f"),
@@ -215,6 +215,6 @@ def timedelta_to_duration(obj: "timedelta") -> "Duration":
     Return the Python ``timestamp`` as a Protobuf ``google.protobuf.Duration``.
     """
     d = Duration()
-    d.seconds = obj.total_seconds()
+    d.seconds = int(obj.total_seconds())
     d.nanos = obj.microseconds * 1000
     return d
