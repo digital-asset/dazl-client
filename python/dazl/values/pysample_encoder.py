@@ -4,7 +4,8 @@
 from typing import Any
 
 from ..damlast.daml_lf_1 import DefDataType, Type as DamlType
-from .mapper import Context, ValueMapper, convert
+from .context import Context
+from .mapper import ValueMapper
 
 
 class PythonSampleEncoder(ValueMapper):
@@ -15,7 +16,7 @@ class PythonSampleEncoder(ValueMapper):
         if context.depth <= self.max_depth:
             return "..."
         else:
-            return convert(self, context.append_path(key), item_type, None)
+            return context.append_path(key).convert(item_type, None)
 
     def data_record(
         self, context: "Context", dt: "DefDataType", record: "DefDataType.Fields", obj: "Any"

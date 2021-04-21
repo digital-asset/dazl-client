@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Any, Optional, Type, TypeVar
+from typing import Any, Optional, Type as PyType, TypeVar
 
 from google.protobuf import timestamp_pb2
 from google.protobuf.empty_pb2 import Empty
@@ -222,7 +222,8 @@ class ProtobufEncoder(ValueMapper):
         return "map", msg
 
     def prim_numeric(self, context: "Context", nat: int, obj: "Any") -> "Any":
-        return "numeric", decimal_to_str(to_decimal(obj))
+        d = to_decimal(obj)
+        return "numeric", decimal_to_str(d) if d is not None else None
 
     def prim_gen_map(
         self, context: "Context", key_type: "Type", value_type: "Type", obj: "Any"
@@ -237,7 +238,7 @@ class ProtobufEncoder(ValueMapper):
         return "gen_map", msg
 
 
-def get_value(obj: "Any", field: str, pb_type: "Type[T]") -> "T":
+def get_value(obj: "Any", field: str, pb_type: "PyType[T]") -> "T":
     return obj if isinstance(obj, pb_type) else getattr(obj, field)
 
 
