@@ -42,7 +42,8 @@ class JsonEncoder(CanonicalMapper):
         return obj.contract_id
 
     def prim_numeric(self, context: "Context", nat: int, obj: "Any") -> "Any":
-        return decimal_to_str(to_decimal(obj))
+        d = to_decimal(obj)
+        return decimal_to_str(d) if d is not None else None
 
     def _ctor_value_to_variant(
         self,
