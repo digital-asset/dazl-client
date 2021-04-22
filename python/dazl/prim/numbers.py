@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from decimal import Decimal
-from typing import Any
+from typing import Any, Optional
 
 __all__ = ["to_int", "to_decimal", "decimal_to_str"]
 
@@ -17,7 +17,7 @@ def to_int(obj: "Any") -> int:
     raise ValueError(f"Could not parse as an int: {obj!r}")
 
 
-def to_decimal(obj: "Any") -> "Decimal":
+def to_decimal(obj: "Optional[Any]") -> "Optional[Decimal]":
     """
     Convert any of the common wire representations of a ``Decimal`` to a ``Decimal``.
     """
