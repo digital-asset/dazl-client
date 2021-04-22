@@ -5,13 +5,30 @@
 This module contains configuration parameters used by the rest of the library.
 """
 
+# We override types in this file LOTS because mypy does not understand what is happening
+# with the ``config_field`` function. There doesn't appear to be a way to describe
+# a dataclasses-like ``field`` function, which is why this config will be dropped
+# in dazl 8's API.
+
 import argparse
 from dataclasses import asdict, dataclass, field, fields
-from typing import TYPE_CHECKING, Any, Collection, List, Mapping, Optional, Sequence, Type, TypeVar
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Collection,
+    List,
+    Mapping,
+    Optional,
+    Sequence,
+    Type,
+    TypeVar,
+    no_type_check,
+)
 import warnings
 
 from .. import LOG
-from ..prim import Party
+from ..damlast.daml_lf_1 import PackageRef
+from ..model.core import ConfigurationError, Party
 from ..util.config_meta import (
     BOOLEAN_TYPE,
     COUNT_TYPE,
@@ -28,7 +45,6 @@ from ..util.config_meta import (
     config_field,
     config_fields,
 )
-from .errors import ConfigurationError
 
 # If this environment variable is set, is used in place of a configuration file if none is supplied
 # on the command-line.
@@ -50,7 +66,7 @@ class URLConfig:
     Configuration for something that requires a URL.
     """
 
-    url: str = config_field(
+    url: str = config_field(  # type: ignore
         "URL where the Ledger API is hosted",
         param_type=URL_TYPE,
         short_alias="u",
@@ -58,51 +74,53 @@ class URLConfig:
         deprecated_alias="participant_url",
     )
 
-    ca_file: Optional[str] = config_field(
+    ca_file: Optional[str] = config_field(  # type: ignore
         "server certificate authority file", param_type=PATH_TYPE, default_value=None
     )
 
-    cert_file: Optional[str] = config_field("client certificate file", param_type=PATH_TYPE)
+    cert_file: Optional[str] = config_field(  # type: ignore
+        "client certificate file", param_type=PATH_TYPE
+    )
 
-    cert_key_file: Optional[str] = config_field(
+    cert_key_file: Optional[str] = config_field(  # type: ignore
         "client certificate and key file", param_type=PATH_TYPE
     )
 
-    verify_ssl: Optional[str] = config_field(
+    verify_ssl: Optional[str] = config_field(  # type: ignore
         "level of verification to use for SSL", param_type=VERIFY_SSL_TYPE
     )
 
-    poll_interval: Optional[float] = config_field(
+    poll_interval: Optional[float] = config_field(  # type: ignore
         "polling interval for receiving new events", param_type=SECONDS_TYPE, default_value=0.1
     )
 
-    connect_timeout: Optional[float] = config_field(
+    connect_timeout: Optional[float] = config_field(  # type: ignore
         "number of seconds before giving up on a connection",
         param_type=SECONDS_TYPE,
         default_value=DEFAULT_CONNECT_TIMEOUT_SECONDS,
     )
 
-    eager_package_fetch: Optional[bool] = config_field(
+    eager_package_fetch: Optional[bool] = config_field(  # type: ignore
         "whether to fetch all packages on startup", param_type=BOOLEAN_TYPE, default_value=True
     )
 
-    enable_http_proxy: Optional[bool] = config_field(
+    enable_http_proxy: Optional[bool] = config_field(  # type: ignore
         "whether to allow the use of HTTP proxies", param_type=BOOLEAN_TYPE, default_value=True
     )
 
-    package_lookup_timeout: Optional[float] = config_field(
+    package_lookup_timeout: Optional[float] = config_field(  # type: ignore
         "number of seconds before giving up on a package",
         param_type=SECONDS_TYPE,
         default_value=DEFAULT_CONNECT_TIMEOUT_SECONDS,
     )
 
-    application_name: Optional[str] = config_field(
+    application_name: Optional[str] = config_field(  # type: ignore
         "The name that this application uses to identify itself to the ledger.",
         param_type=STRING_TYPE,
         default_value="DAZL-Client",
     )
 
-    log_level: Optional[int] = config_field(
+    log_level: Optional[int] = config_field(  # type: ignore
         "logging level for events for this party",
         param_type=LOG_LEVEL_TYPE,
         environment_variable="DAZL_LOG_LEVEL",
@@ -116,25 +134,25 @@ class _PartyConfig(URLConfig):
     Configuration for a specific party's client.
     """
 
-    max_event_block_size: Optional[int] = config_field(
+    max_event_block_size: Optional[int] = config_field(  # type: ignore
         "Maximum number of blocks to read in a single call.",
         param_type=COUNT_TYPE,
         default_value=100,
     )
 
-    max_command_batch_size: Optional[int] = config_field(
+    max_command_batch_size: Optional[int] = config_field(  # type: ignore
         "Maximum number of commands to batch up in a single transaction",
         param_type=COUNT_TYPE,
         default_value=100,
     )
 
-    max_command_batch_timeout: Optional[float] = config_field(
+    max_command_batch_timeout: Optional[float] = config_field(  # type: ignore
         "Maximum number of seconds to wait before sending out a command",
         param_type=SECONDS_TYPE,
         default_value=0.25,
     )
 
-    party_groups: Optional[Collection[str]] = config_field(
+    party_groups: Optional[Collection[Party]] = config_field(  # type: ignore
         "comma-separated list of broadcast parties", param_type=PARTIES_TYPE
     )
 
@@ -149,100 +167,108 @@ class _NetworkConfig(URLConfig):
     their own URL.
     """
 
-    log_level: Optional[int] = config_field(
+    log_level: Optional[int] = config_field(  # type: ignore
         "logging level for events for this party",
         param_type=LOG_LEVEL_TYPE,
         environment_variable="DAZL_LOG_LEVEL",
         short_alias="l",
     )
 
-    max_connection_count: Optional[int] = config_field(
+    max_connection_count: Optional[int] = config_field(  # type: ignore
         "Number of concurrent HTTP connections to have outstanding.",
         param_type=COUNT_TYPE,
         default_value=20,
     )
 
-    quiet_timeout: Optional[float] = config_field(
+    quiet_timeout: Optional[float] = config_field(  # type: ignore
         'Number of seconds to wait after the client "thinks" it\'s done to hang around for',
         param_type=SECONDS_TYPE,
         default_value=1,
     )
 
-    use_acs_service: bool = config_field(
+    use_acs_service: bool = config_field(  # type: ignore
         "Use Active Contract Set service instead of reading from the Transaction event stream",
         param_type=BOOLEAN_TYPE,
         default_value=True,
     )
 
-    idle_timeout: Optional[float] = config_field(
+    idle_timeout: Optional[float] = config_field(  # type: ignore
         "Maximum number of seconds of idle activity before automatically closing the client",
         param_type=SECONDS_TYPE,
         default_value=120,
     )
 
-    max_consequence_depth: Optional[int] = config_field(
+    max_consequence_depth: Optional[int] = config_field(  # type: ignore
         "The maximum number of times to wait for all parties to arrive at the same offset"
         + "before failing with an error",
         param_type=COUNT_TYPE,
         default_value=50,
     )
 
-    party_groups: Optional[Collection[str]] = config_field(
+    party_groups: Optional[Collection[Party]] = config_field(  # type: ignore
         "comma-separated list of broadcast parties", param_type=PARTIES_TYPE
     )
 
-    package_ids: Optional[Collection[str]] = config_field(
+    package_ids: Optional[Collection[PackageRef]] = config_field(  # type: ignore
         "comma-separated list of package IDs to listen on", param_type=PACKAGE_IDS_TYPE
     )
 
-    server_host: Optional[str] = config_field(
+    server_host: Optional[str] = config_field(  # type: ignore
         "Server listening host. Used for OAuth web application flow callbacks.",
         param_type=STRING_TYPE,
         environment_variable="DAZL_SERVER_HOST",
     )
 
-    server_port: Optional[int] = config_field(
+    server_port: Optional[int] = config_field(  # type: ignore
         "Server listening port. Used for OAuth web application flow callbacks.",
         param_type=PORT_TYPE,
         environment_variable="DAZL_SERVER_PORT",
     )
 
-    oauth_client_id: Optional[str] = config_field("OAuth client ID", param_type=STRING_TYPE)
+    oauth_client_id: Optional[str] = config_field(  # type: ignore
+        "OAuth client ID", param_type=STRING_TYPE
+    )
 
-    oauth_client_secret: Optional[str] = config_field(
+    oauth_client_secret: Optional[str] = config_field(  # type: ignore
         "OAuth client secret (implies web application flow or backend application flow)",
         param_type=STRING_TYPE,
     )
 
-    oauth_token: Optional[str] = config_field("OAuth token", param_type=STRING_TYPE)
+    oauth_token: Optional[str] = config_field("OAuth token", param_type=STRING_TYPE)  # type: ignore
 
-    oauth_refresh_token: Optional[str] = config_field("OAuth refresh token", param_type=STRING_TYPE)
+    oauth_refresh_token: Optional[str] = config_field(  # type: ignore
+        "OAuth refresh token", param_type=STRING_TYPE
+    )
 
-    oauth_id_token: Optional[str] = config_field(
+    oauth_id_token: Optional[str] = config_field(  # type: ignore
         "OpenID token (JWT formatted)", param_type=STRING_TYPE
     )
 
-    oauth_token_uri: Optional[str] = config_field("OAuth token URL", param_type=STRING_TYPE)
+    oauth_token_uri: Optional[str] = config_field(  # type: ignore
+        "OAuth token URL", param_type=STRING_TYPE
+    )
 
-    oauth_redirect_uri: Optional[str] = config_field(
+    oauth_redirect_uri: Optional[str] = config_field(  # type: ignore
         "OAuth redirect URI (implies web application flow)", param_type=STRING_TYPE
     )
 
-    oauth_auth_url: Optional[str] = config_field(
+    oauth_auth_url: Optional[str] = config_field(  # type: ignore
         "OAuth auth URL (implies mobile application flow)", param_type=STRING_TYPE
     )
 
-    oauth_ca_file: Optional[str] = config_field("OAuth CA CA Bundle File", param_type=STRING_TYPE)
+    oauth_ca_file: Optional[str] = config_field(  # type: ignore
+        "OAuth CA CA Bundle File", param_type=STRING_TYPE
+    )
 
-    oauth_audience: Optional[str] = config_field(
+    oauth_audience: Optional[str] = config_field(  # type: ignore
         "OAuth audience (Implies Client Credentials Flow)", param_type=STRING_TYPE
     )
 
-    oauth_legacy_username: Optional[str] = config_field(
+    oauth_legacy_username: Optional[str] = config_field(  # type: ignore
         "OAuth username (implies legacy application flow)", param_type=STRING_TYPE
     )
 
-    oauth_legacy_password: Optional[str] = config_field(
+    oauth_legacy_password: Optional[str] = config_field(  # type: ignore
         "OAuth password (implies legacy application flow)", param_type=STRING_TYPE
     )
 
@@ -257,7 +283,7 @@ class _FlatConfig(_NetworkConfig, _PartyConfig):
     from environment variables or command-line arguments.
     """
 
-    parties: Collection[Party] = config_field(
+    parties: Collection[Party] = config_field(  # type: ignore
         "comma-separated list of parties serviced by a participant node",
         param_type=PARTIES_TYPE,
         long_alias="party",
@@ -330,6 +356,7 @@ class NetworkConfig(_NetworkConfig, _TopLevelConfig):
     parties: "Sequence[PartyConfig]" = field(default_factory=tuple)
 
     @classmethod
+    @no_type_check
     def unflatten(cls, config: "_FlatConfig") -> "NetworkConfig":
         """
         Convert a :class:`_FlatConfig` to a :class:`NetworkConfig`.
@@ -362,6 +389,7 @@ class AnonymousNetworkConfig(_NetworkConfig, _TopLevelConfig):
     """
 
     @classmethod
+    @no_type_check
     def unflatten(cls, config: "_FlatConfig") -> "AnonymousNetworkConfig":
         """
         Convert a :class:`_FlatConfig` to a :class:`NetworkConfig`.
@@ -423,6 +451,7 @@ def configure_parser(
     return arg_parser
 
 
+@no_type_check
 def fetch_config(path_or_url: "Optional[str]") -> "Optional[str]":
     """
     Attempts to fetch a config file from what looks like either a path or a URL.
@@ -471,7 +500,10 @@ def _get_env_defaults() -> "Mapping[str, Any]":
         if param.environment_variable:
             value = getenv(param.environment_variable)
             if value:
-                kwargs[fld.name] = param.param_type.value_ctor(value)
+                if param.param_type is not None:
+                    kwargs[fld.name] = param.param_type.value_ctor(value)
+                else:
+                    raise RuntimeError("configuration error")
     return kwargs
 
 
@@ -486,6 +518,7 @@ def _parse_args_ns(args: "argparse.Namespace") -> "Mapping[str, Any]":
     }
 
 
+@no_type_check
 def _parse_args_dict(d: "Mapping[str, Any]") -> "Mapping[str, Any]":
     """
     Convert the key-value pairs in this mapping to keys that are defined on :class:`_FlatConfig`.
