@@ -68,15 +68,20 @@ if TYPE_CHECKING:
 
 __all__ = [
     "BaseEvent",
-    "ContractArchiveEvent",
-    "ContractCreateEvent",
-    "ContractExercisedEvent",
     "InitEvent",
     "OffsetEvent",
-    "PackagesAddedEvent",
     "ReadyEvent",
-    "TransactionEndEvent",
+    "ActiveContractSetEvent",
+    "BaseTransactionEvent",
     "TransactionStartEvent",
+    "TransactionEndEvent",
+    "ContractEvent",
+    "ContractCreateEvent",
+    "ContractExercisedEvent",
+    "ContractArchiveEvent",
+    "PackagesAddedEvent",
+    "ContractFilter",
+    "TransactionFilter",
 ]
 
 
@@ -91,6 +96,9 @@ class BaseEvent:
     time: "Optional[datetime]"
     ledger_id: str
     lookup: "SymbolLookup"
+
+    # TODO: Replace with PackageStore
+    package_store: "Any"
 
     def acs_find_active(self, template: "Union[str, TypeConName]", match=None):
         return self.client.find_active(template, match)

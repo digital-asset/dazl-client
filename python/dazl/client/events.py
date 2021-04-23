@@ -3,12 +3,7 @@
 from typing import Any, Callable, Collection, Iterator, TypeVar
 import warnings
 
-from ..damlast.lookup import (
-    matching_normalizations,
-    normalize,
-    parse_type_con_name,
-    validate_template,
-)
+from ..damlast.lookup import matching_normalizations, normalize, validate_template
 from ..protocols.events import (
     BaseEvent,
     ContractArchiveEvent,
@@ -22,7 +17,7 @@ from ..protocols.events import (
     TransactionStartEvent,
 )
 
-__all__ = ["EventKey", "template_reverse_globs"]
+__all__ = ["EventKey", "_template_reverse_globs"]
 
 T = TypeVar("T")
 
@@ -63,19 +58,10 @@ def create_dispatch(
     return handle
 
 
-def template_reverse_globs(primary_only: bool, package_id: str, type_name: str) -> "Iterator[str]":
+def _template_reverse_globs(primary_only: bool, package_id: str, type_name: str) -> "Iterator[str]":
     """
     Return an iterator over strings that glob to a specified type.
     """
-    warnings.warn(
-        "template_reverse_globs is deprecated; use either "
-        "dazl.damlast.lookup.matching_normalizations (for template_reverse_globs(False, ...)) or "
-        "dazl.damlast.lookup.normalize(for template_reverse_globs(True, ...)). "
-        "Note that the new functions do NOT support periods as a delimiter between "
-        "module names and entity names; you MUST use a colon.",
-        DeprecationWarning,
-    )
-
     # support deprecated type identifiers for usages of this old API to preserve backwards
     # compatibility
     use_deprecated_form = False
@@ -193,4 +179,4 @@ class EventKey:
         m, t = validate_template(template)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            return tuple(f"{prefix}/{g}" for g in template_reverse_globs(primary_only, m, t))
+            return tuple(f"{prefix}/{g}" for g in _template_reverse_globs(primary_only, m, t))

@@ -141,7 +141,14 @@ class _PartyClientImpl:
         :param metadata:
             Information about the connected ledger.
         """
-        evt = InitEvent(self, self.party, current_time, metadata.ledger_id, self.parent.lookup)
+        evt = InitEvent(
+            self,
+            self.party,
+            current_time,
+            metadata.ledger_id,
+            self.parent.lookup,
+            metadata._store,
+        )
         return self.emit_event(evt)
 
     def ready(self) -> Awaitable[None]:
@@ -173,7 +180,9 @@ class _PartyClientImpl:
         """
         return self.bots.notify(data)
 
-    async def emit_ready(self, metadata: LedgerMetadata, time: datetime, offset: str) -> None:
+    async def emit_ready(
+        self, metadata: LedgerMetadata, time: "Optional[datetime]", offset: str
+    ) -> None:
         """
         Emit a ready event specific to this client. This may also emit initial create events and
         initial package added events.
@@ -189,13 +198,13 @@ class _PartyClientImpl:
             have been processed.
         """
         ready_event = ReadyEvent(
-            self, self.party, time, metadata.ledger_id, self.parent.lookup, offset
+            self, self.party, time, metadata.ledger_id, self.parent.lookup, metadata._store, offset
         )
         self._known_packages.update(self.parent.lookup.package_ids())
         await self.emit_event(ready_event)
 
         pkg_event = PackagesAddedEvent(
-            self, self.party, time, metadata.ledger_id, self.parent.lookup, True
+            self, self.party, time, metadata.ledger_id, self.parent.lookup, metadata._store, True
         )
         await self.emit_event(pkg_event)
 
@@ -338,6 +347,7 @@ class _PartyClientImpl:
                     None,
                     metadata.ledger_id,
                     self.parent.lookup,
+                    metadata._store,
                     False,
                 )
                 self._known_packages.update(all_packages)

@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 import pytest
 
-from dazl.client.events import template_reverse_globs
 from dazl.damlast.lookup import matching_normalizations, normalize
+from dazl.model.lookup import template_reverse_globs
 
 
 def test_non_primary_simple_unknown_module():
