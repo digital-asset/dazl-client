@@ -1,0 +1,11 @@
+# Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+[tool.poetry]
+name = "dazl"
+version = "0.0.1"
+description = "sample apps"
+authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]
+
+[packages]
+dazl = { path = "../../../../" }
