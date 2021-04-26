@@ -7,20 +7,28 @@ Support for the gRPC-based Ledger API.
 from asyncio import gather
 from datetime import datetime
 from threading import Event
-from typing import TYPE_CHECKING, AbstractSet, Iterable, Optional, Sequence
+from typing import TYPE_CHECKING, AbstractSet, Iterable, Mapping, Optional, Sequence
 import warnings
 
-from grpc import Channel, RpcError, insecure_channel, secure_channel, ssl_channel_credentials
+from grpc import (
+    Channel,
+    RpcError,
+    StatusCode,
+    insecure_channel,
+    secure_channel,
+    ssl_channel_credentials,
+)
 
 from ... import LOG
+from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import GetTransactionTreesResponse
 from ...damlast.daml_lf_1 import PackageRef
+from ...damlast.parse import parse_archive_payload
 from ...prim import Party, to_party
+from ...protocols.errors import ConnectionTimeoutError, UserTerminateRequest
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
 from .._base import LedgerClient, LedgerConnectionOptions, _LedgerConnection
-from ..errors import ConnectionTimeoutError, UserTerminateRequest
-from ..events import BaseEvent, ContractFilter, TransactionFilter
 from .pb_parse_event import (
     BaseEventDeserializationContext,
     serialize_acs_request,
@@ -29,24 +37,27 @@ from .pb_parse_event import (
     to_transaction_events,
 )
 
-if TYPE_CHECKING:
-    from ...client._conn_settings import HTTPConnectionSettings
-    from ...client.commands import CommandPayload
-    from ...client.ledger import LedgerMetadata
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+
+    if TYPE_CHECKING:
+        from ...client.commands import CommandPayload
+        from ...client.ledger import LedgerMetadata
+        from ...model.network import HTTPConnectionSettings
+        from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
+        from ...model.types_store import PackageProvider, PackageStore
 
 
 class GRPCv1LedgerClient(LedgerClient):
-    def __init__(self, connection: "GRPCv1Connection", ledger: "LedgerMetadata", party: "Party"):
-        from ...client.ledger import LedgerMetadata
-
+    def __init__(self, connection: "GRPCv1Connection", ledger: "LedgerMetadata", party: Party):
         self.connection = safe_cast(GRPCv1Connection, connection)
-        self.ledger = safe_cast(LedgerMetadata, ledger)
+        self.ledger = ledger
         self.party = to_party(party)
 
-    def commands(self, commands: "CommandPayload") -> None:
+    async def commands(self, commands: "CommandPayload") -> None:
         serializer = self.ledger.serializer
         request = serializer.serialize_command_request(commands)
-        return self.connection.invoker.run_in_executor(
+        return await self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request)
         )
 
@@ -56,8 +67,8 @@ class GRPCv1LedgerClient(LedgerClient):
             context = BaseEventDeserializationContext(
                 None,
                 self.connection.options.lookup,
-                self.party,
                 self.ledger._store,
+                self.party,
                 self.ledger.ledger_id,
             )
 
@@ -108,6 +119,7 @@ class GRPCv1LedgerClient(LedgerClient):
             lambda: self.connection.transaction_service.GetTransactions(request)
         )
 
+        tt_stream = None  # type: Optional[Iterable[GetTransactionTreesResponse]]
         if transaction_filter.templates is None:
             # Filtering by package must disable the ability to handle exercise nodes; we may want to
             # consider dropping client-side support for exercise events anyway because they are not
@@ -115,8 +127,6 @@ class GRPCv1LedgerClient(LedgerClient):
             tt_stream = await self.connection.invoker.run_in_executor(
                 lambda: self.connection.transaction_service.GetTransactionTrees(request)
             )
-        else:
-            tt_stream = None
 
         tx_stream = await tx_future
 
@@ -133,6 +143,22 @@ class GRPCv1LedgerClient(LedgerClient):
         return await self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetLedgerEnd(request).offset.absolute
         )
+
+
+def grpc_set_time(connection: "GRPCv1Connection", ledger_id: str, new_datetime: datetime) -> None:
+    from . import model as G
+
+    request = G.GetTimeRequest(ledger_id=ledger_id)
+    response = connection.time_service.GetTime(request)
+    ts = next(iter(response))
+
+    request = G.SetTimeRequest(
+        ledger_id=ledger_id,
+        current_time=ts.current_time,
+        new_time=datetime_to_timestamp(new_datetime),
+    )
+    connection.time_service.SetTime(request)
+    LOG.info("Time on the server changed by the local client to %s.", new_datetime)
 
 
 def grpc_upload_package(connection: "GRPCv1Connection", dar_contents: bytes) -> None:
@@ -200,29 +226,46 @@ def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterabl
     from .pb_ser_command import ProtobufSerializer
 
     LOG.info("grpc_main_thread...")
+    with warnings.catch_warnings():
 
-    package_provider = GRPCPackageProvider(connection, ledger_id)
+        warnings.simplefilter("ignore", DeprecationWarning)
+        from ...model.types_store import PackageStore
+
+        store = PackageStore.empty()
+
+        package_provider = GRPCPackageProvider(connection, ledger_id)
+
+        if connection.options.eager_package_fetch:
+            grpc_package_sync(package_provider, store)
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
-        yield LedgerMetadata(
-            ledger_id=ledger_id,
-            package_loader=PackageLoader(
-                package_lookup=connection.options.lookup,
-                conn=package_provider,
-                timeout=connection.options.connect_timeout,
-            ),
-            serializer=ProtobufSerializer(connection.options.lookup),
-            protocol_version="v1",
-            # TODO: Replace with PackageStore
-            store=object(),
+        package_loader = PackageLoader(
+            package_lookup=connection.options.lookup,
+            conn=package_provider,
+            timeout=connection.options.connect_timeout,
         )
 
+    yield LedgerMetadata(
+        ledger_id=ledger_id,
+        store=store,
+        package_loader=package_loader,
+        serializer=ProtobufSerializer(connection.options.lookup),
+        protocol_version="v1",
+    )
+
+    # poll for package updates once a second
     while not connection._closed.wait(1):
-        pass
+        try:
+            if connection.options.eager_package_fetch:
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", DeprecationWarning)
+                    grpc_package_sync(package_provider, store)
+        except Exception as ex:
+            if not isinstance(ex, RpcError) or ex.code() != StatusCode.CANCELLED:
+                LOG.warning("Package syncing raised an exception.", exc_info=True)
 
     LOG.debug("The gRPC monitor thread is now shutting down.")
-    yield None
 
 
 class GRPCPackageProvider:
@@ -249,6 +292,51 @@ class GRPCPackageProvider:
 
     def fetch_package(self, package_id: "PackageRef") -> bytes:
         return self.package_bytes(package_id)
+
+    def get_all_packages(self) -> "Mapping[PackageRef, bytes]":
+        return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
+
+
+def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore") -> "None":
+    warnings.warn(
+        "grpc_package_sync is deprecated; there is no replacement", DeprecationWarning, stacklevel=2
+    )
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        from .pb_parse_metadata import find_dependencies, parse_daml_metadata_pb
+
+        LOG.debug("grpc_package_sync started...")
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        all_package_ids = package_provider.get_package_ids()
+        loaded_package_ids = {a.hash for a in store.archives()}
+        expected_package_ids = store.expected_package_ids()
+
+        def should_load(p: str) -> bool:
+            # TODO: Filtering by expected package IDs may cause packages to never fully load due to
+            #  transitive dependencies; here we put the onus on the app writer to ensure that they
+            #  supply the complete graph, and we don't even warn them if there is an issue (but
+            #  we could only actually warn them if we parse the archive, which is the expensive
+            #  operation we're trying to avoid).
+            return (
+                expected_package_ids is None or p in expected_package_ids
+            ) and p not in loaded_package_ids
+
+        metadatas_pb = {}
+        for package_id in all_package_ids:
+            if should_load(package_id):
+                archive_payload = package_provider.fetch_package(package_id)
+                metadatas_pb[package_id] = parse_archive_payload(package_id, archive_payload)
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        adr = find_dependencies(metadatas_pb, loaded_package_ids)
+        for package_id, archive_bytes in adr.sorted_archives.items():
+            store.register_all(parse_daml_metadata_pb(package_id, archive_bytes))
+
+        LOG.debug("grpc_package_sync ended.")
 
 
 def grpc_create_channel(settings: "HTTPConnectionSettings") -> Channel:

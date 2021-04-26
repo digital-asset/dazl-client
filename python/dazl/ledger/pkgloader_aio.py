@@ -47,6 +47,8 @@ class PackageLoader:
     information.
     """
 
+    _allow_deprecated_identifiers = True
+
     def __init__(
         self,
         package_lookup: "MultiPackageLookup",
@@ -104,7 +106,9 @@ class PackageLoader:
                     )
                     raise
 
-                pkg_id, name = validate_template(ex.ref)
+                pkg_id, name = validate_template(
+                    ex.ref, allow_deprecated_identifiers=self._allow_deprecated_identifiers
+                )
                 if pkg_id == "*":
                     # we don't know what package contains this type, so we have no
                     # choice but to look in all known packages

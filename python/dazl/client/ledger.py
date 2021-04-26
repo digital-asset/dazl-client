@@ -5,11 +5,14 @@
 Types that describe the behavior of the ledger itself.
 """
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING
 import warnings
 
 from ..ledger.pkgloader_aio import PackageLoader
 from ..protocols.serializers import Serializer
+
+if TYPE_CHECKING:
+    from ..model.types_store import PackageStore
 
 __all__ = ["LedgerMetadata"]
 
@@ -24,7 +27,7 @@ class LedgerMetadata:
     package_loader: "PackageLoader"
     serializer: "Serializer"
     protocol_version: str
-    _store: Any
+    _store: "PackageStore"
 
     def __init__(self, ledger_id, package_loader, serializer, protocol_version, store):
         object.__setattr__(self, "ledger_id", ledger_id)
@@ -34,7 +37,7 @@ class LedgerMetadata:
         object.__setattr__(self, "_store", store)
 
     @property
-    def store(self) -> "Any":
+    def store(self) -> "PackageStore":
         if self._store is None:
             raise Exception("eager_package_fetch is disabled, which disables the PackageStore")
 

@@ -65,6 +65,7 @@ from ..prim import ContractData, ContractId, Party
 
 if TYPE_CHECKING:
     from ..client.state import ContractContextualData
+    from ..model.types_store import PackageStore
 
 __all__ = [
     "BaseEvent",
@@ -96,9 +97,7 @@ class BaseEvent:
     time: "Optional[datetime]"
     ledger_id: str
     lookup: "SymbolLookup"
-
-    # TODO: Replace with PackageStore
-    package_store: "Any"
+    package_store: "PackageStore"
 
     def acs_find_active(self, template: "Union[str, TypeConName]", match=None):
         return self.client.find_active(template, match)

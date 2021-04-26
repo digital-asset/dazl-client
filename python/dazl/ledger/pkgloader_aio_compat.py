@@ -52,8 +52,10 @@ class PackageLoader(NewPackageLoader):
     Backwards-compatibility shim for dazl.client.pkg_loader.PackageLoader that exposes the same
     historical API but also emits a deprecation warning on construction.
 
-    This shim will be removed in v9.
+    This shim will be removed in v8.
     """
+
+    _allow_deprecated_identifiers = False
 
     def __init__(
         self,
