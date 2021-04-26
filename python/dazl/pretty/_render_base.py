@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+# type: ignore
 
 from io import StringIO
 import json
@@ -33,6 +34,15 @@ from ..damlast.visitor import ExprVisitor, ModuleVisitor, PackageVisitor, TypeVi
 from ..prim import to_date, to_datetime
 from .options import PrettyOptions
 from .util import is_hidden_module_name, maybe_parentheses
+
+__all__ = [
+    "PrettyPrintBase",
+    "CodeContext",
+    "decode_special_chars",
+    "get_pretty_printer_type",
+    "register_pretty_printer",
+    "pretty_print_syntax",
+]
 
 
 # noinspection PyMethodMayBeStatic
@@ -78,6 +88,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         """
         Render everything in a :class:`PackageStore`.
         """
+        if self.lookup is None:
+            raise RuntimeError("render_store cannot be used unless lookup is provided")
+
         with StringIO() as buf:
             buf.write("from dazl import create, exercise, module, TemplateMeta, ChoiceMeta\n\n")
             for archive in self.lookup.archives():
@@ -176,7 +189,13 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
                 template_data_types[key] = (template, data_type)
 
         for template, data_type in (*bare_data_types.values(), *template_data_types.values()):
-            if self.context.show_hidden_types or not data_type.name.segments[0].startswith("$"):
+            if (
+                data_type is not None
+                and data_type.name is not None
+                and (
+                    self.context.show_hidden_types or not data_type.name.segments[0].startswith("$")
+                )
+            ):
                 at_least_one = True
                 lines.append(self.visit_def_template(template, data_type))
                 lines.append("")
@@ -537,9 +556,9 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
         return self.with_type_abs(ty_abs.param).visit_expr(ty_abs.body)
 
     def visit_expr_case(self, case: "Case") -> "str":
-        return None
+        raise NotImplementedError("visit_expr_case needs an implementation")
 
-    def visit_expr_casealt(self, alt: "CaseAlt", type: "Optional[Type]" = None) -> str:
+    def visit_expr_casealt(self, alt: "CaseAlt") -> str:
         pattern_text = alt.Sum_match(
             self.visit_expr_casealt_default,
             self.visit_expr_casealt_variant,
@@ -571,10 +590,10 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_expr_casealt_prim_con(self, prim_con: "PrimCon"):
         return self.visit_expr_prim_con(prim_con)
 
-    def visit_expr_casealt_nil(self, nil: "Unit", type: "Optional[Type]" = None):
+    def visit_expr_casealt_nil(self, nil: "Unit", type: "Type" = None):
         return self.visit_expr_nil(Expr.Nil(type))
 
-    def visit_expr_casealt_cons(self, cons: "CaseAlt.Cons", type: "Optional[Type]" = None):
+    def visit_expr_casealt_cons(self, cons: "CaseAlt.Cons", type: "Type" = None):
         return self.visit_expr_cons(
             Expr.Cons(front=(Expr(var=cons.var_head),), tail=Expr(var=cons.var_tail), type=type)
         )
@@ -860,10 +879,6 @@ def decode_special_chars(pp: str) -> str:
 
 
 class _PrettyPrinters:
-    """
-    Holder for
-    """
-
     def __init__(self):
         self._printers = {}  # type: Dict[str, TType[PrettyPrintBase]]
 
@@ -876,6 +891,7 @@ class _PrettyPrinters:
         for key, format_type in self._printers.items():
             if key.startswith(format):
                 return format_type
+        raise ValueError(f"unknown format: {format}")
 
 
 _PRETTY_PRINTERS = _PrettyPrinters()
