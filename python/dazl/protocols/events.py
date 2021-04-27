@@ -218,7 +218,7 @@ class ContractExercisedEvent(ContractEvent):
     Event raised when dazl automation detects a contract exercised.
     """
 
-    contract_creating_event_id: str
+    contract_creating_event_id: None
     choice: str
     choice_args: Any
     acting_parties: Sequence[str]

@@ -1,9 +1,10 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import datetime
+from datetime import datetime
+from functools import partial
 from threading import Event, RLock, Thread
-from typing import TYPE_CHECKING, Awaitable, Dict, Iterable, Optional, Union
+from typing import TYPE_CHECKING, Dict, Iterable, Optional, Union
 
 from .. import LOG
 from ..prim import Party
@@ -16,6 +17,9 @@ from .v1.grpc import GRPCv1Connection
 if TYPE_CHECKING:
     from ..client._conn_settings import HTTPConnectionSettings
     from ..client.ledger import LedgerMetadata
+
+
+__all__ = ["AutodetectLedgerNetwork", "AutodetectConnection"]
 
 
 class AutodetectLedgerNetwork(LedgerNetwork):
@@ -37,8 +41,8 @@ class AutodetectLedgerNetwork(LedgerNetwork):
         self._main_thread = Thread(target=self._main, daemon=True)
         self._main_thread.start()
 
-    def ledger(self) -> "Awaitable[LedgerMetadata]":
-        return self._ledger_future
+    async def ledger(self) -> "LedgerMetadata":
+        return await self._ledger_future
 
     async def connect_anonymous(
         self, settings: "HTTPConnectionSettings", context_path: "Optional[str]"
@@ -66,17 +70,31 @@ class AutodetectLedgerNetwork(LedgerNetwork):
         if ledger.protocol_version == "v1":
             from .v1.grpc import GRPCv1LedgerClient
 
-            return GRPCv1LedgerClient(conn, ledger, party)
+            return GRPCv1LedgerClient(conn, ledger, Party(party))
         elif ledger.protocol_version == "v0":
             raise RuntimeError(f"Unsupported protocol version: {ledger.protocol_version}")
         else:
             raise RuntimeError(f"Unknown protocol version: {ledger.protocol_version}")
 
     async def upload_package(self, dar_contents: bytes) -> None:
+        connection = self._first_connection
+        if connection is None:
+            raise RuntimeError("cannot upload a package until a connection has been established")
+
         from .v1.grpc import grpc_upload_package
 
+        await self._invoker.run_in_executor(partial(grpc_upload_package, connection, dar_contents))
+
+    async def set_time(self, new_time: datetime) -> None:
+        connection = self._first_connection
+        if connection is None:
+            raise RuntimeError("cannot upload a package until a connection has been established")
+
+        from .v1.grpc import grpc_set_time
+
+        ledger = await self.ledger()
         return await self._invoker.run_in_executor(
-            lambda: grpc_upload_package(self._first_connection, dar_contents)
+            partial(grpc_set_time, connection, ledger.ledger_id, new_time)
         )
 
     async def close(self) -> None:
@@ -133,7 +151,9 @@ class AutodetectLedgerNetwork(LedgerNetwork):
                 LOG.debug("Initializing a connection to %s...", settings)
                 stub = self._connections.get(settings)
                 if stub is None:
-                    stub = AutodetectConnection(self._invoker, settings, context_path)
+                    stub = AutodetectConnection(
+                        self._invoker, self._options, settings, context_path
+                    )
                     self._connections[settings] = stub
                 return stub
         except:  # noqa

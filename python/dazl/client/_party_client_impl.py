@@ -527,8 +527,8 @@ class _PartyClientImpl:
         LOG.info("Writer loop for party %s is starting...", self.party)
         ledger_fut = ensure_future(self._pool.ledger())
 
-        client = self._client_fut.result()  # type: LedgerClient
-        metadata = ledger_fut.result()  # type: LedgerMetadata
+        client = await self._client_fut  # type: LedgerClient
+        metadata = await ledger_fut  # type: LedgerMetadata
         validator = ValidateSerializer(self.parent.lookup)
 
         self._writer.pending_commands.start()
