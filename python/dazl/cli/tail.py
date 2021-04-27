@@ -11,8 +11,11 @@ from typing import Optional
 from .. import LOG, Network
 from ..client.config import NetworkConfig, configure_parser
 from ..damlast.daml_types import con
+from ..prim import Party
 from ..values import Context, JsonDecoder
 from ._base import CliCommand
+
+__all__ = ["TailCommand"]
 
 
 def elide_at(s: str, limit: "Optional[int]") -> str:
