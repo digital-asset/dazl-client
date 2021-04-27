@@ -6,8 +6,7 @@ Endpoints for managing parties/bots connected via a dazl client.
 """
 
 from dataclasses import asdict, dataclass
-from typing import TYPE_CHECKING, Collection, Sequence
-import warnings
+from typing import TYPE_CHECKING, Collection, NoReturn, Optional, Sequence
 
 from ..client import Bot, _NetworkImpl
 from ..client.bots import SourceLocation
@@ -27,7 +26,7 @@ class BotInfoList:
 class BotInfo:
     id: str
     name: str
-    party: Party
+    party: "Optional[Party]"
     state: str
     entries: "Sequence[BotInfoEntry]"
 
@@ -35,7 +34,7 @@ class BotInfo:
 @dataclass(frozen=True)
 class BotInfoEntry:
     event_key: str
-    source_location: "SourceLocation"
+    source_location: "Optional[SourceLocation]"
 
 
 def build_routes(network_impl: "_NetworkImpl") -> "Collection[web.AbstractRouteDef]":
@@ -76,12 +75,12 @@ def build_routes(network_impl: "_NetworkImpl") -> "Collection[web.AbstractRouteD
 
         if action.lower() == "pause":
             bot.pause()
-            raise web.HTTPAccepted()
+            return web.HTTPAccepted()
         elif action.lower() == "resume":
             bot.resume()
-            raise web.HTTPAccepted()
+            return web.HTTPAccepted()
         else:
-            raise web.HTTPBadRequest()
+            return web.HTTPBadRequest()
 
     def get_bot(request: "web.Request") -> "Bot":
         """
