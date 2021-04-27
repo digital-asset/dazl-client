@@ -230,10 +230,19 @@ class Context:
         """
         Convert a contract ID string to a :class:`ContractId`.
         """
-        if isinstance(contract_id, ContractId):
-            return contract_id
-        elif isinstance(contract_id, str):
-            return ContractId(element_type.con.tycon, contract_id)
+        with warnings.catch_warnings():
+            # TODO: Drop this and switch to new-style ContractIds
+            warnings.simplefilter("ignore", DeprecationWarning)
+            from ..model.core import ContractId as DeprecatedContractId
+
+            if isinstance(contract_id, DeprecatedContractId):
+                return contract_id
+            elif isinstance(contract_id, ContractId):
+                # convert new-style ContractId instances to deprecated subclasses; for now, this is
+                # still the canonical form of a ContractId until the deprecated version is dropped
+                return DeprecatedContractId(contract_id.value, element_type.con.tycon)
+            else:
+                return DeprecatedContractId(contract_id, element_type.con.tycon)
 
     def resolve_data_type(self, con: "Type.Con") -> "DefDataType":
         """
