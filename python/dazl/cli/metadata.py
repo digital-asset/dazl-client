@@ -4,18 +4,20 @@
 """
 This module prints the metadata obtained from a remote server.
 """
+
 from argparse import ArgumentParser
-from typing import Collection, List
+from typing import Collection
 
 from .. import LOG, Network
 from ..client.config import AnonymousNetworkConfig, configure_parser
-from ..damlast.daml_lf_1 import Archive
+from ..damlast import DarFile
 from ..damlast.lookup import MultiPackageLookup
-from ..damlast.pkgfile import DarFile
 from ..damlast.protocols import SymbolLookup
 from ..pretty import PrettyOptions, get_pretty_printer
 from ..protocols.errors import ConnectionTimeoutError, UserTerminateRequest
 from ._base import CliCommand
+
+__all__ = ["PrintMetadataCommand"]
 
 
 class PrintMetadataCommand(CliCommand):
@@ -45,12 +47,11 @@ class PrintMetadataCommand(CliCommand):
         return self.execute_runtime_metadata(config, options)
 
     @staticmethod
-    def execute_static_metadata(files: "Collection[str]", options: PrettyOptions) -> int:
-        archives = []  # type: List[Archive]
+    def execute_static_metadata(files: Collection[str], options: PrettyOptions) -> int:
+        lookup = MultiPackageLookup()
         for file in files:
-            dar_file = DarFile(file)
-            archives.extend(dar_file.archives())
-        lookup = MultiPackageLookup(archives)
+            with DarFile(file) as dar_file:
+                lookup.add_archive(*dar_file.archives())
         _process_metadata(lookup, options)
         return 0
 
@@ -69,12 +70,11 @@ class PrintMetadataCommand(CliCommand):
 
 
 async def _main(network: Network, options):
-    metadata = await network.aio_global().metadata()
-    await metadata.package_loader.load_all()
+    await network.aio_global().metadata()
     _process_metadata(network.lookup, options)
 
 
-def _process_metadata(store: "SymbolLookup", options: PrettyOptions):
+def _process_metadata(lookup: SymbolLookup, options: PrettyOptions) -> None:
     import sys
 
     if sys.stdout.isatty():
@@ -90,7 +90,10 @@ def _process_metadata(store: "SymbolLookup", options: PrettyOptions):
         pygments = None
         formatter = None
 
-    pretty_printer = get_pretty_printer(options.format, options, store)
+    pretty_printer = get_pretty_printer(options.format, options, lookup)
+    if pretty_printer is None:
+        raise RuntimeError(f"unknown format: {options.format}")
+
     code = pretty_printer.render_store()
     lexer = pretty_printer.lexer()
 
