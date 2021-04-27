@@ -4,15 +4,18 @@
 The core scheduling of logic, managing the tricky interaction between the man asyncio event loop and
 background threads.
 """
-
 from asyncio import CancelledError, Future, InvalidStateError, gather, get_event_loop, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 import signal
+from typing import List
+import warnings
 
-from ..prim import to_timedelta
+from ..prim import TimeDeltaLike, to_timedelta
 from ..util.asyncio_util import execute_in_loop, safe_create_future
 from ._base import RunLevel
+
+__all__ = ["Invoker", "DEFAULT_TIMEOUT"]
 
 DEFAULT_TIMEOUT = timedelta(seconds=30)
 
@@ -25,11 +28,11 @@ class Invoker:
     This serves a similar purpose to Akka's ExecutionContext in Scala.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.level = RunLevel.RUN_FOREVER
         self.loop = None
         self.executor = None
-        self._futures = []
+        self._futures = []  # type: List[Future]
 
     async def __aenter__(self):
         return self
@@ -44,7 +47,9 @@ class Invoker:
             pass
 
     def create_future(self):
-        f = safe_create_future()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            f = safe_create_future()
         f.add_done_callback(self._unhook_future)
         self._futures.append(f)
         return f
@@ -88,7 +93,7 @@ class Invoker:
         if self.executor is None:
             self.executor = ThreadPoolExecutor()
 
-    def run_in_loop(self, func, timeout: float = 30.0):
+    def run_in_loop(self, func, timeout: TimeDeltaLike = 30.0):
         """
         Schedule a normal function or coroutine function to be run on the event loop, and block
         until the function has returned.
@@ -109,11 +114,7 @@ class Invoker:
 
         return self.loop.run_in_executor(self.executor, func)
 
-    def install_signal_handlers(self):
-        """
-
-        :return:
-        """
+    def install_signal_handlers(self) -> None:
         try:
             if self.loop is not None:
                 self.loop.add_signal_handler(signal.SIGINT, self.handle_sigint)
@@ -125,8 +126,8 @@ class Invoker:
             # SIGINT and SIGQUIT are not supported on Windows.
             pass
 
-    def handle_sigint(self):
+    def handle_sigint(self) -> None:
         self.level = RunLevel.TERMINATE_GRACEFULLY
 
-    def handle_sigquit(self):
+    def handle_sigquit(self) -> None:
         self.level = RunLevel.TERMINATE_IMMEDIATELY
