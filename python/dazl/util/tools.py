@@ -17,11 +17,14 @@ from typing import (
     TypeVar,
     Union,
 )
+import warnings
 
 T = TypeVar("T")
 K = TypeVar("K")
 V = TypeVar("V")
-E = TypeVar("E", bound=Exception)
+
+
+__all__ = ["boundary_iter", "flatten", "as_list", "get_matches"]
 
 
 def boundary_iter(obj: Iterable[T]) -> Generator[Tuple[bool, T], None, None]:
@@ -50,11 +53,11 @@ def boundary_iter(obj: Iterable[T]) -> Generator[Tuple[bool, T], None, None]:
         try:
             entry = next(gen)
             if prev_entry is not None:
-                yield (False, prev_entry)
+                yield False, prev_entry
             prev_entry = entry
         except StopIteration:
             if prev_entry is not None:
-                yield (True, prev_entry)
+                yield True, prev_entry
             break
 
 
@@ -86,8 +89,14 @@ def as_list(obj: "Union[None, T, Collection[Union[None, T]]]") -> "List[T]":
         return [obj]
 
 
+def __key_error(key: str) -> Exception:
+    return KeyError(key)
+
+
 def get_matches(
-    mapping: "Mapping[K, V]", key: "K", exc_class: "Optional[Callable[[K], E]]" = KeyError
+    mapping: "Mapping[str, V]",
+    key: "str",
+    exc_class: "Optional[Callable[[str], Exception]]" = __key_error,
 ) -> "Collection[V]":
     """
     Return the value (as a singleton collection) associated with a key. If the key is equal to the
@@ -110,6 +119,7 @@ def get_matches(
         * A collection of one if a match is found for the supplied key;
         * All values of the mapping if the key is `""*""`.
     """
+    warnings.warn("get_matches is deprecated; there is no replacement.", DeprecationWarning)
     if key == "*":
         return tuple(mapping.values())
 
