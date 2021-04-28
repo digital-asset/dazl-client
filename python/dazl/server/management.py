@@ -7,6 +7,7 @@ Endpoints for managing parties/bots connected via a dazl client.
 
 from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Collection, NoReturn, Optional, Sequence
+import warnings
 
 from ..client import Bot, _NetworkImpl
 from ..client.bots import SourceLocation

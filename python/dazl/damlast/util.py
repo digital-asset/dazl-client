@@ -34,14 +34,13 @@ def var(var: str) -> "Type":
 def values_by_module(
     store: "PackageStore",
 ) -> "Mapping[ModuleRef, Mapping[Sequence[str], Union[Expr, OldType]]]":
-    from collections import defaultdict
+    warnings.warn(
+        "dazl.damlast.util.values_by_module is deprecated; there is no replacement.",
+        DeprecationWarning,
+    )
+    from ..pretty.render_python import values_by_module  # type: ignore
 
-    d = defaultdict(defaultdict)
-    for vn, vv in store._value_types.items():
-        d[vn.module][vn.name] = vv
-    for vn, vv in store._data_types.items():
-        d[vn.module][vn.name] = vv
-    return d
+    return values_by_module(store)  # type: ignore
 
 
 # noinspection PyShadowingBuiltins
@@ -76,11 +75,9 @@ def pack_arrow_type(types: "Sequence[Type]") -> "Optional[Type]":
     if not types:
         return None
 
-    from .daml_types import Arrow
-
     t = types[-1]
     for type in reversed(types[0:-1]):
-        t = Arrow(type, t)
+        t = arrow_type(type, t)
     return t
 
 
@@ -131,7 +128,7 @@ def package_ref(obj: "Union[ModuleRef, _Name, TypeReference]") -> "PackageRef":
     """
     from ..model.types import TypeReference
 
-    # TODO: Rewrite for dazl 8.0.0 when the internal structure of a ModuleRef is changed.
+    # TODO: Rewrite for dazl 7.0.0 when the internal structure of a ModuleRef is changed.
     if isinstance(obj, ModuleRef):
         # noinspection PyProtectedMember
         return obj._package_id
@@ -151,7 +148,7 @@ def module_name(obj: "Union[ModuleRef, _Name, TypeReference]") -> "DottedName":
     """
     from ..model.types import TypeReference
 
-    # TODO: Rewrite for dazl 8.0.0 when the internal structure of ModuleRefs and _Name are changed.
+    # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     if isinstance(obj, ModuleRef):
         # noinspection PyProtectedMember
         return obj._module_name
@@ -171,7 +168,7 @@ def module_ref(obj: "Union[_Name, TypeReference]") -> "ModuleRef":
     """
     from ..model.types import TypeReference
 
-    # TODO: Rewrite for dazl 8.0.0 when the internal structure of ModuleRefs and _Name are changed.
+    # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     if isinstance(obj, _Name):
         # noinspection PyProtectedMember
         return obj._module
@@ -189,10 +186,10 @@ def package_local_name(obj: "Union[_Name, TypeReference]") -> str:
     """
     from ..model.types import TypeReference
 
+    # TODO: Rewrite for dazl 7.0.0 when the internal structure of a ModuleRef is changed.
     if isinstance(obj, TypeReference):
         obj = obj.con
 
-    # TODO: Rewrite for dazl 8.0.0 when the internal structure of a ModuleRef is changed.
     if isinstance(obj, _Name):
         # noinspection PyProtectedMember
         return f'{obj._module._module_name}:{".".join(obj._name)}'
@@ -205,12 +202,9 @@ def module_local_name(obj: "Union[_Name, TypeReference]") -> str:
     Return the name of a DAML object, assuming that the referent exists in the same module as the
     target (i.e., in the same package and in the same module).
     """
+    # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     from ..model.types import TypeReference
 
-    if isinstance(obj, TypeReference):
-        obj = obj.con
-
-    # TODO: Rewrite for dazl 8.0.0 when the internal structure of ModuleRefs and _Name are changed.
     if isinstance(obj, _Name):
         # noinspection PyProtectedMember
         return ".".join(obj._name)

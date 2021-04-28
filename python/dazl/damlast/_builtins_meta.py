@@ -6,10 +6,15 @@ This module contains supporting infrastructure for built-in method definitions f
 DAML-LF files.
 """
 
-from typing import Any, Optional, Sequence, Union
+from typing import Any, Optional, Sequence, Type as PyType, Union
+import warnings
 
 from .daml_lf_1 import BuiltinFunction, Expr, Type, ValName
 from .util import package_local_name
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from ..model.types import TypeReference
 
 
 class _BuiltinMeta(type):
@@ -42,16 +47,16 @@ class Builtin(metaclass=_BuiltinMeta):
     def evaluate(self, type_args: "Sequence[Type]", args: "Sequence[Any]") -> "Any":
         raise NotImplementedError()
 
-    def simplify(self, type_args: "Sequence[Type]", args: "Sequence[Expr]") -> "Expr":
+    def simplify(self, type_args: "Sequence[Type]", args: "Sequence[Expr]") -> "Optional[Expr]":
         raise NotImplementedError()
 
 
 class BuiltinTable:
     def __init__(self):
-        self.by_name = dict()
-        self.by_builtin = dict()
+        self.by_name = dict()  # type: [BuiltinFunction, PyType[Builtin]]
+        self.by_builtin = dict()  # type: [str, PyType[Builtin]]
 
-    def add(self, builtin: Builtin):
+    def add(self, builtin: "PyType[Builtin]"):
         if builtin.builtin is not None:
             self.by_builtin[builtin.builtin] = builtin
         elif builtin.name is not None:
@@ -59,13 +64,17 @@ class BuiltinTable:
         else:
             raise ValueError(f"A builtin could not be registered! {builtin!r}")
 
-    def resolve(self, ref: "Union[str, ValName, BuiltinFunction]") -> "Optional[Builtin]":
+    def resolve(
+        self, ref: "Union[str, ValName, TypeReference, BuiltinFunction]"
+    ) -> "Optional[Builtin]":
         """
         Return a :class:`Builtin` implementation for the name or reference if one is defined.
         """
         if isinstance(ref, BuiltinFunction):
             # All BuiltinFunctions MUST be defined
             return self.by_builtin[ref]
+        elif isinstance(ref, (ValName, TypeReference)):
+            return self.by_name.get(package_local_name(ref))
         elif isinstance(ref, str):
             return self.by_name.get(ref)
         else:

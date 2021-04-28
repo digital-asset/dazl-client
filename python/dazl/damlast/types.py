@@ -4,14 +4,12 @@
 from typing import TYPE_CHECKING, Callable, Optional, no_type_check
 import warnings
 
+from ..util.typing import safe_cast
 from ._base import T
 from .daml_lf_1 import PrimType, Type
 
 if TYPE_CHECKING:
     from ..model.types import Type as OldType
-
-
-__all__ = ["var", "match_prim_type", "get_old_type"]
 
 
 def var(var_: str) -> "Type":
@@ -90,8 +88,7 @@ def match_prim_type(
 
 def get_old_type(daml_type: "Type") -> "OldType":
     warnings.warn(
-        "dazl.model.types.Type and get_old_type are deprecated; "
-        "use the types defined in dazl.damlast.daml_lf_1 instead.",
+        "get_old_type is deprecated; use the types of dazl.damlast.daml_lf_1 instead",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -99,7 +96,7 @@ def get_old_type(daml_type: "Type") -> "OldType":
         warnings.simplefilter("ignore", DeprecationWarning)
         from ..model.types import UnsupportedType
 
-        return daml_type.Sum_match(
+        return safe_cast(Type, daml_type).Sum_match(
             _old_type_var,
             _old_type_con,
             _old_type_prim,

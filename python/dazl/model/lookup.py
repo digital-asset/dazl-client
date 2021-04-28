@@ -5,7 +5,7 @@
 This module has been relocated to ``dazl.damlast.lookup``.
 """
 
-from typing import TYPE_CHECKING, Any, Iterator, Tuple, Union
+from typing import Iterator, Tuple
 import warnings
 
 from ..damlast.daml_lf_1 import PackageRef
@@ -13,10 +13,10 @@ from ..damlast.lookup import validate_template as _validate_template
 
 __all__ = ["validate_template", "template_reverse_globs"]
 
-if TYPE_CHECKING:
-    from ..damlast.daml_lf_1 import PackageRef
 warnings.warn(
-    "dazl.model.lookup is deprecated; use dazl.damlast.lookup instead.", DeprecationWarning
+    "dazl.model.lookup is deprecated; use dazl.damlast.lookup instead.",
+    DeprecationWarning,
+    stacklevel=2,
 )
 
 

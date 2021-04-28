@@ -26,6 +26,8 @@ class DarFile:
     This class is _not_ thread-safe.
     """
 
+    filename: Optional[str]
+
     def __init__(self, dar: "Dar"):
         """
         Initialize a new DarFile.
@@ -97,7 +99,7 @@ class DarFile:
         :class:`CachedDarFile` is a better choice than `DarFile` if this method is frequently called
         on the same :class:`DarFile`, as package parsing is an expensive operation.
         """
-        return [parse_archive(a.hash, a.payload) for a in self._pb_archives()]
+        return [parse_archive(PackageRef(a.hash), a.payload) for a in self._pb_archives()]
 
     def package(self, package_id: "PackageRef") -> "Package":
         """
@@ -133,7 +135,7 @@ class DarFile:
         """
         Return the set of package IDs from this DAR.
         """
-        return frozenset(a.hash for a in self._pb_archives())
+        return frozenset(PackageRef(a.hash) for a in self._pb_archives())
 
     async def get_package(self, package_id: "PackageRef") -> bytes:
         """
@@ -155,11 +157,11 @@ class DarFile:
         """
         return self.package_ids()
 
-    def _dalf_names(self) -> "Generator[str, None, None]":
+    def _dalf_names(self) -> "Generator[PackageRef, None, None]":
         """
         Return a generator over the names of DALF files in this DarFile.
         """
-        return (name for name in self._zip.namelist() if name.endswith(".dalf"))
+        return (PackageRef(name) for name in self._zip.namelist() if name.endswith(".dalf"))
 
     def _pb_archives(self) -> "Generator[pb.Archive, None, None]":
         """
@@ -187,7 +189,7 @@ class CachedDarFile:
         from threading import Lock
 
         self._lock = Lock()
-        self._archives = None
+        self._archives = None  # type: Optional[Collection[Archive]]
 
     def archives(self) -> "Collection[Archive]":
         if self._archives is None:
