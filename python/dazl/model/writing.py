@@ -11,20 +11,18 @@ from ..client.commands import (
     CommandDefaults,
     CommandPayload,
     CommandsOrCommandSequence,
+    CreateAndExerciseCommand,
+    CreateCommand,
     EventHandlerResponse,
+    ExerciseByKeyCommand,
+    ExerciseCommand,
     create,
     create_and_exercise,
     exercise,
     exercise_by_key,
     flatten_command_sequence,
 )
-from ..ledger import (
-    Command,
-    CreateAndExerciseCommand,
-    CreateCommand,
-    ExerciseByKeyCommand,
-    ExerciseCommand,
-)
+from ..ledger import Command
 from ..protocols.serializers import AbstractSerializer, Serializer
 
 __all__ = [

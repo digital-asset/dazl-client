@@ -17,28 +17,19 @@ This module contains the public API for interacting with the ledger from the per
 specific party.
 """
 
-from asyncio import ensure_future, get_event_loop
+from asyncio import Future, ensure_future, get_event_loop
 from contextlib import contextmanager
-from functools import wraps
+from functools import partial, wraps
 from logging import INFO
+import os
 from pathlib import Path
-from typing import (
-    Any,
-    Awaitable,
-    BinaryIO,
-    Collection,
-    ContextManager,
-    List,
-    Optional,
-    Tuple,
-    Union,
-)
+from typing import Any, Awaitable, BinaryIO, Collection, List, Optional, Tuple, Union
 from uuid import uuid4
 import warnings
 
 from .. import LOG
 from ..damlast import get_dar_package_ids
-from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.pkgfile import Dar
 from ..damlast.protocols import SymbolLookup
 from ..metrics import MetricEvents
@@ -53,7 +44,7 @@ from ..protocols.events import (
     TransactionEndEvent,
     TransactionStartEvent,
 )
-from ..query import ContractMatch
+from ..query import ContractMatch, is_match
 from ..scheduler import RunLevel, validate_install_signal_handlers
 from ..util.asyncio_util import await_then
 from ..util.io import get_bytes
@@ -75,6 +66,22 @@ from .events import EventKey
 from .ledger import LedgerMetadata
 from .state import ContractContextualData, ContractContextualDataCollection, ContractsState
 
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from ..model.types import TemplateNameLike
+
+__all__ = [
+    "DEFAULT_TIMEOUT_SECONDS",
+    "simple_client",
+    "async_network",
+    "Network",
+    "GlobalClient",
+    "AIOGlobalClient",
+    "SimpleGlobalClient",
+    "PartyClient",
+    "AIOPartyClient",
+    "SimplePartyClient",
+]
 DEFAULT_TIMEOUT_SECONDS = 30
 
 
@@ -83,7 +90,7 @@ def simple_client(
     url: Optional[str] = None,
     party: Union[None, str, Party] = None,
     log_level: Optional[int] = INFO,
-) -> "ContextManager[SimplePartyClient]":
+):
     """
     Start up a single client connecting to a single specific party.
 
@@ -106,8 +113,6 @@ def simple_client(
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             setup_default_logger(log_level)
-
-    import os
 
     if url is None:
         url = os.getenv("DAML_LEDGER_URL")
@@ -185,7 +190,7 @@ class Network:
 
     def __init__(self, metrics: Optional[MetricEvents] = None):
         self._impl = _NetworkImpl(metrics)
-        self._main_fut = None
+        self._main_fut = None  # type: Optional[Future]
 
     def set_config(
         self,
@@ -237,7 +242,7 @@ class Network:
 
         :param party: The party to get a client for.
         """
-        return self._impl.party_impl(to_party(party), SimplePartyClient)
+        return self._impl.party_impl_wrapper(to_party(party), SimplePartyClient)
 
     def simple_new_party(self) -> "SimplePartyClient":
         """
@@ -252,7 +257,7 @@ class Network:
 
         :param party: The party to get a client for.
         """
-        return self._impl.party_impl(Party(party), AIOPartyClient)
+        return self._impl.party_impl_wrapper(Party(party), AIOPartyClient)
 
     def aio_new_party(self) -> "AIOPartyClient":
         """
@@ -318,6 +323,8 @@ class Network:
                 stacklevel=2,
             )
             return self._main_fut
+        else:
+            return None
 
     def join(self, timeout: Optional[float] = None) -> None:
         """
@@ -414,7 +421,7 @@ class Network:
             DeprecationWarning,
             stacklevel=2,
         )
-        return self._impl.bots()
+        return self._impl.bots
 
     def __enter__(self):
         """
@@ -454,7 +461,9 @@ class AIOGlobalClient(GlobalClient):
         return await self._impl.upload_package(raw_bytes, timeout)
 
     async def ensure_packages(
-        self, package_ids: Collection[str], timeout: TimeDeltaLike = DEFAULT_TIMEOUT_SECONDS
+        self,
+        package_ids: Collection[PackageRef],
+        timeout: TimeDeltaLike = DEFAULT_TIMEOUT_SECONDS,
     ) -> None:
         """
         Validate that packages with the specified package IDs exist on the ledger. Throw an
@@ -489,7 +498,9 @@ class SimpleGlobalClient(GlobalClient):
         return self._impl.invoker.run_in_loop(lambda: self._impl.upload_package(raw_bytes, timeout))
 
     def ensure_packages(
-        self, package_ids: Collection[str], timeout: TimeDeltaLike = DEFAULT_TIMEOUT_SECONDS
+        self,
+        package_ids: Collection[PackageRef],
+        timeout: TimeDeltaLike = DEFAULT_TIMEOUT_SECONDS,
     ) -> None:
         """
         Validate that packages with the specified package IDs exist on the ledger. Throw an
@@ -700,8 +711,10 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
+        filter_fn = partial(is_match, match) if match is not None else None
+
         bot = self._impl.bots.add_new(party_client=self, name=handler.__name__)
-        bot.add_event_handler(EventKey.contract_created(True, template), handler, match)
+        bot.add_event_handler(EventKey.contract_created(True, template), handler, filter_fn)
         return bot
 
     def ledger_exercised(
@@ -780,8 +793,10 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
+        filter_fn = partial(is_match, match) if match is not None else None
+
         for key in EventKey.contract_archived(True, template):
-            self._impl.add_event_handler(key, handler, match, self)
+            self._impl.add_event_handler(key, handler, filter_fn, self)
 
     # </editor-fold>
 
@@ -814,7 +829,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: str,
+        template_name: TemplateNameLike,
         arguments: Optional[dict] = None,
         workflow_id: Optional[str] = None,
         deduplication_time: Optional[TimeDeltaLike] = None,
@@ -884,7 +899,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_exercise_by_key(
         self,
-        template_name: Union[str, TypeConName],
+        template_name: TemplateNameLike,
         contract_key: Any,
         choice_name: str,
         arguments: Optional[dict] = None,
@@ -921,7 +936,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create_and_exercise(
         self,
-        template_name: Union[str, TypeConName],
+        template_name: TemplateNameLike,
         arguments: dict,
         choice_name: str,
         choice_arguments: Optional[dict] = None,
@@ -1303,8 +1318,10 @@ class SimplePartyClient(PartyClient):
         ) -> Awaitable[EventHandlerResponse]:
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
+        filter_fn = partial(is_match, match) if match is not None else None
+
         for key in EventKey.contract_created(True, template):
-            self._impl.add_event_handler(key, _background_ledger_contract_create, match, self)
+            self._impl.add_event_handler(key, _background_ledger_contract_create, filter_fn, self)
 
     def ledger_exercised(
         self, template: "Any", choice: str
@@ -1396,8 +1413,10 @@ class SimplePartyClient(PartyClient):
         ) -> Awaitable[EventHandlerResponse]:
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
+        filter_fn = partial(is_match, match) if match is not None else None
+
         for key in EventKey.contract_archived(True, template):
-            self._impl.add_event_handler(key, _background_ledger_contract_archived, match, self)
+            self._impl.add_event_handler(key, _background_ledger_contract_archived, filter_fn, self)
 
     # </editor-fold>
 
@@ -1432,7 +1451,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: Union[str, TypeConName],
+        template_name: TemplateNameLike,
         arguments: Optional[dict] = None,
         workflow_id: Optional[str] = None,
         deduplication_time: Optional[TimeDeltaLike] = None,
@@ -1496,7 +1515,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_exercise_by_key(
         self,
-        template_name: Union[str, TypeConName],
+        template_name: TemplateNameLike,
         contract_key: Any,
         choice_name: str,
         arguments: Optional[dict] = None,
@@ -1533,7 +1552,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_create_and_exercise(
         self,
-        template_name: Union[str, TypeConName],
+        template_name: TemplateNameLike,
         arguments: dict,
         choice_name: str,
         choice_arguments: Optional[dict] = None,
