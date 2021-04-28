@@ -1,12 +1,11 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import ensure_future, gather, sleep, wait_for
+from asyncio import Future, ensure_future, gather, sleep, wait_for
 from collections import defaultdict
 from dataclasses import asdict, fields
 from datetime import timedelta
 import logging
-import sys
 from threading import RLock, Thread, current_thread
 from typing import (
     Any,
@@ -14,15 +13,16 @@ from typing import (
     Callable,
     Collection,
     Dict,
+    List,
     Optional,
     Set,
     Tuple,
     TypeVar,
     Union,
-    overload,
 )
 
 from .. import LOG
+from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
@@ -39,14 +39,7 @@ from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
 from .errors import DazlPartyMissingError
 from .ledger import LedgerMetadata
 
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
-
-
-__all__ = ["_NetworkImpl"]
-
+__all__ = ["_NetworkImpl", "_NetworkRunner"]
 T = TypeVar("T")
 
 
@@ -94,7 +87,7 @@ class _NetworkImpl:
         self._global_impls = dict()  # type: Dict[type, Any]
         self._party_impls = dict()  # type: Dict[Party, _PartyClientImpl]
 
-        self._config = dict()
+        self._config = dict()  # type: Dict[str, Any]
         self.bots = BotCollection(None)
 
     def set_config(self, *configs: "Union[NetworkConfig, AnonymousNetworkConfig]", **kwargs):
@@ -167,21 +160,28 @@ class _NetworkImpl:
         from ..metrics.instrumenters import AioLoopPerfMonitor
 
         config = self.freeze()
+        if self._pool is None:
+            raise RuntimeError("freeze() did not kick off a network pool!")
 
         site = None
         with AioLoopPerfMonitor(self._metrics.loop_responsiveness):
             if config.server_port is not None:
                 LOG.info("Opening port %s for metrics...", config.server_port)
-                from aiohttp import web
+                try:
+                    from aiohttp import web
 
-                from ..server import get_app
+                    from ..server import get_app
 
-                app = get_app(self)
-                runner = web.AppRunner(app)
-                await runner.setup()
-                site = web.TCPSite(runner, config.server_host, config.server_port)
-                ensure_future(site.start())
-                LOG.info("Listening on %s:%s for metrics.", config.server_host, config.server_port)
+                    app = get_app(self)
+                    app_runner = web.AppRunner(app)
+                    await app_runner.setup()
+                    site = web.TCPSite(app_runner, config.server_host, config.server_port)
+                    ensure_future(site.start())
+                    LOG.info(
+                        "Listening on %s:%s for metrics.", config.server_host, config.server_port
+                    )
+                except ImportError:
+                    LOG.warning("Could not start metrics because aiohttp is not installed")
             else:
                 LOG.info(
                     "No server_port configuration was specified, so metrics and other stats "
@@ -267,38 +267,8 @@ class _NetworkImpl:
                 self._global_impls[ctor] = inst  # type: ignore
             return inst
 
-    @overload
-    def party_impl(
-        self,
-        party: Party,
-        ctor: None = None,
-        if_missing: "IfPartyMissingBehavior" = CREATE_IF_MISSING,
-    ) -> "_PartyClientImpl":
-        ...
-
-    @overload
-    def party_impl(
-        self, party: Party, ctor: None = None, if_missing: NONE_IF_MISSING = CREATE_IF_MISSING
-    ) -> "Optional[_PartyClientImpl]":
-        ...
-
-    @overload
-    def party_impl(
-        self,
-        party: Party,
-        ctor: "Callable[[_PartyClientImpl], T]",
-        if_missing: "Literal[1, 3]" = CREATE_IF_MISSING,
-    ) -> "T":
-        ...
-
-    @overload
-    def party_impl(
-        self,
-        party: Party,
-        ctor: "Callable[[_PartyClientImpl], T]",
-        if_missing: "NONE_IF_MISSING" = CREATE_IF_MISSING,
-    ) -> "Optional[T]":
-        ...
+    def party_impl_wrapper(self, party: Party, ctor: "Callable[[_PartyClientImpl], T]") -> "T":
+        return self.party_impl(party, ctor=ctor)
 
     def party_impl(self, party, ctor=None, if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING):
         """
@@ -370,6 +340,11 @@ class _NetworkImpl:
         if self._cached_metadata is not None:
             return self._cached_metadata
 
+        if self._pool is None:
+            raise ValueError(
+                "simple_metadata must be called only after the global connection has started"
+            )
+
         with self._lock:
             return self.invoker.run_in_loop(self._pool.ledger, timeout=timeout)
 
@@ -394,12 +369,14 @@ class _NetworkImpl:
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)
 
-    async def ensure_package_ids(self, package_ids: "Collection[str]", timeout: "TimeDeltaLike"):
+    async def ensure_package_ids(
+        self, package_ids: "Collection[PackageRef]", timeout: "TimeDeltaLike"
+    ):
         await wait_for(
             self.__ensure_package_ids(package_ids), to_timedelta(timeout).total_seconds()
         )
 
-    async def __ensure_package_ids(self, package_ids: "Collection[str]"):
+    async def __ensure_package_ids(self, package_ids: "Collection[PackageRef]"):
         metadata = await self.aio_metadata()
         await gather(*(metadata.package_loader.load(pkg_ref) for pkg_ref in package_ids))
 
@@ -440,10 +417,10 @@ class _NetworkRunner:
         self.initialized_parties = set()  # type: Set[Party]
         self._network_impl = network_impl
         self._config = self._network_impl.resolved_config()
-        self._read_completions = []
+        self._read_completions = []  # type: List[Future]
         self._user_coroutines = [ensure_future(coro) for coro in user_coroutines]
-        self._bot_coroutines = []
-        self._writers = []
+        self._bot_coroutines = []  # type: List[Future]
+        self._writers = []  # type: List[Future]
 
     async def run(self):
         LOG.debug("Running a Network with config: %r", self._config)
@@ -490,7 +467,7 @@ class _NetworkRunner:
         LOG.info("network_run: finished.")
         self._writers = []
 
-    async def beat(self, party_impls: "Collection[_PartyClientImpl]") -> Tuple[str, bool]:
+    async def beat(self, party_impls: "Collection[_PartyClientImpl]") -> Tuple[Optional[str], bool]:
         """
         Called periodically to schedule reads and writes.
         """
@@ -562,7 +539,7 @@ class _NetworkRunner:
         # Raise the 'init' event.
         init_futs = []
         if first_offset is None:
-            evt = InitEvent(
+            init_evt = InitEvent(
                 None,
                 None,
                 None,
@@ -570,7 +547,7 @@ class _NetworkRunner:
                 self._network_impl.lookup,
                 metadata._store,
             )
-            init_futs.append(ensure_future(self._network_impl.emit_event(evt)))
+            init_futs.append(ensure_future(self._network_impl.emit_event(init_evt)))
         for party_impl in party_impls:
             init_futs.append(ensure_future(party_impl.initialize(None, metadata)))
 
@@ -586,7 +563,7 @@ class _NetworkRunner:
         # Raise the 'ready' event.
         ready_futs = []
         if first_offset is None:
-            evt = ReadyEvent(
+            ready_evt = ReadyEvent(
                 None,
                 None,
                 None,
@@ -595,7 +572,7 @@ class _NetworkRunner:
                 metadata._store,
                 offset,
             )
-            ready_futs.append(ensure_future(self._network_impl.emit_event(evt)))
+            ready_futs.append(ensure_future(self._network_impl.emit_event(ready_evt)))
         for party_impl in party_impls:
             ready_futs.append(ensure_future(party_impl.emit_ready(metadata, None, offset)))
         for party_impl in party_impls:

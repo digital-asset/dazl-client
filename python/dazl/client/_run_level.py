@@ -4,6 +4,8 @@ from threading import Event
 
 from ..scheduler import RunLevel
 
+__all__ = ["RunState"]
+
 
 class RunState:
     """

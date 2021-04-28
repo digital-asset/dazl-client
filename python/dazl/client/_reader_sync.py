@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 async def run_iteration(
     party_impls: "Collection[_PartyClientImpl]",
-) -> "Tuple[str, Collection[Future]]":
+) -> "Tuple[Optional[str], Collection[Future]]":
     """
     Read the next set of transactions for the set of parties. This coroutine ends when all
     parties are caught up to the same offset.

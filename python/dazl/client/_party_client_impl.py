@@ -11,18 +11,20 @@ from typing import (
     Any,
     Awaitable,
     Collection,
+    Dict,
     List,
     Optional,
     Sequence,
     Set,
     Tuple,
     TypeVar,
+    Union,
 )
 import uuid
 import warnings
 
 from .. import LOG
-from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.daml_lf_1 import PackageRef, TypeConName
 from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerClient, LedgerNetwork
 from ..protocols.events import (
@@ -40,6 +42,7 @@ from ..protocols.events import (
     TransactionStartEvent,
 )
 from ..query import ContractMatch
+from ..scheduler import Invoker
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast
@@ -47,7 +50,7 @@ from ._conn_settings import OAuthSettings, connection_settings
 from ._writer_verify import ValidateSerializer
 from .bots import Bot, BotCallback, BotCollection, BotFilter
 from .commands import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
-from .config import NetworkConfig, PartyConfig
+from .config import PartyConfig, _NetworkConfig
 from .ledger import LedgerMetadata
 from .state import (
     ActiveContractSet,
@@ -64,20 +67,27 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
+__all__ = ["_PartyClientImpl"]
+
+
 class _PartyClientImpl:
+    invoker: Invoker
+    party: Party
+    bots: BotCollection
+
     def __init__(self, parent: "_NetworkImpl", party: "Party"):
         self.parent = parent
         self.metrics = parent._metrics
         self.invoker = parent.invoker
         self.party = party
 
-        self._config_values = dict()
-        self._config = None  # type: Optional[NetworkConfig]
+        self._config_values = dict()  # type: Dict[str, Any]
+        self._config = None  # type: Optional[_NetworkConfig]
         self._pool = None  # type: Optional[LedgerNetwork]
         self._pool_fut = None  # type: Optional[Awaitable[LedgerNetwork]]
         self._client_fut = None  # type: Optional[Awaitable[LedgerClient]]
         self._ready_fut = self.invoker.create_future()
-        self._known_packages = set()  # type: Set[str]
+        self._known_packages = set()  # type: Set[PackageRef]
 
         self._acs = ActiveContractSet(self.invoker, self.parent.lookup)
         self.bots = BotCollection(party)
@@ -132,7 +142,9 @@ class _PartyClientImpl:
         all_config.update(self._config_values)
         return PartyConfig(**{k: v for k, v in all_config.items() if k in config_names})
 
-    def initialize(self, current_time: datetime, metadata: LedgerMetadata) -> Awaitable[None]:
+    def initialize(
+        self, current_time: "Optional[datetime]", metadata: LedgerMetadata
+    ) -> "Awaitable[None]":
         """
         Initialize the state of the ledger.
 
@@ -151,7 +163,7 @@ class _PartyClientImpl:
         )
         return self.emit_event(evt)
 
-    def ready(self) -> Awaitable[None]:
+    def ready(self) -> Future:
         return self._ready_fut
 
     # region Event Handler Management
@@ -181,7 +193,7 @@ class _PartyClientImpl:
         return self.bots.notify(data)
 
     async def emit_ready(
-        self, metadata: LedgerMetadata, time: "Optional[datetime]", offset: str
+        self, metadata: LedgerMetadata, time: "Optional[datetime]", offset: "Optional[str]"
     ) -> None:
         """
         Emit a ready event specific to this client. This may also emit initial create events and
@@ -212,7 +224,7 @@ class _PartyClientImpl:
 
     # region Active/Historical Contract Set management
 
-    def find_by_id(self, cid: "ContractId") -> "ContractContextualData":
+    def find_by_id(self, cid: "Union[str, ContractId]") -> "Optional[ContractContextualData]":
         return self._acs.get(cid)
 
     def find(
@@ -229,7 +241,7 @@ class _PartyClientImpl:
         return self._acs.read_full(template, match, include_archived=True)
 
     def find_nonempty(
-        self, template: Any, match: "ContractMatch", min_count: int = 1, timeout: float = 30
+        self, template: Any, match: ContractMatch, min_count: int = 1, timeout: float = 30
     ):
         return self._acs.read_async(template, match, min_count=min_count)
 
@@ -260,6 +272,9 @@ class _PartyClientImpl:
             If the PartyClient is _not_ configured to use the ActiveContractService, this function
             immediately returns `None`, and a resolved future.
         """
+        if self._config is None or self._client_fut is None:
+            raise RuntimeError("read_acs must be called only after a party has started")
+
         if not self._config.use_acs_service:
             LOG.info(
                 "read_acs(%r, %r) aborted for party %r because it was configured to not use "
@@ -290,7 +305,7 @@ class _PartyClientImpl:
 
     async def read_transactions(
         self, until_offset: "Optional[str]", raise_events: bool
-    ) -> "Tuple[str, Future]":
+    ) -> "Tuple[Optional[str], Future]":
         """
         Main processing method of events from the read side. Only one instance of this coroutine
         should be active at a time per client.
@@ -306,6 +321,9 @@ class _PartyClientImpl:
             The ledger offset that the reader ended at and a Future that is resolved when all event
             handlers' follow-ups have either successfully or unsuccessfully completed.
         """
+        if self._config is None or self._pool is None or self._client_fut is None:
+            raise RuntimeError("read_transactions must be called only after a party has started")
+
         LOG.verbose(
             "  read_transactions(%s, %s) with party %s | (groups %s), reader offset %s",
             until_offset,
@@ -318,7 +336,7 @@ class _PartyClientImpl:
         metadata = await self._pool.ledger()
 
         event_count = 0
-        futs = []
+        futs = []  # type: List[Future]
 
         while (
             until_offset is None
@@ -388,10 +406,16 @@ class _PartyClientImpl:
             return self._reader.offset, gather(*futs, return_exceptions=True)
 
     async def read_end(self) -> str:
+        if self._client_fut is None:
+            raise RuntimeError("read_end must be called only after a party has started")
+
         client = await self._client_fut
         return await client.events_end()
 
     async def _template_filter(self) -> "Optional[Collection[TypeConName]]":
+        if self._config is None or self._pool is None:
+            raise RuntimeError("_template_filter must be called only after a party has started")
+
         if self._config.package_ids is not None:
             # first, ensure the packages we require are loaded
             metadata = await self._pool.ledger()
@@ -452,7 +476,7 @@ class _PartyClientImpl:
         if isinstance(event, OffsetEvent):
             self._reader.offset = event.offset
 
-        return fut
+        return ensure_future(fut)
 
     # endregion
 

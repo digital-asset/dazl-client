@@ -1,7 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from abc import abstractmethod
 from asyncio import Future, InvalidStateError, ensure_future, gather, get_event_loop
 from collections import defaultdict
 from dataclasses import dataclass, field, replace
@@ -27,6 +26,7 @@ from typing import (
     overload,
 )
 from uuid import uuid4
+import warnings
 
 from .. import LOG
 from ..ledger import Command
@@ -66,7 +66,7 @@ class Bot:
         self._party_client = party_client
         self._id = uuid4().hex
         self._name = name
-        self._queue = []
+        self._queue = []  # type: List[BotInvocation]
         self._signal = None  # type: Optional[Signal]
         self._idle = True
         self._run_level = _BotRunLevel.CONTINUE
@@ -107,6 +107,7 @@ class Bot:
         if not callable(handler):
             raise ValueError("handler must be callable")
 
+        source_loc = None  # type: Optional[SourceLocation]
         # noinspection PyBroadException
         try:
             source_file = inspect.getsourcefile(inspect.unwrap(handler))
@@ -117,7 +118,6 @@ class Bot:
             LOG.warning(
                 "Could not compute original source information for %r", handler, exc_info=True
             )
-            source_loc = None
 
         if self._party_client is not None:
             # noinspection PyProtectedMember
@@ -139,7 +139,10 @@ class Bot:
         """
         # noinspection PyBroadException
         try:
-            self._signal = Signal()
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", DeprecationWarning)
+                # noinspection PyDeprecation
+                self._signal = Signal()
             while self._run_level != _BotRunLevel.TERMINATE:
                 # the main queue contains either events we have not yet processed yet or ``None``
                 # markers that merely indicate running status should be "re-checked"
@@ -267,7 +270,7 @@ class Bot:
         return self._name
 
     @property
-    def party(self) -> "Party":
+    def party(self) -> "Optional[Party]":
         """
         Primary party that this bot receives events for (and potentially generates commands for).
         """
@@ -291,6 +294,8 @@ class Bot:
             return BotState.STOPPED if self._idle else BotState.STOPPING
         elif self._run_level == _BotRunLevel.SUSPEND:
             return BotState.PAUSED if self._idle else BotState.PAUSING
+        else:
+            raise RuntimeError("unexpected _BotRunLevel enum value")
 
     @property
     def running(self) -> bool:
@@ -326,16 +331,14 @@ class BotCollection(Sequence[Bot]):
             return len(self._bots)
 
     @overload
-    @abstractmethod
     def __getitem__(self, i: int) -> Bot:
         ...
 
     @overload
-    @abstractmethod
-    def __getitem__(self, s: slice) -> Sequence[Bot]:
+    def __getitem__(self, i: slice) -> Sequence[Bot]:
         ...
 
-    def __getitem__(self, i: int) -> Bot:
+    def __getitem__(self, i):
         with self._lock:
             return operator.getitem(self._bots, i)
 
