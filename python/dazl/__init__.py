@@ -94,7 +94,9 @@ def _get_version() -> str:
             poetry_section = config["tool.poetry"]
             return literal_eval(poetry_section["version"])
     except Exception:  # noqa
-        return "unknown"
+        pass
+
+    return "unknown"
 
 
 __version__ = _get_version()

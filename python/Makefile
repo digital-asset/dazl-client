@@ -6,6 +6,7 @@ SHELL := /usr/bin/env bash
 
 LIBRARY_NAME=dazl
 version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
+ghr_new_flags := $(shell python3 -c "from pkg_resources import parse_version; print('-prerelease' if parse_version('$(version)').is_prerelease else '')")
 
 dazl_files := $(shell find dazl -name '*.py') README.md
 dazl_bdist := dist/dazl-$(version)-py3-none-any.whl
@@ -60,7 +61,7 @@ package: $(dazl_bdist) $(dazl_sdist) $(dazl_docs_html) $(dazl_docs_markdown)
 .PHONY: publish 
 publish: package
 	poetry publish
-	ghr -n "dazl v$(version)" -replace "v$(version)" "$(dazl_bdist)"
+	ghr -n "dazl v$(version)" -replace -c "$(git rev-parse HEAD)" "v$(version)" "$(dazl_bdist)"
 	ghr -replace "v$(version)" "$(dazl_sdist)"
 	ghr -replace "v$(version)" "$(dazl_docs_html)"
 	ghr -replace "v$(version)" "$(dazl_docs_markdown)"
