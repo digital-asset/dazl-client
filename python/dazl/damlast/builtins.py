@@ -37,6 +37,7 @@ class Concat(Builtin):
             return xxs.cons.front[0]
         if xxs.nil is not None:
             return Expr(nil=Expr.Nil(xxs.nil.type.prim.args[0]))
+        return None
 
 
 @builtins.add
@@ -59,6 +60,9 @@ class AppendText(Builtin):
     def evaluate(self, _: "Sequence[Type]", args: "Sequence[Any]") -> "Any":
         return args[0] + args[1]
 
-    def simplify(self, _: "Sequence[Type]", args: "Sequence[Expr]") -> "Expr":
+    def simplify(self, _: "Sequence[Type]", args: "Sequence[Expr]") -> "Optional[Expr]":
         if args[0].prim_lit is not None and args[1].prim_lit is not None:
-            return Expr(prim_lit=PrimLit(text=args[0].prim_lit.text + args[1].prim_lit.text))
+            return Expr(
+                prim_lit=PrimLit(text=(args[0].prim_lit.text or "") + (args[1].prim_lit.text or ""))
+            )
+        return None

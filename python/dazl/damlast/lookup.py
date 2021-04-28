@@ -21,6 +21,7 @@ from typing import (
     Collection,
     Dict,
     Iterable,
+    List,
     NoReturn,
     Optional,
     Sequence,
@@ -29,6 +30,7 @@ from typing import (
 )
 import warnings
 
+from .. import LOG
 from .daml_lf_1 import (
     Archive,
     DefDataType,
@@ -49,7 +51,6 @@ from .util import package_local_name, package_ref
 __all__ = [
     "EmptyLookup",
     "MultiPackageLookup",
-    "MultiPackageLookup",
     "PackageLookup",
     "find_choice",
     "matching_normalizations",
@@ -65,17 +66,7 @@ def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) ->
     """
     Parse the given string as a type constructor.
     """
-    if allow_deprecated_identifiers:
-        warnings.warn(
-            "parse_type_con_name(..., allow_deprecated_identifiers=True) will be removed in dazl v8",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
-        pkg, name = validate_template(
-            val, allow_deprecated_identifiers=allow_deprecated_identifiers
-        )
+    pkg, name = validate_template(val, allow_deprecated_identifiers=allow_deprecated_identifiers)
     module_name, _, entity_name = name.rpartition(":")
     module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
     return TypeConName(module_ref, entity_name.split("."))
@@ -90,7 +81,7 @@ def empty_lookup_impl(ref: Any) -> NoReturn:
 
 
 def validate_template(
-    template: Union[None, str, TypeConName], allow_deprecated_identifiers: bool = False
+    template: Any, allow_deprecated_identifiers: bool = False
 ) -> Tuple[PackageRef, str]:
     """
     Return a module and type name component from something that can be interpreted as a template.
@@ -129,21 +120,23 @@ def validate_template(
         if len(components) == 3:
             # correct number of colons for a fully-qualified name
             pkgid, m, e = components
-            return pkgid, f"{m}:{e}"
+            return PackageRef(pkgid), f"{m}:{e}"
 
         elif len(components) == 2:
             # one colon, so assume the package ID is unspecified UNLESS the second component is a
             # wildcard; then we assume the wildcard means any module name and entity name
             m, e = components
-            if m == STAR and e != STAR:
-                # strings that look like "*:SOMETHING" are explicitly not allowed; this is almost
-                # certainly an attempt to use periods instead of colons as a delimiter between
-                # module name and entity name
+            if m == STAR and e != STAR and not allow_deprecated_identifiers:
+                # strings that look like "*:SOMETHING" are explicitly not allowed unless deprecated
+                # identifier support is requested; this is almost certainly an attempt to use
+                # periods instead of colons as a delimiter between module name and entity name
                 raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")
+
             return (STAR, f"{m}:{e}") if e != "*" else (PackageRef(m), "*")
 
         elif len(components) == 1 and allow_deprecated_identifiers:
             # no colon whatsoever
+            # TODO: Add a deprecation warning in the appropriate place
             m, _, e = components[0].rpartition(".")
             return STAR, f"{m}:{e}"
 
@@ -205,22 +198,22 @@ class EmptyLookup(SymbolLookup):
         return frozenset()
 
     def data_type_name(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
     def data_type(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
     def value(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
     def template_names(self, ref: "Any") -> "Collection[TypeConName]":
         return frozenset()
 
     def template_name(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
     def template(self, ref: "Any") -> "NoReturn":
-        return empty_lookup_impl(ref)
+        raise empty_lookup_impl(ref)
 
 
 class PackageLookup(SymbolLookup):
@@ -330,8 +323,8 @@ class PackageLookup(SymbolLookup):
             if name == "*":
                 return self.local_template_names()
             elif name in self._templates:
-                n, _ = self._templates.get(name)
-                return n
+                n, _ = self._templates[name]
+                return [n]
         return []
 
     def template_name(self, ref: "Any") -> "TypeConName":
@@ -415,6 +408,7 @@ class MultiPackageLookup(SymbolLookup):
             # cache and the new lookups that came in. When there is a key conflict between the two
             # APIs, always prefer the existing cache to provide stability to callers.
             self._cache = {**new_lookups, **self._cache}
+            LOG.debug("Updated package cache; now contains %d packages.", len(self._cache))
 
     def package_ids(self) -> "AbstractSet[PackageRef]":
         return set(self._cache)
@@ -454,10 +448,15 @@ class MultiPackageLookup(SymbolLookup):
         raise NameNotFoundError(ref)
 
     def template_names(self, ref: "Any") -> "Collection[TypeConName]":
-        names = []
+        names = []  # type: List[TypeConName]
 
         pkg, name = validate_template(ref)
-        for lookup in self._lookups(pkg):
+        try:
+            lookups = self._lookups(pkg)
+        except PackageNotFoundError:
+            return []
+
+        for lookup in lookups:
             if name == "*":
                 names.extend(lookup.local_template_names())
             else:

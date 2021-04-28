@@ -23,11 +23,6 @@ if TYPE_CHECKING:
         from ..model.types import Type as DeprecatedType, TypeReference as DeprecatedTypeReference
 
 
-__all__ = ["parse_template"]
-
-warnings.warn("dazl.damlast.compat is deprecated", DeprecationWarning)
-
-
 def parse_template(
     template_id: "Union[str, DeprecatedType, TypeConName]",
 ) -> "Tuple[TypeConName, DeprecatedTypeReference]":
