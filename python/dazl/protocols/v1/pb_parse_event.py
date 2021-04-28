@@ -6,7 +6,7 @@ Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic typ
 """
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Sequence, Union, cast
 import warnings
 
 from ... import LOG
@@ -39,10 +39,11 @@ from ..events import (
     TransactionStartEvent,
 )
 
-DECODER = ProtobufDecoder()
-
 if TYPE_CHECKING:
     from ...model.types_store import PackageStore
+
+
+DECODER = ProtobufDecoder()
 
 
 @dataclass(frozen=True)
@@ -60,7 +61,7 @@ class BaseEventDeserializationContext:
     def deserializer_context(self) -> "Context":
         return Context(DECODER, self.lookup)
 
-    def offset_event(self, time: datetime, offset: str) -> OffsetEvent:
+    def offset_event(self, time: Optional[datetime], offset: str) -> OffsetEvent:
         return OffsetEvent(
             self.client, self.party, time, self.ledger_id, self.lookup, self.store, offset
         )
@@ -191,7 +192,7 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
         cdata,
         event_id,
         witness_parties,
-        contract_creating_event_id: str,
+        contract_creating_event_id: None,
         choice: str,
         choice_argument: Any,
         acting_parties,
@@ -213,7 +214,7 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             cdata=cdata,
             event_id=event_id,
             witness_parties=witness_parties,
-            contract_creating_event_id=contract_creating_event_id,
+            contract_creating_event_id=None,
             acting_parties=acting_parties,
             choice=choice,
             choice_args=choice_argument,
@@ -342,10 +343,10 @@ def to_transaction_events(
 
     if tt_stream_pb is not None:
         for transaction_tree_pb in tt_stream_pb:
-            for transaction_pb in transaction_tree_pb.transactions:
-                tx_events = events_by_offset.get(transaction_pb.offset)
+            for tt_pb in transaction_tree_pb.transactions:
+                tx_events = events_by_offset.get(tt_pb.offset)
                 if tx_events is not None:
-                    tx_events[-1:-1] = from_transaction_tree(context, transaction_pb)
+                    tx_events[-1:-1] = from_transaction_tree(context, tt_pb)
 
     for tx_events in events_by_offset.values():
         events.extend(tx_events)
@@ -422,8 +423,11 @@ def to_transaction_chunk(
         workflow_id=tx_pb.workflow_id,
     )
 
-    contract_events = [to_event(t_context, evt_pb) for evt_pb in tx_pb.events]
-    contract_events = [evt for evt in contract_events if evt is not None]
+    contract_events = []  # type: List[OffsetEvent]
+    for evt_pb in tx_pb.events:
+        evt = to_event(t_context, evt_pb)
+        if evt is not None:
+            contract_events.append(evt)
 
     return [
         t_context.transaction_start_event(contract_events),
@@ -434,8 +438,8 @@ def to_transaction_chunk(
 
 def to_event(
     context: "Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]",
-    evt_pb: "event_pb2.Event",
-) -> "Optional[BaseEvent]":
+    evt_pb: "Union[event_pb2.Event, tx_pb2.TreeEvent]",
+) -> "Optional[OffsetEvent]":
     try:
         event_type = evt_pb.WhichOneof("event")
     except ValueError:
@@ -448,9 +452,15 @@ def to_event(
     if "created" == event_type:
         return to_created_event(context, evt_pb.created)
     elif "exercised" == event_type:
-        return to_exercised_event(context, evt_pb.exercised)
+        return to_exercised_event(
+            cast(TransactionEventDeserializationContext, context),
+            cast(tx_pb2.TreeEvent, evt_pb).exercised,
+        )
     elif "archived" == event_type:
-        return to_archived_event(context, evt_pb.archived)
+        return to_archived_event(
+            cast(TransactionEventDeserializationContext, context),
+            cast(event_pb2.Event, evt_pb).archived,
+        )
     else:
         raise ValueError(f"unknown event type: {event_type}")
 
@@ -484,10 +494,6 @@ def to_exercised_event(
     cid = ctx.convert_contract_id(tt, er.contract_id)
     event_id = er.event_id
     witness_parties = tuple(er.witness_parties)
-    try:
-        contract_creating_event_id = er.contract_creating_event_id
-    except AttributeError:
-        contract_creating_event_id = None
     choice_args = ctx.convert(choice.arg_binder.type, er.choice_argument)
     acting_parties = tuple(er.acting_parties)
     consuming = er.consuming
@@ -499,7 +505,7 @@ def to_exercised_event(
         None,
         event_id,
         witness_parties,
-        contract_creating_event_id,
+        None,
         er.choice,
         choice_args,
         acting_parties,

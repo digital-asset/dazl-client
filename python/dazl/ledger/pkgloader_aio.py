@@ -52,13 +52,13 @@ class PackageLoader:
     def __init__(
         self,
         package_lookup: "MultiPackageLookup",
-        conn: "PackageService" = None,
-        timeout: "timedelta" = DEFAULT_TIMEOUT,
+        conn: "Optional[PackageService]" = None,
+        timeout: "Optional[timedelta]" = DEFAULT_TIMEOUT,
         executor: "Optional[ThreadPoolExecutor]" = None,
     ):
         self._package_lookup = package_lookup
         self._conn = conn
-        self._timeout = timeout
+        self._timeout = timeout or DEFAULT_TIMEOUT
         self._loading_futs = dict()  # type: Dict[PackageRef, Awaitable[Package]]
         self._parsing_futs = dict()  # type: Dict[PackageRef, Awaitable[Archive]]
         self._executor = executor or ThreadPoolExecutor(3)
@@ -171,7 +171,7 @@ class PackageLoader:
             raise DazlError("a connection is not configured")
 
         archive_bytes = await wait_for(
-            fetch_package_bytes(conn, package_id), timeout=self._timeout.total_seconds()
+            self.__fetch_package_bytes(conn, package_id), timeout=self._timeout.total_seconds()
         )
 
         LOG.info("Loaded for package: %s, %d bytes", package_id, len(archive_bytes))
@@ -192,13 +192,13 @@ class PackageLoader:
         return archive.package
 
     @staticmethod
-    async def __fetch_package_bytes(conn, package_id):
+    async def __fetch_package_bytes(conn: "PackageService", package_id: "PackageRef") -> bytes:
         sleep_interval = 1
 
         while True:
             # noinspection PyBroadException
             try:
-                return await conn.package_bytes(package_id)
+                return await conn.get_package(package_id)
             except Exception:
                 # We tried fetching the package but got an error. Retry, backing off to waiting as
                 # much as 30 seconds between each attempt.
@@ -214,21 +214,3 @@ class PackageLoader:
         package_ids -= self._package_lookup.package_ids()
         if package_ids:
             await gather(*(self.load(package_id) for package_id in package_ids))
-
-
-async def fetch_package_bytes(conn: "PackageService", package_id: "PackageRef") -> bytes:
-    """
-    Fetch package bytes, with retry.
-    """
-    sleep_interval = 1
-
-    while True:
-        # noinspection PyBroadException
-        try:
-            return await conn.get_package(package_id)
-        except Exception:
-            # We tried fetching the package but got an error. Retry, backing off to waiting as
-            # much as 30 seconds between each attempt.
-            await sleep(sleep_interval)
-            sleep_interval = min(sleep_interval * 2, 30)
-            LOG.exception("Failed to fetch package; this will be retried.")

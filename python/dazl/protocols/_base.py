@@ -5,16 +5,16 @@
 This module contains the abstract base class that defines the protocol for interacting with a
 process that implements the Ledger API.
 """
+
 from dataclasses import dataclass
 from datetime import timedelta
 import threading
 from typing import TYPE_CHECKING, Optional, Sequence, Union
 
 from .. import LOG
-from ..damlast.protocols import SymbolLookup
+from ..damlast.lookup import MultiPackageLookup
 from ..prim import Party
 from ..scheduler import Invoker
-from ..util.typing import safe_cast, safe_optional_cast
 from .events import BaseEvent, ContractFilter, TransactionFilter
 
 if TYPE_CHECKING:
@@ -22,12 +22,13 @@ if TYPE_CHECKING:
     from ..client.commands import CommandPayload
     from ..client.ledger import LedgerMetadata
 
-__all__ = ["LedgerConnectionOptions", "LedgerNetwork", "LedgerClient"]
+
+__all__ = ["LedgerConnectionOptions", "LedgerNetwork", "LedgerClient", "_LedgerConnection"]
 
 
 @dataclass(frozen=True)
 class LedgerConnectionOptions:
-    lookup: "SymbolLookup"
+    lookup: "MultiPackageLookup"
     connect_timeout: "Optional[timedelta]"
     package_lookup_timeout: "Optional[timedelta]"
     eager_package_fetch: bool
@@ -134,16 +135,14 @@ class _LedgerConnection:
         invoker: "Invoker",
         options: "LedgerConnectionOptions",
         settings: "HTTPConnectionSettings",
-        context_path: "Optional[str]",
+        context_path: Optional[str],
     ):
-        from ..client._conn_settings import HTTPConnectionSettings
-
         LOG.debug("Creating a gRPC channel for %s...", settings)
 
-        self.invoker = safe_cast(Invoker, invoker)
-        self.options = safe_cast(LedgerConnectionOptions, options)
-        self.settings = safe_cast(HTTPConnectionSettings, settings)
-        self.context_path = safe_optional_cast(str, context_path)
+        self.invoker = invoker
+        self.options = options
+        self.settings = settings
+        self.context_path = context_path
         self.close_evt = threading.Event()
 
     def close(self):

@@ -10,7 +10,7 @@ from asyncio import get_event_loop
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import timedelta
 import sys
-from typing import AbstractSet
+from typing import AbstractSet, Optional
 import warnings
 
 from ..damlast.daml_lf_1 import PackageRef
@@ -60,8 +60,8 @@ class PackageLoader(NewPackageLoader):
     def __init__(
         self,
         package_lookup: "MultiPackageLookup",
-        conn: "SyncPackageService" = None,
-        timeout: "timedelta" = DEFAULT_TIMEOUT,
+        conn: "Optional[SyncPackageService]" = None,
+        timeout: "Optional[timedelta]" = DEFAULT_TIMEOUT,
     ):
         warnings.warn(
             "dazl.client.pkg_loader.PackageLoader has moved to "
@@ -70,7 +70,12 @@ class PackageLoader(NewPackageLoader):
             stacklevel=2,
         )
         executor = ThreadPoolExecutor(3)
-        super().__init__(package_lookup, PackageServiceWrapper(conn, executor), timeout, executor)
+        super().__init__(
+            package_lookup,
+            PackageServiceWrapper(conn, executor) if conn is not None else None,
+            timeout,
+            executor,
+        )
 
 
 class PackageServiceWrapper:

@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from ..client._conn_settings import OAuthSettings
 
 
+__all__ = ["oauth_flow"]
+
+
 async def oauth_flow(settings: "OAuthSettings") -> "OAuthSettings":
     """
     Implementation of an OAuth flow that ensures that a token is provided.
@@ -33,6 +36,9 @@ async def oauth_flow(settings: "OAuthSettings") -> "OAuthSettings":
             "grant_type": "client_credentials",
         }
 
+        if settings.token_uri is None:
+            raise ValueError("missing a token URI")
+        response = None
         try:
             response = requests.post(
                 settings.token_uri,
