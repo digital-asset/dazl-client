@@ -8,7 +8,7 @@ from asyncio import gather
 from datetime import datetime
 from threading import Event
 from time import sleep
-from typing import TYPE_CHECKING, AbstractSet, Iterable, Mapping, Optional, Sequence
+from typing import TYPE_CHECKING, AbstractSet, Iterable, Mapping, Optional, Sequence, cast
 import warnings
 
 from grpc import (
@@ -108,7 +108,9 @@ class GRPCv1LedgerClient(LedgerClient):
         self.party = to_party(party)
 
     async def commands(self, commands: "CommandPayload") -> None:
-        serializer = self.ledger.serializer
+        from .pb_ser_command import ProtobufSerializer
+
+        serializer = cast(ProtobufSerializer, self.ledger.serializer)
         request = serializer.serialize_command_request(commands)
         await self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request)

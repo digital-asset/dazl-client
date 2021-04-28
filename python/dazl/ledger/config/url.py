@@ -20,6 +20,7 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Protocol, runtime_checkable
 
+
 __all__ = ["URLConfig", "create_url", "KNOWN_SCHEME_PORTS", "DEFAULT_CONNECT_TIMEOUT"]
 
 if TYPE_CHECKING:
@@ -66,7 +67,8 @@ def create_url(
         # use environment variables to provide default values
         url = os.getenv(DAML_LEDGER_URL)
         host = os.getenv(DAML_LEDGER_HOST)
-        port = os.getenv(DAML_LEDGER_PORT)
+        port_str = os.getenv(DAML_LEDGER_PORT)
+        port = int(port_str) if port_str else None
         scheme = os.getenv(DAML_LEDGER_SCHEME)
         if host or port or scheme:
             if url:
@@ -106,7 +108,12 @@ def create_url(
         url = build_url(host, port, scheme)
 
     if use_http_proxy is None:
-        use_http_proxy = not is_localhost(urlparse(url).hostname)
+        hostname = urlparse(url).hostname
+        if hostname is None:
+            # this shouldn't have happened because we validate hostnames above
+            raise ValueError("hostname of None unexpected here")
+
+        use_http_proxy = not is_localhost(hostname)
 
     logger.debug("Building a URL configuration:")
     logger.debug("    url=%s", url)
@@ -115,7 +122,9 @@ def create_url(
 
     return SimpleURLConfig(
         url=url,
-        connect_timeout=to_timedelta(connect_timeout) if connect_timeout is not None else None,
+        connect_timeout=to_timedelta(connect_timeout)
+        if connect_timeout is not None
+        else DEFAULT_CONNECT_TIMEOUT,
         use_http_proxy=use_http_proxy,
     )
 

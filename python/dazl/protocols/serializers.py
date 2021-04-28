@@ -83,7 +83,10 @@ class AbstractSerializer(Serializer):
         elif isinstance(command, ExerciseByKeyCommand):
             name = self.lookup.template_name(command.template_id)
             template = self.lookup.template(name)
-            key_value = self.serialize_value(template.key.type, command.key)
+            key_type = template.key
+            if key_type is None:
+                raise ValueError(f"template {template.tycon} does not have a key")
+            key_value = self.serialize_value(key_type.type, command.key)
             choice = find_choice(template, command.choice)
             choice_args = self.serialize_value(choice.arg_binder.type, command.argument)
             return self.serialize_exercise_by_key_command(name, key_value, choice.name, choice_args)

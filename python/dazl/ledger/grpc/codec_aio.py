@@ -11,7 +11,8 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 # References:
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 
-from typing import Any, List, Optional, Sequence, Tuple, Union
+from collections.abc import Mapping as _Mapping
+from typing import Any, List, Optional, Sequence, Set, Tuple, Union
 
 from ..._gen.com.daml.ledger.api.v1.admin.party_management_service_pb2 import (
     PartyDetails as G_PartyDetails,
@@ -45,6 +46,7 @@ from ...damlast.daml_lf_1 import (
     TypeConName,
 )
 from ...damlast.daml_types import con
+from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_ref
 from ...prim import ContractData, ContractId
@@ -79,7 +81,7 @@ class Codec:
     identify package contents.
     """
 
-    def __init__(self, conn: PackageService, lookup: Optional[SymbolLookup] = None):
+    def __init__(self, conn: PackageService, lookup: Optional[MultiPackageLookup] = None):
         self.conn = conn
         self._lookup = lookup or SHARED_PACKAGE_DATABASE
         self._loader = PackageLoader(self._lookup, conn)
@@ -92,29 +94,37 @@ class Codec:
 
     async def encode_command(self, cmd: Command) -> G_Command:
         if isinstance(cmd, CreateCommand):
-            return await self.encode_create_command(cmd.template_id, cmd.payload)
+            return G_Command(create=await self.encode_create_command(cmd.template_id, cmd.payload))
         elif isinstance(cmd, ExerciseCommand):
-            return await self.encode_exercise_command(cmd.contract_id, cmd.choice, cmd.argument)
+            return G_Command(
+                exercise=await self.encode_exercise_command(
+                    cmd.contract_id, cmd.choice, cmd.argument
+                )
+            )
         elif isinstance(cmd, ExerciseByKeyCommand):
-            return await self.encode_exercise_by_key_command(
-                cmd.template_id, cmd.choice, cmd.key, cmd.argument
+            return G_Command(
+                exerciseByKey=await self.encode_exercise_by_key_command(
+                    cmd.template_id, cmd.choice, cmd.key, cmd.argument
+                )
             )
         elif isinstance(cmd, CreateAndExerciseCommand):
-            return await self.encode_create_and_exercise_command(
-                cmd.template_id, cmd.payload, cmd.choice, cmd.argument
+            return G_Command(
+                createAndExercise=await self.encode_create_and_exercise_command(
+                    cmd.template_id, cmd.payload, cmd.choice, cmd.argument
+                )
             )
         else:
-            raise ValueError()
+            raise ValueError(f"unknown Command type: {cmd!r}")
 
-    async def encode_create_command(self, template_id: Any, payload: ContractData) -> G_Command:
+    async def encode_create_command(
+        self, template_id: Union[str, Any], payload: ContractData
+    ) -> G_CreateCommand:
         item_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)
         )
         _, value = self._encode_context.convert(con(item_type), payload)
-        return G_Command(
-            create=G_CreateCommand(
-                template_id=self.encode_identifier(item_type), create_arguments=value
-            )
+        return G_CreateCommand(
+            template_id=self.encode_identifier(item_type), create_arguments=value
         )
 
     async def encode_exercise_command(
@@ -133,11 +143,11 @@ class Codec:
         value_field, value_pb = await self.encode_value(choice.arg_binder.type, argument)
         set_value(cmd_pb.choice_argument, value_field, value_pb)
 
-        return G_Command(exercise=cmd_pb)
+        return cmd_pb
 
     async def encode_create_and_exercise_command(
         self,
-        template_id: TypeConName,
+        template_id: Union[str, TypeConName],
         payload: ContractData,
         choice_name: str,
         argument: Optional[Any] = None,
@@ -146,32 +156,40 @@ class Codec:
 
         cmd_pb = G_CreateAndExerciseCommand(
             template_id=self.encode_identifier(item_type),
-            payload=await self.encode_value(con(item_type), payload),
             choice=choice_name,
         )
-        value_field, value_pb = await self.encode_value(choice.arg_binder.type, argument)
-        set_value(cmd_pb.choice_argument, value_field, value_pb)
+        payload_field, payload_pb = await self.encode_value(con(item_type), payload)
+        if payload_pb != "record":
+            raise ValueError("unexpected non-record type when constructing payload")
+        argument_field, argument_pb = await self.encode_value(choice.arg_binder.type, argument)
+        cmd_pb.create_arguments = payload_pb
+        set_value(cmd_pb.choice_argument, argument_field, argument_pb)
 
-        return G_CreateAndExerciseCommand(createAndExercise=cmd_pb)
+        return cmd_pb
 
     async def encode_exercise_by_key_command(
         self,
-        template_id: TypeConName,
+        template_id: Union[str, TypeConName],
         choice_name: str,
         key: Any,
         argument: Optional[ContractData] = None,
     ) -> G_ExerciseByKeyCommand:
         item_type, template, choice = await self._look_up_choice(template_id, choice_name)
+        if template.key is None:
+            raise ValueError(
+                f"cannot encode ExerciseByKeyCommand; template {template_id} does not have a contract key defined"
+            )
 
         cmd_pb = G_ExerciseByKeyCommand(
             template_id=self.encode_identifier(item_type),
-            contract_key=await self.encode_value(template.key.type, key),
             choice=choice_name,
         )
+        key_field, key_pb = await self.encode_value(template.key.type, key)
         value_field, value_pb = await self.encode_value(choice.arg_binder.type, argument)
+        set_value(cmd_pb.contract_key, key_field, key_pb)
         set_value(cmd_pb.choice_argument, value_field, value_pb)
 
-        return G_Command(exerciseByKey=cmd_pb)
+        return cmd_pb
 
     async def encode_filters(self, template_ids: Sequence[Any]) -> G_Filters:
         # Search for a reference to the "wildcard" template; if any of the requested template_ids
@@ -185,7 +203,7 @@ class Codec:
 
         # No wildcard template IDs, so inspect and resolve all template references to concrete
         # template IDs
-        requested_types = set()
+        requested_types = set()  # type: Set[TypeConName]
         for template_id in template_ids:
             requested_types.update(
                 await self._loader.do_with_retry(lambda: self._lookup.template_names(template_id))
@@ -220,10 +238,15 @@ class Codec:
     async def decode_created_event(self, event: G_CreatedEvent) -> CreateEvent:
         cid = self.decode_contract_id(event)
         cdata = await self.decode_value(con(cid.value_type), event.create_arguments)
+        if not isinstance(cdata, _Mapping):
+            raise ValueError(
+                f"expected create_arguments to result in a dict, but got {cdata!r} instead"
+            )
+
         template = self._lookup.template(cid.value_type)
         key = None
         if template is not None and template.key is not None:
-            key = await self.decode_value(template.key.type, event.key)
+            key = await self.decode_value(template.key.type, event.contract_key)
 
         return CreateEvent(
             cid, cdata, event.signatories, event.observers, event.agreement_text.value, key

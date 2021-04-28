@@ -23,7 +23,9 @@ __all__ = ["PackageService", "PackageLoader", "DEFAULT_TIMEOUT"]
 
 T = TypeVar("T")
 
-DEFAULT_TIMEOUT = timedelta(seconds=30)
+# mypy insists on having a type annotation here, or it will complain about not being able to
+# determine the type of this field in pkgloader_aio_compat.py
+DEFAULT_TIMEOUT: timedelta = timedelta(seconds=30)
 
 
 class PackageService(Protocol):
@@ -47,7 +49,7 @@ class PackageLoader:
     information.
     """
 
-    _allow_deprecated_identifiers = True
+    _allow_deprecated_identifiers = False
 
     def __init__(
         self,
@@ -63,7 +65,7 @@ class PackageLoader:
         self._parsing_futs = dict()  # type: Dict[PackageRef, Awaitable[Archive]]
         self._executor = executor or ThreadPoolExecutor(3)
 
-    def set_connection(self, conn):
+    def set_connection(self, conn: "Optional[PackageService]"):
         self._conn = conn
 
     async def do_with_retry(self, fn: "Callable[[], T]") -> "T":

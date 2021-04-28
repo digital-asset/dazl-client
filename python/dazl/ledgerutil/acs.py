@@ -54,7 +54,7 @@ CONNECTING: Literal["CONNECTING"] = "CONNECTING"
 RUNNING: Literal["RUNNING"] = "RUNNING"
 RECONNECTING: Literal["RECONNECTING"] = "RECONNECTING"
 STOPPED: Literal["STOPPED"] = "STOPPED"
-State = Literal["NOT_STARTED", "RUNNING", "RECONNECTING", "STOPPED"]
+State = Literal["NOT_STARTED", "CONNECTING", "RUNNING", "RECONNECTING", "STOPPED"]
 
 
 class ACS:
@@ -113,7 +113,7 @@ class ACS:
         self._queries = queries
         self._snapshot = None  # type: Optional[Snapshot]
         self._snapshot_fut = None  # type: Optional[Future]
-        self._task = None  # type: Optional[Task]
+        self._task = None  # type: Optional[Future]
         self._state = NOT_STARTED  # type: State
         self._log = conn.config.logger
 
@@ -362,7 +362,9 @@ class Snapshot:
         if there are no matches.
         """
         wanted_template_ids = self._matching_template_ids(template_id)
-        for cev in reversed(self._creates.values()):
+
+        # in Python 3.9, dict values can be `reversed`; sadly we're not there yet
+        for cev in reversed(list(self._creates.values())):
             if cev.contract_id.value_type in wanted_template_ids and is_match(match, cev.payload):
                 return cev
         return None

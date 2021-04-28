@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from typing import Collection, Union
 
 from ..prim import DazlError, DazlWarning, Party
@@ -16,13 +17,15 @@ class ConfigurationError(DazlError):
         A collection of reasons for a failure.
     """
 
-    def __init__(self, reasons: "Union[str, Collection[str]]"):
+    reasons: Collection[str]
+
+    def __init__(self, reasons: Union[None, str, Collection[str]]):
         if reasons is None:
-            self.reasons = []  # type: Collection[str]
+            self.reasons = []
         elif isinstance(reasons, str):
             self.reasons = [reasons]
         else:
-            self.reasons = reasons  # type: Collection[str]
+            self.reasons = reasons
 
 
 class DazlPartyMissingError(DazlError):
