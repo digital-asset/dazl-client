@@ -59,7 +59,7 @@ class OAuthSettings(NamedTuple):
     refresh_token: Optional[str]
     id_token: Optional[str]
     token_uri: Optional[str]
-    client_id: str
+    client_id: Optional[str]
     client_secret: Optional[str]
     redirect_uri: Optional[str]
     auth_url: Optional[str]
@@ -97,6 +97,9 @@ def connection_settings(
             port = 443 if components.scheme in ("https", "grpcs") else 80
         else:
             port = components.port
+
+        if components.hostname is None:
+            raise ValueError("missing hostname")
 
         settings = HTTPConnectionSettings(
             scheme=components.scheme,

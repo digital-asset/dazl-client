@@ -59,8 +59,8 @@ class LedgerRun(NamedTuple):
     block_end_height: Optional[int]
 
 
-CREATE_IF_MISSING = Literal[1]
-NONE_IF_MISSING = Literal[2]
-EXCEPTION_IF_MISSING = Literal[3]
+CREATE_IF_MISSING: Literal[1] = 1
+NONE_IF_MISSING: Literal[2] = 2
+EXCEPTION_IF_MISSING: Literal[3] = 3
 
 IfMissingPartyBehavior = Literal[1, 2, 3]

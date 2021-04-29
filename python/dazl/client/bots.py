@@ -49,7 +49,7 @@ BotFilter = Callable[[E], bool]
 
 @dataclass(frozen=True)
 class SourceLocation:
-    file_name: str
+    file_name: Optional[str]
     start_line: int
     end_line: int
 

@@ -1,11 +1,13 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+from typing import List, Tuple, Union, cast
 from urllib.parse import urlparse
 
 from grpc import (
     AuthMetadataContext,
     AuthMetadataPlugin,
     AuthMetadataPluginCallback,
+    ChannelCredentials,
     composite_channel_credentials,
     metadata_call_credentials,
     ssl_channel_credentials,
@@ -37,8 +39,16 @@ def create_channel(config: "Config") -> "Channel":
             certificate_chain=config.ssl.cert,
         )
         if config.access.token:
-            credentials = composite_channel_credentials(
-                credentials, metadata_call_credentials(GrpcAuth(config))
+            # The grpc Credential objects do not actually define a formal interface, and are
+            # used interchangeably in the code.
+            #
+            # Additionally there are some incorrect rules in the grpc-stubs typing rules that force
+            # us to work around the type system.
+            credentials = cast(
+                ChannelCredentials,
+                composite_channel_credentials(
+                    credentials, metadata_call_credentials(GrpcAuth(config))
+                ),
             )
         return secure_channel(u.netloc, credentials, options)
     else:
@@ -50,11 +60,12 @@ class GrpcAuth(AuthMetadataPlugin):
         self._config = config
 
     def __call__(self, context: "AuthMetadataContext", callback: "AuthMetadataPluginCallback"):
-        options = []
+        # This overly verbose type signature is here to satisfy mypy and grpc-stubs
+        options = []  # type: List[Tuple[str, Union[str, bytes]]]
 
         # TODO: Add support here for refresh tokens
         token = self._config.access.token
         if token:
             options.append(("Authorization", "Bearer " + self._config.access.token))
 
-        callback(options, None)
+        callback(tuple(options), None)

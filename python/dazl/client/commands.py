@@ -7,7 +7,7 @@ These symbols are primarily kept for backwards compatibility.
 """
 from dataclasses import dataclass, fields
 from datetime import timedelta
-from typing import Any, Collection, List, Mapping, Optional, Sequence, Union
+from typing import Any, Collection, List, Mapping, Optional, Sequence, Tuple, Union
 import uuid
 import warnings
 
@@ -49,7 +49,7 @@ class CreateCommand(api_types.CreateCommand):
             DeprecationWarning,
             stacklevel=2,
         )
-        super().__init__(template, arguments)
+        super().__init__(template, arguments or {})
 
     @property
     def template_type(self) -> "TypeConName":
@@ -297,7 +297,7 @@ class CommandBuilder:
         if party is not None:
             self._defaults.default_party = party
         if ledger_id is not None:
-            self._defaults.ledger_id = ledger_id
+            self._defaults.default_ledger_id = ledger_id
         if workflow_id is not None:
             self._defaults.default_workflow_id = workflow_id
         if application_id is not None:
@@ -344,15 +344,11 @@ class CommandBuilder:
         else:
             return self.append_nonatomically(*commands)
 
-    def append_atomically(
-        self, *commands: "Union[api_types.Command, Sequence[api_types.Command]]"
-    ) -> "CommandBuilder":
+    def append_atomically(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
         self._commands.extend([flatten_command_sequence(commands)])
         return self
 
-    def append_nonatomically(
-        self, *commands: "Union[api_types.Command, Sequence[api_types.Command]]"
-    ) -> "CommandBuilder":
+    def append_nonatomically(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
         self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
         return self
 
@@ -367,21 +363,44 @@ class CommandBuilder:
             defaults.default_command_id or self._defaults.default_command_id or uuid.uuid4().hex
         )
 
-        return [
-            CommandPayload(
-                party=defaults.default_party or self._defaults.default_party,
-                ledger_id=defaults.default_ledger_id or self._defaults.default_ledger_id,
-                workflow_id=defaults.default_workflow_id or self._defaults.default_workflow_id,
-                application_id=defaults.default_application_id
-                or self._defaults.default_application_id,
-                command_id=command_id,
-                deduplication_time=defaults.default_deduplication_time
-                or self._defaults.default_deduplication_time,
-                commands=commands,
-            )
-            for i, commands in enumerate(self._commands)
-            if commands
-        ]
+        cmds = []  # type: List[CommandPayload]
+        for i, commands in enumerate(self._commands):
+            if commands:
+                party = defaults.default_party or self._defaults.default_party
+                ledger_id = defaults.default_ledger_id or self._defaults.default_ledger_id
+                workflow_id = defaults.default_workflow_id or self._defaults.default_workflow_id
+                application_id = (
+                    defaults.default_application_id or self._defaults.default_application_id
+                )
+                deduplication_time = (
+                    defaults.default_deduplication_time or self._defaults.default_deduplication_time
+                )
+
+                # hitting any of these checks would be quite unusual as this information is
+                # validated and supplied in places higher up in the code; they're primarily here to
+                # make sure this function typechecks
+                if not party:
+                    raise ValueError("party is missing on a Command")
+                if not ledger_id:
+                    raise ValueError("ledger_id is missing on a Command")
+                if not workflow_id:
+                    raise ValueError("workflow_id is missing on a Command")
+                if not application_id:
+                    raise ValueError("application_id is missing on a Command")
+
+                cmds.append(
+                    CommandPayload(
+                        party=party,
+                        ledger_id=ledger_id,
+                        workflow_id=workflow_id,
+                        application_id=application_id,
+                        command_id=command_id,
+                        deduplication_time=deduplication_time,
+                        commands=commands,
+                    )
+                )
+
+        return cmds
 
     def __format__(self, format_spec):
         if format_spec == "c":
@@ -401,7 +420,7 @@ def flatten_command_sequence(
     non-``None`` commands.
     """
     ret = []  # type: List[api_types.Command]
-    errors = []
+    errors = []  # type: List[Tuple[Sequence[int], CommandsOrCommandSequence]]
 
     for i, obj in enumerate(commands):
         if obj is not None:

@@ -52,10 +52,10 @@ class PackageLoader(NewPackageLoader):
     Backwards-compatibility shim for dazl.client.pkg_loader.PackageLoader that exposes the same
     historical API but also emits a deprecation warning on construction.
 
-    This shim will be removed in v8.
+    This shim will be removed in v9.
     """
 
-    _allow_deprecated_identifiers = False
+    _allow_deprecated_identifiers = True
 
     def __init__(
         self,
@@ -70,12 +70,9 @@ class PackageLoader(NewPackageLoader):
             stacklevel=2,
         )
         executor = ThreadPoolExecutor(3)
-        super().__init__(
-            package_lookup,
-            PackageServiceWrapper(conn, executor) if conn is not None else None,
-            timeout,
-            executor,
-        )
+        if conn is None:
+            raise ValueError("conn is required")
+        super().__init__(package_lookup, PackageServiceWrapper(conn, executor), timeout, executor)
 
 
 class PackageServiceWrapper:

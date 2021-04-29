@@ -138,7 +138,7 @@ class OffsetEvent(BaseEvent):
     Contract Set (ACS) is populated with the current state of the ledger.
     """
 
-    offset: str
+    offset: Optional[str]
 
 
 @dataclass(frozen=True)

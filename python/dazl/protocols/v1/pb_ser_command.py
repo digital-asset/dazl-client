@@ -7,8 +7,8 @@ Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic typ
 from typing import TYPE_CHECKING, Any, Union
 import warnings
 
-from ..._gen.com.daml.ledger.api.v1.command_submission_service_pb2 import (
-    SubmitRequest as G_SubmitRequest,
+from ..._gen.com.daml.ledger.api.v1.command_service_pb2 import (
+    SubmitAndWaitRequest as G_SubmitAndWaitRequest,
 )
 from ..._gen.com.daml.ledger.api.v1.commands_pb2 import (
     Command as G_Command,
@@ -48,9 +48,11 @@ class ProtobufSerializer(AbstractSerializer):
     # COMMAND serializers
     ################################################################################################
 
-    def serialize_command_request(self, command_payload: "CommandPayload") -> G_SubmitRequest:
+    def serialize_command_request(
+        self, command_payload: "CommandPayload"
+    ) -> G_SubmitAndWaitRequest:
         commands = [self.serialize_command(command) for command in command_payload.commands]
-        return G_SubmitRequest(
+        return G_SubmitAndWaitRequest(
             commands=G_Commands(
                 ledger_id=command_payload.ledger_id,
                 workflow_id=command_payload.workflow_id,

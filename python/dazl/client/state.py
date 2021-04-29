@@ -34,7 +34,7 @@ ContractsHistoricalState = Dict[ContractId, Tuple[ContractData, bool]]
 
 
 class ContractContextualDataCollection(tuple):
-    def __getitem__(self, index: Union[int, str, ContractId]):
+    def __getitem__(self, index):
         if index is None:
             raise ValueError("the index cannot be None")
         elif isinstance(index, int):
@@ -57,7 +57,7 @@ class ContractContextualDataCollection(tuple):
 class ContractContextualData:
     cid: ContractId
     cdata: Optional[ContractData]
-    effective_at: datetime
+    effective_at: Optional[datetime]
     archived_at: Optional[datetime]
     active: bool
 

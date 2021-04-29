@@ -9,7 +9,7 @@ from typing import AbstractSet, Any, AsyncIterable, Collection, Mapping, Optiona
 import uuid
 import warnings
 
-from grpc.aio import Channel
+from grpc.aio import Channel, UnaryStreamCall
 
 from ..._gen.com.daml.ledger.api.v1.active_contracts_service_pb2 import (
     GetActiveContractsRequest as G_GetActiveContractsRequest,
@@ -181,6 +181,7 @@ class Connection:
         """
         stub = CommandServiceStub(self.channel)
 
+        commands = [G_Command(create=await self._codec.encode_create_command(template_id, payload))]
         request = G_SubmitAndWaitRequest(
             commands=G_Commands(
                 ledger_id=self._config.access.ledger_id,
@@ -188,7 +189,7 @@ class Connection:
                 command_id=self._command_id(command_id),
                 workflow_id=self._workflow_id(workflow_id),
                 party=self._ensure_act_as(),
-                commands=[await self._codec.encode_create_command(template_id, payload)],
+                commands=commands,
                 act_as=self._config.access.act_as,
                 read_as=self._config.access.read_only_as,
             )
@@ -218,7 +219,13 @@ class Connection:
         """
         stub = CommandServiceStub(self.channel)
 
-        commands = [await self._codec.encode_exercise_command(contract_id, choice_name, argument)]
+        commands = [
+            G_Command(
+                exercise=await self._codec.encode_exercise_command(
+                    contract_id, choice_name, argument
+                )
+            )
+        ]
         request = self._submit_and_wait_request(commands, workflow_id, command_id)
         response = await stub.SubmitAndWaitForTransactionTree(request)
 
@@ -237,8 +244,10 @@ class Connection:
         stub = CommandServiceStub(self.channel)
 
         commands = [
-            await self._codec.encode_create_and_exercise_command(
-                template_id, payload, choice_name, argument
+            G_Command(
+                createAndExercise=await self._codec.encode_create_and_exercise_command(
+                    template_id, payload, choice_name, argument
+                )
             )
         ]
         request = self._submit_and_wait_request(commands, workflow_id, command_id)
@@ -259,11 +268,13 @@ class Connection:
         stub = CommandServiceStub(self.channel)
 
         commands = [
-            await self._codec.encode_exercise_by_key_command(
-                template_id, choice_name, key, argument
+            G_Command(
+                exerciseByKey=await self._codec.encode_exercise_by_key_command(
+                    template_id, choice_name, key, argument
+                )
             )
         ]
-        request = await self._submit_and_wait_request(commands, workflow_id, command_id)
+        request = self._submit_and_wait_request(commands, workflow_id, command_id)
         response = await stub.SubmitAndWaitForTransactionTree(request)
 
         return await self._codec.decode_exercise_response(response.transaction)
@@ -323,7 +334,7 @@ class Connection:
 
     # region Read API
 
-    def query(self, template_id: str = "*", query: Query = None) -> "QueryStream":
+    def query(self, __template_id: str = "*", __query: Query = None) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
 
@@ -331,14 +342,14 @@ class Connection:
         set of templates, you may want to consider :class:`ACS` instead, which is a utility class
         that helps you maintain a "live" state of the ACS.
 
-        :param template_id:
+        :param __template_id:
             The name of the template for which to fetch contracts.
-        :param query:
+        :param __query:
             A filter to apply to the set of returned contracts.
         """
-        return QueryStream(self, {template_id: query}, UNTIL_END)
+        return QueryStream(self, {__template_id: __query}, UNTIL_END)
 
-    def query_many(self, queries: Optional[Mapping[str, Query]] = None) -> "QueryStream":
+    def query_many(self, __queries: Optional[Mapping[str, Query]] = None) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
 
@@ -346,13 +357,13 @@ class Connection:
         set of templates, you may want to consider :class:`ACS` instead, which is a utility class
         that helps you maintain a "live" state of the ACS.
 
-        :param queries:
+        :param __queries:
             A map of template IDs to filter to apply to the set of returned contracts.
         """
-        return QueryStream(self, queries, UNTIL_END)
+        return QueryStream(self, __queries, UNTIL_END)
 
     def stream(
-        self, template_id: str = "*", query: Query = None, *, offset: Optional[str] = None
+        self, __template_id: str = "*", __query: Query = None, *, offset: Optional[str] = None
     ) -> "QueryStream":
         """
         Stream create/archive events.
@@ -363,9 +374,9 @@ class Connection:
         Otherwise, ``offset`` can be supplied to resume a stream from a prior point where a
         ``Boundary`` was returned from a previous stream.
 
-        :param template_id:
+        :param __template_id:
             The name of the template for which to fetch contracts.
-        :param query:
+        :param __query:
             A filter to apply to the set of returned contracts. Note that this does not filter
             :class:`ArchiveEvent`; readers of the stream MUST be able to cope with "mismatched"
             archives that come from the result of applying a filter.
@@ -373,10 +384,10 @@ class Connection:
             An optional offset at which to start receiving events. If ``None``, start from the
             beginning.
         """
-        return QueryStream(self, {template_id: query}, from_offset_until_forever(offset))
+        return QueryStream(self, {__template_id: __query}, from_offset_until_forever(offset))
 
     def stream_many(
-        self, queries: Optional[Mapping[str, Query]] = None, *, offset: Optional[str] = None
+        self, __queries: Optional[Mapping[str, Query]] = None, *, offset: Optional[str] = None
     ) -> "QueryStream":
         """
         Stream create/archive events from more than one template ID in the same stream.
@@ -387,7 +398,7 @@ class Connection:
         Otherwise, ``offset`` can be supplied to resume a stream from a prior point where a
         ``Boundary`` was returned from a previous stream.
 
-        :param queries:
+        :param __queries:
             A map of template IDs to filter to apply to the set of returned contracts. Note that
             this does not filter :class:`ArchiveEvent`; readers of the stream MUST be able to cope
             with "mismatched" archives that come from the result of applying a filter.
@@ -395,7 +406,7 @@ class Connection:
             An optional offset at which to start receiving events. If ``None``, start from the
             beginning.
         """
-        return QueryStream(self, queries, from_offset_until_forever(offset))
+        return QueryStream(self, __queries, from_offset_until_forever(offset))
 
     # endregion
 
@@ -408,7 +419,10 @@ class Connection:
         Allocate a new party.
         """
         stub = PartyManagementServiceStub(self.channel)
-        request = G_AllocatePartyRequest(party_id_hint=identifier_hint, display_name=display_name)
+        request = G_AllocatePartyRequest(
+            party_id_hint=Party(identifier_hint) if identifier_hint else None,
+            display_name=display_name,
+        )
         response = await stub.AllocateParty(request)
         return Codec.decode_party_info(response.party_details)
 
@@ -448,7 +462,7 @@ class QueryStream(QueryStreamBase):
     def __init__(
         self,
         conn: Connection,
-        queries: Optional[Mapping[str, Query]],
+        queries: Optional[Mapping[str, Optional[Query]]],
         offset_range: LedgerOffsetRange,
     ):
         self.conn = conn
@@ -456,7 +470,7 @@ class QueryStream(QueryStreamBase):
         self._offset_range = offset_range
 
         self._filter = None
-        self._response_stream = None
+        self._response_stream = None  # type: Optional[UnaryStreamCall]
 
     async def close(self) -> None:
         if self._response_stream is not None:
@@ -540,10 +554,10 @@ class QueryStream(QueryStreamBase):
         request = G_GetActiveContractsRequest(
             ledger_id=self.conn.config.access.ledger_id, filter=filter_pb
         )
-        self._response_stream = stub.GetActiveContracts(request)
+        self._response_stream = response_stream = stub.GetActiveContracts(request)
 
         offset = None
-        async for response in self._response_stream:
+        async for response in response_stream:
             for event in response.active_contracts:
                 yield await self.conn.codec.decode_created_event(event)
             # for ActiveContractSetResponse messages, only the last offset is actually relevant
@@ -561,14 +575,15 @@ class QueryStream(QueryStreamBase):
             begin=self.conn.codec.encode_begin_offset(begin_offset),
         )
 
-        self._response_stream = stub.GetTransactions(request)
-        async for response in self._response_stream:
-            for event in response.events:
-                event_type = event.WhichOneof("event")
-                if event_type == "created":
-                    yield await self.conn.codec.decode_created_event(event.created)
-                elif event_type == "archived":
-                    yield await self.conn.codec.decode_archived_event(event.archived)
-                else:
-                    warnings.warn(f"Unknown Event({event_type}=...)", ProtocolWarning)
-            yield Boundary(response.offset)
+        self._response_stream = response_stream = stub.GetTransactions(request)
+        async for response in response_stream:
+            for tx in response.transactions:
+                for event in tx.events:
+                    event_type = event.WhichOneof("event")
+                    if event_type == "created":
+                        yield await self.conn.codec.decode_created_event(event.created)
+                    elif event_type == "archived":
+                        yield await self.conn.codec.decode_archived_event(event.archived)
+                    else:
+                        warnings.warn(f"Unknown Event({event_type}=...)", ProtocolWarning)
+                yield Boundary(tx.offset)
