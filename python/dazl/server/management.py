@@ -7,10 +7,12 @@ Endpoints for managing parties/bots connected via a dazl client.
 
 from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Collection, NoReturn, Optional, Sequence
+import warnings
 
 from ..client import Bot, _NetworkImpl
-from ..model.core import DazlImportError, SourceLocation
+from ..client.bots import SourceLocation
 from ..prim import Party
+from ..prim.errors import DazlImportError
 
 if TYPE_CHECKING:
     from aiohttp import web
@@ -40,9 +42,11 @@ def build_routes(network_impl: "_NetworkImpl") -> "Collection[web.AbstractRouteD
     try:
         from aiohttp import web
     except ImportError:
-        raise DazlImportError(
-            "aiohttp", "server routes could not be built because aiohttp is not installed"
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            raise DazlImportError(
+                "aiohttp", "server routes could not be built because aiohttp is not installed"
+            )
 
     routes = web.RouteTableDef()
 
@@ -66,18 +70,18 @@ def build_routes(network_impl: "_NetworkImpl") -> "Collection[web.AbstractRouteD
         return web.json_response(asdict(_get_bot_info(bot)))
 
     @routes.post("/bots/{bot_id}/state/{action}")
-    async def change_bot_state(request: "web.Request") -> "NoReturn":
+    async def change_bot_state(request: "web.Request") -> "web.Response":
         bot = get_bot(request)
         action = request.match_info["action"]
 
         if action.lower() == "pause":
             bot.pause()
-            raise web.HTTPAccepted()
+            return web.HTTPAccepted()
         elif action.lower() == "resume":
             bot.resume()
-            raise web.HTTPAccepted()
+            return web.HTTPAccepted()
         else:
-            raise web.HTTPBadRequest()
+            return web.HTTPBadRequest()
 
     def get_bot(request: "web.Request") -> "Bot":
         """

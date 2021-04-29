@@ -2,17 +2,21 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from dataclasses import dataclass
-from typing import Mapping
 
 import pytest
 
 from dazl import CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
+from dazl._gen.com.daml.ledger.api.v1.commands_pb2 import Command as G_Command
+from dazl._gen.com.daml.ledger.api.v1.value_pb2 import (
+    RecordField as G_RecordField,
+    Value as G_Value,
+)
 from dazl.damlast import DarFile
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.protocols import SymbolLookup
-from dazl.prim import ContractId
-from dazl.protocols.v1 import model as G
-from dazl.protocols.v1.pb_ser_command import ProtobufSerializer, as_identifier
+from dazl.ledger.grpc.codec_aio import Codec
+from dazl.prim import ContractId, Party
+from dazl.protocols.v1.pb_ser_command import ProtobufSerializer
 
 from .dars import Pending
 
@@ -22,8 +26,8 @@ class DarFixture:
     dar: DarFile
     lookup: SymbolLookup
 
-    def get_identifier(self, identifier: str) -> "Mapping[str, str]":
-        return as_identifier(self.lookup.data_type_name(identifier))
+    def get_identifier(self, identifier: str):
+        return Codec.encode_identifier(self.lookup.data_type_name(identifier))
 
 
 @pytest.fixture(scope="module")
@@ -39,10 +43,10 @@ def test_serialize_create(dar_fixture):
 
     command = CreateCommand("Pending:AccountRequest", dict(owner="SomeParty"))
 
-    expected = G.Command()
+    expected = G_Command()
     expected.create.template_id.MergeFrom(dar_fixture.get_identifier("Pending:AccountRequest"))
     expected.create.create_arguments.fields.append(
-        G.RecordField(label="owner", value=G.Value(party="SomeParty"))
+        G_RecordField(label="owner", value=G_Value(party=Party("SomeParty")))
     )
     actual = sut.serialize_command(command)
 
@@ -56,12 +60,12 @@ def test_serialize_exercise(dar_fixture):
     cid = ContractId(tref, "#1:0")
     command = ExerciseCommand(cid, "CreateAccount", dict(accountId=42))
 
-    expected = G.Command()
+    expected = G_Command()
     expected.exercise.contract_id = "#1:0"
     expected.exercise.template_id.MergeFrom(dar_fixture.get_identifier("Pending:AccountRequest"))
     expected.exercise.choice = "CreateAccount"
     expected.exercise.choice_argument.record.fields.append(
-        G.RecordField(label="accountId", value=G.Value(int64=42))
+        G_RecordField(label="accountId", value=G_Value(int64=42))
     )
     actual = sut.serialize_command(command)
 
@@ -73,7 +77,7 @@ def test_serialize_exercise_by_key(dar_fixture):
 
     command = ExerciseByKeyCommand("Pending:Counter", "SomeParty", "Increment", {})
 
-    expected = G.Command()
+    expected = G_Command()
     expected.exerciseByKey.template_id.MergeFrom(dar_fixture.get_identifier("Pending:Counter"))
     expected.exerciseByKey.contract_key.party = "SomeParty"
     expected.exerciseByKey.choice = "Increment"
@@ -90,16 +94,16 @@ def test_serialize_create_and_exercise(dar_fixture):
         "Pending:AccountRequest", dict(owner="SomeParty"), "CreateAccount", dict(accountId=42)
     )
 
-    expected = G.Command()
+    expected = G_Command()
     expected.createAndExercise.template_id.MergeFrom(
         dar_fixture.get_identifier("Pending:AccountRequest")
     )
     expected.createAndExercise.create_arguments.fields.append(
-        G.RecordField(label="owner", value=G.Value(party="SomeParty"))
+        G_RecordField(label="owner", value=G_Value(party=Party("SomeParty")))
     )
     expected.createAndExercise.choice = "CreateAccount"
     expected.createAndExercise.choice_argument.record.fields.append(
-        G.RecordField(label="accountId", value=G.Value(int64=42))
+        G_RecordField(label="accountId", value=G_Value(int64=42))
     )
     actual = sut.serialize_command(command)
 

@@ -3,9 +3,8 @@
 
 from typing import Awaitable, Callable, TypeVar, Union
 
-from dazl.model.writing import EventHandlerResponse
-
-from ..model.reading import BaseEvent
+from ..protocols.events import BaseEvent
+from .commands import EventHandlerResponse
 
 E = TypeVar("E", bound=BaseEvent)
 T = TypeVar("T")

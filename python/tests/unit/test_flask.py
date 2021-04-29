@@ -2,12 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import json
-import logging
 from threading import Thread
 from time import sleep
 
 from dazl import LOG, Network, SimplePartyClient, create
-from dazl.model.reading import ReadyEvent
+from dazl.protocols.events import ReadyEvent
 
 from .dars import PostOffice
 

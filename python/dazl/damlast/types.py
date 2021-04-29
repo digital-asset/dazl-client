@@ -1,12 +1,15 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-from typing import Callable, Optional, no_type_check
+
+from typing import TYPE_CHECKING, Callable, Optional, no_type_check
 import warnings
 
-from ..model.types import Type as OldType
 from ..util.typing import safe_cast
 from ._base import T
 from .daml_lf_1 import PrimType, Type
+
+if TYPE_CHECKING:
+    from ..model.types import Type as OldType
 
 
 def var(var_: str) -> "Type":

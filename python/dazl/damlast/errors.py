@@ -11,7 +11,7 @@ Error types
 
 from typing import TYPE_CHECKING, Any
 
-from ..model.core import DazlError
+from ..prim import DazlError
 
 if TYPE_CHECKING:
     from . import daml_lf_1

@@ -1,13 +1,14 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Callable, Union
+from typing import Any, Callable, Mapping, Union
 
 from ..prim import ContractData
 
-__all__ = ["ContractMatch", "is_match"]
+__all__ = ["ContractMatch", "is_match", "Query"]
 
 ContractMatch = Union[None, Callable[[ContractData], bool], ContractData]
+Query = Mapping[str, Any]
 
 
 def is_match(predicate: ContractMatch, cdata: ContractData) -> bool:

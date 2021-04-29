@@ -5,7 +5,7 @@ import logging
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..model.network import OAuthSettings
+    from ..client._conn_settings import OAuthSettings
 
 
 __all__ = ["oauth_flow"]
@@ -20,7 +20,7 @@ async def oauth_flow(settings: "OAuthSettings") -> "OAuthSettings":
     """
     import requests
 
-    from ..model.network import OAuthSettings
+    from ..client._conn_settings import OAuthSettings
 
     if not settings.token:
 

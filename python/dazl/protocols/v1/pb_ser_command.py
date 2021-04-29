@@ -4,11 +4,11 @@
 """
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any, Union
 import warnings
 
-from ..._gen.com.daml.ledger.api.v1.command_submission_service_pb2 import (
-    SubmitRequest as G_SubmitRequest,
+from ..._gen.com.daml.ledger.api.v1.command_service_pb2 import (
+    SubmitAndWaitRequest as G_SubmitAndWaitRequest,
 )
 from ..._gen.com.daml.ledger.api.v1.commands_pb2 import (
     Command as G_Command,
@@ -21,33 +21,24 @@ from ..._gen.com.daml.ledger.api.v1.commands_pb2 import (
 from ..._gen.com.daml.ledger.api.v1.value_pb2 import Identifier as G_Identifier
 from ...damlast.daml_lf_1 import TypeConName
 from ...damlast.util import module_local_name, module_name, package_ref
-from ...model.writing import AbstractSerializer
+from ...ledger.grpc.codec_aio import Codec
 from ...prim import ContractId, timedelta_to_duration
 from ...values.protobuf import ProtobufEncoder, set_value
+from ..serializers import AbstractSerializer
 
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
+if TYPE_CHECKING:
+    from ...client.commands import CommandPayload
     from ...model.types import TypeReference
     from ...model.writing import CommandPayload
 
 
 def as_identifier(tref: "Union[TypeReference, TypeConName]") -> "G_Identifier":
-    if isinstance(tref, TypeReference):
-        warnings.warn(
-            "as_identifier(TypeReference) is deprecated; use as_identifier(TypeConName) instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
+    warnings.warn("Use Codec.encode_identifier instead.", DeprecationWarning, stacklevel=2)
 
+    if isinstance(tref, TypeReference):
         tref = tref.con
 
-    if isinstance(tref, TypeConName):
-        identifier = G_Identifier()
-        _set_template(identifier, tref)
-        return identifier
-
-    else:
-        raise TypeError("as_identifier requires a TypeConName or a TypeReference")
+    return Codec.encode_identifier(tref)
 
 
 class ProtobufSerializer(AbstractSerializer):
@@ -58,9 +49,11 @@ class ProtobufSerializer(AbstractSerializer):
     # COMMAND serializers
     ################################################################################################
 
-    def serialize_command_request(self, command_payload: "CommandPayload") -> G_SubmitRequest:
+    def serialize_command_request(
+        self, command_payload: "CommandPayload"
+    ) -> G_SubmitAndWaitRequest:
         commands = [self.serialize_command(command) for command in command_payload.commands]
-        return G_SubmitRequest(
+        return G_SubmitAndWaitRequest(
             commands=G_Commands(
                 ledger_id=command_payload.ledger_id,
                 workflow_id=command_payload.workflow_id,

@@ -8,7 +8,7 @@ import sys
 from threading import Event, Thread
 import time
 
-from ..prim.datetime import TimeDeltaLike, to_timedelta
+from ..prim import DazlError, TimeDeltaLike, to_timedelta
 
 
 def kill_process_tree(process: "Popen"):
@@ -47,7 +47,6 @@ def kill_process_tree(process: "Popen"):
 
 
 def wait_for_process_port(process: "Popen", port: int, timeout: "TimeDeltaLike") -> None:
-    from ..model.core import ProcessDiedException
     from .io import is_port_alive
 
     alive = False
@@ -114,3 +113,7 @@ class ProcessLogger:
                 self.logger.info(line.rstrip("\n"))
         except:  # noqa
             pass
+
+
+class ProcessDiedException(DazlError):
+    pass

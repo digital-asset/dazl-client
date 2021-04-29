@@ -15,7 +15,20 @@ DAML-LF fast lookups
 
 import threading
 from types import MappingProxyType
-from typing import AbstractSet, Any, Collection, Dict, Iterable, List, NoReturn, Optional, Tuple
+from typing import (
+    AbstractSet,
+    Any,
+    Collection,
+    Dict,
+    Iterable,
+    List,
+    NoReturn,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
+import warnings
 
 from .. import LOG
 from .daml_lf_1 import (
@@ -33,21 +46,23 @@ from .daml_lf_1 import (
 )
 from .errors import NameNotFoundError, PackageNotFoundError
 from .protocols import SymbolLookup
+from .util import package_local_name, package_ref
 
 __all__ = [
-    "find_choice",
-    "parse_type_con_name",
-    "validate_template",
     "EmptyLookup",
     "MultiPackageLookup",
     "PackageLookup",
-    "MultiPackageLookup",
+    "find_choice",
+    "matching_normalizations",
+    "normalize",
+    "parse_type_con_name",
+    "validate_template",
 ]
 
 STAR = PackageRef("*")
 
 
-def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) -> "TypeConName":
+def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) -> TypeConName:
     """
     Parse the given string as a type constructor.
     """
@@ -57,7 +72,7 @@ def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) ->
     return TypeConName(module_ref, entity_name.split("."))
 
 
-def empty_lookup_impl(ref: "Any") -> "NoReturn":
+def empty_lookup_impl(ref: Any) -> NoReturn:
     pkg, _ = validate_template(ref)
     if pkg != STAR:
         raise PackageNotFoundError(pkg)
@@ -66,8 +81,8 @@ def empty_lookup_impl(ref: "Any") -> "NoReturn":
 
 
 def validate_template(
-    template: "Any", allow_deprecated_identifiers: bool = False
-) -> "Tuple[PackageRef, str]":
+    template: Any, allow_deprecated_identifiers: bool = False
+) -> Tuple[PackageRef, str]:
     """
     Return a module and type name component from something that can be interpreted as a template.
 
@@ -83,14 +98,19 @@ def validate_template(
     :raise ValueError:
         If the object could not be interpreted as a thing referring to a template.
     """
-    from ..damlast.daml_lf_1 import TypeConName
-    from ..damlast.util import package_local_name, package_ref
-
     if template == "*" or template is None:
         return STAR, "*"
 
     if allow_deprecated_identifiers:
-        from ..model.types import UnresolvedTypeReference
+        warnings.warn(
+            "validate_template(..., allow_deprecated_identifiers=True) will be removed in dazl v8",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            # noinspection PyDeprecation
+            from ..model.types import UnresolvedTypeReference
 
         if isinstance(template, UnresolvedTypeReference):
             template = template.name
@@ -106,6 +126,12 @@ def validate_template(
             # one colon, so assume the package ID is unspecified UNLESS the second component is a
             # wildcard; then we assume the wildcard means any module name and entity name
             m, e = components
+            if m == STAR and e != STAR and not allow_deprecated_identifiers:
+                # strings that look like "*:SOMETHING" are explicitly not allowed unless deprecated
+                # identifier support is requested; this is almost certainly an attempt to use
+                # periods instead of colons as a delimiter between module name and entity name
+                raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")
+
             return (STAR, f"{m}:{e}") if e != "*" else (PackageRef(m), "*")
 
         elif len(components) == 1 and allow_deprecated_identifiers:
@@ -121,6 +147,35 @@ def validate_template(
         return package_ref(template), package_local_name(template)
     else:
         raise ValueError(f"Don't know how to convert {template!r} into a template")
+
+
+def normalize(__name: Union[None, str, TypeConName]) -> str:
+    """
+    Return the canonical form for a string that represents a template ID or partial match of a
+    template ID.
+
+    Concretely, this function converts ``"MyMod:MyTemplate"`` to ``"*:MyMod:MyTemplate"`` and leaves
+    most other strings unchanged.
+
+    :param __name:
+        A template ID, expressed in either string form or as an instance of :class:`TypeConName`.
+    :return:
+        A string in canonical form (either ``PACKAGE_REF:MODULE_NAME:ENTITY_NAME`` or
+        ``PACKAGE_REF:*``, where ``PACKAGE_REF`` is also allowed to be ``*``).
+    """
+    p, m = validate_template(__name)
+    return f"{p}:{m}"
+
+
+def matching_normalizations(__name: Union[str, TypeConName]) -> Sequence[str]:
+    """
+    Return strings that are possible matches for the given template ID.
+    """
+    p, m = validate_template(__name)
+
+    # throw away duplicates that arise from `name` not being fully specified (p and/or m are
+    # allowed to be asterisks too)
+    return list(dict.fromkeys([f"{p}:{m}", f"{p}:*", f"*:{m}", "*:*"]))
 
 
 class EmptyLookup(SymbolLookup):
@@ -318,6 +373,12 @@ class PackageLookup(SymbolLookup):
 class MultiPackageLookup(SymbolLookup):
     """
     Combines lookups across multiple archives.
+
+    This class is thread-safe. When calling :meth:`add_archive` and any of the other read-only
+    methods concurrently, read-only methods will NOT block; they will return the previous state
+    of the lookup.
+
+    Packages can only be added; they cannot be removed once added.
     """
 
     def __init__(self, archives: "Optional[Collection[Archive]]" = None):

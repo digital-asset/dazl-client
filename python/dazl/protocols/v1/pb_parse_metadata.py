@@ -3,7 +3,18 @@
 
 from collections import OrderedDict, defaultdict
 from dataclasses import dataclass
-from typing import AbstractSet, Any, Collection, DefaultDict, List, Mapping, Optional, Set, Union
+from typing import (
+    TYPE_CHECKING,
+    AbstractSet,
+    Any,
+    Collection,
+    DefaultDict,
+    List,
+    Mapping,
+    Optional,
+    Set,
+    Union,
+)
 import warnings
 
 from toposort import toposort_flatten
@@ -22,21 +33,11 @@ from ...damlast.daml_lf_1 import (
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
-
     from ...damlast.types import get_old_type
-    from ...model.types import (
-        SCALAR_TYPE_UNIT,
-        EnumType,
-        NamedArgumentList,
-        RecordType,
-        ScalarType,
-        Template,
-        TemplateChoice,
-        TypeReference,
-        TypeVariable,
-        VariantType,
-    )
-    from ...model.types_store import PackageStore, PackageStoreBuilder
+
+    if TYPE_CHECKING:
+        from ...model.types import EnumType, RecordType, ScalarType, VariantType
+        from ...model.types_store import PackageStore
 
 __all__ = [
     "parse_archive_payload",
@@ -259,6 +260,8 @@ def parse_daml_metadata_pb(package_id: "PackageRef", metadata_pb: Any) -> "Packa
 def _parse_daml_metadata_pb(archive: "Archive") -> "PackageStore":
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
+        from ...model.types import EnumType, RecordType, Template, TemplateChoice, VariantType
+        from ...model.types_store import PackageStoreBuilder
 
         psb = PackageStoreBuilder()
         psb.add_archive(archive)
@@ -326,21 +329,33 @@ def create_data_type(
     warnings.warn(
         "create_data_type is deprecated; there is no replacement.", DeprecationWarning, stacklevel=2
     )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        from ...damlast.types import get_old_type
+        from ...model.types import (
+            SCALAR_TYPE_UNIT,
+            EnumType,
+            NamedArgumentList,
+            RecordType,
+            TypeReference,
+            TypeVariable,
+            VariantType,
+        )
 
-    type_vars = tuple(TypeVariable(type_var.var) for type_var in dt.params)
-    tt = TypeReference(con=TypeConName(current_module_ref, dt.name.segments))
+        type_vars = tuple(TypeVariable(type_var.var) for type_var in dt.params)
+        tt = TypeReference(con=TypeConName(current_module_ref, dt.name.segments))
 
-    if dt.record is not None:
-        d = OrderedDict()
-        for fwt in dt.record.fields:
-            d[fwt.field] = get_old_type(fwt.type)
-        return RecordType(NamedArgumentList(d.items()), tt, type_vars)
-    elif dt.variant is not None:
-        d = OrderedDict()
-        for fwt in dt.variant.fields:
-            d[fwt.field] = get_old_type(fwt.type)
-        return VariantType(NamedArgumentList(d.items()), tt, type_vars)
-    elif dt.enum is not None:
-        return EnumType(tt, dt.enum.constructors)
-    else:
-        return SCALAR_TYPE_UNIT
+        if dt.record is not None:
+            d = OrderedDict()
+            for fwt in dt.record.fields:
+                d[fwt.field] = get_old_type(fwt.type)
+            return RecordType(NamedArgumentList(d.items()), tt, type_vars)
+        elif dt.variant is not None:
+            d = OrderedDict()
+            for fwt in dt.variant.fields:
+                d[fwt.field] = get_old_type(fwt.type)
+            return VariantType(NamedArgumentList(d.items()), tt, type_vars)
+        elif dt.enum is not None:
+            return EnumType(tt, dt.enum.constructors)
+        else:
+            return SCALAR_TYPE_UNIT

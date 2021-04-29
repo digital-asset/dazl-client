@@ -8,8 +8,7 @@ from ..damlast import IdentityTypeVisitor
 from ..damlast.daml_lf_1 import DefDataType, FieldWithType, PrimType, Type
 from ..damlast.lookup import EmptyLookup
 from ..damlast.protocols import SymbolLookup
-from ..model.core import DazlError
-from ..prim import ContractId, to_str, to_variant
+from ..prim import ContractId, DazlError, to_str, to_variant
 from .mapper import ValueMapper
 
 if TYPE_CHECKING:

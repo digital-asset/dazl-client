@@ -9,46 +9,48 @@ dazl: DA client library for Python
 Dependencies
 ------------
 
-You will need Python 3.6 or later and a Digital Asset ledger implementation (DA Sandbox or
-DA Ledger Server). 
-
-Build-time dependencies are handled using `Poetry <https://poetry.eustace.io/>`_.
+You will need Python 3.6 or later and a Daml Ledger.
 
 
 Getting Started
 ---------------
 
-This section assumes that you already have a running ledger with the standard `daml new` model loaded, and have imported `dazl`.
+This section assumes that you already have a running ledger with the standard `daml new` model
+loaded, and have imported `dazl`.
 
 Connect to the ledger and submit a single command::
 
-    with dazl.simple_client('http://localhost:6865', 'Alice') as client:
-        contract = { 'issuer' : 'Alice', 'owner' : 'Alice', 'name' : 'hello world!' }
-        client.ready()
-        client.submit_create('Main.Asset', contract)
+    import dazl
+
+    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
+        conn.create('Main:Asset', {'issuer': 'Alice', 'owner': 'Alice', 'name': 'hello world!'})
 
 Connect to the ledger as a single party, print all contracts, and close::
 
-    with dazl.simple_client('http://localhost:7600', 'Alice') as client:
-        # wait for the ACS to be fully read
-        client.ready()
-        contract_dict = client.find_active('*')
-    print(contract_dict)
+    import dazl
+
+    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
+        contracts = {}
+        async for event in conn.query():
+            contracts[event.cid] = event.cdata
+    print(contracts)
 
 Connect to the ledger using asynchronous callbacks::
 
-    from dazl.model.reading import ReadyEvent
-    network = dazl.Network()
-    network.set_config(url='http://localhost:6865')
+    import dazl
 
-    alice = network.aio_party('Alice')
+    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
+        contracts = {}
+        @conn.on_create
+        def _(event):
+            contracts[event.cid] = event.cdata
+    print(contracts)
 
-    @alice.ledger_ready()
-    async def onReady(event: ReadyEvent):
-      contracts = await event.acs_find_one('Main.Asset')
-      print(contracts)
+Code
+----
 
-    network.run_until_complete()
+Build-time dependencies are handled using `Poetry <https://python-poetry.org/>`_.
+
 
 Table of Contents
 -----------------

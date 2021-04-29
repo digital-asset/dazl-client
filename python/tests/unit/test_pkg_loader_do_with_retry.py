@@ -4,12 +4,12 @@
 # noinspection PyPackageRequirements
 import pytest
 
-from dazl.client.pkg_loader import PackageLoader
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef, TypeConName
 from dazl.damlast.errors import NameNotFoundError
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.util import package_ref
+from dazl.ledger.pkgloader_aio import PackageLoader
 
 from .dars import AllKindsOf
 

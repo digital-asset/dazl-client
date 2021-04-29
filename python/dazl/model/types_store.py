@@ -406,6 +406,9 @@ class PackageProvider(Protocol):
 
 class MemoryPackageProvider:
     def __init__(self, mapping: "Mapping[PackageRef, bytes]"):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            super().__init__()
         warnings.warn(
             "MemoryPackageProvider is deprecated; there is no replacement.",
             DeprecationWarning,

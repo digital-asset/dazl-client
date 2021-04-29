@@ -1001,4 +1001,4 @@ def annotate_context(
 
 
 # types that can be used to refer to templates
-TemplateNameLike = Union[str, TypeReference, UnresolvedTypeReference, Template]
+TemplateNameLike = Union[str, TypeConName, TypeReference, UnresolvedTypeReference, Template]

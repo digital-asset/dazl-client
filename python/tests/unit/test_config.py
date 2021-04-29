@@ -4,9 +4,8 @@
 import http.server
 import tempfile
 
-from dazl import Network
+from dazl import Network, Party
 from dazl.client.config import ConfigurationError, NetworkConfig, fetch_config
-from dazl.model.core import Party
 from dazl_internal.background_http_server import TestHTTPServer
 
 # Ensure the key/value pairs that initialize a manager create an appropriate configuration.

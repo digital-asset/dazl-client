@@ -4,6 +4,7 @@
 """
 This module contains miscellaneous utility methods that don't really fit anywhere else.
 """
+
 from typing import (
     Callable,
     Collection,

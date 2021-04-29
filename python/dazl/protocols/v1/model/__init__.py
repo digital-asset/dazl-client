@@ -4,7 +4,9 @@
 import warnings
 
 warnings.warn(
-    "dazl.protocols.v1.model is deprecated; use the types in dazl._gen instead", DeprecationWarning
+    "dazl.protocols.v1.model is deprecated; use the types in dazl._gen instead",
+    DeprecationWarning,
+    stacklevel=2,
 )
 
 from ...._gen.com.daml.daml_lf_dev.daml_lf_1_pb2 import (

@@ -1,6 +1,5 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
 from asyncio import Future, ensure_future, gather, get_event_loop, wait
 from concurrent.futures import ALL_COMPLETED
 from dataclasses import asdict, dataclass, field, fields, replace
@@ -22,13 +21,13 @@ from typing import (
     Union,
 )
 import uuid
+import warnings
 
 from .. import LOG
 from ..damlast.daml_lf_1 import PackageRef, TypeConName
-from ..model.core import ContractContextualData, ContractContextualDataCollection, ContractsState
-from ..model.ledger import LedgerMetadata
-from ..model.network import OAuthSettings, connection_settings
-from ..model.reading import (
+from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
+from ..protocols import LedgerClient, LedgerNetwork
+from ..protocols.events import (
     ActiveContractSetEvent,
     BaseEvent,
     ContractArchiveEvent,
@@ -42,18 +41,23 @@ from ..model.reading import (
     TransactionFilter,
     TransactionStartEvent,
 )
-from ..model.writing import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
-from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
-from ..protocols import LedgerClient, LedgerNetwork
 from ..query import ContractMatch
 from ..scheduler import Invoker
 from ..util.asyncio_util import ServiceQueue, completed, named_gather
 from ..util.prim_natural import n_things
 from ..util.typing import safe_cast
+from ._conn_settings import OAuthSettings, connection_settings
 from ._writer_verify import ValidateSerializer
 from .bots import Bot, BotCallback, BotCollection, BotFilter
+from .commands import CommandBuilder, CommandDefaults, CommandPayload, EventHandlerResponse
 from .config import PartyConfig, _NetworkConfig
-from .state import ActiveContractSet
+from .ledger import LedgerMetadata
+from .state import (
+    ActiveContractSet,
+    ContractContextualData,
+    ContractContextualDataCollection,
+    ContractsState,
+)
 
 if TYPE_CHECKING:
     from ._network_client_impl import _NetworkImpl
@@ -150,7 +154,12 @@ class _PartyClientImpl:
             Information about the connected ledger.
         """
         evt = InitEvent(
-            self, self.party, current_time, metadata.ledger_id, self.parent.lookup, metadata._store
+            self,
+            self.party,
+            current_time,
+            metadata.ledger_id,
+            self.parent.lookup,
+            metadata._store,
         )
         return self.emit_event(evt)
 
@@ -215,20 +224,20 @@ class _PartyClientImpl:
 
     # region Active/Historical Contract Set management
 
-    def find_by_id(self, cid: Union[str, ContractId]) -> "Optional[ContractContextualData]":
+    def find_by_id(self, cid: "Union[str, ContractId]") -> "Optional[ContractContextualData]":
         return self._acs.get(cid)
 
     def find(
-        self, template: Any, match: ContractMatch = None, include_archived: bool = False
-    ) -> ContractContextualDataCollection:
+        self, template: Any, match: "ContractMatch" = None, include_archived: bool = False
+    ) -> "ContractContextualDataCollection":
         return self._acs.read_full(template, match, include_archived=include_archived)
 
-    def find_active(self, template: Any, match: ContractMatch = None) -> ContractsState:
+    def find_active(self, template: Any, match: "ContractMatch" = None) -> "ContractsState":
         return self._acs.read_active(template, match)
 
     def find_historical(
-        self, template: Any, match: ContractMatch = None
-    ) -> ContractContextualDataCollection:
+        self, template: Any, match: "ContractMatch" = None
+    ) -> "ContractContextualDataCollection":
         return self._acs.read_full(template, match, include_archived=True)
 
     def find_nonempty(
@@ -475,7 +484,7 @@ class _PartyClientImpl:
 
     def write_commands(
         self,
-        commands: EventHandlerResponse,
+        commands: "EventHandlerResponse",
         ignore_errors: bool = False,
         workflow_id: "Optional[str]" = None,
         deduplication_time: "Optional[TimeDeltaLike]" = None,
@@ -501,7 +510,9 @@ class _PartyClientImpl:
         """
         if workflow_id is None:
             workflow_id = uuid.uuid4().hex
-        cb = CommandBuilder.coerce(commands, atomic_default=True)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cb = CommandBuilder.coerce(commands, atomic_default=True)
         cb.defaults(
             workflow_id=workflow_id,
             deduplication_time=(
@@ -538,8 +549,10 @@ class _PartyClientImpl:
         Main coroutine for submitting commands.
         """
         LOG.info("Writer loop for party %s is starting...", self.party)
+        ledger_fut = ensure_future(self._pool.ledger())
+
         client = await self._client_fut  # type: LedgerClient
-        metadata = await self._pool.ledger()  # type: LedgerMetadata
+        metadata = await ledger_fut  # type: LedgerMetadata
         validator = ValidateSerializer(self.parent.lookup)
 
         self._writer.pending_commands.start()

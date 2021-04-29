@@ -26,24 +26,21 @@ from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
 from ..metrics import MetricEvents
-from ..model.core import DazlPartyMissingError
-from ..model.ledger import LedgerMetadata
-from ..model.network import connection_settings
-from ..model.reading import BaseEvent, InitEvent, ReadyEvent
-from ..prim import Party
-from ..prim.datetime import TimeDeltaLike, to_timedelta
+from ..prim import Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
 from ..protocols.autodetect import AutodetectLedgerNetwork
+from ..protocols.events import BaseEvent, InitEvent, ReadyEvent
 from ..scheduler import Invoker, RunLevel
 from ._base_model import CREATE_IF_MISSING, NONE_IF_MISSING, IfMissingPartyBehavior
+from ._conn_settings import connection_settings
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
 from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
-
-T = TypeVar("T")
-
+from .errors import DazlPartyMissingError
+from .ledger import LedgerMetadata
 
 __all__ = ["_NetworkImpl", "_NetworkRunner"]
+T = TypeVar("T")
 
 
 class _NetworkImpl:
@@ -543,7 +540,12 @@ class _NetworkRunner:
         init_futs = []
         if first_offset is None:
             init_evt = InitEvent(
-                None, None, None, metadata.ledger_id, self._network_impl.lookup, metadata._store
+                None,
+                None,
+                None,
+                metadata.ledger_id,
+                self._network_impl.lookup,
+                metadata._store,
             )
             init_futs.append(ensure_future(self._network_impl.emit_event(init_evt)))
         for party_impl in party_impls:

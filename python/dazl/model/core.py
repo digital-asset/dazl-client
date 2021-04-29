@@ -2,29 +2,32 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-Core types
-----------
-
-The :mod:`dazl.model.core` module contains classes used on both the read-side and the write-side of
-the Ledger API.
-
-.. autoclass:: ContractId
-   :members:
+This module has been relocated to ``dazl.client``, ``dazl.damlast``, ``dazl.protocols``, or
+``dazl.query``.
 """
-from dataclasses import dataclass
-from datetime import datetime
-from typing import TYPE_CHECKING, Collection, Dict, Optional, Tuple, TypeVar, Union
+from typing import TYPE_CHECKING, TypeVar, Union
 import warnings
 
+from ..client.errors import ConfigurationError, DazlPartyMissingError, UnknownTemplateWarning
+from ..client.state import (
+    ContractContextualData,
+    ContractContextualDataCollection,
+    ContractsHistoricalState,
+    ContractsState,
+)
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.pkgfile import Dar
-from ..prim import ContractData, ContractId as ContractId_, Party
+from ..prim import ContractData, ContractId as ContractId_, DazlError, DazlWarning, Party
+from ..prim.errors import DazlImportError
+from ..protocols.errors import ConnectionTimeoutError, UserTerminateRequest
 from ..query import ContractMatch
+from ..util.proc_util import ProcessDiedException
 
 if TYPE_CHECKING:
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
-        from .types import Type, TypeReference
+    from .types import Type, TypeReference
+
+T = TypeVar("T")
+
 
 __all__ = [
     "ConfigurationError",
@@ -46,8 +49,6 @@ __all__ = [
     "UnknownTemplateWarning",
     "UserTerminateRequest",
 ]
-
-T = TypeVar("T")
 
 
 class ContractId(ContractId_):
@@ -139,91 +140,6 @@ class ContractId(ContractId_):
         return self.value
 
 
-ContractsState = Dict[ContractId, ContractData]
-ContractsHistoricalState = Dict[ContractId, Tuple[ContractData, bool]]
-
-
-class ContractContextualDataCollection(tuple):
-    def __getitem__(self, index):
-        if index is None:
-            raise ValueError("the index cannot be None")
-        elif isinstance(index, int):
-            return tuple.__getitem__(self, index)
-        elif isinstance(index, str):
-            for cxd in self:
-                if cxd.cid.contract_id == index:
-                    return cxd
-            raise KeyError(index)
-        elif isinstance(index, ContractId):
-            for cxd in self:
-                if cxd.cid == index:
-                    return cxd
-            raise KeyError(index)
-        else:
-            raise TypeError("cannot index into a ContractContextualDataCollection with {index!r}")
-
-
-@dataclass(frozen=True)
-class ContractContextualData:
-    cid: ContractId
-    cdata: "Optional[ContractData]"
-    effective_at: "Optional[datetime]"
-    archived_at: "Optional[datetime]"
-    active: bool
-
-
-@dataclass(frozen=True)
-class SourceLocation:
-    file_name: "Optional[str]"
-    start_line: int
-    end_line: int
-
-
-class DazlError(Exception):
-    """
-    Superclass of errors raised by dazl.
-    """
-
-
-class DazlWarning(Warning):
-    """
-    Superclass of warnings raised by dazl.
-    """
-
-
-class DazlPartyMissingError(DazlError):
-    """
-    Error raised when a party or some information about a party is requested, and that party is not
-    found.
-    """
-
-    def __init__(self, party: Party):
-        super().__init__(f"party {party!r} does not have a defined client")
-        self.party = party
-
-
-class DazlImportError(ImportError, DazlError):
-    """
-    Import error raised when an optional dependency could not be found.
-    """
-
-    def __init__(self, missing_module, message):
-        super().__init__(message)
-        self.missing_module = missing_module
-
-
-class UserTerminateRequest(DazlError):
-    """
-    Raised when the user has initiated a request to terminate the application.
-    """
-
-
-class ConnectionTimeoutError(DazlError):
-    """
-    Raised when a connection failed to be established before the connection timeout elapsed.
-    """
-
-
 class CommandTimeoutError(DazlError):
     """
     Raised when a corresponding event for a command was not seen in the appropriate time window.
@@ -231,30 +147,10 @@ class CommandTimeoutError(DazlError):
 
     def __init__(self):
         warnings.warn(
-            "This error is never raised; this symbol will be removed in dazl v8",
+            "This error is never raised; this symbol will be removed in dazl v9",
             DeprecationWarning,
             stacklevel=2,
         )
-
-
-class ConfigurationError(DazlError):
-    """
-    Raised when a configuration error prevents a client from being started.
-
-    .. attribute:: ConfigurationError.reasons
-
-        A collection of reasons for a failure.
-    """
-
-    reasons: Collection[str]
-
-    def __init__(self, reasons: "Union[str, Collection[str]]"):
-        if reasons is None:
-            self.reasons = []
-        elif isinstance(reasons, str):
-            self.reasons = [reasons]
-        else:
-            self.reasons = reasons
 
 
 class ConnectionClosedError(DazlError):
@@ -265,17 +161,7 @@ class ConnectionClosedError(DazlError):
 
     def __init__(self):
         warnings.warn(
-            "This error is never raised; this symbol will be removed in dazl v8",
+            "This error is never raised; this symbol will be removed in dazl v9",
             DeprecationWarning,
             stacklevel=2,
         )
-
-
-class UnknownTemplateWarning(DazlWarning):
-    """
-    Raised when trying to do something with a template name that is unknown.
-    """
-
-
-class ProcessDiedException(DazlError):
-    pass

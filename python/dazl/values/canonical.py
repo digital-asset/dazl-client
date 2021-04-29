@@ -18,6 +18,8 @@ from ..prim import (
 from .context import Context
 from .mapper import ValueMapper
 
+__all__ = ["CanonicalMapper"]
+
 
 class CanonicalMapper(ValueMapper):
     """

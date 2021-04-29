@@ -12,6 +12,8 @@ Subpackages
     dazl.cli
     dazl.client
     dazl.damlast
+    dazl.ledger
+    dazl.ledger.config
     dazl.model
     dazl.pretty
     dazl.protocols

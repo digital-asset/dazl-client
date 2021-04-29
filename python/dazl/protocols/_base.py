@@ -5,20 +5,22 @@
 This module contains the abstract base class that defines the protocol for interacting with a
 process that implements the Ledger API.
 """
+
 from dataclasses import dataclass
 from datetime import timedelta
+import threading
 from typing import TYPE_CHECKING, Optional, Sequence, Union
 
 from .. import LOG
 from ..damlast.lookup import MultiPackageLookup
 from ..prim import Party
 from ..scheduler import Invoker
+from .events import BaseEvent, ContractFilter, TransactionFilter
 
 if TYPE_CHECKING:
-    from ..model.ledger import LedgerMetadata
-    from ..model.network import HTTPConnectionSettings
-    from ..model.reading import BaseEvent, ContractFilter, TransactionFilter
-    from ..model.writing import CommandPayload
+    from ..client._conn_settings import HTTPConnectionSettings
+    from ..client.commands import CommandPayload
+    from ..client.ledger import LedgerMetadata
 
 
 __all__ = ["LedgerConnectionOptions", "LedgerNetwork", "LedgerClient", "_LedgerConnection"]
@@ -136,7 +138,6 @@ class _LedgerConnection:
         context_path: Optional[str],
     ):
         LOG.debug("Creating a gRPC channel for %s...", settings)
-        import threading
 
         self.invoker = invoker
         self.options = options

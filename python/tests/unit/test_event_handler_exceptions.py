@@ -3,7 +3,7 @@
 import pytest
 
 from dazl import async_network
-from dazl.model.reading import ReadyEvent
+from dazl.protocols.events import ReadyEvent
 
 from .dars import PostOffice
 

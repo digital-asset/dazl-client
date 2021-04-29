@@ -6,7 +6,7 @@ Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic typ
 """
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Sequence, Union, cast
 import warnings
 
 from ... import LOG
@@ -19,11 +19,14 @@ from ..._gen.com.daml.ledger.api.v1 import (
     transaction_service_pb2 as txs_pb2,
     value_pb2,
 )
-from ...damlast.daml_lf_1 import DottedName, ModuleRef, PackageRef, TypeConName
+from ...damlast.daml_lf_1 import TypeConName
 from ...damlast.daml_types import con
 from ...damlast.lookup import find_choice
 from ...damlast.protocols import SymbolLookup
-from ...model.reading import (
+from ...ledger.grpc.codec_aio import Codec
+from ...prim import Party, to_datetime
+from ...values import Context, ProtobufDecoder
+from ..events import (
     ActiveContractSetEvent,
     BaseEvent,
     ContractArchiveEvent,
@@ -35,11 +38,8 @@ from ...model.reading import (
     TransactionFilter,
     TransactionStartEvent,
 )
-from ...prim import Party, to_datetime
-from ...values import Context, ProtobufDecoder
 
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
+if TYPE_CHECKING:
     from ...model.types_store import PackageStore
 
 
@@ -175,8 +175,8 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             party=self.party,
             time=self.time,
             ledger_id=self.ledger_id,
-            package_store=self.store,
             lookup=self.lookup,
+            package_store=self.store,
             offset=self.offset,
             command_id=self.command_id,
             workflow_id=self.workflow_id,
@@ -205,8 +205,8 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             party=self.party,
             time=self.time,
             ledger_id=self.ledger_id,
-            package_store=self.store,
             lookup=self.lookup,
+            package_store=self.store,
             offset=self.offset,
             command_id=self.command_id,
             workflow_id=self.workflow_id,
@@ -231,8 +231,8 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             party=self.party,
             time=self.time,
             ledger_id=self.ledger_id,
-            package_store=self.store,
             lookup=self.lookup,
+            package_store=self.store,
             offset=self.offset,
             command_id=self.command_id,
             workflow_id=self.workflow_id,
@@ -287,10 +287,8 @@ def serialize_event_id_request(
 def serialize_transaction_filter(
     contract_filter: "ContractFilter", party: Party
 ) -> "txf_pb2.TransactionFilter":
-    from .pb_ser_command import as_identifier
-
     identifiers = (
-        [as_identifier(tt) for tt in contract_filter.templates]
+        [Codec.encode_identifier(tt) for tt in contract_filter.templates]
         if contract_filter.templates is not None
         else None
     )
@@ -471,7 +469,7 @@ def to_created_event(
     context: "Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]",
     cr: "event_pb2.CreatedEvent",
 ) -> "Optional[ContractCreateEvent]":
-    tt = con(to_type_con_name(cr.template_id))
+    tt = con(Codec.decode_identifier(cr.template_id))
 
     ctx = context.deserializer_context()
     cid = ctx.convert_contract_id(tt, cr.contract_id)
@@ -485,7 +483,7 @@ def to_created_event(
 def to_exercised_event(
     context: "TransactionEventDeserializationContext", er: "event_pb2.ExercisedEvent"
 ) -> "Optional[ContractExercisedEvent]":
-    name = to_type_con_name(er.template_id)
+    name = Codec.decode_identifier(er.template_id)
     tt = con(name)
 
     template = context.lookup.template(name)
@@ -520,7 +518,7 @@ def to_exercised_event(
 def to_archived_event(
     context: "TransactionEventDeserializationContext", ar: "event_pb2.ArchivedEvent"
 ) -> "Optional[ContractArchiveEvent]":
-    tt = con(to_type_con_name(ar.template_id))
+    tt = con(Codec.decode_identifier(ar.template_id))
     event_id = ar.event_id
     witness_parties = tuple(ar.witness_parties)
 
@@ -530,7 +528,5 @@ def to_archived_event(
 
 
 def to_type_con_name(identifier: "value_pb2.Identifier") -> "TypeConName":
-    return TypeConName(
-        ModuleRef(PackageRef(identifier.package_id), DottedName(identifier.module_name.split("."))),
-        DottedName(identifier.entity_name.split(".")).segments,
-    )
+    warnings.warn("Use Codec.decode_identifier instead.", DeprecationWarning, stacklevel=2)
+    return Codec.decode_identifier(identifier)

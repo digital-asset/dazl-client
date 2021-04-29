@@ -1,16 +1,15 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import ensure_future, get_event_loop, sleep
-from threading import Event
+from asyncio import Event, ensure_future, get_event_loop, sleep
+from typing import AbstractSet
 
-# noinspection PyPackageRequirements
 import pytest
 
-from dazl.client.pkg_loader import PackageLoader
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef
 from dazl.damlast.lookup import MultiPackageLookup
+from dazl.ledger.pkgloader_aio import PackageLoader
 
 from .dars import AllKindsOf
 
@@ -35,11 +34,14 @@ async def test_pkg_loader_only_fetches_once(executor):
         def __init__(self):
             self.call_count = 0
 
-        def package_bytes(self, package_id: "PackageRef") -> bytes:
+        async def get_package(self, package_id: "PackageRef") -> bytes:
             self.call_count += 1
             if package_id != pkg_ref:
                 raise Exception
             return contents
+
+        async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+            return frozenset([pkg_ref])
 
     conn = MockPackageService()
     lookup = MultiPackageLookup()
@@ -72,13 +74,17 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
         def __init__(self):
             self.call_count = 0
 
-        def package_bytes(self, package_id: "PackageRef") -> bytes:
+        async def get_package(self, package_id: "PackageRef") -> bytes:
             self.call_count += 1
             if package_id != pkg_ref:
                 raise Exception
             evt1.set()
-            evt2.wait()
+            await evt2.wait()
             return contents
+
+        async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+            # we don't expect this method to be called in the test
+            raise Exception
 
     conn = MockPackageService()
     lookup = MultiPackageLookup()

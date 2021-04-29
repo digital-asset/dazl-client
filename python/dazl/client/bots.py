@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from asyncio import Future, InvalidStateError, ensure_future, gather, get_event_loop
 from collections import defaultdict
 from dataclasses import dataclass, field, replace
@@ -28,10 +29,12 @@ from uuid import uuid4
 import warnings
 
 from .. import LOG
-from ..model.core import Party, SourceLocation
-from ..model.reading import BaseEvent, EventKey
-from ..model.writing import Command, CommandBuilder
+from ..ledger import Command
+from ..prim import Party
+from ..protocols.events import BaseEvent
 from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
+from .commands import CommandBuilder
+from .events import EventKey
 
 if TYPE_CHECKING:
     from .api import PartyClient
@@ -42,6 +45,13 @@ DEFAULT_BOT_STOP_TIMEOUT = timedelta(seconds=30)
 E = TypeVar("E", bound=BaseEvent)
 BotCallback = Callable[[E], Any]
 BotFilter = Callable[[E], bool]
+
+
+@dataclass(frozen=True)
+class SourceLocation:
+    file_name: Optional[str]
+    start_line: int
+    end_line: int
 
 
 class _BotRunLevel(Enum):

@@ -1,30 +1,69 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import Future, sleep
+from asyncio import Future, get_event_loop, sleep
 from collections import defaultdict
-from typing import Awaitable, Collection, Dict, List, Optional, Union, cast
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Awaitable, Collection, Dict, List, Optional, Tuple, Union, cast
 import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
 from ..damlast.protocols import SymbolLookup
 from ..damlast.util import package_ref
-from ..model.core import (
-    ContractContextualData,
-    ContractContextualDataCollection,
-    ContractsState,
-    UnknownTemplateWarning,
-)
-from ..model.reading import ContractArchiveEvent, ContractCreateEvent
-from ..prim import ContractId
+from ..prim import ContractData, ContractId
+from ..protocols.events import ContractArchiveEvent, ContractCreateEvent
 from ..query import ContractMatch, is_match
 from ..scheduler import Invoker
 from ..util.asyncio_util import await_then
+from .errors import UnknownTemplateWarning
+
+__all__ = [
+    "ContractsState",
+    "ContractsHistoricalState",
+    "ContractContextualData",
+    "ContractContextualDataCollection",
+    "ActiveContractSet",
+    "PendingQuery",
+]
+
+
+ContractsState = Dict[ContractId, ContractData]
+ContractsHistoricalState = Dict[ContractId, Tuple[ContractData, bool]]
+
+
+class ContractContextualDataCollection(tuple):
+    def __getitem__(self, index):
+        if index is None:
+            raise ValueError("the index cannot be None")
+        elif isinstance(index, int):
+            return tuple.__getitem__(self, index)
+        elif isinstance(index, str):
+            for cxd in self:
+                if cxd.cid.contract_id == index:
+                    return cxd
+            raise KeyError(index)
+        elif isinstance(index, ContractId):
+            for cxd in self:
+                if cxd.cid == index:
+                    return cxd
+            raise KeyError(index)
+        else:
+            raise TypeError("cannot index into a ContractContextualDataCollection with {index!r}")
+
+
+@dataclass(frozen=True)
+class ContractContextualData:
+    cid: ContractId
+    cdata: Optional[ContractData]
+    effective_at: Optional[datetime]
+    archived_at: Optional[datetime]
+    active: bool
 
 
 class ActiveContractSet:
-    def __init__(self, invoker: "Invoker", lookup: "SymbolLookup"):
+    def __init__(self, invoker: Optional[Invoker], lookup: SymbolLookup):
         self.invoker = invoker
         self.lookup = lookup
         self._tcdata = defaultdict(
@@ -37,7 +76,7 @@ class ActiveContractSet:
     def handle_archive(self, event: ContractArchiveEvent) -> None:
         self._tcdata[event.cid.value_type].handle_archive(event)
 
-    def get(self, cid: "Union[str, ContractId]") -> "Optional[ContractContextualData]":
+    def get(self, cid: Union[str, ContractId]) -> Optional[ContractContextualData]:
         """
         Return information for the associated :class:`ContractId`.
 
@@ -69,7 +108,7 @@ class ActiveContractSet:
 
     async def read_async(
         self, template_name: str, match: ContractMatch = None, min_count: int = 1
-    ) -> "ContractsState":
+    ) -> ContractsState:
         from .. import LOG
 
         # Fetch matching names; we may need to wait for a package to be fetched in order to do this.
@@ -159,14 +198,14 @@ class TemplateContractData:
             active=False,
         )
 
-    def get(self, cid: "Union[str, ContractId]") -> "Optional[ContractContextualData]":
+    def get(self, cid: Union[str, ContractId]) -> Optional[ContractContextualData]:
         if isinstance(cid, ContractId):
             cid = cid.value
         return self._data.get(cid)
 
     def subset(
-        self, match: "ContractMatch", include_archived: bool
-    ) -> "Collection[ContractContextualData]":
+        self, match: ContractMatch, include_archived: bool
+    ) -> Collection[ContractContextualData]:
         return [
             cxd
             for cxd in self._data.values()
@@ -180,8 +219,12 @@ class TemplateContractData:
 
 
 class PendingQuery:
-    def __init__(self, invoker: "Invoker", match, min_count: int):
-        self.future = invoker.create_future()  # type: Awaitable[Collection[ContractContextualData]]
+    future: Awaitable[Collection[ContractContextualData]]
+
+    def __init__(self, invoker: Optional[Invoker], match, min_count: int):
+        self.future = (
+            invoker.create_future() if invoker is not None else get_event_loop().create_future()
+        )
         self.match = match
         self.min_count = min_count
 

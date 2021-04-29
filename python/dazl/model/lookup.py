@@ -2,61 +2,57 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-This module contains the logic for fuzzy lookups (specifically, template references) are performed
-in dazl.
+This module has been relocated to ``dazl.damlast.lookup``.
 """
-from typing import Any, Iterator, Tuple, Union
+
+from typing import Iterator, Tuple
 import warnings
 
 from ..damlast.daml_lf_1 import PackageRef
+from ..damlast.lookup import validate_template as _validate_template
+
+__all__ = ["validate_template", "template_reverse_globs"]
+
+warnings.warn(
+    "dazl.model.lookup is deprecated; use dazl.damlast.lookup instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
-def validate_template(template: "Any") -> "Tuple[Union[str, PackageRef], str]":
+def validate_template(template) -> "Tuple[PackageRef, str]":
+    """
+    Return a module and type name component from something that can be interpreted as a template.
+
+    This function is deprecated and will be removed in dazl v8; please use
+    ``dazl.damlast.lookup.validate_template`` instead.
+
+    :param template:
+        Any object that can be interpreted as an identifier for a template.
+    """
     warnings.warn(
-        "validate_template is deprecated; use dazl.damlast.lookup.validate_template",
+        "dazl.model.lookup.validate_template is deprecated and will be removed in dazl v8; "
+        "use dazl.damlast.lookup.validate_template instead",
         DeprecationWarning,
         stacklevel=2,
     )
-    from ..damlast.lookup import validate_template as validate_template_new
 
-    if template == "*" or template is None:
-        return "*", "*"
-
-    return validate_template_new(template, allow_deprecated_identifiers=True)
+    return _validate_template(template, allow_deprecated_identifiers=True)
 
 
 def template_reverse_globs(primary_only: bool, package_id: str, type_name: str) -> "Iterator[str]":
     """
     Return an iterator over strings that glob to a specified type.
     """
-    package_id = package_id or "*"
-    type_name = type_name or "*"
+    # noinspection PyProtectedMember
+    from ..client.events import _template_reverse_globs
 
-    if package_id != "*":
-        if type_name != "*":
-            if ":" not in type_name:
-                # this is a historical use of template name here; assume the last dot was supposed
-                # to have been a colon instead
-                m, delim, e = type_name.rpartition(".")
-                if delim:
-                    yield f"{package_id}:{m}:{e}"
-                    if primary_only:
-                        return
-            yield f"{package_id}:{type_name}"
-            if primary_only:
-                return
-        if not primary_only or type_name == "*":
-            yield f"{package_id}:*"
-    if type_name != "*":
-        if ":" not in type_name:
-            # this is a historical use of template name here; assume the last dot was supposed
-            # to have been a colon instead
-            m, delim, e = type_name.rpartition(".")
-            if delim:
-                yield f"*:{m}:{e}"
-                if primary_only:
-                    return
-        yield f"*:{type_name}"
-        if primary_only:
-            return
-    yield "*:*"
+    warnings.warn(
+        "template_reverse_globs is deprecated; use either "
+        "dazl.damlast.lookup.matching_normalizations (for template_reverse_globs(False, ...)) or "
+        "dazl.damlast.lookup.normalize(for template_reverse_globs(True, ...)). "
+        "Note that the new functions do NOT support periods as a delimiter between "
+        "module names and entity names; you MUST use a colon.",
+        DeprecationWarning,
+    )
+    return _template_reverse_globs(primary_only, package_id, type_name)

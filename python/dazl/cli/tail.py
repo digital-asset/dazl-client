@@ -101,7 +101,6 @@ class TailCommand(CliCommand):
             PLOG.info(f"Archive - {pprint_cid(event, args)}")
 
     async def _main(self, args):
-
         final_config = NetworkConfig.get_config(args)
 
         network = Network()

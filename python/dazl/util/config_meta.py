@@ -10,7 +10,7 @@ from dataclasses import Field, dataclass, field, fields
 import logging
 from typing import Any, Callable, FrozenSet, Optional, Sequence, Tuple, no_type_check
 
-from ..model.core import Party
+from ..prim import Party
 
 
 def config_field(

@@ -43,12 +43,12 @@ clean:
 deps: $(poetry_install_marker)
 
 .PHONY: format
-format:
+format: $(poetry_install_marker)
 	poetry run isort .
 	poetry run black .
 
 .PHONY: format-check
-format-check:
+format-check: $(poetry_install_marker)
 	poetry run isort . --check-only
 	poetry run black . --check
 
@@ -123,6 +123,7 @@ $(poetry_build_marker): $(build_dir) pyproject.toml $(dazl_files)
 	touch $@
 
 $(poetry_install_marker): $(build_dir) poetry.lock
+	poetry run pip install -U pip
 	poetry install -E oauth -E prometheus -E pygments -E server
 	touch $@
 

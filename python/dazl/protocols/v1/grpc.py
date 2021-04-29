@@ -8,7 +8,7 @@ from asyncio import gather
 from datetime import datetime
 from threading import Event
 from time import sleep
-from typing import TYPE_CHECKING, AbstractSet, Iterable, Mapping, Optional, Sequence
+from typing import TYPE_CHECKING, AbstractSet, Iterable, Mapping, Optional, Sequence, cast
 import warnings
 
 from grpc import (
@@ -62,11 +62,13 @@ from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import (
 )
 from ...damlast.daml_lf_1 import PackageRef
 from ...damlast.parse import parse_archive_payload
+from ...ledger.pkgloader_aio_compat import PackageLoader
 from ...prim import Party, datetime_to_timestamp, to_party
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
 from .._base import LedgerClient, LedgerConnectionOptions, _LedgerConnection
+from ..errors import ConnectionTimeoutError, UserTerminateRequest
 from .pb_parse_event import (
     BaseEventDeserializationContext,
     serialize_acs_request,
@@ -79,11 +81,11 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
 
     if TYPE_CHECKING:
-        from ...model.ledger import LedgerMetadata
+        from ...client.commands import CommandPayload
+        from ...client.ledger import LedgerMetadata
         from ...model.network import HTTPConnectionSettings
         from ...model.reading import BaseEvent, ContractFilter, TransactionFilter
         from ...model.types_store import PackageProvider, PackageStore
-        from ...model.writing import CommandPayload
 
 
 __all__ = [
@@ -100,13 +102,15 @@ __all__ = [
 
 
 class GRPCv1LedgerClient(LedgerClient):
-    def __init__(self, connection: "GRPCv1Connection", ledger: "LedgerMetadata", party: "Party"):
+    def __init__(self, connection: "GRPCv1Connection", ledger: "LedgerMetadata", party: Party):
         self.connection = safe_cast(GRPCv1Connection, connection)
         self.ledger = ledger
         self.party = to_party(party)
 
     async def commands(self, commands: "CommandPayload") -> None:
-        serializer = self.ledger.serializer
+        from .pb_ser_command import ProtobufSerializer
+
+        serializer = cast(ProtobufSerializer, self.ledger.serializer)
         request = serializer.serialize_command_request(commands)
         await self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request)
@@ -226,8 +230,6 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
     a ledger ID has been successfully retrieved, or the timeout is reached (in which case an
     exception is thrown).
     """
-    from ...model.core import ConnectionTimeoutError, UserTerminateRequest
-
     LOG.debug("Starting a monitor thread for connection: %s", connection)
 
     start_time = datetime.utcnow()
@@ -265,8 +267,7 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
 
 # noinspection PyDeprecation
 def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterable[LedgerMetadata]":
-    from ...client.pkg_loader import PackageLoader
-    from ...model.ledger import LedgerMetadata
+    from ...client.ledger import LedgerMetadata
     from .pb_ser_command import ProtobufSerializer
 
     LOG.info("grpc_main_thread...")
@@ -282,14 +283,18 @@ def grpc_main_thread(connection: "GRPCv1Connection", ledger_id: str) -> "Iterabl
         if connection.options.eager_package_fetch:
             grpc_package_sync(package_provider, store)
 
-    yield LedgerMetadata(
-        ledger_id=ledger_id,
-        store=store,
-        package_loader=PackageLoader(
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        package_loader = PackageLoader(
             package_lookup=connection.options.lookup,
             conn=package_provider,
             timeout=connection.options.connect_timeout,
-        ),
+        )
+
+    yield LedgerMetadata(
+        ledger_id=ledger_id,
+        store=store,
+        package_loader=package_loader,
         serializer=ProtobufSerializer(connection.options.lookup),
         protocol_version="v1",
     )

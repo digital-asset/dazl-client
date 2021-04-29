@@ -9,18 +9,7 @@ from dazl.pretty import DamlPrettyPrinter, PrettyOptions
 from .dars import Pending
 
 
-def test_render_list_of_party_old():
-    from dazl.model.types import SCALAR_TYPE_PARTY, ListType
-
-    type_ = ListType(SCALAR_TYPE_PARTY)
-
-    expected = "[Party]"
-    actual = str(type_)
-
-    assert expected == actual
-
-
-def test_render_list_of_party_new():
+def test_render_list_of_party():
     type_ = daml.List(daml.Party)
 
     expected = "[Party]"
@@ -29,22 +18,7 @@ def test_render_list_of_party_new():
     assert expected == actual
 
 
-def test_render_list_of_contract_type_con_old():
-    from dazl.model.types import ContractIdType, ListType, TypeReference
-
-    module_ref = ModuleRef(
-        package_id=PackageRef("00000000000000000000000000000000"), module_name=DottedName(("ABC",))
-    )
-    type_ref = TypeReference(con=TypeConName(module=module_ref, name=("DefGhi",)))
-    type_ = ListType(ContractIdType(type_ref))
-
-    expected = "[ContractId ABC:DefGhi]"
-    actual = str(type_)
-
-    assert expected == actual
-
-
-def test_render_list_of_contract_type_con_new():
+def test_render_list_of_contract_type_con():
     module_ref = ModuleRef(
         package_id=PackageRef("00000000000000000000000000000000"), module_name=DottedName(("ABC",))
     )
@@ -57,22 +31,7 @@ def test_render_list_of_contract_type_con_new():
     assert expected == actual
 
 
-def test_render_update_of_contract_type_con_old():
-    from dazl.model.types import ContractIdType, TypeReference, UpdateType
-
-    module_ref = ModuleRef(
-        package_id=PackageRef("00000000000000000000000000000000"), module_name=DottedName(("ABC",))
-    )
-    type_ref = TypeReference(con=TypeConName(module=module_ref, name=("DefGhi",)))
-    type_ = UpdateType(ContractIdType(type_ref))
-
-    expected = "Update (ContractId ABC:DefGhi)"
-    actual = str(type_)
-
-    assert expected == actual
-
-
-def test_render_update_of_contract_type_con_new():
+def test_render_update_of_contract_type_con():
     module_ref = ModuleRef(
         package_id=PackageRef("00000000000000000000000000000000"), module_name=DottedName(("ABC",))
     )

@@ -7,14 +7,6 @@ dazl\.protocols package
 Submodules
 ----------
 
-dazl\.protocols\.v0 module
-----------------------------
-
-.. automodule:: dazl.protocols.v0
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 dazl\.protocols\.v1 module
 ----------------------------
 
