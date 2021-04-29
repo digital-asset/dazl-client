@@ -512,10 +512,6 @@ def create(template, arguments=None):
         DeprecationWarning,
         stacklevel=2,
     )
-    if not isinstance(template, str):
-        raise ValueError(
-            "template must be a string name, a template type, or an instantiated template"
-        )
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)

@@ -29,6 +29,7 @@ from ..serializers import AbstractSerializer
 if TYPE_CHECKING:
     from ...client.commands import CommandPayload
     from ...model.types import TypeReference
+    from ...model.writing import CommandPayload
 
 
 def as_identifier(tref: "Union[TypeReference, TypeConName]") -> "G_Identifier":
