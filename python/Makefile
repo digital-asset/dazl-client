@@ -60,11 +60,7 @@ package: $(dazl_bdist) $(dazl_sdist) $(dazl_docs_html) $(dazl_docs_markdown)
 
 .PHONY: publish 
 publish: package
-	poetry publish
-	ghr -n "dazl v$(version)" -replace -c "$(git rev-parse HEAD)" "v$(version)" "$(dazl_bdist)"
-	ghr -replace "v$(version)" "$(dazl_sdist)"
-	ghr -replace "v$(version)" "$(dazl_docs_html)"
-	ghr -replace "v$(version)" "$(dazl_docs_markdown)"
+	./scripts/publish.sh "$(dazl_bdist)" "$(dazl_sdist)" "$(dazl_docs_html)" "$(dazl_docs_markdown)"
 
 .PHONY: version
 version:
