@@ -52,8 +52,9 @@ from .client.commands import (
 )
 from .ledger import Command
 from .ledger.grpc import connect
+from .model.core import ContractId
 from .pretty.table import write_acs
-from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
+from .prim import ContractData, DazlError, FrozenDict as frozendict, Party
 from .util.logging import setup_default_logger
 
 try:
