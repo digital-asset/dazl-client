@@ -45,7 +45,7 @@ from ...damlast.daml_lf_1 import (
     Type,
     TypeConName,
 )
-from ...damlast.daml_types import con
+from ...damlast.daml_types import ContractId as ContractIdType, con
 from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_ref
@@ -332,12 +332,11 @@ class Codec:
             lambda: self._decode_context.convert(item_type, obj)
         )
 
-    @staticmethod
     def decode_contract_id(
-        event: Union[G_CreatedEvent, G_ExercisedEvent, G_ArchivedEvent],
+        self, event: Union[G_CreatedEvent, G_ExercisedEvent, G_ArchivedEvent]
     ) -> ContractId:
         vt = Codec.decode_identifier(event.template_id)
-        return ContractId(vt, event.contract_id)
+        return self._decode_context.convert(ContractIdType(con(vt)), event.contract_id)
 
     @staticmethod
     def decode_identifier(identifier: G_Identifier) -> TypeConName:
