@@ -166,6 +166,7 @@ class ExerciseCommand(api_types.ExerciseCommand):
         )
         return self.contract_id
 
+    @property
     def arguments(self) -> "Any":
         """
         Use :meth:`argument` instead.
@@ -184,7 +185,7 @@ class ExerciseByKeyCommand(api_types.ExerciseByKeyCommand):
         template: "Union[str, TypeConName]",
         contract_key: "Any",
         choice: str,
-        choice_argument: "Any",
+        choice_argument: "Optional[Any]" = None,
     ):
         warnings.warn(
             "dazl.client.commands.ExerciseByKeyCommand is deprecated; "

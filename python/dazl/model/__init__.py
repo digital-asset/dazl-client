@@ -28,4 +28,5 @@ __all__ = ["core", "ledger", "lookup", "network", "reading", "writing"]
 warnings.warn(
     "dazl.model is deprecated; these types have moved to either dazl.ledger or dazl.client.",
     DeprecationWarning,
+    stacklevel=2,
 )
