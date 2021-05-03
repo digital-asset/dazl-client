@@ -83,15 +83,15 @@ class CreateCommand(Command):
         """
         return self._payload
 
-    def __repr__(self) -> str:
-        return f"CreateCommand({self.template_id}, {self.payload})"
-
     def __eq__(self, other: "Any") -> bool:
         return (
             isinstance(other, CreateCommand)
             and self.template_id == other.template_id
             and self.payload == other.payload
         )
+
+    def __repr__(self) -> str:
+        return f"CreateCommand({self.template_id}, {self.payload})"
 
 
 class CreateAndExerciseCommand(Command):
@@ -108,7 +108,7 @@ class CreateAndExerciseCommand(Command):
         _template_id: TypeConName
         _payload: ContractData
         _choice: str
-        _argument: Optional[Any]
+        _argument: Any
 
     def __init__(
         self,
@@ -132,7 +132,7 @@ class CreateAndExerciseCommand(Command):
         object.__setattr__(self, "_template_id", validate_template_id(template_id))
         object.__setattr__(self, "_payload", payload)
         object.__setattr__(self, "_choice", choice)
-        object.__setattr__(self, "_argument", argument)
+        object.__setattr__(self, "_argument", dict(argument) if argument is not None else dict())
 
     @property
     def template_id(self) -> TypeConName:
@@ -170,6 +170,9 @@ class CreateAndExerciseCommand(Command):
             and self.choice == other.choice
             and self.argument == other.argument
         )
+
+    def __repr__(self) -> str:
+        return f"CreateAndExerciseCommand({self.template_id}, {self.payload}, {self.choice!r}, {self.argument})"
 
 
 class ExerciseCommand(Command):
@@ -223,9 +226,6 @@ class ExerciseCommand(Command):
         """
         return self._argument
 
-    def __repr__(self):
-        return f"ExerciseCommand({self.choice!r}, {self.contract_id}, {self.argument}>"
-
     def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, ExerciseCommand)
@@ -233,6 +233,9 @@ class ExerciseCommand(Command):
             and self.contract_id == other.contract_id
             and self.argument == other.argument
         )
+
+    def __repr__(self):
+        return f"ExerciseCommand({self.choice!r}, {self.contract_id}, {self.argument})"
 
 
 class ExerciseByKeyCommand(Command):
@@ -273,7 +276,7 @@ class ExerciseByKeyCommand(Command):
         object.__setattr__(self, "_template_id", validate_template_id(template_id))
         object.__setattr__(self, "_key", key)
         object.__setattr__(self, "_choice", choice)
-        object.__setattr__(self, "_argument", argument)
+        object.__setattr__(self, "_argument", dict(argument) if argument is not None else dict())
 
     @property
     def template_id(self) -> TypeConName:
@@ -311,6 +314,9 @@ class ExerciseByKeyCommand(Command):
             and self.choice == other.choice
             and self.argument == other.argument
         )
+
+    def __repr__(self):
+        return f"ExerciseByKeyCommand({self.template_id}, {self.key}, {self.choice!r}, {self.argument})"
 
 
 class CreateEvent:
