@@ -19,7 +19,7 @@ async def test_select_star_retrieves_contracts(sandbox):
 
         network.start()
 
-        await client.submit_create(OperatorRole, {"operator": client.party})
+        await client.create(OperatorRole, {"operator": client.party})
 
         data = client.find_active("*")
 
@@ -45,7 +45,7 @@ async def test_select_template_retrieves_contracts(sandbox):
 
         network.start()
 
-        await client.submit_create(OperatorRole, {"operator": client.party})
+        await client.create(OperatorRole, {"operator": client.party})
 
         data = client.find_active(OperatorRole)
 
@@ -59,7 +59,7 @@ async def test_select_unknown_template_retrieves_empty_set(sandbox):
 
         network.start()
 
-        await client.submit_create(OperatorRole, {"operator": client.party})
+        await client.create(OperatorRole, {"operator": client.party})
 
         with pytest.warns(UnknownTemplateWarning):
             data = client.find_active("NonExistentModule:NonExistentTemplate")
@@ -82,11 +82,9 @@ async def test_select_operates_on_acs_before_event_handlers(sandbox):
 
     async with async_network(url=sandbox, dars=Simple) as network:
         client = network.aio_new_party()
-        client.add_ledger_ready(
-            lambda e: client.submit_create(OperatorRole, {"operator": client.party})
-        )
+        client.add_ledger_ready(lambda e: client.create(OperatorRole, {"operator": client.party}))
         client.add_ledger_created(
-            OperatorRole, lambda e: client.submit_exercise(e.cid, "PublishMany", dict(count=3))
+            OperatorRole, lambda e: client.exercise(e.cid, "PublishMany", dict(count=3))
         )
         client.add_ledger_created(OperatorNotification, on_notification_contract)
 
@@ -110,15 +108,11 @@ async def test_select_reflects_archive_events(sandbox):
 
     async with async_network(url=sandbox, dars=Simple) as network:
         client = network.aio_new_party()
-        client.add_ledger_ready(
-            lambda e: client.submit_create(OperatorRole, {"operator": client.party})
-        )
+        client.add_ledger_ready(lambda e: client.create(OperatorRole, {"operator": client.party}))
         client.add_ledger_created(
-            OperatorRole, lambda e: client.submit_exercise(e.cid, "PublishMany", dict(count=3))
+            OperatorRole, lambda e: client.exercise(e.cid, "PublishMany", dict(count=3))
         )
-        client.add_ledger_created(
-            OperatorNotification, lambda e: client.submit_exercise(e.cid, "Archive")
-        )
+        client.add_ledger_created(OperatorNotification, lambda e: client.exercise(e.cid, "Archive"))
         client.add_ledger_created(OperatorNotification, on_notification_contract)
 
         network.start()

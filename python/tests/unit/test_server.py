@@ -39,7 +39,7 @@ async def test_server_endpoint(sandbox):
 
         @bob_bot.ledger_created("TestServer:Person")
         async def bob_sends_a_message(_):
-            await bob_client.submit_exercise_by_key(
+            await bob_client.exercise_by_key(
                 "TestServer:Person",
                 bob,
                 "SayHello",
@@ -48,7 +48,7 @@ async def test_server_endpoint(sandbox):
 
         @carol_client.ledger_created("TestServer:Person")
         async def carol_sends_a_message(_):
-            await carol_client.submit_exercise_by_key(
+            await carol_client.exercise_by_key(
                 "TestServer:Person",
                 carol,
                 "SayHello",
@@ -61,7 +61,7 @@ async def test_server_endpoint(sandbox):
 
 def ensure_person_contract(network: Network, party: Party):
     client = network.aio_party(party)
-    client.add_ledger_ready(lambda _: client.submit_create("TestServer:Person", dict(party=party)))
+    client.add_ledger_ready(lambda _: client.create("TestServer:Person", dict(party=party)))
 
 
 async def client_main(

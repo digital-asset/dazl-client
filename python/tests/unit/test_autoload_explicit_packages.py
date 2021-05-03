@@ -44,7 +44,7 @@ async def test_autoload_explicit_packages(sandbox):
     # this call should nonetheless succeed because dazl fetches packages that it sees
     # it's missed
     logging.info("Submitting the create...")
-    await client.submit_create(fqtn, {"operator": client.party})
+    await client.create(fqtn, {"operator": client.party})
 
     network.shutdown()
     await fut

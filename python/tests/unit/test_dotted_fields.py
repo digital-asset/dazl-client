@@ -19,7 +19,7 @@ async def test_record_dotted_fields_submit(sandbox):
         network.start()
 
         await client.ready()
-        await client.submit_create(
+        await client.create(
             "DottedFields:American",
             {
                 "person": client.party,
@@ -45,7 +45,7 @@ async def test_variant_dotted_fields_submit(sandbox):
         network.start()
 
         await client.ready()
-        await client.submit_create(
+        await client.create(
             "DottedFields:Person",
             {
                 "person": client.party,

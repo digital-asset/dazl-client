@@ -65,7 +65,7 @@ async def test_maps(sandbox):
 
         network.start()
 
-        await client.submit_create(
+        await client.create(
             "AllKindsOf:MappyContract", {"operator": client.party, "value": {"Map_internal": []}}
         )
 

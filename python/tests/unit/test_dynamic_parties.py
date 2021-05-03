@@ -21,13 +21,13 @@ async def test_parties_can_be_added_after_run_forever(sandbox):
 
         @operator_client.ledger_ready()
         async def operator_ready(event):
-            await operator_client.submit_create("Main:PostmanRole", {"postman": event.party})
+            await operator_client.create("Main:PostmanRole", {"postman": event.party})
 
         @operator_client.ledger_created("Main:PostmanRole")
         async def operator_role_created(event):
             await gather(
                 *[
-                    operator_client.submit_exercise(
+                    operator_client.exercise(
                         event.cid, "InviteParticipant", {"party": party, "address": "whatevs"}
                     )
                     for party in (party_a_client.party, party_b_client.party, party_c_party)
@@ -43,6 +43,6 @@ async def test_parties_can_be_added_after_run_forever(sandbox):
                 network.shutdown()
 
             cid, cdata = await party_c.find_one("Main:InviteAuthorRole")
-            party_c.submit_exercise(cid, "AcceptInviteAuthorRole")
+            party_c.exercise(cid, "AcceptInviteAuthorRole")
 
         network.start()

@@ -16,7 +16,7 @@ async def test_map_support(sandbox):
         network.start()
 
         await client.ready()
-        await client.submit_create(
+        await client.create(
             "MapSupport:Sample",
             {"party": client.party, "mappings": {"65": "A", "97": "a"}, "text": None},
         )
@@ -33,7 +33,7 @@ async def test_complicated_map_support(sandbox):
         client = network.aio_new_party()
 
         await client.ready()
-        await client.submit_create(
+        await client.create(
             "MapSupport:ComplicatedSample",
             {
                 "party": "Test",
