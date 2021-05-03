@@ -751,7 +751,9 @@ def get_running_loop() -> Optional[AbstractEventLoop]:
 # noinspection PyDeprecation
 def safe_create_future():
     warnings.warn(
-        "safe_create_future() is deprecated; there is no planned replacement.", DeprecationWarning
+        "safe_create_future() is deprecated; there is no planned replacement.",
+        DeprecationWarning,
+        stacklevel=2,
     )
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
@@ -795,7 +797,7 @@ class Signal:
         if self._fut is None:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", DeprecationWarning)
-            self._fut = safe_create_future()
+                self._fut = safe_create_future()
         return self._fut
 
 

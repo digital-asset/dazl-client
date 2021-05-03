@@ -92,7 +92,9 @@ class _PartyClientImpl:
         self._acs = ActiveContractSet(self.invoker, self.parent.lookup)
         self.bots = BotCollection(party)
         self._reader = _PartyClientReaderState()
-        self._writer = _PartyClientWriterState()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            self._writer = _PartyClientWriterState()
 
     def connect_in(self, pool: "LedgerNetwork") -> "Future":
         self._config = config = self.resolved_config()

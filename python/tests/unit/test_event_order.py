@@ -2,11 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import asyncio
-from asyncio import new_event_loop, set_event_loop, sleep
+from asyncio import new_event_loop, set_event_loop
 import random
 import uuid
 
-from dazl import Network, create, exercise
+from dazl import Network
+from dazl.ledger import CreateCommand, ExerciseCommand
 from dazl.prim import to_party
 
 from .dars import Simple as SimpleDar
@@ -59,11 +60,13 @@ class Stage1LedgerInit:
     async def on_ready(self, event):
         await self.network.aio_global().ensure_dar(SimpleDar)
 
-        return create(Simple.OperatorRole, {"operator": event.party})
+        return CreateCommand(Simple.OperatorRole, {"operator": event.party})
 
     @staticmethod
     def on_operator(event):
-        return [exercise(event.cid, "Publish", {"text": n}) for n in range(0, NOTIFICATION_COUNT)]
+        return [
+            ExerciseCommand(event.cid, "Publish", {"text": n}) for n in range(0, NOTIFICATION_COUNT)
+        ]
 
     def on_notification(self, event):
         if self.evt_count == 25:
@@ -72,7 +75,7 @@ class Stage1LedgerInit:
             self.evt_count += 1
             missing_parties = self.user_parties.difference(event.cdata["theObservers"])
             if missing_parties:
-                return exercise(
+                return ExerciseCommand(
                     event.cid, "Share", {"sharingParty": random.choice(list(missing_parties))}
                 )
 

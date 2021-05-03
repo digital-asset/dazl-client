@@ -1,11 +1,11 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
 from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 import sys
 from typing import AbstractSet, Awaitable, Callable, Dict, Optional, Set, TypeVar
+import warnings
 
 from .. import LOG
 from ..damlast.daml_lf_1 import Archive, Package, PackageRef
@@ -108,9 +108,11 @@ class PackageLoader:
                     )
                     raise
 
-                pkg_id, name = validate_template(
-                    ex.ref, allow_deprecated_identifiers=self._allow_deprecated_identifiers
-                )
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", DeprecationWarning)
+                    pkg_id, name = validate_template(
+                        ex.ref, allow_deprecated_identifiers=self._allow_deprecated_identifiers
+                    )
                 if pkg_id == "*":
                     # we don't know what package contains this type, so we have no
                     # choice but to look in all known packages

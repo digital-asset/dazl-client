@@ -5,7 +5,6 @@ from dataclasses import dataclass
 
 import pytest
 
-from dazl import CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
 from dazl._gen.com.daml.ledger.api.v1.commands_pb2 import Command as G_Command
 from dazl._gen.com.daml.ledger.api.v1.value_pb2 import (
     RecordField as G_RecordField,
@@ -14,6 +13,12 @@ from dazl._gen.com.daml.ledger.api.v1.value_pb2 import (
 from dazl.damlast import DarFile
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.protocols import SymbolLookup
+from dazl.ledger import (
+    CreateAndExerciseCommand,
+    CreateCommand,
+    ExerciseByKeyCommand,
+    ExerciseCommand,
+)
 from dazl.ledger.grpc.codec_aio import Codec
 from dazl.prim import ContractId, Party
 from dazl.protocols.v1.pb_ser_command import ProtobufSerializer

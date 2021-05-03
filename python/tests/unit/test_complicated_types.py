@@ -6,7 +6,8 @@ from operator import setitem
 
 import pytest
 
-from dazl import async_network, create, exercise
+from dazl import async_network
+from dazl.ledger import ExerciseCommand
 
 from .dars import Complicated as ComplicatedDar
 
@@ -23,7 +24,9 @@ async def test_complicated_types(sandbox):
     async with async_network(url=sandbox, dars=ComplicatedDar) as network:
         party_client = network.aio_new_party()
         party_client.add_ledger_ready(
-            lambda event: create(Complicated.OperatorRole, {"operator": event.party})
+            lambda _: party_client.submit_create(
+                Complicated.OperatorRole, {"operator": party_client.party}
+            )
         )
         party_client.add_ledger_created(Complicated.OperatorRole, _create_empty_notification)
         party_client.add_ledger_created(Complicated.OperatorRole, _create_complicated_notifications)
@@ -40,10 +43,10 @@ async def test_complicated_types(sandbox):
 
 def _create_complicated_notifications(e) -> list:
     return [
-        exercise(e.cid, "PublishFormula", dict(formula={"Tautology": {}})),
-        exercise(e.cid, "PublishFormula", dict(formula={"Contradiction": {}})),
-        exercise(e.cid, "PublishFormula", dict(formula={"Proposition": "something"})),
-        exercise(
+        ExerciseCommand(e.cid, "PublishFormula", dict(formula={"Tautology": {}})),
+        ExerciseCommand(e.cid, "PublishFormula", dict(formula={"Contradiction": {}})),
+        ExerciseCommand(e.cid, "PublishFormula", dict(formula={"Proposition": "something"})),
+        ExerciseCommand(
             e.cid,
             "PublishFormula",
             dict(formula={"Conjunction": [{"Proposition": "something_else"}]}),
@@ -52,4 +55,4 @@ def _create_complicated_notifications(e) -> list:
 
 
 def _create_empty_notification(e) -> list:
-    return [exercise(e.cid, "PublishEmpty")]
+    return [ExerciseCommand(e.cid, "PublishEmpty")]
