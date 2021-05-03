@@ -111,9 +111,17 @@ class ContractId(ContractId_):
         :param arguments:
             (optional) A ``dict`` of named values to send as parameters to the choice exercise.
         """
+        warnings.warn(
+            "ContractId.exercise is deprecated; prefer calling dazl.ledger.Connection.exercise or "
+            "dazl.client.PartyClient.submit_exercise, or use dazl.ledger.ExerciseCommand instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         from .writing import ExerciseCommand
 
-        return ExerciseCommand(self, choice_name, arguments=arguments)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            return ExerciseCommand(self, choice_name, arguments=arguments)
 
     def replace(self, contract_id=None, template_id=None):
         """

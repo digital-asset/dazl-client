@@ -316,12 +316,6 @@ class Network:
         """
         self._impl.shutdown()
         if self._main_fut is not None:
-            warnings.warn(
-                "shutdown() in conjunction with start() is deprecated; use aio_run() directly "
-                "and await on the returned coroutine instead",
-                DeprecationWarning,
-                stacklevel=2,
-            )
             return self._main_fut
         else:
             return None
@@ -343,9 +337,6 @@ class Network:
         """
         Start the coroutine that spawns callbacks for listeners on event streams.
         """
-        warnings.warn(
-            "start() is deprecated; use aio_run() directly", DeprecationWarning, stacklevel=2
-        )
         self._main_fut = ensure_future(self.aio_run(keep_open=False))
 
     def run_until_complete(
@@ -854,8 +845,12 @@ class AIOPartyClient(PartyClient):
         """
         from .. import create
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cmd = create(template_name, arguments)
+
         return self.submit(
-            create(template_name, arguments),
+            cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -891,8 +886,12 @@ class AIOPartyClient(PartyClient):
         """
         from .. import exercise
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cmd = exercise(cid, choice_name, arguments)
+
         return self.submit(
-            exercise(cid, choice_name, arguments),
+            cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -928,8 +927,12 @@ class AIOPartyClient(PartyClient):
         """
         from .. import exercise_by_key
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cmd = (exercise_by_key(template_name, contract_key, choice_name, arguments),)
+
         return self.submit(
-            exercise_by_key(template_name, contract_key, choice_name, arguments),
+            cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -964,8 +967,12 @@ class AIOPartyClient(PartyClient):
         """
         from .. import create_and_exercise
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cmd = create_and_exercise(template_name, arguments, choice_name, choice_arguments)
+
         return self.submit(
-            create_and_exercise(template_name, arguments, choice_name, choice_arguments),
+            cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -1473,8 +1480,12 @@ class SimplePartyClient(PartyClient):
         """
         from .. import create
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cmd = create(template_name, arguments)
+
         return self.submit(
-            create(template_name, arguments),
+            cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -1507,8 +1518,12 @@ class SimplePartyClient(PartyClient):
         """
         from .. import exercise
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cmd = exercise(cid, choice_name, arguments)
+
         return self.submit(
-            exercise(cid, choice_name, arguments),
+            cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -1544,8 +1559,12 @@ class SimplePartyClient(PartyClient):
         """
         from .. import exercise_by_key
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cmd = exercise_by_key(template_name, contract_key, choice_name, arguments)
+
         return self.submit(
-            exercise_by_key(template_name, contract_key, choice_name, arguments),
+            cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )
@@ -1580,8 +1599,12 @@ class SimplePartyClient(PartyClient):
         """
         from .. import create_and_exercise
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            cmd = create_and_exercise(template_name, arguments, choice_name, choice_arguments)
+
         return self.submit(
-            create_and_exercise(template_name, arguments, choice_name, choice_arguments),
+            cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
         )

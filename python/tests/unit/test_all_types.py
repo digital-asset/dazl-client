@@ -6,7 +6,8 @@ from decimal import Decimal
 
 import pytest
 
-from dazl import async_network, create
+from dazl import async_network
+from dazl.ledger import CreateCommand, ExerciseCommand
 
 from .dars import AllKindsOf
 
@@ -76,11 +77,11 @@ class AllTypesTestCase:
         self.archive_done = False
 
     def create_one_of_everything(self, _):
-        return create(TEMPLATE, {**SOME_ARGS, "operator": self.operator})
+        return CreateCommand(TEMPLATE, {**SOME_ARGS, "operator": self.operator})
 
     def on_one_of_everything(self, event):
         if event.cdata is not None:
             self.found_instance = event.cdata
-            return event.cid.exercise("Accept")
+            return ExerciseCommand(event.cid, "Accept")
         else:
             self.archive_done = True

@@ -4,6 +4,8 @@
 from asyncio import ensure_future, gather, new_event_loop, set_event_loop, sleep
 from unittest import TestCase
 
+import pytest
+
 from dazl.util.asyncio_util import ServiceQueue
 
 
@@ -12,7 +14,8 @@ class TestServiceQueue(TestCase):
         loop = new_event_loop()
         set_event_loop(loop)
 
-        sq = ServiceQueue()
+        with pytest.warns(DeprecationWarning):
+            sq = ServiceQueue()
         expected = list(range(5))
         actual = []
 

@@ -6,7 +6,7 @@ import uuid
 
 import pytest
 
-from dazl import Party, async_network, create
+from dazl import Party, async_network
 
 from .dars import AllParty as AllPartyDar
 
@@ -27,12 +27,12 @@ async def test_some_party_receives_public_contract(sandbox):
 
         some_client = network.aio_new_party()
         some_client.add_ledger_ready(
-            lambda _: create(PrivateContract, {"someParty": some_client.party})
+            lambda _: some_client.submit_create(PrivateContract, {"someParty": some_client.party})
         )
 
         publisher_client = network.aio_new_party()
         publisher_client.add_ledger_ready(
-            lambda _: create(
+            lambda _: publisher_client.submit_create(
                 PublicContract, {"publisher": publisher_client.party, "allParty": all_party}
             )
         )

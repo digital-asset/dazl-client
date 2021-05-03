@@ -7,7 +7,7 @@ import logging
 from aiohttp import ClientSession
 import pytest
 
-from dazl import Network, Party, async_network, create, exercise_by_key
+from dazl import Network, Party, async_network
 
 from .dars import TestServer as TestServerDar
 
@@ -38,8 +38,8 @@ async def test_server_endpoint(sandbox):
         bob_bot.pause()
 
         @bob_bot.ledger_created("TestServer:Person")
-        def bob_sends_a_message(_):
-            return exercise_by_key(
+        async def bob_sends_a_message(_):
+            await bob_client.submit_exercise_by_key(
                 "TestServer:Person",
                 bob,
                 "SayHello",
@@ -47,8 +47,8 @@ async def test_server_endpoint(sandbox):
             )
 
         @carol_client.ledger_created("TestServer:Person")
-        def carol_sends_a_message(_):
-            return exercise_by_key(
+        async def carol_sends_a_message(_):
+            await carol_client.submit_exercise_by_key(
                 "TestServer:Person",
                 carol,
                 "SayHello",
@@ -60,9 +60,8 @@ async def test_server_endpoint(sandbox):
 
 
 def ensure_person_contract(network: Network, party: Party):
-    network.aio_party(party).add_ledger_ready(
-        lambda _: create("TestServer:Person", dict(party=party))
-    )
+    client = network.aio_party(party)
+    client.add_ledger_ready(lambda _: client.submit_create("TestServer:Person", dict(party=party)))
 
 
 async def client_main(

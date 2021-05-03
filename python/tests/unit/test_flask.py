@@ -5,7 +5,8 @@ import json
 from threading import Thread
 from time import sleep
 
-from dazl import LOG, Network, SimplePartyClient, create
+from dazl import LOG, Network, SimplePartyClient
+from dazl.ledger import CreateCommand
 from dazl.protocols.events import ReadyEvent
 
 from .dars import PostOffice
@@ -52,7 +53,7 @@ def create_initial_state(event: "ReadyEvent"):
         event.client.ensure_dar(PostOffice)
 
         LOG.info("DAR uploaded. Creating the initial postman role contract...")
-        return create("Main:PostmanRole", dict(postman=event.party))
+        return CreateCommand("Main:PostmanRole", dict(postman=event.party))
     except:
         LOG.exception("Failed to set up our initial state!")
 

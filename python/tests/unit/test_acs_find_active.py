@@ -5,7 +5,8 @@ from asyncio import ensure_future, wait_for
 
 import pytest
 
-from dazl import AIOPartyClient, async_network, exercise
+from dazl import AIOPartyClient, async_network
+from dazl.ledger import ExerciseCommand
 
 from .dars import Simple
 
@@ -52,6 +53,6 @@ async def async_test_case(client: AIOPartyClient):
         if int(cdata["text"]) <= 3:
             contracts_to_delete.append(cid)
 
-    ensure_future(client.submit([exercise(cid, "Archive") for cid in contracts_to_delete]))
+    ensure_future(client.submit([ExerciseCommand(cid, "Archive") for cid in contracts_to_delete]))
 
     ensure_future(client.submit_exercise(operator_cid, "PublishMany", dict(count=3)))

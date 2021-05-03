@@ -4,6 +4,8 @@
 
 from unittest import TestCase
 
+import pytest
+
 from dazl.client.commands import CommandBuilder, CommandDefaults, CommandPayload, create
 from dazl.damlast.lookup import parse_type_con_name
 from dazl.ledger import CreateCommand, ExerciseCommand
@@ -27,7 +29,8 @@ class TestCommandBuilderTest(TestCase):
     """
 
     def test_single_create_untyped(self):
-        expr = create("Sample:Untyped", {"arg": 1})
+        with pytest.warns(DeprecationWarning):
+            expr = create("Sample:Untyped", {"arg": 1})
 
         expected = [
             CommandPayload(
@@ -39,12 +42,15 @@ class TestCommandBuilderTest(TestCase):
                 commands=[CreateCommand(SOME_TEMPLATE_NAME, dict(arg=1))],
             )
         ]
-        actual = CommandBuilder.coerce(expr).build(DEFAULTS)
+
+        with pytest.warns(DeprecationWarning):
+            actual = CommandBuilder.coerce(expr).build(DEFAULTS)
 
         assert expected == actual
 
     def test_object_create_untyped(self):
-        builder = CommandBuilder()
+        with pytest.warns(DeprecationWarning):
+            builder = CommandBuilder()
         builder.create("Sample:Untyped", {"arg": 1})
 
         expected = [
@@ -62,7 +68,8 @@ class TestCommandBuilderTest(TestCase):
         assert expected == actual
 
     def test_object_atomic_default_false(self):
-        builder = CommandBuilder(atomic_default=False)
+        with pytest.warns(DeprecationWarning):
+            builder = CommandBuilder(atomic_default=False)
         builder.create("Sample:Untyped", {"arg": 1})
         builder.exercise(SOME_CONTRACT_ID, "SomeChoice", {"choiceArg": "value"})
 
@@ -90,7 +97,8 @@ class TestCommandBuilderTest(TestCase):
         assert expected == actual
 
     def test_object_atomic_default_true(self):
-        builder = CommandBuilder(atomic_default=True)
+        with pytest.warns(DeprecationWarning):
+            builder = CommandBuilder(atomic_default=True)
         builder.create("Sample:Untyped", {"arg": 1})
         builder.exercise(SOME_CONTRACT_ID, "SomeChoice", {"choiceArg": "value"})
 

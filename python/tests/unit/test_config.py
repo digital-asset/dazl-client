@@ -12,13 +12,13 @@ from dazl_internal.background_http_server import TestHTTPServer
 
 
 def test_party_config_allows_single_string():
-    config = NetworkConfig.parse_kwargs(parties="Bob", participant_url="http://nowhere/")
+    config = NetworkConfig.parse_kwargs(parties="Bob", url="http://nowhere/")
     assert config.parties[0].party == Party("Bob")
     assert config.parties[0].url == "http://nowhere/"
 
 
 def test_party_config_allows_list():
-    config = NetworkConfig.parse_kwargs(parties=["Bob"], participant_url="http://nowhere/")
+    config = NetworkConfig.parse_kwargs(parties=["Bob"], url="http://nowhere/")
     assert config.parties[0].party == Party("Bob")
     assert config.parties[0].url == "http://nowhere/"
 
