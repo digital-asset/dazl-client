@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-from asyncio import Future, ensure_future, gather, get_event_loop, wait
+import asyncio
+from asyncio import Future, ensure_future, gather, get_event_loop, sleep, wait
 from concurrent.futures import ALL_COMPLETED
 from dataclasses import asdict, dataclass, field, fields, replace
 from datetime import datetime
@@ -25,6 +26,15 @@ import warnings
 
 from .. import LOG
 from ..damlast.daml_lf_1 import PackageRef, TypeConName
+from ..ledger import (
+    Command,
+    CreateAndExerciseCommand,
+    CreateCommand,
+    CreateEvent,
+    ExerciseByKeyCommand,
+    ExerciseCommand,
+    ExerciseResponse,
+)
 from ..prim import ContractId, Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerClient, LedgerNetwork
 from ..protocols.events import (
@@ -80,11 +90,11 @@ class _PartyClientImpl:
         self.metrics = parent._metrics
         self.invoker = parent.invoker
         self.party = party
+        self.codec = parent.codec
 
         self._config_values = dict()  # type: Dict[str, Any]
         self._config = None  # type: Optional[_NetworkConfig]
         self._pool = None  # type: Optional[LedgerNetwork]
-        self._pool_fut = None  # type: Optional[Awaitable[LedgerNetwork]]
         self._client_fut = None  # type: Optional[Awaitable[LedgerClient]]
         self._ready_fut = self.invoker.create_future()
         self._known_packages = set()  # type: Set[PackageRef]
@@ -484,11 +494,115 @@ class _PartyClientImpl:
 
     # region Write path
 
+    async def _payload(
+        self,
+        cmd: Command,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> Tuple[LedgerClient, CommandPayload]:
+        if command_id is None:
+            command_id = uuid.uuid4().hex
+        if workflow_id is None:
+            workflow_id = uuid.uuid4().hex
+
+        # Sit here for a maximum of ten minutes. The only reason we would be stuck here is if the
+        # first connection took a very long time to be established, or the user simply never called
+        # run() / start() on the Network. In the former case, we give the upstream as much as 10
+        # minutes before giving up.
+        wait_seconds = 600
+        while True:
+            # A simpler version of this loop throws off mypy; types are marked as non-None ONLY
+            # when used with ``if``, and not with ``while``.
+            if self._pool is None or self._config is None or self._client_fut is None:
+                await sleep(1.0)
+                wait_seconds -= 1
+                if wait_seconds <= 0:
+                    raise asyncio.TimeoutError(
+                        "waited too long for a network to be alive while queuing commands"
+                    )
+            else:
+                break
+
+        metadata = await self._pool.ledger()
+        app_name = self._config.application_name or "DAZL-Client"
+
+        validator = ValidateSerializer(self.parent.lookup)
+        cmd = await metadata.package_loader.do_with_retry(lambda: validator.serialize_command(cmd))
+
+        return (await self._client_fut), CommandPayload(
+            party=self.party,
+            ledger_id=metadata.ledger_id,
+            application_id=app_name,
+            workflow_id=workflow_id,
+            command_id=command_id,
+            commands=[cmd],
+        )
+
+    async def write_create(
+        self,
+        __cmd: CreateCommand,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> CreateEvent:
+        self._writer.inflight_count += 1
+        LOG.debug("Submitting a command... count %d", self._writer.inflight_count)
+        await self.write_commands([])
+        try:
+            client, payload = await self._payload(
+                __cmd, workflow_id=workflow_id, command_id=command_id
+            )
+            tx = await client.commands_transaction(payload)
+
+            # TODO: There isn't an obvious way to make this API more efficient without bigger rewrites,
+            #  but this API is going away in dazl v9 anyway.
+            while self._reader.offset is None or self._reader.offset < tx.offset:
+                LOG.info(
+                    "Waiting for a create to finish... (current offset %r, desired offset %r)",
+                    self._reader.offset,
+                    tx.offset,
+                )
+                await sleep(0.5)
+
+            return await self.codec.decode_created_event(tx.events[0].created)
+        finally:
+            self._writer.inflight_count -= 1
+            LOG.debug("Command complete: %d", self._writer.inflight_count)
+
+    async def write_exercise(
+        self,
+        __cmd: Union[CreateAndExerciseCommand, ExerciseCommand, ExerciseByKeyCommand],
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
+        self._writer.inflight_count += 1
+        LOG.debug("Submitting a command... count %d", self._writer.inflight_count)
+        await self.write_commands([])
+
+        try:
+            client, payload = await self._payload(
+                __cmd, workflow_id=workflow_id, command_id=command_id
+            )
+            tt = await client.commands_transaction_tree(payload)
+
+            # TODO: There isn't an obvious way to make this API more efficient without bigger rewrites,
+            #  but this API is going away in dazl v9 anyway.
+            while self._reader.offset is None or self._reader.offset < tt.offset:
+                await sleep(0.5)
+
+            return await self.codec.decode_exercise_response(tt)
+        finally:
+            self._writer.inflight_count -= 1
+            LOG.debug("Command complete: %d", self._writer.inflight_count)
+
     def write_commands(
         self,
         commands: "EventHandlerResponse",
         ignore_errors: bool = False,
         workflow_id: "Optional[str]" = None,
+        command_id: "Optional[str]" = None,
         deduplication_time: "Optional[TimeDeltaLike]" = None,
     ) -> Awaitable[None]:
         """
@@ -501,6 +615,8 @@ class _PartyClientImpl:
             then a failure to send this command does not necessarily end the client.
         :param workflow_id:
             The workflow ID to use to tag submitted commands.
+        :param command_id:
+            The command ID to use to tag submitted commands.
         :param deduplication_time:
             The length of the time window during which all commands with the same party and command
             ID will be deduplicated. Duplicate commands submitted before the end of this window
@@ -516,6 +632,7 @@ class _PartyClientImpl:
             warnings.simplefilter("ignore", DeprecationWarning)
             cb = CommandBuilder.coerce(commands, atomic_default=True)
         cb.defaults(
+            command_id=command_id,
             workflow_id=workflow_id,
             deduplication_time=(
                 to_timedelta(deduplication_time) if deduplication_time is not None else None
@@ -622,7 +739,11 @@ class _PartyClientImpl:
             LOG.info("Writer loop for party %s is finished.", self.party)
 
     def writer_idle(self):
-        return not bool(self._writer.pending_commands) and not self._writer.inflight_commands
+        return (
+            not bool(self._writer.pending_commands)
+            and not self._writer.inflight_commands
+            and self._writer.inflight_count == 0
+        )
 
     def stop_writer(self):
         """
@@ -642,6 +763,7 @@ class _PartyClientReaderState:
 class _PartyClientWriterState:
     pending_commands: "ServiceQueue[_PendingCommand]" = field(default_factory=ServiceQueue)
     inflight_commands: "List[_PendingCommand]" = field(default_factory=list)
+    inflight_count: int = 0
 
 
 class _PendingCommand:

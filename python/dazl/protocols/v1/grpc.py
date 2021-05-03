@@ -6,9 +6,20 @@ Support for the gRPC-based Ledger API.
 """
 from asyncio import gather
 from datetime import datetime
+import sys
 from threading import Event
 from time import sleep
-from typing import TYPE_CHECKING, AbstractSet, Iterable, Mapping, Optional, Sequence, cast
+from typing import (
+    TYPE_CHECKING,
+    AbstractSet,
+    Iterable,
+    Mapping,
+    Optional,
+    Sequence,
+    Union,
+    cast,
+    overload,
+)
 import warnings
 
 from grpc import (
@@ -52,6 +63,10 @@ from ..._gen.com.daml.ledger.api.v1.testing.time_service_pb2 import (
 )
 from ..._gen.com.daml.ledger.api.v1.testing.time_service_pb2_grpc import (
     TimeServiceStub as G_TimeServiceStub,
+)
+from ..._gen.com.daml.ledger.api.v1.transaction_pb2 import (
+    Transaction as G_Transaction,
+    TransactionTree as G_TransactionTree,
 )
 from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import (
     GetLedgerEndRequest as G_GetLedgerEndRequest,
@@ -107,14 +122,35 @@ class GRPCv1LedgerClient(LedgerClient):
         self.ledger = ledger
         self.party = to_party(party)
 
-    async def commands(self, commands: "CommandPayload") -> None:
+    async def commands(self, command_payload: "CommandPayload") -> None:
         from .pb_ser_command import ProtobufSerializer
 
         serializer = cast(ProtobufSerializer, self.ledger.serializer)
-        request = serializer.serialize_command_request(commands)
+        request = serializer.serialize_command_request(command_payload)
         await self.connection.invoker.run_in_executor(
             lambda: self.connection.command_service.SubmitAndWait(request)
         )
+        return None
+
+    async def commands_transaction(self, __1: "CommandPayload") -> G_Transaction:
+        from .pb_ser_command import ProtobufSerializer
+
+        serializer = cast(ProtobufSerializer, self.ledger.serializer)
+        request = serializer.serialize_command_request(__1)
+        response = await self.connection.invoker.run_in_executor(
+            lambda: self.connection.command_service.SubmitAndWaitForTransaction(request)
+        )
+        return response.transaction
+
+    async def commands_transaction_tree(self, __1: "CommandPayload") -> G_TransactionTree:
+        from .pb_ser_command import ProtobufSerializer
+
+        serializer = cast(ProtobufSerializer, self.ledger.serializer)
+        request = serializer.serialize_command_request(__1)
+        response = await self.connection.invoker.run_in_executor(
+            lambda: self.connection.command_service.SubmitAndWaitForTransactionTree(request)
+        )
+        return response.transaction
 
     async def active_contracts(self, contract_filter: "ContractFilter") -> "Sequence[BaseEvent]":
         with LOG.info_timed("ACS request serialization"):
@@ -388,7 +424,7 @@ def grpc_package_sync(package_provider: "PackageProvider", store: "PackageStore"
             warnings.simplefilter("ignore", DeprecationWarning)
             store.register_all(m)
 
-        LOG.debug("grpc_package_sync ended.")
+    LOG.debug("grpc_package_sync ended.")
 
 
 def grpc_create_channel(settings: "HTTPConnectionSettings") -> Channel:
@@ -478,6 +514,7 @@ class GRPCv1Connection(_LedgerConnection):
 
     def close(self):
         try:
+            LOG.info("Closing a GRPCv1Connection channel...")
             self._closed.set()
             self._channel.close()
         except:

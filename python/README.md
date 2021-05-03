@@ -25,10 +25,11 @@ pip install --user dazl
 
 Requirements
 ------------
-* Python 3.8+
-* GNU Make
-* [Poetry](https://python-poetry.org/) for build/dependency management
-* [DAML SDK](https://www.daml.com)
+* Python 3.6+
+* [Daml Connect](https://www.daml.com)
+* Python gRPC libraries (1.32.0 or later) and Protobuf
+
+**WARNING:** The next major version of dazl (v8.0.0) will require **Python 3.7** or later.
 
 Examples
 --------
@@ -38,56 +39,59 @@ All of the examples below assume you imported `dazl`, and are running a ledger w
 Connect to the ledger and submit a single command:
 
 ```py
-with dazl.simple_client('http://localhost:6865', 'Alice') as client:
-    contract = { 'issuer' : 'Alice', 'owner' : 'Alice', 'name' : 'hello world!' }
-    client.ready()
-    client.submit_create('Main.Asset', contract)
+import asyncio
+import dazl
+
+async def main():
+    async with dazl.connect('http://localhost:6865', act_as='Alice') as client:
+        contract = { 'issuer' : 'Alice', 'owner' : 'Alice', 'name' : 'hello world!' }
+        await client.create('Main:Asset', contract)
+
+# Python 3.7+
+asyncio.run(main())
+
+# Python 3.6+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
 ```
 
 Connect to the ledger as a single party, print all contracts, and close:
 
 ```py
-with dazl.simple_client('http://localhost:6865', 'Alice') as client:
-    # wait for the ACS to be fully read
-    client.ready()
-    contract_dict = client.find_active('*')
-print(contract_dict)
+import asyncio
+import dazl
+from dazl.ledgerutil import ACS
+
+async def main():
+    async with dazl.connect('http://localhost:6865', read_as='Alice') as conn:
+        async with ACS(conn, {"*": {}}) as acs:
+            snapshot = await acs.read()
+            
+    print(snapshot)
+
+# Python 3.7+
+asyncio.run(main())
+
+# Python 3.6+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
 ```
-
-Connect to the ledger using asynchronous callbacks:
-
-```py
-from dazl.protocols.reading import ReadyEvent
-
-network = dazl.Network()
-network.set_config(url='http://localhost:6865')
-
-alice = network.aio_party('Alice')
-
-
-@alice.ledger_ready()
-async def onReady(event: ReadyEvent):
-    contracts = await event.acs_find_one('Main.Asset')
-    print(contracts)
-
-
-network.run_until_complete()
-```
-
 
 Building locally
 ----------------
-You will need to have [Poetry](https://python-poetry.org) installed, and the dependencies fetched using `poetry install`. Then do:
+
+You will need additional dependencies to build locally:
+
+* GNU Make
+* [Poetry](https://python-poetry.org/) for build/dependency management
+
+Once you have these prerequisites in place:
 
 ```sh
 make build
 ```
 
 If you see errors about incompatible python versions, switch your environment to python3 using `poetry env use python3`, for instance.
-
-Building Documentation
-----------------------
-The above command will build documentation in the root `docs/` dir. Committing this into source control and pushing to github will cause github-pages to be updated.
 
 Tests
 -----

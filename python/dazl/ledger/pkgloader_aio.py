@@ -34,10 +34,10 @@ class PackageService(Protocol):
     """
 
     async def get_package(self, package_id: "PackageRef") -> bytes:
-        raise NotImplementedError("SyncPackageService.package_bytes requires an implementation")
+        raise NotImplementedError("PackageService.get_package requires an implementation")
 
     async def list_package_ids(self) -> "AbstractSet[PackageRef]":
-        raise NotImplementedError("SyncPackageService.package_ids requires an implementation")
+        raise NotImplementedError("PackageService.list_package_ids requires an implementation")
 
 
 class PackageLoader:

@@ -1,6 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
+import asyncio
 from asyncio import Future, ensure_future, gather, sleep, wait_for
 from collections import defaultdict
 from dataclasses import asdict, fields
@@ -8,6 +8,7 @@ from datetime import timedelta
 import logging
 from threading import RLock, Thread, current_thread
 from typing import (
+    AbstractSet,
     Any,
     Awaitable,
     Callable,
@@ -25,6 +26,8 @@ from .. import LOG
 from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
+from ..ledger.grpc.codec_aio import Codec
+from ..ledger.pkgloader_aio import PackageService
 from ..metrics import MetricEvents
 from ..prim import Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork
@@ -48,6 +51,7 @@ class _NetworkImpl:
     __slots__ = (
         "lookup",
         "invoker",
+        "codec",
         "_lock",
         "_main_thread",
         "_party_clients",
@@ -64,6 +68,7 @@ class _NetworkImpl:
     def __init__(self, metrics: "Optional[MetricEvents]" = None):
         self.lookup = MultiPackageLookup()
         self.invoker = Invoker()
+        self.codec = Codec(self, self.lookup)
 
         self._lock = RLock()
         self._main_thread = None  # type: Optional[Thread]
@@ -355,6 +360,14 @@ class _NetworkImpl:
         pool = await self._pool_init
         return await pool.ledger()
 
+    async def get_package(self, package_id: "PackageRef") -> bytes:
+        pkg_service = await self._package_service()
+        return await pkg_service.get_package(package_id)
+
+    async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+        pkg_service = await self._package_service()
+        return await pkg_service.list_package_ids()
+
     async def upload_package(self, contents: bytes, timeout: "TimeDeltaLike") -> None:
         """
         Ensure packages specified by the given byte array are loaded on the remote server. This
@@ -379,6 +392,36 @@ class _NetworkImpl:
     async def __ensure_package_ids(self, package_ids: "Collection[PackageRef]"):
         metadata = await self.aio_metadata()
         await gather(*(metadata.package_loader.load(pkg_ref) for pkg_ref in package_ids))
+
+    async def _package_service(self) -> PackageService:
+        """
+        Return an instance of :class:`PackageService`. Blocks until a connection has been
+        established.
+        """
+        metadata = await self.aio_metadata()
+        # noinspection PyProtectedMember
+        conn = metadata.package_loader._conn
+
+        # Sit here for a maximum of ten minutes. The only reason we would be stuck here is if the
+        # first connection took a very long time to be established, or the user simply never called
+        # run() / start() on the Network. In the former case, we give the upstream as much as 10
+        # minutes before giving up.
+        wait_seconds = 600
+        while True:
+            if conn is None:
+                # This isn't the most efficient way to wait for a connection, but in the vast
+                # majority of cases the connection will be immediately available, which means we
+                # don't wait at all
+                await sleep(1.0)
+                wait_seconds -= 1
+                if wait_seconds <= 0:
+                    raise asyncio.TimeoutError(
+                        "waited too long for a network to be alive while searching for packages"
+                    )
+            else:
+                break
+
+        return conn
 
     # region Event Handler Management
 

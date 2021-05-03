@@ -12,6 +12,10 @@ import threading
 from typing import TYPE_CHECKING, Optional, Sequence, Union
 
 from .. import LOG
+from .._gen.com.daml.ledger.api.v1.transaction_pb2 import (
+    Transaction as G_Transaction,
+    TransactionTree as G_TransactionTree,
+)
 from ..damlast.lookup import MultiPackageLookup
 from ..prim import Party
 from ..scheduler import Invoker
@@ -103,12 +107,34 @@ class LedgerClient:
         """
         Submit a command to the ledger.
 
-        The coroutine returns when the implementation has accepted the command for processing, but
-        not necessarily committed to the ledger.
+        The coroutine returns when the implementation has accepted the command and a transaction
+        has been added to the ledger. Nothing is returned.
 
         :param command_payload: Payload of data to submit asynchronously.
         """
         raise NotImplementedError("commands must be implemented")
+
+    async def commands_transaction(self, __1: "CommandPayload") -> G_Transaction:
+        """
+        Submit a command to the ledger and retrieve the resulting transaction.
+
+        The coroutine returns when the implementation has accepted the command and a transaction
+        has been added to the ledger. The transaction is returned.
+
+        :param __1: Payload of data to submit asynchronously.
+        """
+        raise NotImplementedError("commands_transaction must be implemented")
+
+    async def commands_transaction_tree(self, __1: "CommandPayload") -> G_TransactionTree:
+        """
+        Submit a command to the ledger and retrieve the resulting transaction tree.
+
+        The coroutine returns when the implementation has accepted the command and a transaction
+        has been added to the ledger. The transaction tree is returned.
+
+        :param __1: Payload of data to submit asynchronously.
+        """
+        raise NotImplementedError("commands_transaction_tree must be implemented")
 
     async def active_contracts(self, contract_filter: "ContractFilter") -> "Sequence[BaseEvent]":
         """
