@@ -35,11 +35,11 @@ async def test_acs_find_active_retrieves_contracts(sandbox):
 async def async_test_case(client: AIOPartyClient):
     await client.ready()
 
-    ensure_future(client.submit_create(OperatorRole, {"operator": client.party}))
+    ensure_future(client.create(OperatorRole, {"operator": client.party}))
 
     operator_cid, _ = await client.find_one(OperatorRole)
 
-    ensure_future(client.submit_exercise(operator_cid, "PublishMany", dict(count=5)))
+    ensure_future(client.exercise(operator_cid, "PublishMany", dict(count=5)))
 
     # this should actually be a no-op; we're just making sure that calls to ready() that are
     # "too late" are not treated strangely
@@ -55,4 +55,4 @@ async def async_test_case(client: AIOPartyClient):
 
     ensure_future(client.submit([ExerciseCommand(cid, "Archive") for cid in contracts_to_delete]))
 
-    ensure_future(client.submit_exercise(operator_cid, "PublishMany", dict(count=3)))
+    ensure_future(client.exercise(operator_cid, "PublishMany", dict(count=3)))

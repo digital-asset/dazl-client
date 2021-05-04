@@ -29,7 +29,7 @@ from uuid import uuid4
 import warnings
 
 from .. import LOG
-from ..ledger import Command
+from ..ledger import Command, CreateEvent, ExerciseResponse
 from ..prim import Party
 from ..protocols.events import BaseEvent
 from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
@@ -519,6 +519,8 @@ def wrap_as_command_submission(
                     ret = cmd_fut.result()
                     if ret is None:
                         fut.set_result(None)
+                    elif isinstance(ret, (CreateEvent, ExerciseResponse)):
+                        fut.set_result(ret)
                     elif isinstance(ret, (CommandBuilder, Command, list, tuple)):
                         propagate(ensure_future(submit_fn(ret)), fut)
                     elif inspect.isawaitable(ret):

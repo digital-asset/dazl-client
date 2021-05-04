@@ -5,56 +5,15 @@
 Migrate
 #######
 
-Migrating to dazl v8
-====================
-
-Command-line changes
---------------------
-
-Commands such as ``dazl ls``, ``dazl tail``, or options provided for your application by calling
-``dazl.run`` have changed:
-
-* ``-p`` is now used to denote the Ledger API port and **not** ``Party``. In dazl v8, supplying a
-  string argument to ``-p`` will be still interpreted as a ``Party`` but you will get a warning;
-  switch to ``--act-as`` or ``--read-as`` instead. This backwards compatible behavior will be
-  removed in dazl v9.
-
-* ``--party``/``--parties`` has been renamed to ``--act-as`` (``-u``); ``--party-groups`` has been
-  renamed to ``--read-as`` (``-r``). Both ``--act-as`` and ``--read-as`` take a comma-separated list
-  of parties, or as an alternative can be specified multiple times. This matches the terminology
-  used in multi-party submissions as added in Daml Connect 1.9. The older forms of these flags will
-  be removed in dazl v9.
-
-* ``--package-fetch-poll-interval`` replaces ``--eager-package-fetch``.
-  If unspecified or zero, package polling is disabled. Note that ``dazl`` will still generally
-  discover packages as it needs to. This is really only of value if you are explicitly interested
-  in keeping metadata up-to-date because you are using package metadata, and you should generally
-  NOT use this for performance reasons.
-
-  Setting ``-eager-package-fetch`` is the same as specifying ``--package-fetch-poll-interval=1``,
-  as dazl previously polled for package updates once a second.
-
-* ``--enable-http-proxy`` has been renamed to ``--use-http-proxy``; the old flag will be removed in
-  dazl v9.
-
-* The following flags have no effect in dazl v8 and will be removed in dazl v9::
-   - ``--idle-timeout``
-   - ``--max-command-batch-timeout``
-   - ``--max-connection-batch-size``
-   - ``--max-connection-count``
-   - ``--max-consequence-depth``
-   - ``--max-event-block-size``
-   - ``--poll-interval``
-   - ``--quiet-count``
-   - ``--use-acs-service``
-
-
 Migrating to dazl v7.5
 ======================
 
-dazl 7.5 introduced a new API for connecting to the Ledger API that embraces design patterns and
-technical capabilities that have been introduced to Daml and some of the underlying Python libraries
-over the last few years.
+dazl v7.5.0 introduces a new API, ``dazl.connect`` for adding support to more modern features of
+Daml Connect. The ``dazl.Network`` API will continue to be supported in dazl v8 (the next major
+version of dazl), but you are encouraged to use ``dazl.connect`` going forward.
+
+``dazl.connect`` embraces design patterns and technical capabilities that have been introduced to
+Daml and some of the underlying Python libraries over the last few years.
 
 * Daml Multi-party submissions (as of Daml Connect 1.9):
   https://daml.com/blog/engineering/roles-in-daml-introducing-multi-party-submissions/
@@ -68,8 +27,8 @@ over the last few years.
 
 * Daml HTTP JSON API (stable as of DAML SDK 1.3.0)
 
-  While not yet directly supported (this is planned for dazl v8), the HTTP JSON API supports most
-  use-cases for applications that need to communicate with a ledger. The new API is slightly
+  While not yet directly supported (this is planned for dazl v8.0.0), the HTTP JSON API supports
+  most use-cases for applications that need to communicate with a ledger. The new API is slightly
   restructured for both compatibility with the HTTP JSON API and parity with the JavaScript
   `@daml/ledger <https://www.npmjs.com/package/@daml/ledger>`_ library.
 
@@ -96,29 +55,65 @@ over the last few years.
   client streams that are no longer coupled to each other, means the internals of ``dazl`` are
   significantly simpler while also improving performance.
 
+
+Command submission changes (``dazl.Network`` and ``dazl.connect``)
+------------------------------------------------------------------
+
+The most visible change from trying to align ``dazl`` to the
+`@daml/ledger <https://www.npmjs.com/package/@daml/ledger>`_ library is a renaming of the properties
+of the ``Command`` class hierarchy.
+
+In general, however, you should prefer the command submission
+methods on either ``dazl.client.PartyClient`` or ``dazl.ledger.Connection``, as these methods
+give you access to command-specific return values, such as exercise results for
+:class:`dazl.ledger.CreateAndExerciseCommand`, :class:``dazl.ledger.ExerciseCommand``, and
+:class:``dazl.ledger.ExerciseByKeyCommand``; or information about the created contract
+(:class:``dazl.ledger.CreateCommand``).
+
+.. code-block:: python
+
+   # Avoid:
+   from dazl import exercise
+   # This method does not return anything meaningful
+   await client.submit(exercise(cid, "SomeChoice", {"amount": 300}))
+
+   # Instead (v7.5 and later):
+   response = await client.exercise(cid, "SomeChoice", {"amount": 300}))
+   # This is the result of exercising the choice;
+   # available only when using specific command submission methods
+   print(response.result)
+
+If you still have a use-case for constructing commands (for example, batch submission), the change
+to your code should be as simple as changing imports:
+
++-------------------------------------------------+-------------------------------------------------+
+| Old imports                                     | New import                                      |
++=================================================+=================================================+
+| ``dazl.CreateCommand``                          | :class:``dazl.ledger.CreateCommand``            |
+| ``dazl.create(...)``                            |                                                 |
+| ``dazl.model.writing.CreateCommand``            |                                                 |
++-------------------------------------------------+-------------------------------------------------+
+| ``dazl.CreateAndExerciseCommand``               | :class:``dazl.ledger.CreateAndExerciseCommand`` |
+| ``dazl.create_and_exercise``                    |                                                 |
+| ``dazl.model.writing.CreateAndExerciseCommand`` |                                                 |
++-------------------------------------------------+-------------------------------------------------+
+| ``dazl.ExerciseCommand``                        | :class:``dazl.ledger.ExerciseCommand``          |
+| ``dazl.exercise(...)``                          |                                                 |
+| ``dazl.model.writing.ExerciseCommand``          |                                                 |
++-------------------------------------------------+-------------------------------------------------+
+| ``dazl.ExerciseByKeyCommand``                   | :class:``dazl.ledger.ExerciseByKeyCommand``     |
+| ``dazl.model.writing.ExerciseByKeyCommand``     |                                                 |
+| ``dazl.model.writing.create``                   |                                                 |
++-------------------------------------------------+-------------------------------------------------+
+
+These command classes can and should be used in both the ``dazl.Network`` API and the
+``dazl.connect`` API.
+
 The changes:
 
-``dazl.Network``, which has been the primary entry point for dazl code since dazl v5, is now
-deprecated. Transitional releases (starting with v7.5) will include both APIs, and ``dazl.Network``
-will be fully removed in dazl v8.
-
-To ease the transition, you can simply replace ``dazl.Network`` with ``dazl.ConnectionFactory``,
-but there are some important semantic differences between these APIs:
-
-* Old-style template names are not supported with ``dazl.ConnectionFactory``. If you were using
-  template names such as "Some.Module.Contract" instead of "Some.Module:Contract", this is the time
-  to change.
-* Callbacks from a ``dazl.ConnectionFactory`` that _return_ commands will raise warnings
-  (though they will still function as expected). These warnings are raised to help you find
-  examples of callbacks that will need to be reworked when transitioning to the new API.
-* Multiple calls to aio_party or simple_party for the same ``Party`` will still share an underlying
-  connection, but a warning will be raised. These warnings are raised to help you find examples of
-  places where you may be relying on connection sharing; connections are no longer automatically
-  shared in the new API.
-* Data streams will no longer be synchronized across Parties. If you were building up state from the
-  perspective of one party and using that information as a different party, you will experience
-  different behavior. This behavior is anyway generally frowned upon, but prior to the introduction
-  of multi-party submissions, occasionally necessary.
+``dazl.Network``, which has been the primary entry point for dazl code since dazl v5, will be
+deprecated in dazl v8.0.0. Transitional releases (starting with v7.5.0) will include both APIs, an
+``dazl.Network`` will be fully removed in dazl v9.0.0.
 
 
 .. code-block:: python
@@ -222,6 +217,48 @@ should generally
 
    # Python 3.7+
    asyncio.run(asyncio.gather(main_alice(), main_bob()))
+
+
+Command-line changes
+--------------------
+
+The standard set of command line options provided by ``dazl.run`` has changed. This also impacts any
+dazl commands (``dazl ls``, ``dazl tail``, etc.) as well as any custom commands that use
+``dazl.run``::
+
+* ``-p`` is now used to denote the Ledger API port and **not** ``Party``. In dazl v8, supplying a
+  string argument to ``-p`` will be still interpreted as a ``Party`` but you will get a warning;
+  switch to ``--act-as`` or ``--read-as`` instead. This backwards compatible behavior will be
+  removed in dazl v9.0.0.
+
+* ``--party``/``--parties`` has been renamed to ``--act-as`` (``-u``); ``--party-groups`` has been
+  renamed to ``--read-as`` (``-r``). Both ``--act-as`` and ``--read-as`` take a comma-separated list
+  of parties, or as an alternative can be specified multiple times. This matches the terminology
+  used in multi-party submissions as added in Daml Connect 1.9. The older forms of these flags will
+  be removed in dazl v9.0.0.
+
+* ``--package-fetch-poll-interval`` replaces ``--eager-package-fetch``.
+  If unspecified or zero, package polling is disabled. Note that ``dazl`` will still generally
+  discover packages as it needs to. This is really only of value if you are explicitly interested
+  in keeping metadata up-to-date because you are using package metadata, and you should generally
+  NOT use this for performance reasons.
+
+  Setting ``-eager-package-fetch`` is the same as specifying ``--package-fetch-poll-interval=1``,
+  as dazl previously polled for package updates once a second.
+
+* ``--enable-http-proxy`` has been renamed to ``--use-http-proxy``; the old flag will be removed in
+  dazl v9.0.0.
+
+* The following flags have no effect in dazl v8 and will be removed in dazl v8.0.0::
+   - ``--idle-timeout``
+   - ``--max-command-batch-timeout``
+   - ``--max-connection-batch-size``
+   - ``--max-connection-count``
+   - ``--max-consequence-depth``
+   - ``--max-event-block-size``
+   - ``--poll-interval``
+   - ``--quiet-count``
+   - ``--use-acs-service``
 
 
 

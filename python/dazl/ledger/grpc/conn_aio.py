@@ -25,6 +25,7 @@ from ..._gen.com.daml.ledger.api.v1.admin.package_management_service_pb2_grpc im
 )
 from ..._gen.com.daml.ledger.api.v1.admin.party_management_service_pb2 import (
     AllocatePartyRequest as G_AllocatePartyRequest,
+    ListKnownPartiesRequest as G_ListKnownPartiesRequest,
 )
 from ..._gen.com.daml.ledger.api.v1.admin.party_management_service_pb2_grpc import (
     PartyManagementServiceStub,
@@ -165,8 +166,8 @@ class Connection:
 
     async def create(
         self,
-        template_id: Union[str, TypeConName],
-        payload: ContractData,
+        __template_id: Union[str, TypeConName],
+        __payload: ContractData,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -174,14 +175,28 @@ class Connection:
         """
         Create a contract for a given template.
 
-        :param template_id: The template of the contract to be created.
-        :param payload: Template arguments for the contract to be created.
-        :param workflow_id: An optional workflow ID.
-        :param command_id: An optional command ID. If unspecified, a random one will be created.
+        :param __template_id:
+            The template of the contract to be created.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __payload:
+            Template arguments for the contract to be created.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The :class:`CreateEvent` that represents the contract that was successfully created.
         """
         stub = CommandServiceStub(self.channel)
 
-        commands = [G_Command(create=await self._codec.encode_create_command(template_id, payload))]
+        commands = [
+            G_Command(create=await self._codec.encode_create_command(__template_id, __payload))
+        ]
         request = G_SubmitAndWaitRequest(
             commands=G_Commands(
                 ledger_id=self._config.access.ledger_id,
@@ -200,9 +215,9 @@ class Connection:
 
     async def exercise(
         self,
-        contract_id: ContractId,
-        choice_name: str,
-        argument: Optional[ContractData] = None,
+        __contract_id: ContractId,
+        __choice_name: str,
+        __argument: Optional[ContractData] = None,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -210,19 +225,35 @@ class Connection:
         """
         Exercise a choice on a contract identified by its contract ID.
 
-        :param contract_id: The contract ID of the contract to exercise.
-        :param choice_name: The name of the choice to exercise.
-        :param argument: The choice arguments. Can be omitted for choices that take no argument.
-        :param workflow_id: An optional workflow ID.
-        :param command_id: An optional command ID. If unspecified, a random one will be created.
-        :return: A response
+        :param __contract_id:
+            The contract ID of the contract to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
         """
         stub = CommandServiceStub(self.channel)
 
         commands = [
             G_Command(
                 exercise=await self._codec.encode_exercise_command(
-                    contract_id, choice_name, argument
+                    __contract_id, __choice_name, __argument
                 )
             )
         ]
@@ -233,20 +264,52 @@ class Connection:
 
     async def create_and_exercise(
         self,
-        template_id: Union[str, TypeConName],
-        payload: ContractData,
-        choice_name: str,
-        argument: Optional[ContractData] = None,
+        __template_id: Union[str, TypeConName],
+        __payload: ContractData,
+        __choice_name: str,
+        __argument: Optional[ContractData] = None,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
     ) -> ExerciseResponse:
+        """
+        Exercise a choice on a newly-created contract, in a single transaction.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __payload:
+            Template arguments for the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument (positional
+            argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
         stub = CommandServiceStub(self.channel)
 
         commands = [
             G_Command(
                 createAndExercise=await self._codec.encode_create_and_exercise_command(
-                    template_id, payload, choice_name, argument
+                    __template_id, __payload, __choice_name, __argument
                 )
             )
         ]
@@ -257,20 +320,51 @@ class Connection:
 
     async def exercise_by_key(
         self,
-        template_id: Union[str, TypeConName],
-        choice_name: str,
-        key: Any,
-        argument: Optional[ContractData] = None,
+        __template_id: Union[str, TypeConName],
+        __choice_name: str,
+        __key: Any,
+        __argument: Optional[ContractData] = None,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
     ) -> "ExerciseResponse":
+        """
+        Exercise a choice on a contract identified by its contract key.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __key:
+            The key of the contract to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
         stub = CommandServiceStub(self.channel)
 
         commands = [
             G_Command(
                 exerciseByKey=await self._codec.encode_exercise_by_key_command(
-                    template_id, choice_name, key, argument
+                    __template_id, __choice_name, __key, __argument
                 )
             )
         ]
@@ -279,12 +373,66 @@ class Connection:
 
         return await self._codec.decode_exercise_response(response.transaction)
 
-    async def archive(self, contract_id: ContractId) -> ArchiveEvent:
-        await self.exercise(contract_id, "Archive")
-        return ArchiveEvent(contract_id)
+    async def archive(
+        self,
+        __contract_id: ContractId,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ArchiveEvent:
+        """
+        Archive a choice on a contract identified by its contract ID.
 
-    async def archive_by_key(self, template_id: str, key: Any) -> ArchiveEvent:
-        response = await self.exercise_by_key(template_id, "Archive", key)
+        :param __contract_id:
+            The contract ID of the contract to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
+        await self.exercise(
+            __contract_id, "Archive", workflow_id=workflow_id, command_id=command_id
+        )
+        return ArchiveEvent(__contract_id)
+
+    async def archive_by_key(
+        self,
+        __template_id: str,
+        __key: Any,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ArchiveEvent:
+        """
+        Exercise a choice on a contract identified by its contract key.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __key:
+            The key of the contract to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
+        response = await self.exercise_by_key(
+            __template_id, "Archive", __key, workflow_id=workflow_id, command_id=command_id
+        )
         return next(iter(event for event in response.events if isinstance(event, ArchiveEvent)))
 
     def _ensure_act_as(self) -> Party:
@@ -428,7 +576,8 @@ class Connection:
 
     async def list_known_parties(self) -> Sequence[PartyInfo]:
         stub = PartyManagementServiceStub(self.channel)
-        response = await stub.ListKnownParties()
+        request = G_ListKnownPartiesRequest()
+        response = await stub.ListKnownParties(request)
         return [Codec.decode_party_info(pd) for pd in response.party_details]
 
     # endregion

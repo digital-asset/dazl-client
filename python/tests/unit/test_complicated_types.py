@@ -24,7 +24,7 @@ async def test_complicated_types(sandbox):
     async with async_network(url=sandbox, dars=ComplicatedDar) as network:
         party_client = network.aio_new_party()
         party_client.add_ledger_ready(
-            lambda _: party_client.submit_create(
+            lambda _: party_client.create(
                 Complicated.OperatorRole, {"operator": party_client.party}
             )
         )

@@ -16,7 +16,7 @@ def test_simple_client_api(sandbox):
     with simple_client(url=sandbox, party=party) as client:
         client.ready()
         logging.info("Submitting...")
-        client.submit_create("Main:PostmanRole", {"postman": party})
+        client.create("Main:PostmanRole", {"postman": party})
         logging.info("getting contracts")
         contracts = client.find_active("*")
         logging.info("got the contracts")

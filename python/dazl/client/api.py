@@ -29,9 +29,16 @@ import warnings
 
 from .. import LOG
 from ..damlast import get_dar_package_ids
-from ..damlast.daml_lf_1 import PackageRef
+from ..damlast.daml_lf_1 import PackageRef, TypeConName
 from ..damlast.pkgfile import Dar
 from ..damlast.protocols import SymbolLookup
+from ..ledger import (
+    CreateCommand,
+    CreateEvent,
+    ExerciseByKeyCommand,
+    ExerciseCommand,
+    ExerciseResponse,
+)
 from ..metrics import MetricEvents
 from ..prim import ContractData, ContractId, Party, TimeDeltaLike, to_party
 from ..protocols.events import (
@@ -60,7 +67,7 @@ from ._events import (
 from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
-from .commands import EventHandlerResponse
+from .commands import CreateAndExerciseCommand, EventHandlerResponse
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from .events import EventKey
 from .ledger import LedgerMetadata
@@ -197,7 +204,7 @@ class Network:
         *config: Union[NetworkConfig, AnonymousNetworkConfig],
         url: Optional[str] = None,
         admin_url: Optional[str] = None,
-        **kwargs
+        **kwargs,
     ):
         self._impl.set_config(*config, url=url, admin_url=admin_url, **kwargs)
 
@@ -798,6 +805,8 @@ class AIOPartyClient(PartyClient):
         commands: EventHandlerResponse,
         workflow_id: Optional[str] = None,
         deduplication_time: Optional[TimeDeltaLike] = None,
+        *,
+        command_id: Optional[str] = None,
     ) -> Awaitable[None]:
         """
         Submit commands to the ledger.
@@ -810,12 +819,51 @@ class AIOPartyClient(PartyClient):
             The length of the time window during which all commands with the same party and command
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
         :return:
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
         return self._impl.write_commands(
-            commands, workflow_id=workflow_id, deduplication_time=deduplication_time
+            commands,
+            workflow_id=workflow_id,
+            command_id=command_id,
+            deduplication_time=deduplication_time,
+        )
+
+    async def create(
+        self,
+        __template_id: Union[str, TypeConName],
+        __payload: ContractData,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> CreateEvent:
+        """
+        Create a contract for a given template.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __payload:
+            Template arguments for the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The :class:`CreateEvent` that represents the contract that was successfully created.
+        """
+        return await self._impl.write_create(
+            CreateCommand(__template_id, __payload),
+            workflow_id=workflow_id,
+            command_id=command_id,
         )
 
     def submit_create(
@@ -843,6 +891,12 @@ class AIOPartyClient(PartyClient):
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
+        warnings.warn(
+            "submit_create is deprecated; use create instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         from .. import create
 
         with warnings.catch_warnings():
@@ -853,6 +907,47 @@ class AIOPartyClient(PartyClient):
             cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
+        )
+
+    async def exercise(
+        self,
+        __contract_id: ContractId,
+        __choice_name: str,
+        __argument: Optional[ContractData] = None,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
+        """
+        Exercise a choice on a contract identified by its contract ID.
+
+        :param __contract_id:
+            The contract ID of the contract to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
+        return await self._impl.write_exercise(
+            ExerciseCommand(__contract_id, __choice_name, __argument),
+            workflow_id=workflow_id,
+            command_id=command_id,
         )
 
     def submit_exercise(
@@ -884,6 +979,12 @@ class AIOPartyClient(PartyClient):
             A future that resolves when the command has made it to the ledger _or_ an error
             occurred when trying to process them.
         """
+        warnings.warn(
+            "submit_exercise is deprecated; use exercise instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         from .. import exercise
 
         with warnings.catch_warnings():
@@ -894,6 +995,53 @@ class AIOPartyClient(PartyClient):
             cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
+        )
+
+    async def exercise_by_key(
+        self,
+        __template_id: Union[str, TypeConName],
+        __choice_name: str,
+        __key: Any,
+        __argument: Optional[ContractData] = None,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
+        """
+        Exercise a choice on a contract identified by its contract ID.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __key:
+            The key of the contract to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
+        return await self._impl.write_exercise(
+            ExerciseByKeyCommand(__template_id, __choice_name, __key, __argument),
+            workflow_id=workflow_id,
+            command_id=command_id,
         )
 
     def submit_exercise_by_key(
@@ -925,6 +1073,12 @@ class AIOPartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
+        warnings.warn(
+            "submit_exercise_by_key is deprecated; use exercise_by_key instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         from .. import exercise_by_key
 
         with warnings.catch_warnings():
@@ -935,6 +1089,54 @@ class AIOPartyClient(PartyClient):
             cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
+        )
+
+    async def create_and_exercise(
+        self,
+        __template_id: Union[str, TypeConName],
+        __payload: ContractData,
+        __choice_name: str,
+        __argument: Optional[ContractData] = None,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
+        """
+        Exercise a choice on a newly-created contract, in a single transaction.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __payload:
+            Template arguments for the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument (positional
+            argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
+        return await self._impl.write_exercise(
+            CreateAndExerciseCommand(__template_id, __payload, __choice_name, __argument),
+            workflow_id=workflow_id,
+            command_id=command_id,
         )
 
     def submit_create_and_exercise(
@@ -965,6 +1167,12 @@ class AIOPartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
+        warnings.warn(
+            "submit_create_and_exercise is deprecated; use create_and_exercise instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         from .. import create_and_exercise
 
         with warnings.catch_warnings():
@@ -1456,6 +1664,42 @@ class SimplePartyClient(PartyClient):
             )
         )
 
+    def create(
+        self,
+        __template_id: Union[str, TypeConName],
+        __payload: ContractData,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> CreateEvent:
+        """
+        Create a contract for a given template.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __payload:
+            Template arguments for the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The :class:`CreateEvent` that represents the contract that was successfully created.
+        """
+        return self._impl.invoker.run_in_loop(
+            lambda: self._impl.write_create(
+                CreateCommand(__template_id, __payload),
+                workflow_id=workflow_id,
+                command_id=command_id,
+            )
+        )
+
     def submit_create(
         self,
         template_name: TemplateNameLike,
@@ -1478,6 +1722,12 @@ class SimplePartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
+        warnings.warn(
+            "submit_create is deprecated; use create instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         from .. import create
 
         with warnings.catch_warnings():
@@ -1488,6 +1738,49 @@ class SimplePartyClient(PartyClient):
             cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
+        )
+
+    def exercise(
+        self,
+        __contract_id: ContractId,
+        __choice_name: str,
+        __argument: Optional[ContractData] = None,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
+        """
+        Exercise a choice on a contract identified by its contract ID.
+
+        :param __contract_id:
+            The contract ID of the contract to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
+        return self._impl.invoker.run_in_loop(
+            lambda: self._impl.write_exercise(
+                ExerciseCommand(__contract_id, __choice_name, __argument),
+                workflow_id=workflow_id,
+                command_id=command_id,
+            )
         )
 
     def submit_exercise(
@@ -1516,6 +1809,12 @@ class SimplePartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
+        warnings.warn(
+            "submit_exercise is deprecated; use exercise instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         from .. import exercise
 
         with warnings.catch_warnings():
@@ -1526,6 +1825,55 @@ class SimplePartyClient(PartyClient):
             cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
+        )
+
+    def exercise_by_key(
+        self,
+        __template_id: Union[str, TypeConName],
+        __choice_name: str,
+        __key: Any,
+        __argument: Optional[ContractData] = None,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
+        """
+        Exercise a choice on a contract identified by its contract ID.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __key:
+            The key of the contract to exercise.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
+        return self._impl.invoker.run_in_loop(
+            lambda: self._impl.write_exercise(
+                ExerciseByKeyCommand(__template_id, __choice_name, __key, __argument),
+                workflow_id=workflow_id,
+                command_id=command_id,
+            )
         )
 
     def submit_exercise_by_key(
@@ -1557,6 +1905,12 @@ class SimplePartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
+        warnings.warn(
+            "submit_exercise_by_key is deprecated; use exercise_by_key instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         from .. import exercise_by_key
 
         with warnings.catch_warnings():
@@ -1567,6 +1921,56 @@ class SimplePartyClient(PartyClient):
             cmd,
             workflow_id=workflow_id,
             deduplication_time=deduplication_time,
+        )
+
+    def create_and_exercise(
+        self,
+        __template_id: Union[str, TypeConName],
+        __payload: ContractData,
+        __choice_name: str,
+        __argument: Optional[ContractData] = None,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+    ) -> ExerciseResponse:
+        """
+        Exercise a choice on a newly-created contract, in a single transaction.
+
+        :param __template_id:
+            The template of the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __payload:
+            Template arguments for the contract to be created (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __choice_name:
+            The name of the choice to exercise (positional argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param __argument:
+            The choice arguments. Can be omitted for choices that take no argument (positional
+            argument only).
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :param workflow_id:
+            An optional workflow ID.
+        :param command_id:
+            An optional command ID. If unspecified, a random one will be created.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
+        """
+        return self._impl.invoker.run_in_loop(
+            lambda: self._impl.write_exercise(
+                CreateAndExerciseCommand(__template_id, __payload, __choice_name, __argument),
+                workflow_id=workflow_id,
+                command_id=command_id,
+            )
         )
 
     def submit_create_and_exercise(
@@ -1597,6 +2001,12 @@ class SimplePartyClient(PartyClient):
             ID will be deduplicated. Duplicate commands submitted before the end of this window
             return an ``ALREADY_EXISTS`` error.
         """
+        warnings.warn(
+            "submit_create_and_exercise is deprecated; use create_and_exercise instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         from .. import create_and_exercise
 
         with warnings.catch_warnings():
