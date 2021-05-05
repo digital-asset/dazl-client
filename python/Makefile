@@ -9,6 +9,7 @@ version := $(shell python3 -c "import configparser; config = configparser.Config
 ghr_new_flags := $(shell python3 -c "from pkg_resources import parse_version; print('-prerelease' if parse_version('$(version)').is_prerelease else '')")
 
 dazl_files := $(shell find dazl -name '*.py') README.md
+dazl_docs_files := $(shell find docs -name '*.rst') $(dazl_files)
 dazl_bdist := dist/dazl-$(version)-py3-none-any.whl
 dazl_sdist := dist/dazl-$(version).tar.gz
 dazl_docs_html := dist/dazl-docs-$(version)-html.tar.gz
@@ -127,11 +128,11 @@ $(dazl_bdist): $(poetry_build_marker)
 
 $(dazl_sdist): $(poetry_build_marker)
 
-$(dazl_docs_html): $(poetry_install_marker) $(dazl_files)
+$(dazl_docs_html): $(poetry_install_marker) $(dazl_docs_files)
 	poetry run python3 scripts/docs.py build --format html -o $(dazl_docs_html_dir)
 	(cd dist && tar czf $(@F) $(notdir $(dazl_docs_html_dir)))
 
-$(dazl_docs_markdown): $(poetry_install_marker) $(dazl_files)
+$(dazl_docs_markdown): $(poetry_install_marker) $(dazl_docs_files)
 	poetry run python3 scripts/docs.py build --format markdown -o $(dazl_docs_markdown_dir)
 	(cd dist && tar czf $(@F) $(notdir $(dazl_docs_markdown_dir)))
 
