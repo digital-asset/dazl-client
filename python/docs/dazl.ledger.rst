@@ -289,6 +289,173 @@ Data Model
 | :class:`PartyInfo`                | metadata about a party                                       |
 +-----------------------------------+--------------------------------------------------------------+
 
+Connections
+-----------
+
+.. py:class:: Connection
+
+   Protocol that describes a connection to a ledger. You will typically work with the more specific
+   protocols :class:`dazl.ledger.aio.Connection` or :class:`dazl.ledger.blocking.Connection` that
+   are tailored towards connections with ``asyncio`` or thread-blocking semantics, respectively.
+
+   On *asynchronous* connections:
+
+    * the command submission methods :meth:`create`, :meth:`exercise`, :meth:`submit` are coroutines.
+    * the stream methods :meth:`query`, :meth:`query_many`, :meth:`stream`, and :meth:`stream_many`,
+      return asynchronous context managers and asynchronous iterators
+
+   On *blocking* connections:
+
+    * the command submission methods :meth:`create`, :meth:`exercise`, :meth:`submit` block the
+      current thread until the command submission succeeds or fails.
+    * the stream methods :meth:`query`, :meth:`query_many`, :meth:`stream`, and :meth:`stream_many`,
+      return context managers and blocking iterators.
+
+   .. py:function:: exercise(contract_id, choice_name, [argument], /, *, workflow_id=None, command_id=None)
+
+      Exercise a choice on a contract identified by its contract ID.
+
+      :param contract_id: The contract ID of the contract to exercise.
+      :type contract_id: dazl.prim.ContractId
+      :param choice_name: The name of the choice to exercise.
+      :type choice_name: str
+      :param argument: The choice arguments. Can be omitted for choices that take no argument.
+      :type argument: dict or None
+      :param workflow_id: An optional workflow ID.
+      :type workflow_id: str or None
+      :param command_id: An optional command ID. If unspecified, a random one will be created.
+      :type command_id: str or None
+
+   .. py:function:: archive(contract_id, /, *, workflow_id=None, command_id=None)
+
+      Archive a choice on a contract identified by its contract ID.
+
+      :param contract_id: The contract ID of the contract to archive.
+      :type contract_id: dazl.prim.ContractId
+      :param workflow_id: An optional workflow ID.
+      :type workflow_id: str or None
+      :param command_id: An optional command ID. If unspecified, a random one will be created.
+      :type command_id: str or None
+
+.. py:class:: QueryStream
+
+   Protocol for classes that provide for reading from a stream of events from a Daml ledger. Like
+   :class:`Connection`, there are async query streams (:class:`dazl.ledger.aio.QueryStream`) and
+   blocking query streams (:class:`dazl.ledger.blocking.QueryStream`).
+
+   The methods of :class:`QueryStream` consume the stream: you cannot replay a
+   :class:`QueryStream`'s contents simply by trying to iterate over it again.
+
+   On *asynchronous* connections, the methods on :class:`QueryStream` return asynchronous
+   iterators: use ``async for`` to iterate over their contents.
+
+   On *blocking* connections, the methods on :class:`QueryStream` return blocking iterators:
+   use ``for`` to iterate over their contents.
+
+   Note that the :meth:`events` and :meth:`items` streams may return :class:`ArchiveEvent` objects
+   that had no :class:`CreateEvent` predecessor. This may happen for a number of reasons:
+
+    * You started requesting a stream at a specific offset. When resuming from an offset, no
+      events (:class:`CreateEvent` or :class:`ArchiveEvent`) that preceded the specified offset are
+      returned.
+    * You are filtering events; event filtering only applies to :class:`CreateEvent` instances and
+      *not* :class:`ArchiveEvent`.
+    * You are learning of an archive of a `divulged contract
+      <https://docs.daml.com/concepts/ledger-model/ledger-privacy.html#divulgence-when-non-stakeholders-see-contracts>`_.
+      Note that ``dazl`` does not have an API for retrieving divulged contracts.
+
+   **Reading from and controlling the stream**
+
+   The :meth:`creates`, :meth:`events`, and :meth:`items` methods are used to receive events from
+   the stream; :meth:`run` can be used to consume the stream without iterating yourself, and
+   :meth:`close` stops the stream.
+
+   .. code-block:: python
+
+      # asynchronous connections
+      async with conn.stream() as stream:
+         async for event in stream.creates():
+            # print every contract create...forever
+            print(event.contract_id, event.payload)
+
+      # blocking connections
+      with conn.stream() as stream:
+         for event in stream.creates():
+            # print every contract create...forever
+            print(event.contract_id, event.payload)
+
+   .. py:method:: creates()
+
+      Return an iterator (or async iterator) over only :class:`CreateEvent` instances.
+
+   .. py:method:: events()
+
+      Return an iterator (or async iterator) over :class:`CreateEvent` and :class:`ArchiveEvent`
+      instances.
+
+   .. py:method:: items()
+
+      Return an iterator (or async iterator) over *all* objects (:class:`CreateEvent`,
+      :class:`ArchiveEvent`, and :class:`Boundary`).
+
+   .. py:method:: run()
+
+      Block until the stream has been fully consumed. This method normally only makes sense to
+      use in conjunction with callbacks (:meth:`on_create`, :meth:`on_archive`, and
+      :meth:`on_boundary`). For async connections, this is a coroutine.
+
+   .. py:method:: close()
+
+      Stops the iterator and aborts the stream. For async connections, this is a coroutine.
+
+   **Registering Callbacks**
+
+   Callbacks can be used as an alternative to reading events from the stream.
+
+   The callable must take a :class:`CreateEvent`, :class:`ArchiveEvent`, or :class:`Boundary` as
+   its only parameter and should generally return ``None``. However the callback can also return
+   :class:`CreateEvent` or :class:`ExerciseResponse`, mostly so that one-line lambdas that call
+   ledger methods can be used:
+
+   .. code-block:: python
+
+      # registering a callback as a lambda
+      stream.on_create("My:Tmpl", lambda event: conn.exercise(event.cid, "Accept"))
+
+      # registering a callback using a decorator
+      @stream.on_create("My:Tmpl")
+      def handle(event):
+          conn.exercise(event.cid, "Accept")
+
+   .. py:method:: on_create(fn)
+                  on_create(name, fn)
+                  @on_create
+                  @on_create(name)
+
+      Register a callback that is triggered whenever a :class:`CreateEvent` is read through the
+      stream.
+
+      :param name: An optional name of a template to further filter :class:`CreateEvent`.
+      :type name: str or dazl.damlast.TypeConName
+
+   .. py:method:: on_archive(fn)
+                  on_archive(name, fn)
+                  @on_archive
+                  @on_archive(name)
+
+      Register a callback that is triggered whenever a :class:`ArchiveEvent` is read through the
+      stream.
+
+      :param name: An optional name of a template to further filter :class:`ArchiveEvent`.
+      :type name: str or dazl.damlast.TypeConName
+
+   .. py:method:: on_boundary(fn)
+                   @on_boundary
+
+      Register a callback that is triggered whenever a :class:`Boundary` is read through the
+      stream.
+
+
 Write-side types
 ----------------
 
