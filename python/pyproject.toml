@@ -41,6 +41,7 @@ pytest-subtests = "^0.2.1"
 setuptools = "==40.8.0"
 sphinx = "*"
 sphinx-markdown-builder = "^0.5.1"
+sphinxcontrib-trio = "^1.1.2"
 watchdog = "*"
 
 [tool.poetry.extras]
