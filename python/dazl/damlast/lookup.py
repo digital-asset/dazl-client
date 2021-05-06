@@ -68,7 +68,10 @@ def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) ->
     """
     pkg, name = validate_template(val, allow_deprecated_identifiers=allow_deprecated_identifiers)
     module_name, _, entity_name = name.rpartition(":")
-    module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
+    if module_name:
+        module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
+    else:
+        module_ref = ModuleRef(pkg, DottedName())
     return TypeConName(module_ref, entity_name.split("."))
 
 

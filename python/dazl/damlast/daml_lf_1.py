@@ -89,6 +89,9 @@ class DottedName:
     def __str__(self):
         return ".".join(self.segments)
 
+    def __bool__(self):
+        return bool(self.segments)
+
     def __eq__(self, other):
         return isinstance(other, DottedName) and self.segments == other.segments
 
@@ -112,9 +115,9 @@ class ModuleRef:
     """
     A reference to a module.
 
-    In dazl 7.0.0, ModuleRef will become a `NewType(str)`, so making assumptions about the structure
-    of this type should be avoided, and accessor methods should be instead used for callers that
-    care about the structure of these names.
+    In dazl v8.0.0, ModuleRef will become a `NewType(str)`, so making assumptions about the
+    structure of this type should be avoided, and accessor methods should be instead used for
+    callers that care about the structure of these names.
     """
 
     __slots__ = "_package_id", "_module_name"
@@ -156,7 +159,10 @@ class ModuleRef:
         return hash(self._package_id) ^ hash(self._module_name)
 
     def __str__(self):
-        return f"{self._package_id}:{self._module_name}"
+        if self._module_name:
+            return f"{self._package_id}:{self._module_name}"
+        else:
+            return self._package_id
 
     def __repr__(self):
         return f"ModuleRef(package_id={self._package_id!r}, " f"module_name={self._module_name})"
