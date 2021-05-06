@@ -220,8 +220,7 @@ class Config:
         |                   |                      | | ``https`` for all other ports               |
         +-------------------+----------------------+-----------------------------------------------+
 
-        HTTP(s) proxies (gRPC Ledger API only)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        **HTTP(s) proxies (gRPC Ledger API only)**
 
         When connecting to the gRPC Ledger API, note that
         `gRPC environment variables

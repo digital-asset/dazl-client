@@ -64,11 +64,11 @@ The most visible change from trying to align ``dazl`` to the
 of the ``Command`` class hierarchy.
 
 In general, however, you should prefer the command submission
-methods on either ``dazl.client.PartyClient`` or ``dazl.ledger.Connection``, as these methods
+methods on either :class:`dazl.ledger.Connection` or ``dazl.client.PartyClient``, as these methods
 give you access to command-specific return values, such as exercise results for
-:class:`dazl.ledger.CreateAndExerciseCommand`, :class:``dazl.ledger.ExerciseCommand``, and
-:class:``dazl.ledger.ExerciseByKeyCommand``; or information about the created contract
-(:class:``dazl.ledger.CreateCommand``).
+:class:`dazl.ledger.CreateAndExerciseCommand`, :class:`dazl.ledger.ExerciseCommand`, and
+:class:`dazl.ledger.ExerciseByKeyCommand`; or information about the created contract
+(:class:`dazl.ledger.CreateCommand`).
 
 .. code-block:: python
 
@@ -224,7 +224,7 @@ Command-line changes
 
 The standard set of command line options provided by ``dazl.run`` has changed. This also impacts any
 dazl commands (``dazl ls``, ``dazl tail``, etc.) as well as any custom commands that use
-``dazl.run``::
+``dazl.run``:
 
 * ``-p`` is now used to denote the Ledger API port and **not** ``Party``. In dazl v8, supplying a
   string argument to ``-p`` will be still interpreted as a ``Party`` but you will get a warning;
