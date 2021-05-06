@@ -26,10 +26,12 @@ __all__ = [
     "CreateCommand",
     "CreateEvent",
     "Event",
+    "EventOrBoundary",
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExerciseResponse",
     "PartyInfo",
+    "SubmitResponse",
 ]
 
 
@@ -470,6 +472,9 @@ class Boundary:
         return f"Boundary({self._offset!r})"
 
 
+EventOrBoundary = Union[Event, Boundary]
+
+
 class ExerciseResponse:
     """
     Returned when directly exercising a choice using :meth:`Connection.create_and_exercise`,
@@ -503,6 +508,9 @@ class ExerciseResponse:
 
     def __repr__(self):
         return f"ExerciseResponse(result={self.result}, events={self.events})"
+
+
+SubmitResponse = Union[None, CreateEvent, ExerciseResponse]
 
 
 class PartyInfo:

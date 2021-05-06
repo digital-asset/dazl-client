@@ -395,12 +395,12 @@ class MultiPackageLookup(SymbolLookup):
 
     def add_archive(self, *a: "Archive") -> None:
         """
-        Add one or more :class:`Archive`s to this lookup.
+        Add one or more :class:`Archive` instances to this lookup.
 
         This method is thread-safe, but note that :class:`MultiPackageLookup` allows dirty reads for
         performance reasons.
 
-        :param a: One or more :class:`Archive`s to add.
+        :param a: One or more :class:`Archive` instances to add.
         """
         new_lookups = {ar.hash: PackageLookup(ar) for ar in a}
         with self._lock:
