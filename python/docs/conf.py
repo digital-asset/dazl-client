@@ -46,7 +46,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.mathjax",
     "sphinx.ext.ifconfig",
-    "sphinx.ext.viewcode",
+    "sphinxcontrib_trio",
     "sphinx.ext.githubpages",
 ]
 
@@ -199,4 +199,4 @@ def setup(sphinx):
         DAMLLexer = None
 
     if DAMLLexer is not None:
-        sphinx.add_lexer("daml", DAMLLexer())
+        sphinx.add_lexer("daml", DAMLLexer)
