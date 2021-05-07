@@ -4,11 +4,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/python:3.6.11
-
-      # Start an SDK image alongside the tests for purposes of running the Sandbox
-      - image: digitalasset/daml-sdk:1.12.0
-        command: daml sandbox -a 0.0.0.0
+      # The browsers image has both Python and Java; we need both
+      - image: cimg/python:3.6.13-browsers
         
     resource_class: medium+
     steps:
@@ -43,13 +40,9 @@ jobs:
           command: make python-format-check
       - run:
           name: Python unit tests
-          environment:
-            DAZL_TEST_DAML_LEDGER_URL: http://localhost:6865
           command: make python-test
       - run:
           name: Python integration tests
-          environment:
-            DAZL_TEST_DAML_LEDGER_URL: http://localhost:6865
           command: make python-integration-test
       - run:
           name: Python packaging
