@@ -22,14 +22,14 @@ Connect to the ledger and submit a single command::
 
     import dazl
 
-    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
-        conn.create('Main:Asset', {'issuer': 'Alice', 'owner': 'Alice', 'name': 'hello world!'})
+    async with dazl.connect(url='http://localhost:6865', act_as='Alice') as conn:
+        await conn.create('Main:Asset', {'issuer': 'Alice', 'owner': 'Alice', 'name': 'hello world!'})
 
 Connect to the ledger as a single party, print all contracts, and close::
 
     import dazl
 
-    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
+    async with dazl.connect(url='http://localhost:6865', read_as='Alice') as conn:
         contracts = {}
         async for event in conn.query():
             contracts[event.cid] = event.cdata
@@ -39,7 +39,7 @@ Connect to the ledger using asynchronous callbacks::
 
     import dazl
 
-    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
+    async with dazl.connect(url='http://localhost:6865', read_as='Alice') as conn:
         contracts = {}
         @conn.on_create
         def _(event):
