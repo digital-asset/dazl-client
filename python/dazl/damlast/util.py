@@ -15,6 +15,7 @@ from .daml_lf_1 import (
     PackageRef,
     PrimType,
     Type,
+    TypeConName,
     TypeVarWithKind,
     _Name,
 )
@@ -179,6 +180,7 @@ def module_ref(obj: "Union[_Name, TypeReference]") -> "ModuleRef":
         raise ValueError(f"Could not extract a module_ref from {obj!r}")
 
 
+# noinspection PyProtectedMember
 def package_local_name(obj: "Union[_Name, TypeReference]") -> str:
     """
     Return the name of a DAML object, assuming that the referent exists in the same package as the
@@ -191,8 +193,11 @@ def package_local_name(obj: "Union[_Name, TypeReference]") -> str:
         obj = obj.con
 
     if isinstance(obj, _Name):
-        # noinspection PyProtectedMember
-        return f'{obj._module._module_name}:{".".join(obj._name)}'
+        name_str = ".".join(obj._name)
+        if obj._module._module_name:
+            return f"{obj._module._module_name}:{name_str}"
+        else:
+            return name_str
     else:
         raise ValueError(f"Could not extract a package_local_name from {obj!r}")
 
@@ -213,6 +218,21 @@ def module_local_name(obj: "Union[_Name, TypeReference]") -> str:
         return ".".join(obj.con._name)
     else:
         raise ValueError(f"Could not extract a module_local_name from {obj!r}")
+
+
+def is_match(pattern: TypeConName, value: TypeConName) -> bool:
+    if pattern == value:
+        return True
+
+    pkg = package_ref(pattern)
+    name = package_local_name(pattern)
+
+    if pkg == PackageRef("*"):
+        return name == "*" or name == package_local_name(value)
+    elif pkg == package_ref(value):
+        return name == "*"
+    else:
+        return False
 
 
 def find_variant_type(dt: "DefDataType", variant: "DefDataType.Fields", constructor: str) -> "Type":

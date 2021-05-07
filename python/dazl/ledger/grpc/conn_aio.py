@@ -54,8 +54,9 @@ from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import (
 )
 from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import TransactionServiceStub
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
+from ...damlast.util import is_match
 from ...prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party
-from ...query import Query
+from ...query import Filter, Queries, Query, parse_query
 from .._offsets import UNTIL_END, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
 from ..config import Config
@@ -495,9 +496,11 @@ class Connection:
         :param __query:
             A filter to apply to the set of returned contracts.
         """
-        return QueryStream(self, {__template_id: __query}, UNTIL_END)
+        return QueryStream(
+            self, parse_query({__template_id: __query}, server_side_filters=False), UNTIL_END
+        )
 
-    def query_many(self, __queries: Optional[Mapping[str, Query]] = None) -> "QueryStream":
+    def query_many(self, *queries: Queries) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
 
@@ -505,10 +508,10 @@ class Connection:
         set of templates, you may want to consider :class:`ACS` instead, which is a utility class
         that helps you maintain a "live" state of the ACS.
 
-        :param __queries:
+        :param queries:
             A map of template IDs to filter to apply to the set of returned contracts.
         """
-        return QueryStream(self, __queries, UNTIL_END)
+        return QueryStream(self, parse_query(*queries, server_side_filters=False), UNTIL_END)
 
     def stream(
         self, __template_id: str = "*", __query: Query = None, *, offset: Optional[str] = None
@@ -532,11 +535,13 @@ class Connection:
             An optional offset at which to start receiving events. If ``None``, start from the
             beginning.
         """
-        return QueryStream(self, {__template_id: __query}, from_offset_until_forever(offset))
+        return QueryStream(
+            self,
+            parse_query({__template_id: __query}, server_side_filters=False),
+            from_offset_until_forever(offset),
+        )
 
-    def stream_many(
-        self, __queries: Optional[Mapping[str, Query]] = None, *, offset: Optional[str] = None
-    ) -> "QueryStream":
+    def stream_many(self, *queries: Queries, offset: Optional[str] = None) -> "QueryStream":
         """
         Stream create/archive events from more than one template ID in the same stream.
 
@@ -546,7 +551,7 @@ class Connection:
         Otherwise, ``offset`` can be supplied to resume a stream from a prior point where a
         ``Boundary`` was returned from a previous stream.
 
-        :param __queries:
+        :param queries:
             A map of template IDs to filter to apply to the set of returned contracts. Note that
             this does not filter :class:`ArchiveEvent`; readers of the stream MUST be able to cope
             with "mismatched" archives that come from the result of applying a filter.
@@ -554,7 +559,11 @@ class Connection:
             An optional offset at which to start receiving events. If ``None``, start from the
             beginning.
         """
-        return QueryStream(self, __queries, from_offset_until_forever(offset))
+        return QueryStream(
+            self,
+            parse_query(*queries, server_side_filters=False),
+            from_offset_until_forever(offset),
+        )
 
     # endregion
 
@@ -611,14 +620,12 @@ class QueryStream(QueryStreamBase):
     def __init__(
         self,
         conn: Connection,
-        queries: Optional[Mapping[str, Optional[Query]]],
+        filters: Optional[Mapping[TypeConName, Filter]],
         offset_range: LedgerOffsetRange,
     ):
         self.conn = conn
-        self._queries = queries
+        self._filters = filters
         self._offset_range = offset_range
-
-        self._filter = None
         self._response_stream = None  # type: Optional[UnaryStreamCall]
 
     async def close(self) -> None:
@@ -647,7 +654,7 @@ class QueryStream(QueryStreamBase):
         """
         log = self.conn.config.logger
 
-        filters = await self.conn.codec.encode_filters(self._queries)
+        filters = await self.conn.codec.encode_filters(self._filters)
         filters_by_party = {party: filters for party in self.conn.config.access.read_as}
         tx_filter_pb = G_TransactionFilter(filters_by_party=filters_by_party)
 
@@ -708,7 +715,9 @@ class QueryStream(QueryStreamBase):
         offset = None
         async for response in response_stream:
             for event in response.active_contracts:
-                yield await self.conn.codec.decode_created_event(event)
+                c_evt = await self.conn.codec.decode_created_event(event)
+                if self._is_match(c_evt):
+                    yield c_evt
             # for ActiveContractSetResponse messages, only the last offset is actually relevant
             offset = response.offset
         yield Boundary(offset)
@@ -730,9 +739,25 @@ class QueryStream(QueryStreamBase):
                 for event in tx.events:
                     event_type = event.WhichOneof("event")
                     if event_type == "created":
-                        yield await self.conn.codec.decode_created_event(event.created)
+                        c_evt = await self.conn.codec.decode_created_event(event.created)
+                        if self._is_match(c_evt):
+                            yield c_evt
                     elif event_type == "archived":
                         yield await self.conn.codec.decode_archived_event(event.archived)
                     else:
                         warnings.warn(f"Unknown Event({event_type}=...)", ProtocolWarning)
                 yield Boundary(tx.offset)
+
+    def _is_match(self, event: CreateEvent) -> bool:
+        # if there are no filters, then everything is a match
+        if self._filters is None:
+            return True
+
+        for name, f in self._filters.items():
+            # for each filter, if this contract type could be interpreted as a match for the current
+            # filter, then apply a client-side filter
+            if is_match(name, event.contract_id.value_type):
+                return f.client_side is None or f.client_side(event.payload)
+
+        # we checked every name, but none of them matched
+        return False

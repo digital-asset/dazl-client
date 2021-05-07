@@ -48,7 +48,7 @@ from ...damlast.daml_lf_1 import (
 from ...damlast.daml_types import ContractId as ContractIdType, con
 from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
-from ...damlast.util import module_local_name, module_name, package_ref
+from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...prim import ContractData, ContractId
 from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
@@ -191,15 +191,16 @@ class Codec:
 
         return cmd_pb
 
-    async def encode_filters(self, template_ids: Sequence[Any]) -> G_Filters:
+    async def encode_filters(self, template_ids: Sequence[TypeConName]) -> G_Filters:
         # Search for a reference to the "wildcard" template; if any of the requested template_ids
         # is "*", then return results for all templates. We do this first because resolving template
         # IDs otherwise requires do_with_retry, which can be expensive.
-        for template_id in template_ids:
-            if template_id == "*":
-                # if any of the keys references the "wildcard" template, then this means we
-                # need to fetch values for all templates; note that we
-                return G_Filters()
+        if not template_ids or any(
+            package_ref(t) == "*" and package_local_name(t) == "*" for t in template_ids
+        ):
+            # if any of the keys references the "wildcard" template, (or no values were supplied)
+            # then this means we need to fetch values for all templates
+            return G_Filters()
 
         # No wildcard template IDs, so inspect and resolve all template references to concrete
         # template IDs
