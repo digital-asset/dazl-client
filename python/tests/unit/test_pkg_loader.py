@@ -9,7 +9,7 @@ import pytest
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef
 from dazl.damlast.lookup import MultiPackageLookup
-from dazl.ledger.pkgloader_aio import PackageLoader
+from dazl.ledger.aio import PackageLoader
 
 from .dars import AllKindsOf
 

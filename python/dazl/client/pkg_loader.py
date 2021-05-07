@@ -3,10 +3,10 @@
 
 import warnings
 
-from ..ledger.pkgloader_aio_compat import PackageLoader, SyncPackageService
+from ..ledger.aio.pkgloader_compat import PackageLoader, SyncPackageService
 
 warnings.warn(
-    "dazl.client.pkg_loader is deprecated; use dazl.protocols.pkgloader_aio instead.",
+    "dazl.client.pkg_loader is deprecated; use dazl.ledger.aio instead.",
     DeprecationWarning,
     stacklevel=2,
 )

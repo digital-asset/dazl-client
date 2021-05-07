@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 import warnings
 
-from ..ledger.pkgloader_aio import PackageLoader
+from ..ledger.aio import PackageLoader
 from ..protocols.serializers import Serializer
 
 if TYPE_CHECKING:

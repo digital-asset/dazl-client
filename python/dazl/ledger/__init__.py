@@ -41,6 +41,9 @@ __all__ = [
     "ExerciseCommand",
     "ExerciseResponse",
     "PartyInfo",
+    "PackageService",
+    "Connection",
+    "QueryStream",
 ]
 
 
@@ -63,8 +66,35 @@ def connect(*, blocking=False, **kwargs):
     return GrpcConnection(cfg)
 
 
+class PackageService(Protocol):
+    """
+    Protocol that describe a service that provides package information. The :class:`Connection`
+    protocol extends this interface.
+    """
+
+    def get_package(self, __package_id):
+        """
+        Given a package ID, fetch the binary data for the corresponding DALF.
+
+        :param __package_id:
+            The package ID of the DALF to retrieve.
+
+            Note that future versions of dazl reserve the right to rename this parameter name at any
+            time; it should be passed in as a positional parameter and never by name.
+        :return:
+            The byte array contents of the DALF associated with the package ID.
+        """
+        raise NotImplementedError
+
+    def list_package_ids(self):
+        """
+        Fetch a list of all known package IDs.
+        """
+        raise NotImplementedError
+
+
 @runtime_checkable
-class Connection(Protocol):
+class Connection(PackageService, Protocol):
     """
     Protocol that describes a connection to a ledger. You will typically work with the more specific
     protocols :class:`dazl.ledger.aio.Connection` or :class:`dazl.ledger.blocking.Connection` that
@@ -450,26 +480,6 @@ class Connection(Protocol):
     def list_known_parties(self):
         """
         Return a list of :class:`PartyInfo` for all parties on the ledger.
-        """
-        raise NotImplementedError
-
-    def get_package(self, __package_id):
-        """
-        Given a package ID, fetch the binary data for the corresponding DALF.
-
-        :param __package_id:
-            The package ID of the DALF to retrieve.
-
-            Note that future versions of dazl reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :return:
-            The byte array contents of the DALF associated with the package ID.
-        """
-        raise NotImplementedError
-
-    def list_package_ids(self):
-        """
-        Fetch a list of all known package IDs.
         """
         raise NotImplementedError
 

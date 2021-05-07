@@ -3,6 +3,7 @@
 import abc
 import sys
 from typing import (
+    AbstractSet,
     Any,
     AsyncIterator,
     Awaitable,
@@ -16,8 +17,12 @@ from typing import (
     overload,
 )
 
-from .. import Connection as _Connection, QueryStream as _QueryStream
-from ...damlast.daml_lf_1 import TypeConName
+from .. import (
+    Connection as _Connection,
+    PackageService as _PackageService,
+    QueryStream as _QueryStream,
+)
+from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...prim import ContractData, ContractId
 from ...query import Queries, Query
 from ..api_types import (
@@ -26,15 +31,17 @@ from ..api_types import (
     Command,
     CreateEvent,
     ExerciseResponse,
+    PartyInfo,
     SubmitResponse,
 )
+from .pkgloader import PackageLoader
 
 if sys.version_info >= (3, 8):
     from typing import Protocol, runtime_checkable
 else:
     from typing_extensions import Protocol, runtime_checkable
 
-__all__ = ["Connection", "QueryStream", "QueryStreamBase"]
+__all__ = ["PackageService", "Connection", "QueryStream", "QueryStreamBase", "PackageLoader"]
 
 Self = TypeVar("Self")
 CreateFn = TypeVar("CreateFn", bound=Callable[[CreateEvent], SubmitResponse])
@@ -72,8 +79,12 @@ class ABoundaryDecorator(Protocol):
     @overload
     def __call__(self, __fn: ABoundaryFn) -> ABoundaryFn: ...
 
+class PackageService(_PackageService, Protocol):
+    async def get_package(self, __package_id: PackageRef) -> bytes: ...
+    async def list_package_ids(self) -> AbstractSet[PackageRef]: ...
+
 @runtime_checkable
-class Connection(_Connection, Protocol):
+class Connection(_Connection, PackageService, Protocol):
     async def __aenter__(self: Self) -> Self: ...
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None: ...
     async def open(self) -> None: ...
@@ -143,6 +154,11 @@ class Connection(_Connection, Protocol):
         self, __template_id: str = "*", __query: Query = None, *, offset: Optional[str] = None
     ) -> QueryStream: ...
     def stream_many(self, *q: Queries, offset: Optional[str] = None) -> QueryStream: ...
+    async def allocate_party(
+        self, *, identifier_hint: Optional[str] = None, display_name: Optional[str] = None
+    ) -> PartyInfo: ...
+    async def list_known_parties(self) -> Sequence[PartyInfo]: ...
+    async def upload_package(self, contents: bytes) -> None: ...
 
 # PyCharm doesn't know what to make of these overloads with respect to the parent protocol,
 # but mypy understands that these type signatures do not conflict with the parent base class

@@ -58,6 +58,9 @@ __all__ = [
     "ExerciseCommand",
     "ExerciseResponse",
     "PartyInfo",
+    "PackageService",
+    "Connection",
+    "QueryStream",
 ]
 
 CreateFn = TypeVar("CreateFn", bound=Callable[[CreateEvent], SubmitResponse])
@@ -180,8 +183,15 @@ def connect(
     logger_name: Optional[str] = None,
     log_level: Optional[str] = None,
 ) -> Connection: ...
+
+class PackageService(Protocol):
+    def get_package(self, package_id: PackageRef) -> Union[bytes, Awaitable[bytes]]: ...
+    def list_package_ids(
+        self,
+    ) -> Union[AbstractSet[PackageRef], Awaitable[AbstractSet[PackageRef]]]: ...
+
 @runtime_checkable
-class Connection(Protocol):
+class Connection(PackageService, Protocol):
     @property
     def config(self) -> Config: ...
     @property
@@ -257,10 +267,6 @@ class Connection(Protocol):
         self, *, identifier_hint: str = None, display_name: str = None
     ) -> Union[PartyInfo, Awaitable[PartyInfo]]: ...
     def list_known_parties(self) -> Union[Sequence[PartyInfo], Awaitable[Sequence[PartyInfo]]]: ...
-    def get_package(self, __package_id: PackageRef) -> Union[bytes, Awaitable[bytes]]: ...
-    def list_package_ids(
-        self,
-    ) -> Union[AbstractSet[PackageRef], Awaitable[AbstractSet[PackageRef]]]: ...
     def upload_package(self, __contents: bytes) -> Union[None, Awaitable[None]]: ...
 
 @runtime_checkable
