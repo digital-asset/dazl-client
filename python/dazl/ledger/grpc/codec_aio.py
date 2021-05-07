@@ -14,6 +14,17 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 from collections.abc import Mapping as _Mapping
 from typing import Any, List, Optional, Sequence, Set, Tuple, Union
 
+from .. import (
+    ArchiveEvent,
+    Command,
+    CreateAndExerciseCommand,
+    CreateCommand,
+    CreateEvent,
+    ExerciseByKeyCommand,
+    ExerciseCommand,
+    ExerciseResponse,
+    PartyInfo,
+)
 from ..._gen.com.daml.ledger.api.v1.admin.party_management_service_pb2 import (
     PartyDetails as G_PartyDetails,
 )
@@ -49,22 +60,12 @@ from ...damlast.daml_types import ContractId as ContractIdType, con
 from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
+from ...ledger.aio import PackageService
 from ...prim import ContractData, ContractId
 from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
-from ..api_types import (
-    ArchiveEvent,
-    Command,
-    CreateAndExerciseCommand,
-    CreateCommand,
-    CreateEvent,
-    ExerciseByKeyCommand,
-    ExerciseCommand,
-    ExerciseResponse,
-    PartyInfo,
-)
+from ..aio import PackageLoader
 from ..pkgcache import SHARED_PACKAGE_DATABASE
-from ..pkgloader_aio import PackageLoader, PackageService
 
 __all__ = ["Codec"]
 

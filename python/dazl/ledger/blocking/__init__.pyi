@@ -1,24 +1,33 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 import sys
-from typing import Any, Iterator, Optional, Sequence, TypeVar, Union
+from typing import AbstractSet, Any, Iterator, Optional, Sequence, TypeVar, Union
 
-from .. import Connection as _Connection, QueryStream as _QueryStream
-from ...damlast.daml_lf_1 import TypeConName
+from .. import (
+    Connection as _Connection,
+    PackageService as _PackageService,
+    QueryStream as _QueryStream,
+)
+from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...prim import ContractData, ContractId
 from ...query import Queries, Query
-from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse
+from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
 
 if sys.version_info >= (3, 8):
     from typing import Protocol, runtime_checkable
 else:
     from typing_extensions import Protocol, runtime_checkable
 
-__all__ = ["Connection", "QueryStream"]
+__all__ = ["PackageService", "Connection", "QueryStream"]
 
 Self = TypeVar("Self")
+
+class PackageService(_PackageService, Protocol):
+    def get_package(self, package_id: PackageRef) -> bytes: ...
+    def list_package_ids(self) -> AbstractSet[PackageRef]: ...
+
 @runtime_checkable
-class Connection(_Connection, Protocol):
+class Connection(_Connection, PackageService, Protocol):
     def __enter__(self: Self) -> Self: ...
     def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
     def open(self) -> None: ...
@@ -88,6 +97,11 @@ class Connection(_Connection, Protocol):
         self, __template_id: str = "*", __query: Query = None, *, offset: Optional[str] = None
     ) -> QueryStream: ...
     def stream_many(self, *q: Queries, offset: Optional[str] = None) -> QueryStream: ...
+    def allocate_party(
+        self, *, identifier_hint: Optional[str] = None, display_name: Optional[str] = None
+    ) -> PartyInfo: ...
+    def list_known_parties(self) -> Sequence[PartyInfo]: ...
+    def upload_package(self, contents: bytes) -> None: ...
 
 @runtime_checkable
 class QueryStream(_QueryStream, Protocol):

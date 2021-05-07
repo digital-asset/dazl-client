@@ -26,8 +26,8 @@ from .. import LOG
 from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.lookup import MultiPackageLookup
 from ..damlast.pkgfile import get_dar_package_ids
+from ..ledger.aio import PackageService
 from ..ledger.grpc.codec_aio import Codec
-from ..ledger.pkgloader_aio import PackageService
 from ..metrics import MetricEvents
 from ..prim import Party, TimeDeltaLike, to_timedelta
 from ..protocols import LedgerNetwork

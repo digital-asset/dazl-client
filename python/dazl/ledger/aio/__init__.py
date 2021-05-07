@@ -22,7 +22,7 @@ else:
     from typing_extensions import Protocol, runtime_checkable
 
 
-__all__ = ["Connection", "QueryStream", "QueryStreamBase"]
+__all__ = ["PackageService", "Connection", "QueryStream", "QueryStreamBase", "PackageLoader"]
 
 Self = TypeVar("Self")
 Ret = Union[None, CreateEvent, ExerciseResponse]
@@ -31,6 +31,19 @@ E = TypeVar("E", bound=Event)
 CREATE_EVENT = "create"
 ARCHIVE_EVENT = "archive"
 BOUNDARY = "boundary"
+
+
+class PackageService(Protocol):
+    """
+    Protocol that describe a service that provides package information. The :class:`Connection`
+    protocol extends this interface.
+    """
+
+    async def get_package(self, __package_id) -> bytes:
+        raise NotImplementedError
+
+    async def list_package_ids(self):
+        raise NotImplementedError
 
 
 @runtime_checkable
@@ -198,3 +211,7 @@ def _register_decorator(q: QueryStreamBase, name: str, template_id: Union[None, 
         return fn
 
     return decorator
+
+
+# Imports internal to this package are at the bottom of the file to avoid circular dependencies
+from .pkgloader import PackageLoader  # noqa

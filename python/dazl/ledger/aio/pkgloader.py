@@ -1,43 +1,28 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
-import sys
-from typing import AbstractSet, Awaitable, Callable, Dict, Optional, Set, TypeVar
+from typing import Awaitable, Callable, Dict, Optional, Set, TypeVar
 import warnings
 
-from .. import LOG
-from ..damlast.daml_lf_1 import Archive, Package, PackageRef
-from ..damlast.errors import NameNotFoundError, PackageNotFoundError
-from ..damlast.lookup import MultiPackageLookup, validate_template
-from ..damlast.pkgfile import Dar
-from ..prim import DazlError
+from . import PackageService
+from ... import LOG
+from ...damlast.daml_lf_1 import Archive, Package, PackageRef
+from ...damlast.errors import NameNotFoundError, PackageNotFoundError
+from ...damlast.lookup import MultiPackageLookup, validate_template
+from ...damlast.parse import parse_archive
+from ...damlast.pkgfile import Dar
+from ...prim import DazlError
 
-if sys.version_info >= (3, 8):
-    from typing import Protocol
-else:
-    from typing_extensions import Protocol
-
-__all__ = ["PackageService", "PackageLoader", "DEFAULT_TIMEOUT"]
+__all__ = ["PackageLoader", "DEFAULT_TIMEOUT"]
 
 T = TypeVar("T")
 
 # mypy insists on having a type annotation here, or it will complain about not being able to
 # determine the type of this field in pkgloader_aio_compat.py
 DEFAULT_TIMEOUT: timedelta = timedelta(seconds=30)
-
-
-class PackageService(Protocol):
-    """
-    A service that provides package information.
-    """
-
-    async def get_package(self, package_id: "PackageRef") -> bytes:
-        raise NotImplementedError("PackageService.get_package requires an implementation")
-
-    async def list_package_ids(self) -> "AbstractSet[PackageRef]":
-        raise NotImplementedError("PackageService.list_package_ids requires an implementation")
 
 
 class PackageLoader:
@@ -165,8 +150,6 @@ class PackageLoader:
         return package
 
     async def _load_and_parse_package(self, package_id: "PackageRef") -> "Package":
-        from ..damlast.parse import parse_archive
-
         LOG.info("Loading package: %s", package_id)
 
         loop = get_event_loop()

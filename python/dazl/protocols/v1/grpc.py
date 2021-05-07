@@ -6,20 +6,9 @@ Support for the gRPC-based Ledger API.
 """
 from asyncio import gather
 from datetime import datetime
-import sys
 from threading import Event
 from time import sleep
-from typing import (
-    TYPE_CHECKING,
-    AbstractSet,
-    Iterable,
-    Mapping,
-    Optional,
-    Sequence,
-    Union,
-    cast,
-    overload,
-)
+from typing import TYPE_CHECKING, AbstractSet, Iterable, Mapping, Optional, Sequence, cast
 import warnings
 
 from grpc import (
@@ -77,7 +66,7 @@ from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import (
 )
 from ...damlast.daml_lf_1 import PackageRef
 from ...damlast.parse import parse_archive_payload
-from ...ledger.pkgloader_aio_compat import PackageLoader
+from ...ledger.aio.pkgloader_compat import PackageLoader
 from ...prim import Party, datetime_to_timestamp, to_party
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
