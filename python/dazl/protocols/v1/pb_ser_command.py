@@ -33,6 +33,8 @@ if TYPE_CHECKING:
 
 
 def as_identifier(tref: "Union[TypeReference, TypeConName]") -> "G_Identifier":
+    from ...model.types import TypeReference
+
     warnings.warn("Use Codec.encode_identifier instead.", DeprecationWarning, stacklevel=2)
 
     if isinstance(tref, TypeReference):
