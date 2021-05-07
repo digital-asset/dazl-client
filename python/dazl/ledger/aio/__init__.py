@@ -1,27 +1,64 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+"""
+`asyncio`-flavored protocols and base classes for connecting to a Daml ledger.
+"""
 
 from collections import defaultdict
 from inspect import iscoroutine
-from typing import Any, Callable, TypeVar, Union
+import sys
+from typing import Any, Callable, TypeVar, Union, no_type_check
 import warnings
 
-from ..damlast.daml_lf_1 import TypeConName
-from .api_types import ArchiveEvent, Boundary, CreateEvent, Event
-from .errors import CallbackReturnWarning
+from .. import Connection as _Connection, QueryStream as _QueryStream
+from ...damlast.daml_lf_1 import TypeConName
+from ...damlast.lookup import matching_normalizations, normalize
+from ..api_types import ArchiveEvent, Boundary, CreateEvent, Event, ExerciseResponse
+from ..errors import CallbackReturnWarning
 
-__all__ = ["QueryStreamBase"]
+if sys.version_info >= (3, 8):
+    from typing import Protocol, runtime_checkable
+else:
+    from typing_extensions import Protocol, runtime_checkable
 
-from ..damlast.lookup import matching_normalizations, normalize
+
+__all__ = ["Connection", "QueryStream", "QueryStreamBase"]
+
+Self = TypeVar("Self")
+Ret = Union[None, CreateEvent, ExerciseResponse]
+E = TypeVar("E", bound=Event)
 
 CREATE_EVENT = "create"
 ARCHIVE_EVENT = "archive"
 BOUNDARY = "boundary"
 
-E = TypeVar("E", bound=Event)
+
+@runtime_checkable
+class Connection(_Connection, Protocol):
+    async def __aenter__(self):
+        raise NotImplementedError
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
+        raise NotImplementedError
 
 
-class QueryStreamBase:
+@runtime_checkable
+class QueryStream(_QueryStream, Protocol):
+    async def __aenter__(self):
+        raise NotImplementedError
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        raise NotImplementedError
+
+    def __aiter__(self):
+        raise NotImplementedError
+
+
+class QueryStreamBase(QueryStream):
+    """
+    Base implementation of the :class:`QueryStream` protocol
+    """
+
     @property
     def _callbacks(self):
         cb = getattr(self, "__cb", None)
@@ -30,12 +67,15 @@ class QueryStreamBase:
             object.__setattr__(self, "__cb", cb)
         return cb
 
+    @no_type_check
     def on_boundary(self, *args):
         register(self, BOUNDARY, *args)
 
+    @no_type_check
     def on_create(self, *args):
         register(self, CREATE_EVENT, *args)
 
+    @no_type_check
     def on_archive(self, *args):
         register(self, ARCHIVE_EVENT, *args)
 
@@ -55,7 +95,7 @@ class QueryStreamBase:
         Close and dispose of any resources used by this stream.
         """
 
-    async def run(self) -> "None":
+    async def run(self) -> None:
         """
         "Runs" the stream. This can be called as an alternative to :meth:`items` when using
         callback-based APIs.
@@ -99,7 +139,10 @@ class QueryStreamBase:
             result = cb(obj)
             if result is not None and iscoroutine(result):
                 result = await result
-            if result is not None:
+
+            # allow CreateEvent and ExerciseResponse as valid return types for callbacks because
+            # it makes inline lambdas easier to write; we don't do anything with them
+            if result is not None and not isinstance(result, (CreateEvent, ExerciseResponse)):
                 warnings.warn(
                     "callbacks should not return anything; the result will be ignored",
                     CallbackReturnWarning,

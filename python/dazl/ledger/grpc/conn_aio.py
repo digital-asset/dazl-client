@@ -11,6 +11,7 @@ import warnings
 
 from grpc.aio import Channel, UnaryStreamCall
 
+from .. import aio
 from ..._gen.com.daml.ledger.api.v1.active_contracts_service_pb2 import (
     GetActiveContractsRequest as G_GetActiveContractsRequest,
 )
@@ -62,14 +63,19 @@ from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseRe
 from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
 from ..errors import ProtocolWarning
-from ..stream_aio import QueryStreamBase
 from .channel import create_channel
 from .codec_aio import Codec
 
 __all__ = ["Connection", "QueryStream"]
 
 
-class Connection:
+class Connection(aio.Connection):
+    """
+    An asynchronous (``asyncio``) connection to the Daml gRPC Ledger API.
+
+
+    """
+
     def __init__(self, config: Config):
         self._config = config
         self._logger = config.logger
@@ -123,9 +129,9 @@ class Connection:
 
     # region Write API
 
-    async def do_commands(
+    async def submit(
         self,
-        commands: Union[Command, Sequence[Command]],
+        __commands: Union[Command, Sequence[Command]],
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -143,14 +149,14 @@ class Connection:
         into Daml so that only a single command is needed from the outside in order to satisfy your
         use case.
         """
-        if commands is None:
+        if __commands is None:
             return
-        elif isinstance(commands, Command):
-            commands = [commands]
+        elif isinstance(__commands, Command):
+            __commands = [__commands]
 
         stub = CommandServiceStub(self.channel)
 
-        commands_pb = await asyncio.gather(*map(self._codec.encode_command, commands))
+        commands_pb = await asyncio.gather(*map(self._codec.encode_command, __commands))
         request = G_SubmitAndWaitRequest(
             commands=G_Commands(
                 ledger_id=self._config.access.ledger_id,
@@ -570,7 +576,7 @@ class Connection:
     # region Party Management calls
 
     async def allocate_party(
-        self, identifier_hint: str = None, display_name: str = None
+        self, *, identifier_hint: str = None, display_name: str = None
     ) -> "PartyInfo":
         """
         Allocate a new party.
@@ -616,7 +622,7 @@ class Connection:
     # endregion
 
 
-class QueryStream(QueryStreamBase):
+class QueryStream(aio.QueryStreamBase):
     def __init__(
         self,
         conn: Connection,

@@ -13,6 +13,8 @@ Subpackages
     dazl.client
     dazl.damlast
     dazl.ledger
+    dazl.ledger.aio
+    dazl.ledger.blocking
     dazl.ledger.config
     dazl.model
     dazl.pretty
