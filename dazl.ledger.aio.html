@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dazl.ledger.aio</title>
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="_static/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" href="_static/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="_static/favicon-16x16.png" sizes="16x16"/>
+  <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
+        <link rel="up" title="dazl package" href="dazl.html"/>
+        <link rel="next" title="dazl.ledger.blocking" href="dazl.ledger.blocking.html"/>
+        <link rel="prev" title="dazl.ledger" href="dazl.ledger.html"/> 
+</head>
+<body>
+
+   
+
+  <header>
+    dazl
+
+  </header>
+  <nav>
+              
+              
+                
+              
+              
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dazl.html">dazl package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="dazl.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dazl.cli.html">dazl.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.client.html">dazl.client package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.protocols.html">dazl.protocols package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.util</span></code> package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.html#module-dazl">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+              
+
+  </nav>
+  <main>
+    
+  <div class="section" id="dazl-ledger-aio">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code><a class="headerlink" href="#dazl-ledger-aio" title="Permalink to this headline">¶</a></h1>
+<p><cite>asyncio</cite>-flavored protocols and base classes for connecting to a Daml ledger.</p>
+<p>This protocol is currently implemented by the <cite>asyncio</cite> gRPC Ledger API implementation
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.ledger.grpc.conn_aio.Connection</span></code>.</p>
+<dl class="py class">
+<dt id="dazl.ledger.aio.Connection">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.ledger.aio.</span></code><code class="sig-name descname"><span class="pre">Connection</span></code><a class="headerlink" href="#dazl.ledger.aio.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="dazl.ledger.aio.Connection.codec">
+<code class="sig-name descname"><span class="pre">codec</span></code><a class="headerlink" href="#dazl.ledger.aio.Connection.codec" title="Permalink to this definition">¶</a></dt>
+<dd><p>The codec object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.config">
+<code class="sig-name descname"><span class="pre">config</span></code><a class="headerlink" href="#dazl.ledger.aio.Connection.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="dazl.ledger.config.html#dazl.ledger.config.Config" title="dazl.ledger.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.ledger.config.Config</span></code></a> that was used to initialize this connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.open">
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">open</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the connection. Will also fetch the ledger ID if that information is not locally
+available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.close">
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the connection. Commands in-flight will be allowed to finish, but new commands will be
+rejected. All existing streams made from this connection are closed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.create">
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">template_id</span></em>, <em class="sig-param"><span class="pre">payload</span></em>, <em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a contract for a given template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>dazl.damlast.TypeConName</em>) – The template of the contract to be created.</p></li>
+<li><p><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Template arguments for the contract to be created.</p></li>
+<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional command ID. If unspecified, a random one will be created.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The <a class="reference internal" href="dazl.ledger.html#dazl.ledger.CreateEvent" title="dazl.ledger.CreateEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.ledger.CreateEvent</span></code></a> that describes the created contract, including its
+contract ID.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.create_and_exercise">
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">create_and_exercise</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">template_id</span></em>, <em class="sig-param"><span class="pre">payload</span></em>, <em class="sig-param"><span class="pre">choice_name</span></em>, <span class="optional">[</span><em class="sig-param"><span class="pre">argument</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.create_and_exercise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exercise a choice on a newly-created contract, in a single transaction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>contract_id</strong> (<em>dazl.prim.ContractId</em>) – The contract ID of the contract to exercise.</p></li>
+<li><p><strong>choice_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the choice to exercise.</p></li>
+<li><p><strong>argument</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The choice arguments. Can be omitted for choices that take no argument.</p></li>
+<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional command ID. If unspecified, a random one will be created.</p></li>
+<li><p><strong>workflow_id</strong> – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> – An optional command ID. If unspecified, a random one will be created.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="dazl.ledger.html#dazl.ledger.ExerciseResponse" title="dazl.ledger.ExerciseResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.ledger.ExerciseResponse</span></code></a> containing the return value of the choice,
+together with a list of events that occurred as a result of exercising the choice.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.exercise">
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">exercise</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">contract_id</span></em>, <em class="sig-param"><span class="pre">choice_name</span></em>, <span class="optional">[</span><em class="sig-param"><span class="pre">argument</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.exercise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exercise a choice on a contract identified by its contract ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>contract_id</strong> (<em>dazl.prim.ContractId</em>) – The contract ID of the contract to exercise.</p></li>
+<li><p><strong>choice_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the choice to exercise.</p></li>
+<li><p><strong>argument</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The choice arguments. Can be omitted for choices that take no argument.</p></li>
+<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional command ID. If unspecified, a random one will be created.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="dazl.ledger.html#dazl.ledger.ExerciseResponse" title="dazl.ledger.ExerciseResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.ledger.ExerciseResponse</span></code></a> containing the return value of the choice,
+together with a list of events that occurred as a result of exercising the choice.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.exercise_by_key">
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">exercise_by_key</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">template_id</span></em>, <em class="sig-param"><span class="pre">choice_name</span></em>, <em class="sig-param"><span class="pre">key</span></em>, <span class="optional">[</span><em class="sig-param"><span class="pre">argument</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.exercise_by_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exercise a choice on a contract identified by its contract key.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.submit">
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">submit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">commands</span></em>, <em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submit one or more commands to the Ledger API.</p>
+<p>You should generally prefer trying to use <a class="reference internal" href="#dazl.ledger.aio.Connection.create" title="dazl.ledger.aio.Connection.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a>, <a class="reference internal" href="#dazl.ledger.aio.Connection.exercise" title="dazl.ledger.aio.Connection.exercise"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exercise()</span></code></a>,
+<a class="reference internal" href="#dazl.ledger.aio.Connection.exercise_by_key" title="dazl.ledger.aio.Connection.exercise_by_key"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exercise_by_key()</span></code></a>, or <a class="reference internal" href="#dazl.ledger.aio.Connection.create_and_exercise" title="dazl.ledger.aio.Connection.create_and_exercise"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_exercise()</span></code></a>, as they are available over both
+the gRPC Ledger API and HTTP JSON API; additionally those methods can provide more
+information about what happened.</p>
+<p>This method can be used to submit multiple disparate commands as a single transaction, but
+if you find yourself needing to do this, you may want to consider moving more of your logic
+into Daml so that only a single command is needed from the outside in order to satisfy your
+use case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>commands</strong> (<a class="reference internal" href="dazl.ledger.html#dazl.ledger.Command" title="dazl.ledger.Command"><em>dazl.ledger.Command</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference internal" href="dazl.ledger.html#dazl.ledger.Command" title="dazl.ledger.Command"><em>dazl.ledger.Command</em></a><em>]</em>) – The sequence of commands to submit to the ledger.</p></li>
+<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional command ID. If unspecified, a random one will be created.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.query">
+<code class="sig-name descname"><span class="pre">query</span></code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">template_id</span></em>, <span class="optional">]</span><span class="optional">[</span><em class="sig-param"><span class="pre">query</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.query" title="Permalink to this definition">¶</a></dt>
+<dt id="dazl.ledger.aio.Connection.stream">
+<code class="sig-name descname"><span class="pre">stream</span></code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">template_id</span></em>, <span class="optional">]</span><span class="optional">[</span><em class="sig-param"><span class="pre">query</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">offset=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.stream" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_id</strong> (str or <code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.damlast.TypeConName</span></code>) – The name of the template for which to fetch contracts. If omitted or <cite>“*”</cite>, contracts for
+all templates are returned.</p></li>
+<li><p><strong>query</strong> – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> whose keys represent exact values to be matched.</p></li>
+<li><p><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – An optional offset at which to start receiving events. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, start from the
+beginning. Can only be supplied to <a class="reference internal" href="#dazl.ledger.aio.Connection.stream" title="dazl.ledger.aio.Connection.stream"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stream()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A <a class="reference internal" href="#dazl.ledger.aio.QueryStream" title="dazl.ledger.aio.QueryStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryStream</span></code></a> over the relevant events.</p>
+<p>The stream returned by <a class="reference internal" href="#dazl.ledger.aio.Connection.query" title="dazl.ledger.aio.Connection.query"><code class="xref py py-meth docutils literal notranslate"><span class="pre">query()</span></code></a> represents a snapshot of the current state, and
+terminates when all <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> instances that represent currently active
+contracts are returned.</p>
+<p>The stream returned by <a class="reference internal" href="#dazl.ledger.aio.Connection.stream" title="dazl.ledger.aio.Connection.stream"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stream()</span></code></a> returns the current state as <a class="reference internal" href="#dazl.ledger.aio.Connection.query" title="dazl.ledger.aio.Connection.query"><code class="xref py py-meth docutils literal notranslate"><span class="pre">query()</span></code></a> does, but
+afterwards the stream remains open, and subsequent <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>’s are returned until <a class="reference internal" href="#dazl.ledger.aio.Connection.close" title="dazl.ledger.aio.Connection.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> is called.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.Connection.query_many">
+<code class="sig-name descname"><span class="pre">query_many</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">queries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.query_many" title="Permalink to this definition">¶</a></dt>
+<dt id="dazl.ledger.aio.Connection.stream_many">
+<code class="sig-name descname"><span class="pre">stream_many</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">queries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.stream_many" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dazl.ledger.aio.QueryStream">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.ledger.aio.</span></code><code class="sig-name descname"><span class="pre">QueryStream</span></code><a class="headerlink" href="#dazl.ledger.aio.QueryStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Protocol for classes that provide for asynchronous reading from a stream of events from a Daml
+ledger.</p>
+<p><strong>Reading from and controlling the stream</strong></p>
+<p>The <a class="reference internal" href="#dazl.ledger.aio.QueryStream.creates" title="dazl.ledger.aio.QueryStream.creates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">creates()</span></code></a>, <a class="reference internal" href="#dazl.ledger.aio.QueryStream.events" title="dazl.ledger.aio.QueryStream.events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">events()</span></code></a>, and <a class="reference internal" href="#dazl.ledger.aio.QueryStream.items" title="dazl.ledger.aio.QueryStream.items"><code class="xref py py-meth docutils literal notranslate"><span class="pre">items()</span></code></a> methods are used to receive events from
+the stream; <a class="reference internal" href="#dazl.ledger.aio.QueryStream.run" title="dazl.ledger.aio.QueryStream.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> can be used to consume the stream without iterating yourself, and
+<a class="reference internal" href="#dazl.ledger.aio.QueryStream.close" title="dazl.ledger.aio.QueryStream.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> stops the stream. These methods consume the stream: you cannot replay a
+<a class="reference internal" href="#dazl.ledger.aio.QueryStream" title="dazl.ledger.aio.QueryStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryStream</span></code></a>’s contents simply by trying to iterate over it again.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">creates</span><span class="p">():</span>
+        <span class="c1"># print every contract create...forever</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">contract_id</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the <a class="reference internal" href="#dazl.ledger.aio.QueryStream.events" title="dazl.ledger.aio.QueryStream.events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">events()</span></code></a> and <a class="reference internal" href="#dazl.ledger.aio.QueryStream.items" title="dazl.ledger.aio.QueryStream.items"><code class="xref py py-meth docutils literal notranslate"><span class="pre">items()</span></code></a> streams may return <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code> objects
+that had no <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> predecessor. This may happen for a number of reasons:</p>
+<ul class="simple">
+<li><p>You started requesting a stream at a specific offset. When resuming from an offset, no
+events (<code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>) that preceded the specified offset are
+returned.</p></li>
+<li><p>You are filtering events; event filtering only applies to <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> instances and
+<em>not</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>.</p></li>
+<li><p>You are learning of an archive of a <a class="reference external" href="https://docs.daml.com/concepts/ledger-model/ledger-privacy.html#divulgence-when-non-stakeholders-see-contracts">divulged contract</a>.
+Note that <code class="docutils literal notranslate"><span class="pre">dazl</span></code> does not have an API for retrieving divulged contracts.</p></li>
+</ul>
+<dl class="py method">
+<dt id="dazl.ledger.aio.QueryStream.creates">
+<em class="property"><span class="pre">abstractmethod</span> <span class="pre">async</span> <span class="pre">for</span> <span class="pre">event</span> <span class="pre">in</span> </em><code class="sig-name descname"><span class="pre">creates</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.QueryStream.creates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator (or async iterator) over only <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> instances.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.QueryStream.events">
+<em class="property"><span class="pre">abstractmethod</span> <span class="pre">async</span> <span class="pre">for</span> <span class="pre">event</span> <span class="pre">in</span> </em><code class="sig-name descname"><span class="pre">events</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.QueryStream.events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator (or async iterator) over <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>
+instances.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.QueryStream.items">
+<em class="property"><span class="pre">abstractmethod</span> <span class="pre">async</span> <span class="pre">for</span> <span class="pre">event_or_boundary</span> <span class="pre">in</span> </em><code class="sig-name descname"><span class="pre">items</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.QueryStream.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator (or async iterator) over <em>all</em> objects (<code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">Boundary</span></code>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.QueryStream.run">
+<em class="property"><span class="pre">abstractmethod</span> <span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.QueryStream.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Block until the stream has been fully consumed. This method normally only makes sense to
+use in conjunction with callbacks (<a class="reference internal" href="#dazl.ledger.aio.QueryStream.on_create" title="dazl.ledger.aio.QueryStream.on_create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_create()</span></code></a>, <a class="reference internal" href="#dazl.ledger.aio.QueryStream.on_archive" title="dazl.ledger.aio.QueryStream.on_archive"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_archive()</span></code></a>, and
+<a class="reference internal" href="#dazl.ledger.aio.QueryStream.on_boundary" title="dazl.ledger.aio.QueryStream.on_boundary"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_boundary()</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.QueryStream.close">
+<em class="property"><span class="pre">abstractmethod</span> <span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.QueryStream.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops the iterator and aborts the stream. For async connections, this is a coroutine.</p>
+</dd></dl>
+
+<p><strong>Registering Callbacks</strong></p>
+<p>Callbacks can be used as an alternative to reading events from the stream.</p>
+<p>The callable must take a <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>, or <code class="xref py py-class docutils literal notranslate"><span class="pre">Boundary</span></code> as
+its only parameter and should generally return <code class="docutils literal notranslate"><span class="pre">None</span></code>. However the callback can also return
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ExerciseResponse</span></code>, mostly so that one-line lambdas that call
+ledger methods can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># registering a callback as a lambda</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">on_create</span><span class="p">(</span><span class="s2">&quot;My:Tmpl&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">conn</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;Accept&quot;</span><span class="p">))</span>
+
+<span class="c1"># registering a callback using a decorator</span>
+<span class="nd">@stream</span><span class="o">.</span><span class="n">on_create</span><span class="p">(</span><span class="s2">&quot;My:Tmpl&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;Accept&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="dazl.ledger.aio.QueryStream.on_create">
+<code class="sig-name descname"><span class="pre">on_create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.QueryStream.on_create" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="sig-name descname"><span class="pre">on_create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span></dt>
+<dt>
+<code class="sig-name descname"><span class="pre">&#64;on_create</span></code></dt>
+<dt>
+<code class="sig-name descname"><span class="pre">&#64;on_create(name)</span></code></dt>
+<dd><p>Register a callback that is triggered whenever a <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code> is read through the
+stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>TypeConName</em>) – An optional name of a template to further filter <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.QueryStream.on_archive">
+<code class="sig-name descname"><span class="pre">on_archive</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.QueryStream.on_archive" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="sig-name descname"><span class="pre">on_archive</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span></dt>
+<dt>
+<code class="sig-name descname"><span class="pre">&#64;on_archive</span></code></dt>
+<dt>
+<code class="sig-name descname"><span class="pre">&#64;on_archive(name)</span></code></dt>
+<dd><p>Register a callback that is triggered whenever a <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code> is read through the
+stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>TypeConName</em>) – An optional name of a template to further filter <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.ledger.aio.QueryStream.on_boundary">
+<code class="sig-name descname"><span class="pre">on_boundary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.QueryStream.on_boundary" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="sig-name descname"><span class="pre">&#64;on_boundary</span></code></dt>
+<dd><p>Register a callback that is triggered whenever a <code class="xref py py-class docutils literal notranslate"><span class="pre">Boundary</span></code> is read through the
+stream.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+  </main>
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'7.2.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <footer> 
+  </footer>
+</body>
+</html>

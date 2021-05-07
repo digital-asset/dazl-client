@@ -34,7 +34,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/> 
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/> 
 </head>
 <body>
 
@@ -164,106 +164,109 @@ our Python application will be designed.</p>
 </div>
 <div class="section" id="python-application">
 <h2>Python Application<a class="headerlink" href="#python-application" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
 <span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kn">from</span> <span class="nn">dazl</span> <span class="kn">import</span> <span class="n">create</span><span class="p">,</span> <span class="n">exercise</span>
 <span class="kn">from</span> <span class="nn">dazl.client</span> <span class="kn">import</span> <span class="n">create_client</span>
 <span class="kn">from</span> <span class="nn">dazl.plugins</span> <span class="kn">import</span> <span class="n">LedgerCapturePlugin</span>
 
-<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span><span class="s1">&#39;Bob&#39;</span><span class="p">]</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:7600/&#39;</span>
+<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">]</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:7600/&quot;</span>
 
 
 <span class="k">def</span> <span class="nf">genesis_contract</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;MessageIngester.OperatorRole&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="s1">&#39;operator&#39;</span> <span class="p">:</span> <span class="s1">&#39;Alice&#39;</span> <span class="p">})</span>
+    <span class="k">return</span> <span class="n">create</span><span class="p">(</span><span class="s2">&quot;MessageIngester.OperatorRole&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">})</span>
+
 
 <span class="c1"># DOC_BEGIN: FUNCTION_INGEST_THE_MESSAGE</span>
 <span class="k">def</span> <span class="nf">ingest_the_message</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="n">ingest_message</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;IngestMessage&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;requestProcessingParty&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">})]</span>
+    <span class="n">ingest_message</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;IngestMessage&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;requestProcessingParty&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">})]</span>
     <span class="k">return</span> <span class="n">ingest_message</span>
     <span class="c1"># DOC_BEGIN: FUNCTION_INGEST_THE_MESSAGE</span>
 
 
 <span class="k">def</span> <span class="nf">accept_the_message</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="n">accept_message_action</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;AcceptMessage&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;acknowledgingParty&#39;</span><span class="p">:</span> <span class="s1">&#39;alice&#39;</span><span class="p">})]</span>
+    <span class="n">accept_message_action</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;AcceptMessage&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;acknowledgingParty&quot;</span><span class="p">:</span> <span class="s2">&quot;alice&quot;</span><span class="p">})]</span>
     <span class="k">return</span> <span class="n">accept_message_action</span>
 
 
 <span class="k">def</span> <span class="nf">acknowledge_the_message</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="n">acknowledge_message_action</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;Acknowledge&#39;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="n">acknowledge_message_action</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;Acknowledge&quot;</span><span class="p">,</span> <span class="p">{})]</span>
     <span class="k">return</span> <span class="n">acknowledge_message_action</span>
 
 
 <span class="k">def</span> <span class="nf">register_event_handlers</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">):</span>
-    <span class="c1">#define a sandbox client, associated with the &#39;operator&#39; party, and how it reacts to events</span>
-    <span class="n">alice_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span>
+    <span class="c1"># define a sandbox client, associated with the &#39;operator&#39; party, and how it reacts to events</span>
+    <span class="n">alice_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
     <span class="n">alice_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span><span class="n">genesis_contract</span><span class="p">)</span>
     <span class="c1"># DOC_BEGIN: SAMPLE_CALLBACK_ONCREATED</span>
-    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;MessageIngester.OperatorRole&#39;</span><span class="p">,</span> <span class="n">ingest_the_message</span><span class="p">)</span>
+    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;MessageIngester.OperatorRole&quot;</span><span class="p">,</span> <span class="n">ingest_the_message</span><span class="p">)</span>
     <span class="c1"># DOC_END: SAMPLE_CALLBACK_ONCREATED</span>
-    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;MessageIngester.TradeResponse&#39;</span><span class="p">,</span> <span class="n">acknowledge_the_message</span><span class="p">)</span>
+    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;MessageIngester.TradeResponse&quot;</span><span class="p">,</span> <span class="n">acknowledge_the_message</span><span class="p">)</span>
 
-    <span class="c1">#define a sandbox client, associated with the &#39;requestor&#39; party, and how it reacts to events</span>
-    <span class="n">bob_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="s1">&#39;Bob&#39;</span><span class="p">)</span>
-    <span class="n">bob_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;MessageIngester.TradeRequest&#39;</span><span class="p">,</span> <span class="n">accept_the_message</span><span class="p">)</span>
+    <span class="c1"># define a sandbox client, associated with the &#39;requestor&#39; party, and how it reacts to events</span>
+    <span class="n">bob_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">)</span>
+    <span class="n">bob_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;MessageIngester.TradeRequest&quot;</span><span class="p">,</span> <span class="n">accept_the_message</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
@@ -276,6 +279,7 @@ our Python application will be designed.</p>
             <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">inspector</span><span class="o">.</span><span class="n">dump_all</span><span class="p">()</span>
+
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">run</span><span class="p">()</span>
@@ -299,7 +303,7 @@ it has successfully connected to the platform/sandbox.</p>
 <p><code class="xref py py-func docutils literal notranslate"><span class="pre">work()</span></code> contains a command to create the genesis contract, and a series of callback registrations,
 each of which provide a reference to a custom python function that shall be invoked when a certain
 leger event occurs. For example, this registration:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;MessageIngester.OperatorRole&#39;</span><span class="p">,</span> <span class="n">ingest_the_message</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;MessageIngester.OperatorRole&quot;</span><span class="p">,</span> <span class="n">ingest_the_message</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>indicates that the <code class="xref py py-func docutils literal notranslate"><span class="pre">ingest_the_message()</span></code> shall be invoked after the <code class="docutils literal notranslate"><span class="pre">OperatorRole</span></code> contract is
@@ -314,7 +318,7 @@ created.</p>
 </dd>
 </dl>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ingest_the_message</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="n">ingest_message</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;IngestMessage&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;requestProcessingParty&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">})]</span>
+    <span class="n">ingest_message</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;IngestMessage&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;requestProcessingParty&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">})]</span>
     <span class="k">return</span> <span class="n">ingest_message</span>
 </pre></div>
 </div>
@@ -357,7 +361,7 @@ when this application terminates.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -368,7 +372,6 @@ when this application terminates.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

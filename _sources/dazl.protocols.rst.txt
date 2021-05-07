@@ -1,16 +1,11 @@
+.. Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+   SPDX-License-Identifier: Apache-2.0
+   
 dazl\.protocols package
 =======================
 
 Submodules
 ----------
-
-dazl\.protocols\.v0 module
-----------------------------
-
-.. automodule:: dazl.protocols.v0
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 dazl\.protocols\.v1 module
 ----------------------------

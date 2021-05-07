@@ -1,3 +1,6 @@
+.. Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+   SPDX-License-Identifier: Apache-2.0
+   
 dazl: DA client library for Python
 ==================================
 
@@ -6,54 +9,47 @@ dazl: DA client library for Python
 Dependencies
 ------------
 
-You will need Python 3.6 or later and a Digital Asset ledger implementation (DA Sandbox or
-DA Ledger Server). :term:`dazl` additionally requires the following libraries to be
-installed:
+You will need Python 3.6 or later and a Daml Ledger.
 
-* grpcio, version 1.18.0 or later
-* PyYAML
-* semver
 
 Getting Started
 ---------------
 
-This section assumes that you already have a running ledger with a DAML model loaded.
+This section assumes that you already have a running ledger with the standard `daml new` model
+loaded, and have imported `dazl`.
 
 Connect to the ledger and submit a single command::
 
-    with dazl.simple_client('http://localhost:7600', 'Alice') as client:
-        client.submit_create('Alice', 'My.Template', { someField: 'someText' })
+    import dazl
+
+    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
+        conn.create('Main:Asset', {'issuer': 'Alice', 'owner': 'Alice', 'name': 'hello world!'})
 
 Connect to the ledger as a single party, print all contracts, and close::
 
-    with dazl.simple_client('http://localhost:7600', 'Alice') as client:
-        # wait for the ACS to be fully read
-        client.ready()
-        contract_dict = client.find_active('*')
-    print(contract_dict)
+    import dazl
 
-Connect to the ledger as multiple parties::
+    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
+        contracts = {}
+        async for event in conn.query():
+            contracts[event.cid] = event.cdata
+    print(contracts)
 
-    network = dazl.Network()
-    network.set_config(url='http://localhost:7600')
+Connect to the ledger using asynchronous callbacks::
 
-    alice = network.simple_party('Alice')
-    bob = network.simple_party('Bob')
+    import dazl
 
-    @alice.ledger_ready()
-    def set_up(event):
-        currency_cid, _ = await event.acs_find_one('My.Currency', {"currency": "USD"})
-        return dazl.create('SomethingOf.Value', {
-            'amount': 100,
-            'currency': currency_cid,
-            'from': 'Accept',
-            'to': 'Bob' })
+    async with dazl.connect('http://localhost:6865', 'Alice') as conn:
+        contracts = {}
+        @conn.on_create
+        def _(event):
+            contracts[event.cid] = event.cdata
+    print(contracts)
 
-    @bob.ledger_created('SomethingOf.Value')
-    def on_something_of_value(event):
-        return dazl.exercise(event.cid, 'Accept', { 'message': 'Thanks!' })
+Code
+----
 
-    network.start()
+Build-time dependencies are handled using `Poetry <https://python-poetry.org/>`_.
 
 
 Table of Contents

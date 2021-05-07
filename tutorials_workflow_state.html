@@ -34,7 +34,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/> 
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/> 
 </head>
 <body>
 
@@ -263,13 +263,13 @@ our Python application will be designed.</p>
 <div class="section" id="python-application">
 <h2>Python Application<a class="headerlink" href="#python-application" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">store.py</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
 <span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;store&#39;</span><span class="p">)</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;store&quot;</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">ContractStore</span><span class="p">:</span>
@@ -280,7 +280,7 @@ our Python application will be designed.</p>
 
     <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Saving </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Saving </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">future</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
@@ -296,9 +296,9 @@ our Python application will be designed.</p>
 <span class="sd">        :return: A ``Future`` that resolves to a (cid, cdata) tuple.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Finding in store </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Finding in store </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finding in store </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finding in store </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">future</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -308,7 +308,7 @@ our Python application will be designed.</p>
 
     <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Deleting from store </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Deleting from store </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">future</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -328,7 +328,7 @@ our Python application will be designed.</p>
 
     <span class="k">def</span> <span class="nf">_resolve_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">name</span>
 
     <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_match</span><span class="p">):</span>
@@ -341,122 +341,154 @@ our Python application will be designed.</p>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">workflow_state_example.py</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.</span>
 <span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">store</span> <span class="kn">import</span> <span class="n">ContractStore</span>
 
 <span class="kn">from</span> <span class="nn">dazl</span> <span class="kn">import</span> <span class="n">create</span><span class="p">,</span> <span class="n">exercise</span>
 <span class="kn">from</span> <span class="nn">dazl.client</span> <span class="kn">import</span> <span class="n">create_client</span>
 <span class="kn">from</span> <span class="nn">dazl.plugins</span> <span class="kn">import</span> <span class="n">LedgerCapturePlugin</span>
-<span class="kn">from</span> <span class="nn">store</span> <span class="kn">import</span> <span class="n">ContractStore</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
 
-<span class="n">operator</span> <span class="o">=</span> <span class="s1">&#39;Operator&#39;</span>
-<span class="n">alice</span> <span class="o">=</span> <span class="s1">&#39;Alice&#39;</span>
-<span class="n">bob</span> <span class="o">=</span> <span class="s1">&#39;Bob&#39;</span>
+<span class="n">operator</span> <span class="o">=</span> <span class="s2">&quot;Operator&quot;</span>
+<span class="n">alice</span> <span class="o">=</span> <span class="s2">&quot;Alice&quot;</span>
+<span class="n">bob</span> <span class="o">=</span> <span class="s2">&quot;Bob&quot;</span>
 
-<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">operator</span><span class="p">,</span><span class="n">alice</span><span class="p">,</span><span class="n">bob</span><span class="p">]</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:7600/&#39;</span>
+<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">operator</span><span class="p">,</span> <span class="n">alice</span><span class="p">,</span> <span class="n">bob</span><span class="p">]</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:7600/&quot;</span>
 <span class="n">contract_store</span> <span class="o">=</span> <span class="n">ContractStore</span><span class="p">()</span>
 <span class="n">transaction_limit</span> <span class="o">=</span> <span class="mi">1</span>
 
 
 <span class="k">def</span> <span class="nf">create_initial_workflow_state</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="n">workflow_state</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;SetInitialWorkflowState&#39;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="n">workflow_state</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;SetInitialWorkflowState&quot;</span><span class="p">,</span> <span class="p">{})]</span>
     <span class="k">return</span> <span class="n">workflow_state</span>
 
+
 <span class="k">def</span> <span class="nf">invite_ticket_seller</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowSetupInProgress&#39;&#39;&#39;</span>
-    <span class="n">ticket_seller_invitation</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;InviteTicketSeller&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ticketSeller&#39;</span><span class="p">:</span> <span class="n">bob</span><span class="p">})]</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowSetupInProgress&quot;&quot;&quot;</span>
+    <span class="n">ticket_seller_invitation</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;InviteTicketSeller&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;ticketSeller&quot;</span><span class="p">:</span> <span class="n">bob</span><span class="p">})]</span>
     <span class="k">return</span> <span class="n">ticket_seller_invitation</span>
 
+
 <span class="k">def</span> <span class="nf">invite_ticket_buyer</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowSetupInProgress&#39;&#39;&#39;</span>
-    <span class="n">ticket_buyer_invitation</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;InviteTicketBuyer&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ticketBuyer&#39;</span><span class="p">:</span> <span class="n">alice</span><span class="p">})]</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowSetupInProgress&quot;&quot;&quot;</span>
+    <span class="n">ticket_buyer_invitation</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;InviteTicketBuyer&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;ticketBuyer&quot;</span><span class="p">:</span> <span class="n">alice</span><span class="p">})]</span>
     <span class="k">return</span> <span class="n">ticket_buyer_invitation</span>
+
 
 <span class="c1"># DOC_BEGIN: FUNCTION_ACCEPT_INVITE</span>
 <span class="k">def</span> <span class="nf">accept_ticket_seller_invite</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowSetupInProgress&#39;&#39;&#39;</span>
-    <span class="n">ticket_seller_role</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;AcceptTicketSellerInvitation&#39;</span><span class="p">,</span> <span class="p">{})]</span>
-    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;ticketSellerRole1&#39;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowSetupInProgress&quot;&quot;&quot;</span>
+    <span class="n">ticket_seller_role</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;AcceptTicketSellerInvitation&quot;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;ticketSellerRole1&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ticket_seller_role</span>
 
+
 <span class="k">def</span> <span class="nf">accept_ticket_buyer_invite</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowSetupInProgress&#39;&#39;&#39;</span>
-    <span class="n">ticket_buyer_role</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;AcceptTicketBuyerInvitation&#39;</span><span class="p">,</span> <span class="p">{})]</span>
-    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;ticketBuyerRole1&#39;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowSetupInProgress&quot;&quot;&quot;</span>
+    <span class="n">ticket_buyer_role</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;AcceptTicketBuyerInvitation&quot;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;ticketBuyerRole1&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ticket_buyer_role</span>
+
+
 <span class="c1"># DOC_END: FUNCTION_ACCEPT_INVITE</span>
 
 <span class="c1"># DOC_BEGIN: FUNCTION_MULTI_CREATION_DEPENDENCY</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">transition_to_ticket_transactions_in_progress</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ticketSellerRole1&#39;</span><span class="p">)</span>
-    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ticketBuyerRole1&#39;</span><span class="p">)</span>
-    <span class="n">workflow_ticket_transactions_in_progress</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;TicketTransactionsInProgress&#39;</span><span class="p">,</span> <span class="p">{})]</span>
-    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;workflowTicketTransactionsInProgress&#39;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ticketSellerRole1&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ticketBuyerRole1&quot;</span><span class="p">)</span>
+    <span class="n">workflow_ticket_transactions_in_progress</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;TicketTransactionsInProgress&quot;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;workflowTicketTransactionsInProgress&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">workflow_ticket_transactions_in_progress</span>
+
+
 <span class="c1"># DOC_END: FUNCTION_MULTI_CREATION_DEPENDENCY</span>
 
+
 <span class="k">async</span> <span class="k">def</span> <span class="nf">offer_ticket_purchase_agreement</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowTicketTransactionsInProgress&#39;&#39;&#39;</span>
-    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;workflowTicketTransactionsInProgress&#39;</span><span class="p">)</span>
-    <span class="n">offer_ticket_purchase_agreement</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;OfferTicketPurchaseAgreement&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ticketBuyer&#39;</span><span class="p">:</span> <span class="n">alice</span><span class="p">})]</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowTicketTransactionsInProgress&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;workflowTicketTransactionsInProgress&quot;</span><span class="p">)</span>
+    <span class="n">offer_ticket_purchase_agreement</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;OfferTicketPurchaseAgreement&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;ticketBuyer&quot;</span><span class="p">:</span> <span class="n">alice</span><span class="p">})</span>
+    <span class="p">]</span>
     <span class="k">global</span> <span class="n">transaction_limit</span>
     <span class="k">if</span> <span class="n">transaction_limit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">transaction_limit</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">offer_ticket_purchase_agreement</span>
 
+
 <span class="k">def</span> <span class="nf">purchase_ticket</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowTicketTransactionsInProgress&#39;&#39;&#39;</span>
-    <span class="n">ticket_purchase_agreement</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;PurchaseTicket&#39;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowTicketTransactionsInProgress&quot;&quot;&quot;</span>
+    <span class="n">ticket_purchase_agreement</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;PurchaseTicket&quot;</span><span class="p">,</span> <span class="p">{})]</span>
     <span class="k">return</span> <span class="n">ticket_purchase_agreement</span>
 
+
 <span class="k">def</span> <span class="nf">save_purchase_agreement</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowTicketTransactionsInProgress&#39;&#39;&#39;</span>
-    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;purchase_agreement&#39;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowTicketTransactionsInProgress&quot;&quot;&quot;</span>
+    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;purchase_agreement&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">transition_to_workflow_completed</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;purchase_agreement&#39;</span><span class="p">)</span>
-    <span class="c1">#move on to the next phase of the workflow after 1 purchase agreement has been created</span>
-    <span class="n">workflow_completed</span> <span class="o">=</span><span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;WorkflowCompleted&#39;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;purchase_agreement&quot;</span><span class="p">)</span>
+    <span class="c1"># move on to the next phase of the workflow after 1 purchase agreement has been created</span>
+    <span class="n">workflow_completed</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;WorkflowCompleted&quot;</span><span class="p">,</span> <span class="p">{})]</span>
     <span class="k">return</span> <span class="n">workflow_completed</span>
 
+
 <span class="k">def</span> <span class="nf">register_event_handlers</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Register event handlers with the appropriate clients.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># initial workflow state (1 of 3): &quot;InviteParticipantsInProgress&quot;</span>
 
     <span class="c1"># Define a ledger client associated with the &#39;Operator&#39; party, and how it reacts to events</span>
-    <span class="n">operator_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="s1">&#39;Operator&#39;</span><span class="p">)</span>
-    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.GenesisContract&#39;</span><span class="p">,</span> <span class="n">create_initial_workflow_state</span><span class="p">)</span>
-    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.GenesisContract&#39;</span><span class="p">,</span> <span class="n">invite_ticket_seller</span><span class="p">)</span>
-    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.GenesisContract&#39;</span><span class="p">,</span> <span class="n">invite_ticket_buyer</span><span class="p">)</span>
+    <span class="n">operator_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="s2">&quot;Operator&quot;</span><span class="p">)</span>
+    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+        <span class="s2">&quot;WorkflowStateExample.GenesisContract&quot;</span><span class="p">,</span> <span class="n">create_initial_workflow_state</span>
+    <span class="p">)</span>
+    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;WorkflowStateExample.GenesisContract&quot;</span><span class="p">,</span> <span class="n">invite_ticket_seller</span><span class="p">)</span>
+    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;WorkflowStateExample.GenesisContract&quot;</span><span class="p">,</span> <span class="n">invite_ticket_buyer</span><span class="p">)</span>
 
     <span class="c1"># define a ledger client associated with the ticket seller, and how it reacts to events</span>
     <span class="n">bob_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">bob</span><span class="p">)</span>
-    <span class="n">bob_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.TicketSellerInvitation&#39;</span><span class="p">,</span> <span class="n">accept_ticket_seller_invite</span><span class="p">)</span>
+    <span class="n">bob_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+        <span class="s2">&quot;WorkflowStateExample.TicketSellerInvitation&quot;</span><span class="p">,</span> <span class="n">accept_ticket_seller_invite</span>
+    <span class="p">)</span>
 
     <span class="c1"># define a ledger client associated with the ticket buyer, and how it reacts to events</span>
     <span class="n">alice_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">alice</span><span class="p">)</span>
-    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.TicketBuyerInvitation&#39;</span><span class="p">,</span> <span class="n">accept_ticket_buyer_invite</span><span class="p">)</span>
+    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+        <span class="s2">&quot;WorkflowStateExample.TicketBuyerInvitation&quot;</span><span class="p">,</span> <span class="n">accept_ticket_buyer_invite</span>
+    <span class="p">)</span>
 
     <span class="c1"># transition to workflow state: &quot;TicketTransactionsInProgress&quot;</span>
-    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.WorkflowSetupInProgress&#39;</span><span class="p">,</span> <span class="n">transition_to_ticket_transactions_in_progress</span><span class="p">)</span>
+    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+        <span class="s2">&quot;WorkflowStateExample.WorkflowSetupInProgress&quot;</span><span class="p">,</span>
+        <span class="n">transition_to_ticket_transactions_in_progress</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="c1"># workflow state (2 of 3): &quot;TicketTransactionsInProgress&quot;</span>
-    <span class="n">bob_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.TicketSellerRole&#39;</span><span class="p">,</span> <span class="n">offer_ticket_purchase_agreement</span><span class="p">)</span>
+    <span class="n">bob_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;WorkflowStateExample.TicketSellerRole&quot;</span><span class="p">,</span> <span class="n">offer_ticket_purchase_agreement</span><span class="p">)</span>
 
     <span class="c1"># alice purchases a ticket</span>
-    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.TicketPurchaseAgreementOffer&#39;</span><span class="p">,</span> <span class="n">purchase_ticket</span><span class="p">)</span>
-    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.TicketPurchaseAgreement&#39;</span><span class="p">,</span> <span class="n">save_purchase_agreement</span><span class="p">)</span>
+    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;WorkflowStateExample.TicketPurchaseAgreementOffer&quot;</span><span class="p">,</span> <span class="n">purchase_ticket</span><span class="p">)</span>
+    <span class="n">alice_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s2">&quot;WorkflowStateExample.TicketPurchaseAgreement&quot;</span><span class="p">,</span> <span class="n">save_purchase_agreement</span><span class="p">)</span>
 
     <span class="c1"># transition to workflow state (3 of 3): &quot;WorkflowCompleted&quot;</span>
-    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.WorkflowTicketTransactionsInProgress&#39;</span><span class="p">,</span> <span class="n">transition_to_workflow_completed</span><span class="p">)</span>
+    <span class="n">operator_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
+        <span class="s2">&quot;WorkflowStateExample.WorkflowTicketTransactionsInProgress&quot;</span><span class="p">,</span>
+        <span class="n">transition_to_workflow_completed</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="c1"># all event handlers are defined; create the genesis contract, and all other event handlers shall react thereafter</span>
-    <span class="n">operator_client</span><span class="o">.</span><span class="n">submit</span><span class="p">([</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;WorkflowStateExample.GenesisContract&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="s1">&#39;operator&#39;</span> <span class="p">:</span> <span class="s1">&#39;Operator&#39;</span> <span class="p">})])</span>
+    <span class="n">operator_client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;WorkflowStateExample.GenesisContract&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;Operator&quot;</span><span class="p">})]</span>
+    <span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 
@@ -469,12 +501,12 @@ our Python application will be designed.</p>
             <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">inspector</span><span class="o">.</span><span class="n">dump_all</span><span class="p">()</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;da&#39;</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;da&quot;</span><span class="p">,</span> <span class="s2">&quot;stop&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;da&#39;</span><span class="p">,</span> <span class="s1">&#39;sandbox&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;da&quot;</span><span class="p">,</span> <span class="s2">&quot;sandbox&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
     <span class="n">run</span><span class="p">()</span>
-
 </pre></div>
 </div>
 <dl class="simple">
@@ -492,25 +524,30 @@ our Python application will be designed.</p>
 </dl>
 <p><code class="xref py py-func docutils literal notranslate"><span class="pre">accept_ticket_seller_invite()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">accept_ticket_buyer_invite()</span></code> store their respective contracts into <code class="docutils literal notranslate"><span class="pre">contract_store</span></code>. This is the first step in setting up a multi-contract-creation dependency.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accept_ticket_seller_invite</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowSetupInProgress&#39;&#39;&#39;</span>
-    <span class="n">ticket_seller_role</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;AcceptTicketSellerInvitation&#39;</span><span class="p">,</span> <span class="p">{})]</span>
-    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;ticketSellerRole1&#39;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowSetupInProgress&quot;&quot;&quot;</span>
+    <span class="n">ticket_seller_role</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;AcceptTicketSellerInvitation&quot;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;ticketSellerRole1&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ticket_seller_role</span>
 
+
 <span class="k">def</span> <span class="nf">accept_ticket_buyer_invite</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Workflow state: WorkflowSetupInProgress&#39;&#39;&#39;</span>
-    <span class="n">ticket_buyer_role</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;AcceptTicketBuyerInvitation&#39;</span><span class="p">,</span> <span class="p">{})]</span>
-    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;ticketBuyerRole1&#39;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Workflow state: WorkflowSetupInProgress&quot;&quot;&quot;</span>
+    <span class="n">ticket_buyer_role</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;AcceptTicketBuyerInvitation&quot;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;ticketBuyerRole1&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ticket_buyer_role</span>
+
+
 </pre></div>
 </div>
 <p><code class="xref py py-func docutils literal notranslate"><span class="pre">transition_to_ticket_transactions_in_progress()</span></code> performs lookups into <code class="docutils literal notranslate"><span class="pre">contract_store</span></code>. These lookups will wait until the specified contract keys are present in the <code class="docutils literal notranslate"><span class="pre">contract_store</span></code>, and only perform the <code class="docutils literal notranslate"><span class="pre">exercise</span></code> command after that point. Thus, BOTH the <cite>TicketSellerRole</cite> and the <cite>TicketBuyerRole</cite> must be created before the application can transition to the next step in the workflow.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">transition_to_ticket_transactions_in_progress</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">):</span>
-    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ticketSellerRole1&#39;</span><span class="p">)</span>
-    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ticketBuyerRole1&#39;</span><span class="p">)</span>
-    <span class="n">workflow_ticket_transactions_in_progress</span> <span class="o">=</span> <span class="p">[</span> <span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;TicketTransactionsInProgress&#39;</span><span class="p">,</span> <span class="p">{})]</span>
-    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;workflowTicketTransactionsInProgress&#39;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ticketSellerRole1&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">contract_store</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ticketBuyerRole1&quot;</span><span class="p">)</span>
+    <span class="n">workflow_ticket_transactions_in_progress</span> <span class="o">=</span> <span class="p">[</span><span class="n">exercise</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="s2">&quot;TicketTransactionsInProgress&quot;</span><span class="p">,</span> <span class="p">{})]</span>
+    <span class="n">contract_store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;workflowTicketTransactionsInProgress&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">workflow_ticket_transactions_in_progress</span>
+
+
 </pre></div>
 </div>
 </div>
@@ -566,7 +603,7 @@ our Python application will be designed.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -577,7 +614,6 @@ our Python application will be designed.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

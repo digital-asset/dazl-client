@@ -34,10 +34,10 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.pretty package" href="dazl.pretty.html"/>
-        <link rel="prev" title="dazl.damast package" href="dazl.damlast.html"/> 
+        <link rel="prev" title="dazl.ledger.config — connection configuration" href="dazl.ledger.config.html"/> 
 </head>
 <body>
 
@@ -63,10 +63,12 @@
 <li class="toctree-l3"><a class="reference internal" href="dazl.cli.html">dazl.cli package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.client.html">dazl.client package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#core-types">Core types</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#type-system-types">Type system types</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#write-side-types">Write-Side types</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
@@ -87,82 +89,15 @@
     
   <span class="target" id="module-dazl.model"></span><div class="section" id="dazl-model-package">
 <h1><a class="reference internal" href="#module-dazl.model" title="dazl.model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code></a> package<a class="headerlink" href="#dazl-model-package" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="#module-dazl.model" title="dazl.model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code></a> module is the low-level domain model for the Ledger. Most of the time, these
-classes will not be instantiated directly, but will frequently be passed to your code to work with.</p>
-<p>The most important classes:</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#module-dazl.model.core" title="dazl.model.core"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model.core</span></code></a>:</dt><dd><p><a class="reference internal" href="#dazl.model.core.ContractId" title="dazl.model.core.ContractId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractId</span></code></a></p>
-</dd>
-<dt><a class="reference internal" href="#module-dazl.model.writing" title="dazl.model.writing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model.writing</span></code></a>:</dt><dd><p>Subclasses of <a class="reference internal" href="#dazl.model.writing.Command" title="dazl.model.writing.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a> for the Write API:
-<a class="reference internal" href="#dazl.model.writing.CreateCommand" title="dazl.model.writing.CreateCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">CreateCommand</span></code></a> and
-<a class="reference internal" href="#dazl.model.writing.ExerciseCommand" title="dazl.model.writing.ExerciseCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExerciseCommand</span></code></a></p>
-</dd>
-<dt><a class="reference internal" href="#module-dazl.model.types" title="dazl.model.types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model.types</span></code></a>:</dt><dd><p>Type description classes:
-Subclasses of <a class="reference internal" href="#dazl.model.types.Type" title="dazl.model.types.Type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>:
-<a class="reference internal" href="#dazl.model.types.ScalarType" title="dazl.model.types.ScalarType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarType</span></code></a>,
-<a class="reference internal" href="#dazl.model.types.ListType" title="dazl.model.types.ListType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListType</span></code></a>,
-<a class="reference internal" href="#dazl.model.types.RecordType" title="dazl.model.types.RecordType"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecordType</span></code></a>,
-<a class="reference internal" href="#dazl.model.types.VariantType" title="dazl.model.types.VariantType"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariantType</span></code></a></p>
-</dd>
-</dl>
-<span class="target" id="module-dazl.model.core"></span><div class="section" id="core-types">
-<h2>Core types<a class="headerlink" href="#core-types" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-dazl.model.core" title="dazl.model.core"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model.core</span></code></a> module contains classes used on both the read-side and the write-side of
-the Ledger API.</p>
-<dl class="py class">
-<dt id="dazl.model.core.ContractId">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.core.</code><code class="sig-name descname">ContractId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contract_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">template_id</span><span class="p">:</span> <span class="n">Union[None, str, Type]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/core.html#ContractId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.core.ContractId" title="Permalink to this definition">¶</a></dt>
-<dd><p>There are two kinds of contract IDs: those that know the template type of the underlying
-contract instance and those that don’t. Contract IDs that arise from event processing are always
-tagged with their type when they are read off the event stream. Contract IDs that are
-parameters to a template are not currently tagged with a template type.</p>
-<p>Instance attributes:</p>
-<dl class="py attribute">
-<dt id="dazl.model.core.ContractId.contract_id">
-<code class="sig-name descname">contract_id</code><a class="headerlink" href="#dazl.model.core.ContractId.contract_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <code class="docutils literal notranslate"><span class="pre">str</span></code> reference to a contract.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dazl.model.core.ContractId.template_id">
-<code class="sig-name descname">template_id</code><a class="headerlink" href="#dazl.model.core.ContractId.template_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>An optional <code class="docutils literal notranslate"><span class="pre">str</span></code> template ID.</p>
-</dd></dl>
-
-<p>Instance members:</p>
-<dl class="py method">
-<dt id="dazl.model.core.ContractId.exercise">
-<code class="sig-name descname">exercise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">choice_name</span></em>, <em class="sig-param"><span class="n">arguments</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/core.html#ContractId.exercise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.core.ContractId.exercise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an <code class="xref py py-class docutils literal notranslate"><span class="pre">ExerciseCommand</span></code> that represents the result of exercising a choice on this
-contract with the specified choice.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>choice_name</strong> – The name of the choice to exercise.</p></li>
-<li><p><strong>arguments</strong> – (optional) A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of named values to send as parameters to the choice exercise.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dazl.model.core.ContractId.for_json">
-<code class="sig-name descname">for_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/core.html#ContractId.for_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.core.ContractId.for_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the JSON representation of this contract. This is currently just the contract ID
-string itself.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dazl.model.core.ContractId.replace">
-<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contract_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">template_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/core.html#ContractId.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.core.ContractId.replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a new <a class="reference internal" href="#dazl.model.core.ContractId" title="dazl.model.core.ContractId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractId</span></code></a> instance replacing specified fields with values.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<span class="target" id="module-dazl.model.ledger"></span><p>Types that describe the behavior of the ledger itself.</p>
-<span class="target" id="module-dazl.model.reading"></span><p>This module contains models used on the read-side of the Ledger API.</p>
+<p>This module is deprecated. These types have generally moved to <a class="reference internal" href="dazl.client.html#module-dazl.client" title="dazl.client"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.client</span></code></a> (for the API
+introduced in dazl v5) or <a class="reference internal" href="dazl.protocols.html#module-dazl.protocols" title="dazl.protocols"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.protocols</span></code></a> (for the API introduced in dazl v8).</p>
+<span class="target" id="module-dazl.model.core"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.client</span></code>, <code class="docutils literal notranslate"><span class="pre">dazl.damlast</span></code>, <code class="docutils literal notranslate"><span class="pre">dazl.protocols</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">dazl.query</span></code>.</p>
+<span class="target" id="module-dazl.model.ledger"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.client.ledger</span></code>.</p>
+<span class="target" id="module-dazl.model.lookup"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.damlast.lookup</span></code>.</p>
+<span class="target" id="module-dazl.model.network"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.client._conn_settings</span></code>.</p>
+<span class="target" id="module-dazl.model.reading"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.client.events</span></code>, though if possible you should move to
+<code class="docutils literal notranslate"><span class="pre">dazl.protocol.events</span></code>.</p>
 <span class="target" id="module-dazl.model.types"></span><div class="section" id="type-system-types">
 <h2>Type system types<a class="headerlink" href="#type-system-types" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#module-dazl.model.types" title="dazl.model.types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model.types</span></code></a> module contains the Python classes used to represent the DAML type
@@ -194,154 +129,41 @@ system.</p>
 </table>
 <dl class="py class">
 <dt id="dazl.model.types.Type">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.types.</code><code class="sig-name descname">Type</code><a class="reference internal" href="_modules/dazl/model/types.html#Type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.types.Type" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">Type</span></code><a class="headerlink" href="#dazl.model.types.Type" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DAML-defined type.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="dazl.model.types.ScalarType">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.types.</code><code class="sig-name descname">ScalarType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/types.html#ScalarType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.types.ScalarType" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">ScalarType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.ScalarType" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DAML-defined type that represents a simple scalar value. You should not need to ever
 construct instances of this directly; all scalar types are builtins.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="dazl.model.types.ListType">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.types.</code><code class="sig-name descname">ListType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type_parameter</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#dazl.model.types.Type" title="dazl.model.types.Type">dazl.model.types.Type</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/types.html#ListType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.types.ListType" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">ListType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_parameter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dazl.model.types.Type" title="dazl.model.types.Type"><span class="pre">dazl.model.types.Type</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.ListType" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt id="dazl.model.types.RecordType">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.types.</code><code class="sig-name descname">RecordType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">named_args</span><span class="p">:</span> <span class="n">dazl.model.types.NamedArgumentList</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dazl.model.types.TypeReference<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">type_args</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>dazl.model.types.TypeVariable<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/types.html#RecordType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.types.RecordType" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">RecordType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">named_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.model.types.NamedArgumentList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeReference</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeVariable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.RecordType" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt id="dazl.model.types.VariantType">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.types.</code><code class="sig-name descname">VariantType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">named_args</span><span class="p">:</span> <span class="n">dazl.model.types.NamedArgumentList</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dazl.model.types.TypeReference<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">type_args</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>dazl.model.types.TypeVariable<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/types.html#VariantType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.types.VariantType" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">VariantType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">named_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.model.types.NamedArgumentList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeReference</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeVariable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.VariantType" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt id="dazl.model.types.UnsupportedType">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.types.</code><code class="sig-name descname">UnsupportedType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/types.html#UnsupportedType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.types.UnsupportedType" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">UnsupportedType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.UnsupportedType" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DAML type that is currently unparseable by the Python client library.</p>
 </dd></dl>
 
 </div>
-<span class="target" id="module-dazl.model.types_store"></span><span class="target" id="module-dazl.model.writing"></span><div class="section" id="write-side-types">
-<h2>Write-Side types<a class="headerlink" href="#write-side-types" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-dazl.model.writing" title="dazl.model.writing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model.writing</span></code></a> module contains the Python classes used on the write-side of the
-Ledger API.</p>
-<dl class="py class">
-<dt id="dazl.model.writing.Command">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.writing.</code><code class="sig-name descname">Command</code><a class="reference internal" href="_modules/dazl/model/writing.html#Command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.writing.Command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Base class for write-side commands.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="dazl.model.writing.CreateCommand">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.writing.</code><code class="sig-name descname">CreateCommand</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span><a class="reference internal" href="#dazl.model.types.Type" title="dazl.model.types.Type">dazl.model.types.Type</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">arguments</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/writing.html#CreateCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.writing.CreateCommand" title="Permalink to this definition">¶</a></dt>
-<dd><p>A command that creates a contract without any predecessors.</p>
-<dl class="py attribute">
-<dt id="dazl.model.writing.CreateCommand.template">
-<code class="sig-name descname">template</code><a class="headerlink" href="#dazl.model.writing.CreateCommand.template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Refers to the type of a template. This can be passed in as a <code class="docutils literal notranslate"><span class="pre">str</span></code> to the constructor,
-where it assumed to represent the ID or name of a template.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dazl.model.writing.CreateCommand.arguments">
-<code class="sig-name descname">arguments</code><a class="headerlink" href="#dazl.model.writing.CreateCommand.arguments" title="Permalink to this definition">¶</a></dt>
-<dd><p>The arguments to the create (as a <code class="docutils literal notranslate"><span class="pre">dict</span></code>).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dazl.model.writing.CreateCommand.replace">
-<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template</span><span class="p">:</span> <span class="n">Union[None, str, dazl.model.types.Type]</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">arguments</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/writing.html#CreateCommand.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.writing.CreateCommand.replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new <a class="reference internal" href="#dazl.model.writing.CreateCommand" title="dazl.model.writing.CreateCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">CreateCommand</span></code></a> with the same identifier as this command, but with new
-values for its parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>template</strong> – The new value of the <cite>template</cite> field, or <cite>None</cite> to reuse the existing value.</p></li>
-<li><p><strong>arguments</strong> – The new value of the <cite>arguments</cite> field, or <cite>None</cite> to reuse the existing value.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dazl.model.writing.ExerciseCommand">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.model.writing.</code><code class="sig-name descname">ExerciseCommand</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contract</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span><a class="reference internal" href="#dazl.model.core.ContractId" title="dazl.model.core.ContractId">dazl.model.core.ContractId</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">choice</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">arguments</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">template_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/writing.html#ExerciseCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.writing.ExerciseCommand" title="Permalink to this definition">¶</a></dt>
-<dd><p>A command that exercises a choice on a pre-existing contract.</p>
-<dl class="py attribute">
-<dt id="dazl.model.writing.ExerciseCommand.contract">
-<code class="sig-name descname">contract</code><a class="headerlink" href="#dazl.model.writing.ExerciseCommand.contract" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">ContractId</span></code> on which a choice is being exercised.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dazl.model.writing.ExerciseCommand.choice">
-<code class="sig-name descname">choice</code><a class="headerlink" href="#dazl.model.writing.ExerciseCommand.choice" title="Permalink to this definition">¶</a></dt>
-<dd><p>Refers to a choice (either a <code class="xref py py-class docutils literal notranslate"><span class="pre">ChoiceRef</span></code> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">ChoiceMetadata</span></code>).
-This can be passed in as a <code class="docutils literal notranslate"><span class="pre">str</span></code> to the constructor, where it assumed to represent the
-name of a choice.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dazl.model.writing.ExerciseCommand.arguments">
-<code class="sig-name descname">arguments</code><a class="headerlink" href="#dazl.model.writing.ExerciseCommand.arguments" title="Permalink to this definition">¶</a></dt>
-<dd><p>The arguments to the exercise choice (as a <code class="docutils literal notranslate"><span class="pre">dict</span></code>).</p>
-</dd></dl>
-
-<p>Note that when an <code class="docutils literal notranslate"><span class="pre">ExerciseCommand</span></code> is created, an additional <code class="docutils literal notranslate"><span class="pre">template_id</span></code> parameter can
-be supplied to the constructor to aid in disambiguation of the specific choice being invoked.
-In some situations involving composite commands, a <code class="docutils literal notranslate"><span class="pre">template_id</span></code> must eventually be supplied
-before a choice can be exercised. If this <code class="docutils literal notranslate"><span class="pre">template_id</span></code> is specified, the <code class="docutils literal notranslate"><span class="pre">contract</span></code> and
-<code class="docutils literal notranslate"><span class="pre">choice</span></code> are both tagged with this ID.</p>
-<p>Instance methods:</p>
-<dl class="py method">
-<dt id="dazl.model.writing.ExerciseCommand.replace">
-<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contract</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choice</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">arguments</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">template_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/writing.html#ExerciseCommand.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.model.writing.ExerciseCommand.replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new <a class="reference internal" href="#dazl.model.writing.ExerciseCommand" title="dazl.model.writing.ExerciseCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExerciseCommand</span></code></a> with the same identifier as this command, but with new
-values for its parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>contract</strong> – The new value of the <cite>contract</cite> field, or <cite>None</cite> to reuse the existing value.
-The same type coercion rules used in the constructor apply here.</p></li>
-<li><p><strong>choice</strong> – The new value of the <cite>choice</cite> field, or <cite>None</cite> to reuse the existing value.
-The same type coercion rules used in the constructor apply here.</p></li>
-<li><p><strong>arguments</strong> – The new value of the <cite>choice</cite> field, or <cite>None</cite> to reuse the existing value.</p></li>
-<li><p><strong>template_id</strong> – The expected template type.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="id0">
-<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contract</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choice</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">arguments</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">template_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/model/writing.html#ExerciseCommand.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new <a class="reference internal" href="#dazl.model.writing.ExerciseCommand" title="dazl.model.writing.ExerciseCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExerciseCommand</span></code></a> with the same identifier as this command, but with new
-values for its parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>contract</strong> – The new value of the <cite>contract</cite> field, or <cite>None</cite> to reuse the existing value.
-The same type coercion rules used in the constructor apply here.</p></li>
-<li><p><strong>choice</strong> – The new value of the <cite>choice</cite> field, or <cite>None</cite> to reuse the existing value.
-The same type coercion rules used in the constructor apply here.</p></li>
-<li><p><strong>arguments</strong> – The new value of the <cite>choice</cite> field, or <cite>None</cite> to reuse the existing value.</p></li>
-<li><p><strong>template_id</strong> – The expected template type.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
+<span class="target" id="module-dazl.model.types_store"></span><span class="target" id="module-dazl.model.writing"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.client.commands</span></code>, though if possible you should move to
+the command types defined in <code class="docutils literal notranslate"><span class="pre">dazl.ledger</span></code> instead.</p>
 </div>
 
 
@@ -352,7 +174,7 @@ The same type coercion rules used in the constructor apply here.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -363,7 +185,6 @@ The same type coercion rules used in the constructor apply here.</p></li>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

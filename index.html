@@ -34,7 +34,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="#"/>
+    <link rel="top" title="dazl 7.2.0 documentation" href="#"/>
         <link rel="next" title="Basics" href="basics.html"/> 
 </head>
 <body>
@@ -70,54 +70,44 @@
 <p><em>Version: |release|</em></p>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>You will need Python 3.6 or later and a Digital Asset ledger implementation (DA Sandbox or
-DA Ledger Server). <a class="reference internal" href="glossary.html#term-dazl"><span class="xref std std-term">dazl</span></a> additionally requires the following libraries to be
-installed:</p>
-<ul class="simple">
-<li><p>grpcio, version 1.18.0 or later</p></li>
-<li><p>PyYAML</p></li>
-<li><p>semver</p></li>
-</ul>
+<p>You will need Python 3.6 or later and a Daml Ledger.</p>
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>This section assumes that you already have a running ledger with a DAML model loaded.</p>
+<p>This section assumes that you already have a running ledger with the standard <cite>daml new</cite> model
+loaded, and have imported <cite>dazl</cite>.</p>
 <p>Connect to the ledger and submit a single command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">simple_client</span><span class="p">(</span><span class="s1">&#39;http://localhost:7600&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">submit_create</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;My.Template&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">someField</span><span class="p">:</span> <span class="s1">&#39;someText&#39;</span> <span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;http://localhost:6865&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:Asset&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;issuer&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;owner&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;hello world!&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>Connect to the ledger as a single party, print all contracts, and close:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">simple_client</span><span class="p">(</span><span class="s1">&#39;http://localhost:7600&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
-    <span class="c1"># wait for the ACS to be fully read</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">ready</span><span class="p">()</span>
-    <span class="n">contract_dict</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">find_active</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">contract_dict</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;http://localhost:6865&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">contracts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">query</span><span class="p">():</span>
+        <span class="n">contracts</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">cdata</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">contracts</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Connect to the ledger as multiple parties:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">network</span> <span class="o">=</span> <span class="n">dazl</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
-<span class="n">network</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://localhost:7600&#39;</span><span class="p">)</span>
+<p>Connect to the ledger using asynchronous callbacks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
 
-<span class="n">alice</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">simple_party</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span>
-<span class="n">bob</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">simple_party</span><span class="p">(</span><span class="s1">&#39;Bob&#39;</span><span class="p">)</span>
-
-<span class="nd">@alice</span><span class="o">.</span><span class="n">ledger_ready</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="n">currency_cid</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">event</span><span class="o">.</span><span class="n">acs_find_one</span><span class="p">(</span><span class="s1">&#39;My.Currency&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;currency&quot;</span><span class="p">:</span> <span class="s2">&quot;USD&quot;</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">dazl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;SomethingOf.Value&#39;</span><span class="p">,</span> <span class="p">{</span>
-        <span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-        <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="n">currency_cid</span><span class="p">,</span>
-        <span class="s1">&#39;from&#39;</span><span class="p">:</span> <span class="s1">&#39;Accept&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;to&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span> <span class="p">})</span>
-
-<span class="nd">@bob</span><span class="o">.</span><span class="n">ledger_created</span><span class="p">(</span><span class="s1">&#39;SomethingOf.Value&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">on_something_of_value</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">dazl</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">,</span> <span class="s1">&#39;Accept&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Thanks!&#39;</span> <span class="p">})</span>
-
-<span class="n">network</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;http://localhost:6865&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">contracts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="nd">@conn</span><span class="o">.</span><span class="n">on_create</span>
+    <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+        <span class="n">contracts</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">cdata</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">contracts</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<p>Build-time dependencies are handled using <a class="reference external" href="https://python-poetry.org/">Poetry</a>.</p>
 </div>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
@@ -131,15 +121,20 @@ installed:</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-from-dazl-v6-from-v7">Migrating from dazl v6 from v7</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-to-dazl-v7-5">Migrating to dazl v7.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="migrating.html#command-submission-changes-dazl-network-and-dazl-connect">Command submission changes (<code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> and <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="migrating.html#command-line-changes">Command-line changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-to-dazl-v7">Migrating to dazl v7</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#template-formats">Template formats</a></li>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#sandbox-wrapper">Sandbox Wrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#time-model-changes">Time Model changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#deprecated-symbols-removal">Deprecated symbols removal</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-from-dazl-v5-from-v6">Migrating from dazl v5 from v6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-from-dazl-v5-from-v4">Migrating from dazl v5 from v4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-to-v6">Migrating to v6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-to-v5">Migrating to v5</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#library-initialization">Library Initialization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#initialization-event-listeners">Initialization Event Listeners</a></li>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#ready-event-listeners">Ready Event Listeners</a></li>
@@ -163,17 +158,38 @@ installed:</p>
 <li class="toctree-l4"><a class="reference internal" href="dazl.client.html#module-dazl.client">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dazl.damlast.html#daml-lf-archive-types">DAML-LF Archive types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.damlast.html#daml-types">DAML Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.damlast.html#daml-lf-fast-lookups">DAML-LF fast lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.damlast.html#daml-lf-archive-parsing">DAML-LF Archive parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.damlast.html#error-types">Error types</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.html#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.html#data-model">Data Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.html#connections">Connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.html#write-side-types">Write-side types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.html#read-side-types">Read-side types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.config.html#access-configuration">Access configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.config.html#ssl-tls-configuration">SSL/TLS configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dazl.ledger.config.html#url-configuration">URL configuration</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="dazl.model.html#core-types">Core types</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dazl.model.html#type-system-types">Type system types</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dazl.model.html#write-side-types">Write-Side types</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.protocols.html">dazl.protocols package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="dazl.protocols.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dazl.protocols.html#module-dazl.protocols.v0">dazl.protocols.v0 module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dazl.protocols.html#module-dazl.protocols.v1">dazl.protocols.v1 module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dazl.protocols.html#module-dazl.protocols">Module contents</a></li>
 </ul>
@@ -198,7 +214,7 @@ installed:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -209,7 +225,6 @@ installed:</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

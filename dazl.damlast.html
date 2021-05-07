@@ -34,9 +34,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
-        <link rel="next" title="dazl.model package" href="dazl.model.html"/>
+        <link rel="next" title="dazl.ledger" href="dazl.ledger.html"/>
         <link rel="prev" title="dazl.client package" href="dazl.client.html"/> 
 </head>
 <body>
@@ -62,7 +62,18 @@
 <li class="toctree-l2 current"><a class="reference internal" href="dazl.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="dazl.cli.html">dazl.cli package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.client.html">dazl.client package</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#daml-lf-archive-types">DAML-LF Archive types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#daml-types">DAML Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#daml-lf-fast-lookups">DAML-LF fast lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#daml-lf-archive-parsing">DAML-LF Archive parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-types">Error types</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.protocols.html">dazl.protocols package</a></li>
@@ -82,7 +93,517 @@
     
   <span class="target" id="module-dazl.damlast"></span><div class="section" id="dazl-damast-package">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package<a class="headerlink" href="#dazl-damast-package" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-dazl.damlast" title="dazl.damlast"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damlast</span></code></a> module contains types and functions for working with DAML-LF Archives.
+The types in this module are for dealing with DAML’s type system as encoded in DAML-LF; for
+encoding and decoding of values, see <code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.values</span></code>.</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#module-dazl.damlast.daml_lf_1" title="dazl.damlast.daml_lf_1"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damlast.daml_lf_1</span></code></a>:</dt><dd><p>The full definition of a DAML-LF Archive.</p>
+</dd>
+<dt><a class="reference internal" href="#module-dazl.damlast.daml_types" title="dazl.damlast.daml_types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damlast.daml_types</span></code></a>:</dt><dd><p>Convenience functions for constructing DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> objects.</p>
+</dd>
+<dt><a class="reference internal" href="#module-dazl.damlast.lookup" title="dazl.damlast.lookup"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damlast.lookup</span></code></a>:</dt><dd><p>Utilities for quickly resolving names to DAML-LF types/values.</p>
+</dd>
+<dt><a class="reference internal" href="#module-dazl.damlast.parse" title="dazl.damlast.parse"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damlast.parse</span></code></a>:</dt><dd><p>Functions for parsing a DAML-LF Archive from its Protobuf definition.</p>
+</dd>
+<dt><a class="reference internal" href="#module-dazl.damlast.protocols" title="dazl.damlast.protocols"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damlast.protocols</span></code></a>:</dt><dd><p>Protocols (interfaces) for components in this package.</p>
+</dd>
+<dt><a class="reference internal" href="#module-dazl.damlast.errors" title="dazl.damlast.errors"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damlast.errors</span></code></a>:</dt><dd><p>Subclasses of <code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code> that may be thrown by classes in this package.</p>
+</dd>
+</dl>
+<span class="target" id="module-dazl.damlast.daml_lf_1"></span><div class="section" id="daml-lf-archive-types">
+<h2>DAML-LF Archive types<a class="headerlink" href="#daml-lf-archive-types" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">members</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 </div>
+<span class="target" id="module-dazl.damlast.daml_types"></span><div class="section" id="daml-types">
+<h2>DAML Types<a class="headerlink" href="#daml-types" title="Permalink to this headline">¶</a></h2>
+<p>Constants and constructor functions for the various primitive DAML types.</p>
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.Arrow">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">Arrow</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.Arrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">b</span></code> (a function type).</p>
+<p>This type is not normally used in <code class="docutils literal notranslate"><span class="pre">dazl</span></code> since we are primarily concerned with serializable
+types; it is included for completeness.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.ContractId">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">ContractId</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.ContractId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">ContractId</span> <span class="pre">a</span></code>.</p>
+<p>No checking is done to verify that the argument refers to a valid template.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.List">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">List</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.List" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">[a]</span></code> (a list of objects).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.Map">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">Map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.Map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">Map</span> <span class="pre">k</span> <span class="pre">v</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.Numeric">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">Numeric</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.Numeric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">Numeric</span> <span class="pre">n</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.Optional">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">Optional</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.Optional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">Optional</span> <span class="pre">a</span></code> (either <code class="docutils literal notranslate"><span class="pre">Some</span> <span class="pre">a</span></code> or
+<code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.Scenario">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">Scenario</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.Scenario" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">Scenario</span> <span class="pre">a</span></code>.</p>
+<p>This type is not normally used in <code class="docutils literal notranslate"><span class="pre">dazl</span></code> since we are primarily concerned with serializable
+types; it is included for completeness.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.TextMap">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">TextMap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.TextMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">TextMap</span> <span class="pre">a</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.Update">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">Update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.Update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">Update</span> <span class="pre">a</span></code>.</p>
+<p>This type is not normally used in <code class="docutils literal notranslate"><span class="pre">dazl</span></code> since we are primarily concerned with serializable
+types; it is included for completeness.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.con">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">con</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tycon</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.TypeConName</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.con" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is a reference to a <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code> (a record, variant,
+or enum).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tycon</strong> – The fully-qualified name of the type constructor.</p></li>
+<li><p><strong>args</strong> – Type arguments (only applicable if the type is a generic type).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.struct">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">struct</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">dazl.damlast.daml_lf_1.Type</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.damlast.daml_types.struct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to a structural tuple type (<code class="docutils literal notranslate"><span class="pre">(a,</span> <span class="pre">b,</span> <span class="pre">...)</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fields</strong> – A map of field names to their types. DAML-LF structs generally define structs as having
+field names <code class="docutils literal notranslate"><span class="pre">&quot;_1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;_2&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;_3&quot;</span></code>, and so on.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.syn">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">syn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tysyn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.TypeSynName</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.syn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is a reference to another type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tysyn</strong> – The fully-qualified name of the type synonym.</p></li>
+<li><p><strong>args</strong> – Type arguments (only applicable if the type is a generic type).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.daml_types.var">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.daml_types.</span></code><code class="sig-name descname"><span class="pre">var</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Type</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Type</span><a class="headerlink" href="#dazl.damlast.daml_types.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a DAML <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code> that is equivalent to <code class="docutils literal notranslate"><span class="pre">a</span></code> (a type variable of the specified
+name).</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-dazl.damlast.lookup"></span><div class="section" id="daml-lf-fast-lookups">
+<h2>DAML-LF fast lookups<a class="headerlink" href="#daml-lf-fast-lookups" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="dazl.damlast.lookup.EmptyLookup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.damlast.lookup.</span></code><code class="sig-name descname"><span class="pre">EmptyLookup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolLookup</span></code> that trivially throws for all of its functions.</p>
+<p>This can be used where a <code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolLookup</span></code> instance is useful but an implementation is not
+required.</p>
+<p>All methods are implemented such that if the provided ref has a package ID,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PackageNotFoundError</span></code> is thrown; otherwise, <code class="xref py py-class docutils literal notranslate"><span class="pre">NameNotFoundError</span></code> is thrown.</p>
+<dl class="py method">
+<dt id="dazl.damlast.lookup.EmptyLookup.archives">
+<code class="sig-name descname"><span class="pre">archives</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.Archive</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup.archives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the archives that are known to this lookup.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.EmptyLookup.data_type">
+<code class="sig-name descname"><span class="pre">data_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">NoReturn</span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup.data_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code> for the specified name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.EmptyLookup.data_type_name">
+<code class="sig-name descname"><span class="pre">data_type_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">NoReturn</span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup.data_type_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> that refers to a <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code> that is known to
+exist in this lookup.</p>
+<p>If this method succeeds, <a class="reference internal" href="#dazl.damlast.lookup.EmptyLookup.data_type" title="dazl.damlast.lookup.EmptyLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> with the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> as an
+argument should also always succeed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.EmptyLookup.package_ids">
+<code class="sig-name descname"><span class="pre">package_ids</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AbstractSet</span><span class="p"><span class="pre">[</span></span><span class="pre">PackageRef</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup.package_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the package IDs that are known to this lookup.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.EmptyLookup.template">
+<code class="sig-name descname"><span class="pre">template</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">NoReturn</span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup.template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefTemplate</span></code> for the specified name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.EmptyLookup.template_name">
+<code class="sig-name descname"><span class="pre">template_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">NoReturn</span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup.template_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> that refers to a <code class="xref py py-class docutils literal notranslate"><span class="pre">DefTemplate</span></code> that is known to
+exist in this lookup.</p>
+<p>If this method succeeds, <a class="reference internal" href="#dazl.damlast.lookup.EmptyLookup.data_type" title="dazl.damlast.lookup.EmptyLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> with the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> as an
+argument should also always succeed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.EmptyLookup.template_names">
+<code class="sig-name descname"><span class="pre">template_names</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup.template_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all template names that are currently known that are a match for the query. Either
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PackageRef</span></code> or the template name can be <cite>*</cite>.</p>
+<p>Unlike the other methods of this class, this function should return an empty list in the
+case of a match failure; <code class="xref py py-class docutils literal notranslate"><span class="pre">PackageNotFoundError</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">NameNotFoundError</span></code> are
+never thrown.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.EmptyLookup.value">
+<code class="sig-name descname"><span class="pre">value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">NoReturn</span><a class="headerlink" href="#dazl.damlast.lookup.EmptyLookup.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefValue</span></code> for the specified name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dazl.damlast.lookup.MultiPackageLookup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.damlast.lookup.</span></code><code class="sig-name descname"><span class="pre">MultiPackageLookup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combines lookups across multiple archives.</p>
+<p>This class is thread-safe. When calling <a class="reference internal" href="#dazl.damlast.lookup.MultiPackageLookup.add_archive" title="dazl.damlast.lookup.MultiPackageLookup.add_archive"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_archive()</span></code></a> and any of the other read-only
+methods concurrently, read-only methods will NOT block; they will return the previous state
+of the lookup.</p>
+<p>Packages can only be added; they cannot be removed once added.</p>
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.add_archive">
+<code class="sig-name descname"><span class="pre">add_archive</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.Archive</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.add_archive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add one or more <code class="xref py py-class docutils literal notranslate"><span class="pre">Archive</span></code> instances to this lookup.</p>
+<p>This method is thread-safe, but note that <a class="reference internal" href="#dazl.damlast.lookup.MultiPackageLookup" title="dazl.damlast.lookup.MultiPackageLookup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiPackageLookup</span></code></a> allows dirty reads for
+performance reasons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>a</strong> – One or more <code class="xref py py-class docutils literal notranslate"><span class="pre">Archive</span></code> instances to add.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.archives">
+<code class="sig-name descname"><span class="pre">archives</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.Archive</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.archives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of known archives.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.data_type">
+<code class="sig-name descname"><span class="pre">data_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.DefDataType</span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.data_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code> for the specified name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.data_type_name">
+<code class="sig-name descname"><span class="pre">data_type_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.data_type_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> that refers to a <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code> that is known to
+exist in this lookup.</p>
+<p>If this method succeeds, <a class="reference internal" href="#dazl.damlast.lookup.MultiPackageLookup.data_type" title="dazl.damlast.lookup.MultiPackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> with the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> as an
+argument should also always succeed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.package_ids">
+<code class="sig-name descname"><span class="pre">package_ids</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AbstractSet</span><span class="p"><span class="pre">[</span></span><span class="pre">PackageRef</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.package_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the package IDs that are known to this lookup.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.template">
+<code class="sig-name descname"><span class="pre">template</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.DefTemplate</span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefTemplate</span></code> for the specified name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.template_name">
+<code class="sig-name descname"><span class="pre">template_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.template_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> that refers to a <code class="xref py py-class docutils literal notranslate"><span class="pre">DefTemplate</span></code> that is known to
+exist in this lookup.</p>
+<p>If this method succeeds, <a class="reference internal" href="#dazl.damlast.lookup.MultiPackageLookup.data_type" title="dazl.damlast.lookup.MultiPackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> with the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> as an
+argument should also always succeed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.template_names">
+<code class="sig-name descname"><span class="pre">template_names</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.template_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all template names that are currently known that are a match for the query. Either
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PackageRef</span></code> or the template name can be <cite>*</cite>.</p>
+<p>Unlike the other methods of this class, this function should return an empty list in the
+case of a match failure; <code class="xref py py-class docutils literal notranslate"><span class="pre">PackageNotFoundError</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">NameNotFoundError</span></code> are
+never thrown.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.MultiPackageLookup.value">
+<code class="sig-name descname"><span class="pre">value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.DefValue</span><a class="headerlink" href="#dazl.damlast.lookup.MultiPackageLookup.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefValue</span></code> for the specified name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dazl.damlast.lookup.PackageLookup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.damlast.lookup.</span></code><code class="sig-name descname"><span class="pre">PackageLookup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caching structure to make lookups on type names within a <code class="xref py py-class docutils literal notranslate"><span class="pre">Package</span></code> faster.</p>
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.archives">
+<code class="sig-name descname"><span class="pre">archives</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.Archive</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.archives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the archives that are known to this lookup.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.data_type">
+<code class="sig-name descname"><span class="pre">data_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.DefDataType</span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.data_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code> for the specified name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.data_type_name">
+<code class="sig-name descname"><span class="pre">data_type_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.data_type_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> that refers to a <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code> that is known to
+exist in this lookup.</p>
+<p>If this method succeeds, <a class="reference internal" href="#dazl.damlast.lookup.PackageLookup.data_type" title="dazl.damlast.lookup.PackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> with the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> as an
+argument should also always succeed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.local_data_type">
+<code class="sig-name descname"><span class="pre">local_data_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.DefDataType</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.local_data_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variation of <a class="reference internal" href="#dazl.damlast.lookup.PackageLookup.data_type" title="dazl.damlast.lookup.PackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> that assumes the name is already scoped to this package.
+Unlike <a class="reference internal" href="#dazl.damlast.lookup.PackageLookup.data_type" title="dazl.damlast.lookup.PackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a>, this method returns <code class="docutils literal notranslate"><span class="pre">None</span></code> in the case of no match.</p>
+<p>You should not normally use this method directly, and instead prefer to use the methods of
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolLookup</span></code> protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – A name to search for. Must be of the form <code class="docutils literal notranslate"><span class="pre">&quot;ModuleName:EntityName&quot;</span></code>, where both
+modules and entities are dot-delimited.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Either a matching <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no match.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.local_template">
+<code class="sig-name descname"><span class="pre">local_template</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.DefTemplate</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.local_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variation of <a class="reference internal" href="#dazl.damlast.lookup.PackageLookup.data_type" title="dazl.damlast.lookup.PackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> that assumes the name is already scoped to this package.
+Unlike <a class="reference internal" href="#dazl.damlast.lookup.PackageLookup.data_type" title="dazl.damlast.lookup.PackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a>, this method returns <code class="docutils literal notranslate"><span class="pre">None</span></code> in the case of no match.</p>
+<p>You should not normally use this method directly, and instead prefer to use the methods of
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolLookup</span></code> protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – A name to search for. Must be of the form <code class="docutils literal notranslate"><span class="pre">&quot;ModuleName:EntityName&quot;</span></code>, where both
+modules and entities are dot-delimited.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Either a matching <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no match.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.local_value">
+<code class="sig-name descname"><span class="pre">local_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.DefValue</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.local_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variation of <a class="reference internal" href="#dazl.damlast.lookup.PackageLookup.data_type" title="dazl.damlast.lookup.PackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> that assumes the name is already scoped to this package.
+Unlike <a class="reference internal" href="#dazl.damlast.lookup.PackageLookup.data_type" title="dazl.damlast.lookup.PackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a>, this method returns <code class="docutils literal notranslate"><span class="pre">None</span></code> in the case of no match.</p>
+<p>You should not normally use this method directly, and instead prefer to use the methods of
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolLookup</span></code> protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – A name to search for. Must be of the form <code class="docutils literal notranslate"><span class="pre">&quot;ModuleName:EntityName&quot;</span></code>, where both
+modules and entities are dot-delimited.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Either a matching <code class="xref py py-class docutils literal notranslate"><span class="pre">DefDataType</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no match.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.package_ids">
+<code class="sig-name descname"><span class="pre">package_ids</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AbstractSet</span><span class="p"><span class="pre">[</span></span><span class="pre">PackageRef</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.package_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the package IDs that are known to this lookup.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.template">
+<code class="sig-name descname"><span class="pre">template</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.DefTemplate</span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefTemplate</span></code> for the specified name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.template_name">
+<code class="sig-name descname"><span class="pre">template_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.template_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> that refers to a <code class="xref py py-class docutils literal notranslate"><span class="pre">DefTemplate</span></code> that is known to
+exist in this lookup.</p>
+<p>If this method succeeds, <a class="reference internal" href="#dazl.damlast.lookup.PackageLookup.data_type" title="dazl.damlast.lookup.PackageLookup.data_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_type()</span></code></a> with the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code> as an
+argument should also always succeed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.template_names">
+<code class="sig-name descname"><span class="pre">template_names</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.template_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all template names that are currently known that are a match for the query. Either
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PackageRef</span></code> or the template name can be <cite>*</cite>.</p>
+<p>Unlike the other methods of this class, this function should return an empty list in the
+case of a match failure; <code class="xref py py-class docutils literal notranslate"><span class="pre">PackageNotFoundError</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">NameNotFoundError</span></code> are
+never thrown.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dazl.damlast.lookup.PackageLookup.value">
+<code class="sig-name descname"><span class="pre">value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.DefValue</span><a class="headerlink" href="#dazl.damlast.lookup.PackageLookup.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="xref py py-class docutils literal notranslate"><span class="pre">DefValue</span></code> for the specified name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.lookup.find_choice">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.lookup.</span></code><code class="sig-name descname"><span class="pre">find_choice</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.daml_lf_1.DefTemplate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.TemplateChoice</span><a class="headerlink" href="#dazl.damlast.lookup.find_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a choice in a <code class="xref py py-class docutils literal notranslate"><span class="pre">DefTemplate</span></code>. If the choice could not be found,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">NameNotFoundError</span></code> is raised.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.lookup.matching_normalizations">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.lookup.</span></code><code class="sig-name descname"><span class="pre">matching_normalizations</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.matching_normalizations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return strings that are possible matches for the given template ID.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.lookup.normalize">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.lookup.</span></code><code class="sig-name descname"><span class="pre">normalize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><a class="headerlink" href="#dazl.damlast.lookup.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the canonical form for a string that represents a template ID or partial match of a
+template ID.</p>
+<p>Concretely, this function converts <code class="docutils literal notranslate"><span class="pre">&quot;MyMod:MyTemplate&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;*:MyMod:MyTemplate&quot;</span></code> and leaves
+most other strings unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__name</strong> – A template ID, expressed in either string form or as an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeConName</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string in canonical form (either <code class="docutils literal notranslate"><span class="pre">PACKAGE_REF:MODULE_NAME:ENTITY_NAME</span></code> or
+<code class="docutils literal notranslate"><span class="pre">PACKAGE_REF:*</span></code>, where <code class="docutils literal notranslate"><span class="pre">PACKAGE_REF</span></code> is also allowed to be <code class="docutils literal notranslate"><span class="pre">*</span></code>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.lookup.parse_type_con_name">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.lookup.</span></code><code class="sig-name descname"><span class="pre">parse_type_con_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_deprecated_identifiers</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.TypeConName</span><a class="headerlink" href="#dazl.damlast.lookup.parse_type_con_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the given string as a type constructor.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.lookup.validate_template">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.lookup.</span></code><code class="sig-name descname"><span class="pre">validate_template</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_deprecated_identifiers</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">PackageRef</span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.damlast.lookup.validate_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a module and type name component from something that can be interpreted as a template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template</strong> – Any object that can be interpreted as an identifier for a template.</p></li>
+<li><p><strong>allow_deprecated_identifiers</strong> – Allow deprecated identifiers (<code class="xref py py-class docutils literal notranslate"><span class="pre">UnresolvedTypeReference</span></code> and a period delimiter
+instead of a colon between module names and entity names).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of package ID and <code class="docutils literal notranslate"><span class="pre">Module.Name:EntityName</span></code> (the package-scoped identifier for the
+type). The special value <code class="docutils literal notranslate"><span class="pre">'*'</span></code> is used if either the package ID, module name, or both
+should be wildcarded.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the object could not be interpreted as a thing referring to a template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<span class="target" id="module-dazl.damlast.parse"></span><div class="section" id="daml-lf-archive-parsing">
+<h2>DAML-LF Archive parsing<a class="headerlink" href="#daml-lf-archive-parsing" title="Permalink to this headline">¶</a></h2>
+<p>Functions for creating <code class="xref py py-class docutils literal notranslate"><span class="pre">Archive</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">Package</span></code> instances.</p>
+<p><a class="reference internal" href="#dazl.damlast.parse.parse_archive" title="dazl.damlast.parse.parse_archive"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_archive()</span></code></a> can be used to take an arbitrary byte payload from the Package Service and
+convert it to an <code class="xref py py-class docutils literal notranslate"><span class="pre">Archive</span></code>; an <code class="xref py py-class docutils literal notranslate"><span class="pre">Archive</span></code> contains the package and its modules, which
+in turn contain templates, data types, and values.</p>
+<dl class="py function">
+<dt id="dazl.damlast.parse.parse_archive">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.parse.</span></code><code class="sig-name descname"><span class="pre">parse_archive</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">PackageRef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_bytes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.damlast.daml_lf_1.Archive</span><a class="headerlink" href="#dazl.damlast.parse.parse_archive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <code class="docutils literal notranslate"><span class="pre">bytes</span></code> into an <code class="xref py py-class docutils literal notranslate"><span class="pre">Archive</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dazl.damlast.parse.parse_archive_payload">
+<code class="sig-prename descclassname"><span class="pre">dazl.damlast.parse.</span></code><code class="sig-name descname"><span class="pre">parse_archive_payload</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PackageRef</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_bytes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">com.daml.daml_lf_dev.daml_lf_pb2.ArchivePayload</span><a class="headerlink" href="#dazl.damlast.parse.parse_archive_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <code class="docutils literal notranslate"><span class="pre">bytes</span></code> into a <code class="xref py py-class docutils literal notranslate"><span class="pre">G.ArchivePayload</span></code>.</p>
+<p>Note that this function will temporarily increase Python’s recursion limit to handle cases where
+parsing a DAML-LF archive requires deeper recursion limits.</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-dazl.damlast.errors"></span><div class="section" id="error-types">
+<h2>Error types<a class="headerlink" href="#error-types" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="dazl.damlast.errors.PackageNotFoundError">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.damlast.errors.</span></code><code class="sig-name descname"><span class="pre">PackageNotFoundError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">daml_lf_1.PackageRef</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.damlast.errors.PackageNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when a <code class="xref py py-class docutils literal notranslate"><span class="pre">Package</span></code> was expected but could not be found.</p>
+<p>This error can also be raised in places where types/values are being resolved; it is an
+indication that the operation MAY succeed if the package of the specified ID is fetched and
+the original option retried.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dazl.damlast.errors.NameNotFoundError">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.damlast.errors.</span></code><code class="sig-name descname"><span class="pre">NameNotFoundError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.damlast.errors.NameNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when a <code class="xref py py-class docutils literal notranslate"><span class="pre">daml_lf_1.DefDataType</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">daml_lf_1.DefValue</span></code>, or
+<code class="xref py py-class docutils literal notranslate"><span class="pre">daml_lf_1.DefTemplate</span></code> of a specific name was expected, but could not be found.</p>
+<p>Typically this error is raised when the <em>package ID</em> is valid, but the name is not. Because
+package IDs are immutable, this error is not normally retryable.</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-dazl.damlast.protocols"></span></div>
 
 
   </main>
@@ -92,7 +613,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -103,7 +624,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

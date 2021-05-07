@@ -34,7 +34,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.client package" href="dazl.client.html"/>
         <link rel="prev" title="dazl package" href="dazl.html"/> 
@@ -68,6 +68,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.client.html">dazl.client package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.protocols.html">dazl.protocols package</a></li>
@@ -94,21 +98,21 @@
 <span id="dazl-cli-ls-module"></span><h2>dazl.cli.ls module<a class="headerlink" href="#module-dazl.cli.ls" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="dazl.cli.ls.ListAllCommand">
-<em class="property">class </em><code class="sig-prename descclassname">dazl.cli.ls.</code><code class="sig-name descname">ListAllCommand</code><a class="reference internal" href="_modules/dazl/cli/ls.html#ListAllCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.cli.ls.ListAllCommand" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.cli.ls.</span></code><code class="sig-name descname"><span class="pre">ListAllCommand</span></code><a class="headerlink" href="#dazl.cli.ls.ListAllCommand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.cli._base.CliCommand</span></code></p>
 <dl class="py method">
 <dt id="dazl.cli.ls.ListAllCommand.execute">
-<code class="sig-name descname">execute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><a class="reference internal" href="_modules/dazl/cli/ls.html#ListAllCommand.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.cli.ls.ListAllCommand.execute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execute</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><a class="headerlink" href="#dazl.cli.ls.ListAllCommand.execute" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="dazl.cli.ls.ListAllCommand.name">
-<code class="sig-name descname">name</code><em class="property"> = 'ls'</em><a class="headerlink" href="#dazl.cli.ls.ListAllCommand.name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'ls'</span></em><a class="headerlink" href="#dazl.cli.ls.ListAllCommand.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="dazl.cli.ls.ListAllCommand.parser">
-<code class="sig-name descname">parser</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.8)">argparse.ArgumentParser</a><a class="reference internal" href="_modules/dazl/cli/ls.html#ListAllCommand.parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.cli.ls.ListAllCommand.parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">parser</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.9)"><span class="pre">argparse.ArgumentParser</span></a><a class="headerlink" href="#dazl.cli.ls.ListAllCommand.parser" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -119,18 +123,18 @@
 <p>Simple command-line handlers.</p>
 <dl class="py function">
 <dt id="dazl.cli.main">
-<code class="sig-prename descclassname">dazl.cli.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/cli.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.cli.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dazl.cli.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.cli.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Executes one of the known commands.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="dazl.cli.print_cmd_help">
-<code class="sig-prename descclassname">dazl.cli.</code><code class="sig-name descname">print_cmd_help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dazl/cli.html#print_cmd_help"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.cli.print_cmd_help" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dazl.cli.</span></code><code class="sig-name descname"><span class="pre">print_cmd_help</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.cli.print_cmd_help" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="dazl.cli.run">
-<code class="sig-prename descclassname">dazl.cli.</code><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span></em>, <em class="sig-param"><span class="n">args</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><a class="reference internal" href="_modules/dazl/cli.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.cli.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dazl.cli.</span></code><code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><a class="headerlink" href="#dazl.cli.run" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -144,7 +148,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -155,7 +159,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

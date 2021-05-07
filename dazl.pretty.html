@@ -34,7 +34,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.protocols package" href="dazl.protocols.html"/>
         <link rel="prev" title="dazl.model package" href="dazl.model.html"/> 
@@ -63,6 +63,10 @@
 <li class="toctree-l3"><a class="reference internal" href="dazl.cli.html">dazl.cli package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.client.html">dazl.client package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dazl.protocols.html">dazl.protocols package</a></li>
@@ -83,9 +87,99 @@
   <span class="target" id="module-dazl.pretty"></span><div class="section" id="dazl-pretty-package">
 <h1><a class="reference internal" href="#module-dazl.pretty" title="dazl.pretty"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code></a> package<a class="headerlink" href="#dazl-pretty-package" title="Permalink to this headline">¶</a></h1>
 <p>This module contains utilities for pretty-printing various types in dazl.</p>
-<span class="target" id="module-dazl.pretty.render_daml"></span><span class="target" id="module-dazl.pretty.util"></span><dl class="py function">
+<span class="target" id="module-dazl.pretty.render_daml"></span><span class="target" id="module-dazl.pretty.util"></span><dl class="py class">
+<dt id="dazl.pretty.DAMLLexer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></code><code class="sig-name descname"><span class="pre">DAMLLexer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.pretty.DAMLLexer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dazl.pretty.DAMLLexer.aliases">
+<code class="sig-name descname"><span class="pre">aliases</span></code><em class="property"> <span class="pre">=</span> <span class="pre">['daml']</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.aliases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcuts for the lexer</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dazl.pretty.DAMLLexer.daml_reserved">
+<code class="sig-name descname"><span class="pre">daml_reserved</span></code><em class="property"> <span class="pre">=</span> <span class="pre">('template',</span> <span class="pre">'with',</span> <span class="pre">'controller',</span> <span class="pre">'can',</span> <span class="pre">'ensure',</span> <span class="pre">'daml',</span> <span class="pre">'observer',</span> <span class="pre">'signatory',</span> <span class="pre">'agreement',</span> <span class="pre">'controller',</span> <span class="pre">'nonconsuming',</span> <span class="pre">'return',</span> <span class="pre">'this')</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.daml_reserved" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="dazl.pretty.DAMLLexer.filenames">
+<code class="sig-name descname"><span class="pre">filenames</span></code><em class="property"> <span class="pre">=</span> <span class="pre">['*.daml']</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.filenames" title="Permalink to this definition">¶</a></dt>
+<dd><p>File name globs</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dazl.pretty.DAMLLexer.name">
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'DAML'</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the lexer</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dazl.pretty.DAMLLexer.tokens">
+<code class="sig-name descname"><span class="pre">tokens</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'root':</span> <span class="pre">[(&quot;\\b(template|with|controller|can|ensure|daml|observer|signatory|agreement|controller|nonconsuming|return|this)(?!\\')\\b&quot;,</span> <span class="pre">Token.Keyword.Reserved),</span> <span class="pre">('\\b(True|False)\\b',</span> <span class="pre">Token.Keyword.Constant),</span> <span class="pre">inherit]}</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dict of <code class="docutils literal notranslate"><span class="pre">{'state':</span> <span class="pre">[(regex,</span> <span class="pre">tokentype,</span> <span class="pre">new_state),</span> <span class="pre">...],</span> <span class="pre">...}</span></code></p>
+<p>The initial state is ‘root’.
+<code class="docutils literal notranslate"><span class="pre">new_state</span></code> can be omitted to signify no state transition.
+If it is a string, the state is pushed on the stack and changed.
+If it is a tuple of strings, all states are pushed on the stack and
+the current state will be the topmost.
+It can also be <code class="docutils literal notranslate"><span class="pre">combined('state1',</span> <span class="pre">'state2',</span> <span class="pre">...)</span></code>
+to signify a new, anonymous state combined from the rules of two
+or more existing ones.
+Furthermore, it can be ‘#pop’ to signify going back one step in
+the state stack, or ‘#push’ to push the current state on the stack
+again.</p>
+<p>The tuple can also be replaced with <code class="docutils literal notranslate"><span class="pre">include('state')</span></code>, in which
+case the rules from the state named by the string are included in the
+current one.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dazl.pretty.PrettyOptions">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></code><code class="sig-name descname"><span class="pre">PrettyOptions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_width</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_hidden_types</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'daml'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.pretty.PrettyOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display options for pretty-printing DAML ASTs.</p>
+<p>Instance attributes:</p>
+<dl class="py attribute">
+<dt id="dazl.pretty.PrettyOptions.column_width">
+<code class="sig-name descname"><span class="pre">column_width</span></code><a class="headerlink" href="#dazl.pretty.PrettyOptions.column_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of columns to use when rendering text, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if lines should not
+wrap.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dazl.pretty.PrettyOptions.show_hidden_types">
+<code class="sig-name descname"><span class="pre">show_hidden_types</span></code><a class="headerlink" href="#dazl.pretty.PrettyOptions.show_hidden_types" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> to render built-in DAML types defined in <code class="docutils literal notranslate"><span class="pre">DA.Internal</span></code> or <code class="docutils literal notranslate"><span class="pre">GHC</span></code> and specially
+generated names.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dazl.pretty.PrettyOptions.format">
+<code class="sig-name descname"><span class="pre">format</span></code><a class="headerlink" href="#dazl.pretty.PrettyOptions.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string that identifies the target language to render.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id0">
+<code class="sig-name descname"><span class="pre">column_width</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id1">
+<code class="sig-name descname"><span class="pre">format</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><em class="property"> <span class="pre">=</span> <span class="pre">'daml'</span></em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id2">
+<code class="sig-name descname"><span class="pre">show_hidden_types</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></em><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
 <dt id="dazl.pretty.get_pretty_printer">
-<code class="sig-prename descclassname">dazl.pretty.</code><code class="sig-name descname">get_pretty_printer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">format</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">dazl.pretty.options.PrettyOptions</span></em>, <em class="sig-param"><span class="n">store</span><span class="p">:</span> <span class="n">dazl.model.types_store.PackageStore</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>dazl.pretty._render_base.PrettyPrintBase<span class="p">]</span><a class="reference internal" href="_modules/dazl/pretty.html#get_pretty_printer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dazl.pretty.get_pretty_printer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></code><code class="sig-name descname"><span class="pre">get_pretty_printer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.pretty.options.PrettyOptions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.protocols.SymbolLookup</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.pretty._render_base.PrettyPrintBase</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#dazl.pretty.get_pretty_printer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -98,7 +192,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -109,7 +203,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

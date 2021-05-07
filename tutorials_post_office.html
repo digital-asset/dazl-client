@@ -34,7 +34,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/> 
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/> 
 </head>
 <body>
 
@@ -291,13 +291,16 @@ anything else can happen:</p>
 </dl>
 <p>First, a few important imports:</p>
 <div class="highlight-python notranslate" id="imports-and-constants"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
 
-<span class="kn">from</span> <span class="nn">dazl</span> <span class="kn">import</span> <span class="n">create</span><span class="p">,</span> <span class="n">sandbox</span>
+<span class="kn">from</span> <span class="nn">dazl</span> <span class="kn">import</span> <span class="n">create</span><span class="p">,</span> <span class="n">sandbox</span><span class="p">,</span> <span class="n">setup_default_logger</span>
+<span class="kn">from</span> <span class="nn">dazl.client</span> <span class="kn">import</span> <span class="n">ExitCode</span>  <span class="c1"># noqa</span>
 <span class="kn">from</span> <span class="nn">dazl.client</span> <span class="kn">import</span> <span class="n">create_client</span>
+<span class="kn">from</span> <span class="nn">dazl.client.config</span> <span class="kn">import</span> <span class="n">LedgerNodeConfiguration</span>
 
-<span class="n">DAML_FILE</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;./Main.daml&#39;</span><span class="p">))</span>
+<span class="n">DAML_FILE</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;./Main.daml&quot;</span><span class="p">))</span>
 
-<span class="n">POSTMAN_PARTY</span> <span class="o">=</span> <span class="s1">&#39;Postman&#39;</span>
+<span class="n">POSTMAN_PARTY</span> <span class="o">=</span> <span class="s2">&quot;Postman&quot;</span>
 <span class="n">MEMBER_PARTY_COUNT</span> <span class="o">=</span> <span class="mi">10</span>
 </pre></div>
 </div>
@@ -308,14 +311,16 @@ anything else can happen:</p>
     <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">parties</span><span class="o">=</span><span class="n">all_parties</span><span class="p">,</span> <span class="n">participant_url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">client_mgr</span><span class="p">:</span>
         <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
         <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+            <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s2">&quot;Main:PostmanRole&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">))</span>
+        <span class="p">)</span>
 
         <span class="n">ledger_run</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
+
 </pre></div>
 </div>
 <p>Lastly, the code that actually runs everything:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">sys</span>
 
     <span class="k">with</span> <span class="n">sandbox</span><span class="p">(</span><span class="n">DAML_FILE</span><span class="p">)</span> <span class="k">as</span> <span class="n">server</span><span class="p">:</span>
@@ -323,7 +328,7 @@ anything else can happen:</p>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">exit_code</span><span class="p">))</span>
 </pre></div>
 </div>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.simple_client()</span></code> is a helper function for creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code> and a
+<p><a class="reference internal" href="dazl.html#dazl.simple_client" title="dazl.simple_client"><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.simple_client()</span></code></a> is a helper function for creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code> and a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">SimplePartyClient</span></code>. At a minimum, you must provide it a list of parties to listen as, and a URL to the Sandbox
 (or Ledger Server participant node when running against a real instance).</p>
 <p>To create a client for a specific party, call <code class="xref py py-meth docutils literal notranslate"><span class="pre">LedgerClientManager.new_client()</span></code>. There are
@@ -353,7 +358,8 @@ after every run:</p>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
             <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+                <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s2">&quot;Main:PostmanRole&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">))</span>
+            <span class="p">)</span>
 
             <span class="n">client_mgr</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">inspector</span><span class="p">)</span>
 
@@ -361,6 +367,7 @@ after every run:</p>
             <span class="k">return</span> <span class="n">ledger_run</span><span class="o">.</span><span class="n">exit_code</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">inspector</span><span class="o">.</span><span class="n">dump_all</span><span class="p">()</span>
+
 </pre></div>
 </div>
 <p>We have added <code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.plugin.LedgerCapturePlugin</span></code>, which listens for events from the ledger and
@@ -377,9 +384,10 @@ instance; in this example, <code class="docutils literal notranslate"><span clas
 of this market. For readability, let’s also split out all the registration methods into a separate
 <code class="docutils literal notranslate"><span class="pre">set_up</span></code> function so that we can keep the focus on adding listeners to the ledger:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_test</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Member </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
-               <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MEMBER_PARTY_COUNT</span><span class="p">)]</span>
-    <span class="n">all_parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">POSTMAN_PARTY</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">member</span><span class="p">[</span><span class="s1">&#39;party&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Member </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MEMBER_PARTY_COUNT</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="n">all_parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">POSTMAN_PARTY</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">member</span><span class="p">[</span><span class="s2">&quot;party&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
 
     <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">parties</span><span class="o">=</span><span class="n">all_parties</span><span class="p">,</span> <span class="n">participant_url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">client_mgr</span><span class="p">:</span>
         <span class="n">inspector</span> <span class="o">=</span> <span class="n">LedgerCapturePlugin</span><span class="o">.</span><span class="n">stdout</span><span class="p">()</span>
@@ -395,13 +403,16 @@ of this market. For readability, let’s also split out all the registration met
 <span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
     <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
     <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
-        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s2">&quot;Main:PostmanRole&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">))</span>
+    <span class="p">)</span>
     <span class="n">postman_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
-        <span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span>
-        <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="p">[</span><span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;InviteParticipant&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">])</span>
+        <span class="s2">&quot;Main:PostmanRole&quot;</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="p">[</span><span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s2">&quot;InviteParticipant&quot;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">],</span>
+    <span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> Member Lane&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> Member Lane&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">on_created</span></code> method allows you to add an event handler for templates as they are created on
@@ -413,18 +424,24 @@ further progress the workflow, let’s add more callbacks in <code class="docuti
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="n">client_mgr</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
     <span class="n">postman_client</span> <span class="o">=</span> <span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">POSTMAN_PARTY</span><span class="p">)</span>
     <span class="n">postman_client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span>
-        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">)))</span>
+        <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="p">:</span> <span class="n">create</span><span class="p">(</span><span class="s2">&quot;Main:PostmanRole&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">postman</span><span class="o">=</span><span class="n">POSTMAN_PARTY</span><span class="p">))</span>
+    <span class="p">)</span>
     <span class="n">postman_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
-        <span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span>
-        <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="p">[</span><span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;InviteParticipant&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">])</span>
+        <span class="s2">&quot;Main:PostmanRole&quot;</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="p">[</span><span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s2">&quot;InviteParticipant&quot;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">],</span>
+    <span class="p">)</span>
 
-    <span class="n">member_clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;party&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
+    <span class="n">member_clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">client_mgr</span><span class="o">.</span><span class="n">new_client</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s2">&quot;party&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">member_client</span> <span class="ow">in</span> <span class="n">member_clients</span><span class="p">:</span>
         <span class="c1"># every member automatically accepts</span>
         <span class="n">member_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
-            <span class="s1">&#39;Main:InviteAuthorRole&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;AcceptInviteAuthorRole&#39;</span><span class="p">))</span>
+            <span class="s2">&quot;Main:InviteAuthorRole&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s2">&quot;AcceptInviteAuthorRole&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">member_client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span>
-            <span class="s1">&#39;Main:InviteReceiverRole&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s1">&#39;AcceptInviteReceiverRole&#39;</span><span class="p">))</span>
+            <span class="s2">&quot;Main:InviteReceiverRole&quot;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="n">cid</span><span class="o">.</span><span class="n">exercise</span><span class="p">(</span><span class="s2">&quot;AcceptInviteReceiverRole&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+
 </pre></div>
 </div>
 <p>Now notice that the <code class="docutils literal notranslate"><span class="pre">InviteAsAuthor</span></code> and <code class="docutils literal notranslate"><span class="pre">InviteAsReceiver</span></code> contracts are no longer in the
@@ -450,7 +467,7 @@ send letters to other participants in the market.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -461,7 +478,6 @@ send letters to other participants in the market.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

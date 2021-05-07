@@ -34,7 +34,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.0.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
         <link rel="next" title="Migrate" href="migrating.html"/>
         <link rel="prev" title="Basics" href="basics.html"/> 
 </head>
@@ -100,7 +100,8 @@ contracts.</p>
 
     <span class="n">sandbox_proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
         <span class="p">[</span><span class="s2">&quot;daml&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;--start-navigator=no&quot;</span><span class="p">,</span> <span class="s2">&quot;--open-browser=no&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--sandbox-port=</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-        <span class="n">cwd</span><span class="o">=</span><span class="n">daml_project_root</span><span class="p">)</span>
+        <span class="n">cwd</span><span class="o">=</span><span class="n">daml_project_root</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">sandbox_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
@@ -110,7 +111,6 @@ contracts.</p>
 
 
 <span class="k">class</span> <span class="nc">ExampleTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-
     <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">dazl</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">sandbox_url</span><span class="p">)</span>
@@ -124,8 +124,9 @@ contracts.</p>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">simple_new_party</span><span class="p">()</span>
         <span class="n">client</span><span class="o">.</span><span class="n">ready</span><span class="p">()</span>
 
-        <span class="n">client</span><span class="o">.</span><span class="n">submit_create</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;postman&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">party</span><span class="p">})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">find_active</span><span class="p">(</span><span class="s1">&#39;Main:PostmanRole&#39;</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">submit_create</span><span class="p">(</span><span class="s2">&quot;Main:PostmanRole&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;postman&quot;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">party</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">find_active</span><span class="p">(</span><span class="s2">&quot;Main:PostmanRole&quot;</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+
 
 </pre></div>
 </div>
@@ -180,7 +181,7 @@ globals:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.0.0',
+            VERSION:'7.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -191,7 +192,6 @@ globals:</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 
