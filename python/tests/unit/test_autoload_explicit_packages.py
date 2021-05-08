@@ -1,12 +1,11 @@
 from asyncio import ensure_future
 import logging
 
-import pytest
-
 from dazl import Network
 from dazl.damlast.errors import PackageNotFoundError
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.pkgfile import DarFile
+import pytest
 
 from .dars import Simple
 

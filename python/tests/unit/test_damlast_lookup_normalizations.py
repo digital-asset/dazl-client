@@ -1,9 +1,8 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-import pytest
-
 from dazl.damlast.lookup import matching_normalizations, normalize
 from dazl.model.lookup import template_reverse_globs
+import pytest
 
 
 def test_non_primary_simple_unknown_module():

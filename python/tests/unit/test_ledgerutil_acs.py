@@ -1,10 +1,9 @@
 from asyncio import gather
 import logging
 
-import pytest
-
 from dazl import connect
 from dazl.ledgerutil import ACS
+import pytest
 
 from .dars import PostOffice
 

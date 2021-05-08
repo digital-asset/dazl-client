@@ -4,9 +4,8 @@
 from asyncio import ensure_future, gather, new_event_loop, set_event_loop, sleep
 from unittest import TestCase
 
-import pytest
-
 from dazl.util.asyncio_util import ServiceQueue
+import pytest
 
 
 class TestServiceQueue(TestCase):

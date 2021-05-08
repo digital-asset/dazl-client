@@ -12,6 +12,7 @@
 .mypy_cache
 .poetry.ready
 .pytest_cache
+dist
 python/build
 python/dazl.egg-info
 python/dist

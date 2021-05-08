@@ -3,13 +3,11 @@
 
 from datetime import date, datetime, timedelta, timezone
 
-# noinspection PyPackageRequirements
-import pytest
-
 from dazl._gen.com.daml.ledger.api.v1 import value_pb2
 from dazl.damlast import CachedDarFile, daml_types as daml
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.values import Context, ProtobufDecoder, ProtobufEncoder
+import pytest
 from tests.unit import dars
 
 ARBITRARY_DATETIME = datetime(1989, 7, 5, 21, 30, tzinfo=timezone(-timedelta(hours=4)))

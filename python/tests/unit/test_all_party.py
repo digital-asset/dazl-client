@@ -4,9 +4,8 @@
 import logging
 import uuid
 
-import pytest
-
 from dazl import Party, async_network
+import pytest
 
 from .dars import AllParty as AllPartyDar
 

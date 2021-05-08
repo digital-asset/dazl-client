@@ -5,9 +5,8 @@ from asyncio import sleep
 import logging
 
 from aiohttp import ClientSession
-import pytest
-
 from dazl import Network, Party, async_network
+import pytest
 
 from .dars import TestServer as TestServerDar
 

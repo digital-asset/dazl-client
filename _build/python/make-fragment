@@ -75,21 +75,21 @@ def generate(manifest_file):
         # relative imports
         if 'pb' in types and 'grpc' not in types:
             print()
-            print(f'$(py_gen_dir)/{p}_pb2.py: $(_py_gen_tmp_dir)/{p}_pb2.py COPYRIGHT')
+            print(f'$(py_gen_dir)/{p}_pb2.py: $(_py_gen_tmp_dir)/{p}_pb2.py COPYRIGHT .venv/poetry.lock')
             print('\t@mkdir -p $(@D)')
             print('\t$(python) $(_py_rewrite) $< .cache/python COPYRIGHT > $@')
             print()
-            print(f'$(_py_gen_tmp_dir)/{p}_pb2.py: $(proto_dir)/{p}.proto')
+            print(f'$(_py_gen_tmp_dir)/{p}_pb2.py: $(proto_dir)/{p}.proto .venv/poetry.lock')
             print('\t@mkdir -p $(_py_gen_tmp_dir)')
             print('\t$(python) -m grpc_tools.protoc -I$(proto_dir) --python_out=$(_py_gen_tmp_dir) $<')
 
         if 'grpc' in types:
             print()
-            print(f'$(py_gen_dir)/{p}_pb2.py: $(_py_gen_tmp_dir)/{p}_pb2.py COPYRIGHT')
+            print(f'$(py_gen_dir)/{p}_pb2.py: $(_py_gen_tmp_dir)/{p}_pb2.py COPYRIGHT .venv/poetry.lock')
             print('\t@mkdir -p $(@D)')
             print('\t$(python) $(_py_rewrite) $< .cache/python COPYRIGHT > $@')
             print()
-            print(f'$(py_gen_dir)/{p}_pb2_grpc.py: $(_py_gen_tmp_dir)/{p}_pb2_grpc.py COPYRIGHT')
+            print(f'$(py_gen_dir)/{p}_pb2_grpc.py: $(_py_gen_tmp_dir)/{p}_pb2_grpc.py COPYRIGHT .venv/poetry.lock')
             print('\t@mkdir -p $(@D)')
             print('\t$(python) $(_py_rewrite) $< .cache/python COPYRIGHT > $@')
             print()

@@ -1,7 +1,6 @@
-import pytest
-
 from dazl import async_network
 from dazl.ledger import CreateCommand
+import pytest
 
 from .dars import AllParty, PostOffice
 

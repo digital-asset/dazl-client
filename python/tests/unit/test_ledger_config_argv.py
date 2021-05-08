@@ -4,11 +4,10 @@ import logging
 import os
 from typing import Any, Mapping
 
-import pytest
-
 from dazl.ledger.config import configure_parser
 from dazl.ledger.config.argv import WideHelpFormatter
 from dazl.ledger.config.exc import ConfigWarning
+import pytest
 
 
 def _test(cmd_line: str, expected: Mapping[str, Any]):

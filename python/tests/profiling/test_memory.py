@@ -14,10 +14,9 @@ from asyncio import get_event_loop
 from datetime import datetime
 import sys
 
-from pympler import muppy, summary
-
 from dazl import Network, create
 from dazl.protocols.events import ContractCreateEvent, ReadyEvent
+from pympler import muppy, summary
 
 
 def main(url: str):

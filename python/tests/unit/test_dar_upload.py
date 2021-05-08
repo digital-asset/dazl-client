@@ -3,9 +3,8 @@
 
 from asyncio import sleep
 
-import pytest
-
 from dazl import Network
+import pytest
 
 from .dars import UploadTest
 

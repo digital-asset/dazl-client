@@ -5,12 +5,11 @@ Ensure that v7 Commands and v8 Commands behave as expected, particularly with re
 deprecations.
 """
 
-import pytest
-
 from dazl.client import commands as v7
 from dazl.damlast.lookup import parse_type_con_name
 from dazl.ledger import api_types as v8
 from dazl.prim import ContractId, Party
+import pytest
 
 Operator = Party("Operator")
 

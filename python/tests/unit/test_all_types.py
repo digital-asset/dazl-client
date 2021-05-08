@@ -4,10 +4,9 @@
 import datetime
 from decimal import Decimal
 
-import pytest
-
 from dazl import async_network
 from dazl.ledger import CreateCommand, ExerciseCommand
+import pytest
 
 from .dars import AllKindsOf
 

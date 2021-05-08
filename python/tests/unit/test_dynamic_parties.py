@@ -3,9 +3,8 @@
 from asyncio import gather
 import uuid
 
-import pytest
-
 from dazl import async_network
+import pytest
 
 from .dars import PostOffice
 

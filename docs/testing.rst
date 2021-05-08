@@ -19,7 +19,7 @@ contracts.
 
 You can use a module-based setup fixture in ``unittest``:
 
-.. literalinclude:: ../tests/unittest_example/unittest_example.py
+.. literalinclude:: ../python/tests/unittest_example/unittest_example.py
     :language: python
     :start-after: # DOC_BEGIN: EXAMPLE
     :end-before: # DOC_END: EXAMPLE

@@ -24,7 +24,7 @@ import sys
 #
 import dazl
 
-theme_dir = str(Path(__file__).parent.parent.parent / "_themes")
+theme_dir = str(Path(__file__).parent.parent / "_themes")
 print(f"Reading a theme from {theme_dir}...")
 sys.path.insert(0, theme_dir)
 

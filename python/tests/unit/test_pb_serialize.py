@@ -3,8 +3,6 @@
 
 from dataclasses import dataclass
 
-import pytest
-
 from dazl._gen.com.daml.ledger.api.v1.commands_pb2 import Command as G_Command
 from dazl._gen.com.daml.ledger.api.v1.value_pb2 import (
     RecordField as G_RecordField,
@@ -22,6 +20,7 @@ from dazl.ledger import (
 from dazl.ledger.grpc.codec_aio import Codec
 from dazl.prim import ContractId, Party
 from dazl.protocols.v1.pb_ser_command import ProtobufSerializer
+import pytest
 
 from .dars import Pending
 

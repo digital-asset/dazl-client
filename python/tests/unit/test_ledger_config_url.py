@@ -1,8 +1,7 @@
 from urllib.parse import urlparse
 
-import pytest
-
 from dazl.ledger.config import create_url
+import pytest
 
 testdata = [
     # TODO: figure out a way to test the blank default in pytest while also ignoring environment

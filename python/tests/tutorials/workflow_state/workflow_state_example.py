@@ -3,11 +3,10 @@
 
 import subprocess
 
-from store import ContractStore
-
 from dazl import create, exercise
 from dazl.client import create_client
 from dazl.plugins import LedgerCapturePlugin
+from store import ContractStore
 
 operator = "Operator"
 alice = "Alice"
