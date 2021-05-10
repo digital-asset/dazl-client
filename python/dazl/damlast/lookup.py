@@ -78,8 +78,8 @@ def parse_type_con_name(val: str) -> TypeConName:
     if module_name:
         module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
     else:
-        module_ref = ModuleRef(pkg, DottedName())
-    return TypeConName(module_ref, entity_name.split("."))
+        module_ref = ModuleRef(pkg, DottedName(tuple()))
+    return TypeConName(module_ref, DottedName(entity_name.split(".")))
 
 
 def empty_lookup_impl(ref: Any) -> NoReturn:
@@ -219,15 +219,16 @@ class PackageLookup(SymbolLookup):
             module_ref = ModuleRef(archive.hash, module.name)
 
             for dt in module.data_types:
-                dt_name = TypeConName(module_ref, dt.name.segments)
-                data_types[f"{module.name}:{dt.name}"] = (dt_name, dt)
+                if dt.name is not None:
+                    dt_name = TypeConName(module_ref, DottedName(dt.name.segments))
+                    data_types[f"{module.name}:{dt.name}"] = (dt_name, dt)
 
             for value in module.values:
                 value_name = ValName(module_ref, value.name_with_type.name)
                 values[f"{module.name}:{value.name_with_type.name}"] = (value_name, value)
 
             for tmpl in module.templates:
-                tmpl_name = TypeConName(module_ref, tmpl.tycon.segments)
+                tmpl_name = TypeConName(module_ref, DottedName(tmpl.tycon.segments))
                 templates[f"{module.name}:{tmpl.tycon}"] = (tmpl_name, tmpl)
 
         self._data_types = MappingProxyType(data_types)

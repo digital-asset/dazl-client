@@ -68,7 +68,11 @@ def match_prim_type(
     elif prim_type.prim == PrimType.TEXTMAP:
         return on_text_map(prim_type.args[0])
     elif prim_type.prim == PrimType.NUMERIC:
-        return on_numeric(prim_type.args[0].nat)
+        nat = prim_type.args[0].nat
+        if nat is not None:
+            return on_numeric(nat)
+        else:
+            raise ValueError(f"invalid type argument for a Numeric: {prim_type.args[0]}")
     elif prim_type.prim == PrimType.ANY:
         return on_any()
     elif prim_type.prim == PrimType.TYPE_REP:

@@ -14,7 +14,10 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Literal
 
-__all__ = ["ProtobufParser"]
+__all__ = ["ProtobufParser", "UNIT"]
+
+
+UNIT = Unit()
 
 # TODO: Figure out a way to define these literals in daml_lf_1_pb2.pyi where they belong
 # fmt: off
@@ -63,7 +66,7 @@ class ProtobufParser:
             raise ValueError("missing a valid ModuleRef in a TypeConName definition")
         return lf.TypeConName(
             module_ref,
-            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments,
+            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
         )
 
     def parse_TypeSynName(self, pb: pblf.TypeSynName) -> lf.TypeSynName:
@@ -72,7 +75,7 @@ class ProtobufParser:
             raise ValueError("missing a valid ModuleRef in a TypeSynName definition")
         return lf.TypeSynName(
             module_ref,
-            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments,
+            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
         )
 
     def parse_DottedName(self, pb: pblf.DottedName) -> lf.DottedName:
@@ -84,7 +87,7 @@ class ProtobufParser:
             raise ValueError("missing a valid ModuleRef in a ValName definition")
         return lf.ValName(
             module_ref,
-            self._resolve_string_seq(pb.name_dname, pb.name_interned_dname),
+            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
         )
 
     def parse_FieldWithType(self, pb: pblf.FieldWithType) -> lf.FieldWithType:
@@ -136,7 +139,7 @@ class ProtobufParser:
         if sum_name == "var":
             return self.parse_Type_Var(pb.var)
         elif sum_name == "con":
-            return self.parse_Type_Con(pb.con)
+            return Type(con=self.parse_Type_Con(pb.con))
         elif sum_name == "prim":
             return lf.Type(prim=self.parse_Type_Prim(pb.prim))
         elif sum_name == "forall":
@@ -160,14 +163,14 @@ class ProtobufParser:
             )
         )
 
-    def parse_Type_Con(self, pb: pblf.Type.Con) -> lf.Type:
+    def parse_Type_Con(self, pb: pblf.Type.Con) -> lf.Type.Con:
         """
         Create a :class:`Type` instance (but may produce something slightly different than the AST
         due to ``Map``/``Optional`` type rewriting).
         """
         tycon = self.parse_TypeConName(pb.tycon)
         args = tuple(self.parse_Type(arg) for arg in pb.args)
-        return lf.Type(con=lf.Type.Con(tycon, args))
+        return lf.Type.Con(tycon, args)
 
     def parse_Type_Prim(self, pb: pblf.Type.Prim) -> lf.Type.Prim:
         return lf.Type.Prim(
@@ -391,7 +394,7 @@ class ProtobufParser:
     def parse_Expr_RecUpd(self, pb: pblf.Expr.RecUpd) -> lf.Expr.RecUpd:
         """Set ``field`` in ``record`` to ``update``."""
         return lf.Expr.RecUpd(
-            self.parse_Type_Con(pb.tycon).con,
+            self.parse_Type_Con(pb.tycon),
             self._resolve_string(pb.field_str, pb.field_interned_str),
             self.parse_Expr(pb.record),
             self.parse_Expr(pb.update),
@@ -399,7 +402,7 @@ class ProtobufParser:
 
     def parse_Expr_VariantCon(self, pb: pblf.Expr.VariantCon) -> lf.Expr.VariantCon:
         return lf.Expr.VariantCon(
-            self.parse_Type_Con(pb.tycon).con,  # Always fully applied
+            self.parse_Type_Con(pb.tycon),  # Always fully applied
             self._resolve_string(pb.variant_con_str, pb.variant_con_interned_str),
             self.parse_Expr(pb.variant_arg),
         )
@@ -813,7 +816,7 @@ class ProtobufParser:
 
     def parse_KeyExpr_Projection(self, pb: pblf.KeyExpr.Projection) -> lf.KeyExpr.Projection:
         return lf.KeyExpr.Projection(
-            tycon=self.parse_Type_Con(pb.tycon).con,
+            tycon=self.parse_Type_Con(pb.tycon),
             field=self._resolve_string(pb.field_str, pb.field_interned_str),
         )
 
@@ -830,7 +833,7 @@ class ProtobufParser:
 
     def parse_KeyExpr_Record(self, pb: pblf.KeyExpr.Record) -> lf.KeyExpr.Record:
         return lf.KeyExpr.Record(
-            tycon=self.parse_Type_Con(pb.tycon).con,
+            tycon=self.parse_Type_Con(pb.tycon),
             fields=[self.parse_KeyExpr_RecordField(p) for p in pb.fields],
         )
 
@@ -848,20 +851,29 @@ class ProtobufParser:
         )
 
     def parse_DefTemplate_DefKey(self, pb: pblf.DefTemplate.DefKey) -> lf.DefTemplate.DefKey:
-        kwargs = dict(type=self.parse_Type(pb.type), maintainers=self.parse_Expr(pb.maintainers))
+        type = self.parse_Type(pb.type)
+        maintainers = self.parse_Expr(pb.maintainers)
         key_expr_name = pb.WhichOneof("key_expr")
         if key_expr_name == "key":
-            kwargs["key"] = self.parse_KeyExpr(pb.key)
+            return DefTemplate.DefKey(
+                key=self.parse_KeyExpr(pb.key),
+                type=type,
+                maintainers=maintainers,
+            )
         elif key_expr_name == "complex_key":
-            kwargs["complex_key"] = self.parse_Expr(pb.complex_key)
-        return lf.DefTemplate.DefKey(**kwargs)
+            return DefTemplate.DefKey(
+                complex_key=self.parse_Expr(pb.complex_key),
+                type=type,
+                maintainers=maintainers,
+            )
+        else:
+            raise ValueError(f"unknown key type: {key_expr_name}")
 
     def parse_DefDataType(self, pb: pblf.DefDataType) -> lf.DefDataType:
         name = self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname)
         params = tuple(self.parse_TypeVarWithKind(param) for param in pb.params)
         serializable = pb.serializable
         location = self.parse_Location(pb.location)
-
         DataCons_name = pb.WhichOneof("DataCons")
         if DataCons_name == "record":
             return lf.DefDataType(
@@ -958,6 +970,7 @@ class ProtobufParser:
                 templates=tuple(
                     child_parser.parse_DefTemplate(template) for template in pb.templates
                 ),
+                exceptions=tuple(),
             )
         finally:
             self.current_module = None

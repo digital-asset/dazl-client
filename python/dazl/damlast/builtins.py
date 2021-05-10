@@ -46,7 +46,7 @@ class Concat(Builtin):
         if xxs.cons is not None and xxs.cons.tail.nil is not None and len(xxs.cons.front) == 1:
             return xxs.cons.front[0]
         if xxs.nil is not None:
-            return Expr(nil=Expr.Nil(xxs.nil.type.prim.args[0]))
+            return Expr(nil=Expr.Nil(xxs.nil.type.prim.args[0]))  # type: ignore
         return None
 
 

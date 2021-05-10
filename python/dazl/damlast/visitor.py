@@ -328,25 +328,41 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
         return Expr(prim_lit=prim_lit)
 
     def visit_expr_rec_con(self, rec_con: "Expr.RecCon") -> "Expr":
-        new_fields = tuple(
-            [FieldWithExpr(fwt.field, self.visit_expr(fwt.expr)) for fwt in rec_con.fields]
-        )
-        new_tycon = self.visit_type_con(rec_con.tycon).con
-        return Expr(rec_con=Expr.RecCon(tycon=new_tycon, fields=new_fields))
+        new_type = self.visit_type_con(rec_con.tycon)
+        new_type_con = new_type.con
+        if new_type_con is not None:
+            new_fields = tuple(
+                FieldWithExpr(fwt.field, self.visit_expr(fwt.expr)) for fwt in rec_con.fields
+            )
+            return Expr(rec_con=Expr.RecCon(tycon=new_type_con, fields=new_fields))
+        else:
+            raise ValueError("cannot create an Expr(rec_con=...) with a non-Type.Con type")
 
     def visit_expr_rec_proj(self, rec_proj: "Expr.RecProj") -> "Expr":
-        new_tycon = self.visit_type_con(rec_proj.tycon).con
-        new_record = self.visit_expr(rec_proj.record)
-        return Expr(rec_proj=Expr.RecProj(tycon=new_tycon, field=rec_proj.field, record=new_record))
+        new_type = self.visit_type_con(rec_proj.tycon)
+        new_type_con = new_type.con
+        if new_type_con is not None:
+            new_record = self.visit_expr(rec_proj.record)
+            return Expr(
+                rec_proj=Expr.RecProj(tycon=new_type_con, field=rec_proj.field, record=new_record)
+            )
+        else:
+            raise ValueError("cannot create an Expr(rec_proj=...) with a non-Type.Con type")
 
     def visit_expr_variant_con(self, variant_con: "Expr.VariantCon") -> "Expr":
-        new_type_con = self.visit_type_con(variant_con.tycon).con
-        new_variant_arg = self.visit_expr(variant_con.variant_arg)
-        return Expr(
-            variant_con=Expr.VariantCon(
-                tycon=new_type_con, variant_con=variant_con.variant_con, variant_arg=new_variant_arg
+        new_type = self.visit_type_con(variant_con.tycon)
+        new_type_con = new_type.con
+        if new_type_con is not None:
+            new_variant_arg = self.visit_expr(variant_con.variant_arg)
+            return Expr(
+                variant_con=Expr.VariantCon(
+                    tycon=new_type_con,
+                    variant_con=variant_con.variant_con,
+                    variant_arg=new_variant_arg,
+                )
             )
-        )
+        else:
+            raise ValueError("cannot create an Expr(variant_con=...) with a non-Type.con type")
 
     def visit_expr_enum_con(self, enum_con: "Expr.EnumCon") -> "Expr":
         return Expr(enum_con=Expr.EnumCon(tycon=enum_con.tycon, enum_con=enum_con.enum_con))

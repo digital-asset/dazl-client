@@ -131,6 +131,9 @@ $(py_src_gen): $(py_src_gen_root)/%: .cache/witnesses/python
 	@mkdir -p $(@D)
 	$(protoc) --dazl-python_out="$(py_src_gen_root)" -I$(proto_dir) $(proto_src_pb)
 
+python/dazl/damlast/daml_lf_1.py: .cache/protos/com/daml/daml_lf_1_15/daml_lf_1.proto
+	$(protoc) --dazl-python-archive_out="$(@D)" -I$(proto_dir) .cache/protos/com/daml/daml_lf_1_15/daml_lf_1.proto
+
 # python: witness that makes sure the current venv is up to date with our lock file
 .venv/poetry.lock: poetry.lock
 	poetry run pip install --no-color --disable-pip-version-check -U pip

@@ -61,6 +61,7 @@ tls-testing = ["pyOpenSSL"]
 dazl = 'dazl.cli:main'
 protoc-gen-dazl-go = '_dazl_pb.plugin_go:main'
 protoc-gen-dazl-python = '_dazl_pb.plugin_python:main'
+protoc-gen-dazl-python-archive = '_dazl_pb.plugin_python_archive:main'
 
 [tool.black]
 line-length = 100
