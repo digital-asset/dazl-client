@@ -27,7 +27,7 @@ from ..ledger import ArchiveEvent, Boundary, CreateEvent
 from ..ledger.aio import Connection
 from ..ledger.errors import ProtocolWarning
 from ..prim import ContractData, ContractId
-from ..query import ContractMatch, is_match
+from ..query import ContractMatch, Queries, is_match
 
 if sys.version_info >= (3, 8):
     from typing import Literal
@@ -96,11 +96,7 @@ class ACS:
 
     """
 
-    def __init__(
-        self,
-        conn: Connection,
-        queries: Mapping[Union[str, TypeConName], ContractMatch],
-    ):
+    def __init__(self, conn: Connection, queries: Queries):
         self._conn = conn
         self._queries = queries
         self._snapshot = None  # type: Optional[Snapshot]
@@ -233,7 +229,9 @@ class ACS:
         return f"ACS(state={self._state})"
 
 
-async def snapshots(conn: Connection, queries) -> "AsyncIterator[Tuple[State, Optional[Snapshot]]]":
+async def snapshots(
+    conn: Connection, queries: Queries
+) -> "AsyncIterator[Tuple[State, Optional[Snapshot]]]":
     """
     Coroutine that returns regular "state" and "snapshot" updates aggregated over events off an
     event stream.
