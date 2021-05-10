@@ -1,7 +1,6 @@
-import pytest
-
 from dazl.damlast.lookup import parse_type_con_name
 from dazl.query import EMPTY, Filter, parse_query
+import pytest
 
 SuperCoolTmpl = parse_type_con_name("SuperCool:Tmpl")
 ReallyCoolTmpl = parse_type_con_name("ReallyCool:Tmpl")

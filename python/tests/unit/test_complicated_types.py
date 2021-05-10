@@ -4,10 +4,9 @@
 import logging
 from operator import setitem
 
-import pytest
-
 from dazl import async_network
 from dazl.ledger import ExerciseCommand
+import pytest
 
 from .dars import Complicated as ComplicatedDar
 

@@ -3,9 +3,8 @@
 
 import logging
 
-import pytest
-
 from dazl import connect
+import pytest
 
 from .dars import PostOffice
 

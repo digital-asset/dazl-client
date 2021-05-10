@@ -8,7 +8,29 @@ download_protos_zip := $(cache_dir)/download/protobufs-$(daml_proto_version).zip
 download_status_proto := $(cache_dir)/download/google/rpc/status.proto
 proto_dir := $(cache_dir)/protos
 proto_manifest := $(proto_dir)/manifest.json
-python := $(shell cd python && poetry env info -p)/bin/python3
+python := poetry run python3
+
+version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
+py_src := $(shell find python/dazl -name '*.py[i]') README.md pyproject.toml
+docs_src := $(shell find docs -name '*.rst') $(py_src)
+py_bdist := dist/dazl-$(version)-py3-none-any.whl
+py_sdist := dist/dazl-$(version).tar.gz
+docs_html_dir := dist/dazl-docs-$(version)-html
+docs_html_tgz := $(docs_html_dir).tar.gz
+docs_markdown_dir := dist/dazl-docs-$(version)-markdown
+docs_markdown_tgz := $(docs_markdown_dir).tar.gz
+packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
+test_dars := \
+  _fixtures/src/all-kinds-of/.daml/dist/all-kinds-of-1.0.0.dar \
+  _fixtures/src/all-party/.daml/dist/all-party-1.0.0.dar \
+  _fixtures/src/complicated/.daml/dist/complicated-1.0.0.dar \
+  _fixtures/src/dotted-fields/.daml/dist/dotted-fields-1.0.0.dar \
+  _fixtures/src/map-support/.daml/dist/map-support-1.0.0.dar \
+  _fixtures/src/pending/.daml/dist/pending-1.0.0.dar \
+  _fixtures/src/post-office/.daml/dist/post-office-1.0.0.dar \
+  _fixtures/src/simple/.daml/dist/simple-1.0.0.dar \
+  _fixtures/src/test-server/.daml/dist/test-server-1.0.0.dar \
+  _fixtures/src/upload-test/.daml/dist/upload-test-1.0.0.dar
 
 # Go requires that GOBIN be an absolute path
 export GOBIN := $(shell pwd)/.cache/bin
@@ -40,47 +62,80 @@ unpack-protos: $(cache_dir)/protos/manifest.json
 help:	## Show list of available make targets
 	@cat Makefile | grep -e "^[a-zA-Z_\-]*: *.*## *" | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: deps
-deps:  ## Fetch all dependencies.
-	make -C python deps
-
 .PHONY: clean
 clean:  ## Clean everything.
-	rm -fr .cache
-	make -C python clean
-	make -C tests clean
+	rm -fr .cache dist target
 
+
+.PHONY: deps
+deps: python-deps
+
+
+.PHONY: python-deps
+python-deps: .venv/poetry.lock
+
+
+.venv/poetry.lock: poetry.lock
+	poetry run pip install pip==21.1.1
+	poetry install -E oauth -E prometheus -E pygments -E server
+	cp $< $@
+
+
+# `poetry build` produces both the wheel and a source dist; see
+# https://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html
+# for why these rules are written this way
 .PHONY: build
-build:  ## Build everything.
-	make -C python build
+build: $(packages)  # Build everything.
+
+
+$(py_sdist): $(py_src)
+	poetry build
+
+
+$(py_bdist): $(py_sdist)
+	@test -f $@ || rm -f $^
+	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) $^
+
 
 .PHONY: test
-test: dars  ## Run all tests.
-	make -C python test
-	make -C tests test
+test: python-format-test python-typecheck python-unit-test python-integration-test  ## Run all tests.
+
 
 .PHONY: local-ci
 local-ci:  ## Run the build as if it were running on CI.
 	circleci local execute
 
+
 .PHONY: publish
-publish:  ## Publish everything.
-	make -C python publish
+publish: $(packages)  ## Publish everything.
+	scripts/publish.sh $^
 
 
-.PHONY: python-format-check
-python-format-check:
-	make -C python format-check
+.PHONY: format
+format: python-format
 
 
-.PHONY: python-test
-python-test: dars
-	$(MAKE) -C python test
+.PHONY: python-format
+python-format: .venv/poetry.lock
+	poetry run isort python
+	poetry run black python
+
+
+.PHONY: python-format-test
+python-format-test: .venv/poetry.lock
+	poetry run isort python --check-only
+	poetry run black python --check
+
+
+.PHONY: python-unit-test
+python-unit-test: .venv/poetry.lock $(test_dars)
+	poetry run pytest --log-cli-level=INFO --junitxml=target/test-results/junit.xml
 
 
 .PHONY: python-integration-test
-python-integration-test:
-	$(MAKE) -C python integration-test
+python-integration-test: .venv/poetry.lock _fixtures/src/post-office/.daml/dist/post-office-1.0.0.dar
+	cd _fixtures/src/post-office && \
+	$(python) integration-test.py $(if $(DAZL_TEST_DAML_LEDGER_URL),--url $(DAZL_TEST_DAML_LEDGER_URL))
 
 
 .PHONY: fetch-protos
@@ -101,11 +156,6 @@ gen-go-clean:
 	rm -fr .cache/make/go.mk .cache/go-protos go/v7/pkg
 
 
-.cache/make/dars.mk: _build/dar/make-fragment
-	mkdir -p $(@D)
-	$^ > $@
-	
-
 .cache/bin/protoc-gen-go:
 	mkdir -p $(@D)
 	go install google.golang.org/protobuf/cmd/protoc-gen-go
@@ -121,6 +171,72 @@ gen-go-clean:
 	$^ > $@
 
 
-include .cache/make/dars.mk
+.PHONY: typecheck
+typecheck: python-typecheck
+
+
+.PHONY: python-typecheck
+python-typecheck: .venv/poetry.lock
+	poetry run python3 -m mypy -p dazl
+
+
+.PHONY: docs
+docs: $(docs_html_tgz) $(docs_markdown_tgz)
+
+
+$(docs_html_tgz): .venv/poetry.lock $(docs_src)
+	poetry run sphinx-build -b html docs $(docs_html_dir)
+	(cd dist && tar czf $(@F) $(notdir $(docs_html_dir)))
+
+
+$(docs_markdown_tgz): .venv/poetry.lock $(docs_src)
+	poetry run sphinx-build -b markdown docs $(docs_markdown_dir)
+	(cd dist && tar czf $(@F) $(notdir $(docs_markdown_dir)))
+
+
+.PHONY: dars
+dars: $(test_dars)
+
+
+_fixtures/src/all-kinds-of/.daml/dist/all-kinds-of-1.0.0.dar: _fixtures/src/all-kinds-of/daml.yaml $(shell find _fixtures/src/all-kinds-of -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/all-party/.daml/dist/all-party-1.0.0.dar: _fixtures/src/all-party/daml.yaml $(shell find _fixtures/src/all-party -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/complicated/.daml/dist/complicated-1.0.0.dar: _fixtures/src/complicated/daml.yaml $(shell find _fixtures/src/complicated -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/dotted-fields/.daml/dist/dotted-fields-1.0.0.dar: _fixtures/src/dotted-fields/daml.yaml $(shell find _fixtures/src/dotted-fields -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/map-support/.daml/dist/map-support-1.0.0.dar: _fixtures/src/map-support/daml.yaml $(shell find _fixtures/src/map-support -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/pending/.daml/dist/pending-1.0.0.dar: _fixtures/src/pending/daml.yaml $(shell find _fixtures/src/pending -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/post-office/.daml/dist/post-office-1.0.0.dar: _fixtures/src/post-office/daml.yaml $(shell find _fixtures/src/post-office -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/simple/.daml/dist/simple-1.0.0.dar: _fixtures/src/simple/daml.yaml $(shell find _fixtures/src/simple -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/test-server/.daml/dist/test-server-1.0.0.dar: _fixtures/src/test-server/daml.yaml $(shell find _fixtures/src/test-server -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/upload-test/.daml/dist/upload-test-1.0.0.dar: _fixtures/src/upload-test/daml.yaml $(shell find _fixtures/src/upload-test -name '*.daml')
+	cd $(<D) && daml build
+
+
 include .cache/make/go.mk
 include .cache/make/python.mk

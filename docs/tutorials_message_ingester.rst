@@ -28,7 +28,7 @@ DAML Model
 
 This example assumes the following DAML:
 
-.. literalinclude:: ../tests/tutorials/message_ingester/MessageIngester.daml
+.. literalinclude:: ../python/tests/tutorials/message_ingester/MessageIngester.daml
     :language: daml
 
 The ``messageIngesterTest`` scenario describes a sample execution of the workflow, and is the basis from from which
@@ -37,7 +37,7 @@ our Python application will be designed.
 Python Application
 ------------------
 
-.. literalinclude:: ../tests/tutorials/message_ingester/message_ingester.py
+.. literalinclude:: ../python/tests/tutorials/message_ingester/message_ingester.py
     :language: python
     :linenos:
 
@@ -58,7 +58,7 @@ it has successfully connected to the platform/sandbox.
 each of which provide a reference to a custom python function that shall be invoked when a certain
 leger event occurs. For example, this registration:
 
-.. literalinclude:: ../tests/tutorials/message_ingester/message_ingester.py
+.. literalinclude:: ../python/tests/tutorials/message_ingester/message_ingester.py
     :language: python
     :start-after: # DOC_BEGIN: SAMPLE_CALLBACK_ONCREATED
     :end-before: # DOC_END: SAMPLE_CALLBACK_ONCREATED
@@ -72,14 +72,14 @@ created.
   3. That ``exercise`` choice will be invoked on a DAML contract with a contract id of ``cid``, with the specified parameters.
   4. Since this is a non-consuming choice, the ``OperatorRole`` contract will remain active.
 
-.. literalinclude:: ../tests/tutorials/message_ingester/message_ingester.py
+.. literalinclude:: ../python/tests/tutorials/message_ingester/message_ingester.py
     :language: python
     :start-after: # DOC_BEGIN: FUNCTION_INGEST_THE_MESSAGE
     :end-before: # DOC_BEGIN: FUNCTION_INGEST_THE_MESSAGE
 
 The :func:`exercise` call in the above code snippet corresponds to this line in our DAML test scenario:
 
-.. literalinclude:: ../tests/tutorials/message_ingester/MessageIngester.daml
+.. literalinclude:: ../python/tests/tutorials/message_ingester/MessageIngester.daml
     :language: daml
     :start-after: -- DOC_BEGIN: SAMPLE_DAML_SCENARIO_INGEST_MESSAGE
     :end-before: -- DOC_END: SAMPLE_DAML_SCENARIO_INGEST_MESSAGE

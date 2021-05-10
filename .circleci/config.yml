@@ -17,7 +17,8 @@ jobs:
           command: .circleci/install-jq
       - save_cache:
           key: jq-{{ checksum ".circleci/install-jq" }}
-          paths: /home/circleci/.jq
+          paths:
+           - /home/circleci/.jq
 
       - restore_cache:
           key: daml-{{ checksum ".circleci/install-daml" }}
@@ -25,30 +26,32 @@ jobs:
           command: .circleci/install-daml
       - save_cache:
           key: daml-{{ checksum ".circleci/install-daml" }}
-          paths: /home/circleci/.daml
+          paths:
+           - /home/circleci/.daml
 
       - restore_cache:
-          key: deps-{{ checksum "python/poetry.lock" }}
+          key: python-deps-{{ checksum "poetry.lock" }}
       - run:
-          command: poetry config virtualenvs.in-project true && make -C python deps
+          command: poetry config virtualenvs.in-project true && make python-deps
       - save_cache:
-          key: deps-{{ checksum "python/poetry.lock" }}
-          paths: "python/.venv"
+          key: python-deps-{{ checksum "poetry.lock" }}
+          paths:
+           - .venv
 
       - run:
           name: Python format checks
-          command: make python-format-check
+          command: make python-format-test
       - run:
           name: Python unit tests
-          command: make python-test
+          command: make python-unit-test
       - run:
           name: Python integration tests
           command: make python-integration-test
       - run:
           name: Python packaging
-          command: make -C python package
+          command: make build
       - store_test_results:
-          path: python/test-results
+          path: target/test-results
   blackduck:
     docker:
       - image: rappdw/docker-java-python
@@ -61,7 +64,8 @@ jobs:
           command: .circleci/install-jq
       - save_cache:
           key: jq-{{ checksum ".circleci/install-jq" }}
-          paths: /home/circleci/.jq
+          paths:
+           - /home/circleci/.jq
 
       - run:
           name: Run Blackduck Detect

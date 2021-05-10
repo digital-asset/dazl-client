@@ -3,10 +3,9 @@
 
 from asyncio import ensure_future, wait_for
 
-import pytest
-
 from dazl import AIOPartyClient, async_network
 from dazl.ledger import ExerciseCommand
+import pytest
 
 from .dars import Simple
 

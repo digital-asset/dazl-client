@@ -16,7 +16,7 @@ DAML Model
 
 This example assumes the following DAML:
 
-.. literalinclude:: ../tests/tutorials/post_office/Main.daml
+.. literalinclude:: ../python/tests/tutorials/post_office/Main.daml
     :language: daml
 
 Create the Postman
@@ -32,7 +32,7 @@ If you are running this code example through the SDK, it will:
 
 First, a few important imports:
 
-.. literalinclude:: ../tests/tutorials/post_office/tutorial.py
+.. literalinclude:: ../python/tests/tutorials/post_office/tutorial.py
     :language: python
     :start-after: # DOC_BEGIN: IMPORTS_CONSTANTS
     :end-before: # DOC_END: IMPORTS_CONSTANTS
@@ -40,7 +40,7 @@ First, a few important imports:
 
 Then the main dish:
 
-.. literalinclude:: ../tests/tutorials/post_office/tutorial.py
+.. literalinclude:: ../python/tests/tutorials/post_office/tutorial.py
     :language: python
     :dedent: 4
     :start-after: # DOC_BEGIN: CREATE_POSTMAN
@@ -49,7 +49,7 @@ Then the main dish:
 
 Lastly, the code that actually runs everything:
 
-.. literalinclude:: ../tests/tutorials/post_office/tutorial.py
+.. literalinclude:: ../python/tests/tutorials/post_office/tutorial.py
     :language: python
     :dedent: 4
     :start-after: # DOC_BEGIN: MAIN-BOILERPLATE
@@ -81,7 +81,7 @@ actually see what is happening afterwards because it tears down the ledger and a
 You could either start a Sandbox instance manually through the SDK, or you could output the ledger
 after every run:
 
-.. literalinclude:: ../tests/tutorials/post_office/tutorial.py
+.. literalinclude:: ../python/tests/tutorials/post_office/tutorial.py
     :language: python
     :dedent: 4
     :start-after: # DOC_BEGIN: INSPECT_LEDGER
@@ -104,7 +104,7 @@ We have now created the postman and can see that on the ledger; now we'll add th
 of this market. For readability, let's also split out all the registration methods into a separate
 ``set_up`` function so that we can keep the focus on adding listeners to the ledger:
 
-.. literalinclude:: ../tests/tutorials/post_office/tutorial.py
+.. literalinclude:: ../python/tests/tutorials/post_office/tutorial.py
     :language: python
     :dedent: 4
     :start-after: # DOC_BEGIN: INVITE_PARTICIPANTS
@@ -118,7 +118,7 @@ After running the script, you should see a few more columns in the output for al
 and you can see that the parties now see invitation contracts that they can exercise choices on. To
 further progress the workflow, let's add more callbacks in ``set_up``:
 
-.. literalinclude:: ../tests/tutorials/post_office/tutorial.py
+.. literalinclude:: ../python/tests/tutorials/post_office/tutorial.py
     :language: python
     :dedent: 4
     :start-after: # DOC_BEGIN: ACCEPT_INVITES

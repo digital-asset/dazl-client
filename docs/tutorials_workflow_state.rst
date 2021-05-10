@@ -30,7 +30,7 @@ DAML Model
 
 ``WorkflowStateExample.daml``
 
-.. literalinclude:: ../tests/tutorials/workflow_state/daml/WorkflowStateExample.daml
+.. literalinclude:: ../python/tests/tutorials/workflow_state/daml/WorkflowStateExample.daml
     :language: daml
 
 The ``ticketTransactionTest`` scenario describes a sample execution of the workflow, and is the basis from from which
@@ -41,12 +41,12 @@ Python Application
 
 ``store.py``
 
-.. literalinclude:: ../tests/tutorials/workflow_state/store.py
+.. literalinclude:: ../python/tests/tutorials/workflow_state/store.py
     :language: python
 
 ``workflow_state_example.py``
 
-.. literalinclude:: ../tests/tutorials/workflow_state/workflow_state_example.py
+.. literalinclude:: ../python/tests/tutorials/workflow_state/workflow_state_example.py
     :language: python
 
 To run this code sample:
@@ -61,14 +61,14 @@ To run this code sample:
 
 :func:`accept_ticket_seller_invite` and :func:`accept_ticket_buyer_invite` store their respective contracts into ``contract_store``. This is the first step in setting up a multi-contract-creation dependency.
 
-.. literalinclude:: ../tests/tutorials/workflow_state/workflow_state_example.py
+.. literalinclude:: ../python/tests/tutorials/workflow_state/workflow_state_example.py
     :language: python
     :start-after: # DOC_BEGIN: FUNCTION_ACCEPT_INVITE
     :end-before: # DOC_END: FUNCTION_ACCEPT_INVITE
 
 :func:`transition_to_ticket_transactions_in_progress` performs lookups into ``contract_store``. These lookups will wait until the specified contract keys are present in the ``contract_store``, and only perform the ``exercise`` command after that point. Thus, BOTH the `TicketSellerRole` and the `TicketBuyerRole` must be created before the application can transition to the next step in the workflow.
 
-.. literalinclude:: ../tests/tutorials/workflow_state/workflow_state_example.py
+.. literalinclude:: ../python/tests/tutorials/workflow_state/workflow_state_example.py
     :language: python
     :start-after: # DOC_BEGIN: FUNCTION_MULTI_CREATION_DEPENDENCY
     :end-before: # DOC_END: FUNCTION_MULTI_CREATION_DEPENDENCY

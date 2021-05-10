@@ -4,12 +4,11 @@
 from asyncio import Event, ensure_future, get_event_loop, sleep
 from typing import AbstractSet
 
-import pytest
-
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.ledger.aio import PackageLoader
+import pytest
 
 from .dars import AllKindsOf
 

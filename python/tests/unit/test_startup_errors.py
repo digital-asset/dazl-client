@@ -1,9 +1,8 @@
 import asyncio
 from asyncio import CancelledError, ensure_future, wait_for
 
-import pytest
-
 from dazl import LOG, Network
+import pytest
 
 
 @pytest.mark.asyncio

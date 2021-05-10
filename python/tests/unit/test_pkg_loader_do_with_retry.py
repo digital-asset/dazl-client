@@ -1,15 +1,13 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-# noinspection PyPackageRequirements
-import pytest
-
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef, TypeConName
 from dazl.damlast.errors import NameNotFoundError
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.util import package_ref
 from dazl.ledger.aio import PackageLoader
+import pytest
 
 from .dars import AllKindsOf
 
