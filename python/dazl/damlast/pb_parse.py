@@ -8,7 +8,10 @@ from typing import Any, Dict, List as _List, Optional, Sequence
 
 from .daml_lf_1 import *
 
-__all__ = ["ProtobufParser"]
+__all__ = ["ProtobufParser", "UNIT"]
+
+
+UNIT = Unit()
 
 
 # noinspection PyPep8Naming,PyMethodMayBeStatic
@@ -47,7 +50,7 @@ class ProtobufParser:
             raise ValueError("missing a valid ModuleRef in a TypeConName definition")
         return TypeConName(
             module_ref,
-            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments,
+            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
         )
 
     def parse_TypeSynName(self, pb) -> "TypeSynName":
@@ -56,7 +59,7 @@ class ProtobufParser:
             raise ValueError("missing a valid ModuleRef in a TypeSynName definition")
         return TypeSynName(
             module_ref,
-            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname).segments,
+            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
         )
 
     def parse_DottedName(self, pb) -> "DottedName":
@@ -68,7 +71,7 @@ class ProtobufParser:
             raise ValueError("missing a valid ModuleRef in a ValName definition")
         return ValName(
             module_ref,
-            self._resolve_string_seq(pb.name_dname, pb.name_interned_dname),
+            self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
         )
 
     def parse_FieldWithType(self, pb) -> "FieldWithType":
@@ -120,7 +123,7 @@ class ProtobufParser:
         if sum_name == "var":
             return self.parse_Type_Var(pb.var)
         elif sum_name == "con":
-            return self.parse_Type_Con(pb.con)
+            return Type(con=self.parse_Type_Con(pb.con))
         elif sum_name == "prim":
             return Type(prim=self.parse_Type_Prim(pb.prim))
         elif sum_name == "fun":
@@ -146,15 +149,14 @@ class ProtobufParser:
             )
         )
 
-    def parse_Type_Con(self, pb) -> "Type":
+    def parse_Type_Con(self, pb) -> "Type.Con":
         """
         Create a :class:`Type` instance (but may produce something slightly different than the AST
         due to ``Map``/``Optional`` type rewriting).
         """
         tycon = self.parse_TypeConName(pb.tycon)
         args = tuple(self.parse_Type(arg) for arg in pb.args)
-        core_type = Type(con=Type.Con(tycon, args))
-        return core_type
+        return Type.Con(tycon, args)
 
     def parse_Type_Prim(self, pb) -> "Type.Prim":
         return Type.Prim(
@@ -303,13 +305,13 @@ class ProtobufParser:
 
     def parse_Expr_RecCon(self, pb) -> "Expr.RecCon":
         return Expr.RecCon(
-            self.parse_Type_Con(pb.tycon).con,
+            self.parse_Type_Con(pb.tycon),
             tuple(self.parse_FieldWithExpr(field) for field in pb.fields),
         )  # length > 0
 
     def parse_Expr_RecProj(self, pb) -> "Expr.RecProj":
         return Expr.RecProj(
-            self.parse_Type_Con(pb.tycon).con,  # Always fully applied
+            self.parse_Type_Con(pb.tycon),  # Always fully applied
             self._resolve_string(pb.field_str, pb.field_interned_str),
             self.parse_Expr(pb.record),
         )
@@ -317,7 +319,7 @@ class ProtobufParser:
     def parse_Expr_RecUpd(self, pb) -> "Expr.RecUpd":
         """Set ``field`` in ``record`` to ``update``."""
         return Expr.RecUpd(
-            self.parse_Type_Con(pb.tycon).con,
+            self.parse_Type_Con(pb.tycon),
             self._resolve_string(pb.field_str, pb.field_interned_str),
             self.parse_Expr(pb.record),
             self.parse_Expr(pb.update),
@@ -325,7 +327,7 @@ class ProtobufParser:
 
     def parse_Expr_VariantCon(self, pb) -> "Expr.VariantCon":
         return Expr.VariantCon(
-            self.parse_Type_Con(pb.tycon).con,  # Always fully applied
+            self.parse_Type_Con(pb.tycon),  # Always fully applied
             self._resolve_string(pb.variant_con_str, pb.variant_con_interned_str),
             self.parse_Expr(pb.variant_arg),
         )
@@ -610,7 +612,7 @@ class ProtobufParser:
 
     def parse_KeyExpr_Projection(self, pb) -> "KeyExpr.Projection":
         return KeyExpr.Projection(
-            tycon=self.parse_Type_Con(pb.tycon).con,
+            tycon=self.parse_Type_Con(pb.tycon),
             field=self._resolve_string(pb.name, pb.interned_id),
         )
 
@@ -626,7 +628,7 @@ class ProtobufParser:
 
     def parse_KeyExpr_Record(self, pb) -> "KeyExpr.Record":
         return KeyExpr.Record(
-            tycon=self.parse_Type_Con(pb.tycon).con,
+            tycon=self.parse_Type_Con(pb.tycon),
             fields=[self.parse_KeyExpr_RecordField(p) for p in pb.fields],
         )
 
@@ -644,13 +646,23 @@ class ProtobufParser:
         )
 
     def parse_DefTemplate_DefKey(self, pb) -> "DefTemplate.DefKey":
-        kwargs = dict(type=self.parse_Type(pb.type), maintainers=self.parse_Expr(pb.maintainers))
+        type = self.parse_Type(pb.type)
+        maintainers = self.parse_Expr(pb.maintainers)
         key_expr_name = pb.WhichOneof("key_expr")
         if key_expr_name == "key":
-            kwargs["key"] = self.parse_KeyExpr(pb.key)
+            return DefTemplate.DefKey(
+                key=self.parse_KeyExpr(pb.key),
+                type=type,
+                maintainers=maintainers,
+            )
         elif key_expr_name == "complex_key":
-            kwargs["complex_key"] = self.parse_Expr(pb.complex_key)
-        return DefTemplate.DefKey(**kwargs)
+            return DefTemplate.DefKey(
+                complex_key=self.parse_Expr(pb.complex_key),
+                type=type,
+                maintainers=maintainers,
+            )
+        else:
+            raise ValueError(f"unknown key type: {key_expr_name}")
 
     def parse_DefDataType(self, pb) -> "DefDataType":
         kwargs = dict(
@@ -701,7 +713,7 @@ class ProtobufParser:
 
     def parse_DefValue_NameWithType(self, pb) -> "DefValue.NameWithType":
         return DefValue.NameWithType(
-            name=self._resolve_string_seq(pb.name_dname, pb.name_interned_dname),
+            name=self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname),
             type=self.parse_Type(pb.type),
         )
 
@@ -728,6 +740,7 @@ class ProtobufParser:
                 templates=tuple(
                     child_parser.parse_DefTemplate(template) for template in pb.templates
                 ),
+                exceptions=tuple(),
             )
         finally:
             self.current_module = None

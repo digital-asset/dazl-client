@@ -7,7 +7,6 @@ from typing import Optional, Sequence, Union
 import warnings
 
 from .daml_lf_1 import (
-    UNIT,
     DefDataType,
     DefValue,
     DottedName,
@@ -21,6 +20,7 @@ from .daml_lf_1 import (
     TypeVarWithKind,
     _Name,
 )
+from .pb_parse import UNIT
 
 
 # noinspection PyShadowingBuiltins
@@ -98,7 +98,7 @@ def type_var_with_kind(var: str, type: Kind = Kind(star=UNIT)):
 def def_value(name: "Union[str, Sequence[str]]", daml_type: "Type", expr: "Expr") -> "DefValue":
     if isinstance(name, str):
         name = (name,)
-    name_with_type = DefValue.NameWithType(name=name, type=daml_type)
+    name_with_type = DefValue.NameWithType(name=DottedName(name), type=daml_type)
     return DefValue(name_with_type, expr, True, False, None)
 
 
