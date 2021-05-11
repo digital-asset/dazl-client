@@ -2,9 +2,9 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-root_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/../.. >/dev/null 2>&1 && pwd )"
+root_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. >/dev/null 2>&1 && pwd )"
 root_version=$(cat "${root_dir}/VERSION")
-py_version=$(python3 -c "import configparser; config = configparser.ConfigParser(); config.read('${root_dir}/python/pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
+py_version=$(python3 -c "import configparser; config = configparser.ConfigParser(); config.read('${root_dir}/pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
 git_sha="$(git rev-parse HEAD)"
 
 if ! command -v gh &>/dev/null ; then
@@ -22,7 +22,7 @@ fi
 if [ "${root_version}" != "${py_version}" ]; then
     echo "The versions in the repo do not agree!"
     echo "    VERSION: ${root_version}"
-    echo "    python/pyproject.toml: ${py_version}"
+    echo "    pyproject.toml: ${py_version}"
     exit 1
 fi
 
