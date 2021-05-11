@@ -489,7 +489,9 @@ class Connection(aio.Connection):
 
     # region Read API
 
-    def query(self, __template_id: str = "*", __query: Query = None) -> "QueryStream":
+    def query(
+        self, __template_id: Union[str, TypeConName] = "*", __query: Query = None
+    ) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
 
@@ -520,7 +522,11 @@ class Connection(aio.Connection):
         return QueryStream(self, parse_query(*queries, server_side_filters=False), UNTIL_END)
 
     def stream(
-        self, __template_id: str = "*", __query: Query = None, *, offset: Optional[str] = None
+        self,
+        __template_id: Union[str, TypeConName] = "*",
+        __query: Query = None,
+        *,
+        offset: Optional[str] = None,
     ) -> "QueryStream":
         """
         Stream create/archive events.
