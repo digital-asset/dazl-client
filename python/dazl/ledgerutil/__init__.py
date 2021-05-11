@@ -2,6 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from .acs import ACS
-from .fetch import fetch_first
+from .fetch import fetch_first, fetch_last
 
-__all__ = ["ACS", "fetch_first"]
+__all__ = ["ACS", "fetch_first", "fetch_last"]
