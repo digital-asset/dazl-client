@@ -54,7 +54,7 @@ jobs:
           path: target/test-results
   blackduck:
     docker:
-      - image: rappdw/docker-java-python
+      - image: cimg/python:3.6.13-browsers
     steps:
       - checkout
 
@@ -70,8 +70,7 @@ jobs:
       - run:
           name: Run Blackduck Detect
           command: |
-            cp /home/circleci/.jq/bin/jq /usr/local/bin
-            bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) ci-build digitalasset_dazl master --logging.level.com.synopsys.integration=DEBUG --detect.python.python3=true
+            bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) ci-build digitalasset_dazl master --logging.level.com.synopsys.integration=DEBUG
           working_directory: python
           
 workflows:
