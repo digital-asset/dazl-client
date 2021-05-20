@@ -102,6 +102,7 @@ class QueryStreamBase(QueryStream):
         """
         Close the stream.
         """
+        await self.close()
 
     async def close(self) -> None:
         """

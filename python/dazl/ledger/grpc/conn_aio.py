@@ -9,6 +9,7 @@ from typing import AbstractSet, Any, AsyncIterable, Collection, Mapping, Optiona
 import uuid
 import warnings
 
+from grpc import ChannelConnectivity
 from grpc.aio import Channel, UnaryStreamCall
 
 from .. import aio
@@ -62,7 +63,7 @@ from .._offsets import UNTIL_END, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
 from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
-from ..errors import ProtocolWarning
+from ..errors import ProtocolWarning, _translate_exceptions
 from .channel import create_channel
 from .codec_aio import Codec
 
@@ -96,6 +97,10 @@ class Connection(aio.Connection):
     @property
     def codec(self) -> Codec:
         return self._codec
+
+    @property
+    def is_closed(self) -> bool:
+        return self._channel.get_state(try_to_connect=False) == ChannelConnectivity.SHUTDOWN
 
     async def __aenter__(self) -> "Connection":
         await self.open()
@@ -665,12 +670,11 @@ class QueryStream(aio.QueryStreamBase):
             In this case, the first returned object is a :class:`Boundary` with ``offset=None``.
         """
         log = self.conn.config.logger
+        async with _translate_exceptions(self.conn), self:
+            filters = await self.conn.codec.encode_filters(self._filters)
+            filters_by_party = {party: filters for party in self.conn.config.access.read_as}
+            tx_filter_pb = G_TransactionFilter(filters_by_party=filters_by_party)
 
-        filters = await self.conn.codec.encode_filters(self._filters)
-        filters_by_party = {party: filters for party in self.conn.config.access.read_as}
-        tx_filter_pb = G_TransactionFilter(filters_by_party=filters_by_party)
-
-        try:
             offset = None
             if self._offset_range.begin is None:
                 # when starting from the beginning of the ledger, the Active Contract Set service
@@ -711,8 +715,6 @@ class QueryStream(aio.QueryStreamBase):
                 log.debug(
                     "Not reading from transaction stream because we were only asked for a snapshot."
                 )
-        finally:
-            await self.close()
 
     async def _acs_events(
         self, filter_pb: G_TransactionFilter

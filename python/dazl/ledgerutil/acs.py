@@ -34,7 +34,7 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Literal
 
-__all__ = ["ACS", "Snapshot"]
+__all__ = ["ACS", "Snapshot", "snapshots"]
 
 
 T = TypeVar("T")
@@ -281,6 +281,10 @@ async def snapshots(
             raise
 
         except Exception:
+            if conn.is_closed:
+                yield STOPPED, None
+                raise
+
             yield RECONNECTING, None
             log.exception(
                 "The stream disconnected. Waiting %s seconds, then trying again (attempting "
@@ -289,7 +293,7 @@ async def snapshots(
                 offset,
             )
             await sleep(backoff_time)
-            backoff_time = max(30.0, backoff_time * 2.0)
+            backoff_time = min(30.0, backoff_time * 2.0)
 
 
 class Snapshot:
@@ -409,10 +413,13 @@ class Snapshot:
         """
         return self._creates
 
-    def __len__(self):
+    def __bool__(self) -> bool:
+        return bool(self._creates)
+
+    def __len__(self) -> int:
         return len(self._creates)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Snapshot(len={len(self)})"
 
 

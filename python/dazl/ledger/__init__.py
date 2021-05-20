@@ -121,6 +121,13 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
+    @property
+    def is_closed(self):
+        """
+        Return whether the connection is closed.
+        """
+        raise NotImplementedError
+
     def open(self):
         """
         Prepares the connection for being used, including possibly fetching the ledger ID if it is
