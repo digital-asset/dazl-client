@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-set -euo pipefail
+set -xeuo pipefail
 
-version=1.12.0
+version=1.13.1
 
 function install {
     if ! link ; then
