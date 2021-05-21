@@ -42,6 +42,9 @@ jobs:
           name: Python format checks
           command: make python-format-test
       - run:
+          name: Python typechecks
+          command: make python-typecheck
+      - run:
           name: Python unit tests
           command: make python-unit-test
       - run:
