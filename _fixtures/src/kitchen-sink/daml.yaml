@@ -1,0 +1,7 @@
+sdk-version: 1.13.1
+name: kitchen-sink
+version: 1.0.0
+source: KitchenSink
+dependencies:
+  - daml-prim
+  - daml-stdlib

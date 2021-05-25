@@ -1,0 +1,7 @@
+module KitchenSink.SKU where
+
+data SKU = SKU
+  with
+    supplier : Party
+    sku : Text
+  deriving (Eq, Show, Ord)

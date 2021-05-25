@@ -1,0 +1,57 @@
+module KitchenSink.Warehouse where
+
+import KitchenSink.SKU
+
+template Warehouse
+  with
+    warehouse : Party
+    suppliers : Party
+    location : Text
+  where
+    signatory warehouse
+    observer suppliers
+    
+    choice AddStock : ContractId WarehouseStock with
+        sku : SKU
+        quantity : Int
+      controller sku.supplier
+      do
+        optCid <- lookupByKey @WarehouseRetailer (warehouse, sku.supplier)
+        case optCid of
+          None -> abort $ "unknown supplier: " <> (show sku.supplier)
+          Some cid -> addStock warehouse sku quantity
+
+
+template WarehouseStock
+  with
+    warehouse : Party
+    sku : SKU
+    quantity : Int
+  where
+    signatory warehouse, sku.supplier
+    key (warehouse, sku) : (Party, SKU)
+    maintainer key._1
+
+
+template WarehouseRetailer
+  with
+    warehouse : Party
+    supplier : Party
+    activeAt : Time
+    terminatedAt : Optional Time
+  where
+    signatory warehouse, supplier
+    key (warehouse, supplier) : (Party, Party)
+    maintainer key._1
+
+
+addStock : Party -> SKU -> Int -> Update (ContractId WarehouseStock)
+addStock warehouse sku quantity = do
+  optStockCid <- lookupByKey @WarehouseStock (warehouse, sku)
+  case optStockCid of 
+    Some stockCid -> do
+      stock <- fetch stockCid
+      archive stockCid
+      create stock with quantity = stock.quantity + quantity
+    None -> do
+      create WarehouseStock with ..

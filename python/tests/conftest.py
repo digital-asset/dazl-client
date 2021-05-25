@@ -10,7 +10,7 @@ import subprocess
 from dazl.util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
 import pytest
 
-DEFAULT_SDK_VERSION = "1.3.0"
+DEFAULT_SDK_VERSION = "1.13.1"
 SANDBOX_START_TIMEOUT = timedelta(seconds=10)
 
 

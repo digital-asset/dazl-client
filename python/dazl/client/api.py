@@ -33,6 +33,7 @@ from ..damlast.daml_lf_1 import PackageRef, TypeConName
 from ..damlast.pkgfile import Dar
 from ..damlast.protocols import SymbolLookup
 from ..ledger import (
+    CreateAndExerciseCommand,
     CreateCommand,
     CreateEvent,
     ExerciseByKeyCommand,
@@ -67,7 +68,7 @@ from ._events import (
 from ._network_client_impl import _NetworkImpl
 from ._party_client_impl import _PartyClientImpl
 from .bots import Bot, BotCollection
-from .commands import CreateAndExerciseCommand, EventHandlerResponse
+from .commands import EventHandlerResponse
 from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from .events import EventKey
 from .ledger import LedgerMetadata
@@ -861,7 +862,7 @@ class AIOPartyClient(PartyClient):
             The :class:`CreateEvent` that represents the contract that was successfully created.
         """
         return await self._impl.write_create(
-            CreateCommand(__template_id, __payload),
+            CreateCommand(template_id=__template_id, payload=__payload),
             workflow_id=workflow_id,
             command_id=command_id,
         )
@@ -945,7 +946,7 @@ class AIOPartyClient(PartyClient):
             of exercising the choice.
         """
         return await self._impl.write_exercise(
-            ExerciseCommand(__contract_id, __choice_name, __argument),
+            ExerciseCommand(contract_id=__contract_id, choice=__choice_name, argument=__argument),
             workflow_id=workflow_id,
             command_id=command_id,
         )
@@ -1039,7 +1040,9 @@ class AIOPartyClient(PartyClient):
             of exercising the choice.
         """
         return await self._impl.write_exercise(
-            ExerciseByKeyCommand(__template_id, __choice_name, __key, __argument),
+            ExerciseByKeyCommand(
+                template_id=__template_id, choice=__choice_name, key=__key, argument=__argument
+            ),
             workflow_id=workflow_id,
             command_id=command_id,
         )
@@ -1134,7 +1137,12 @@ class AIOPartyClient(PartyClient):
             of exercising the choice.
         """
         return await self._impl.write_exercise(
-            CreateAndExerciseCommand(__template_id, __payload, __choice_name, __argument),
+            CreateAndExerciseCommand(
+                template_id=__template_id,
+                payload=__payload,
+                choice=__choice_name,
+                argument=__argument,
+            ),
             workflow_id=workflow_id,
             command_id=command_id,
         )
