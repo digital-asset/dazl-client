@@ -40,8 +40,8 @@ async def test_server_endpoint(sandbox):
         async def bob_sends_a_message(_):
             await bob_client.exercise_by_key(
                 "TestServer:Person",
-                bob,
                 "SayHello",
+                bob,
                 {"receiver": alice, "text": "Bob's ultra secret message"},
             )
 
@@ -49,8 +49,8 @@ async def test_server_endpoint(sandbox):
         async def carol_sends_a_message(_):
             await carol_client.exercise_by_key(
                 "TestServer:Person",
-                carol,
                 "SayHello",
+                carol,
                 {"receiver": alice, "text": "Carol's gonna Carol"},
             )
 

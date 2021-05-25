@@ -1,0 +1,33 @@
+module KitchenSink.Retailer where
+
+template Retailer
+  with
+    retailer : Party
+    name : Text
+    website : Text
+  where
+    signatory retailer
+    key retailer : Party
+    maintainer key
+
+    controller retailer can
+      UpdateWebsite : ContractId Retailer
+        with
+          newWebsite : Text
+        do
+          create this with website = newWebsite
+
+
+template Order
+  with
+    customer : Party
+    payment : Numeric 2
+    retailer : Party
+    expedite : Bool
+  where
+    signatory customer, retailer
+
+    controller retailer can
+      MarkAsShipped : ()
+        do
+          pure ()

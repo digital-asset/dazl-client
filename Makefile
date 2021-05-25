@@ -25,6 +25,7 @@ test_dars := \
   _fixtures/src/all-party/.daml/dist/all-party-1.0.0.dar \
   _fixtures/src/complicated/.daml/dist/complicated-1.0.0.dar \
   _fixtures/src/dotted-fields/.daml/dist/dotted-fields-1.0.0.dar \
+  _fixtures/src/kitchen-sink/.daml/dist/kitchen-sink-1.0.0.dar \
   _fixtures/src/map-support/.daml/dist/map-support-1.0.0.dar \
   _fixtures/src/pending/.daml/dist/pending-1.0.0.dar \
   _fixtures/src/post-office/.daml/dist/post-office-1.0.0.dar \
@@ -211,6 +212,10 @@ _fixtures/src/complicated/.daml/dist/complicated-1.0.0.dar: _fixtures/src/compli
 
 
 _fixtures/src/dotted-fields/.daml/dist/dotted-fields-1.0.0.dar: _fixtures/src/dotted-fields/daml.yaml $(shell find _fixtures/src/dotted-fields -name '*.daml')
+	cd $(<D) && daml build
+
+
+_fixtures/src/kitchen-sink/.daml/dist/kitchen-sink-1.0.0.dar: _fixtures/src/kitchen-sink/daml.yaml $(shell find _fixtures/src/kitchen-sink -name '*.daml')
 	cd $(<D) && daml build
 
 
