@@ -3,6 +3,7 @@ import logging
 
 from dazl import connect
 from dazl.ledgerutil import ACS
+from dazl.testing import connect_with_new_party
 import pytest
 
 from .dars import PostOffice
@@ -10,36 +11,35 @@ from .dars import PostOffice
 
 @pytest.mark.asyncio
 async def test_acs(sandbox):
-    parties = []
-    async with connect(url=sandbox, admin=True) as conn:
-        await conn.upload_package(PostOffice.read_bytes())
-        postman = (await conn.allocate_party()).party
-        for _ in range(3):
-            info = await conn.allocate_party()
-            parties.append(info.party)
-
-    async with connect(url=sandbox, act_as=postman) as conn:
-        event = await conn.create("Main:PostmanRole", {"postman": postman})
-        await gather(
-            *[
-                conn.exercise(
-                    event.contract_id, "InviteParticipant", {"party": party, "address": "P1"}
-                )
-                for party in parties
-            ]
+    async with connect_with_new_party(url=sandbox, dar=PostOffice, party_count=4) as (
+        postman,
+        p1,
+        p2,
+        p3,
+    ):
+        event = await postman.connection.create("Main:PostmanRole", {"postman": postman.party})
+        await postman.connection.exercise(
+            event.contract_id, "InviteParticipant", {"party": p1.party, "address": "P1"}
         )
+        await postman.connection.exercise(
+            event.contract_id, "InviteParticipant", {"party": p2.party, "address": "P2"}
+        )
+        await postman.connection.exercise(
+            event.contract_id, "InviteParticipant", {"party": p3.party, "address": "P3"}
+        )
+
         logging.info("Accepting roles...")
-        await gather(*[accept_roles(sandbox, party) for party in parties])
+        await gather(*[accept_roles(sandbox, party) for party in (p1.party, p2.party, p3.party)])
         logging.info("Roles accepted.")
 
-        async with ACS(conn, {"Main:AuthorRole": {}, "Main:ReceiverRole": {}}) as acs:
+        async with ACS(postman.connection, {"Main:AuthorRole": {}, "Main:ReceiverRole": {}}) as acs:
             snapshot = acs.read_immediately()
 
             authors = snapshot.matching_contracts("Main:AuthorRole")
             receivers = snapshot.matching_contracts("Main:ReceiverRole")
 
-            assert len(parties) == len(authors)
-            assert len(parties) == len(receivers)
+            assert 3 == len(authors)
+            assert 3 == len(receivers)
             logging.info("Authors: %r", authors)
             logging.info("Receivers: %r", receivers)
 

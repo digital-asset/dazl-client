@@ -58,7 +58,7 @@ def _rewrite_exceptions(fn: Fn) -> Fn:
     # to handling all Exceptions until this code is modified to handle this case.
     try:
         # noinspection PyProtectedMember
-        from grpc._cython.cygrpc import UsageError
+        from grpc._cython.cygrpc import UsageError  # type: ignore
     except ImportError:
         # noinspection PyPep8Naming
         UsageError = Exception
@@ -73,7 +73,7 @@ def _rewrite_exceptions(fn: Fn) -> Fn:
             else:
                 raise
 
-    return _rewrite_exception
+    return _rewrite_exception  # type: ignore
 
 
 class ExceptionTranslator:
