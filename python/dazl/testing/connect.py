@@ -7,6 +7,7 @@ import sys
 from typing import BinaryIO, Callable, Collection, List, Optional, Sequence, Union
 
 from .. import connect
+from ..ledger import PartyInfo
 from ..ledger.aio import Connection
 from ..prim import Party
 
@@ -168,22 +169,7 @@ class ConnectWithNewParty:
         self.connections = []  # type: List[Connection]
 
     async def __aenter__(self) -> "Sequence[ConnectionWithParty]":
-        # Party allocation and package uploading require "admin" access, so we disregard the given
-        # user parameters to allocate parties
-        async with connect(url=self.url, admin=True, ledger_id=self.ledger_id) as conn:
-            party_infos = await gather(
-                *(
-                    conn.allocate_party(
-                        identifier_hint=self.identifier_hint_fn(i),
-                        display_name=self.display_name_fn(i),
-                    )
-                    for i in range(self.party_count)
-                )
-            )
-
-            if self.dar is not None:
-                await conn.upload_package(self.dar)
-
+        party_infos = await self._set_up_ledger()
         ret = []
         for party_info in party_infos:
             party_conn = connect(
@@ -202,3 +188,20 @@ class ConnectWithNewParty:
 
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
         await gather(*(conn.close() for conn in self.connections))
+
+    async def _set_up_ledger(self) -> Sequence[PartyInfo]:
+        # Party allocation and package uploading require "admin" access, so we disregard the given
+        # user parameters to upload packages and allocate parties
+        async with connect(url=self.url, admin=True, ledger_id=self.ledger_id) as admin_conn:
+            if self.dar is not None:
+                await admin_conn.upload_package(self.dar)
+
+            return await gather(
+                *(
+                    admin_conn.allocate_party(
+                        identifier_hint=self.identifier_hint_fn(i),
+                        display_name=self.display_name_fn(i),
+                    )
+                    for i in range(self.party_count)
+                )
+            )
