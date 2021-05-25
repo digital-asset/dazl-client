@@ -39,5 +39,5 @@ echo "Git SHA: ${git_sha}"
 echo "Files: $@"
 echo "Flags: ${gh_flags}"
 
-gh release create "${root_version}" ${gh_flags} -t "dazl v${root_version}" $@
+gh release create "v${root_version}" ${gh_flags} -t "dazl v${root_version}" $@
 poetry publish
