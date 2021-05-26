@@ -185,6 +185,11 @@ python-typecheck: .venv/poetry.lock
 docs: $(docs_html_tgz) $(docs_markdown_tgz)
 
 
+.PHONY: docs-server
+docs-server:
+	poetry run sphinx-autobuild -a -b html docs .cache/docs
+
+
 $(docs_html_tgz): .venv/poetry.lock $(docs_src)
 	poetry run sphinx-build -b html docs $(docs_html_dir)
 	(cd dist && tar czf $(@F) $(notdir $(docs_html_dir)))
