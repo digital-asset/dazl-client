@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+daml_yamls=$(find _fixtures/src -name daml.yaml)
+
+case "${1:-}" in
+  -M) ;;  # output a make dependencies file
+  -d) ;;  # output daml.yaml file names
+  -o) ;;  # output DAR file names
+  *)
+    echo "Must be called with -M or -o"
+    exit 1
+    ;;
+esac
+
+for daml_yaml in ${daml_yamls}
+do
+  daml_dir="$(dirname "${daml_yaml}")"
+  dar="${daml_dir}/.daml/dist/$(basename "${daml_dir}")-1.0.0.dar"
+
+  case "${1}" in
+  -M)
+    echo "${dar}: ${daml_yaml} $(find "${daml_dir}" -name '*.daml' -type f | tr '\n' ' ')"
+    echo "	cd \"${daml_dir}\" && daml build"
+    echo ""
+    ;;
+  -d)
+    echo "${daml_yaml}"
+    ;;
+  -o)
+    echo "${dar}"
+    ;;
+  esac
+done
+

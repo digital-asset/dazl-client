@@ -1,0 +1,78 @@
+module SameName where
+
+import DA.Action
+
+template Book
+  with
+    owner: Party
+    publisher: Party
+    author: Party
+    title: Text
+  where
+    signatory owner
+
+
+template Draft
+  with
+    author: Party
+    title: Text
+  where
+    signatory author
+
+
+template Publisher
+  with
+    publisher: Party
+  where
+    signatory publisher
+
+    controller publisher can
+      PublishBook : [ContractId Book]
+        with
+          draft: Draft
+          copies: Int
+        do
+          replicateA copies $ create Book
+            with
+              owner = publisher
+              author = draft.author
+              title = draft.title
+              publisher = publisher
+          
+
+template PublisherAuthorRelationship
+  with
+    publisher: Party
+    author: Party
+  where
+    signatory publisher, author
+
+
+template Author
+  with
+    author: Party
+    name: Text
+  where
+    signatory author
+    controller author can
+      RequestRelationship: ContractId PublisherAuthorRelationshipRequest
+        with
+          publisher: Party
+        do
+          create PublisherAuthorRelationshipRequest with ..
+
+
+template PublisherAuthorRelationshipRequest
+  with
+    publisher: Party
+    author: Party
+  where
+    signatory author
+    controller publisher can
+      Accept : ContractId PublisherAuthorRelationship
+        do
+          create PublisherAuthorRelationship with ..
+
+      Reject : ()
+        do
+          pure ()
