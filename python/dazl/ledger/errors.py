@@ -1,7 +1,8 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
-from typing import TYPE_CHECKING, Callable, TypeVar
+import asyncio
+import concurrent.futures
+from typing import TYPE_CHECKING, Callable, Optional, TypeVar
 
 if TYPE_CHECKING:
     from . import Connection
@@ -15,6 +16,7 @@ __all__ = [
     "ConnectionClosedError",
     "_rewrite_exceptions",
     "_translate_exceptions",
+    "_allow_cancel",
 ]
 
 
@@ -95,9 +97,46 @@ class ExceptionTranslator:
             raise ConnectionClosedError() from exc_val
 
 
+class AllowCancellation:
+    def __init__(self, allow: Callable[[], bool]):
+        self.allow = allow
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> Optional[bool]:
+        if exc_val is not None:
+            # These two exceptions are actually the same type under the hood--however, nothing
+            # that I can find in the Python docs suggest that this HAS to be the case. Either
+            # way, suppress cancellation errors that happen when we are closed, because .
+            return self.allow() and (
+                exc_type is asyncio.CancelledError or exc_type is concurrent.futures.CancelledError
+            )
+
+        return None
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb) -> Optional[bool]:
+        if exc_val is not None:
+            # These two exceptions are actually the same type under the hood--however, nothing
+            # that I can find in the Python docs suggest that this HAS to be the case. Either
+            # way, suppress cancellation errors that happen when we are closed, because .
+            return self.allow() and (
+                exc_type is asyncio.CancelledError or exc_type is concurrent.futures.CancelledError
+            )
+
+        return None
+
+
 def _translate_exceptions(conn: "Connection") -> ExceptionTranslator:
     """
     Return an (async) context manager that translates exceptions thrown from low-level gRPC calls
     to high-level dazl exceptions.
     """
     return ExceptionTranslator(conn)
+
+
+def _allow_cancel(allow: Callable[[], bool]) -> AllowCancellation:
+    return AllowCancellation(allow)

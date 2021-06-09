@@ -53,3 +53,12 @@ async def accept_roles(sandbox, party):
         async with conn.query("Main:InviteReceiverRole") as query:
             async for event in query.creates():
                 await conn.exercise(event.contract_id, "AcceptInviteReceiverRole")
+
+
+@pytest.mark.asyncio
+async def test_acs_can_async_read(sandbox):
+    async with connect_with_new_party(url=sandbox, dar=PostOffice) as p:
+        async with ACS(p.connection, {"Main:PostmanRole"}) as acs:
+            await acs.read()
+
+    assert True
