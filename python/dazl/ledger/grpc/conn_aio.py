@@ -63,7 +63,7 @@ from .._offsets import UNTIL_END, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
 from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
-from ..errors import ProtocolWarning, _translate_exceptions
+from ..errors import ProtocolWarning, _allow_cancel, _translate_exceptions
 from .channel import create_channel
 from .codec_aio import Codec
 
@@ -644,8 +644,16 @@ class QueryStream(aio.QueryStreamBase):
         self._filters = filters
         self._offset_range = offset_range
         self._response_stream = None  # type: Optional[UnaryStreamCall]
+        self._closed = False
+
+    @property
+    def is_closed(self) -> bool:
+        return self._closed
 
     async def close(self) -> None:
+        # make sure to mark the object as "closed"; when we're closed, we don't mind cancellation
+        # errors, because we're the one triggering the cancellation
+        self._closed = True
         if self._response_stream is not None:
             self._response_stream.cancel()
             self._response_stream = None
@@ -670,7 +678,7 @@ class QueryStream(aio.QueryStreamBase):
             In this case, the first returned object is a :class:`Boundary` with ``offset=None``.
         """
         log = self.conn.config.logger
-        async with _translate_exceptions(self.conn), self:
+        async with _translate_exceptions(self.conn), self, _allow_cancel(lambda: self._closed):
             filters = await self.conn.codec.encode_filters(self._filters)
             filters_by_party = {party: filters for party in self.conn.config.access.read_as}
             tx_filter_pb = G_TransactionFilter(filters_by_party=filters_by_party)

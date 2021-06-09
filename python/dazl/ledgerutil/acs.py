@@ -1,6 +1,6 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
+import asyncio
 from asyncio import CancelledError, Future, InvalidStateError, ensure_future, get_event_loop, sleep
 from collections.abc import Mapping as MappingBase
 import sys
@@ -205,6 +205,9 @@ class ACS:
                 if snapshot is not None:
                     self._snapshot = snapshot
                     self._snapshot_fut.set_result(snapshot)
+        except CancelledError:
+            if self._snapshot_fut is not None and not self._snapshot_fut.done():
+                self._snapshot_fut.cancel()
         except Exception as ex:
             # No one is actually waiting for our result, so if we don't move our exception to
             # an awaitable that people actually care about, it will never be seen!
