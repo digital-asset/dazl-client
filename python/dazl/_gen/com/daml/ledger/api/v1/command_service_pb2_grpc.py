@@ -58,6 +58,7 @@ class CommandServiceServicer(object):
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
         - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+        - ``ABORTED``: if a contract key is missing or duplicated due to for example contention on resources
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -73,6 +74,7 @@ class CommandServiceServicer(object):
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
         - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+        - ``ABORTED``: if a contract key is missing or duplicated due to for example contention on resources
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -88,6 +90,7 @@ class CommandServiceServicer(object):
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
         - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+        - ``ABORTED``: if a contract key is missing or duplicated due to for example contention on resources
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -103,6 +106,7 @@ class CommandServiceServicer(object):
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
         - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
+        - ``ABORTED``: if a contract key is missing or duplicated due to for example contention on resources
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

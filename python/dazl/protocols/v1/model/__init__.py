@@ -9,13 +9,13 @@ warnings.warn(
     stacklevel=2,
 )
 
-from ...._gen.com.daml.daml_lf_dev.daml_lf_1_pb2 import (
+from ...._gen.com.daml.daml_lf_1_14.daml_lf_1_pb2 import (
     DefDataType,
     DefTemplate,
     PrimType,
     TemplateChoice,
 )
-from ...._gen.com.daml.daml_lf_dev.daml_lf_pb2 import ArchivePayload
+from ...._gen.com.daml.daml_lf_1_14.daml_lf_pb2 import ArchivePayload
 from ...._gen.com.daml.ledger.api.v1.active_contracts_service_pb2 import (
     GetActiveContractsRequest,
     GetActiveContractsResponse,

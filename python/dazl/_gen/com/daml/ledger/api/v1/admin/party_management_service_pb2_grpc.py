@@ -111,6 +111,8 @@ class PartyManagementServiceServicer(object):
         canton: completely different globally unique identifier is allocated.
         Behind the scenes calls to an internal protocol are made. As that protocol
         is richer than the surface protocol, the arguments take implicit values
+        The party identifier suggestion must be a valid party name. Party names are required to be non-empty US-ASCII strings built from letters, digits, space,
+        colon, minus and underscore limited to 255 chars
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

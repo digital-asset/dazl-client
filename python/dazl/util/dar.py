@@ -143,7 +143,7 @@ def parse_dalf(contents: bytes) -> "PackageStore":
         stacklevel=2,
     )
     # noinspection PyProtectedMember
-    from .._gen.com.daml.daml_lf_dev.daml_lf_pb2 import Archive
+    from .._gen.com.daml.daml_lf_1_14.daml_lf_pb2 import Archive
     from ..protocols.v1.pb_parse_metadata import _parse_daml_metadata_pb
 
     a = Archive()

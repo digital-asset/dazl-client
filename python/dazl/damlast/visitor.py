@@ -72,6 +72,7 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_from_any,
             self.visit_expr_to_text_template_id,
             self.visit_expr_type_rep,
+            self.visit_expr_throw,
         )
 
     def visit_expr_var(self, var: str) -> "RE":
@@ -159,6 +160,9 @@ class ExprVisitor(Generic[RE]):
         raise NotImplementedError
 
     def visit_expr_type_rep(self, type_rep: "Type") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_throw(self, throw: "Expr.Throw") -> "RE":
         raise NotImplementedError
 
 

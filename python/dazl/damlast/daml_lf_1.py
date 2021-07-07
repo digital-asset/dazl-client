@@ -377,6 +377,9 @@ class PrimType(Enum):
     ANY = 18
     TYPE_REP = 19
     GENMAP = 20
+    BIGNUMERIC = 21
+    ROUNDING_MODE = 22
+    ANY_EXCEPTION = 23
 
 
 # noinspection PyShadowingBuiltins
@@ -565,6 +568,16 @@ class PrimLit:
     _Sum_name: str
     _Sum_value: Any
 
+    class RoundingMode(Enum):
+        UP = 0
+        DOWN = 1
+        CEILING = 2
+        FLOOR = 3
+        HALF_UP = 4
+        HALF_DOWN = 5
+        HALF_EVEN = 6
+        UNNECESSARY = 7
+
     def __init__(
         self,
         int64: "Union[int, _Missing]" = MISSING,
@@ -574,6 +587,7 @@ class PrimLit:
         party: "Union[str, _Missing]" = MISSING,
         date: "Union[int, _Missing]" = MISSING,
         numeric: "Union[str, _Missing]" = MISSING,
+        rounding_mode: "Union[RoundingMode, _Missing]" = MISSING,
     ):
         if int64 is not MISSING:
             object.__setattr__(self, "_Sum_name", "int64")
@@ -596,6 +610,9 @@ class PrimLit:
         elif numeric is not MISSING:
             object.__setattr__(self, "_Sum_name", "numeric")
             object.__setattr__(self, "_Sum_value", numeric)
+        elif numeric is not MISSING:
+            object.__setattr__(self, "_Sum_name", "rounding_mode")
+            object.__setattr__(self, "_Sum_value", rounding_mode)
 
     @property
     def int64(self) -> "Optional[int]":
@@ -649,7 +666,16 @@ class PrimLit:
 
         The number of decimal digits indicate the scale of the number.
         """
-        return self._Sum_value if self._Sum_name == "date" else None
+        return self._Sum_value if self._Sum_name == "numeric" else None
+
+    @property
+    def rounding_mode(self) -> "Optional[RoundingMode]":
+        """
+        Rounding mode for arithmetic operation
+
+        Available in versions >= 1.13
+        """
+        return self._Sum_value if self._Sum_name == "rounding_mode" else None
 
 
 # noinspection PyShadowingBuiltins
@@ -872,6 +898,16 @@ class Expr:
         def __init__(self, type: "Type"):
             self.type = type
 
+    class Throw:
+        return_type: "Type"
+        exception_type: "Type"
+        exception_expr: "Expr"
+
+        def __init__(self, return_type: "Type", exception_type: "Type", exception_expr: "Expr"):
+            self.return_type = return_type
+            self.exception_type = exception_type
+            self.exception_expr = exception_expr
+
     __slots__ = "location", "_Sum_name", "_Sum_value"
     location: Location
     _Sum_name: str
@@ -909,6 +945,7 @@ class Expr:
         from_any: "Union[FromAny, _Missing]" = MISSING,
         to_text_template_id: "Union[ToTextTemplateId, _Missing]" = MISSING,
         type_rep: "Union[Type, _Missing]" = MISSING,
+        throw: "Union[Throw, _Missing]" = MISSING,
     ):
         object.__setattr__(self, "location", location)
         if var is not MISSING:
@@ -998,6 +1035,9 @@ class Expr:
         elif type_rep is not MISSING:
             object.__setattr__(self, "_Sum_name", "type_rep")
             object.__setattr__(self, "_Sum_value", type_rep)
+        elif throw is not MISSING:
+            object.__setattr__(self, "_Sum_name", "throw")
+            object.__setattr__(self, "_Sum_value", throw)
         else:
             raise ValueError(f"At least one valid Sum value must be supplied!")
 
@@ -1120,6 +1160,10 @@ class Expr:
     def type_rep(self) -> "Optional[Type]":
         return self._Sum_value if self._Sum_name == "type_rep" else None
 
+    @property
+    def throw(self) -> "Optional[Throw]":
+        return self._Sum_value if self._Sum_name == "throw" else None
+
     # noinspection PyPep8Naming
     def Sum_match(
         self,
@@ -1152,6 +1196,7 @@ class Expr:
         from_any: "Callable[[FromAny], T]",
         to_text_template_id: "Callable[[ToTextTemplateId], T]",
         type_rep: "Callable[[Type], T]",
+        throw: "Callable[[Throw], T]",
     ) -> "T":
         if self._Sum_name == "var":
             return var(self.var)  # type: ignore
@@ -1211,6 +1256,8 @@ class Expr:
             return to_text_template_id(self.to_text_template_id)  # type: ignore
         elif self._Sum_name == "type_rep":
             return type_rep(self.type_rep)  # type: ignore
+        elif self._Sum_name == "throw":
+            return throw(self.throw)  # type: ignore
         else:
             raise Exception
 
@@ -1673,29 +1720,19 @@ class Scenario:
 
 
 class BuiltinFunction(Enum):
-    CONCAT_LIST = -1000
+    ADD_DECIMAL = 0  # Available in versions < 1.7
+    SUB_DECIMAL = 1  # Available in versions < 1.7
+    MUL_DECIMAL = 2  # Available in versions < 1.7
+    DIV_DECIMAL = 3  # Available in versions < 1.7
+    ROUND_DECIMAL = 6  # Available in versions < 1.7
 
-    ADD_DECIMAL = 0
-    SUB_DECIMAL = 1
-    MUL_DECIMAL = 2
-    DIV_DECIMAL = 3
-    ROUND_DECIMAL = 6
-
-    ADD_NUMERIC = 107
-    SUB_NUMERIC = 108
-    MUL_NUMERIC = 109
-    DIV_NUMERIC = 110
-    ROUND_NUMERIC = 111
-    CAST_NUMERIC = 121
-    SHIFT_NUMERIC = 122
-
-    GENMAP_EMPTY = 124
-    GENMAP_INSERT = 125
-    GENMAP_LOOKUP = 126
-    GENMAP_DELETE = 127
-    GENMAP_KEYS = 128
-    GENMAP_VALUES = 129
-    GENMAP_SIZE = 130
+    ADD_NUMERIC = 107  # Available in versions >= 1.7
+    SUB_NUMERIC = 108  # Available in versions >= 1.7
+    MUL_NUMERIC = 109  # Available in versions >= 1.7
+    DIV_NUMERIC = 110  # Available in versions >= 1.7
+    ROUND_NUMERIC = 111  # Available in versions >= 1.7
+    CAST_NUMERIC = 121  # Available in versions >= 1.7
+    SHIFT_NUMERIC = 122  # Available in versions >= 1.7
 
     ADD_INT64 = 7
     SUB_INT64 = 8
@@ -1707,64 +1744,73 @@ class BuiltinFunction(Enum):
     FOLDL = 20
     FOLDR = 21
 
-    MAP_EMPTY = 96
-    MAP_INSERT = 97
-    MAP_LOOKUP = 98
-    MAP_DELETE = 99
-    MAP_TO_LIST = 100
-    MAP_SIZE = 101
+    TEXTMAP_EMPTY = 96
+    TEXTMAP_INSERT = 97
+    TEXTMAP_LOOKUP = 98
+    TEXTMAP_DELETE = 99
+    TEXTMAP_TO_LIST = 100
+    TEXTMAP_SIZE = 101
+
+    GENMAP_EMPTY = 124  # Available in versions >= 1.11
+    GENMAP_INSERT = 125  # Available in versions >= 1.11
+    GENMAP_LOOKUP = 126  # Available in versions >= 1.11
+    GENMAP_DELETE = 127  # Available in versions >= 1.11
+    GENMAP_KEYS = 128  # Available in versions >= 1.11
+    GENMAP_VALUES = 129  # Available in versions >= 1.11
+    GENMAP_SIZE = 130  # Available in versions >= 1.11
 
     EXPLODE_TEXT = 23
     APPEND_TEXT = 24
 
     ERROR = 25
+    ANY_EXCEPTION_MESSAGE = 147  # Available in versions >= 1.14
 
-    LEQ_INT64 = 33
-    LEQ_DECIMAL = 34
-    LEQ_NUMERIC = 112
-    LEQ_TEXT = 36
-    LEQ_TIMESTAMP = 37
-    LEQ_DATE = 67
-    LEQ_PARTY = 89
+    LEQ_INT64 = 33  # Available in versions < 1.11
+    LEQ_DECIMAL = 34  # Available in versions < 1.7
+    LEQ_NUMERIC = 112  # Available in versions >= 1.7 and < 1.11
+    LEQ_TEXT = 36  # Available in versions < 1.11
+    LEQ_TIMESTAMP = 37  # Available in versions < 1.11
+    LEQ_DATE = 67  # Available in versions < 1.11
+    LEQ_PARTY = 89  # Available in versions >= 1.1 and < 1.11
 
-    LESS_INT64 = 39
-    LESS_DECIMAL = 40
-    LESS_NUMERIC = 113
-    LESS_TEXT = 42
-    LESS_TIMESTAMP = 43
-    LESS_DATE = 68
-    LESS_PARTY = 90
+    LESS_INT64 = 39  # Available in versions < 1.11
+    LESS_DECIMAL = 40  # Available in versions < 1.7
+    LESS_NUMERIC = 113  # Available in versions >= 1.7 and < 1.11
+    LESS_TEXT = 42  # Available in versions < 1.11
+    LESS_TIMESTAMP = 43  # Available in versions < 1.11
+    LESS_DATE = 68  # Available in versions < 1.11
+    LESS_PARTY = 90  # Available in versions >= 1.1 and < 1.11
 
-    GEQ_INT64 = 45
-    GEQ_DECIMAL = 46
-    GEQ_NUMERIC = 114
-    GEQ_TEXT = 48
-    GEQ_TIMESTAMP = 49
-    GEQ_DATE = 69
-    GEQ_PARTY = 91
+    GEQ_INT64 = 45  # Available in versions < 1.11
+    GEQ_DECIMAL = 46  # Available in versions < 1.7
+    GEQ_NUMERIC = 114  # Available in versions >= 1.7 and < 1.11
+    GEQ_TEXT = 48  # Available in versions < 1.11
+    GEQ_TIMESTAMP = 49  # Available in versions < 1.11
+    GEQ_DATE = 69  # Available in versions < 1.11
+    GEQ_PARTY = 91  # Available in versions >= 1.1 and < 1.11
 
-    GREATER_INT64 = 51
-    GREATER_DECIMAL = 52
-    GREATER_NUMERIC = 115
-    GREATER_TEXT = 54
-    GREATER_TIMESTAMP = 55
-    GREATER_DATE = 70
-    GREATER_PARTY = 92
+    GREATER_INT64 = 51  # Available in versions < 1.11
+    GREATER_DECIMAL = 52  # Available in versions < 1.7
+    GREATER_NUMERIC = 115  # Available in versions >= 1.7 and < 1.11
+    GREATER_TEXT = 54  # Available in versions < 1.11
+    GREATER_TIMESTAMP = 55  # Available in versions < 1.11
+    GREATER_DATE = 70  # Available in versions < 1.11
+    GREATER_PARTY = 92  # Available in versions >= 1.1 and < 1.11
 
-    TO_TEXT_INT64 = 57
-    TO_TEXT_DECIMAL = 58
-    TO_TEXT_NUMERIC = 116
-    TO_TEXT_TEXT = 60
-    TO_TEXT_TIMESTAMP = 61
-    TO_TEXT_DATE = 71
-    TO_QUOTED_TEXT_PARTY = 63  # legacy, remove in next major version
-    TO_TEXT_PARTY = 94  # Available Since version 1.2
-    FROM_TEXT_PARTY = 95  # Available Since version 1.2
-    FROM_TEXT_INT64 = 103  # Available Since version 1.5
-    FROM_TEXT_DECIMAL = 104  # Available Since version 1.5
-    FROM_TEXT_NUMERIC = 117
-    TO_TEXT_CONTRACT_ID = 136
-    SHA256_TEXT = 93  # Available Since version 1.2
+    INT64_TO_TEXT = 57
+    DECIMAL_TO_TEXT = 58  # Available in versions < 1.7
+    NUMERIC_TO_TEXT = 116  # Available in versions >= 1.7
+    TEXT_TO_TEXT = 60
+    TIMESTAMP_TO_TEXT = 61
+    DATE_TO_TEXT = 71
+    PARTY_TO_QUOTED_TEXT = 63  # Available in versions <= 1.dev
+    PARTY_TO_TEXT = 94  # Available in versions >= 1.2
+    TEXT_TO_PARTY = 95  # Available in versions >= 1.2, was named TEXT_TO_PARTY in 1.2, 1.3 and 1.4
+    TEXT_TO_INT64 = 103  # Available in versions >= 1.5
+    TEXT_TO_DECIMAL = 104  # Available in versions 1.5 and 1.6
+    TEXT_TO_NUMERIC = 117  # Available in versions >= 1.7
+    CONTRACT_ID_TO_TEXT = 136  # Available in versions >= 1.11
+    SHA256_TEXT = 93  # Available in versions >= 1.2
 
     DATE_TO_UNIX_DAYS = 72  # Date -> Int64
     UNIX_DAYS_TO_DATE = 73  # Int64 -> Date
@@ -1772,47 +1818,49 @@ class BuiltinFunction(Enum):
     TIMESTAMP_TO_UNIX_MICROSECONDS = 74  # Timestamp -> Int64
     UNIX_MICROSECONDS_TO_TIMESTAMP = 75  # Int64 -> Timestamp
 
-    INT64_TO_DECIMAL = 76
-    DECIMAL_TO_INT64 = 77
+    INT64_TO_DECIMAL = 76  # Available in versions < 1.7
+    DECIMAL_TO_INT64 = 77  # Available in versions < 1.7
 
-    INT64_TO_NUMERIC = 118
-    NUMERIC_TO_INT64 = 119
+    INT64_TO_NUMERIC = 118  # Available in versions >= 1.7
+    NUMERIC_TO_INT64 = 119  # Available in versions >= 1.7
 
     IMPLODE_TEXT = 78
 
-    EQUAL_INT64 = 79
-    EQUAL_DECIMAL = 80
-    EQUAL_NUMERIC = 120
-    EQUAL_TEXT = 81
-    EQUAL_TIMESTAMP = 82
-    EQUAL_DATE = 83
-    EQUAL_PARTY = 84
-    EQUAL_BOOL = 85
-    EQUAL_CONTRACT_ID = 86
+    EQUAL_INT64 = 79  # Available in versions < 1.11
+    EQUAL_DECIMAL = 80  # Available in versions < 1.7
+    EQUAL_NUMERIC = 120  # Available in versions >= 1.7 and < 1.11
+    EQUAL_TEXT = 81  # Available in versions < 1.11
+    EQUAL_TIMESTAMP = 82  # Available in versions < 1.11
+    EQUAL_DATE = 83  # Available in versions < 1.11
+    EQUAL_PARTY = 84  # Available in versions < 1.11
+    EQUAL_BOOL = 85  # Available in versions < 1.11
+    EQUAL_CONTRACT_ID = 86  # Available in versions < 1.11
     EQUAL_LIST = 87
-    EQUAL_TYPE_REP = 123
+    EQUAL_TYPE_REP = 123  # Available in versions = 1.8
 
-    EQUAL = 131
-    LESS_EQ = 132
-    LESS = 133
-    GREATER_EQ = 134
-    GREATER = 135
+    EQUAL = 131  # Available in versions >= 1.11
+    LESS_EQ = 132  # Available in versions >= 1.11
+    LESS = 133  # Available in versions >= 1.11
+    GREATER_EQ = 134  # Available in versions >= 1.11
+    GREATER = 135  # Available in versions >= 1.11
 
     TRACE = 88
 
     COERCE_CONTRACT_ID = 102
 
-    TO_TEXT_CODE_POINTS = 105
-    FROM_TEXT_CODE_POINTS = 106
+    CODE_POINTS_TO_TEXT = 105  # Available in versions >= 1.6
+    TEXT_POINTS_TO_CODE = 106  # Available in versions >= 1.6
 
-    TEXT_TO_UPPER = 9901
-    TEXT_TO_LOWER = 9902
-    TEXT_SLICE = 9903
-    TEXT_SLICE_INDEX = 9904
-    TEXT_CONTAINS_ONLY = 9905
-    TEXT_REPLICATE = 9906
-    TEXT_SPLIT_ON = 9907
-    TEXT_INTERCALATE = 9908
+    SCALE_BIGNUMERIC = 137  # Available in versions >= 1.13
+    PRECISION_BIGNUMERIC = 138  # Available in versions >= 1.13
+    ADD_BIGNUMERIC = 139  # Available in versions >= 1.13
+    SUB_BIGNUMERIC = 140  # Available in versions >= 1.13
+    MUL_BIGNUMERIC = 141  # Available in versions >= 1.13
+    DIV_BIGNUMERIC = 142  # Available in versions >= 1.13
+    SHIFT_RIGHT_BIGNUMERIC = 143  # Available in versions >= 1.13
+    BIGNUMERIC_TO_NUMERIC = 144  # Available in versions >= 1.13
+    NUMERIC_TO_BIGNUMERIC = 145  # Available in versions >= 1.13
+    BIGNUMERIC_TO_TEXT = 146  # Available in versions >= 1.13
 
 
 class PrimCon(Enum):
