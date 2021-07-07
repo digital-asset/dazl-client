@@ -2,13 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 cache_dir=.cache
-daml_proto_version=1.9.0
+daml_proto_version=1.15.0-snapshot.20210705.7286.0.62aabcc4
 
 download_protos_zip := $(cache_dir)/download/protobufs-$(daml_proto_version).zip
-download_status_proto := $(cache_dir)/download/google/rpc/status.proto
 proto_dir := $(cache_dir)/protos
 proto_manifest := $(proto_dir)/manifest.json
 python := poetry run python3
+# TODO: Is there a programmatic way to get this path?
+venv_site_packages := .venv/lib/python3.6/site-packages
 
 version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
 py_src := $(shell find python/dazl -name '*.py[i]') README.md pyproject.toml
@@ -49,16 +50,8 @@ $(download_protos_zip):
 	curl -sSL https://github.com/digital-asset/daml/releases/download/v$(daml_proto_version)/protobufs-$(daml_proto_version).zip -o $@
 
 
-$(download_status_proto):
-	@mkdir -p $(@D)
-	curl -sSL https://raw.githubusercontent.com/googleapis/googleapis/master/google/rpc/status.proto -o $@
-
-
-$(proto_manifest): $(download_protos_zip) $(download_status_proto)
-	_build/unpack.py \
-	  -i $(download_protos_zip) \
-	  -i $(download_status_proto) \
-	  -o $(@D) -m $@
+$(proto_manifest): $(download_protos_zip)
+	_build/unpack.py -i $^ -o $(@D) -m $@
 
 
 .PHONY: unpack-protos

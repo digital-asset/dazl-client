@@ -20,7 +20,7 @@ import warnings
 from toposort import toposort_flatten
 
 from ... import LOG
-from ..._gen.com.daml.daml_lf_dev.daml_lf_pb2 import ArchivePayload as G_ArchivePayload
+from ..._gen.com.daml.daml_lf_1_14.daml_lf_pb2 import ArchivePayload as G_ArchivePayload
 from ...damlast.daml_lf_1 import (
     Archive,
     DefDataType,

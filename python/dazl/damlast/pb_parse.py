@@ -215,8 +215,13 @@ class ProtobufParser:
             return PrimLit(party=pb.party_interned_str)
         elif sum_name == "date":
             return PrimLit(date=pb.date)
+        elif sum_name == "rounding_mode":
+            return PrimLit(rounding_mode=self.parse_PrimLit_RoundingMode(pb.rounding_mode))
         else:
             raise ValueError(f"unknown Sum value: {pb!r}")
+
+    def parse_PrimLit_RoundingMode(self, pb) -> "PrimLit.RoundingMode":
+        return PrimLit.RoundingMode(pb)
 
     def parse_Expr(self, pb) -> "Expr":
         args = {}  # type: Dict[str, Any]
@@ -285,6 +290,8 @@ class ProtobufParser:
             args["to_text_template_id"] = self.parse_Expr_ToTextTemplateId(pb.to_text_template_id)
         elif sum_name == "type_rep":
             args["type_rep"] = self.parse_Type(pb.type_rep)
+        elif sum_name == "throw":
+            args["throw"] = self.parse_Expr_Throw(pb.throw)
         else:
             raise ValueError(f"Unknown type of Expr: {sum_name!r}")
 
@@ -389,6 +396,13 @@ class ProtobufParser:
 
     def parse_Expr_ToTextTemplateId(self, pb):
         return Expr.ToTextTemplateId(self.parse_Type(pb.type))
+
+    def parse_Expr_Throw(self, pb):
+        return Expr.Throw(
+            return_type=self.parse_Type(pb.return_type),
+            exception_type=self.parse_Type(pb.exception_type),
+            exception_expr=self.parse_Expr(pb.exception_expr),
+        )
 
     def parse_CaseAlt(self, pb) -> "CaseAlt":
         body = self.parse_Expr(pb.body)

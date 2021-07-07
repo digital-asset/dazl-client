@@ -81,7 +81,7 @@ def generate(manifest_file):
             print()
             print(f'$(_py_gen_tmp_dir)/{p}_pb2.py: $(proto_dir)/{p}.proto .venv/poetry.lock')
             print('\t@mkdir -p $(_py_gen_tmp_dir)')
-            print('\t$(python) -m grpc_tools.protoc -I$(proto_dir) --python_out=$(_py_gen_tmp_dir) $<')
+            print('\t$(python) -m grpc_tools.protoc -I$(venv_site_packages) -I$(proto_dir) --python_out=$(_py_gen_tmp_dir) $<')
 
         if 'grpc' in types:
             print()
@@ -95,7 +95,7 @@ def generate(manifest_file):
             print()
             print(f'$(_py_gen_tmp_dir)/{p}_pb2.py $(_py_gen_tmp_dir)/{p}_pb2_grpc.py: $(proto_dir)/{p}.proto COPYRIGHT')
             print('\t@mkdir -p $(_py_gen_tmp_dir)')
-            print('\t$(python) -m grpc_tools.protoc -I$(proto_dir) --python_out=$(_py_gen_tmp_dir) --grpc_python_out=$(_py_gen_tmp_dir) $<')
+            print('\t$(python) -m grpc_tools.protoc -I$(venv_site_packages) -I$(proto_dir) --python_out=$(_py_gen_tmp_dir) --grpc_python_out=$(_py_gen_tmp_dir) $<')
 
 
 if __name__ == '__main__':
