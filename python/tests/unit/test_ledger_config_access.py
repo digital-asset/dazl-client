@@ -3,8 +3,8 @@
 
 from __future__ import annotations
 
+from dazl.ledger.auth import DamlV1ClaimName
 from dazl.ledger.config import PropertyBasedAccessConfig, TokenBasedAccessConfig
-from dazl.ledger.config.access import DamlLedgerApiNamespace
 from dazl.prim import Party
 import jwt
 
@@ -15,7 +15,7 @@ def test_access_jwts_are_valid():
     config = PropertyBasedAccessConfig(act_as=[ALICE])
     claims = jwt.decode(config.token, algorithms=["none"], options={"verify_signature": False})
 
-    assert claims[DamlLedgerApiNamespace]["actAs"] == [ALICE]
+    assert claims[DamlV1ClaimName]["actAs"] == ["Alice"]
 
 
 def test_v1_party_claims_parse():

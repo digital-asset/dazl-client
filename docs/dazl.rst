@@ -11,6 +11,7 @@ dazl package
     dazl.damlast
     dazl.ledger
     dazl.ledger.aio
+    dazl.ledger.auth
     dazl.ledger.blocking
     dazl.ledger.config
     dazl.pretty

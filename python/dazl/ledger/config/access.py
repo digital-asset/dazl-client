@@ -3,9 +3,7 @@
 
 from __future__ import annotations
 
-import base64
 from collections.abc import MutableSet as MutableSetBase, Set as SetBase
-import json
 from logging import Logger
 import os
 from pathlib import Path
@@ -23,8 +21,13 @@ from typing import (
 )
 import warnings
 
-from ... import _repr
-from ...prim import Party
+from ...prim import Party, to_parties
+from ..auth import (
+    DamlV1ClaimName as DamlLedgerApiNamespace,
+    daml_claims,
+    decode_jwt_unverified,
+    encode_jwt_unsigned,
+)
 from .exc import ConfigError
 
 if sys.version_info >= (3, 8):
@@ -50,9 +53,9 @@ if TYPE_CHECKING:
 
 def parties_from_env(*env_vars: str) -> AbstractSet[Party]:
     """
-    Read the set of parties
+    Read the set of parties as defined by the given environment variable(s).
     """
-    return {Party(p) for env_var in env_vars for p in os.getenv(env_var, "").split(",") if p}
+    return {p for env_var in env_vars for p in to_parties(os.getenv(env_var, ""))}
 
 
 # mypy note: typing.overload cannot properly express a more correct signature for this function,
@@ -245,7 +248,7 @@ class TokenBasedAccessConfig(AccessConfig):
     @token.setter
     def token(self, value: str) -> None:
         self._token = value
-        claims = decode_token_claims(self._token)
+        claims = decode_jwt_unverified(self._token)
 
         v1_claims = claims.get(DamlLedgerApiNamespace)
         if "daml_ledger_api" in claims.get("scope", "").split(" "):
@@ -257,8 +260,8 @@ class TokenBasedAccessConfig(AccessConfig):
         elif v1_claims is not None:
             # we found Daml V1 claims, so assume it's a Daml V1 token
             self._set(
-                read_as=frozenset(v1_claims.get("readAs", ())),
-                act_as=frozenset(v1_claims.get("actAs", ())),
+                read_as=frozenset(v1_claims.get("readAs") or ()),
+                act_as=frozenset(v1_claims.get("actAs") or ()),
                 admin=bool(v1_claims.get("admin", False)),
             )
             self._ledger_id = v1_claims.get("ledgerId", None)
@@ -392,8 +395,14 @@ class PropertyBasedAccessConfig(AccessConfig):
         """
         Produces a token without signing, utilizing our parameters.
         """
-        return encode_unsigned_token(
-            self.read_as, self.act_as, self.ledger_id, self.application_name, self.admin
+        return encode_jwt_unsigned(
+            daml_claims(
+                read_as=self.read_as,
+                act_as=self.act_as,
+                ledger_id=self.ledger_id,
+                application_id=self.application_name,
+                admin=self.admin,
+            )
         ).decode("ascii")
 
     @property
@@ -478,62 +487,30 @@ def parties(p: Union[None, Party, Collection[Party]]) -> Collection[Party]:
         return p
 
 
-DamlLedgerApiNamespace = "https://daml.com/ledger-api"
-
-
-def decode_token(token: str) -> Mapping[str, Any]:
-    warnings.warn("decode_token is deprecated; use decode_token_claims instead", DeprecationWarning)
-    claims = decode_token_claims(token)
-    claims_dict = claims.get(DamlLedgerApiNamespace)
-    if claims_dict is None:
+def decode_token(token: str) -> "Mapping[str, Any]":
+    """
+    This function is deprecated. Use :func:`dazl.ledegr.auth.decode_jwt_unverified` instead,
+    which supports both Daml 1.x and Daml 2.x auth tokens.
+    """
+    warnings.warn(
+        "decode_token is deprecated; use dazl.ledger.auth.decode_jwt_unverified instead",
+        DeprecationWarning,
+    )
+    # this API is around purely for backwards compatibility
+    v1_claims = decode_jwt_unverified(token).get(DamlLedgerApiNamespace)
+    if v1_claims is None:
         raise ValueError(f"JWT is missing claim namespace: {DamlLedgerApiNamespace!r}")
-    return claims_dict
+    return v1_claims
 
 
 def decode_token_claims(token: str) -> "Mapping[str, Any]":
     """
-    Decode the claims section from a JSON Web Token (JWT).
-
-    Note that the signature is NOT verified; this is the responsibility of the caller!
+    This function is deprecated. Use :func:`dazl.ledegr.auth.decode_jwt_unverified` instead.
     """
-    components = token.split(".", 3)
-    if len(components) != 3:
-        raise ValueError("not a JWT")
-
-    pad_bytes = "=" * (-len(components[1]) % 4)
-    claim_str = base64.urlsafe_b64decode(components[1] + pad_bytes)
-    return json.loads(claim_str)
-
-
-def encode_unsigned_token(
-    read_as: "Optional[Collection[Party]]",
-    act_as: "Optional[Collection[Party]]",
-    ledger_id: "Optional[str]",
-    application_id: "Optional[str]",
-    admin: bool = True,
-) -> bytes:
-    header = {
-        "alg": "none",
-        "typ": "JWT",
-    }
-    payload = {DamlLedgerApiNamespace: {}}  # type: Mapping[str, Any]
-    if ledger_id is not None:
-        payload[DamlLedgerApiNamespace]["ledgerId"] = ledger_id
-    if application_id is not None:
-        payload[DamlLedgerApiNamespace]["applicationId"] = application_id
-    if act_as is not None:
-        payload[DamlLedgerApiNamespace]["actAs"] = sorted(act_as)
-    if read_as is not None:
-        payload[DamlLedgerApiNamespace]["readAs"] = sorted(read_as)
-    if admin:
-        payload[DamlLedgerApiNamespace]["admin"] = admin
-
-    return (
-        base64.urlsafe_b64encode(json.dumps(header).encode("utf-8")).rstrip(b"=")
-        + b"."
-        + base64.urlsafe_b64encode(json.dumps(payload).encode("utf-8")).rstrip(b"=")
-        + b"."
+    warnings.warn(
+        "decode_token_claims is deprecated; use dazl.ledger.auth.decode_jwt_unverified instead."
     )
+    return decode_jwt_unverified(token)
 
 
 class PartyRights(SetBase):

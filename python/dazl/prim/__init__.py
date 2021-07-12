@@ -67,6 +67,7 @@ __all__ = [
     "to_decimal",
     "to_int",
     "Party",
+    "to_parties",
     "to_party",
     "to_parties",
 ]

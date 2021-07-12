@@ -22,7 +22,7 @@ Connect to the ledger and submit a single command:
 .. literalinclude:: ../python/tests/unit/test_docs.py
    :language: python
    :pyobject: test_send_single_command
-   :lines: 2-
+   :lines: 4-
    :dedent: 4
 
 Connect to the ledger as a single party, print all contracts, and close:
@@ -30,7 +30,7 @@ Connect to the ledger as a single party, print all contracts, and close:
 .. literalinclude:: ../python/tests/unit/test_docs.py
    :language: python
    :pyobject: test_read
-   :lines: 2-
+   :lines: 4-
    :dedent: 4
 
 Connect to the ledger using asynchronous callbacks:
@@ -38,7 +38,7 @@ Connect to the ledger using asynchronous callbacks:
 .. literalinclude:: ../python/tests/unit/test_docs.py
    :language: python
    :pyobject: test_read_using_callback
-   :lines: 2-
+   :lines: 4-
    :dedent: 4
 
 

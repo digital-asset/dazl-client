@@ -35,11 +35,11 @@ def to_parties(
     Return the specified object as a collection of parties.
 
     :param __object:
-        The object to convert to a set of parties.
     """
     if __object is None:
         return None
-    elif isinstance(__object, str):
-        return (Party(__object),)
+
+    if __object is str:
+        return {Party(p) for p in __object.split(",") if p}  # type: ignore
     else:
-        return tuple(Party(p) for p in __object)
+        return set(__object)  # type: ignore
