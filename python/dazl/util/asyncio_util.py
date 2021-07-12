@@ -154,7 +154,7 @@ def await_then(awaitable: "Awaitable[T_co]", func: "Callable[[T_co], U]") -> "Aw
             try:
                 return completed(func(fut.result()))
             except Exception as ex:
-                fut = get_event_loop().create_future()
+                fut = get_event_loop().create_future()  # type: ignore
                 fut.set_exception(ex)
                 return fut  # type: ignore
     else:

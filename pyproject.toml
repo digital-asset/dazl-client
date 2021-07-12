@@ -31,19 +31,24 @@ typing_extensions = { version = "*", python = "<3.8.0" }
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
+cryptography = "^3"
 flask = "^1.0"
 grpc-stubs = "*"
 grpcio-tools = ">=1.32.0"
 isort = "^5"
 mypy = "*"
 pympler = "*"
+pyjwt = "^2"
 pytest = "^6"
 pytest-asyncio = "*"
 sphinx = "^4"
 sphinx-autobuild = "*"
 sphinx-markdown-builder = "^0.5.4"
 sphinxcontrib-trio = "^1.1.2"
+types-dataclasses = { version = "*", python = "~=3.6.0" }
 types-protobuf = "*"
+types-requests = "*"
+types-setuptools = "*"
 watchdog = "*"
 
 [tool.poetry.extras]

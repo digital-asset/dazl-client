@@ -76,7 +76,7 @@ python-deps: .venv/poetry.lock
 
 
 .venv/poetry.lock: poetry.lock
-	poetry run pip install pip==21.1.1
+	poetry run pip install pip==21.1.3
 	poetry install -E oauth -E prometheus -E pygments -E server
 	cp $< $@
 
