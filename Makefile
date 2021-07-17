@@ -2,25 +2,163 @@
 # SPDX-License-Identifier: Apache-2.0
 
 cache_dir=.cache
-daml_proto_version=1.15.0-snapshot.20210705.7286.0.62aabcc4
 
-download_protos_zip := $(cache_dir)/download/protobufs-$(daml_proto_version).zip
 proto_dir := $(cache_dir)/protos
-proto_manifest := $(proto_dir)/manifest.json
 python := poetry run python3
 # TODO: Is there a programmatic way to get this path?
 venv_site_packages := .venv/lib/python3.6/site-packages
 
 version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
-py_src := $(shell find python/dazl -name '*.py[i]') README.md pyproject.toml
 docs_src := $(shell find docs -name '*.rst') $(py_src)
-py_bdist := dist/dazl-$(version)-py3-none-any.whl
-py_sdist := dist/dazl-$(version).tar.gz
 docs_html_dir := dist/dazl-docs-$(version)-html
 docs_html_tgz := $(docs_html_dir).tar.gz
 docs_markdown_dir := dist/dazl-docs-$(version)-markdown
 docs_markdown_tgz := $(docs_markdown_dir).tar.gz
 packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
+
+protos := _build/daml-connect/protos.py
+
+####################################################################################################
+# Protobuf
+
+proto_rel_dir     := $(shell $(protos) list --kind dir)
+proto_rel_pb_only := $(shell $(protos) list --kind pb)
+proto_rel_grpc    := $(shell $(protos) list --kind grpc)
+proto_rel_pb      := $(proto_rel_pb_only) $(proto_rel_grpc)
+
+proto_src_pb      := $(foreach p,$(proto_rel_pb),.cache/protos/$(p))
+proto_src_grpc    := $(foreach p,$(proto_rel_grpc),.cache/protos/$(p))
+
+# proto: the (slightly modified) Protobuf files from Daml Connect
+$(proto_src_pb): .cache/witnesses/proto
+.cache/witnesses/proto: $(protos)
+	@mkdir -p $(@D)
+	$(protos) unpack
+	@touch $@
+
+####################################################################################################
+# Go
+
+go_src_gen_root := go/v7/pkg/generated
+go_src_gen_pb := $(foreach d,$(proto_rel_pb),$(go_src_gen_root)/$(d:.proto=.pb.go))
+go_src_gen_grpc := $(foreach d,$(proto_rel_grpc),$(go_src_gen_root)/$(d:.proto=_grpc.pb.go))
+go_src_gen := $(go_src_gen_pb) $(go_src_gen_grpc)
+
+go_tmp_gen_root := .cache/go-gen
+
+# go: run all source generation
+.PHONY: go-gen
+go-gen: $(go_src_gen)
+
+# go: Protobuf generated code (non-gRPC)
+$(go_src_gen_pb): $(go_src_gen_root)/%: $(go_tmp_gen_root)/% COPYRIGHT
+	@mkdir -p $(@D)
+	cp $< $@
+
+$(foreach d,$(proto_rel_pb),$(go_tmp_gen_root)/$(d:.proto=.pb.go)): .cache/witnesses/go-pb
+.cache/witnesses/go-pb: .cache/bin/protoc-gen-go $(proto_src_pb)
+	@mkdir -p $(go_tmp_gen_root)
+	PATH=.cache/bin:"${PATH}" protoc -I$(venv_site_packages) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative $(proto_src_pb)
+
+# go: Protobuf generated code (gRPC)
+#  NOTE: Go's gRPC-generated code does NOT include a copyright, so we need to add that ourselves
+$(go_src_gen_grpc): $(go_src_gen_root)/%: $(go_tmp_gen_root)/% COPYRIGHT
+	@mkdir -p $(@D)
+	{ sed 's/^/\/\/ /' COPYRIGHT ; cat $< ; } > $@
+
+$(foreach d,$(proto_rel_grpc),$(go_tmp_gen_root)/$(d:.proto=_grpc.pb.go)): .cache/witnesses/go-grpc
+.cache/witnesses/go-grpc: .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc $(proto_src_grpc)
+	@mkdir -p $(go_tmp_gen_root)
+	PATH=.cache/bin:"${PATH}" protoc -I$(venv_site_packages) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative --go-grpc_out=$(go_tmp_gen_root) --go-grpc_opt=paths=source_relative $(proto_src_grpc)
+
+.cache/bin/protoc-gen-go:
+	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
+
+.cache/bin/protoc-gen-go-grpc:
+	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
+
+####################################################################################################
+# Python
+
+py_root := python
+py_src_gen_root := python/dazl/_gen
+py_src_core := $(shell find python/dazl -path $(py_src_gen_root) -prune -false -o -name '*.py' -o -name '*.pyi')
+
+py_src_gen_mod_init := $(py_src_gen_root)/__init__.py \
+                       $(foreach d,$(proto_rel_dir),$(py_src_gen_root)/$(d)/__init__.py)
+py_src_gen_pb := $(foreach d,$(proto_rel_pb),$(py_src_gen_root)/$(d:.proto=_pb2.py))
+py_src_gen_grpc := $(foreach d,$(proto_rel_grpc),$(py_src_gen_root)/$(d:.proto=_pb2_grpc.py))
+py_src_gen := $(py_src_gen_mod_init) $(py_src_gen_pb) $(py_src_gen_grpc)
+
+py_src = $(py_src_core) $(py_src_gen)
+py_bdist := dist/dazl-$(version)-py3-none-any.whl
+py_sdist := dist/dazl-$(version).tar.gz
+
+py_tmp_gen_root := .cache/python-gen
+
+.PHONY: python-deps
+python-deps: .venv/poetry.lock
+
+# python: reformat all of our files
+.PHONY: python-format
+python-format: .venv/poetry.lock
+	poetry run isort python
+	poetry run black python
+
+# python: check if files are formatted properly
+.PHONY: python-format-test
+python-format-test: .venv/poetry.lock
+	poetry run isort python --check-only
+	poetry run black python --check
+
+# python: run all source generation
+.PHONY: python-gen
+python-gen: $(py_src_gen)
+
+# python: run mypy
+.PHONY: python-typecheck
+python-typecheck: .venv/poetry.lock
+	poetry run python3 -m mypy -p dazl
+
+# python: build BOTH $(py_bdist) and $(py_sdist)
+$(py_sdist): $(py_src)
+	poetry build
+$(py_bdist): $(py_sdist)
+	@test -f $@ || rm -f $^
+	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) $^
+
+# python: __init__.py files in the Protobuf generated code modules
+$(py_src_gen_mod_init): %: COPYRIGHT
+	@mkdir -p $(@D)
+	sed -e 's/^/# /' < $< > $@
+	echo "#" >> $@
+	echo "# This file is automatically generated."
+
+# python: Protobuf generated code (non-gRPC)
+$(py_src_gen_pb): $(py_src_gen_root)/%: $(py_tmp_gen_root)/% _build/python/rewrite_pb2.py COPYRIGHT
+	@mkdir -p $(@D)
+	python _build/python/rewrite_pb2.py $< $(py_tmp_gen_root) COPYRIGHT > $@
+
+$(foreach d,$(proto_rel_pb),$(py_tmp_gen_root)/$(d:.proto=_pb2.py)): .cache/witnesses/python-pb
+.cache/witnesses/python-pb: poetry.lock $(proto_src_pb)
+	@mkdir -p $(@D) $(py_tmp_gen_root)
+	$(python) -m grpc_tools.protoc -I$(venv_site_packages) -I$(proto_dir) --python_out=$(py_tmp_gen_root) $(proto_src_pb)
+
+# python: Protobuf generated code (gRPC)
+$(py_src_gen_grpc): $(py_src_gen_root)/%: $(py_tmp_gen_root)/% _build/python/rewrite_pb2.py COPYRIGHT
+	@mkdir -p $(@D)
+	python _build/python/rewrite_pb2.py $< $(py_tmp_gen_root) COPYRIGHT > $@
+
+$(foreach d,$(proto_rel_grpc),$(py_tmp_gen_root)/$(d:.proto=_pb2_grpc.py)): .cache/witnesses/python-grpc
+.cache/witnesses/python-grpc: poetry.lock $(proto_src_grpc)
+	@mkdir -p $(@D) $(py_tmp_gen_root)
+	$(python) -m grpc_tools.protoc -I$(venv_site_packages) -I$(proto_dir) --python_out=$(py_tmp_gen_root) --grpc_python_out=$(py_tmp_gen_root) $(proto_src_grpc)
+
+# python: witness that makes sure the current venv is up to date with our lock file
+.venv/poetry.lock: poetry.lock
+	poetry run pip install pip==21.1.3
+	poetry install -E oauth -E prometheus -E pygments -E server
+	cp $< $@
 
 
 ####################################################################################################
@@ -40,23 +178,6 @@ include .cache/make/dars.mk
 ####################################################################################################
 
 
-# Go requires that GOBIN be an absolute path
-export GOBIN := $(shell pwd)/.cache/bin
-export PATH := $(shell go env GOPATH)/bin:${GOBIN}:${PATH}
-
-
-$(download_protos_zip):
-	@mkdir -p $(@D)
-	curl -sSL https://github.com/digital-asset/daml/releases/download/v$(daml_proto_version)/protobufs-$(daml_proto_version).zip -o $@
-
-
-$(proto_manifest): $(download_protos_zip)
-	_build/unpack.py -i $^ -o $(@D) -m $@
-
-
-.PHONY: unpack-protos
-unpack-protos: $(cache_dir)/protos/manifest.json
-
 
 .PHONY: help
 help:	## Show list of available make targets
@@ -71,30 +192,11 @@ clean:  ## Clean everything.
 deps: python-deps
 
 
-.PHONY: python-deps
-python-deps: .venv/poetry.lock
-
-
-.venv/poetry.lock: poetry.lock
-	poetry run pip install pip==21.1.3
-	poetry install -E oauth -E prometheus -E pygments -E server
-	cp $< $@
-
-
 # `poetry build` produces both the wheel and a source dist; see
 # https://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html
 # for why these rules are written this way
 .PHONY: build
 build: $(packages)  # Build everything.
-
-
-$(py_sdist): $(py_src)
-	poetry build
-
-
-$(py_bdist): $(py_sdist)
-	@test -f $@ || rm -f $^
-	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) $^
 
 
 .PHONY: test
@@ -115,18 +217,6 @@ publish: $(packages)  ## Publish everything.
 format: python-format
 
 
-.PHONY: python-format
-python-format: .venv/poetry.lock
-	poetry run isort python
-	poetry run black python
-
-
-.PHONY: python-format-test
-python-format-test: .venv/poetry.lock
-	poetry run isort python --check-only
-	poetry run black python --check
-
-
 .PHONY: python-unit-test
 python-unit-test: .venv/poetry.lock $(_fixture_dars)
 	poetry run pytest --log-cli-level=INFO --junitxml=target/test-results/junit.xml
@@ -138,46 +228,8 @@ python-integration-test: .venv/poetry.lock _fixtures/src/post-office/.daml/dist/
 	$(python) integration-test.py $(if $(DAZL_TEST_DAML_LEDGER_URL),--url $(DAZL_TEST_DAML_LEDGER_URL))
 
 
-.PHONY: fetch-protos
-fetch-protos: .cache/protos/protobufs-$(daml_proto_version).zip
-
-
-.PHONY: gen-python
-gen-python: .cache/make/python.mk  ## Rebuild Python code-generated files.
-
-
-.PHONY: gen-go
-gen-go: .cache/make/go.mk
-
-
-.PHONY: gen-go-clean
-gen-go-clean:
-	echo $(PATH)
-	rm -fr .cache/make/go.mk .cache/go-protos go/v7/pkg
-
-
-.cache/bin/protoc-gen-go:
-	mkdir -p $(@D)
-	go install google.golang.org/protobuf/cmd/protoc-gen-go
-
-	
-.cache/make/go.mk: _build/go/make-fragment $(proto_manifest)
-	mkdir -p $(@D)
-	$^ > $@
-
-
-.cache/make/python.mk: _build/python/make-fragment $(proto_manifest)
-	mkdir -p $(@D)
-	$^ > $@
-
-
 .PHONY: typecheck
 typecheck: python-typecheck
-
-
-.PHONY: python-typecheck
-python-typecheck: .venv/poetry.lock
-	poetry run python3 -m mypy -p dazl
 
 
 .PHONY: docs
@@ -199,6 +251,3 @@ $(docs_markdown_tgz): .venv/poetry.lock $(docs_src)
 	(cd dist && tar czf $(@F) $(notdir $(docs_markdown_dir)))
 
 
-
-include .cache/make/go.mk
-include .cache/make/python.mk

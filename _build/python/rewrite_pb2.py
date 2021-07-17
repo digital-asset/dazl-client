@@ -22,7 +22,9 @@ def rewrite_file(input_file, root_path, copyright_file) -> str:
     with Path(copyright_file).open('r', encoding='utf-8') as f:
         for line in f.readlines():
             print('# ' + line.rstrip())
-        
+    print('# fmt: off')
+    print('# isort: skip_file')
+
     with Path(input_file).open('r', encoding='utf-8') as f:
         for line in f.readlines():
             print(rewrite_import(current_module, line).rstrip())

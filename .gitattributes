@@ -1,1 +1,4 @@
 *.daml linguist-language=Haskell
+_build/daml-connect/daml-connect.conf linguist-generated=true
+python/dazl/_gen/** linguist-generated=true
+go/v7/pkg/generated/** linguist-generated=true
