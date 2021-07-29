@@ -388,7 +388,9 @@ def decode_token(token: str) -> Mapping[str, Any]:
     components = token.split(".", 3)
     if len(components) != 3:
         raise ValueError("not a JWT")
-    claim_str = base64.urlsafe_b64decode(components[1])
+
+    pad_bytes = "=" * (-len(components[1]) % 4)
+    claim_str = base64.urlsafe_b64decode(components[1] + pad_bytes)
     claims = json.loads(claim_str)
     claims_dict = claims.get(DamlLedgerApiNamespace)
     if claims_dict is None:
@@ -418,9 +420,9 @@ def encode_unsigned_token(
     }
 
     return (
-        base64.urlsafe_b64encode(json.dumps(header).encode("utf-8"))
+        base64.urlsafe_b64encode(json.dumps(header).encode("utf-8")).rstrip(b"=")
         + b"."
-        + base64.urlsafe_b64encode(json.dumps(payload).encode("utf-8"))
+        + base64.urlsafe_b64encode(json.dumps(payload).encode("utf-8")).rstrip(b"=")
         + b"."
     )
 
