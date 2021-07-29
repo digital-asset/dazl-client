@@ -66,6 +66,7 @@ class GrpcAuth(AuthMetadataPlugin):
         # TODO: Add support here for refresh tokens
         token = self._config.access.token
         if token:
-            options.append(("Authorization", "Bearer " + self._config.access.token))
+            # note: gRPC headers MUST be lowercased
+            options.append(("authorization", "Bearer " + self._config.access.token))
 
         callback(tuple(options), None)
