@@ -224,16 +224,16 @@ class GRPCv1LedgerClient(LedgerClient):
 
 
 def grpc_set_time(connection: "GRPCv1Connection", ledger_id: str, new_datetime: datetime) -> None:
-    request = G_GetTimeRequest(ledger_id=ledger_id)
-    response = connection.time_service.GetTime(request)
-    ts = next(iter(response))
+    get_request = G_GetTimeRequest(ledger_id=ledger_id)
+    get_response = connection.time_service.GetTime(get_request)
+    ts = next(iter(get_response))
 
-    request = G_SetTimeRequest(
+    set_request = G_SetTimeRequest(
         ledger_id=ledger_id,
         current_time=ts.current_time,
         new_time=datetime_to_timestamp(new_datetime),
     )
-    connection.time_service.SetTime(request)
+    connection.time_service.SetTime(set_request)
     LOG.info("Time on the server changed by the local client to %s.", new_datetime)
 
 
