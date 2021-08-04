@@ -297,7 +297,7 @@ def serialize_transaction_filter(
     if contract_filter.party_groups is not None:
         parties.extend(contract_filter.party_groups)
 
-    filters_by_party = {}
+    filters_by_party = {}  # type: Dict[str, txf_pb2.Filters]
     for party in parties:
         if identifiers is not None:
             filters_by_party[party] = txf_pb2.Filters(

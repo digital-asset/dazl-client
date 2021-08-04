@@ -18,7 +18,6 @@ from google.protobuf.descriptor import FieldDescriptor as __FieldDescriptor
 from google.protobuf.message import Message as __Message
 from google.protobuf.wrappers_pb2 import StringValue
 
-from .......prim import Party
 from .value_pb2 import Identifier, Record, Value
 
 __all__ = [
@@ -64,9 +63,9 @@ class CreatedEvent(__Message):
     template_id: Identifier
     contract_key: Value
     create_arguments: Record
-    witness_parties: __List[Party]
-    signatories: __List[Party]
-    observers: __List[Party]
+    witness_parties: __List[str]
+    signatories: __List[str]
+    observers: __List[str]
     agreement_text: StringValue
     def __init__(self, *, event_id: __Optional[str] = ..., contract_id: __Optional[str] = ..., template_id: __Optional[Identifier] = ..., contract_key: __Optional[Value] = ..., create_arguments: __Optional[Record] = ..., witness_parties: __Optional[__Sequence[Party]] = ..., signatories: __Optional[__Sequence[Party]] = ..., observers: __Optional[__Sequence[Party]] = ..., agreement_text: StringValue = ...): ...
     def __eq__(self, other_msg: __Optional[__Any]) -> bool: ...
@@ -94,7 +93,7 @@ class ArchivedEvent(__Message):
     event_id: str
     contract_id: str
     template_id: Identifier
-    witness_parties: __List[Party]
+    witness_parties: __List[str]
     def __init__(self, *, event_id: __Optional[str] = ..., contract_id: __Optional[str] = ..., template_id: __Optional[Identifier] = ..., witness_parties: __Optional[__Sequence[Party]] = ...): ...
     def __eq__(self, other_msg: __Optional[__Any]) -> bool: ...
     def __str__(self) -> str: ...
@@ -123,9 +122,9 @@ class ExercisedEvent(__Message):
     template_id: Identifier
     choice: str
     choice_argument: Value
-    acting_parties: __List[Party]
+    acting_parties: __List[str]
     consuming: bool
-    witness_parties: __List[Party]
+    witness_parties: __List[str]
     child_event_ids: __List[str]
     exercise_result: Value
     def __init__(self, *, event_id: __Optional[str] = ..., contract_id: __Optional[str] = ..., template_id: __Optional[Identifier] = ..., choice: __Optional[str] = ..., choice_argument: __Optional[Value] = ..., acting_parties: __Optional[__Sequence[Party]] = ..., consuming: __Optional[bool] = ..., witness_parties: __Optional[__Sequence[Party]] = ..., child_event_ids: __Optional[__Sequence[str]] = ..., exercise_result: __Optional[Value] = ...): ...
