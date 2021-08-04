@@ -173,7 +173,9 @@ class GRPCv1LedgerClient(LedgerClient):
         if pkg_refs:
             with LOG.info_timed(f"ACS load {len(pkg_refs)} new package(s)"):
                 # Preload packages that are DIRECTLY referenced by packages in the message
-                await gather(*(self.ledger.package_loader.load(pkg_ref) for pkg_ref in pkg_refs))
+                await gather(
+                    *(self.ledger.package_loader.load(PackageRef(pkg_ref)) for pkg_ref in pkg_refs)
+                )
 
         with LOG.info_timed("ACS transform the message"):
             # Now load all the events. Note that do_with_retry is still required because the
@@ -346,7 +348,7 @@ class GRPCPackageProvider:
     def package_ids(self) -> "AbstractSet[PackageRef]":
         request = G_ListPackagesRequest(ledger_id=self.ledger_id)
         response = self.connection.package_service.ListPackages(request)
-        return frozenset(response.package_ids)
+        return frozenset([PackageRef(p) for p in response.package_ids])
 
     def package_bytes(self, package_id: "PackageRef") -> bytes:
         request = G_GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)

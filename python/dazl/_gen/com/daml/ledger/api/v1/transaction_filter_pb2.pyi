@@ -17,14 +17,13 @@ from typing import (
 from google.protobuf.descriptor import FieldDescriptor as __FieldDescriptor
 from google.protobuf.message import Message as __Message
 
-from .......prim import Party
 from .value_pb2 import Identifier
 
 __all__ = ["TransactionFilter", "Filters", "InclusiveFilters"]
 
 class TransactionFilter(__Message):
-    filters_by_party: __Map[Party, Filters]
-    def __init__(self, *, filters_by_party: __Optional[__Mapping[Party, Filters]] = ...): ...
+    filters_by_party: __Map[str, Filters]
+    def __init__(self, *, filters_by_party: __Optional[__Mapping[str, Filters]] = ...): ...
     def __eq__(self, other_msg: __Optional[__Any]) -> bool: ...
     def __str__(self) -> str: ...
     def __unicode__(self) -> str: ...

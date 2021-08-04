@@ -18,7 +18,6 @@ from typing import (
 from google.protobuf.descriptor import FieldDescriptor as __FieldDescriptor
 from google.protobuf.message import Message as __Message
 
-from .......prim import Party
 from .ledger_offset_pb2 import LedgerOffset
 from .trace_context_pb2 import TraceContext
 from .transaction_filter_pb2 import TransactionFilter
@@ -116,7 +115,7 @@ class GetTransactionTreesResponse(__Message):
 class GetTransactionByEventIdRequest(__Message):
     ledger_id: str
     event_id: str
-    requesting_parties: __List[Party]
+    requesting_parties: __List[str]
     trace_context: TraceContext
     def __init__(self, *, ledger_id: __Optional[str] = ..., event_id: __Optional[str] = ..., requesting_parties: __Optional[__Sequence[Party]] = ..., trace_context: __Optional[TraceContext] = ...): ...
     def __eq__(self, other_msg: __Optional[__Any]) -> bool: ...
@@ -143,7 +142,7 @@ class GetTransactionByEventIdRequest(__Message):
 class GetTransactionByIdRequest(__Message):
     ledger_id: str
     event_id: str
-    requesting_parties: __List[Party]
+    requesting_parties: __List[str]
     trace_context: TraceContext
     def __init__(self, *, ledger_id: __Optional[str] = ..., event_id: __Optional[str] = ..., requesting_parties: __Optional[__Sequence[Party]] = ..., trace_context: __Optional[TraceContext] = ...): ...
     def __eq__(self, other_msg: __Optional[__Any]) -> bool: ...

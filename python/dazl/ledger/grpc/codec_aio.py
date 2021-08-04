@@ -61,7 +61,7 @@ from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
-from ...prim import ContractData, ContractId
+from ...prim import ContractData, ContractId, Party
 from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
 from ..aio import PackageLoader
@@ -251,7 +251,12 @@ class Codec:
             key = await self.decode_value(template.key.type, event.contract_key)
 
         return CreateEvent(
-            cid, cdata, event.signatories, event.observers, event.agreement_text.value, key
+            cid,
+            cdata,
+            tuple(Party(p) for p in event.signatories),
+            tuple(Party(p) for p in event.observers),
+            event.agreement_text.value,
+            key,
         )
 
     async def decode_archived_event(self, event: G_ArchivedEvent) -> ArchiveEvent:
@@ -351,7 +356,9 @@ class Codec:
 
     @staticmethod
     def decode_party_info(party_details: G_PartyDetails) -> PartyInfo:
-        return PartyInfo(party_details.party, party_details.display_name, party_details.is_local)
+        return PartyInfo(
+            Party(party_details.party), party_details.display_name, party_details.is_local
+        )
 
     async def _look_up_choice(
         self, template_id: Any, choice_name: str

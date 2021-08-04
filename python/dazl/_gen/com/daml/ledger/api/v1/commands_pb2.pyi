@@ -19,7 +19,6 @@ from google.protobuf.duration_pb2 import Duration
 from google.protobuf.message import Message as __Message
 from google.protobuf.timestamp_pb2 import Timestamp
 
-from .......prim import Party
 from .value_pb2 import Identifier, Record, Value
 
 __all__ = [
@@ -36,13 +35,13 @@ class Commands(__Message):
     workflow_id: str
     application_id: str
     command_id: str
-    party: Party
+    party: str
     commands: __List[Command]
     deduplication_time: Duration
     min_ledger_time_abs: Timestamp
     min_ledger_time_rel: Timestamp
-    act_as: __List[Party]
-    read_as: __List[Party]
+    act_as: __List[str]
+    read_as: __List[str]
     def __init__(self, *, ledger_id: __Optional[str] = ..., workflow_id: __Optional[str] = ..., application_id: __Optional[str] = ..., command_id: __Optional[str] = ..., party: __Optional[Party] = ..., commands: __Optional[__Sequence[Command]] = ..., deduplication_time: __Optional[Duration] = ..., min_ledger_time_abs: __Optional[Timestamp] = ..., min_ledger_time_rel: __Optional[Timestamp] = ..., act_as: __Optional[__Sequence[Party]] = ..., read_as: __Optional[__Sequence[Party]] = ...): ...
     def __eq__(self, other_msg: __Optional[__Any]) -> bool: ...
     def __str__(self) -> str: ...

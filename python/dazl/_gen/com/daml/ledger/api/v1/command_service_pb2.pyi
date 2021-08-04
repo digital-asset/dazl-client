@@ -19,6 +19,7 @@ from google.protobuf.message import Message as __Message
 
 from .commands_pb2 import Commands
 from .trace_context_pb2 import TraceContext
+from .transaction_pb2 import Transaction, TransactionTree
 
 __all__ = [
     "SubmitAndWaitRequest",
@@ -26,8 +27,6 @@ __all__ = [
     "SubmitAndWaitForTransactionResponse",
     "SubmitAndWaitForTransactionTreeResponse",
 ]
-
-from .transaction_pb2 import Transaction, TransactionTree
 
 class SubmitAndWaitRequest(__Message):
     commands: Commands
