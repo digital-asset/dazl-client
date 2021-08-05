@@ -80,7 +80,7 @@ class DarFile(_DarFile):
         warnings.warn(
             "get_archives is deprecated; there is no replacement.", DeprecationWarning, stacklevel=2
         )
-        return {a.hash: a.payload for a in self._pb_archives()}
+        return {PackageRef(a.hash): a.payload for a in self._pb_archives()}
 
     def get_dalf_names(self) -> "Sequence[PackageRef]":
         warnings.warn(
@@ -148,7 +148,7 @@ def parse_dalf(contents: bytes) -> "PackageStore":
 
     a = Archive()
     a.ParseFromString(contents)
-    return _parse_daml_metadata_pb(parse_archive(a.hash, a.payload))
+    return _parse_daml_metadata_pb(parse_archive(PackageRef(a.hash), a.payload))
 
 
 def get_dar_package_ids(dar: "Dar") -> "Collection[PackageRef]":

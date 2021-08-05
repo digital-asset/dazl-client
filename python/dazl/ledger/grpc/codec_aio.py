@@ -155,15 +155,15 @@ class Codec:
     ) -> G_CreateAndExerciseCommand:
         item_type, _, choice = await self._look_up_choice(template_id, choice_name)
 
-        cmd_pb = G_CreateAndExerciseCommand(
-            template_id=self.encode_identifier(item_type),
-            choice=choice_name,
-        )
         payload_field, payload_pb = await self.encode_value(con(item_type), payload)
         if payload_pb != "record":
             raise ValueError("unexpected non-record type when constructing payload")
         argument_field, argument_pb = await self.encode_value(choice.arg_binder.type, argument)
-        cmd_pb.create_arguments = payload_pb
+        cmd_pb = G_CreateAndExerciseCommand(
+            create_arguments=payload_pb,
+            template_id=self.encode_identifier(item_type),
+            choice=choice_name,
+        )
         set_value(cmd_pb.choice_argument, argument_field, argument_pb)
 
         return cmd_pb
