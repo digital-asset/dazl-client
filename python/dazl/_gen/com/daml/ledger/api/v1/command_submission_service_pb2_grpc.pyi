@@ -2,13 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 
-from typing import (
-    AsyncIterable as __AsyncStream,
-    Awaitable as __Awaitable,
-    Iterable as __Stream,
-    Union as __Union,
-    overload,
-)
+import typing as _typing
 
 from google.protobuf.empty_pb2 import Empty
 from grpc import Channel as __Channel
@@ -22,15 +16,15 @@ __all__ = [
 
 class CommandSubmissionServiceStub:
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __Channel) -> _CommandSubmissionServiceStub: ...
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __AsyncChannel) -> _CommandSubmissionServiceStub_Async: ...
-    def Submit(self, __1: SubmitRequest) -> __Union[Empty, __Awaitable[Empty]]: ...
+    def Submit(self, __1: SubmitRequest) -> _typing.Union[Empty, _typing.Awaitable[Empty]]: ...
 
 class _CommandSubmissionServiceStub(CommandSubmissionServiceStub):
     def Submit(self, __1: SubmitRequest) -> Empty: ...
 
 class _CommandSubmissionServiceStub_Async(CommandSubmissionServiceStub):
-    def Submit(self, __1: SubmitRequest) -> __Awaitable[Empty]: ...
+    def Submit(self, __1: SubmitRequest) -> _typing.Awaitable[Empty]: ...
