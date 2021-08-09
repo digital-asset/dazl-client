@@ -1,7 +1,20 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
+import abc
 import sys
-from typing import AbstractSet, Any, Iterator, Optional, Sequence, TypeVar, Union
+from typing import (
+    AbstractSet,
+    Any,
+    Callable,
+    DefaultDict,
+    Iterator,
+    List,
+    Optional,
+    Sequence,
+    TypeVar,
+    Union,
+)
 
 from .. import (
     Connection as _Connection,
@@ -120,3 +133,13 @@ class QueryStream(_QueryStream, Protocol):
     def close(self) -> None: ...
     def __enter__(self: Self) -> Self: ...
     def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
+
+class QueryStreamBase(QueryStream, abc.ABC):
+    @property
+    def _callbacks(self) -> DefaultDict[str, List[Callable]]: ...
+    @abc.abstractmethod
+    def items(self): ...
+    async def _emit(self, name: str, obj: Any) -> None: ...
+    async def _emit_create(self, event: CreateEvent) -> None: ...
+    async def _emit_archive(self, event: ArchiveEvent) -> None: ...
+    async def _emit_boundary(self, event: Boundary) -> None: ...

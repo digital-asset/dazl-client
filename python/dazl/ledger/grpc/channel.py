@@ -1,26 +1,49 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import List, Tuple, Union, cast
+import sys
+from typing import List, Tuple, Union, cast, overload
 from urllib.parse import urlparse
 
 from grpc import (
     AuthMetadataContext,
     AuthMetadataPlugin,
     AuthMetadataPluginCallback,
+    Channel,
     ChannelCredentials,
     composite_channel_credentials,
+    insecure_channel,
     metadata_call_credentials,
+    secure_channel,
     ssl_channel_credentials,
 )
-from grpc.aio import Channel, insecure_channel, secure_channel
+from grpc.aio import (
+    Channel as AioChannel,
+    insecure_channel as insecure_aio_channel,
+    secure_channel as secure_aio_channel,
+)
 
 from ..config import Config
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 __all__ = ["create_channel"]
 
 
-def create_channel(config: "Config") -> "Channel":
+@overload
+def create_channel(config: "Config", *, blocking: Literal[False] = ...) -> "AioChannel":
+    ...
+
+
+@overload
+def create_channel(config: "Config", *, blocking: Literal[True]) -> "Channel":
+    ...
+
+
+def create_channel(config: "Config", blocking: bool = False) -> "Channel":
     """
     Create a :class:`Channel` for the specified configuration.
     """
@@ -51,9 +74,15 @@ def create_channel(config: "Config") -> "Channel":
                     credentials, metadata_call_credentials(GrpcAuth(config))
                 ),
             )
-        return secure_channel(u.netloc, credentials, options)
+        if blocking:
+            return secure_channel(u.netloc, credentials, options)
+        else:
+            return secure_aio_channel(u.netloc, credentials, options)
     else:
-        return insecure_channel(u.netloc, options)
+        if blocking:
+            return insecure_channel(u.netloc, options)
+        else:
+            return insecure_aio_channel(u.netloc, options)
 
 
 class GrpcAuth(AuthMetadataPlugin):

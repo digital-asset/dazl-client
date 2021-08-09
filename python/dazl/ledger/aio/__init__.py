@@ -4,17 +4,13 @@
 `asyncio`-flavored protocols and base classes for connecting to a Daml ledger.
 """
 
-from collections import defaultdict
 from inspect import iscoroutine
 import sys
-from typing import Any, Callable, TypeVar, Union, no_type_check
-import warnings
+from typing import Any, TypeVar, Union
 
 from .. import Connection as _Connection, QueryStream as _QueryStream
-from ...damlast.daml_lf_1 import TypeConName
-from ...damlast.lookup import matching_normalizations, normalize
+from .._stream import Callbacks, check_return_type
 from ..api_types import ArchiveEvent, Boundary, CreateEvent, Event, ExerciseResponse
-from ..errors import CallbackReturnWarning
 
 if sys.version_info >= (3, 8):
     from typing import Protocol, runtime_checkable
@@ -67,30 +63,10 @@ class QueryStream(_QueryStream, Protocol):
         raise NotImplementedError
 
 
-class QueryStreamBase(QueryStream):
+class QueryStreamBase(Callbacks, QueryStream):
     """
-    Base implementation of the :class:`QueryStream` protocol
+    Base implementation of the :class:`QueryStream` protocol for asyncio connections.
     """
-
-    @property
-    def _callbacks(self):
-        cb = getattr(self, "__cb", None)
-        if cb is None:
-            cb = defaultdict(list)
-            object.__setattr__(self, "__cb", cb)
-        return cb
-
-    @no_type_check
-    def on_boundary(self, *args):
-        register(self, BOUNDARY, *args)
-
-    @no_type_check
-    def on_create(self, *args):
-        register(self, CREATE_EVENT, *args)
-
-    @no_type_check
-    def on_archive(self, *args):
-        register(self, ARCHIVE_EVENT, *args)
 
     async def __aenter__(self):
         """
@@ -154,13 +130,7 @@ class QueryStreamBase(QueryStream):
             if result is not None and iscoroutine(result):
                 result = await result
 
-            # allow CreateEvent and ExerciseResponse as valid return types for callbacks because
-            # it makes inline lambdas easier to write; we don't do anything with them
-            if result is not None and not isinstance(result, (CreateEvent, ExerciseResponse)):
-                warnings.warn(
-                    "callbacks should not return anything; the result will be ignored",
-                    CallbackReturnWarning,
-                )
+            check_return_type(result)
 
     async def _emit_create(self, event: "CreateEvent"):
         await self._emit(CREATE_EVENT, event)
@@ -170,48 +140,6 @@ class QueryStreamBase(QueryStream):
 
     async def _emit_boundary(self, event: "Boundary"):
         await self._emit(BOUNDARY, event)
-
-
-def register(q: QueryStreamBase, name: str, *args):
-    if len(args) == 0:
-        return _register_decorator(q, name, None)
-    elif len(args) == 1:
-        if callable(args[0]):
-            return _register(q, name, None, args[0])
-        elif isinstance(args[0], (str, TypeConName)):
-            return _register_decorator(q, name, args[0])
-        else:
-            raise ValueError("expected a template name or a callback here")
-    elif len(args) == 2:
-        template_id, fn = args
-        _register(q, name, template_id, fn)
-    else:
-        raise ValueError("too many arguments")
-
-
-def _register(
-    q: QueryStreamBase,
-    name: str,
-    template_id: Union[None, str, TypeConName],
-    fn: Callable[[E], None],
-) -> Callable[[E], None]:
-    template_search = normalize(template_id)
-
-    def handler(event: E):
-        if template_search in matching_normalizations(event.contract_id.value_type):
-            fn(event)
-
-    # noinspection PyProtectedMember
-    q._callbacks[name].append(handler)
-    return fn
-
-
-def _register_decorator(q: QueryStreamBase, name: str, template_id: Union[None, str, TypeConName]):
-    def decorator(fn):
-        _register(q, name, template_id, fn)
-        return fn
-
-    return decorator
 
 
 # Imports internal to this package are at the bottom of the file to avoid circular dependencies

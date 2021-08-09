@@ -31,6 +31,7 @@ else:
 
 __all__ = [
     "aio",
+    "connect",
     "ArchiveEvent",
     "Boundary",
     "Command",
@@ -57,13 +58,16 @@ def connect(*, blocking=False, **kwargs):
     details on the parameters it takes and how values are defaulted.
     """
     from .config import Config
-    from .grpc.conn_aio import Connection as GrpcConnection
-
-    if blocking:
-        raise ValueError("blocking connections are not currently supported")
 
     cfg = Config.create(**kwargs)
-    return GrpcConnection(cfg)
+    if blocking:
+        from .grpc.conn_blocking import Connection as GrpcBlockingConnection
+
+        return GrpcBlockingConnection(cfg)
+    else:
+        from .grpc.conn_aio import Connection as GrpcAsyncConnection
+
+        return GrpcAsyncConnection(cfg)
 
 
 class PackageService(Protocol):

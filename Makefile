@@ -82,7 +82,9 @@ $(foreach d,$(proto_rel_grpc),$(go_tmp_gen_root)/$(d:.proto=_grpc.pb.go)): .cach
 
 py_root := python
 py_src_gen_root := python/dazl/_gen
-py_src_core := $(shell find python/dazl -path $(py_src_gen_root) -prune -false -o -name '*.py' -o -name '*.pyi')
+py_src_core := $(shell find python/dazl -path $(py_src_gen_root) -prune -false -o -name '*.py' -o -name '*.pyi') \
+               python/dazl/ledger/grpc/codec_blocking.py \
+               python/dazl/ledger/grpc/conn_blocking.py
 
 py_src_gen_mod_init := $(py_src_gen_root)/__init__.py \
                        $(foreach d,$(proto_rel_dir),$(py_src_gen_root)/$(d)/__init__.py)
@@ -126,6 +128,15 @@ $(py_sdist): $(py_src)
 $(py_bdist): $(py_sdist)
 	@test -f $@ || rm -f $^
 	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) $^
+
+python/dazl/ledger/blocking/pkgloader.py: python/dazl/ledger/aio/pkgloader.py
+	sed -e s'/async //' -e s'/await //' < $< > $@
+
+python/dazl/ledger/grpc/codec_blocking.py: python/dazl/ledger/grpc/codec_aio.py
+	sed -e s'/async //' -e s'/await //' < $< > $@
+
+python/dazl/ledger/grpc/conn_blocking.py: python/dazl/ledger/grpc/conn_aio.py
+	sed -e s'/async //' -e s'/await //' < $< > $@
 
 # python: __init__.py files in the Protobuf generated code modules
 $(py_src_gen_mod_init): %: COPYRIGHT

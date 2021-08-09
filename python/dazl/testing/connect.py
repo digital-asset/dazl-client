@@ -2,13 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from asyncio import gather
+from contextlib import ExitStack
 from os import PathLike
 import sys
-from typing import BinaryIO, Callable, Collection, List, Optional, Sequence, Union
+from typing import BinaryIO, Callable, Collection, Optional, TypeVar, Union
 
 from .. import connect
-from ..ledger import PartyInfo
-from ..ledger.aio import Connection
 from ..prim import Party
 
 if sys.version_info >= (3, 8):
@@ -16,7 +15,15 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Literal
 
+if sys.version_info >= (3, 7):
+    from contextlib import AsyncExitStack
+else:
+    from async_exit_stack import AsyncExitStack
+
 __all__ = ["connect_with_new_party"]
+
+Conn = TypeVar("Conn", bound="Connection")
+Self = TypeVar("Self", bound="ConnectionWithParty")
 
 
 NameGenFn = Callable[[int], Optional[str]]
@@ -33,7 +40,8 @@ def connect_with_new_party(
     dar=None,
     identifier_hint=None,
     display_name=None,
-) -> "ConnectWithNewParty":
+    blocking=False,
+):
     """
     A helper function for connecting to a ledger as a brand new party. This isn't normally useful
     outside of tests, where having creating new parties for each test helps keep test data isolated.
@@ -69,8 +77,11 @@ def connect_with_new_party(
         DAR that should also be uploaded.
     :type dar: str or bytes or PathLike or BinaryIO
     :param party_count:
-        The number of parties (and connections) to create.
+        The number of parties (and connections) to create. The default value is 1.
     :type party_count: int
+    :param blocking:
+        Whether to return a blocking connection or an asyncio connection. The default is ``False``
+        (an asyncio connection).
     :param identifier_hint:
         A hint to the backing participant. Note that the Daml ledger is free to ignore this
         hint entirely. If `party_count` is greater than 1, then
@@ -94,35 +105,33 @@ def connect_with_new_party(
         else:
             contents = dar.read()
 
-    return ConnectWithNewParty(
-        party_count=party_count,
-        url=url,
-        read_as=read_as,
-        act_as=as_party_collection(act_as),
-        admin=admin,
-        ledger_id=ledger_id,
-        dar=contents,
-        identifier_hint_fn=convert_to_fn(identifier_hint, party_count=party_count),
-        display_name_fn=convert_to_fn(display_name, party_count=party_count),
-    )
+    if blocking:
+        return BlockingConnectWithNewParty(
+            party_count=party_count,
+            url=url,
+            read_as=read_as,
+            act_as=as_party_collection(act_as),
+            admin=admin,
+            ledger_id=ledger_id,
+            dar=contents,
+            identifier_hint_fn=convert_to_fn(identifier_hint, party_count=party_count),
+            display_name_fn=convert_to_fn(display_name, party_count=party_count),
+        )
+    else:
+        return AsyncConnectWithNewParty(
+            party_count=party_count,
+            url=url,
+            read_as=read_as,
+            act_as=as_party_collection(act_as),
+            admin=admin,
+            ledger_id=ledger_id,
+            dar=contents,
+            identifier_hint_fn=convert_to_fn(identifier_hint, party_count=party_count),
+            display_name_fn=convert_to_fn(display_name, party_count=party_count),
+        )
 
 
-class ConnectionWithParty:
-    # We're cheating here; we declare the types of our fields as properties in the typing file,
-    # but really they're just plain attributes
-    # noinspection PyPropertyAccess
-    def __init__(self, connection, party):
-        self.connection = connection
-        self.party = party
-
-    def __getitem__(self, item: Literal[0]) -> "ConnectionWithParty":
-        return self
-
-    def __len__(self) -> Literal[1]:
-        return 1
-
-
-def as_party_collection(p: Union[None, Party, Collection[Party]]) -> Collection[Party]:
+def as_party_collection(p: "Union[None, Party, Collection[Party]]") -> "Collection[Party]":
     if not p:
         return []
     elif isinstance(p, str):
@@ -143,7 +152,22 @@ def convert_to_fn(party_or_fn: Union[None, str, NameGenFn], *, party_count: int 
         return party_or_fn
 
 
-class ConnectWithNewParty:
+class ConnectionWithParty:
+    # We're cheating here; we declare the types of our fields as properties in the typing file,
+    # but really they're just plain attributes
+    # noinspection PyPropertyAccess
+    def __init__(self, connection, party):
+        self.connection = connection
+        self.party = party
+
+    def __getitem__(self, item: "Literal[0]") -> "ConnectionWithParty":
+        return self
+
+    def __len__(self) -> "Literal[1]":
+        return 1
+
+
+class ConnectWithNewPartyBase:
     def __init__(
         self,
         *,
@@ -166,20 +190,26 @@ class ConnectWithNewParty:
         self.party_count = party_count
         self.identifier_hint_fn = identifier_hint_fn
         self.display_name_fn = display_name_fn
-        self.connections = []  # type: List[Connection]
 
-    async def __aenter__(self) -> "Sequence[ConnectionWithParty]":
+
+class AsyncConnectWithNewParty(ConnectWithNewPartyBase):
+    def __init__(self, **kwargs):
+        super(AsyncConnectWithNewParty, self).__init__(**kwargs)
+        self._cm = AsyncExitStack()
+
+    async def __aenter__(self):
         party_infos = await self._set_up_ledger()
         ret = []
         for party_info in party_infos:
-            party_conn = connect(
-                url=self.url,
-                read_as=self.read_as,
-                act_as=[party_info.party, *self.act_as],
-                admin=self.admin,
-                ledger_id=self.ledger_id,
+            party_conn = await self._cm.enter_async_context(
+                connect(
+                    url=self.url,
+                    read_as=self.read_as,
+                    act_as=[party_info.party, *self.act_as],
+                    admin=self.admin,
+                    ledger_id=self.ledger_id,
+                )
             )
-            await party_conn.open()
             ret.append(ConnectionWithParty(party_conn, party_info.party))
         if len(ret) == 1:
             return ret[0]
@@ -187,9 +217,9 @@ class ConnectWithNewParty:
             return tuple(ret)
 
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
-        await gather(*(conn.close() for conn in self.connections))
+        await self._cm.aclose()
 
-    async def _set_up_ledger(self) -> Sequence[PartyInfo]:
+    async def _set_up_ledger(self):
         # Party allocation and package uploading require "admin" access, so we disregard the given
         # user parameters to upload packages and allocate parties
         async with connect(url=self.url, admin=True, ledger_id=self.ledger_id) as admin_conn:
@@ -205,3 +235,49 @@ class ConnectWithNewParty:
                     for i in range(self.party_count)
                 )
             )
+
+
+class BlockingConnectWithNewParty(ConnectWithNewPartyBase):
+    def __init__(self, **kwargs):
+        super(BlockingConnectWithNewParty, self).__init__(**kwargs)
+        self._cm = ExitStack()
+
+    def __enter__(self):
+        party_infos = self._set_up_ledger()
+        ret = []
+        for party_info in party_infos:
+            party_conn = self._cm.enter_context(
+                connect(
+                    url=self.url,
+                    read_as=self.read_as,
+                    act_as=[party_info.party, *self.act_as],
+                    admin=self.admin,
+                    ledger_id=self.ledger_id,
+                    blocking=True,
+                )
+            )
+            ret.append(ConnectionWithParty(party_conn, party_info.party))
+        if len(ret) == 1:
+            return ret[0]
+        else:
+            return tuple(ret)
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        self._cm.close()
+
+    def _set_up_ledger(self):
+        # Party allocation and package uploading require "admin" access, so we disregard the given
+        # user parameters to upload packages and allocate parties
+        with connect(
+            url=self.url, admin=True, ledger_id=self.ledger_id, blocking=True
+        ) as admin_conn:
+            if self.dar is not None:
+                admin_conn.upload_package(self.dar)
+
+            return [
+                admin_conn.allocate_party(
+                    identifier_hint=self.identifier_hint_fn(i),
+                    display_name=self.display_name_fn(i),
+                )
+                for i in range(self.party_count)
+            ]
