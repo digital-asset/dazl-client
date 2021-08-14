@@ -1,10 +1,11 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import Future, ThreadPoolExecutor
 from datetime import timedelta
-from typing import Awaitable, Callable, Dict, Optional, TypeVar
+import threading
+from time import sleep
+from typing import Callable, Dict, Optional, TypeVar
 
 from . import PackageService
 from ... import LOG
@@ -12,7 +13,6 @@ from ...damlast.daml_lf_1 import Package, PackageRef
 from ...damlast.errors import PackageNotFoundError
 from ...damlast.lookup import STAR, MultiPackageLookup, PackageExceptionTracker
 from ...damlast.parse import parse_archive
-from ...damlast.pkgfile import Dar
 from ...prim import DazlError
 
 __all__ = ["PackageLoader", "DEFAULT_TIMEOUT"]
@@ -33,8 +33,6 @@ class PackageLoader:
     information.
     """
 
-    _allow_deprecated_identifiers = False
-
     def __init__(
         self,
         package_lookup: "MultiPackageLookup",
@@ -45,13 +43,14 @@ class PackageLoader:
         self._package_lookup = package_lookup
         self._conn = conn
         self._timeout = timeout or DEFAULT_TIMEOUT
-        self._futures = dict()  # type: Dict[PackageRef, Awaitable[Package]]
+        self._lock = threading.RLock()
+        self._futures = dict()  # type: Dict[PackageRef, Future[Package]]
         self._executor = executor or ThreadPoolExecutor(3)
 
     def set_connection(self, conn: "Optional[PackageService]"):
         self._conn = conn
 
-    async def do_with_retry(self, fn: "Callable[[], T]") -> "T":
+    def do_with_retry(self, fn: "Callable[[], T]") -> "T":
         """
         Perform a synchronous action that assumes the existence of one or more packages. In the
         event the function raises :class:`PackageNotFoundError` or a wildcarded
@@ -63,27 +62,17 @@ class PackageLoader:
         :param fn: A function to invoke.
         :return: The result of that function.
         """
-        guard = PackageExceptionTracker(
-            allow_deprecated_identifiers=self._allow_deprecated_identifiers
-        )
+        guard = PackageExceptionTracker()
         while True:
             pkg_ref = guard.pop_package()
             while pkg_ref is not None:
-                await self.load(pkg_ref)
+                self.load(pkg_ref)
                 pkg_ref = guard.pop_package()
 
             with guard:
                 return fn()
 
-    async def preload(self, *contents: "Dar") -> None:
-        """
-        Populate a :class:`PackageCache` with types from DARs.
-
-        :param contents:
-            One or more DARs to load into a local package cache.
-        """
-
-    async def load(self, ref: "PackageRef") -> "Optional[Package]":
+    def load(self, ref: "PackageRef") -> "Optional[Package]":
         """
         Load a package ID from the remote server. If the package has additional dependencies, they
         are also loaded.
@@ -92,7 +81,10 @@ class PackageLoader:
         :raises: PackageNotFoundError if the package could not be resolved
         """
         if ref == STAR:
-            return await self.load_all()
+            # I'd prefer `return self.load_all()`, but https://github.com/python/mypy/issues/6549
+            # was closed as "not a bug, won't fix"
+            self.load_all()
+            return None
 
         # If the package has already been loaded, then skip all the expensive I/O stuff
         try:
@@ -102,52 +94,50 @@ class PackageLoader:
 
         # If we already have a request in-flight, simply return that same Future to our caller;
         # do not try to schedule a new request
-        fut = self._futures.get(ref)
-        if fut is None:
-            fut = ensure_future(self._load(ref))
-            self._futures[ref] = fut
-        package = await fut
+        with self._lock:
+            fut = self._futures.get(ref)
+            if fut is None:
+                fut = self._executor.submit(self._load, ref)
+                self._futures[ref] = fut
 
-        _ = self._futures.pop(ref, None)
+        package = fut.result()
+
+        with self._lock:
+            _ = self._futures.pop(ref, None)
 
         return package
 
-    async def _load(self, package_id: "PackageRef") -> "Package":
+    def _load(self, package_id: "PackageRef") -> "Package":
         LOG.info("Loading package: %s", package_id)
 
-        loop = get_event_loop()
         conn = self._conn
         if conn is None:
             raise DazlError("a connection is not configured")
 
-        archive_bytes = await wait_for(
-            self.__fetch_package_bytes(conn, package_id), timeout=self._timeout.total_seconds()
-        )
+        archive_bytes = self.__fetch_package_bytes(conn, package_id)
 
         LOG.info("Loaded for package: %s, %d bytes", package_id, len(archive_bytes))
 
-        archive = await loop.run_in_executor(
-            self._executor, lambda: parse_archive(package_id, archive_bytes)
-        )
+        archive = parse_archive(package_id, archive_bytes)
         self._package_lookup.add_archive(archive)
         return archive.package
 
     @staticmethod
-    async def __fetch_package_bytes(conn: "PackageService", package_id: "PackageRef") -> bytes:
+    def __fetch_package_bytes(conn: "PackageService", package_id: "PackageRef") -> bytes:
         sleep_interval = 1
 
         while True:
             # noinspection PyBroadException
             try:
-                return await conn.get_package(package_id)
+                return conn.get_package(package_id)
             except Exception:
                 # We tried fetching the package but got an error. Retry, backing off to waiting as
                 # much as 30 seconds between each attempt.
-                await sleep(sleep_interval)
+                sleep(sleep_interval)
                 sleep_interval = min(sleep_interval * 2, 30)
                 LOG.exception("Failed to fetch package; this will be retried.")
 
-    async def load_all(self) -> None:
+    def load_all(self) -> None:
         """
         Load all packages from the remote server.
         """
@@ -155,9 +145,20 @@ class PackageLoader:
         if conn is None:
             raise DazlError("a connection is not configured")
 
-        package_ids = set(await conn.list_package_ids())
-        package_ids -= self._package_lookup.package_ids()
-        if package_ids:
-            await gather(*(self.load(package_id) for package_id in package_ids))
+        package_ids = set(conn.list_package_ids()) - self._package_lookup.package_ids()
+
+        # wait for the Futures for all missing packages to be resolved, and then return
+        futs = []
+        with self._lock:
+            for ref in package_ids:
+                fut = self._futures.get(ref)
+                if fut is None:
+                    fut = self._executor.submit(self._load, ref)
+                    self._futures[ref] = fut
+                futs.append(fut)
+
+        # wait for all interesting Futures to be complete
+        for fut in futs:
+            fut.result()
 
         return None

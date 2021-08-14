@@ -25,6 +25,7 @@ from typing import (
     NoReturn,
     Optional,
     Sequence,
+    Set,
     Tuple,
     Union,
 )
@@ -49,9 +50,11 @@ from .protocols import SymbolLookup
 from .util import package_local_name, package_ref
 
 __all__ = [
+    "STAR",
     "EmptyLookup",
     "MultiPackageLookup",
     "PackageLookup",
+    "PackageExceptionTracker",
     "find_choice",
     "matching_normalizations",
     "normalize",
@@ -508,6 +511,80 @@ class MultiPackageLookup(SymbolLookup):
             return (lookup,)
 
         raise PackageNotFoundError(ref)
+
+
+class PackageExceptionTracker:
+    """
+    A context manager that gracefully recovers from errors related to missing packages that are
+    retryable.
+    """
+
+    def __init__(self, allow_deprecated_identifiers: bool = False):
+        self._seen_types = set()  # type: Set[str]
+        self._seen_packages = set()  # type: Set[PackageRef]
+        self._pkg_refs = list()  # type: List[PackageRef]
+        self._allow_deprecated_identifiers = allow_deprecated_identifiers
+        self.done = False
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if isinstance(exc_val, PackageNotFoundError):
+            # every time we fail serialization due to a missing package or type,
+            # try to resolve it; remember what we tried, because if we fail again
+            # for the same reason it is likely fatal
+            if exc_val.ref in self._seen_packages:
+                # we already looked for this package and couldn't find it; this will
+                # never succeed, so we can't suppress this error
+                return None
+
+            self._seen_packages.add(exc_val.ref)
+
+            # the caller should try to load the offending package, and then retry the operation
+            self._pkg_refs.append(exc_val.ref)
+            return True
+
+        elif isinstance(exc_val, NameNotFoundError):
+            if exc_val.ref in self._seen_types:
+                # we already looked for this type and couldn't find it; this will
+                # never succeed
+                LOG.verbose(
+                    "Failed to find name %s in all known packages, "
+                    "even after fetching the latest.",
+                    exc_val.ref,
+                )
+                raise
+
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", DeprecationWarning)
+                pkg_id, name = validate_template(
+                    exc_val.ref, allow_deprecated_identifiers=self._allow_deprecated_identifiers
+                )
+            if pkg_id == "*":
+                # we don't know what package contains this type, so we have no
+                # choice but to look in all known packages
+                LOG.verbose(
+                    "Failed to find name %s in all known packages, " "so loading ALL packages...",
+                    name,
+                )
+                self._seen_types.add(exc_val.ref)
+
+                # the caller should load all packages, and then retry the operation
+                self._pkg_refs.append(STAR)
+                return True
+            else:
+                # we know what package this type comes from, but it did not contain
+                # the required type
+                LOG.warning("Found package %s, but it did not include type %s", pkg_id, name)
+                return None
+
+    def pop_package(self) -> "Optional[PackageRef]":
+        """
+        Return a :class:`PackageRef` that should be fetched before an operation is retried, or
+        ``None`` if there is no such operation.
+        """
+        return self._pkg_refs.pop() if self._pkg_refs else None
 
 
 def find_choice(template: "DefTemplate", name: str) -> "TemplateChoice":

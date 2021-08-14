@@ -4,7 +4,9 @@
 from io import BytesIO
 from os import PathLike
 from pathlib import Path
+import threading
 from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional, Union
+import warnings
 from zipfile import ZipFile
 
 from .._gen.com.daml.daml_lf_1_14 import daml_lf_pb2 as pb
@@ -137,24 +139,43 @@ class DarFile:
         """
         return frozenset(PackageRef(a.hash) for a in self._pb_archives())
 
+    def async_package_service(self) -> "DarFileAsyncPackageService":
+        """
+        Return an implementation of :class:`dazl.ledger.aio.PackageService` that is backed by
+        the contents of this :class:`DarFile`.
+        """
+        return DarFileAsyncPackageService(self)
+
+    def blocking_package_service(self) -> "DarFileBlockingPackageService":
+        """
+        Return an implementation of :class:`dazl.ledger.blocking.PackageService` that is backed by
+        the contents of this :class:`DarFile`.
+
+        The returned service is thread-safe as long as this :class:`DarFile` is not accessed
+        concurrently by other processes.
+        """
+        return DarFileBlockingPackageService(self)
+
     async def get_package(self, package_id: "PackageRef") -> bytes:
         """
-        Return bytes corresponding to the specified :class:`PackageRef`. If this DAR were to be
-        uploaded to a ledger, these are the bytes that would be returned for the specified
-        :class:`PackageRef`.
-
-        This method is not actually async; it merely has an async signature to comply with the
-        PackageLoader protocol.
+        This method is deprecated; use :meth:`DarFile.async_package_service` instead.
         """
+        warnings.warn(
+            "DarFile.get_package is deprecated; use DarFile.async_package_service.get_package instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self.package_bytes(package_id)
 
     async def list_package_ids(self):
         """
-        Return the set of package IDs from this DAR.
-
-        This method is not actually async; it merely has an async signature to comply with the
-        PackageLoader protocol.
+        This method is deprecated; use :meth:`DarFile.async_package_service` instead.
         """
+        warnings.warn(
+            "DarFile.list_package_ids is deprecated; use DarFile.async_package_service.list_package_ids instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self.package_ids()
 
     def _dalf_names(self) -> "Generator[PackageRef, None, None]":
@@ -220,3 +241,28 @@ def get_dar_package_ids(dar: "Dar") -> "AbstractSet[PackageRef]":
     """
     with DarFile(dar) as dar_file:
         return dar_file.package_ids()
+
+
+class DarFileAsyncPackageService:
+    def __init__(self, __dar_file: "DarFile"):
+        self._dar_file = __dar_file
+
+    async def get_package(self, package_id: "PackageRef") -> bytes:
+        return self._dar_file.package_bytes(package_id)
+
+    async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+        return self._dar_file.package_ids()
+
+
+class DarFileBlockingPackageService:
+    def __init__(self, __dar_file: "DarFile"):
+        self._dar_file = __dar_file
+        self._lock = threading.RLock()
+
+    def get_package(self, package_id: "PackageRef") -> bytes:
+        with self._lock:
+            return self._dar_file.package_bytes(package_id)
+
+    def list_package_ids(self) -> "AbstractSet[PackageRef]":
+        with self._lock:
+            return self._dar_file.package_ids()
