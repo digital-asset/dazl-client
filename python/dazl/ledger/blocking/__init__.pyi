@@ -12,13 +12,14 @@ from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...prim import ContractData, ContractId
 from ...query import Queries, Query
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
+from .pkgloader import PackageLoader
 
 if sys.version_info >= (3, 8):
     from typing import Protocol, runtime_checkable
 else:
     from typing_extensions import Protocol, runtime_checkable
 
-__all__ = ["PackageService", "Connection", "QueryStream"]
+__all__ = ["PackageService", "Connection", "QueryStream", "PackageLoader"]
 
 Self = TypeVar("Self")
 
