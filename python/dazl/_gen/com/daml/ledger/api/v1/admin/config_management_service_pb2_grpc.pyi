@@ -2,13 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 
-from typing import (
-    AsyncIterable as __AsyncStream,
-    Awaitable as __Awaitable,
-    Iterable as __Stream,
-    Union as __Union,
-    overload,
-)
+import typing as _typing
 
 from grpc import Channel as __Channel
 from grpc.aio import Channel as __AsyncChannel
@@ -26,18 +20,18 @@ __all__ = [
 
 class ConfigManagementServiceStub:
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __Channel) -> _ConfigManagementServiceStub: ...
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __AsyncChannel) -> _ConfigManagementServiceStub_Async: ...
-    def GetTimeModel(self, __1: GetTimeModelRequest) -> __Union[GetTimeModelResponse, __Awaitable[GetTimeModelResponse]]: ...
-    def SetTimeModel(self, __1: SetTimeModelRequest) -> __Union[SetTimeModelResponse, __Awaitable[SetTimeModelResponse]]: ...
+    def GetTimeModel(self, __1: GetTimeModelRequest) -> _typing.Union[GetTimeModelResponse, _typing.Awaitable[GetTimeModelResponse]]: ...
+    def SetTimeModel(self, __1: SetTimeModelRequest) -> _typing.Union[SetTimeModelResponse, _typing.Awaitable[SetTimeModelResponse]]: ...
 
 class _ConfigManagementServiceStub(ConfigManagementServiceStub):
     def GetTimeModel(self, __1: GetTimeModelRequest) -> GetTimeModelResponse: ...
     def SetTimeModel(self, __1: SetTimeModelRequest) -> SetTimeModelResponse: ...
 
 class _ConfigManagementServiceStub_Async(ConfigManagementServiceStub):
-    def GetTimeModel(self, __1: GetTimeModelRequest) -> __Awaitable[GetTimeModelResponse]: ...
+    def GetTimeModel(self, __1: GetTimeModelRequest) -> _typing.Awaitable[GetTimeModelResponse]: ...
     def SetTimeModel(self, __1: SetTimeModelRequest) -> SetTimeModelResponse: ...

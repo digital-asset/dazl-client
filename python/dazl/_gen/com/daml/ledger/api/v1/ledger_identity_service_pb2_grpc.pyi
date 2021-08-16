@@ -2,13 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 
-from typing import (
-    AsyncIterable as __AsyncStream,
-    Awaitable as __Awaitable,
-    Iterable as __Stream,
-    Union as __Union,
-    overload,
-)
+import typing as _typing
 
 from grpc import Channel as __Channel
 from grpc.aio import Channel as __AsyncChannel
@@ -21,15 +15,15 @@ __all__ = [
 
 class LedgerIdentityServiceStub:
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __Channel) -> _LedgerIdentityServiceStub: ...
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __AsyncChannel) -> _LedgerIdentityServiceStub_Async: ...
-    def GetLedgerIdentity(self, __1: GetLedgerIdentityRequest) -> __Union[GetLedgerIdentityResponse, __Awaitable[GetLedgerIdentityResponse]]: ...
+    def GetLedgerIdentity(self, __1: GetLedgerIdentityRequest) -> _typing.Union[GetLedgerIdentityResponse, _typing.Awaitable[GetLedgerIdentityResponse]]: ...
 
 class _LedgerIdentityServiceStub(LedgerIdentityServiceStub):
     def GetLedgerIdentity(self, __1: GetLedgerIdentityRequest) -> GetLedgerIdentityResponse: ...
 
 class _LedgerIdentityServiceStub_Async(LedgerIdentityServiceStub):
-    def GetLedgerIdentity(self, __1: GetLedgerIdentityRequest) -> __Awaitable[GetLedgerIdentityResponse]: ...
+    def GetLedgerIdentity(self, __1: GetLedgerIdentityRequest) -> _typing.Awaitable[GetLedgerIdentityResponse]: ...

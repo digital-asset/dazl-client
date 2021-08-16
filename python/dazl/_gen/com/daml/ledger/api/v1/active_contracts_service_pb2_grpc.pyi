@@ -2,14 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 
-from typing import (
-    AsyncIterable as __AsyncStream,
-    AsyncIterator as __AsyncIterator,
-    Iterable as __Stream,
-    Iterator as __Iterator,
-    Union as __Union,
-    overload,
-)
+import typing as _typing
 
 from grpc import Channel as __Channel, UnaryStreamMultiCallable as __UnaryStreamCall
 from grpc.aio import Channel as __AsyncChannel, UnaryStreamCall as __AsyncUnaryStreamCall
@@ -22,21 +15,21 @@ __all__ = [
 
 class ActiveContractsServiceStub:
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __Channel) -> __ActiveContractsServiceStub: ...
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __AsyncChannel) -> __ActiveContractsServiceStub_Async: ...
-    def GetActiveContracts(self, __1: GetActiveContractsRequest) -> __Union[__ActiveContractsServiceStub_GetActiveContracts_Response, __ActiveContractsServiceStub_GetActiveContracts_AsyncResponse]: ...
+    def GetActiveContracts(self, __1: GetActiveContractsRequest) -> _typing.Union[__ActiveContractsServiceStub_GetActiveContracts_Response, __ActiveContractsServiceStub_GetActiveContracts_AsyncResponse]: ...
 
 class __ActiveContractsServiceStub(ActiveContractsServiceStub):
     def GetActiveContracts(self, __1: GetActiveContractsRequest) -> __ActiveContractsServiceStub_GetActiveContracts_Response: ...
 
 class __ActiveContractsServiceStub_GetActiveContracts_Response(__UnaryStreamCall):
-    def __iter__(self) -> __Iterator[GetActiveContractsResponse]: ...
+    def __iter__(self) -> _typing.Iterator[GetActiveContractsResponse]: ...
 
 class __ActiveContractsServiceStub_Async(ActiveContractsServiceStub):
     def GetActiveContracts(self, __1: GetActiveContractsRequest) -> __ActiveContractsServiceStub_GetActiveContracts_AsyncResponse: ...
 
 class __ActiveContractsServiceStub_GetActiveContracts_AsyncResponse(__AsyncUnaryStreamCall):
-    def __aiter__(self) -> __AsyncIterator[GetActiveContractsResponse]: ...
+    def __aiter__(self) -> _typing.AsyncIterator[GetActiveContractsResponse]: ...

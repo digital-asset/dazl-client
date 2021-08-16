@@ -2,13 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 
-from typing import (
-    AsyncIterable as __AsyncStream,
-    Awaitable as __Awaitable,
-    Iterable as __Stream,
-    Union as __Union,
-    overload,
-)
+import typing as _typing
 
 from grpc import Channel as __Channel
 from grpc.aio import Channel as __AsyncChannel
@@ -21,15 +15,15 @@ __all__ = [
 
 class ParticipantPruningServiceStub:
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __Channel) -> _ParticipantPruningServiceStub: ...
     @classmethod
-    @overload
+    @_typing.overload
     def __new__(cls, channel: __AsyncChannel) -> _ParticipantPruningServiceStub_Async: ...
-    def Prune(self, __1: PruneRequest) -> __Union[PruneResponse, __Awaitable[PruneResponse]]: ...
+    def Prune(self, __1: PruneRequest) -> _typing.Union[PruneResponse, _typing.Awaitable[PruneResponse]]: ...
 
 class _ParticipantPruningServiceStub(ParticipantPruningServiceStub):
     def Prune(self, __1: PruneRequest) -> PruneResponse: ...
 
 class _ParticipantPruningServiceStub_Async(ParticipantPruningServiceStub):
-    def Prune(self, __1: PruneRequest) -> __Awaitable[PruneResponse]: ...
+    def Prune(self, __1: PruneRequest) -> _typing.Awaitable[PruneResponse]: ...
