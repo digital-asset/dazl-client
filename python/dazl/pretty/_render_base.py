@@ -704,7 +704,7 @@ class PrettyPrintBase(PackageVisitor[str], ModuleVisitor[str], ExprVisitor[str],
     def visit_type_forall(self, forall: "Type.Forall") -> "str":
         pass
 
-    def visit_type_tuple(self, tuple: "Type.Tuple") -> "str":
+    def visit_type_struct(self, struct: "Type.Struct") -> "str":
         pass
 
     def visit_type_nat(self, nat: int) -> "str":

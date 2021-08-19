@@ -128,7 +128,7 @@ class ProtobufParser:
         elif sum_name == "forall":
             return Type(forall=self.parse_Type_Forall(pb.forall))
         elif sum_name == "struct":
-            return Type(tuple=self.parse_Type_Tuple(pb.struct))
+            return Type(struct=self.parse_Type_Struct(pb.struct))
         elif sum_name == "nat":
             return Type(nat=pb.nat)
         elif sum_name == "syn":
@@ -173,8 +173,8 @@ class ProtobufParser:
             tuple(self.parse_TypeVarWithKind(var) for var in pb.vars), self.parse_Type(pb.body)
         )
 
-    def parse_Type_Tuple(self, pb) -> "Type.Tuple":
-        return Type.Tuple(tuple(self.parse_FieldWithType(field) for field in pb.fields))
+    def parse_Type_Struct(self, pb) -> "Type.Struct":
+        return Type.Struct(tuple(self.parse_FieldWithType(field) for field in pb.fields))
 
     def parse_Type_Syn(self, pb) -> "Type.Syn":
         return Type.Syn(
@@ -246,14 +246,18 @@ class ProtobufParser:
             args["rec_con"] = self.parse_Expr_RecCon(pb.rec_con)
         elif sum_name == "rec_proj":
             args["rec_proj"] = self.parse_Expr_RecProj(pb.rec_proj)
+        elif sum_name == "rec_upd":
+            args["rec_upd"] = self.parse_Expr_RecUpd(pb.rec_upd)
         elif sum_name == "variant_con":
             args["variant_con"] = self.parse_Expr_VariantCon(pb.variant_con)
-        elif sum_name == "struct_con":
-            args["struct_con"] = self.parse_Expr_TupleCon(pb.struct_con)
         elif sum_name == "enum_con":
             args["enum_con"] = self.parse_Expr_EnumCon(pb.enum_con)
+        elif sum_name == "struct_con":
+            args["struct_con"] = self.parse_Expr_StructCon(pb.struct_con)
         elif sum_name == "struct_proj":
-            args["struct_proj"] = self.parse_Expr_TupleProj(pb.struct_proj)
+            args["struct_proj"] = self.parse_Expr_StructProj(pb.struct_proj)
+        elif sum_name == "struct_upd":
+            args["struct_upd"] = self.parse_Expr_StructUpd(pb.struct_upd)
         elif sum_name == "app":
             args["app"] = self.parse_Expr_App(pb.app)
         elif sum_name == "ty_app":
@@ -274,10 +278,6 @@ class ProtobufParser:
             args["update"] = self.parse_Update(pb.update)
         elif sum_name == "scenario":
             args["scenario"] = self.parse_Scenario(pb.scenario)
-        elif sum_name == "rec_upd":
-            args["rec_upd"] = self.parse_Expr_RecUpd(pb.rec_upd)
-        elif sum_name == "struct_upd":
-            args["struct_upd"] = self.parse_Expr_TupleUpd(pb.struct_upd)
         elif sum_name == "optional_none":
             args["optional_none"] = self.parse_Expr_OptionalNone(pb.optional_none)
         elif sum_name == "optional_some":
@@ -286,12 +286,16 @@ class ProtobufParser:
             args["to_any"] = self.parse_Expr_ToAny(pb.to_any)
         elif sum_name == "from_any":
             args["from_any"] = self.parse_Expr_FromAny(pb.from_any)
-        elif sum_name == "to_text_template_id":
-            args["to_text_template_id"] = self.parse_Expr_ToTextTemplateId(pb.to_text_template_id)
         elif sum_name == "type_rep":
             args["type_rep"] = self.parse_Type(pb.type_rep)
+        elif sum_name == "to_any_exception":
+            args["to_any_exception"] = self.parse_Expr_ToAnyException(pb.to_any_exception)
+        elif sum_name == "from_any_exception":
+            args["from_any_exception"] = self.parse_Expr_FromAnyException(pb.from_any_exception)
         elif sum_name == "throw":
             args["throw"] = self.parse_Expr_Throw(pb.throw)
+        elif sum_name == "experimental":
+            args["experimental"] = self.parse_Expr_Experimental(pb.experimental)
         else:
             raise ValueError(f"Unknown type of Expr: {sum_name!r}")
 
@@ -326,7 +330,7 @@ class ProtobufParser:
             self.parse_Expr(pb.variant_arg),
         )
 
-    def parse_Expr_TupleCon(self, pb) -> "Expr.StructCon":
+    def parse_Expr_StructCon(self, pb) -> "Expr.StructCon":
         return Expr.StructCon(
             tuple(self.parse_FieldWithExpr(field) for field in pb.fields)
         )  # length > 0
@@ -337,12 +341,12 @@ class ProtobufParser:
             self._resolve_string(pb.enum_con_str, pb.enum_con_interned_str),
         )
 
-    def parse_Expr_TupleProj(self, pb) -> "Expr.StructProj":
+    def parse_Expr_StructProj(self, pb) -> "Expr.StructProj":
         return Expr.StructProj(
             self._resolve_string(pb.field_str, pb.field_interned_str), self.parse_Expr(pb.struct)
         )
 
-    def parse_Expr_TupleUpd(self, pb) -> "Expr.StructUpd":
+    def parse_Expr_StructUpd(self, pb) -> "Expr.StructUpd":
         """Set ``field`` in ``tuple`` to ``update``."""
         return Expr.StructUpd(
             self._resolve_string(pb.field_str, pb.field_interned_str),
@@ -394,8 +398,11 @@ class ProtobufParser:
     def parse_Expr_FromAny(self, pb):
         return Expr.FromAny(self.parse_Type(pb.type), self.parse_Expr(pb.expr))
 
-    def parse_Expr_ToTextTemplateId(self, pb):
-        return Expr.ToTextTemplateId(self.parse_Type(pb.type))
+    def parse_Expr_ToAnyException(self, pb):
+        return Expr.ToAnyException(self.parse_Type(pb.type), self.parse_Expr(pb.expr))
+
+    def parse_Expr_FromAnyException(self, pb):
+        return Expr.FromAnyException(self.parse_Type(pb.type), self.parse_Expr(pb.expr))
 
     def parse_Expr_Throw(self, pb):
         return Expr.Throw(
@@ -403,6 +410,9 @@ class ProtobufParser:
             exception_type=self.parse_Type(pb.exception_type),
             exception_expr=self.parse_Expr(pb.exception_expr),
         )
+
+    def parse_Expr_Experimental(self, pb):
+        return Expr.Experimental(name=pb.name, type=self.parse_Type(pb.type))
 
     def parse_CaseAlt(self, pb) -> "CaseAlt":
         body = self.parse_Expr(pb.body)
@@ -471,16 +481,20 @@ class ProtobufParser:
             return Update(create=self.parse_Update_Create(pb.create))
         elif sum_name == "exercise":
             return Update(exercise=self.parse_Update_Exercise(pb.exercise))
+        elif sum_name == "exercise_by_key":
+            return Update(exercise_by_key=self.parse_Update_ExerciseByKey(pb.exercise_by_key))
         elif sum_name == "fetch":
             return Update(fetch=self.parse_Update_Fetch(pb.fetch))
         elif sum_name == "get_time":
             return Update(get_time=self.parse_Unit(pb.get_time))
-        elif sum_name == "embed_expr":
-            return Update(embed_expr=self.parse_Update_EmbedExpr(pb.embed_expr))
         elif sum_name == "lookup_by_key":
             return Update(lookup_by_key=self.parse_Update_RetrieveByKey(pb.lookup_by_key))
         elif sum_name == "fetch_by_key":
             return Update(fetch_by_key=self.parse_Update_RetrieveByKey(pb.fetch_by_key))
+        elif sum_name == "embed_expr":
+            return Update(embed_expr=self.parse_Update_EmbedExpr(pb.embed_expr))
+        elif sum_name == "try_catch":
+            return Update(try_catch=self.parse_Update_TryCatch(pb.try_catch))
         else:
             raise ValueError(f"unknown Sum value: {sum_name!r}")
 
@@ -497,6 +511,14 @@ class ProtobufParser:
             arg=self.parse_Expr(pb.arg),
         )
 
+    def parse_Update_ExerciseByKey(self, pb) -> "Update.ExerciseByKey":
+        return Update.ExerciseByKey(
+            template=self.parse_TypeConName(pb.template),
+            choice=pb.choice,
+            key=self.parse_Expr(pb.key),
+            arg=self.parse_Expr(pb.arg),
+        )
+
     def parse_Update_Fetch(self, pb) -> "Update.Fetch":
         return Update.Fetch(
             template=self.parse_TypeConName(pb.template), cid=self.parse_Expr(pb.cid)
@@ -508,6 +530,14 @@ class ProtobufParser:
     def parse_Update_RetrieveByKey(self, pb) -> "Update.RetrieveByKey":
         return Update.RetrieveByKey(
             template=self.parse_TypeConName(pb.template), key=self.parse_Expr(pb.key)
+        )
+
+    def parse_Update_TryCatch(self, pb) -> "Update.TryCatch":
+        return Update.TryCatch(
+            return_type=self.parse_Type(pb.return_type),
+            try_expr=self.parse_Expr(pb.try_expr),
+            var=self.interned_strings[pb.var_interned_str],
+            catch_expr=self.parse_Expr(pb.catch_expr),
         )
 
     def parse_Scenario(self, pb) -> "Scenario":
@@ -562,6 +592,7 @@ class ProtobufParser:
             name=self._resolve_string(pb.name_str, pb.name_interned_str),
             consuming=pb.consuming,
             controllers=self.parse_Expr(pb.controllers),
+            observers=self.parse_Expr(pb.observers) if pb.HasField("observers") else None,
             arg_binder=self.parse_VarWithType(pb.arg_binder),
             ret_type=self.parse_Type(pb.ret_type),
             update=self.parse_Expr(pb.update),
@@ -676,9 +707,9 @@ class ProtobufParser:
 
     def parse_FeatureFlags(self, pb) -> "FeatureFlags":
         return FeatureFlags(
-            forbidPartyLiterals=pb.forbidPartyLiterals,
-            dontDivulgeContractIdsInCreateArguments=pb.dontDivulgeContractIdsInCreateArguments,
-            dontDiscloseNonConsumingChoicesToObservers=pb.dontDiscloseNonConsumingChoicesToObservers,
+            forbid_party_literals=pb.forbidPartyLiterals,
+            dont_divulge_contract_ids_in_create_arguments=pb.dontDivulgeContractIdsInCreateArguments,
+            dont_disclose_nonconsuming_choices_to_observers=pb.dontDiscloseNonConsumingChoicesToObservers,
         )
 
     def parse_Module(self, pb) -> "Module":

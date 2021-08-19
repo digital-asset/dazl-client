@@ -158,7 +158,7 @@ class DamlPrettyPrinter(PrettyPrintBase):
         return f"{variant_con.variant_con} {maybe_parentheses(arg_text)}"
 
     def visit_expr_struct_proj(self, struct_proj: "Expr.StructProj") -> str:
-        tuple_text = maybe_parentheses(self.visit_expr(struct_proj.tuple))
+        tuple_text = maybe_parentheses(self.visit_expr(struct_proj.struct))
         return f"{tuple_text}.{struct_proj.field}"
 
     def visit_expr_app_inline(self, app: "Expr.App") -> str:
@@ -355,9 +355,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
                 var=self.visit_type_var,
                 con=self.visit_type_con,
                 prim=self.visit_type_prim,
-                tysyn=self.visit_type_syn,
                 forall=self.visit_type_forall,
-                tuple=self.visit_type_tuple,
+                struct=self.visit_type_struct,
                 nat=self.visit_type_nat,
                 syn=self.visit_type_syn,
             )
@@ -495,8 +494,8 @@ class DamlPrettyPrinter(PrettyPrintBase):
             raise TypeError(f"A DAML forall Type is required here (got {forall!r} instead")
 
     # noinspection PyShadowingBuiltins
-    def visit_type_tuple(self, tuple: "NewType.Tuple") -> str:
-        return "(" + ",".join(self.visit_type(t.type) for t in tuple.fields) + ")"
+    def visit_type_tuple(self, struct: "NewType.Struct") -> str:
+        return "(" + ",".join(self.visit_type(t.type) for t in struct.fields) + ")"
 
     def _visit_type_app(self, types: "Union[TypeApp, Sequence[Union[str, NewType, OldType]]]"):
         if isinstance(types, TypeApp):

@@ -20,12 +20,7 @@ from ..damlast.daml_lf_1 import (
     ValName,
 )
 from ..damlast.util import pack_arrow_type, unpack_arrow_type
-from ._render_base import (
-    CodeContext,
-    PrettyPrintBase,
-    decode_special_chars,
-    register_pretty_printer,
-)
+from ._render_base import CodeContext, PrettyPrintBase, decode_special_chars
 
 
 class CSharpPrettyPrint(PrettyPrintBase):
@@ -424,8 +419,8 @@ class CSharpPrettyPrint(PrettyPrintBase):
     def visit_type_forall(self, forall: "Type.Forall") -> "str":
         return self.visit_type(forall.body)
 
-    def visit_type_tuple(self, tuple: "Type.Tuple") -> "str":
-        args = ", ".join(f"{self.visit_type(fwt.type)} {fwt.field}" for fwt in tuple.fields)
+    def visit_type_struct(self, struct: "Type.Struct") -> "str":
+        args = ", ".join(f"{self.visit_type(fwt.type)} {fwt.field}" for fwt in struct.fields)
         return f"({args})"
 
     def _visit_type_default(self):
