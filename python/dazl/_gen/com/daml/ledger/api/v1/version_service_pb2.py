@@ -21,9 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/version_service.proto',
   package='com.daml.ledger.api.v1',
   syntax='proto3',
-  serialized_options=b'\n\026com.daml.ledger.api.v1B\030VersionServiceOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  serialized_options=b'\n\026com.daml.ledger.api.v1B\030VersionServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n,com/daml/ledger/api/v1/version_service.proto\x12\x16\x63om.daml.ledger.api.v1\"/\n\x1aGetLedgerApiVersionRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\".\n\x1bGetLedgerApiVersionResponse\x12\x0f\n\x07version\x18\x01 \x01(\t2\x90\x01\n\x0eVersionService\x12~\n\x13GetLedgerApiVersion\x12\x32.com.daml.ledger.api.v1.GetLedgerApiVersionRequest\x1a\x33.com.daml.ledger.api.v1.GetLedgerApiVersionResponseBK\n\x16\x63om.daml.ledger.api.v1B\x18VersionServiceOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n,com/daml/ledger/api/v1/version_service.proto\x12\x16\x63om.daml.ledger.api.v1\"9\n\x1aGetLedgerApiVersionRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\"7\n\x1bGetLedgerApiVersionResponse\x12\x18\n\x07version\x18\x01 \x01(\tR\x07version2\x90\x01\n\x0eVersionService\x12~\n\x13GetLedgerApiVersion\x12\x32.com.daml.ledger.api.v1.GetLedgerApiVersionRequest\x1a\x33.com.daml.ledger.api.v1.GetLedgerApiVersionResponseB\x9c\x01\n\x16\x63om.daml.ledger.api.v1B\x18VersionServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
 )
 
 
@@ -43,7 +43,7 @@ _GETLEDGERAPIVERSIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -57,7 +57,7 @@ _GETLEDGERAPIVERSIONREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=72,
-  serialized_end=119,
+  serialized_end=129,
 )
 
 
@@ -75,7 +75,7 @@ _GETLEDGERAPIVERSIONRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='version', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -88,8 +88,8 @@ _GETLEDGERAPIVERSIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=121,
-  serialized_end=167,
+  serialized_start=131,
+  serialized_end=186,
 )
 
 DESCRIPTOR.message_types_by_name['GetLedgerApiVersionRequest'] = _GETLEDGERAPIVERSIONREQUEST
@@ -120,8 +120,8 @@ _VERSIONSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=170,
-  serialized_end=314,
+  serialized_start=189,
+  serialized_end=333,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetLedgerApiVersion',

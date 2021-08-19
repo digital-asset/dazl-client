@@ -23,9 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/testing/time_service.proto',
   package='com.daml.ledger.api.v1.testing',
   syntax='proto3',
-  serialized_options=b'\n\036com.daml.ledger.api.v1.testingB\025TimeServiceOuterClass\252\002\036Com.Daml.Ledger.Api.V1.Testing',
+  serialized_options=b'\n\036com.daml.ledger.api.v1.testingB\025TimeServiceOuterClassZWgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/testing\252\002\036Com.Daml.Ledger.Api.V1.Testing',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n1com/daml/ledger/api/v1/testing/time_service.proto\x12\x1e\x63om.daml.ledger.api.v1.testing\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"#\n\x0eGetTimeRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\"C\n\x0fGetTimeResponse\x12\x30\n\x0c\x63urrent_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x83\x01\n\x0eSetTimeRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t\x12\x30\n\x0c\x63urrent_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08new_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\xce\x01\n\x0bTimeService\x12l\n\x07GetTime\x12..com.daml.ledger.api.v1.testing.GetTimeRequest\x1a/.com.daml.ledger.api.v1.testing.GetTimeResponse0\x01\x12Q\n\x07SetTime\x12..com.daml.ledger.api.v1.testing.SetTimeRequest\x1a\x16.google.protobuf.EmptyBX\n\x1e\x63om.daml.ledger.api.v1.testingB\x15TimeServiceOuterClass\xaa\x02\x1e\x43om.Daml.Ledger.Api.V1.Testingb\x06proto3'
+  serialized_pb=b'\n1com/daml/ledger/api/v1/testing/time_service.proto\x12\x1e\x63om.daml.ledger.api.v1.testing\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"-\n\x0eGetTimeRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\"P\n\x0fGetTimeResponse\x12=\n\x0c\x63urrent_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0b\x63urrentTime\"\xa3\x01\n\x0eSetTimeRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12=\n\x0c\x63urrent_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0b\x63urrentTime\x12\x35\n\x08new_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x07newTime2\xce\x01\n\x0bTimeService\x12l\n\x07GetTime\x12..com.daml.ledger.api.v1.testing.GetTimeRequest\x1a/.com.daml.ledger.api.v1.testing.GetTimeResponse0\x01\x12Q\n\x07SetTime\x12..com.daml.ledger.api.v1.testing.SetTimeRequest\x1a\x16.google.protobuf.EmptyB\xb1\x01\n\x1e\x63om.daml.ledger.api.v1.testingB\x15TimeServiceOuterClassZWgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/testing\xaa\x02\x1e\x43om.Daml.Ledger.Api.V1.Testingb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -46,7 +46,7 @@ _GETTIMEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -60,7 +60,7 @@ _GETTIMEREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=147,
-  serialized_end=182,
+  serialized_end=192,
 )
 
 
@@ -78,7 +78,7 @@ _GETTIMERESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='currentTime', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -91,8 +91,8 @@ _GETTIMERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=184,
-  serialized_end=251,
+  serialized_start=194,
+  serialized_end=274,
 )
 
 
@@ -110,21 +110,21 @@ _SETTIMEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='current_time', full_name='com.daml.ledger.api.v1.testing.SetTimeRequest.current_time', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='currentTime', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='new_time', full_name='com.daml.ledger.api.v1.testing.SetTimeRequest.new_time', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='newTime', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -137,8 +137,8 @@ _SETTIMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=254,
-  serialized_end=385,
+  serialized_start=277,
+  serialized_end=440,
 )
 
 _GETTIMERESPONSE.fields_by_name['current_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -180,8 +180,8 @@ _TIMESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=388,
-  serialized_end=594,
+  serialized_start=443,
+  serialized_end=649,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetTime',

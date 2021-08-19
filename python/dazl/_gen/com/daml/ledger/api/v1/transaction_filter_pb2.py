@@ -22,9 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/transaction_filter.proto',
   package='com.daml.ledger.api.v1',
   syntax='proto3',
-  serialized_options=b'\n\026com.daml.ledger.api.v1B\033TransactionFilterOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  serialized_options=b'\n\026com.daml.ledger.api.v1B\033TransactionFilterOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n/com/daml/ledger/api/v1/transaction_filter.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/value.proto\"\xc4\x01\n\x11TransactionFilter\x12W\n\x10\x66ilters_by_party\x18\x01 \x03(\x0b\x32=.com.daml.ledger.api.v1.TransactionFilter.FiltersByPartyEntry\x1aV\n\x13\x46iltersByPartyEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12.\n\x05value\x18\x02 \x01(\x0b\x32\x1f.com.daml.ledger.api.v1.Filters:\x02\x38\x01\"F\n\x07\x46ilters\x12;\n\tinclusive\x18\x01 \x01(\x0b\x32(.com.daml.ledger.api.v1.InclusiveFilters\"L\n\x10InclusiveFilters\x12\x38\n\x0ctemplate_ids\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.IdentifierBN\n\x16\x63om.daml.ledger.api.v1B\x1bTransactionFilterOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n/com/daml/ledger/api/v1/transaction_filter.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/value.proto\"\xe0\x01\n\x11TransactionFilter\x12g\n\x10\x66ilters_by_party\x18\x01 \x03(\x0b\x32=.com.daml.ledger.api.v1.TransactionFilter.FiltersByPartyEntryR\x0e\x66iltersByParty\x1a\x62\n\x13\x46iltersByPartyEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32\x1f.com.daml.ledger.api.v1.FiltersR\x05value:\x02\x38\x01\"Q\n\x07\x46ilters\x12\x46\n\tinclusive\x18\x01 \x01(\x0b\x32(.com.daml.ledger.api.v1.InclusiveFiltersR\tinclusive\"Y\n\x10InclusiveFilters\x12\x45\n\x0ctemplate_ids\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x0btemplateIdsB\x9f\x01\n\x16\x63om.daml.ledger.api.v1B\x1bTransactionFilterOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_value__pb2.DESCRIPTOR,])
 
@@ -45,14 +45,14 @@ _TRANSACTIONFILTER_FILTERSBYPARTYENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='key', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='value', full_name='com.daml.ledger.api.v1.TransactionFilter.FiltersByPartyEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -65,8 +65,8 @@ _TRANSACTIONFILTER_FILTERSBYPARTYENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=222,
-  serialized_end=308,
+  serialized_start=238,
+  serialized_end=336,
 )
 
 _TRANSACTIONFILTER = _descriptor.Descriptor(
@@ -83,7 +83,7 @@ _TRANSACTIONFILTER = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='filtersByParty', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -97,7 +97,7 @@ _TRANSACTIONFILTER = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=112,
-  serialized_end=308,
+  serialized_end=336,
 )
 
 
@@ -115,7 +115,7 @@ _FILTERS = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='inclusive', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -128,8 +128,8 @@ _FILTERS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=310,
-  serialized_end=380,
+  serialized_start=338,
+  serialized_end=419,
 )
 
 
@@ -147,7 +147,7 @@ _INCLUSIVEFILTERS = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='templateIds', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -160,8 +160,8 @@ _INCLUSIVEFILTERS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=382,
-  serialized_end=458,
+  serialized_start=421,
+  serialized_end=510,
 )
 
 _TRANSACTIONFILTER_FILTERSBYPARTYENTRY.fields_by_name['value'].message_type = _FILTERS

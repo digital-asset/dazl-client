@@ -1,11 +1,12 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
+# isort: skip_file
 
 import typing as _typing
 
-from grpc import Channel as __Channel, UnaryStreamMultiCallable as __UnaryStreamCall
-from grpc.aio import Channel as __AsyncChannel, UnaryStreamCall as __AsyncUnaryStreamCall
+import grpc as _grpc
+from grpc import aio as _grpc_aio
 
 from .active_contracts_service_pb2 import GetActiveContractsRequest, GetActiveContractsResponse
 
@@ -13,23 +14,32 @@ __all__ = [
     "ActiveContractsServiceStub",
 ]
 
+_T = _typing.TypeVar('_T')
+
+
+# noinspection PyAbstractClass
+class _Async(_grpc_aio.UnaryUnaryCall, _typing.Awaitable[_T]):
+    pass
+
+# noinspection PyAbstractClass
+class _AsyncStream(_grpc_aio.UnaryStreamCall, _typing.AsyncIterator[_T]):
+    pass
+
+
+# noinspection PyPep8Naming,DuplicatedCode
 class ActiveContractsServiceStub:
     @classmethod
     @_typing.overload
-    def __new__(cls, channel: __Channel) -> __ActiveContractsServiceStub: ...
+    def __new__(cls, channel: _grpc.Channel) -> _ActiveContractsServiceBlockingStub: ...
     @classmethod
     @_typing.overload
-    def __new__(cls, channel: __AsyncChannel) -> __ActiveContractsServiceStub_Async: ...
-    def GetActiveContracts(self, __1: GetActiveContractsRequest) -> _typing.Union[__ActiveContractsServiceStub_GetActiveContracts_Response, __ActiveContractsServiceStub_GetActiveContracts_AsyncResponse]: ...
+    def __new__(cls, channel: _grpc_aio.Channel) -> _ActiveContractsServiceAsyncStub: ...
+    def GetActiveContracts(self, __1: GetActiveContractsRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[_grpc.CallIterator[GetActiveContractsResponse], _AsyncStream[GetActiveContractsResponse]]: ...
 
-class __ActiveContractsServiceStub(ActiveContractsServiceStub):
-    def GetActiveContracts(self, __1: GetActiveContractsRequest) -> __ActiveContractsServiceStub_GetActiveContracts_Response: ...
+# noinspection PyPep8Naming,DuplicatedCode
+class _ActiveContractsServiceBlockingStub(ActiveContractsServiceStub):
+    def GetActiveContracts(self, __1: GetActiveContractsRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc.CallIterator[GetActiveContractsResponse]: ...
 
-class __ActiveContractsServiceStub_GetActiveContracts_Response(__UnaryStreamCall):
-    def __iter__(self) -> _typing.Iterator[GetActiveContractsResponse]: ...
-
-class __ActiveContractsServiceStub_Async(ActiveContractsServiceStub):
-    def GetActiveContracts(self, __1: GetActiveContractsRequest) -> __ActiveContractsServiceStub_GetActiveContracts_AsyncResponse: ...
-
-class __ActiveContractsServiceStub_GetActiveContracts_AsyncResponse(__AsyncUnaryStreamCall):
-    def __aiter__(self) -> _typing.AsyncIterator[GetActiveContractsResponse]: ...
+# noinspection PyPep8Naming,DuplicatedCode
+class _ActiveContractsServiceAsyncStub(ActiveContractsServiceStub):
+    def GetActiveContracts(self, __1: GetActiveContractsRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _AsyncStream[GetActiveContractsResponse]: ...

@@ -25,9 +25,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/command_service.proto',
   package='com.daml.ledger.api.v1',
   syntax='proto3',
-  serialized_options=b'\n\026com.daml.ledger.api.v1B\030CommandServiceOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  serialized_options=b'\n\026com.daml.ledger.api.v1B\030CommandServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n,com/daml/ledger/api/v1/command_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a%com/daml/ledger/api/v1/commands.proto\x1a*com/daml/ledger/api/v1/trace_context.proto\x1a(com/daml/ledger/api/v1/transaction.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x88\x01\n\x14SubmitAndWaitRequest\x12\x32\n\x08\x63ommands\x18\x01 \x01(\x0b\x32 .com.daml.ledger.api.v1.Commands\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext\"?\n%SubmitAndWaitForTransactionIdResponse\x12\x16\n\x0etransaction_id\x18\x01 \x01(\t\"_\n#SubmitAndWaitForTransactionResponse\x12\x38\n\x0btransaction\x18\x01 \x01(\x0b\x32#.com.daml.ledger.api.v1.Transaction\"g\n\'SubmitAndWaitForTransactionTreeResponse\x12<\n\x0btransaction\x18\x01 \x01(\x0b\x32\'.com.daml.ledger.api.v1.TransactionTree2\x94\x04\n\x0e\x43ommandService\x12U\n\rSubmitAndWait\x12,.com.daml.ledger.api.v1.SubmitAndWaitRequest\x1a\x16.google.protobuf.Empty\x12\x8c\x01\n\x1dSubmitAndWaitForTransactionId\x12,.com.daml.ledger.api.v1.SubmitAndWaitRequest\x1a=.com.daml.ledger.api.v1.SubmitAndWaitForTransactionIdResponse\x12\x88\x01\n\x1bSubmitAndWaitForTransaction\x12,.com.daml.ledger.api.v1.SubmitAndWaitRequest\x1a;.com.daml.ledger.api.v1.SubmitAndWaitForTransactionResponse\x12\x90\x01\n\x1fSubmitAndWaitForTransactionTree\x12,.com.daml.ledger.api.v1.SubmitAndWaitRequest\x1a?.com.daml.ledger.api.v1.SubmitAndWaitForTransactionTreeResponseBK\n\x16\x63om.daml.ledger.api.v1B\x18\x43ommandServiceOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n,com/daml/ledger/api/v1/command_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a%com/daml/ledger/api/v1/commands.proto\x1a*com/daml/ledger/api/v1/trace_context.proto\x1a(com/daml/ledger/api/v1/transaction.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xa0\x01\n\x14SubmitAndWaitRequest\x12<\n\x08\x63ommands\x18\x01 \x01(\x0b\x32 .com.daml.ledger.api.v1.CommandsR\x08\x63ommands\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"N\n%SubmitAndWaitForTransactionIdResponse\x12%\n\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\"l\n#SubmitAndWaitForTransactionResponse\x12\x45\n\x0btransaction\x18\x01 \x01(\x0b\x32#.com.daml.ledger.api.v1.TransactionR\x0btransaction\"t\n\'SubmitAndWaitForTransactionTreeResponse\x12I\n\x0btransaction\x18\x01 \x01(\x0b\x32\'.com.daml.ledger.api.v1.TransactionTreeR\x0btransaction2\x94\x04\n\x0e\x43ommandService\x12U\n\rSubmitAndWait\x12,.com.daml.ledger.api.v1.SubmitAndWaitRequest\x1a\x16.google.protobuf.Empty\x12\x8c\x01\n\x1dSubmitAndWaitForTransactionId\x12,.com.daml.ledger.api.v1.SubmitAndWaitRequest\x1a=.com.daml.ledger.api.v1.SubmitAndWaitForTransactionIdResponse\x12\x88\x01\n\x1bSubmitAndWaitForTransaction\x12,.com.daml.ledger.api.v1.SubmitAndWaitRequest\x1a;.com.daml.ledger.api.v1.SubmitAndWaitForTransactionResponse\x12\x90\x01\n\x1fSubmitAndWaitForTransactionTree\x12,.com.daml.ledger.api.v1.SubmitAndWaitRequest\x1a?.com.daml.ledger.api.v1.SubmitAndWaitForTransactionTreeResponseB\x9c\x01\n\x16\x63om.daml.ledger.api.v1B\x18\x43ommandServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_commands__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -48,14 +48,14 @@ _SUBMITANDWAITREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='commands', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.SubmitAndWaitRequest.trace_context', index=1,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -69,7 +69,7 @@ _SUBMITANDWAITREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=227,
-  serialized_end=363,
+  serialized_end=387,
 )
 
 
@@ -87,7 +87,7 @@ _SUBMITANDWAITFORTRANSACTIONIDRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='transactionId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -100,8 +100,8 @@ _SUBMITANDWAITFORTRANSACTIONIDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=365,
-  serialized_end=428,
+  serialized_start=389,
+  serialized_end=467,
 )
 
 
@@ -119,7 +119,7 @@ _SUBMITANDWAITFORTRANSACTIONRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='transaction', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -132,8 +132,8 @@ _SUBMITANDWAITFORTRANSACTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=430,
-  serialized_end=525,
+  serialized_start=469,
+  serialized_end=577,
 )
 
 
@@ -151,7 +151,7 @@ _SUBMITANDWAITFORTRANSACTIONTREERESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='transaction', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -164,8 +164,8 @@ _SUBMITANDWAITFORTRANSACTIONTREERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=527,
-  serialized_end=630,
+  serialized_start=579,
+  serialized_end=695,
 )
 
 _SUBMITANDWAITREQUEST.fields_by_name['commands'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_commands__pb2._COMMANDS
@@ -216,8 +216,8 @@ _COMMANDSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=633,
-  serialized_end=1165,
+  serialized_start=698,
+  serialized_end=1230,
   methods=[
   _descriptor.MethodDescriptor(
     name='SubmitAndWait',
