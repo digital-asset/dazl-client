@@ -21,17 +21,17 @@ from . import daml_lf_1_pb2 as com_dot_daml_dot_daml__lf__1__14_dot_daml__lf__1_
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/daml_lf_1_14/daml_lf.proto',
-  package='daml_lf_1_13',
+  package='daml_lf_1',
   syntax='proto3',
-  serialized_options=b'\n\025com.daml.daml_lf_1_14\252\002\034Com.Daml.Daml_Lf_1_14.DamlLf',
+  serialized_options=b'\n\025com.daml.daml_lf_1_14ZNgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/daml_lf_1_14\252\002\034Com.Daml.Daml_Lf_1_14.DamlLf',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n#com/daml/daml_lf_1_14/daml_lf.proto\x12\x0c\x64\x61ml_lf_1_13\x1a%com/daml/daml_lf_1_14/daml_lf_1.proto\"]\n\x0e\x41rchivePayload\x12\r\n\x05minor\x18\x03 \x01(\t\x12\'\n\tdaml_lf_1\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.PackageH\x00\x42\x05\n\x03SumJ\x06\x08\x8fN\x10\x90NJ\x04\x08\x01\x10\x02\"[\n\x07\x41rchive\x12\x31\n\rhash_function\x18\x01 \x01(\x0e\x32\x1a.daml_lf_1_13.HashFunction\x12\x0f\n\x07payload\x18\x03 \x01(\x0c\x12\x0c\n\x04hash\x18\x04 \x01(\t*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42\x36\n\x15\x63om.daml.daml_lf_1_14\xaa\x02\x1c\x43om.Daml.Daml_Lf_1_14.DamlLfb\x06proto3'
+  serialized_pb=b'\n#com/daml/daml_lf_1_14/daml_lf.proto\x12\tdaml_lf_1\x1a%com/daml/daml_lf_1_14/daml_lf_1.proto\"m\n\x0e\x41rchivePayload\x12\x14\n\x05minor\x18\x03 \x01(\tR\x05minor\x12\x30\n\tdaml_lf_1\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.PackageH\x00R\x07\x64\x61mlLf1B\x05\n\x03SumJ\x06\x08\x8fN\x10\x90NJ\x04\x08\x01\x10\x02\"u\n\x07\x41rchive\x12<\n\rhash_function\x18\x01 \x01(\x0e\x32\x17.daml_lf_1.HashFunctionR\x0chashFunction\x12\x18\n\x07payload\x18\x03 \x01(\x0cR\x07payload\x12\x12\n\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42\x86\x01\n\x15\x63om.daml.daml_lf_1_14ZNgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/daml_lf_1_14\xaa\x02\x1c\x43om.Daml.Daml_Lf_1_14.DamlLfb\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_daml__lf__1__14_dot_daml__lf__1__pb2.DESCRIPTOR,])
 
 _HASHFUNCTION = _descriptor.EnumDescriptor(
   name='HashFunction',
-  full_name='daml_lf_1_13.HashFunction',
+  full_name='daml_lf_1.HashFunction',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -44,8 +44,8 @@ _HASHFUNCTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=280,
-  serialized_end=306,
+  serialized_start=319,
+  serialized_end=345,
 )
 _sym_db.RegisterEnumDescriptor(_HASHFUNCTION)
 
@@ -56,26 +56,26 @@ SHA256 = 0
 
 _ARCHIVEPAYLOAD = _descriptor.Descriptor(
   name='ArchivePayload',
-  full_name='daml_lf_1_13.ArchivePayload',
+  full_name='daml_lf_1.ArchivePayload',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='minor', full_name='daml_lf_1_13.ArchivePayload.minor', index=0,
+      name='minor', full_name='daml_lf_1.ArchivePayload.minor', index=0,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='minor', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='daml_lf_1', full_name='daml_lf_1_13.ArchivePayload.daml_lf_1', index=1,
+      name='daml_lf_1', full_name='daml_lf_1.ArchivePayload.daml_lf_1', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='damlLf1', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -88,45 +88,45 @@ _ARCHIVEPAYLOAD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='Sum', full_name='daml_lf_1_13.ArchivePayload.Sum',
+      name='Sum', full_name='daml_lf_1.ArchivePayload.Sum',
       index=0, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=92,
-  serialized_end=185,
+  serialized_start=89,
+  serialized_end=198,
 )
 
 
 _ARCHIVE = _descriptor.Descriptor(
   name='Archive',
-  full_name='daml_lf_1_13.Archive',
+  full_name='daml_lf_1.Archive',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='hash_function', full_name='daml_lf_1_13.Archive.hash_function', index=0,
+      name='hash_function', full_name='daml_lf_1.Archive.hash_function', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='hashFunction', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='payload', full_name='daml_lf_1_13.Archive.payload', index=1,
+      name='payload', full_name='daml_lf_1.Archive.payload', index=1,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=b"",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='payload', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='hash', full_name='daml_lf_1_13.Archive.hash', index=2,
+      name='hash', full_name='daml_lf_1.Archive.hash', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='hash', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -139,8 +139,8 @@ _ARCHIVE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=187,
-  serialized_end=278,
+  serialized_start=200,
+  serialized_end=317,
 )
 
 _ARCHIVEPAYLOAD.fields_by_name['daml_lf_1'].message_type = com_dot_daml_dot_daml__lf__1__14_dot_daml__lf__1__pb2._PACKAGE
@@ -156,14 +156,14 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 ArchivePayload = _reflection.GeneratedProtocolMessageType('ArchivePayload', (_message.Message,), {
   'DESCRIPTOR' : _ARCHIVEPAYLOAD,
   '__module__' : 'com.daml.daml_lf_1_14.daml_lf_pb2'
-  # @@protoc_insertion_point(class_scope:daml_lf_1_13.ArchivePayload)
+  # @@protoc_insertion_point(class_scope:daml_lf_1.ArchivePayload)
   })
 _sym_db.RegisterMessage(ArchivePayload)
 
 Archive = _reflection.GeneratedProtocolMessageType('Archive', (_message.Message,), {
   'DESCRIPTOR' : _ARCHIVE,
   '__module__' : 'com.daml.daml_lf_1_14.daml_lf_pb2'
-  # @@protoc_insertion_point(class_scope:daml_lf_1_13.Archive)
+  # @@protoc_insertion_point(class_scope:daml_lf_1.Archive)
   })
 _sym_db.RegisterMessage(Archive)
 

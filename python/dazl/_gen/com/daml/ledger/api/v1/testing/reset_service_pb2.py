@@ -22,9 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/testing/reset_service.proto',
   package='com.daml.ledger.api.v1.testing',
   syntax='proto3',
-  serialized_options=b'\n\036com.daml.ledger.api.v1.testingB\026ResetServiceOuterClass\252\002\036Com.Daml.Ledger.Api.V1.Testing',
+  serialized_options=b'\n\036com.daml.ledger.api.v1.testingB\026ResetServiceOuterClassZWgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/testing\252\002\036Com.Daml.Ledger.Api.V1.Testing',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n2com/daml/ledger/api/v1/testing/reset_service.proto\x12\x1e\x63om.daml.ledger.api.v1.testing\x1a\x1bgoogle/protobuf/empty.proto\"!\n\x0cResetRequest\x12\x11\n\tledger_id\x18\x01 \x01(\t2]\n\x0cResetService\x12M\n\x05Reset\x12,.com.daml.ledger.api.v1.testing.ResetRequest\x1a\x16.google.protobuf.EmptyBY\n\x1e\x63om.daml.ledger.api.v1.testingB\x16ResetServiceOuterClass\xaa\x02\x1e\x43om.Daml.Ledger.Api.V1.Testingb\x06proto3'
+  serialized_pb=b'\n2com/daml/ledger/api/v1/testing/reset_service.proto\x12\x1e\x63om.daml.ledger.api.v1.testing\x1a\x1bgoogle/protobuf/empty.proto\"+\n\x0cResetRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId2]\n\x0cResetService\x12M\n\x05Reset\x12,.com.daml.ledger.api.v1.testing.ResetRequest\x1a\x16.google.protobuf.EmptyB\xb2\x01\n\x1e\x63om.daml.ledger.api.v1.testingB\x16ResetServiceOuterClassZWgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/testing\xaa\x02\x1e\x43om.Daml.Ledger.Api.V1.Testingb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -45,7 +45,7 @@ _RESETREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -59,7 +59,7 @@ _RESETREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=115,
-  serialized_end=148,
+  serialized_end=158,
 )
 
 DESCRIPTOR.message_types_by_name['ResetRequest'] = _RESETREQUEST
@@ -82,8 +82,8 @@ _RESETSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=150,
-  serialized_end=243,
+  serialized_start=160,
+  serialized_end=253,
   methods=[
   _descriptor.MethodDescriptor(
     name='Reset',

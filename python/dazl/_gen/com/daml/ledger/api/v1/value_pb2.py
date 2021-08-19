@@ -22,9 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/value.proto',
   package='com.daml.ledger.api.v1',
   syntax='proto3',
-  serialized_options=b'\n\026com.daml.ledger.api.v1B\017ValueOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  serialized_options=b'\n\026com.daml.ledger.api.v1B\017ValueOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\"com/daml/ledger/api/v1/value.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\x1bgoogle/protobuf/empty.proto\"\xa6\x04\n\x05Value\x12\x30\n\x06record\x18\x01 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.RecordH\x00\x12\x32\n\x07variant\x18\x02 \x01(\x0b\x32\x1f.com.daml.ledger.api.v1.VariantH\x00\x12\x15\n\x0b\x63ontract_id\x18\x03 \x01(\tH\x00\x12,\n\x04list\x18\x04 \x01(\x0b\x32\x1c.com.daml.ledger.api.v1.ListH\x00\x12\x13\n\x05int64\x18\x05 \x01(\x12\x42\x02\x30\x01H\x00\x12\x11\n\x07numeric\x18\x06 \x01(\tH\x00\x12\x0e\n\x04text\x18\x08 \x01(\tH\x00\x12\x17\n\ttimestamp\x18\t \x01(\x10\x42\x02\x30\x01H\x00\x12\x0f\n\x05party\x18\x0b \x01(\tH\x00\x12\x0e\n\x04\x62ool\x18\x0c \x01(\x08H\x00\x12&\n\x04unit\x18\r \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12\x0e\n\x04\x64\x61te\x18\x0e \x01(\x05H\x00\x12\x34\n\x08optional\x18\x0f \x01(\x0b\x32 .com.daml.ledger.api.v1.OptionalH\x00\x12*\n\x03map\x18\x10 \x01(\x0b\x32\x1b.com.daml.ledger.api.v1.MapH\x00\x12,\n\x04\x65num\x18\x11 \x01(\x0b\x32\x1c.com.daml.ledger.api.v1.EnumH\x00\x12\x31\n\x07gen_map\x18\x12 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.GenMapH\x00\x42\x05\n\x03Sum\"t\n\x06Record\x12\x35\n\trecord_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.Identifier\x12\x33\n\x06\x66ields\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.RecordField\"J\n\x0bRecordField\x12\r\n\x05label\x18\x01 \x01(\t\x12,\n\x05value\x18\x02 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.Value\"P\n\nIdentifier\x12\x12\n\npackage_id\x18\x01 \x01(\t\x12\x13\n\x0bmodule_name\x18\x03 \x01(\t\x12\x13\n\x0b\x65ntity_name\x18\x04 \x01(\tJ\x04\x08\x02\x10\x03\"\x84\x01\n\x07Variant\x12\x36\n\nvariant_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.Identifier\x12\x13\n\x0b\x63onstructor\x18\x02 \x01(\t\x12,\n\x05value\x18\x03 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.Value\"P\n\x04\x45num\x12\x33\n\x07\x65num_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.Identifier\x12\x13\n\x0b\x63onstructor\x18\x02 \x01(\t\"7\n\x04List\x12/\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x1d.com.daml.ledger.api.v1.Value\"8\n\x08Optional\x12,\n\x05value\x18\x01 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.Value\"}\n\x03Map\x12\x32\n\x07\x65ntries\x18\x01 \x03(\x0b\x32!.com.daml.ledger.api.v1.Map.Entry\x1a\x42\n\x05\x45ntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12,\n\x05value\x18\x02 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.Value\"\xa2\x01\n\x06GenMap\x12\x35\n\x07\x65ntries\x18\x01 \x03(\x0b\x32$.com.daml.ledger.api.v1.GenMap.Entry\x1a\x61\n\x05\x45ntry\x12*\n\x03key\x18\x01 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.Value\x12,\n\x05value\x18\x02 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueBB\n\x16\x63om.daml.ledger.api.v1B\x0fValueOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n\"com/daml/ledger/api/v1/value.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\x1bgoogle/protobuf/empty.proto\"\xa0\x05\n\x05Value\x12\x38\n\x06record\x18\x01 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.RecordH\x00R\x06record\x12;\n\x07variant\x18\x02 \x01(\x0b\x32\x1f.com.daml.ledger.api.v1.VariantH\x00R\x07variant\x12!\n\x0b\x63ontract_id\x18\x03 \x01(\tH\x00R\ncontractId\x12\x32\n\x04list\x18\x04 \x01(\x0b\x32\x1c.com.daml.ledger.api.v1.ListH\x00R\x04list\x12\x1a\n\x05int64\x18\x05 \x01(\x12\x42\x02\x30\x01H\x00R\x05int64\x12\x1a\n\x07numeric\x18\x06 \x01(\tH\x00R\x07numeric\x12\x14\n\x04text\x18\x08 \x01(\tH\x00R\x04text\x12\"\n\ttimestamp\x18\t \x01(\x10\x42\x02\x30\x01H\x00R\ttimestamp\x12\x16\n\x05party\x18\x0b \x01(\tH\x00R\x05party\x12\x14\n\x04\x62ool\x18\x0c \x01(\x08H\x00R\x04\x62ool\x12,\n\x04unit\x18\r \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00R\x04unit\x12\x14\n\x04\x64\x61te\x18\x0e \x01(\x05H\x00R\x04\x64\x61te\x12>\n\x08optional\x18\x0f \x01(\x0b\x32 .com.daml.ledger.api.v1.OptionalH\x00R\x08optional\x12/\n\x03map\x18\x10 \x01(\x0b\x32\x1b.com.daml.ledger.api.v1.MapH\x00R\x03map\x12\x32\n\x04\x65num\x18\x11 \x01(\x0b\x32\x1c.com.daml.ledger.api.v1.EnumH\x00R\x04\x65num\x12\x39\n\x07gen_map\x18\x12 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.GenMapH\x00R\x06genMapB\x05\n\x03Sum\"\x86\x01\n\x06Record\x12?\n\trecord_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x08recordId\x12;\n\x06\x66ields\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.RecordFieldR\x06\x66ields\"X\n\x0bRecordField\x12\x14\n\x05label\x18\x01 \x01(\tR\x05label\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x05value\"s\n\nIdentifier\x12\x1d\n\npackage_id\x18\x01 \x01(\tR\tpackageId\x12\x1f\n\x0bmodule_name\x18\x03 \x01(\tR\nmoduleName\x12\x1f\n\x0b\x65ntity_name\x18\x04 \x01(\tR\nentityNameJ\x04\x08\x02\x10\x03\"\xa3\x01\n\x07Variant\x12\x41\n\nvariant_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\tvariantId\x12 \n\x0b\x63onstructor\x18\x02 \x01(\tR\x0b\x63onstructor\x12\x33\n\x05value\x18\x03 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x05value\"e\n\x04\x45num\x12;\n\x07\x65num_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x06\x65numId\x12 \n\x0b\x63onstructor\x18\x02 \x01(\tR\x0b\x63onstructor\"A\n\x04List\x12\x39\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x08\x65lements\"?\n\x08Optional\x12\x33\n\x05value\x18\x01 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x05value\"\x92\x01\n\x03Map\x12;\n\x07\x65ntries\x18\x01 \x03(\x0b\x32!.com.daml.ledger.api.v1.Map.EntryR\x07\x65ntries\x1aN\n\x05\x45ntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x05value\"\xb7\x01\n\x06GenMap\x12>\n\x07\x65ntries\x18\x01 \x03(\x0b\x32$.com.daml.ledger.api.v1.GenMap.EntryR\x07\x65ntries\x1am\n\x05\x45ntry\x12/\n\x03key\x18\x01 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x03key\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x05valueB\x93\x01\n\x16\x63om.daml.ledger.api.v1B\x0fValueOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -45,112 +45,112 @@ _VALUE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='record', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='variant', full_name='com.daml.ledger.api.v1.Value.variant', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='variant', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='contract_id', full_name='com.daml.ledger.api.v1.Value.contract_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='contractId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='list', full_name='com.daml.ledger.api.v1.Value.list', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='list', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='int64', full_name='com.daml.ledger.api.v1.Value.int64', index=4,
       number=5, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=b'0\001', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=b'0\001', json_name='int64', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='numeric', full_name='com.daml.ledger.api.v1.Value.numeric', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='numeric', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='text', full_name='com.daml.ledger.api.v1.Value.text', index=6,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='text', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='timestamp', full_name='com.daml.ledger.api.v1.Value.timestamp', index=7,
       number=9, type=16, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=b'0\001', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=b'0\001', json_name='timestamp', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='party', full_name='com.daml.ledger.api.v1.Value.party', index=8,
       number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='party', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='bool', full_name='com.daml.ledger.api.v1.Value.bool', index=9,
       number=12, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='bool', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='unit', full_name='com.daml.ledger.api.v1.Value.unit', index=10,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='unit', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='date', full_name='com.daml.ledger.api.v1.Value.date', index=11,
       number=14, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='date', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='optional', full_name='com.daml.ledger.api.v1.Value.optional', index=12,
       number=15, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='optional', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='map', full_name='com.daml.ledger.api.v1.Value.map', index=13,
       number=16, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='map', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='enum', full_name='com.daml.ledger.api.v1.Value.enum', index=14,
       number=17, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='enum', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='gen_map', full_name='com.daml.ledger.api.v1.Value.gen_map', index=15,
       number=18, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='genMap', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -169,7 +169,7 @@ _VALUE = _descriptor.Descriptor(
     fields=[]),
   ],
   serialized_start=92,
-  serialized_end=642,
+  serialized_end=764,
 )
 
 
@@ -187,14 +187,14 @@ _RECORD = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='recordId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='fields', full_name='com.daml.ledger.api.v1.Record.fields', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='fields', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -207,8 +207,8 @@ _RECORD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=644,
-  serialized_end=760,
+  serialized_start=767,
+  serialized_end=901,
 )
 
 
@@ -226,14 +226,14 @@ _RECORDFIELD = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='label', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='value', full_name='com.daml.ledger.api.v1.RecordField.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -246,8 +246,8 @@ _RECORDFIELD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=762,
-  serialized_end=836,
+  serialized_start=903,
+  serialized_end=991,
 )
 
 
@@ -265,21 +265,21 @@ _IDENTIFIER = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='packageId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='module_name', full_name='com.daml.ledger.api.v1.Identifier.module_name', index=1,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='moduleName', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='entity_name', full_name='com.daml.ledger.api.v1.Identifier.entity_name', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='entityName', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -292,8 +292,8 @@ _IDENTIFIER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=838,
-  serialized_end=918,
+  serialized_start=993,
+  serialized_end=1108,
 )
 
 
@@ -311,21 +311,21 @@ _VARIANT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='variantId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='constructor', full_name='com.daml.ledger.api.v1.Variant.constructor', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='constructor', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='value', full_name='com.daml.ledger.api.v1.Variant.value', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -338,8 +338,8 @@ _VARIANT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=921,
-  serialized_end=1053,
+  serialized_start=1111,
+  serialized_end=1274,
 )
 
 
@@ -357,14 +357,14 @@ _ENUM = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='enumId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='constructor', full_name='com.daml.ledger.api.v1.Enum.constructor', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='constructor', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -377,8 +377,8 @@ _ENUM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1055,
-  serialized_end=1135,
+  serialized_start=1276,
+  serialized_end=1377,
 )
 
 
@@ -396,7 +396,7 @@ _LIST = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='elements', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -409,8 +409,8 @@ _LIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1137,
-  serialized_end=1192,
+  serialized_start=1379,
+  serialized_end=1444,
 )
 
 
@@ -428,7 +428,7 @@ _OPTIONAL = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -441,8 +441,8 @@ _OPTIONAL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1194,
-  serialized_end=1250,
+  serialized_start=1446,
+  serialized_end=1509,
 )
 
 
@@ -460,14 +460,14 @@ _MAP_ENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='key', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='value', full_name='com.daml.ledger.api.v1.Map.Entry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -480,8 +480,8 @@ _MAP_ENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1311,
-  serialized_end=1377,
+  serialized_start=1580,
+  serialized_end=1658,
 )
 
 _MAP = _descriptor.Descriptor(
@@ -498,7 +498,7 @@ _MAP = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='entries', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -511,8 +511,8 @@ _MAP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1252,
-  serialized_end=1377,
+  serialized_start=1512,
+  serialized_end=1658,
 )
 
 
@@ -530,14 +530,14 @@ _GENMAP_ENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='key', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='value', full_name='com.daml.ledger.api.v1.GenMap.Entry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -550,8 +550,8 @@ _GENMAP_ENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1445,
-  serialized_end=1542,
+  serialized_start=1735,
+  serialized_end=1844,
 )
 
 _GENMAP = _descriptor.Descriptor(
@@ -568,7 +568,7 @@ _GENMAP = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='entries', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -581,8 +581,8 @@ _GENMAP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1380,
-  serialized_end=1542,
+  serialized_start=1661,
+  serialized_end=1844,
 )
 
 _VALUE.fields_by_name['record'].message_type = _RECORD

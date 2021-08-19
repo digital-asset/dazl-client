@@ -24,9 +24,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/transaction.proto',
   package='com.daml.ledger.api.v1',
   syntax='proto3',
-  serialized_options=b'\n\026com.daml.ledger.api.v1B\025TransactionOuterClass\252\002\026Com.Daml.Ledger.Api.V1',
+  serialized_options=b'\n\026com.daml.ledger.api.v1B\025TransactionOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n(com/daml/ledger/api/v1/transaction.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/event.proto\x1a*com/daml/ledger/api/v1/trace_context.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8f\x03\n\x0fTransactionTree\x12\x16\n\x0etransaction_id\x18\x01 \x01(\t\x12\x12\n\ncommand_id\x18\x02 \x01(\t\x12\x13\n\x0bworkflow_id\x18\x03 \x01(\t\x12\x30\n\x0c\x65\x66\x66\x65\x63tive_at\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06offset\x18\x06 \x01(\t\x12M\n\x0c\x65vents_by_id\x18\x07 \x03(\x0b\x32\x37.com.daml.ledger.api.v1.TransactionTree.EventsByIdEntry\x12\x16\n\x0eroot_event_ids\x18\x08 \x03(\t\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContext\x1aT\n\x0f\x45ventsByIdEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x30\n\x05value\x18\x02 \x01(\x0b\x32!.com.daml.ledger.api.v1.TreeEvent:\x02\x38\x01\"\x89\x01\n\tTreeEvent\x12\x37\n\x07\x63reated\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v1.CreatedEventH\x00\x12;\n\texercised\x18\x02 \x01(\x0b\x32&.com.daml.ledger.api.v1.ExercisedEventH\x00\x42\x06\n\x04kind\"\xfd\x01\n\x0bTransaction\x12\x16\n\x0etransaction_id\x18\x01 \x01(\t\x12\x12\n\ncommand_id\x18\x02 \x01(\t\x12\x13\n\x0bworkflow_id\x18\x03 \x01(\t\x12\x30\n\x0c\x65\x66\x66\x65\x63tive_at\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12-\n\x06\x65vents\x18\x05 \x03(\x0b\x32\x1d.com.daml.ledger.api.v1.Event\x12\x0e\n\x06offset\x18\x06 \x01(\t\x12<\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextBH\n\x16\x63om.daml.ledger.api.v1B\x15TransactionOuterClass\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n(com/daml/ledger/api/v1/transaction.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/event.proto\x1a*com/daml/ledger/api/v1/trace_context.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xfe\x03\n\x0fTransactionTree\x12%\n\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12\x1d\n\ncommand_id\x18\x02 \x01(\tR\tcommandId\x12\x1f\n\x0bworkflow_id\x18\x03 \x01(\tR\nworkflowId\x12=\n\x0c\x65\x66\x66\x65\x63tive_at\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0b\x65\x66\x66\x65\x63tiveAt\x12\x16\n\x06offset\x18\x06 \x01(\tR\x06offset\x12Y\n\x0c\x65vents_by_id\x18\x07 \x03(\x0b\x32\x37.com.daml.ledger.api.v1.TransactionTree.EventsByIdEntryR\neventsById\x12$\n\x0eroot_event_ids\x18\x08 \x03(\tR\x0crootEventIds\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\x1a`\n\x0f\x45ventsByIdEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32!.com.daml.ledger.api.v1.TreeEventR\x05value:\x02\x38\x01\"\x9d\x01\n\tTreeEvent\x12@\n\x07\x63reated\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v1.CreatedEventH\x00R\x07\x63reated\x12\x46\n\texercised\x18\x02 \x01(\x0b\x32&.com.daml.ledger.api.v1.ExercisedEventH\x00R\texercisedB\x06\n\x04kind\"\xce\x02\n\x0bTransaction\x12%\n\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12\x1d\n\ncommand_id\x18\x02 \x01(\tR\tcommandId\x12\x1f\n\x0bworkflow_id\x18\x03 \x01(\tR\nworkflowId\x12=\n\x0c\x65\x66\x66\x65\x63tive_at\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0b\x65\x66\x66\x65\x63tiveAt\x12\x35\n\x06\x65vents\x18\x05 \x03(\x0b\x32\x1d.com.daml.ledger.api.v1.EventR\x06\x65vents\x12\x16\n\x06offset\x18\x06 \x01(\tR\x06offset\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContextB\x99\x01\n\x16\x63om.daml.ledger.api.v1B\x15TransactionOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_event__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -47,14 +47,14 @@ _TRANSACTIONTREE_EVENTSBYIDENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='key', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='value', full_name='com.daml.ledger.api.v1.TransactionTree.EventsByIdEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -67,8 +67,8 @@ _TRANSACTIONTREE_EVENTSBYIDENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=497,
-  serialized_end=581,
+  serialized_start=596,
+  serialized_end=692,
 )
 
 _TRANSACTIONTREE = _descriptor.Descriptor(
@@ -85,56 +85,56 @@ _TRANSACTIONTREE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='transactionId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='command_id', full_name='com.daml.ledger.api.v1.TransactionTree.command_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='commandId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='workflow_id', full_name='com.daml.ledger.api.v1.TransactionTree.workflow_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='workflowId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='effective_at', full_name='com.daml.ledger.api.v1.TransactionTree.effective_at', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='effectiveAt', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='offset', full_name='com.daml.ledger.api.v1.TransactionTree.offset', index=4,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='offset', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='events_by_id', full_name='com.daml.ledger.api.v1.TransactionTree.events_by_id', index=5,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='eventsById', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='root_event_ids', full_name='com.daml.ledger.api.v1.TransactionTree.root_event_ids', index=6,
       number=8, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='rootEventIds', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.TransactionTree.trace_context', index=7,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -148,7 +148,7 @@ _TRANSACTIONTREE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=182,
-  serialized_end=581,
+  serialized_end=692,
 )
 
 
@@ -166,14 +166,14 @@ _TREEEVENT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='created', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='exercised', full_name='com.daml.ledger.api.v1.TreeEvent.exercised', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='exercised', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -191,8 +191,8 @@ _TREEEVENT = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=584,
-  serialized_end=721,
+  serialized_start=695,
+  serialized_end=852,
 )
 
 
@@ -210,49 +210,49 @@ _TRANSACTION = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='transactionId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='command_id', full_name='com.daml.ledger.api.v1.Transaction.command_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='commandId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='workflow_id', full_name='com.daml.ledger.api.v1.Transaction.workflow_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='workflowId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='effective_at', full_name='com.daml.ledger.api.v1.Transaction.effective_at', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='effectiveAt', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='events', full_name='com.daml.ledger.api.v1.Transaction.events', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='events', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='offset', full_name='com.daml.ledger.api.v1.Transaction.offset', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='offset', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='trace_context', full_name='com.daml.ledger.api.v1.Transaction.trace_context', index=6,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -265,8 +265,8 @@ _TRANSACTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=724,
-  serialized_end=977,
+  serialized_start=855,
+  serialized_end=1189,
 )
 
 _TRANSACTIONTREE_EVENTSBYIDENTRY.fields_by_name['value'].message_type = _TREEEVENT

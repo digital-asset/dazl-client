@@ -21,9 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/admin/party_management_service.proto',
   package='com.daml.ledger.api.v1.admin',
   syntax='proto3',
-  serialized_options=b'\n\034com.daml.ledger.api.v1.adminB PartyManagementServiceOuterClass\252\002\034Com.Daml.Ledger.Api.V1.Admin',
+  serialized_options=b'\n\034com.daml.ledger.api.v1.adminB PartyManagementServiceOuterClassZUgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n;com/daml/ledger/api/v1/admin/party_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\"\x19\n\x17GetParticipantIdRequest\"2\n\x18GetParticipantIdResponse\x12\x16\n\x0eparticipant_id\x18\x01 \x01(\t\"$\n\x11GetPartiesRequest\x12\x0f\n\x07parties\x18\x01 \x03(\t\"W\n\x12GetPartiesResponse\x12\x41\n\rparty_details\x18\x01 \x03(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetails\"\x19\n\x17ListKnownPartiesRequest\"]\n\x18ListKnownPartiesResponse\x12\x41\n\rparty_details\x18\x01 \x03(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetails\"C\n\x14\x41llocatePartyRequest\x12\x15\n\rparty_id_hint\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\"Z\n\x15\x41llocatePartyResponse\x12\x41\n\rparty_details\x18\x01 \x01(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetails\"E\n\x0cPartyDetails\x12\r\n\x05party\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x10\n\x08is_local\x18\x03 \x01(\x08\x32\x8b\x04\n\x16PartyManagementService\x12\x81\x01\n\x10GetParticipantId\x12\x35.com.daml.ledger.api.v1.admin.GetParticipantIdRequest\x1a\x36.com.daml.ledger.api.v1.admin.GetParticipantIdResponse\x12o\n\nGetParties\x12/.com.daml.ledger.api.v1.admin.GetPartiesRequest\x1a\x30.com.daml.ledger.api.v1.admin.GetPartiesResponse\x12\x81\x01\n\x10ListKnownParties\x12\x35.com.daml.ledger.api.v1.admin.ListKnownPartiesRequest\x1a\x36.com.daml.ledger.api.v1.admin.ListKnownPartiesResponse\x12x\n\rAllocateParty\x12\x32.com.daml.ledger.api.v1.admin.AllocatePartyRequest\x1a\x33.com.daml.ledger.api.v1.admin.AllocatePartyResponseB_\n\x1c\x63om.daml.ledger.api.v1.adminB PartyManagementServiceOuterClass\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
+  serialized_pb=b'\n;com/daml/ledger/api/v1/admin/party_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\"\x19\n\x17GetParticipantIdRequest\"A\n\x18GetParticipantIdResponse\x12%\n\x0eparticipant_id\x18\x01 \x01(\tR\rparticipantId\"-\n\x11GetPartiesRequest\x12\x18\n\x07parties\x18\x01 \x03(\tR\x07parties\"e\n\x12GetPartiesResponse\x12O\n\rparty_details\x18\x01 \x03(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"\x19\n\x17ListKnownPartiesRequest\"k\n\x18ListKnownPartiesResponse\x12O\n\rparty_details\x18\x01 \x03(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"]\n\x14\x41llocatePartyRequest\x12\"\n\rparty_id_hint\x18\x01 \x01(\tR\x0bpartyIdHint\x12!\n\x0c\x64isplay_name\x18\x02 \x01(\tR\x0b\x64isplayName\"h\n\x15\x41llocatePartyResponse\x12O\n\rparty_details\x18\x01 \x01(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"b\n\x0cPartyDetails\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x12!\n\x0c\x64isplay_name\x18\x02 \x01(\tR\x0b\x64isplayName\x12\x19\n\x08is_local\x18\x03 \x01(\x08R\x07isLocal2\x8b\x04\n\x16PartyManagementService\x12\x81\x01\n\x10GetParticipantId\x12\x35.com.daml.ledger.api.v1.admin.GetParticipantIdRequest\x1a\x36.com.daml.ledger.api.v1.admin.GetParticipantIdResponse\x12o\n\nGetParties\x12/.com.daml.ledger.api.v1.admin.GetPartiesRequest\x1a\x30.com.daml.ledger.api.v1.admin.GetPartiesResponse\x12\x81\x01\n\x10ListKnownParties\x12\x35.com.daml.ledger.api.v1.admin.ListKnownPartiesRequest\x1a\x36.com.daml.ledger.api.v1.admin.ListKnownPartiesResponse\x12x\n\rAllocateParty\x12\x32.com.daml.ledger.api.v1.admin.AllocatePartyRequest\x1a\x33.com.daml.ledger.api.v1.admin.AllocatePartyResponseB\xb6\x01\n\x1c\x63om.daml.ledger.api.v1.adminB PartyManagementServiceOuterClassZUgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
 )
 
 
@@ -68,7 +68,7 @@ _GETPARTICIPANTIDRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='participantId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -82,7 +82,7 @@ _GETPARTICIPANTIDRESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=120,
-  serialized_end=170,
+  serialized_end=185,
 )
 
 
@@ -100,7 +100,7 @@ _GETPARTIESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='parties', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -113,8 +113,8 @@ _GETPARTIESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=172,
-  serialized_end=208,
+  serialized_start=187,
+  serialized_end=232,
 )
 
 
@@ -132,7 +132,7 @@ _GETPARTIESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='partyDetails', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -145,8 +145,8 @@ _GETPARTIESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=210,
-  serialized_end=297,
+  serialized_start=234,
+  serialized_end=335,
 )
 
 
@@ -170,8 +170,8 @@ _LISTKNOWNPARTIESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=299,
-  serialized_end=324,
+  serialized_start=337,
+  serialized_end=362,
 )
 
 
@@ -189,7 +189,7 @@ _LISTKNOWNPARTIESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='partyDetails', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -202,8 +202,8 @@ _LISTKNOWNPARTIESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=326,
-  serialized_end=419,
+  serialized_start=364,
+  serialized_end=471,
 )
 
 
@@ -221,14 +221,14 @@ _ALLOCATEPARTYREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='partyIdHint', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='display_name', full_name='com.daml.ledger.api.v1.admin.AllocatePartyRequest.display_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='displayName', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -241,8 +241,8 @@ _ALLOCATEPARTYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=421,
-  serialized_end=488,
+  serialized_start=473,
+  serialized_end=566,
 )
 
 
@@ -260,7 +260,7 @@ _ALLOCATEPARTYRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='partyDetails', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -273,8 +273,8 @@ _ALLOCATEPARTYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=490,
-  serialized_end=580,
+  serialized_start=568,
+  serialized_end=672,
 )
 
 
@@ -292,21 +292,21 @@ _PARTYDETAILS = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='party', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='display_name', full_name='com.daml.ledger.api.v1.admin.PartyDetails.display_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='displayName', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='is_local', full_name='com.daml.ledger.api.v1.admin.PartyDetails.is_local', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='isLocal', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -319,8 +319,8 @@ _PARTYDETAILS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=582,
-  serialized_end=651,
+  serialized_start=674,
+  serialized_end=772,
 )
 
 _GETPARTIESRESPONSE.fields_by_name['party_details'].message_type = _PARTYDETAILS
@@ -410,8 +410,8 @@ _PARTYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=654,
-  serialized_end=1177,
+  serialized_start=775,
+  serialized_end=1298,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetParticipantId',

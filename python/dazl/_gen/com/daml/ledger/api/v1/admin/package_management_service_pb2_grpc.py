@@ -57,8 +57,8 @@ class PackageManagementServiceServicer(object):
 
     def UploadDarFile(self, request, context):
         """Upload a DAR file to the backing participant.
-        Depending on the ledger implementation this might also make the package
-        available on the whole ledger. This call might not be supported by some
+        Depending on the ledger implementation this might also make the package 
+        available on the whole ledger. This call might not be supported by some 
         ledger implementations. Canton could be an example, where uploading a DAR
         is not sufficient to render it usable, it must be activated first.
         This call may:
