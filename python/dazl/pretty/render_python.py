@@ -412,7 +412,7 @@ class PythonPrettyPrint(PrettyPrintBase):
         # information away
         return self.visit_type(forall.body)
 
-    def visit_type_tuple(self, tuple: "Type.Tuple") -> str:
+    def visit_type_struct(self, struct: "Type.Struct") -> str:
         return "?"
 
 

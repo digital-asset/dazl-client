@@ -227,7 +227,9 @@ def struct(fields: "Mapping[str, Type]"):
         field names ``"_1"``, ``"_2"``, ``"_3"``, and so on.
     """
     return Type(
-        tuple=Type.Tuple(fields=tuple([FieldWithType(field, typ) for field, typ in fields.items()]))
+        struct=Type.Struct(
+            fields=tuple([FieldWithType(field, typ) for field, typ in fields.items()])
+        )
     )
 
 

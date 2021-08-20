@@ -263,11 +263,11 @@ class SimplifyVisitor(RewriteVisitor):
             )
 
     def visit_expr_struct_proj(self, struct_proj: "Expr.StructProj"):
-        new_tuple = self.visit_expr(struct_proj.tuple)
+        new_tuple = self.visit_expr(struct_proj.struct)
         if new_tuple.struct_con is not None:
             for fwt in new_tuple.struct_con.fields:
                 if fwt.field == struct_proj.field:
                     return self.visit_expr(fwt.expr)
             raise RuntimeError("rec_proj over a rec_con that did not have the necessary field")
         else:
-            return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, tuple=new_tuple))
+            return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, struct=new_tuple))

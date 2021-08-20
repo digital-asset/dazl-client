@@ -19,9 +19,10 @@ DAML-LF Archive types
 # file self-contained.
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import IntEnum as _IntEnum
 from io import StringIO
 from typing import Any, Callable, NewType, Optional, Sequence, Tuple, Union
+import typing as _typing
 
 from ._base import MISSING, T, _Missing
 
@@ -65,6 +66,8 @@ __all__ = [
     "ValName",
     "VarWithType",
 ]
+
+_T = _typing.TypeVar("_T")
 
 
 class Unit:
@@ -355,24 +358,24 @@ class Kind:
             return " -> ".join((f"({i})" if " " in i else i for i in params))
 
 
-class PrimType(Enum):
-    UNIT = 0  # arity = 0
-    BOOL = 1  # arity = 0
-    INT64 = 2  # arity = 0
-    DECIMAL = 3  # arity = 0
-    CHAR = 4  # arity = 0, we have removed this in favor of TEXT for everything text related
-    TEXT = 5  # arity = 0
-    TIMESTAMP = 6  # arity = 0
-    RELTIME = 7  # we removed this in favor of INT64.
-    PARTY = 8  # arity = 0
-    LIST = 9  # arity = 1
-    UPDATE = 10  # arity = 1
-    SCENARIO = 11  # arity = 1
-    DATE = 12  # arity = 0, days since the unix epoch
-    CONTRACT_ID = 13  # arity = 1
-    OPTIONAL = 14  # arity = 1
-    ARROW = 15  # arity = 2
-    TEXTMAP = 16  # arity = 1
+class PrimType(_IntEnum):
+    UNIT = 0
+    BOOL = 1
+    INT64 = 2
+    DECIMAL = 3
+    CHAR = 4
+    TEXT = 5
+    TIMESTAMP = 6
+    RELTIME = 7
+    PARTY = 8
+    LIST = 9
+    UPDATE = 10
+    SCENARIO = 11
+    DATE = 12
+    CONTRACT_ID = 13
+    OPTIONAL = 14
+    ARROW = 15
+    TEXTMAP = 16
     NUMERIC = 17
     ANY = 18
     TYPE_REP = 19
@@ -400,6 +403,11 @@ class Type:
         def __repr__(self):
             return f"Type.Con(tycon={self.tycon}, args={self.args})"
 
+    @dataclass(frozen=True)
+    class Syn:
+        tysyn: "TypeSynName"
+        args: "Sequence[Type]"
+
     class Prim:
         prim: "PrimType"
         args: "Sequence[Type]"
@@ -411,10 +419,13 @@ class Type:
         def __repr__(self):
             return f"Type.Prim(prim={self.prim!r}, args={self.args!r})"
 
-    @dataclass(frozen=True)
-    class Syn:
-        tysyn: "TypeSynName"
-        args: "Sequence[Type]"
+    class Fun:
+        params: "Sequence[Type]"
+        result: "Type"
+
+        def __init__(self, params: "Sequence[Type]", result: "Type"):
+            self.params = params
+            self.result = result
 
     class Forall:
         vars: "Sequence[TypeVarWithKind]"
@@ -425,16 +436,11 @@ class Type:
             self.vars = vars
             self.body = body
 
-    class Tuple:
+    class Struct:
         fields: "Sequence[FieldWithType]"
 
         def __init__(self, fields: "Sequence[FieldWithType]"):
             self.fields = tuple(fields)
-
-    @dataclass(frozen=True)
-    class App:
-        tyfun: "Type"
-        args: "Sequence[Type]"
 
     __slots__ = "_Sum_name", "_Sum_value"
     _Sum_name: str
@@ -446,7 +452,7 @@ class Type:
         con: "Union[Type.Con, _Missing]" = MISSING,
         prim: "Union[Type.Prim, _Missing]" = MISSING,
         forall: "Union[Type.Forall, _Missing]" = MISSING,
-        tuple: "Union[Type.Tuple, _Missing]" = MISSING,
+        struct: "Union[Type.Struct, _Missing]" = MISSING,
         nat: "Union[int, _Missing]" = MISSING,
         syn: "Union[Type.Syn, _Missing]" = MISSING,
     ):
@@ -462,9 +468,9 @@ class Type:
         elif forall is not MISSING:
             object.__setattr__(self, "_Sum_name", "forall")
             object.__setattr__(self, "_Sum_value", forall)
-        elif tuple is not MISSING:
-            object.__setattr__(self, "_Sum_name", "tuple")
-            object.__setattr__(self, "_Sum_value", tuple)
+        elif struct is not MISSING:
+            object.__setattr__(self, "_Sum_name", "struct")
+            object.__setattr__(self, "_Sum_value", struct)
         elif nat is not MISSING:
             object.__setattr__(self, "_Sum_name", "nat")
             object.__setattr__(self, "_Sum_value", nat)
@@ -487,20 +493,20 @@ class Type:
         return self._Sum_value if self._Sum_name == "prim" else None
 
     @property
-    def tysyn(self) -> "Type.Syn":
-        return self._Sum_value if self._Sum_name == "tysyn" else None
-
-    @property
     def forall(self) -> "Type.Forall":
         return self._Sum_value if self._Sum_name == "forall" else None
 
     @property
-    def tuple(self) -> "Type.Tuple":
-        return self._Sum_value if self._Sum_name == "tuple" else None
+    def struct(self) -> "Type.Struct":
+        return self._Sum_value if self._Sum_name == "struct" else None
 
     @property
     def nat(self) -> int:
         return self._Sum_value if self._Sum_name == "nat" else None
+
+    @property
+    def syn(self) -> "Type.Syn":
+        return self._Sum_value if self._Sum_name == "syn" else None
 
     # noinspection PyPep8Naming
     def Sum_match(
@@ -508,9 +514,8 @@ class Type:
         var: "Callable[[Type.Var], T]",
         con: "Callable[[Type.Con], T]",
         prim: "Callable[[Type.Prim], T]",
-        tysyn: "Callable[[Type.Syn], T]",
         forall: "Callable[[Type.Forall], T]",
-        tuple: "Callable[[Type.Tuple], T]",
+        struct: "Callable[[Type.Struct], T]",
         nat: "Callable[[int], T]",
         syn: "Callable[[Type.Syn], T]",
     ) -> "T":
@@ -520,12 +525,10 @@ class Type:
             return con(self._Sum_value)
         elif self._Sum_name == "prim":
             return prim(self._Sum_value)
-        elif self._Sum_name == "tysyn":
-            return tysyn(self._Sum_value)
         elif self._Sum_name == "forall":
             return forall(self._Sum_value)
-        elif self._Sum_name == "tuple":
-            return tuple(self._Sum_value)
+        elif self._Sum_name == "struct":
+            return struct(self._Sum_value)
         elif self._Sum_name == "nat":
             return nat(self._Sum_value)
         elif self._Sum_name == "syn":
@@ -568,7 +571,7 @@ class PrimLit:
     _Sum_name: str
     _Sum_value: Any
 
-    class RoundingMode(Enum):
+    class RoundingMode(_IntEnum):
         UP = 0
         DOWN = 1
         CEILING = 2
@@ -771,13 +774,13 @@ class Expr:
     @dataclass(frozen=True)
     class StructProj:
         field: str
-        tuple: "Expr"
+        struct: "Expr"
 
     # Set `field` in `tuple` to `update`.
     @dataclass(frozen=True)
     class StructUpd:
         field: str
-        tuple: "Expr"
+        struct: "Expr"
         update: "Expr"
 
     @dataclass(frozen=True)
@@ -891,6 +894,24 @@ class Expr:
             self.type = type
             self.expr = expr
 
+    class ToAnyException:
+        type: "Type"
+        expr: "Expr"
+
+        # noinspection PyShadowingBuiltins
+        def __init__(self, type: "Type", expr: "Expr"):
+            self.type = type
+            self.expr = expr
+
+    class FromAnyException:
+        type: "Type"
+        expr: "Expr"
+
+        # noinspection PyShadowingBuiltins
+        def __init__(self, type: "Type", expr: "Expr"):
+            self.type = type
+            self.expr = expr
+
     class ToTextTemplateId:
         type: "Type"
 
@@ -908,6 +929,15 @@ class Expr:
             self.exception_type = exception_type
             self.exception_expr = exception_expr
 
+    class Experimental:
+        name: str
+        type: "Type"
+
+        # noinspection PyShadowingBuiltins
+        def __init__(self, name: str, type: "Type"):
+            self.name = name
+            self.type = type
+
     __slots__ = "location", "_Sum_name", "_Sum_value"
     location: Location
     _Sum_name: str
@@ -915,6 +945,7 @@ class Expr:
 
     def __init__(
         self,
+        *,
         var: "Union[str, _Missing]" = MISSING,
         val: "Union[ValName, _Missing]" = MISSING,
         builtin: "Union[BuiltinFunction, _Missing]" = MISSING,
@@ -922,10 +953,12 @@ class Expr:
         prim_lit: "Union[PrimLit, _Missing]" = MISSING,
         rec_con: "Union[RecCon, _Missing]" = MISSING,
         rec_proj: "Union[RecProj, _Missing]" = MISSING,
+        rec_upd: "Union[RecUpd, _Missing]" = MISSING,
         variant_con: "Union[VariantCon, _Missing]" = MISSING,
         enum_con: "Union[EnumCon, _Missing]" = MISSING,
         struct_con: "Union[StructCon, _Missing]" = MISSING,
         struct_proj: "Union[StructProj, _Missing]" = MISSING,
+        struct_upd: "Union[StructUpd, _Missing]" = MISSING,
         app: "Union[App, _Missing]" = MISSING,
         ty_app: "Union[TyApp, _Missing]" = MISSING,
         abs: "Union[Abs, _Missing]" = MISSING,
@@ -936,16 +969,16 @@ class Expr:
         cons: "Union[Cons, _Missing]" = MISSING,
         update: "Union[Update, _Missing]" = MISSING,
         scenario: "Union[Scenario, _Missing]" = MISSING,
-        rec_upd: "Union[RecUpd, _Missing]" = MISSING,
-        struct_upd: "Union[StructUpd, _Missing]" = MISSING,
         optional_none: "Union[OptionalNone, _Missing]" = MISSING,
         optional_some: "Union[OptionalSome, _Missing]" = MISSING,
-        location: "Union[Location, _Missing]" = MISSING,
         to_any: "Union[ToAny, _Missing]" = MISSING,
         from_any: "Union[FromAny, _Missing]" = MISSING,
-        to_text_template_id: "Union[ToTextTemplateId, _Missing]" = MISSING,
         type_rep: "Union[Type, _Missing]" = MISSING,
-        throw: "Union[Throw, _Missing]" = MISSING,
+        to_any_exception: "Union[Expr.ToAnyException, _Missing]" = MISSING,
+        from_any_exception: "Union[Expr.FromAnyException, _Missing]" = MISSING,
+        throw: "Union[Expr.Throw, _Missing]" = MISSING,
+        experimental: "Union[Expr.Experimental, _Missing]" = MISSING,
+        location: "Optional[Location]" = None,
     ):
         object.__setattr__(self, "location", location)
         if var is not MISSING:
@@ -1029,12 +1062,18 @@ class Expr:
         elif from_any is not MISSING:
             object.__setattr__(self, "_Sum_name", "from_any")
             object.__setattr__(self, "_Sum_value", from_any)
-        elif to_text_template_id is not MISSING:
-            object.__setattr__(self, "_Sum_name", "to_text_template_id")
-            object.__setattr__(self, "_Sum_value", to_text_template_id)
+        elif to_any_exception is not MISSING:
+            object.__setattr__(self, "_Sum_name", "to_any_exception")
+            object.__setattr__(self, "_Sum_value", to_any_exception)
+        elif from_any_exception is not MISSING:
+            object.__setattr__(self, "_Sum_name", "from_any_exception")
+            object.__setattr__(self, "_Sum_value", from_any_exception)
         elif type_rep is not MISSING:
             object.__setattr__(self, "_Sum_name", "type_rep")
             object.__setattr__(self, "_Sum_value", type_rep)
+        elif experimental is not MISSING:
+            object.__setattr__(self, "_Sum_name", "experimental")
+            object.__setattr__(self, "_Sum_value", experimental)
         elif throw is not MISSING:
             object.__setattr__(self, "_Sum_name", "throw")
             object.__setattr__(self, "_Sum_value", throw)
@@ -1167,36 +1206,38 @@ class Expr:
     # noinspection PyPep8Naming
     def Sum_match(
         self,
-        var: "Callable[[str], T]",
-        val: "Callable[[ValName], T]",
-        builtin: "Callable[[BuiltinFunction], T]",
-        prim_con: "Callable[[PrimCon], T]",
-        prim_lit: "Callable[[PrimLit], T]",
-        rec_con: "Callable[[RecCon], T]",
-        rec_proj: "Callable[[RecProj], T]",
-        variant_con: "Callable[[VariantCon], T]",
-        enum_con: "Callable[[EnumCon], T]",
-        struct_con: "Callable[[StructCon], T]",
-        struct_proj: "Callable[[StructProj], T]",
-        app: "Callable[[App], T]",
-        ty_app: "Callable[[TyApp], T]",
-        abs: "Callable[[Abs], T]",
-        ty_abs: "Callable[[TyAbs], T]",
-        case: "Callable[[Case], T]",
-        let: "Callable[[Block], T]",
-        nil: "Callable[[Nil], T]",
-        cons: "Callable[[Cons], T]",
-        update: "Callable[[Update], T]",
-        scenario: "Callable[[Scenario], T]",
-        rec_upd: "Callable[[RecUpd], T]",
-        struct_upd: "Callable[[StructUpd], T]",
-        optional_none: "Callable[[OptionalNone], T]",
-        optional_some: "Callable[[OptionalSome], T]",
-        to_any: "Callable[[ToAny], T]",
-        from_any: "Callable[[FromAny], T]",
-        to_text_template_id: "Callable[[ToTextTemplateId], T]",
-        type_rep: "Callable[[Type], T]",
-        throw: "Callable[[Throw], T]",
+        var: "_typing.Callable[[str], _T]",
+        val: "_typing.Callable[[ValName], _T]",
+        builtin: "_typing.Callable[[BuiltinFunction], _T]",
+        prim_con: "_typing.Callable[[PrimCon], _T]",
+        prim_lit: "_typing.Callable[[PrimLit], _T]",
+        rec_con: "_typing.Callable[[Expr.RecCon], _T]",
+        rec_proj: "_typing.Callable[[Expr.RecProj], _T]",
+        rec_upd: "_typing.Callable[[Expr.RecUpd], _T]",
+        variant_con: "_typing.Callable[[Expr.VariantCon], _T]",
+        enum_con: "_typing.Callable[[Expr.EnumCon], _T]",
+        struct_con: "_typing.Callable[[Expr.StructCon], _T]",
+        struct_proj: "_typing.Callable[[Expr.StructProj], _T]",
+        struct_upd: "_typing.Callable[[Expr.StructUpd], _T]",
+        app: "_typing.Callable[[Expr.App], _T]",
+        ty_app: "_typing.Callable[[Expr.TyApp], _T]",
+        abs: "_typing.Callable[[Expr.Abs], _T]",
+        ty_abs: "_typing.Callable[[Expr.TyAbs], _T]",
+        case: "_typing.Callable[[Case], _T]",
+        let: "_typing.Callable[[Block], _T]",
+        nil: "_typing.Callable[[Expr.Nil], _T]",
+        cons: "_typing.Callable[[Expr.Cons], _T]",
+        update: "_typing.Callable[[Update], _T]",
+        scenario: "_typing.Callable[[Scenario], _T]",
+        optional_none: "_typing.Callable[[Expr.OptionalNone], _T]",
+        optional_some: "_typing.Callable[[Expr.OptionalSome], _T]",
+        to_any: "_typing.Callable[[Expr.ToAny], _T]",
+        from_any: "_typing.Callable[[Expr.FromAny], _T]",
+        type_rep: "_typing.Callable[[Type], _T]",
+        to_any_exception: "_typing.Callable[[Expr.ToAnyException], _T]",
+        from_any_exception: "_typing.Callable[[Expr.FromAnyException], _T]",
+        throw: "_typing.Callable[[Expr.Throw], _T]",
+        experimental: "_typing.Callable[[Expr.Experimental], _T]",
     ) -> "T":
         if self._Sum_name == "var":
             return var(self.var)  # type: ignore
@@ -1252,12 +1293,18 @@ class Expr:
             return to_any(self.to_any)  # type: ignore
         elif self._Sum_name == "from_any":
             return from_any(self.from_any)  # type: ignore
+        elif self._Sum_name == "to_any_exception":
+            return to_any_exception(self.to_any_exception)  # type: ignore
+        elif self._Sum_name == "from_any_exception":
+            return from_any_exception(self.from_any_exception)  # type: ignore
         elif self._Sum_name == "to_text_template_id":
             return to_text_template_id(self.to_text_template_id)  # type: ignore
         elif self._Sum_name == "type_rep":
             return type_rep(self.type_rep)  # type: ignore
         elif self._Sum_name == "throw":
             return throw(self.throw)  # type: ignore
+        elif self._Sum_name == "experimental":
+            return experimental(self.experimental)  # type: ignore
         else:
             raise Exception
 
@@ -1439,6 +1486,18 @@ class Update:
             self.cid = cid
             self.arg = arg
 
+    class ExerciseByKey:
+        template: "TypeConName"
+        choice: str
+        key: "Expr"
+        arg: "Expr"
+
+        def __init__(self, template: "TypeConName", choice: str, key: "Expr", arg: "Expr"):
+            self.template = template
+            self.choice = choice
+            self.key = key
+            self.arg = arg
+
     class Fetch:
         template: "TypeConName"
         cid: "Expr"
@@ -1464,6 +1523,18 @@ class Update:
             self.template = template
             self.key = key
 
+    class TryCatch:
+        return_type: Type
+        try_expr: Expr
+        var: str
+        catch_expr: Expr
+
+        def __init__(self, return_type: Type, try_expr: Expr, var: str, catch_expr: Expr):
+            self.return_type = return_type
+            self.try_expr = try_expr
+            self.var = var
+            self.catch_expr = catch_expr
+
     __slots__ = "_Sum_name", "_Sum_value"
     _Sum_name: str
     _Sum_value: Any
@@ -1472,13 +1543,15 @@ class Update:
         self,
         pure: "Union[Pure, _Missing]" = MISSING,
         block: "Union[Block, _Missing]" = MISSING,
-        create: "Union[Create, _Missing]" = MISSING,
-        exercise: "Union[Exercise, _Missing]" = MISSING,
-        fetch: "Union[Fetch, _Missing]" = MISSING,
+        create: "Union[Update.Create, _Missing]" = MISSING,
+        exercise: "Union[Update.Exercise, _Missing]" = MISSING,
+        exercise_by_key: "Union[Update.ExerciseByKey, _Missing]" = MISSING,
+        fetch: "Union[Update.Fetch, _Missing]" = MISSING,
         get_time: "Union[Unit, _Missing]" = MISSING,
-        lookup_by_key: "Union[RetrieveByKey, _Missing]" = MISSING,
-        fetch_by_key: "Union[RetrieveByKey, _Missing]" = MISSING,
-        embed_expr: "Union[EmbedExpr, _Missing]" = MISSING,
+        lookup_by_key: "Union[Update.RetrieveByKey, _Missing]" = MISSING,
+        fetch_by_key: "Union[Update.RetrieveByKey, _Missing]" = MISSING,
+        embed_expr: "Union[Update.EmbedExpr, _Missing]" = MISSING,
+        try_catch: "Union[Update.TryCatch, _Missing]" = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -1492,21 +1565,27 @@ class Update:
         elif exercise is not MISSING:
             object.__setattr__(self, "_Sum_name", "exercise")
             object.__setattr__(self, "_Sum_value", exercise)
+        elif exercise_by_key is not MISSING:
+            object.__setattr__(self, "_Sum_name", "exercise_by_key")
+            object.__setattr__(self, "_Sum_value", exercise_by_key)
         elif fetch is not MISSING:
             object.__setattr__(self, "_Sum_name", "fetch")
             object.__setattr__(self, "_Sum_value", fetch)
         elif get_time is not MISSING:
             object.__setattr__(self, "_Sum_name", "get_time")
             object.__setattr__(self, "_Sum_value", get_time)
-        elif embed_expr is not MISSING:
-            object.__setattr__(self, "_Sum_name", "embed_expr")
-            object.__setattr__(self, "_Sum_value", embed_expr)
         elif lookup_by_key is not MISSING:
             object.__setattr__(self, "_Sum_name", "lookup_by_key")
             object.__setattr__(self, "_Sum_value", lookup_by_key)
         elif fetch_by_key is not MISSING:
             object.__setattr__(self, "_Sum_name", "fetch_by_key")
             object.__setattr__(self, "_Sum_value", fetch_by_key)
+        elif embed_expr is not MISSING:
+            object.__setattr__(self, "_Sum_name", "embed_expr")
+            object.__setattr__(self, "_Sum_value", embed_expr)
+        elif try_catch is not MISSING:
+            object.__setattr__(self, "_Sum_name", "try_catch")
+            object.__setattr__(self, "_Sum_value", try_catch)
 
     @property
     def pure(self) -> "Optional[Pure]":
@@ -1719,151 +1798,128 @@ class Scenario:
             raise ValueError(f"unknown Scenario.Sum case: {self._Sum_name!r}")
 
 
-class BuiltinFunction(Enum):
-    ADD_DECIMAL = 0  # Available in versions < 1.7
-    SUB_DECIMAL = 1  # Available in versions < 1.7
-    MUL_DECIMAL = 2  # Available in versions < 1.7
-    DIV_DECIMAL = 3  # Available in versions < 1.7
-    ROUND_DECIMAL = 6  # Available in versions < 1.7
-
-    ADD_NUMERIC = 107  # Available in versions >= 1.7
-    SUB_NUMERIC = 108  # Available in versions >= 1.7
-    MUL_NUMERIC = 109  # Available in versions >= 1.7
-    DIV_NUMERIC = 110  # Available in versions >= 1.7
-    ROUND_NUMERIC = 111  # Available in versions >= 1.7
-    CAST_NUMERIC = 121  # Available in versions >= 1.7
-    SHIFT_NUMERIC = 122  # Available in versions >= 1.7
-
+class BuiltinFunction(_IntEnum):
+    ADD_DECIMAL = 0
+    SUB_DECIMAL = 1
+    MUL_DECIMAL = 2
+    DIV_DECIMAL = 3
+    ROUND_DECIMAL = 6
+    ADD_NUMERIC = 107
+    SUB_NUMERIC = 108
+    MUL_NUMERIC = 109
+    DIV_NUMERIC = 110
+    ROUND_NUMERIC = 111
+    CAST_NUMERIC = 121
+    SHIFT_NUMERIC = 122
     ADD_INT64 = 7
     SUB_INT64 = 8
     MUL_INT64 = 9
     DIV_INT64 = 10
     MOD_INT64 = 11
     EXP_INT64 = 12
-
     FOLDL = 20
     FOLDR = 21
-
     TEXTMAP_EMPTY = 96
     TEXTMAP_INSERT = 97
     TEXTMAP_LOOKUP = 98
     TEXTMAP_DELETE = 99
     TEXTMAP_TO_LIST = 100
     TEXTMAP_SIZE = 101
-
-    GENMAP_EMPTY = 124  # Available in versions >= 1.11
-    GENMAP_INSERT = 125  # Available in versions >= 1.11
-    GENMAP_LOOKUP = 126  # Available in versions >= 1.11
-    GENMAP_DELETE = 127  # Available in versions >= 1.11
-    GENMAP_KEYS = 128  # Available in versions >= 1.11
-    GENMAP_VALUES = 129  # Available in versions >= 1.11
-    GENMAP_SIZE = 130  # Available in versions >= 1.11
-
+    GENMAP_EMPTY = 124
+    GENMAP_INSERT = 125
+    GENMAP_LOOKUP = 126
+    GENMAP_DELETE = 127
+    GENMAP_KEYS = 128
+    GENMAP_VALUES = 129
+    GENMAP_SIZE = 130
     EXPLODE_TEXT = 23
     APPEND_TEXT = 24
-
     ERROR = 25
-    ANY_EXCEPTION_MESSAGE = 147  # Available in versions >= 1.14
-
-    LEQ_INT64 = 33  # Available in versions < 1.11
-    LEQ_DECIMAL = 34  # Available in versions < 1.7
-    LEQ_NUMERIC = 112  # Available in versions >= 1.7 and < 1.11
-    LEQ_TEXT = 36  # Available in versions < 1.11
-    LEQ_TIMESTAMP = 37  # Available in versions < 1.11
-    LEQ_DATE = 67  # Available in versions < 1.11
-    LEQ_PARTY = 89  # Available in versions >= 1.1 and < 1.11
-
-    LESS_INT64 = 39  # Available in versions < 1.11
-    LESS_DECIMAL = 40  # Available in versions < 1.7
-    LESS_NUMERIC = 113  # Available in versions >= 1.7 and < 1.11
-    LESS_TEXT = 42  # Available in versions < 1.11
-    LESS_TIMESTAMP = 43  # Available in versions < 1.11
-    LESS_DATE = 68  # Available in versions < 1.11
-    LESS_PARTY = 90  # Available in versions >= 1.1 and < 1.11
-
-    GEQ_INT64 = 45  # Available in versions < 1.11
-    GEQ_DECIMAL = 46  # Available in versions < 1.7
-    GEQ_NUMERIC = 114  # Available in versions >= 1.7 and < 1.11
-    GEQ_TEXT = 48  # Available in versions < 1.11
-    GEQ_TIMESTAMP = 49  # Available in versions < 1.11
-    GEQ_DATE = 69  # Available in versions < 1.11
-    GEQ_PARTY = 91  # Available in versions >= 1.1 and < 1.11
-
-    GREATER_INT64 = 51  # Available in versions < 1.11
-    GREATER_DECIMAL = 52  # Available in versions < 1.7
-    GREATER_NUMERIC = 115  # Available in versions >= 1.7 and < 1.11
-    GREATER_TEXT = 54  # Available in versions < 1.11
-    GREATER_TIMESTAMP = 55  # Available in versions < 1.11
-    GREATER_DATE = 70  # Available in versions < 1.11
-    GREATER_PARTY = 92  # Available in versions >= 1.1 and < 1.11
-
+    ANY_EXCEPTION_MESSAGE = 147
+    LEQ_INT64 = 33
+    LEQ_DECIMAL = 34
+    LEQ_NUMERIC = 112
+    LEQ_TEXT = 36
+    LEQ_TIMESTAMP = 37
+    LEQ_DATE = 67
+    LEQ_PARTY = 89
+    LESS_INT64 = 39
+    LESS_DECIMAL = 40
+    LESS_NUMERIC = 113
+    LESS_TEXT = 42
+    LESS_TIMESTAMP = 43
+    LESS_DATE = 68
+    LESS_PARTY = 90
+    GEQ_INT64 = 45
+    GEQ_DECIMAL = 46
+    GEQ_NUMERIC = 114
+    GEQ_TEXT = 48
+    GEQ_TIMESTAMP = 49
+    GEQ_DATE = 69
+    GEQ_PARTY = 91
+    GREATER_INT64 = 51
+    GREATER_DECIMAL = 52
+    GREATER_NUMERIC = 115
+    GREATER_TEXT = 54
+    GREATER_TIMESTAMP = 55
+    GREATER_DATE = 70
+    GREATER_PARTY = 92
     INT64_TO_TEXT = 57
-    DECIMAL_TO_TEXT = 58  # Available in versions < 1.7
-    NUMERIC_TO_TEXT = 116  # Available in versions >= 1.7
+    DECIMAL_TO_TEXT = 58
+    NUMERIC_TO_TEXT = 116
     TEXT_TO_TEXT = 60
     TIMESTAMP_TO_TEXT = 61
     DATE_TO_TEXT = 71
-    PARTY_TO_QUOTED_TEXT = 63  # Available in versions <= 1.dev
-    PARTY_TO_TEXT = 94  # Available in versions >= 1.2
-    TEXT_TO_PARTY = 95  # Available in versions >= 1.2, was named TEXT_TO_PARTY in 1.2, 1.3 and 1.4
-    TEXT_TO_INT64 = 103  # Available in versions >= 1.5
-    TEXT_TO_DECIMAL = 104  # Available in versions 1.5 and 1.6
-    TEXT_TO_NUMERIC = 117  # Available in versions >= 1.7
-    CONTRACT_ID_TO_TEXT = 136  # Available in versions >= 1.11
-    SHA256_TEXT = 93  # Available in versions >= 1.2
-
-    DATE_TO_UNIX_DAYS = 72  # Date -> Int64
-    UNIX_DAYS_TO_DATE = 73  # Int64 -> Date
-
-    TIMESTAMP_TO_UNIX_MICROSECONDS = 74  # Timestamp -> Int64
-    UNIX_MICROSECONDS_TO_TIMESTAMP = 75  # Int64 -> Timestamp
-
-    INT64_TO_DECIMAL = 76  # Available in versions < 1.7
-    DECIMAL_TO_INT64 = 77  # Available in versions < 1.7
-
-    INT64_TO_NUMERIC = 118  # Available in versions >= 1.7
-    NUMERIC_TO_INT64 = 119  # Available in versions >= 1.7
-
+    PARTY_TO_QUOTED_TEXT = 63
+    PARTY_TO_TEXT = 94
+    TEXT_TO_PARTY = 95
+    TEXT_TO_INT64 = 103
+    TEXT_TO_DECIMAL = 104
+    TEXT_TO_NUMERIC = 117
+    CONTRACT_ID_TO_TEXT = 136
+    SHA256_TEXT = 93
+    DATE_TO_UNIX_DAYS = 72
+    UNIX_DAYS_TO_DATE = 73
+    TIMESTAMP_TO_UNIX_MICROSECONDS = 74
+    UNIX_MICROSECONDS_TO_TIMESTAMP = 75
+    INT64_TO_DECIMAL = 76
+    DECIMAL_TO_INT64 = 77
+    INT64_TO_NUMERIC = 118
+    NUMERIC_TO_INT64 = 119
     IMPLODE_TEXT = 78
-
-    EQUAL_INT64 = 79  # Available in versions < 1.11
-    EQUAL_DECIMAL = 80  # Available in versions < 1.7
-    EQUAL_NUMERIC = 120  # Available in versions >= 1.7 and < 1.11
-    EQUAL_TEXT = 81  # Available in versions < 1.11
-    EQUAL_TIMESTAMP = 82  # Available in versions < 1.11
-    EQUAL_DATE = 83  # Available in versions < 1.11
-    EQUAL_PARTY = 84  # Available in versions < 1.11
-    EQUAL_BOOL = 85  # Available in versions < 1.11
-    EQUAL_CONTRACT_ID = 86  # Available in versions < 1.11
+    EQUAL_INT64 = 79
+    EQUAL_DECIMAL = 80
+    EQUAL_NUMERIC = 120
+    EQUAL_TEXT = 81
+    EQUAL_TIMESTAMP = 82
+    EQUAL_DATE = 83
+    EQUAL_PARTY = 84
+    EQUAL_BOOL = 85
+    EQUAL_CONTRACT_ID = 86
     EQUAL_LIST = 87
-    EQUAL_TYPE_REP = 123  # Available in versions = 1.8
-
-    EQUAL = 131  # Available in versions >= 1.11
-    LESS_EQ = 132  # Available in versions >= 1.11
-    LESS = 133  # Available in versions >= 1.11
-    GREATER_EQ = 134  # Available in versions >= 1.11
-    GREATER = 135  # Available in versions >= 1.11
-
+    EQUAL_TYPE_REP = 123
+    EQUAL = 131
+    LESS_EQ = 132
+    LESS = 133
+    GREATER_EQ = 134
+    GREATER = 135
     TRACE = 88
-
     COERCE_CONTRACT_ID = 102
-
-    CODE_POINTS_TO_TEXT = 105  # Available in versions >= 1.6
-    TEXT_POINTS_TO_CODE = 106  # Available in versions >= 1.6
-
-    SCALE_BIGNUMERIC = 137  # Available in versions >= 1.13
-    PRECISION_BIGNUMERIC = 138  # Available in versions >= 1.13
-    ADD_BIGNUMERIC = 139  # Available in versions >= 1.13
-    SUB_BIGNUMERIC = 140  # Available in versions >= 1.13
-    MUL_BIGNUMERIC = 141  # Available in versions >= 1.13
-    DIV_BIGNUMERIC = 142  # Available in versions >= 1.13
-    SHIFT_RIGHT_BIGNUMERIC = 143  # Available in versions >= 1.13
-    BIGNUMERIC_TO_NUMERIC = 144  # Available in versions >= 1.13
-    NUMERIC_TO_BIGNUMERIC = 145  # Available in versions >= 1.13
-    BIGNUMERIC_TO_TEXT = 146  # Available in versions >= 1.13
+    CODE_POINTS_TO_TEXT = 105
+    TEXT_POINTS_TO_CODE = 106
+    SCALE_BIGNUMERIC = 137
+    PRECISION_BIGNUMERIC = 138
+    ADD_BIGNUMERIC = 139
+    SUB_BIGNUMERIC = 140
+    MUL_BIGNUMERIC = 141
+    DIV_BIGNUMERIC = 142
+    SHIFT_RIGHT_BIGNUMERIC = 143
+    BIGNUMERIC_TO_NUMERIC = 144
+    NUMERIC_TO_BIGNUMERIC = 145
+    BIGNUMERIC_TO_TEXT = 146
 
 
-class PrimCon(Enum):
+class PrimCon(_IntEnum):
     CON_UNIT = 0
     CON_FALSE = 1
     CON_TRUE = 2
@@ -1884,6 +1940,8 @@ class TemplateChoice:
     # controllers need to authorize the exercising of this choice (aka
     # conjunctive choice controllers).
     controllers: "Expr"
+
+    observers: "Optional[Expr]"
 
     # Name to which the choice argument is bound and its type.
     arg_binder: "VarWithType"
@@ -2142,9 +2200,9 @@ class DefValue:
 
 @dataclass(frozen=True)
 class FeatureFlags:
-    forbidPartyLiterals: bool
-    dontDivulgeContractIdsInCreateArguments: bool
-    dontDiscloseNonConsumingChoicesToObservers: bool
+    forbid_party_literals: bool
+    dont_divulge_contract_ids_in_create_arguments: bool
+    dont_disclose_nonconsuming_choices_to_observers: bool
 
 
 @dataclass(frozen=True)

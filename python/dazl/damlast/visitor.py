@@ -50,10 +50,12 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_prim_lit,
             self.visit_expr_rec_con,
             self.visit_expr_rec_proj,
+            self.visit_expr_rec_upd,
             self.visit_expr_variant_con,
             self.visit_expr_enum_con,
             self.visit_expr_struct_con,
             self.visit_expr_struct_proj,
+            self.visit_expr_struct_upd,
             self.visit_expr_app,
             self.visit_expr_ty_app,
             self.visit_expr_abs,
@@ -64,15 +66,15 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_cons,
             self.visit_expr_update,
             self.visit_expr_scenario,
-            self.visit_expr_rec_upd,
-            self.visit_expr_struct_upd,
             self.visit_expr_optional_none,
             self.visit_expr_optional_some,
             self.visit_expr_to_any,
             self.visit_expr_from_any,
-            self.visit_expr_to_text_template_id,
             self.visit_expr_type_rep,
+            self.visit_expr_to_any_exception,
+            self.visit_expr_from_any_exception,
             self.visit_expr_throw,
+            self.visit_expr_experimental,
         )
 
     def visit_expr_var(self, var: str) -> "RE":
@@ -156,13 +158,19 @@ class ExprVisitor(Generic[RE]):
     def visit_expr_from_any(self, from_any: "Expr.FromAny") -> "RE":
         raise NotImplementedError
 
-    def visit_expr_to_text_template_id(self, to_text_template_id: "Expr.ToTextTemplateId") -> "RE":
-        raise NotImplementedError
-
     def visit_expr_type_rep(self, type_rep: "Type") -> "RE":
         raise NotImplementedError
 
     def visit_expr_throw(self, throw: "Expr.Throw") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_to_any_exception(self, to_any_exception: "Expr.ToAnyException") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_from_any_exception(self, from_any_exception: "Expr.FromAnyException") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_experimental(self, experimental: "Expr.Experimental") -> "RE":
         raise NotImplementedError
 
 
@@ -172,9 +180,8 @@ class TypeVisitor(Generic[RT]):
             self.visit_type_var,
             self.visit_type_con,
             self.visit_type_prim,
-            self.visit_type_tysyn,
             self.visit_type_forall,
-            self.visit_type_tuple,
+            self.visit_type_struct,
             self.visit_type_nat,
             self.visit_type_syn,
         )
@@ -188,13 +195,10 @@ class TypeVisitor(Generic[RT]):
     def visit_type_prim(self, prim: "Type.Prim") -> "RT":
         raise NotImplementedError
 
-    def visit_type_tysyn(self, tysyn: "Type.Syn") -> "RT":
-        raise NotImplementedError
-
     def visit_type_forall(self, forall: "Type.Forall") -> "RT":
         raise NotImplementedError
 
-    def visit_type_tuple(self, tuple: "Type.Tuple") -> "RT":
+    def visit_type_struct(self, struct: "Type.Struct") -> "RT":
         raise NotImplementedError
 
     def visit_type_nat(self, nat: int) -> "RT":
@@ -237,11 +241,14 @@ class IdentityTypeVisitor(TypeVisitor[Type]):
         new_body = self.visit_type(forall.body)
         return Type(forall=Type.Forall(forall.vars, new_body))
 
-    def visit_type_tuple(self, tuple: "Type.Tuple") -> "Type":
+    def visit_type_struct(self, struct: "Type.Struct") -> "Type":
         new_fields = _tuple(
-            [FieldWithType(field=fwt.field, type=self.visit_type(fwt.type)) for fwt in tuple.fields]
+            [
+                FieldWithType(field=fwt.field, type=self.visit_type(fwt.type))
+                for fwt in struct.fields
+            ]
         )
-        return Type(tuple=Type.Tuple(fields=new_fields))
+        return Type(struct=Type.Struct(fields=new_fields))
 
     def visit_type_nat(self, nat: int) -> "Type":
         return Type(nat=nat)
@@ -301,8 +308,8 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
         return Expr(struct_con=Expr.StructCon(fields=new_fields))
 
     def visit_expr_struct_proj(self, struct_proj: "Expr.StructProj") -> "Expr":
-        new_tuple = self.visit_expr(struct_proj.tuple)
-        return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, tuple=new_tuple))
+        new_struct = self.visit_expr(struct_proj.struct)
+        return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, struct=new_struct))
 
     def visit_expr_app(self, app: "Expr.App") -> "Expr":
         new_fun = self.visit_expr(app.fun)
@@ -378,14 +385,5 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
         return Expr(
             from_any=Expr.FromAny(
                 type=self.visit_type(from_any.type), expr=self.visit_expr(from_any.expr)
-            )
-        )
-
-    def visit_expr_to_text_template_id(
-        self, to_text_template_id: "Expr.ToTextTemplateId"
-    ) -> "Expr":
-        return Expr(
-            to_text_template_id=Expr.ToTextTemplateId(
-                type=self.visit_type(to_text_template_id.type)
             )
         )
