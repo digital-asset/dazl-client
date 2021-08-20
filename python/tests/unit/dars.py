@@ -4,9 +4,7 @@
 from pathlib import Path
 from typing import Mapping
 
-from dazl.util.io import find_nearest_ancestor
-
-DAZL_ROOT = find_nearest_ancestor(".dazl-root", Path(__file__).resolve()).parent
+DAZL_ROOT = Path(__file__).absolute().parent.parent.parent.parent
 DAML_ROOT = DAZL_ROOT / "python" / "tests" / "resources"
 
 

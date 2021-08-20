@@ -60,7 +60,7 @@ async def test_server_endpoint(sandbox):
 
 def ensure_person_contract(network: Network, party: Party):
     client = network.aio_party(party)
-    client.add_ledger_ready(lambda _: client.create("TestServer:Person", dict(party=party)))
+    client.add_ledger_ready(lambda _: client.create("TestServer:Person", dict(party=party)))  # type: ignore
 
 
 async def client_main(

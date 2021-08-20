@@ -3,6 +3,7 @@
 
 import datetime
 from decimal import Decimal
+from typing import Any, Mapping
 
 from dazl import async_network
 from dazl.ledger import CreateCommand, ExerciseCommand
@@ -11,7 +12,7 @@ import pytest
 from .dars import AllKindsOf
 
 TEMPLATE = "AllKindsOf:OneOfEverything"
-SOME_ARGS = dict(
+SOME_ARGS: Mapping[str, Any] = dict(
     operator=None,  # this is filled in by each of the tests because Party allocation is random
     someBoolean=True,
     someInteger=5,
