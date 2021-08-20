@@ -46,6 +46,7 @@ sphinx-autobuild = "*"
 sphinx-markdown-builder = "^0.5.4"
 sphinxcontrib-trio = "^1.1.2"
 types-dataclasses = { version = "*", python = "~=3.6.0" }
+types-flask = "*"
 types-protobuf = "*"
 types-requests = "*"
 types-setuptools = "*"

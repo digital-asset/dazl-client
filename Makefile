@@ -118,7 +118,7 @@ python-gen: $(py_src_gen)
 # python: run mypy
 .PHONY: python-typecheck
 python-typecheck: .venv/poetry.lock
-	poetry run python3 -m mypy -p dazl
+	poetry run python3 -m mypy python
 
 # python: build BOTH $(py_bdist) and $(py_sdist)
 $(py_sdist): $(py_src)

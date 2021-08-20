@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from dataclasses import dataclass
+from typing import Generator
 
 from dazl._gen.com.daml.ledger.api.v1.commands_pb2 import Command as G_Command
 from dazl._gen.com.daml.ledger.api.v1.value_pb2 import (
@@ -35,7 +36,7 @@ class DarFixture:
 
 
 @pytest.fixture(scope="module")
-def dar_fixture() -> "DarFixture":
+def dar_fixture() -> "Generator[DarFixture, None, None]":
     with DarFile(Pending) as dar:
         lookup = MultiPackageLookup(dar.archives())
 

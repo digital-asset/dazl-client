@@ -6,6 +6,7 @@ from datetime import timedelta
 import logging
 import os
 import subprocess
+from typing import Generator
 
 from dazl.util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
 import pytest
@@ -15,7 +16,7 @@ SANDBOX_START_TIMEOUT = timedelta(seconds=10)
 
 
 @pytest.fixture(scope="session")
-def sandbox() -> str:
+def sandbox() -> "Generator[str, None, None]":
     """
     Run an instance of the Sandbox, or use one configured through environment variables.
 
@@ -67,6 +68,6 @@ def sandbox() -> str:
 
 
 @pytest.fixture()
-def executor() -> "ThreadPoolExecutor":
+def executor() -> "Generator[ThreadPoolExecutor, None, None]":
     with ThreadPoolExecutor(3) as executor:
         yield executor
