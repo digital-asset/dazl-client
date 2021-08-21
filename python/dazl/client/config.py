@@ -27,8 +27,9 @@ from typing import (
 import warnings
 
 from .. import LOG
+from ..client.errors import ConfigurationError
 from ..damlast.daml_lf_1 import PackageRef
-from ..model.core import ConfigurationError, Party
+from ..prim import Party
 from ..util.config_meta import (
     BOOLEAN_TYPE,
     COUNT_TYPE,

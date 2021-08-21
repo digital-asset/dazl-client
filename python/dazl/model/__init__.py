@@ -21,7 +21,9 @@ introduced in dazl v5) or :mod:`dazl.protocols` (for the API introduced in dazl 
 
 import warnings
 
-from . import core, ledger, lookup, network, reading, types, writing
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from . import core, ledger, lookup, network, reading, types, writing
 
 __all__ = ["core", "ledger", "lookup", "network", "reading", "writing"]
 
