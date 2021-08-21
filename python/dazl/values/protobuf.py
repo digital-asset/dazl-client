@@ -6,7 +6,7 @@ from typing import Any, Optional, Type as PyType, TypeVar
 from google.protobuf import timestamp_pb2
 from google.protobuf.empty_pb2 import Empty
 
-from .._gen.com.daml.ledger.api.v1 import value_pb2
+from .._gen.com.daml.ledger.api import v1 as lapipb
 from ..damlast.daml_lf_1 import DefDataType, Type
 from ..damlast.util import find_variant_type
 from ..prim import (
@@ -44,7 +44,7 @@ class ProtobufDecoder(ValueMapper):
     def data_record(
         self, context: "Context", dt: "DefDataType", record: "DefDataType.Fields", obj: "Any"
     ) -> "Any":
-        msg = get_value(obj, "record", value_pb2.Record)
+        msg = get_value(obj, "record", lapipb.Record)
 
         d = dict()
         for fld_metadata, fld_data in zip(record.fields, msg.fields):
@@ -57,7 +57,7 @@ class ProtobufDecoder(ValueMapper):
     def data_variant(
         self, context: "Context", dt: "DefDataType", variant: "DefDataType.Fields", obj: "Any"
     ) -> "Any":
-        msg = get_value(obj, "variant", value_pb2.Variant)
+        msg = get_value(obj, "variant", lapipb.Variant)
         obj_ctor = msg.constructor
         obj_value = msg.value
         obj_type = find_variant_type(dt, variant, obj_ctor)
@@ -73,7 +73,7 @@ class ProtobufDecoder(ValueMapper):
         enum: "DefDataType.EnumConstructors",
         obj: "Any",
     ) -> "Any":
-        msg = get_value(obj, "enum", value_pb2.Enum)
+        msg = get_value(obj, "enum", lapipb.Enum)
         return context.value_validate_enum(msg.constructor, enum)
 
     def prim_unit(self, context: "Context", obj: "Any") -> "Any":
@@ -95,7 +95,7 @@ class ProtobufDecoder(ValueMapper):
         return to_party(get_value(obj, "party", str))
 
     def prim_list(self, context: "Context", item_type: "Type", obj: "Any") -> "Any":
-        msg = get_value(obj, "list", value_pb2.List)
+        msg = get_value(obj, "list", lapipb.List)
         return context.convert_list(item_type, msg.elements)
 
     def prim_date(self, context: "Context", obj: "Any") -> "Any":
@@ -107,12 +107,12 @@ class ProtobufDecoder(ValueMapper):
         return context.convert_contract_id(item_type, msg)
 
     def prim_optional(self, context: "Context", t: "Type", obj: "Any") -> "Any":
-        msg = get_value(obj, "optional", value_pb2.Optional)
+        msg = get_value(obj, "optional", lapipb.Optional)
         maybe_val = msg.value if msg.HasField("value") else None
         return context.convert_optional(t, maybe_val)
 
     def prim_text_map(self, context: "Context", item_type: "Type", obj: "Any") -> "Any":
-        msg = get_value(obj, "map", value_pb2.Map)
+        msg = get_value(obj, "map", lapipb.Map)
         mapping = {entry_pb.key: entry_pb.value for entry_pb in msg.entries}
         return context.convert_text_map(item_type, mapping)
 
@@ -123,7 +123,7 @@ class ProtobufDecoder(ValueMapper):
     def prim_gen_map(
         self, context: "Context", key_type: "Type", value_type: "Type", obj: "Any"
     ) -> "Any":
-        msg = get_value(obj, "gen_map", value_pb2.GenMap)
+        msg = get_value(obj, "gen_map", lapipb.GenMap)
 
         obj = {}
         for i, entry in enumerate(msg.entries):
@@ -138,7 +138,7 @@ class ProtobufEncoder(ValueMapper):
     def data_record(
         self, context: "Context", dt: "DefDataType", record: "DefDataType.Fields", obj: "Any"
     ) -> "Any":
-        msg = value_pb2.Record()
+        msg = lapipb.Record()
 
         for fld in record.fields:
             entry = msg.fields.add()
@@ -156,7 +156,7 @@ class ProtobufEncoder(ValueMapper):
 
         msg_case, msg_value = context.append_path(obj_ctor).convert(obj_type, obj_value)
 
-        msg = value_pb2.Variant()
+        msg = lapipb.Variant()
         msg.constructor = obj_ctor
         set_value(msg.value, msg_case, msg_value)
 
@@ -169,7 +169,7 @@ class ProtobufEncoder(ValueMapper):
         enum: "DefDataType.EnumConstructors",
         obj: "Any",
     ) -> "Any":
-        msg = value_pb2.Enum()
+        msg = lapipb.Enum()
         msg.constructor = context.value_validate_enum(obj, enum)
         return "enum", msg
 
@@ -192,7 +192,7 @@ class ProtobufEncoder(ValueMapper):
         return "party", to_str(obj)
 
     def prim_list(self, context: "Context", item_type: "Type", obj: "Any") -> "Any":
-        msg = value_pb2.List()
+        msg = lapipb.List()
         for i, item in enumerate(obj):
             value = msg.elements.add()
             ctor, val = context.append_path(f"[{i}").convert(item_type, item)
@@ -206,14 +206,14 @@ class ProtobufEncoder(ValueMapper):
         return "contract_id", to_str(obj)
 
     def prim_optional(self, context: "Context", item_type: "Type", obj: "Any") -> "Any":
-        msg = value_pb2.Optional()
+        msg = lapipb.Optional()
         if obj is not None:
             ctor, val = context.append_path("?").convert(item_type, obj)
             set_value(msg.value, ctor, val)
         return "optional", msg
 
     def prim_text_map(self, context: "Context", item_type: "Type", obj: "Any") -> "Any":
-        msg = value_pb2.Map()
+        msg = lapipb.Map()
         for key, value in obj.items():
             entry = msg.entries.add()
             entry.key = key
@@ -228,7 +228,7 @@ class ProtobufEncoder(ValueMapper):
     def prim_gen_map(
         self, context: "Context", key_type: "Type", value_type: "Type", obj: "Any"
     ) -> "Any":
-        msg = value_pb2.GenMap()
+        msg = lapipb.GenMap()
         for i, (key, value) in enumerate(obj.items()):
             entry = msg.entries.add()
             key_ctor, key_val = context.append_path(f"[key: {i}]").convert(key_type, key)
@@ -242,7 +242,7 @@ def get_value(obj: "Any", field: str, pb_type: "PyType[T]") -> "T":
     return obj if isinstance(obj, pb_type) else getattr(obj, field)
 
 
-def set_value(message: "value_pb2.Value", ctor: "Optional[str]", value: "Any") -> None:
+def set_value(message: "lapipb.Value", ctor: "Optional[str]", value: "Any") -> None:
     """
     Work around the somewhat crazy API of Python's gRPC library to apply a known value to a
     :class:`Value`.

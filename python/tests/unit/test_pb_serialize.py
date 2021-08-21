@@ -4,8 +4,8 @@
 from dataclasses import dataclass
 from typing import Generator
 
-from dazl._gen.com.daml.ledger.api.v1.commands_pb2 import Command as G_Command
-from dazl._gen.com.daml.ledger.api.v1.value_pb2 import (
+from dazl._gen.com.daml.ledger.api.v1 import (
+    Command as G_Command,
     RecordField as G_RecordField,
     Value as G_Value,
 )

@@ -7,18 +7,7 @@ Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic typ
 from typing import TYPE_CHECKING, Any, Union
 import warnings
 
-from ..._gen.com.daml.ledger.api.v1.command_service_pb2 import (
-    SubmitAndWaitRequest as G_SubmitAndWaitRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.commands_pb2 import (
-    Command as G_Command,
-    Commands as G_Commands,
-    CreateAndExerciseCommand as G_CreateAndExerciseCommand,
-    CreateCommand as G_CreateCommand,
-    ExerciseByKeyCommand as G_ExerciseByKeyCommand,
-    ExerciseCommand as G_ExerciseCommand,
-)
-from ..._gen.com.daml.ledger.api.v1.value_pb2 import Identifier as G_Identifier
+from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ...damlast.daml_lf_1 import TypeConName
 from ...damlast.util import module_local_name, module_name, package_ref
 from ...ledger.grpc.codec_aio import Codec
@@ -31,8 +20,10 @@ if TYPE_CHECKING:
     from ...model.types import TypeReference
     from ...model.writing import CommandPayload
 
+__all__ = ["as_identifier", "ProtobufSerializer"]
 
-def as_identifier(tref: "Union[TypeReference, TypeConName]") -> "G_Identifier":
+
+def as_identifier(tref: "Union[TypeReference, TypeConName]") -> "lapipb.Identifier":
     from ...model.types import TypeReference
 
     warnings.warn("Use Codec.encode_identifier instead.", DeprecationWarning, stacklevel=2)
@@ -53,10 +44,10 @@ class ProtobufSerializer(AbstractSerializer):
 
     def serialize_command_request(
         self, command_payload: "CommandPayload"
-    ) -> G_SubmitAndWaitRequest:
+    ) -> "lapipb.SubmitAndWaitRequest":
         commands = [self.serialize_command(command) for command in command_payload.commands]
-        return G_SubmitAndWaitRequest(
-            commands=G_Commands(
+        return lapipb.SubmitAndWaitRequest(
+            commands=lapipb.Commands(
                 ledger_id=command_payload.ledger_id,
                 workflow_id=command_payload.workflow_id,
                 application_id=command_payload.application_id,
@@ -71,28 +62,30 @@ class ProtobufSerializer(AbstractSerializer):
             )
         )
 
-    def serialize_create_command(self, name: "TypeConName", template_args: "Any") -> G_Command:
+    def serialize_create_command(
+        self, name: "TypeConName", template_args: "Any"
+    ) -> "lapipb.Command":
         create_ctor, create_value = template_args
         if create_ctor != "record":
             raise ValueError("Template values must resemble records")
 
-        cmd = G_CreateCommand()
+        cmd = lapipb.CreateCommand()
         _set_template(cmd.template_id, name)
         cmd.create_arguments.MergeFrom(create_value)
-        return G_Command(create=cmd)
+        return lapipb.Command(create=cmd)
 
     def serialize_exercise_command(
         self, contract_id: "ContractId", choice_name: str, choice_args: "Any"
-    ) -> G_Command:
+    ) -> lapipb.Command:
         type_ref = contract_id.value_type
         ctor, value = choice_args
 
-        cmd = G_ExerciseCommand()
+        cmd = lapipb.ExerciseCommand()
         _set_template(cmd.template_id, type_ref)
         cmd.contract_id = contract_id.value
         cmd.choice = choice_name
         set_value(cmd.choice_argument, ctor, value)
-        return G_Command(exercise=cmd)
+        return lapipb.Command(exercise=cmd)
 
     def serialize_exercise_by_key_command(
         self,
@@ -100,16 +93,16 @@ class ProtobufSerializer(AbstractSerializer):
         key_arguments: Any,
         choice_name: str,
         choice_arguments: Any,
-    ) -> G_Command:
+    ) -> lapipb.Command:
         key_ctor, key_value = key_arguments
         choice_ctor, choice_value = choice_arguments
 
-        cmd = G_ExerciseByKeyCommand()
+        cmd = lapipb.ExerciseByKeyCommand()
         _set_template(cmd.template_id, template_name)
         set_value(cmd.contract_key, key_ctor, key_value)
         cmd.choice = choice_name
         set_value(cmd.choice_argument, choice_ctor, choice_value)
-        return G_Command(exerciseByKey=cmd)
+        return lapipb.Command(exerciseByKey=cmd)
 
     def serialize_create_and_exercise_command(
         self,
@@ -117,21 +110,21 @@ class ProtobufSerializer(AbstractSerializer):
         create_arguments: "Any",
         choice_name: str,
         choice_arguments: Any,
-    ) -> G_Command:
+    ) -> lapipb.Command:
         create_ctor, create_value = create_arguments
         if create_ctor != "record":
             raise ValueError("Template values must resemble records")
         choice_ctor, choice_value = choice_arguments
 
-        cmd = G_CreateAndExerciseCommand()
+        cmd = lapipb.CreateAndExerciseCommand()
         _set_template(cmd.template_id, template_name)
         cmd.create_arguments.MergeFrom(create_value)
         cmd.choice = choice_name
         set_value(cmd.choice_argument, choice_ctor, choice_value)
-        return G_Command(createAndExercise=cmd)
+        return lapipb.Command(createAndExercise=cmd)
 
 
-def _set_template(message: G_Identifier, name: "TypeConName") -> None:
+def _set_template(message: "lapipb.Identifier", name: "TypeConName") -> None:
     message.package_id = package_ref(name)
     message.module_name = str(module_name(name))
     message.entity_name = module_local_name(name)

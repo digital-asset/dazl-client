@@ -25,28 +25,8 @@ from .. import (
     ExerciseResponse,
     PartyInfo,
 )
-from ..._gen.com.daml.ledger.api.v1.admin.party_management_service_pb2 import (
-    PartyDetails as G_PartyDetails,
-)
-from ..._gen.com.daml.ledger.api.v1.commands_pb2 import (
-    Command as G_Command,
-    CreateAndExerciseCommand as G_CreateAndExerciseCommand,
-    CreateCommand as G_CreateCommand,
-    ExerciseByKeyCommand as G_ExerciseByKeyCommand,
-    ExerciseCommand as G_ExerciseCommand,
-)
-from ..._gen.com.daml.ledger.api.v1.event_pb2 import (
-    ArchivedEvent as G_ArchivedEvent,
-    CreatedEvent as G_CreatedEvent,
-    ExercisedEvent as G_ExercisedEvent,
-)
-from ..._gen.com.daml.ledger.api.v1.ledger_offset_pb2 import LedgerOffset as G_LedgerOffset
-from ..._gen.com.daml.ledger.api.v1.transaction_filter_pb2 import (
-    Filters as G_Filters,
-    InclusiveFilters as G_InclusiveFilters,
-)
-from ..._gen.com.daml.ledger.api.v1.transaction_pb2 import TransactionTree as G_TransactionTree
-from ..._gen.com.daml.ledger.api.v1.value_pb2 import Identifier as G_Identifier
+from ..._gen.com.daml.ledger.api import v1 as lapipb
+from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import (
     DefTemplate,
     DottedName,
@@ -93,23 +73,25 @@ class Codec:
     def lookup(self) -> SymbolLookup:
         return self._lookup
 
-    async def encode_command(self, cmd: Command) -> G_Command:
+    async def encode_command(self, cmd: Command) -> lapipb.Command:
         if isinstance(cmd, CreateCommand):
-            return G_Command(create=await self.encode_create_command(cmd.template_id, cmd.payload))
+            return lapipb.Command(
+                create=await self.encode_create_command(cmd.template_id, cmd.payload)
+            )
         elif isinstance(cmd, ExerciseCommand):
-            return G_Command(
+            return lapipb.Command(
                 exercise=await self.encode_exercise_command(
                     cmd.contract_id, cmd.choice, cmd.argument
                 )
             )
         elif isinstance(cmd, ExerciseByKeyCommand):
-            return G_Command(
+            return lapipb.Command(
                 exerciseByKey=await self.encode_exercise_by_key_command(
                     cmd.template_id, cmd.choice, cmd.key, cmd.argument
                 )
             )
         elif isinstance(cmd, CreateAndExerciseCommand):
-            return G_Command(
+            return lapipb.Command(
                 createAndExercise=await self.encode_create_and_exercise_command(
                     cmd.template_id, cmd.payload, cmd.choice, cmd.argument
                 )
@@ -119,12 +101,12 @@ class Codec:
 
     async def encode_create_command(
         self, template_id: Union[str, Any], payload: ContractData
-    ) -> G_CreateCommand:
+    ) -> lapipb.CreateCommand:
         item_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)
         )
         _, value = self._encode_context.convert(con(item_type), payload)
-        return G_CreateCommand(
+        return lapipb.CreateCommand(
             template_id=self.encode_identifier(item_type), create_arguments=value
         )
 
@@ -133,10 +115,10 @@ class Codec:
         contract_id: ContractId,
         choice_name: str,
         argument: Optional[Any] = None,
-    ) -> G_ExerciseCommand:
+    ) -> lapipb.ExerciseCommand:
         item_type, _, choice = await self._look_up_choice(contract_id.value_type, choice_name)
 
-        cmd_pb = G_ExerciseCommand(
+        cmd_pb = lapipb.ExerciseCommand(
             template_id=self.encode_identifier(item_type),
             contract_id=contract_id.value,
             choice=choice_name,
@@ -152,14 +134,14 @@ class Codec:
         payload: ContractData,
         choice_name: str,
         argument: Optional[Any] = None,
-    ) -> G_CreateAndExerciseCommand:
+    ) -> lapipb.CreateAndExerciseCommand:
         item_type, _, choice = await self._look_up_choice(template_id, choice_name)
 
         payload_field, payload_pb = await self.encode_value(con(item_type), payload)
         if payload_pb != "record":
             raise ValueError("unexpected non-record type when constructing payload")
         argument_field, argument_pb = await self.encode_value(choice.arg_binder.type, argument)
-        cmd_pb = G_CreateAndExerciseCommand(
+        cmd_pb = lapipb.CreateAndExerciseCommand(
             create_arguments=payload_pb,
             template_id=self.encode_identifier(item_type),
             choice=choice_name,
@@ -174,14 +156,14 @@ class Codec:
         choice_name: str,
         key: Any,
         argument: Optional[ContractData] = None,
-    ) -> G_ExerciseByKeyCommand:
+    ) -> lapipb.ExerciseByKeyCommand:
         item_type, template, choice = await self._look_up_choice(template_id, choice_name)
         if template.key is None:
             raise ValueError(
                 f"cannot encode ExerciseByKeyCommand; template {template_id} does not have a contract key defined"
             )
 
-        cmd_pb = G_ExerciseByKeyCommand(
+        cmd_pb = lapipb.ExerciseByKeyCommand(
             template_id=self.encode_identifier(item_type),
             choice=choice_name,
         )
@@ -192,7 +174,7 @@ class Codec:
 
         return cmd_pb
 
-    async def encode_filters(self, template_ids: Sequence[TypeConName]) -> G_Filters:
+    async def encode_filters(self, template_ids: Sequence[TypeConName]) -> lapipb.Filters:
         # Search for a reference to the "wildcard" template; if any of the requested template_ids
         # is "*", then return results for all templates. We do this first because resolving template
         # IDs otherwise requires do_with_retry, which can be expensive.
@@ -201,7 +183,7 @@ class Codec:
         ):
             # if any of the keys references the "wildcard" template, (or no values were supplied)
             # then this means we need to fetch values for all templates
-            return G_Filters()
+            return lapipb.Filters()
 
         # No wildcard template IDs, so inspect and resolve all template references to concrete
         # template IDs
@@ -211,8 +193,8 @@ class Codec:
                 await self._loader.do_with_retry(lambda: self._lookup.template_names(template_id))
             )
 
-        return G_Filters(
-            inclusive=G_InclusiveFilters(
+        return lapipb.Filters(
+            inclusive=lapipb.InclusiveFilters(
                 template_ids=[self.encode_identifier(i) for i in sorted(requested_types)]
             )
         )
@@ -226,18 +208,22 @@ class Codec:
         )
 
     @staticmethod
-    def encode_identifier(name: TypeConName) -> G_Identifier:
-        return G_Identifier(
+    def encode_identifier(name: TypeConName) -> lapipb.Identifier:
+        return lapipb.Identifier(
             package_id=package_ref(name),
             module_name=str(module_name(name)),
             entity_name=module_local_name(name),
         )
 
     @staticmethod
-    def encode_begin_offset(offset: Optional[str]) -> G_LedgerOffset:
-        return G_LedgerOffset(absolute=offset) if offset is not None else G_LedgerOffset(boundary=0)
+    def encode_begin_offset(offset: Optional[str]) -> lapipb.LedgerOffset:
+        return (
+            lapipb.LedgerOffset(absolute=offset)
+            if offset is not None
+            else lapipb.LedgerOffset(boundary=0)
+        )
 
-    async def decode_created_event(self, event: G_CreatedEvent) -> CreateEvent:
+    async def decode_created_event(self, event: lapipb.CreatedEvent) -> CreateEvent:
         cid = self.decode_contract_id(event)
         cdata = await self.decode_value(con(cid.value_type), event.create_arguments)
         if not isinstance(cdata, _Mapping):
@@ -259,11 +245,11 @@ class Codec:
             key,
         )
 
-    async def decode_archived_event(self, event: G_ArchivedEvent) -> ArchiveEvent:
+    async def decode_archived_event(self, event: lapipb.ArchivedEvent) -> ArchiveEvent:
         cid = self.decode_contract_id(event)
         return ArchiveEvent(cid)
 
-    async def decode_exercise_response(self, tree: G_TransactionTree) -> ExerciseResponse:
+    async def decode_exercise_response(self, tree: lapipb.TransactionTree) -> ExerciseResponse:
         """
         Convert a Protobuf TransactionTree response to an ExerciseResponse. The TransactionTree is
         expected to only contain a single exercise node at the root level.
@@ -309,7 +295,7 @@ class Codec:
         return ExerciseResponse(result, events)
 
     async def _decode_exercised_child_events(
-        self, tree: G_TransactionTree, event_ids: Sequence[str]
+        self, tree: lapipb.TransactionTree, event_ids: Sequence[str]
     ) -> Sequence[Union[CreateEvent, ArchiveEvent]]:
         from ... import LOG
 
@@ -340,13 +326,13 @@ class Codec:
         )
 
     def decode_contract_id(
-        self, event: Union[G_CreatedEvent, G_ExercisedEvent, G_ArchivedEvent]
+        self, event: Union[lapipb.CreatedEvent, lapipb.ExercisedEvent, lapipb.ArchivedEvent]
     ) -> ContractId:
         vt = Codec.decode_identifier(event.template_id)
         return self._decode_context.convert(ContractIdType(con(vt)), event.contract_id)
 
     @staticmethod
-    def decode_identifier(identifier: G_Identifier) -> TypeConName:
+    def decode_identifier(identifier: lapipb.Identifier) -> TypeConName:
         return TypeConName(
             ModuleRef(
                 PackageRef(identifier.package_id), DottedName(identifier.module_name.split("."))
@@ -355,7 +341,7 @@ class Codec:
         )
 
     @staticmethod
-    def decode_party_info(party_details: G_PartyDetails) -> PartyInfo:
+    def decode_party_info(party_details: lapiadminpb.PartyDetails) -> PartyInfo:
         return PartyInfo(
             Party(party_details.party), party_details.display_name, party_details.is_local
         )

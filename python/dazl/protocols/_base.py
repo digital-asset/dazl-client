@@ -12,10 +12,7 @@ import threading
 from typing import TYPE_CHECKING, Optional, Sequence, Union
 
 from .. import LOG
-from .._gen.com.daml.ledger.api.v1.transaction_pb2 import (
-    Transaction as G_Transaction,
-    TransactionTree as G_TransactionTree,
-)
+from .._gen.com.daml.ledger.api import v1 as lapipb
 from ..damlast.lookup import MultiPackageLookup
 from ..prim import Party
 from ..scheduler import Invoker
@@ -114,7 +111,7 @@ class LedgerClient:
         """
         raise NotImplementedError("commands must be implemented")
 
-    async def commands_transaction(self, __1: "CommandPayload") -> G_Transaction:
+    async def commands_transaction(self, __1: "CommandPayload") -> "lapipb.Transaction":
         """
         Submit a command to the ledger and retrieve the resulting transaction.
 
@@ -125,7 +122,7 @@ class LedgerClient:
         """
         raise NotImplementedError("commands_transaction must be implemented")
 
-    async def commands_transaction_tree(self, __1: "CommandPayload") -> G_TransactionTree:
+    async def commands_transaction_tree(self, __1: "CommandPayload") -> "lapipb.TransactionTree":
         """
         Submit a command to the ledger and retrieve the resulting transaction tree.
 

@@ -20,7 +20,7 @@ import warnings
 from toposort import toposort_flatten
 
 from ... import LOG
-from ..._gen.com.daml.daml_lf_1_14.daml_lf_pb2 import ArchivePayload as G_ArchivePayload
+from ..._gen.com.daml.daml_lf_1_14 import daml_lf_pb2 as lfpb
 from ...damlast.daml_lf_1 import (
     Archive,
     DefDataType,
@@ -71,13 +71,13 @@ def parse_archive_payload(raw_bytes: bytes, package_id: "Optional[PackageRef]" =
 
 @dataclass(frozen=True)
 class ArchiveDependencyResult:
-    sorted_archives: "Mapping[PackageRef, G_ArchivePayload]"
-    unresolvable_archives: "Mapping[PackageRef, G_ArchivePayload]"
+    sorted_archives: "Mapping[PackageRef, lfpb.ArchivePayload]"
+    unresolvable_archives: "Mapping[PackageRef, lfpb.ArchivePayload]"
 
 
 # noinspection PyDeprecation
 def find_dependencies(
-    metadatas_pb: "Mapping[PackageRef, G_ArchivePayload]",
+    metadatas_pb: "Mapping[PackageRef, lfpb.ArchivePayload]",
     existing_package_ids: "Collection[PackageRef]",
 ) -> "ArchiveDependencyResult":
     """

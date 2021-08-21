@@ -21,49 +21,8 @@ from grpc import (
 )
 
 from ... import LOG
-from ..._gen.com.daml.ledger.api.v1.active_contracts_service_pb2_grpc import (
-    ActiveContractsServiceStub as G_ActiveContractsServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.admin.package_management_service_pb2 import (
-    UploadDarFileRequest as G_UploadDarFileRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.admin.package_management_service_pb2_grpc import (
-    PackageManagementServiceStub as G_PackageManagementServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.command_service_pb2_grpc import (
-    CommandServiceStub as G_CommandServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.ledger_identity_service_pb2 import (
-    GetLedgerIdentityRequest as G_GetLedgerIdentityRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.ledger_identity_service_pb2_grpc import (
-    LedgerIdentityServiceStub as G_LedgerIdentityServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.package_service_pb2 import (
-    GetPackageRequest as G_GetPackageRequest,
-    ListPackagesRequest as G_ListPackagesRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.package_service_pb2_grpc import (
-    PackageServiceStub as G_PackageServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.testing.time_service_pb2 import (
-    GetTimeRequest as G_GetTimeRequest,
-    SetTimeRequest as G_SetTimeRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.testing.time_service_pb2_grpc import (
-    TimeServiceStub as G_TimeServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.transaction_pb2 import (
-    Transaction as G_Transaction,
-    TransactionTree as G_TransactionTree,
-)
-from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import (
-    GetLedgerEndRequest as G_GetLedgerEndRequest,
-    GetTransactionTreesResponse as G_GetTransactionTreesResponse,
-)
-from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import (
-    TransactionServiceStub as G_TransactionServiceStub,
-)
+from ..._gen.com.daml.ledger.api import v1 as lapipb
+from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb, testing as lapitestingpb
 from ...damlast.daml_lf_1 import PackageRef
 from ...damlast.parse import parse_archive_payload
 from ...ledger.aio.pkgloader_compat import PackageLoader
@@ -121,7 +80,7 @@ class GRPCv1LedgerClient(LedgerClient):
         )
         return None
 
-    async def commands_transaction(self, __1: "CommandPayload") -> G_Transaction:
+    async def commands_transaction(self, __1: "CommandPayload") -> lapipb.Transaction:
         from .pb_ser_command import ProtobufSerializer
 
         serializer = cast(ProtobufSerializer, self.ledger.serializer)
@@ -131,7 +90,7 @@ class GRPCv1LedgerClient(LedgerClient):
         )
         return response.transaction
 
-    async def commands_transaction_tree(self, __1: "CommandPayload") -> G_TransactionTree:
+    async def commands_transaction_tree(self, __1: "CommandPayload") -> lapipb.TransactionTree:
         from .pb_ser_command import ProtobufSerializer
 
         serializer = cast(ProtobufSerializer, self.ledger.serializer)
@@ -201,7 +160,7 @@ class GRPCv1LedgerClient(LedgerClient):
             lambda: self.connection.transaction_service.GetTransactions(request)
         )
 
-        tt_stream = None  # type: Optional[Iterable[G_GetTransactionTreesResponse]]
+        tt_stream = None  # type: Optional[Iterable[lapipb.GetTransactionTreesResponse]]
         if transaction_filter.templates is None:
             # Filtering by package must disable the ability to handle exercise nodes; we may want to
             # consider dropping client-side support for exercise events anyway because they are not
@@ -219,18 +178,18 @@ class GRPCv1LedgerClient(LedgerClient):
         )
 
     async def events_end(self) -> str:
-        request = G_GetLedgerEndRequest(ledger_id=self.ledger.ledger_id)
+        request = lapipb.GetLedgerEndRequest(ledger_id=self.ledger.ledger_id)
         return await self.connection.invoker.run_in_executor(
             lambda: self.connection.transaction_service.GetLedgerEnd(request).offset.absolute
         )
 
 
 def grpc_set_time(connection: "GRPCv1Connection", ledger_id: str, new_datetime: datetime) -> None:
-    get_request = G_GetTimeRequest(ledger_id=ledger_id)
+    get_request = lapitestingpb.GetTimeRequest(ledger_id=ledger_id)
     get_response = connection.time_service.GetTime(get_request)
     ts = next(iter(get_response))
 
-    set_request = G_SetTimeRequest(
+    set_request = lapitestingpb.SetTimeRequest(
         ledger_id=ledger_id,
         current_time=ts.current_time,
         new_time=datetime_to_timestamp(new_datetime),
@@ -240,7 +199,7 @@ def grpc_set_time(connection: "GRPCv1Connection", ledger_id: str, new_datetime: 
 
 
 def grpc_upload_package(connection: "GRPCv1Connection", dar_contents: bytes) -> None:
-    request = G_UploadDarFileRequest(dar_file=dar_contents)
+    request = lapiadminpb.UploadDarFileRequest(dar_file=dar_contents)
     connection.package_management_service.UploadDarFile(request)
 
 
@@ -270,7 +229,7 @@ def grpc_detect_ledger_id(connection: "GRPCv1Connection") -> str:
 
         try:
             response = connection.ledger_identity_service.GetLedgerIdentity(
-                G_GetLedgerIdentityRequest()
+                lapipb.GetLedgerIdentityRequest()
             )
         except RpcError as ex:
             details_str = ex.details()
@@ -346,12 +305,12 @@ class GRPCPackageProvider:
         self.ledger_id = ledger_id
 
     def package_ids(self) -> "AbstractSet[PackageRef]":
-        request = G_ListPackagesRequest(ledger_id=self.ledger_id)
+        request = lapipb.ListPackagesRequest(ledger_id=self.ledger_id)
         response = self.connection.package_service.ListPackages(request)
         return frozenset([PackageRef(p) for p in response.package_ids])
 
     def package_bytes(self, package_id: "PackageRef") -> bytes:
-        request = G_GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
+        request = lapipb.GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
         package_info = self.connection.package_service.GetPackage(request)
         return package_info.archive_payload
 
@@ -495,13 +454,13 @@ class GRPCv1Connection(_LedgerConnection):
         super(GRPCv1Connection, self).__init__(invoker, options, settings, context_path)
         self._closed = Event()
         self._channel = grpc_create_channel(settings)
-        self.active_contract_set_service = G_ActiveContractsServiceStub(self._channel)
-        self.command_service = G_CommandServiceStub(self._channel)
-        self.transaction_service = G_TransactionServiceStub(self._channel)
-        self.package_service = G_PackageServiceStub(self._channel)
-        self.package_management_service = G_PackageManagementServiceStub(self._channel)
-        self.ledger_identity_service = G_LedgerIdentityServiceStub(self._channel)
-        self.time_service = G_TimeServiceStub(self._channel)
+        self.active_contract_set_service = lapipb.ActiveContractsServiceStub(self._channel)
+        self.command_service = lapipb.CommandServiceStub(self._channel)
+        self.transaction_service = lapipb.TransactionServiceStub(self._channel)
+        self.package_service = lapipb.PackageServiceStub(self._channel)
+        self.package_management_service = lapiadminpb.PackageManagementServiceStub(self._channel)
+        self.ledger_identity_service = lapipb.LedgerIdentityServiceStub(self._channel)
+        self.time_service = lapitestingpb.TimeServiceStub(self._channel)
 
     def close(self):
         try:
