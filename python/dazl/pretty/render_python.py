@@ -4,6 +4,7 @@
 
 from io import StringIO
 from typing import Mapping, Optional, Sequence, Union
+import warnings
 
 from .. import LOG
 from ..damlast import daml_types as daml
@@ -20,10 +21,13 @@ from ..damlast.daml_lf_1 import (
     Update,
 )
 from ..damlast.util import def_value, module_name
-from ..model.types import ModuleRef, Type as OldType
-from ..model.types_store import PackageStore
 from ._render_base import PrettyPrintBase, pretty_print_syntax
 from .util import indent, maybe_parentheses
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from ..model.types import ModuleRef, Type as OldType
+    from ..model.types_store import PackageStore
 
 
 def values_by_module(
