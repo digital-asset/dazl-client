@@ -3,7 +3,7 @@
 
 from datetime import date, datetime, timedelta, timezone
 
-from dazl._gen.com.daml.ledger.api.v1 import value_pb2
+from dazl._gen.com.daml.ledger.api import v1 as lapipb
 from dazl.damlast import CachedDarFile, daml_types as daml
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.values import Context, ProtobufDecoder, ProtobufEncoder
@@ -42,7 +42,7 @@ def test_values_protobuf_encode_bool_false(encode_context):
 def test_values_protobuf_encode_enum(encode_context, lookup):
     color_enum_type = daml.con(lookup.data_type_name("*:AllKindsOf:Color"))
     actual = encode_context.convert(color_enum_type, "Red")
-    assert actual == ("enum", value_pb2.Enum(constructor="Red"))
+    assert actual == ("enum", lapipb.Enum(constructor="Red"))
 
 
 def test_values_protobuf_encode_enum_invalid(encode_context, lookup):
@@ -80,7 +80,7 @@ def test_values_protobuf_encode_datetime(encode_context):
 
 
 def test_values_protobuf_decode_date(decode_context):
-    value = value_pb2.Value()
+    value = lapipb.Value()
     value.date = 18262
 
     actual = decode_context.convert(daml.Date, value)
@@ -88,7 +88,7 @@ def test_values_protobuf_decode_date(decode_context):
 
 
 def test_values_protobuf_decode_date_far_in_the_past(decode_context):
-    value = value_pb2.Value()
+    value = lapipb.Value()
     value.date = -1
 
     actual = decode_context.convert(daml.Date, value)
@@ -96,7 +96,7 @@ def test_values_protobuf_decode_date_far_in_the_past(decode_context):
 
 
 def test_values_protobuf_decode_datetime(decode_context):
-    value = value_pb2.Value()
+    value = lapipb.Value()
     value.timestamp = ARBITRARY_DATETIME_TIMESTAMP
 
     actual = decode_context.convert(daml.Time, value)

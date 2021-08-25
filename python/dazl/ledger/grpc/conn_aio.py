@@ -13,48 +13,8 @@ from grpc import ChannelConnectivity
 from grpc.aio import Channel, UnaryStreamCall
 
 from .. import aio
-from ..._gen.com.daml.ledger.api.v1.active_contracts_service_pb2 import (
-    GetActiveContractsRequest as G_GetActiveContractsRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.active_contracts_service_pb2_grpc import (
-    ActiveContractsServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.admin.package_management_service_pb2 import (
-    UploadDarFileRequest as G_UploadDarFileRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.admin.package_management_service_pb2_grpc import (
-    PackageManagementServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.admin.party_management_service_pb2 import (
-    AllocatePartyRequest as G_AllocatePartyRequest,
-    ListKnownPartiesRequest as G_ListKnownPartiesRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.admin.party_management_service_pb2_grpc import (
-    PartyManagementServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.command_service_pb2 import (
-    SubmitAndWaitRequest as G_SubmitAndWaitRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.command_service_pb2_grpc import CommandServiceStub
-from ..._gen.com.daml.ledger.api.v1.commands_pb2 import Command as G_Command, Commands as G_Commands
-from ..._gen.com.daml.ledger.api.v1.ledger_identity_service_pb2 import (
-    GetLedgerIdentityRequest as G_GetLedgerIdentityRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.ledger_identity_service_pb2_grpc import (
-    LedgerIdentityServiceStub,
-)
-from ..._gen.com.daml.ledger.api.v1.package_service_pb2 import (
-    GetPackageRequest as G_GetPackageRequest,
-    ListPackagesRequest as G_ListPackagesRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.package_service_pb2_grpc import PackageServiceStub
-from ..._gen.com.daml.ledger.api.v1.transaction_filter_pb2 import (
-    TransactionFilter as G_TransactionFilter,
-)
-from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2 import (
-    GetTransactionsRequest as G_GetTransactionsRequest,
-)
-from ..._gen.com.daml.ledger.api.v1.transaction_service_pb2_grpc import TransactionServiceStub
+from ..._gen.com.daml.ledger.api import v1 as lapipb
+from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...damlast.util import is_match
 from ...prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party
@@ -117,8 +77,8 @@ class Connection(aio.Connection):
         if not self._config.access.ledger_id:
             # most calls require a ledger ID; if it wasn't supplied as part of our token or we were
             # never given a token in the first place, fetch the ledger ID from the destination
-            stub = LedgerIdentityServiceStub(self._channel)
-            response = await stub.GetLedgerIdentity(G_GetLedgerIdentityRequest())
+            stub = lapipb.LedgerIdentityServiceStub(self._channel)
+            response = await stub.GetLedgerIdentity(lapipb.GetLedgerIdentityRequest())
             if isinstance(self._config.access, PropertyBasedAccessConfig):
                 self._logger.info("Connected to gRPC Ledger API, ledger ID: %s", response.ledger_id)
                 self._config.access.ledger_id = response.ledger_id
@@ -159,11 +119,11 @@ class Connection(aio.Connection):
         elif isinstance(__commands, Command):
             __commands = [__commands]
 
-        stub = CommandServiceStub(self.channel)
+        stub = lapipb.CommandServiceStub(self.channel)
 
         commands_pb = await asyncio.gather(*map(self._codec.encode_command, __commands))
-        request = G_SubmitAndWaitRequest(
-            commands=G_Commands(
+        request = lapipb.SubmitAndWaitRequest(
+            commands=lapipb.Commands(
                 ledger_id=self._config.access.ledger_id,
                 application_id=self._config.access.application_name,
                 command_id=self._command_id(command_id),
@@ -204,13 +164,13 @@ class Connection(aio.Connection):
         :return:
             The :class:`CreateEvent` that represents the contract that was successfully created.
         """
-        stub = CommandServiceStub(self.channel)
+        stub = lapipb.CommandServiceStub(self.channel)
 
         commands = [
-            G_Command(create=await self._codec.encode_create_command(__template_id, __payload))
+            lapipb.Command(create=await self._codec.encode_create_command(__template_id, __payload))
         ]
-        request = G_SubmitAndWaitRequest(
-            commands=G_Commands(
+        request = lapipb.SubmitAndWaitRequest(
+            commands=lapipb.Commands(
                 ledger_id=self._config.access.ledger_id,
                 application_id=self._config.access.application_name,
                 command_id=self._command_id(command_id),
@@ -260,10 +220,10 @@ class Connection(aio.Connection):
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
-        stub = CommandServiceStub(self.channel)
+        stub = lapipb.CommandServiceStub(self.channel)
 
         commands = [
-            G_Command(
+            lapipb.Command(
                 exercise=await self._codec.encode_exercise_command(
                     __contract_id, __choice_name, __argument
                 )
@@ -316,10 +276,10 @@ class Connection(aio.Connection):
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
-        stub = CommandServiceStub(self.channel)
+        stub = lapipb.CommandServiceStub(self.channel)
 
         commands = [
-            G_Command(
+            lapipb.Command(
                 createAndExercise=await self._codec.encode_create_and_exercise_command(
                     __template_id, __payload, __choice_name, __argument
                 )
@@ -371,10 +331,10 @@ class Connection(aio.Connection):
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
-        stub = CommandServiceStub(self.channel)
+        stub = lapipb.CommandServiceStub(self.channel)
 
         commands = [
-            G_Command(
+            lapipb.Command(
                 exerciseByKey=await self._codec.encode_exercise_by_key_command(
                     __template_id, __choice_name, __key, __argument
                 )
@@ -473,12 +433,12 @@ class Connection(aio.Connection):
 
     def _submit_and_wait_request(
         self,
-        commands: Collection[G_Command],
+        commands: Collection[lapipb.Command],
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-    ) -> G_SubmitAndWaitRequest:
-        return G_SubmitAndWaitRequest(
-            commands=G_Commands(
+    ) -> lapipb.SubmitAndWaitRequest:
+        return lapipb.SubmitAndWaitRequest(
+            commands=lapipb.Commands(
                 ledger_id=self._config.access.ledger_id,
                 application_id=self._config.access.application_name,
                 command_id=self._command_id(command_id),
@@ -592,8 +552,8 @@ class Connection(aio.Connection):
         """
         Allocate a new party.
         """
-        stub = PartyManagementServiceStub(self.channel)
-        request = G_AllocatePartyRequest(
+        stub = lapiadminpb.PartyManagementServiceStub(self.channel)
+        request = lapiadminpb.AllocatePartyRequest(
             party_id_hint=Party(identifier_hint) if identifier_hint else None,
             display_name=display_name,
         )
@@ -601,8 +561,8 @@ class Connection(aio.Connection):
         return Codec.decode_party_info(response.party_details)
 
     async def list_known_parties(self) -> Sequence[PartyInfo]:
-        stub = PartyManagementServiceStub(self.channel)
-        request = G_ListKnownPartiesRequest()
+        stub = lapiadminpb.PartyManagementServiceStub(self.channel)
+        request = lapiadminpb.ListKnownPartiesRequest()
         response = await stub.ListKnownParties(request)
         return [Codec.decode_party_info(pd) for pd in response.party_details]
 
@@ -611,22 +571,22 @@ class Connection(aio.Connection):
     # region Package Management calls
 
     async def get_package(self, package_id: PackageRef) -> bytes:
-        stub = PackageServiceStub(self.channel)
-        request = G_GetPackageRequest(
+        stub = lapipb.PackageServiceStub(self.channel)
+        request = lapipb.GetPackageRequest(
             ledger_id=self._config.access.ledger_id, package_id=package_id
         )
         response = await stub.GetPackage(request)
         return response.archive_payload
 
     async def list_package_ids(self) -> AbstractSet[PackageRef]:
-        stub = PackageServiceStub(self.channel)
-        request = G_ListPackagesRequest(ledger_id=self._config.access.ledger_id)
+        stub = lapipb.PackageServiceStub(self.channel)
+        request = lapipb.ListPackagesRequest(ledger_id=self._config.access.ledger_id)
         response = await stub.ListPackages(request)
         return frozenset({PackageRef(pkg_id) for pkg_id in response.package_ids})
 
     async def upload_package(self, contents: bytes) -> None:
-        stub = PackageManagementServiceStub(self.channel)
-        request = G_UploadDarFileRequest(dar_file=contents)
+        stub = lapiadminpb.PackageManagementServiceStub(self.channel)
+        request = lapiadminpb.UploadDarFileRequest(dar_file=contents)
         await stub.UploadDarFile(request)
         return
 
@@ -681,7 +641,7 @@ class QueryStream(aio.QueryStreamBase):
         async with _translate_exceptions(self.conn), self, _allow_cancel(lambda: self._closed):
             filters = await self.conn.codec.encode_filters(self._filters)
             filters_by_party = {party: filters for party in self.conn.config.access.read_as}
-            tx_filter_pb = G_TransactionFilter(filters_by_party=filters_by_party)
+            tx_filter_pb = lapipb.TransactionFilter(filters_by_party=filters_by_party)
 
             offset = None
             if self._offset_range.begin is None:
@@ -725,11 +685,11 @@ class QueryStream(aio.QueryStreamBase):
                 )
 
     async def _acs_events(
-        self, filter_pb: G_TransactionFilter
+        self, filter_pb: lapipb.TransactionFilter
     ) -> AsyncIterable[Union[CreateEvent, Boundary]]:
-        stub = ActiveContractsServiceStub(self.conn.channel)
+        stub = lapipb.ActiveContractsServiceStub(self.conn.channel)
 
-        request = G_GetActiveContractsRequest(
+        request = lapipb.GetActiveContractsRequest(
             ledger_id=self.conn.config.access.ledger_id, filter=filter_pb
         )
         self._response_stream = response_stream = stub.GetActiveContracts(request)
@@ -745,11 +705,11 @@ class QueryStream(aio.QueryStreamBase):
         yield Boundary(offset)
 
     async def _tx_events(
-        self, filter_pb: G_TransactionFilter, begin_offset: Optional[str]
+        self, filter_pb: lapipb.TransactionFilter, begin_offset: Optional[str]
     ) -> AsyncIterable[Union[CreateEvent, ArchiveEvent, Boundary]]:
-        stub = TransactionServiceStub(self.conn.channel)
+        stub = lapipb.TransactionServiceStub(self.conn.channel)
 
-        request = G_GetTransactionsRequest(
+        request = lapipb.GetTransactionsRequest(
             ledger_id=self.conn.config.access.ledger_id,
             filter=filter_pb,
             begin=self.conn.codec.encode_begin_offset(begin_offset),
