@@ -66,7 +66,7 @@ async def main():
     async with dazl.connect('http://localhost:6865', read_as='Alice') as conn:
         async with ACS(conn, {"*": {}}) as acs:
             snapshot = await acs.read()
-            
+
     print(snapshot)
 
 # Python 3.7+
@@ -101,3 +101,8 @@ Tests in dazl are written using [pytest](https://docs.pytest.org/en/latest/). Yo
 ```sh
 make test
 ```
+
+Support
+-------
+
+The dazl library is supported by the Daml community. If you are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).

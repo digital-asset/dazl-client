@@ -1,6 +1,6 @@
 .. Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
    SPDX-License-Identifier: Apache-2.0
-   
+
 dazl: DA client library for Python
 ==================================
 
@@ -51,6 +51,10 @@ Code
 
 Build-time dependencies are handled using `Poetry <https://python-poetry.org/>`_.
 
+Support
+-------
+
+The dazl library is supported by the Daml community. If you are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).
 
 Table of Contents
 -----------------
