@@ -41,6 +41,7 @@ def match_prim_type(
     on_any: "Callable[[], T]",
     on_type_rep: "Callable[[], T]",
     on_gen_map: "Callable[[Type, Type], T]",
+    on_any_exception: "Callable[[], T]",
 ) -> "T":
     if prim_type.prim == PrimType.UNIT:
         return on_unit()
@@ -82,6 +83,8 @@ def match_prim_type(
         return on_type_rep()
     elif prim_type.prim == PrimType.GENMAP:
         return on_gen_map(prim_type.args[0], prim_type.args[1])
+    elif prim_type.prim == PrimType.ANY_EXCEPTION:
+        return on_any_exception()
     else:
         raise ValueError(f"undefined PrimType: {prim_type}")
 
@@ -148,6 +151,7 @@ def _old_type_prim(prim: "Type.Prim") -> "OldType":
         _old_scalar_type_any,
         _old_scalar_type_type_rep,
         _old_genmap_type,
+        lambda *args: UnsupportedType("AnyException"),
     )
 
 
