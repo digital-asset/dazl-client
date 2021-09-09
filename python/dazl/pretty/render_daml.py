@@ -479,6 +479,9 @@ class DamlPrettyPrinter(PrettyPrintBase):
         elif PrimType.ANY == prim_type:
             return "Any"
 
+        elif PrimType.ANY_EXCEPTION == prim_type:
+            return "AnyException"
+
         else:
             raise TypeError(f"A DAML Type primitive is required here (got {prim!r} instead")
 
