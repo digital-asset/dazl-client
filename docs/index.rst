@@ -54,7 +54,7 @@ Build-time dependencies are handled using `Poetry <https://python-poetry.org/>`_
 Support
 -------
 
-The dazl library is supported by the Daml community. If you are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).
+The dazl library is supported by the Daml community. If you are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our `Daml Community Forum <https://discuss.daml.com>`_.
 
 Table of Contents
 -----------------
