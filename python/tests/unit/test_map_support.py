@@ -23,19 +23,18 @@ async def test_map_support(sandbox):
         assert len(client.find_active("*")) == 1
 
 
-@pytest.mark.skip(
-    "Keys with arbitrary types are no longer supported. See the comments in MapSupport.daml."
-)
+@pytest.mark.asyncio
 async def test_complicated_map_support(sandbox):
-    # This test will be re-enabled when GenMap support lands in DAML-LF 1.9
     async with async_network(url=sandbox, dars=MapSupport) as network:
         client = network.aio_new_party()
+
+        network.start()
 
         await client.ready()
         await client.create(
             "MapSupport:ComplicatedSample",
             {
-                "party": "Test",
+                "party": client.party,
                 # Note: Python `dict`s are not hashable, so the only way to write this out
                 # is to create a special dict as a key
                 "keyIsMap": {frozendict(A="b"): "mmm"},

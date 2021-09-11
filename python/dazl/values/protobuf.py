@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+import collections.abc
 from typing import Any, Optional, Type as PyType, TypeVar
 
 from google.protobuf import timestamp_pb2
@@ -10,6 +11,7 @@ from .._gen.com.daml.ledger.api import v1 as lapipb
 from ..damlast.daml_lf_1 import DefDataType, Type
 from ..damlast.util import find_variant_type
 from ..prim import (
+    FrozenDict,
     date_to_int,
     datetime_to_epoch_microseconds,
     decimal_to_str,
@@ -129,7 +131,13 @@ class ProtobufDecoder(ValueMapper):
         for i, entry in enumerate(msg.entries):
             key = context.append_path(f"[key: {i}]").convert(key_type, entry.key)
             value = context.append_path(f"[{key}]").convert(value_type, entry.value)
-            obj[key] = value
+            if isinstance(key, collections.abc.Mapping):
+                # Python dicts cannot be the keys of a dict because they are not hashable;
+                # FrozenDict wraps a dict with a trivial hashing implementation to avoid
+                # problems
+                obj[FrozenDict(key)] = value
+            else:
+                obj[key] = value
 
         return obj
 
