@@ -3,7 +3,7 @@
 # fmt: off
 # isort: skip_file
 
-import typing as _typing
+import builtins as _builtins, typing as _typing
 
 import grpc as _grpc
 from grpc import aio as _grpc_aio
@@ -17,26 +17,17 @@ __all__ = [
 _T = _typing.TypeVar('_T')
 
 
-# noinspection PyAbstractClass
-class _Async(_grpc_aio.UnaryUnaryCall, _typing.Awaitable[_T]):
-    pass
-
-# noinspection PyAbstractClass
-class _AsyncStream(_grpc_aio.UnaryStreamCall, _typing.AsyncIterator[_T]):
-    pass
-
-
 # noinspection PyPep8Naming,DuplicatedCode
 class PackageServiceStub:
     @classmethod
     @_typing.overload
-    def __new__(cls, channel: _grpc.Channel) -> _PackageServiceBlockingStub: ...
+    def __new__(cls, channel: _grpc.Channel) -> _PackageServiceBlockingStub: ...  # type: ignore
     @classmethod
     @_typing.overload
-    def __new__(cls, channel: _grpc_aio.Channel) -> _PackageServiceAsyncStub: ...
-    def ListPackages(self, __1: ListPackagesRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[ListPackagesResponse, _Async[ListPackagesResponse]]: ...
-    def GetPackage(self, __1: GetPackageRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[GetPackageResponse, _Async[GetPackageResponse]]: ...
-    def GetPackageStatus(self, __1: GetPackageStatusRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[GetPackageStatusResponse, _Async[GetPackageStatusResponse]]: ...
+    def __new__(cls, channel: _grpc_aio.Channel) -> _PackageServiceAsyncStub: ...  # type: ignore
+    def ListPackages(self, __1: ListPackagesRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[ListPackagesResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, ListPackagesResponse]]: ...
+    def GetPackage(self, __1: GetPackageRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[GetPackageResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, GetPackageResponse]]: ...
+    def GetPackageStatus(self, __1: GetPackageStatusRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[GetPackageStatusResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, GetPackageStatusResponse]]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _PackageServiceBlockingStub(PackageServiceStub):
@@ -46,6 +37,6 @@ class _PackageServiceBlockingStub(PackageServiceStub):
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _PackageServiceAsyncStub(PackageServiceStub):
-    def ListPackages(self, __1: ListPackagesRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _Async[ListPackagesResponse]: ...
-    def GetPackage(self, __1: GetPackageRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _Async[GetPackageResponse]: ...
-    def GetPackageStatus(self, __1: GetPackageStatusRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _Async[GetPackageStatusResponse]: ...
+    def ListPackages(self, __1: ListPackagesRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, ListPackagesResponse]: ...
+    def GetPackage(self, __1: GetPackageRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, GetPackageResponse]: ...
+    def GetPackageStatus(self, __1: GetPackageStatusRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, GetPackageStatusResponse]: ...

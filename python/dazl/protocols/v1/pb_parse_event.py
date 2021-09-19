@@ -239,18 +239,14 @@ def serialize_transactions_request(
     f: "TransactionFilter", ledger_id: str, party: Party
 ) -> "lapipb.GetTransactionsRequest":
     if f.current_offset is not None:
-        ledger_offset = lapipb.LedgerOffset()
-        ledger_offset.absolute = f.current_offset
+        ledger_offset = lapipb.LedgerOffset(absolute=f.current_offset)
     else:
-        ledger_offset = lapipb.LedgerOffset()
-        ledger_offset.boundary = 0
+        ledger_offset = lapipb.LedgerOffset(boundary=0)
 
     if f.destination_offset is not None:
-        final_offset = lapipb.LedgerOffset()
-        final_offset.absolute = f.destination_offset
+        final_offset = lapipb.LedgerOffset(absolute=f.destination_offset)
     else:
-        final_offset = lapipb.LedgerOffset()
-        final_offset.boundary = 1
+        final_offset = lapipb.LedgerOffset(boundary=1)
 
     return lapipb.GetTransactionsRequest(
         ledger_id=ledger_id,
@@ -432,11 +428,12 @@ def to_event(
     context: "Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]",
     evt_pb: "Union[lapipb.Event, lapipb.TreeEvent]",
 ) -> "Optional[OffsetEvent]":
+    # TODO: mypy should understand that
     try:
-        event_type = evt_pb.WhichOneof("event")
+        event_type = evt_pb.WhichOneof("event")  # type: ignore
     except ValueError:
         try:
-            event_type = evt_pb.WhichOneof("kind")
+            event_type = evt_pb.WhichOneof("kind")  # type: ignore
         except ValueError:
             LOG.error("Deserialization error into an event of %r", evt_pb)
             raise

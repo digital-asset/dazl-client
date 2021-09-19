@@ -4,5 +4,4 @@
 # isort: skip_file
 
 
-__all__ = [
-]
+__all__ = []  # type: ignore

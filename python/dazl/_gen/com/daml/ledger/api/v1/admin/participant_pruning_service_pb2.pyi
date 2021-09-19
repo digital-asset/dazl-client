@@ -3,9 +3,14 @@
 # fmt: off
 # isort: skip_file
 
-import typing as _typing
+import builtins as _builtins, sys, typing as _typing
 
 from google.protobuf.message import Message as _Message
+
+if sys.version_info >= (3, 8):
+    from typing import Literal as _L
+else:
+    from typing_extensions import Literal as _L
 
 __all__ = [
     "PruneRequest",
@@ -14,11 +19,11 @@ __all__ = [
 
 
 class PruneRequest(_Message):
-    prune_up_to: str
-    submission_id: str
-    def __init__(self, *, prune_up_to: _typing.Optional[str] = ..., submission_id: _typing.Optional[str] = ...): ...
-    def HasField(self, field_name: _typing.Literal["prune_up_to", "submission_id"]) -> bool: ...
-    def ClearField(self, field_name: _typing.Literal["prune_up_to", "submission_id"]) -> None: ...
+    prune_up_to: _builtins.str
+    submission_id: _builtins.str
+    def __init__(self, *, prune_up_to: _typing.Optional[_builtins.str] = ..., submission_id: _typing.Optional[_builtins.str] = ...): ...
+    def HasField(self, field_name: _L["prune_up_to", "submission_id"]) -> _builtins.bool: ...
+    def ClearField(self, field_name: _L["prune_up_to", "submission_id"]) -> None: ...
     def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
 
 class PruneResponse(_Message):
