@@ -3,7 +3,7 @@
 # fmt: off
 # isort: skip_file
 
-import typing as _typing
+import builtins as _builtins, typing as _typing
 
 import grpc as _grpc
 from grpc import aio as _grpc_aio
@@ -17,25 +17,16 @@ __all__ = [
 _T = _typing.TypeVar('_T')
 
 
-# noinspection PyAbstractClass
-class _Async(_grpc_aio.UnaryUnaryCall, _typing.Awaitable[_T]):
-    pass
-
-# noinspection PyAbstractClass
-class _AsyncStream(_grpc_aio.UnaryStreamCall, _typing.AsyncIterator[_T]):
-    pass
-
-
 # noinspection PyPep8Naming,DuplicatedCode
 class ConfigManagementServiceStub:
     @classmethod
     @_typing.overload
-    def __new__(cls, channel: _grpc.Channel) -> _ConfigManagementServiceBlockingStub: ...
+    def __new__(cls, channel: _grpc.Channel) -> _ConfigManagementServiceBlockingStub: ...  # type: ignore
     @classmethod
     @_typing.overload
-    def __new__(cls, channel: _grpc_aio.Channel) -> _ConfigManagementServiceAsyncStub: ...
-    def GetTimeModel(self, __1: GetTimeModelRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[GetTimeModelResponse, _Async[GetTimeModelResponse]]: ...
-    def SetTimeModel(self, __1: SetTimeModelRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[SetTimeModelResponse, _Async[SetTimeModelResponse]]: ...
+    def __new__(cls, channel: _grpc_aio.Channel) -> _ConfigManagementServiceAsyncStub: ...  # type: ignore
+    def GetTimeModel(self, __1: GetTimeModelRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[GetTimeModelResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, GetTimeModelResponse]]: ...
+    def SetTimeModel(self, __1: SetTimeModelRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[SetTimeModelResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, SetTimeModelResponse]]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _ConfigManagementServiceBlockingStub(ConfigManagementServiceStub):
@@ -44,5 +35,5 @@ class _ConfigManagementServiceBlockingStub(ConfigManagementServiceStub):
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _ConfigManagementServiceAsyncStub(ConfigManagementServiceStub):
-    def GetTimeModel(self, __1: GetTimeModelRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _Async[GetTimeModelResponse]: ...
-    def SetTimeModel(self, __1: SetTimeModelRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _Async[SetTimeModelResponse]: ...
+    def GetTimeModel(self, __1: GetTimeModelRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, GetTimeModelResponse]: ...
+    def SetTimeModel(self, __1: SetTimeModelRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, SetTimeModelResponse]: ...
