@@ -5,7 +5,13 @@ import keyword
 import re
 from typing import Collection, List, Optional, Tuple
 
-__all__ = ["as_interned_field", "strip_interning"]
+__all__ = [
+    "as_interned_field",
+    "strip_interning",
+    "pyize_name",
+    "goize_name_public",
+    "goize_name_private",
+]
 
 
 SNAKE_CASE_RE = re.compile(r"(?<!^)(?=[A-Z])")
@@ -64,6 +70,24 @@ def strip_interning(field_name: str, field_type: str) -> "Tuple[str, str]":
     return field_name, field_type
 
 
+def goize_name_public(name: str) -> str:
+    return "".join(word.capitalize() for word in name.split("_"))
+
+
+def goize_name_private(name: str) -> str:
+    s1 = "".join(word.capitalize() for word in name.split("_"))
+    s2 = s1[0].lower() + s1[1:]
+    if s2 == "package":
+        return "pkg"
+    elif s2 == "type":
+        return "typ"
+    elif s2 == "func":
+        return "fn"
+    if s2 in ("var", "struct", "range", "func", "nil", "case", "default"):
+        return s2 + "_"
+    return s2.replace(".", "_")
+
+
 def pyize_name(name: str) -> str:
     """
     Convert a name to one that is more Pythonic.
@@ -76,6 +100,77 @@ def pyize_name(name: str) -> str:
         return name + "_"
 
     return SNAKE_CASE_RE.sub("_", name).lower().replace("_non_consuming_", "_nonconsuming_")
+
+
+def classification(name: str) -> str:
+    """
+    Return the classification for a message of the specified name (see the comments on
+    :class:`MessageMeta`)
+    """
+    if name == "Archive":
+        return "lf"
+    if (
+        name
+        in (
+            "Package",
+            "PackageRef",
+            "DottedName",
+            "ModuleRef",
+            "TypeConName",
+            "TypeSynName",
+            "ValName",
+            "DefTemplate",
+            "TemplateChoice",
+            "DefException",
+            "DefDataType",
+            "DefTypeSyn",
+            "DefValue",
+            "FeatureFlags",
+            "Module",
+            "PackageMetadata",
+        )
+        or name.startswith("DefTemplate")
+        or name.startswith("DefDataType")
+        or name.startswith("DefValue.")
+    ):
+        return "lfpkg"
+    elif (
+        name
+        in (
+            "Expr",
+            "Update",
+            "Scenario",
+            "BuiltinFunction",
+            "FieldWithExpr",
+            "Binding",
+            "PrimLit",
+            "Case",
+            "CaseAlt",
+            "Block",
+            "Pure",
+            "KeyExpr",
+            "PrimCon",
+        )
+        or name.startswith("Expr.")
+        or name.startswith("Case")
+        or name.startswith("CaseAlt.")
+        or name.startswith("Update.")
+        or name.startswith("Scenario.")
+        or name.startswith("KeyExpr.")
+    ):
+        return "lfexpr"
+    elif (
+        name in ("Type", "PrimType", "FieldWithType", "VarWithType", "TypeVarWithKind", "Kind")
+        or name.startswith("Type.")
+        or name.startswith("Kind.")
+    ):
+        return "lftype"
+    elif name in ("Location", "Location.Range"):
+        return "lfloc"
+    elif name == "Unit":
+        return "builtin"
+    else:
+        raise ValueError(f"unknown classification for symbol: {name}")
 
 
 def without_prefix(value: str, prefix: str) -> "Optional[str]":

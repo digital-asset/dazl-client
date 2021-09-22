@@ -131,6 +131,9 @@ $(py_src_gen): $(py_src_gen_root)/%: .cache/witnesses/python
 	@mkdir -p $(@D)
 	$(protoc) --dazl-python_out="$(py_src_gen_root)" -I$(proto_dir) $(proto_src_pb)
 
+go/pkg/damlast/daml_lf_1.go:
+	.venv/bin/protoc --dazl-go-archive_out="$(@D)" -I$(proto_dir) .cache/protos/com/daml/daml_lf_1_14/daml_lf_1.proto
+
 python/dazl/damlast/daml_lf_1.py:
 	.venv/bin/protoc --dazl-python-archive_out="$(@D)" -I$(proto_dir) .cache/protos/com/daml/daml_lf_1_14/daml_lf_1.proto
 

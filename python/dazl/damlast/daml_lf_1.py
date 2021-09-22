@@ -1,5 +1,5 @@
-from enum import IntEnum as _IntEnum
 import builtins as _builtins
+from enum import IntEnum as _IntEnum
 import sys
 
 
@@ -250,16 +250,10 @@ class ModuleRef:
         return hash((self.package_ref, self.module_name))
 
     def __eq__(self, __other):
-        return (
-            self.package_ref == __other.package_ref
-            and self.module_name == __other.module_name
-        )
+        return self.package_ref == __other.package_ref and self.module_name == __other.module_name
 
     def __ne__(self, __other):
-        return (
-            self.package_ref != __other.package_ref
-            or self.module_name != __other.module_name
-        )
+        return self.package_ref != __other.package_ref or self.module_name != __other.module_name
 
     def __lt__(self, __other):
         return (self.package_ref, self.module_name) < (
@@ -1106,9 +1100,7 @@ class PrimLit:
         elif len(Sum) > 1:
             raise ValueError("cannot specify at the same time")
 
-    def Sum_match(
-        self, int64, decimal, numeric, text, timestamp, party, date, rounding_mode
-    ):
+    def Sum_match(self, int64, decimal, numeric, text, timestamp, party, date, rounding_mode):
         if self.Sum[0] == "int64":
             return int64(self.Sum[1])
         elif self.Sum[0] == "decimal":
@@ -2635,14 +2627,10 @@ class CaseAlt:
             return hash((self.var_head, self.var_tail))
 
         def __eq__(self, __other):
-            return (
-                self.var_head == __other.var_head and self.var_tail == __other.var_tail
-            )
+            return self.var_head == __other.var_head and self.var_tail == __other.var_tail
 
         def __ne__(self, __other):
-            return (
-                self.var_head != __other.var_head or self.var_tail != __other.var_tail
-            )
+            return self.var_head != __other.var_head or self.var_tail != __other.var_tail
 
         def __lt__(self, __other):
             return (self.var_head, self.var_tail) < (__other.var_head, __other.var_tail)
@@ -2749,9 +2737,7 @@ class CaseAlt:
         elif len(Sum) > 1:
             raise ValueError("cannot specify at the same time")
 
-    def Sum_match(
-        self, default, variant, prim_con, nil, cons, optional_none, optional_some, enum
-    ):
+    def Sum_match(self, default, variant, prim_con, nil, cons, optional_none, optional_some, enum):
         if self.Sum[0] == "default":
             return default(self.Sum[1])
         elif self.Sum[0] == "variant":
@@ -3204,9 +3190,7 @@ class Update:
             return (self.template, self.key) >= (__other.template, __other.key)
 
         def __repr__(self):
-            return (
-                f"Update.RetrieveByKey(template={self.template!r}, key={self.key!r}, )"
-            )
+            return f"Update.RetrieveByKey(template={self.template!r}, key={self.key!r}, )"
 
     # noinspection PyShadowingBuiltins,SpellCheckingInspection
     class TryCatch:
@@ -3554,9 +3538,7 @@ class Scenario:
         elif len(Sum) > 1:
             raise ValueError("cannot specify at the same time")
 
-    def Sum_match(
-        self, pure, block, commit, must_fail_at, pass_, get_time, get_party, embed_expr
-    ):
+    def Sum_match(self, pure, block, commit, must_fail_at, pass_, get_time, get_party, embed_expr):
         if self.Sum[0] == "pure":
             return pure(self.Sum[1])
         elif self.Sum[0] == "block":
@@ -4463,9 +4445,7 @@ class DefDataType:
         raise AttributeError
 
     def __hash__(self):
-        return hash(
-            (self.name, self.params, self.data_cons, self.serializable, self.location)
-        )
+        return hash((self.name, self.params, self.data_cons, self.serializable, self.location))
 
     def __eq__(self, __other):
         return (
@@ -4486,13 +4466,7 @@ class DefDataType:
         )
 
     def __lt__(self, __other):
-        return (
-            self.name,
-            self.params,
-            self.data_cons,
-            self.serializable,
-            self.location,
-        ) < (
+        return (self.name, self.params, self.data_cons, self.serializable, self.location,) < (
             __other.name,
             __other.params,
             __other.data_cons,
@@ -4501,13 +4475,7 @@ class DefDataType:
         )
 
     def __le__(self, __other):
-        return (
-            self.name,
-            self.params,
-            self.data_cons,
-            self.serializable,
-            self.location,
-        ) <= (
+        return (self.name, self.params, self.data_cons, self.serializable, self.location,) <= (
             __other.name,
             __other.params,
             __other.data_cons,
@@ -4516,13 +4484,7 @@ class DefDataType:
         )
 
     def __gt__(self, __other):
-        return (
-            self.name,
-            self.params,
-            self.data_cons,
-            self.serializable,
-            self.location,
-        ) > (
+        return (self.name, self.params, self.data_cons, self.serializable, self.location,) > (
             __other.name,
             __other.params,
             __other.data_cons,
@@ -4531,13 +4493,7 @@ class DefDataType:
         )
 
     def __ge__(self, __other):
-        return (
-            self.name,
-            self.params,
-            self.data_cons,
-            self.serializable,
-            self.location,
-        ) >= (
+        return (self.name, self.params, self.data_cons, self.serializable, self.location,) >= (
             __other.name,
             __other.params,
             __other.data_cons,
@@ -4897,9 +4853,7 @@ class Module:
         "exceptions",
     )
 
-    def __init__(
-        self, name, flags, synonyms, data_types, values, templates, exceptions
-    ):
+    def __init__(self, name, flags, synonyms, data_types, values, templates, exceptions):
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "flags", flags)
         object.__setattr__(self, "synonyms", _builtins.tuple(synonyms))
