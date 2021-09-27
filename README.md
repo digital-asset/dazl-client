@@ -43,7 +43,7 @@ import asyncio
 import dazl
 
 async def main():
-    async with dazl.connect('http://localhost:6865', act_as='Alice') as client:
+    async with dazl.connect(url='http://localhost:6865', act_as='Alice') as client:
         contract = { 'issuer' : 'Alice', 'owner' : 'Alice', 'name' : 'hello world!' }
         await client.create('Main:Asset', contract)
 
@@ -63,7 +63,7 @@ import dazl
 from dazl.ledgerutil import ACS
 
 async def main():
-    async with dazl.connect('http://localhost:6865', read_as='Alice') as conn:
+    async with dazl.connect(url='http://localhost:6865', read_as='Alice') as conn:
         async with ACS(conn, {"*": {}}) as acs:
             snapshot = await acs.read()
 
