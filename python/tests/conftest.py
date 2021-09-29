@@ -2,17 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from concurrent.futures.thread import ThreadPoolExecutor
-from datetime import timedelta
-import logging
-import os
-import subprocess
 from typing import Generator
 
-from dazl.util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
+from dazl import testing
 import pytest
 
 DEFAULT_SDK_VERSION = "1.16.0"
-SANDBOX_START_TIMEOUT = timedelta(seconds=10)
 
 
 @pytest.fixture(scope="session")
@@ -32,39 +27,8 @@ def sandbox() -> "Generator[str, None, None]":
          DAML_SDK_VERSION=1.0.0 make test
          ```
     """
-    url = os.environ.get("DAZL_TEST_DAML_LEDGER_URL")
-    if url:
-        logging.info("Using the sandbox at %s because `DAZL_TEST_DAML_LEDGER_URL` is defined", url)
-        yield url
-        return
-
-    port = find_free_port()
-
-    env = os.environ.copy()
-    # Running dazl's tests against a different Sandbox merely requires the DAML_SDK_VERSION
-    # variable be set to a different value
-    if "DAML_SDK_VERSION" not in env:
-        env["DAML_SDK_VERSION"] = DEFAULT_SDK_VERSION
-
-    process = subprocess.Popen(
-        ["daml", "sandbox", "--port", str(port)],
-        env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
-    )
-    try:
-        ProcessLogger(process, logging.getLogger("sandbox")).start()
-        wait_for_process_port(process, port, SANDBOX_START_TIMEOUT)
-
-        yield f"http://localhost:{port}"
-
-    finally:
-        # Clean up the process that we started. Note that some versions of the SDK have issues that
-        # leave dangling child processes running even after the parent process is killed, so make
-        # sure that we find and destroy them too if the parent process doesn't kill its own children
-        # quickly enough.
-        kill_process_tree(process)
+    with testing.sandbox(project_root=None) as sb:
+        yield sb.url
 
 
 @pytest.fixture()
