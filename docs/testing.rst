@@ -41,26 +41,19 @@ globals:
 
     @pytest.fixture(scope="session")
     def sandbox():
-        port = dazl.util.find_free_port()
-
-        sandbox_proc = subprocess.Popen(
-            ["daml", "start", "--start-navigator=no", "--open-browser=no", f"--sandbox-port={port}"],
-            cwd=daml_project_root)
-        try:
-            yield "http://localhost:{port}"
-        finally:
-            sandbox_proc.terminate()
+        with dazl.testing.sandbox(project_root=daml_project_root) as sandbox_proc:
+            return sandbox_proc
 
 
     def test_something(sandbox):
         network = dazl.Network()
-        network.set_config(url=sandbox_url)
+        network.set_config(url=sandbox.url)
         network.start_in_background()
         try:
             client = self.network.simple_new_party()
             client.ready()
 
-            client.submit_create('Main:PostmanRole', {'postman': client.party})
+            client.create('Main:PostmanRole', {'postman': client.party})
             assert len(client.find_active('Main:PostmanRole') == 1
 
         finally:

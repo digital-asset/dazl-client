@@ -19,6 +19,7 @@ Subpackages
     dazl.model
     dazl.pretty
     dazl.protocols
+    dazl.testing
     dazl.util
 
 Module contents
