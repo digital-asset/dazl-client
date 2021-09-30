@@ -72,7 +72,7 @@ version = "0.6"
 
 [[package]]
 category = "main"
-description = "high-level Ledger API client for DAML ledgers"
+description = "high-level Ledger API client for Daml ledgers"
 name = "dazl"
 optional = false
 python-versions = ">=3.6"
