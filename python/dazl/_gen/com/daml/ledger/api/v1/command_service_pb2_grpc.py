@@ -13,6 +13,9 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 class CommandServiceStub(object):
     """Command Service is able to correlate submitted commands with completion data, identify timeouts, and return contextual
     information with each tracking result. This supports the implementation of stateless clients.
+
+    Note that submitted commands generally produce completion events as well, even in case a command gets rejected.
+    For example, the participant MAY choose to produce a completion event for a rejection of a duplicate command.
     """
 
     def __init__(self, channel):
@@ -46,6 +49,9 @@ class CommandServiceStub(object):
 class CommandServiceServicer(object):
     """Command Service is able to correlate submitted commands with completion data, identify timeouts, and return contextual
     information with each tracking result. This supports the implementation of stateless clients.
+
+    Note that submitted commands generally produce completion events as well, even in case a command gets rejected.
+    For example, the participant MAY choose to produce a completion event for a rejection of a duplicate command.
     """
 
     def SubmitAndWait(self, request, context):
@@ -145,6 +151,9 @@ def add_CommandServiceServicer_to_server(servicer, server):
 class CommandService(object):
     """Command Service is able to correlate submitted commands with completion data, identify timeouts, and return contextual
     information with each tracking result. This supports the implementation of stateless clients.
+
+    Note that submitted commands generally produce completion events as well, even in case a command gets rejected.
+    For example, the participant MAY choose to produce a completion event for a rejection of a duplicate command.
     """
 
     @staticmethod

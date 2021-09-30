@@ -18,7 +18,6 @@ _sym_db = _symbol_database.Default()
 from . import ledger_offset_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_ledger__offset__pb2
 from . import transaction_filter_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__filter__pb2
 from . import transaction_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__pb2
-from . import trace_context_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -27,9 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\034TransactionServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n0com/daml/ledger/api/v1/transaction_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a*com/daml/ledger/api/v1/ledger_offset.proto\x1a/com/daml/ledger/api/v1/transaction_filter.proto\x1a(com/daml/ledger/api/v1/transaction.proto\x1a*com/daml/ledger/api/v1/trace_context.proto\"\xd2\x02\n\x16GetTransactionsRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12:\n\x05\x62\x65gin\x18\x02 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffsetR\x05\x62\x65gin\x12\x36\n\x03\x65nd\x18\x03 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffsetR\x03\x65nd\x12\x41\n\x06\x66ilter\x18\x04 \x01(\x0b\x32).com.daml.ledger.api.v1.TransactionFilterR\x06\x66ilter\x12\x18\n\x07verbose\x18\x05 \x01(\x08R\x07verbose\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"b\n\x17GetTransactionsResponse\x12G\n\x0ctransactions\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.TransactionR\x0ctransactions\"j\n\x1bGetTransactionTreesResponse\x12K\n\x0ctransactions\x18\x01 \x03(\x0b\x32\'.com.daml.ledger.api.v1.TransactionTreeR\x0ctransactions\"\xd3\x01\n\x1eGetTransactionByEventIdRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12\x19\n\x08\x65vent_id\x18\x02 \x01(\tR\x07\x65ventId\x12-\n\x12requesting_parties\x18\x03 \x03(\tR\x11requestingParties\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"\xda\x01\n\x19GetTransactionByIdRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12%\n\x0etransaction_id\x18\x02 \x01(\tR\rtransactionId\x12-\n\x12requesting_parties\x18\x03 \x03(\tR\x11requestingParties\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"c\n\x16GetTransactionResponse\x12I\n\x0btransaction\x18\x01 \x01(\x0b\x32\'.com.daml.ledger.api.v1.TransactionTreeR\x0btransaction\"c\n\x1aGetFlatTransactionResponse\x12\x45\n\x0btransaction\x18\x01 \x01(\x0b\x32#.com.daml.ledger.api.v1.TransactionR\x0btransaction\"~\n\x13GetLedgerEndRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"T\n\x14GetLedgerEndResponse\x12<\n\x06offset\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffsetR\x06offset2\xfd\x06\n\x12TransactionService\x12t\n\x0fGetTransactions\x12..com.daml.ledger.api.v1.GetTransactionsRequest\x1a/.com.daml.ledger.api.v1.GetTransactionsResponse0\x01\x12|\n\x13GetTransactionTrees\x12..com.daml.ledger.api.v1.GetTransactionsRequest\x1a\x33.com.daml.ledger.api.v1.GetTransactionTreesResponse0\x01\x12\x81\x01\n\x17GetTransactionByEventId\x12\x36.com.daml.ledger.api.v1.GetTransactionByEventIdRequest\x1a..com.daml.ledger.api.v1.GetTransactionResponse\x12w\n\x12GetTransactionById\x12\x31.com.daml.ledger.api.v1.GetTransactionByIdRequest\x1a..com.daml.ledger.api.v1.GetTransactionResponse\x12\x89\x01\n\x1bGetFlatTransactionByEventId\x12\x36.com.daml.ledger.api.v1.GetTransactionByEventIdRequest\x1a\x32.com.daml.ledger.api.v1.GetFlatTransactionResponse\x12\x7f\n\x16GetFlatTransactionById\x12\x31.com.daml.ledger.api.v1.GetTransactionByIdRequest\x1a\x32.com.daml.ledger.api.v1.GetFlatTransactionResponse\x12i\n\x0cGetLedgerEnd\x12+.com.daml.ledger.api.v1.GetLedgerEndRequest\x1a,.com.daml.ledger.api.v1.GetLedgerEndResponseB\xa0\x01\n\x16\x63om.daml.ledger.api.v1B\x1cTransactionServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n0com/daml/ledger/api/v1/transaction_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a*com/daml/ledger/api/v1/ledger_offset.proto\x1a/com/daml/ledger/api/v1/transaction_filter.proto\x1a(com/daml/ledger/api/v1/transaction.proto\"\x86\x02\n\x16GetTransactionsRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12:\n\x05\x62\x65gin\x18\x02 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffsetR\x05\x62\x65gin\x12\x36\n\x03\x65nd\x18\x03 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffsetR\x03\x65nd\x12\x41\n\x06\x66ilter\x18\x04 \x01(\x0b\x32).com.daml.ledger.api.v1.TransactionFilterR\x06\x66ilter\x12\x18\n\x07verbose\x18\x05 \x01(\x08R\x07verbose\"b\n\x17GetTransactionsResponse\x12G\n\x0ctransactions\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.TransactionR\x0ctransactions\"j\n\x1bGetTransactionTreesResponse\x12K\n\x0ctransactions\x18\x01 \x03(\x0b\x32\'.com.daml.ledger.api.v1.TransactionTreeR\x0ctransactions\"\x87\x01\n\x1eGetTransactionByEventIdRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12\x19\n\x08\x65vent_id\x18\x02 \x01(\tR\x07\x65ventId\x12-\n\x12requesting_parties\x18\x03 \x03(\tR\x11requestingParties\"\x8e\x01\n\x19GetTransactionByIdRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12%\n\x0etransaction_id\x18\x02 \x01(\tR\rtransactionId\x12-\n\x12requesting_parties\x18\x03 \x03(\tR\x11requestingParties\"c\n\x16GetTransactionResponse\x12I\n\x0btransaction\x18\x01 \x01(\x0b\x32\'.com.daml.ledger.api.v1.TransactionTreeR\x0btransaction\"c\n\x1aGetFlatTransactionResponse\x12\x45\n\x0btransaction\x18\x01 \x01(\x0b\x32#.com.daml.ledger.api.v1.TransactionR\x0btransaction\"2\n\x13GetLedgerEndRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\"T\n\x14GetLedgerEndResponse\x12<\n\x06offset\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v1.LedgerOffsetR\x06offset2\xfd\x06\n\x12TransactionService\x12t\n\x0fGetTransactions\x12..com.daml.ledger.api.v1.GetTransactionsRequest\x1a/.com.daml.ledger.api.v1.GetTransactionsResponse0\x01\x12|\n\x13GetTransactionTrees\x12..com.daml.ledger.api.v1.GetTransactionsRequest\x1a\x33.com.daml.ledger.api.v1.GetTransactionTreesResponse0\x01\x12\x81\x01\n\x17GetTransactionByEventId\x12\x36.com.daml.ledger.api.v1.GetTransactionByEventIdRequest\x1a..com.daml.ledger.api.v1.GetTransactionResponse\x12w\n\x12GetTransactionById\x12\x31.com.daml.ledger.api.v1.GetTransactionByIdRequest\x1a..com.daml.ledger.api.v1.GetTransactionResponse\x12\x89\x01\n\x1bGetFlatTransactionByEventId\x12\x36.com.daml.ledger.api.v1.GetTransactionByEventIdRequest\x1a\x32.com.daml.ledger.api.v1.GetFlatTransactionResponse\x12\x7f\n\x16GetFlatTransactionById\x12\x31.com.daml.ledger.api.v1.GetTransactionByIdRequest\x1a\x32.com.daml.ledger.api.v1.GetFlatTransactionResponse\x12i\n\x0cGetLedgerEnd\x12+.com.daml.ledger.api.v1.GetLedgerEndRequest\x1a,.com.daml.ledger.api.v1.GetLedgerEndResponseB\xa0\x01\n\x16\x63om.daml.ledger.api.v1B\x1cTransactionServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
-  dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_ledger__offset__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__filter__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,])
+  dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_ledger__offset__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__filter__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__pb2.DESCRIPTOR,])
 
 
 
@@ -77,13 +76,6 @@ _GETTRANSACTIONSREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='verbose', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.GetTransactionsRequest.trace_context', index=5,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -96,8 +88,8 @@ _GETTRANSACTIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=256,
-  serialized_end=594,
+  serialized_start=212,
+  serialized_end=474,
 )
 
 
@@ -128,8 +120,8 @@ _GETTRANSACTIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=596,
-  serialized_end=694,
+  serialized_start=476,
+  serialized_end=574,
 )
 
 
@@ -160,8 +152,8 @@ _GETTRANSACTIONTREESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=696,
-  serialized_end=802,
+  serialized_start=576,
+  serialized_end=682,
 )
 
 
@@ -194,13 +186,6 @@ _GETTRANSACTIONBYEVENTIDREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='requestingParties', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.GetTransactionByEventIdRequest.trace_context', index=3,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -213,8 +198,8 @@ _GETTRANSACTIONBYEVENTIDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=805,
-  serialized_end=1016,
+  serialized_start=685,
+  serialized_end=820,
 )
 
 
@@ -247,13 +232,6 @@ _GETTRANSACTIONBYIDREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='requestingParties', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.GetTransactionByIdRequest.trace_context', index=3,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -266,8 +244,8 @@ _GETTRANSACTIONBYIDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1019,
-  serialized_end=1237,
+  serialized_start=823,
+  serialized_end=965,
 )
 
 
@@ -298,8 +276,8 @@ _GETTRANSACTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1239,
-  serialized_end=1338,
+  serialized_start=967,
+  serialized_end=1066,
 )
 
 
@@ -330,8 +308,8 @@ _GETFLATTRANSACTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1340,
-  serialized_end=1439,
+  serialized_start=1068,
+  serialized_end=1167,
 )
 
 
@@ -350,13 +328,6 @@ _GETLEDGERENDREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.GetLedgerEndRequest.trace_context', index=1,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -369,8 +340,8 @@ _GETLEDGERENDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1441,
-  serialized_end=1567,
+  serialized_start=1169,
+  serialized_end=1219,
 )
 
 
@@ -401,21 +372,17 @@ _GETLEDGERENDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1569,
-  serialized_end=1653,
+  serialized_start=1221,
+  serialized_end=1305,
 )
 
 _GETTRANSACTIONSREQUEST.fields_by_name['begin'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_ledger__offset__pb2._LEDGEROFFSET
 _GETTRANSACTIONSREQUEST.fields_by_name['end'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_ledger__offset__pb2._LEDGEROFFSET
 _GETTRANSACTIONSREQUEST.fields_by_name['filter'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__filter__pb2._TRANSACTIONFILTER
-_GETTRANSACTIONSREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
 _GETTRANSACTIONSRESPONSE.fields_by_name['transactions'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__pb2._TRANSACTION
 _GETTRANSACTIONTREESRESPONSE.fields_by_name['transactions'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__pb2._TRANSACTIONTREE
-_GETTRANSACTIONBYEVENTIDREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
-_GETTRANSACTIONBYIDREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
 _GETTRANSACTIONRESPONSE.fields_by_name['transaction'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__pb2._TRANSACTIONTREE
 _GETFLATTRANSACTIONRESPONSE.fields_by_name['transaction'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__pb2._TRANSACTION
-_GETLEDGERENDREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
 _GETLEDGERENDRESPONSE.fields_by_name['offset'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_ledger__offset__pb2._LEDGEROFFSET
 DESCRIPTOR.message_types_by_name['GetTransactionsRequest'] = _GETTRANSACTIONSREQUEST
 DESCRIPTOR.message_types_by_name['GetTransactionsResponse'] = _GETTRANSACTIONSRESPONSE
@@ -501,8 +468,8 @@ _TRANSACTIONSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1656,
-  serialized_end=2549,
+  serialized_start=1308,
+  serialized_end=2201,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetTransactions',

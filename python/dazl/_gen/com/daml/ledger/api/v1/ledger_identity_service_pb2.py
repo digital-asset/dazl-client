@@ -15,7 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from . import trace_context_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -24,9 +23,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\037LedgerIdentityServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n4com/daml/ledger/api/v1/ledger_identity_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a*com/daml/ledger/api/v1/trace_context.proto\"f\n\x18GetLedgerIdentityRequest\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"8\n\x19GetLedgerIdentityResponse\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId2\x91\x01\n\x15LedgerIdentityService\x12x\n\x11GetLedgerIdentity\x12\x30.com.daml.ledger.api.v1.GetLedgerIdentityRequest\x1a\x31.com.daml.ledger.api.v1.GetLedgerIdentityResponseB\xa3\x01\n\x16\x63om.daml.ledger.api.v1B\x1fLedgerIdentityServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
-  ,
-  dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,])
+  serialized_pb=b'\n4com/daml/ledger/api/v1/ledger_identity_service.proto\x12\x16\x63om.daml.ledger.api.v1\"\x1a\n\x18GetLedgerIdentityRequest\"8\n\x19GetLedgerIdentityResponse\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId2\x91\x01\n\x15LedgerIdentityService\x12x\n\x11GetLedgerIdentity\x12\x30.com.daml.ledger.api.v1.GetLedgerIdentityRequest\x1a\x31.com.daml.ledger.api.v1.GetLedgerIdentityResponseB\xa3\x01\n\x16\x63om.daml.ledger.api.v1B\x1fLedgerIdentityServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+)
 
 
 
@@ -39,13 +37,6 @@ _GETLEDGERIDENTITYREQUEST = _descriptor.Descriptor(
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.GetLedgerIdentityRequest.trace_context', index=0,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -58,8 +49,8 @@ _GETLEDGERIDENTITYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=124,
-  serialized_end=226,
+  serialized_start=80,
+  serialized_end=106,
 )
 
 
@@ -90,11 +81,10 @@ _GETLEDGERIDENTITYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=228,
-  serialized_end=284,
+  serialized_start=108,
+  serialized_end=164,
 )
 
-_GETLEDGERIDENTITYREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
 DESCRIPTOR.message_types_by_name['GetLedgerIdentityRequest'] = _GETLEDGERIDENTITYREQUEST
 DESCRIPTOR.message_types_by_name['GetLedgerIdentityResponse'] = _GETLEDGERIDENTITYRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -123,8 +113,8 @@ _LEDGERIDENTITYSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=287,
-  serialized_end=432,
+  serialized_start=167,
+  serialized_end=312,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetLedgerIdentity',

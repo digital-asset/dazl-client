@@ -15,8 +15,6 @@ __all__ = [
     "CommandServiceStub",
 ]
 
-_T = _typing.TypeVar('_T')
-
 
 # noinspection PyPep8Naming,DuplicatedCode
 class CommandServiceStub:

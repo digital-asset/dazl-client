@@ -14,8 +14,6 @@ __all__ = [
     "PackageManagementServiceStub",
 ]
 
-_T = _typing.TypeVar('_T')
-
 
 # noinspection PyPep8Naming,DuplicatedCode
 class PackageManagementServiceStub:

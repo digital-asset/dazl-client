@@ -5,7 +5,6 @@
 
 from .value_pb2 import Enum, GenMap, Identifier, List, Map, Optional, Record, RecordField, Value, Variant
 from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
-from .trace_context_pb2 import TraceContext
 from .completion_pb2 import Completion
 from .event_pb2 import ArchivedEvent, CreatedEvent, Event, ExercisedEvent
 from .ledger_offset_pb2 import LedgerOffset
@@ -96,7 +95,6 @@ __all__ = [
     "SubmitAndWaitForTransactionTreeResponse",
     "SubmitAndWaitRequest",
     "SubmitRequest",
-    "TraceContext",
     "Transaction",
     "TransactionFilter",
     "TransactionServiceStub",
