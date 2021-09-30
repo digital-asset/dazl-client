@@ -8,7 +8,7 @@ There are many ways you can contribute beyond coding. For example, you can repor
 
 ## Code of conduct
 
-This project and everyone participating in it is governed by the [DAML Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [community@digitalasset.com](mailto:community@digitalasset.com).
+This project and everyone participating in it is governed by the [Daml Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [community@digitalasset.com](mailto:community@digitalasset.com).
 
 ## Git conventions
 
@@ -64,7 +64,7 @@ The active milestones arse listed [here](https://github.com/DACH-NY/dazl/milesto
 
 ## Discussions
 
-Discussions on this repository should be limited to the dazl library. Discussions more generally about daml or the lower-level language bindings that are formally included in the SDK should be discussed on the [DAML repo](https://github.com/DACH-NY/daml).
+Discussions on this repository should be limited to the dazl library. Discussions more generally about daml or the lower-level language bindings that are formally included in the SDK should be discussed on the [Daml repo](https://github.com/DACH-NY/daml).
 
 # Thank you!
 

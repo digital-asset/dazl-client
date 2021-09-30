@@ -2,24 +2,24 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-:mod:`dazl.damast` package
-==========================
+:mod:`dazl.damast`
+==================
 
-The :mod:`dazl.damlast` module contains types and functions for working with DAML-LF Archives.
-The types in this module are for dealing with DAML's type system as encoded in DAML-LF; for
+The :mod:`dazl.damlast` package contains types and functions for working with Daml-LF Archives.
+The types in this module are for dealing with Daml's type system as encoded in Daml-LF; for
 encoding and decoding of values, see :mod:`dazl.values`.
 
 :mod:`dazl.damlast.daml_lf_1`:
-    The full definition of a DAML-LF Archive.
+    The full definition of a Daml-LF Archive.
 
 :mod:`dazl.damlast.daml_types`:
-    Convenience functions for constructing DAML :class:`Type` objects.
+    Convenience functions for constructing Daml :class:`Type` objects.
 
 :mod:`dazl.damlast.lookup`:
-    Utilities for quickly resolving names to DAML-LF types/values.
+    Utilities for quickly resolving names to Daml-LF types/values.
 
 :mod:`dazl.damlast.parse`:
-    Functions for parsing a DAML-LF Archive from its Protobuf definition.
+    Functions for parsing a Daml-LF Archive from its Protobuf definition.
 
 :mod:`dazl.damlast.protocols`:
     Protocols (interfaces) for components in this package.

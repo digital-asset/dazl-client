@@ -4,9 +4,6 @@
 dazl package
 ============
 
-Subpackages
------------
-
 .. toctree::
 
     dazl.cli
@@ -21,9 +18,6 @@ Subpackages
     dazl.protocols
     dazl.testing
     dazl.util
-
-Module contents
----------------
 
 .. automodule:: dazl
     :members:

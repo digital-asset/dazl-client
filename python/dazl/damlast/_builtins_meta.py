@@ -3,7 +3,7 @@
 
 """
 This module contains supporting infrastructure for built-in method definitions for interpreting
-DAML-LF files.
+Daml-LF files.
 """
 
 from typing import Any, Optional, Sequence, Type as PyType, Union
