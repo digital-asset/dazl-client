@@ -2,7 +2,8 @@
 <html lang="" >
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>dazl.ledger.blocking</title>
@@ -29,12 +30,16 @@
   
 
   
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.5.12 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.ledger.config — connection configuration" href="dazl.ledger.config.html"/>
         <link rel="prev" title="dazl.ledger.aio" href="dazl.ledger.aio.html"/> 
@@ -53,27 +58,24 @@
                 
               
               
-                <p class="caption"><span class="caption-text">Contents:</span></p>
+                <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="dazl.html">dazl package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="dazl.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dazl.cli.html">dazl.cli package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.client.html">dazl.client package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.protocols.html">dazl.protocols package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.util</span></code> package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="dazl.html#module-dazl">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.cli.html"><code class="docutils literal notranslate"><span class="pre">dazl.cli</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.client.html"><code class="docutils literal notranslate"><span class="pre">dazl.client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.protocols.html"><code class="docutils literal notranslate"><span class="pre">dazl.protocols</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.testing.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.testing</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.util</span></code> package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
@@ -84,7 +86,7 @@
   </nav>
   <main>
     
-  <div class="section" id="dazl-ledger-blocking">
+  <section id="dazl-ledger-blocking">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code><a class="headerlink" href="#dazl-ledger-blocking" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -97,7 +99,7 @@ an implementation should be thread-safe, with the exception of <code class="xref
 <p>Since <code class="docutils literal notranslate"><span class="pre">dazl</span></code> activity is typically dominated by I/O, using a blocking <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code> with
 multiple threads is usually more expensive than using connections. You should consider
 using the asyncio variant of this API (<a class="reference internal" href="dazl.ledger.aio.html#dazl.ledger.aio.Connection" title="dazl.ledger.aio.Connection"><code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.ledger.aio.Connection</span></code></a>) instead.</p>
-</div>
+</section>
 
 
   </main>
@@ -107,7 +109,7 @@ using the asyncio variant of this API (<a class="reference internal" href="dazl.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.2.0',
+            VERSION:'7.5.12',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -115,6 +117,7 @@ using the asyncio variant of this API (<a class="reference internal" href="dazl.
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>

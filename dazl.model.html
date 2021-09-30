@@ -2,7 +2,8 @@
 <html lang="" >
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>dazl.model package</title>
@@ -29,12 +30,16 @@
   
 
   
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.5.12 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.pretty package" href="dazl.pretty.html"/>
         <link rel="prev" title="dazl.ledger.config — connection configuration" href="dazl.ledger.config.html"/> 
@@ -53,30 +58,27 @@
                 
               
               
-                <p class="caption"><span class="caption-text">Contents:</span></p>
+                <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="dazl.html">dazl package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="dazl.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dazl.cli.html">dazl.cli package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.client.html">dazl.client package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#type-system-types">Type system types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.cli.html"><code class="docutils literal notranslate"><span class="pre">dazl.cli</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.client.html"><code class="docutils literal notranslate"><span class="pre">dazl.client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#type-system-types">Type system types</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.protocols.html">dazl.protocols package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.util</span></code> package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="dazl.html#module-dazl">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.protocols.html"><code class="docutils literal notranslate"><span class="pre">dazl.protocols</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.testing.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.testing</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.util</span></code> package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
@@ -87,7 +89,7 @@
   </nav>
   <main>
     
-  <span class="target" id="module-dazl.model"></span><div class="section" id="dazl-model-package">
+  <span class="target" id="module-dazl.model"></span><section id="dazl-model-package">
 <h1><a class="reference internal" href="#module-dazl.model" title="dazl.model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code></a> package<a class="headerlink" href="#dazl-model-package" title="Permalink to this headline">¶</a></h1>
 <p>This module is deprecated. These types have generally moved to <a class="reference internal" href="dazl.client.html#module-dazl.client" title="dazl.client"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.client</span></code></a> (for the API
 introduced in dazl v5) or <a class="reference internal" href="dazl.protocols.html#module-dazl.protocols" title="dazl.protocols"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.protocols</span></code></a> (for the API introduced in dazl v8).</p>
@@ -98,7 +100,7 @@ introduced in dazl v5) or <a class="reference internal" href="dazl.protocols.htm
 <span class="target" id="module-dazl.model.network"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.client._conn_settings</span></code>.</p>
 <span class="target" id="module-dazl.model.reading"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.client.events</span></code>, though if possible you should move to
 <code class="docutils literal notranslate"><span class="pre">dazl.protocol.events</span></code>.</p>
-<span class="target" id="module-dazl.model.types"></span><div class="section" id="type-system-types">
+<span class="target" id="module-dazl.model.types"></span><section id="type-system-types">
 <h2>Type system types<a class="headerlink" href="#type-system-types" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#module-dazl.model.types" title="dazl.model.types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model.types</span></code></a> module contains the Python classes used to represent the DAML type
 system.</p>
@@ -128,43 +130,43 @@ system.</p>
 </tbody>
 </table>
 <dl class="py class">
-<dt id="dazl.model.types.Type">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">Type</span></code><a class="headerlink" href="#dazl.model.types.Type" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.model.types.Type">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></span><span class="sig-name descname"><span class="pre">Type</span></span><a class="headerlink" href="#dazl.model.types.Type" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DAML-defined type.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dazl.model.types.ScalarType">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">ScalarType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.ScalarType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.model.types.ScalarType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></span><span class="sig-name descname"><span class="pre">ScalarType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.ScalarType" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DAML-defined type that represents a simple scalar value. You should not need to ever
 construct instances of this directly; all scalar types are builtins.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dazl.model.types.ListType">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">ListType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_parameter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dazl.model.types.Type" title="dazl.model.types.Type"><span class="pre">dazl.model.types.Type</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.ListType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.model.types.ListType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></span><span class="sig-name descname"><span class="pre">ListType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_parameter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dazl.model.types.Type" title="dazl.model.types.Type"><span class="pre">dazl.model.types.Type</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.ListType" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="dazl.model.types.RecordType">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">RecordType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">named_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.model.types.NamedArgumentList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeReference</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeVariable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.RecordType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.model.types.RecordType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></span><span class="sig-name descname"><span class="pre">RecordType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">named_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.model.types.NamedArgumentList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeReference</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeVariable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.RecordType" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="dazl.model.types.VariantType">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">VariantType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">named_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.model.types.NamedArgumentList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeReference</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeVariable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.VariantType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.model.types.VariantType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></span><span class="sig-name descname"><span class="pre">VariantType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">named_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.model.types.NamedArgumentList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeReference</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.model.types.TypeVariable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.VariantType" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="dazl.model.types.UnsupportedType">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></code><code class="sig-name descname"><span class="pre">UnsupportedType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.UnsupportedType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.model.types.UnsupportedType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.model.types.</span></span><span class="sig-name descname"><span class="pre">UnsupportedType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.model.types.UnsupportedType" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DAML type that is currently unparseable by the Python client library.</p>
 </dd></dl>
 
-</div>
+</section>
 <span class="target" id="module-dazl.model.types_store"></span><span class="target" id="module-dazl.model.writing"></span><p>This module has been relocated to <code class="docutils literal notranslate"><span class="pre">dazl.client.commands</span></code>, though if possible you should move to
 the command types defined in <code class="docutils literal notranslate"><span class="pre">dazl.ledger</span></code> instead.</p>
-</div>
+</section>
 
 
   </main>
@@ -174,7 +176,7 @@ the command types defined in <code class="docutils literal notranslate"><span cl
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.2.0',
+            VERSION:'7.5.12',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -182,6 +184,7 @@ the command types defined in <code class="docutils literal notranslate"><span cl
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>

@@ -2,7 +2,8 @@
 <html lang="" >
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>dazl.ledger.config — connection configuration</title>
@@ -29,12 +30,16 @@
   
 
   
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.5.12 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.model package" href="dazl.model.html"/>
         <link rel="prev" title="dazl.ledger.blocking" href="dazl.ledger.blocking.html"/> 
@@ -53,32 +58,29 @@
                 
               
               
-                <p class="caption"><span class="caption-text">Contents:</span></p>
+                <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="dazl.html">dazl package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="dazl.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dazl.cli.html">dazl.cli package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.client.html">dazl.client package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code> package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#access-configuration">Access configuration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ssl-tls-configuration">SSL/TLS configuration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#url-configuration">URL configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.cli.html"><code class="docutils literal notranslate"><span class="pre">dazl.cli</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.client.html"><code class="docutils literal notranslate"><span class="pre">dazl.client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#access-configuration">Access configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ssl-tls-configuration">SSL/TLS configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#url-configuration">URL configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.protocols.html">dazl.protocols package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dazl.util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.util</span></code> package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="dazl.html#module-dazl">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.protocols.html"><code class="docutils literal notranslate"><span class="pre">dazl.protocols</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.testing.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.testing</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.util</span></code> package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
@@ -89,7 +91,7 @@
   </nav>
   <main>
     
-  <span class="target" id="module-dazl.ledger.config"></span><div class="section" id="dazl-ledger-config-connection-configuration">
+  <span class="target" id="module-dazl.ledger.config"></span><section id="dazl-ledger-config-connection-configuration">
 <h1><a class="reference internal" href="#module-dazl.ledger.config" title="dazl.ledger.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code></a> — connection configuration<a class="headerlink" href="#dazl-ledger-config-connection-configuration" title="Permalink to this headline">¶</a></h1>
 <p>This module contains configuration objects for a <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code>.</p>
 <p>Normally you don’t need to construct these objects directly; instead, simply call
@@ -107,12 +109,12 @@ using tokens, you can simply assign <code class="docutils literal notranslate"><
 API or HTTP JSON API implementation</p></li>
 </ul>
 <dl class="py class">
-<dt id="dazl.ledger.config.Config">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></code><code class="sig-name descname"><span class="pre">Config</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">access</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.ledger.config.access.AccessConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.ledger.config.ssl.SSLConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.ledger.config.url.URLConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.config.Config" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.Config">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">access</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dazl.ledger.config.AccessConfig" title="dazl.ledger.config.access.AccessConfig"><span class="pre">dazl.ledger.config.access.AccessConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dazl.ledger.config.SSLConfig" title="dazl.ledger.config.ssl.SSLConfig"><span class="pre">dazl.ledger.config.ssl.SSLConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dazl.ledger.config.URLConfig" title="dazl.ledger.config.url.URLConfig"><span class="pre">dazl.ledger.config.url.URLConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.config.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores configuration for a <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code>.</p>
 <dl class="py method">
-<dt id="dazl.ledger.config.Config.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_as</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Party</span><span class="p"><span class="pre">,</span> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">Party</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_as</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Party</span><span class="p"><span class="pre">,</span> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">Party</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ledger_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oauth_token</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oauth_token_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ca</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ca_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_key_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_timeout</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/decimal.html#decimal.Decimal" title="(in Python v3.9)"><span class="pre">decimal.Decimal</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><span class="pre">datetime.timedelta</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_http_proxy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#dazl.ledger.config.Config" title="dazl.ledger.config.Config"><span class="pre">dazl.ledger.config.Config</span></a><a class="headerlink" href="#dazl.ledger.config.Config.create" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.Config.create">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_as</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Party</span><span class="p"><span class="pre">,</span> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">Party</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_as</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Party</span><span class="p"><span class="pre">,</span> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">Party</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ledger_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oauth_token</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oauth_token_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ca</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ca_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_key_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_timeout</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/decimal.html#decimal.Decimal" title="(in Python v3.9)"><span class="pre">decimal.Decimal</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><span class="pre">datetime.timedelta</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_http_proxy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dazl.ledger.config.Config" title="dazl.ledger.config.Config"><span class="pre">dazl.ledger.config.Config</span></a></span></span><a class="headerlink" href="#dazl.ledger.config.Config.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a <a class="reference internal" href="#dazl.ledger.config.Config" title="dazl.ledger.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> object from the supplied parameters.</p>
 <p>The remote can be configured either by supplying a URL or by supplying a host (and optional
 port and scheme). If none of <code class="docutils literal notranslate"><span class="pre">url</span></code>, <code class="docutils literal notranslate"><span class="pre">host</span></code>, <code class="docutils literal notranslate"><span class="pre">port</span></code>, or <code class="docutils literal notranslate"><span class="pre">scheme</span></code> are supplied, then
@@ -241,7 +243,7 @@ not provided.</p></li>
 
 </dd></dl>
 
-<div class="section" id="access-configuration">
+<section id="access-configuration">
 <span id="id1"></span><h2>Access configuration<a class="headerlink" href="#access-configuration" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#dazl.ledger.config.AccessConfig" title="dazl.ledger.config.AccessConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccessConfig</span></code></a> protocol specifies how <code class="docutils literal notranslate"><span class="pre">dazl</span></code> identifies itself to a ledger. There are
 two built-in mechanisms for this: <strong>property-based access</strong>, which is traditionally used with
@@ -287,17 +289,17 @@ at any time:</p>
 </div>
 <p>Deeper support for token refreshing may be added in a future release.</p>
 <dl class="py class">
-<dt id="dazl.ledger.config.AccessConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></code><code class="sig-name descname"><span class="pre">AccessConfig</span></code><a class="headerlink" href="#dazl.ledger.config.AccessConfig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.AccessConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></span><span class="sig-name descname"><span class="pre">AccessConfig</span></span><a class="headerlink" href="#dazl.ledger.config.AccessConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configuration parameters for providing access to a ledger.</p>
 <p>To create an instance of this protocol, call <a class="reference internal" href="#dazl.ledger.config.create_access" title="dazl.ledger.config.create_access"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_access()</span></code></a> and provide <em>either</em>
 <code class="docutils literal notranslate"><span class="pre">oauth_token</span></code> <em>or</em> the other fields you wish to set (such as <code class="docutils literal notranslate"><span class="pre">act_as</span></code>). You cannot specify
 both an access token and other fields.</p>
 <p>You may implement this protocol using your own custom type if you have very specialized access
 needs.</p>
-<dl class="py method">
-<dt id="dazl.ledger.config.AccessConfig.act_as">
-<code class="sig-name descname"><span class="pre">act_as</span></code><a class="headerlink" href="#dazl.ledger.config.AccessConfig.act_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.AccessConfig.act_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">act_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">AbstractSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.AccessConfig.act_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties that can be used to write data to the ledger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -306,9 +308,9 @@ needs.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.AccessConfig.admin">
-<code class="sig-name descname"><span class="pre">admin</span></code><a class="headerlink" href="#dazl.ledger.config.AccessConfig.admin" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.AccessConfig.admin">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">admin</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#dazl.ledger.config.AccessConfig.admin" title="Permalink to this definition">¶</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the token grants “admin” access.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -317,9 +319,9 @@ needs.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.AccessConfig.application_name">
-<code class="sig-name descname"><span class="pre">application_name</span></code><a class="headerlink" href="#dazl.ledger.config.AccessConfig.application_name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.AccessConfig.application_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">application_name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#dazl.ledger.config.AccessConfig.application_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The application name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -328,9 +330,9 @@ needs.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.AccessConfig.ledger_id">
-<code class="sig-name descname"><span class="pre">ledger_id</span></code><a class="headerlink" href="#dazl.ledger.config.AccessConfig.ledger_id" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.AccessConfig.ledger_id">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ledger_id</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[str]</span></em><a class="headerlink" href="#dazl.ledger.config.AccessConfig.ledger_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>The ledger ID. For non-token based access methods, this can be queried from the ledger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -339,9 +341,9 @@ needs.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.AccessConfig.read_as">
-<code class="sig-name descname"><span class="pre">read_as</span></code><a class="headerlink" href="#dazl.ledger.config.AccessConfig.read_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.AccessConfig.read_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">read_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">AbstractSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.AccessConfig.read_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties that can be used to read data from the ledger. This also includes the
 set of parties that can be used to write data to the ledger.</p>
 <dl class="field-list simple">
@@ -351,9 +353,9 @@ set of parties that can be used to write data to the ledger.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.AccessConfig.read_only_as">
-<code class="sig-name descname"><span class="pre">read_only_as</span></code><a class="headerlink" href="#dazl.ledger.config.AccessConfig.read_only_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.AccessConfig.read_only_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">read_only_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">AbstractSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.AccessConfig.read_only_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties that have read-only access to the underlying ledger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -362,9 +364,9 @@ set of parties that can be used to write data to the ledger.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.AccessConfig.token">
-<code class="sig-name descname"><span class="pre">token</span></code><a class="headerlink" href="#dazl.ledger.config.AccessConfig.token" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.AccessConfig.token">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#dazl.ledger.config.AccessConfig.token" title="Permalink to this definition">¶</a></dt>
 <dd><p>The bearer token that provides authorization and authentication to a ledger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -376,21 +378,21 @@ set of parties that can be used to write data to the ledger.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="dazl.ledger.config.create_access">
-<code class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></code><code class="sig-name descname"><span class="pre">create_access</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_as</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Party</span><span class="p"><span class="pre">,</span> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">Party</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_as</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Party</span><span class="p"><span class="pre">,</span> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">Party</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ledger_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oauth_token</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oauth_token_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dazl.ledger.config.access.AccessConfig</span><a class="headerlink" href="#dazl.ledger.config.create_access" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.create_access">
+<span class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></span><span class="sig-name descname"><span class="pre">create_access</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_as</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Party</span><span class="p"><span class="pre">,</span> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">Party</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_as</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Party</span><span class="p"><span class="pre">,</span> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">Party</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ledger_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oauth_token</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oauth_token_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dazl.ledger.config.AccessConfig" title="dazl.ledger.config.access.AccessConfig"><span class="pre">dazl.ledger.config.access.AccessConfig</span></a></span></span><a class="headerlink" href="#dazl.ledger.config.create_access" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an appropriate instance of <a class="reference internal" href="#dazl.ledger.config.AccessConfig" title="dazl.ledger.config.AccessConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccessConfig</span></code></a>.</p>
 <p>See <a class="reference internal" href="#dazl.ledger.config.Config.create" title="dazl.ledger.config.Config.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Config.create()</span></code></a> for a more detailed description of these parameters.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dazl.ledger.config.PropertyBasedAccessConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></code><code class="sig-name descname"><span class="pre">PropertyBasedAccessConfig</span></code><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.PropertyBasedAccessConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></span><span class="sig-name descname"><span class="pre">PropertyBasedAccessConfig</span></span><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Access configuration that is manually specified outside of an authentication/authorization
 framework. Suitable for local testing or when no auth server is available, and the Ledger API
 inherently trusts any caller to provide its own authentication and authorization.</p>
-<dl class="py method">
-<dt id="dazl.ledger.config.PropertyBasedAccessConfig.act_as">
-<code class="sig-name descname"><span class="pre">act_as</span></code><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.act_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.PropertyBasedAccessConfig.act_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">act_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">MutableSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.act_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties for which act-as rights are granted. This collection can be modified.
 Adding a party to this set _removes_ it from <a class="reference internal" href="#dazl.ledger.config.PropertyBasedAccessConfig.read_only_as" title="dazl.ledger.config.PropertyBasedAccessConfig.read_only_as"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read_only_as()</span></code></a>.</p>
 <dl class="field-list simple">
@@ -400,16 +402,16 @@ Adding a party to this set _removes_ it from <a class="reference internal" href=
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.PropertyBasedAccessConfig.admin">
-<code class="sig-name descname"><span class="pre">admin</span></code><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.admin" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.PropertyBasedAccessConfig.admin">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">admin</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.admin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the token sent to HTTP JSON API contains the <code class="docutils literal notranslate"><span class="pre">admin:</span> <span class="pre">true</span></code> flag that
 signals a token bearer with admin access.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.PropertyBasedAccessConfig.application_name">
-<code class="sig-name descname"><span class="pre">application_name</span></code><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.application_name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.PropertyBasedAccessConfig.application_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">application_name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.application_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The application name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -418,9 +420,9 @@ signals a token bearer with admin access.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.PropertyBasedAccessConfig.ledger_id">
-<code class="sig-name descname"><span class="pre">ledger_id</span></code><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.ledger_id" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.PropertyBasedAccessConfig.ledger_id">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ledger_id</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[str]</span></em><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.ledger_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>The ledger ID. When connecting to the gRPC Ledger API, this can be inferred and does not
 need to be supplied. When connecting to the HTTP JSON API, it must be supplied.</p>
 <dl class="field-list simple">
@@ -430,9 +432,9 @@ need to be supplied. When connecting to the HTTP JSON API, it must be supplied.<
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.PropertyBasedAccessConfig.read_as">
-<code class="sig-name descname"><span class="pre">read_as</span></code><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.read_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.PropertyBasedAccessConfig.read_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">read_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">AbstractSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.read_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties for which read rights are granted. This collection is read-only. If you
 want to add a party with read-only access, add it to <a class="reference internal" href="#dazl.ledger.config.PropertyBasedAccessConfig.read_only_as" title="dazl.ledger.config.PropertyBasedAccessConfig.read_only_as"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read_only_as()</span></code></a>; if you want to
 add a party with act-as access as well as read-only access, add it to <a class="reference internal" href="#dazl.ledger.config.PropertyBasedAccessConfig.act_as" title="dazl.ledger.config.PropertyBasedAccessConfig.act_as"><code class="xref py py-meth docutils literal notranslate"><span class="pre">act_as()</span></code></a>.</p>
@@ -445,9 +447,9 @@ but NOT acted as, use <a class="reference internal" href="#dazl.ledger.config.Pr
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.PropertyBasedAccessConfig.read_only_as">
-<code class="sig-name descname"><span class="pre">read_only_as</span></code><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.read_only_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.PropertyBasedAccessConfig.read_only_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">read_only_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">MutableSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.read_only_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties for which read-as rights are granted, but act-as rights are NOT granted.
 This collection can be modified.</p>
 <dl class="field-list simple">
@@ -457,22 +459,22 @@ This collection can be modified.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.PropertyBasedAccessConfig.token">
-<code class="sig-name descname"><span class="pre">token</span></code><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.token" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.PropertyBasedAccessConfig.token">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#dazl.ledger.config.PropertyBasedAccessConfig.token" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produces a token without signing, utilizing our parameters.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="dazl.ledger.config.TokenBasedAccessConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></code><code class="sig-name descname"><span class="pre">TokenBasedAccessConfig</span></code><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.TokenBasedAccessConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></span><span class="sig-name descname"><span class="pre">TokenBasedAccessConfig</span></span><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Access configuration that is inherently token-based. The token can be changed at any time, and
 party rights, the application name, and ledger ID are all derived off of the token.</p>
-<dl class="py method">
-<dt id="dazl.ledger.config.TokenBasedAccessConfig.act_as">
-<code class="sig-name descname"><span class="pre">act_as</span></code><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.act_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.TokenBasedAccessConfig.act_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">act_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">AbstractSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.act_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties that can be used to write data to the ledger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -481,9 +483,9 @@ party rights, the application name, and ledger ID are all derived off of the tok
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.TokenBasedAccessConfig.admin">
-<code class="sig-name descname"><span class="pre">admin</span></code><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.admin" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.TokenBasedAccessConfig.admin">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">admin</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.admin" title="Permalink to this definition">¶</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the token grants “admin” access.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -492,9 +494,9 @@ party rights, the application name, and ledger ID are all derived off of the tok
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.TokenBasedAccessConfig.application_name">
-<code class="sig-name descname"><span class="pre">application_name</span></code><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.application_name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.TokenBasedAccessConfig.application_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">application_name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.application_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The application name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -503,9 +505,9 @@ party rights, the application name, and ledger ID are all derived off of the tok
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.TokenBasedAccessConfig.ledger_id">
-<code class="sig-name descname"><span class="pre">ledger_id</span></code><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.ledger_id" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.TokenBasedAccessConfig.ledger_id">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ledger_id</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[str]</span></em><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.ledger_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>The ledger ID. For non-token based access methods, this can be queried from the ledger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -514,9 +516,9 @@ party rights, the application name, and ledger ID are all derived off of the tok
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.TokenBasedAccessConfig.read_as">
-<code class="sig-name descname"><span class="pre">read_as</span></code><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.read_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.TokenBasedAccessConfig.read_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">read_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">AbstractSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.read_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties that can be used to read data from the ledger. This also includes the
 set of parties that can be used to write data to the ledger.</p>
 <dl class="field-list simple">
@@ -526,9 +528,9 @@ set of parties that can be used to write data to the ledger.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.TokenBasedAccessConfig.read_only_as">
-<code class="sig-name descname"><span class="pre">read_only_as</span></code><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.read_only_as" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.TokenBasedAccessConfig.read_only_as">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">read_only_as</span></span><em class="property"><span class="pre">:</span> <span class="pre">AbstractSet[Party]</span></em><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.read_only_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>The set of parties that have read-only access to the underlying ledger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -537,84 +539,84 @@ set of parties that can be used to write data to the ledger.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.TokenBasedAccessConfig.token">
-<code class="sig-name descname"><span class="pre">token</span></code><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.token" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.TokenBasedAccessConfig.token">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#dazl.ledger.config.TokenBasedAccessConfig.token" title="Permalink to this definition">¶</a></dt>
 <dd><p>The bearer token that provides authorization and authentication to a ledger. This value can
 be replaced on a live connection in order to support use cases such as token refreshing.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="ssl-tls-configuration">
+</section>
+<section id="ssl-tls-configuration">
 <span id="id2"></span><h2>SSL/TLS configuration<a class="headerlink" href="#ssl-tls-configuration" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="dazl.ledger.config.SSLConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></code><code class="sig-name descname"><span class="pre">SSLConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ca</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ca_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_key_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.config.SSLConfig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.SSLConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></span><span class="sig-name descname"><span class="pre">SSLConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ca</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ca_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_key_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><span class="pre">os.PathLike</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.config.SSLConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configuration parameters that affect SSL connections.</p>
 <p>See <a class="reference internal" href="#dazl.ledger.config.Config.create" title="dazl.ledger.config.Config.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Config.create()</span></code></a> for a more detailed description of these parameters.</p>
-<dl class="py method">
-<dt id="dazl.ledger.config.SSLConfig.ca">
-<code class="sig-name descname"><span class="pre">ca</span></code><a class="headerlink" href="#dazl.ledger.config.SSLConfig.ca" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.SSLConfig.ca">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ca</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[bytes]</span></em><a class="headerlink" href="#dazl.ledger.config.SSLConfig.ca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Server certificate authority file.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.SSLConfig.cert">
-<code class="sig-name descname"><span class="pre">cert</span></code><a class="headerlink" href="#dazl.ledger.config.SSLConfig.cert" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.SSLConfig.cert">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cert</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[bytes]</span></em><a class="headerlink" href="#dazl.ledger.config.SSLConfig.cert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Client certificate file.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.SSLConfig.cert_key">
-<code class="sig-name descname"><span class="pre">cert_key</span></code><a class="headerlink" href="#dazl.ledger.config.SSLConfig.cert_key" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.SSLConfig.cert_key">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cert_key</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[bytes]</span></em><a class="headerlink" href="#dazl.ledger.config.SSLConfig.cert_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Client certificate and key file.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="url-configuration">
+</section>
+<section id="url-configuration">
 <span id="id3"></span><h2>URL configuration<a class="headerlink" href="#url-configuration" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#dazl.ledger.config.URLConfig" title="dazl.ledger.config.URLConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">URLConfig</span></code></a> protocol specifies the ledger implementation that <code class="docutils literal notranslate"><span class="pre">dazl</span></code> connects to
 (either gRPC Ledger API or HTTP JSON API).</p>
 <dl class="py function">
-<dt id="dazl.ledger.config.create_url">
-<code class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></code><code class="sig-name descname"><span class="pre">create_url</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_timeout</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/decimal.html#decimal.Decimal" title="(in Python v3.9)"><span class="pre">decimal.Decimal</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><span class="pre">datetime.timedelta</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_http_proxy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.config.create_url" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.create_url">
+<span class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></span><span class="sig-name descname"><span class="pre">create_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_timeout</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/decimal.html#decimal.Decimal" title="(in Python v3.9)"><span class="pre">decimal.Decimal</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><span class="pre">datetime.timedelta</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_http_proxy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.9)"><span class="pre">logging.Logger</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.config.create_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an instance of <a class="reference internal" href="#dazl.ledger.config.URLConfig" title="dazl.ledger.config.URLConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">URLConfig</span></code></a>, possibly with values taken from environment variables,
 or defaulted if otherwise unspecified.</p>
 <p>See <a class="reference internal" href="#dazl.ledger.config.Config.create" title="dazl.ledger.config.Config.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Config.create()</span></code></a> for a more detailed description of these parameters.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dazl.ledger.config.URLConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></code><code class="sig-name descname"><span class="pre">URLConfig</span></code><a class="headerlink" href="#dazl.ledger.config.URLConfig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dazl.ledger.config.URLConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.config.</span></span><span class="sig-name descname"><span class="pre">URLConfig</span></span><a class="headerlink" href="#dazl.ledger.config.URLConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configuration parameters for the remote host, including basic connection parameters that do not
 belong in <a class="reference internal" href="#dazl.ledger.config.AccessConfig" title="dazl.ledger.config.AccessConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccessConfig</span></code></a>.</p>
-<dl class="py method">
-<dt id="dazl.ledger.config.URLConfig.connect_timeout">
-<code class="sig-name descname"><span class="pre">connect_timeout</span></code><a class="headerlink" href="#dazl.ledger.config.URLConfig.connect_timeout" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.URLConfig.connect_timeout">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">connect_timeout</span></span><em class="property"><span class="pre">:</span> <span class="pre">datetime.timedelta</span></em><a class="headerlink" href="#dazl.ledger.config.URLConfig.connect_timeout" title="Permalink to this definition">¶</a></dt>
 <dd><p>How long to wait for a connection before giving up.</p>
 <p>The default is 30 seconds.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.URLConfig.url">
-<code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#dazl.ledger.config.URLConfig.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.URLConfig.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#dazl.ledger.config.URLConfig.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>The full URL to connect to, including a protocol (scheme), host, and port.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dazl.ledger.config.URLConfig.use_http_proxy">
-<code class="sig-name descname"><span class="pre">use_http_proxy</span></code><a class="headerlink" href="#dazl.ledger.config.URLConfig.use_http_proxy" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dazl.ledger.config.URLConfig.use_http_proxy">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">use_http_proxy</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#dazl.ledger.config.URLConfig.use_http_proxy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to allow the use of HTTP proxies.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
   </main>
@@ -624,7 +626,7 @@ belong in <a class="reference internal" href="#dazl.ledger.config.AccessConfig" 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.2.0',
+            VERSION:'7.5.12',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -632,6 +634,7 @@ belong in <a class="reference internal" href="#dazl.ledger.config.AccessConfig" 
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>

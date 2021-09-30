@@ -2,7 +2,8 @@
 <html lang="" >
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Migrate</title>
@@ -29,12 +30,16 @@
   
 
   
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.2.0 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.5.12 documentation" href="index.html"/>
         <link rel="next" title="dazl package" href="dazl.html"/>
         <link rel="prev" title="Testing" href="testing.html"/> 
 </head>
@@ -52,7 +57,7 @@
                 
               
               
-                <p class="caption"><span class="caption-text">Contents:</span></p>
+                <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
@@ -88,9 +93,9 @@
   </nav>
   <main>
     
-  <div class="section" id="migrate">
+  <section id="migrate">
 <h1>Migrate<a class="headerlink" href="#migrate" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="migrating-to-dazl-v7-5">
+<section id="migrating-to-dazl-v7-5">
 <h2>Migrating to dazl v7.5<a class="headerlink" href="#migrating-to-dazl-v7-5" title="Permalink to this headline">¶</a></h2>
 <p>dazl v7.5.0 introduces a new API, <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code> for adding support to more modern features of
 Daml Connect. The <code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> API will continue to be supported in dazl v8 (the next major
@@ -133,7 +138,7 @@ client streams that are no longer coupled to each other, means the internals of 
 significantly simpler while also improving performance.</p>
 </li>
 </ul>
-<div class="section" id="command-submission-changes-dazl-network-and-dazl-connect">
+<section id="command-submission-changes-dazl-network-and-dazl-connect">
 <h3>Command submission changes (<code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> and <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code>)<a class="headerlink" href="#command-submission-changes-dazl-network-and-dazl-connect" title="Permalink to this headline">¶</a></h3>
 <p>The most visible change from trying to align <code class="docutils literal notranslate"><span class="pre">dazl</span></code> to the
 <a class="reference external" href="https://www.npmjs.com/package/&#64;daml/ledger">&#64;daml/ledger</a> library is a renaming of the properties
@@ -296,8 +301,8 @@ should generally</p>
 <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">main_alice</span><span class="p">(),</span> <span class="n">main_bob</span><span class="p">()))</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="command-line-changes">
+</section>
+<section id="command-line-changes">
 <h3>Command-line changes<a class="headerlink" href="#command-line-changes" title="Permalink to this headline">¶</a></h3>
 <p>The standard set of command line options provided by <code class="docutils literal notranslate"><span class="pre">dazl.run</span></code> has changed. This also impacts any
 dazl commands (<code class="docutils literal notranslate"><span class="pre">dazl</span> <span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">dazl</span> <span class="pre">tail</span></code>, etc.) as well as any custom commands that use
@@ -338,11 +343,11 @@ dazl v9.0.0.</p></li>
 </dl>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="migrating-to-dazl-v7">
+</section>
+</section>
+<section id="migrating-to-dazl-v7">
 <h2>Migrating to dazl v7<a class="headerlink" href="#migrating-to-dazl-v7" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="template-formats">
+<section id="template-formats">
 <h3>Template formats<a class="headerlink" href="#template-formats" title="Permalink to this headline">¶</a></h3>
 <p>Versions of <cite>dazl</cite> prior to version 7 understood previously-used conventions for template names
 other than the form <code class="docutils literal notranslate"><span class="pre">package_ref:module_name:entity_name</span></code>. As of version 7, this is the only
@@ -357,13 +362,13 @@ understood format, and other forms are now unrecognized.</p>
 <span class="k">def</span> <span class="nf">handle_something</span><span class="p">(</span><span class="n">event</span><span class="p">):</span> <span class="o">...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="sandbox-wrapper">
+</section>
+<section id="sandbox-wrapper">
 <h3>Sandbox Wrapper<a class="headerlink" href="#sandbox-wrapper" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">dazl.sandbox()</span></code> function has been removed. In order to set up tests around applications that
 use <code class="docutils literal notranslate"><span class="pre">dazl</span></code> as a library, see the testing guide.</p>
-</div>
-<div class="section" id="time-model-changes">
+</section>
+<section id="time-model-changes">
 <h3>Time Model changes<a class="headerlink" href="#time-model-changes" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://github.com/digital-asset/daml/releases/tag/v1.0.0">DAML SDK 1.0</a> brought some changes to
 the way that time works over the Ledger API. Clients no longer need to behave differently for
@@ -372,8 +377,8 @@ ledgers that run in static time vs. real time mode.</p>
 APIs for manipulating static time have been removed and no replacement API is available. Static time
 is generally only useful in non-production contexts and use cases that require static time are
 better addressed with DAML scenarios.</p>
-</div>
-<div class="section" id="deprecated-symbols-removal">
+</section>
+<section id="deprecated-symbols-removal">
 <h3>Deprecated symbols removal<a class="headerlink" href="#deprecated-symbols-removal" title="Permalink to this headline">¶</a></h3>
 <p>Deprecated symbols in the <cite>dazl.damlast</cite> and <cite>dazl.model</cite> packages have been removed:</p>
 <table class="docutils align-default">
@@ -419,15 +424,15 @@ better addressed with DAML scenarios.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="migrating-to-v6">
+</section>
+</section>
+<section id="migrating-to-v6">
 <h2>Migrating to v6<a class="headerlink" href="#migrating-to-v6" title="Permalink to this headline">¶</a></h2>
 <p>No major breaking API changes were introduced in the v6 release.</p>
-</div>
-<div class="section" id="migrating-to-v5">
+</section>
+<section id="migrating-to-v5">
 <h2>Migrating to v5<a class="headerlink" href="#migrating-to-v5" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="library-initialization">
+<section id="library-initialization">
 <h3>Library Initialization<a class="headerlink" href="#library-initialization" title="Permalink to this headline">¶</a></h3>
 <p>Old API:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
@@ -450,8 +455,8 @@ better addressed with DAML scenarios.</p>
 <span class="n">alice_client</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="initialization-event-listeners">
+</section>
+<section id="initialization-event-listeners">
 <h3>Initialization Event Listeners<a class="headerlink" href="#initialization-event-listeners" title="Permalink to this headline">¶</a></h3>
 <p>Arguments to event listeners have changed in order to provide more information about events and
 for consistency across event handlers.</p>
@@ -469,8 +474,8 @@ for consistency across event handlers.</p>
 <span class="n">client</span><span class="o">.</span><span class="n">add_ledger_init</span><span class="p">(</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ledger initialization with package store: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">store</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="ready-event-listeners">
+</section>
+<section id="ready-event-listeners">
 <h3>Ready Event Listeners<a class="headerlink" href="#ready-event-listeners" title="Permalink to this headline">¶</a></h3>
 <p>Old API:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
@@ -484,8 +489,8 @@ for consistency across event handlers.</p>
 <span class="n">client</span><span class="o">.</span><span class="n">add_ledger_ready</span><span class="p">(</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Party </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">party</span><span class="si">}</span><span class="s1"> is ready&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="create-archive-event-listeners">
+</section>
+<section id="create-archive-event-listeners">
 <h3>Create/Archive Event Listeners<a class="headerlink" href="#create-archive-event-listeners" title="Permalink to this headline">¶</a></h3>
 <p>Create and archive events now take a single parameter, called <code class="docutils literal notranslate"><span class="pre">event</span></code> by convention, that contain
 the contract ID, contract data, and additional metadata about the event, such as the time of
@@ -504,9 +509,9 @@ execution, ledger ID, and access to the active contract set.</p>
 <span class="n">client</span><span class="o">.</span><span class="n">add_ledger_archived</span><span class="p">(</span><span class="s1">&#39;Some.Asset&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
   </main>
@@ -516,7 +521,7 @@ execution, ledger ID, and access to the active contract set.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.2.0',
+            VERSION:'7.5.12',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -524,6 +529,7 @@ execution, ledger ID, and access to the active contract set.</p>
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>

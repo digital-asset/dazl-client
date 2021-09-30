@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="" >
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dazl.testing</title>
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="_static/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" href="_static/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="_static/favicon-16x16.png" sizes="16x16"/>
+  <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="dazl 7.5.12 documentation" href="index.html"/>
+        <link rel="up" title="dazl package" href="dazl.html"/>
+        <link rel="next" title="dazl.util package" href="dazl.util.html"/>
+        <link rel="prev" title="dazl.protocols package" href="dazl.protocols.html"/> 
+</head>
+<body>
+
+   
+
+  <header>
+    dazl
+
+  </header>
+  <nav>
+              
+              
+                
+              
+              
+                <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dazl.html">dazl package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dazl.cli.html"><code class="docutils literal notranslate"><span class="pre">dazl.cli</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.client.html"><code class="docutils literal notranslate"><span class="pre">dazl.client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.damlast.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.damast</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.aio.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.aio</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.blocking.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.blocking</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.ledger.config.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.ledger.config</span></code> — connection configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.model</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.pretty.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.pretty</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.protocols.html"><code class="docutils literal notranslate"><span class="pre">dazl.protocols</span></code> package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.testing</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dazl.util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.util</span></code> package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+              
+
+  </nav>
+  <main>
+    
+  <section id="dazl-testing">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">dazl.testing</span></code><a class="headerlink" href="#dazl-testing" title="Permalink to this headline">¶</a></h1>
+<p>This module provides testing utilities for writing simple tests around a Daml ledger running with a
+local sandbox. Call the <a class="reference internal" href="#dazl.testing.sandbox" title="dazl.testing.sandbox"><code class="xref py py-func docutils literal notranslate"><span class="pre">sandbox()</span></code></a> function which returns an object that controls the lifecycle
+of a sandbox process.</p>
+<p>Starting up a Daml sandbox and uploading relevant DARs takes long enough (more than one second) that
+you’ll probably want to start a single sandbox to run for the duration of the tests. In order to
+achieve good test isolation, though, you don’t necessarily want to use the same parties for each
+test, you should also use <a class="reference internal" href="#dazl.testing.connect_with_new_party" title="dazl.testing.connect_with_new_party"><code class="xref py py-func docutils literal notranslate"><span class="pre">connect_with_new_party()</span></code></a>, which will automatically allocate and
+return a new party on every invocation.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># this assumes a daml.yaml file exists in the same location as your Python code;</span>
+<span class="c1"># you may need to adjust this location for your own project</span>
+<span class="n">project_root</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+   <span class="k">async</span> <span class="k">with</span> <span class="n">sandbox</span><span class="p">(</span><span class="n">project_root</span><span class="o">=</span><span class="p">)</span> <span class="k">as</span> <span class="n">sb</span><span class="p">:</span>
+      <span class="k">async</span> <span class="k">with</span> <span class="n">connect_with_new_party</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">sb</span><span class="o">.</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connecting as party: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">party</span><span class="p">)</span>
+         <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;Some:Asset&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">party</span><span class="p">,</span> <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+
+<span class="c1"># Python 3.7+ only</span>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="dazl.testing.sandbox">
+<span class="sig-prename descclassname"><span class="pre">dazl.testing.</span></span><span class="sig-name descname"><span class="pre">sandbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dazl.testing.sandbox" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><em>os.PathLike</em></a>) – The root project directory for your Daml project. If supplied, the DAR from this project is
+automatically uploaded like <code class="docutils literal notranslate"><span class="pre">daml</span> <span class="pre">start</span></code> does. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, an empty sandbox is started and
+you must supply your own DAR.</p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The Daml Connect version to use.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><em>datetime.timedelta</em></a>) – The amount of time to wait for a Sandbox to start before giving up. The defualt is 10 seconds.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Launch a sandbox running on a randomized port, optionally using the DARs as specified by a local
+Daml project.</p>
+<p>The resulting object can be used as a context manager _or_ an asynchronous context manager.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dazl.testing.connect_with_new_party">
+<span class="sig-prename descclassname"><span class="pre">dazl.testing.</span></span><span class="sig-name descname"><span class="pre">connect_with_new_party</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">party_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_as</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_as</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ledger_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier_hint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dazl.testing.connect.ConnectWithNewParty</span></span></span><a class="headerlink" href="#dazl.testing.connect_with_new_party" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for connecting to a ledger as a brand new party. This isn’t normally useful
+outside of tests, where having creating new parties for each test helps keep test data isolated.</p>
+<p>Like the <a class="reference internal" href="dazl.ledger.html#dazl.ledger.connect" title="dazl.ledger.connect"><code class="xref py py-func docutils literal notranslate"><span class="pre">dazl.ledger.connect()</span></code></a> function, all parameters are optional, and if unspecified,
+get their default values from the environment.</p>
+<p>This function can NOT be used with ledgers that require authentication since it has no way to
+ask a token granter for an appropriate token for the newly allocated party.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The URL of the ledger to connect to. This ledger MUST NOT require authentication!</p></li>
+<li><p><strong>read_as</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – Extra parties to for which read-as access should be granted.</p></li>
+<li><p><strong>act_as</strong> – Extra parties to for which act-as access should be granted. The created party is added to
+this list.</p></li>
+<li><p><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the created connection should have “admin” rights; otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>. Note
+that in order to allocate parties, an initial connection with admin rights is ALWAYS
+created, and the value of this call only affects the returned connection.</p></li>
+<li><p><strong>ledger_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The ledger ID to connect to. As with the <code class="docutils literal notranslate"><span class="pre">connect</span></code> api, if the target is the gRPC Ledger
+API, then supplying this field is optional, and with an HTTP JSON API server, this field
+must be supplied.</p></li>
+<li><p><strong>dar</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a><em> or </em><em>PathLike</em><em> or </em><em>BinaryIO</em>) – A path to a file, the contents of the file (as <code class="docutils literal notranslate"><span class="pre">bytes</span></code>), or a byte buffer that point to a
+DAR that should also be uploaded.</p></li>
+<li><p><strong>party_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of parties (and connections) to create.</p></li>
+<li><p><strong>identifier_hint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – A hint to the backing participant. Note that the Daml ledger is free to ignore this
+hint entirely. If <cite>party_count</cite> is greater than 1, then</p></li>
+<li><p><strong>display_name</strong> – A human-readable name that corresponds to the allocated <code class="docutils literal notranslate"><span class="pre">Party</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An asynchronous context manager that returns one or more <code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectionWithParty</span></code>
+objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+  </main>
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'7.5.12',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <footer> 
+  </footer>
+</body>
+</html>
