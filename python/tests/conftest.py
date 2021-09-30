@@ -7,7 +7,7 @@ from typing import Generator
 from dazl import testing
 import pytest
 
-DEFAULT_SDK_VERSION = "1.16.0"
+DEFAULT_SDK_VERSION = "1.17.0"
 
 
 @pytest.fixture(scope="session")

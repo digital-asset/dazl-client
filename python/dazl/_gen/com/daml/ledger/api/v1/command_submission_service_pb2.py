@@ -15,7 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from . import trace_context_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2
 from . import commands_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_commands__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
@@ -26,9 +25,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\"CommandSubmissionServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n7com/daml/ledger/api/v1/command_submission_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a*com/daml/ledger/api/v1/trace_context.proto\x1a%com/daml/ledger/api/v1/commands.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x99\x01\n\rSubmitRequest\x12<\n\x08\x63ommands\x18\x01 \x01(\x0b\x32 .com.daml.ledger.api.v1.CommandsR\x08\x63ommands\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext2c\n\x18\x43ommandSubmissionService\x12G\n\x06Submit\x12%.com.daml.ledger.api.v1.SubmitRequest\x1a\x16.google.protobuf.EmptyB\xa6\x01\n\x16\x63om.daml.ledger.api.v1B\"CommandSubmissionServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n7com/daml/ledger/api/v1/command_submission_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a%com/daml/ledger/api/v1/commands.proto\x1a\x1bgoogle/protobuf/empty.proto\"M\n\rSubmitRequest\x12<\n\x08\x63ommands\x18\x01 \x01(\x0b\x32 .com.daml.ledger.api.v1.CommandsR\x08\x63ommands2c\n\x18\x43ommandSubmissionService\x12G\n\x06Submit\x12%.com.daml.ledger.api.v1.SubmitRequest\x1a\x16.google.protobuf.EmptyB\xa6\x01\n\x16\x63om.daml.ledger.api.v1B\"CommandSubmissionServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
-  dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,com_dot_daml_dot_ledger_dot_api_dot_v1_dot_commands__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
+  dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_commands__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
 
 
@@ -48,13 +47,6 @@ _SUBMITREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='commands', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.SubmitRequest.trace_context', index=1,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -67,12 +59,11 @@ _SUBMITREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=196,
-  serialized_end=349,
+  serialized_start=151,
+  serialized_end=228,
 )
 
 _SUBMITREQUEST.fields_by_name['commands'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_commands__pb2._COMMANDS
-_SUBMITREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
 DESCRIPTOR.message_types_by_name['SubmitRequest'] = _SUBMITREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -93,8 +84,8 @@ _COMMANDSUBMISSIONSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=351,
-  serialized_end=450,
+  serialized_start=230,
+  serialized_end=329,
   methods=[
   _descriptor.MethodDescriptor(
     name='Submit',

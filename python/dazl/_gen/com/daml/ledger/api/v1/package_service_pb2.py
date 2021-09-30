@@ -16,7 +16,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from . import trace_context_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -25,9 +24,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\030PackageServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n,com/daml/ledger/api/v1/package_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a*com/daml/ledger/api/v1/trace_context.proto\"~\n\x13ListPackagesRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"7\n\x14ListPackagesResponse\x12\x1f\n\x0bpackage_ids\x18\x01 \x03(\tR\npackageIds\"\x9b\x01\n\x11GetPackageRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12\x1d\n\npackage_id\x18\x02 \x01(\tR\tpackageId\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"\x9c\x01\n\x12GetPackageResponse\x12I\n\rhash_function\x18\x01 \x01(\x0e\x32$.com.daml.ledger.api.v1.HashFunctionR\x0chashFunction\x12\'\n\x0f\x61rchive_payload\x18\x02 \x01(\x0cR\x0e\x61rchivePayload\x12\x12\n\x04hash\x18\x03 \x01(\tR\x04hash\"\xa1\x01\n\x17GetPackageStatusRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12\x1d\n\npackage_id\x18\x02 \x01(\tR\tpackageId\x12J\n\rtrace_context\x18\xe8\x07 \x01(\x0b\x32$.com.daml.ledger.api.v1.TraceContextR\x0ctraceContext\"h\n\x18GetPackageStatusResponse\x12L\n\x0epackage_status\x18\x01 \x01(\x0e\x32%.com.daml.ledger.api.v1.PackageStatusR\rpackageStatus*,\n\rPackageStatus\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0e\n\nREGISTERED\x10\x01*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x32\xd7\x02\n\x0ePackageService\x12i\n\x0cListPackages\x12+.com.daml.ledger.api.v1.ListPackagesRequest\x1a,.com.daml.ledger.api.v1.ListPackagesResponse\x12\x63\n\nGetPackage\x12).com.daml.ledger.api.v1.GetPackageRequest\x1a*.com.daml.ledger.api.v1.GetPackageResponse\x12u\n\x10GetPackageStatus\x12/.com.daml.ledger.api.v1.GetPackageStatusRequest\x1a\x30.com.daml.ledger.api.v1.GetPackageStatusResponseB\x9c\x01\n\x16\x63om.daml.ledger.api.v1B\x18PackageServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
-  ,
-  dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2.DESCRIPTOR,])
+  serialized_pb=b'\n,com/daml/ledger/api/v1/package_service.proto\x12\x16\x63om.daml.ledger.api.v1\"2\n\x13ListPackagesRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\"7\n\x14ListPackagesResponse\x12\x1f\n\x0bpackage_ids\x18\x01 \x03(\tR\npackageIds\"O\n\x11GetPackageRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12\x1d\n\npackage_id\x18\x02 \x01(\tR\tpackageId\"\x9c\x01\n\x12GetPackageResponse\x12I\n\rhash_function\x18\x01 \x01(\x0e\x32$.com.daml.ledger.api.v1.HashFunctionR\x0chashFunction\x12\'\n\x0f\x61rchive_payload\x18\x02 \x01(\x0cR\x0e\x61rchivePayload\x12\x12\n\x04hash\x18\x03 \x01(\tR\x04hash\"U\n\x17GetPackageStatusRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12\x1d\n\npackage_id\x18\x02 \x01(\tR\tpackageId\"h\n\x18GetPackageStatusResponse\x12L\n\x0epackage_status\x18\x01 \x01(\x0e\x32%.com.daml.ledger.api.v1.PackageStatusR\rpackageStatus*,\n\rPackageStatus\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0e\n\nREGISTERED\x10\x01*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x32\xd7\x02\n\x0ePackageService\x12i\n\x0cListPackages\x12+.com.daml.ledger.api.v1.ListPackagesRequest\x1a,.com.daml.ledger.api.v1.ListPackagesResponse\x12\x63\n\nGetPackage\x12).com.daml.ledger.api.v1.GetPackageRequest\x1a*.com.daml.ledger.api.v1.GetPackageResponse\x12u\n\x10GetPackageStatus\x12/.com.daml.ledger.api.v1.GetPackageStatusRequest\x1a\x30.com.daml.ledger.api.v1.GetPackageStatusResponseB\x9c\x01\n\x16\x63om.daml.ledger.api.v1B\x18PackageServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+)
 
 _PACKAGESTATUS = _descriptor.EnumDescriptor(
   name='PackageStatus',
@@ -49,8 +47,8 @@ _PACKAGESTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=888,
-  serialized_end=932,
+  serialized_start=614,
+  serialized_end=658,
 )
 _sym_db.RegisterEnumDescriptor(_PACKAGESTATUS)
 
@@ -70,8 +68,8 @@ _HASHFUNCTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=934,
-  serialized_end=960,
+  serialized_start=660,
+  serialized_end=686,
 )
 _sym_db.RegisterEnumDescriptor(_HASHFUNCTION)
 
@@ -97,13 +95,6 @@ _LISTPACKAGESREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.ListPackagesRequest.trace_context', index=1,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -116,8 +107,8 @@ _LISTPACKAGESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=116,
-  serialized_end=242,
+  serialized_start=72,
+  serialized_end=122,
 )
 
 
@@ -148,8 +139,8 @@ _LISTPACKAGESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=244,
-  serialized_end=299,
+  serialized_start=124,
+  serialized_end=179,
 )
 
 
@@ -175,13 +166,6 @@ _GETPACKAGEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='packageId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.GetPackageRequest.trace_context', index=2,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -194,8 +178,8 @@ _GETPACKAGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=302,
-  serialized_end=457,
+  serialized_start=181,
+  serialized_end=260,
 )
 
 
@@ -240,8 +224,8 @@ _GETPACKAGERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=460,
-  serialized_end=616,
+  serialized_start=263,
+  serialized_end=419,
 )
 
 
@@ -267,13 +251,6 @@ _GETPACKAGESTATUSREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='packageId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='trace_context', full_name='com.daml.ledger.api.v1.GetPackageStatusRequest.trace_context', index=2,
-      number=1000, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='traceContext', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -286,8 +263,8 @@ _GETPACKAGESTATUSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=619,
-  serialized_end=780,
+  serialized_start=421,
+  serialized_end=506,
 )
 
 
@@ -318,14 +295,11 @@ _GETPACKAGESTATUSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=782,
-  serialized_end=886,
+  serialized_start=508,
+  serialized_end=612,
 )
 
-_LISTPACKAGESREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
-_GETPACKAGEREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
 _GETPACKAGERESPONSE.fields_by_name['hash_function'].enum_type = _HASHFUNCTION
-_GETPACKAGESTATUSREQUEST.fields_by_name['trace_context'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_trace__context__pb2._TRACECONTEXT
 _GETPACKAGESTATUSRESPONSE.fields_by_name['package_status'].enum_type = _PACKAGESTATUS
 DESCRIPTOR.message_types_by_name['ListPackagesRequest'] = _LISTPACKAGESREQUEST
 DESCRIPTOR.message_types_by_name['ListPackagesResponse'] = _LISTPACKAGESRESPONSE
@@ -389,8 +363,8 @@ _PACKAGESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=963,
-  serialized_end=1306,
+  serialized_start=689,
+  serialized_end=1032,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListPackages',

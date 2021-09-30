@@ -14,8 +14,6 @@ __all__ = [
     "LedgerConfigurationServiceStub",
 ]
 
-_T = _typing.TypeVar('_T')
-
 
 # noinspection PyPep8Naming,DuplicatedCode
 class LedgerConfigurationServiceStub:

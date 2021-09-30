@@ -15,8 +15,6 @@ __all__ = [
     "ResetServiceStub",
 ]
 
-_T = _typing.TypeVar('_T')
-
 
 # noinspection PyPep8Naming,DuplicatedCode
 class ResetServiceStub:

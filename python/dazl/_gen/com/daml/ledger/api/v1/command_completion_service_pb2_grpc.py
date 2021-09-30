@@ -16,16 +16,14 @@ class CommandCompletionServiceStub(object):
 
     Commands may fail in 2 distinct manners:
 
-    1. Failure communicated in the gRPC error of the submission.
-    2. Failure communicated in a Completion.
+    1. Failure communicated synchronously in the gRPC error of the submission.
+    2. Failure communicated asynchronously in a Completion, see ``completion.proto``.
 
-    Only successfully submitted commands may produce a completion event.
+    Note that not only successfully submitted commands MAY produce a completion event. For example, the participant MAY
+    choose to produce a completion event for a rejection of a duplicate command.
 
     Clients that do not receive a successful completion about their submission MUST NOT assume that it was successful.
     Clients SHOULD subscribe to the CompletionStream before starting to submit commands to prevent race conditions.
-
-    Interprocess tracing of command submissions may be achieved via Zipkin by filling out the ``trace_context`` field.
-    The server will return a child context of the submitted one, (or a new one if the context was missing) on both the Completion and Transaction streams.
     """
 
     def __init__(self, channel):
@@ -53,16 +51,14 @@ class CommandCompletionServiceServicer(object):
 
     Commands may fail in 2 distinct manners:
 
-    1. Failure communicated in the gRPC error of the submission.
-    2. Failure communicated in a Completion.
+    1. Failure communicated synchronously in the gRPC error of the submission.
+    2. Failure communicated asynchronously in a Completion, see ``completion.proto``.
 
-    Only successfully submitted commands may produce a completion event.
+    Note that not only successfully submitted commands MAY produce a completion event. For example, the participant MAY
+    choose to produce a completion event for a rejection of a duplicate command.
 
     Clients that do not receive a successful completion about their submission MUST NOT assume that it was successful.
     Clients SHOULD subscribe to the CompletionStream before starting to submit commands to prevent race conditions.
-
-    Interprocess tracing of command submissions may be achieved via Zipkin by filling out the ``trace_context`` field.
-    The server will return a child context of the submitted one, (or a new one if the context was missing) on both the Completion and Transaction streams.
     """
 
     def CompletionStream(self, request, context):
@@ -116,16 +112,14 @@ class CommandCompletionService(object):
 
     Commands may fail in 2 distinct manners:
 
-    1. Failure communicated in the gRPC error of the submission.
-    2. Failure communicated in a Completion.
+    1. Failure communicated synchronously in the gRPC error of the submission.
+    2. Failure communicated asynchronously in a Completion, see ``completion.proto``.
 
-    Only successfully submitted commands may produce a completion event.
+    Note that not only successfully submitted commands MAY produce a completion event. For example, the participant MAY
+    choose to produce a completion event for a rejection of a duplicate command.
 
     Clients that do not receive a successful completion about their submission MUST NOT assume that it was successful.
     Clients SHOULD subscribe to the CompletionStream before starting to submit commands to prevent race conditions.
-
-    Interprocess tracing of command submissions may be achieved via Zipkin by filling out the ``trace_context`` field.
-    The server will return a child context of the submitted one, (or a new one if the context was missing) on both the Completion and Transaction streams.
     """
 
     @staticmethod

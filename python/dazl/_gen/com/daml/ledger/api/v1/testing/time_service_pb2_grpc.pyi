@@ -15,8 +15,6 @@ __all__ = [
     "TimeServiceStub",
 ]
 
-_T = _typing.TypeVar('_T')
-
 
 # noinspection PyPep8Naming,DuplicatedCode
 class TimeServiceStub:

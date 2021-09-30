@@ -46,21 +46,29 @@ class ProtobufSerializer(AbstractSerializer):
         self, command_payload: "CommandPayload"
     ) -> "lapipb.SubmitAndWaitRequest":
         commands = [self.serialize_command(command) for command in command_payload.commands]
-        return lapipb.SubmitAndWaitRequest(
-            commands=lapipb.Commands(
-                ledger_id=command_payload.ledger_id,
-                workflow_id=command_payload.workflow_id,
-                application_id=command_payload.application_id,
-                command_id=command_payload.command_id,
-                party=command_payload.party,
-                commands=commands,
-                deduplication_time=(
-                    timedelta_to_duration(command_payload.deduplication_time)
-                    if command_payload.deduplication_time is not None
-                    else None
-                ),
+        if command_payload.deduplication_time is not None:
+            return lapipb.SubmitAndWaitRequest(
+                commands=lapipb.Commands(
+                    ledger_id=command_payload.ledger_id,
+                    workflow_id=command_payload.workflow_id,
+                    application_id=command_payload.application_id,
+                    command_id=command_payload.command_id,
+                    party=command_payload.party,
+                    commands=commands,
+                    deduplication_time=timedelta_to_duration(command_payload.deduplication_time),
+                )
             )
-        )
+        else:
+            return lapipb.SubmitAndWaitRequest(
+                commands=lapipb.Commands(
+                    ledger_id=command_payload.ledger_id,
+                    workflow_id=command_payload.workflow_id,
+                    application_id=command_payload.application_id,
+                    command_id=command_payload.command_id,
+                    party=command_payload.party,
+                    commands=commands,
+                )
+            )
 
     def serialize_create_command(
         self, name: "TypeConName", template_args: "Any"
