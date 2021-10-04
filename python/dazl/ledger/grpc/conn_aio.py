@@ -4,13 +4,11 @@
 This module contains the mapping between gRPC calls and Python/dazl types.
 """
 
-import asyncio
 from typing import AbstractSet, Any, AsyncIterable, Collection, Mapping, Optional, Sequence, Union
 import uuid
 import warnings
 
-from grpc import ChannelConnectivity
-from grpc.aio import Channel, UnaryStreamCall
+from grpc.aio import UnaryStreamCall
 
 from .. import aio
 from ... import LOG
@@ -22,53 +20,18 @@ from ...prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party
 from ...query import Filter, Queries, Query, parse_query
 from .._offsets import END, UNTIL_END, End, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
-from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
 from ..errors import ProtocolWarning, _allow_cancel, _translate_exceptions
-from .channel import create_channel
+from ._conn_base import AioConnectionBase
 from .codec_aio import Codec
 
 __all__ = ["Connection", "QueryStream"]
 
 
-class Connection(aio.Connection):
+class Connection(AioConnectionBase):
     """
     An asynchronous (``asyncio``) connection to the Daml gRPC Ledger API.
-
-
     """
-
-    def __init__(self, config: Config):
-        self._config = config
-        self._logger = config.logger
-        self._channel = create_channel(config)
-        self._codec = Codec(self)
-
-    @property
-    def config(self) -> Config:
-        return self._config
-
-    @property
-    def channel(self) -> Channel:
-        """
-        Provides access to the underlying gRPC channel.
-        """
-        return self._channel
-
-    @property
-    def codec(self) -> Codec:
-        return self._codec
-
-    @property
-    def is_closed(self) -> bool:
-        return self._channel.get_state(try_to_connect=False) == ChannelConnectivity.SHUTDOWN
-
-    async def __aenter__(self) -> "Connection":
-        await self.open()
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
-        await self.close()
 
     async def open(self) -> None:
         """
@@ -122,7 +85,7 @@ class Connection(aio.Connection):
 
         stub = lapipb.CommandServiceStub(self.channel)
 
-        commands_pb = await asyncio.gather(*map(self._codec.encode_command, __commands))
+        commands_pb = await self.map(self._codec.encode_command, __commands)
         request = lapipb.SubmitAndWaitRequest(
             commands=lapipb.Commands(
                 ledger_id=self._config.access.ledger_id,

@@ -12,7 +12,7 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 
 from collections.abc import Mapping as _Mapping
-from typing import Any, List, Optional, Sequence, Set, Tuple, Union
+from typing import Any, List, Optional, Sequence, Tuple, Union
 
 from .. import (
     ArchiveEvent,
@@ -42,13 +42,14 @@ from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
 from ...prim import ContractData, ContractId, Party
-from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
 from .._offsets import END, End
 from ..aio import PackageLoader
-from ..pkgcache import SHARED_PACKAGE_DATABASE
+from ..aio._codec import CoreCodecFactory
 
 __all__ = ["Codec"]
+
+CORE_CODEC_FACTORY = CoreCodecFactory(ProtobufEncoder(), ProtobufDecoder())
 
 
 class Codec:
@@ -65,14 +66,11 @@ class Codec:
 
     def __init__(self, conn: PackageService, lookup: Optional[MultiPackageLookup] = None):
         self.conn = conn
-        self._lookup = lookup or SHARED_PACKAGE_DATABASE
-        self._loader = PackageLoader(self._lookup, conn)
-        self._encode_context = Context(ProtobufEncoder(), self._lookup)
-        self._decode_context = Context(ProtobufDecoder(), self._lookup)
+        self._core = CORE_CODEC_FACTORY.build(conn, lookup)
 
     @property
     def lookup(self) -> SymbolLookup:
-        return self._lookup
+        return self._core.lookup
 
     async def encode_command(self, cmd: Command) -> lapipb.Command:
         if isinstance(cmd, CreateCommand):
@@ -103,10 +101,8 @@ class Codec:
     async def encode_create_command(
         self, template_id: Union[str, Any], payload: ContractData
     ) -> lapipb.CreateCommand:
-        item_type = await self._loader.do_with_retry(
-            lambda: self._lookup.template_name(template_id)
-        )
-        _, value = self._encode_context.convert(con(item_type), payload)
+        item_type = await self._core.look_up_type(template_id)
+        _, value = await self.encode_value(con(item_type), payload)
         return lapipb.CreateCommand(
             template_id=self.encode_identifier(item_type), create_arguments=value
         )
@@ -188,11 +184,7 @@ class Codec:
 
         # No wildcard template IDs, so inspect and resolve all template references to concrete
         # template IDs
-        requested_types = set()  # type: Set[TypeConName]
-        for template_id in template_ids:
-            requested_types.update(
-                await self._loader.do_with_retry(lambda: self._lookup.template_names(template_id))
-            )
+        requested_types = await self._core.look_up_types(template_ids)
 
         return lapipb.Filters(
             inclusive=lapipb.InclusiveFilters(
@@ -204,9 +196,7 @@ class Codec:
         """
         Convert a dazl/Python value to its Protobuf equivalent.
         """
-        return await self._loader.do_with_retry(
-            lambda: self._encode_context.convert(item_type, obj)
-        )
+        return await self._core.encode_value(item_type, obj)
 
     @staticmethod
     def encode_identifier(name: TypeConName) -> lapipb.Identifier:
@@ -243,7 +233,7 @@ class Codec:
                 f"expected create_arguments to result in a dict, but got {cdata!r} instead"
             )
 
-        template = self._lookup.template(cid.value_type)
+        template = self.lookup.template(cid.value_type)
         key = None
         if template is not None and template.key is not None:
             key = await self.decode_value(template.key.type, event.contract_key)
@@ -283,7 +273,7 @@ class Codec:
                 if cid is None:
                     cid = self.decode_contract_id(event_pb.exercised)
 
-                    template = self._lookup.template(cid.value_type)
+                    template = self.lookup.template(cid.value_type)
 
                     if found_choice is None:
                         for choice in template.choices:
@@ -333,15 +323,13 @@ class Codec:
         """
         Convert a Protobuf Ledger API value to its dazl/Python equivalent.
         """
-        return await self._loader.do_with_retry(
-            lambda: self._decode_context.convert(item_type, obj)
-        )
+        return await self._core.decode_value(item_type, obj)
 
     def decode_contract_id(
         self, event: Union[lapipb.CreatedEvent, lapipb.ExercisedEvent, lapipb.ArchivedEvent]
     ) -> ContractId:
         vt = Codec.decode_identifier(event.template_id)
-        return self._decode_context.convert(ContractIdType(con(vt)), event.contract_id)
+        return self._core._decode_context.convert(ContractIdType(con(vt)), event.contract_id)
 
     @staticmethod
     def decode_identifier(identifier: lapipb.Identifier) -> TypeConName:
@@ -361,11 +349,4 @@ class Codec:
     async def _look_up_choice(
         self, template_id: Any, choice_name: str
     ) -> Tuple[TypeConName, DefTemplate, TemplateChoice]:
-        template_type = await self._loader.do_with_retry(
-            lambda: self._lookup.template_name(template_id)
-        )
-        template = self._lookup.template(template_type)
-        for choice in template.choices:
-            if choice.name == choice_name:
-                return template_type, template, choice
-        raise ValueError(f"template {template.tycon} has no choice named {choice_name}")
+        return self._core.look_up_choice(template_id, choice_name)

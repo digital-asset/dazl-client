@@ -18,8 +18,6 @@ from typing import (
 import uuid
 import warnings
 
-from grpc import Channel, ChannelConnectivity
-
 from .. import blocking
 from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
@@ -29,10 +27,9 @@ from ...prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party
 from ...query import Filter, Queries, Query, parse_query
 from .._offsets import UNTIL_END, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
-from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
 from ..errors import ProtocolWarning, _allow_cancel, _translate_exceptions
-from .channel import create_channel
+from ._conn_base import BlockingConnectionBase
 from .codec_blocking import Codec
 
 if TYPE_CHECKING:
@@ -41,48 +38,10 @@ if TYPE_CHECKING:
 __all__ = ["Connection", "QueryStream"]
 
 
-class Connection(blocking.Connection):
+class Connection(BlockingConnectionBase):
     """
     A blocking connection to the Daml gRPC Ledger API.
     """
-
-    def __init__(self, config: Config):
-        self._config = config
-        self._logger = config.logger
-        self._channel = create_channel(config, blocking=True)
-        self._channel.subscribe(self._monitor_state, try_to_connect=False)
-        self._is_closed = False
-        self._codec = Codec(self)
-
-    @property
-    def config(self) -> Config:
-        return self._config
-
-    @property
-    def channel(self) -> Channel:
-        """
-        Provides access to the underlying gRPC channel.
-        """
-        return self._channel
-
-    @property
-    def codec(self) -> Codec:
-        return self._codec
-
-    @property
-    def is_closed(self) -> bool:
-        return self._is_closed
-
-    def _monitor_state(self, state: "ChannelConnectivity"):
-        if state == ChannelConnectivity.SHUTDOWN:
-            self._is_closed = True
-
-    def __enter__(self) -> "Connection":
-        self.open()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
-        self.close()
 
     def open(self) -> None:
         """
@@ -136,7 +95,7 @@ class Connection(blocking.Connection):
 
         stub = lapipb.CommandServiceStub(self.channel)
 
-        commands_pb = [self._codec.encode_command(cmd) for cmd in __commands]
+        commands_pb = self.map(self._codec.encode_command, __commands)
         request = lapipb.SubmitAndWaitRequest(
             commands=lapipb.Commands(
                 ledger_id=self._config.access.ledger_id,
