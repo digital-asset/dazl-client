@@ -50,8 +50,7 @@ from .client.commands import (
     exercise,
     exercise_by_key,
 )
-from .ledger import Command
-from .ledger.grpc import connect
+from .ledger import Command, connect
 from .model.core import ContractId
 from .pretty.table import write_acs
 from .prim import ContractData, DazlError, FrozenDict as frozendict, Party
