@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Dict, List, Mapping, NoReturn, Optional, Sequence
+from typing import Any, Dict, List, Mapping, NoReturn, Optional, Sequence
 import warnings
 
 from ..damlast import IdentityTypeVisitor
@@ -12,10 +12,6 @@ from ..damlast.lookup import EmptyLookup
 from ..damlast.protocols import SymbolLookup
 from ..prim import ContractId, DazlError, to_str, to_variant
 from .mapper import ValueMapper
-
-if TYPE_CHECKING:
-    from .mapper import ValueMapper
-
 
 __all__ = ["Context", "UnboundVarError"]
 
@@ -232,19 +228,12 @@ class Context:
         """
         Convert a contract ID string to a :class:`ContractId`.
         """
-        with warnings.catch_warnings():
-            # TODO: Drop this and switch to new-style ContractIds
-            warnings.simplefilter("ignore", DeprecationWarning)
-            from ..model.core import ContractId as DeprecatedContractId
-
-            if isinstance(contract_id, DeprecatedContractId):
-                return contract_id
-            elif isinstance(contract_id, ContractId):
-                # convert new-style ContractId instances to deprecated subclasses; for now, this is
-                # still the canonical form of a ContractId until the deprecated version is dropped
-                return DeprecatedContractId(contract_id.value, element_type.con.tycon)
-            else:
-                return DeprecatedContractId(contract_id, element_type.con.tycon)
+        if isinstance(contract_id, ContractId):
+            # convert new-style ContractId instances to deprecated subclasses; for now, this is
+            # still the canonical form of a ContractId until the deprecated version is dropped
+            return contract_id
+        else:
+            return ContractId(element_type.con.tycon, contract_id)
 
     def resolve_data_type(self, con: "Type.Con") -> "DefDataType":
         """

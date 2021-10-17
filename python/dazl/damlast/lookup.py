@@ -67,11 +67,11 @@ __all__ = [
 STAR = PackageRef("*")
 
 
-def parse_type_con_name(val: str, allow_deprecated_identifiers: bool = False) -> TypeConName:
+def parse_type_con_name(val: str) -> TypeConName:
     """
     Parse the given string as a type constructor.
     """
-    pkg, name = validate_template(val, allow_deprecated_identifiers=allow_deprecated_identifiers)
+    pkg, name = validate_template(val)
     module_name, _, entity_name = name.rpartition(":")
     if module_name:
         module_ref = ModuleRef(pkg, DottedName(module_name.split(".")))
@@ -88,9 +88,7 @@ def empty_lookup_impl(ref: Any) -> NoReturn:
         raise NameNotFoundError(ref)
 
 
-def validate_template(
-    template: Any, allow_deprecated_identifiers: bool = False
-) -> Tuple[PackageRef, str]:
+def validate_template(template: Any) -> Tuple[PackageRef, str]:
     """
     Return a module and type name component from something that can be interpreted as a template.
 
@@ -109,20 +107,6 @@ def validate_template(
     if template == "*" or template is None:
         return STAR, "*"
 
-    if allow_deprecated_identifiers:
-        warnings.warn(
-            "validate_template(..., allow_deprecated_identifiers=True) will be removed in dazl v8",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            # noinspection PyDeprecation
-            from ..model.types import UnresolvedTypeReference
-
-        if isinstance(template, UnresolvedTypeReference):
-            template = template.name
-
     if isinstance(template, str):
         components = template.split(":")
         if len(components) == 3:
@@ -134,19 +118,13 @@ def validate_template(
             # one colon, so assume the package ID is unspecified UNLESS the second component is a
             # wildcard; then we assume the wildcard means any module name and entity name
             m, e = components
-            if m == STAR and e != STAR and not allow_deprecated_identifiers:
+            if m == STAR and e != STAR:
                 # strings that look like "*:SOMETHING" are explicitly not allowed unless deprecated
                 # identifier support is requested; this is almost certainly an attempt to use
                 # periods instead of colons as a delimiter between module name and entity name
                 raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")
 
             return (STAR, f"{m}:{e}") if e != "*" else (PackageRef(m), "*")
-
-        elif len(components) == 1 and allow_deprecated_identifiers:
-            # no colon whatsoever
-            # TODO: Add a deprecation warning in the appropriate place
-            m, _, e = components[0].rpartition(".")
-            return STAR, f"{m}:{e}"
 
         else:
             raise ValueError("string must be in the format PKG_REF:MOD:ENTITY or MOD:ENTITY")
@@ -521,11 +499,10 @@ class PackageExceptionTracker:
     retryable.
     """
 
-    def __init__(self, allow_deprecated_identifiers: bool = False):
+    def __init__(self):
         self._seen_types = set()  # type: Set[str]
         self._seen_packages = set()  # type: Set[PackageRef]
         self._pkg_refs = list()  # type: List[PackageRef]
-        self._allow_deprecated_identifiers = allow_deprecated_identifiers
         self.done = False
 
     def __enter__(self):
@@ -560,9 +537,7 @@ class PackageExceptionTracker:
 
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", DeprecationWarning)
-                pkg_id, name = validate_template(
-                    exc_val.ref, allow_deprecated_identifiers=self._allow_deprecated_identifiers
-                )
+                pkg_id, name = validate_template(exc_val.ref)
             if pkg_id == "*":
                 # we don't know what package contains this type, so we have no
                 # choice but to look in all known packages
