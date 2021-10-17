@@ -21,6 +21,7 @@ DAML-LF Archive types
 from dataclasses import dataclass
 from enum import IntEnum as _IntEnum
 from io import StringIO
+import threading
 from typing import Any, Callable, NewType, Optional, Sequence, Tuple, Union
 import typing as _typing
 
@@ -2165,7 +2166,6 @@ class DefTypeSyn:
     location: "Optional[Location]"
 
 
-@dataclass(frozen=True)
 class DefValue:
     """Value definition"""
 
@@ -2185,7 +2185,10 @@ class DefValue:
             self.type = type
 
     name_with_type: "DefValue.NameWithType"
-    expr: "Expr"
+
+    _lazy_lock: threading.RLock
+    _expr: "Optional[Expr]"
+    _expr_fn: "Callable[[], Expr]"
 
     # If true, the value must not contain any party literals and not reference
     # values which contain party literals.
@@ -2196,6 +2199,61 @@ class DefValue:
     no_party_literals: bool
     is_test: bool
     location: "Optional[Location]"
+
+    __slots__ = (
+        "name_with_type",
+        "_lazy_lock",
+        "_expr",
+        "_expr_fn",
+        "no_party_literals",
+        "is_test",
+        "location",
+    )
+
+    def __init__(
+        self,
+        name_with_type: "DefValue.NameWithType",
+        expr: "Union[Expr, Callable[[], Expr]]",
+        no_party_literals: bool,
+        is_test: bool,
+        location: "Optional[Location]" = None,
+    ):
+        object.__setattr__(self, "name_with_type", name_with_type)
+        object.__setattr__(self, "_lazy_lock", threading.RLock())
+        object.__setattr__(self, "_expr", None)
+        object.__setattr__(self, "_expr_fn", (lambda: expr) if isinstance(expr, Expr) else expr)
+        object.__setattr__(self, "no_party_literals", no_party_literals)
+        object.__setattr__(self, "is_test", is_test)
+        object.__setattr__(self, "location", location)
+
+    @property
+    def expr(self) -> "Expr":
+        expr = self._expr
+        if expr is not None:
+            return expr
+
+        with self._lazy_lock:
+            expr = self._expr
+            if expr is None:
+                expr = self._expr_fn()  # type: ignore
+                object.__setattr__(self, "_expr", expr)
+            return expr
+
+    def __setattr__(self, key, value):
+        raise AttributeError
+
+    def __hash__(self):
+        return hash(
+            (
+                self.name_with_type,
+                self.no_party_literals,
+                self.is_test,
+                self.location,
+            )
+        )
+
+    def __repr__(self):
+        return f"DefValue(name_with_type={self.name_with_type!r}, expr=..., no_party_literals={self.no_party_literals!r}, is_test={self.is_test!r}, location={self.location!r})"
 
 
 @dataclass(frozen=True)
