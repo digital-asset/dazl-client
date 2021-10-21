@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-from typing import Any, Dict, Optional, Sequence
+from typing import Any, Dict, List as _List, Optional, Sequence
 
 from .daml_lf_1 import *
 
@@ -12,13 +12,11 @@ __all__ = ["ProtobufParser"]
 # noinspection PyPep8Naming,PyMethodMayBeStatic
 class ProtobufParser:
     def __init__(self, current_package: "PackageRef"):
-        from typing import List
-
         self.current_package = current_package
         self.current_module = None  # type: Optional[ModuleRef]
-        self.interned_strings = []  # type: List[str]
-        self.interned_dotted_names = []  # type: List[Sequence[str]]
-        self.interned_types = []  # type: List[Type]
+        self.interned_strings = []  # type: _List[str]
+        self.interned_dotted_names = []  # type: _List[Sequence[str]]
+        self.interned_types = []  # type: _List[Type]
 
     # noinspection PyUnusedLocal
     def parse_Unit(self, pb) -> "Unit":
@@ -693,7 +691,7 @@ class ProtobufParser:
     def parse_DefValue(self, pb) -> "DefValue":
         return DefValue(
             name_with_type=self.parse_DefValue_NameWithType(pb.name_with_type),
-            expr=self.parse_Expr(pb.expr),
+            expr=lambda: self.parse_Expr(pb.expr),
             no_party_literals=pb.no_party_literals,
             is_test=pb.is_test,
             location=self.parse_Location(pb.location),
@@ -715,14 +713,19 @@ class ProtobufParser:
     def parse_Module(self, pb) -> "Module":
         name = self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname)
         self.current_module = ModuleRef(self.current_package, name)
+        child_parser = self._copy()
         try:
             module = Module(
                 name=name,
-                flags=self.parse_FeatureFlags(pb.flags),
-                synonyms=tuple(self.parse_DefTypeSyn(value) for value in pb.synonyms),
-                data_types=tuple(self.parse_DefDataType(data_type) for data_type in pb.data_types),
-                values=tuple(self.parse_DefValue(value) for value in pb.values),
-                templates=tuple(self.parse_DefTemplate(template) for template in pb.templates),
+                flags=child_parser.parse_FeatureFlags(pb.flags),
+                synonyms=tuple(child_parser.parse_DefTypeSyn(value) for value in pb.synonyms),
+                data_types=tuple(
+                    child_parser.parse_DefDataType(data_type) for data_type in pb.data_types
+                ),
+                values=tuple(child_parser.parse_DefValue(value) for value in pb.values),
+                templates=tuple(
+                    child_parser.parse_DefTemplate(template) for template in pb.templates
+                ),
             )
         finally:
             self.current_module = None
@@ -757,6 +760,14 @@ class ProtobufParser:
             name=self.interned_strings[pb.name_interned_str],
             version=self.interned_strings[pb.version_interned_str],
         )
+
+    def _copy(self) -> "ProtobufParser":
+        p = ProtobufParser(self.current_package)
+        p.current_module = self.current_module
+        p.interned_strings = self.interned_strings
+        p.interned_dotted_names = self.interned_dotted_names
+        p.interned_types = self.interned_types
+        return p
 
     def _resolve_string(self, name: "Optional[str]", interned_id: "Optional[int]") -> str:
         # note that we intentionally conflate None and empty string, or None and 0 because
