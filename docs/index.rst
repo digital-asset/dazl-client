@@ -4,13 +4,12 @@
 dazl: DA client library for Python
 ==================================
 
-*Version: |release|*
+Version |release|
 
 Dependencies
 ------------
 
 You will need Python 3.6 or later and a Daml Ledger.
-
 
 Getting Started
 ---------------
@@ -18,33 +17,30 @@ Getting Started
 This section assumes that you already have a running ledger with the standard `daml new` model
 loaded, and have imported `dazl`.
 
-Connect to the ledger and submit a single command::
+Connect to the ledger and submit a single command:
 
-    import dazl
+.. literalinclude:: ../python/tests/unit/test_docs.py
+   :language: python
+   :pyobject: test_send_single_command
+   :lines: 2-
+   :dedent: 4
 
-    async with dazl.connect(url='http://localhost:6865', act_as='Alice') as conn:
-        await conn.create('Main:Asset', {'issuer': 'Alice', 'owner': 'Alice', 'name': 'hello world!'})
+Connect to the ledger as a single party, print all contracts, and close:
 
-Connect to the ledger as a single party, print all contracts, and close::
+.. literalinclude:: ../python/tests/unit/test_docs.py
+   :language: python
+   :pyobject: test_read
+   :lines: 2-
+   :dedent: 4
 
-    import dazl
+Connect to the ledger using asynchronous callbacks:
 
-    async with dazl.connect(url='http://localhost:6865', read_as='Alice') as conn:
-        contracts = {}
-        async for event in conn.query():
-            contracts[event.cid] = event.cdata
-    print(contracts)
+.. literalinclude:: ../python/tests/unit/test_docs.py
+   :language: python
+   :pyobject: test_read_using_callback
+   :lines: 2-
+   :dedent: 4
 
-Connect to the ledger using asynchronous callbacks::
-
-    import dazl
-
-    async with dazl.connect(url='http://localhost:6865', read_as='Alice') as conn:
-        contracts = {}
-        @conn.on_create
-        def _(event):
-            contracts[event.cid] = event.cdata
-    print(contracts)
 
 Code
 ----
