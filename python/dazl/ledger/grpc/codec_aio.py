@@ -44,6 +44,7 @@ from ...ledger.aio import PackageService
 from ...prim import ContractData, ContractId, Party
 from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
+from .._offsets import END, End
 from ..aio import PackageLoader
 from ..pkgcache import SHARED_PACKAGE_DATABASE
 
@@ -217,11 +218,22 @@ class Codec:
 
     @staticmethod
     def encode_begin_offset(offset: Optional[str]) -> lapipb.LedgerOffset:
-        return (
-            lapipb.LedgerOffset(absolute=offset)
-            if offset is not None
-            else lapipb.LedgerOffset(boundary=0)
-        )
+        if offset is None:
+            return lapipb.LedgerOffset(boundary=0)
+        else:
+            return lapipb.LedgerOffset(absolute=offset)
+
+    @staticmethod
+    def encode_end_offset(offset: Union[str, None, End]) -> Optional[lapipb.LedgerOffset]:
+        if offset is None:
+            # there is no ending offset (the stream will never naturally terminate)
+            return None
+        elif isinstance(offset, End):
+            # the offset goes up until the current end of the ledger
+            return lapipb.LedgerOffset(boundary=1)
+        else:
+            # the offset is absolute
+            return lapipb.LedgerOffset(absolute=offset)
 
     async def decode_created_event(self, event: lapipb.CreatedEvent) -> CreateEvent:
         cid = self.decode_contract_id(event)
