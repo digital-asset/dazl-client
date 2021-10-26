@@ -42,7 +42,7 @@ globals:
     @pytest.fixture(scope="session")
     def sandbox():
         with dazl.testing.sandbox(project_root=daml_project_root) as sandbox_proc:
-            return sandbox_proc
+            yield sandbox_proc
 
 
     def test_something(sandbox):

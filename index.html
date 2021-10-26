@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.12 documentation" href="#"/>
+    <link rel="top" title="dazl 7.5.13 documentation" href="#"/>
         <link rel="next" title="Basics" href="basics.html"/> 
 </head>
 <body>
@@ -72,7 +72,7 @@
     
   <section id="dazl-da-client-library-for-python">
 <h1>dazl: DA client library for Python<a class="headerlink" href="#dazl-da-client-library-for-python" title="Permalink to this headline">¶</a></h1>
-<p><em>Version: |release|</em></p>
+<p>Version 7.5.13</p>
 <section id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>You will need Python 3.6 or later and a Daml Ledger.</p>
@@ -82,30 +82,36 @@
 <p>This section assumes that you already have a running ledger with the standard <cite>daml new</cite> model
 loaded, and have imported <cite>dazl</cite>.</p>
 <p>Connect to the ledger and submit a single command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
 
-<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://localhost:6865&#39;</span><span class="p">,</span> <span class="n">act_as</span><span class="o">=</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-    <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;Main:Asset&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;issuer&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;owner&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;hello world!&#39;</span><span class="p">})</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://localhost:6865&quot;</span><span class="p">,</span> <span class="n">act_as</span><span class="o">=</span><span class="n">dazl</span><span class="o">.</span><span class="n">Party</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;issuer&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world!&quot;</span><span class="p">}</span>
+    <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;Main:Asset&quot;</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Connect to the ledger as a single party, print all contracts, and close:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
 
-<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://localhost:6865&#39;</span><span class="p">,</span> <span class="n">read_as</span><span class="o">=</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://localhost:6865&quot;</span><span class="p">,</span> <span class="n">read_as</span><span class="o">=</span><span class="n">dazl</span><span class="o">.</span><span class="n">Party</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
     <span class="n">contracts</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">query</span><span class="p">():</span>
-        <span class="n">contracts</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">cdata</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;Main:Asset&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">creates</span><span class="p">():</span>
+            <span class="n">contracts</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">contract_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">payload</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">contracts</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Connect to the ledger using asynchronous callbacks:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
 
-<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://localhost:6865&#39;</span><span class="p">,</span> <span class="n">read_as</span><span class="o">=</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://localhost:6865&quot;</span><span class="p">,</span> <span class="n">read_as</span><span class="o">=</span><span class="n">dazl</span><span class="o">.</span><span class="n">Party</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
     <span class="n">contracts</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="nd">@conn</span><span class="o">.</span><span class="n">on_create</span>
-    <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-        <span class="n">contracts</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">cdata</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;Main:Asset&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+
+        <span class="nd">@stream</span><span class="o">.</span><span class="n">on_create</span>
+        <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+            <span class="n">contracts</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">contract_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">payload</span>
+
+        <span class="k">await</span> <span class="n">stream</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">contracts</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -223,7 +229,7 @@ loaded, and have imported <cite>dazl</cite>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.12',
+            VERSION:'7.5.13',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.12 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.5.13 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.util package" href="dazl.util.html"/>
         <link rel="prev" title="dazl.protocols package" href="dazl.protocols.html"/> 
@@ -117,11 +117,11 @@ return a new party on every invocation.</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>project_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.9)"><em>os.PathLike</em></a>) – The root project directory for your Daml project. If supplied, the DAR from this project is
+<li><p><strong>project_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.10)"><em>os.PathLike</em></a>) – The root project directory for your Daml project. If supplied, the DAR from this project is
 automatically uploaded like <code class="docutils literal notranslate"><span class="pre">daml</span> <span class="pre">start</span></code> does. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, an empty sandbox is started and
 you must supply your own DAR.</p></li>
-<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The Daml Connect version to use.</p></li>
-<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><em>datetime.timedelta</em></a>) – The amount of time to wait for a Sandbox to start before giving up. The defualt is 10 seconds.</p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The Daml Connect version to use.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.10)"><em>datetime.timedelta</em></a>) – The amount of time to wait for a Sandbox to start before giving up. The defualt is 10 seconds.</p></li>
 </ul>
 </dd>
 </dl>
@@ -142,20 +142,20 @@ ask a token granter for an appropriate token for the newly allocated party.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The URL of the ledger to connect to. This ledger MUST NOT require authentication!</p></li>
-<li><p><strong>read_as</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – Extra parties to for which read-as access should be granted.</p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The URL of the ledger to connect to. This ledger MUST NOT require authentication!</p></li>
+<li><p><strong>read_as</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Extra parties to for which read-as access should be granted.</p></li>
 <li><p><strong>act_as</strong> – Extra parties to for which act-as access should be granted. The created party is added to
 this list.</p></li>
-<li><p><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the created connection should have “admin” rights; otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>. Note
+<li><p><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the created connection should have “admin” rights; otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>. Note
 that in order to allocate parties, an initial connection with admin rights is ALWAYS
 created, and the value of this call only affects the returned connection.</p></li>
-<li><p><strong>ledger_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The ledger ID to connect to. As with the <code class="docutils literal notranslate"><span class="pre">connect</span></code> api, if the target is the gRPC Ledger
+<li><p><strong>ledger_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The ledger ID to connect to. As with the <code class="docutils literal notranslate"><span class="pre">connect</span></code> api, if the target is the gRPC Ledger
 API, then supplying this field is optional, and with an HTTP JSON API server, this field
 must be supplied.</p></li>
-<li><p><strong>dar</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a><em> or </em><em>PathLike</em><em> or </em><em>BinaryIO</em>) – A path to a file, the contents of the file (as <code class="docutils literal notranslate"><span class="pre">bytes</span></code>), or a byte buffer that point to a
+<li><p><strong>dar</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><em>bytes</em></a><em> or </em><em>PathLike</em><em> or </em><em>BinaryIO</em>) – A path to a file, the contents of the file (as <code class="docutils literal notranslate"><span class="pre">bytes</span></code>), or a byte buffer that point to a
 DAR that should also be uploaded.</p></li>
-<li><p><strong>party_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of parties (and connections) to create.</p></li>
-<li><p><strong>identifier_hint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – A hint to the backing participant. Note that the Daml ledger is free to ignore this
+<li><p><strong>party_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The number of parties (and connections) to create.</p></li>
+<li><p><strong>identifier_hint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A hint to the backing participant. Note that the Daml ledger is free to ignore this
 hint entirely. If <cite>party_count</cite> is greater than 1, then</p></li>
 <li><p><strong>display_name</strong> – A human-readable name that corresponds to the allocated <code class="docutils literal notranslate"><span class="pre">Party</span></code>.</p></li>
 </ul>
@@ -177,7 +177,7 @@ objects.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.12',
+            VERSION:'7.5.13',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
