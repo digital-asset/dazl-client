@@ -13,13 +13,14 @@ from grpc import ChannelConnectivity
 from grpc.aio import Channel, UnaryStreamCall
 
 from .. import aio
+from ... import LOG
 from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...damlast.util import is_match
 from ...prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party
 from ...query import Filter, Queries, Query, parse_query
-from .._offsets import UNTIL_END, LedgerOffsetRange, from_offset_until_forever
+from .._offsets import END, UNTIL_END, End, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
 from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
@@ -455,7 +456,12 @@ class Connection(aio.Connection):
     # region Read API
 
     def query(
-        self, __template_id: Union[str, TypeConName] = "*", __query: Query = None
+        self,
+        __template_id: Union[str, TypeConName] = "*",
+        __query: Query = None,
+        *,
+        begin_offset: Optional[str] = None,
+        end_offset: Optional[str] = None,
     ) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
@@ -468,12 +474,25 @@ class Connection(aio.Connection):
             The name of the template for which to fetch contracts.
         :param __query:
             A filter to apply to the set of returned contracts.
+        :param begin_offset:
+            The starting offset at which to read an active contract set. If ``None``, contracts
+            are read from the beginning, and using the Active Contract Set Service instead of the
+            Transaction Service.
+        :param end_offset:
+            The ending offset. If ``None``, contracts are read until the end of the stream.
+            In order to read indefinitely, use :meth:`stream` instead.
         """
+        offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
         return QueryStream(
-            self, parse_query({__template_id: __query}, server_side_filters=False), UNTIL_END
+            self, parse_query({__template_id: __query}, server_side_filters=False), offset
         )
 
-    def query_many(self, *queries: Queries) -> "QueryStream":
+    def query_many(
+        self,
+        *queries: Queries,
+        begin_offset: Optional[str] = None,
+        end_offset: Optional[str] = None,
+    ) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
 
@@ -483,8 +502,16 @@ class Connection(aio.Connection):
 
         :param queries:
             A map of template IDs to filter to apply to the set of returned contracts.
+        :param begin_offset:
+            The starting offset at which to read an active contract set. If ``None``, contracts
+            are read from the beginning, and using the Active Contract Set Service instead of the
+            Transaction Service.
+        :param end_offset:
+            The ending offset. If ``None``, contracts are read until the end of the stream.
+            In order to read indefinitely, use :meth:`stream_many` instead.
         """
-        return QueryStream(self, parse_query(*queries, server_side_filters=False), UNTIL_END)
+        offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
+        return QueryStream(self, parse_query(*queries, server_side_filters=False), offset)
 
     def stream(
         self,
@@ -643,8 +670,10 @@ class QueryStream(aio.QueryStreamBase):
             filters_by_party = {party: filters for party in self.conn.config.access.read_as}
             tx_filter_pb = lapipb.TransactionFilter(filters_by_party=filters_by_party)
 
-            offset = None
-            if self._offset_range.begin is None:
+            offset = self._offset_range.begin
+            if offset:
+                log.debug("Skipped reading from the ACS because begin offset is %r", offset)
+            else:
                 # when starting from the beginning of the ledger, the Active Contract Set service
                 # lets us catch up more quickly than having to parse every create/archive event
                 # ourselves
@@ -658,31 +687,30 @@ class QueryStream(aio.QueryStreamBase):
                     else:
                         warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
                     yield event
-            else:
-                log.debug(
-                    "Skipped reading from the ACS because begin offset is %r",
-                    self._offset_range.begin,
-                )
 
-            if self._offset_range != UNTIL_END:
-                # now start returning events as they come off the transaction stream; note this
-                # stream will never naturally close, so it's on the caller to call close() or to
-                # otherwise exit our current context
-                log.debug("Reading a transaction stream: %s", self._offset_range)
-                async for event in self._tx_events(tx_filter_pb, offset):
-                    if isinstance(event, CreateEvent):
-                        await self._emit_create(event)
-                    elif isinstance(event, ArchiveEvent):
-                        await self._emit_archive(event)
-                    elif isinstance(event, Boundary):
-                        await self._emit_boundary(event)
-                    else:
-                        warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
-                    yield event
-            else:
-                log.debug(
-                    "Not reading from transaction stream because we were only asked for a snapshot."
-                )
+                # when reading from the Active Contract Set service, if we're supposed to stop
+                # at "the end", then the Active Contract Set data is all that we'll return
+                if self._offset_range.end == END:
+                    log.debug(
+                        "Not reading from transaction stream because we were only asked for a snapshot."
+                    )
+                    return
+
+            # now start returning events as they come off the transaction stream; note this
+            # stream will never naturally close, so it's on the caller to call close() or to
+            # otherwise exit our current context
+            log.debug("Reading a transaction stream: %s", self._offset_range)
+            async for event in self._tx_events(tx_filter_pb, offset, self._offset_range.end):
+                log.debug("Received an event: %s", event)
+                if isinstance(event, CreateEvent):
+                    await self._emit_create(event)
+                elif isinstance(event, ArchiveEvent):
+                    await self._emit_archive(event)
+                elif isinstance(event, Boundary):
+                    await self._emit_boundary(event)
+                else:
+                    warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
+                yield event
 
     async def _acs_events(
         self, filter_pb: lapipb.TransactionFilter
@@ -696,16 +724,25 @@ class QueryStream(aio.QueryStreamBase):
 
         offset = None
         async for response in response_stream:
+            LOG.debug(
+                "ACS start (offset %r, %d event(s))",
+                response.offset,
+                len(response.active_contracts),
+            )
             for event in response.active_contracts:
                 c_evt = await self.conn.codec.decode_created_event(event)
                 if self._is_match(c_evt):
                     yield c_evt
             # for ActiveContractSetResponse messages, only the last offset is actually relevant
+            LOG.debug("ACS end (offset %r)", response.offset)
             offset = response.offset
         yield Boundary(offset)
 
     async def _tx_events(
-        self, filter_pb: lapipb.TransactionFilter, begin_offset: Optional[str]
+        self,
+        filter_pb: lapipb.TransactionFilter,
+        begin_offset: Optional[str],
+        end_offset: "Union[None, str, End]",
     ) -> AsyncIterable[Union[CreateEvent, ArchiveEvent, Boundary]]:
         stub = lapipb.TransactionServiceStub(self.conn.channel)
 
@@ -713,6 +750,7 @@ class QueryStream(aio.QueryStreamBase):
             ledger_id=self.conn.config.access.ledger_id,
             filter=filter_pb,
             begin=self.conn.codec.encode_begin_offset(begin_offset),
+            end=self.conn.codec.encode_end_offset(end_offset),
         )
 
         self._response_stream = response_stream = stub.GetTransactions(request)

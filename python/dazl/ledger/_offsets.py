@@ -10,6 +10,8 @@ from typing import Any, Optional, Union
 
 __all__ = [
     "LedgerOffsetRange",
+    "End",
+    "END",
     "UNTIL_END",
     "FROM_BEGINNING_UNTIL_FOREVER",
     "from_offset_until_forever",
@@ -20,6 +22,8 @@ class End:
     """
     Marker object that denotes the current end of the ledger.
     """
+
+    __slots__ = ()
 
     def __hash__(self):
         return 0
@@ -39,7 +43,7 @@ class LedgerOffsetRange:
     so this class actually represents the commonality between these two interfaces.
     """
 
-    def __init__(self, __begin: "Union[None, str]", __end: "Union[None, End]"):
+    def __init__(self, __begin: "Union[None, str]", __end: "Union[None, str, End]"):
         """
         Initialize a :class:`LedgerOffsetRange`.
 
@@ -48,9 +52,11 @@ class LedgerOffsetRange:
             Otherwise, must be a legal ledger offset.
         :param __end:
             The end of the stream. If ``None``, then keep reading from the stream forever; if
-            ``END``, then terminate when reaching the _current_ end of stream. Note that offsets
-            are *not* allowed here, as the HTTP JSON API does not provide a mechanism for reading
-            *to* a specific transaction offset.
+            ``END``, then terminate when reaching the _current_ end of stream.
+
+            Note that offsets are only allowed here on the gRPC Ledger API; they are *not*
+            allowed here on the HTTP JSON API does not provide a mechanism for reading *to* a
+            specific transaction offset.
         """
         self.begin = __begin
         self.end = __end
@@ -64,6 +70,9 @@ class LedgerOffsetRange:
 
     def __hash__(self):
         return hash(self.begin) ^ hash(self.end)
+
+    def __repr__(self):
+        return f"({self.begin}, {self.end})"
 
 
 UNTIL_END = LedgerOffsetRange(None, END)
