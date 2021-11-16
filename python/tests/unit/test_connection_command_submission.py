@@ -42,3 +42,37 @@ async def test_exercise_by_key(sandbox):
         )
 
         logging.info("Choice result: %r", result.result)
+
+
+@pytest.mark.asyncio
+async def test_create_and_exercise(sandbox):
+    async with connect_with_new_party(url=sandbox, dar=KitchenSink) as p:
+        result = await p.connection.create_and_exercise(
+            "KitchenSink.Retailer:Retailer",
+            {
+                "retailer": p.party,
+                "name": "Kitchen Sinks R Us",
+                "website": "kitchensinksrus.local",
+            },
+            "UpdateWebsite",
+            {"newWebsite": "kitchensinksrus.com"},
+        )
+
+        logging.info("Choice result: %r", result.result)
+
+
+@pytest.mark.asyncio
+async def test_create_and_exercise_unit_arg(sandbox):
+    async with connect_with_new_party(url=sandbox, dar=KitchenSink) as p:
+        result = await p.connection.create_and_exercise(
+            "KitchenSink.Retailer:Order",
+            {
+                "customer": p.party,
+                "payment": 0,
+                "retailer": p.party,
+                "expedite": False,
+            },
+            "MarkAsShipped",
+        )
+
+        logging.info("Choice result: %r", result.result)

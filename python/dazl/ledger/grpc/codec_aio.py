@@ -139,7 +139,7 @@ class Codec:
         item_type, _, choice = await self._look_up_choice(template_id, choice_name)
 
         payload_field, payload_pb = await self.encode_value(con(item_type), payload)
-        if payload_pb != "record":
+        if payload_field != "record":
             raise ValueError("unexpected non-record type when constructing payload")
         argument_field, argument_pb = await self.encode_value(choice.arg_binder.type, argument)
         cmd_pb = lapipb.CreateAndExerciseCommand(
