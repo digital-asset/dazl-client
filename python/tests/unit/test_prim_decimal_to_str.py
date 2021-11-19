@@ -1,3 +1,6 @@
+# Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 from decimal import Decimal
 
 from dazl.prim import decimal_to_str
