@@ -185,7 +185,7 @@ help:	## Show list of available make targets
 
 .PHONY: clean
 clean:  ## Clean everything.
-	rm -fr .cache dist target
+	rm -fr .cache dist target .venv $(shell find python -name '__pycache__' -type d)
 
 
 .PHONY: deps
