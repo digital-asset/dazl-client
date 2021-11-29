@@ -118,6 +118,7 @@ from logging import Logger
 from os import PathLike
 from typing import Collection, Optional, Union
 
+from ...damlast.lookup import MultiPackageLookup
 from ...prim import Party, TimeDeltaLike
 from .access import AccessConfig, PropertyBasedAccessConfig, TokenBasedAccessConfig, create_access
 from .argv import configure_parser
@@ -175,6 +176,7 @@ class Config:
         logger: Optional[Logger] = None,
         logger_name: Optional[str] = None,
         log_level: Optional[str] = None,
+        lookup: "Optional[MultiPackageLookup]" = None,
     ) -> "Config":
         """
         Create a :class:`Config` object from the supplied parameters.
@@ -305,6 +307,9 @@ class Config:
         :param log_level:
             The logging level for the logger. The default is ``warn``. Only used if ``logger`` is
             not provided.
+        :param lookup:
+            An alternate symbol table to use to store package information. You should not normally
+            need to set this value.
         """
         if logger is None:
             if not logger_name:
@@ -344,9 +349,16 @@ class Config:
             logger=logger,
         )
 
-        return cls(access_config, ssl_config, url_config, logger)
+        return cls(access_config, ssl_config, url_config, logger, lookup)
 
-    def __init__(self, access: AccessConfig, ssl: SSLConfig, url: URLConfig, logger: Logger):
+    def __init__(
+        self,
+        access: AccessConfig,
+        ssl: SSLConfig,
+        url: URLConfig,
+        logger: Logger,
+        lookup: "Optional[MultiPackageLookup]" = None,
+    ):
         """
         Initialize an instance of :class:`Config`.
         """
@@ -354,3 +366,4 @@ class Config:
         self.ssl = ssl
         self.url = url
         self.logger = logger
+        self.lookup = lookup

@@ -4,6 +4,7 @@
 from os import PathLike
 from typing import Collection, Optional, Union
 
+from ...damlast.lookup import MultiPackageLookup
 from ...prim import Party, TimeDeltaLike
 from .conn_aio import Connection
 
@@ -28,4 +29,5 @@ def connect(
     cert_key_file: "Optional[PathLike]" = None,
     connect_timeout: "Optional[TimeDeltaLike]" = None,
     enable_http_proxy: "bool" = True,
+    lookup: "Optional[MultiPackageLookup]" = None,
 ) -> Connection: ...

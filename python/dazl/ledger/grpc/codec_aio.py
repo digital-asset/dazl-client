@@ -106,7 +106,7 @@ class Codec:
         item_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)
         )
-        _, value = self._encode_context.convert(con(item_type), payload)
+        _, value = await self.encode_value(con(item_type), payload)
         return lapipb.CreateCommand(
             template_id=self.encode_identifier(item_type), create_arguments=value
         )

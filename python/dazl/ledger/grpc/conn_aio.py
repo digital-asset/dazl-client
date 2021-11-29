@@ -42,7 +42,7 @@ class Connection(aio.Connection):
         self._config = config
         self._logger = config.logger
         self._channel = create_channel(config)
-        self._codec = Codec(self)
+        self._codec = Codec(self, lookup=config.lookup)
 
     @property
     def config(self) -> Config:
