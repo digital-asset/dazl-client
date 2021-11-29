@@ -79,4 +79,4 @@ cache_dir = ".cache/pytest"
 log_cli = true
 log_cli_level = "DEBUG"
 junit_family = "xunit1"
-testpaths = ["python/tests/unit"]
+testpaths = ["python/tests/structure", "python/tests/unit"]

@@ -1,3 +1,6 @@
+# Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 from dazl.damlast.lookup import parse_type_con_name
 from dazl.query import EMPTY, Filter, parse_query
 import pytest
