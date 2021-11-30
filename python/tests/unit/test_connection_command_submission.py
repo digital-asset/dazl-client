@@ -31,6 +31,7 @@ async def test_exercise_by_key(sandbox):
                 "retailer": p.party,
                 "name": "Kitchen Sinks R Us",
                 "website": "kitchensinksrus.local",
+                "tags": {"map": {}},
             },
         )
 
@@ -53,6 +54,7 @@ async def test_create_and_exercise(sandbox):
                 "retailer": p.party,
                 "name": "Kitchen Sinks R Us",
                 "website": "kitchensinksrus.local",
+                "tags": {"map": {}},
             },
             "UpdateWebsite",
             {"newWebsite": "kitchensinksrus.com"},
