@@ -33,8 +33,9 @@ Connecting to a ledger, and printing out all create events that ``Alice`` can se
 
    async def main():
       async with dazl.connect(url='localhost:6865', read_as='Alice') as conn:
-         async for event in conn.creates():
-            print(event.contract_id, event.payload)
+         async with conn.query('*') as stream:
+            async for event in stream.creates():
+               print(event.contract_id, event.payload)
 
    # Python 3.7+ or later
    asyncio.run(main())

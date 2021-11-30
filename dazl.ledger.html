@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.13 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.5.15 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.ledger.aio" href="dazl.ledger.aio.html"/>
         <link rel="prev" title="dazl.damast" href="dazl.damlast.html"/> 
@@ -117,8 +117,9 @@
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
    <span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;localhost:6865&#39;</span><span class="p">,</span> <span class="n">read_as</span><span class="o">=</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-      <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">creates</span><span class="p">():</span>
-         <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">contract_id</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+      <span class="k">async</span> <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+         <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">creates</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">contract_id</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
 
 <span class="c1"># Python 3.7+ or later</span>
 <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
@@ -819,7 +820,7 @@ execution).</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.13',
+            VERSION:'7.5.15',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
