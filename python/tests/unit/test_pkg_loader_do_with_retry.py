@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+import logging
+
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef, TypeConName
 from dazl.damlast.errors import NameNotFoundError
@@ -13,8 +15,16 @@ import pytest
 from .dars import AllKindsOf
 
 ALL_KINDS_OF_PKG_REF = PackageRef(
-    "e32da8a173e9667e1cd6557a12bf3edbbb6e5a9eb017c3363280ba0b22100bc4"
+    "df817e6b917d544c4352a6872cc87b20631ac573ed9d8812ca3610acf62f32b0"
 )
+
+
+def test_pkg_ref_up_to_date():
+    from .dars import AllKindsOf
+
+    with DarFile(AllKindsOf) as dar:
+        logging.info("package IDs in AllKindsOf: %s", dar.package_ids())
+        assert ALL_KINDS_OF_PKG_REF in dar.package_ids()
 
 
 class PackageLoaderTest:

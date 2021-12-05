@@ -1,4 +1,4 @@
-sdk-version: 0.13.25
+sdk-version: 1.17.1
 name: hello-world
 source: src/daml
 version: 1.0.0
