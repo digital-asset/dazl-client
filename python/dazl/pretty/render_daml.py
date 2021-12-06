@@ -473,6 +473,9 @@ class DamlPrettyPrinter(PrettyPrintBase):
         elif PrimType.TEXTMAP == prim_type:
             return self._visit_type_app(("TextMap", *prim.args))
 
+        elif PrimType.GENMAP == prim_type:
+            return self._visit_type_app(("Map", *prim.args))
+
         elif PrimType.TYPE_REP == prim.prim:
             return "???"
 

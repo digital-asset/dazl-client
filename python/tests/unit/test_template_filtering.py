@@ -27,14 +27,13 @@ async def test_template_filtering(sandbox):
                 CreateCommand("AllParty:PrivateContract", {"someParty": party}),
                 CreateCommand("AllParty:PrivateContract", {"someParty": party}),
                 CreateCommand("Main:PostmanRole", {"postman": party}),
-                CreateCommand("Main:PostmanRole", {"postman": party}),
             ]
         )
 
-        # The ACS should only contain the five contracts we created: two from Post Office, and three
+        # The ACS should only contain the five contracts we created: one from Post Office, and three
         # from AllKindsOf.
         contracts = client.find_active("*")
-        assert len(contracts) == 5
+        assert len(contracts) == 4
 
     # Now create a new client to the same sandbox, but with less DARs
     async with async_network(url=sandbox, dars=[PostOffice]) as network:
@@ -46,4 +45,4 @@ async def test_template_filtering(sandbox):
         # The ACS should only contain the two contracts we created that were part of the Post Office
         # model.
         contracts = client.find_active("*")
-        assert len(contracts) == 2
+        assert len(contracts) == 1

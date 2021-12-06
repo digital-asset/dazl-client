@@ -4,12 +4,12 @@
 from dazl import LOG, async_network
 import pytest
 
-from .dars import PostOffice
+from .dars import Simple
 
 
 @pytest.mark.asyncio
 async def test_static_dump_and_tail(sandbox):
-    async with async_network(url=sandbox, dars=PostOffice) as network:
+    async with async_network(url=sandbox, dars=Simple) as network:
         client = network.aio_new_party()
         seen_contracts = []
 
@@ -27,6 +27,9 @@ async def test_static_dump_and_tail(sandbox):
         await client.ready()
 
         for i in range(0, 5):
-            await client.create("Main:PostmanRole", {"postman": client.party})
+            await client.create(
+                "Simple:OperatorNotification",
+                {"operator": client.party, "theObservers": [], "text": "Something"},
+            )
 
     assert len(seen_contracts) == 5

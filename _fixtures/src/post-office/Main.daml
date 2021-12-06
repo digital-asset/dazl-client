@@ -1,4 +1,6 @@
-daml 1.2
+-- Copyright (c) 2017-2021, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+-- SPDX-License-Identifier: Apache-2.0
+
 module Main where
 
 
@@ -9,6 +11,8 @@ template PostmanRole
     postman : Party
   where
     signatory postman
+    key postman : Party
+    maintainer key
     controller postman can
       nonconsuming InviteParticipant : ()
         with
@@ -200,3 +204,11 @@ template AcknowlegedLetter
     signatory receiver
 
     agreement (show sender) <> " sent" <> content <> " to " <> (show receiver) <> " at " <> (show receiverAddress)
+
+
+template PrivateNote
+  with
+    party : Party
+    text : Text
+  where
+    signatory party
