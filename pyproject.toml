@@ -15,7 +15,7 @@ packages = [{ include = "dazl", from = "python" }]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-aiohttp = { version = ">3.7.4", optional = true }
+aiohttp = { version = "*", optional = true }
 async_exit_stack = { version = "*", python = "~=3.6.0" }
 dataclasses = { version = "*", python = "~=3.6.0" }
 google-auth = { version = "*", optional = true }
