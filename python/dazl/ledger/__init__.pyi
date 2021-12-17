@@ -21,6 +21,7 @@ from typing import (
 
 from ..damlast import TypeConName
 from ..damlast.daml_lf_1 import PackageRef
+from ..damlast.lookup import SymbolLookup
 from ..prim import ContractData, ContractId, Party, TimeDeltaLike
 from ..query import Queries, Query
 from .aio import Connection as AioConnection, QueryStream as AioQueryStream
@@ -124,6 +125,7 @@ def connect(
     logger: Optional[Logger] = None,
     logger_name: Optional[str] = None,
     log_level: Optional[str] = None,
+    lookup: Optional[SymbolLookup] = None,
 ) -> AioConnection: ...
 
 # noinspection PyShadowingNames
@@ -153,6 +155,7 @@ def connect(
     logger: Optional[Logger] = None,
     logger_name: Optional[str] = None,
     log_level: Optional[str] = None,
+    lookup: Optional[SymbolLookup] = None,
 ) -> BlockingConnection: ...
 
 # noinspection PyShadowingNames
@@ -182,6 +185,7 @@ def connect(
     logger: Optional[Logger] = None,
     logger_name: Optional[str] = None,
     log_level: Optional[str] = None,
+    lookup: Optional[SymbolLookup] = None,
 ) -> Connection: ...
 
 class PackageService(Protocol):
