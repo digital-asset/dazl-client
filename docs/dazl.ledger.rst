@@ -271,6 +271,8 @@ Data Model
 | :class:`ExerciseByKeyCommand`     | exercise a choice on a contract identified by its contract   |
 |                                   | key                                                          |
 +-----------------------------------+--------------------------------------------------------------+
+| :class:`CommandMeta`              | additional fields that can accompany a command submission    |
++-----------------------------------+--------------------------------------------------------------+
 | Events and Responses                                                                             |
 +-----------------------------------+--------------------------------------------------------------+
 | :class:`CreateEvent`              | event raised when a contract is created, either as part of   |
@@ -477,6 +479,9 @@ can give you more information about what happened.
    :members:
 
 .. autoclass:: ExerciseByKeyCommand
+   :members:
+
+.. autoclass:: CommandMeta
    :members:
 
 Read-side types

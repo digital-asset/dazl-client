@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 import sys
-from typing import AbstractSet, Any, Iterator, Optional, Sequence, TypeVar, Union
+from typing import AbstractSet, Any, Collection, Iterator, Optional, Sequence, TypeVar, Union
 
 from .. import (
     Connection as _Connection,
@@ -9,7 +9,7 @@ from .. import (
     QueryStream as _QueryStream,
 )
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
-from ...prim import ContractData, ContractId
+from ...prim import ContractData, ContractId, Party
 from ...query import Queries, Query
 from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
 from .pkgloader import PackageLoader
@@ -39,6 +39,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> None: ...
     def create(
         self,
@@ -47,6 +49,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> CreateEvent: ...
     def exercise(
         self,
@@ -56,6 +60,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ExerciseResponse: ...
     def create_and_exercise(
         self,
@@ -66,6 +72,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ExerciseResponse: ...
     def exercise_by_key(
         self,
@@ -76,6 +84,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ExerciseResponse: ...
     def archive(
         self,
@@ -83,6 +93,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ArchiveEvent: ...
     def archive_by_key(
         self,
@@ -91,19 +103,34 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ArchiveEvent: ...
     def query(
-        self, __template_id: Union[str, TypeConName] = "*", __query: Query = None
+        self,
+        __template_id: Union[str, TypeConName] = "*",
+        __query: Query = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
     ) -> QueryStream: ...
-    def query_many(self, *queries: Queries) -> QueryStream: ...
+    def query_many(
+        self,
+        *queries: Queries,
+        read_as: Union[None, Party, Collection[Party]] = None,
+    ) -> QueryStream: ...
     def stream(
         self,
         __template_id: Union[str, TypeConName] = "*",
         __query: Query = None,
         *,
         offset: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
     ) -> QueryStream: ...
-    def stream_many(self, *queries: Queries, offset: Optional[str] = None) -> QueryStream: ...
+    def stream_many(
+        self,
+        *queries: Queries,
+        offset: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+    ) -> QueryStream: ...
     def allocate_party(
         self, *, identifier_hint: Optional[str] = None, display_name: Optional[str] = None
     ) -> PartyInfo: ...

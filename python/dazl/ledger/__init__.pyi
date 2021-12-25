@@ -211,6 +211,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> Union[CreateEvent, Awaitable[CreateEvent]]: ...
     def create_and_exercise(
         self,
@@ -221,6 +223,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def exercise(
         self,
@@ -230,6 +234,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def exercise_by_key(
         self,
@@ -240,6 +246,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def submit(
         self,
@@ -247,6 +255,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> Union[None, Awaitable[None]]: ...
     def archive(
         self,
@@ -254,6 +264,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> Union[ArchiveEvent, Awaitable[ArchiveEvent]]: ...
     def archive_by_key(
         self,
@@ -262,19 +274,35 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> Union[ArchiveEvent, Awaitable[ArchiveEvent]]: ...
     def query(
-        self, __template_id: Union[str, TypeConName] = "*", __query: Query = None
+        self,
+        __template_id: Union[str, TypeConName] = "*",
+        __query: Query = None,
+        *,
+        read_as: Union[None, Party, Collection[Party]] = None,
     ) -> QueryStream: ...
-    def query_many(self, *queries: Queries) -> QueryStream: ...
+    def query_many(
+        self,
+        *queries: Queries,
+        read_as: Union[None, Party, Collection[Party]],
+    ) -> QueryStream: ...
     def stream(
         self,
         __template_id: Union[str, TypeConName] = "*",
         __query: Query = None,
         *,
         offset: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
     ) -> QueryStream: ...
-    def stream_many(self, *queries: Queries, offset: Optional[str] = None) -> QueryStream: ...
+    def stream_many(
+        self,
+        *queries: Queries,
+        offset: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+    ) -> QueryStream: ...
     def allocate_party(
         self, *, identifier_hint: str = None, display_name: str = None
     ) -> Union[PartyInfo, Awaitable[PartyInfo]]: ...

@@ -6,7 +6,6 @@ This module contains the mapping between gRPC calls and Python/dazl types.
 
 import asyncio
 from typing import AbstractSet, Any, AsyncIterable, Collection, Mapping, Optional, Sequence, Union
-import uuid
 import warnings
 
 from grpc import ChannelConnectivity
@@ -18,10 +17,18 @@ from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...damlast.util import is_match
-from ...prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party
+from ...prim import ContractData, ContractId, Party, to_parties
 from ...query import Filter, Queries, Query, parse_query
-from .._offsets import END, UNTIL_END, End, LedgerOffsetRange, from_offset_until_forever
-from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
+from .._offsets import END, End, LedgerOffsetRange, from_offset_until_forever
+from ..api_types import (
+    ArchiveEvent,
+    Boundary,
+    Command,
+    CommandMeta,
+    CreateEvent,
+    ExerciseResponse,
+    PartyInfo,
+)
 from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
 from ..errors import ProtocolWarning, _allow_cancel, _translate_exceptions
@@ -34,8 +41,6 @@ __all__ = ["Connection", "QueryStream"]
 class Connection(aio.Connection):
     """
     An asynchronous (``asyncio``) connection to the Daml gRPC Ledger API.
-
-
     """
 
     def __init__(self, config: Config):
@@ -101,6 +106,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> "None":
         """
         Submit one or more commands to the Ledger API.
@@ -122,19 +129,11 @@ class Connection(aio.Connection):
 
         stub = lapipb.CommandServiceStub(self.channel)
 
-        commands_pb = await asyncio.gather(*map(self._codec.encode_command, __commands))
-        request = lapipb.SubmitAndWaitRequest(
-            commands=lapipb.Commands(
-                ledger_id=self._config.access.ledger_id,
-                application_id=self._config.access.application_name,
-                command_id=self._command_id(command_id),
-                workflow_id=self._workflow_id(workflow_id),
-                party=self._ensure_act_as(),
-                commands=commands_pb,
-                act_as=self._config.access.act_as,
-                read_as=self._config.access.read_only_as,
-            )
+        meta = self._command_meta(
+            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
         )
+        commands = await asyncio.gather(*map(self._codec.encode_command, __commands))
+        request = self._submit_and_wait_request(commands, meta)
         await stub.SubmitAndWait(request)
 
     async def create(
@@ -144,6 +143,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> CreateEvent:
         """
         Create a contract for a given template.
@@ -162,26 +163,24 @@ class Connection(aio.Connection):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The :class:`CreateEvent` that represents the contract that was successfully created.
         """
         stub = lapipb.CommandServiceStub(self.channel)
 
+        meta = self._command_meta(
+            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+        )
         commands = [
             lapipb.Command(create=await self._codec.encode_create_command(__template_id, __payload))
         ]
-        request = lapipb.SubmitAndWaitRequest(
-            commands=lapipb.Commands(
-                ledger_id=self._config.access.ledger_id,
-                application_id=self._config.access.application_name,
-                command_id=self._command_id(command_id),
-                workflow_id=self._workflow_id(workflow_id),
-                party=self._ensure_act_as(),
-                commands=commands,
-                act_as=self._config.access.act_as,
-                read_as=self._config.access.read_only_as,
-            )
-        )
+        request = self._submit_and_wait_request(commands, meta)
         response = await stub.SubmitAndWaitForTransaction(request)
 
         return await self._codec.decode_created_event(response.transaction.events[0].created)
@@ -194,6 +193,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ExerciseResponse:
         """
         Exercise a choice on a contract identified by its contract ID.
@@ -217,12 +218,21 @@ class Connection(aio.Connection):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
         stub = lapipb.CommandServiceStub(self.channel)
 
+        meta = self._command_meta(
+            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+        )
         commands = [
             lapipb.Command(
                 exercise=await self._codec.encode_exercise_command(
@@ -230,7 +240,7 @@ class Connection(aio.Connection):
                 )
             )
         ]
-        request = self._submit_and_wait_request(commands, workflow_id, command_id)
+        request = self._submit_and_wait_request(commands, meta)
         response = await stub.SubmitAndWaitForTransactionTree(request)
 
         return await self._codec.decode_exercise_response(response.transaction)
@@ -244,6 +254,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ExerciseResponse:
         """
         Exercise a choice on a newly-created contract, in a single transaction.
@@ -273,12 +285,21 @@ class Connection(aio.Connection):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
         stub = lapipb.CommandServiceStub(self.channel)
 
+        meta = self._command_meta(
+            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+        )
         commands = [
             lapipb.Command(
                 createAndExercise=await self._codec.encode_create_and_exercise_command(
@@ -286,7 +307,7 @@ class Connection(aio.Connection):
                 )
             )
         ]
-        request = self._submit_and_wait_request(commands, workflow_id, command_id)
+        request = self._submit_and_wait_request(commands, meta)
         response = await stub.SubmitAndWaitForTransactionTree(request)
 
         return await self._codec.decode_exercise_response(response.transaction)
@@ -300,6 +321,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> "ExerciseResponse":
         """
         Exercise a choice on a contract identified by its contract key.
@@ -328,12 +351,21 @@ class Connection(aio.Connection):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
         stub = lapipb.CommandServiceStub(self.channel)
 
+        meta = self._command_meta(
+            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+        )
         commands = [
             lapipb.Command(
                 exerciseByKey=await self._codec.encode_exercise_by_key_command(
@@ -341,7 +373,7 @@ class Connection(aio.Connection):
                 )
             )
         ]
-        request = self._submit_and_wait_request(commands, workflow_id, command_id)
+        request = self._submit_and_wait_request(commands, meta)
         response = await stub.SubmitAndWaitForTransactionTree(request)
 
         return await self._codec.decode_exercise_response(response.transaction)
@@ -352,6 +384,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ArchiveEvent:
         """
         Archive a choice on a contract identified by its contract ID.
@@ -365,12 +399,23 @@ class Connection(aio.Connection):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
         await self.exercise(
-            __contract_id, "Archive", workflow_id=workflow_id, command_id=command_id
+            __contract_id,
+            "Archive",
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
         )
         return ArchiveEvent(__contract_id)
 
@@ -381,6 +426,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ArchiveEvent:
         """
         Exercise a choice on a contract identified by its contract key.
@@ -399,56 +446,66 @@ class Connection(aio.Connection):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
         response = await self.exercise_by_key(
-            __template_id, "Archive", __key, workflow_id=workflow_id, command_id=command_id
+            __template_id,
+            "Archive",
+            __key,
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
         )
         return next(iter(event for event in response.events if isinstance(event, ArchiveEvent)))
-
-    def _ensure_act_as(self) -> Party:
-        act_as_party = next(iter(self._config.access.act_as), None)
-        if not act_as_party:
-            raise ValueError("current access rights do not include any act-as parties")
-        return act_as_party
-
-    @staticmethod
-    def _workflow_id(workflow_id: Optional[str]) -> Optional[str]:
-        if workflow_id:
-            if not LEDGER_STRING_REGEX.match(workflow_id):
-                raise ValueError("workflow_id must be a valid ledger string")
-            return workflow_id
-        else:
-            return None
-
-    @staticmethod
-    def _command_id(command_id: Optional[str]) -> str:
-        if command_id:
-            if not LEDGER_STRING_REGEX.match(command_id):
-                raise ValueError("command_id must be a valid ledger string")
-            return command_id
-        else:
-            return uuid.uuid4().hex
 
     def _submit_and_wait_request(
         self,
         commands: Collection[lapipb.Command],
-        workflow_id: Optional[str] = None,
-        command_id: Optional[str] = None,
+        meta: CommandMeta,
     ) -> lapipb.SubmitAndWaitRequest:
+        # this is support for versions of Daml Connect prior to 1.9.0
+        act_as = meta.act_as
+        if act_as is not None:
+            act_as_party = act_as[0]
+        else:
+            raise ValueError("current access rights do not include any act-as parties")
+
         return lapipb.SubmitAndWaitRequest(
             commands=lapipb.Commands(
                 ledger_id=self._config.access.ledger_id,
                 application_id=self._config.access.application_name,
-                command_id=self._command_id(command_id),
-                workflow_id=self._workflow_id(workflow_id),
-                party=self._ensure_act_as(),
+                command_id=meta.command_id,
+                workflow_id=meta.workflow_id,
+                party=act_as_party,
                 commands=commands,
-                act_as=self._config.access.act_as,
-                read_as=self._config.access.read_only_as,
+                act_as=meta.act_as,
+                read_as=meta.read_as,
             )
+        )
+
+    def _command_meta(
+        self,
+        *,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+        act_as: Union[None, Party, Collection[Party]] = None,
+    ):
+        read_as = self._read_as(read_as)
+        if act_as is None:
+            act_as = self._config.access.act_as
+
+        return CommandMeta(
+            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
         )
 
     # endregion
@@ -462,6 +519,7 @@ class Connection(aio.Connection):
         *,
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
     ) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
@@ -481,10 +539,16 @@ class Connection(aio.Connection):
         :param end_offset:
             The ending offset. If ``None``, contracts are read until the end of the stream.
             In order to read indefinitely, use :meth:`stream` instead.
+        :param read_as:
+            An optional set of read-as parties to use to submit this query. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         """
         offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
         return QueryStream(
-            self, parse_query({__template_id: __query}, server_side_filters=False), offset
+            self,
+            parse_query({__template_id: __query}, server_side_filters=False),
+            offset,
+            self._read_as(read_as),
         )
 
     def query_many(
@@ -492,6 +556,7 @@ class Connection(aio.Connection):
         *queries: Queries,
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
     ) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
@@ -509,9 +574,14 @@ class Connection(aio.Connection):
         :param end_offset:
             The ending offset. If ``None``, contracts are read until the end of the stream.
             In order to read indefinitely, use :meth:`stream_many` instead.
+        :param read_as:
+            An optional set of read-as parties to use to submit this query. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         """
         offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
-        return QueryStream(self, parse_query(*queries, server_side_filters=False), offset)
+        return QueryStream(
+            self, parse_query(*queries, server_side_filters=False), offset, self._read_as(read_as)
+        )
 
     def stream(
         self,
@@ -519,6 +589,7 @@ class Connection(aio.Connection):
         __query: Query = None,
         *,
         offset: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
     ) -> "QueryStream":
         """
         Stream create/archive events.
@@ -538,14 +609,23 @@ class Connection(aio.Connection):
         :param offset:
             An optional offset at which to start receiving events. If ``None``, start from the
             beginning.
+        :param read_as:
+            An optional set of read-as parties to use to submit this query. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         """
         return QueryStream(
             self,
             parse_query({__template_id: __query}, server_side_filters=False),
             from_offset_until_forever(offset),
+            self._read_as(read_as),
         )
 
-    def stream_many(self, *queries: Queries, offset: Optional[str] = None) -> "QueryStream":
+    def stream_many(
+        self,
+        *queries: Queries,
+        offset: Optional[str] = None,
+        read_as: Union[None, Party, Collection[Party]] = None,
+    ) -> "QueryStream":
         """
         Stream create/archive events from more than one template ID in the same stream.
 
@@ -562,12 +642,22 @@ class Connection(aio.Connection):
         :param offset:
             An optional offset at which to start receiving events. If ``None``, start from the
             beginning.
+        :param read_as:
+            An optional set of read-as parties to use to submit this query. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         """
         return QueryStream(
             self,
             parse_query(*queries, server_side_filters=False),
             from_offset_until_forever(offset),
+            self._read_as(read_as),
         )
+
+    def _read_as(self, read_as: Union[None, Party, Collection[Party]] = None) -> Collection[Party]:
+        if read_as is None:
+            return self.config.access.read_as
+        else:
+            return to_parties(read_as)
 
     # endregion
 
@@ -626,10 +716,12 @@ class QueryStream(aio.QueryStreamBase):
         conn: Connection,
         filters: Optional[Mapping[TypeConName, Filter]],
         offset_range: LedgerOffsetRange,
+        read_as: Collection[Party],
     ):
         self.conn = conn
         self._filters = filters
         self._offset_range = offset_range
+        self._read_as = read_as
         self._response_stream = None  # type: Optional[UnaryStreamCall]
         self._closed = False
 
@@ -667,7 +759,7 @@ class QueryStream(aio.QueryStreamBase):
         log = self.conn.config.logger
         async with _translate_exceptions(self.conn), self, _allow_cancel(lambda: self._closed):
             filters = await self.conn.codec.encode_filters(self._filters)
-            filters_by_party = {party: filters for party in self.conn.config.access.read_as}
+            filters_by_party = {party: filters for party in self._read_as}
             tx_filter_pb = lapipb.TransactionFilter(filters_by_party=filters_by_party)
 
             offset = self._offset_range.begin
