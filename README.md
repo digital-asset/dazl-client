@@ -6,7 +6,7 @@ dazl
 <img src="https://circleci.com/gh/digital-asset/dazl-client.svg?style=svg">
 </a>
 
-Copyright (c) 2017-2021 Digital Asset (Switzerland) GmbH and/or its affiliates. All Rights Reserved.
+Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 
 
