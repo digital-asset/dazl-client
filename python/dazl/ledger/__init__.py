@@ -62,10 +62,14 @@ def connect(*, blocking=False, **kwargs):
     from .grpc.conn_aio import Connection as GrpcConnection
 
     if blocking:
-        raise ValueError("blocking connections are not currently supported")
+        from .blocking._aiowrapper import ConnectionThunk
 
-    cfg = Config.create(**kwargs)
-    return GrpcConnection(cfg)
+        return ConnectionThunk(lambda: GrpcConnection(Config.create(**kwargs)))
+    else:
+        cfg = Config.create(**kwargs)
+        conn = GrpcConnection(cfg)
+
+    return conn
 
 
 class PackageService(Protocol):
