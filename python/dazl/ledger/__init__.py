@@ -11,6 +11,7 @@ from .api_types import (
     ArchiveEvent,
     Boundary,
     Command,
+    CommandMeta,
     CreateAndExerciseCommand,
     CreateCommand,
     CreateEvent,
@@ -34,6 +35,7 @@ __all__ = [
     "ArchiveEvent",
     "Boundary",
     "Command",
+    "CommandMeta",
     "CreateAndExerciseCommand",
     "CreateCommand",
     "CreateEvent",
@@ -151,7 +153,15 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
-    def submit(self, __commands, *, workflow_id=None, command_id=None):
+    def submit(
+        self,
+        __commands,
+        *,
+        workflow_id=None,
+        command_id=None,
+        read_as=None,
+        act_as=None,
+    ):
         """
         Submit one or more commands to the Ledger API.
 
@@ -179,10 +189,25 @@ class Connection(PackageService, Protocol):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         """
         raise NotImplementedError
 
-    def create(self, __template_id, __payload, *, workflow_id, command_id):
+    def create(
+        self,
+        __template_id,
+        __payload,
+        *,
+        workflow_id=None,
+        command_id=None,
+        read_as=None,
+        act_as=None,
+    ):
         """
         Create a contract for a given template.
 
@@ -200,12 +225,28 @@ class Connection(PackageService, Protocol):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The :class:`CreateEvent` that represents the contract that was successfully created.
         """
         raise NotImplementedError
 
-    def exercise(self, __contract_id, __choice_name, __argument, *, workflow_id, command_id):
+    def exercise(
+        self,
+        __contract_id,
+        __choice_name,
+        __argument,
+        *,
+        workflow_id=None,
+        command_id=None,
+        read_as=None,
+        act_as=None,
+    ):
         """
         Exercise a choice on a contract identified by its contract ID.
 
@@ -228,6 +269,12 @@ class Connection(PackageService, Protocol):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -242,7 +289,9 @@ class Connection(PackageService, Protocol):
         __argument=None,
         *,
         workflow_id=None,
-        command_id=None
+        command_id=None,
+        read_as=None,
+        act_as=None,
     ):
         """
         Exercise a choice on a newly-created contract, in a single transaction.
@@ -272,6 +321,12 @@ class Connection(PackageService, Protocol):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -279,7 +334,16 @@ class Connection(PackageService, Protocol):
         raise NotImplementedError
 
     def exercise_by_key(
-        self, __template_id, __choice_name, __key, __argument, *, workflow_id=None, command_id=None
+        self,
+        __template_id,
+        __choice_name,
+        __key,
+        __argument,
+        *,
+        workflow_id=None,
+        command_id=None,
+        read_as=None,
+        act_as=None,
     ):
         """
         Exercise a choice on a contract identified by its contract key.
@@ -308,13 +372,27 @@ class Connection(PackageService, Protocol):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
         raise NotImplementedError
 
-    def archive(self, __contract_id, *, workflow_id=None, command_id=None):
+    def archive(
+        self,
+        __contract_id,
+        *,
+        workflow_id=None,
+        command_id=None,
+        read_as=None,
+        act_as=None,
+    ):
         """
         Archive a choice on a contract identified by its contract ID.
 
@@ -327,13 +405,28 @@ class Connection(PackageService, Protocol):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
         raise NotImplementedError
 
-    def archive_by_key(self, __template_id, __key, *, workflow_id=None, command_id=None):
+    def archive_by_key(
+        self,
+        __template_id,
+        __key,
+        *,
+        workflow_id=None,
+        command_id=None,
+        read_as=None,
+        act_as=None,
+    ):
         """
         Exercise a choice on a contract identified by its contract key.
 
@@ -351,13 +444,19 @@ class Connection(PackageService, Protocol):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param read_as:
+            An optional set of read-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
+        :param act_as:
+            An optional set of act-as parties to use to submit this command. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
         raise NotImplementedError
 
-    def query(self, __template_id="*", __query=None):
+    def query(self, __template_id="*", __query=None, *, read_as=None):
         """
         Return the create events from the active contract set service as a stream.
 
@@ -375,13 +474,16 @@ class Connection(PackageService, Protocol):
 
             Note that future versions of dazl reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
+        :param read_as:
+            An optional set of read-as parties to use to submit this query. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         :return:
             A query stream that iterates over the :class:`CreateEvent` objects of the Active
             Contract Set, and terminates.
         """
         raise NotImplementedError
 
-    def query_many(self, *q):
+    def query_many(self, *q, read_as=None):
         """
         Return the create events from the active contract set service as a stream.
 
@@ -408,7 +510,7 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
-    def stream(self, __template_id="*", __query=None, *, offset=None):
+    def stream(self, __template_id="*", __query=None, *, offset=None, read_as=None):
         """
         Stream create/archive events.
 
@@ -433,10 +535,13 @@ class Connection(PackageService, Protocol):
         :param offset:
             An optional offset at which to start receiving events. If ``None``, start from the
             beginning.
+        :param read_as:
+            An optional set of read-as parties to use to submit this query. Note that for a
+            ledger with authorization, these parties must be a subset of the parties in the token.
         """
         raise NotImplementedError
 
-    def stream_many(self, *q, offset=None):
+    def stream_many(self, *q, offset=None, read_as=None):
         """
         Stream create/archive events from more than one template ID in the same stream.
 

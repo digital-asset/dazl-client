@@ -12,16 +12,18 @@ from typing import (
     Sequence,
     Union,
 )
+import uuid
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
-from ..prim import ContractData, ContractId, Party
+from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_parties
 from ..util.typing import safe_cast
 
 __all__ = [
     "ArchiveEvent",
     "Boundary",
     "Command",
+    "CommandMeta",
     "CreateAndExerciseCommand",
     "CreateCommand",
     "CreateEvent",
@@ -319,6 +321,75 @@ class ExerciseByKeyCommand(Command):
 
     def __repr__(self):
         return f"ExerciseByKeyCommand({self.template_id}, {self.key}, {self.choice!r}, {self.argument})"
+
+
+class CommandMeta:
+    """
+    Additional fields that accompany a command submission.
+
+    .. py:attribute:: workflow_id
+        :type: str | None
+
+        An optional workflow ID.
+
+    .. py:attribute:: command_id
+        :type: str | None
+
+        An optional command ID. If unspecified, a random one will be created.
+
+    .. py:attribute:: read_as
+        :type: Collection[Party] | None
+
+        An optional set of read-as parties to use to submit this command. Note that for a
+        ledger with authorization, these parties must be a subset of the parties in the token.
+
+    .. py:attribute:: act_as
+        :type: Collection[Party] | None
+
+        An optional set of act-as parties to use to submit this command. Note that for a
+        ledger with authorization, these parties must be a subset of the parties in the token.
+    """
+
+    __slots__ = "workflow_id", "command_id", "read_as", "act_as"
+
+    if TYPE_CHECKING:
+        workflow_id: "Optional[str]"
+        command_id: "Optional[str]"
+        read_as: "Optional[Sequence[Party]]"
+        act_as: "Optional[Sequence[Party]]"
+
+    def __init__(
+        self,
+        workflow_id: "Optional[str]",
+        command_id: "Optional[str]",
+        read_as: "Union[None, Party, Collection[Party]]",
+        act_as: "Union[None, Party, Collection[Party]]",
+    ):
+        if workflow_id:
+            if not LEDGER_STRING_REGEX.match(workflow_id):
+                raise ValueError("workflow_id must be a valid ledger string")
+        else:
+            workflow_id = None
+
+        if command_id:
+            if not LEDGER_STRING_REGEX.match(command_id):
+                raise ValueError("command_id must be a valid ledger string")
+        else:
+            command_id = uuid.uuid4().hex
+
+        object.__setattr__(self, "workflow_id", workflow_id)
+        object.__setattr__(self, "command_id", command_id)
+        object.__setattr__(self, "read_as", to_parties(read_as))
+        object.__setattr__(self, "act_as", to_parties(act_as))
+
+    def __eq__(self, other: Any) -> bool:
+        return (
+            isinstance(other, CommandMeta)
+            and self.workflow_id == other.workflow_id
+            and self.command_id == other.command_id
+            and self.read_as == other.read_as
+            and self.act_as == other.act_as
+        )
 
 
 class CreateEvent:
