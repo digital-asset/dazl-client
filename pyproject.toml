@@ -11,7 +11,7 @@ readme = 'README.md'
 repository = "https://github.com/digital-asset/dazl-client"
 homepage = "https://github.com/digital-asset/dazl-client"
 keywords = ["daml", "blockchain", "dlt", "distributed ledger", "digital asset"]
-packages = [{ include = "dazl", from = "python" }]
+packages = [{ include = "dazl", from = "python" }, { include = "_dazl_pb", from = "python" }]
 
 [tool.poetry.dependencies]
 python = "^3.6"
