@@ -5,8 +5,7 @@ cache_dir=.cache
 
 proto_dir := $(cache_dir)/protos
 python := poetry run python3
-# TODO: Is there a programmatic way to get this path?
-venv_site_packages := .venv/lib/python3.6/site-packages
+protoc := poetry run python3 -m _dazl_pb.protoc
 
 version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
 docs_src := $(shell find docs -name '*.rst') $(py_src)
@@ -58,7 +57,7 @@ $(go_src_gen_pb): $(go_src_gen_root)/%: $(go_tmp_gen_root)/% COPYRIGHT
 $(foreach d,$(proto_rel_pb),$(go_tmp_gen_root)/$(d:.proto=.pb.go)): .cache/witnesses/go-pb
 .cache/witnesses/go-pb: .cache/bin/protoc-gen-go $(proto_src_pb)
 	@mkdir -p $(go_tmp_gen_root)
-	PATH=.cache/bin:"${PATH}" protoc -I$(venv_site_packages) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative $(proto_src_pb)
+	PATH=.cache/bin:"${PATH}" $(protoc) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative $(proto_src_pb)
 
 # go: Protobuf generated code (gRPC)
 #  NOTE: Go's gRPC-generated code does NOT include a copyright, so we need to add that ourselves
@@ -69,7 +68,7 @@ $(go_src_gen_grpc): $(go_src_gen_root)/%: $(go_tmp_gen_root)/% COPYRIGHT
 $(foreach d,$(proto_rel_grpc),$(go_tmp_gen_root)/$(d:.proto=_grpc.pb.go)): .cache/witnesses/go-grpc
 .cache/witnesses/go-grpc: .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc $(proto_src_grpc)
 	@mkdir -p $(go_tmp_gen_root)
-	PATH=.cache/bin:"${PATH}" protoc -I$(venv_site_packages) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative --go-grpc_out=$(go_tmp_gen_root) --go-grpc_opt=paths=source_relative $(proto_src_grpc)
+	PATH=.cache/bin:"${PATH}" $(protoc) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative --go-grpc_out=$(go_tmp_gen_root) --go-grpc_opt=paths=source_relative $(proto_src_grpc)
 
 .cache/bin/protoc-gen-go:
 	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
@@ -142,7 +141,7 @@ $(py_src_gen_pb): $(py_src_gen_root)/%: $(py_tmp_gen_root)/% _build/python/rewri
 $(foreach d,$(proto_rel_pb),$(py_tmp_gen_root)/$(d:.proto=_pb2.py)): .cache/witnesses/python-pb
 .cache/witnesses/python-pb: poetry.lock $(proto_src_pb)
 	@mkdir -p $(@D) $(py_tmp_gen_root)
-	$(python) -m grpc_tools.protoc -I$(venv_site_packages) -I$(proto_dir) --python_out=$(py_tmp_gen_root) $(proto_src_pb)
+	$(protoc) -I$(proto_dir) --python_out=$(py_tmp_gen_root) $(proto_src_pb)
 
 # python: Protobuf generated code (gRPC)
 $(py_src_gen_grpc): $(py_src_gen_root)/%: $(py_tmp_gen_root)/% _build/python/rewrite_pb2.py COPYRIGHT
@@ -152,7 +151,7 @@ $(py_src_gen_grpc): $(py_src_gen_root)/%: $(py_tmp_gen_root)/% _build/python/rew
 $(foreach d,$(proto_rel_grpc),$(py_tmp_gen_root)/$(d:.proto=_pb2_grpc.py)): .cache/witnesses/python-grpc
 .cache/witnesses/python-grpc: poetry.lock $(proto_src_grpc)
 	@mkdir -p $(@D) $(py_tmp_gen_root)
-	$(python) -m grpc_tools.protoc -I$(venv_site_packages) -I$(proto_dir) --python_out=$(py_tmp_gen_root) --grpc_python_out=$(py_tmp_gen_root) $(proto_src_grpc)
+	$(protoc) -I$(proto_dir) --python_out=$(py_tmp_gen_root) --grpc_python_out=$(py_tmp_gen_root) $(proto_src_grpc)
 
 # python: witness that makes sure the current venv is up to date with our lock file
 .venv/poetry.lock: poetry.lock
