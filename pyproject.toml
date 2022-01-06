@@ -61,6 +61,7 @@ server = ["aiohttp"]
 
 [tool.poetry.scripts]
 dazl = 'dazl.cli:main'
+protoc-gen-dazl-python = '_dazl_pb.plugin_python:main'
 
 [tool.black]
 line-length = 100

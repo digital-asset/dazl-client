@@ -38,7 +38,7 @@ from google.protobuf.descriptor_pb2 import FileDescriptorSet
 from grpc_tools import protoc as _protoc
 import pkg_resources
 
-__all__ = ["main"]
+__all__ = ["main", "protoc_plugin", "run_plugin"]
 
 
 def main() -> "NoReturn":
