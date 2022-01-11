@@ -73,7 +73,7 @@ jobs:
       - run:
           name: Run Blackduck Detect
           command: |
-            bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) ci-build digitalasset_dazl master --logging.level.com.synopsys.integration=DEBUG
+            bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) ci-build digitalasset_dazl main --logging.level.com.synopsys.integration=DEBUG
           working_directory: python
           
 workflows:
