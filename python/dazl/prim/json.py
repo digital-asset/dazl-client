@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from datetime import date, datetime
+from decimal import Decimal
 import json
 
 from .contracts import ContractId
@@ -22,6 +23,8 @@ class JSONEncoder(json.JSONEncoder):
             return date_to_str(o)
         elif isinstance(o, ContractId):
             return o.value
+        elif isinstance(o, Decimal):
+            return str(o)
         elif isinstance(o, UnquotedDecimal):
             return UnquotedDecimal(o)
 
