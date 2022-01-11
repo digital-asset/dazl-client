@@ -1,16 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-version: 2
-jobs:
-  build:
-    docker:
-      # The browsers image has both Python and Java; we need both
-      - image: cimg/python:3.6.13-browsers
-        
-    resource_class: medium+
+commands:
+  restore_dazl_cache:
     steps:
-      - checkout
-
       - restore_cache:
           key: jq-{{ checksum ".circleci/install-jq" }}
       - run:
@@ -36,7 +28,18 @@ jobs:
       - save_cache:
           key: python-deps-{{ checksum "poetry.lock" }}
           paths:
-           - .venv
+           - .venv    
+
+jobs:
+  build:
+    docker:
+      # The browsers image has both Python and Java; we need both
+      - image: cimg/python:3.6.13-browsers
+        
+    resource_class: medium+
+    steps:
+      - checkout
+      - restore_dazl_cache
 
       - run:
           name: Python format checks
@@ -60,22 +63,23 @@ jobs:
       - image: cimg/python:3.6.13-browsers
     steps:
       - checkout
+      - restore_dazl_cache      
 
-      - restore_cache:
-          key: jq-{{ checksum ".circleci/install-jq" }}
       - run:
-          command: .circleci/install-jq
-      - save_cache:
-          key: jq-{{ checksum ".circleci/install-jq" }}
-          paths:
-           - /home/circleci/.jq
+          name: Python packaging
+          command: make build
 
       - run:
           name: Run Blackduck Detect
           command: |
-            bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) ci-build digitalasset_dazl master --logging.level.com.synopsys.integration=DEBUG
-          working_directory: python
-          
+            bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) \
+            ci-build ${CIRCLE_PROJECT_USERNAME}_${CIRCLE_PROJECT_REPONAME} ${CIRCLE_BRANCH} \
+            --detect.excluded.detector.types=GO_MOD \
+            --logging.level.com.synopsys.integration=DEBUG \
+            --detect.policy.check.fail.on.severities=MAJOR,CRITICAL,BLOCKER \
+            --detect.timeout=600
+            
+version: 2.1               
 workflows:
   version: 2
   build_and_test:
