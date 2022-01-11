@@ -78,6 +78,7 @@ jobs:
             --logging.level.com.synopsys.integration=DEBUG \
             --detect.policy.check.fail.on.severities=MAJOR,CRITICAL,BLOCKER \
             --detect.timeout=600
+            
 version: 2.1               
 workflows:
   version: 2
