@@ -1,6 +1,36 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 version: 2
+
+commands:
+    restore_dazl_cache:
+        steps:
+        - restore_cache:
+            key: jq-{{ checksum ".circleci/install-jq" }}
+        - run:
+            command: .circleci/install-jq
+        - save_cache:
+            key: jq-{{ checksum ".circleci/install-jq" }}
+            paths:
+            - /home/circleci/.jq
+
+        - restore_cache:
+            key: daml-{{ checksum ".circleci/install-daml" }}
+        - run:
+            command: .circleci/install-daml
+        - save_cache:
+            key: daml-{{ checksum ".circleci/install-daml" }}
+            paths:
+            - /home/circleci/.daml
+
+        - restore_cache:
+            key: python-deps-{{ checksum "poetry.lock" }}
+        - run:
+            command: poetry config virtualenvs.in-project true && make python-deps
+        - save_cache:
+            key: python-deps-{{ checksum "poetry.lock" }}
+            paths:
+            - .venv        
 jobs:
   build:
     docker:
@@ -10,34 +40,7 @@ jobs:
     resource_class: medium+
     steps:
       - checkout
-
-      - restore_cache:
-          key: jq-{{ checksum ".circleci/install-jq" }}
-      - run:
-          command: .circleci/install-jq
-      - save_cache:
-          key: jq-{{ checksum ".circleci/install-jq" }}
-          paths:
-           - /home/circleci/.jq
-
-      - restore_cache:
-          key: daml-{{ checksum ".circleci/install-daml" }}
-      - run:
-          command: .circleci/install-daml
-      - save_cache:
-          key: daml-{{ checksum ".circleci/install-daml" }}
-          paths:
-           - /home/circleci/.daml
-
-      - restore_cache:
-          key: python-deps-{{ checksum "poetry.lock" }}
-      - run:
-          command: poetry config virtualenvs.in-project true && make python-deps
-      - save_cache:
-          key: python-deps-{{ checksum "poetry.lock" }}
-          paths:
-           - .venv
-
+      - restore_dazl_cache
       - run:
           name: Python format checks
           command: make python-format-test
@@ -60,15 +63,11 @@ jobs:
       - image: cimg/python:3.6.13-browsers
     steps:
       - checkout
-
-      - restore_cache:
-          key: jq-{{ checksum ".circleci/install-jq" }}
+      - restore_dazl_cache
+      
       - run:
-          command: .circleci/install-jq
-      - save_cache:
-          key: jq-{{ checksum ".circleci/install-jq" }}
-          paths:
-           - /home/circleci/.jq
+          name: Python packaging
+          command: make build
 
       - run:
           name: Run Blackduck Detect
