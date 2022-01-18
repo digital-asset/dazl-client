@@ -26,7 +26,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\022CommandsOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n%com/daml/ledger/api/v1/commands.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"\x93\x05\n\x08\x43ommands\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12\x1f\n\x0bworkflow_id\x18\x02 \x01(\tR\nworkflowId\x12%\n\x0e\x61pplication_id\x18\x03 \x01(\tR\rapplicationId\x12\x1d\n\ncommand_id\x18\x04 \x01(\tR\tcommandId\x12\x14\n\x05party\x18\x05 \x01(\tR\x05party\x12;\n\x08\x63ommands\x18\x08 \x03(\x0b\x32\x1f.com.daml.ledger.api.v1.CommandR\x08\x63ommands\x12N\n\x12\x64\x65\x64uplication_time\x18\t \x01(\x0b\x32\x19.google.protobuf.DurationB\x02\x18\x01H\x00R\x11\x64\x65\x64uplicationTime\x12R\n\x16\x64\x65\x64uplication_duration\x18\x0f \x01(\x0b\x32\x19.google.protobuf.DurationH\x00R\x15\x64\x65\x64uplicationDuration\x12I\n\x13min_ledger_time_abs\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x10minLedgerTimeAbs\x12H\n\x13min_ledger_time_rel\x18\x0b \x01(\x0b\x32\x19.google.protobuf.DurationR\x10minLedgerTimeRel\x12\x15\n\x06\x61\x63t_as\x18\x0c \x03(\tR\x05\x61\x63tAs\x12\x17\n\x07read_as\x18\r \x03(\tR\x06readAs\x12#\n\rsubmission_id\x18\x0e \x01(\tR\x0csubmissionIdB\x16\n\x14\x64\x65\x64uplication_periodJ\x04\x08\x06\x10\x07J\x04\x08\x07\x10\x08\"\xd4\x02\n\x07\x43ommand\x12?\n\x06\x63reate\x18\x01 \x01(\x0b\x32%.com.daml.ledger.api.v1.CreateCommandH\x00R\x06\x63reate\x12\x45\n\x08\x65xercise\x18\x02 \x01(\x0b\x32\'.com.daml.ledger.api.v1.ExerciseCommandH\x00R\x08\x65xercise\x12T\n\rexerciseByKey\x18\x04 \x01(\x0b\x32,.com.daml.ledger.api.v1.ExerciseByKeyCommandH\x00R\rexerciseByKey\x12`\n\x11\x63reateAndExercise\x18\x03 \x01(\x0b\x32\x30.com.daml.ledger.api.v1.CreateAndExerciseCommandH\x00R\x11\x63reateAndExerciseB\t\n\x07\x63ommand\"\x9f\x01\n\rCreateCommand\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12I\n\x10\x63reate_arguments\x18\x02 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.RecordR\x0f\x63reateArguments\"\xd7\x01\n\x0f\x45xerciseCommand\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12\x1f\n\x0b\x63ontract_id\x18\x02 \x01(\tR\ncontractId\x12\x16\n\x06\x63hoice\x18\x03 \x01(\tR\x06\x63hoice\x12\x46\n\x0f\x63hoice_argument\x18\x04 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0e\x63hoiceArgument\"\xfd\x01\n\x14\x45xerciseByKeyCommand\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12@\n\x0c\x63ontract_key\x18\x02 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0b\x63ontractKey\x12\x16\n\x06\x63hoice\x18\x03 \x01(\tR\x06\x63hoice\x12\x46\n\x0f\x63hoice_argument\x18\x04 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0e\x63hoiceArgument\"\x8a\x02\n\x18\x43reateAndExerciseCommand\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12I\n\x10\x63reate_arguments\x18\x02 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.RecordR\x0f\x63reateArguments\x12\x16\n\x06\x63hoice\x18\x03 \x01(\tR\x06\x63hoice\x12\x46\n\x0f\x63hoice_argument\x18\x04 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0e\x63hoiceArgumentB\x96\x01\n\x16\x63om.daml.ledger.api.v1B\x12\x43ommandsOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n%com/daml/ledger/api/v1/commands.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"\xc8\x05\n\x08\x43ommands\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\x12\x1f\n\x0bworkflow_id\x18\x02 \x01(\tR\nworkflowId\x12%\n\x0e\x61pplication_id\x18\x03 \x01(\tR\rapplicationId\x12\x1d\n\ncommand_id\x18\x04 \x01(\tR\tcommandId\x12\x14\n\x05party\x18\x05 \x01(\tR\x05party\x12;\n\x08\x63ommands\x18\x08 \x03(\x0b\x32\x1f.com.daml.ledger.api.v1.CommandR\x08\x63ommands\x12N\n\x12\x64\x65\x64uplication_time\x18\t \x01(\x0b\x32\x19.google.protobuf.DurationB\x02\x18\x01H\x00R\x11\x64\x65\x64uplicationTime\x12R\n\x16\x64\x65\x64uplication_duration\x18\x0f \x01(\x0b\x32\x19.google.protobuf.DurationH\x00R\x15\x64\x65\x64uplicationDuration\x12\x33\n\x14\x64\x65\x64uplication_offset\x18\x10 \x01(\tH\x00R\x13\x64\x65\x64uplicationOffset\x12I\n\x13min_ledger_time_abs\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x10minLedgerTimeAbs\x12H\n\x13min_ledger_time_rel\x18\x0b \x01(\x0b\x32\x19.google.protobuf.DurationR\x10minLedgerTimeRel\x12\x15\n\x06\x61\x63t_as\x18\x0c \x03(\tR\x05\x61\x63tAs\x12\x17\n\x07read_as\x18\r \x03(\tR\x06readAs\x12#\n\rsubmission_id\x18\x0e \x01(\tR\x0csubmissionIdB\x16\n\x14\x64\x65\x64uplication_periodJ\x04\x08\x06\x10\x07J\x04\x08\x07\x10\x08\"\xd4\x02\n\x07\x43ommand\x12?\n\x06\x63reate\x18\x01 \x01(\x0b\x32%.com.daml.ledger.api.v1.CreateCommandH\x00R\x06\x63reate\x12\x45\n\x08\x65xercise\x18\x02 \x01(\x0b\x32\'.com.daml.ledger.api.v1.ExerciseCommandH\x00R\x08\x65xercise\x12T\n\rexerciseByKey\x18\x04 \x01(\x0b\x32,.com.daml.ledger.api.v1.ExerciseByKeyCommandH\x00R\rexerciseByKey\x12`\n\x11\x63reateAndExercise\x18\x03 \x01(\x0b\x32\x30.com.daml.ledger.api.v1.CreateAndExerciseCommandH\x00R\x11\x63reateAndExerciseB\t\n\x07\x63ommand\"\x9f\x01\n\rCreateCommand\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12I\n\x10\x63reate_arguments\x18\x02 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.RecordR\x0f\x63reateArguments\"\xd7\x01\n\x0f\x45xerciseCommand\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12\x1f\n\x0b\x63ontract_id\x18\x02 \x01(\tR\ncontractId\x12\x16\n\x06\x63hoice\x18\x03 \x01(\tR\x06\x63hoice\x12\x46\n\x0f\x63hoice_argument\x18\x04 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0e\x63hoiceArgument\"\xfd\x01\n\x14\x45xerciseByKeyCommand\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12@\n\x0c\x63ontract_key\x18\x02 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0b\x63ontractKey\x12\x16\n\x06\x63hoice\x18\x03 \x01(\tR\x06\x63hoice\x12\x46\n\x0f\x63hoice_argument\x18\x04 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0e\x63hoiceArgument\"\x8a\x02\n\x18\x43reateAndExerciseCommand\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12I\n\x10\x63reate_arguments\x18\x02 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.RecordR\x0f\x63reateArguments\x12\x16\n\x06\x63hoice\x18\x03 \x01(\tR\x06\x63hoice\x12\x46\n\x0f\x63hoice_argument\x18\x04 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0e\x63hoiceArgumentB\x96\x01\n\x16\x63om.daml.ledger.api.v1B\x12\x43ommandsOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_value__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,])
 
@@ -98,35 +98,42 @@ _COMMANDS = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='deduplicationDuration', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='min_ledger_time_abs', full_name='com.daml.ledger.api.v1.Commands.min_ledger_time_abs', index=8,
+      name='deduplication_offset', full_name='com.daml.ledger.api.v1.Commands.deduplication_offset', index=8,
+      number=16, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='deduplicationOffset', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='min_ledger_time_abs', full_name='com.daml.ledger.api.v1.Commands.min_ledger_time_abs', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='minLedgerTimeAbs', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='min_ledger_time_rel', full_name='com.daml.ledger.api.v1.Commands.min_ledger_time_rel', index=9,
+      name='min_ledger_time_rel', full_name='com.daml.ledger.api.v1.Commands.min_ledger_time_rel', index=10,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='minLedgerTimeRel', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='act_as', full_name='com.daml.ledger.api.v1.Commands.act_as', index=10,
+      name='act_as', full_name='com.daml.ledger.api.v1.Commands.act_as', index=11,
       number=12, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='actAs', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='read_as', full_name='com.daml.ledger.api.v1.Commands.read_as', index=11,
+      name='read_as', full_name='com.daml.ledger.api.v1.Commands.read_as', index=12,
       number=13, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='readAs', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='submission_id', full_name='com.daml.ledger.api.v1.Commands.submission_id', index=12,
+      name='submission_id', full_name='com.daml.ledger.api.v1.Commands.submission_id', index=13,
       number=14, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -150,7 +157,7 @@ _COMMANDS = _descriptor.Descriptor(
     fields=[]),
   ],
   serialized_start=167,
-  serialized_end=826,
+  serialized_end=879,
 )
 
 
@@ -207,8 +214,8 @@ _COMMAND = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=829,
-  serialized_end=1169,
+  serialized_start=882,
+  serialized_end=1222,
 )
 
 
@@ -246,8 +253,8 @@ _CREATECOMMAND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1172,
-  serialized_end=1331,
+  serialized_start=1225,
+  serialized_end=1384,
 )
 
 
@@ -299,8 +306,8 @@ _EXERCISECOMMAND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1334,
-  serialized_end=1549,
+  serialized_start=1387,
+  serialized_end=1602,
 )
 
 
@@ -352,8 +359,8 @@ _EXERCISEBYKEYCOMMAND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1552,
-  serialized_end=1805,
+  serialized_start=1605,
+  serialized_end=1858,
 )
 
 
@@ -405,8 +412,8 @@ _CREATEANDEXERCISECOMMAND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1808,
-  serialized_end=2074,
+  serialized_start=1861,
+  serialized_end=2127,
 )
 
 _COMMANDS.fields_by_name['commands'].message_type = _COMMAND
@@ -420,6 +427,9 @@ _COMMANDS.fields_by_name['deduplication_time'].containing_oneof = _COMMANDS.oneo
 _COMMANDS.oneofs_by_name['deduplication_period'].fields.append(
   _COMMANDS.fields_by_name['deduplication_duration'])
 _COMMANDS.fields_by_name['deduplication_duration'].containing_oneof = _COMMANDS.oneofs_by_name['deduplication_period']
+_COMMANDS.oneofs_by_name['deduplication_period'].fields.append(
+  _COMMANDS.fields_by_name['deduplication_offset'])
+_COMMANDS.fields_by_name['deduplication_offset'].containing_oneof = _COMMANDS.oneofs_by_name['deduplication_period']
 _COMMAND.fields_by_name['create'].message_type = _CREATECOMMAND
 _COMMAND.fields_by_name['exercise'].message_type = _EXERCISECOMMAND
 _COMMAND.fields_by_name['exerciseByKey'].message_type = _EXERCISEBYKEYCOMMAND

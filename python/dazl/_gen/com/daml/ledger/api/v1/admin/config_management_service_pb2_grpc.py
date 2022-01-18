@@ -13,7 +13,7 @@ class ConfigManagementServiceStub(object):
     """Status: experimental interface, will change before it is deemed production
     ready
 
-    Ledger configuration management service provides methods for the ledger administrator
+    The ledger configuration management service provides methods for the ledger administrator
     to change the current ledger configuration. The services provides methods to modify
     different aspects of the configuration.
     """
@@ -40,7 +40,7 @@ class ConfigManagementServiceServicer(object):
     """Status: experimental interface, will change before it is deemed production
     ready
 
-    Ledger configuration management service provides methods for the ledger administrator
+    The ledger configuration management service provides methods for the ledger administrator
     to change the current ledger configuration. The services provides methods to modify
     different aspects of the configuration.
     """
@@ -64,9 +64,10 @@ class ConfigManagementServiceServicer(object):
         does not match the current active configuration generation. The caller is expected
         to retry by again fetching current time model using 'GetTimeModel', applying changes
         and resubmitting.
-        - ``ABORTED``: if the request is rejected or times out. Note that a timed out request may
+        - ``DEADLINE_EXCEEDED``: if the request times out. Note that a timed out request may
         have still been committed to the ledger. Application should re-query the current
         time model before retrying.
+        - ``FAILED_PRECONDITION``: if the request is rejected.
         - ``UNIMPLEMENTED``: if this method is not supported by the backing ledger.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -97,7 +98,7 @@ class ConfigManagementService(object):
     """Status: experimental interface, will change before it is deemed production
     ready
 
-    Ledger configuration management service provides methods for the ledger administrator
+    The ledger configuration management service provides methods for the ledger administrator
     to change the current ledger configuration. The services provides methods to modify
     different aspects of the configuration.
     """

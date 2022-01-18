@@ -60,11 +60,15 @@ class CommandServiceServicer(object):
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
+        - ``NOT_FOUND``: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
+        due to for example contention on resources
+        - ``ALREADY_EXISTS`` if a resource is duplicated (e.g. contract key)
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+        - ``ABORTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+        - ``FAILED_PRECONDITION``: on consistency errors (e.g. the contract key has changed since the submission)
+        or if an interpretation error occurred
         - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
-        - ``ABORTED``: if a contract key is missing or duplicated due to for example contention on resources
+        - ``DEADLINE_EXCEEDED``: if the request failed to receive its completion within the predefined timeout.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -76,11 +80,15 @@ class CommandServiceServicer(object):
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
+        - ``NOT_FOUND``: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
+        due to for example contention on resources
+        - ``ALREADY_EXISTS`` if a resource is duplicated (e.g. contract key)
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+        - ``ABORTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+        - ``FAILED_PRECONDITION``: on consistency errors (e.g. the contract key has changed since the submission)
+        or if an interpretation error occurred
         - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
-        - ``ABORTED``: if a contract key is missing or duplicated due to for example contention on resources
+        - ``DEADLINE_EXCEEDED``: if the request failed to receive its completion within the predefined timeout.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -92,11 +100,15 @@ class CommandServiceServicer(object):
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
+        - ``NOT_FOUND``: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
+        due to for example contention on resources
+        - ``ALREADY_EXISTS`` if a resource is duplicated (e.g. contract key)
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+        - ``ABORTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+        - ``FAILED_PRECONDITION``: on consistency errors (e.g. the contract key has changed since the submission)
+        or if an interpretation error occurred
         - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
-        - ``ABORTED``: if a contract key is missing or duplicated due to for example contention on resources
+        - ``DEADLINE_EXCEEDED``: if the request failed to receive its completion within the predefined timeout.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -108,11 +120,15 @@ class CommandServiceServicer(object):
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
+        - ``NOT_FOUND``: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
+        due to for example contention on resources
+        - ``ALREADY_EXISTS`` if a resource is duplicated (e.g. contract key)
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``RESOURCE_EXHAUSTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+        - ``ABORTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
+        - ``FAILED_PRECONDITION``: on consistency errors (e.g. the contract key has changed since the submission)
+        or if an interpretation error occurred
         - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
-        - ``ABORTED``: if a contract key is missing or duplicated due to for example contention on resources
+        - ``DEADLINE_EXCEEDED``: if the request failed to receive its completion within the predefined timeout.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

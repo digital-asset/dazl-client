@@ -24,6 +24,7 @@ To create a Protobuf plugin in Python, define an entrypoint as so:
        return response
 """
 
+from functools import wraps
 import os
 from pathlib import Path
 import site
@@ -70,6 +71,7 @@ def protoc_plugin(
     program/script.
     """
 
+    @wraps(fn)
     def _body() -> "NoReturn":
         try:
             data = sys.stdin.buffer.read()
@@ -107,8 +109,6 @@ def run_plugin_built_in(
 
         # re-run the built-in code generator, but with the arguments that we were given
         invocation = [
-            "python3",
-            "-m",
             "_dazl_pb.protoc",
             f"--descriptor_set_in={input_file}",
             f"--{plugin_name}_out={output_dir}",
@@ -117,7 +117,7 @@ def run_plugin_built_in(
 
         exit_code = _main(invocation)
         if exit_code:
-            raise Exception(f"oh no {exit_code}")
+            raise Exception(f"failed to run {invocation} (exit code {exit_code})")
 
         files = [
             CodeGeneratorResponse.File(name=str(p.relative_to(output_dir)), content=p.read_text())
