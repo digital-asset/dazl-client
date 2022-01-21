@@ -574,6 +574,27 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
+    def get_user(self, user_id=None):
+        """
+        Get the user data of a specific user or the authenticated user.
+
+        :param user_id:
+            If supplied, the user whose data to retrieve. If unspecified, then the data for the
+            currently authenticated user will be retrieved.
+        :return:
+            Information about the specified :class:`User`.
+        """
+        raise NotImplementedError
+
+    def list_users(self):
+        """
+        List all existing users.
+
+        :return:
+            Information about all :class:`User`'s on the backing participant.
+        """
+        raise NotImplementedError
+
     def allocate_party(self, *, identifier_hint=None, display_name=None):
         """
         Allocate a new party.
@@ -611,6 +632,22 @@ class Connection(PackageService, Protocol):
 
             Note that future versions of dazl reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
+        """
+        raise NotImplementedError
+
+    def get_metering_report(self, from_, to=None, application_id=None):
+        """
+        Retrieve a metering report.
+
+        :param from_:
+            The from timestamp (inclusive).
+        :param to:
+            If specified, the to timestamp (exclusive). If not provided, the server will default to
+            its current time.
+        :param application_id:
+            If specified, the report will only be generated for the specified application.
+        :return:
+            A :class:`ParticipantMeteringReport`.
         """
         raise NotImplementedError
 

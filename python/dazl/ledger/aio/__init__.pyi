@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 import abc
+from datetime import datetime
 import sys
 from typing import (
     AbstractSet,
@@ -32,6 +33,7 @@ from ..api_types import (
     Command,
     CreateEvent,
     ExerciseResponse,
+    ParticipantMeteringReport,
     PartyInfo,
     SubmitResponse,
 )
@@ -195,6 +197,9 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> PartyInfo: ...
     async def list_known_parties(self) -> Sequence[PartyInfo]: ...
     async def upload_package(self, contents: bytes) -> None: ...
+    async def get_metering_report(
+        self, from_: datetime, to: Optional[datetime] = None, application_id: Optional[str] = None
+    ) -> ParticipantMeteringReport: ...
 
 # PyCharm doesn't know what to make of these overloads with respect to the parent protocol,
 # but mypy understands that these type signatures do not conflict with the parent base class

@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+from datetime import datetime
 import sys
 from typing import AbstractSet, Any, Collection, Iterator, Optional, Sequence, TypeVar, Union
 
@@ -11,7 +12,16 @@ from .. import (
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...prim import ContractData, ContractId, Party
 from ...query import Queries, Query
-from ..api_types import ArchiveEvent, Boundary, Command, CreateEvent, ExerciseResponse, PartyInfo
+from ..api_types import (
+    ArchiveEvent,
+    Boundary,
+    Command,
+    CreateEvent,
+    ExerciseResponse,
+    ParticipantMeteringReport,
+    PartyInfo,
+    User,
+)
 from .pkgloader import PackageLoader
 
 if sys.version_info >= (3, 8):
@@ -131,11 +141,16 @@ class Connection(_Connection, PackageService, Protocol):
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
     ) -> QueryStream: ...
+    def get_user(self, user_id: Optional[str] = None) -> User: ...
+    def list_users(self) -> Sequence[User]: ...
     def allocate_party(
         self, *, identifier_hint: Optional[str] = None, display_name: Optional[str] = None
     ) -> PartyInfo: ...
     def list_known_parties(self) -> Sequence[PartyInfo]: ...
     def upload_package(self, contents: bytes) -> None: ...
+    def get_metering_report(
+        self, from_: datetime, to: Optional[datetime] = None, application_id: Optional[str] = None
+    ) -> ParticipantMeteringReport: ...
 
 @runtime_checkable
 class QueryStream(_QueryStream, Protocol):

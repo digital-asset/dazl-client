@@ -1,6 +1,6 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
+from datetime import datetime
 from typing import (
     TYPE_CHECKING,
     AbstractSet,
@@ -20,6 +20,7 @@ from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_part
 from ..util.typing import safe_cast
 
 __all__ = [
+    "ApplicationMeteringReport",
     "ArchiveEvent",
     "Boundary",
     "Command",
@@ -32,8 +33,10 @@ __all__ = [
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExerciseResponse",
+    "ParticipantMeteringReport",
     "PartyInfo",
     "SubmitResponse",
+    "User",
 ]
 
 
@@ -584,6 +587,22 @@ class ExerciseResponse:
 SubmitResponse = Union[None, CreateEvent, ExerciseResponse]
 
 
+class User:
+    """
+    Full information about a ``User``.
+
+    Note: This is part of a Daml 2.x pre-release API and is subject to change.
+    """
+
+    __slots__ = ("id", "primary_party")
+    id: str
+    primary_party: Party
+
+    def __init__(self, id: str, primary_party: Party):
+        self.id = id
+        self.primary_party = primary_party
+
+
 class PartyInfo:
     """
     Full information about a ``Party``.
@@ -620,6 +639,36 @@ class PartyInfo:
         Indicates if the ``Party`` is hosted by the backing participant.
         """
         return self._is_local
+
+
+class ParticipantMeteringReport:
+    __slots__ = ("report_generation_time", "participant_id", "to_actual", "application_reports")
+    report_generation_time: datetime
+    participant_id: str
+    to_actual: datetime
+    application_reports: "Sequence[ApplicationMeteringReport]"
+
+    def __init__(
+        self,
+        report_generation_time: datetime,
+        participant_id: str,
+        to_actual: datetime,
+        application_reports: "Sequence[ApplicationMeteringReport]",
+    ):
+        object.__setattr__(self, "report_generation_time", report_generation_time)
+        object.__setattr__(self, "participant_id", participant_id)
+        object.__setattr__(self, "to_actual", to_actual)
+        object.__setattr__(self, "application_reports", application_reports)
+
+
+class ApplicationMeteringReport:
+    __slots__ = ("application_id", "event_count")
+    application_id: str
+    event_count: int
+
+    def __init__(self, application_id: str, event_count: int):
+        object.__setattr__(self, "application_id", application_id)
+        object.__setattr__(self, "event_count", event_count)
 
 
 def validate_template_id(value: Union[str, TypeConName]) -> TypeConName:

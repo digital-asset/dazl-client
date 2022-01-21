@@ -94,6 +94,14 @@ class ConnectionThunk:
     def stream_many(self, *args, **kwargs):
         return QueryStreamThunk(self._conn.stream_many(*args, **kwargs), self._loop)
 
+    def get_user(self, *args, **kwargs):
+        fut = run_coroutine_threadsafe(self._conn.get_user(*args, **kwargs), self._loop)
+        return fut.result()
+
+    def list_users(self, *args, **kwargs):
+        fut = run_coroutine_threadsafe(self._conn.list_users(*args, **kwargs), self._loop)
+        return fut.result()
+
     def allocate_party(self, *args, **kwargs):
         fut = run_coroutine_threadsafe(self._conn.allocate_party(*args, **kwargs), self._loop)
         return fut.result()
@@ -112,6 +120,10 @@ class ConnectionThunk:
 
     def list_package_ids(self, *args, **kwargs):
         fut = run_coroutine_threadsafe(self._conn.list_package_ids(*args, **kwargs), self._loop)
+        return fut.result()
+
+    def get_metering_report(self, *args, **kwargs):
+        fut = run_coroutine_threadsafe(self._conn.get_metering_report(*args, **kwargs), self._loop)
         return fut.result()
 
 

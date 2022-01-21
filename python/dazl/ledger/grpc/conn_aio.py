@@ -5,7 +5,18 @@ This module contains the mapping between gRPC calls and Python/dazl types.
 """
 
 import asyncio
-from typing import AbstractSet, Any, AsyncIterable, Collection, Mapping, Optional, Sequence, Union
+from datetime import datetime
+from typing import (
+    AbstractSet,
+    Any,
+    AsyncIterable,
+    Collection,
+    Dict,
+    Mapping,
+    Optional,
+    Sequence,
+    Union,
+)
 import warnings
 
 from grpc import ChannelConnectivity
@@ -17,7 +28,7 @@ from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...damlast.util import is_match
-from ...prim import ContractData, ContractId, Party, to_parties
+from ...prim import ContractData, ContractId, Party, datetime_to_timestamp, to_parties
 from ...query import Filter, Queries, Query, parse_query
 from .._offsets import END, End, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import (
@@ -27,7 +38,9 @@ from ..api_types import (
     CommandMeta,
     CreateEvent,
     ExerciseResponse,
+    ParticipantMeteringReport,
     PartyInfo,
+    User,
 )
 from ..config import Config
 from ..config.access import PropertyBasedAccessConfig
@@ -661,6 +674,22 @@ class Connection(aio.Connection):
 
     # endregion
 
+    # region User Management calls
+
+    async def get_user(self, user_id: "Optional[str]" = None) -> "User":
+        stub = lapiadminpb.UserManagementServiceStub(self.channel)
+        request = lapiadminpb.GetUserRequest(user_id=user_id)
+        response = await stub.GetUser(request)
+        return Codec.decode_user(response)
+
+    async def list_users(self) -> "Sequence[User]":
+        stub = lapiadminpb.UserManagementServiceStub(self.channel)
+        request = lapiadminpb.ListUsersRequest()
+        response = await stub.ListUsers(request)
+        return [Codec.decode_user(user) for user in response.users]
+
+    # endregion
+
     # region Party Management calls
 
     async def allocate_party(
@@ -708,6 +737,27 @@ class Connection(aio.Connection):
         return
 
     # endregion
+
+    # region Metering Report calls
+
+    async def get_metering_report(
+        self, from_: datetime, to: Optional[datetime] = None, application_id: Optional[str] = None
+    ) -> ParticipantMeteringReport:
+        stub = lapiadminpb.MeteringReportServiceStub(self.channel)
+
+        # This slightly awkward construction is due to Protobuf's Python type not escaping field
+        # names that happen to match keywords. Unfortunately mypy can't follow what is going on
+        # when we do this, so we must be careful!
+        kwargs = {"from": datetime_to_timestamp(from_)}  # type: Dict[str, Any]
+        if to is not None:
+            kwargs["to"] = datetime_to_timestamp(to)
+        if application_id is not None:
+            kwargs["application_id"] = application_id
+        request = lapiadminpb.GetMeteringReportRequest(**kwargs)  # type: ignore
+        response = await stub.GetMeteringReport(request)
+        return Codec.decode_get_metering_report_response(response)
+
+    # end region
 
 
 class QueryStream(aio.QueryStreamBase):
