@@ -41,11 +41,12 @@ from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
-from ...prim import ContractData, ContractId, Party
+from ...prim import ContractData, ContractId, Party, datetime_to_timestamp, to_datetime
 from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
 from .._offsets import END, End
 from ..aio import PackageLoader
+from ..api_types import ApplicationMeteringReport, ParticipantMeteringReport, User
 from ..pkgcache import SHARED_PACKAGE_DATABASE
 
 __all__ = ["Codec"]
@@ -353,10 +354,34 @@ class Codec:
         )
 
     @staticmethod
+    def decode_user(user: lapiadminpb.User) -> User:
+        return User(id=user.id, primary_party=Party(user.primary_party))
+
+    @staticmethod
     def decode_party_info(party_details: lapiadminpb.PartyDetails) -> PartyInfo:
         return PartyInfo(
             Party(party_details.party), party_details.display_name, party_details.is_local
         )
+
+    @staticmethod
+    def decode_get_metering_report_response(
+        __obj: lapiadminpb.GetMeteringReportResponse,
+    ) -> ParticipantMeteringReport:
+        return ParticipantMeteringReport(
+            report_generation_time=to_datetime(__obj.report_generation_time),
+            participant_id=__obj.participant_report.participant_id,
+            to_actual=to_datetime(__obj.participant_report.to_actual),
+            application_reports=[
+                Codec.decode_application_metering_report(a)
+                for a in __obj.participant_report.application_reports
+            ],
+        )
+
+    @staticmethod
+    def decode_application_metering_report(
+        __obj: lapiadminpb.ApplicationMeteringReport,
+    ) -> ApplicationMeteringReport:
+        return ApplicationMeteringReport(__obj.application_id, __obj.event_count)
 
     async def _look_up_choice(
         self, template_id: Any, choice_name: str

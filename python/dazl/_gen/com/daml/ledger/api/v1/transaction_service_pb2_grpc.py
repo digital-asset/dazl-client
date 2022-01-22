@@ -67,8 +67,9 @@ class TransactionServiceServicer(object):
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or if the ledger has been pruned before ``begin``
+        - ``NOT_FOUND``: if the request does not include a valid ledger id
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if ``before`` is not before ``end``)
+        - ``FAILED_PRECONDITION``: if the ledger has been pruned after the subscription start offset
         - ``OUT_OF_RANGE``: if the ``begin`` parameter value is not before the end of the ledger
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -81,8 +82,9 @@ class TransactionServiceServicer(object):
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or if the ledger has been pruned before ``begin``
+        - ``NOT_FOUND``: if the request does not include a valid ledger id
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if ``before`` is not before ``end``)
+        - ``FAILED_PRECONDITION``: if the ledger has been pruned after the subscription start offset
         - ``OUT_OF_RANGE``: if the ``begin`` parameter value is not before the end of the ledger
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -145,7 +147,7 @@ class TransactionServiceServicer(object):
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
+        - ``NOT_FOUND``: if the request does not include a valid ledger id
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

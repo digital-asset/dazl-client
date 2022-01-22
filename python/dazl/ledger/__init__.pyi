@@ -1,6 +1,6 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
+from datetime import datetime
 from logging import Logger
 from os import PathLike
 import sys
@@ -37,8 +37,10 @@ from .api_types import (
     ExerciseByKeyCommand,
     ExerciseCommand,
     ExerciseResponse,
+    ParticipantMeteringReport,
     PartyInfo,
     SubmitResponse,
+    User,
 )
 from .blocking import Connection as BlockingConnection, QueryStream as BlockingQueryStream
 from .config import Config
@@ -303,11 +305,16 @@ class Connection(PackageService, Protocol):
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
     ) -> QueryStream: ...
+    def get_user(self, user_id: Optional[str] = None) -> Union[User, Awaitable[User]]: ...
+    def list_users(self) -> Union[Sequence[User], Awaitable[Sequence[User]]]: ...
     def allocate_party(
         self, *, identifier_hint: str = None, display_name: str = None
     ) -> Union[PartyInfo, Awaitable[PartyInfo]]: ...
     def list_known_parties(self) -> Union[Sequence[PartyInfo], Awaitable[Sequence[PartyInfo]]]: ...
     def upload_package(self, __contents: bytes) -> Union[None, Awaitable[None]]: ...
+    def get_metering_report(
+        self, from_: datetime, to: Optional[datetime] = None, application_id: Optional[str] = None
+    ) -> Union[ParticipantMeteringReport, Awaitable[ParticipantMeteringReport]]: ...
 
 @runtime_checkable
 class QueryStream(Protocol):
