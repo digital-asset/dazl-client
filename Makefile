@@ -38,7 +38,7 @@ $(proto_src_pb): .cache/witnesses/proto
 ####################################################################################################
 # Go
 
-go_src_gen_root := go/v7/pkg/generated
+go_src_gen_root := go/api
 go_src_gen_pb := $(foreach d,$(proto_rel_pb),$(go_src_gen_root)/$(d:.proto=.pb.go))
 go_src_gen_grpc := $(foreach d,$(proto_rel_grpc),$(go_src_gen_root)/$(d:.proto=_grpc.pb.go))
 go_src_gen := $(go_src_gen_pb) $(go_src_gen_grpc)
@@ -71,10 +71,10 @@ $(foreach d,$(proto_rel_grpc),$(go_tmp_gen_root)/$(d:.proto=_grpc.pb.go)): .cach
 	PATH=.cache/bin:"${PATH}" $(protoc) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative --go-grpc_out=$(go_tmp_gen_root) --go-grpc_opt=paths=source_relative $(proto_src_grpc)
 
 .cache/bin/protoc-gen-go:
-	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
+	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27.1
 
 .cache/bin/protoc-gen-go-grpc:
-	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
+	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2.0
 
 ####################################################################################################
 # Python
