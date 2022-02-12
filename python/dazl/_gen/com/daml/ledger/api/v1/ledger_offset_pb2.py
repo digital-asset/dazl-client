@@ -21,9 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/ledger_offset.proto',
   package='com.daml.ledger.api.v1',
   syntax='proto3',
-  serialized_options=b'\n\026com.daml.ledger.api.v1B\026LedgerOffsetOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
+  serialized_options=b'\n\026com.daml.ledger.api.v1B\026LedgerOffsetOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n*com/daml/ledger/api/v1/ledger_offset.proto\x12\x16\x63om.daml.ledger.api.v1\"\xbc\x01\n\x0cLedgerOffset\x12\x1c\n\x08\x61\x62solute\x18\x01 \x01(\tH\x00R\x08\x61\x62solute\x12Q\n\x08\x62oundary\x18\x02 \x01(\x0e\x32\x33.com.daml.ledger.api.v1.LedgerOffset.LedgerBoundaryH\x00R\x08\x62oundary\"2\n\x0eLedgerBoundary\x12\x10\n\x0cLEDGER_BEGIN\x10\x00\x12\x0e\n\nLEDGER_END\x10\x01\x42\x07\n\x05valueB\x9a\x01\n\x16\x63om.daml.ledger.api.v1B\x16LedgerOffsetOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n*com/daml/ledger/api/v1/ledger_offset.proto\x12\x16\x63om.daml.ledger.api.v1\"\xbc\x01\n\x0cLedgerOffset\x12\x1c\n\x08\x61\x62solute\x18\x01 \x01(\tH\x00R\x08\x61\x62solute\x12Q\n\x08\x62oundary\x18\x02 \x01(\x0e\x32\x33.com.daml.ledger.api.v1.LedgerOffset.LedgerBoundaryH\x00R\x08\x62oundary\"2\n\x0eLedgerBoundary\x12\x10\n\x0cLEDGER_BEGIN\x10\x00\x12\x0e\n\nLEDGER_END\x10\x01\x42\x07\n\x05valueB\x90\x01\n\x16\x63om.daml.ledger.api.v1B\x16LedgerOffsetOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
 )
 
 

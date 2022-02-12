@@ -136,7 +136,7 @@ $(py_src_gen): $(py_src_gen_root)/%: .cache/witnesses/python
 
 # python: witness that makes sure the current venv is up to date with our lock file
 .venv/poetry.lock: poetry.lock
-	poetry run pip install pip==21.1.3
+	poetry run pip install -U pip
 	poetry install -E oauth -E prometheus -E pygments -E server
 	cp $< $@
 

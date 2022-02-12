@@ -13,7 +13,7 @@ from .participant_pruning_service_pb2 import PruneRequest, PruneResponse
 from .participant_pruning_service_pb2_grpc import ParticipantPruningServiceStub
 from .party_management_service_pb2 import AllocatePartyRequest, AllocatePartyResponse, GetParticipantIdRequest, GetParticipantIdResponse, GetPartiesRequest, GetPartiesResponse, ListKnownPartiesRequest, ListKnownPartiesResponse, PartyDetails
 from .party_management_service_pb2_grpc import PartyManagementServiceStub
-from .user_management_service_pb2 import CreateUserRequest, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GrantUserRightsRequest, GrantUserRightsResponse, ListUserRightsRequest, ListUserRightsResponse, ListUsersRequest, ListUsersResponse, RevokeUserRightsRequest, RevokeUserRightsResponse, Right, User
+from .user_management_service_pb2 import CreateUserRequest, CreateUserResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, GrantUserRightsRequest, GrantUserRightsResponse, ListUserRightsRequest, ListUserRightsResponse, ListUsersRequest, ListUsersResponse, RevokeUserRightsRequest, RevokeUserRightsResponse, Right, User
 from .user_management_service_pb2_grpc import UserManagementServiceStub
 
 __all__ = [
@@ -22,6 +22,7 @@ __all__ = [
     "ApplicationMeteringReport",
     "ConfigManagementServiceStub",
     "CreateUserRequest",
+    "CreateUserResponse",
     "DeleteUserRequest",
     "DeleteUserResponse",
     "GetMeteringReportRequest",
@@ -33,6 +34,7 @@ __all__ = [
     "GetTimeModelRequest",
     "GetTimeModelResponse",
     "GetUserRequest",
+    "GetUserResponse",
     "GrantUserRightsRequest",
     "GrantUserRightsResponse",
     "ListKnownPackagesRequest",

@@ -33,7 +33,7 @@ type Commands struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as described in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 	// Identifier of the on-ledger workflow that this command is a part of.
 	// Must be a valid LedgerString (as described in ``value.proto``).
@@ -271,7 +271,7 @@ type Commands_DeduplicationDuration struct {
 }
 
 type Commands_DeduplicationOffset struct {
-	// Specifies the start of the deduplication period by a completion stream offset.
+	// Specifies the start of the deduplication period by a completion stream offset (exclusive).
 	// Must be a valid LedgerString (as described in ``ledger_offset.proto``).
 	DeduplicationOffset string `protobuf:"bytes,16,opt,name=deduplication_offset,json=deduplicationOffset,proto3,oneof"`
 }

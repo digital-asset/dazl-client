@@ -7,7 +7,7 @@ from .value_pb2 import Enum, GenMap, Identifier, List, Map, Optional, Record, Re
 from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
 from .completion_pb2 import Completion
 from .event_pb2 import ArchivedEvent, CreatedEvent, Event, ExercisedEvent
-from .experimental_features_pb2 import ExperimentalFeatures, ExperimentalSelfServiceErrorCodes
+from .experimental_features_pb2 import CommandDeduplicationFeatures, CommandDeduplicationPeriodSupport, CommandDeduplicationType, ExperimentalContractIds, ExperimentalFeatures, ExperimentalOptionalLedgerId, ExperimentalSelfServiceErrorCodes, ExperimentalStaticTime
 from .ledger_offset_pb2 import LedgerOffset
 from .transaction_pb2 import Transaction, TransactionTree, TreeEvent
 from .transaction_filter_pb2 import Filters, InclusiveFilters, TransactionFilter
@@ -27,7 +27,7 @@ from .package_service_pb2 import GetPackageRequest, GetPackageResponse, GetPacka
 from .package_service_pb2_grpc import PackageServiceStub
 from .transaction_service_pb2 import GetFlatTransactionResponse, GetLedgerEndRequest, GetLedgerEndResponse, GetTransactionByEventIdRequest, GetTransactionByIdRequest, GetTransactionResponse, GetTransactionTreesResponse, GetTransactionsRequest, GetTransactionsResponse
 from .transaction_service_pb2_grpc import TransactionServiceStub
-from .version_service_pb2 import CommandDeduplicationFeatures, DeduplicationPeriodSupport, FeaturesDescriptor, GetLedgerApiVersionRequest, GetLedgerApiVersionResponse, ParticipantDeduplicationSupport, UserManagementFeature
+from .version_service_pb2 import FeaturesDescriptor, GetLedgerApiVersionRequest, GetLedgerApiVersionResponse, UserManagementFeature
 from .version_service_pb2_grpc import VersionServiceStub
 
 __all__ = [
@@ -37,6 +37,8 @@ __all__ = [
     "Command",
     "CommandCompletionServiceStub",
     "CommandDeduplicationFeatures",
+    "CommandDeduplicationPeriodSupport",
+    "CommandDeduplicationType",
     "CommandServiceStub",
     "CommandSubmissionServiceStub",
     "Commands",
@@ -48,14 +50,16 @@ __all__ = [
     "CreateAndExerciseCommand",
     "CreateCommand",
     "CreatedEvent",
-    "DeduplicationPeriodSupport",
     "Enum",
     "Event",
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExercisedEvent",
+    "ExperimentalContractIds",
     "ExperimentalFeatures",
+    "ExperimentalOptionalLedgerId",
     "ExperimentalSelfServiceErrorCodes",
+    "ExperimentalStaticTime",
     "FeaturesDescriptor",
     "Filters",
     "GenMap",
@@ -94,7 +98,6 @@ __all__ = [
     "Optional",
     "PackageServiceStub",
     "PackageStatus",
-    "ParticipantDeduplicationSupport",
     "Record",
     "RecordField",
     "SubmitAndWaitForTransactionIdResponse",

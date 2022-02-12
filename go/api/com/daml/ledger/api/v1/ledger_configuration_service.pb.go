@@ -31,7 +31,7 @@ type GetLedgerConfigurationRequest struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as described in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 }
 

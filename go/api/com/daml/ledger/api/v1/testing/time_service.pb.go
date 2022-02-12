@@ -32,7 +32,7 @@ type GetTimeRequest struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as describe in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 }
 
@@ -130,7 +130,7 @@ type SetTimeRequest struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as describe in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 	// MUST precisely match the current time as it's known to the ledger server.
 	CurrentTime *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=current_time,json=currentTime,proto3" json:"current_time,omitempty"`

@@ -23,7 +23,10 @@ const _ = grpc.SupportPackageIsVersion7
 // LedgerIdentityServiceClient is the client API for LedgerIdentityService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type LedgerIdentityServiceClient interface {
+	// Deprecated: Do not use.
 	// Clients may call this RPC to return the identifier of the ledger they are connected to.
 	// Errors:
 	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
@@ -35,10 +38,12 @@ type ledgerIdentityServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewLedgerIdentityServiceClient(cc grpc.ClientConnInterface) LedgerIdentityServiceClient {
 	return &ledgerIdentityServiceClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *ledgerIdentityServiceClient) GetLedgerIdentity(ctx context.Context, in *GetLedgerIdentityRequest, opts ...grpc.CallOption) (*GetLedgerIdentityResponse, error) {
 	out := new(GetLedgerIdentityResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.LedgerIdentityService/GetLedgerIdentity", in, out, opts...)
@@ -51,7 +56,10 @@ func (c *ledgerIdentityServiceClient) GetLedgerIdentity(ctx context.Context, in 
 // LedgerIdentityServiceServer is the server API for LedgerIdentityService service.
 // All implementations must embed UnimplementedLedgerIdentityServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type LedgerIdentityServiceServer interface {
+	// Deprecated: Do not use.
 	// Clients may call this RPC to return the identifier of the ledger they are connected to.
 	// Errors:
 	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
@@ -76,6 +84,7 @@ type UnsafeLedgerIdentityServiceServer interface {
 	mustEmbedUnimplementedLedgerIdentityServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterLedgerIdentityServiceServer(s grpc.ServiceRegistrar, srv LedgerIdentityServiceServer) {
 	s.RegisterService(&LedgerIdentityService_ServiceDesc, srv)
 }

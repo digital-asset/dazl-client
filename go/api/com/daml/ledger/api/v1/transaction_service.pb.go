@@ -30,7 +30,7 @@ type GetTransactionsRequest struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as described in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 	// Beginning of the requested ledger section.
 	// This offset is exclusive: the response will only contain transactions whose offset is strictly greater than this.
@@ -220,7 +220,7 @@ type GetTransactionByEventIdRequest struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as described in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 	// The ID of a particular event.
 	// Must be a valid LedgerString (as described in ``value.proto``).
@@ -293,7 +293,7 @@ type GetTransactionByIdRequest struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as describe in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 	// The ID of a particular transaction.
 	// Must be a valid LedgerString (as describe in ``value.proto``).
@@ -460,7 +460,7 @@ type GetLedgerEndRequest struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as describe in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 }
 
