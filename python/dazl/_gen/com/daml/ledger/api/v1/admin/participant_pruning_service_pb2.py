@@ -21,9 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/admin/participant_pruning_service.proto',
   package='com.daml.ledger.api.v1.admin',
   syntax='proto3',
-  serialized_options=b'\n\034com.daml.ledger.api.v1.adminB#ParticipantPruningServiceOuterClassZUgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin',
+  serialized_options=b'\n\034com.daml.ledger.api.v1.adminB#ParticipantPruningServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n>com/daml/ledger/api/v1/admin/participant_pruning_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\"\x94\x01\n\x0cPruneRequest\x12\x1e\n\x0bprune_up_to\x18\x01 \x01(\tR\tpruneUpTo\x12#\n\rsubmission_id\x18\x02 \x01(\tR\x0csubmissionId\x12?\n\x1cprune_all_divulged_contracts\x18\x03 \x01(\x08R\x19pruneAllDivulgedContracts\"\x0f\n\rPruneResponse2}\n\x19ParticipantPruningService\x12`\n\x05Prune\x12*.com.daml.ledger.api.v1.admin.PruneRequest\x1a+.com.daml.ledger.api.v1.admin.PruneResponseB\xb9\x01\n\x1c\x63om.daml.ledger.api.v1.adminB#ParticipantPruningServiceOuterClassZUgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
+  serialized_pb=b'\n>com/daml/ledger/api/v1/admin/participant_pruning_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\"\x94\x01\n\x0cPruneRequest\x12\x1e\n\x0bprune_up_to\x18\x01 \x01(\tR\tpruneUpTo\x12#\n\rsubmission_id\x18\x02 \x01(\tR\x0csubmissionId\x12?\n\x1cprune_all_divulged_contracts\x18\x03 \x01(\x08R\x19pruneAllDivulgedContracts\"\x0f\n\rPruneResponse2}\n\x19ParticipantPruningService\x12`\n\x05Prune\x12*.com.daml.ledger.api.v1.admin.PruneRequest\x1a+.com.daml.ledger.api.v1.admin.PruneResponseB\xaf\x01\n\x1c\x63om.daml.ledger.api.v1.adminB#ParticipantPruningServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
 )
 
 

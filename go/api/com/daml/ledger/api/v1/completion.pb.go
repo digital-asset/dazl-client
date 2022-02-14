@@ -173,7 +173,7 @@ type isCompletion_DeduplicationPeriod interface {
 }
 
 type Completion_DeduplicationOffset struct {
-	// Specifies the start of the deduplication period by a completion stream offset.
+	// Specifies the start of the deduplication period by a completion stream offset (exclusive).
 	//
 	// Must be a valid LedgerString (as described in ``value.proto``).
 	DeduplicationOffset string `protobuf:"bytes,8,opt,name=deduplication_offset,json=deduplicationOffset,proto3,oneof"`

@@ -10,8 +10,9 @@ from . import ledger_identity_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot
 
 
 class LedgerIdentityServiceStub(object):
-    """Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
-    Note that every ledger has a unique ID.
+    """DEPRECATED: This service is now deprecated and ledger identity string is optional for all Ledger API requests.
+
+    Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
     """
 
     def __init__(self, channel):
@@ -28,8 +29,9 @@ class LedgerIdentityServiceStub(object):
 
 
 class LedgerIdentityServiceServicer(object):
-    """Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
-    Note that every ledger has a unique ID.
+    """DEPRECATED: This service is now deprecated and ledger identity string is optional for all Ledger API requests.
+
+    Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
     """
 
     def GetLedgerIdentity(self, request, context):
@@ -58,8 +60,9 @@ def add_LedgerIdentityServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class LedgerIdentityService(object):
-    """Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
-    Note that every ledger has a unique ID.
+    """DEPRECATED: This service is now deprecated and ledger identity string is optional for all Ledger API requests.
+
+    Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
     """
 
     @staticmethod

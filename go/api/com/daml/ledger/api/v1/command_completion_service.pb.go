@@ -31,7 +31,7 @@ type CompletionStreamRequest struct {
 
 	// Must correspond to the ledger id reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as described in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 	// Only completions of commands submitted with the same application_id will be visible in the stream.
 	// Must be a valid ApplicationIdString (as described in ``value.proto``).
@@ -239,7 +239,7 @@ type CompletionEndRequest struct {
 
 	// Must correspond to the ledger ID reported by the Ledger Identification Service.
 	// Must be a valid LedgerString (as described in ``value.proto``).
-	// Required
+	// Optional
 	LedgerId string `protobuf:"bytes,1,opt,name=ledger_id,json=ledgerId,proto3" json:"ledger_id,omitempty"`
 }
 

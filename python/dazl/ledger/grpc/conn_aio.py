@@ -680,7 +680,7 @@ class Connection(aio.Connection):
         stub = lapiadminpb.UserManagementServiceStub(self.channel)
         request = lapiadminpb.GetUserRequest(user_id=user_id)
         response = await stub.GetUser(request)
-        return Codec.decode_user(response)
+        return Codec.decode_user(response.user)
 
     async def list_users(self) -> "Sequence[User]":
         stub = lapiadminpb.UserManagementServiceStub(self.channel)

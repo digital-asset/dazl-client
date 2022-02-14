@@ -25,12 +25,12 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserManagementServiceClient interface {
 	// Create a new user, failing if it already exists.
-	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*User, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	// Get the user data of a specific user or the authenticated user.
-	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error)
+	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	// Delete an existing user and all its rights.
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
-	// List the all existing users.
+	// List all existing users.
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
 	// Grant rights to a user.
 	GrantUserRights(ctx context.Context, in *GrantUserRightsRequest, opts ...grpc.CallOption) (*GrantUserRightsResponse, error)
@@ -48,8 +48,8 @@ func NewUserManagementServiceClient(cc grpc.ClientConnInterface) UserManagementS
 	return &userManagementServiceClient{cc}
 }
 
-func (c *userManagementServiceClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*User, error) {
-	out := new(User)
+func (c *userManagementServiceClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+	out := new(CreateUserResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.admin.UserManagementService/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -57,8 +57,8 @@ func (c *userManagementServiceClient) CreateUser(ctx context.Context, in *Create
 	return out, nil
 }
 
-func (c *userManagementServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error) {
-	out := new(User)
+func (c *userManagementServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
+	out := new(GetUserResponse)
 	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.admin.UserManagementService/GetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -116,12 +116,12 @@ func (c *userManagementServiceClient) ListUserRights(ctx context.Context, in *Li
 // for forward compatibility
 type UserManagementServiceServer interface {
 	// Create a new user, failing if it already exists.
-	CreateUser(context.Context, *CreateUserRequest) (*User, error)
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	// Get the user data of a specific user or the authenticated user.
-	GetUser(context.Context, *GetUserRequest) (*User, error)
+	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	// Delete an existing user and all its rights.
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
-	// List the all existing users.
+	// List all existing users.
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
 	// Grant rights to a user.
 	GrantUserRights(context.Context, *GrantUserRightsRequest) (*GrantUserRightsResponse, error)
@@ -136,10 +136,10 @@ type UserManagementServiceServer interface {
 type UnimplementedUserManagementServiceServer struct {
 }
 
-func (UnimplementedUserManagementServiceServer) CreateUser(context.Context, *CreateUserRequest) (*User, error) {
+func (UnimplementedUserManagementServiceServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedUserManagementServiceServer) GetUser(context.Context, *GetUserRequest) (*User, error) {
+func (UnimplementedUserManagementServiceServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
 func (UnimplementedUserManagementServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {

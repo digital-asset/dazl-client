@@ -10,23 +10,13 @@ from . import user_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot
 
 
 class UserManagementServiceStub(object):
-    """Experimental API to manage users and their rights for interacting with the Ledger API
+    """Service to manage users and their rights for interacting with the Ledger API
     served by a participant node.
 
-    The API roughly follows the Google API style guidelines for resource-oriented design
-    (https://cloud.google.com/apis/design/resources) with the following simplifications to
-    ease its implementation:
-
-    1. List methods do not (yet) support pagination,
-    as we expect to have fewer than 10k users and 1k rights per user.
-
-    2. Resources are not named as per the Google API style guide,
-    as this would be in contrast with the other Ledger API services.
-
-    Authorization rules for the services RPCs are specified on the `RpcNameRequest`
-    messages as boolean expressions over these facts:
-    - ``HasRight(r)``: true iff the authenticated user has right `r`
-    - ``IsAuthenticatedUser(u)``: true iff ``u`` is equal to the name of the authenticated user
+    The authorization rules for its RPCs are specified on the ``<RpcName>Request``
+    messages as boolean expressions over these two facts:
+    (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
+    (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
 
     """
 
@@ -39,12 +29,12 @@ class UserManagementServiceStub(object):
         self.CreateUser = channel.unary_unary(
                 '/com.daml.ledger.api.v1.admin.UserManagementService/CreateUser',
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.CreateUserRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.User.FromString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.CreateUserResponse.FromString,
                 )
         self.GetUser = channel.unary_unary(
                 '/com.daml.ledger.api.v1.admin.UserManagementService/GetUser',
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.User.FromString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserResponse.FromString,
                 )
         self.DeleteUser = channel.unary_unary(
                 '/com.daml.ledger.api.v1.admin.UserManagementService/DeleteUser',
@@ -74,23 +64,13 @@ class UserManagementServiceStub(object):
 
 
 class UserManagementServiceServicer(object):
-    """Experimental API to manage users and their rights for interacting with the Ledger API
+    """Service to manage users and their rights for interacting with the Ledger API
     served by a participant node.
 
-    The API roughly follows the Google API style guidelines for resource-oriented design
-    (https://cloud.google.com/apis/design/resources) with the following simplifications to
-    ease its implementation:
-
-    1. List methods do not (yet) support pagination,
-    as we expect to have fewer than 10k users and 1k rights per user.
-
-    2. Resources are not named as per the Google API style guide,
-    as this would be in contrast with the other Ledger API services.
-
-    Authorization rules for the services RPCs are specified on the `RpcNameRequest`
-    messages as boolean expressions over these facts:
-    - ``HasRight(r)``: true iff the authenticated user has right `r`
-    - ``IsAuthenticatedUser(u)``: true iff ``u`` is equal to the name of the authenticated user
+    The authorization rules for its RPCs are specified on the ``<RpcName>Request``
+    messages as boolean expressions over these two facts:
+    (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
+    (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
 
     """
 
@@ -116,7 +96,7 @@ class UserManagementServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ListUsers(self, request, context):
-        """List the all existing users.
+        """List all existing users.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -149,12 +129,12 @@ def add_UserManagementServiceServicer_to_server(servicer, server):
             'CreateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateUser,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.CreateUserRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.User.SerializeToString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.CreateUserResponse.SerializeToString,
             ),
             'GetUser': grpc.unary_unary_rpc_method_handler(
                     servicer.GetUser,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.User.SerializeToString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserResponse.SerializeToString,
             ),
             'DeleteUser': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteUser,
@@ -189,23 +169,13 @@ def add_UserManagementServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class UserManagementService(object):
-    """Experimental API to manage users and their rights for interacting with the Ledger API
+    """Service to manage users and their rights for interacting with the Ledger API
     served by a participant node.
 
-    The API roughly follows the Google API style guidelines for resource-oriented design
-    (https://cloud.google.com/apis/design/resources) with the following simplifications to
-    ease its implementation:
-
-    1. List methods do not (yet) support pagination,
-    as we expect to have fewer than 10k users and 1k rights per user.
-
-    2. Resources are not named as per the Google API style guide,
-    as this would be in contrast with the other Ledger API services.
-
-    Authorization rules for the services RPCs are specified on the `RpcNameRequest`
-    messages as boolean expressions over these facts:
-    - ``HasRight(r)``: true iff the authenticated user has right `r`
-    - ``IsAuthenticatedUser(u)``: true iff ``u`` is equal to the name of the authenticated user
+    The authorization rules for its RPCs are specified on the ``<RpcName>Request``
+    messages as boolean expressions over these two facts:
+    (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
+    (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
 
     """
 
@@ -222,7 +192,7 @@ class UserManagementService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.UserManagementService/CreateUser',
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.CreateUserRequest.SerializeToString,
-            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.User.FromString,
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.CreateUserResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -239,7 +209,7 @@ class UserManagementService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.UserManagementService/GetUser',
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserRequest.SerializeToString,
-            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.User.FromString,
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

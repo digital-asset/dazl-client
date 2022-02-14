@@ -23,9 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/daml_lf_1_14/daml_lf.proto',
   package='daml_lf_1',
   syntax='proto3',
-  serialized_options=b'\n\025com.daml.daml_lf_1_14ZNgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/daml_lf_1_14\252\002\034Com.Daml.Daml_Lf_1_14.DamlLf',
+  serialized_options=b'\n\025com.daml.daml_lf_1_14ZDgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_1_14\252\002\034Com.Daml.Daml_Lf_1_14.DamlLf',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n#com/daml/daml_lf_1_14/daml_lf.proto\x12\tdaml_lf_1\x1a%com/daml/daml_lf_1_14/daml_lf_1.proto\"m\n\x0e\x41rchivePayload\x12\x14\n\x05minor\x18\x03 \x01(\tR\x05minor\x12\x30\n\tdaml_lf_1\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.PackageH\x00R\x07\x64\x61mlLf1B\x05\n\x03SumJ\x06\x08\x8fN\x10\x90NJ\x04\x08\x01\x10\x02\"u\n\x07\x41rchive\x12<\n\rhash_function\x18\x01 \x01(\x0e\x32\x17.daml_lf_1.HashFunctionR\x0chashFunction\x12\x18\n\x07payload\x18\x03 \x01(\x0cR\x07payload\x12\x12\n\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42\x86\x01\n\x15\x63om.daml.daml_lf_1_14ZNgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/daml_lf_1_14\xaa\x02\x1c\x43om.Daml.Daml_Lf_1_14.DamlLfb\x06proto3'
+  serialized_pb=b'\n#com/daml/daml_lf_1_14/daml_lf.proto\x12\tdaml_lf_1\x1a%com/daml/daml_lf_1_14/daml_lf_1.proto\"m\n\x0e\x41rchivePayload\x12\x14\n\x05minor\x18\x03 \x01(\tR\x05minor\x12\x30\n\tdaml_lf_1\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.PackageH\x00R\x07\x64\x61mlLf1B\x05\n\x03SumJ\x06\x08\x8fN\x10\x90NJ\x04\x08\x01\x10\x02\"u\n\x07\x41rchive\x12<\n\rhash_function\x18\x01 \x01(\x0e\x32\x17.daml_lf_1.HashFunctionR\x0chashFunction\x12\x18\n\x07payload\x18\x03 \x01(\x0cR\x07payload\x12\x12\n\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42|\n\x15\x63om.daml.daml_lf_1_14ZDgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_1_14\xaa\x02\x1c\x43om.Daml.Daml_Lf_1_14.DamlLfb\x06proto3'
   ,
   dependencies=[com_dot_daml_dot_daml__lf__1__14_dot_daml__lf__1__pb2.DESCRIPTOR,])
 

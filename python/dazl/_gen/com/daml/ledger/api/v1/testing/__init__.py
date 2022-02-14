@@ -3,16 +3,12 @@
 # fmt: off
 # isort: skip_file
 
-from .reset_service_pb2 import ResetRequest
-from .reset_service_pb2_grpc import ResetServiceStub
 from .time_service_pb2 import GetTimeRequest, GetTimeResponse, SetTimeRequest
 from .time_service_pb2_grpc import TimeServiceStub
 
 __all__ = [
     "GetTimeRequest",
     "GetTimeResponse",
-    "ResetRequest",
-    "ResetServiceStub",
     "SetTimeRequest",
     "TimeServiceStub",
 ]

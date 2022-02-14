@@ -21,9 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/admin/user_management_service.proto',
   package='com.daml.ledger.api.v1.admin',
   syntax='proto3',
-  serialized_options=b'\n\034com.daml.ledger.api.v1.adminB\037UserManagementServiceOuterClassZUgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin',
+  serialized_options=b'\n\034com.daml.ledger.api.v1.adminB\037UserManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n:com/daml/ledger/api/v1/admin/user_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\";\n\x04User\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12#\n\rprimary_party\x18\x02 \x01(\tR\x0cprimaryParty\"\xec\x02\n\x05Right\x12\x63\n\x11participant_admin\x18\x01 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.admin.Right.ParticipantAdminH\x00R\x10participantAdmin\x12L\n\ncan_act_as\x18\x02 \x01(\x0b\x32,.com.daml.ledger.api.v1.admin.Right.CanActAsH\x00R\x08\x63\x61nActAs\x12O\n\x0b\x63\x61n_read_as\x18\x03 \x01(\x0b\x32-.com.daml.ledger.api.v1.admin.Right.CanReadAsH\x00R\tcanReadAs\x1a\x12\n\x10ParticipantAdmin\x1a \n\x08\x43\x61nActAs\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x1a!\n\tCanReadAs\x12\x14\n\x05party\x18\x01 \x01(\tR\x05partyB\x06\n\x04kind\"\x88\x01\n\x11\x43reateUserRequest\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\")\n\x0eGetUserRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\",\n\x11\x44\x65leteUserRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"\x14\n\x12\x44\x65leteUserResponse\"\x12\n\x10ListUsersRequest\"M\n\x11ListUsersResponse\x12\x38\n\x05users\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x05users\"n\n\x16GrantUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"p\n\x17GrantUserRightsResponse\x12U\n\x14newly_granted_rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x12newlyGrantedRights\"o\n\x17RevokeUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"q\n\x18RevokeUserRightsResponse\x12U\n\x14newly_revoked_rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x12newlyRevokedRights\"0\n\x15ListUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"U\n\x16ListUserRightsResponse\x12;\n\x06rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights2\xb7\x06\n\x15UserManagementService\x12\x61\n\nCreateUser\x12/.com.daml.ledger.api.v1.admin.CreateUserRequest\x1a\".com.daml.ledger.api.v1.admin.User\x12[\n\x07GetUser\x12,.com.daml.ledger.api.v1.admin.GetUserRequest\x1a\".com.daml.ledger.api.v1.admin.User\x12o\n\nDeleteUser\x12/.com.daml.ledger.api.v1.admin.DeleteUserRequest\x1a\x30.com.daml.ledger.api.v1.admin.DeleteUserResponse\x12l\n\tListUsers\x12..com.daml.ledger.api.v1.admin.ListUsersRequest\x1a/.com.daml.ledger.api.v1.admin.ListUsersResponse\x12~\n\x0fGrantUserRights\x12\x34.com.daml.ledger.api.v1.admin.GrantUserRightsRequest\x1a\x35.com.daml.ledger.api.v1.admin.GrantUserRightsResponse\x12\x81\x01\n\x10RevokeUserRights\x12\x35.com.daml.ledger.api.v1.admin.RevokeUserRightsRequest\x1a\x36.com.daml.ledger.api.v1.admin.RevokeUserRightsResponse\x12{\n\x0eListUserRights\x12\x33.com.daml.ledger.api.v1.admin.ListUserRightsRequest\x1a\x34.com.daml.ledger.api.v1.admin.ListUserRightsResponseB\xb5\x01\n\x1c\x63om.daml.ledger.api.v1.adminB\x1fUserManagementServiceOuterClassZUgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
+  serialized_pb=b'\n:com/daml/ledger/api/v1/admin/user_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\";\n\x04User\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12#\n\rprimary_party\x18\x02 \x01(\tR\x0cprimaryParty\"\xec\x02\n\x05Right\x12\x63\n\x11participant_admin\x18\x01 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.admin.Right.ParticipantAdminH\x00R\x10participantAdmin\x12L\n\ncan_act_as\x18\x02 \x01(\x0b\x32,.com.daml.ledger.api.v1.admin.Right.CanActAsH\x00R\x08\x63\x61nActAs\x12O\n\x0b\x63\x61n_read_as\x18\x03 \x01(\x0b\x32-.com.daml.ledger.api.v1.admin.Right.CanReadAsH\x00R\tcanReadAs\x1a\x12\n\x10ParticipantAdmin\x1a \n\x08\x43\x61nActAs\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x1a!\n\tCanReadAs\x12\x14\n\x05party\x18\x01 \x01(\tR\x05partyB\x06\n\x04kind\"\x88\x01\n\x11\x43reateUserRequest\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"L\n\x12\x43reateUserResponse\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\")\n\x0eGetUserRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"I\n\x0fGetUserResponse\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\",\n\x11\x44\x65leteUserRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"\x14\n\x12\x44\x65leteUserResponse\"N\n\x10ListUsersRequest\x12\x1d\n\npage_token\x18\x02 \x01(\tR\tpageToken\x12\x1b\n\tpage_size\x18\x03 \x01(\x05R\x08pageSize\"u\n\x11ListUsersResponse\x12\x38\n\x05users\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x05users\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"n\n\x16GrantUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"p\n\x17GrantUserRightsResponse\x12U\n\x14newly_granted_rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x12newlyGrantedRights\"o\n\x17RevokeUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"q\n\x18RevokeUserRightsResponse\x12U\n\x14newly_revoked_rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x12newlyRevokedRights\"0\n\x15ListUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"U\n\x16ListUserRightsResponse\x12;\n\x06rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights2\xd0\x06\n\x15UserManagementService\x12o\n\nCreateUser\x12/.com.daml.ledger.api.v1.admin.CreateUserRequest\x1a\x30.com.daml.ledger.api.v1.admin.CreateUserResponse\x12\x66\n\x07GetUser\x12,.com.daml.ledger.api.v1.admin.GetUserRequest\x1a-.com.daml.ledger.api.v1.admin.GetUserResponse\x12o\n\nDeleteUser\x12/.com.daml.ledger.api.v1.admin.DeleteUserRequest\x1a\x30.com.daml.ledger.api.v1.admin.DeleteUserResponse\x12l\n\tListUsers\x12..com.daml.ledger.api.v1.admin.ListUsersRequest\x1a/.com.daml.ledger.api.v1.admin.ListUsersResponse\x12~\n\x0fGrantUserRights\x12\x34.com.daml.ledger.api.v1.admin.GrantUserRightsRequest\x1a\x35.com.daml.ledger.api.v1.admin.GrantUserRightsResponse\x12\x81\x01\n\x10RevokeUserRights\x12\x35.com.daml.ledger.api.v1.admin.RevokeUserRightsRequest\x1a\x36.com.daml.ledger.api.v1.admin.RevokeUserRightsResponse\x12{\n\x0eListUserRights\x12\x33.com.daml.ledger.api.v1.admin.ListUserRightsRequest\x1a\x34.com.daml.ledger.api.v1.admin.ListUserRightsResponseB\xab\x01\n\x1c\x63om.daml.ledger.api.v1.adminB\x1fUserManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
 )
 
 
@@ -244,6 +244,38 @@ _CREATEUSERREQUEST = _descriptor.Descriptor(
 )
 
 
+_CREATEUSERRESPONSE = _descriptor.Descriptor(
+  name='CreateUserResponse',
+  full_name='com.daml.ledger.api.v1.admin.CreateUserResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='user', full_name='com.daml.ledger.api.v1.admin.CreateUserResponse.user', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='user', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=659,
+  serialized_end=735,
+)
+
+
 _GETUSERREQUEST = _descriptor.Descriptor(
   name='GetUserRequest',
   full_name='com.daml.ledger.api.v1.admin.GetUserRequest',
@@ -271,8 +303,40 @@ _GETUSERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=659,
-  serialized_end=700,
+  serialized_start=737,
+  serialized_end=778,
+)
+
+
+_GETUSERRESPONSE = _descriptor.Descriptor(
+  name='GetUserResponse',
+  full_name='com.daml.ledger.api.v1.admin.GetUserResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='user', full_name='com.daml.ledger.api.v1.admin.GetUserResponse.user', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='user', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=780,
+  serialized_end=853,
 )
 
 
@@ -303,8 +367,8 @@ _DELETEUSERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=702,
-  serialized_end=746,
+  serialized_start=855,
+  serialized_end=899,
 )
 
 
@@ -328,8 +392,8 @@ _DELETEUSERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=748,
-  serialized_end=768,
+  serialized_start=901,
+  serialized_end=921,
 )
 
 
@@ -341,6 +405,20 @@ _LISTUSERSREQUEST = _descriptor.Descriptor(
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='com.daml.ledger.api.v1.admin.ListUsersRequest.page_token', index=0,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='pageToken', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='com.daml.ledger.api.v1.admin.ListUsersRequest.page_size', index=1,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='pageSize', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -353,8 +431,8 @@ _LISTUSERSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=770,
-  serialized_end=788,
+  serialized_start=923,
+  serialized_end=1001,
 )
 
 
@@ -373,6 +451,13 @@ _LISTUSERSRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='users', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='com.daml.ledger.api.v1.admin.ListUsersResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='nextPageToken', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -385,8 +470,8 @@ _LISTUSERSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=790,
-  serialized_end=867,
+  serialized_start=1003,
+  serialized_end=1120,
 )
 
 
@@ -424,8 +509,8 @@ _GRANTUSERRIGHTSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=869,
-  serialized_end=979,
+  serialized_start=1122,
+  serialized_end=1232,
 )
 
 
@@ -456,8 +541,8 @@ _GRANTUSERRIGHTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=981,
-  serialized_end=1093,
+  serialized_start=1234,
+  serialized_end=1346,
 )
 
 
@@ -495,8 +580,8 @@ _REVOKEUSERRIGHTSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1095,
-  serialized_end=1206,
+  serialized_start=1348,
+  serialized_end=1459,
 )
 
 
@@ -527,8 +612,8 @@ _REVOKEUSERRIGHTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1208,
-  serialized_end=1321,
+  serialized_start=1461,
+  serialized_end=1574,
 )
 
 
@@ -559,8 +644,8 @@ _LISTUSERRIGHTSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1323,
-  serialized_end=1371,
+  serialized_start=1576,
+  serialized_end=1624,
 )
 
 
@@ -591,8 +676,8 @@ _LISTUSERRIGHTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1373,
-  serialized_end=1458,
+  serialized_start=1626,
+  serialized_end=1711,
 )
 
 _RIGHT_PARTICIPANTADMIN.containing_type = _RIGHT
@@ -612,6 +697,8 @@ _RIGHT.oneofs_by_name['kind'].fields.append(
 _RIGHT.fields_by_name['can_read_as'].containing_oneof = _RIGHT.oneofs_by_name['kind']
 _CREATEUSERREQUEST.fields_by_name['user'].message_type = _USER
 _CREATEUSERREQUEST.fields_by_name['rights'].message_type = _RIGHT
+_CREATEUSERRESPONSE.fields_by_name['user'].message_type = _USER
+_GETUSERRESPONSE.fields_by_name['user'].message_type = _USER
 _LISTUSERSRESPONSE.fields_by_name['users'].message_type = _USER
 _GRANTUSERRIGHTSREQUEST.fields_by_name['rights'].message_type = _RIGHT
 _GRANTUSERRIGHTSRESPONSE.fields_by_name['newly_granted_rights'].message_type = _RIGHT
@@ -621,7 +708,9 @@ _LISTUSERRIGHTSRESPONSE.fields_by_name['rights'].message_type = _RIGHT
 DESCRIPTOR.message_types_by_name['User'] = _USER
 DESCRIPTOR.message_types_by_name['Right'] = _RIGHT
 DESCRIPTOR.message_types_by_name['CreateUserRequest'] = _CREATEUSERREQUEST
+DESCRIPTOR.message_types_by_name['CreateUserResponse'] = _CREATEUSERRESPONSE
 DESCRIPTOR.message_types_by_name['GetUserRequest'] = _GETUSERREQUEST
+DESCRIPTOR.message_types_by_name['GetUserResponse'] = _GETUSERRESPONSE
 DESCRIPTOR.message_types_by_name['DeleteUserRequest'] = _DELETEUSERREQUEST
 DESCRIPTOR.message_types_by_name['DeleteUserResponse'] = _DELETEUSERRESPONSE
 DESCRIPTOR.message_types_by_name['ListUsersRequest'] = _LISTUSERSREQUEST
@@ -679,12 +768,26 @@ CreateUserRequest = _reflection.GeneratedProtocolMessageType('CreateUserRequest'
   })
 _sym_db.RegisterMessage(CreateUserRequest)
 
+CreateUserResponse = _reflection.GeneratedProtocolMessageType('CreateUserResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CREATEUSERRESPONSE,
+  '__module__' : 'com.daml.ledger.api.v1.admin.user_management_service_pb2'
+  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.CreateUserResponse)
+  })
+_sym_db.RegisterMessage(CreateUserResponse)
+
 GetUserRequest = _reflection.GeneratedProtocolMessageType('GetUserRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETUSERREQUEST,
   '__module__' : 'com.daml.ledger.api.v1.admin.user_management_service_pb2'
   # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.GetUserRequest)
   })
 _sym_db.RegisterMessage(GetUserRequest)
+
+GetUserResponse = _reflection.GeneratedProtocolMessageType('GetUserResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETUSERRESPONSE,
+  '__module__' : 'com.daml.ledger.api.v1.admin.user_management_service_pb2'
+  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.GetUserResponse)
+  })
+_sym_db.RegisterMessage(GetUserResponse)
 
 DeleteUserRequest = _reflection.GeneratedProtocolMessageType('DeleteUserRequest', (_message.Message,), {
   'DESCRIPTOR' : _DELETEUSERREQUEST,
@@ -766,8 +869,8 @@ _USERMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1461,
-  serialized_end=2284,
+  serialized_start=1714,
+  serialized_end=2562,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateUser',
@@ -775,7 +878,7 @@ _USERMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
     index=0,
     containing_service=None,
     input_type=_CREATEUSERREQUEST,
-    output_type=_USER,
+    output_type=_CREATEUSERRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
@@ -785,7 +888,7 @@ _USERMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
     index=1,
     containing_service=None,
     input_type=_GETUSERREQUEST,
-    output_type=_USER,
+    output_type=_GETUSERRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

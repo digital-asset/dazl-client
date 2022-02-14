@@ -21,9 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='com/daml/ledger/api/v1/ledger_identity_service.proto',
   package='com.daml.ledger.api.v1',
   syntax='proto3',
-  serialized_options=b'\n\026com.daml.ledger.api.v1B\037LedgerIdentityServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
+  serialized_options=b'\n\026com.daml.ledger.api.v1B\037LedgerIdentityServiceOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n4com/daml/ledger/api/v1/ledger_identity_service.proto\x12\x16\x63om.daml.ledger.api.v1\"\x1a\n\x18GetLedgerIdentityRequest\"8\n\x19GetLedgerIdentityResponse\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId2\x91\x01\n\x15LedgerIdentityService\x12x\n\x11GetLedgerIdentity\x12\x30.com.daml.ledger.api.v1.GetLedgerIdentityRequest\x1a\x31.com.daml.ledger.api.v1.GetLedgerIdentityResponseB\xa3\x01\n\x16\x63om.daml.ledger.api.v1B\x1fLedgerIdentityServiceOuterClassZOgithub.com/digital-asset/dazl-client/go/v7/pkg/generated/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n4com/daml/ledger/api/v1/ledger_identity_service.proto\x12\x16\x63om.daml.ledger.api.v1\"\x1e\n\x18GetLedgerIdentityRequest:\x02\x18\x01\"@\n\x19GetLedgerIdentityResponse\x12\x1f\n\tledger_id\x18\x01 \x01(\tB\x02\x18\x01R\x08ledgerId:\x02\x18\x01\x32\x9b\x01\n\x15LedgerIdentityService\x12}\n\x11GetLedgerIdentity\x12\x30.com.daml.ledger.api.v1.GetLedgerIdentityRequest\x1a\x31.com.daml.ledger.api.v1.GetLedgerIdentityResponse\"\x03\x88\x02\x01\x1a\x03\x88\x02\x01\x42\x99\x01\n\x16\x63om.daml.ledger.api.v1B\x1fLedgerIdentityServiceOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
 )
 
 
@@ -43,14 +43,14 @@ _GETLEDGERIDENTITYREQUEST = _descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  serialized_options=b'\030\001',
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=80,
-  serialized_end=106,
+  serialized_end=110,
 )
 
 
@@ -68,21 +68,21 @@ _GETLEDGERIDENTITYRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=b'\030\001', json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  serialized_options=b'\030\001',
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=108,
-  serialized_end=164,
+  serialized_start=112,
+  serialized_end=176,
 )
 
 DESCRIPTOR.message_types_by_name['GetLedgerIdentityRequest'] = _GETLEDGERIDENTITYREQUEST
@@ -105,16 +105,19 @@ _sym_db.RegisterMessage(GetLedgerIdentityResponse)
 
 
 DESCRIPTOR._options = None
+_GETLEDGERIDENTITYREQUEST._options = None
+_GETLEDGERIDENTITYRESPONSE.fields_by_name['ledger_id']._options = None
+_GETLEDGERIDENTITYRESPONSE._options = None
 
 _LEDGERIDENTITYSERVICE = _descriptor.ServiceDescriptor(
   name='LedgerIdentityService',
   full_name='com.daml.ledger.api.v1.LedgerIdentityService',
   file=DESCRIPTOR,
   index=0,
-  serialized_options=None,
+  serialized_options=b'\210\002\001',
   create_key=_descriptor._internal_create_key,
-  serialized_start=167,
-  serialized_end=312,
+  serialized_start=179,
+  serialized_end=334,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetLedgerIdentity',
@@ -123,7 +126,7 @@ _LEDGERIDENTITYSERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_GETLEDGERIDENTITYREQUEST,
     output_type=_GETLEDGERIDENTITYRESPONSE,
-    serialized_options=None,
+    serialized_options=b'\210\002\001',
     create_key=_descriptor._internal_create_key,
   ),
 ])
