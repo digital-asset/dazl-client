@@ -710,7 +710,7 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
-        filter_fn = partial(is_match, match) if match is not None else None
+        filter_fn = (lambda evt: is_match(match, evt.cdata)) if match is not None else None
 
         bot = self._impl.bots.add_new(party_client=self, name=handler.__name__)
         bot.add_event_handler(EventKey.contract_created(True, template), handler, filter_fn)
@@ -792,7 +792,7 @@ class AIOPartyClient(PartyClient):
         :param match:
             An (optional) parameter that filters the templates to be received by the callback.
         """
-        filter_fn = partial(is_match, match) if match is not None else None
+        filter_fn = (lambda evt: is_match(match, evt.cdata)) if match is not None else None
 
         for key in EventKey.contract_archived(True, template):
             self._impl.add_event_handler(key, handler, filter_fn, self)
@@ -1541,7 +1541,7 @@ class SimplePartyClient(PartyClient):
         ) -> Awaitable[EventHandlerResponse]:
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
-        filter_fn = partial(is_match, match) if match is not None else None
+        filter_fn = (lambda evt: is_match(match, evt.cdata)) if match is not None else None
 
         for key in EventKey.contract_created(True, template):
             self._impl.add_event_handler(key, _background_ledger_contract_create, filter_fn, self)
@@ -1636,7 +1636,7 @@ class SimplePartyClient(PartyClient):
         ) -> Awaitable[EventHandlerResponse]:
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
-        filter_fn = partial(is_match, match) if match is not None else None
+        filter_fn = (lambda evt: is_match(match, evt.cdata)) if match is not None else None
 
         for key in EventKey.contract_archived(True, template):
             self._impl.add_event_handler(key, _background_ledger_contract_archived, filter_fn, self)
