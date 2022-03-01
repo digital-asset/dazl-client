@@ -208,10 +208,12 @@ type UserManagementFeature struct {
 	// Whether the Ledger API server provides the user management service.
 	Supported bool `protobuf:"varint,1,opt,name=supported,proto3" json:"supported,omitempty"`
 	// The maximum number of rights that can be assigned to a single user.
-	// Value of 0 means that no rights per user limit is enforced.
+	// Servers MUST support at least 100 rights per user.
+	// A value of 0 means that the server enforces no rights per user limit.
 	MaxRightsPerUser int32 `protobuf:"varint,2,opt,name=max_rights_per_user,json=maxRightsPerUser,proto3" json:"max_rights_per_user,omitempty"`
 	// The maximum number of users the server can return in a single response (page).
-	// Value of 0 means that no page size limit is enforced.
+	// Servers MUST support at least a 100 users per page.
+	// A value of 0 means that the server enforces no page size limit.
 	MaxUsersPageSize int32 `protobuf:"varint,3,opt,name=max_users_page_size,json=maxUsersPageSize,proto3" json:"max_users_page_size,omitempty"`
 }
 

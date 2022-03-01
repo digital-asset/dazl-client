@@ -75,7 +75,12 @@ class UserManagementServiceServicer(object):
     """
 
     def CreateUser(self, request, context):
-        """Create a new user, failing if it already exists.
+        """Create a new user.
+        Errors:
+        - ``ALREADY_EXISTS``: if the user already exists
+        - ``UNAUTHENTICATED``: if the request does not include a valid access token
+        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -83,6 +88,11 @@ class UserManagementServiceServicer(object):
 
     def GetUser(self, request, context):
         """Get the user data of a specific user or the authenticated user.
+        Errors:
+        - ``NOT_FOUND``: if the user doesn't exist
+        - ``UNAUTHENTICATED``: if the request does not include a valid access token
+        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -90,6 +100,11 @@ class UserManagementServiceServicer(object):
 
     def DeleteUser(self, request, context):
         """Delete an existing user and all its rights.
+        Errors:
+        - ``NOT_FOUND``: if the user doesn't exist
+        - ``UNAUTHENTICATED``: if the request does not include a valid access token
+        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -97,6 +112,10 @@ class UserManagementServiceServicer(object):
 
     def ListUsers(self, request, context):
         """List all existing users.
+        Errors:
+        - ``UNAUTHENTICATED``: if the request does not include a valid access token
+        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -104,6 +123,11 @@ class UserManagementServiceServicer(object):
 
     def GrantUserRights(self, request, context):
         """Grant rights to a user.
+        Errors:
+        - ``NOT_FOUND``: if the user doesn't exist
+        - ``UNAUTHENTICATED``: if the request does not include a valid access token
+        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -111,6 +135,11 @@ class UserManagementServiceServicer(object):
 
     def RevokeUserRights(self, request, context):
         """Revoke rights from a user.
+        Errors:
+        - ``NOT_FOUND``: if the user doesn't exist
+        - ``UNAUTHENTICATED``: if the request does not include a valid access token
+        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -118,6 +147,11 @@ class UserManagementServiceServicer(object):
 
     def ListUserRights(self, request, context):
         """List the set of all rights granted to a user.
+        Errors:
+        - ``NOT_FOUND``: if the user doesn't exist
+        - ``UNAUTHENTICATED``: if the request does not include a valid access token
+        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

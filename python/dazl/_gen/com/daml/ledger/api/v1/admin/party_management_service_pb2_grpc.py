@@ -58,8 +58,7 @@ class PartyManagementServiceServicer(object):
     def GetParticipantId(self, request, context):
         """Return the identifier of the backing participant.
         All horizontally scaled replicas should return the same id.
-        daml-on-sql: returns an identifier supplied on command line at launch time
-        daml-on-kv-ledger: as above
+        daml-on-kv-ledger: returns an identifier supplied on command line at launch time
         canton: returns globally unique identifier of the backing participant
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
@@ -106,7 +105,6 @@ class PartyManagementServiceServicer(object):
         - ``UNIMPLEMENTED``: if synchronous party allocation is not supported by the backing participant
         - ``DEADLINE_EXCEEDED``: if the request times out
         - ``INVALID_ARGUMENT``: if the provided hint and/or display name is invalid on the given ledger (see below).
-        daml-on-sql: suggestion's uniqueness is checked and call rejected if the identifier is already present
         daml-on-kv-ledger: suggestion's uniqueness is checked by the validators in
         the consensus layer and call rejected if the identifier is already present.
         canton: completely different globally unique identifier is allocated.

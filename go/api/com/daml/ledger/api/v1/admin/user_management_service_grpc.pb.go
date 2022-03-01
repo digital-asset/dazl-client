@@ -24,19 +24,53 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserManagementServiceClient interface {
-	// Create a new user, failing if it already exists.
+	// Create a new user.
+	// Errors:
+	// - ``ALREADY_EXISTS``: if the user already exists
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	// Get the user data of a specific user or the authenticated user.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	// Delete an existing user and all its rights.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	// List all existing users.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
 	// Grant rights to a user.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	GrantUserRights(ctx context.Context, in *GrantUserRightsRequest, opts ...grpc.CallOption) (*GrantUserRightsResponse, error)
 	// Revoke rights from a user.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	RevokeUserRights(ctx context.Context, in *RevokeUserRightsRequest, opts ...grpc.CallOption) (*RevokeUserRightsResponse, error)
 	// List the set of all rights granted to a user.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	ListUserRights(ctx context.Context, in *ListUserRightsRequest, opts ...grpc.CallOption) (*ListUserRightsResponse, error)
 }
 
@@ -115,19 +149,53 @@ func (c *userManagementServiceClient) ListUserRights(ctx context.Context, in *Li
 // All implementations must embed UnimplementedUserManagementServiceServer
 // for forward compatibility
 type UserManagementServiceServer interface {
-	// Create a new user, failing if it already exists.
+	// Create a new user.
+	// Errors:
+	// - ``ALREADY_EXISTS``: if the user already exists
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	// Get the user data of a specific user or the authenticated user.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	// Delete an existing user and all its rights.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	// List all existing users.
+	// Errors:
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
 	// Grant rights to a user.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	GrantUserRights(context.Context, *GrantUserRightsRequest) (*GrantUserRightsResponse, error)
 	// Revoke rights from a user.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	RevokeUserRights(context.Context, *RevokeUserRightsRequest) (*RevokeUserRightsResponse, error)
 	// List the set of all rights granted to a user.
+	// Errors:
+	// - ``NOT_FOUND``: if the user doesn't exist
+	// - ``UNAUTHENTICATED``: if the request does not include a valid access token
+	// - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
+	// - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
 	ListUserRights(context.Context, *ListUserRightsRequest) (*ListUserRightsResponse, error)
 	mustEmbedUnimplementedUserManagementServiceServer()
 }

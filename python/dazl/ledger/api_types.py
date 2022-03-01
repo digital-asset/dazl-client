@@ -642,22 +642,22 @@ class PartyInfo:
 
 
 class ParticipantMeteringReport:
-    __slots__ = ("report_generation_time", "participant_id", "to_actual", "application_reports")
+    __slots__ = ("report_generation_time", "participant_id", "is_final", "application_reports")
     report_generation_time: datetime
     participant_id: str
-    to_actual: datetime
+    is_final: bool
     application_reports: "Sequence[ApplicationMeteringReport]"
 
     def __init__(
         self,
         report_generation_time: datetime,
         participant_id: str,
-        to_actual: datetime,
+        is_final: bool,
         application_reports: "Sequence[ApplicationMeteringReport]",
     ):
         object.__setattr__(self, "report_generation_time", report_generation_time)
         object.__setattr__(self, "participant_id", participant_id)
-        object.__setattr__(self, "to_actual", to_actual)
+        object.__setattr__(self, "is_final", is_final)
         object.__setattr__(self, "application_reports", application_reports)
 
 

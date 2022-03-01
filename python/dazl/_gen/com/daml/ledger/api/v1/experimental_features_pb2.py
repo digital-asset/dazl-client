@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\026com.daml.ledger.api.v1B\036ExperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n2com/daml/ledger/api/v1/experimental_features.proto\x12\x16\x63om.daml.ledger.api.v1\"\xfe\x03\n\x14\x45xperimentalFeatures\x12r\n\x18self_service_error_codes\x18\x01 \x01(\x0b\x32\x39.com.daml.ledger.api.v1.ExperimentalSelfServiceErrorCodesR\x15selfServiceErrorCodes\x12O\n\x0bstatic_time\x18\x02 \x01(\x0b\x32..com.daml.ledger.api.v1.ExperimentalStaticTimeR\nstaticTime\x12i\n\x15\x63ommand_deduplication\x18\x03 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.CommandDeduplicationFeaturesR\x14\x63ommandDeduplication\x12\x62\n\x12optional_ledger_id\x18\x04 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.ExperimentalOptionalLedgerIdR\x10optionalLedgerId\x12R\n\x0c\x63ontract_ids\x18\x05 \x01(\x0b\x32/.com.daml.ledger.api.v1.ExperimentalContractIdsR\x0b\x63ontractIds\"#\n!ExperimentalSelfServiceErrorCodes\"6\n\x16\x45xperimentalStaticTime\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\"\xcb\x02\n\x1c\x43ommandDeduplicationFeatures\x12{\n\x1c\x64\x65\x64uplication_period_support\x18\x01 \x01(\x0b\x32\x39.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupportR\x1a\x64\x65\x64uplicationPeriodSupport\x12_\n\x12\x64\x65\x64uplication_type\x18\x02 \x01(\x0e\x32\x30.com.daml.ledger.api.v1.CommandDeduplicationTypeR\x11\x64\x65\x64uplicationType\x12M\n#max_deduplication_duration_enforced\x18\x03 \x01(\x08R maxDeduplicationDurationEnforced\"\x1e\n\x1c\x45xperimentalOptionalLedgerId\"\xbf\x03\n!CommandDeduplicationPeriodSupport\x12n\n\x0eoffset_support\x18\x01 \x01(\x0e\x32G.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupport.OffsetSupportR\roffsetSupport\x12t\n\x10\x64uration_support\x18\x02 \x01(\x0e\x32I.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupport.DurationSupportR\x0f\x64urationSupport\"d\n\rOffsetSupport\x12\x18\n\x14OFFSET_NOT_SUPPORTED\x10\x00\x12\x19\n\x15OFFSET_NATIVE_SUPPORT\x10\x01\x12\x1e\n\x1aOFFSET_CONVERT_TO_DURATION\x10\x02\"N\n\x0f\x44urationSupport\x12\x1b\n\x17\x44URATION_NATIVE_SUPPORT\x10\x00\x12\x1e\n\x1a\x44URATION_CONVERT_TO_OFFSET\x10\x01\"\xa5\x01\n\x17\x45xperimentalContractIds\x12S\n\x02v1\x18\x01 \x01(\x0e\x32\x43.com.daml.ledger.api.v1.ExperimentalContractIds.ContractIdV1SupportR\x02v1\"5\n\x13\x43ontractIdV1Support\x12\x0c\n\x08SUFFIXED\x10\x00\x12\x10\n\x0cNON_SUFFIXED\x10\x01*I\n\x18\x43ommandDeduplicationType\x12\x0e\n\nASYNC_ONLY\x10\x00\x12\x1d\n\x19\x41SYNC_AND_CONCURRENT_SYNC\x10\x01\x42\x98\x01\n\x16\x63om.daml.ledger.api.v1B\x1e\x45xperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
+  serialized_pb=b'\n2com/daml/ledger/api/v1/experimental_features.proto\x12\x16\x63om.daml.ledger.api.v1\"\x82\x04\n\x14\x45xperimentalFeatures\x12v\n\x18self_service_error_codes\x18\x01 \x01(\x0b\x32\x39.com.daml.ledger.api.v1.ExperimentalSelfServiceErrorCodesB\x02\x18\x01R\x15selfServiceErrorCodes\x12O\n\x0bstatic_time\x18\x02 \x01(\x0b\x32..com.daml.ledger.api.v1.ExperimentalStaticTimeR\nstaticTime\x12i\n\x15\x63ommand_deduplication\x18\x03 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.CommandDeduplicationFeaturesR\x14\x63ommandDeduplication\x12\x62\n\x12optional_ledger_id\x18\x04 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.ExperimentalOptionalLedgerIdR\x10optionalLedgerId\x12R\n\x0c\x63ontract_ids\x18\x05 \x01(\x0b\x32/.com.daml.ledger.api.v1.ExperimentalContractIdsR\x0b\x63ontractIds\"\'\n!ExperimentalSelfServiceErrorCodes:\x02\x18\x01\"6\n\x16\x45xperimentalStaticTime\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\"\xcb\x02\n\x1c\x43ommandDeduplicationFeatures\x12{\n\x1c\x64\x65\x64uplication_period_support\x18\x01 \x01(\x0b\x32\x39.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupportR\x1a\x64\x65\x64uplicationPeriodSupport\x12_\n\x12\x64\x65\x64uplication_type\x18\x02 \x01(\x0e\x32\x30.com.daml.ledger.api.v1.CommandDeduplicationTypeR\x11\x64\x65\x64uplicationType\x12M\n#max_deduplication_duration_enforced\x18\x03 \x01(\x08R maxDeduplicationDurationEnforced\"\x1e\n\x1c\x45xperimentalOptionalLedgerId\"\xbf\x03\n!CommandDeduplicationPeriodSupport\x12n\n\x0eoffset_support\x18\x01 \x01(\x0e\x32G.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupport.OffsetSupportR\roffsetSupport\x12t\n\x10\x64uration_support\x18\x02 \x01(\x0e\x32I.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupport.DurationSupportR\x0f\x64urationSupport\"d\n\rOffsetSupport\x12\x18\n\x14OFFSET_NOT_SUPPORTED\x10\x00\x12\x19\n\x15OFFSET_NATIVE_SUPPORT\x10\x01\x12\x1e\n\x1aOFFSET_CONVERT_TO_DURATION\x10\x02\"N\n\x0f\x44urationSupport\x12\x1b\n\x17\x44URATION_NATIVE_SUPPORT\x10\x00\x12\x1e\n\x1a\x44URATION_CONVERT_TO_OFFSET\x10\x01\"\xa5\x01\n\x17\x45xperimentalContractIds\x12S\n\x02v1\x18\x01 \x01(\x0e\x32\x43.com.daml.ledger.api.v1.ExperimentalContractIds.ContractIdV1SupportR\x02v1\"5\n\x13\x43ontractIdV1Support\x12\x0c\n\x08SUFFIXED\x10\x00\x12\x10\n\x0cNON_SUFFIXED\x10\x01*I\n\x18\x43ommandDeduplicationType\x12\x0e\n\nASYNC_ONLY\x10\x00\x12\x1d\n\x19\x41SYNC_AND_CONCURRENT_SYNC\x10\x01\x42\x98\x01\n\x16\x63om.daml.ledger.api.v1B\x1e\x45xperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
 )
 
 _COMMANDDEDUPLICATIONTYPE = _descriptor.EnumDescriptor(
@@ -47,8 +47,8 @@ _COMMANDDEDUPLICATIONTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1668,
-  serialized_end=1741,
+  serialized_start=1676,
+  serialized_end=1749,
 )
 _sym_db.RegisterEnumDescriptor(_COMMANDDEDUPLICATIONTYPE)
 
@@ -82,8 +82,8 @@ _COMMANDDEDUPLICATIONPERIODSUPPORT_OFFSETSUPPORT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1318,
-  serialized_end=1418,
+  serialized_start=1326,
+  serialized_end=1426,
 )
 _sym_db.RegisterEnumDescriptor(_COMMANDDEDUPLICATIONPERIODSUPPORT_OFFSETSUPPORT)
 
@@ -107,8 +107,8 @@ _COMMANDDEDUPLICATIONPERIODSUPPORT_DURATIONSUPPORT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1420,
-  serialized_end=1498,
+  serialized_start=1428,
+  serialized_end=1506,
 )
 _sym_db.RegisterEnumDescriptor(_COMMANDDEDUPLICATIONPERIODSUPPORT_DURATIONSUPPORT)
 
@@ -132,8 +132,8 @@ _EXPERIMENTALCONTRACTIDS_CONTRACTIDV1SUPPORT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1613,
-  serialized_end=1666,
+  serialized_start=1621,
+  serialized_end=1674,
 )
 _sym_db.RegisterEnumDescriptor(_EXPERIMENTALCONTRACTIDS_CONTRACTIDV1SUPPORT)
 
@@ -152,7 +152,7 @@ _EXPERIMENTALFEATURES = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='selfServiceErrorCodes', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=b'\030\001', json_name='selfServiceErrorCodes', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='static_time', full_name='com.daml.ledger.api.v1.ExperimentalFeatures.static_time', index=1,
       number=2, type=11, cpp_type=10, label=1,
@@ -194,7 +194,7 @@ _EXPERIMENTALFEATURES = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=79,
-  serialized_end=589,
+  serialized_end=593,
 )
 
 
@@ -212,14 +212,14 @@ _EXPERIMENTALSELFSERVICEERRORCODES = _descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  serialized_options=b'\030\001',
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=591,
-  serialized_end=626,
+  serialized_start=595,
+  serialized_end=634,
 )
 
 
@@ -250,8 +250,8 @@ _EXPERIMENTALSTATICTIME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=628,
-  serialized_end=682,
+  serialized_start=636,
+  serialized_end=690,
 )
 
 
@@ -296,8 +296,8 @@ _COMMANDDEDUPLICATIONFEATURES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=685,
-  serialized_end=1016,
+  serialized_start=693,
+  serialized_end=1024,
 )
 
 
@@ -321,8 +321,8 @@ _EXPERIMENTALOPTIONALLEDGERID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1018,
-  serialized_end=1048,
+  serialized_start=1026,
+  serialized_end=1056,
 )
 
 
@@ -362,8 +362,8 @@ _COMMANDDEDUPLICATIONPERIODSUPPORT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1051,
-  serialized_end=1498,
+  serialized_start=1059,
+  serialized_end=1506,
 )
 
 
@@ -395,8 +395,8 @@ _EXPERIMENTALCONTRACTIDS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1501,
-  serialized_end=1666,
+  serialized_start=1509,
+  serialized_end=1674,
 )
 
 _EXPERIMENTALFEATURES.fields_by_name['self_service_error_codes'].message_type = _EXPERIMENTALSELFSERVICEERRORCODES
@@ -473,4 +473,6 @@ _sym_db.RegisterMessage(ExperimentalContractIds)
 
 
 DESCRIPTOR._options = None
+_EXPERIMENTALFEATURES.fields_by_name['self_service_error_codes']._options = None
+_EXPERIMENTALSELFSERVICEERRORCODES._options = None
 # @@protoc_insertion_point(module_scope)

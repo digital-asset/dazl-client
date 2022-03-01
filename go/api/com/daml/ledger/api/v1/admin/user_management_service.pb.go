@@ -34,6 +34,7 @@ type User struct {
 
 	// The user identifier, which must be a non-empty string of at most 128
 	// characters that are either lowercase alphanumeric ASCII characters or one of the symbols "@^$.!`-#+'~_|:".
+	// Required
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// The primary party as which this user reads and acts by default on the ledger
 	// *provided* it has the corresponding ``CanReadAs(primary_party)`` or
@@ -41,6 +42,7 @@ type User struct {
 	// Ledger API clients SHOULD set this field to a non-empty value for all users to
 	// enable the users to act on the ledger using their own Daml party.
 	// Users for participant administrators MAY have an associated primary party.
+	// Optional
 	PrimaryParty string `protobuf:"bytes,2,opt,name=primary_party,json=primaryParty,proto3" json:"primary_party,omitempty"`
 }
 
@@ -195,9 +197,11 @@ type CreateUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The user to create.
+	// Required
 	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	// The rights to be assigned to the user upon creation,
 	// which SHOULD include appropriate rights for the ``user.primary_party``.
+	// Required
 	Rights []*Right `protobuf:"bytes,2,rep,name=rights,proto3" json:"rights,omitempty"`
 }
 
@@ -303,6 +307,7 @@ type GetUserRequest struct {
 
 	// The user whose data to retrieve.
 	// If set to empty string (the default), then the data for the authenticated user will be retrieved.
+	// Required
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
@@ -400,6 +405,7 @@ type DeleteUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The user to delete.
+	// Required
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
@@ -489,9 +495,11 @@ type ListUsersRequest struct {
 
 	// Pagination token to determine the specific page to fetch.
 	// Leave empty to fetch the first page.
+	// Optional
 	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Maximum number of results to be returned by the server. The server will return no more than that many results, but it might return fewer.
 	// If 0, the server will decide the number of results to be returned.
+	// Optional
 	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 }
 
@@ -608,8 +616,10 @@ type GrantUserRightsRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The user to whom to grant rights.
+	// Required
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	// The rights to grant.
+	// Required
 	Rights []*Right `protobuf:"bytes,2,rep,name=rights,proto3" json:"rights,omitempty"`
 }
 
@@ -716,8 +726,10 @@ type RevokeUserRightsRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The user from whom to revoke rights.
+	// Required
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	// The rights to revoke.
+	// Required
 	Rights []*Right `protobuf:"bytes,2,rep,name=rights,proto3" json:"rights,omitempty"`
 }
 
@@ -823,6 +835,7 @@ type ListUserRightsRequest struct {
 
 	// The user for which to list the rights.
 	// If set to empty string (the default), then the rights for the authenticated user will be listed.
+	// Required
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
