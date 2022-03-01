@@ -41,10 +41,10 @@ from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
-from ...prim import ContractData, ContractId, Party, datetime_to_timestamp, to_datetime
+from ...prim import ContractData, ContractId, Party, to_datetime
 from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
-from .._offsets import END, End
+from .._offsets import End
 from ..aio import PackageLoader
 from ..api_types import ApplicationMeteringReport, ParticipantMeteringReport, User
 from ..pkgcache import SHARED_PACKAGE_DATABASE
@@ -370,7 +370,7 @@ class Codec:
         return ParticipantMeteringReport(
             report_generation_time=to_datetime(__obj.report_generation_time),
             participant_id=__obj.participant_report.participant_id,
-            to_actual=to_datetime(__obj.participant_report.to_actual),
+            is_final=__obj.participant_report.is_final,
             application_reports=[
                 Codec.decode_application_metering_report(a)
                 for a in __obj.participant_report.application_reports

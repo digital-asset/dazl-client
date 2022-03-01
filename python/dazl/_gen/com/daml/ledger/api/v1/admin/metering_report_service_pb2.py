@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\034com.daml.ledger.api.v1.adminB\030MeteringReportOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n:com/daml/ledger/api/v1/admin/metering_report_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x01\n\x18GetMeteringReportRequest\x12.\n\x04\x66rom\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04\x66rom\x12*\n\x02to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x02to\x12%\n\x0e\x61pplication_id\x18\x03 \x01(\tR\rapplicationId\"\xa7\x02\n\x19GetMeteringReportResponse\x12P\n\x07request\x18\x01 \x01(\x0b\x32\x36.com.daml.ledger.api.v1.admin.GetMeteringReportRequestR\x07request\x12\x66\n\x12participant_report\x18\x02 \x01(\x0b\x32\x37.com.daml.ledger.api.v1.admin.ParticipantMeteringReportR\x11participantReport\x12P\n\x16report_generation_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x14reportGenerationTime\"\xe5\x01\n\x19ParticipantMeteringReport\x12%\n\x0eparticipant_id\x18\x01 \x01(\tR\rparticipantId\x12\x37\n\tto_actual\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x08toActual\x12h\n\x13\x61pplication_reports\x18\x03 \x03(\x0b\x32\x37.com.daml.ledger.api.v1.admin.ApplicationMeteringReportR\x12\x61pplicationReports\"c\n\x19\x41pplicationMeteringReport\x12%\n\x0e\x61pplication_id\x18\x01 \x01(\tR\rapplicationId\x12\x1f\n\x0b\x65vent_count\x18\x02 \x01(\x03R\neventCount2\x9e\x01\n\x15MeteringReportService\x12\x84\x01\n\x11GetMeteringReport\x12\x36.com.daml.ledger.api.v1.admin.GetMeteringReportRequest\x1a\x37.com.daml.ledger.api.v1.admin.GetMeteringReportResponseB\xa4\x01\n\x1c\x63om.daml.ledger.api.v1.adminB\x18MeteringReportOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
+  serialized_pb=b'\n:com/daml/ledger/api/v1/admin/metering_report_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x01\n\x18GetMeteringReportRequest\x12.\n\x04\x66rom\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04\x66rom\x12*\n\x02to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x02to\x12%\n\x0e\x61pplication_id\x18\x03 \x01(\tR\rapplicationId\"\xa7\x02\n\x19GetMeteringReportResponse\x12P\n\x07request\x18\x01 \x01(\x0b\x32\x36.com.daml.ledger.api.v1.admin.GetMeteringReportRequestR\x07request\x12\x66\n\x12participant_report\x18\x02 \x01(\x0b\x32\x37.com.daml.ledger.api.v1.admin.ParticipantMeteringReportR\x11participantReport\x12P\n\x16report_generation_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x14reportGenerationTime\"\xc7\x01\n\x19ParticipantMeteringReport\x12%\n\x0eparticipant_id\x18\x01 \x01(\tR\rparticipantId\x12\x19\n\x08is_final\x18\x02 \x01(\x08R\x07isFinal\x12h\n\x13\x61pplication_reports\x18\x03 \x03(\x0b\x32\x37.com.daml.ledger.api.v1.admin.ApplicationMeteringReportR\x12\x61pplicationReports\"c\n\x19\x41pplicationMeteringReport\x12%\n\x0e\x61pplication_id\x18\x01 \x01(\tR\rapplicationId\x12\x1f\n\x0b\x65vent_count\x18\x02 \x01(\x03R\neventCount2\x9e\x01\n\x15MeteringReportService\x12\x84\x01\n\x11GetMeteringReport\x12\x36.com.daml.ledger.api.v1.admin.GetMeteringReportRequest\x1a\x37.com.daml.ledger.api.v1.admin.GetMeteringReportResponseB\xa4\x01\n\x1c\x63om.daml.ledger.api.v1.adminB\x18MeteringReportOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -139,12 +139,12 @@ _PARTICIPANTMETERINGREPORT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, json_name='participantId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='to_actual', full_name='com.daml.ledger.api.v1.admin.ParticipantMeteringReport.to_actual', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='is_final', full_name='com.daml.ledger.api.v1.admin.ParticipantMeteringReport.is_final', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='toActual', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, json_name='isFinal', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='application_reports', full_name='com.daml.ledger.api.v1.admin.ParticipantMeteringReport.application_reports', index=2,
       number=3, type=11, cpp_type=10, label=3,
@@ -165,7 +165,7 @@ _PARTICIPANTMETERINGREPORT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=584,
-  serialized_end=813,
+  serialized_end=783,
 )
 
 
@@ -203,8 +203,8 @@ _APPLICATIONMETERINGREPORT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=815,
-  serialized_end=914,
+  serialized_start=785,
+  serialized_end=884,
 )
 
 _GETMETERINGREPORTREQUEST.fields_by_name['from'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -212,7 +212,6 @@ _GETMETERINGREPORTREQUEST.fields_by_name['to'].message_type = google_dot_protobu
 _GETMETERINGREPORTRESPONSE.fields_by_name['request'].message_type = _GETMETERINGREPORTREQUEST
 _GETMETERINGREPORTRESPONSE.fields_by_name['participant_report'].message_type = _PARTICIPANTMETERINGREPORT
 _GETMETERINGREPORTRESPONSE.fields_by_name['report_generation_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_PARTICIPANTMETERINGREPORT.fields_by_name['to_actual'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _PARTICIPANTMETERINGREPORT.fields_by_name['application_reports'].message_type = _APPLICATIONMETERINGREPORT
 DESCRIPTOR.message_types_by_name['GetMeteringReportRequest'] = _GETMETERINGREPORTREQUEST
 DESCRIPTOR.message_types_by_name['GetMeteringReportResponse'] = _GETMETERINGREPORTRESPONSE
@@ -258,8 +257,8 @@ _METERINGREPORTSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=917,
-  serialized_end=1075,
+  serialized_start=887,
+  serialized_end=1045,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetMeteringReport',
