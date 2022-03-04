@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import async_network
+from dazl import async_network, connect
 from dazl.client.errors import UnknownTemplateWarning
 import pytest
 
@@ -13,8 +13,11 @@ OperatorNotification = "Simple:OperatorNotification"
 
 @pytest.mark.asyncio
 async def test_select_star_retrieves_contracts(sandbox):
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     async with async_network(url=sandbox, dars=Simple) as network:
-        client = network.aio_new_party()
+        client = network.aio_party(party_info.party)
 
         network.start()
 
@@ -27,8 +30,11 @@ async def test_select_star_retrieves_contracts(sandbox):
 
 @pytest.mark.asyncio
 async def test_select_star_on_empty_ledger_retrieves_nothing(sandbox):
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     async with async_network(url=sandbox, dars=Simple) as network:
-        client = network.aio_new_party()
+        client = network.aio_party(party_info.party)
 
         network.start()
 
@@ -39,12 +45,15 @@ async def test_select_star_on_empty_ledger_retrieves_nothing(sandbox):
 
 @pytest.mark.asyncio
 async def test_select_template_retrieves_contracts(sandbox):
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     async with async_network(url=sandbox, dars=Simple) as network:
-        client = network.aio_new_party()
+        client = network.aio_party(party_info.party)
 
         network.start()
 
-        await client.create(OperatorRole, {"operator": client.party})
+        await client.create(OperatorRole, {"operator": party_info.party})
 
         data = client.find_active(OperatorRole)
 
@@ -53,12 +62,15 @@ async def test_select_template_retrieves_contracts(sandbox):
 
 @pytest.mark.asyncio
 async def test_select_unknown_template_retrieves_empty_set(sandbox):
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     async with async_network(url=sandbox, dars=Simple) as network:
-        client = network.aio_new_party()
+        client = network.aio_party(party_info.party)
 
         network.start()
 
-        await client.create(OperatorRole, {"operator": client.party})
+        await client.create(OperatorRole, {"operator": party_info.party})
 
         with pytest.warns(UnknownTemplateWarning):
             data = client.find_active("NonExistentModule:NonExistentTemplate")
@@ -79,9 +91,14 @@ async def test_select_operates_on_acs_before_event_handlers(sandbox):
         nonlocal actual_select_count
         actual_select_count += len(client.find_active(OperatorNotification))
 
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     async with async_network(url=sandbox, dars=Simple) as network:
-        client = network.aio_new_party()
-        client.add_ledger_ready(lambda e: client.create(OperatorRole, {"operator": client.party}))
+        client = network.aio_party(party_info.party)
+        client.add_ledger_ready(
+            lambda e: client.create(OperatorRole, {"operator": party_info.party})
+        )
         client.add_ledger_created(
             OperatorRole, lambda e: client.exercise(e.cid, "PublishMany", dict(count=3))
         )
@@ -105,9 +122,14 @@ async def test_select_reflects_archive_events(sandbox):
         nonlocal actual_select_count
         actual_select_count += len(event.acs_find_active(OperatorNotification))
 
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     async with async_network(url=sandbox, dars=Simple) as network:
-        client = network.aio_new_party()
-        client.add_ledger_ready(lambda e: client.create(OperatorRole, {"operator": client.party}))
+        client = network.aio_party(party_info.party)
+        client.add_ledger_ready(
+            lambda e: client.create(OperatorRole, {"operator": party_info.party})
+        )
         client.add_ledger_created(
             OperatorRole, lambda e: client.exercise(e.cid, "PublishMany", dict(count=3))
         )

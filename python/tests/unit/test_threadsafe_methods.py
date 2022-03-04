@@ -1,7 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import exercise, simple_client
+from dazl import simple_client
+from dazl.ledger import ExerciseCommand
 
 from .blocking_setup import blocking_setup
 from .dars import Simple
@@ -27,7 +28,7 @@ def test_threadsafe_methods(sandbox):
             if int(cdata["text"]) <= 3:
                 contracts_to_delete.append(cid)
 
-        client.submit([exercise(cid, "Archive") for cid in contracts_to_delete])
+        client.submit([ExerciseCommand(cid, "Archive") for cid in contracts_to_delete])
 
         client.exercise(operator_cid, "PublishMany", dict(count=3))
 

@@ -1,7 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import async_network, frozendict
+from dazl import frozendict
+from dazl.testing import connect_with_new_party
 import pytest
 
 from .dars import MapSupport
@@ -9,32 +10,27 @@ from .dars import MapSupport
 
 @pytest.mark.asyncio
 async def test_map_support(sandbox):
-    async with async_network(url=sandbox, dars=MapSupport) as network:
-        client = network.aio_new_party()
-
-        network.start()
-
-        await client.ready()
-        await client.create(
+    async with connect_with_new_party(url=sandbox, dar=MapSupport, admin=True) as p:
+        await p.connection.create(
             "MapSupport:Sample",
-            {"party": client.party, "mappings": {"65": "A", "97": "a"}, "text": None},
+            {"party": p.party, "mappings": {"65": "A", "97": "a"}, "text": None},
         )
 
-        assert len(client.find_active("*")) == 1
+        count = 0
+        async with p.connection.query("MapSupport:Sample") as stream:
+            async for _ in stream.creates():
+                count += 1
+
+        assert count == 1
 
 
 @pytest.mark.asyncio
 async def test_complicated_map_support(sandbox):
-    async with async_network(url=sandbox, dars=MapSupport) as network:
-        client = network.aio_new_party()
-
-        network.start()
-
-        await client.ready()
-        await client.create(
+    async with connect_with_new_party(url=sandbox, dar=MapSupport, admin=True) as p:
+        await p.connection.create(
             "MapSupport:ComplicatedSample",
             {
-                "party": client.party,
+                "party": p.party,
                 # Note: Python `dict`s are not hashable, so the only way to write this out
                 # is to create a special dict as a key
                 "keyIsMap": {frozendict(A="b"): "mmm"},
@@ -44,4 +40,9 @@ async def test_complicated_map_support(sandbox):
             },
         )
 
-        assert len(client.find_active("*")) == 1
+        count = 0
+        async with p.connection.query("MapSupport:ComplicatedSample") as stream:
+            async for _ in stream.creates():
+                count += 1
+
+        assert count == 1

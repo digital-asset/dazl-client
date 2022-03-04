@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import async_network
+from dazl.testing import connect_with_new_party
 import pytest
 
 from .dars import DottedFields
@@ -12,16 +12,11 @@ from .dars import DottedFields
     "These tests are temporarily disabled because the new encoder does not support this."
 )
 async def test_record_dotted_fields_submit(sandbox):
-    async with async_network(url=sandbox, dars=DottedFields) as network:
-        client = network.aio_new_party()
-
-        network.start()
-
-        await client.ready()
-        await client.create(
+    async with connect_with_new_party(url=sandbox, dar=DottedFields) as p:
+        await p.connection.create(
             "DottedFields:American",
             {
-                "person": client.party,
+                "person": p.party,
                 "address.address": "1 Test Place",
                 "address.city": "Somewhere",
                 "address.state": "ZZ",
@@ -29,7 +24,11 @@ async def test_record_dotted_fields_submit(sandbox):
             },
         )
 
-        items = client.find_active("DottedFields:American")
+        items = []
+        async with p.connection.query("DottedFields:American") as stream:
+            async for event in stream.creates():
+                items.append(event)
+
         assert len(items) == 1
 
 
@@ -38,16 +37,11 @@ async def test_record_dotted_fields_submit(sandbox):
     "These tests are temporarily disabled because the new encoder does not support this."
 )
 async def test_variant_dotted_fields_submit(sandbox):
-    async with async_network(url=sandbox, dars=DottedFields) as network:
-        client = network.aio_new_party()
-
-        network.start()
-
-        await client.ready()
-        await client.create(
+    async with connect_with_new_party(url=sandbox, dar=DottedFields) as p:
+        await p.connection.create(
             "DottedFields:Person",
             {
-                "person": client.party,
+                "person": p.party,
                 "address.US.address": "1 Test Place",
                 "address.US.city": "Somewhere",
                 "address.US.state": "ZZ",
@@ -60,5 +54,9 @@ async def test_variant_dotted_fields_submit(sandbox):
             },
         )
 
-        items = client.find_active("DottedFields:Person")
+        items = []
+        async with p.connection.query("DottedFields:Person") as stream:
+            async for event in stream.creates():
+                items.append(event)
+
         assert len(items) == 1

@@ -6,16 +6,19 @@ from threading import Thread
 from time import sleep
 
 from dazl import LOG, Network, SimplePartyClient
-from dazl.ledger import CreateCommand
+from dazl.ledger import CreateCommand, connect
 from dazl.protocols.events import ReadyEvent
 
 from .dars import PostOffice
 
 
 def test_simple_flask_integration(sandbox):
+    with connect(url=sandbox, admin=True, blocking=True) as conn:
+        party_info = conn.allocate_party()
+
     network = Network()
     network.set_config(url=sandbox)
-    client = network.simple_new_party()
+    client = network.simple_party(party_info.party)
 
     # seed the ledger with some initial state
     client.add_ledger_ready(create_initial_state)

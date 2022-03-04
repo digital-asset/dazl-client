@@ -1,13 +1,10 @@
 # Copyright (c) 2017-2022, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-sdk-version: 1.17.1
+sdk-version: 1.18.1
 name: dotted-fields
 version: 1.0.0
 source: DottedFields.daml
-parties:
-- Alice
-- Bob
 dependencies:
 - daml-prim
 - daml-stdlib

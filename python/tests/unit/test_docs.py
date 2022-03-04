@@ -5,6 +5,11 @@
 # But at the very least, they _are_ typechecked.
 
 
+import pytest
+
+
+@pytest.mark.asyncio
+@pytest.mark.skip("typecheck only")
 async def test_send_single_command() -> None:
     import dazl
 
@@ -13,6 +18,8 @@ async def test_send_single_command() -> None:
         await conn.create("Main:Asset", payload)
 
 
+@pytest.mark.asyncio
+@pytest.mark.skip("typecheck only")
 async def test_read() -> None:
     import dazl
 
@@ -24,6 +31,8 @@ async def test_read() -> None:
     print(contracts)
 
 
+@pytest.mark.asyncio
+@pytest.mark.skip("typecheck only")
 async def test_read_using_callback() -> None:
     import dazl
 

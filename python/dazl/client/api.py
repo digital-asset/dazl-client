@@ -272,6 +272,9 @@ class Network:
         Return a :class:`PartyClient` for a random party that works on an asyncio event loop.
         This will never return the same object twice.
         """
+        warnings.warn(
+            "aio_new_party is deprecated and does not work on Daml 2.x ledgers", DeprecationWarning
+        )
         return self.aio_party(str(uuid4()))
 
     def party_bots(

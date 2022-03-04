@@ -3,7 +3,7 @@
 
 from asyncio import ensure_future, wait_for
 
-from dazl import AIOPartyClient, async_network
+from dazl import AIOPartyClient, async_network, connect
 from dazl.ledger import ExerciseCommand
 import pytest
 
@@ -17,8 +17,11 @@ OperatorNotification = "Simple:OperatorNotification"
 async def test_acs_find_active_retrieves_contracts(sandbox):
     seen_notifications = []
 
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     async with async_network(url=sandbox, dars=Simple) as network:
-        client = network.aio_new_party()
+        client = network.aio_party(party_info.party)
         client.add_ledger_created(
             OperatorNotification, lambda event: seen_notifications.append(event.cid)
         )

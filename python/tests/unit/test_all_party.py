@@ -2,9 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-import uuid
 
-from dazl import Party, async_network
+from dazl import async_network, connect
 import pytest
 
 from .dars import AllParty as AllPartyDar
@@ -18,21 +17,24 @@ async def test_some_party_receives_public_contract(sandbox):
     some_party_cids = []
     publisher_cids = []
 
-    # TODO: Switch to a Party allocation API when available.
-    all_party = Party(str(uuid.uuid4()))
+    async with connect(url=sandbox, admin=True) as conn:
+        all_party_info = await conn.allocate_party()
+        some_party_info = await conn.allocate_party()
+        publisher_party_info = await conn.allocate_party()
 
     async with async_network(url=sandbox, dars=AllPartyDar) as network:
-        network.set_config(party_groups=[all_party])
+        network.set_config(party_groups=[all_party_info.party])
 
-        some_client = network.aio_new_party()
+        some_client = network.aio_party(some_party_info.party)
         some_client.add_ledger_ready(
             lambda _: some_client.create(PrivateContract, {"someParty": some_client.party})
         )
 
-        publisher_client = network.aio_new_party()
+        publisher_client = network.aio_party(publisher_party_info.party)
         publisher_client.add_ledger_ready(
             lambda _: publisher_client.create(
-                PublicContract, {"publisher": publisher_client.party, "allParty": all_party}
+                PublicContract,
+                {"publisher": publisher_client.party, "allParty": all_party_info.party},
             )
         )
 
