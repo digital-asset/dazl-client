@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import List, Tuple, Union, cast
+from typing import Any, AsyncIterable, Callable, Iterable, List, Tuple, TypeVar, Union, cast
 from urllib.parse import urlparse
 
 from grpc import (
@@ -13,11 +13,28 @@ from grpc import (
     metadata_call_credentials,
     ssl_channel_credentials,
 )
-from grpc.aio import Channel, insecure_channel, secure_channel
+from grpc.aio import (
+    Channel,
+    ClientCallDetails,
+    StreamStreamCall,
+    StreamStreamClientInterceptor,
+    StreamUnaryCall,
+    StreamUnaryClientInterceptor,
+    UnaryStreamCall,
+    UnaryStreamClientInterceptor,
+    UnaryUnaryCall,
+    UnaryUnaryClientInterceptor,
+    insecure_channel,
+    secure_channel,
+)
 
 from ..config import Config
 
 __all__ = ["create_channel"]
+
+RequestType = TypeVar("RequestType")
+RequestIterableType = Union[Iterable[Any], AsyncIterable[Any]]
+ResponseIterableType = AsyncIterable[Any]
 
 
 def create_channel(config: "Config") -> "Channel":
@@ -55,7 +72,15 @@ def create_channel(config: "Config") -> "Channel":
                 ),
             )
         return secure_channel(u.netloc, credentials, tuple(options))
+
+    elif config.access.token_version is not None:
+        # Python/C++ libraries refuse to allow "credentials" objects to be passed around on
+        # non-TLS channels, but they don't check interceptors; use an interceptor to inject
+        # an Authorization header instead
+        return insecure_channel(u.netloc, options, interceptors=[GrpcAuthInterceptor(config)])
+
     else:
+        # no TLS, no tokens--simply create an insecure channel with no adornments
         return insecure_channel(u.netloc, options)
 
 
@@ -74,3 +99,68 @@ class GrpcAuth(AuthMetadataPlugin):
             options.append(("authorization", "Bearer " + self._config.access.token))
 
         callback(tuple(options), None)
+
+
+class GrpcAuthInterceptor(
+    UnaryUnaryClientInterceptor,
+    UnaryStreamClientInterceptor,
+    StreamUnaryClientInterceptor,
+    StreamStreamClientInterceptor,
+):
+    """
+    An interceptor that injects "Authorization" metadata into a request.
+
+    This works around the fact that the C++ gRPC libraries (which Python is built on) highly
+    discourage sending authorization data over the wire unless the connection is protected with TLS.
+    """
+
+    # NOTE: There are a number of typing errors in the grpc.aio classes, so we're ignoring a handful
+    #  of lines until those problems are addressed.
+
+    def __init__(self, config: "Config"):
+        self._config = config
+
+    async def intercept_unary_unary(
+        self,
+        continuation: "Callable[[ClientCallDetails, RequestType], UnaryUnaryCall]",
+        client_call_details: ClientCallDetails,
+        request: RequestType,
+    ) -> "Union[UnaryUnaryCall, RequestType]":
+        return await continuation(self._modify_client_call_details(client_call_details), request)
+
+    async def intercept_unary_stream(
+        self,
+        continuation: "Callable[[ClientCallDetails, RequestType], UnaryStreamCall]",
+        client_call_details: ClientCallDetails,
+        request: RequestType,
+    ) -> "Union[ResponseIterableType, UnaryStreamCall]":
+        return await continuation(self._modify_client_call_details(client_call_details), request)
+
+    async def intercept_stream_unary(
+        self,
+        continuation: "Callable[[ClientCallDetails, RequestType], StreamUnaryCall]",
+        client_call_details: ClientCallDetails,
+        request_iterator: RequestIterableType,
+    ) -> StreamUnaryCall:
+        return await continuation(
+            self._modify_client_call_details(client_call_details), request_iterator  # type: ignore
+        )
+
+    async def intercept_stream_stream(
+        self,
+        continuation: Callable[[ClientCallDetails, RequestType], StreamStreamCall],
+        client_call_details: ClientCallDetails,
+        request_iterator: RequestIterableType,
+    ) -> "Union[ResponseIterableType, StreamStreamCall]":
+        return await continuation(
+            self._modify_client_call_details(client_call_details), request_iterator  # type: ignore
+        )
+
+    def _modify_client_call_details(self, client_call_details: ClientCallDetails):
+        if (
+            "authorization" not in client_call_details.metadata
+            and self._config.access.token_version is not None
+        ):
+            client_call_details.metadata.add("authorization", f"Bearer {self._config.access.token}")
+
+        return client_call_details

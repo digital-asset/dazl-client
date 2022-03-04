@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+import abc
 from datetime import datetime
+import sys
 from typing import (
     TYPE_CHECKING,
     AbstractSet,
@@ -19,7 +21,15 @@ from ..damlast.lookup import parse_type_con_name
 from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_parties
 from ..util.typing import safe_cast
 
+if sys.version_info >= (3, 8):
+    from typing import final
+else:
+    from typing_extensions import final
+
+
 __all__ = [
+    "ActAs",
+    "Admin",
     "ApplicationMeteringReport",
     "ArchiveEvent",
     "Boundary",
@@ -35,6 +45,8 @@ __all__ = [
     "ExerciseResponse",
     "ParticipantMeteringReport",
     "PartyInfo",
+    "ReadAs",
+    "Right",
     "SubmitResponse",
     "User",
 ]
@@ -601,6 +613,54 @@ class User:
     def __init__(self, id: str, primary_party: Party):
         self.id = id
         self.primary_party = primary_party
+
+
+class Right(abc.ABC):
+    def __setattr__(self, key, value):
+        """
+        Overridden to make Right objects read-only.
+        """
+        raise AttributeError
+
+
+@final
+class ReadAs(Right):
+    __slots__ = ("party",)
+    __match_args__ = ("party",)
+
+    party: Party
+
+    def __init__(self, __party: Party):
+        object.__setattr__(self, "party", __party)
+
+    def __repr__(self) -> str:
+        return f"ReadAs({self.party!r})"
+
+
+@final
+class ActAs(Right):
+    __slots__ = ("party",)
+    __match_args__ = ("party",)
+
+    party: Party
+
+    def __init__(self, __party: Party):
+        object.__setattr__(self, "party", __party)
+
+    def __repr__(self) -> str:
+        return f"ActAs({self.party!r})"
+
+
+@final
+class _Admin(Right):
+    __slots__ = ()
+    __match_args__ = ()
+
+    def __repr__(self) -> str:
+        return "Admin"
+
+
+Admin = _Admin()
 
 
 class PartyInfo:
