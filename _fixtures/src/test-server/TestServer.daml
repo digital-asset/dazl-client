@@ -3,6 +3,8 @@
 
 module TestServer where
 
+import Daml.Script
+
 template Person
   with
     party: Party
@@ -27,31 +29,3 @@ template Message
   where
     signatory sender
     observer receiver
-
-
-test_server = scenario do
-  alice <- getParty "Alice"
-  bob <- getParty "Bob"
-  carol <- getParty "Carol"
-
-  alice_cid <- submit alice do
-    create Person with party = alice
-  submit bob do
-    create Person with party = bob
-  submit carol do
-    create Person with party = carol
-  
-  submit alice do
-    exercise alice_cid SayHello with
-      receiver = bob
-      text = "hi from Alice"
-    exercise alice_cid SayHello with
-      receiver = carol
-      text = "hi from Alice"
-  
-  submit carol do
-    exerciseByKey @Person carol SayHello with
-      receiver = alice
-      text = "hi from Carol"
-
-  return ()

@@ -14,8 +14,8 @@ template Counter
     key owner: Party
     maintainer key
 
-    controller owner can
-      Increment: ContractId Counter
+    choice Increment: ContractId Counter
+      controller owner
         do
           create Counter with owner; value = value + 1
 
@@ -25,10 +25,11 @@ template AccountRequest
     owner: Party
   where
     signatory [owner]
-    controller owner can
-      CreateAccount: ContractId Account
-        with
-          accountId : Int
+
+    choice CreateAccount: ContractId Account
+      with
+        accountId : Int
+      controller owner
         do
           create Account with owner; accountId
 

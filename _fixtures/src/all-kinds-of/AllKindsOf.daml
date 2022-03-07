@@ -38,9 +38,10 @@ template OneOfEverything
   where
     signatory operator
 
-    controller operator can
-        Accept: ()
-            do return ()
+    choice Accept : ()
+      controller operator
+        do
+          return ()
 
 
 template MappyContract

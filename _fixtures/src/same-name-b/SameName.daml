@@ -29,11 +29,11 @@ template Publisher
   where
     signatory publisher
 
-    controller publisher can
-      PublishBook : [ContractId Book]
-        with
-          draft: Draft
-          copies: Int
+    choice PublishBook : [ContractId Book]
+      with
+        draft: Draft
+        copies: Int
+      controller publisher
         do
           replicateA copies $ create Book
             with
@@ -57,10 +57,11 @@ template Author
     name: Text
   where
     signatory author
-    controller author can
-      RequestRelationship: ContractId PublisherAuthorRelationshipRequest
-        with
-          publisher: Party
+
+    choice RequestRelationship: ContractId PublisherAuthorRelationshipRequest
+      with
+        publisher: Party
+      controller author
         do
           create PublisherAuthorRelationshipRequest with ..
 
@@ -71,11 +72,13 @@ template PublisherAuthorRelationshipRequest
     author: Party
   where
     signatory author
-    controller publisher can
-      Accept : ContractId PublisherAuthorRelationship
+
+    choice Accept : ContractId PublisherAuthorRelationship
+      controller publisher
         do
           create PublisherAuthorRelationship with ..
 
-      Reject : ()
+    choice Reject : ()
+      controller publisher
         do
           pure ()

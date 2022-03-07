@@ -26,14 +26,14 @@ async def test_protocol_ledger_api(sandbox):
         # postman inviting participants may not yet have been observed by the clients. Instead, use
         # stream() since it remains open until explicitly closed. We break the never-ending iterator
         # as soon as we see one of each contract.
-        async with p1.connection.stream("Main:InviteAuthorRole") as query:
-            async for event in query:
+        async with p1.connection.stream("Main:InviteAuthorRole") as stream:
+            async for event in stream.creates():
                 result = await p1.connection.exercise(event.contract_id, "AcceptInviteAuthorRole")
                 logging.info("The result of AcceptInviteAuthorRole: %s", result)
                 break
 
-        async with p1.connection.stream("Main:InviteReceiverRole") as query:
-            async for event in query:
+        async with p1.connection.stream("Main:InviteReceiverRole") as stream:
+            async for event in stream.creates():
                 result = await p1.connection.exercise(event.contract_id, "AcceptInviteReceiverRole")
                 logging.info("The result of AcceptInviteReceiverRole: %s", result)
                 break

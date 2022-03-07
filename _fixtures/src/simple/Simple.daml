@@ -8,19 +8,21 @@ template OperatorRole
     operator: Party
   where
     signatory operator
-    controller operator can
-      nonconsuming Publish: ContractId OperatorNotification
-        with
-          text : Text
+
+    choice Publish : ContractId OperatorNotification
+      with
+       text : Text
+      controller operator
         do
           create OperatorNotification with
             operator
             theObservers = []
             text
 
-      nonconsuming PublishMany: [ContractId OperatorNotification]
-        with
-          count : Int
+    nonconsuming choice PublishMany : [ContractId OperatorNotification]
+      with
+        count : Int
+      controller operator
         do
           mapA (\i -> create OperatorNotification with
             operator
@@ -37,10 +39,10 @@ template OperatorNotification
     signatory operator
     observer theObservers
 
-    controller operator can
-      Share: ContractId OperatorNotification
-        with
-          sharingParty: Party
+    choice Share : ContractId OperatorNotification
+      with
+        sharingParty: Party
+      controller operator
         do
           create OperatorNotification with
             operator

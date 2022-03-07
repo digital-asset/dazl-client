@@ -58,8 +58,6 @@ jobs:
     parameters:
       python_version:
         type: string
-      daml_sdk_version:
-        type: string
     docker:
       - image: cimg/python:<<parameters.python_version>>-browsers
     resource_class: medium+
@@ -69,13 +67,9 @@ jobs:
           python_version: <<parameters.python_version>>
       - run:
           name: Python unit tests
-          env:
-            DAML_SDK_VERSION: <<parameters.daml_sdk_version>>
           command: make python-unit-test
       - run:
           name: Python integration tests
-          env:
-            DAML_SDK_VERSION: <<parameters.daml_sdk_version>>
           command: make python-integration-test
       - run:
           name: Python packaging
@@ -127,7 +121,6 @@ workflows:
           matrix:
             parameters:
               python_version: ["3.6.13", "3.7.12", "3.8.12", "3.9.10", "3.10.2"]
-              daml_sdk_version: ["1.18.1", "2.0.0"]
       - build:
           requires:
            - blackduck

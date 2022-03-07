@@ -33,7 +33,7 @@ dependencies: []
 #!/bin/sh
 
 mkdir -p {artifact_dar.parent}
-(cd {target} && daml build -o {artifact_dar})
+(cd {target} && DAML_SDK_VERSION= daml build -o {artifact_dar})
 '''.lstrip())
     (target / 'build.sh').chmod(0o755)
 

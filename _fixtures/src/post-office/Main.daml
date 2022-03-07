@@ -13,10 +13,11 @@ template PostmanRole
     signatory postman
     key postman : Party
     maintainer key
-    controller postman can
-      nonconsuming InviteParticipant : ()
-        with
-          party : Party; address: Text
+
+    nonconsuming choice InviteParticipant : ()
+      with
+        party : Party; address: Text
+      controller postman
         do
           create InviteAuthorRole with postman; author = party
           create InviteReceiverRole with postman; receiver = party; address
@@ -28,11 +29,13 @@ template AuthorRole
     author: Party
   where
     signatory postman
-    controller author can
-      nonconsuming CreateLetter : ContractId UnsortedLetter
-        with
-          address : Text
-          content : Text
+    observer author
+
+    nonconsuming choice CreateLetter : ContractId UnsortedLetter
+      with
+        address : Text
+        content : Text
+      controller author
         do
           create UnsortedLetter
             with
@@ -41,10 +44,11 @@ template AuthorRole
               address
               content
 
-      nonconsuming CreateIntLetter : ContractId UnsortedLetter
-        with
-          address : Text
-          content : Int
+    nonconsuming choice CreateIntLetter : ContractId UnsortedLetter
+      with
+        address : Text
+        content : Int
+      controller author
         do
           create UnsortedLetter
             with
@@ -53,10 +57,11 @@ template AuthorRole
               address
               content = (show content)
 
-      nonconsuming CreateDecimalLetter : ContractId UnsortedLetter
-        with
-          address : Text
-          content : Decimal
+    nonconsuming choice CreateDecimalLetter : ContractId UnsortedLetter
+      with
+        address : Text
+        content : Decimal
+      controller author
         do
           create UnsortedLetter
             with
@@ -65,10 +70,11 @@ template AuthorRole
               address
               content = (show content)
 
-      nonconsuming CreateTimeLetter : ContractId UnsortedLetter
-        with
-          address : Text
-          content : Time
+    nonconsuming choice CreateTimeLetter : ContractId UnsortedLetter
+      with
+        address : Text
+        content : Time
+      controller author
         do
           create UnsortedLetter
             with
@@ -77,10 +83,11 @@ template AuthorRole
               address
               content = (show content)
 
-      nonconsuming CreateListIntLetter : ContractId UnsortedLetter
-        with
-          address : Text
-          content : [Int]
+    nonconsuming choice CreateListIntLetter : ContractId UnsortedLetter
+      with
+        address : Text
+        content : [Int]
+      controller author
         do
           create UnsortedLetter
             with
@@ -96,10 +103,12 @@ template ReceiverRole
     address : Text
   where
     signatory postman
-    controller receiver can
-      AcceptLetter : ContractId AcknowlegedLetter
-        with
-          sentLetterCid : ContractId SentLetter
+    observer receiver
+
+    choice AcceptLetter : ContractId AcknowlegedLetter
+      with
+        sentLetterCid : ContractId SentLetter
+      controller receiver
         do
           sentLetterCid2 <- fetch sentLetterCid
           assert $ sentLetterCid2.receiver == receiver
@@ -112,8 +121,8 @@ template ReceiverRole
               receiverAddress = address
               content = sentLetterCid2.content
 
-    controller postman can
-      Deactivate : ()
+    choice Deactivate : ()
+      controller postman
         do
           assert $ postman == postman
 
@@ -123,8 +132,10 @@ template InviteAuthorRole
     author : Party
   where
     signatory postman
-    controller author can
-      AcceptInviteAuthorRole : ContractId AuthorRole
+    observer author
+
+    choice AcceptInviteAuthorRole : ContractId AuthorRole
+      controller author
         do
           create AuthorRole with postman; author
 
@@ -135,8 +146,10 @@ template InviteReceiverRole
     address : Text
   where
     signatory postman
-    controller receiver can
-      AcceptInviteReceiverRole : ContractId ReceiverRole
+    observer receiver
+
+    choice AcceptInviteReceiverRole : ContractId ReceiverRole
+      controller receiver
         do
           create ReceiverRole with postman; receiver; address
 
@@ -150,10 +163,12 @@ template UnsortedLetter
     content : Text
   where
     signatory sender
-    controller postman can
-      Sort : ContractId SortedLetter
-        with
-          receiverCid : ContractId ReceiverRole
+    observer postman
+
+    choice Sort : ContractId SortedLetter
+      with
+        receiverCid : ContractId ReceiverRole
+      controller postman
         do
           receiverCid2 <- fetch receiverCid
           assert $ receiverCid2.address == address
@@ -176,8 +191,10 @@ template SortedLetter
     content : Text
   where
     signatory sender
-    controller postman can
-      Deliver : ContractId SentLetter
+    observer postman
+
+    choice Deliver : ContractId SentLetter
+      controller postman
         do
           create SentLetter with sender; receiver; receiverAddress; content
 
@@ -189,8 +206,10 @@ template SentLetter
     content : Text
   where
     signatory sender
-    controller receiver can
-      AcceptSentLetter : ContractId AcknowlegedLetter
+    observer receiver
+
+    choice AcceptSentLetter : ContractId AcknowlegedLetter
+      controller receiver
         do
           create AcknowlegedLetter with sender; receiver; receiverAddress; content
 
