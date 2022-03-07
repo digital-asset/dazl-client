@@ -195,7 +195,7 @@ def datetime_to_epoch_microseconds(obj: "datetime") -> float:
     1970 Jan 1 midnight, UTC.
     """
     td = datetime_to_epoch_timedelta(obj)
-    return (td.days * 86400 + td.seconds) * 10 ** 6 + td.microseconds
+    return (td.days * 86400 + td.seconds) * 10**6 + td.microseconds
 
 
 def datetime_to_epoch_timedelta(obj: "datetime") -> "timedelta":

@@ -14,7 +14,7 @@ keywords = ["daml", "blockchain", "dlt", "distributed ledger", "digital asset"]
 packages = [{ include = "dazl", from = "python" }, { include = "_dazl_pb", from = "python" }]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.2"
 aiohttp = { version = "*", optional = true }
 async_exit_stack = { version = "*", python = "~=3.6.0" }
 dataclasses = { version = "*", python = "~=3.6.0" }
@@ -31,15 +31,15 @@ toposort = "*"
 typing_extensions = { version = "*", python = "<3.8.0" }
 
 [tool.poetry.dev-dependencies]
-black = "^20.8b1"
-cryptography = "^3"
+black = "*"
+cryptography = "*"
 flask = "^1.0"
 grpc-stubs = "*"
 grpcio-tools = ">=1.32.0"
 isort = "^5"
 mypy = "*"
 pympler = "*"
-pyjwt = "^2"
+pyjwt = "*"
 pytest = "^6"
 pytest-asyncio = "*"
 sphinx = "^4"
@@ -52,6 +52,8 @@ types-protobuf = "*"
 types-requests = "*"
 types-setuptools = "*"
 watchdog = "*"
+pyOpenSSL = "^22.0.0"
+types-pyOpenSSL = "^22.0.0"
 
 [tool.poetry.extras]
 oauth = ["google-auth", "oauthlib"]
