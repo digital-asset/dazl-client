@@ -25,6 +25,7 @@ else:
     from typing_extensions import Literal
 __all__ = ["connect_with_new_party"]
 NameGenFn = Callable[[int], Optional[str]]
+
 @overload
 def connect_with_new_party(
     *,

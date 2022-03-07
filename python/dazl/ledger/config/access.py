@@ -24,9 +24,9 @@ from ...prim import Party
 from .exc import ConfigError
 
 if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
+    from typing import Literal, Protocol, runtime_checkable
 else:
-    from typing_extensions import Protocol, runtime_checkable
+    from typing_extensions import Literal, Protocol, runtime_checkable
 
 __all__ = [
     "AccessConfig",
@@ -188,6 +188,21 @@ class AccessConfig(Protocol):
         """
         raise NotImplementedError
 
+    @property
+    def token_version(self) -> "Optional[Literal[1]]":
+        """
+        The version of the token supplied at configuration time, as provided by a signing authority
+        that is trusted by the server.
+
+        This parameter is used at connection initialization in order to bootstrap local state.
+
+        If access parameters are supplied instead of a token, then the version of the token is
+        ``None``.
+
+        :type: int | None
+        """
+        raise NotImplementedError
+
 
 class TokenBasedAccessConfig(AccessConfig):
     """
@@ -249,6 +264,10 @@ class TokenBasedAccessConfig(AccessConfig):
     @property
     def application_name(self) -> str:
         return self._application_name
+
+    @property
+    def token_version(self) -> "Literal[1]":
+        return 1
 
 
 class TokenFileBasedAccessConfig(TokenBasedAccessConfig):
@@ -370,6 +389,14 @@ class PropertyBasedAccessConfig(AccessConfig):
     @admin.setter
     def admin(self, value: bool) -> None:
         self._admin = value
+
+    @property
+    def token_version(self) -> None:
+        """
+        Return ``None``, because any token that we are supplying is purely for identification
+        purposes and not really a valid server-side issued token.
+        """
+        return None
 
 
 def parties(p: Union[None, Party, Collection[Party]]) -> Collection[Party]:

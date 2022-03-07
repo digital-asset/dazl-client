@@ -34,12 +34,15 @@ def create_channel(config: "Config") -> "Channel":
         options.append(("grpc.enable_http_proxy", 0))
 
     if (u.scheme in ("https", "grpcs")) or config.ssl:
-        credentials = ssl_channel_credentials(
-            root_certificates=config.ssl.ca,
-            private_key=config.ssl.cert_key,
-            certificate_chain=config.ssl.cert,
-        )
-        if config.access.token:
+        if config.ssl.ca is None and config.ssl.cert is not None:
+            credentials = ssl_channel_credentials(root_certificates=config.ssl.cert)
+        else:
+            credentials = ssl_channel_credentials(
+                root_certificates=config.ssl.ca,
+                private_key=config.ssl.cert_key,
+                certificate_chain=config.ssl.cert,
+            )
+        if config.access.token_version is not None:
             # The grpc Credential objects do not actually define a formal interface, and are
             # used interchangeably in the code.
             #
@@ -48,10 +51,10 @@ def create_channel(config: "Config") -> "Channel":
             credentials = cast(
                 ChannelCredentials,
                 composite_channel_credentials(
-                    credentials, metadata_call_credentials(GrpcAuth(config))
+                    credentials, metadata_call_credentials(GrpcAuth(config), name="auth gateway")
                 ),
             )
-        return secure_channel(u.netloc, credentials, options)
+        return secure_channel(u.netloc, credentials, tuple(options))
     else:
         return insecure_channel(u.netloc, options)
 
