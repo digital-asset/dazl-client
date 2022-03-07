@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import async_network
+from dazl import async_network, connect
 from dazl.ledger import CreateCommand
 import pytest
 
@@ -13,12 +13,12 @@ async def test_template_filtering(sandbox):
     # First, create a few contracts stretching across two DARs and validate that all of those
     # contracts show up in the active contract set. async_network will supply the list of DARs to
     # dazl.
-    async with async_network(url=sandbox, dars=[AllParty, PostOffice]) as network:
-        client = network.aio_new_party()
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+        party = party_info.party
 
-        # Remember the party, because we're going to reconnect as this party, but with a restricted
-        # set of DARs.
-        party = client.party
+    async with async_network(url=sandbox, dars=[AllParty, PostOffice]) as network:
+        client = network.aio_party(party)
 
         network.start()
         await client.submit(

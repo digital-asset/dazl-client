@@ -2,13 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from asyncio import new_event_loop, set_event_loop
+from pathlib import Path
 from threading import Thread
+from typing import Optional
 
-from dazl import Network, Party
-from dazl.damlast.pkgfile import Dar
+from dazl import connect
+from dazl.prim import Party
+
+__all__ = ["blocking_setup"]
 
 
-def blocking_setup(url: str, dar: Dar) -> "Party":
+def blocking_setup(url: str, dar: "Path") -> "Party":
     """
     Set up a ledger for a test in a completely blocking fashion.
 
@@ -19,7 +23,7 @@ def blocking_setup(url: str, dar: Dar) -> "Party":
     :param url:
         The URL of the remote Ledger API implementation to connect to.
     :param dar:
-        A DAR file.
+        Path to a DAR file.
     :return:
         A newly allocated ``Party`` that is guaranteed to be used by no other
         client.
@@ -28,32 +32,30 @@ def blocking_setup(url: str, dar: Dar) -> "Party":
 
 
 class Setup:
-    def __init__(self, url, dar):
+    def __init__(self, url: str, dar: "Path"):
         self.url = url
-        self.party = None
         self.dar = dar
-        self.network = None
+        self.party = None  # type: Optional[Party]
 
-    def run(self):
+    def run(self) -> "Party":
         # upload our DAR and allocate our Party in a completely separate thread as to try to avoid
         # polluting the current context
         t = Thread(target=self._main)
         t.start()
         t.join()
+        if self.party is None:
+            raise RuntimeError("party failed to be allocated!")
         return self.party
 
     def _main(self):
         # create a private event loop just for us
-        set_event_loop(new_event_loop())
+        loop = new_event_loop()
+        set_event_loop(loop)
+        self.party = loop.run_until_complete(self.__main())
 
-        self.network = Network()
-        self.network.set_config(url=self.url)
+    async def __main(self) -> "Party":
+        async with connect(url=self.url, admin=True) as conn:
+            party_info = await conn.allocate_party()
+            await conn.upload_package(self.dar.read_bytes())
 
-        client = self.network.aio_new_party()
-
-        self.party = client.party
-
-        self.network.run_until_complete(self.upload_dar())
-
-    async def upload_dar(self):
-        await self.network.aio_global().ensure_dar(self.dar)
+        return party_info.party

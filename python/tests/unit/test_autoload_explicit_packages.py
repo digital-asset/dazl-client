@@ -4,7 +4,7 @@
 from asyncio import ensure_future
 import logging
 
-from dazl import Network
+from dazl import Network, connect
 from dazl.damlast.errors import PackageNotFoundError
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.pkgfile import DarFile
@@ -15,6 +15,9 @@ from .dars import Simple
 
 @pytest.mark.asyncio
 async def test_autoload_explicit_packages(sandbox):
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     with DarFile(Simple) as dar_file:
         lookup = MultiPackageLookup()
         lookup.add_archive(*dar_file.archives())
@@ -30,7 +33,7 @@ async def test_autoload_explicit_packages(sandbox):
     logging.info("Now running the real test...")
     network = Network()
     network.set_config(url=sandbox, eager_package_fetch=False)
-    client = network.aio_new_party()
+    client = network.aio_party(party_info.party)
     fut = ensure_future(network.aio_run())
     await client.ready()
 

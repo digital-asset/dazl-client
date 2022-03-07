@@ -3,7 +3,7 @@
 
 from asyncio import sleep
 
-from dazl import Network
+from dazl import Network, connect
 import pytest
 
 from .dars import UploadTest
@@ -41,9 +41,12 @@ async def test_package_events(sandbox):
     initial_events = []
     follow_up_events = []
 
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     network = Network()
     network.set_config(url=sandbox)
-    client = network.aio_new_party()
+    client = network.aio_party(party_info.party)
 
     async def upload_dars_and_verify():
         # make sure the client is "ready" before uploading DARs, because we are explicitly

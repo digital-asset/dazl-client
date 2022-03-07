@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 commands:
   restore_dazl_cache:
+    parameters:
+      python_version:
+        type: string
+      
     steps:
       - restore_cache:
           key: jq-{{ checksum ".circleci/install-jq" }}
@@ -22,53 +26,73 @@ commands:
            - /home/circleci/.daml
 
       - restore_cache:
-          key: python-deps-{{ checksum "poetry.lock" }}
+          key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>
       - run:
           command: poetry config virtualenvs.in-project true && make python-deps
       - save_cache:
-          key: python-deps-{{ checksum "poetry.lock" }}
+          key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>
           paths:
            - .venv    
 
 jobs:
-  build:
+  check-py:
+    parameters:
+      python_version:
+        type: string
     docker:
-      # The browsers image has both Python and Java; we need both
-      - image: cimg/python:3.6.13-browsers
-        
-    resource_class: medium+
+      - image: cimg/python:<<parameters.python_version>>-browsers
     steps:
       - checkout
-      - restore_dazl_cache
-
+      - restore_dazl_cache:
+          python_version: <<parameters.python_version>>
       - run:
           name: Python format checks
           command: make python-format-test
       - run:
           name: Python typechecks
           command: make python-typecheck
+      - store_test_results:
+          path: target/test-results
+
+  test-py:
+    parameters:
+      python_version:
+        type: string
+      daml_sdk_version:
+        type: string
+    docker:
+      - image: cimg/python:<<parameters.python_version>>-browsers
+    resource_class: medium+
+    steps:
+      - checkout
+      - restore_dazl_cache:
+          python_version: <<parameters.python_version>>
       - run:
           name: Python unit tests
+          env:
+            DAML_SDK_VERSION: <<parameters.daml_sdk_version>>
           command: make python-unit-test
       - run:
           name: Python integration tests
+          env:
+            DAML_SDK_VERSION: <<parameters.daml_sdk_version>>
           command: make python-integration-test
       - run:
           name: Python packaging
           command: make build
       - store_test_results:
           path: target/test-results
+
   blackduck:
     docker:
       - image: cimg/python:3.6.13-browsers
     steps:
       - checkout
-      - restore_dazl_cache      
-
+      - restore_dazl_cache:
+          python_version: "3.6.13"
       - run:
           name: Python packaging
           command: make build
-
       - run:
           name: Run Blackduck Detect
           command: |
@@ -78,12 +102,34 @@ jobs:
             --logging.level.com.synopsys.integration=DEBUG \
             --detect.policy.check.fail.on.severities=MAJOR,CRITICAL,BLOCKER \
             --detect.timeout=600
+
+  # build doesn't do anything, except run after all of our other jobs.
+  build:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Success
+          command: |
+            echo "success!"
             
 version: 2.1               
 workflows:
-  version: 2
-  build_and_test:
+  workflow:
     jobs:
-      - build
       - blackduck:
           context: blackduck
+      - check-py:
+          matrix:
+            parameters:
+              python_version: ["3.6.13", "3.7.12", "3.8.12", "3.9.10", "3.10.2"]
+      - test-py:
+          matrix:
+            parameters:
+              python_version: ["3.6.13", "3.7.12", "3.8.12", "3.9.10", "3.10.2"]
+              daml_sdk_version: ["1.18.1", "2.0.0"]
+      - build:
+          requires:
+           - blackduck
+           - check-py
+           - test-py

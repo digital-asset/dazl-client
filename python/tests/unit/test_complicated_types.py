@@ -2,10 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from operator import setitem
 
-from dazl import async_network
 from dazl.ledger import ExerciseCommand
+from dazl.testing import connect_with_new_party
 import pytest
 
 from .dars import Complicated as ComplicatedDar
@@ -18,40 +17,37 @@ class Complicated:
 
 @pytest.mark.asyncio
 async def test_complicated_types(sandbox):
-    recorded_data = dict()
+    async with connect_with_new_party(url=sandbox, dar=ComplicatedDar) as p:
+        await p.connection.create(Complicated.OperatorRole, {"operator": p.party})
 
-    async with async_network(url=sandbox, dars=ComplicatedDar) as network:
-        party_client = network.aio_new_party()
-        party_client.add_ledger_ready(
-            lambda _: party_client.create(
-                Complicated.OperatorRole, {"operator": party_client.party}
-            )
-        )
-        party_client.add_ledger_created(Complicated.OperatorRole, _create_empty_notification)
-        party_client.add_ledger_created(Complicated.OperatorRole, _create_complicated_notifications)
-        party_client.add_ledger_created(
-            Complicated.OperatorFormulaNotification,
-            lambda e: setitem(recorded_data, e.cid, e.cdata),
-        )
+        async with p.connection.query(Complicated.OperatorRole) as stream:
+            async for event in stream.creates():
+                await p.connection.exercise(event.contract_id, "PublishEmpty")
+                await p.connection.submit(
+                    [
+                        ExerciseCommand(
+                            event.contract_id, "PublishFormula", dict(formula={"Tautology": {}})
+                        ),
+                        ExerciseCommand(
+                            event.contract_id, "PublishFormula", dict(formula={"Contradiction": {}})
+                        ),
+                        ExerciseCommand(
+                            event.contract_id,
+                            "PublishFormula",
+                            dict(formula={"Proposition": "something"}),
+                        ),
+                        ExerciseCommand(
+                            event.contract_id,
+                            "PublishFormula",
+                            dict(formula={"Conjunction": [{"Proposition": "something_else"}]}),
+                        ),
+                    ]
+                )
 
-        network.start()
+        payloads = []
+        async with p.connection.query(Complicated.OperatorFormulaNotification) as stream:
+            async for event in stream.creates():
+                payloads.append(event.payload)
 
-    logging.info("got to the end with contracts: %s", recorded_data)
-    assert len(recorded_data) == 4
-
-
-def _create_complicated_notifications(e) -> list:
-    return [
-        ExerciseCommand(e.cid, "PublishFormula", dict(formula={"Tautology": {}})),
-        ExerciseCommand(e.cid, "PublishFormula", dict(formula={"Contradiction": {}})),
-        ExerciseCommand(e.cid, "PublishFormula", dict(formula={"Proposition": "something"})),
-        ExerciseCommand(
-            e.cid,
-            "PublishFormula",
-            dict(formula={"Conjunction": [{"Proposition": "something_else"}]}),
-        ),
-    ]
-
-
-def _create_empty_notification(e) -> list:
-    return [ExerciseCommand(e.cid, "PublishEmpty")]
+    logging.info("got to the end with contracts: %s", payloads)
+    assert len(payloads) == 4

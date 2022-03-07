@@ -5,7 +5,7 @@ from asyncio import sleep
 import logging
 
 from aiohttp import ClientSession
-from dazl import Network, Party, async_network
+from dazl import Network, Party, async_network, connect
 import pytest
 
 from .dars import TestServer as TestServerDar
@@ -16,17 +16,18 @@ LOG = logging.getLogger("test_server")
 @pytest.mark.asyncio
 async def test_server_endpoint(sandbox):
     SERVER_PORT = 53390
+
+    async with connect(url=sandbox, admin=True) as conn:
+        alice = (await conn.allocate_party()).party
+        bob = (await conn.allocate_party()).party
+        carol = (await conn.allocate_party()).party
+
     async with async_network(url=sandbox, dars=TestServerDar) as network:
         network.set_config(server_port=SERVER_PORT)
 
-        alice_client = network.aio_new_party()
-        alice = alice_client.party
-
-        bob_client = network.aio_new_party()
-        bob = bob_client.party
-
-        carol_client = network.aio_new_party()
-        carol = carol_client.party
+        _ = network.aio_party(alice)
+        bob_client = network.aio_party(bob)
+        carol_client = network.aio_party(carol)
 
         # create Person contracts for each party
         for party in [alice, bob, carol]:

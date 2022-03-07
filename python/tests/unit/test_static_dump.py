@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl import LOG, async_network
+from dazl import LOG, async_network, connect
 import pytest
 
 from .dars import Simple
@@ -9,8 +9,11 @@ from .dars import Simple
 
 @pytest.mark.asyncio
 async def test_static_dump_and_tail(sandbox):
+    async with connect(url=sandbox, admin=True) as conn:
+        party_info = await conn.allocate_party()
+
     async with async_network(url=sandbox, dars=Simple) as network:
-        client = network.aio_new_party()
+        client = network.aio_party(party_info.party)
         seen_contracts = []
 
         @client.ledger_ready()

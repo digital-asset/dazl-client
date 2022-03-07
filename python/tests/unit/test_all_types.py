@@ -1,12 +1,15 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from asyncio import ensure_future, wait_for
 import datetime
 from decimal import Decimal
-from typing import Any, Mapping
+from typing import Any, Mapping, Optional
 
-from dazl import async_network
-from dazl.ledger import CreateCommand, ExerciseCommand
+from dazl.ledger import ArchiveEvent, CreateEvent
+from dazl.ledger.aio import Connection
+from dazl.prim import ContractData
+from dazl.testing import connect_with_new_party
 import pytest
 
 from .dars import AllKindsOf
@@ -36,52 +39,41 @@ SOME_ARGS: Mapping[str, Any] = dict(
 
 @pytest.mark.asyncio
 async def test_all_types(sandbox):
-    async with async_network(url=sandbox, dars=AllKindsOf) as network:
-        client = network.aio_new_party()
+    async with connect_with_new_party(url=sandbox, dar=AllKindsOf) as p:
+        # start a reader that makes sure a create occurs, sends an archive choice,
+        # and then waits for that archive event to appear.
+        fut = ensure_future(consume_singular_event(p.connection))
+        await p.connection.create(TEMPLATE, {**SOME_ARGS, "operator": p.party})
 
-        test_case = AllTypesTestCase(client.party)
-        client.add_ledger_ready(test_case.create_one_of_everything)
-        client.add_ledger_created(TEMPLATE, test_case.on_one_of_everything)
+        # this really shouldn't take long
+        cdata = await wait_for(fut, timeout=1)
 
-        network.start()
-
-    assert test_case.found_instance is not None, "Expected to find an instance of OneOfEverything!"
-
-    assert (
-        SOME_ARGS.keys() == test_case.found_instance.keys()
-    ), "There are either extra fields or missing fields!"
+    assert cdata is not None, "Expected to find an instance of OneOfEverything!"
+    assert SOME_ARGS.keys() == cdata.keys(), "There are either extra fields or missing fields!"
 
     for key in SOME_ARGS:
         if key != "operator":
             expected = SOME_ARGS.get(key)
-            actual = test_case.found_instance.get(key)
+            actual = cdata.get(key)
             assert expected == actual, f"Failed to compare types for key: {key}"
 
 
 @pytest.mark.asyncio
 async def test_maps(sandbox):
-    async with async_network(url=sandbox, dars=AllKindsOf) as network:
-        client = network.aio_new_party()
-
-        network.start()
-
-        await client.create(
-            "AllKindsOf:MappyContract", {"operator": client.party, "value": {"Map_internal": []}}
+    async with connect_with_new_party(url=sandbox, dar=AllKindsOf) as p:
+        await p.connection.create(
+            "AllKindsOf:MappyContract", {"operator": p.party, "value": {"Map_internal": []}}
         )
 
 
-class AllTypesTestCase:
-    def __init__(self, operator):
-        self.operator = operator
-        self.found_instance = None
-        self.archive_done = False
+async def consume_singular_event(conn: "Connection") -> "Optional[ContractData]":
+    cdata = None
+    async with conn.stream(TEMPLATE) as stream:
+        async for event in stream.items():
+            if isinstance(event, CreateEvent):
+                cdata = event.payload
+                await conn.exercise(event.contract_id, "Accept")
+            elif isinstance(event, ArchiveEvent):
+                return cdata
 
-    def create_one_of_everything(self, _):
-        return CreateCommand(TEMPLATE, {**SOME_ARGS, "operator": self.operator})
-
-    def on_one_of_everything(self, event):
-        if event.cdata is not None:
-            self.found_instance = event.cdata
-            return ExerciseCommand(event.cid, "Accept")
-        else:
-            self.archive_done = True
+    raise RuntimeError("didn't receive the events we expected")
