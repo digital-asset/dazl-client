@@ -14,15 +14,16 @@ template Warehouse
     signatory warehouse
     observer suppliers
     
-    choice AddStock : ContractId WarehouseStock with
+    choice AddStock : ContractId WarehouseStock
+      with
         sku : SKU
         quantity : Int
       controller sku.supplier
-      do
-        optCid <- lookupByKey @WarehouseRetailer (warehouse, sku.supplier)
-        case optCid of
-          None -> abort $ "unknown supplier: " <> (show sku.supplier)
-          Some cid -> addStock warehouse sku quantity
+        do
+          optCid <- lookupByKey @WarehouseRetailer (warehouse, sku.supplier)
+          case optCid of
+            None -> abort $ "unknown supplier: " <> (show sku.supplier)
+            Some cid -> addStock warehouse sku quantity
 
 
 template WarehouseStock

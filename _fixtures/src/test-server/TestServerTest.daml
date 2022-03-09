@@ -1,0 +1,38 @@
+-- Copyright (c) 2017-2022, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+-- SPDX-License-Identifier: Apache-2.0
+
+module TestServerTest where
+
+import Daml.Script
+
+import TestServer
+
+test_server : Script ()
+test_server = do
+  alice <- allocateParty "Alice"
+  bob <- allocateParty "Bob"
+  carol <- allocateParty "Carol"
+
+  alice_cid <- submit alice do
+    createCmd Person with party = alice
+  submit bob do
+    createCmd Person with party = bob
+  submit carol do
+    createCmd Person with party = carol
+  
+  submit alice do
+    exerciseCmd alice_cid SayHello with
+      receiver = bob
+      text = "hi from Alice"
+
+  submit alice do
+    exerciseCmd alice_cid SayHello with
+      receiver = carol
+      text = "hi from Alice"
+  
+  submit carol do
+    exerciseByKeyCmd @Person carol SayHello with
+      receiver = alice
+      text = "hi from Carol"
+
+  pure ()

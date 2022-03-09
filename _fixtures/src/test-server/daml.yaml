@@ -8,3 +8,4 @@ source: TestServer.daml
 dependencies:
 - daml-prim
 - daml-stdlib
+- daml-script

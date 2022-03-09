@@ -28,12 +28,13 @@ template Item
     key SKU with .. : SKU
     maintainer key.supplier
 
-    controller supplier can
-      Remove : ()
+    choice Remove : ()
+      controller supplier
         do
           assertEq state Draft
 
-      nonconsuming Activate : ContractId Item
+    nonconsuming choice Activate : ContractId Item
+      controller supplier
         do
           if state == Retired then
             return self
@@ -41,7 +42,8 @@ template Item
             archive self
             create this with state = Retired
 
-      nonconsuming RetireOrRemove : Either () (ContractId Item)
+    nonconsuming choice RetireOrRemove : Either () (ContractId Item)
+      controller supplier
         do
           case state of
             Draft -> Left <$> archive self
@@ -50,10 +52,11 @@ template Item
               Right <$> create this with state = Retired
             Retired -> Right <$> pure self
 
-      nonconsuming CreateShipment : ContractId SupplierDelivery
-        with
-          warehouse : Party
-          quantity : Int
+    nonconsuming choice CreateShipment : ContractId SupplierDelivery
+      with
+        warehouse : Party
+        quantity : Int
+      controller supplier
         do
           create SupplierDelivery with sku = SKU with .. ; ..
 
@@ -68,14 +71,15 @@ template SupplierDelivery
     signatory sku.supplier
     observer warehouse
     
-    controller warehouse can
-      Accept : ContractId WarehouseStock
+    choice Accept : ContractId WarehouseStock
+      controller warehouse
         do
           addStock warehouse sku quantity
 
-      Reject : ContractId ReturnedInventory
-        with
-          reason : Text
+    choice Reject : ContractId ReturnedInventory
+      with
+        reason : Text
+      controller warehouse
         do
           create ReturnedInventory with ..
 
@@ -91,7 +95,7 @@ template ReturnedInventory
     signatory warehouse
     observer sku.supplier
 
-    controller sku.supplier can
-      Dispose : ()
+    choice Dispose : ()
+      controller sku.supplier
         do
           pure ()

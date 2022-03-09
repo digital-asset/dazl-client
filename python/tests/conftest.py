@@ -7,10 +7,8 @@ from typing import Generator
 from dazl import testing
 import pytest
 
-DEFAULT_SDK_VERSION = "1.17.0"
 
-
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", params=["1.18.1", "2.0.0"])
 def sandbox() -> "Generator[str, None, None]":
     """
     Run an instance of the Sandbox, or use one configured through environment variables.

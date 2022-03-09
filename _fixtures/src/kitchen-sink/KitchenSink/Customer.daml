@@ -39,31 +39,33 @@ template Cart
 
     ensure all (>0) $ M.values contents 
 
-    controller customer can
-      Add : ContractId Cart
-        with
-          moreContents : M.Map SKU Int
+    choice Add : ContractId Cart
+      with
+        moreContents : M.Map SKU Int
+      controller customer
         do
           create Cart with contents = combineCart 1 contents moreContents; ..
 
-      Remove : ContractId Cart
-        with
-          unwantedContents : M.Map SKU Int
+    choice Remove : ContractId Cart
+      with
+        unwantedContents : M.Map SKU Int
+      controller customer
         do
           create Cart with contents = combineCart (-1) contents unwantedContents; ..
 
-      Finish : ContractId Order
-        with
-          -- | This is the payment amount for the order. If this weren't a test case DAR,
-          -- this might need to be a more complicated representation. But for now we'll assume
-          -- a currency with two digits after the decimal point.
-          payment : Numeric 2
-          expedite : Bool
+    choice Finish : ContractId Order
+      with
+        -- | This is the payment amount for the order. If this weren't a test case DAR,
+        -- this might need to be a more complicated representation. But for now we'll assume
+        -- a currency with two digits after the decimal point.
+        payment : Numeric 2
+        expedite : Bool
+      controller customer
         do
           create Order with ..
 
-    controller retailer can
-      Cancel : ()
+    choice Cancel : ()
+      controller retailer
         do
           pure ()
 

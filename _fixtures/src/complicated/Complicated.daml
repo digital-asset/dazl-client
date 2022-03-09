@@ -28,20 +28,23 @@ template OperatorRole
     operator: Party
   where
     signatory operator
-    controller operator can
-      nonconsuming PublishEmpty : ContractId OperatorEmptyNotification
+
+    nonconsuming choice PublishEmpty : ContractId OperatorEmptyNotification
+      controller operator
         do
           create OperatorEmptyNotification with operator
 
-      nonconsuming PublishFormula : ContractId OperatorFormulaNotification
-        with
-          formula : Formula Text
+    nonconsuming choice PublishFormula : ContractId OperatorFormulaNotification
+      with
+        formula : Formula Text
+      controller operator
         do
           create OperatorFormulaNotification with operator; formula
 
-      nonconsuming PublishMoreContrived : ContractId OperatorContrivedNotification
-        with
-          contrived : MoreContrived [Int]
+    nonconsuming choice PublishMoreContrived : ContractId OperatorContrivedNotification
+      with
+        contrived : MoreContrived [Int]
+      controller operator
         do
           create OperatorContrivedNotification with operator; contrived
 
