@@ -19,6 +19,7 @@ from typing import (
     Optional,
     Union,
 )
+import warnings
 
 from ...prim import Party
 from .exc import ConfigError
@@ -189,7 +190,7 @@ class AccessConfig(Protocol):
         raise NotImplementedError
 
     @property
-    def token_version(self) -> "Optional[Literal[1]]":
+    def token_version(self) -> "Optional[Literal[1, 2]]":
         """
         The version of the token supplied at configuration time, as provided by a signing authority
         that is trusted by the server.
@@ -210,6 +211,8 @@ class TokenBasedAccessConfig(AccessConfig):
     party rights, the application name, and ledger ID are all derived off of the token.
     """
 
+    _token_version: Literal[1, 2]
+
     def __init__(self, oauth_token: str):
         """
         Initialize a token-based access configuration.
@@ -229,17 +232,34 @@ class TokenBasedAccessConfig(AccessConfig):
     @token.setter
     def token(self, value: str) -> None:
         self._token = value
-        claims = decode_token(self._token)
+        claims = decode_token_claims(self._token)
 
-        read_as = frozenset(claims.get("readAs", ()))
-        act_as = frozenset(claims.get("actAs", ()))
+        v1_claims = claims.get(DamlLedgerApiNamespace)
+        if v1_claims is not None:
+            self._set(
+                read_as=frozenset(claims.get("readAs", ())),
+                act_as=frozenset(claims.get("actAs", ())),
+                admin=bool(claims.get("admin", False)),
+            )
+            self._ledger_id = v1_claims.get("ledgerId", None)
+            self._application_name = v1_claims.get("applicationId", None)
+            self._token_version = 1
+        else:
+            self._token_version = 2
+
+    def _set(self, *, read_as: Collection[Party], act_as: Collection[Party], admin: bool):
+        """
+        Set the values of this :class:`TokenBasedAccessConfig`.
+
+        This is not a public API, and subject to change at any time.
+        """
+        read_as = frozenset(read_as)
+        act_as = frozenset(act_as)
 
         self._act_as = act_as
         self._read_only_as = read_as - act_as
         self._read_as = read_as.union(act_as)
-        self._admin = bool(claims.get("admin", False))
-        self._ledger_id = claims.get("ledgerId", None)
-        self._application_name = claims.get("applicationId", None)
+        self._admin = admin
 
     @property
     def read_as(self) -> AbstractSet[Party]:
@@ -266,8 +286,8 @@ class TokenBasedAccessConfig(AccessConfig):
         return self._application_name
 
     @property
-    def token_version(self) -> "Literal[1]":
-        return 1
+    def token_version(self) -> "Literal[1, 2]":
+        return self._token_version
 
 
 class TokenFileBasedAccessConfig(TokenBasedAccessConfig):
@@ -412,17 +432,27 @@ DamlLedgerApiNamespace = "https://daml.com/ledger-api"
 
 
 def decode_token(token: str) -> Mapping[str, Any]:
+    warnings.warn("decode_token is deprecated; use decode_token_claims instead", DeprecationWarning)
+    claims = decode_token_claims(token)
+    claims_dict = claims.get(DamlLedgerApiNamespace)
+    if claims_dict is None:
+        raise ValueError(f"JWT is missing claim namespace: {DamlLedgerApiNamespace!r}")
+    return claims_dict
+
+
+def decode_token_claims(token: str) -> "Mapping[str, Any]":
+    """
+    Decode the claims section from a JSON Web Token (JWT).
+
+    Note that the signature is NOT verified; this is the responsibility of the caller!
+    """
     components = token.split(".", 3)
     if len(components) != 3:
         raise ValueError("not a JWT")
 
     pad_bytes = "=" * (-len(components[1]) % 4)
     claim_str = base64.urlsafe_b64decode(components[1] + pad_bytes)
-    claims = json.loads(claim_str)
-    claims_dict = claims.get(DamlLedgerApiNamespace)
-    if claims_dict is None:
-        raise ValueError(f"JWT is missing claim namespace: {DamlLedgerApiNamespace!r}")
-    return claims_dict
+    return json.loads(claim_str)
 
 
 def encode_unsigned_token(

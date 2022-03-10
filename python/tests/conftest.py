@@ -9,7 +9,7 @@ import pytest
 
 
 @pytest.fixture(scope="session", params=["1.18.1", "2.0.0"])
-def sandbox() -> "Generator[str, None, None]":
+def sandbox(request) -> "Generator[str, None, None]":
     """
     Run an instance of the Sandbox, or use one configured through environment variables.
 
@@ -25,7 +25,7 @@ def sandbox() -> "Generator[str, None, None]":
          DAML_SDK_VERSION=1.0.0 make test
          ```
     """
-    with testing.sandbox(project_root=None) as sb:
+    with testing.sandbox(project_root=None, version=request.param) as sb:
         yield sb.url
 
 

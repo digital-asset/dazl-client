@@ -14,17 +14,6 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 from collections.abc import Mapping as _Mapping
 from typing import Any, List, Optional, Sequence, Set, Tuple, Union
 
-from .. import (
-    ArchiveEvent,
-    Command,
-    CreateAndExerciseCommand,
-    CreateCommand,
-    CreateEvent,
-    ExerciseByKeyCommand,
-    ExerciseCommand,
-    ExerciseResponse,
-    PartyInfo,
-)
 from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import (
@@ -46,7 +35,24 @@ from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
 from .._offsets import End
 from ..aio import PackageLoader
-from ..api_types import ApplicationMeteringReport, ParticipantMeteringReport, User
+from ..api_types import (
+    ActAs,
+    Admin,
+    ApplicationMeteringReport,
+    ArchiveEvent,
+    Command,
+    CreateAndExerciseCommand,
+    CreateCommand,
+    CreateEvent,
+    ExerciseByKeyCommand,
+    ExerciseCommand,
+    ExerciseResponse,
+    ParticipantMeteringReport,
+    PartyInfo,
+    ReadAs,
+    Right,
+    User,
+)
 from ..pkgcache import SHARED_PACKAGE_DATABASE
 
 __all__ = ["Codec"]
@@ -218,6 +224,21 @@ class Codec:
         )
 
     @staticmethod
+    def encode_user(user: User) -> lapiadminpb.User:
+        return lapiadminpb.User(id=user.id, primary_party=user.primary_party)
+
+    @staticmethod
+    def encode_right(right: Right) -> lapiadminpb.Right:
+        if right == Admin:
+            return lapiadminpb.Right(participant_admin=lapiadminpb.Right.ParticipantAdmin())
+        elif isinstance(right, ReadAs):
+            return lapiadminpb.Right(can_read_as=lapiadminpb.Right.CanReadAs(party=right.party))
+        elif isinstance(right, ActAs):
+            return lapiadminpb.Right(can_act_as=lapiadminpb.Right.CanActAs(party=right.party))
+        else:
+            raise ValueError(f"unknown kind of right: {right!r}")
+
+    @staticmethod
     def encode_begin_offset(offset: Optional[str]) -> lapipb.LedgerOffset:
         if offset is None:
             return lapipb.LedgerOffset(boundary=0)
@@ -356,6 +377,18 @@ class Codec:
     @staticmethod
     def decode_user(user: lapiadminpb.User) -> User:
         return User(id=user.id, primary_party=Party(user.primary_party))
+
+    @staticmethod
+    def decode_right(right: lapiadminpb.Right) -> Right:
+        kind = right.WhichOneof("kind")
+        if kind == "participant_admin":
+            return Admin
+        elif kind == "can_read_as":
+            return ReadAs(Party(right.can_read_as.party))
+        elif kind == "can_act_as":
+            return ActAs(Party(right.can_act_as.party))
+        else:
+            raise ValueError(f"unexpected kind of right: {kind}")
 
     @staticmethod
     def decode_party_info(party_details: lapiadminpb.PartyDetails) -> PartyInfo:

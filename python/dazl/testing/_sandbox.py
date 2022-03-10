@@ -9,14 +9,14 @@ from pathlib import Path
 import subprocess
 import tempfile
 import threading
-from typing import Any, Dict, Mapping, Optional, Union, cast
+from typing import Any, Dict, Mapping, Optional, Sequence, Union, cast
 
 from ..util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
 from ._cert import Certificate, cert_gen
 
 __all__ = ["DEFAULT_TIMEOUT", "SandboxLauncher"]
 
-DEFAULT_TIMEOUT = timedelta(seconds=10)
+DEFAULT_TIMEOUT = timedelta(seconds=30)
 
 
 class SandboxLauncher:
@@ -30,13 +30,16 @@ class SandboxLauncher:
         project_root: "Union[None, str, os.PathLike]" = None,
         version: "Optional[str]" = None,
         timeout: "Optional[timedelta]" = DEFAULT_TIMEOUT,
+        ledger_id: "Optional[str]" = None,
         use_auth: bool = False,
         use_tls: bool = False,
     ):
+        self.log = logging.getLogger("sandbox")
         self._lock = threading.RLock()
         self._project_root = project_root
         self._version = version
         self._timeout = timeout
+        self._ledger_id = ledger_id
         self._process = None  # type: Optional[subprocess.Popen]
         self._url = None  # type: Optional[str]
         self._exit_stack = ExitStack()
@@ -44,8 +47,8 @@ class SandboxLauncher:
         self._use_tls = use_tls
 
         self._certificate = None  # type: Optional[Certificate]
-        self._crt_file = None  # type: Optional[str]
-        self._key_file = None  # type: Optional[str]
+        self._crt_file = None  # type: Optional[Path]
+        self._key_file = None  # type: Optional[Path]
 
         if self._use_auth or self._use_tls:
             if self._project_root is not None:
@@ -111,10 +114,24 @@ class SandboxLauncher:
         port = find_free_port()
 
         env = os.environ.copy()
+
         # Running dazl's tests against a different Sandbox merely requires the DAML_SDK_VERSION
         # variable be set to a different value
         if self._version is not None:
             env["DAML_SDK_VERSION"] = self._version
+            major_version_str, _, _ = self._version.partition(".")
+            major_version = int(major_version_str)
+        else:
+            # TODO: interrogate the local daml binary to figure out what version is defaulted;
+            #  assume 1 for now
+            major_version = 1
+
+        if self._use_auth or self._use_tls:
+            # We're supposed to launch with auth and/or TLS.
+            # Both of these flags moved around from Daml 1.x to Daml 2.x,
+            # so determine which set of flags to use.
+            if self._version is None:
+                raise RuntimeError("when tls/auth is on, a version must be specified")
 
         with self._lock:
             # one last check inside the lock
@@ -126,77 +143,38 @@ class SandboxLauncher:
                 # multiple sandbox processes could be very confusing
                 raise RuntimeError("we somehow have a process without a URL")
 
-            self._certificate = cert_gen(subject_alternative_name="localhost")
-
-            crt_file = cast(str, self._exit_stack.push(tempfile.NamedTemporaryFile()).name)  # type: ignore
-            key_file = cast(str, self._exit_stack.push(tempfile.NamedTemporaryFile()).name)  # type: ignore
-            Path(crt_file).write_bytes(self._certificate.public_cert)
-            Path(key_file).write_bytes(self._certificate.private_key)
-            self._crt_file = crt_file
-            self._key_file = key_file
-
-            cwd = None  # type: Union[None, str, os.PathLike]
-            if self._project_root:
-                cmdline = [
-                    "daml",
-                    "start",
-                    "--start-navigator=no",
-                    "--open-browser=no",
-                    f"--sandbox-port={port}",
-                ]
-                cwd = self._project_root
-            else:
-                cmdline = ["daml", "sandbox", "--port", str(port)]
-
             if self._use_auth or self._use_tls:
-                # We're supposed to launch with auth and/or TLS.
-                # Both of these flags moved around from Daml 1.x to Daml 2.x,
-                # so determine which set of flags to use.
-                if self._version is None:
-                    raise RuntimeError("when tls/auth is on, a version must be specified")
-                major_version, _, _ = self._version.partition(".")
-                if major_version in ("0", "1"):
-                    # assume Daml 1.x or earlier
-                    if self._use_auth:
-                        cmdline.extend(["--auth-jwt-rs256-crt", str(self._key_file)])
-                    if self._use_tls:
-                        cmdline.extend(
-                            [
-                                "--crt",
-                                str(self._crt_file),
-                                "--pem",
-                                str(self._key_file),
-                                "--client-auth",
-                                "none",
-                            ]
-                        )
-                else:
-                    # assume Daml 2.x or later
-                    if self._use_auth:
-                        cmdline.extend(
-                            [
-                                "-D" + f"ledger-api.auth-services.type=jwt-rs-256-crt",
-                                "-D" + f"ledger-api.auth-services.certificate={self._crt_file!r}",
-                            ]
-                        )
-                    if self._use_tls:
-                        cmdline.extend(
-                            [
-                                "-D" + f"ledger-api.tls.cert-chain-file={self._crt_file!r}",
-                                "-D" + f"ledger-api.tls.private-key-file={self._key_file!r}",
-                                "-D" + "ledger-api.tls.client-auth=none",
-                            ]
-                        )
+                self._certificate = cert_gen(subject_alternative_name="localhost")
+
+                temp_dir = Path(self._exit_stack.enter_context(tempfile.TemporaryDirectory()))
+                self._crt_file = temp_dir / "tmp.crt"
+                self._key_file = temp_dir / "tmp.key"
+
+                self._crt_file.write_bytes(self._certificate.public_cert)
+                self._key_file.write_bytes(self._certificate.private_key)
+
+            options = SandboxOptions(
+                port=port,
+                ledger_id=self._ledger_id,
+                project_root=self._project_root,  # type: ignore
+                use_auth=self._use_auth,
+                use_tls=self._use_tls,
+                cert_file=self._crt_file,
+                key_file=self._key_file,
+            )
+            cmdline = options.daml_cmdline(major_version)
+
+            self.log.info("Launching sandbox: %s", cmdline)
 
             self._process = subprocess.Popen(
                 cmdline,
                 env=env,
-                cwd=cwd,
+                cwd=self._project_root,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 universal_newlines=True,
             )
-            ProcessLogger(self._process, logging.getLogger("sandbox")).start()
+            ProcessLogger(self._process, self.log).start()
             wait_for_process_port(self._process, port, DEFAULT_TIMEOUT)
 
             self._url = f"http://localhost:{port}"
@@ -244,3 +222,104 @@ class SandboxLauncher:
         """
         loop = get_event_loop()
         await loop.run_in_executor(None, self.stop)
+
+
+class SandboxOptions:
+    port: int
+    project_root: Optional[str] = None
+    ledger_id: Optional[str] = None
+    use_auth: bool = False
+    use_tls: bool = False
+    cert_file: Optional[Path] = None
+    key_file: Optional[Path] = None
+
+    def __init__(
+        self,
+        *,
+        port: int,
+        project_root: Optional[str] = None,
+        ledger_id: Optional[str] = None,
+        use_auth: bool = False,
+        use_tls: bool = False,
+        cert_file: Optional[Path] = None,
+        key_file: Optional[Path] = None,
+    ):
+        object.__setattr__(self, "port", port)
+        object.__setattr__(self, "project_root", project_root)
+        object.__setattr__(self, "ledger_id", ledger_id)
+        object.__setattr__(self, "use_auth", use_auth)
+        object.__setattr__(self, "use_tls", use_tls)
+        object.__setattr__(self, "cert_file", cert_file)
+        object.__setattr__(self, "key_file", key_file)
+
+    def daml_cmdline(self, __major_version: int) -> "Sequence[str]":
+        if __major_version <= 1:
+            return self._daml1_cmdline()
+        elif __major_version == 2:
+            return self._daml2_cmdline()
+        else:
+            raise ValueError("unknown Daml version")
+
+    def _daml1_cmdline(self) -> Sequence[str]:
+        if self.project_root:
+            cmdline = ["daml", "start"]
+            cmdline.extend(["--start-navigator=no", "--open-browser=no"])
+            cmdline.append(f"--sandbox-port={self.port}")
+        else:
+            cmdline = ["daml", "sandbox", "--port", str(self.port)]
+
+        if self.ledger_id:
+            cmdline.extend(["--ledgerid", self.ledger_id])
+        if self.use_auth:
+            cmdline.extend(["--auth-jwt-rs256-crt", str(self.cert_file)])
+        if self.use_tls:
+            cmdline.extend(
+                ["--crt", str(self.cert_file), "--pem", str(self.key_file), "--client-auth", "none"]
+            )
+
+        return cmdline
+
+    def _daml2_cmdline(self) -> Sequence[str]:
+        if self.ledger_id and (self.ledger_id != "sandbox"):
+            raise ValueError('for Daml 2.x ledgers, ledger ID must be unset, or set to "sandbox"')
+
+        participant_admin_port = find_free_port()
+        domain_api_port = find_free_port()
+        domain_admin_port = find_free_port()
+
+        participant = "canton.participants.sandbox"
+        domain = "canton.domains.local"
+
+        cmdline = ["daml", "sandbox", "--port", str(self.port)]
+
+        # for the time being, we don't use any of Canton's other ports, but it's important that
+        # they are bound to random ports to avoid conflicts
+        config_options = {
+            f"{participant}.admin-api.port": str(participant_admin_port),
+            f"{domain}.public-api.port": str(domain_api_port),
+            f"{domain}.admin-api.port": str(domain_admin_port),
+        }
+
+        if self.use_auth:
+            if self.cert_file is None:
+                raise ValueError("cert_file must be specified when use_auth=True")
+
+            config_options[f"{participant}.ledger-api.auth-services.0.type"] = "jwt-rs-256-crt"
+            config_options[f"{participant}.ledger-api.auth-services.0.certificate"] = str(
+                self.cert_file
+            )
+        if self.use_tls:
+            # config_options["canton.participants.sandbox.ledger-api.host"] = "localhost"
+            if self.cert_file is None:
+                raise ValueError("cert_file must be specified when use_auth=True")
+            if self.key_file is None:
+                raise ValueError("cert_file must be specified when use_auth=True")
+
+            config_options[f"{participant}.ledger-api.tls.cert-chain-file"] = str(self.cert_file)
+            config_options[f"{participant}.ledger-api.tls.private-key-file"] = str(self.key_file)
+
+        if config_options:
+            cmdline.append("-C")
+            cmdline.append(",".join(f"{key}={value}" for key, value in config_options.items()))
+
+        return cmdline

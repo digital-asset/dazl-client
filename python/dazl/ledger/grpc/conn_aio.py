@@ -12,10 +12,12 @@ from typing import (
     AsyncIterable,
     Collection,
     Dict,
+    List,
     Mapping,
     Optional,
     Sequence,
     Union,
+    cast,
 )
 import warnings
 
@@ -32,6 +34,8 @@ from ...prim import ContractData, ContractId, Party, datetime_to_timestamp, to_p
 from ...query import Filter, Queries, Query, parse_query
 from .._offsets import END, End, LedgerOffsetRange, from_offset_until_forever
 from ..api_types import (
+    ActAs,
+    Admin,
     ArchiveEvent,
     Boundary,
     Command,
@@ -40,10 +44,12 @@ from ..api_types import (
     ExerciseResponse,
     ParticipantMeteringReport,
     PartyInfo,
+    ReadAs,
+    Right,
     User,
 )
 from ..config import Config
-from ..config.access import PropertyBasedAccessConfig
+from ..config.access import PropertyBasedAccessConfig, TokenBasedAccessConfig
 from ..errors import ProtocolWarning, _allow_cancel, _translate_exceptions
 from .channel import create_channel
 from .codec_aio import Codec
@@ -103,6 +109,23 @@ class Connection(aio.Connection):
                 self._config.access.ledger_id = response.ledger_id
             else:
                 raise ValueError("when using token-based access, the token must contain ledger ID")
+        if self._config.access.token_version == 2:
+            # Daml 2.0 tokens do not contain party information, so an extra call to the server is
+            # required in order to resolve our current set of rights
+            if hasattr(self._config.access, "_set"):
+                admin = False
+                read_as = []  # type: List[Party]
+                act_as = []  # type: List[Party]
+                for right in await self.list_user_rights():
+                    if right == Admin:
+                        admin = True
+                    elif isinstance(right, (ReadAs, ActAs)):
+                        read_as.append(right.party)
+
+                # noinspection PyProtectedMember
+                cast(TokenBasedAccessConfig, self._config.access)._set(
+                    read_as=read_as, act_as=act_as, admin=admin
+                )
 
     async def close(self) -> None:
         """
@@ -682,11 +705,29 @@ class Connection(aio.Connection):
         response = await stub.GetUser(request)
         return Codec.decode_user(response.user)
 
+    async def create_user(self, user: "User", rights: "Optional[Sequence[Right]]" = None) -> "User":
+        stub = lapiadminpb.UserManagementServiceStub(self.channel)
+        request = (
+            lapiadminpb.CreateUserRequest(
+                user=Codec.encode_user(user), rights=[Codec.encode_right(right) for right in rights]
+            )
+            if rights
+            else ()
+        )
+        response = await stub.CreateUser(request)
+        return Codec.decode_user(response.user)
+
     async def list_users(self) -> "Sequence[User]":
         stub = lapiadminpb.UserManagementServiceStub(self.channel)
         request = lapiadminpb.ListUsersRequest()
         response = await stub.ListUsers(request)
         return [Codec.decode_user(user) for user in response.users]
+
+    async def list_user_rights(self, user_id: "Optional[str]" = None) -> "Sequence[Right]":
+        stub = lapiadminpb.UserManagementServiceStub(self.channel)
+        request = lapiadminpb.ListUserRightsRequest(user_id=user_id)
+        response = await stub.ListUserRights(request)
+        return [Codec.decode_right(user) for user in response.rights]
 
     # endregion
 
