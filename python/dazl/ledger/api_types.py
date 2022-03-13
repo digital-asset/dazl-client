@@ -22,9 +22,9 @@ from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_part
 from ..util.typing import safe_cast
 
 if sys.version_info >= (3, 8):
-    from typing import final
+    from typing import Final, final
 else:
-    from typing_extensions import final
+    from typing_extensions import Final, final
 
 
 __all__ = [
@@ -625,8 +625,8 @@ class Right(abc.ABC):
 
 @final
 class ReadAs(Right):
-    __slots__ = ("party",)
-    __match_args__ = ("party",)
+    _slots__: Final = ("party",)
+    __match_args__: Final = ("party",)
 
     party: Party
 
@@ -639,8 +639,8 @@ class ReadAs(Right):
 
 @final
 class ActAs(Right):
-    __slots__ = ("party",)
-    __match_args__ = ("party",)
+    __slots__: Final = ("party",)
+    __match_args__: Final = ("party",)
 
     party: Party
 
@@ -653,8 +653,8 @@ class ActAs(Right):
 
 @final
 class _Admin(Right):
-    __slots__ = ()
-    __match_args__ = ()
+    __slots__: Final = ()
+    __match_args__: Final = ()
 
     def __repr__(self) -> str:
         return "Admin"
