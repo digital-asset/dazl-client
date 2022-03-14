@@ -602,8 +602,6 @@ SubmitResponse = Union[None, CreateEvent, ExerciseResponse]
 class User:
     """
     Full information about a ``User``.
-
-    Note: This is part of a Daml 2.x pre-release API and is subject to change.
     """
 
     __slots__ = ("id", "primary_party")
@@ -616,6 +614,10 @@ class User:
 
 
 class Right(abc.ABC):
+    """
+    Information about an individual right for a :class:`User`.
+    """
+
     def __setattr__(self, key, value):
         """
         Overridden to make Right objects read-only.
