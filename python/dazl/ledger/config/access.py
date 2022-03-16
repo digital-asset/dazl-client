@@ -245,6 +245,8 @@ class TokenBasedAccessConfig(AccessConfig):
             self._application_name = v1_claims.get("applicationId", None)
             self._token_version = 1
         else:
+            self._ledger_id = None
+            self._application_name = None
             self._token_version = 2
 
     def _set(self, *, read_as: Collection[Party], act_as: Collection[Party], admin: bool):

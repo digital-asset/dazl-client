@@ -35,7 +35,9 @@ from ..api_types import (
     ExerciseResponse,
     ParticipantMeteringReport,
     PartyInfo,
+    Right,
     SubmitResponse,
+    User,
 )
 from .pkgloader import PackageLoader
 
@@ -192,6 +194,10 @@ class Connection(_Connection, PackageService, Protocol):
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
     ) -> QueryStream: ...
+    async def get_user(self, user_id: Optional[str] = None) -> User: ...
+    async def create_user(self, user: User, rights: Optional[Sequence[Right]] = ...) -> User: ...
+    async def list_users(self) -> Sequence[User]: ...
+    async def list_user_rights(self, user_id: Optional[str] = None) -> Sequence[Right]: ...
     async def allocate_party(
         self, *, identifier_hint: Optional[str] = None, display_name: Optional[str] = None
     ) -> PartyInfo: ...

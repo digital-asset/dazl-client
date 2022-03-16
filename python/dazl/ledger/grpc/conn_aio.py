@@ -99,16 +99,6 @@ class Connection(aio.Connection):
         Does final validation of the token, including possibly fetching the ledger ID if it is not
         yet known.
         """
-        if not self._config.access.ledger_id:
-            # most calls require a ledger ID; if it wasn't supplied as part of our token or we were
-            # never given a token in the first place, fetch the ledger ID from the destination
-            stub = lapipb.LedgerIdentityServiceStub(self._channel)
-            response = await stub.GetLedgerIdentity(lapipb.GetLedgerIdentityRequest())
-            if isinstance(self._config.access, PropertyBasedAccessConfig):
-                self._logger.info("Connected to gRPC Ledger API, ledger ID: %s", response.ledger_id)
-                self._config.access.ledger_id = response.ledger_id
-            else:
-                raise ValueError("when using token-based access, the token must contain ledger ID")
         if self._config.access.token_version == 2:
             # Daml 2.0 tokens do not contain party information, so an extra call to the server is
             # required in order to resolve our current set of rights
@@ -126,6 +116,18 @@ class Connection(aio.Connection):
                 cast(TokenBasedAccessConfig, self._config.access)._set(
                     read_as=read_as, act_as=act_as, admin=admin
                 )
+
+        elif not self._config.access.ledger_id:
+            # most calls to Daml 1.x ledgers require a ledger ID; if it wasn't supplied as part of
+            # our token or we were never given a token in the first place, fetch the ledger ID from
+            # the destination
+            stub = lapipb.LedgerIdentityServiceStub(self._channel)
+            response = await stub.GetLedgerIdentity(lapipb.GetLedgerIdentityRequest())
+            if isinstance(self._config.access, PropertyBasedAccessConfig):
+                self._logger.info("Connected to gRPC Ledger API, ledger ID: %s", response.ledger_id)
+                self._config.access.ledger_id = response.ledger_id
+            else:
+                raise ValueError("when using token-based access, the token must contain ledger ID")
 
     async def close(self) -> None:
         """
