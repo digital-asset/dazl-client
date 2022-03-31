@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "dazl"
-version = "7.7.1"
+version = "7.7.2"
 description = "high-level Ledger API client for Daml ledgers"
 license = "Apache-2.0"
 authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]
@@ -25,10 +25,11 @@ oauthlib = { version = "*", optional = true }
 prometheus_client = { version = "*", optional = true }
 protobuf = ">=3.12.0"
 pygments = { version = "*", optional = true }
+pyOpenSSL = { version = "*", optional = true }
 requests = "*"
 semver = "*"
 toposort = "*"
-typing_extensions = { version = "*", python = "<3.8.0" }
+typing_extensions = { version = "*", optional = true }
 
 [tool.poetry.dev-dependencies]
 black = "*"
@@ -52,14 +53,14 @@ types-protobuf = "*"
 types-requests = "*"
 types-setuptools = "*"
 watchdog = "*"
-pyOpenSSL = "^22.0.0"
-types-pyOpenSSL = "^22.0.0"
+types-pyOpenSSL = "*"
 
 [tool.poetry.extras]
 oauth = ["google-auth", "oauthlib"]
 prometheus = ["prometheus_client"]
 pygments = ["pygments"]
 server = ["aiohttp"]
+tls-testing = ["pyOpenSSL"]
 
 [tool.poetry.scripts]
 dazl = 'dazl.cli:main'

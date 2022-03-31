@@ -709,13 +709,10 @@ class Connection(aio.Connection):
 
     async def create_user(self, user: "User", rights: "Optional[Sequence[Right]]" = None) -> "User":
         stub = lapiadminpb.UserManagementServiceStub(self.channel)
-        request = (
-            lapiadminpb.CreateUserRequest(
-                user=Codec.encode_user(user), rights=[Codec.encode_right(right) for right in rights]
-            )
-            if rights
-            else ()
-        )
+        request = lapiadminpb.CreateUserRequest(user=Codec.encode_user(user))
+        if rights is not None:
+            request.rights.extend(Codec.encode_right(right) for right in rights)
+
         response = await stub.CreateUser(request)
         return Codec.decode_user(response.user)
 

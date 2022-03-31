@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 from typing import Collection, Optional
 
-from OpenSSL import crypto
-
 
 class Certificate:
     def __init__(self, public_cert: bytes, private_key: bytes):
@@ -23,6 +21,8 @@ def cert_gen(
     serial_number: int = 0,
     validity_end_in_seconds: int = 10 * 365 * 24 * 60 * 60,
 ) -> "Certificate":
+    from OpenSSL import crypto
+
     # can look at generated file using openssl:
     # openssl x509 -inform pem -in selfsigned.crt -noout -text
     # create a key pair

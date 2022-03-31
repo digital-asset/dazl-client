@@ -8,6 +8,8 @@ Daml `gRPC Ledger API <https://docs.daml.com/app-dev/ledger-api.html>`_ or
 import sys
 
 from .api_types import (
+    ActAs,
+    Admin,
     ArchiveEvent,
     Boundary,
     Command,
@@ -20,8 +22,12 @@ from .api_types import (
     ExerciseByKeyCommand,
     ExerciseCommand,
     ExerciseResponse,
+    ParticipantMeteringReport,
     PartyInfo,
+    ReadAs,
+    Right,
     SubmitResponse,
+    User,
 )
 
 if sys.version_info >= (3, 8):
@@ -32,6 +38,8 @@ else:
 
 __all__ = [
     "aio",
+    "ActAs",
+    "Admin",
     "ArchiveEvent",
     "Boundary",
     "Command",
@@ -39,13 +47,18 @@ __all__ = [
     "CreateAndExerciseCommand",
     "CreateCommand",
     "CreateEvent",
+    "Event",
+    "EventOrBoundary",
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExerciseResponse",
     "PartyInfo",
     "PackageService",
+    "ParticipantMeteringReport",
+    "ReadAs",
     "Connection",
     "QueryStream",
+    "User",
 ]
 
 
