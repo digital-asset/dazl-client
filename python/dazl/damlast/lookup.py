@@ -55,6 +55,7 @@ __all__ = [
     "MultiPackageLookup",
     "PackageLookup",
     "PackageExceptionTracker",
+    "SymbolLookup",
     "find_choice",
     "matching_normalizations",
     "normalize",

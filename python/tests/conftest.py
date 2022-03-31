@@ -8,8 +8,8 @@ from dazl import testing
 import pytest
 
 
-@pytest.fixture(scope="session", params=["1.18.1", "2.0.0"])
-def sandbox(request) -> "Generator[str, None, None]":
+@pytest.fixture(scope="session", params=["1", "2"])
+def sandbox(request, sandbox_v1, sandbox_v2) -> "Generator[str, None, None]":
     """
     Run an instance of the Sandbox, or use one configured through environment variables.
 
@@ -25,7 +25,21 @@ def sandbox(request) -> "Generator[str, None, None]":
          DAML_SDK_VERSION=1.0.0 make test
          ```
     """
-    with testing.sandbox(project_root=None, version=request.param) as sb:
+    if request.param == "1":
+        yield sandbox_v1
+    else:
+        yield sandbox_v2
+
+
+@pytest.fixture(scope="session")
+def sandbox_v1() -> "Generator[str, None, None]":
+    with testing.sandbox(project_root=None, version="1.18.1") as sb:
+        yield sb.url
+
+
+@pytest.fixture(scope="session")
+def sandbox_v2() -> "Generator[str, None, None]":
+    with testing.sandbox(project_root=None, version="2.0.0") as sb:
         yield sb.url
 
 

@@ -26,9 +26,12 @@ from ..prim import ContractData, ContractId, Party, TimeDeltaLike
 from ..query import Queries, Query
 from .aio import Connection as AioConnection, QueryStream as AioQueryStream
 from .api_types import (
+    ActAs,
+    Admin,
     ArchiveEvent,
     Boundary,
     Command,
+    CommandMeta,
     CreateAndExerciseCommand,
     CreateCommand,
     CreateEvent,
@@ -39,6 +42,7 @@ from .api_types import (
     ExerciseResponse,
     ParticipantMeteringReport,
     PartyInfo,
+    ReadAs,
     Right,
     SubmitResponse,
     User,
@@ -52,19 +56,28 @@ else:
     from typing_extensions import Literal, Protocol, runtime_checkable
 
 __all__ = [
+    "aio",
+    "ActAs",
+    "Admin",
     "ArchiveEvent",
     "Boundary",
     "Command",
+    "CommandMeta",
     "CreateAndExerciseCommand",
     "CreateCommand",
     "CreateEvent",
+    "Event",
+    "EventOrBoundary",
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExerciseResponse",
     "PartyInfo",
     "PackageService",
+    "ParticipantMeteringReport",
+    "ReadAs",
     "Connection",
     "QueryStream",
+    "User",
 ]
 
 CreateFn = TypeVar("CreateFn", bound=Callable[[CreateEvent], SubmitResponse])
@@ -105,7 +118,36 @@ class OnBoundaryDecorator(Protocol):
 @overload
 def connect(
     *,
-    blocking: Literal[False] = False,
+    url: Optional[str] = None,
+    host: Optional[str] = None,
+    port: Optional[int] = None,
+    scheme: Optional[str] = None,
+    read_as: Union[None, Party, Collection[Party]] = None,
+    act_as: Union[None, Party, Collection[Party]] = None,
+    admin: Optional[bool] = False,
+    ledger_id: Optional[str] = None,
+    application_name: Optional[str] = None,
+    oauth_token: Optional[str] = None,
+    oauth_token_file: Optional[str] = None,
+    ca: Optional[bytes] = None,
+    ca_file: Optional[PathLike] = None,
+    cert: Optional[bytes] = None,
+    cert_file: Optional[PathLike] = None,
+    cert_key: Optional[bytes] = None,
+    cert_key_file: Optional[PathLike] = None,
+    connect_timeout: Optional[TimeDeltaLike] = None,
+    use_http_proxy: bool = True,
+    logger: Optional[Logger] = None,
+    logger_name: Optional[str] = None,
+    log_level: Optional[str] = None,
+    lookup: Optional[SymbolLookup] = None,
+) -> AioConnection: ...
+
+# noinspection PyShadowingNames
+@overload
+def connect(
+    *,
+    blocking: Literal[False],
     url: Optional[str] = None,
     host: Optional[str] = None,
     port: Optional[int] = None,
