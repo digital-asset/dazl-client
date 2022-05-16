@@ -52,6 +52,9 @@ from ..api_types import (
     ReadAs,
     Right,
     User,
+    Version,
+    VersionFeatures,
+    VersionUserManagementFeature,
 )
 from ..pkgcache import SHARED_PACKAGE_DATABASE
 
@@ -394,6 +397,19 @@ class Codec:
     def decode_party_info(party_details: lapiadminpb.PartyDetails) -> PartyInfo:
         return PartyInfo(
             Party(party_details.party), party_details.display_name, party_details.is_local
+        )
+
+    @staticmethod
+    def decode_version(__obj: lapipb.GetLedgerApiVersionResponse) -> Version:
+        return Version(
+            version=__obj.version,
+            features=VersionFeatures(
+                user_management=VersionUserManagementFeature(
+                    supported=__obj.features.user_management.supported,
+                    max_rights_per_user=__obj.features.user_management.max_rights_per_user,
+                    max_users_page_size=__obj.features.user_management.max_users_page_size,
+                ),
+            ),
         )
 
     @staticmethod

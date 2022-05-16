@@ -49,6 +49,7 @@ __all__ = [
     "Right",
     "SubmitResponse",
     "User",
+    "Version",
 ]
 
 
@@ -701,6 +702,39 @@ class PartyInfo:
         Indicates if the ``Party`` is hosted by the backing participant.
         """
         return self._is_local
+
+
+class Version:
+    __slots__ = ("version", "features")
+
+    version: "Final[str]"  # type: ignore
+    features: "Final[VersionFeatures]"  # type: ignore
+
+    def __init__(self, version: str, features: "VersionFeatures"):
+        object.__setattr__(self, "version", version)
+        object.__setattr__(self, "features", features)
+
+
+class VersionFeatures:
+    __slots__ = ("user_management",)
+
+    user_management: "Final[VersionUserManagementFeature]"  # type: ignore
+
+    def __init__(self, user_management: "VersionUserManagementFeature"):
+        object.__setattr__(self, "user_management", user_management)
+
+
+class VersionUserManagementFeature:
+    __slots__ = ("supported", "max_rights_per_user", "max_users_page_size")
+
+    supported: "Final[bool]"  # type: ignore
+    max_rights_per_user: "Final[int]"  # type: ignore
+    max_users_page_size: "Final[int]"  # type: ignore
+
+    def __init__(self, supported: bool, max_rights_per_user: int, max_users_page_size: int):
+        object.__setattr__(self, "supported", supported)
+        object.__setattr__(self, "max_rights_per_user", max_rights_per_user)
+        object.__setattr__(self, "max_users_page_size", max_users_page_size)
 
 
 class ParticipantMeteringReport:

@@ -22,6 +22,7 @@ from ..api_types import (
     PartyInfo,
     Right,
     User,
+    Version,
 )
 from .pkgloader import PackageLoader
 
@@ -150,6 +151,7 @@ class Connection(_Connection, PackageService, Protocol):
         self, *, identifier_hint: Optional[str] = None, display_name: Optional[str] = None
     ) -> PartyInfo: ...
     def list_known_parties(self) -> Sequence[PartyInfo]: ...
+    def get_version(self) -> Version: ...
     def upload_package(self, contents: bytes) -> None: ...
     def get_metering_report(
         self, from_: datetime, to: Optional[datetime] = None, application_id: Optional[str] = None
