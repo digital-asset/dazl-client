@@ -511,6 +511,7 @@ class Connection(aio.Connection):
         commands: Collection[lapipb.Command],
         meta: CommandMeta,
     ) -> lapipb.SubmitAndWaitRequest:
+        print(meta)
         # this is support for versions of Daml Connect prior to 1.9.0
         act_as = meta.act_as
         if act_as is not None:
@@ -541,6 +542,7 @@ class Connection(aio.Connection):
     ):
         read_as = self._read_as(read_as)
         if act_as is None:
+            print(self._config.access)
             act_as = self._config.access.act_as
 
         return CommandMeta(

@@ -21,6 +21,7 @@ from typing import (
 )
 import warnings
 
+from ... import _repr
 from ...prim import Party
 from .exc import ConfigError
 
@@ -213,13 +214,16 @@ class TokenBasedAccessConfig(AccessConfig):
 
     _token_version: Literal[1, 2]
 
-    def __init__(self, oauth_token: str):
+    def __init__(self, oauth_token: "Union[bytes, str]"):
         """
         Initialize a token-based access configuration.
 
         :param oauth_token: The initial value of the bearer token.
         """
-        self.token = oauth_token
+        if isinstance(oauth_token, bytes):
+            self.token = oauth_token.decode("ascii")
+        else:
+            self.token = oauth_token
 
     @property
     def token(self) -> str:
@@ -237,9 +241,9 @@ class TokenBasedAccessConfig(AccessConfig):
         v1_claims = claims.get(DamlLedgerApiNamespace)
         if v1_claims is not None:
             self._set(
-                read_as=frozenset(claims.get("readAs", ())),
-                act_as=frozenset(claims.get("actAs", ())),
-                admin=bool(claims.get("admin", False)),
+                read_as=frozenset(v1_claims.get("readAs", ())),
+                act_as=frozenset(v1_claims.get("actAs", ())),
+                admin=bool(v1_claims.get("admin", False)),
             )
             self._ledger_id = v1_claims.get("ledgerId", None)
             self._application_name = v1_claims.get("applicationId", None)
@@ -291,6 +295,21 @@ class TokenBasedAccessConfig(AccessConfig):
     def token_version(self) -> "Literal[1, 2]":
         return self._token_version
 
+    def __repr__(self):
+        s = [
+            f"read_as={_repr.list(self.read_as)}",
+            f"act_as={_repr.list(self.act_as)}",
+        ]
+        if self.admin:
+            s.append("admin=True")
+        if self.ledger_id is not None:
+            s.append(f"ledger_id={_repr.str(self.ledger_id)}")
+        if self.application_name is not None:
+            s.append(f"application_name={_repr.str(self.application_name)}")
+        s.append(f"token_version={self.token_version}")
+
+        return f"{self.__class__.__name__}({', '.join(s)})"
+
 
 class TokenFileBasedAccessConfig(TokenBasedAccessConfig):
     def __init__(self, oauth_token_file: str):
@@ -340,13 +359,13 @@ class PropertyBasedAccessConfig(AccessConfig):
         self._application_name = application_name or "dazl-client"
 
     @property
-    def token(self):
+    def token(self) -> str:
         """
         Produces a token without signing, utilizing our parameters.
         """
         return encode_unsigned_token(
             self.read_as, self.act_as, self.ledger_id, self.application_name, self.admin
-        )
+        ).decode("ascii")
 
     @property
     def ledger_id(self) -> "Optional[str]":
@@ -458,25 +477,27 @@ def decode_token_claims(token: str) -> "Mapping[str, Any]":
 
 
 def encode_unsigned_token(
-    read_as: Collection[Party],
-    act_as: Collection[Party],
-    ledger_id: str,
-    application_id: str,
+    read_as: "Optional[Collection[Party]]",
+    act_as: "Optional[Collection[Party]]",
+    ledger_id: "Optional[str]",
+    application_id: "Optional[str]",
     admin: bool = True,
 ) -> bytes:
     header = {
         "alg": "none",
         "typ": "JWT",
     }
-    payload = {
-        DamlLedgerApiNamespace: {
-            "ledgerId": ledger_id,
-            "applicationId": application_id,
-            "actAs": sorted(act_as),
-            "readAs": sorted(read_as),
-            "admin": admin,
-        }
-    }
+    payload = {DamlLedgerApiNamespace: {}}  # type: Mapping[str, Any]
+    if ledger_id is not None:
+        payload[DamlLedgerApiNamespace]["ledgerId"] = ledger_id
+    if application_id is not None:
+        payload[DamlLedgerApiNamespace]["applicationId"] = application_id
+    if act_as is not None:
+        payload[DamlLedgerApiNamespace]["actAs"] = sorted(act_as)
+    if read_as is not None:
+        payload[DamlLedgerApiNamespace]["readAs"] = sorted(read_as)
+    if admin:
+        payload[DamlLedgerApiNamespace]["admin"] = admin
 
     return (
         base64.urlsafe_b64encode(json.dumps(header).encode("utf-8")).rstrip(b"=")

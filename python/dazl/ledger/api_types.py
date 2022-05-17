@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 import abc
 from datetime import datetime
 import sys
@@ -16,6 +17,7 @@ from typing import (
 )
 import uuid
 
+from .. import _repr
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
 from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_parties
@@ -406,6 +408,18 @@ class CommandMeta:
             and self.read_as == other.read_as
             and self.act_as == other.act_as
         )
+
+    def __repr__(self) -> str:
+        s = []
+        if self.workflow_id is not None:
+            s.append(f"workflow_id={_repr.str(self.workflow_id)}")
+        if self.command_id is not None:
+            s.append(f"command_id={_repr.str(self.command_id )}")
+        if self.read_as is not None:
+            s.append(f"read_as={_repr.list(self.read_as)}")
+        if self.act_as is not None:
+            s.append(f"act_as={_repr.list(self.act_as)}")
+        return f"{self.__class__.__name__}({', '.join(s)})"
 
 
 class CreateEvent:
