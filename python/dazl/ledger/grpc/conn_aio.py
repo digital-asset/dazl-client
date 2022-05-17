@@ -47,6 +47,7 @@ from ..api_types import (
     ReadAs,
     Right,
     User,
+    Version,
 )
 from ..config import Config
 from ..config.access import PropertyBasedAccessConfig, TokenBasedAccessConfig
@@ -698,6 +699,12 @@ class Connection(aio.Connection):
             return to_parties(read_as)
 
     # endregion
+
+    async def get_version(self) -> "Version":
+        stub = lapipb.VersionServiceStub(self.channel)
+        request = lapipb.GetLedgerApiVersionRequest(ledger_id=self._config.access.ledger_id)
+        response = await stub.GetLedgerApiVersion(request)
+        return Codec.decode_version(response)
 
     # region User Management calls
 
