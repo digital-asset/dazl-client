@@ -172,12 +172,19 @@ class AccessConfig(Protocol):
         """
         raise NotImplementedError
 
+    @ledger_id.setter
+    def ledger_id(self, value: Optional[str]) -> None:
+        # note; this is settable purely to support Daml V1-based workflows where ledger ID needss
+        # to be remembered locally because most interactions with Daml V1 ledgers require
+        # ledger ID to be supplied
+        raise NotImplementedError
+
     @property
-    def application_name(self) -> str:
+    def application_name(self) -> Optional[str]:
         """
         The application name.
 
-        :type: str
+        :type: Optional[str]
         """
         raise NotImplementedError
 
@@ -239,7 +246,14 @@ class TokenBasedAccessConfig(AccessConfig):
         claims = decode_token_claims(self._token)
 
         v1_claims = claims.get(DamlLedgerApiNamespace)
-        if v1_claims is not None:
+        if "daml_ledger_api" in claims.get("scope", "").split(" "):
+            # "scope": "daml_ledegr_api" is present, which makes it a Daml V2 token
+            self._ledger_id = None
+            self._application_name = None
+            self._token_version = 2
+
+        elif v1_claims is not None:
+            # we found Daml V1 claims, so assume it's a Daml V1 token
             self._set(
                 read_as=frozenset(v1_claims.get("readAs", ())),
                 act_as=frozenset(v1_claims.get("actAs", ())),
@@ -248,7 +262,9 @@ class TokenBasedAccessConfig(AccessConfig):
             self._ledger_id = v1_claims.get("ledgerId", None)
             self._application_name = v1_claims.get("applicationId", None)
             self._token_version = 1
+
         else:
+            # we're not _entirely_ sure what kind of token it is; assume it's 2
             self._ledger_id = None
             self._application_name = None
             self._token_version = 2
@@ -287,8 +303,19 @@ class TokenBasedAccessConfig(AccessConfig):
     def ledger_id(self) -> Optional[str]:
         return self._ledger_id
 
+    @ledger_id.setter
+    def ledger_id(self, value: Optional[str]) -> None:
+        """
+        Set ledger ID.
+
+        Unlike the other properties derived from the token, this is settable here to support
+        Daml V1-based workflows where the ledger ID isn't necessarily in the token, but still
+        needs to be known locally in order to supply it to gRPC commands.
+        """
+        self._ledger_id = value
+
     @property
-    def application_name(self) -> str:
+    def application_name(self) -> Optional[str]:
         return self._application_name
 
     @property

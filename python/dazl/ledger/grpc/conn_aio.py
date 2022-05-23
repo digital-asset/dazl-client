@@ -124,11 +124,9 @@ class Connection(aio.Connection):
             # the destination
             stub = lapipb.LedgerIdentityServiceStub(self._channel)
             response = await stub.GetLedgerIdentity(lapipb.GetLedgerIdentityRequest())
-            if isinstance(self._config.access, PropertyBasedAccessConfig):
-                self._logger.info("Connected to gRPC Ledger API, ledger ID: %s", response.ledger_id)
-                self._config.access.ledger_id = response.ledger_id
-            else:
-                raise ValueError("when using token-based access, the token must contain ledger ID")
+
+            self._logger.info("Connected to gRPC Ledger API, ledger ID: %s", response.ledger_id)
+            self._config.access.ledger_id = response.ledger_id
 
     async def close(self) -> None:
         """
