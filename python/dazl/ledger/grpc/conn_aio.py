@@ -33,6 +33,7 @@ from ...damlast.util import is_match
 from ...prim import ContractData, ContractId, Party, datetime_to_timestamp, to_parties
 from ...query import Filter, Queries, Query, parse_query
 from .._offsets import END, End, LedgerOffsetRange, from_offset_until_forever
+from .._retry import retry
 from ..api_types import (
     ActAs,
     Admin,
@@ -50,7 +51,7 @@ from ..api_types import (
     Version,
 )
 from ..config import Config
-from ..config.access import PropertyBasedAccessConfig, TokenBasedAccessConfig
+from ..config.access import TokenBasedAccessConfig
 from ..errors import ProtocolWarning, _allow_cancel, _translate_exceptions
 from .channel import create_channel
 from .codec_aio import Codec
@@ -110,8 +111,10 @@ class Connection(aio.Connection):
                 for right in await self.list_user_rights():
                     if right == Admin:
                         admin = True
-                    elif isinstance(right, (ReadAs, ActAs)):
+                    elif isinstance(right, ReadAs):
                         read_as.append(right.party)
+                    elif isinstance(right, ActAs):
+                        act_as.append(right.party)
 
                 # noinspection PyProtectedMember
                 cast(TokenBasedAccessConfig, self._config.access)._set(
@@ -512,7 +515,7 @@ class Connection(aio.Connection):
         # this is support for versions of Daml Connect prior to 1.9.0
         act_as = meta.act_as
         if act_as is not None:
-            act_as_party = act_as[0]
+            act_as_party = act_as[0] if act_as else None
         else:
             raise ValueError("current access rights do not include any act-as parties")
 
@@ -748,7 +751,8 @@ class Connection(aio.Connection):
             party_id_hint=Party(identifier_hint) if identifier_hint else None,
             display_name=display_name,
         )
-        response = await stub.AllocateParty(request)
+
+        response = await retry(lambda: stub.AllocateParty(request))
         return Codec.decode_party_info(response.party_details)
 
     async def list_known_parties(self) -> Sequence[PartyInfo]:

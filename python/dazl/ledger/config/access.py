@@ -247,9 +247,9 @@ class TokenBasedAccessConfig(AccessConfig):
 
         v1_claims = claims.get(DamlLedgerApiNamespace)
         if "daml_ledger_api" in claims.get("scope", "").split(" "):
-            # "scope": "daml_ledegr_api" is present, which makes it a Daml V2 token
+            # "scope": "daml_ledger_api" is present, which makes it a Daml V2 token
             self._ledger_id = None
-            self._application_name = None
+            self._application_name = claims.get("sub")
             self._token_version = 2
 
         elif v1_claims is not None:
@@ -266,7 +266,7 @@ class TokenBasedAccessConfig(AccessConfig):
         else:
             # we're not _entirely_ sure what kind of token it is; assume it's 2
             self._ledger_id = None
-            self._application_name = None
+            self._application_name = claims.get("sub")
             self._token_version = 2
 
     def _set(self, *, read_as: Collection[Party], act_as: Collection[Party], admin: bool):
