@@ -8,6 +8,7 @@
 """Generated protocol buffer code."""
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -19,140 +20,15 @@ _sym_db = _symbol_database.Default()
 from . import daml_lf_1_pb2 as com_dot_daml_dot_daml__lf__1__14_dot_daml__lf__1__pb2
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-  name='com/daml/daml_lf_1_14/daml_lf.proto',
-  package='daml_lf_1',
-  syntax='proto3',
-  serialized_options=b'\n\025com.daml.daml_lf_1_14ZDgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_1_14\252\002\034Com.Daml.Daml_Lf_1_14.DamlLf',
-  create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n#com/daml/daml_lf_1_14/daml_lf.proto\x12\tdaml_lf_1\x1a%com/daml/daml_lf_1_14/daml_lf_1.proto\"m\n\x0e\x41rchivePayload\x12\x14\n\x05minor\x18\x03 \x01(\tR\x05minor\x12\x30\n\tdaml_lf_1\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.PackageH\x00R\x07\x64\x61mlLf1B\x05\n\x03SumJ\x06\x08\x8fN\x10\x90NJ\x04\x08\x01\x10\x02\"u\n\x07\x41rchive\x12<\n\rhash_function\x18\x01 \x01(\x0e\x32\x17.daml_lf_1.HashFunctionR\x0chashFunction\x12\x18\n\x07payload\x18\x03 \x01(\x0cR\x07payload\x12\x12\n\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42|\n\x15\x63om.daml.daml_lf_1_14ZDgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_1_14\xaa\x02\x1c\x43om.Daml.Daml_Lf_1_14.DamlLfb\x06proto3'
-  ,
-  dependencies=[com_dot_daml_dot_daml__lf__1__14_dot_daml__lf__1__pb2.DESCRIPTOR,])
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n#com/daml/daml_lf_1_14/daml_lf.proto\x12\tdaml_lf_1\x1a%com/daml/daml_lf_1_14/daml_lf_1.proto\"m\n\x0e\x41rchivePayload\x12\x14\n\x05minor\x18\x03 \x01(\tR\x05minor\x12\x30\n\tdaml_lf_1\x18\x02 \x01(\x0b\x32\x12.daml_lf_1.PackageH\x00R\x07\x64\x61mlLf1B\x05\n\x03SumJ\x06\x08\x8fN\x10\x90NJ\x04\x08\x01\x10\x02\"u\n\x07\x41rchive\x12<\n\rhash_function\x18\x01 \x01(\x0e\x32\x17.daml_lf_1.HashFunctionR\x0chashFunction\x12\x18\n\x07payload\x18\x03 \x01(\x0cR\x07payload\x12\x12\n\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42|\n\x15\x63om.daml.daml_lf_1_14ZDgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_1_14\xaa\x02\x1c\x43om.Daml.Daml_Lf_1_14.DamlLfb\x06proto3')
 
-_HASHFUNCTION = _descriptor.EnumDescriptor(
-  name='HashFunction',
-  full_name='daml_lf_1.HashFunction',
-  filename=None,
-  file=DESCRIPTOR,
-  create_key=_descriptor._internal_create_key,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='SHA256', index=0, number=0,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=319,
-  serialized_end=345,
-)
-_sym_db.RegisterEnumDescriptor(_HASHFUNCTION)
-
+_HASHFUNCTION = DESCRIPTOR.enum_types_by_name['HashFunction']
 HashFunction = enum_type_wrapper.EnumTypeWrapper(_HASHFUNCTION)
 SHA256 = 0
 
 
-
-_ARCHIVEPAYLOAD = _descriptor.Descriptor(
-  name='ArchivePayload',
-  full_name='daml_lf_1.ArchivePayload',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='minor', full_name='daml_lf_1.ArchivePayload.minor', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='minor', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='daml_lf_1', full_name='daml_lf_1.ArchivePayload.daml_lf_1', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='damlLf1', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='Sum', full_name='daml_lf_1.ArchivePayload.Sum',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=89,
-  serialized_end=198,
-)
-
-
-_ARCHIVE = _descriptor.Descriptor(
-  name='Archive',
-  full_name='daml_lf_1.Archive',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='hash_function', full_name='daml_lf_1.Archive.hash_function', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='hashFunction', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='daml_lf_1.Archive.payload', index=1,
-      number=3, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='payload', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='hash', full_name='daml_lf_1.Archive.hash', index=2,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='hash', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=200,
-  serialized_end=317,
-)
-
-_ARCHIVEPAYLOAD.fields_by_name['daml_lf_1'].message_type = com_dot_daml_dot_daml__lf__1__14_dot_daml__lf__1__pb2._PACKAGE
-_ARCHIVEPAYLOAD.oneofs_by_name['Sum'].fields.append(
-  _ARCHIVEPAYLOAD.fields_by_name['daml_lf_1'])
-_ARCHIVEPAYLOAD.fields_by_name['daml_lf_1'].containing_oneof = _ARCHIVEPAYLOAD.oneofs_by_name['Sum']
-_ARCHIVE.fields_by_name['hash_function'].enum_type = _HASHFUNCTION
-DESCRIPTOR.message_types_by_name['ArchivePayload'] = _ARCHIVEPAYLOAD
-DESCRIPTOR.message_types_by_name['Archive'] = _ARCHIVE
-DESCRIPTOR.enum_types_by_name['HashFunction'] = _HASHFUNCTION
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_ARCHIVEPAYLOAD = DESCRIPTOR.message_types_by_name['ArchivePayload']
+_ARCHIVE = DESCRIPTOR.message_types_by_name['Archive']
 ArchivePayload = _reflection.GeneratedProtocolMessageType('ArchivePayload', (_message.Message,), {
   'DESCRIPTOR' : _ARCHIVEPAYLOAD,
   '__module__' : 'com.daml.daml_lf_1_14.daml_lf_pb2'
@@ -167,6 +43,14 @@ Archive = _reflection.GeneratedProtocolMessageType('Archive', (_message.Message,
   })
 _sym_db.RegisterMessage(Archive)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'\n\025com.daml.daml_lf_1_14ZDgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_1_14\252\002\034Com.Daml.Daml_Lf_1_14.DamlLf'
+  _HASHFUNCTION._serialized_start=319
+  _HASHFUNCTION._serialized_end=345
+  _ARCHIVEPAYLOAD._serialized_start=89
+  _ARCHIVEPAYLOAD._serialized_end=198
+  _ARCHIVE._serialized_start=200
+  _ARCHIVE._serialized_end=317
 # @@protoc_insertion_point(module_scope)

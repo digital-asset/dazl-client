@@ -7,6 +7,7 @@
 # source: com/daml/ledger/api/v1/version_service.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -18,183 +19,14 @@ _sym_db = _symbol_database.Default()
 from . import experimental_features_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_experimental__features__pb2
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-  name='com/daml/ledger/api/v1/version_service.proto',
-  package='com.daml.ledger.api.v1',
-  syntax='proto3',
-  serialized_options=b'\n\026com.daml.ledger.api.v1B\030VersionServiceOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1',
-  create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n,com/daml/ledger/api/v1/version_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\x32\x63om/daml/ledger/api/v1/experimental_features.proto\"9\n\x1aGetLedgerApiVersionRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\"\x7f\n\x1bGetLedgerApiVersionResponse\x12\x18\n\x07version\x18\x01 \x01(\tR\x07version\x12\x46\n\x08\x66\x65\x61tures\x18\x02 \x01(\x0b\x32*.com.daml.ledger.api.v1.FeaturesDescriptorR\x08\x66\x65\x61tures\"\xbe\x01\n\x12\x46\x65\x61turesDescriptor\x12V\n\x0fuser_management\x18\x02 \x01(\x0b\x32-.com.daml.ledger.api.v1.UserManagementFeatureR\x0euserManagement\x12P\n\x0c\x65xperimental\x18\x01 \x01(\x0b\x32,.com.daml.ledger.api.v1.ExperimentalFeaturesR\x0c\x65xperimental\"\x93\x01\n\x15UserManagementFeature\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\x12-\n\x13max_rights_per_user\x18\x02 \x01(\x05R\x10maxRightsPerUser\x12-\n\x13max_users_page_size\x18\x03 \x01(\x05R\x10maxUsersPageSize2\x90\x01\n\x0eVersionService\x12~\n\x13GetLedgerApiVersion\x12\x32.com.daml.ledger.api.v1.GetLedgerApiVersionRequest\x1a\x33.com.daml.ledger.api.v1.GetLedgerApiVersionResponseB\x92\x01\n\x16\x63om.daml.ledger.api.v1B\x18VersionServiceOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3'
-  ,
-  dependencies=[com_dot_daml_dot_ledger_dot_api_dot_v1_dot_experimental__features__pb2.DESCRIPTOR,])
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/daml/ledger/api/v1/version_service.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\x32\x63om/daml/ledger/api/v1/experimental_features.proto\"9\n\x1aGetLedgerApiVersionRequest\x12\x1b\n\tledger_id\x18\x01 \x01(\tR\x08ledgerId\"\x7f\n\x1bGetLedgerApiVersionResponse\x12\x18\n\x07version\x18\x01 \x01(\tR\x07version\x12\x46\n\x08\x66\x65\x61tures\x18\x02 \x01(\x0b\x32*.com.daml.ledger.api.v1.FeaturesDescriptorR\x08\x66\x65\x61tures\"\xbe\x01\n\x12\x46\x65\x61turesDescriptor\x12V\n\x0fuser_management\x18\x02 \x01(\x0b\x32-.com.daml.ledger.api.v1.UserManagementFeatureR\x0euserManagement\x12P\n\x0c\x65xperimental\x18\x01 \x01(\x0b\x32,.com.daml.ledger.api.v1.ExperimentalFeaturesR\x0c\x65xperimental\"\x93\x01\n\x15UserManagementFeature\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\x12-\n\x13max_rights_per_user\x18\x02 \x01(\x05R\x10maxRightsPerUser\x12-\n\x13max_users_page_size\x18\x03 \x01(\x05R\x10maxUsersPageSize2\x90\x01\n\x0eVersionService\x12~\n\x13GetLedgerApiVersion\x12\x32.com.daml.ledger.api.v1.GetLedgerApiVersionRequest\x1a\x33.com.daml.ledger.api.v1.GetLedgerApiVersionResponseB\x92\x01\n\x16\x63om.daml.ledger.api.v1B\x18VersionServiceOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3')
 
 
 
-
-_GETLEDGERAPIVERSIONREQUEST = _descriptor.Descriptor(
-  name='GetLedgerApiVersionRequest',
-  full_name='com.daml.ledger.api.v1.GetLedgerApiVersionRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='ledger_id', full_name='com.daml.ledger.api.v1.GetLedgerApiVersionRequest.ledger_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='ledgerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=124,
-  serialized_end=181,
-)
-
-
-_GETLEDGERAPIVERSIONRESPONSE = _descriptor.Descriptor(
-  name='GetLedgerApiVersionResponse',
-  full_name='com.daml.ledger.api.v1.GetLedgerApiVersionResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='version', full_name='com.daml.ledger.api.v1.GetLedgerApiVersionResponse.version', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='version', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='features', full_name='com.daml.ledger.api.v1.GetLedgerApiVersionResponse.features', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='features', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=183,
-  serialized_end=310,
-)
-
-
-_FEATURESDESCRIPTOR = _descriptor.Descriptor(
-  name='FeaturesDescriptor',
-  full_name='com.daml.ledger.api.v1.FeaturesDescriptor',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='user_management', full_name='com.daml.ledger.api.v1.FeaturesDescriptor.user_management', index=0,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='userManagement', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='experimental', full_name='com.daml.ledger.api.v1.FeaturesDescriptor.experimental', index=1,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='experimental', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=313,
-  serialized_end=503,
-)
-
-
-_USERMANAGEMENTFEATURE = _descriptor.Descriptor(
-  name='UserManagementFeature',
-  full_name='com.daml.ledger.api.v1.UserManagementFeature',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='supported', full_name='com.daml.ledger.api.v1.UserManagementFeature.supported', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='supported', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='max_rights_per_user', full_name='com.daml.ledger.api.v1.UserManagementFeature.max_rights_per_user', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='maxRightsPerUser', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='max_users_page_size', full_name='com.daml.ledger.api.v1.UserManagementFeature.max_users_page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='maxUsersPageSize', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=506,
-  serialized_end=653,
-)
-
-_GETLEDGERAPIVERSIONRESPONSE.fields_by_name['features'].message_type = _FEATURESDESCRIPTOR
-_FEATURESDESCRIPTOR.fields_by_name['user_management'].message_type = _USERMANAGEMENTFEATURE
-_FEATURESDESCRIPTOR.fields_by_name['experimental'].message_type = com_dot_daml_dot_ledger_dot_api_dot_v1_dot_experimental__features__pb2._EXPERIMENTALFEATURES
-DESCRIPTOR.message_types_by_name['GetLedgerApiVersionRequest'] = _GETLEDGERAPIVERSIONREQUEST
-DESCRIPTOR.message_types_by_name['GetLedgerApiVersionResponse'] = _GETLEDGERAPIVERSIONRESPONSE
-DESCRIPTOR.message_types_by_name['FeaturesDescriptor'] = _FEATURESDESCRIPTOR
-DESCRIPTOR.message_types_by_name['UserManagementFeature'] = _USERMANAGEMENTFEATURE
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_GETLEDGERAPIVERSIONREQUEST = DESCRIPTOR.message_types_by_name['GetLedgerApiVersionRequest']
+_GETLEDGERAPIVERSIONRESPONSE = DESCRIPTOR.message_types_by_name['GetLedgerApiVersionResponse']
+_FEATURESDESCRIPTOR = DESCRIPTOR.message_types_by_name['FeaturesDescriptor']
+_USERMANAGEMENTFEATURE = DESCRIPTOR.message_types_by_name['UserManagementFeature']
 GetLedgerApiVersionRequest = _reflection.GeneratedProtocolMessageType('GetLedgerApiVersionRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETLEDGERAPIVERSIONREQUEST,
   '__module__' : 'com.daml.ledger.api.v1.version_service_pb2'
@@ -223,32 +55,19 @@ UserManagementFeature = _reflection.GeneratedProtocolMessageType('UserManagement
   })
 _sym_db.RegisterMessage(UserManagementFeature)
 
+_VERSIONSERVICE = DESCRIPTOR.services_by_name['VersionService']
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
-
-_VERSIONSERVICE = _descriptor.ServiceDescriptor(
-  name='VersionService',
-  full_name='com.daml.ledger.api.v1.VersionService',
-  file=DESCRIPTOR,
-  index=0,
-  serialized_options=None,
-  create_key=_descriptor._internal_create_key,
-  serialized_start=656,
-  serialized_end=800,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='GetLedgerApiVersion',
-    full_name='com.daml.ledger.api.v1.VersionService.GetLedgerApiVersion',
-    index=0,
-    containing_service=None,
-    input_type=_GETLEDGERAPIVERSIONREQUEST,
-    output_type=_GETLEDGERAPIVERSIONRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-])
-_sym_db.RegisterServiceDescriptor(_VERSIONSERVICE)
-
-DESCRIPTOR.services_by_name['VersionService'] = _VERSIONSERVICE
-
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'\n\026com.daml.ledger.api.v1B\030VersionServiceOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1'
+  _GETLEDGERAPIVERSIONREQUEST._serialized_start=124
+  _GETLEDGERAPIVERSIONREQUEST._serialized_end=181
+  _GETLEDGERAPIVERSIONRESPONSE._serialized_start=183
+  _GETLEDGERAPIVERSIONRESPONSE._serialized_end=310
+  _FEATURESDESCRIPTOR._serialized_start=313
+  _FEATURESDESCRIPTOR._serialized_end=503
+  _USERMANAGEMENTFEATURE._serialized_start=506
+  _USERMANAGEMENTFEATURE._serialized_end=653
+  _VERSIONSERVICE._serialized_start=656
+  _VERSIONSERVICE._serialized_end=800
 # @@protoc_insertion_point(module_scope)
