@@ -7,7 +7,7 @@ from .value_pb2 import Enum, GenMap, Identifier, List, Map, Optional, Record, Re
 from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
 from .completion_pb2 import Completion
 from .event_pb2 import ArchivedEvent, CreatedEvent, Event, ExercisedEvent
-from .experimental_features_pb2 import CommandDeduplicationFeatures, CommandDeduplicationPeriodSupport, CommandDeduplicationType, ExperimentalContractIds, ExperimentalFeatures, ExperimentalOptionalLedgerId, ExperimentalSelfServiceErrorCodes, ExperimentalStaticTime
+from .experimental_features_pb2 import CommandDeduplicationFeatures, CommandDeduplicationPeriodSupport, CommandDeduplicationType, ExperimentalCommitterEventLog, ExperimentalContractIds, ExperimentalFeatures, ExperimentalOptionalLedgerId, ExperimentalSelfServiceErrorCodes, ExperimentalStaticTime
 from .ledger_offset_pb2 import LedgerOffset
 from .transaction_pb2 import Transaction, TransactionTree, TreeEvent
 from .transaction_filter_pb2 import Filters, InclusiveFilters, TransactionFilter
@@ -55,6 +55,7 @@ __all__ = [
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExercisedEvent",
+    "ExperimentalCommitterEventLog",
     "ExperimentalContractIds",
     "ExperimentalFeatures",
     "ExperimentalOptionalLedgerId",
