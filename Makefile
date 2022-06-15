@@ -122,11 +122,8 @@ python-typecheck: .venv/poetry.lock
 	poetry run python3 -m mypy python
 
 # python: build BOTH $(py_bdist) and $(py_sdist)
-$(py_sdist): $(py_src)
+$(py_sdist) $(py_bdist) &: $(py_src)
 	poetry build
-$(py_bdist): $(py_sdist)
-	@test -f $@ || rm -f $^
-	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) $^
 
 # python: Protobuf generated code (non-gRPC)
 $(py_src_gen): $(py_src_gen_root)/%: .cache/witnesses/python
@@ -172,9 +169,6 @@ clean:  ## Clean everything.
 deps: python-deps
 
 
-# `poetry build` produces both the wheel and a source dist; see
-# https://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html
-# for why these rules are written this way
 .PHONY: build
 build: $(packages)  # Build everything.
 

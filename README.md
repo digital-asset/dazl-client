@@ -82,7 +82,7 @@ Building locally
 
 You will need additional dependencies to build locally:
 
-* GNU Make
+* GNU Make 4.3 or later
 * [Poetry](https://python-poetry.org/) for build/dependency management
 
 Once you have these prerequisites in place:
