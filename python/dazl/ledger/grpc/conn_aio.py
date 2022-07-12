@@ -552,6 +552,16 @@ class Connection(aio.Connection):
 
     # region Read API
 
+    async def get_ledger_end(self) -> "str":
+        """
+        Return the offset at the end of the ledger.
+        """
+        stub = lapipb.TransactionServiceStub(self.channel)
+
+        request = lapipb.GetLedgerEndRequest(ledger_id=self._config.access.ledger_id)
+        response = await stub.GetLedgerEnd(request)
+        return response.offset.absolute
+
     def query(
         self,
         __template_id: Union[str, TypeConName] = "*",
