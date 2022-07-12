@@ -82,6 +82,10 @@ class ConnectionThunk:
         fut = run_coroutine_threadsafe(self._conn.archive_by_key(*args, **kwargs), self._loop)
         return fut.result()
 
+    def get_ledger_end(self, *args, **kwargs):
+        fut = run_coroutine_threadsafe(self._conn.get_ledger_end(*args, **kwargs), self._loop)
+        return fut.result()
+
     def query(self, *args, **kwargs):
         return QueryStreamThunk(self._conn.query(*args, **kwargs), self._loop)
 

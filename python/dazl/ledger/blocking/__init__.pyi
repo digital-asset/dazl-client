@@ -118,6 +118,7 @@ class Connection(_Connection, PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
     ) -> ArchiveEvent: ...
+    def get_ledger_end(self) -> str: ...
     def query(
         self,
         __template_id: Union[str, TypeConName] = "*",

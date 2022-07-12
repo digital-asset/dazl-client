@@ -304,6 +304,7 @@ class Connection(PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
     ) -> Union[None, Awaitable[None]]: ...
+    def get_ledger_end(self) -> Union[str, Awaitable[str]]: ...
     def archive(
         self,
         __contract_id: ContractId,
