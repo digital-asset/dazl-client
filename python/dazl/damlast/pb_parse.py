@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
+from __future__ import annotations
+
 from typing import Any, Dict, List as _List, Optional, Sequence
 
 from .daml_lf_1 import *

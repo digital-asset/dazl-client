@@ -6,13 +6,14 @@ DAML-LF fast lookups
 --------------------
 """
 
+from __future__ import annotations
+
 # Implementation notes:
 #
 # The code in here is fairly monotonous and boilerplate heavy. However, being too creative here can
 # potentially lead to performance degradations, particularly at application startup where type and
 # template lookups by name are very frequent. Please be conscious of the runtime costs of
 # modifications in this file!
-
 import threading
 from types import MappingProxyType
 from typing import (

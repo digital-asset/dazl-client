@@ -5,6 +5,8 @@
 This module has been relocated to ``dazl.damlast.lookup``.
 """
 
+from __future__ import annotations
+
 from typing import Iterator, Tuple
 import warnings
 

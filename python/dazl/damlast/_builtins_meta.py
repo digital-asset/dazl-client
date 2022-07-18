@@ -6,6 +6,8 @@ This module contains supporting infrastructure for built-in method definitions f
 Daml-LF files.
 """
 
+from __future__ import annotations
+
 from typing import Any, Optional, Sequence, Type as PyType, Union
 import warnings
 

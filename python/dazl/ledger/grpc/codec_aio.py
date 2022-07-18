@@ -4,13 +4,14 @@
 This module contains the mapping between Protobuf objects and Python/dazl types.
 """
 
+from __future__ import annotations
+
 # Earlier versions of dazl (before v8) had an API that mapped less directly to the gRPC Ledger API.
 # But with the HTTP JSON API, many common ledger methods now have much more direct translations that
 # still manage to adhere quite closely to dazl's historical behavior.
 #
 # References:
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
-
 from collections.abc import Mapping as _Mapping
 from typing import Any, List, Optional, Sequence, Set, Tuple, Union
 

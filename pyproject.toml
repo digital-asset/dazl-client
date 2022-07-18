@@ -64,6 +64,7 @@ protoc-gen-dazl-python = '_dazl_pb.plugin_python:main'
 line-length = 100
 
 [tool.isort]
+add_imports = ["from __future__ import annotations"]
 combine_as_imports = true
 combine_star = true
 force_sort_within_sections = true

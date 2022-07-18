@@ -4,6 +4,8 @@
 """
 This module contains the Python API for interacting with the Ledger API.
 """
+from __future__ import annotations
+
 from ast import literal_eval
 from configparser import ConfigParser
 from pathlib import Path

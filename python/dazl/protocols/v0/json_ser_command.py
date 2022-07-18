@@ -6,6 +6,8 @@ Methods for serializing domain objects and other things into basic primitive
 types over the wire on the REST interface using JSON.
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 import warnings

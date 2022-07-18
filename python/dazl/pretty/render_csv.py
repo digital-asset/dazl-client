@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # type: ignore
 
+from __future__ import annotations
+
 from io import StringIO
 from typing import Dict, List, Tuple
 

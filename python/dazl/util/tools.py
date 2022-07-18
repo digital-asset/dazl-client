@@ -5,6 +5,8 @@
 This module contains miscellaneous utility methods that don't really fit anywhere else.
 """
 
+from __future__ import annotations
+
 from typing import (
     Callable,
     Collection,

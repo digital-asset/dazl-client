@@ -6,6 +6,8 @@ This module has been relocated to ``dazl.client.events``, though if possible you
 ``dazl.protocol.events``.
 """
 
+from __future__ import annotations
+
 from ..client._reader_sync import max_offset
 from ..client.events import EventKey, create_dispatch
 from ..protocols.events import (
