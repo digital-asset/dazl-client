@@ -5,6 +5,8 @@
 This module has been relocated to ``dazl.client.commands``, though if possible you should move to
 the command types defined in ``dazl.ledger`` instead.
 """
+from __future__ import annotations
+
 import warnings
 
 from ..client.commands import (

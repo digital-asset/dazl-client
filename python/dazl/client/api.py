@@ -17,6 +17,8 @@ This module contains the public API for interacting with the ledger from the per
 specific party.
 """
 
+from __future__ import annotations
+
 from asyncio import Future, ensure_future, get_event_loop
 from contextlib import contextmanager
 from functools import partial, wraps

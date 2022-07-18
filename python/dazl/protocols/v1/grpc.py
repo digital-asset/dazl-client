@@ -4,6 +4,8 @@
 """
 Support for the gRPC-based Ledger API.
 """
+from __future__ import annotations
+
 from asyncio import gather
 from datetime import datetime
 from threading import Event

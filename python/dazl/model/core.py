@@ -5,6 +5,8 @@
 This module has been relocated to ``dazl.client``, ``dazl.damlast``, ``dazl.protocols``, or
 ``dazl.query``.
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, TypeVar, Union
 import warnings
 

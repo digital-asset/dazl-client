@@ -5,6 +5,8 @@
 This module prints the metadata obtained from a remote server.
 """
 
+from __future__ import annotations
+
 from argparse import ArgumentParser
 from typing import Collection
 

@@ -10,6 +10,8 @@ deprecated :class:`dazl.model.types.Type` hierarchy to :class:`dazl.damlast.daml
 These functions will be removed WITHOUT an intermediate deprecation warning, as they are considered
 internal only.
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Tuple, Union
 import warnings
 

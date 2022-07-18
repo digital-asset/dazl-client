@@ -4,6 +4,8 @@
 Internal process communications that apply globally. These include signal handlers.
 """
 
+from __future__ import annotations
+
 from collections import defaultdict
 from threading import RLock
 from typing import Any, Callable

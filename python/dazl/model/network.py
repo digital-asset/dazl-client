@@ -5,6 +5,8 @@
 This module has been relocated to ``dazl.client._conn_settings``.
 """
 
+from __future__ import annotations
+
 __all__ = ["HTTPConnectionSettings", "SSLSettings", "OAuthSettings", "connection_settings"]
 
 from ..client._conn_settings import (

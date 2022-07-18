@@ -27,6 +27,8 @@ system.
 .. autoclass:: VariantType
 .. autoclass:: UnsupportedType
 """
+from __future__ import annotations
+
 from typing import (
     TYPE_CHECKING,
     AbstractSet,

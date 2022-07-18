@@ -1,5 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
 import asyncio
 from asyncio import Future, ensure_future, gather, sleep, wait_for
 from collections import defaultdict

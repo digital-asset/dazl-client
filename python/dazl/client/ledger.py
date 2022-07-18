@@ -4,6 +4,8 @@
 """
 Types that describe the behavior of the ledger itself.
 """
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 import warnings

@@ -4,6 +4,8 @@
 """
 This module contains utilities to help work with ``asyncio``.
 """
+from __future__ import annotations
+
 from asyncio import (
     AbstractEventLoop,
     AbstractEventLoopPolicy,

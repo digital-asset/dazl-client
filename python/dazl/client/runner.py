@@ -5,6 +5,8 @@
 Simple methods for instantiating an application written against dazl that incorporate common usage
 patterns.
 """
+from __future__ import annotations
+
 from argparse import ArgumentParser
 from typing import Callable
 import warnings

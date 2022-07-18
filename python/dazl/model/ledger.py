@@ -4,6 +4,8 @@
 """
 This module has been relocated to ``dazl.client.ledger``.
 """
+from __future__ import annotations
+
 import warnings
 
 from ..client.ledger import LedgerMetadata

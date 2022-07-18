@@ -6,6 +6,8 @@ Functions for ensuring that readers across different parties remain as close in 
 as practical.
 """
 
+from __future__ import annotations
+
 from asyncio import Future, ensure_future, gather, sleep
 from typing import TYPE_CHECKING, Collection, List, Optional, Tuple
 

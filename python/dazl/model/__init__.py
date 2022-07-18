@@ -19,6 +19,8 @@ introduced in dazl v5) or :mod:`dazl.protocols` (for the API introduced in dazl 
 
 """
 
+from __future__ import annotations
+
 import warnings
 
 with warnings.catch_warnings():

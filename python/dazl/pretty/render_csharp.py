@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # type: ignore
 
+from __future__ import annotations
+
 from typing import Mapping, Optional, Sequence, Union
 
 from ..damlast.daml_lf_1 import (

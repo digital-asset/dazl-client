@@ -6,6 +6,8 @@ Utilities for working with ledger offsets.
 This API is _not_ public!
 """
 
+from __future__ import annotations
+
 from typing import Any, Optional, Union
 
 __all__ = [

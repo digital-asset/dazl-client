@@ -4,6 +4,8 @@
 """
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Union
 import warnings
 
