@@ -16,27 +16,6 @@ import pytest
 Operator = Party("Operator")
 
 
-def test_model_writing_imports():
-    """
-    The dazl.model.writing implementations have been moved to dazl.client; make sure these imports
-    refer to the desired types.
-
-    Note that DeprecationWarnings are NOT raised on imports, so pytest.warns(DeprecationWarning)
-    is not used here!
-    """
-    from dazl.model.writing import (
-        CreateAndExerciseCommand,
-        CreateCommand,
-        ExerciseByKeyCommand,
-        ExerciseCommand,
-    )
-
-    assert CreateCommand == v7.CreateCommand
-    assert CreateAndExerciseCommand == v7.CreateAndExerciseCommand
-    assert ExerciseCommand == v7.ExerciseCommand
-    assert ExerciseByKeyCommand == v7.ExerciseByKeyCommand
-
-
 def test_create_command():
     cmd_v8 = v8.CreateCommand("Mod:Tmpl", {"operator": Operator})
 
