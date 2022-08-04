@@ -26,18 +26,22 @@ from ..api_types import (
     User,
     Version,
 )
+from ..config import Config
 from .pkgloader import PackageLoader
 
 if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
+    from typing import ClassVar, Literal, Protocol, runtime_checkable
 else:
-    from typing_extensions import Protocol, runtime_checkable
+    from typing_extensions import ClassVar, Literal, Protocol, runtime_checkable
 
 __all__ = ["PackageService", "Connection", "QueryStream", "PackageLoader"]
 
 Self = TypeVar("Self")
 
-class PackageService(_PackageService, Protocol):
+class PackageService(Protocol):
+
+    is_asyncio: ClassVar[Literal[False]]
+
     def get_package(
         self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> bytes: ...
@@ -46,11 +50,15 @@ class PackageService(_PackageService, Protocol):
     ) -> AbstractSet[PackageRef]: ...
 
 @runtime_checkable
-class Connection(_Connection, PackageService, Protocol):
+class Connection(PackageService, Protocol):
     def __enter__(self: Self) -> Self: ...
     def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
     def open(self) -> None: ...
     def close(self) -> None: ...
+    @property
+    def config(self) -> Config: ...
+    @property
+    def is_closed(self) -> bool: ...
     def submit(
         self,
         __commands: Union[Command, Sequence[Command]],
@@ -199,7 +207,10 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> MeteringReport: ...
 
 @runtime_checkable
-class QueryStream(_QueryStream, Protocol):
+class QueryStream(Protocol):
+
+    is_asyncio: ClassVar[Literal[False]]
+
     def creates(self) -> Iterator[CreateEvent]: ...
     def events(self) -> Iterator[Union[CreateEvent, ArchiveEvent]]: ...
     def items(self) -> Iterator[Union[CreateEvent, ArchiveEvent, Boundary]]: ...

@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-import asyncio
 from asyncio import CancelledError, Future, InvalidStateError, ensure_future, get_event_loop, sleep
 from collections.abc import Mapping as MappingBase
 import sys

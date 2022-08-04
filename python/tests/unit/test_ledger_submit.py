@@ -20,9 +20,12 @@ async def test_command_submission_with_stdlib_values(sandbox: SandboxLauncher) -
             conn.allocate_party(), conn.upload_package(dars.KitchenSink1_18.read_bytes())
         )
 
-        # remember the appropriate template ID, because we'll need it soon
-        tmpl_id = await conn.codec._loader.do_with_retry(
-            lambda: conn.codec.lookup.template_name("KitchenSink.Retailer:Retailer")
+        # remember the appropriate template ID, because we'll need it soon.
+        # It's a little hacky to grab the gRPC codec off the connection like this,
+        # but it'll have to do for these tests
+        codec = conn.codec  # type: ignore
+        tmpl_id = await codec._loader.do_with_retry(
+            lambda: codec.lookup.template_name("KitchenSink.Retailer:Retailer")
         )
 
     # override lookup intentionally to make sure this test is not polluted with cached state from other tests

@@ -21,11 +21,6 @@ from typing import (
     overload,
 )
 
-from .. import (
-    Connection as _Connection,
-    PackageService as _PackageService,
-    QueryStream as _QueryStream,
-)
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...prim import ContractData, ContractId, Party, TimeDeltaLike
 from ...query import Queries, Query
@@ -42,12 +37,13 @@ from ..api_types import (
     User,
     Version,
 )
+from ..config import Config
 from .pkgloader import PackageLoader
 
 if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
+    from typing import ClassVar, Literal, Protocol, runtime_checkable
 else:
-    from typing_extensions import Protocol, runtime_checkable
+    from typing_extensions import ClassVar, Literal, Protocol, runtime_checkable
 
 __all__ = ["PackageService", "Connection", "QueryStream", "QueryStreamBase", "PackageLoader"]
 
@@ -88,20 +84,27 @@ class ABoundaryDecorator(Protocol):
     @overload
     def __call__(self, __fn: ABoundaryFn) -> ABoundaryFn: ...
 
-class PackageService(_PackageService, Protocol):
+class PackageService(Protocol):
+
+    is_asyncio: ClassVar[Literal[True]]
+
     async def get_package(
-        self, __package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = ...
+        self, __package_id: PackageRef, *, timeout: Optional[TimeDeltaLike]
     ) -> bytes: ...
     async def list_package_ids(
-        self, *, timeout: Optional[TimeDeltaLike] = ...
+        self, *, timeout: Optional[TimeDeltaLike]
     ) -> AbstractSet[PackageRef]: ...
 
 @runtime_checkable
-class Connection(_Connection, PackageService, Protocol):
+class Connection(PackageService, Protocol):
     async def __aenter__(self: ConnSelf) -> ConnSelf: ...
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None: ...
     async def open(self) -> None: ...
     async def close(self) -> None: ...
+    @property
+    def config(self) -> Config: ...
+    @property
+    def is_closed(self) -> bool: ...
     async def submit(
         self,
         __commands: Union[Command, Sequence[Command]],
@@ -254,7 +257,10 @@ class Connection(_Connection, PackageService, Protocol):
 # but mypy understands that these type signatures do not conflict with the parent base class
 # noinspection PyProtocol,PyMethodOverriding
 @runtime_checkable
-class QueryStream(_QueryStream, Protocol):
+class QueryStream(Protocol):
+
+    is_asyncio: ClassVar[Literal[True]]
+
     @overload
     def on_create(self) -> ACreateDecorator: ...
     @overload

@@ -8,12 +8,14 @@ from collections import defaultdict
 from dataclasses import asdict, fields
 from datetime import timedelta
 import logging
+import sys
 from threading import RLock, Thread, current_thread
 from typing import (
     AbstractSet,
     Any,
     Awaitable,
     Callable,
+    ClassVar,
     Collection,
     Dict,
     List,
@@ -44,11 +46,18 @@ from .config import AnonymousNetworkConfig, NetworkConfig, URLConfig
 from .errors import DazlPartyMissingError
 from .ledger import LedgerMetadata
 
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
 __all__ = ["_NetworkImpl", "_NetworkRunner"]
 T = TypeVar("T")
 
 
 class _NetworkImpl:
+
+    is_asyncio: ClassVar[Literal[True]] = True
 
     __slots__ = (
         "lookup",

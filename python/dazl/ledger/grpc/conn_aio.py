@@ -9,10 +9,12 @@ from __future__ import annotations
 import asyncio
 from asyncio import wait_for
 from datetime import datetime, timedelta
+import sys
 from typing import (
     AbstractSet,
     Any,
     AsyncIterable,
+    ClassVar,
     Collection,
     Dict,
     List,
@@ -67,6 +69,11 @@ from ..errors import ProtocolWarning, _allow_cancel, _translate_exceptions
 from .channel import create_channel
 from .codec_aio import Codec
 
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
 __all__ = ["Connection", "QueryStream"]
 
 
@@ -74,6 +81,8 @@ class Connection(aio.Connection):
     """
     An asynchronous (``asyncio``) connection to the Daml gRPC Ledger API.
     """
+
+    is_asyncio: ClassVar[Literal[True]] = True
 
     def __init__(self, config: Config):
         self._config = config
@@ -966,6 +975,9 @@ class Connection(aio.Connection):
 
 
 class QueryStream(aio.QueryStreamBase):
+
+    is_asyncio: ClassVar[Literal[True]] = True
+
     def __init__(
         self,
         conn: Connection,

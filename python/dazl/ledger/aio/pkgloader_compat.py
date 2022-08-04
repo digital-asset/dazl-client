@@ -12,7 +12,7 @@ from asyncio import get_event_loop
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import timedelta
 import sys
-from typing import AbstractSet, Optional
+from typing import AbstractSet, ClassVar, Optional
 import warnings
 
 from dazl.damlast.daml_lf_1 import PackageRef
@@ -22,9 +22,9 @@ from ...prim import TimeDeltaLike
 from .pkgloader import DEFAULT_TIMEOUT, PackageLoader as NewPackageLoader
 
 if sys.version_info >= (3, 8):
-    from typing import Protocol
+    from typing import Literal, Protocol
 else:
-    from typing_extensions import Protocol
+    from typing_extensions import Literal, Protocol
 
 __all__ = ["SyncPackageService", "PackageLoader"]
 
@@ -82,6 +82,9 @@ class PackageLoader(NewPackageLoader):
 
 
 class PackageServiceWrapper:
+
+    is_asyncio: ClassVar[Literal[True]] = True
+
     def __init__(self, impl: "SyncPackageService", executor: "ThreadPoolExecutor"):
         self.impl = impl
         self.executor = executor
