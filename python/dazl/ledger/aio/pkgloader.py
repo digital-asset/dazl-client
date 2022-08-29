@@ -92,7 +92,8 @@ class PackageLoader:
         :raises: PackageNotFoundError if the package could not be resolved
         """
         if ref == STAR:
-            return await self.load_all()
+            await self.load_all()
+            return None
 
         # If the package has already been loaded, then skip all the expensive I/O stuff
         try:
