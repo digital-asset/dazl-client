@@ -4,6 +4,8 @@
 This module contains the mapping between gRPC calls and Python/dazl types.
 """
 
+from __future__ import annotations
+
 import asyncio
 from datetime import datetime
 from typing import (

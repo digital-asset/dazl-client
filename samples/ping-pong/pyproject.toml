@@ -5,8 +5,8 @@ description = ""
 authors = ["Luciano Joublanc (DA) <luciano.joublanc@digital-asset.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-dazl = "^6.3"
+python = "^3.7"
+dazl = "^7.6.3"
 
 [tool.poetry.dev-dependencies]
 

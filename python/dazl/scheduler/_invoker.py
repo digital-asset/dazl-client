@@ -4,6 +4,8 @@
 The core scheduling of logic, managing the tricky interaction between the man asyncio event loop and
 background threads.
 """
+from __future__ import annotations
+
 from asyncio import CancelledError, Future, InvalidStateError, gather, get_event_loop, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta

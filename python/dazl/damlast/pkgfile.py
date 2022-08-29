@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from io import BytesIO
 from os import PathLike
 from pathlib import Path
@@ -11,6 +13,7 @@ from zipfile import ZipFile
 
 from .._gen.com.daml.daml_lf_1_14 import daml_lf_pb2 as pb
 from .daml_lf_1 import Archive, Package, PackageRef
+from .errors import PackageNotFoundError
 from .parse import parse_archive
 
 # Wherever the API expects a DAR, we can take a file path, `bytes`, or a byte buffer.
@@ -220,11 +223,7 @@ class CachedDarFile:
                         self._archives = dar.archives()
         return self._archives
 
-    def package(self, package_id: "PackageRef") -> "Package":
-        # TODO: This import needs to be local as long as the dazl.util.dar module still exists
-        #  to avoid import cycles. Move this to the top of the file when dazl.util.dar is removed.
-        from .errors import PackageNotFoundError
-
+    def package(self, package_id: PackageRef) -> Package:
         for archive in self.archives():
             if archive.hash == package_id:
                 return archive.package

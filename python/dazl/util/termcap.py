@@ -5,6 +5,8 @@
 This module contains helper methods for detecting terminal capabilities.
 """
 
+from __future__ import annotations
+
 from subprocess import DEVNULL, PIPE, Popen
 from typing import Optional, Tuple
 

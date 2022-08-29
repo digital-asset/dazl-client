@@ -6,6 +6,8 @@ DAML-LF Archive types
 ---------------------
 """
 
+from __future__ import annotations
+
 # NOTE TO IMPLEMENTORS: A future version of this file is intended to be code-generated instead of
 # manually maintained. The makeup of this file is intentionally highly formulaic in order to
 # facilitate a smooth transition to automatically-generated data structures.
@@ -17,7 +19,6 @@ DAML-LF Archive types
 #
 # The few local imports in this file should be inlined by a codegen process instead to keep this
 # file self-contained.
-
 from dataclasses import dataclass
 from enum import IntEnum as _IntEnum
 from io import StringIO
