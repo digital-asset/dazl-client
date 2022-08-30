@@ -4,7 +4,7 @@
 import logging
 
 from dazl.ledger import ExerciseCommand
-from dazl.testing import connect_with_new_party
+from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
 
 from .dars import Complicated as ComplicatedDar
@@ -16,8 +16,8 @@ class Complicated:
 
 
 @pytest.mark.asyncio
-async def test_complicated_types(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=ComplicatedDar) as p:
+async def test_complicated_types(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=ComplicatedDar) as p:
         await p.connection.create(Complicated.OperatorRole, {"operator": p.party})
 
         async with p.connection.query(Complicated.OperatorRole) as stream:

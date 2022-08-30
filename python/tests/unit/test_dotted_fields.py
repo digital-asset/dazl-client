@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from dazl.testing import connect_with_new_party
+from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
 
 from .dars import DottedFields
@@ -11,8 +11,8 @@ from .dars import DottedFields
 @pytest.mark.skip(
     "These tests are temporarily disabled because the new encoder does not support this."
 )
-async def test_record_dotted_fields_submit(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=DottedFields) as p:
+async def test_record_dotted_fields_submit(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=DottedFields) as p:
         await p.connection.create(
             "DottedFields:American",
             {
@@ -36,8 +36,8 @@ async def test_record_dotted_fields_submit(sandbox):
 @pytest.mark.skip(
     "These tests are temporarily disabled because the new encoder does not support this."
 )
-async def test_variant_dotted_fields_submit(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=DottedFields) as p:
+async def test_variant_dotted_fields_submit(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=DottedFields) as p:
         await p.connection.create(
             "DottedFields:Person",
             {

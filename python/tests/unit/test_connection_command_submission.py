@@ -3,14 +3,14 @@
 
 import logging
 
-from dazl.testing import connect_with_new_party
+from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
 from tests.unit.dars import KitchenSink
 
 
 @pytest.mark.asyncio
-async def test_create(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=KitchenSink, admin=True) as p:
+async def test_create(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=KitchenSink, admin=True) as p:
         suppliers_party_info = await p.connection.allocate_party()
         await p.connection.create(
             "KitchenSink.Warehouse:Warehouse",
@@ -23,8 +23,8 @@ async def test_create(sandbox):
 
 
 @pytest.mark.asyncio
-async def test_exercise_by_key(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=KitchenSink) as p:
+async def test_exercise_by_key(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=KitchenSink) as p:
         await p.connection.create(
             "KitchenSink.Retailer:Retailer",
             {
@@ -46,8 +46,8 @@ async def test_exercise_by_key(sandbox):
 
 
 @pytest.mark.asyncio
-async def test_create_and_exercise(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=KitchenSink) as p:
+async def test_create_and_exercise(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=KitchenSink) as p:
         result = await p.connection.create_and_exercise(
             "KitchenSink.Retailer:Retailer",
             {
@@ -64,8 +64,8 @@ async def test_create_and_exercise(sandbox):
 
 
 @pytest.mark.asyncio
-async def test_create_and_exercise_unit_arg(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=KitchenSink) as p:
+async def test_create_and_exercise_unit_arg(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=KitchenSink) as p:
         result = await p.connection.create_and_exercise(
             "KitchenSink.Retailer:Order",
             {

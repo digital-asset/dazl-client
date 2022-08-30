@@ -3,16 +3,19 @@
 
 import logging
 
-from dazl.testing import connect_with_new_party
+from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
 
 from .dars import PostOffice
 
 
 @pytest.mark.asyncio
-async def test_protocol_ledger_api(sandbox):
+async def test_protocol_ledger_api(sandbox: SandboxLauncher) -> None:
     # first, administrative stuff--upload the DAR and allocate two parties that we'll use later
-    async with connect_with_new_party(url=sandbox, dar=PostOffice, party_count=2) as (postman, p1):
+    async with connect_with_new_party(url=sandbox.url, dar=PostOffice, party_count=2) as (
+        postman,
+        p1,
+    ):
         event = await postman.connection.create("Main:PostmanRole", {"postman": postman.party})
         result = await postman.connection.exercise(
             event.contract_id, "InviteParticipant", {"party": p1.party, "address": "Somewhere!"}

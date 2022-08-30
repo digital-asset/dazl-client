@@ -2,15 +2,15 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from dazl import frozendict
-from dazl.testing import connect_with_new_party
+from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
 
 from .dars import MapSupport
 
 
 @pytest.mark.asyncio
-async def test_map_support(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=MapSupport, admin=True) as p:
+async def test_map_support(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=MapSupport, admin=True) as p:
         await p.connection.create(
             "MapSupport:Sample",
             {"party": p.party, "mappings": {"65": "A", "97": "a"}, "text": None},
@@ -25,8 +25,8 @@ async def test_map_support(sandbox):
 
 
 @pytest.mark.asyncio
-async def test_complicated_map_support(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=MapSupport, admin=True) as p:
+async def test_complicated_map_support(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=MapSupport, admin=True) as p:
         await p.connection.create(
             "MapSupport:ComplicatedSample",
             {

@@ -8,14 +8,15 @@ from dazl import Network, connect
 from dazl.damlast.errors import PackageNotFoundError
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.pkgfile import DarFile
+from dazl.testing import SandboxLauncher
 import pytest
 
 from .dars import Simple
 
 
 @pytest.mark.asyncio
-async def test_autoload_explicit_packages(sandbox):
-    async with connect(url=sandbox, admin=True) as conn:
+async def test_autoload_explicit_packages(sandbox: SandboxLauncher) -> None:
+    async with connect(url=sandbox.url, admin=True) as conn:
         party_info = await conn.allocate_party()
 
     with DarFile(Simple) as dar_file:
@@ -26,13 +27,13 @@ async def test_autoload_explicit_packages(sandbox):
     # Start the sandbox and make sure our package is loaded.
     logging.info("Preloading the DAR...")
     network = Network()
-    network.set_config(url=sandbox)
+    network.set_config(url=sandbox.url)
     await network.aio_global().ensure_dar(Simple)
 
     # Now start the sandbox again, but without any preloading.
     logging.info("Now running the real test...")
     network = Network()
-    network.set_config(url=sandbox, eager_package_fetch=False)
+    network.set_config(url=sandbox.url, eager_package_fetch=False)
     client = network.aio_party(party_info.party)
     fut = ensure_future(network.aio_run())
     await client.ready()

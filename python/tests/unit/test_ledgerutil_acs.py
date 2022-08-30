@@ -6,15 +6,16 @@ import logging
 
 from dazl import connect
 from dazl.ledgerutil import ACS
-from dazl.testing import connect_with_new_party
+from dazl.prim import Party
+from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
 
 from .dars import PostOffice
 
 
 @pytest.mark.asyncio
-async def test_acs(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=PostOffice, party_count=4) as (
+async def test_acs(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=PostOffice, party_count=4) as (
         postman,
         p1,
         p2,
@@ -37,6 +38,7 @@ async def test_acs(sandbox):
 
         async with ACS(postman.connection, {"Main:AuthorRole": {}, "Main:ReceiverRole": {}}) as acs:
             snapshot = acs.read_immediately()
+            assert snapshot is not None
 
             authors = snapshot.matching_contracts("Main:AuthorRole")
             receivers = snapshot.matching_contracts("Main:ReceiverRole")
@@ -47,8 +49,8 @@ async def test_acs(sandbox):
             logging.info("Receivers: %r", receivers)
 
 
-async def accept_roles(sandbox, party):
-    async with connect(url=sandbox, act_as=party) as conn:
+async def accept_roles(sandbox: SandboxLauncher, party: Party) -> None:
+    async with connect(url=sandbox.url, act_as=party) as conn:
         async with conn.query("Main:InviteAuthorRole") as query:
             async for event in query.creates():
                 await conn.exercise(event.contract_id, "AcceptInviteAuthorRole")
@@ -59,8 +61,8 @@ async def accept_roles(sandbox, party):
 
 
 @pytest.mark.asyncio
-async def test_acs_can_async_read(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=PostOffice) as p:
+async def test_acs_can_async_read(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=PostOffice) as p:
         async with ACS(p.connection, {"Main:PostmanRole"}) as acs:
             await acs.read()
 
