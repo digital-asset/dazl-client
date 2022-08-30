@@ -9,7 +9,7 @@ import pytest
 
 
 @pytest.fixture(scope="session", params=["1", "2"])
-def sandbox(request, sandbox_v1, sandbox_v2) -> "Generator[str, None, None]":
+def sandbox(request, sandbox_v1, sandbox_v2) -> "Generator[testing.SandboxLauncher, None, None]":
     """
     Run an instance of the Sandbox, or use one configured through environment variables.
 
@@ -32,15 +32,15 @@ def sandbox(request, sandbox_v1, sandbox_v2) -> "Generator[str, None, None]":
 
 
 @pytest.fixture(scope="session")
-def sandbox_v1() -> "Generator[str, None, None]":
+def sandbox_v1() -> "Generator[testing.SandboxLauncher, None, None]":
     with testing.sandbox(project_root=None, version="1.18.1") as sb:
-        yield sb.url
+        yield sb
 
 
 @pytest.fixture(scope="session")
-def sandbox_v2() -> "Generator[str, None, None]":
+def sandbox_v2() -> "Generator[testing.SandboxLauncher, None, None]":
     with testing.sandbox(project_root=None, version="2.0.0") as sb:
-        yield sb.url
+        yield sb
 
 
 @pytest.fixture()

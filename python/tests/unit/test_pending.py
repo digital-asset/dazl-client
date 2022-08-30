@@ -1,7 +1,12 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
+from typing import Sequence
+
 from dazl import async_network, connect
-from dazl.ledger import CreateCommand, ExerciseCommand
+from dazl.ledger import Command, CreateCommand, ExerciseCommand
+from dazl.protocols.events import ContractCreateEvent
+from dazl.testing import SandboxLauncher
 import pytest
 
 from .dars import Pending
@@ -14,13 +19,13 @@ OperatorNotification = "Simple:OperatorNotification"
 
 
 @pytest.mark.asyncio
-async def test_select_template_retrieves_contracts(sandbox):
+async def test_select_template_retrieves_contracts(sandbox: SandboxLauncher) -> None:
     number_of_contracts = 10
 
-    async with connect(url=sandbox, admin=True) as conn:
+    async with connect(url=sandbox.url, admin=True) as conn:
         party = (await conn.allocate_party()).party
 
-    async with async_network(url=sandbox, dars=Pending) as network:
+    async with async_network(url=sandbox.url, dars=Pending) as network:
         client = network.aio_party(party)
         client.add_ledger_ready(
             lambda _: [
@@ -33,7 +38,7 @@ async def test_select_template_retrieves_contracts(sandbox):
         )
 
         @client.ledger_created(AccountRequest)
-        async def on_account_request(event):
+        async def on_account_request(event: ContractCreateEvent) -> Sequence[Command]:
             counter_cid, counter_cdata = await event.acs_find_one(Counter)
             return [
                 ExerciseCommand(event.cid, "CreateAccount", dict(accountId=counter_cdata["value"])),

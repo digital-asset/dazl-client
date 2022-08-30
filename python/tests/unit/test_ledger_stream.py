@@ -2,9 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from asyncio import ensure_future, gather, sleep
+from typing import Sequence
 
 import dazl
+from dazl.ledger import CreateEvent
+from dazl.ledger.aio import Connection
 from dazl.prim import ContractData, Party
+from dazl.testing import SandboxLauncher
 import pytest
 from tests.unit import dars
 
@@ -16,14 +20,14 @@ def payload(operator: Party, text: str) -> ContractData:
 
 
 @pytest.mark.asyncio
-async def test_stream_with_initial_state_and_early_punchout(sandbox) -> None:
-    async with dazl.connect(url=sandbox, admin=True) as conn:
+async def test_stream_with_initial_state_and_early_punchout(sandbox: SandboxLauncher) -> None:
+    async with dazl.connect(url=sandbox.url, admin=True) as conn:
         party_info, _ = await gather(
             conn.allocate_party(), conn.upload_package(dars.Simple.read_bytes())
         )
 
     # start a separate coroutine for injecting data into the ledger
-    async with dazl.connect(url=sandbox, act_as=party_info.party) as conn:
+    async with dazl.connect(url=sandbox.url, act_as=party_info.party) as conn:
         texts = ["Red", "Red", "Green", "Blue", "Blue", "Blue"]
         for text in texts:
             await conn.create(TEMPLATE, payload(party_info.party, text))
@@ -33,13 +37,13 @@ async def test_stream_with_initial_state_and_early_punchout(sandbox) -> None:
 
 
 @pytest.mark.asyncio
-async def test_stream_with_no_initial_state_and_early_punchout(sandbox) -> None:
-    async with dazl.connect(url=sandbox, admin=True) as conn:
+async def test_stream_with_no_initial_state_and_early_punchout(sandbox: SandboxLauncher) -> None:
+    async with dazl.connect(url=sandbox.url, admin=True) as conn:
         party_info, _ = await gather(
             conn.allocate_party(), conn.upload_package(dars.Simple.read_bytes())
         )
 
-    async with dazl.connect(url=sandbox, act_as=party_info.party) as conn:
+    async with dazl.connect(url=sandbox.url, act_as=party_info.party) as conn:
         # kick off the scanning of three elements _before_ the ledger has any data in it
         fut = ensure_future(first_three(conn))
 
@@ -53,7 +57,7 @@ async def test_stream_with_no_initial_state_and_early_punchout(sandbox) -> None:
     assert some_texts == texts[:3]
 
 
-async def first_three(conn):
+async def first_three(conn: Connection) -> Sequence[CreateEvent]:
     events = []
     async with conn.stream(TEMPLATE) as stream:
         async for event in stream.creates():
@@ -62,3 +66,5 @@ async def first_three(conn):
                 # punch out of the stream before we've consumed everything;
                 # this should cleanly abort the stream
                 return events
+
+    raise AssertionError("did not receive three events")

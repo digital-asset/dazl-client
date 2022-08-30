@@ -2,26 +2,28 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from dazl import LOG, async_network, connect
+from dazl.protocols.events import ContractCreateEvent
+from dazl.testing import SandboxLauncher
 import pytest
 
 from .dars import Simple
 
 
 @pytest.mark.asyncio
-async def test_static_dump_and_tail(sandbox):
-    async with connect(url=sandbox, admin=True) as conn:
+async def test_static_dump_and_tail(sandbox: SandboxLauncher) -> None:
+    async with connect(url=sandbox.url, admin=True) as conn:
         party_info = await conn.allocate_party()
 
-    async with async_network(url=sandbox, dars=Simple) as network:
+    async with async_network(url=sandbox.url, dars=Simple) as network:
         client = network.aio_party(party_info.party)
         seen_contracts = []
 
         @client.ledger_ready()
-        def print_initial_state(event):
+        def print_initial_state(event: ContractCreateEvent) -> None:
             LOG.info("Current ACS: %s", event.acs_find_active("*"))
 
         @client.ledger_created("*")
-        def print_create(event):
+        def print_create(event: ContractCreateEvent) -> None:
             LOG.info("Seen cid: %s, cdata: %s", event.cid, event.cdata)
             seen_contracts.append(event.cid)
 

@@ -3,6 +3,7 @@
 
 from dazl import simple_client
 from dazl.ledger import ExerciseCommand
+from dazl.testing import SandboxLauncher
 
 from .blocking_setup import blocking_setup
 from .dars import Simple
@@ -11,10 +12,10 @@ OperatorRole = "Simple:OperatorRole"
 OperatorNotification = "Simple:OperatorNotification"
 
 
-def test_threadsafe_methods(sandbox):
-    party = blocking_setup(sandbox, Simple)
+def test_threadsafe_methods(sandbox: SandboxLauncher) -> None:
+    party = blocking_setup(sandbox.url, Simple)
 
-    with simple_client(url=sandbox, party=party) as client:
+    with simple_client(url=sandbox.url, party=party) as client:
         client.ready()
         client.create(OperatorRole, {"operator": party})
 

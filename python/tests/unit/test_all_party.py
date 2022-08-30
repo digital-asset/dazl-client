@@ -4,6 +4,7 @@
 import logging
 
 from dazl import async_network, connect
+from dazl.testing import SandboxLauncher
 import pytest
 
 from .dars import AllParty as AllPartyDar
@@ -13,16 +14,16 @@ PublicContract = "AllParty:PublicContract"
 
 
 @pytest.mark.asyncio
-async def test_some_party_receives_public_contract(sandbox):
+async def test_some_party_receives_public_contract(sandbox: SandboxLauncher) -> None:
     some_party_cids = []
     publisher_cids = []
 
-    async with connect(url=sandbox, admin=True) as conn:
+    async with connect(url=sandbox.url, admin=True) as conn:
         all_party_info = await conn.allocate_party()
         some_party_info = await conn.allocate_party()
         publisher_party_info = await conn.allocate_party()
 
-    async with async_network(url=sandbox, dars=AllPartyDar) as network:
+    async with async_network(url=sandbox.url, dars=AllPartyDar) as network:
         network.set_config(party_groups=[all_party_info.party])
 
         some_client = network.aio_party(some_party_info.party)

@@ -5,14 +5,14 @@ from typing import Optional
 
 from dazl.ledger.errors import ConnectionClosedError
 from dazl.ledgerutil.acs import RUNNING, Snapshot, snapshots
-from dazl.testing import connect_with_new_party
+from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
 from tests.unit.dars import PostOffice
 
 
 @pytest.mark.asyncio
-async def test_acs(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=PostOffice) as p:
+async def test_acs(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=PostOffice) as p:
         await p.connection.create("Main:PostmanRole", {"postman": p.party})
         snapshot = None  # type: Optional[Snapshot]
         snapshot_loop_count = 0
