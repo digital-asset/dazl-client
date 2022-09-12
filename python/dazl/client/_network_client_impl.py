@@ -360,13 +360,17 @@ class _NetworkImpl:
         pool = await self._pool_init
         return await pool.ledger()
 
-    async def get_package(self, package_id: "PackageRef") -> bytes:
+    async def get_package(
+        self, package_id: "PackageRef", *, timeout: Optional[TimeDeltaLike] = None
+    ) -> bytes:
         pkg_service = await self._package_service()
-        return await pkg_service.get_package(package_id)
+        return await pkg_service.get_package(package_id, timeout=timeout)
 
-    async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+    async def list_package_ids(
+        self, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> "AbstractSet[PackageRef]":
         pkg_service = await self._package_service()
-        return await pkg_service.list_package_ids()
+        return await pkg_service.list_package_ids(timeout=timeout)
 
     async def upload_package(self, contents: bytes, timeout: "TimeDeltaLike") -> None:
         """

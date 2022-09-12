@@ -5,7 +5,8 @@ This module contains the mapping between gRPC calls and Python/dazl types.
 """
 
 import asyncio
-from datetime import datetime
+from asyncio import wait_for
+from datetime import datetime, timedelta
 from typing import (
     AbstractSet,
     Any,
@@ -30,7 +31,15 @@ from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...damlast.util import is_match
-from ...prim import ContractData, ContractId, Party, datetime_to_timestamp, to_parties
+from ...prim import (
+    ContractData,
+    ContractId,
+    Party,
+    TimeDeltaLike,
+    datetime_to_timestamp,
+    to_parties,
+    to_timedelta,
+)
 from ...query import Filter, Queries, Query, parse_query
 from .._offsets import END, End, LedgerOffsetRange, from_offset_until_forever
 from .._retry import retry
@@ -138,6 +147,9 @@ class Connection(aio.Connection):
         """
         await self._channel.close()
 
+    def _retry_timeout(self, timeout: Optional[TimeDeltaLike]) -> timedelta:
+        return to_timedelta(timeout) if timeout is not None else self._config.url.retry_timeout
+
     # region Write API
 
     async def submit(
@@ -148,7 +160,8 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
-    ) -> "None":
+        timeout: Optional[TimeDeltaLike] = None,
+    ) -> None:
         """
         Submit one or more commands to the Ledger API.
 
@@ -166,7 +179,7 @@ class Connection(aio.Connection):
             return
         elif isinstance(__commands, Command):
             __commands = [__commands]
-
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
@@ -174,7 +187,10 @@ class Connection(aio.Connection):
         )
         commands = await asyncio.gather(*map(self._codec.encode_command, __commands))
         request = self._submit_and_wait_request(commands, meta)
-        await stub.SubmitAndWait(request)
+        await retry(
+            lambda: stub.SubmitAndWait(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
 
     async def create(
         self,
@@ -185,6 +201,7 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> CreateEvent:
         """
         Create a contract for a given template.
@@ -209,9 +226,13 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         :return:
             The :class:`CreateEvent` that represents the contract that was successfully created.
         """
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
@@ -221,8 +242,13 @@ class Connection(aio.Connection):
             lapipb.Command(create=await self._codec.encode_create_command(__template_id, __payload))
         ]
         request = self._submit_and_wait_request(commands, meta)
-        response = await stub.SubmitAndWaitForTransaction(request)
 
+        response = await retry(
+            lambda: stub.SubmitAndWaitForTransaction(
+                request, timeout=retry_timeout.total_seconds()
+            ),
+            timeout=retry_timeout,
+        )
         return await self._codec.decode_created_event(response.transaction.events[0].created)
 
     async def exercise(
@@ -235,6 +261,7 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> ExerciseResponse:
         """
         Exercise a choice on a contract identified by its contract ID.
@@ -264,10 +291,14 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
@@ -281,8 +312,13 @@ class Connection(aio.Connection):
             )
         ]
         request = self._submit_and_wait_request(commands, meta)
-        response = await stub.SubmitAndWaitForTransactionTree(request)
 
+        response = await retry(
+            lambda: stub.SubmitAndWaitForTransactionTree(
+                request, timeout=retry_timeout.total_seconds()
+            ),
+            timeout=retry_timeout,
+        )
         return await self._codec.decode_exercise_response(response.transaction)
 
     async def create_and_exercise(
@@ -296,6 +332,7 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> ExerciseResponse:
         """
         Exercise a choice on a newly-created contract, in a single transaction.
@@ -335,6 +372,7 @@ class Connection(aio.Connection):
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
@@ -348,8 +386,13 @@ class Connection(aio.Connection):
             )
         ]
         request = self._submit_and_wait_request(commands, meta)
-        response = await stub.SubmitAndWaitForTransactionTree(request)
 
+        response = await retry(
+            lambda: stub.SubmitAndWaitForTransactionTree(
+                request, timeout=retry_timeout.total_seconds()
+            ),
+            timeout=retry_timeout,
+        )
         return await self._codec.decode_exercise_response(response.transaction)
 
     async def exercise_by_key(
@@ -363,6 +406,7 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> "ExerciseResponse":
         """
         Exercise a choice on a contract identified by its contract key.
@@ -401,6 +445,7 @@ class Connection(aio.Connection):
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
@@ -426,6 +471,7 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> ArchiveEvent:
         """
         Archive a choice on a contract identified by its contract ID.
@@ -456,6 +502,7 @@ class Connection(aio.Connection):
             command_id=command_id,
             read_as=read_as,
             act_as=act_as,
+            timeout=timeout,
         )
         return ArchiveEvent(__contract_id)
 
@@ -468,6 +515,7 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> ArchiveEvent:
         """
         Exercise a choice on a contract identified by its contract key.
@@ -504,6 +552,7 @@ class Connection(aio.Connection):
             command_id=command_id,
             read_as=read_as,
             act_as=act_as,
+            timeout=timeout,
         )
         return next(iter(event for event in response.events if isinstance(event, ArchiveEvent)))
 
@@ -539,6 +588,7 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ):
         read_as = self._read_as(read_as)
         if act_as is None:
@@ -552,14 +602,18 @@ class Connection(aio.Connection):
 
     # region Read API
 
-    async def get_ledger_end(self) -> "str":
+    async def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = None) -> str:
         """
         Return the offset at the end of the ledger.
         """
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.TransactionServiceStub(self.channel)
 
         request = lapipb.GetLedgerEndRequest(ledger_id=self._config.access.ledger_id)
-        response = await stub.GetLedgerEnd(request)
+        response = await retry(
+            lambda: stub.GetLedgerEnd(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return response.offset.absolute
 
     def query(
@@ -570,6 +624,7 @@ class Connection(aio.Connection):
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
@@ -599,6 +654,7 @@ class Connection(aio.Connection):
             parse_query({__template_id: __query}, server_side_filters=False),
             offset,
             self._read_as(read_as),
+            self._retry_timeout(timeout),
         )
 
     def query_many(
@@ -607,6 +663,7 @@ class Connection(aio.Connection):
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> "QueryStream":
         """
         Return the create events from the active contract set service as a stream.
@@ -630,7 +687,11 @@ class Connection(aio.Connection):
         """
         offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
         return QueryStream(
-            self, parse_query(*queries, server_side_filters=False), offset, self._read_as(read_as)
+            self,
+            parse_query(*queries, server_side_filters=False),
+            offset,
+            self._read_as(read_as),
+            self._retry_timeout(timeout),
         )
 
     def stream(
@@ -640,6 +701,7 @@ class Connection(aio.Connection):
         *,
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> "QueryStream":
         """
         Stream create/archive events.
@@ -668,6 +730,7 @@ class Connection(aio.Connection):
             parse_query({__template_id: __query}, server_side_filters=False),
             from_offset_until_forever(offset),
             self._read_as(read_as),
+            self._retry_timeout(timeout),
         )
 
     def stream_many(
@@ -675,6 +738,7 @@ class Connection(aio.Connection):
         *queries: Queries,
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> "QueryStream":
         """
         Stream create/archive events from more than one template ID in the same stream.
@@ -701,6 +765,7 @@ class Connection(aio.Connection):
             parse_query(*queries, server_side_filters=False),
             from_offset_until_forever(offset),
             self._read_as(read_as),
+            self._retry_timeout(timeout),
         )
 
     def _read_as(self, read_as: Union[None, Party, Collection[Party]] = None) -> Collection[Party]:
@@ -711,39 +776,73 @@ class Connection(aio.Connection):
 
     # endregion
 
-    async def get_version(self) -> "Version":
+    async def get_version(self, *, timeout: Optional[TimeDeltaLike] = None) -> "Version":
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.VersionServiceStub(self.channel)
         request = lapipb.GetLedgerApiVersionRequest(ledger_id=self._config.access.ledger_id)
-        response = await stub.GetLedgerApiVersion(request)
+
+        response = await retry(
+            lambda: stub.GetLedgerApiVersion(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return Codec.decode_version(response)
 
     # region User Management calls
 
-    async def get_user(self, user_id: "Optional[str]" = None) -> "User":
+    async def get_user(
+        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> User:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.UserManagementServiceStub(self.channel)
         request = lapiadminpb.GetUserRequest(user_id=user_id)
-        response = await stub.GetUser(request)
+
+        response = await retry(
+            lambda: stub.GetUser(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return Codec.decode_user(response.user)
 
-    async def create_user(self, user: "User", rights: "Optional[Sequence[Right]]" = None) -> "User":
+    async def create_user(
+        self,
+        user: User,
+        rights: Optional[Sequence[Right]] = None,
+        *,
+        timeout: Optional[TimeDeltaLike] = None,
+    ) -> User:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.UserManagementServiceStub(self.channel)
         request = lapiadminpb.CreateUserRequest(user=Codec.encode_user(user))
         if rights is not None:
             request.rights.extend(Codec.encode_right(right) for right in rights)
 
-        response = await stub.CreateUser(request)
+        response = await retry(
+            lambda: stub.CreateUser(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return Codec.decode_user(response.user)
 
-    async def list_users(self) -> "Sequence[User]":
+    async def list_users(self, *, timeout: Optional[TimeDeltaLike] = None) -> Sequence[User]:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.UserManagementServiceStub(self.channel)
         request = lapiadminpb.ListUsersRequest()
-        response = await stub.ListUsers(request)
+
+        response = await retry(
+            lambda: stub.ListUsers(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return [Codec.decode_user(user) for user in response.users]
 
-    async def list_user_rights(self, user_id: "Optional[str]" = None) -> "Sequence[Right]":
+    async def list_user_rights(
+        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> Sequence[Right]:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.UserManagementServiceStub(self.channel)
         request = lapiadminpb.ListUserRightsRequest(user_id=user_id)
-        response = await stub.ListUserRights(request)
+
+        response = await retry(
+            lambda: stub.ListUserRights(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return [Codec.decode_right(user) for user in response.rights]
 
     # endregion
@@ -751,57 +850,98 @@ class Connection(aio.Connection):
     # region Party Management calls
 
     async def allocate_party(
-        self, *, identifier_hint: str = None, display_name: str = None
-    ) -> "PartyInfo":
+        self,
+        *,
+        identifier_hint: str = None,
+        display_name: str = None,
+        timeout: Optional[TimeDeltaLike] = None,
+    ) -> PartyInfo:
         """
         Allocate a new party.
         """
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.PartyManagementServiceStub(self.channel)
         request = lapiadminpb.AllocatePartyRequest(
             party_id_hint=Party(identifier_hint) if identifier_hint else None,
             display_name=display_name,
         )
 
-        response = await retry(lambda: stub.AllocateParty(request))
+        response = await retry(
+            lambda: stub.AllocateParty(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return Codec.decode_party_info(response.party_details)
 
-    async def list_known_parties(self) -> Sequence[PartyInfo]:
+    async def list_known_parties(
+        self, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> Sequence[PartyInfo]:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.PartyManagementServiceStub(self.channel)
         request = lapiadminpb.ListKnownPartiesRequest()
-        response = await stub.ListKnownParties(request)
+
+        response = await retry(
+            lambda: stub.ListKnownParties(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return [Codec.decode_party_info(pd) for pd in response.party_details]
 
     # endregion
 
     # region Package Management calls
 
-    async def get_package(self, package_id: PackageRef) -> bytes:
+    async def get_package(
+        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> bytes:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.PackageServiceStub(self.channel)
         request = lapipb.GetPackageRequest(
             ledger_id=self._config.access.ledger_id, package_id=package_id
         )
-        response = await stub.GetPackage(request)
+
+        response = await retry(
+            lambda: stub.GetPackage(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return response.archive_payload
 
-    async def list_package_ids(self) -> AbstractSet[PackageRef]:
+    async def list_package_ids(
+        self, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> AbstractSet[PackageRef]:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.PackageServiceStub(self.channel)
         request = lapipb.ListPackagesRequest(ledger_id=self._config.access.ledger_id)
-        response = await stub.ListPackages(request)
+
+        response = await retry(
+            lambda: stub.ListPackages(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return frozenset({PackageRef(pkg_id) for pkg_id in response.package_ids})
 
-    async def upload_package(self, contents: bytes) -> None:
+    async def upload_package(
+        self, contents: bytes, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> None:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.PackageManagementServiceStub(self.channel)
         request = lapiadminpb.UploadDarFileRequest(dar_file=contents)
-        await stub.UploadDarFile(request)
-        return
+
+        await retry(
+            lambda: stub.UploadDarFile(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
 
     # endregion
 
     # region Metering Report calls
 
     async def get_metering_report(
-        self, from_: datetime, to: Optional[datetime] = None, application_id: Optional[str] = None
+        self,
+        from_: datetime,
+        to: Optional[datetime] = None,
+        application_id: Optional[str] = None,
+        *,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> ParticipantMeteringReport:
+        retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.MeteringReportServiceStub(self.channel)
 
         # This slightly awkward construction is due to Protobuf's Python type not escaping field
@@ -813,10 +953,14 @@ class Connection(aio.Connection):
         if application_id is not None:
             kwargs["application_id"] = application_id
         request = lapiadminpb.GetMeteringReportRequest(**kwargs)  # type: ignore
-        response = await stub.GetMeteringReport(request)
+
+        response = await retry(
+            lambda: stub.GetMeteringReport(request, timeout=retry_timeout.total_seconds()),
+            timeout=retry_timeout,
+        )
         return Codec.decode_get_metering_report_response(response)
 
-    # end region
+    # endregion
 
 
 class QueryStream(aio.QueryStreamBase):
@@ -826,11 +970,13 @@ class QueryStream(aio.QueryStreamBase):
         filters: Optional[Mapping[TypeConName, Filter]],
         offset_range: LedgerOffsetRange,
         read_as: Collection[Party],
+        timeout: timedelta,
     ):
         self.conn = conn
         self._filters = filters
         self._offset_range = offset_range
         self._read_as = read_as
+        self._timeout = timeout
         self._response_stream = None  # type: Optional[UnaryStreamCall]
         self._closed = False
 
@@ -924,7 +1070,20 @@ class QueryStream(aio.QueryStreamBase):
         self._response_stream = response_stream = stub.GetActiveContracts(request)
 
         offset = None
-        async for response in response_stream:
+
+        # Unidirectional gRPC streams cannot sensibly have a deadline because the stream may be
+        # open indefinitely. However, if fetching an individual message from the stream takes a
+        # long time here, we can reasonably assume that the stream is dead, because Active
+        # Contract Set messages are really supposed to be sent as quickly as the server can send
+        # them. In other words, a long timeout pause in the middle of pulling down ACS messages
+        # would be highly unusual, so we treat them as fatal
+        i = response_stream.__aiter__()
+        while True:
+            try:
+                response = await wait_for(i.__anext__(), timeout=self._timeout.total_seconds())
+            except StopAsyncIteration:
+                break
+
             LOG.debug(
                 "ACS start (offset %r, %d event(s))",
                 response.offset,
@@ -947,27 +1106,66 @@ class QueryStream(aio.QueryStreamBase):
     ) -> AsyncIterable[Union[CreateEvent, ArchiveEvent, Boundary]]:
         stub = lapipb.TransactionServiceStub(self.conn.channel)
 
-        request = lapipb.GetTransactionsRequest(
-            ledger_id=self.conn.config.access.ledger_id,
-            filter=filter_pb,
-            begin=self.conn.codec.encode_begin_offset(begin_offset),
-            end=self.conn.codec.encode_end_offset(end_offset),
-        )
+        last_offset = begin_offset
 
-        self._response_stream = response_stream = stub.GetTransactions(request)
-        async for response in response_stream:
-            for tx in response.transactions:
-                for event in tx.events:
-                    event_type = event.WhichOneof("event")
-                    if event_type == "created":
-                        c_evt = await self.conn.codec.decode_created_event(event.created)
-                        if self._is_match(c_evt):
-                            yield c_evt
-                    elif event_type == "archived":
-                        yield await self.conn.codec.decode_archived_event(event.archived)
-                    else:
-                        warnings.warn(f"Unknown Event({event_type}=...)", ProtocolWarning)
-                yield Boundary(tx.offset)
+        while True:
+            request = lapipb.GetTransactionsRequest(
+                ledger_id=self.conn.config.access.ledger_id,
+                filter=filter_pb,
+                begin=self.conn.codec.encode_begin_offset(last_offset),
+                end=self.conn.codec.encode_end_offset(end_offset),
+            )
+
+            self._response_stream = response_stream = stub.GetTransactions(request)
+            i = response_stream.__aiter__()
+
+            while True:
+                try:
+                    response = await wait_for(i.__anext__(), timeout=self._timeout.total_seconds())
+                except StopAsyncIteration:
+                    # a TransactionStream stopped with an EOF sent from the server. This means
+                    # our work in reading this stream is done too.
+                    return
+                except asyncio.TimeoutError:
+                    # There was an unusually large gap in time between transactions.
+                    # Abort the current stream because we can't be sure whether the stream died
+                    # or if the server is merely quiet. If the stream re-establishment fails,
+                    # we have our answer.
+                    #
+                    # Note that this _SHOULD_ be transparent to our callers, because we only
+                    # perform this check on a Transaction boundary, and if the stream resumes
+                    # successfully, we pick up from the point where we disconnected.
+                    LOG.debug("terminating a transaction stream because of inactivity")
+
+                    try:
+                        # clean up the old stream; we ignore errors since we're about to retry
+                        # the connection anyway
+                        response_stream.cancel()
+                    except Exception:  # noqa
+                        pass
+
+                    # Perform a GetLedgerEnd request _purely_ to assert that the remote is healthy,
+                    # because we can't reliably distinguish between a condition where transactions
+                    # aren't streaming because of no activity, or because of an unresponsive server.
+                    # If this operation fails, let the exception bubble up the stack.
+                    await self.conn.get_ledger_end(timeout=self._timeout)
+
+                    # abort the loop in which we read events from a stream, and start over again
+                    # trying to establish a stream connection
+                    break
+
+                for tx in response.transactions:
+                    for event in tx.events:
+                        event_type = event.WhichOneof("event")
+                        if event_type == "created":
+                            c_evt = await self.conn.codec.decode_created_event(event.created)
+                            if self._is_match(c_evt):
+                                yield c_evt
+                        elif event_type == "archived":
+                            yield await self.conn.codec.decode_archived_event(event.archived)
+                        else:
+                            warnings.warn(f"Unknown Event({event_type}=...)", ProtocolWarning)
+                    yield Boundary(tx.offset)
 
     def _is_match(self, event: CreateEvent) -> bool:
         # if there are no filters, then everything is a match
