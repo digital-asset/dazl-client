@@ -51,18 +51,26 @@ from .pretty.table import write_acs
 from .prim import ContractData, DazlError, FrozenDict as frozendict, Party
 from .util.logging import setup_default_logger
 
+# Large Protobuf message support
+
+# These methods are undocumented, but is required to read even moderately sized DALF's.
 try:
-    # This method is undocumented, but is required to read large size of model files when using
-    # the C++ implementation.
+    # For Protobuf libraries version 4 or later (using upb)
+    # noinspection PyPackageRequirements,PyUnresolvedReferences,PyProtectedMember
+    from google._upb._message import SetAllowOversizeProtos
+
+    SetAllowOversizeProtos(True)
+except ImportError:
+    pass
+
+try:
+    # For Protobuf libraries version 3 or earlier (using upb)
     # noinspection PyPackageRequirements,PyUnresolvedReferences,PyProtectedMember
     from google.protobuf.pyext import _message
 
     _message.SetAllowOversizeProtos(True)
-
 except ImportError:
-    # ImportError for the Protobuf libraries is likely fatal, but this would not be the most helpful
-    # place to throw an ImportError.
     pass
 
 
-__version__ = "7.8.4"
+__version__ = "7.9.0"
