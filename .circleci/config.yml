@@ -91,10 +91,18 @@ jobs:
       - run:
           name: Run Blackduck Detect
           command: |
+
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              SCAN_MODE="INTELLIGENT"
+            else
+              SCAN_MODE="RAPID"
+            fi
+
             bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) \
             ci-build ${CIRCLE_PROJECT_USERNAME}_${CIRCLE_PROJECT_REPONAME} ${CIRCLE_BRANCH} \
             --detect.excluded.detector.types=GO_MOD \
             --logging.level.com.synopsys.integration=DEBUG \
+            --detect.blackduck.scan.mode="${SCAN_MODE}" \
             --detect.policy.check.fail.on.severities=MAJOR,CRITICAL,BLOCKER \
             --detect.timeout=600
 
