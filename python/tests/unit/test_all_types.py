@@ -11,7 +11,7 @@ from typing import Any, Mapping, Optional
 from dazl.ledger import ArchiveEvent, CreateEvent
 from dazl.ledger.aio import Connection
 from dazl.prim import ContractData
-from dazl.testing import connect_with_new_party
+from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
 
 from .dars import AllKindsOf
@@ -40,8 +40,8 @@ SOME_ARGS: Mapping[str, Any] = dict(
 
 
 @pytest.mark.asyncio
-async def test_all_types(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=AllKindsOf) as p:
+async def test_all_types(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=AllKindsOf) as p:
         # start a reader that makes sure a create occurs, sends an archive choice,
         # and then waits for that archive event to appear.
         fut = ensure_future(consume_singular_event(p.connection))
@@ -61,14 +61,14 @@ async def test_all_types(sandbox):
 
 
 @pytest.mark.asyncio
-async def test_maps(sandbox):
-    async with connect_with_new_party(url=sandbox, dar=AllKindsOf) as p:
+async def test_maps(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=AllKindsOf) as p:
         await p.connection.create(
             "AllKindsOf:MappyContract", {"operator": p.party, "value": {"Map_internal": []}}
         )
 
 
-async def consume_singular_event(conn: "Connection") -> "Optional[ContractData]":
+async def consume_singular_event(conn: Connection) -> Optional[ContractData]:
     cdata = None
     async with conn.stream(TEMPLATE) as stream:
         async for event in stream.items():

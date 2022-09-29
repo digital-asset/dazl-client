@@ -5,20 +5,21 @@ from __future__ import annotations
 from asyncio import gather
 
 from dazl import async_network, connect
+from dazl.testing import SandboxLauncher
 import pytest
 
 from .dars import PostOffice
 
 
 @pytest.mark.asyncio
-async def test_parties_can_be_added_after_run_forever(sandbox):
-    async with connect(url=sandbox, admin=True) as conn:
+async def test_parties_can_be_added_after_run_forever(sandbox: SandboxLauncher) -> None:
+    async with connect(url=sandbox.url, admin=True) as conn:
         operator_info = await conn.allocate_party()
         party_a_info = await conn.allocate_party()
         party_b_info = await conn.allocate_party()
         party_c_info = await conn.allocate_party()
 
-    async with async_network(url=sandbox, dars=PostOffice) as network:
+    async with async_network(url=sandbox.url, dars=PostOffice) as network:
         operator_client = network.aio_party(operator_info.party)
         party_a_client = network.aio_party(party_a_info.party)
         party_b_client = network.aio_party(party_b_info.party)

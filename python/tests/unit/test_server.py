@@ -8,6 +8,7 @@ import logging
 
 from aiohttp import ClientSession
 from dazl import Network, Party, async_network, connect
+from dazl.testing import SandboxLauncher
 import pytest
 
 from .dars import TestServer as TestServerDar
@@ -16,15 +17,15 @@ LOG = logging.getLogger("test_server")
 
 
 @pytest.mark.asyncio
-async def test_server_endpoint(sandbox):
+async def test_server_endpoint(sandbox: SandboxLauncher) -> None:
     SERVER_PORT = 53390
 
-    async with connect(url=sandbox, admin=True) as conn:
+    async with connect(url=sandbox.url, admin=True) as conn:
         alice = (await conn.allocate_party()).party
         bob = (await conn.allocate_party()).party
         carol = (await conn.allocate_party()).party
 
-    async with async_network(url=sandbox, dars=TestServerDar) as network:
+    async with async_network(url=sandbox.url, dars=TestServerDar) as network:
         network.set_config(server_port=SERVER_PORT)
 
         _ = network.aio_party(alice)
@@ -61,7 +62,7 @@ async def test_server_endpoint(sandbox):
         await network.aio_run(client_main(network, SERVER_PORT, alice, bob, carol), keep_open=False)
 
 
-def ensure_person_contract(network: Network, party: Party):
+def ensure_person_contract(network: Network, party: Party) -> None:
     client = network.aio_party(party)
     client.add_ledger_ready(lambda _: client.create("TestServer:Person", dict(party=party)))  # type: ignore
 

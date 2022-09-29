@@ -7,14 +7,15 @@ from asyncio import gather
 
 import dazl
 from dazl.damlast.lookup import MultiPackageLookup
+from dazl.testing import SandboxLauncher
 import pytest
 from tests.unit import dars
 
 
 @pytest.mark.asyncio
-async def test_command_submission_with_stdlib_values(sandbox) -> None:
+async def test_command_submission_with_stdlib_values(sandbox: SandboxLauncher) -> None:
 
-    async with dazl.connect(url=sandbox, admin=True) as conn:
+    async with dazl.connect(url=sandbox.url, admin=True) as conn:
         party_info, _ = await gather(
             conn.allocate_party(), conn.upload_package(dars.KitchenSink.read_bytes())
         )
@@ -26,7 +27,7 @@ async def test_command_submission_with_stdlib_values(sandbox) -> None:
 
     # override lookup intentionally to make sure this test is not polluted with cached state from other tests
     async with dazl.connect(
-        url=sandbox, act_as=party_info.party, lookup=MultiPackageLookup()
+        url=sandbox.url, act_as=party_info.party, lookup=MultiPackageLookup()
     ) as conn:
         # bare create a contract with a specific package ID; this should have the side-effect of resolving
         # dependent packages (in this case, stdlib itself)

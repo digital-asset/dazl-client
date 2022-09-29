@@ -6,17 +6,18 @@ from __future__ import annotations
 from asyncio import sleep
 
 from dazl import Network, connect
+from dazl.testing import SandboxLauncher
 import pytest
 
 from .dars import UploadTest
 
 
 @pytest.mark.asyncio
-async def test_dar_uploads_near_startup(sandbox):
+async def test_dar_uploads_near_startup(sandbox: SandboxLauncher) -> None:
     package_ids = []
 
     network = Network()
-    network.set_config(url=sandbox)
+    network.set_config(url=sandbox.url)
 
     async def upload_dars_and_verify():
         await upload_test_dars(network)
@@ -39,15 +40,15 @@ async def test_dar_uploads_near_startup(sandbox):
     "basis. When this happens, PackagesAddedEvent will be dropped. If this is still a use-case you "
     "need, please write your own poller around lookup.package_ids."
 )
-async def test_package_events(sandbox):
+async def test_package_events(sandbox: SandboxLauncher) -> None:
     initial_events = []
     follow_up_events = []
 
-    async with connect(url=sandbox, admin=True) as conn:
+    async with connect(url=sandbox.url, admin=True) as conn:
         party_info = await conn.allocate_party()
 
     network = Network()
-    network.set_config(url=sandbox)
+    network.set_config(url=sandbox.url)
     client = network.aio_party(party_info.party)
 
     async def upload_dars_and_verify():
@@ -71,6 +72,6 @@ async def test_package_events(sandbox):
     assert len(follow_up_events) == 1
 
 
-async def upload_test_dars(network: "Network"):
+async def upload_test_dars(network: Network) -> None:
     g = network.aio_global()
     await g.ensure_dar(UploadTest)

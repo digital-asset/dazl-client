@@ -9,16 +9,17 @@ from __future__ import annotations
 from asyncio import ensure_future
 
 from dazl import async_network, connect
+from dazl.testing import SandboxLauncher
 import pytest
 from tests.unit.dars import Pending
 
 
 @pytest.mark.asyncio
-async def test_cancelled_write(sandbox):
-    async with connect(url=sandbox, admin=True) as conn:
+async def test_cancelled_write(sandbox: SandboxLauncher) -> None:
+    async with connect(url=sandbox.url, admin=True) as conn:
         party_info = await conn.allocate_party()
 
-    async with async_network(url=sandbox, dars=Pending) as network:
+    async with async_network(url=sandbox.url, dars=Pending) as network:
         client = network.aio_party(party_info.party)
 
         network.start()

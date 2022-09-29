@@ -6,16 +6,17 @@ from __future__ import annotations
 import logging
 
 from dazl import simple_client
+from dazl.testing import SandboxLauncher
 
 from .blocking_setup import blocking_setup
 from .dars import PostOffice
 
 
-def test_simple_client_api(sandbox):
-    party = blocking_setup(sandbox, PostOffice)
+def test_simple_client_api(sandbox: SandboxLauncher) -> None:
+    party = blocking_setup(sandbox.url, PostOffice)
 
     logging.info("Creating client...")
-    with simple_client(url=sandbox, party=party) as client:
+    with simple_client(url=sandbox.url, party=party) as client:
         client.ready()
         logging.info("Submitting...")
         client.create("Main:PostmanRole", {"postman": party})

@@ -1240,7 +1240,7 @@ class Expr:
         from_any_exception: "_typing.Callable[[Expr.FromAnyException], _T]",
         throw: "_typing.Callable[[Expr.Throw], _T]",
         experimental: "_typing.Callable[[Expr.Experimental], _T]",
-    ) -> "T":
+    ) -> "_T":
         if self._Sum_name == "var":
             return var(self.var)  # type: ignore
         elif self._Sum_name == "val":

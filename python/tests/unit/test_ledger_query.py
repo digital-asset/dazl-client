@@ -11,6 +11,7 @@ from dazl.ledger import Boundary, CreateEvent
 from dazl.ledger.aio import Connection
 from dazl.ledger.grpc import Connection as GrpcConnection
 from dazl.prim import ContractData, Party
+from dazl.testing import SandboxLauncher
 import pytest
 from tests.unit import dars
 
@@ -22,13 +23,13 @@ def payload(operator: Party, text: str) -> ContractData:
 
 
 @pytest.mark.asyncio
-async def test_query_no_filter(sandbox) -> None:
-    async with dazl.connect(url=sandbox, admin=True) as conn:
+async def test_query_no_filter(sandbox: SandboxLauncher) -> None:
+    async with dazl.connect(url=sandbox.url, admin=True) as conn:
         party_info, _ = await gather(
             conn.allocate_party(), conn.upload_package(dars.Simple.read_bytes())
         )
 
-    async with dazl.connect(url=sandbox, act_as=party_info.party) as conn:
+    async with dazl.connect(url=sandbox.url, act_as=party_info.party) as conn:
         texts = ["Red", "Red", "Green", "Blue", "Blue", "Blue"]
         for text in texts:
             await conn.create(TEMPLATE, payload(party_info.party, text))

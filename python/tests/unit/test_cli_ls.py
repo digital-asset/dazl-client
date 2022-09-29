@@ -7,15 +7,16 @@ Tests to ensure that CLI commands work properly.
 from __future__ import annotations
 
 from dazl.cli import _main
+from dazl.testing import SandboxLauncher
 
 
-def test_simple_ls(sandbox):
-    exit_code = _main(f"dazl ls --url {sandbox} --parties=Alice".split(" "))
+def test_simple_ls(sandbox: SandboxLauncher) -> None:
+    exit_code = _main(f"dazl ls --url {sandbox.url} --parties=Alice".split(" "))
     assert exit_code == 0
 
 
 def test_simple_ls_two_parties(sandbox):
-    exit_code = _main(f"dazl ls --url {sandbox} --parties=Alice,Bob".split(" "))
+    exit_code = _main(f"dazl ls --url {sandbox.url} --parties=Alice,Bob".split(" "))
 
     assert exit_code == 0
 
@@ -23,7 +24,7 @@ def test_simple_ls_two_parties(sandbox):
 def test_env_ls(sandbox):
     import os
 
-    os.environ["DAML_LEDGER_URL"] = sandbox
+    os.environ["DAML_LEDGER_URL"] = sandbox.url
     os.environ["DAML_LEDGER_PARTY"] = "Alice"
     exit_code = _main("dazl ls".split(" "))
 

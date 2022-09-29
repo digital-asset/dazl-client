@@ -15,7 +15,7 @@ from .dars import PostOffice
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("daml_sdk_version", daml_sdk_versions())
-async def test_v1_token(daml_sdk_version):
+async def test_v1_token(daml_sdk_version: str) -> None:
     async with testing.sandbox(
         version=daml_sdk_version, use_auth=True, ledger_id="sandbox"
     ) as sandbox:
@@ -28,7 +28,7 @@ async def test_v1_token(daml_sdk_version):
 
 
 @pytest.mark.asyncio
-async def test_v2_token(sandbox_v2):
+async def test_v2_token() -> None:
     async with testing.sandbox(
         version=known_version_2, use_auth=True, ledger_id="sandbox"
     ) as sandbox:

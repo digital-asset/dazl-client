@@ -21,7 +21,7 @@ googleapis_common_protos = "^1"
 grpcio = ">=1.32.0"
 oauthlib = { version = "*", optional = true }
 prometheus_client = { version = "*", optional = true }
-protobuf = ">=3.19.0, <4"
+protobuf = ">=3.19.0"
 pygments = { version = "*", optional = true }
 pyOpenSSL = { version = "*", optional = true }
 requests = "*"
@@ -39,6 +39,7 @@ mypy = "*"
 pyjwt = "*"
 pytest = "^6"
 pytest-asyncio = "*"
+setuptools = "*"
 sphinx = "^4"
 sphinx-autobuild = "*"
 sphinx-markdown-builder = "^0.5.4"
