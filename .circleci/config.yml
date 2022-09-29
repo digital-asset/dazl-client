@@ -92,7 +92,7 @@ jobs:
           name: Run Blackduck Detect
           command: |
 
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
               SCAN_MODE="INTELLIGENT"
             else
               SCAN_MODE="RAPID"
