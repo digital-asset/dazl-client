@@ -79,11 +79,11 @@ jobs:
 
   blackduck:
     docker:
-      - image: cimg/python:3.6.13-browsers
+      - image: cimg/python:3.7.12-browsers
     steps:
       - checkout
       - restore_dazl_cache:
-          python_version: "3.6.13"
+          python_version: "3.7.12"
       - run:
           name: Python packaging
           command: make build
@@ -116,11 +116,11 @@ workflows:
       - check-py:
           matrix:
             parameters:
-              python_version: ["3.6.13", "3.7.12", "3.8.12", "3.9.10", "3.10.2"]
+              python_version: ["3.7.12", "3.8.12", "3.9.10", "3.10.2"]
       - test-py:
           matrix:
             parameters:
-              python_version: ["3.6.13", "3.7.12", "3.8.12", "3.9.10", "3.10.2"]
+              python_version: ["3.7.12", "3.8.12", "3.9.10", "3.10.2"]
       - build:
           requires:
            - blackduck
