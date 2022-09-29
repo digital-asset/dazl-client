@@ -1,8 +1,9 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-# This module will likely be deprecated in v8.
+from __future__ import annotations
 
+# This module will likely be deprecated in v8.
 from typing import Any, Sequence
 
 from ..damlast.daml_lf_1 import Type, TypeConName

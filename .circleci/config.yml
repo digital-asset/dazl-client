@@ -41,6 +41,7 @@ jobs:
         type: string
     docker:
       - image: cimg/python:<<parameters.python_version>>-browsers
+    resource_class: medium+
     steps:
       - checkout
       - restore_dazl_cache:

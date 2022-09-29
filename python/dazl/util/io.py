@@ -5,6 +5,8 @@
 Utilities for dealing with the file system.
 """
 
+from __future__ import annotations
+
 from io import BufferedIOBase
 from pathlib import Path
 import socket

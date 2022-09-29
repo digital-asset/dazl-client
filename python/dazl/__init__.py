@@ -4,6 +4,7 @@
 """
 This module contains the Python API for interacting with the Ledger API.
 """
+from __future__ import annotations
 
 __all__ = [
     "AIOPartyClient",
@@ -46,9 +47,8 @@ from .client.commands import (
     exercise_by_key,
 )
 from .ledger import Command, connect
-from .model.core import ContractId
 from .pretty.table import write_acs
-from .prim import ContractData, DazlError, FrozenDict as frozendict, Party
+from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
 from .util.logging import setup_default_logger
 
 # Large Protobuf message support
@@ -73,4 +73,4 @@ except ImportError:
     pass
 
 
-__version__ = "7.9.0"
+__version__ = "8.0.0a4"

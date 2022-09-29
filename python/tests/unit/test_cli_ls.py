@@ -4,6 +4,8 @@
 """
 Tests to ensure that CLI commands work properly.
 """
+from __future__ import annotations
+
 from dazl.cli import _main
 from dazl.testing import SandboxLauncher
 

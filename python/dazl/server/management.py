@@ -5,6 +5,8 @@
 Endpoints for managing parties/bots connected via a dazl client.
 """
 
+from __future__ import annotations
+
 from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Collection, NoReturn, Optional, Sequence
 import warnings

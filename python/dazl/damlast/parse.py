@@ -12,6 +12,8 @@ convert it to an :class:`Archive`; an :class:`Archive` contains the package and 
 in turn contain templates, data types, and values.
 """
 
+from __future__ import annotations
+
 import sys
 import time
 from typing import Optional

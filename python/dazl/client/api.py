@@ -17,6 +17,8 @@ This module contains the public API for interacting with the ledger from the per
 specific party.
 """
 
+from __future__ import annotations
+
 from asyncio import Future, ensure_future, get_event_loop
 from contextlib import contextmanager
 from functools import partial, wraps
@@ -73,10 +75,6 @@ from .config import AnonymousNetworkConfig, NetworkConfig, PartyConfig
 from .events import EventKey
 from .ledger import LedgerMetadata
 from .state import ContractContextualData, ContractContextualDataCollection, ContractsState
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
-    from ..model.types import TemplateNameLike
 
 __all__ = [
     "DEFAULT_TIMEOUT_SECONDS",
@@ -872,7 +870,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         arguments: Optional[dict] = None,
         workflow_id: Optional[str] = None,
         deduplication_time: Optional[TimeDeltaLike] = None,
@@ -1052,7 +1050,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_exercise_by_key(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         contract_key: Any,
         choice_name: str,
         arguments: Optional[dict] = None,
@@ -1152,7 +1150,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create_and_exercise(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         arguments: dict,
         choice_name: str,
         choice_arguments: Optional[dict] = None,
@@ -1713,7 +1711,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         arguments: Optional[dict] = None,
         workflow_id: Optional[str] = None,
         deduplication_time: Optional[TimeDeltaLike] = None,
@@ -1889,7 +1887,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_exercise_by_key(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         contract_key: Any,
         choice_name: str,
         arguments: Optional[dict] = None,
@@ -1986,7 +1984,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_create_and_exercise(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         arguments: dict,
         choice_name: str,
         choice_arguments: Optional[dict] = None,

@@ -1,9 +1,10 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-
+#
 # Note: These tests are not currently run since they hardcode URLs for documentation purposes.
 # But at the very least, they _are_ typechecked.
 
+from __future__ import annotations
 
 import pytest
 

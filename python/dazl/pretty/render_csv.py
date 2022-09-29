@@ -2,11 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # type: ignore
 
+from __future__ import annotations
+
 from io import StringIO
 from typing import Dict, List, Tuple
-
-from dazl.model.types import ContractIdType, ListType, RecordType, Type, TypeReference
-from dazl.model.types_store import PackageStore
 
 
 def write_csv(store: PackageStore) -> str:

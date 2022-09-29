@@ -5,6 +5,8 @@
 The :mod:`dazl.util.prim_types` module contains functions for converting arbitrary objects and
 on-wire formats to/from canonical Python types.
 """
+from __future__ import annotations
+
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 from typing import Any, Mapping, Optional, Tuple, Union, overload
