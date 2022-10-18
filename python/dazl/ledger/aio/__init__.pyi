@@ -25,7 +25,7 @@ from .. import (
     QueryStream as _QueryStream,
 )
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
-from ...prim import ContractData, ContractId, Party
+from ...prim import ContractData, ContractId, Party, TimeDeltaLike
 from ...query import Queries, Query
 from ..api_types import (
     ArchiveEvent,
@@ -87,8 +87,12 @@ class ABoundaryDecorator(Protocol):
     def __call__(self, __fn: ABoundaryFn) -> ABoundaryFn: ...
 
 class PackageService(_PackageService, Protocol):
-    async def get_package(self, __package_id: PackageRef) -> bytes: ...
-    async def list_package_ids(self) -> AbstractSet[PackageRef]: ...
+    async def get_package(
+        self, __package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = ...
+    ) -> bytes: ...
+    async def list_package_ids(
+        self, *, timeout: Optional[TimeDeltaLike] = ...
+    ) -> AbstractSet[PackageRef]: ...
 
 @runtime_checkable
 class Connection(_Connection, PackageService, Protocol):
@@ -104,6 +108,7 @@ class Connection(_Connection, PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> None: ...
     async def create(
         self,
@@ -114,6 +119,7 @@ class Connection(_Connection, PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> CreateEvent: ...
     async def exercise(
         self,
@@ -125,6 +131,7 @@ class Connection(_Connection, PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     async def create_and_exercise(
         self,
@@ -137,6 +144,7 @@ class Connection(_Connection, PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     async def exercise_by_key(
         self,
@@ -149,6 +157,7 @@ class Connection(_Connection, PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     async def archive(
         self,
@@ -158,6 +167,7 @@ class Connection(_Connection, PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> ArchiveEvent: ...
     async def archive_by_key(
         self,
@@ -168,19 +178,22 @@ class Connection(_Connection, PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> ArchiveEvent: ...
-    async def get_ledger_end(self) -> str: ...
+    async def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = ...) -> str: ...
     def query(
         self,
         __template_id: Union[str, TypeConName] = "*",
         __query: Query = None,
         *,
         read_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def query_many(
         self,
         *queries: Queries,
         read_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def stream(
         self,
@@ -189,25 +202,50 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def stream_many(
         self,
         *queries: Queries,
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
-    async def get_user(self, user_id: Optional[str] = None) -> User: ...
-    async def create_user(self, user: User, rights: Optional[Sequence[Right]] = ...) -> User: ...
-    async def list_users(self) -> Sequence[User]: ...
-    async def list_user_rights(self, user_id: Optional[str] = None) -> Sequence[Right]: ...
+    async def get_user(
+        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = ...
+    ) -> User: ...
+    async def create_user(
+        self,
+        user: User,
+        rights: Optional[Sequence[Right]] = ...,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
+    ) -> User: ...
+    async def list_users(self, *, timeout: Optional[TimeDeltaLike] = ...) -> Sequence[User]: ...
+    async def list_user_rights(
+        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = ...
+    ) -> Sequence[Right]: ...
     async def allocate_party(
-        self, *, identifier_hint: Optional[str] = None, display_name: Optional[str] = None
+        self,
+        *,
+        identifier_hint: Optional[str] = None,
+        display_name: Optional[str] = None,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> PartyInfo: ...
-    async def list_known_parties(self) -> Sequence[PartyInfo]: ...
-    async def get_version(self) -> Version: ...
-    async def upload_package(self, contents: bytes) -> None: ...
+    async def list_known_parties(
+        self, *, timeout: Optional[TimeDeltaLike] = ...
+    ) -> Sequence[PartyInfo]: ...
+    async def get_version(self, *, timeout: Optional[TimeDeltaLike] = ...) -> Version: ...
+    async def upload_package(
+        self, contents: bytes, *, timeout: Optional[TimeDeltaLike] = ...
+    ) -> None: ...
     async def get_metering_report(
-        self, from_: datetime, to: Optional[datetime] = None, application_id: Optional[str] = None
+        self,
+        from_: datetime,
+        to: Optional[datetime] = None,
+        application_id: Optional[str] = None,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> ParticipantMeteringReport: ...
 
 # PyCharm doesn't know what to make of these overloads with respect to the parent protocol,

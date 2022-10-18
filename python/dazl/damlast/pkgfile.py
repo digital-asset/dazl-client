@@ -10,6 +10,7 @@ import warnings
 from zipfile import ZipFile
 
 from .._gen.com.daml.daml_lf_1_14 import daml_lf_pb2 as pb
+from ..prim import TimeDeltaLike
 from .daml_lf_1 import Archive, Package, PackageRef
 from .parse import parse_archive
 
@@ -247,10 +248,14 @@ class DarFileAsyncPackageService:
     def __init__(self, __dar_file: "DarFile"):
         self._dar_file = __dar_file
 
-    async def get_package(self, package_id: "PackageRef") -> bytes:
+    async def get_package(
+        self, package_id: "PackageRef", timeout: Optional[TimeDeltaLike] = None
+    ) -> bytes:
         return self._dar_file.package_bytes(package_id)
 
-    async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+    async def list_package_ids(
+        self, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> "AbstractSet[PackageRef]":
         return self._dar_file.package_ids()
 
 
@@ -259,10 +264,14 @@ class DarFileBlockingPackageService:
         self._dar_file = __dar_file
         self._lock = threading.RLock()
 
-    def get_package(self, package_id: "PackageRef") -> bytes:
+    def get_package(
+        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> bytes:
         with self._lock:
             return self._dar_file.package_bytes(package_id)
 
-    def list_package_ids(self) -> "AbstractSet[PackageRef]":
+    def list_package_ids(
+        self, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> AbstractSet[PackageRef]:
         with self._lock:
             return self._dar_file.package_ids()
