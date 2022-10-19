@@ -1165,6 +1165,7 @@ class QueryStream(aio.QueryStreamBase):
                             yield await self.conn.codec.decode_archived_event(event.archived)
                         else:
                             warnings.warn(f"Unknown Event({event_type}=...)", ProtocolWarning)
+                    last_offset = tx.offset
                     yield Boundary(tx.offset)
 
     def _is_match(self, event: CreateEvent) -> bool:
