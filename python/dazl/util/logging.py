@@ -6,6 +6,8 @@ Utilities for working with the built-in `logging` module.
 
 This module will be removed soon!
 """
+from __future__ import annotations
+
 import logging
 import warnings
 

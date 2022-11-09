@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 # Type definitions for _scheduler.py.
 #
 # These type definitions live in a separate file instead of in _scheduler.py because
@@ -9,7 +11,6 @@
 #    "Properly" typing the signatures of these functions would result in a bit of unnecessary and
 #    inaccurate casting in the bodies of these methods.
 #    (See https://github.com/python/typing/issues/446 for more information on this.)
-
 from asyncio import AbstractEventLoop, Future
 from concurrent.futures import Executor
 from typing import Awaitable, Callable, List, Optional, TypeVar, overload

@@ -5,6 +5,8 @@ This module contains the types needed to submit commands to and read events from
 Daml `gRPC Ledger API <https://docs.daml.com/app-dev/ledger-api.html>`_ or
 `HTTP JSON API <https://docs.daml.com/json-api/index.html>`_.
 """
+from __future__ import annotations
+
 import sys
 
 from .api_types import (

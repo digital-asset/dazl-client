@@ -11,6 +11,8 @@ This module contains utilities for pretty-printing various types in dazl.
 .. automodule:: dazl.pretty.util
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Optional, Type
 
 from ..damlast.protocols import SymbolLookup

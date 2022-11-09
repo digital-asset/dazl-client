@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
@@ -63,9 +65,7 @@ class PackageLoader:
         :param fn: A function to invoke.
         :return: The result of that function.
         """
-        guard = PackageExceptionTracker(
-            allow_deprecated_identifiers=self._allow_deprecated_identifiers
-        )
+        guard = PackageExceptionTracker()
         while True:
             pkg_ref = guard.pop_package()
             while pkg_ref is not None:
