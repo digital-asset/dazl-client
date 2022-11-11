@@ -18,6 +18,7 @@ import warnings
 from dazl.damlast.daml_lf_1 import PackageRef
 from dazl.damlast.lookup import MultiPackageLookup
 
+from ...prim import TimeDeltaLike
 from .pkgloader import DEFAULT_TIMEOUT, PackageLoader as NewPackageLoader
 
 if sys.version_info >= (3, 8):
@@ -43,10 +44,12 @@ class SyncPackageService(Protocol):
             stacklevel=2,
         )
 
-    def package_bytes(self, package_id: "PackageRef") -> bytes:
+    def package_bytes(
+        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> bytes:
         raise NotImplementedError("SyncPackageService.package_bytes requires an implementation")
 
-    def package_ids(self) -> "AbstractSet[PackageRef]":
+    def package_ids(self, *, timeout: Optional[TimeDeltaLike] = None) -> AbstractSet[PackageRef]:
         raise NotImplementedError("SyncPackageService.package_ids requires an implementation")
 
 
@@ -83,10 +86,18 @@ class PackageServiceWrapper:
         self.impl = impl
         self.executor = executor
 
-    async def get_package(self, package_id: "PackageRef") -> bytes:
+    async def get_package(
+        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> bytes:
         loop = get_event_loop()
-        return await loop.run_in_executor(self.executor, self.impl.package_bytes, package_id)
+        return await loop.run_in_executor(
+            self.executor, lambda: self.impl.package_bytes(package_id, timeout=timeout)
+        )
 
-    async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+    async def list_package_ids(
+        self, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> "AbstractSet[PackageRef]":
         loop = get_event_loop()
-        return await loop.run_in_executor(self.executor, self.impl.package_ids)
+        return await loop.run_in_executor(
+            self.executor, lambda: self.impl.package_ids(timeout=timeout)
+        )

@@ -28,7 +28,7 @@ from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb, testing as lapi
 from ...client._conn_settings import HTTPConnectionSettings
 from ...damlast.daml_lf_1 import PackageRef
 from ...ledger.aio.pkgloader_compat import PackageLoader
-from ...prim import Party, datetime_to_timestamp, to_party
+from ...prim import Party, TimeDeltaLike, datetime_to_timestamp, to_party, to_timedelta
 from ...scheduler import Invoker, RunLevel
 from ...util.io import read_file_bytes
 from ...util.typing import safe_cast
@@ -288,14 +288,18 @@ class GRPCPackageProvider:
         self.connection = connection
         self.ledger_id = ledger_id
 
-    def package_ids(self) -> "AbstractSet[PackageRef]":
+    def package_ids(self, *, timeout: Optional[TimeDeltaLike] = None) -> AbstractSet[PackageRef]:
+        timeout_secs = to_timedelta(timeout).total_seconds() if timeout is not None else None
         request = lapipb.ListPackagesRequest(ledger_id=self.ledger_id)
-        response = self.connection.package_service.ListPackages(request)
+        response = self.connection.package_service.ListPackages(request, timeout=timeout_secs)
         return frozenset([PackageRef(p) for p in response.package_ids])
 
-    def package_bytes(self, package_id: "PackageRef") -> bytes:
+    def package_bytes(
+        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = None
+    ) -> bytes:
+        timeout_secs = to_timedelta(timeout).total_seconds() if timeout is not None else None
         request = lapipb.GetPackageRequest(ledger_id=self.ledger_id, package_id=package_id)
-        package_info = self.connection.package_service.GetPackage(request)
+        package_info = self.connection.package_service.GetPackage(request, timeout=timeout_secs)
         return package_info.archive_payload
 
     def get_package_ids(self) -> "AbstractSet[PackageRef]":

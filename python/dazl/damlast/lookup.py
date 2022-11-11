@@ -64,6 +64,8 @@ __all__ = [
     "validate_template",
 ]
 
+from ..prim import TimeDeltaLike
+
 STAR = PackageRef("*")
 
 
@@ -396,7 +398,12 @@ class MultiPackageLookup(SymbolLookup):
             self._cache = {**new_lookups, **self._cache}
             LOG.debug("Updated package cache; now contains %d packages.", len(self._cache))
 
-    def package_ids(self) -> "AbstractSet[PackageRef]":
+    def package_ids(self) -> AbstractSet[PackageRef]:
+        """
+        Return the package IDs of packages stored in this lookup.
+
+        Because the data is local and in memory, the timeout parameter is ignored.
+        """
         return set(self._cache)
 
     def package(self, ref: "PackageRef") -> "Package":

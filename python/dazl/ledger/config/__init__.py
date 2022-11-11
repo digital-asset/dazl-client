@@ -174,6 +174,7 @@ class Config:
         cert_key: Optional[bytes] = None,
         cert_key_file: Optional[PathLike] = None,
         connect_timeout: Optional[TimeDeltaLike] = None,
+        retry_timeout: Optional[TimeDeltaLike] = None,
         use_http_proxy: bool = True,
         logger: Optional[Logger] = None,
         logger_name: Optional[str] = None,
@@ -251,6 +252,9 @@ class Config:
         :param connect_timeout:
             Length of time to wait before giving up connecting to the remote and declaring an error.
             The default value is 30 seconds.
+        :param retry_timeout:
+            Length of time to wait while attempting to retry retryable errors before giving up and
+            declaring an error. The default value is 30 seconds.
         :param use_http_proxy:
             ``True`` to use an HTTP(S) proxy server if configured; ``False`` to avoid using any
             configured server. If unspecified and the host is ``localhost``, the proxy server is
@@ -326,6 +330,7 @@ class Config:
             port=port,
             scheme=scheme,
             connect_timeout=connect_timeout,
+            retry_timeout=retry_timeout,
             use_http_proxy=use_http_proxy,
             logger=logger,
         )

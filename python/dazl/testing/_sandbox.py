@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from __future__ import annotations
 
 from asyncio import get_event_loop
@@ -9,6 +10,7 @@ import logging
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import threading
 from typing import Any, Dict, Mapping, Optional, Sequence, Union, cast
@@ -16,9 +18,34 @@ from typing import Any, Dict, Mapping, Optional, Sequence, Union, cast
 from ..util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
 from ._cert import Certificate, cert_gen
 
+if sys.version_info >= (3, 11):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
+
 __all__ = ["DEFAULT_TIMEOUT", "SandboxLauncher"]
 
 DEFAULT_TIMEOUT = timedelta(seconds=30)
+
+
+class ExternalURLSource:
+    def __init__(self, url: str) -> None:
+        self.url = url
+
+
+class LocalURLSource:
+    def __init__(self, port: int) -> None:
+        self.port = port
+
+    def __str__(self) -> str:
+        return f"http://localhost:{self.port}"
+
+    @property
+    def url(self) -> str:
+        return str(self)
+
+
+URLSource: TypeAlias = Union[LocalURLSource, ExternalURLSource]
 
 
 class SandboxLauncher:
@@ -26,16 +53,27 @@ class SandboxLauncher:
     A simple launcher for an in-memory Sandbox.
     """
 
+    _url_source: URLSource
+
     def __init__(
         self,
         *,
-        project_root: "Union[None, str, os.PathLike]" = None,
-        version: "Optional[str]" = None,
-        timeout: "Optional[timedelta]" = DEFAULT_TIMEOUT,
-        ledger_id: "Optional[str]" = None,
+        project_root: Union[None, str, os.PathLike] = None,
+        version: Optional[str] = None,
+        timeout: Optional[timedelta] = DEFAULT_TIMEOUT,
+        ledger_id: Optional[str] = None,
         use_auth: bool = False,
         use_tls: bool = False,
-    ):
+        url: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize an instance of :class:`SandboxLauncher`.
+
+        :param url:
+            If supplied, a URL to an _already running_ sandbox that should instead be used.
+            If NOT supplied, then take the value of the ``DAZL_TEST_DAML_LEDGER_URL`` if
+            supplied, or start sandbox on a randomized local port.
+        """
         self.log = logging.getLogger("sandbox")
         self._lock = threading.RLock()
         self._project_root = project_root
@@ -43,7 +81,7 @@ class SandboxLauncher:
         self._timeout = timeout
         self._ledger_id = ledger_id
         self._process = None  # type: Optional[subprocess.Popen]
-        self._url = None  # type: Optional[str]
+
         self._exit_stack = ExitStack()
         self._use_auth = use_auth
         self._use_tls = use_tls
@@ -58,14 +96,18 @@ class SandboxLauncher:
                     "use_auth/use_tls cannot be specified when specifying a project root"
                 )
 
-        url = os.environ.get("DAZL_TEST_DAML_LEDGER_URL")
+        # first, default the url to an environment variable if present
+        if not url:
+            url = os.environ.get("DAZL_TEST_DAML_LEDGER_URL")
+            if url:
+                logging.info(
+                    "Using the sandbox at %s because `DAZL_TEST_DAML_LEDGER_URL` is defined", url
+                )
+
         if url:
-            # if we're supposed to use a different already-running implementation,
-            # then do that instead
-            logging.info(
-                "Using the sandbox at %s because `DAZL_TEST_DAML_LEDGER_URL` is defined", url
-            )
-            self._url = url
+            self._url_source = ExternalURLSource(url)
+        else:
+            self._url_source = LocalURLSource(find_free_port())
 
     @property
     def public_cert(self) -> bytes:
@@ -100,20 +142,15 @@ class SandboxLauncher:
         """
         Return a URL that can be used to connect to this running Sandbox.
         """
-        u = self._url
-        if u is not None:
-            return u
-        else:
-            raise RuntimeError("the sandbox is not running (did you call start()?)")
+        return self._url_source.url
 
     def start(self) -> None:
         """
         Start the sandbox and return a URL that can be used to connect to it.
         """
-        if self._url is not None:
+        if isinstance(self._url_source, ExternalURLSource):
+            self.log.info("start() against an external sandbox: %s", self._url_source)
             return
-
-        port = find_free_port()
 
         env = os.environ.copy()
 
@@ -136,10 +173,6 @@ class SandboxLauncher:
                 raise RuntimeError("when tls/auth is on, a version must be specified")
 
         with self._lock:
-            # one last check inside the lock
-            if self._url is not None:
-                return
-
             if self._process is not None:
                 # this shouldn't ever happen, but we explicitly check for it because running
                 # multiple sandbox processes could be very confusing
@@ -156,7 +189,7 @@ class SandboxLauncher:
                 self._key_file.write_bytes(self._certificate.private_key)
 
             options = SandboxOptions(
-                port=port,
+                port=self._url_source.port,
                 ledger_id=self._ledger_id,
                 project_root=self._project_root,  # type: ignore
                 use_auth=self._use_auth,
@@ -177,9 +210,7 @@ class SandboxLauncher:
                 universal_newlines=True,
             )
             ProcessLogger(self._process, self.log).start()
-            wait_for_process_port(self._process, port, DEFAULT_TIMEOUT)
-
-            self._url = f"http://localhost:{port}"
+            wait_for_process_port(self._process, self._url_source.port, DEFAULT_TIMEOUT)
 
     def stop(self) -> None:
         """
@@ -195,6 +226,7 @@ class SandboxLauncher:
                 kill_process_tree(process)
             finally:
                 self._url = None
+        self._process = None
         self._exit_stack.close()
 
     def __enter__(self) -> "SandboxLauncher":

@@ -23,7 +23,13 @@ else:
     from typing_extensions import Protocol, runtime_checkable
 
 
-__all__ = ["URLConfig", "create_url", "KNOWN_SCHEME_PORTS", "DEFAULT_CONNECT_TIMEOUT"]
+__all__ = [
+    "URLConfig",
+    "create_url",
+    "KNOWN_SCHEME_PORTS",
+    "DEFAULT_CONNECT_TIMEOUT",
+    "DEFAULT_RETRY_TIMEOUT",
+]
 
 if TYPE_CHECKING:
     # We refer to the Config class in a docstring and
@@ -32,6 +38,7 @@ if TYPE_CHECKING:
     from . import Config
 
 DEFAULT_CONNECT_TIMEOUT = timedelta(seconds=30)
+DEFAULT_RETRY_TIMEOUT = timedelta(seconds=30)
 
 # The set of schemes we understand, and the known ports that map to those schemes. The first port
 # in the list is the default value for the scheme.
@@ -53,6 +60,7 @@ def create_url(
     port: Optional[int] = None,
     scheme: Optional[str] = None,
     connect_timeout: Optional[TimeDeltaLike] = None,
+    retry_timeout: Optional[TimeDeltaLike] = None,
     use_http_proxy: Optional[bool] = None,
     logger: Optional[Logger] = None,
 ):
@@ -120,6 +128,7 @@ def create_url(
     logger.debug("Building a URL configuration:")
     logger.debug("    url=%s", url)
     logger.debug("    connect_timeout=%s", connect_timeout)
+    logger.debug("    retry_timeout=%s", retry_timeout)
     logger.debug("    use_http_proxy=%s", use_http_proxy)
 
     return SimpleURLConfig(
@@ -127,6 +136,9 @@ def create_url(
         connect_timeout=to_timedelta(connect_timeout)
         if connect_timeout is not None
         else DEFAULT_CONNECT_TIMEOUT,
+        retry_timeout=to_timedelta(retry_timeout)
+        if retry_timeout is not None
+        else DEFAULT_RETRY_TIMEOUT,
         use_http_proxy=use_http_proxy,
     )
 
@@ -161,15 +173,27 @@ class URLConfig(Protocol):
         """
         raise NotImplementedError
 
+    @property
+    def retry_timeout(self) -> timedelta:
+        """
+        How long to keep retrying retryable operations before giving up.
+
+        The default is 30 seconds.
+        """
+        raise NotImplementedError
+
 
 class SimpleURLConfig:
     """
     Trivial implementation of the :class:`URLConfig` protocol.
     """
 
-    def __init__(self, url: str, connect_timeout: timedelta, use_http_proxy: bool):
+    def __init__(
+        self, url: str, connect_timeout: timedelta, retry_timeout: timedelta, use_http_proxy: bool
+    ):
         self.url = url
         self.connect_timeout = connect_timeout
+        self.retry_timeout = retry_timeout
         self.use_http_proxy = use_http_proxy
 
 
