@@ -418,7 +418,7 @@ class Codec:
     ) -> ParticipantMeteringReport:
         return ParticipantMeteringReport(
             report_generation_time=to_datetime(__obj.report_generation_time),
-            participant_id=__obj.participant_report.participant_id,
+            participant_id=__obj.request.application_id,
             is_final=__obj.participant_report.is_final,
             application_reports=[
                 Codec.decode_application_metering_report(a)

@@ -751,7 +751,7 @@ class VersionUserManagementFeature:
         object.__setattr__(self, "max_users_page_size", max_users_page_size)
 
 
-class ParticipantMeteringReport:
+class MeteringReport:
     __slots__ = ("report_generation_time", "participant_id", "is_final", "application_reports")
     report_generation_time: datetime
     participant_id: str
