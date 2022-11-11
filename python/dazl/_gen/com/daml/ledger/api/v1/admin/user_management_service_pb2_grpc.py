@@ -18,6 +18,17 @@ class UserManagementServiceStub(object):
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
 
+    The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
+    (1) ``Optional`` denoting the client may leave the field unset when sending a request.
+    (2) ``Required`` denoting the client must set the field to a non-default value when sending a request.
+
+    A user resource consists of:
+    (1) a set of properties represented by the ``User`` message,
+    (2) a set of user rights, where each right is represented by the ``Right`` message.
+
+    A user resource, once it has been created, can be modified.
+    In order to update the properties represented by the ``User`` message use the ``UpdateUser`` RPC. The only fields that can be modified are those marked as ``Modifiable``.
+    In order to grant or revoke user rights use ``GrantRights' and ``RevokeRights`` RPCs.
     """
 
     def __init__(self, channel):
@@ -35,6 +46,11 @@ class UserManagementServiceStub(object):
                 '/com.daml.ledger.api.v1.admin.UserManagementService/GetUser',
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserResponse.FromString,
+                )
+        self.UpdateUser = channel.unary_unary(
+                '/com.daml.ledger.api.v1.admin.UserManagementService/UpdateUser',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserResponse.FromString,
                 )
         self.DeleteUser = channel.unary_unary(
                 '/com.daml.ledger.api.v1.admin.UserManagementService/DeleteUser',
@@ -72,6 +88,17 @@ class UserManagementServiceServicer(object):
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
 
+    The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
+    (1) ``Optional`` denoting the client may leave the field unset when sending a request.
+    (2) ``Required`` denoting the client must set the field to a non-default value when sending a request.
+
+    A user resource consists of:
+    (1) a set of properties represented by the ``User`` message,
+    (2) a set of user rights, where each right is represented by the ``Right`` message.
+
+    A user resource, once it has been created, can be modified.
+    In order to update the properties represented by the ``User`` message use the ``UpdateUser`` RPC. The only fields that can be modified are those marked as ``Modifiable``.
+    In order to grant or revoke user rights use ``GrantRights' and ``RevokeRights`` RPCs.
     """
 
     def CreateUser(self, request, context):
@@ -93,6 +120,13 @@ class UserManagementServiceServicer(object):
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
         - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateUser(self, request, context):
+        """Update selected modifiable attribute of a user resource described by the ``User`` message.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -123,6 +157,7 @@ class UserManagementServiceServicer(object):
 
     def GrantUserRights(self, request, context):
         """Grant rights to a user.
+        Granting rights does not affect the resource version of the corresponding user.
         Errors:
         - ``NOT_FOUND``: if the user doesn't exist
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
@@ -135,6 +170,7 @@ class UserManagementServiceServicer(object):
 
     def RevokeUserRights(self, request, context):
         """Revoke rights from a user.
+        Revoking rights does not affect the resource version of the corresponding user.
         Errors:
         - ``NOT_FOUND``: if the user doesn't exist
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
@@ -169,6 +205,11 @@ def add_UserManagementServiceServicer_to_server(servicer, server):
                     servicer.GetUser,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserResponse.SerializeToString,
+            ),
+            'UpdateUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateUser,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserResponse.SerializeToString,
             ),
             'DeleteUser': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteUser,
@@ -211,6 +252,17 @@ class UserManagementService(object):
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
 
+    The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
+    (1) ``Optional`` denoting the client may leave the field unset when sending a request.
+    (2) ``Required`` denoting the client must set the field to a non-default value when sending a request.
+
+    A user resource consists of:
+    (1) a set of properties represented by the ``User`` message,
+    (2) a set of user rights, where each right is represented by the ``Right`` message.
+
+    A user resource, once it has been created, can be modified.
+    In order to update the properties represented by the ``User`` message use the ``UpdateUser`` RPC. The only fields that can be modified are those marked as ``Modifiable``.
+    In order to grant or revoke user rights use ``GrantRights' and ``RevokeRights`` RPCs.
     """
 
     @staticmethod
@@ -244,6 +296,23 @@ class UserManagementService(object):
         return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.UserManagementService/GetUser',
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.GetUserResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.UserManagementService/UpdateUser',
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

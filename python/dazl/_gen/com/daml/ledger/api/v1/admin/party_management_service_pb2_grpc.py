@@ -10,12 +10,19 @@ from . import party_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_do
 
 
 class PartyManagementServiceStub(object):
-    """Status: experimental interface, will change before it is deemed production
-    ready
+    """This service allows inspecting the party management state of the ledger known to the participant
+    and managing the participant-local party metadata.
 
-    Inspect the party management state of a ledger participant and modify the
-    parts that are modifiable. We use 'backing participant' to refer to this
-    specific participant in the methods of this API.
+    The authorization rules for its RPCs are specified on the ``<RpcName>Request``
+    messages as boolean expressions over the fact ``HasRight(r)`` denoting whether the authenticated user has right ``r``.
+
+    The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
+    (1) ``Optional`` denoting the client may leave the field unset when sending a request.
+    (2) ``Required`` denoting the client must set the field to a non-default value when sending a request.
+
+    A party details resource is described by the ``PartyDetails`` message,
+    A party details resource, once it has been created, can be modified using the ``UpdatePartyDetails`` RPC.
+    The only fields that can be modified are those marked as ``Modifiable``.
     """
 
     def __init__(self, channel):
@@ -44,22 +51,34 @@ class PartyManagementServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.AllocatePartyRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.AllocatePartyResponse.FromString,
                 )
+        self.UpdatePartyDetails = channel.unary_unary(
+                '/com.daml.ledger.api.v1.admin.PartyManagementService/UpdatePartyDetails',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsResponse.FromString,
+                )
 
 
 class PartyManagementServiceServicer(object):
-    """Status: experimental interface, will change before it is deemed production
-    ready
+    """This service allows inspecting the party management state of the ledger known to the participant
+    and managing the participant-local party metadata.
 
-    Inspect the party management state of a ledger participant and modify the
-    parts that are modifiable. We use 'backing participant' to refer to this
-    specific participant in the methods of this API.
+    The authorization rules for its RPCs are specified on the ``<RpcName>Request``
+    messages as boolean expressions over the fact ``HasRight(r)`` denoting whether the authenticated user has right ``r``.
+
+    The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
+    (1) ``Optional`` denoting the client may leave the field unset when sending a request.
+    (2) ``Required`` denoting the client must set the field to a non-default value when sending a request.
+
+    A party details resource is described by the ``PartyDetails`` message,
+    A party details resource, once it has been created, can be modified using the ``UpdatePartyDetails`` RPC.
+    The only fields that can be modified are those marked as ``Modifiable``.
     """
 
     def GetParticipantId(self, request, context):
-        """Return the identifier of the backing participant.
+        """Return the identifier of the participant.
         All horizontally scaled replicas should return the same id.
         daml-on-kv-ledger: returns an identifier supplied on command line at launch time
-        canton: returns globally unique identifier of the backing participant
+        canton: returns globally unique identifier of the participant
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
@@ -80,9 +99,9 @@ class PartyManagementServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ListKnownParties(self, request, context):
-        """List the parties known by the backing participant.
+        """List the parties known by the participant.
         The list returned contains parties whose ledger access is facilitated by
-        backing participant and the ones maintained elsewhere.
+        the participant and the ones maintained elsewhere.
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
@@ -92,9 +111,10 @@ class PartyManagementServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def AllocateParty(self, request, context):
-        """Adds a new party to the set managed by the backing participant.
+        """Allocates a new party on a ledger and adds it to the set managed by the participant.
         Caller specifies a party identifier suggestion, the actual identifier
         allocated might be different and is implementation specific.
+        Caller can specify party metadata that is stored locally on the participant.
         This call may:
         - Succeed, in which case the actual allocated identifier is visible in
         the response.
@@ -102,7 +122,7 @@ class PartyManagementServiceServicer(object):
         Errors:
         - ``UNAUTHENTICATED``: if the request does not include a valid access token
         - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``UNIMPLEMENTED``: if synchronous party allocation is not supported by the backing participant
+        - ``UNIMPLEMENTED``: if synchronous party allocation is not supported by the participant
         - ``DEADLINE_EXCEEDED``: if the request times out
         - ``INVALID_ARGUMENT``: if the provided hint and/or display name is invalid on the given ledger (see below).
         daml-on-kv-ledger: suggestion's uniqueness is checked by the validators in
@@ -112,6 +132,14 @@ class PartyManagementServiceServicer(object):
         is richer than the surface protocol, the arguments take implicit values
         The party identifier suggestion must be a valid party name. Party names are required to be non-empty US-ASCII strings built from letters, digits, space,
         colon, minus and underscore limited to 255 chars
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdatePartyDetails(self, request, context):
+        """Update selected modifiable participant-local attributes of a party details resource.
+        Can update the participant's local information for both local and non-local parties.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -140,6 +168,11 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.AllocatePartyRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.AllocatePartyResponse.SerializeToString,
             ),
+            'UpdatePartyDetails': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdatePartyDetails,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'com.daml.ledger.api.v1.admin.PartyManagementService', rpc_method_handlers)
@@ -148,12 +181,19 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class PartyManagementService(object):
-    """Status: experimental interface, will change before it is deemed production
-    ready
+    """This service allows inspecting the party management state of the ledger known to the participant
+    and managing the participant-local party metadata.
 
-    Inspect the party management state of a ledger participant and modify the
-    parts that are modifiable. We use 'backing participant' to refer to this
-    specific participant in the methods of this API.
+    The authorization rules for its RPCs are specified on the ``<RpcName>Request``
+    messages as boolean expressions over the fact ``HasRight(r)`` denoting whether the authenticated user has right ``r``.
+
+    The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
+    (1) ``Optional`` denoting the client may leave the field unset when sending a request.
+    (2) ``Required`` denoting the client must set the field to a non-default value when sending a request.
+
+    A party details resource is described by the ``PartyDetails`` message,
+    A party details resource, once it has been created, can be modified using the ``UpdatePartyDetails`` RPC.
+    The only fields that can be modified are those marked as ``Modifiable``.
     """
 
     @staticmethod
@@ -221,5 +261,22 @@ class PartyManagementService(object):
         return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.PartyManagementService/AllocateParty',
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.AllocatePartyRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.AllocatePartyResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdatePartyDetails(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.PartyManagementService/UpdatePartyDetails',
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

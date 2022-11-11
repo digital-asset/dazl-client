@@ -38,6 +38,9 @@ grpc-stubs = "*"
 grpcio-tools = ">=1.32.0"
 isort = "^5"
 mypy = "*"
+# hold back Protobuf in our development dependencies, so that we can continue to ensure that
+# generated stubs are compatible with our earliest version of supported Protobuf
+protobuf = "==3.19.0"
 pyjwt = "*"
 pytest = "^6"
 pytest-asyncio = "*"
