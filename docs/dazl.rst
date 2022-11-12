@@ -13,7 +13,6 @@ dazl package
     dazl.ledger.aio
     dazl.ledger.blocking
     dazl.ledger.config
-    dazl.model
     dazl.pretty
     dazl.protocols
     dazl.testing
