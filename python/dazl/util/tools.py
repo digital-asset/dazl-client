@@ -7,19 +7,7 @@ This module contains miscellaneous utility methods that don't really fit anywher
 
 from __future__ import annotations
 
-from typing import (
-    Callable,
-    Collection,
-    Generator,
-    Iterable,
-    List,
-    Mapping,
-    Optional,
-    Tuple,
-    TypeVar,
-    Union,
-)
-import warnings
+from typing import Collection, Generator, Iterable, List, Tuple, TypeVar, Union
 
 T = TypeVar("T")
 K = TypeVar("K")
@@ -89,47 +77,3 @@ def as_list(obj: "Union[None, T, Collection[Union[None, T]]]") -> "List[T]":
     else:
         # assume we're dealing with a single object of the requested type
         return [obj]
-
-
-def __key_error(key: str) -> Exception:
-    return KeyError(key)
-
-
-def get_matches(
-    mapping: "Mapping[str, V]",
-    key: "str",
-    exc_class: "Optional[Callable[[str], Exception]]" = __key_error,
-) -> "Collection[V]":
-    """
-    Return the value (as a singleton collection) associated with a key. If the key is equal to the
-    special value ``"*"``, then all values are returned. If there is no mapping for the specified
-    key and an exception class is provided, an exception is raised. Otherwise, an empty collection
-    is returned.
-
-    This function should NOT be used if ``"*"`` _can_ be a valid key; the behavior in this case is
-    still to return all values, which could be confusing.
-
-    :param mapping:
-        A mapping to use to perform lookups.
-    :param key:
-        The key to lookup a value for, or the special value '*' to retrieve all values.
-    :param exc_class:
-        The exception to raise if this function would have returned an empty collection, or
-        ``None`` to allow empty collections to be returned.
-    :return:
-        * An empty collection if the supplied key does not have a mapping _and_ ``exc_class is not None``;
-        * A collection of one if a match is found for the supplied key;
-        * All values of the mapping if the key is `""*""`.
-    """
-    warnings.warn("get_matches is deprecated; there is no replacement.", DeprecationWarning)
-    if key == "*":
-        return tuple(mapping.values())
-
-    value = mapping.get(key)
-    if value is None:
-        if exc_class is not None:
-            raise exc_class(key)
-        else:
-            return ()
-
-    return (value,)
