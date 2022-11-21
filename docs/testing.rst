@@ -5,10 +5,10 @@
 Testing
 #######
 
-Code that you write against `dazl` will typically need a Sandbox to be running. You can use a setup
-similar to what ``dazl`` does for its own tests.
+Code that you write against the Daml Python bindings will typically need a Sandbox to be running. You can use a setup
+similar to what the Daml Python bingings do for their own tests.
 
-``dazl`` starts a single Sandbox process for all of its tests, because starting and stopping Sandbox
+The Daml Python bindings start a single Sandbox process for all of their tests, because starting and stopping Sandbox
 instances repeatedly can greatly slow down the test suite. To achieve good isolation between tests,
 use freshly-allocated ``Party`` in instances instead. Because of DAML's privacy model, islands of
 ``Party`` s that are mutually unaware of each other are guaranteed to never see unintended
@@ -28,7 +28,7 @@ You can use a module-based setup fixture in ``unittest``:
 pytest
 ######
 
-``dazl`` uses pytest internally, which supports session-scoped fixtures and avoids the need for
+The Daml Python bindings use pytest internally, which supports session-scoped fixtures and avoids the need for
 globals:
 
 .. code-block:: python

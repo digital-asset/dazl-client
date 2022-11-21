@@ -5,12 +5,12 @@
 Migrate
 #######
 
-Migrating to dazl v7.5
-======================
+Migrating to the Daml Python bindings v7.5
+==========================================
 
-dazl v7.5.0 introduces a new API, ``dazl.connect`` for adding support to more modern features of
-Daml Connect. The ``dazl.Network`` API will continue to be supported in dazl v8 (the next major
-version of dazl), but you are encouraged to use ``dazl.connect`` going forward.
+The Daml Python bindings v7.5.0 introduces a new API, ``dazl.connect`` for adding support to more modern features of
+Daml Connect. The ``dazl.Network`` API will continue to be supported in the Daml Python bindings v8 (the next major
+version of the Daml Python bindings), but you are encouraged to use ``dazl.connect`` going forward.
 
 ``dazl.connect`` embraces design patterns and technical capabilities that have been introduced to
 Daml and some of the underlying Python libraries over the last few years.
@@ -27,39 +27,39 @@ Daml and some of the underlying Python libraries over the last few years.
 
 * Daml HTTP JSON API (stable as of DAML SDK 1.3.0)
 
-  While not yet directly supported (this is planned for dazl v8.0.0), the HTTP JSON API supports
+  While not yet directly supported (this is planned for the Daml Python bindings v8.0.0), the HTTP JSON API supports
   most use-cases for applications that need to communicate with a ledger. The new API is slightly
   restructured for both compatibility with the HTTP JSON API and parity with the JavaScript
   `@daml/ledger <https://www.npmjs.com/package/@daml/ledger>`_ library.
 
 * Daml Authentication/authorization using JSON Web Tokens (JWT)
 
-  dazl was originally built with the simple assumption that a ``Party`` exists 1:1 to a set of
-  credentials. As the Daml Ledger API evolved, this assumption no longer holds. The new dazl API
-  treats tokens more as a
+  The Daml Python bindings were originally built with the simple assumption that a ``Party`` exists 1:1 to a set of
+  credentials. As the Daml Ledger API evolved, this assumption no longer holds. The new Daml Python bindings API
+  treats tokens more as a 
 
 * Daml return values from exercise choices
 
   Exercise return values have been available from the Ledger API since Daml was open sourced back
-  in April 2019. dazl's API has finally been updated to take this feature into account.
+  in April 2019. The Daml Python bindings's API has finally been updated to take this feature into account.
 
 * "Unsubscribing" from streams
 
-  ``dazl`` has never had a straightforward way of abandoning event callbacks that were no longer
+  The Daml Python bindings have never had a straightforward way of abandoning event callbacks that were no longer
   needed. The new API makes stream lifecycle more explicit and the responsibility of the user of the
   library. Disposing of streams is now simpler to reason about.
 
 * Native gRPC support for asyncio: https://github.com/grpc/proposal/pull/155
 
   As of gRPC 1.32.0, the Python gRPC libraries natively support ``asyncio``. This, combined with
-  client streams that are no longer coupled to each other, means the internals of ``dazl`` are
+  client streams that are no longer coupled to each other, means the internals of the Daml Python bindings are
   significantly simpler while also improving performance.
 
 
 Command submission changes (``dazl.Network`` and ``dazl.connect``)
 ------------------------------------------------------------------
 
-The most visible change from trying to align ``dazl`` to the
+The most visible change from trying to align the Daml Python bindings to the
 `@daml/ledger <https://www.npmjs.com/package/@daml/ledger>`_ library is a renaming of the properties
 of the ``Command`` class hierarchy.
 
@@ -111,9 +111,9 @@ These command classes can and should be used in both the ``dazl.Network`` API an
 
 The changes:
 
-``dazl.Network``, which has been the primary entry point for dazl code since dazl v5, will be
-deprecated in dazl v8.0.0. Transitional releases (starting with v7.5.0) will include both APIs, an
-``dazl.Network`` will be fully removed in dazl v9.0.0.
+``dazl.Network``, which has been the primary entry point for the Daml Python binding's code since Daml Python bindings v5, will be
+deprecated in the Daml Python bindings v8.0.0. Transitional releases (starting with v7.5.0) will include both APIs, an
+``dazl.Network`` will be fully removed in the Daml Python bindings v9.0.0.
 
 
 .. code-block:: python
@@ -223,33 +223,33 @@ Command-line changes
 --------------------
 
 The standard set of command line options provided by ``dazl.run`` has changed. This also impacts any
-dazl commands (``dazl ls``, ``dazl tail``, etc.) as well as any custom commands that use
+ Daml Python bindings commands (``dazl ls``, ``dazl tail``, etc.) as well as any custom commands that use
 ``dazl.run``:
 
-* ``-p`` is now used to denote the Ledger API port and **not** ``Party``. In dazl v8, supplying a
-  string argument to ``-p`` will be still interpreted as a ``Party`` but you will get a warning;
+* ``-p`` is now used to denote the Ledger API port and **not** ``Party``. In the Daml Python bindings v8,
+  supplying a string argument to ``-p`` will be still interpreted as a ``Party`` but you will get a warning;
   switch to ``--act-as`` or ``--read-as`` instead. This backwards compatible behavior will be
-  removed in dazl v9.0.0.
+  removed in the Daml Python bindings v9.0.0.
 
 * ``--party``/``--parties`` has been renamed to ``--act-as`` (``-u``); ``--party-groups`` has been
   renamed to ``--read-as`` (``-r``). Both ``--act-as`` and ``--read-as`` take a comma-separated list
   of parties, or as an alternative can be specified multiple times. This matches the terminology
   used in multi-party submissions as added in Daml Connect 1.9. The older forms of these flags will
-  be removed in dazl v9.0.0.
+  be removed in the Daml Python bindings v9.0.0.
 
 * ``--package-fetch-poll-interval`` replaces ``--eager-package-fetch``.
-  If unspecified or zero, package polling is disabled. Note that ``dazl`` will still generally
+  If unspecified or zero, package polling is disabled. Note that the Daml Python bindings will still generally
   discover packages as it needs to. This is really only of value if you are explicitly interested
   in keeping metadata up-to-date because you are using package metadata, and you should generally
   NOT use this for performance reasons.
 
   Setting ``-eager-package-fetch`` is the same as specifying ``--package-fetch-poll-interval=1``,
-  as dazl previously polled for package updates once a second.
+  as the Daml Python bindings previously polled for package updates once a second.
 
 * ``--enable-http-proxy`` has been renamed to ``--use-http-proxy``; the old flag will be removed in
-  dazl v9.0.0.
+  the Daml Python bindings v9.0.0.
 
-* The following flags have no effect in dazl v8 and will be removed in dazl v8.0.0::
+* The following flags have no effect in the Daml Python bindings v8 and will be removed in the Daml Python bindings v8.0.0::
    - ``--idle-timeout``
    - ``--max-command-batch-timeout``
    - ``--max-connection-batch-size``
@@ -262,13 +262,13 @@ dazl commands (``dazl ls``, ``dazl tail``, etc.) as well as any custom commands 
 
 
 
-Migrating to dazl v7
-====================
+Migrating to the Daml Python bindings v7
+========================================
 
 Template formats
 ----------------
 
-Versions of `dazl` prior to version 7 understood previously-used conventions for template names
+Versions of the Daml Python bindings prior to version 7 understood previously-used conventions for template names
 other than the form ``package_ref:module_name:entity_name``. As of version 7, this is the only
 understood format, and other forms are now unrecognized.
 
@@ -286,7 +286,7 @@ Sandbox Wrapper
 ---------------
 
 The ``dazl.sandbox()`` function has been removed. In order to set up tests around applications that
-use ``dazl`` as a library, see the testing guide.
+use the Daml Python bindings as a library, see the testing guide.
 
 Time Model changes
 ------------------
@@ -295,7 +295,7 @@ Time Model changes
 the way that time works over the Ledger API. Clients no longer need to behave differently for
 ledgers that run in static time vs. real time mode.
 
-The default time model for the DAML SDK Sandbox has changed to real time. Consequently, the `dazl`
+The default time model for the DAML SDK Sandbox has changed to real time. Consequently, the Daml Python bindings
 APIs for manipulating static time have been removed and no replacement API is available. Static time
 is generally only useful in non-production contexts and use cases that require static time are
 better addressed with DAML scenarios.
@@ -343,7 +343,7 @@ Library Initialization
 
 Old API::
 
-    # original dazl API
+    # original Daml Python bindings API
     with create_client(participant_url='http://localhost:7600', parties=['Alice', 'Bob']) as manager:
         alice_client = manager.client('Alice')
         bob_client = manager.client('Bob')
@@ -373,7 +373,7 @@ Initialization has been collapsed into a single event, where formerly, there wer
 
 Old API::
 
-    # original dazl API
+    # original Daml Python bindings API
     client = manager.client('Some Party')
     client.on_init(lambda: print('Ledger initialization is happening')
     client.on_init_metadata(lambda store: print(f'Ledger package store: {store}'))
@@ -388,7 +388,7 @@ Ready Event Listeners
 
 Old API::
 
-    # original dazl API
+    # original Daml Python bindings API
     client = manager.client('Some Party')
     client.on_ready(lambda party_name, client\_: print(f'Party {party_name} is ready'))
 
@@ -407,7 +407,7 @@ execution, ledger ID, and access to the active contract set.
 
 Old API::
 
-    # original dazl API
+    # original Daml Python bindings API
     client = manager.client('Some Party')
     client.on_created('Some.Asset', lambda cid, cdata: print(cid, cdata))
     client.on_archived('Some.Asset', lambda cid: print(cid))
