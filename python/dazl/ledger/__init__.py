@@ -98,7 +98,7 @@ class PackageService(Protocol):
         :param __package_id:
             The package ID of the DALF to retrieve.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :return:
             The byte array contents of the DALF associated with the package ID.
@@ -200,7 +200,7 @@ class Connection(PackageService, Protocol):
         :param __commands:
             A command or sequence of commands to submit to the ledger.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -231,12 +231,12 @@ class Connection(PackageService, Protocol):
         :param __template_id:
             The template of the contract to be created.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __payload:
             Template arguments for the contract to be created.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -270,17 +270,17 @@ class Connection(PackageService, Protocol):
         :param __contract_id:
             The contract ID of the contract to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -316,23 +316,23 @@ class Connection(PackageService, Protocol):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __payload:
             Template arguments for the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument (positional
             argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -368,22 +368,22 @@ class Connection(PackageService, Protocol):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __key:
             The key of the contract to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -416,7 +416,7 @@ class Connection(PackageService, Protocol):
         :param __contract_id:
             The contract ID of the contract to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -450,12 +450,12 @@ class Connection(PackageService, Protocol):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __key:
             The key of the contract to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -484,12 +484,12 @@ class Connection(PackageService, Protocol):
         :param __template_id:
             The name of the template for which to fetch contracts.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __query:
             A filter to apply to the set of returned contracts.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param read_as:
             An optional set of read-as parties to use to submit this query. Note that for a
@@ -540,14 +540,14 @@ class Connection(PackageService, Protocol):
         :param __template_id:
             The name of the template for which to fetch contracts.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __query:
             A filter to apply to the set of returned contracts. Note that this does not filter
             :class:`ArchiveEvent`; readers of the stream MUST be able to cope with "mismatched"
             archives that come from the result of applying a filter.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param offset:
             An optional offset at which to start receiving events. If ``None``, start from the
@@ -643,7 +643,7 @@ class Connection(PackageService, Protocol):
         :param __contents:
             The contents of a DAR file (for example, as obtained from running ``daml build``).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         """
         raise NotImplementedError

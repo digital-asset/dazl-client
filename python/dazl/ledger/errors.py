@@ -25,7 +25,7 @@ class CallbackReturnWarning(Warning):
     Raised when a user callback on a stream returns a value. These objects have no meaning and are
     ignored by dazl.
 
-    This warning is raised primarily because older versions of dazl interpreted returning commands
+    This warning is raised primarily because older versions interpreted returning commands
     from a callback as a request to send commands to the underlying ledger, and this is not
     supported in newer APIs.
     """
