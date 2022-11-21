@@ -6,7 +6,7 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 
 from __future__ import annotations
 
-# Earlier versions of dazl (before v8) had an API that mapped less directly to the gRPC Ledger API.
+# Earlier versions (before v8) had an API that mapped less directly to the gRPC Ledger API.
 # But with the HTTP JSON API, many common ledger methods now have much more direct translations that
 # still manage to adhere quite closely to dazl's historical behavior.
 #

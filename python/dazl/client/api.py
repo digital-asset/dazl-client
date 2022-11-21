@@ -837,12 +837,12 @@ class AIOPartyClient(PartyClient):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __payload:
             Template arguments for the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -915,17 +915,17 @@ class AIOPartyClient(PartyClient):
         :param __contract_id:
             The contract ID of the contract to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -1004,22 +1004,22 @@ class AIOPartyClient(PartyClient):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __key:
             The key of the contract to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -1100,23 +1100,23 @@ class AIOPartyClient(PartyClient):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __payload:
             Template arguments for the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument (positional
             argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -1676,12 +1676,12 @@ class SimplePartyClient(PartyClient):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __payload:
             Template arguments for the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -1753,17 +1753,17 @@ class SimplePartyClient(PartyClient):
         :param __contract_id:
             The contract ID of the contract to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -1841,22 +1841,22 @@ class SimplePartyClient(PartyClient):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __key:
             The key of the contract to exercise.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument.
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -1937,23 +1937,23 @@ class SimplePartyClient(PartyClient):
         :param __template_id:
             The template of the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __payload:
             Template arguments for the contract to be created (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __choice_name:
             The name of the choice to exercise (positional argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param __argument:
             The choice arguments. Can be omitted for choices that take no argument (positional
             argument only).
 
-            Note that future versions of dazl reserve the right to rename this parameter name at any
+            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
