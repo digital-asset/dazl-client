@@ -95,7 +95,6 @@ DEFAULT_TIMEOUT_SECONDS = 30
 def simple_client(
     url: Optional[str] = None,
     party: Union[None, str, Party] = None,
-    log_level: Optional[int] = INFO,
 ):
     """
     Start up a single client connecting to a single specific party.
@@ -106,20 +105,10 @@ def simple_client(
     :param party:
         The party to connect as. Defaults to the value of the ``DAML_LEDGER_PARTY`` environment
         variable if it is set.
-    :param log_level:
-        If non-``None``, configure a default logger that logs output at the specified level. The
-        default value is ``INFO``.
     :return:
         A :class:`SimplePartyClient` that can be used in a completely blocking, synchronous
         fashion.
     """
-    if log_level is not None:
-        from .. import setup_default_logger
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            setup_default_logger(log_level)
-
     if url is None:
         url = os.getenv("DAML_LEDGER_URL")
     if not url:

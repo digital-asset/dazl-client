@@ -29,7 +29,6 @@ __all__ = [
     "exercise_by_key",
     "frozendict",
     "run",
-    "setup_default_logger",
     "simple_client",
     "write_acs",
 ]
@@ -49,7 +48,6 @@ from .client.commands import (
 from .ledger import Command, connect
 from .pretty.table import write_acs
 from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
-from .util.logging import setup_default_logger
 
 # Large Protobuf message support
 
