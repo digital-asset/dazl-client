@@ -1,5 +1,5 @@
-dazl
-====
+Daml Python bindings (formerly known as dazl)
+=============================================
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/digital-asset/dazl-client/blob/main/LICENSE)
 <a href="https://circleci.com/gh/digital-asset/dazl-client">
@@ -96,7 +96,7 @@ If you see errors about incompatible python versions, switch your environment to
 Tests
 -----
 
-Tests in dazl are written using [pytest](https://docs.pytest.org/en/latest/). You can run them by doing:
+Tests in the Daml Python bindings are written using [pytest](https://docs.pytest.org/en/latest/). You can run them by doing:
 
 ```sh
 make test
@@ -105,4 +105,4 @@ make test
 Support
 -------
 
-The dazl library is supported by the Daml community. If you are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).
+The Daml Python bindings library are supported under the Daml Enterprise license. If you do not have a Daml Enterprise license and are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).
