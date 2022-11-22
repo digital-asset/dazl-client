@@ -44,7 +44,7 @@ class CanonicalMapper(ValueMapper):
         actual_keys = frozenset(orig_mapping)
         if actual_keys.issuperset(expected_keys):
             if actual_keys != expected_keys:
-                # Earlier versions of dazl were more tolerant of extra fields. To keep backwards
+                # Earlier versions were more tolerant of extra fields. To keep backwards
                 # compatibility, we'll emit a warning, though this may become an exception
                 # eventually.
                 context.value_warn(
