@@ -105,4 +105,4 @@ make test
 Support
 -------
 
-The Daml Python bindings library are supported under the Daml Enterprise license. If you do not have a Daml Enterprise license and are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).
+The Daml Python bindings library is supported under the Daml Enterprise license. If you do not have a Daml Enterprise license and are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).
