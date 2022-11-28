@@ -52,7 +52,7 @@ from ..api_types import (
     CommandMeta,
     CreateEvent,
     ExerciseResponse,
-    ParticipantMeteringReport,
+    MeteringReport,
     PartyInfo,
     ReadAs,
     Right,
@@ -940,7 +940,7 @@ class Connection(aio.Connection):
         application_id: Optional[str] = None,
         *,
         timeout: Optional[TimeDeltaLike] = None,
-    ) -> ParticipantMeteringReport:
+    ) -> MeteringReport:
         retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.MeteringReportServiceStub(self.channel)
 

@@ -17,16 +17,15 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/daml/ledger/api/v1/admin/metering_report_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x01\n\x18GetMeteringReportRequest\x12.\n\x04\x66rom\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04\x66rom\x12*\n\x02to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x02to\x12%\n\x0e\x61pplication_id\x18\x03 \x01(\tR\rapplicationId\"\xa7\x02\n\x19GetMeteringReportResponse\x12P\n\x07request\x18\x01 \x01(\x0b\x32\x36.com.daml.ledger.api.v1.admin.GetMeteringReportRequestR\x07request\x12\x66\n\x12participant_report\x18\x02 \x01(\x0b\x32\x37.com.daml.ledger.api.v1.admin.ParticipantMeteringReportR\x11participantReport\x12P\n\x16report_generation_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x14reportGenerationTime\"\xc7\x01\n\x19ParticipantMeteringReport\x12%\n\x0eparticipant_id\x18\x01 \x01(\tR\rparticipantId\x12\x19\n\x08is_final\x18\x02 \x01(\x08R\x07isFinal\x12h\n\x13\x61pplication_reports\x18\x03 \x03(\x0b\x32\x37.com.daml.ledger.api.v1.admin.ApplicationMeteringReportR\x12\x61pplicationReports\"c\n\x19\x41pplicationMeteringReport\x12%\n\x0e\x61pplication_id\x18\x01 \x01(\tR\rapplicationId\x12\x1f\n\x0b\x65vent_count\x18\x02 \x01(\x03R\neventCount2\x9e\x01\n\x15MeteringReportService\x12\x84\x01\n\x11GetMeteringReport\x12\x36.com.daml.ledger.api.v1.admin.GetMeteringReportRequest\x1a\x37.com.daml.ledger.api.v1.admin.GetMeteringReportResponseB\xa4\x01\n\x1c\x63om.daml.ledger.api.v1.adminB\x18MeteringReportOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/daml/ledger/api/v1/admin/metering_report_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/protobuf/struct.proto\"\x9d\x01\n\x18GetMeteringReportRequest\x12.\n\x04\x66rom\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04\x66rom\x12*\n\x02to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x02to\x12%\n\x0e\x61pplication_id\x18\x03 \x01(\tR\rapplicationId\"\xa4\x02\n\x19GetMeteringReportResponse\x12P\n\x07request\x18\x01 \x01(\x0b\x32\x36.com.daml.ledger.api.v1.admin.GetMeteringReportRequestR\x07request\x12P\n\x16report_generation_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x14reportGenerationTime\x12I\n\x14metering_report_json\x18\x04 \x01(\x0b\x32\x17.google.protobuf.StructR\x12meteringReportJsonJ\x04\x08\x02\x10\x03R\x12participant_report2\x9e\x01\n\x15MeteringReportService\x12\x84\x01\n\x11GetMeteringReport\x12\x36.com.daml.ledger.api.v1.admin.GetMeteringReportRequest\x1a\x37.com.daml.ledger.api.v1.admin.GetMeteringReportResponseB\xa4\x01\n\x1c\x63om.daml.ledger.api.v1.adminB\x18MeteringReportOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3')
 
 
 
 _GETMETERINGREPORTREQUEST = DESCRIPTOR.message_types_by_name['GetMeteringReportRequest']
 _GETMETERINGREPORTRESPONSE = DESCRIPTOR.message_types_by_name['GetMeteringReportResponse']
-_PARTICIPANTMETERINGREPORT = DESCRIPTOR.message_types_by_name['ParticipantMeteringReport']
-_APPLICATIONMETERINGREPORT = DESCRIPTOR.message_types_by_name['ApplicationMeteringReport']
 GetMeteringReportRequest = _reflection.GeneratedProtocolMessageType('GetMeteringReportRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETMETERINGREPORTREQUEST,
   '__module__' : 'com.daml.ledger.api.v1.admin.metering_report_service_pb2'
@@ -41,33 +40,15 @@ GetMeteringReportResponse = _reflection.GeneratedProtocolMessageType('GetMeterin
   })
 _sym_db.RegisterMessage(GetMeteringReportResponse)
 
-ParticipantMeteringReport = _reflection.GeneratedProtocolMessageType('ParticipantMeteringReport', (_message.Message,), {
-  'DESCRIPTOR' : _PARTICIPANTMETERINGREPORT,
-  '__module__' : 'com.daml.ledger.api.v1.admin.metering_report_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.ParticipantMeteringReport)
-  })
-_sym_db.RegisterMessage(ParticipantMeteringReport)
-
-ApplicationMeteringReport = _reflection.GeneratedProtocolMessageType('ApplicationMeteringReport', (_message.Message,), {
-  'DESCRIPTOR' : _APPLICATIONMETERINGREPORT,
-  '__module__' : 'com.daml.ledger.api.v1.admin.metering_report_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.ApplicationMeteringReport)
-  })
-_sym_db.RegisterMessage(ApplicationMeteringReport)
-
 _METERINGREPORTSERVICE = DESCRIPTOR.services_by_name['MeteringReportService']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'\n\034com.daml.ledger.api.v1.adminB\030MeteringReportOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin'
-  _GETMETERINGREPORTREQUEST._serialized_start=126
-  _GETMETERINGREPORTREQUEST._serialized_end=283
-  _GETMETERINGREPORTRESPONSE._serialized_start=286
-  _GETMETERINGREPORTRESPONSE._serialized_end=581
-  _PARTICIPANTMETERINGREPORT._serialized_start=584
-  _PARTICIPANTMETERINGREPORT._serialized_end=783
-  _APPLICATIONMETERINGREPORT._serialized_start=785
-  _APPLICATIONMETERINGREPORT._serialized_end=884
-  _METERINGREPORTSERVICE._serialized_start=887
-  _METERINGREPORTSERVICE._serialized_end=1045
+  _GETMETERINGREPORTREQUEST._serialized_start=156
+  _GETMETERINGREPORTREQUEST._serialized_end=313
+  _GETMETERINGREPORTRESPONSE._serialized_start=316
+  _GETMETERINGREPORTRESPONSE._serialized_end=608
+  _METERINGREPORTSERVICE._serialized_start=611
+  _METERINGREPORTSERVICE._serialized_end=769
 # @@protoc_insertion_point(module_scope)

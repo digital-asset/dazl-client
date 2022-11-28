@@ -14,6 +14,8 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 from collections.abc import Mapping as _Mapping
 from typing import Any, List, Optional, Sequence, Set, Tuple, Union
 
+from google.protobuf.json_format import MessageToDict
+
 from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import (
@@ -38,7 +40,6 @@ from ..aio import PackageLoader
 from ..api_types import (
     ActAs,
     Admin,
-    ApplicationMeteringReport,
     ArchiveEvent,
     Command,
     CreateAndExerciseCommand,
@@ -47,7 +48,9 @@ from ..api_types import (
     ExerciseByKeyCommand,
     ExerciseCommand,
     ExerciseResponse,
-    ParticipantMeteringReport,
+    MeteringReport,
+    MeteringReportApplication,
+    MeteringReportRequest,
     PartyInfo,
     ReadAs,
     Right,
@@ -415,22 +418,27 @@ class Codec:
     @staticmethod
     def decode_get_metering_report_response(
         __obj: lapiadminpb.GetMeteringReportResponse,
-    ) -> ParticipantMeteringReport:
-        return ParticipantMeteringReport(
-            report_generation_time=to_datetime(__obj.report_generation_time),
-            participant_id=__obj.participant_report.participant_id,
-            is_final=__obj.participant_report.is_final,
-            application_reports=[
-                Codec.decode_application_metering_report(a)
-                for a in __obj.participant_report.application_reports
+    ) -> MeteringReport:
+        # unfortunately with a JSON-based format, we lose a considerable degree
+        # of type safety, and this (rightfully) makes mypy complain loudly
+        report_json = MessageToDict(__obj.metering_report_json)
+
+        return MeteringReport(
+            request=MeteringReportRequest(
+                report_json.get("application"),  # type: ignore
+                report_json.get("from"),  # type: ignore
+                report_json.get("to"),  # type: ignore
+            ),
+            participant=report_json["participant"],  # type: ignore
+            final=report_json["final"],  # type: ignore
+            applications=[
+                MeteringReportApplication(
+                    o["application"],  # type: ignore
+                    int(o["events"]),  # type: ignore
+                )
+                for o in report_json["applications"]
             ],
         )
-
-    @staticmethod
-    def decode_application_metering_report(
-        __obj: lapiadminpb.ApplicationMeteringReport,
-    ) -> ApplicationMeteringReport:
-        return ApplicationMeteringReport(__obj.application_id, __obj.event_count)
 
     async def _look_up_choice(
         self, template_id: Any, choice_name: str

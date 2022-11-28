@@ -19,7 +19,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n2com/daml/ledger/api/v1/experimental_features.proto\x12\x16\x63om.daml.ledger.api.v1\"\xe9\x04\n\x14\x45xperimentalFeatures\x12v\n\x18self_service_error_codes\x18\x01 \x01(\x0b\x32\x39.com.daml.ledger.api.v1.ExperimentalSelfServiceErrorCodesB\x02\x18\x01R\x15selfServiceErrorCodes\x12O\n\x0bstatic_time\x18\x02 \x01(\x0b\x32..com.daml.ledger.api.v1.ExperimentalStaticTimeR\nstaticTime\x12i\n\x15\x63ommand_deduplication\x18\x03 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.CommandDeduplicationFeaturesR\x14\x63ommandDeduplication\x12\x62\n\x12optional_ledger_id\x18\x04 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.ExperimentalOptionalLedgerIdR\x10optionalLedgerId\x12R\n\x0c\x63ontract_ids\x18\x05 \x01(\x0b\x32/.com.daml.ledger.api.v1.ExperimentalContractIdsR\x0b\x63ontractIds\x12\x65\n\x13\x63ommitter_event_log\x18\x06 \x01(\x0b\x32\x35.com.daml.ledger.api.v1.ExperimentalCommitterEventLogR\x11\x63ommitterEventLog\"\'\n!ExperimentalSelfServiceErrorCodes:\x02\x18\x01\"6\n\x16\x45xperimentalStaticTime\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\"\xcb\x02\n\x1c\x43ommandDeduplicationFeatures\x12{\n\x1c\x64\x65\x64uplication_period_support\x18\x01 \x01(\x0b\x32\x39.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupportR\x1a\x64\x65\x64uplicationPeriodSupport\x12_\n\x12\x64\x65\x64uplication_type\x18\x02 \x01(\x0e\x32\x30.com.daml.ledger.api.v1.CommandDeduplicationTypeR\x11\x64\x65\x64uplicationType\x12M\n#max_deduplication_duration_enforced\x18\x03 \x01(\x08R maxDeduplicationDurationEnforced\"\x1e\n\x1c\x45xperimentalOptionalLedgerId\"\xbf\x03\n!CommandDeduplicationPeriodSupport\x12n\n\x0eoffset_support\x18\x01 \x01(\x0e\x32G.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupport.OffsetSupportR\roffsetSupport\x12t\n\x10\x64uration_support\x18\x02 \x01(\x0e\x32I.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupport.DurationSupportR\x0f\x64urationSupport\"d\n\rOffsetSupport\x12\x18\n\x14OFFSET_NOT_SUPPORTED\x10\x00\x12\x19\n\x15OFFSET_NATIVE_SUPPORT\x10\x01\x12\x1e\n\x1aOFFSET_CONVERT_TO_DURATION\x10\x02\"N\n\x0f\x44urationSupport\x12\x1b\n\x17\x44URATION_NATIVE_SUPPORT\x10\x00\x12\x1e\n\x1a\x44URATION_CONVERT_TO_OFFSET\x10\x01\"\xa5\x01\n\x17\x45xperimentalContractIds\x12S\n\x02v1\x18\x01 \x01(\x0e\x32\x43.com.daml.ledger.api.v1.ExperimentalContractIds.ContractIdV1SupportR\x02v1\"5\n\x13\x43ontractIdV1Support\x12\x0c\n\x08SUFFIXED\x10\x00\x12\x10\n\x0cNON_SUFFIXED\x10\x01\"\xcd\x01\n\x1d\x45xperimentalCommitterEventLog\x12q\n\x0e\x65vent_log_type\x18\x01 \x01(\x0e\x32K.com.daml.ledger.api.v1.ExperimentalCommitterEventLog.CommitterEventLogTypeR\x0c\x65ventLogType\"9\n\x15\x43ommitterEventLogType\x12\x0f\n\x0b\x43\x45NTRALIZED\x10\x00\x12\x0f\n\x0b\x44ISTRIBUTED\x10\x01*I\n\x18\x43ommandDeduplicationType\x12\x0e\n\nASYNC_ONLY\x10\x00\x12\x1d\n\x19\x41SYNC_AND_CONCURRENT_SYNC\x10\x01\x42\x98\x01\n\x16\x63om.daml.ledger.api.v1B\x1e\x45xperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n2com/daml/ledger/api/v1/experimental_features.proto\x12\x16\x63om.daml.ledger.api.v1\"\xd2\x05\n\x14\x45xperimentalFeatures\x12v\n\x18self_service_error_codes\x18\x01 \x01(\x0b\x32\x39.com.daml.ledger.api.v1.ExperimentalSelfServiceErrorCodesB\x02\x18\x01R\x15selfServiceErrorCodes\x12O\n\x0bstatic_time\x18\x02 \x01(\x0b\x32..com.daml.ledger.api.v1.ExperimentalStaticTimeR\nstaticTime\x12i\n\x15\x63ommand_deduplication\x18\x03 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.CommandDeduplicationFeaturesR\x14\x63ommandDeduplication\x12\x62\n\x12optional_ledger_id\x18\x04 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.ExperimentalOptionalLedgerIdR\x10optionalLedgerId\x12R\n\x0c\x63ontract_ids\x18\x05 \x01(\x0b\x32/.com.daml.ledger.api.v1.ExperimentalContractIdsR\x0b\x63ontractIds\x12\x65\n\x13\x63ommitter_event_log\x18\x06 \x01(\x0b\x32\x35.com.daml.ledger.api.v1.ExperimentalCommitterEventLogR\x11\x63ommitterEventLog\x12g\n\x13\x65xplicit_disclosure\x18\x07 \x01(\x0b\x32\x36.com.daml.ledger.api.v1.ExperimentalExplicitDisclosureR\x12\x65xplicitDisclosure\"\'\n!ExperimentalSelfServiceErrorCodes:\x02\x18\x01\"6\n\x16\x45xperimentalStaticTime\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\"\xcb\x02\n\x1c\x43ommandDeduplicationFeatures\x12{\n\x1c\x64\x65\x64uplication_period_support\x18\x01 \x01(\x0b\x32\x39.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupportR\x1a\x64\x65\x64uplicationPeriodSupport\x12_\n\x12\x64\x65\x64uplication_type\x18\x02 \x01(\x0e\x32\x30.com.daml.ledger.api.v1.CommandDeduplicationTypeR\x11\x64\x65\x64uplicationType\x12M\n#max_deduplication_duration_enforced\x18\x03 \x01(\x08R maxDeduplicationDurationEnforced\"\x1e\n\x1c\x45xperimentalOptionalLedgerId\"\xbf\x03\n!CommandDeduplicationPeriodSupport\x12n\n\x0eoffset_support\x18\x01 \x01(\x0e\x32G.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupport.OffsetSupportR\roffsetSupport\x12t\n\x10\x64uration_support\x18\x02 \x01(\x0e\x32I.com.daml.ledger.api.v1.CommandDeduplicationPeriodSupport.DurationSupportR\x0f\x64urationSupport\"d\n\rOffsetSupport\x12\x18\n\x14OFFSET_NOT_SUPPORTED\x10\x00\x12\x19\n\x15OFFSET_NATIVE_SUPPORT\x10\x01\x12\x1e\n\x1aOFFSET_CONVERT_TO_DURATION\x10\x02\"N\n\x0f\x44urationSupport\x12\x1b\n\x17\x44URATION_NATIVE_SUPPORT\x10\x00\x12\x1e\n\x1a\x44URATION_CONVERT_TO_OFFSET\x10\x01\"\xa5\x01\n\x17\x45xperimentalContractIds\x12S\n\x02v1\x18\x01 \x01(\x0e\x32\x43.com.daml.ledger.api.v1.ExperimentalContractIds.ContractIdV1SupportR\x02v1\"5\n\x13\x43ontractIdV1Support\x12\x0c\n\x08SUFFIXED\x10\x00\x12\x10\n\x0cNON_SUFFIXED\x10\x01\"\xcd\x01\n\x1d\x45xperimentalCommitterEventLog\x12q\n\x0e\x65vent_log_type\x18\x01 \x01(\x0e\x32K.com.daml.ledger.api.v1.ExperimentalCommitterEventLog.CommitterEventLogTypeR\x0c\x65ventLogType\"9\n\x15\x43ommitterEventLogType\x12\x0f\n\x0b\x43\x45NTRALIZED\x10\x00\x12\x0f\n\x0b\x44ISTRIBUTED\x10\x01\">\n\x1e\x45xperimentalExplicitDisclosure\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported*I\n\x18\x43ommandDeduplicationType\x12\x0e\n\nASYNC_ONLY\x10\x00\x12\x1d\n\x19\x41SYNC_AND_CONCURRENT_SYNC\x10\x01\x42\x98\x01\n\x16\x63om.daml.ledger.api.v1B\x1e\x45xperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3')
 
 _COMMANDDEDUPLICATIONTYPE = DESCRIPTOR.enum_types_by_name['CommandDeduplicationType']
 CommandDeduplicationType = enum_type_wrapper.EnumTypeWrapper(_COMMANDDEDUPLICATIONTYPE)
@@ -35,6 +35,7 @@ _EXPERIMENTALOPTIONALLEDGERID = DESCRIPTOR.message_types_by_name['ExperimentalOp
 _COMMANDDEDUPLICATIONPERIODSUPPORT = DESCRIPTOR.message_types_by_name['CommandDeduplicationPeriodSupport']
 _EXPERIMENTALCONTRACTIDS = DESCRIPTOR.message_types_by_name['ExperimentalContractIds']
 _EXPERIMENTALCOMMITTEREVENTLOG = DESCRIPTOR.message_types_by_name['ExperimentalCommitterEventLog']
+_EXPERIMENTALEXPLICITDISCLOSURE = DESCRIPTOR.message_types_by_name['ExperimentalExplicitDisclosure']
 _COMMANDDEDUPLICATIONPERIODSUPPORT_OFFSETSUPPORT = _COMMANDDEDUPLICATIONPERIODSUPPORT.enum_types_by_name['OffsetSupport']
 _COMMANDDEDUPLICATIONPERIODSUPPORT_DURATIONSUPPORT = _COMMANDDEDUPLICATIONPERIODSUPPORT.enum_types_by_name['DurationSupport']
 _EXPERIMENTALCONTRACTIDS_CONTRACTIDV1SUPPORT = _EXPERIMENTALCONTRACTIDS.enum_types_by_name['ContractIdV1Support']
@@ -95,6 +96,13 @@ ExperimentalCommitterEventLog = _reflection.GeneratedProtocolMessageType('Experi
   })
 _sym_db.RegisterMessage(ExperimentalCommitterEventLog)
 
+ExperimentalExplicitDisclosure = _reflection.GeneratedProtocolMessageType('ExperimentalExplicitDisclosure', (_message.Message,), {
+  'DESCRIPTOR' : _EXPERIMENTALEXPLICITDISCLOSURE,
+  '__module__' : 'com.daml.ledger.api.v1.experimental_features_pb2'
+  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.ExperimentalExplicitDisclosure)
+  })
+_sym_db.RegisterMessage(ExperimentalExplicitDisclosure)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
@@ -103,30 +111,32 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _EXPERIMENTALFEATURES.fields_by_name['self_service_error_codes']._serialized_options = b'\030\001'
   _EXPERIMENTALSELFSERVICEERRORCODES._options = None
   _EXPERIMENTALSELFSERVICEERRORCODES._serialized_options = b'\030\001'
-  _COMMANDDEDUPLICATIONTYPE._serialized_start=1987
-  _COMMANDDEDUPLICATIONTYPE._serialized_end=2060
+  _COMMANDDEDUPLICATIONTYPE._serialized_start=2156
+  _COMMANDDEDUPLICATIONTYPE._serialized_end=2229
   _EXPERIMENTALFEATURES._serialized_start=79
-  _EXPERIMENTALFEATURES._serialized_end=696
-  _EXPERIMENTALSELFSERVICEERRORCODES._serialized_start=698
-  _EXPERIMENTALSELFSERVICEERRORCODES._serialized_end=737
-  _EXPERIMENTALSTATICTIME._serialized_start=739
-  _EXPERIMENTALSTATICTIME._serialized_end=793
-  _COMMANDDEDUPLICATIONFEATURES._serialized_start=796
-  _COMMANDDEDUPLICATIONFEATURES._serialized_end=1127
-  _EXPERIMENTALOPTIONALLEDGERID._serialized_start=1129
-  _EXPERIMENTALOPTIONALLEDGERID._serialized_end=1159
-  _COMMANDDEDUPLICATIONPERIODSUPPORT._serialized_start=1162
-  _COMMANDDEDUPLICATIONPERIODSUPPORT._serialized_end=1609
-  _COMMANDDEDUPLICATIONPERIODSUPPORT_OFFSETSUPPORT._serialized_start=1429
-  _COMMANDDEDUPLICATIONPERIODSUPPORT_OFFSETSUPPORT._serialized_end=1529
-  _COMMANDDEDUPLICATIONPERIODSUPPORT_DURATIONSUPPORT._serialized_start=1531
-  _COMMANDDEDUPLICATIONPERIODSUPPORT_DURATIONSUPPORT._serialized_end=1609
-  _EXPERIMENTALCONTRACTIDS._serialized_start=1612
-  _EXPERIMENTALCONTRACTIDS._serialized_end=1777
-  _EXPERIMENTALCONTRACTIDS_CONTRACTIDV1SUPPORT._serialized_start=1724
-  _EXPERIMENTALCONTRACTIDS_CONTRACTIDV1SUPPORT._serialized_end=1777
-  _EXPERIMENTALCOMMITTEREVENTLOG._serialized_start=1780
-  _EXPERIMENTALCOMMITTEREVENTLOG._serialized_end=1985
-  _EXPERIMENTALCOMMITTEREVENTLOG_COMMITTEREVENTLOGTYPE._serialized_start=1928
-  _EXPERIMENTALCOMMITTEREVENTLOG_COMMITTEREVENTLOGTYPE._serialized_end=1985
+  _EXPERIMENTALFEATURES._serialized_end=801
+  _EXPERIMENTALSELFSERVICEERRORCODES._serialized_start=803
+  _EXPERIMENTALSELFSERVICEERRORCODES._serialized_end=842
+  _EXPERIMENTALSTATICTIME._serialized_start=844
+  _EXPERIMENTALSTATICTIME._serialized_end=898
+  _COMMANDDEDUPLICATIONFEATURES._serialized_start=901
+  _COMMANDDEDUPLICATIONFEATURES._serialized_end=1232
+  _EXPERIMENTALOPTIONALLEDGERID._serialized_start=1234
+  _EXPERIMENTALOPTIONALLEDGERID._serialized_end=1264
+  _COMMANDDEDUPLICATIONPERIODSUPPORT._serialized_start=1267
+  _COMMANDDEDUPLICATIONPERIODSUPPORT._serialized_end=1714
+  _COMMANDDEDUPLICATIONPERIODSUPPORT_OFFSETSUPPORT._serialized_start=1534
+  _COMMANDDEDUPLICATIONPERIODSUPPORT_OFFSETSUPPORT._serialized_end=1634
+  _COMMANDDEDUPLICATIONPERIODSUPPORT_DURATIONSUPPORT._serialized_start=1636
+  _COMMANDDEDUPLICATIONPERIODSUPPORT_DURATIONSUPPORT._serialized_end=1714
+  _EXPERIMENTALCONTRACTIDS._serialized_start=1717
+  _EXPERIMENTALCONTRACTIDS._serialized_end=1882
+  _EXPERIMENTALCONTRACTIDS_CONTRACTIDV1SUPPORT._serialized_start=1829
+  _EXPERIMENTALCONTRACTIDS_CONTRACTIDV1SUPPORT._serialized_end=1882
+  _EXPERIMENTALCOMMITTEREVENTLOG._serialized_start=1885
+  _EXPERIMENTALCOMMITTEREVENTLOG._serialized_end=2090
+  _EXPERIMENTALCOMMITTEREVENTLOG_COMMITTEREVENTLOGTYPE._serialized_start=2033
+  _EXPERIMENTALCOMMITTEREVENTLOG_COMMITTEREVENTLOGTYPE._serialized_end=2090
+  _EXPERIMENTALEXPLICITDISCLOSURE._serialized_start=2092
+  _EXPERIMENTALEXPLICITDISCLOSURE._serialized_end=2154
 # @@protoc_insertion_point(module_scope)

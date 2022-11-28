@@ -18,7 +18,7 @@ from ..api_types import (
     Command,
     CreateEvent,
     ExerciseResponse,
-    ParticipantMeteringReport,
+    MeteringReport,
     PartyInfo,
     Right,
     User,
@@ -194,7 +194,7 @@ class Connection(_Connection, PackageService, Protocol):
         application_id: Optional[str] = None,
         *,
         timeout: Optional[TimeDeltaLike] = ...,
-    ) -> ParticipantMeteringReport: ...
+    ) -> MeteringReport: ...
 
 @runtime_checkable
 class QueryStream(_QueryStream, Protocol):
