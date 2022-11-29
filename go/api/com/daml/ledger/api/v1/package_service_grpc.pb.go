@@ -25,22 +25,10 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PackageServiceClient interface {
 	// Returns the identifiers of all supported packages.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the request does not include a valid ledger id
 	ListPackages(ctx context.Context, in *ListPackagesRequest, opts ...grpc.CallOption) (*ListPackagesResponse, error)
 	// Returns the contents of a single package.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the requested package is unknown
 	GetPackage(ctx context.Context, in *GetPackageRequest, opts ...grpc.CallOption) (*GetPackageResponse, error)
 	// Returns the status of a single package.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the requested package is unknown
 	GetPackageStatus(ctx context.Context, in *GetPackageStatusRequest, opts ...grpc.CallOption) (*GetPackageStatusResponse, error)
 }
 
@@ -84,22 +72,10 @@ func (c *packageServiceClient) GetPackageStatus(ctx context.Context, in *GetPack
 // for forward compatibility
 type PackageServiceServer interface {
 	// Returns the identifiers of all supported packages.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the request does not include a valid ledger id
 	ListPackages(context.Context, *ListPackagesRequest) (*ListPackagesResponse, error)
 	// Returns the contents of a single package.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the requested package is unknown
 	GetPackage(context.Context, *GetPackageRequest) (*GetPackageResponse, error)
 	// Returns the status of a single package.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the requested package is unknown
 	GetPackageStatus(context.Context, *GetPackageStatusRequest) (*GetPackageStatusResponse, error)
 	mustEmbedUnimplementedPackageServiceServer()
 }

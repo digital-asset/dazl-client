@@ -47,8 +47,6 @@ class TimeServiceServicer(object):
 
     def SetTime(self, request, context):
         """Allows clients to change the ledger's clock in an atomic get-and-set operation.
-        Errors:
-        - ``INVALID_ARGUMENT``: if ``current_time`` is invalid (it MUST precisely match the current time as it's known to the ledger server)
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

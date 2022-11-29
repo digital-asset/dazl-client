@@ -25,9 +25,6 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PackageManagementServiceClient interface {
 	// Returns the details of all Daml-LF packages known to the backing participant.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
 	ListKnownPackages(ctx context.Context, in *ListKnownPackagesRequest, opts ...grpc.CallOption) (*ListKnownPackagesResponse, error)
 	// Upload a DAR file to the backing participant.
 	// Depending on the ledger implementation this might also make the package
@@ -38,12 +35,6 @@ type PackageManagementServiceClient interface {
 	//   - Succeed, if the package was successfully uploaded, or if the same package
 	//     was already uploaded before.
 	//   - Respond with a gRPC error
-	//
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “UNIMPLEMENTED“: if DAR package uploading is not supported by the backing participant
-	// - “INVALID_ARGUMENT“: if the DAR file is too big or malformed. The maximum supported size is implementation specific.
 	UploadDarFile(ctx context.Context, in *UploadDarFileRequest, opts ...grpc.CallOption) (*UploadDarFileResponse, error)
 }
 
@@ -78,9 +69,6 @@ func (c *packageManagementServiceClient) UploadDarFile(ctx context.Context, in *
 // for forward compatibility
 type PackageManagementServiceServer interface {
 	// Returns the details of all Daml-LF packages known to the backing participant.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
 	ListKnownPackages(context.Context, *ListKnownPackagesRequest) (*ListKnownPackagesResponse, error)
 	// Upload a DAR file to the backing participant.
 	// Depending on the ledger implementation this might also make the package
@@ -91,12 +79,6 @@ type PackageManagementServiceServer interface {
 	//   - Succeed, if the package was successfully uploaded, or if the same package
 	//     was already uploaded before.
 	//   - Respond with a gRPC error
-	//
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “UNIMPLEMENTED“: if DAR package uploading is not supported by the backing participant
-	// - “INVALID_ARGUMENT“: if the DAR file is too big or malformed. The maximum supported size is implementation specific.
 	UploadDarFile(context.Context, *UploadDarFileRequest) (*UploadDarFileResponse, error)
 	mustEmbedUnimplementedPackageManagementServiceServer()
 }

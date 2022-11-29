@@ -47,9 +47,6 @@ class PackageManagementServiceServicer(object):
 
     def ListKnownPackages(self, request, context):
         """Returns the details of all Daml-LF packages known to the backing participant.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -65,11 +62,6 @@ class PackageManagementServiceServicer(object):
         - Succeed, if the package was successfully uploaded, or if the same package
         was already uploaded before.
         - Respond with a gRPC error
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``UNIMPLEMENTED``: if DAR package uploading is not supported by the backing participant
-        - ``INVALID_ARGUMENT``: if the DAR file is too big or malformed. The maximum supported size is implementation specific.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

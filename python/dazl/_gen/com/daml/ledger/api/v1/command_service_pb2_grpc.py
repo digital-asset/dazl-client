@@ -57,18 +57,6 @@ class CommandServiceServicer(object):
     def SubmitAndWait(self, request, context):
         """Submits a single composite command and waits for its result.
         Propagates the gRPC error of failed submissions including Daml interpretation errors.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
-        due to for example contention on resources
-        - ``ALREADY_EXISTS`` if a resource is duplicated (e.g. contract key)
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``ABORTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
-        - ``FAILED_PRECONDITION``: on consistency errors (e.g. the contract key has changed since the submission)
-        or if an interpretation error occurred
-        - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
-        - ``DEADLINE_EXCEEDED``: if the request failed to receive its completion within the predefined timeout.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -77,18 +65,6 @@ class CommandServiceServicer(object):
     def SubmitAndWaitForTransactionId(self, request, context):
         """Submits a single composite command, waits for its result, and returns the transaction id.
         Propagates the gRPC error of failed submissions including Daml interpretation errors.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
-        due to for example contention on resources
-        - ``ALREADY_EXISTS`` if a resource is duplicated (e.g. contract key)
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``ABORTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
-        - ``FAILED_PRECONDITION``: on consistency errors (e.g. the contract key has changed since the submission)
-        or if an interpretation error occurred
-        - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
-        - ``DEADLINE_EXCEEDED``: if the request failed to receive its completion within the predefined timeout.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -97,18 +73,6 @@ class CommandServiceServicer(object):
     def SubmitAndWaitForTransaction(self, request, context):
         """Submits a single composite command, waits for its result, and returns the transaction.
         Propagates the gRPC error of failed submissions including Daml interpretation errors.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
-        due to for example contention on resources
-        - ``ALREADY_EXISTS`` if a resource is duplicated (e.g. contract key)
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``ABORTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
-        - ``FAILED_PRECONDITION``: on consistency errors (e.g. the contract key has changed since the submission)
-        or if an interpretation error occurred
-        - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
-        - ``DEADLINE_EXCEEDED``: if the request failed to receive its completion within the predefined timeout.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -117,18 +81,6 @@ class CommandServiceServicer(object):
     def SubmitAndWaitForTransactionTree(self, request, context):
         """Submits a single composite command, waits for its result, and returns the transaction tree.
         Propagates the gRPC error of failed submissions including Daml interpretation errors.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
-        due to for example contention on resources
-        - ``ALREADY_EXISTS`` if a resource is duplicated (e.g. contract key)
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``ABORTED``: if the number of in-flight commands reached the maximum (if a limit is configured)
-        - ``FAILED_PRECONDITION``: on consistency errors (e.g. the contract key has changed since the submission)
-        or if an interpretation error occurred
-        - ``UNAVAILABLE``: if the participant is not yet ready to submit commands or if the service has been shut down.
-        - ``DEADLINE_EXCEEDED``: if the request failed to receive its completion within the predefined timeout.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

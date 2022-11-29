@@ -36,8 +36,7 @@ type Completion struct {
 	// Required
 	CommandId string `protobuf:"bytes,1,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
 	// Identifies the exact type of the error.
-	// For example, malformed or double spend transactions will result in a “INVALID_ARGUMENT“ status.
-	// Transactions with invalid time time windows (which may be valid at a later date) will result in an “ABORTED“ error.
+	// It uses the same format of conveying error details as it is used for the RPC responses of the APIs.
 	// Optional
 	Status *status.Status `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
 	// The transaction_id of the transaction that resulted from the command with command_id.
