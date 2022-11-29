@@ -11,6 +11,8 @@ Thread-blocking protocols and base classes for connecting to a Daml ledger.
 .. autoclass:: QueryStream()
 """
 
+from __future__ import annotations
+
 import sys
 
 from .. import Connection as _Connection, QueryStream as _QueryStream

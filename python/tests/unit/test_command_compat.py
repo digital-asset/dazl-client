@@ -5,6 +5,8 @@ Ensure that v7 Commands and v8 Commands behave as expected, particularly with re
 deprecations.
 """
 
+from __future__ import annotations
+
 from dazl.client import commands as v7
 from dazl.damlast.lookup import parse_type_con_name
 from dazl.ledger import api_types as v8
@@ -12,27 +14,6 @@ from dazl.prim import ContractId, Party
 import pytest
 
 Operator = Party("Operator")
-
-
-def test_model_writing_imports():
-    """
-    The dazl.model.writing implementations have been moved to dazl.client; make sure these imports
-    refer to the desired types.
-
-    Note that DeprecationWarnings are NOT raised on imports, so pytest.warns(DeprecationWarning)
-    is not used here!
-    """
-    from dazl.model.writing import (
-        CreateAndExerciseCommand,
-        CreateCommand,
-        ExerciseByKeyCommand,
-        ExerciseCommand,
-    )
-
-    assert CreateCommand == v7.CreateCommand
-    assert CreateAndExerciseCommand == v7.CreateAndExerciseCommand
-    assert ExerciseCommand == v7.ExerciseCommand
-    assert ExerciseByKeyCommand == v7.ExerciseByKeyCommand
 
 
 def test_create_command():

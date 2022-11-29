@@ -4,6 +4,8 @@
 """
 Tests to ensure that cancelled command submissions behave correctly.
 """
+from __future__ import annotations
+
 from asyncio import ensure_future
 
 from dazl import async_network, connect

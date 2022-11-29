@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from asyncio import CancelledError, sleep
 from datetime import datetime, timedelta
 from typing import Awaitable, Callable, TypeVar
@@ -33,7 +35,7 @@ async def retry(
     fn: Callable[[], Awaitable[T]],
     *,
     retry_safe_ex: Callable[[Exception], bool] = is_retryable_exception,
-    timeout: timedelta = DEFAULT_TIMEOUT
+    timeout: timedelta = DEFAULT_TIMEOUT,
 ) -> T:
     a, b = 0, 1
     start = datetime.utcnow()

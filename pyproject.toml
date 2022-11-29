@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "dazl"
-version = "7.10.0"
+version = "8.0.0a4"
 description = "high-level Ledger API client for Daml ledgers"
 license = "Apache-2.0"
 authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]
@@ -14,10 +14,8 @@ keywords = ["daml", "blockchain", "dlt", "distributed ledger", "digital asset"]
 packages = [{ include = "dazl", from = "python" }, { include = "_dazl_pb", from = "python" }]
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 aiohttp = { version = "*", optional = true }
-async_exit_stack = { version = "*", python = "~=3.6.0" }
-dataclasses = { version = "*", python = "~=3.6.0" }
 google-auth = { version = "*", optional = true }
 googleapis_common_protos = "^1"
 grpcio = ">=1.32.0"
@@ -29,7 +27,7 @@ pyOpenSSL = { version = "*", optional = true }
 requests = "*"
 semver = "*"
 toposort = "*"
-typing_extensions = { version = "*", optional = true }
+typing_extensions = { version = "*" }
 
 [tool.poetry.dev-dependencies]
 black = "*"
@@ -46,7 +44,6 @@ sphinx = "^4"
 sphinx-autobuild = "*"
 sphinx-markdown-builder = "^0.5.4"
 sphinxcontrib-trio = "^1.1.2"
-types-dataclasses = { version = "*", python = "~=3.6.0" }
 types-protobuf = "*"
 types-pyOpenSSL = "*"
 types-requests = "*"
@@ -62,12 +59,14 @@ tls-testing = ["pyOpenSSL"]
 
 [tool.poetry.scripts]
 dazl = 'dazl.cli:main'
+protoc-gen-dazl-go = '_dazl_pb.plugin_go:main'
 protoc-gen-dazl-python = '_dazl_pb.plugin_python:main'
 
 [tool.black]
 line-length = 100
 
 [tool.isort]
+add_imports = ["from __future__ import annotations"]
 combine_as_imports = true
 combine_star = true
 force_sort_within_sections = true

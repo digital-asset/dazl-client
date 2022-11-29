@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
+from __future__ import annotations
+
 from unittest import TestCase
 
 from dazl.client.commands import CommandBuilder, CommandDefaults, CommandPayload, create

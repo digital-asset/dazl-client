@@ -6,15 +6,12 @@ This module contains supporting infrastructure for built-in method definitions f
 Daml-LF files.
 """
 
+from __future__ import annotations
+
 from typing import Any, Optional, Sequence, Type as PyType, Union
-import warnings
 
 from .daml_lf_1 import BuiltinFunction, Expr, Type, ValName
 from .util import package_local_name
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
-    from ..model.types import TypeReference
 
 
 class _BuiltinMeta(type):
@@ -64,16 +61,14 @@ class BuiltinTable:
         else:
             raise ValueError(f"A builtin could not be registered! {builtin!r}")
 
-    def resolve(
-        self, ref: "Union[str, ValName, TypeReference, BuiltinFunction]"
-    ) -> "Optional[Builtin]":
+    def resolve(self, ref: "Union[str, ValName, BuiltinFunction]") -> "Optional[Builtin]":
         """
         Return a :class:`Builtin` implementation for the name or reference if one is defined.
         """
         if isinstance(ref, BuiltinFunction):
             # All BuiltinFunctions MUST be defined
             return self.by_builtin[ref]
-        elif isinstance(ref, (ValName, TypeReference)):
+        elif isinstance(ref, ValName):
             return self.by_name.get(package_local_name(ref))
         elif isinstance(ref, str):
             return self.by_name.get(ref)
