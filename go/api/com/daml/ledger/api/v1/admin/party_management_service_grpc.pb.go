@@ -24,41 +24,27 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PartyManagementServiceClient interface {
-	// Return the identifier of the backing participant.
+	// Return the identifier of the participant.
 	// All horizontally scaled replicas should return the same id.
 	// daml-on-kv-ledger: returns an identifier supplied on command line at launch time
-	// canton: returns globally unique identifier of the backing participant
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
+	// canton: returns globally unique identifier of the participant
 	GetParticipantId(ctx context.Context, in *GetParticipantIdRequest, opts ...grpc.CallOption) (*GetParticipantIdResponse, error)
 	// Get the party details of the given parties. Only known parties will be
 	// returned in the list.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
 	GetParties(ctx context.Context, in *GetPartiesRequest, opts ...grpc.CallOption) (*GetPartiesResponse, error)
-	// List the parties known by the backing participant.
+	// List the parties known by the participant.
 	// The list returned contains parties whose ledger access is facilitated by
-	// backing participant and the ones maintained elsewhere.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
+	// the participant and the ones maintained elsewhere.
 	ListKnownParties(ctx context.Context, in *ListKnownPartiesRequest, opts ...grpc.CallOption) (*ListKnownPartiesResponse, error)
-	// Adds a new party to the set managed by the backing participant.
+	// Allocates a new party on a ledger and adds it to the set managed by the participant.
 	// Caller specifies a party identifier suggestion, the actual identifier
 	// allocated might be different and is implementation specific.
+	// Caller can specify party metadata that is stored locally on the participant.
 	// This call may:
 	//   - Succeed, in which case the actual allocated identifier is visible in
 	//     the response.
 	//   - Respond with a gRPC error
 	//
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “UNIMPLEMENTED“: if synchronous party allocation is not supported by the backing participant
-	// - “DEADLINE_EXCEEDED“: if the request times out
-	// - “INVALID_ARGUMENT“: if the provided hint and/or display name is invalid on the given ledger (see below).
 	// daml-on-kv-ledger: suggestion's uniqueness is checked by the validators in
 	// the consensus layer and call rejected if the identifier is already present.
 	// canton: completely different globally unique identifier is allocated.
@@ -67,6 +53,9 @@ type PartyManagementServiceClient interface {
 	// The party identifier suggestion must be a valid party name. Party names are required to be non-empty US-ASCII strings built from letters, digits, space,
 	// colon, minus and underscore limited to 255 chars
 	AllocateParty(ctx context.Context, in *AllocatePartyRequest, opts ...grpc.CallOption) (*AllocatePartyResponse, error)
+	// Update selected modifiable participant-local attributes of a party details resource.
+	// Can update the participant's local information for both local and non-local parties.
+	UpdatePartyDetails(ctx context.Context, in *UpdatePartyDetailsRequest, opts ...grpc.CallOption) (*UpdatePartyDetailsResponse, error)
 }
 
 type partyManagementServiceClient struct {
@@ -113,45 +102,40 @@ func (c *partyManagementServiceClient) AllocateParty(ctx context.Context, in *Al
 	return out, nil
 }
 
+func (c *partyManagementServiceClient) UpdatePartyDetails(ctx context.Context, in *UpdatePartyDetailsRequest, opts ...grpc.CallOption) (*UpdatePartyDetailsResponse, error) {
+	out := new(UpdatePartyDetailsResponse)
+	err := c.cc.Invoke(ctx, "/com.daml.ledger.api.v1.admin.PartyManagementService/UpdatePartyDetails", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PartyManagementServiceServer is the server API for PartyManagementService service.
 // All implementations must embed UnimplementedPartyManagementServiceServer
 // for forward compatibility
 type PartyManagementServiceServer interface {
-	// Return the identifier of the backing participant.
+	// Return the identifier of the participant.
 	// All horizontally scaled replicas should return the same id.
 	// daml-on-kv-ledger: returns an identifier supplied on command line at launch time
-	// canton: returns globally unique identifier of the backing participant
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
+	// canton: returns globally unique identifier of the participant
 	GetParticipantId(context.Context, *GetParticipantIdRequest) (*GetParticipantIdResponse, error)
 	// Get the party details of the given parties. Only known parties will be
 	// returned in the list.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
 	GetParties(context.Context, *GetPartiesRequest) (*GetPartiesResponse, error)
-	// List the parties known by the backing participant.
+	// List the parties known by the participant.
 	// The list returned contains parties whose ledger access is facilitated by
-	// backing participant and the ones maintained elsewhere.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
+	// the participant and the ones maintained elsewhere.
 	ListKnownParties(context.Context, *ListKnownPartiesRequest) (*ListKnownPartiesResponse, error)
-	// Adds a new party to the set managed by the backing participant.
+	// Allocates a new party on a ledger and adds it to the set managed by the participant.
 	// Caller specifies a party identifier suggestion, the actual identifier
 	// allocated might be different and is implementation specific.
+	// Caller can specify party metadata that is stored locally on the participant.
 	// This call may:
 	//   - Succeed, in which case the actual allocated identifier is visible in
 	//     the response.
 	//   - Respond with a gRPC error
 	//
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “UNIMPLEMENTED“: if synchronous party allocation is not supported by the backing participant
-	// - “DEADLINE_EXCEEDED“: if the request times out
-	// - “INVALID_ARGUMENT“: if the provided hint and/or display name is invalid on the given ledger (see below).
 	// daml-on-kv-ledger: suggestion's uniqueness is checked by the validators in
 	// the consensus layer and call rejected if the identifier is already present.
 	// canton: completely different globally unique identifier is allocated.
@@ -160,6 +144,9 @@ type PartyManagementServiceServer interface {
 	// The party identifier suggestion must be a valid party name. Party names are required to be non-empty US-ASCII strings built from letters, digits, space,
 	// colon, minus and underscore limited to 255 chars
 	AllocateParty(context.Context, *AllocatePartyRequest) (*AllocatePartyResponse, error)
+	// Update selected modifiable participant-local attributes of a party details resource.
+	// Can update the participant's local information for both local and non-local parties.
+	UpdatePartyDetails(context.Context, *UpdatePartyDetailsRequest) (*UpdatePartyDetailsResponse, error)
 	mustEmbedUnimplementedPartyManagementServiceServer()
 }
 
@@ -178,6 +165,9 @@ func (UnimplementedPartyManagementServiceServer) ListKnownParties(context.Contex
 }
 func (UnimplementedPartyManagementServiceServer) AllocateParty(context.Context, *AllocatePartyRequest) (*AllocatePartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllocateParty not implemented")
+}
+func (UnimplementedPartyManagementServiceServer) UpdatePartyDetails(context.Context, *UpdatePartyDetailsRequest) (*UpdatePartyDetailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePartyDetails not implemented")
 }
 func (UnimplementedPartyManagementServiceServer) mustEmbedUnimplementedPartyManagementServiceServer() {
 }
@@ -265,6 +255,24 @@ func _PartyManagementService_AllocateParty_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyManagementService_UpdatePartyDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePartyDetailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyManagementServiceServer).UpdatePartyDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.daml.ledger.api.v1.admin.PartyManagementService/UpdatePartyDetails",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyManagementServiceServer).UpdatePartyDetails(ctx, req.(*UpdatePartyDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PartyManagementService_ServiceDesc is the grpc.ServiceDesc for PartyManagementService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -287,6 +295,10 @@ var PartyManagementService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllocateParty",
 			Handler:    _PartyManagementService_AllocateParty_Handler,
+		},
+		{
+			MethodName: "UpdatePartyDetails",
+			Handler:    _PartyManagementService_UpdatePartyDetails_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

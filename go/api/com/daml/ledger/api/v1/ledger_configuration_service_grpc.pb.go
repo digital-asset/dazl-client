@@ -25,10 +25,6 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LedgerConfigurationServiceClient interface {
 	// Returns the latest configuration as the first response, and publishes configuration updates in the same stream.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the request does not include a valid ledger id
 	GetLedgerConfiguration(ctx context.Context, in *GetLedgerConfigurationRequest, opts ...grpc.CallOption) (LedgerConfigurationService_GetLedgerConfigurationClient, error)
 }
 
@@ -77,10 +73,6 @@ func (x *ledgerConfigurationServiceGetLedgerConfigurationClient) Recv() (*GetLed
 // for forward compatibility
 type LedgerConfigurationServiceServer interface {
 	// Returns the latest configuration as the first response, and publishes configuration updates in the same stream.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the request does not include a valid ledger id
 	GetLedgerConfiguration(*GetLedgerConfigurationRequest, LedgerConfigurationService_GetLedgerConfigurationServer) error
 	mustEmbedUnimplementedLedgerConfigurationServiceServer()
 }

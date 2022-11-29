@@ -47,9 +47,6 @@ class ConfigManagementServiceServicer(object):
 
     def GetTimeModel(self, request, context):
         """Return the currently active time model and the current configuration generation.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -57,18 +54,6 @@ class ConfigManagementServiceServicer(object):
 
     def SetTimeModel(self, request, context):
         """Set the ledger time model.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``INVALID_ARGUMENT``: if arguments are invalid, or the provided configuration generation
-        does not match the current active configuration generation. The caller is expected
-        to retry by again fetching current time model using 'GetTimeModel', applying changes
-        and resubmitting.
-        - ``DEADLINE_EXCEEDED``: if the request times out. Note that a timed out request may
-        have still been committed to the ledger. Application should re-query the current
-        time model before retrying.
-        - ``FAILED_PRECONDITION``: if the request is rejected.
-        - ``UNIMPLEMENTED``: if this method is not supported by the backing ledger.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

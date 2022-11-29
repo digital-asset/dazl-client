@@ -28,11 +28,6 @@ type ActiveContractsServiceClient interface {
 	// If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
 	// Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
 	// Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the request does not include a valid ledger id
-	// - “INVALID_ARGUMENT“: if the payload is malformed or is missing required fields (filters by party cannot be empty)
 	GetActiveContracts(ctx context.Context, in *GetActiveContractsRequest, opts ...grpc.CallOption) (ActiveContractsService_GetActiveContractsClient, error)
 }
 
@@ -84,11 +79,6 @@ type ActiveContractsServiceServer interface {
 	// If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
 	// Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
 	// Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the request does not include a valid ledger id
-	// - “INVALID_ARGUMENT“: if the payload is malformed or is missing required fields (filters by party cannot be empty)
 	GetActiveContracts(*GetActiveContractsRequest, ActiveContractsService_GetActiveContractsServer) error
 	mustEmbedUnimplementedActiveContractsServiceServer()
 }

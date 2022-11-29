@@ -28,9 +28,6 @@ const _ = grpc.SupportPackageIsVersion7
 type LedgerIdentityServiceClient interface {
 	// Deprecated: Do not use.
 	// Clients may call this RPC to return the identifier of the ledger they are connected to.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
 	GetLedgerIdentity(ctx context.Context, in *GetLedgerIdentityRequest, opts ...grpc.CallOption) (*GetLedgerIdentityResponse, error)
 }
 
@@ -61,9 +58,6 @@ func (c *ledgerIdentityServiceClient) GetLedgerIdentity(ctx context.Context, in 
 type LedgerIdentityServiceServer interface {
 	// Deprecated: Do not use.
 	// Clients may call this RPC to return the identifier of the ledger they are connected to.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
 	GetLedgerIdentity(context.Context, *GetLedgerIdentityRequest) (*GetLedgerIdentityResponse, error)
 	mustEmbedUnimplementedLedgerIdentityServiceServer()
 }

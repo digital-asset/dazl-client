@@ -50,14 +50,7 @@ class ParticipantPruningServiceServicer(object):
 
     def Prune(self, request, context):
         """Prune the ledger specifying the offset before and at which ledger transactions should be removed. Only returns when
-        the potentially long-running prune request ends successfully or with one of the following errors:
-        - ``INVALID_ARGUMENT``: if the payload, particularly the offset is malformed or missing
-        - ``UNIMPLEMENTED``: if the participant is based on a ledger that has not implemented pruning
-        - ``INTERNAL``: if the participant has encountered a failure and has potentially applied pruning partially. Such cases
-        warrant verifying the participant health before retrying the prune with the same (or a larger, valid) offset.
-        Successful retries after such errors ensure that different components reach a consistent pruning state.
-        - ``FAILED_PRECONDITION``: if the participant is not yet able to prune at the specified offset.
-
+        the potentially long-running prune request ends successfully or with an error.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

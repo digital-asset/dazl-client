@@ -36,9 +36,6 @@ class LedgerIdentityServiceServicer(object):
 
     def GetLedgerIdentity(self, request, context):
         """Clients may call this RPC to return the identifier of the ledger they are connected to.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

@@ -26,17 +26,6 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommandSubmissionServiceClient interface {
 	// Submit a single composite command.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
-	// due to for example contention on resources
-	// - “ALREADY_EXISTS“ if a resource is duplicated (e.g. contract key)
-	// - “INVALID_ARGUMENT“: if the payload is malformed or is missing required fields
-	// - “ABORTED“: if the number of in-flight commands reached the maximum (if a limit is configured)
-	// - “FAILED_PRECONDITION“: on consistency errors (e.g. the contract key has changed since the submission)
-	// or if an interpretation error occurred
-	// - “UNAVAILABLE“: if the participant is not yet ready to submit commands or if the service has been shut down.
 	Submit(ctx context.Context, in *SubmitRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
@@ -62,17 +51,6 @@ func (c *commandSubmissionServiceClient) Submit(ctx context.Context, in *SubmitR
 // for forward compatibility
 type CommandSubmissionServiceServer interface {
 	// Submit a single composite command.
-	// Errors:
-	// - “UNAUTHENTICATED“: if the request does not include a valid access token
-	// - “PERMISSION_DENIED“: if the claims in the token are insufficient to perform a given operation
-	// - “NOT_FOUND“: if the request does not include a valid ledger id or if a resource is missing (e.g. contract key)
-	// due to for example contention on resources
-	// - “ALREADY_EXISTS“ if a resource is duplicated (e.g. contract key)
-	// - “INVALID_ARGUMENT“: if the payload is malformed or is missing required fields
-	// - “ABORTED“: if the number of in-flight commands reached the maximum (if a limit is configured)
-	// - “FAILED_PRECONDITION“: on consistency errors (e.g. the contract key has changed since the submission)
-	// or if an interpretation error occurred
-	// - “UNAVAILABLE“: if the participant is not yet ready to submit commands or if the service has been shut down.
 	Submit(context.Context, *SubmitRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedCommandSubmissionServiceServer()
 }

@@ -73,4 +73,4 @@ except ImportError:
     pass
 
 
-__version__ = "7.9.2"
+__version__ = "7.10.0"

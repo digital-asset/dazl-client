@@ -42,10 +42,6 @@ class PackageServiceServicer(object):
 
     def ListPackages(self, request, context):
         """Returns the identifiers of all supported packages.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -53,10 +49,6 @@ class PackageServiceServicer(object):
 
     def GetPackage(self, request, context):
         """Returns the contents of a single package.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the requested package is unknown
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -64,10 +56,6 @@ class PackageServiceServicer(object):
 
     def GetPackageStatus(self, request, context):
         """Returns the status of a single package.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the requested package is unknown
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

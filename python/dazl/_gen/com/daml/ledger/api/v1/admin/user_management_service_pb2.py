@@ -16,9 +16,11 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from . import object_meta_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_object__meta__pb2
+from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/daml/ledger/api/v1/admin/user_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\";\n\x04User\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12#\n\rprimary_party\x18\x02 \x01(\tR\x0cprimaryParty\"\xec\x02\n\x05Right\x12\x63\n\x11participant_admin\x18\x01 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.admin.Right.ParticipantAdminH\x00R\x10participantAdmin\x12L\n\ncan_act_as\x18\x02 \x01(\x0b\x32,.com.daml.ledger.api.v1.admin.Right.CanActAsH\x00R\x08\x63\x61nActAs\x12O\n\x0b\x63\x61n_read_as\x18\x03 \x01(\x0b\x32-.com.daml.ledger.api.v1.admin.Right.CanReadAsH\x00R\tcanReadAs\x1a\x12\n\x10ParticipantAdmin\x1a \n\x08\x43\x61nActAs\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x1a!\n\tCanReadAs\x12\x14\n\x05party\x18\x01 \x01(\tR\x05partyB\x06\n\x04kind\"\x88\x01\n\x11\x43reateUserRequest\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"L\n\x12\x43reateUserResponse\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\")\n\x0eGetUserRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"I\n\x0fGetUserResponse\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\",\n\x11\x44\x65leteUserRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"\x14\n\x12\x44\x65leteUserResponse\"N\n\x10ListUsersRequest\x12\x1d\n\npage_token\x18\x02 \x01(\tR\tpageToken\x12\x1b\n\tpage_size\x18\x03 \x01(\x05R\x08pageSize\"u\n\x11ListUsersResponse\x12\x38\n\x05users\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x05users\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"n\n\x16GrantUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"p\n\x17GrantUserRightsResponse\x12U\n\x14newly_granted_rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x12newlyGrantedRights\"o\n\x17RevokeUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"q\n\x18RevokeUserRightsResponse\x12U\n\x14newly_revoked_rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x12newlyRevokedRights\"0\n\x15ListUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"U\n\x16ListUserRightsResponse\x12;\n\x06rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights2\xd0\x06\n\x15UserManagementService\x12o\n\nCreateUser\x12/.com.daml.ledger.api.v1.admin.CreateUserRequest\x1a\x30.com.daml.ledger.api.v1.admin.CreateUserResponse\x12\x66\n\x07GetUser\x12,.com.daml.ledger.api.v1.admin.GetUserRequest\x1a-.com.daml.ledger.api.v1.admin.GetUserResponse\x12o\n\nDeleteUser\x12/.com.daml.ledger.api.v1.admin.DeleteUserRequest\x1a\x30.com.daml.ledger.api.v1.admin.DeleteUserResponse\x12l\n\tListUsers\x12..com.daml.ledger.api.v1.admin.ListUsersRequest\x1a/.com.daml.ledger.api.v1.admin.ListUsersResponse\x12~\n\x0fGrantUserRights\x12\x34.com.daml.ledger.api.v1.admin.GrantUserRightsRequest\x1a\x35.com.daml.ledger.api.v1.admin.GrantUserRightsResponse\x12\x81\x01\n\x10RevokeUserRights\x12\x35.com.daml.ledger.api.v1.admin.RevokeUserRightsRequest\x1a\x36.com.daml.ledger.api.v1.admin.RevokeUserRightsResponse\x12{\n\x0eListUserRights\x12\x33.com.daml.ledger.api.v1.admin.ListUserRightsRequest\x1a\x34.com.daml.ledger.api.v1.admin.ListUserRightsResponseB\xab\x01\n\x1c\x63om.daml.ledger.api.v1.adminB\x1fUserManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/daml/ledger/api/v1/admin/user_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\x1a.com/daml/ledger/api/v1/admin/object_meta.proto\x1a google/protobuf/field_mask.proto\"\xa8\x01\n\x04User\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12#\n\rprimary_party\x18\x02 \x01(\tR\x0cprimaryParty\x12%\n\x0eis_deactivated\x18\x03 \x01(\x08R\risDeactivated\x12\x44\n\x08metadata\x18\x04 \x01(\x0b\x32(.com.daml.ledger.api.v1.admin.ObjectMetaR\x08metadata\"\xec\x02\n\x05Right\x12\x63\n\x11participant_admin\x18\x01 \x01(\x0b\x32\x34.com.daml.ledger.api.v1.admin.Right.ParticipantAdminH\x00R\x10participantAdmin\x12L\n\ncan_act_as\x18\x02 \x01(\x0b\x32,.com.daml.ledger.api.v1.admin.Right.CanActAsH\x00R\x08\x63\x61nActAs\x12O\n\x0b\x63\x61n_read_as\x18\x03 \x01(\x0b\x32-.com.daml.ledger.api.v1.admin.Right.CanReadAsH\x00R\tcanReadAs\x1a\x12\n\x10ParticipantAdmin\x1a \n\x08\x43\x61nActAs\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x1a!\n\tCanReadAs\x12\x14\n\x05party\x18\x01 \x01(\tR\x05partyB\x06\n\x04kind\"\x88\x01\n\x11\x43reateUserRequest\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"L\n\x12\x43reateUserResponse\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\")\n\x0eGetUserRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"I\n\x0fGetUserResponse\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\"\x88\x01\n\x11UpdateUserRequest\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\x12;\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskR\nupdateMask\"L\n\x12UpdateUserResponse\x12\x36\n\x04user\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x04user\",\n\x11\x44\x65leteUserRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"\x14\n\x12\x44\x65leteUserResponse\"N\n\x10ListUsersRequest\x12\x1d\n\npage_token\x18\x02 \x01(\tR\tpageToken\x12\x1b\n\tpage_size\x18\x03 \x01(\x05R\x08pageSize\"u\n\x11ListUsersResponse\x12\x38\n\x05users\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.admin.UserR\x05users\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"n\n\x16GrantUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"p\n\x17GrantUserRightsResponse\x12U\n\x14newly_granted_rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x12newlyGrantedRights\"o\n\x17RevokeUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\x12;\n\x06rights\x18\x02 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights\"q\n\x18RevokeUserRightsResponse\x12U\n\x14newly_revoked_rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x12newlyRevokedRights\"0\n\x15ListUserRightsRequest\x12\x17\n\x07user_id\x18\x01 \x01(\tR\x06userId\"U\n\x16ListUserRightsResponse\x12;\n\x06rights\x18\x01 \x03(\x0b\x32#.com.daml.ledger.api.v1.admin.RightR\x06rights2\xc1\x07\n\x15UserManagementService\x12o\n\nCreateUser\x12/.com.daml.ledger.api.v1.admin.CreateUserRequest\x1a\x30.com.daml.ledger.api.v1.admin.CreateUserResponse\x12\x66\n\x07GetUser\x12,.com.daml.ledger.api.v1.admin.GetUserRequest\x1a-.com.daml.ledger.api.v1.admin.GetUserResponse\x12o\n\nUpdateUser\x12/.com.daml.ledger.api.v1.admin.UpdateUserRequest\x1a\x30.com.daml.ledger.api.v1.admin.UpdateUserResponse\x12o\n\nDeleteUser\x12/.com.daml.ledger.api.v1.admin.DeleteUserRequest\x1a\x30.com.daml.ledger.api.v1.admin.DeleteUserResponse\x12l\n\tListUsers\x12..com.daml.ledger.api.v1.admin.ListUsersRequest\x1a/.com.daml.ledger.api.v1.admin.ListUsersResponse\x12~\n\x0fGrantUserRights\x12\x34.com.daml.ledger.api.v1.admin.GrantUserRightsRequest\x1a\x35.com.daml.ledger.api.v1.admin.GrantUserRightsResponse\x12\x81\x01\n\x10RevokeUserRights\x12\x35.com.daml.ledger.api.v1.admin.RevokeUserRightsRequest\x1a\x36.com.daml.ledger.api.v1.admin.RevokeUserRightsResponse\x12{\n\x0eListUserRights\x12\x33.com.daml.ledger.api.v1.admin.ListUserRightsRequest\x1a\x34.com.daml.ledger.api.v1.admin.ListUserRightsResponseB\xab\x01\n\x1c\x63om.daml.ledger.api.v1.adminB\x1fUserManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3')
 
 
 
@@ -31,6 +33,8 @@ _CREATEUSERREQUEST = DESCRIPTOR.message_types_by_name['CreateUserRequest']
 _CREATEUSERRESPONSE = DESCRIPTOR.message_types_by_name['CreateUserResponse']
 _GETUSERREQUEST = DESCRIPTOR.message_types_by_name['GetUserRequest']
 _GETUSERRESPONSE = DESCRIPTOR.message_types_by_name['GetUserResponse']
+_UPDATEUSERREQUEST = DESCRIPTOR.message_types_by_name['UpdateUserRequest']
+_UPDATEUSERRESPONSE = DESCRIPTOR.message_types_by_name['UpdateUserResponse']
 _DELETEUSERREQUEST = DESCRIPTOR.message_types_by_name['DeleteUserRequest']
 _DELETEUSERRESPONSE = DESCRIPTOR.message_types_by_name['DeleteUserResponse']
 _LISTUSERSREQUEST = DESCRIPTOR.message_types_by_name['ListUsersRequest']
@@ -107,6 +111,20 @@ GetUserResponse = _reflection.GeneratedProtocolMessageType('GetUserResponse', (_
   })
 _sym_db.RegisterMessage(GetUserResponse)
 
+UpdateUserRequest = _reflection.GeneratedProtocolMessageType('UpdateUserRequest', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEUSERREQUEST,
+  '__module__' : 'com.daml.ledger.api.v1.admin.user_management_service_pb2'
+  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.UpdateUserRequest)
+  })
+_sym_db.RegisterMessage(UpdateUserRequest)
+
+UpdateUserResponse = _reflection.GeneratedProtocolMessageType('UpdateUserResponse', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEUSERRESPONSE,
+  '__module__' : 'com.daml.ledger.api.v1.admin.user_management_service_pb2'
+  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.UpdateUserResponse)
+  })
+_sym_db.RegisterMessage(UpdateUserResponse)
+
 DeleteUserRequest = _reflection.GeneratedProtocolMessageType('DeleteUserRequest', (_message.Message,), {
   'DESCRIPTOR' : _DELETEUSERREQUEST,
   '__module__' : 'com.daml.ledger.api.v1.admin.user_management_service_pb2'
@@ -182,44 +200,48 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'\n\034com.daml.ledger.api.v1.adminB\037UserManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin'
-  _USER._serialized_start=92
-  _USER._serialized_end=151
-  _RIGHT._serialized_start=154
-  _RIGHT._serialized_end=518
-  _RIGHT_PARTICIPANTADMIN._serialized_start=423
-  _RIGHT_PARTICIPANTADMIN._serialized_end=441
-  _RIGHT_CANACTAS._serialized_start=443
-  _RIGHT_CANACTAS._serialized_end=475
-  _RIGHT_CANREADAS._serialized_start=477
-  _RIGHT_CANREADAS._serialized_end=510
-  _CREATEUSERREQUEST._serialized_start=521
-  _CREATEUSERREQUEST._serialized_end=657
-  _CREATEUSERRESPONSE._serialized_start=659
-  _CREATEUSERRESPONSE._serialized_end=735
-  _GETUSERREQUEST._serialized_start=737
-  _GETUSERREQUEST._serialized_end=778
-  _GETUSERRESPONSE._serialized_start=780
-  _GETUSERRESPONSE._serialized_end=853
-  _DELETEUSERREQUEST._serialized_start=855
-  _DELETEUSERREQUEST._serialized_end=899
-  _DELETEUSERRESPONSE._serialized_start=901
-  _DELETEUSERRESPONSE._serialized_end=921
-  _LISTUSERSREQUEST._serialized_start=923
-  _LISTUSERSREQUEST._serialized_end=1001
-  _LISTUSERSRESPONSE._serialized_start=1003
-  _LISTUSERSRESPONSE._serialized_end=1120
-  _GRANTUSERRIGHTSREQUEST._serialized_start=1122
-  _GRANTUSERRIGHTSREQUEST._serialized_end=1232
-  _GRANTUSERRIGHTSRESPONSE._serialized_start=1234
-  _GRANTUSERRIGHTSRESPONSE._serialized_end=1346
-  _REVOKEUSERRIGHTSREQUEST._serialized_start=1348
-  _REVOKEUSERRIGHTSREQUEST._serialized_end=1459
-  _REVOKEUSERRIGHTSRESPONSE._serialized_start=1461
-  _REVOKEUSERRIGHTSRESPONSE._serialized_end=1574
-  _LISTUSERRIGHTSREQUEST._serialized_start=1576
-  _LISTUSERRIGHTSREQUEST._serialized_end=1624
-  _LISTUSERRIGHTSRESPONSE._serialized_start=1626
-  _LISTUSERRIGHTSRESPONSE._serialized_end=1711
-  _USERMANAGEMENTSERVICE._serialized_start=1714
-  _USERMANAGEMENTSERVICE._serialized_end=2562
+  _USER._serialized_start=175
+  _USER._serialized_end=343
+  _RIGHT._serialized_start=346
+  _RIGHT._serialized_end=710
+  _RIGHT_PARTICIPANTADMIN._serialized_start=615
+  _RIGHT_PARTICIPANTADMIN._serialized_end=633
+  _RIGHT_CANACTAS._serialized_start=635
+  _RIGHT_CANACTAS._serialized_end=667
+  _RIGHT_CANREADAS._serialized_start=669
+  _RIGHT_CANREADAS._serialized_end=702
+  _CREATEUSERREQUEST._serialized_start=713
+  _CREATEUSERREQUEST._serialized_end=849
+  _CREATEUSERRESPONSE._serialized_start=851
+  _CREATEUSERRESPONSE._serialized_end=927
+  _GETUSERREQUEST._serialized_start=929
+  _GETUSERREQUEST._serialized_end=970
+  _GETUSERRESPONSE._serialized_start=972
+  _GETUSERRESPONSE._serialized_end=1045
+  _UPDATEUSERREQUEST._serialized_start=1048
+  _UPDATEUSERREQUEST._serialized_end=1184
+  _UPDATEUSERRESPONSE._serialized_start=1186
+  _UPDATEUSERRESPONSE._serialized_end=1262
+  _DELETEUSERREQUEST._serialized_start=1264
+  _DELETEUSERREQUEST._serialized_end=1308
+  _DELETEUSERRESPONSE._serialized_start=1310
+  _DELETEUSERRESPONSE._serialized_end=1330
+  _LISTUSERSREQUEST._serialized_start=1332
+  _LISTUSERSREQUEST._serialized_end=1410
+  _LISTUSERSRESPONSE._serialized_start=1412
+  _LISTUSERSRESPONSE._serialized_end=1529
+  _GRANTUSERRIGHTSREQUEST._serialized_start=1531
+  _GRANTUSERRIGHTSREQUEST._serialized_end=1641
+  _GRANTUSERRIGHTSRESPONSE._serialized_start=1643
+  _GRANTUSERRIGHTSRESPONSE._serialized_end=1755
+  _REVOKEUSERRIGHTSREQUEST._serialized_start=1757
+  _REVOKEUSERRIGHTSREQUEST._serialized_end=1868
+  _REVOKEUSERRIGHTSRESPONSE._serialized_start=1870
+  _REVOKEUSERRIGHTSRESPONSE._serialized_end=1983
+  _LISTUSERRIGHTSREQUEST._serialized_start=1985
+  _LISTUSERRIGHTSREQUEST._serialized_end=2033
+  _LISTUSERRIGHTSRESPONSE._serialized_start=2035
+  _LISTUSERRIGHTSRESPONSE._serialized_end=2120
+  _USERMANAGEMENTSERVICE._serialized_start=2123
+  _USERMANAGEMENTSERVICE._serialized_end=3084
 # @@protoc_insertion_point(module_scope)

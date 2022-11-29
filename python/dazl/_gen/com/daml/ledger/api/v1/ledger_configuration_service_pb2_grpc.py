@@ -32,10 +32,6 @@ class LedgerConfigurationServiceServicer(object):
 
     def GetLedgerConfiguration(self, request, context):
         """Returns the latest configuration as the first response, and publishes configuration updates in the same stream.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

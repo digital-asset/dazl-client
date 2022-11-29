@@ -19,7 +19,7 @@ _sym_db = _symbol_database.Default()
 from . import value_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_value__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n/com/daml/ledger/api/v1/transaction_filter.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/value.proto\"\xe0\x01\n\x11TransactionFilter\x12g\n\x10\x66ilters_by_party\x18\x01 \x03(\x0b\x32=.com.daml.ledger.api.v1.TransactionFilter.FiltersByPartyEntryR\x0e\x66iltersByParty\x1a\x62\n\x13\x46iltersByPartyEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32\x1f.com.daml.ledger.api.v1.FiltersR\x05value:\x02\x38\x01\"Q\n\x07\x46ilters\x12\x46\n\tinclusive\x18\x01 \x01(\x0b\x32(.com.daml.ledger.api.v1.InclusiveFiltersR\tinclusive\"\xaf\x01\n\x10InclusiveFilters\x12\x45\n\x0ctemplate_ids\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x0btemplateIds\x12T\n\x11interface_filters\x18\x02 \x03(\x0b\x32\'.com.daml.ledger.api.v1.InterfaceFilterR\x10interfaceFilters\"\x8e\x01\n\x0fInterfaceFilter\x12\x45\n\x0cinterface_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x0binterfaceId\x12\x34\n\x16include_interface_view\x18\x02 \x01(\x08R\x14includeInterfaceViewB\x95\x01\n\x16\x63om.daml.ledger.api.v1B\x1bTransactionFilterOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n/com/daml/ledger/api/v1/transaction_filter.proto\x12\x16\x63om.daml.ledger.api.v1\x1a\"com/daml/ledger/api/v1/value.proto\"\xe0\x01\n\x11TransactionFilter\x12g\n\x10\x66ilters_by_party\x18\x01 \x03(\x0b\x32=.com.daml.ledger.api.v1.TransactionFilter.FiltersByPartyEntryR\x0e\x66iltersByParty\x1a\x62\n\x13\x46iltersByPartyEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32\x1f.com.daml.ledger.api.v1.FiltersR\x05value:\x02\x38\x01\"Q\n\x07\x46ilters\x12\x46\n\tinclusive\x18\x01 \x01(\x0b\x32(.com.daml.ledger.api.v1.InclusiveFiltersR\tinclusive\"\xaf\x01\n\x10InclusiveFilters\x12\x45\n\x0ctemplate_ids\x18\x01 \x03(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x0btemplateIds\x12T\n\x11interface_filters\x18\x02 \x03(\x0b\x32\'.com.daml.ledger.api.v1.InterfaceFilterR\x10interfaceFilters\"\xd1\x01\n\x0fInterfaceFilter\x12\x45\n\x0cinterface_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x0binterfaceId\x12\x34\n\x16include_interface_view\x18\x02 \x01(\x08R\x14includeInterfaceView\x12\x41\n\x1dinclude_create_arguments_blob\x18\x03 \x01(\x08R\x1aincludeCreateArgumentsBlobB\x95\x01\n\x16\x63om.daml.ledger.api.v1B\x1bTransactionFilterOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3')
 
 
 
@@ -79,5 +79,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _INCLUSIVEFILTERS._serialized_start=422
   _INCLUSIVEFILTERS._serialized_end=597
   _INTERFACEFILTER._serialized_start=600
-  _INTERFACEFILTER._serialized_end=742
+  _INTERFACEFILTER._serialized_end=809
 # @@protoc_insertion_point(module_scope)
