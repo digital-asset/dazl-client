@@ -33,7 +33,7 @@ from ..api_types import (
     Command,
     CreateEvent,
     ExerciseResponse,
-    ParticipantMeteringReport,
+    MeteringReport,
     PartyInfo,
     Right,
     SubmitResponse,
@@ -246,7 +246,7 @@ class Connection(_Connection, PackageService, Protocol):
         application_id: Optional[str] = None,
         *,
         timeout: Optional[TimeDeltaLike] = ...,
-    ) -> ParticipantMeteringReport: ...
+    ) -> MeteringReport: ...
 
 # PyCharm doesn't know what to make of these overloads with respect to the parent protocol,
 # but mypy understands that these type signatures do not conflict with the parent base class

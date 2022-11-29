@@ -32,7 +32,6 @@ else:
 __all__ = [
     "ActAs",
     "Admin",
-    "ApplicationMeteringReport",
     "ArchiveEvent",
     "Boundary",
     "Command",
@@ -45,7 +44,9 @@ __all__ = [
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExerciseResponse",
-    "ParticipantMeteringReport",
+    "MeteringReport",
+    "MeteringReportApplication",
+    "MeteringReportRequest",
     "PartyInfo",
     "ReadAs",
     "Right",
@@ -751,34 +752,48 @@ class VersionUserManagementFeature:
         object.__setattr__(self, "max_users_page_size", max_users_page_size)
 
 
-class ParticipantMeteringReport:
-    __slots__ = ("report_generation_time", "participant_id", "is_final", "application_reports")
-    report_generation_time: datetime
-    participant_id: str
-    is_final: bool
-    application_reports: "Sequence[ApplicationMeteringReport]"
+class MeteringReport:
+    __slots__ = ("participant", "request", "final", "applications")
+
+    participant: str
+    request: "MeteringReportRequest"
+    final: bool
+    applications: "Sequence[MeteringReportApplication]"
 
     def __init__(
         self,
-        report_generation_time: datetime,
-        participant_id: str,
-        is_final: bool,
-        application_reports: "Sequence[ApplicationMeteringReport]",
+        participant: str,
+        request: "MeteringReportRequest",
+        final: bool,
+        applications: "Sequence[MeteringReportApplication]",
     ):
-        object.__setattr__(self, "report_generation_time", report_generation_time)
-        object.__setattr__(self, "participant_id", participant_id)
-        object.__setattr__(self, "is_final", is_final)
-        object.__setattr__(self, "application_reports", application_reports)
+        object.__setattr__(self, "participant", participant)
+        object.__setattr__(self, "request", request)
+        object.__setattr__(self, "final", final)
+        object.__setattr__(self, "applications", applications)
 
 
-class ApplicationMeteringReport:
-    __slots__ = ("application_id", "event_count")
-    application_id: str
-    event_count: int
+class MeteringReportRequest:
+    __slots__ = ("application", "from_", "to")
+    application: str
+    from_: datetime
+    to: datetime
 
-    def __init__(self, application_id: str, event_count: int):
-        object.__setattr__(self, "application_id", application_id)
-        object.__setattr__(self, "event_count", event_count)
+    def __init__(self, application: str, from_: datetime, to: datetime):
+        object.__setattr__(self, "application", application)
+        object.__setattr__(self, "from_", from_)
+        object.__setattr__(self, "to", to)
+
+
+class MeteringReportApplication:
+    __slots__ = ("application", "events")
+
+    application: str
+    events: int
+
+    def __init__(self, application: str, events: int):
+        object.__setattr__(self, "application", application)
+        object.__setattr__(self, "events", events)
 
 
 def validate_template_id(value: Union[str, TypeConName]) -> TypeConName:

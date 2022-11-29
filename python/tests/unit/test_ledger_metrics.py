@@ -16,7 +16,7 @@ async def test_ledger_metrics(sandbox_v2) -> None:
 
     async with connect(url=sandbox_v2.url, admin=True, application_name=app_name) as conn:
         report = await conn.get_metering_report(datetime.fromtimestamp(0), application_id=app_name)
-        assert len(report.application_reports) == 0
+        assert len(report.applications) == 0
 
         party_info = await conn.allocate_party()
         await conn.upload_package(Simple.read_bytes())
@@ -32,5 +32,5 @@ async def test_ledger_metrics(sandbox_v2) -> None:
             act_as=party_info.party,
         )
         report = await conn.get_metering_report(datetime.fromtimestamp(0), application_id=app_name)
-        assert len(report.application_reports) == 1
-        assert report.application_reports[0].event_count == 2
+        assert len(report.applications) == 1
+        assert report.applications[0].events == 2
