@@ -7,7 +7,7 @@ import sys
 from typing import List, Optional, Sequence
 
 from . import daml_lf_1 as lf
-from .._gen.com.daml.daml_lf_1_14 import daml_lf_1_pb2 as pblf
+from .._gen.com.daml.daml_lf_1_15 import daml_lf_1_pb2 as pblf
 
 if sys.version_info >= (3, 8):
     from typing import Literal
@@ -139,8 +139,6 @@ class ProtobufParser:
             return self.parse_Type_Con(pb.con)
         elif sum_name == "prim":
             return lf.Type(prim=self.parse_Type_Prim(pb.prim))
-        elif sum_name == "fun":
-            return self.parse_Type_Fun(pb.fun)
         elif sum_name == "forall":
             return lf.Type(forall=self.parse_Type_Forall(pb.forall))
         elif sum_name == "struct":
@@ -175,15 +173,6 @@ class ProtobufParser:
         return lf.Type.Prim(
             self.parse_PrimType(pb.prim), tuple(self.parse_Type(arg) for arg in pb.args)
         )
-
-    def parse_Type_Fun(self, pb: pblf.Type.Fun) -> lf.Type:
-        """``fun`` has been deprecated and this code path is now replaced with PrimType.ARROW"""
-        last_type = self.parse_Type(pb.result)
-        for param in reversed(pb.params):
-            last_type = lf.Type(
-                prim=lf.Type.Prim(lf.PrimType.ARROW, (self.parse_Type(param), last_type))
-            )
-        return last_type
 
     def parse_Type_Forall(self, pb: pblf.Type.Forall) -> lf.Type.Forall:
         return lf.Type.Forall(

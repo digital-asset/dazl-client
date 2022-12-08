@@ -45,12 +45,7 @@ async def main():
         contract = { 'issuer' : 'Alice', 'owner' : 'Alice', 'name' : 'hello world!' }
         await client.create('Main:Asset', contract)
 
-# Python 3.7+
 asyncio.run(main())
-
-# Python 3.6+
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
 ```
 
 Connect to the ledger as a single party, print all contracts, and close:
@@ -67,12 +62,7 @@ async def main():
 
     print(snapshot)
 
-# Python 3.7+
 asyncio.run(main())
-
-# Python 3.6+
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
 ```
 
 Building locally

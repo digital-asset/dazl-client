@@ -3,14 +3,15 @@
 # fmt: off
 # isort: skip_file
 
+from .contract_metadata_pb2 import ContractMetadata
 from .value_pb2 import Enum, GenMap, Identifier, List, Map, Optional, Record, RecordField, Value, Variant
-from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
+from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, DisclosedContract, ExerciseByKeyCommand, ExerciseCommand
 from .completion_pb2 import Completion
-from .event_pb2 import ArchivedEvent, CreatedEvent, Event, ExercisedEvent
-from .experimental_features_pb2 import CommandDeduplicationFeatures, CommandDeduplicationPeriodSupport, CommandDeduplicationType, ExperimentalCommitterEventLog, ExperimentalContractIds, ExperimentalFeatures, ExperimentalOptionalLedgerId, ExperimentalSelfServiceErrorCodes, ExperimentalStaticTime
+from .event_pb2 import ArchivedEvent, CreatedEvent, Event, ExercisedEvent, InterfaceView
+from .experimental_features_pb2 import CommandDeduplicationFeatures, CommandDeduplicationPeriodSupport, CommandDeduplicationType, ExperimentalCommitterEventLog, ExperimentalContractIds, ExperimentalExplicitDisclosure, ExperimentalFeatures, ExperimentalOptionalLedgerId, ExperimentalSelfServiceErrorCodes, ExperimentalStaticTime, ExperimentalUserAndPartyLocalMetadataExtensions
 from .ledger_offset_pb2 import LedgerOffset
 from .transaction_pb2 import Transaction, TransactionTree, TreeEvent
-from .transaction_filter_pb2 import Filters, InclusiveFilters, TransactionFilter
+from .transaction_filter_pb2 import Filters, InclusiveFilters, InterfaceFilter, TransactionFilter
 from .active_contracts_service_pb2 import GetActiveContractsRequest, GetActiveContractsResponse
 from .active_contracts_service_pb2_grpc import ActiveContractsServiceStub
 from .command_completion_service_pb2 import Checkpoint, CompletionEndRequest, CompletionEndResponse, CompletionStreamRequest, CompletionStreamResponse
@@ -47,9 +48,11 @@ __all__ = [
     "CompletionEndResponse",
     "CompletionStreamRequest",
     "CompletionStreamResponse",
+    "ContractMetadata",
     "CreateAndExerciseCommand",
     "CreateCommand",
     "CreatedEvent",
+    "DisclosedContract",
     "Enum",
     "Event",
     "ExerciseByKeyCommand",
@@ -57,10 +60,12 @@ __all__ = [
     "ExercisedEvent",
     "ExperimentalCommitterEventLog",
     "ExperimentalContractIds",
+    "ExperimentalExplicitDisclosure",
     "ExperimentalFeatures",
     "ExperimentalOptionalLedgerId",
     "ExperimentalSelfServiceErrorCodes",
     "ExperimentalStaticTime",
+    "ExperimentalUserAndPartyLocalMetadataExtensions",
     "FeaturesDescriptor",
     "Filters",
     "GenMap",
@@ -88,6 +93,8 @@ __all__ = [
     "HashFunction",
     "Identifier",
     "InclusiveFilters",
+    "InterfaceFilter",
+    "InterfaceView",
     "LedgerConfiguration",
     "LedgerConfigurationServiceStub",
     "LedgerIdentityServiceStub",

@@ -64,13 +64,6 @@ class TransactionServiceServicer(object):
         """Read the ledger's filtered transaction stream for a set of parties.
         Lists only creates and archives, but not other events.
         Omits all events on transient contracts, i.e., contracts that were both created and archived in the same transaction.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if ``before`` is not before ``end``)
-        - ``FAILED_PRECONDITION``: if the ledger has been pruned after the subscription start offset
-        - ``OUT_OF_RANGE``: if the ``begin`` parameter value is not before the end of the ledger
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -79,13 +72,6 @@ class TransactionServiceServicer(object):
     def GetTransactionTrees(self, request, context):
         """Read the ledger's complete transaction tree stream for a set of parties.
         The stream can be filtered only by parties, but not templates (template filter must be empty).
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if ``before`` is not before ``end``)
-        - ``FAILED_PRECONDITION``: if the ledger has been pruned after the subscription start offset
-        - ``OUT_OF_RANGE``: if the ``begin`` parameter value is not before the end of the ledger
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -94,11 +80,6 @@ class TransactionServiceServicer(object):
     def GetTransactionByEventId(self, request, context):
         """Lookup a transaction tree by the ID of an event that appears within it.
         For looking up a transaction instead of a transaction tree, please see GetFlatTransactionByEventId
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -107,11 +88,6 @@ class TransactionServiceServicer(object):
     def GetTransactionById(self, request, context):
         """Lookup a transaction tree by its ID.
         For looking up a transaction instead of a transaction tree, please see GetFlatTransactionById
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -119,11 +95,6 @@ class TransactionServiceServicer(object):
 
     def GetFlatTransactionByEventId(self, request, context):
         """Lookup a transaction by the ID of an event that appears within it.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -131,11 +102,6 @@ class TransactionServiceServicer(object):
 
     def GetFlatTransactionById(self, request, context):
         """Lookup a transaction by its ID.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id or no such transaction exists
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields (e.g. if requesting parties are invalid or empty)
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -144,10 +110,6 @@ class TransactionServiceServicer(object):
     def GetLedgerEnd(self, request, context):
         """Get the current ledger end.
         Subscriptions started with the returned offset will serve transactions created after this RPC was called.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

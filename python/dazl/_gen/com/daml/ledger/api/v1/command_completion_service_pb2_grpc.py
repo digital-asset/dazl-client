@@ -63,13 +63,6 @@ class CommandCompletionServiceServicer(object):
 
     def CompletionStream(self, request, context):
         """Subscribe to command completion events.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
-        - ``FAILED_PRECONDITION``: if the ledger has been pruned after the subscription start offset
-        - ``INVALID_ARGUMENT``: if the payload is malformed or is missing required fields
-        - ``OUT_OF_RANGE``: if the absolute offset is after the end of the ledger
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -77,10 +70,6 @@ class CommandCompletionServiceServicer(object):
 
     def CompletionEnd(self, request, context):
         """Returns the offset after the latest completion.
-        Errors:
-        - ``UNAUTHENTICATED``: if the request does not include a valid access token
-        - ``PERMISSION_DENIED``: if the claims in the token are insufficient to perform a given operation
-        - ``NOT_FOUND``: if the request does not include a valid ledger id
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

@@ -42,7 +42,7 @@ from .api_types import (
     ExerciseByKeyCommand,
     ExerciseCommand,
     ExerciseResponse,
-    ParticipantMeteringReport,
+    MeteringReport,
     PartyInfo,
     ReadAs,
     Right,
@@ -76,7 +76,7 @@ __all__ = [
     "ExerciseResponse",
     "PartyInfo",
     "PackageService",
-    "ParticipantMeteringReport",
+    "MeteringReport",
     "ReadAs",
     "Connection",
     "QueryStream",
@@ -406,7 +406,7 @@ class Connection(PackageService, Protocol):
         application_id: Optional[str] = None,
         *,
         timeout: Optional[TimeDeltaLike] = ...,
-    ) -> Union[ParticipantMeteringReport, Awaitable[ParticipantMeteringReport]]: ...
+    ) -> Union[MeteringReport, Awaitable[MeteringReport]]: ...
 
 @runtime_checkable
 class QueryStream(Protocol):

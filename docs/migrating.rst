@@ -53,7 +53,7 @@ Daml and some of the underlying Python libraries over the last few years.
 
   The Daml Python bindings were originally built with the simple assumption that a ``Party`` exists 1:1 to a set of
   credentials. As the Daml Ledger API evolved, this assumption no longer holds. The new Daml Python bindings API
-  treats tokens more as a 
+  treats tokens more opaquely, and removes the assumption that connections are tied to a specific single ``Party``.
 
 * Daml return values from exercise choices
 

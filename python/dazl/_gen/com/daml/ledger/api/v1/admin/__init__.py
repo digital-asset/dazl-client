@@ -3,23 +3,23 @@
 # fmt: off
 # isort: skip_file
 
+from .object_meta_pb2 import ObjectMeta
 from .config_management_service_pb2 import GetTimeModelRequest, GetTimeModelResponse, SetTimeModelRequest, SetTimeModelResponse, TimeModel
 from .config_management_service_pb2_grpc import ConfigManagementServiceStub
-from .metering_report_service_pb2 import ApplicationMeteringReport, GetMeteringReportRequest, GetMeteringReportResponse, ParticipantMeteringReport
+from .metering_report_service_pb2 import GetMeteringReportRequest, GetMeteringReportResponse
 from .metering_report_service_pb2_grpc import MeteringReportServiceStub
 from .package_management_service_pb2 import ListKnownPackagesRequest, ListKnownPackagesResponse, PackageDetails, UploadDarFileRequest, UploadDarFileResponse
 from .package_management_service_pb2_grpc import PackageManagementServiceStub
 from .participant_pruning_service_pb2 import PruneRequest, PruneResponse
 from .participant_pruning_service_pb2_grpc import ParticipantPruningServiceStub
-from .party_management_service_pb2 import AllocatePartyRequest, AllocatePartyResponse, GetParticipantIdRequest, GetParticipantIdResponse, GetPartiesRequest, GetPartiesResponse, ListKnownPartiesRequest, ListKnownPartiesResponse, PartyDetails
+from .party_management_service_pb2 import AllocatePartyRequest, AllocatePartyResponse, GetParticipantIdRequest, GetParticipantIdResponse, GetPartiesRequest, GetPartiesResponse, ListKnownPartiesRequest, ListKnownPartiesResponse, PartyDetails, UpdatePartyDetailsRequest, UpdatePartyDetailsResponse
 from .party_management_service_pb2_grpc import PartyManagementServiceStub
-from .user_management_service_pb2 import CreateUserRequest, CreateUserResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, GrantUserRightsRequest, GrantUserRightsResponse, ListUserRightsRequest, ListUserRightsResponse, ListUsersRequest, ListUsersResponse, RevokeUserRightsRequest, RevokeUserRightsResponse, Right, User
+from .user_management_service_pb2 import CreateUserRequest, CreateUserResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, GrantUserRightsRequest, GrantUserRightsResponse, ListUserRightsRequest, ListUserRightsResponse, ListUsersRequest, ListUsersResponse, RevokeUserRightsRequest, RevokeUserRightsResponse, Right, UpdateUserRequest, UpdateUserResponse, User
 from .user_management_service_pb2_grpc import UserManagementServiceStub
 
 __all__ = [
     "AllocatePartyRequest",
     "AllocatePartyResponse",
-    "ApplicationMeteringReport",
     "ConfigManagementServiceStub",
     "CreateUserRequest",
     "CreateUserResponse",
@@ -46,9 +46,9 @@ __all__ = [
     "ListUsersRequest",
     "ListUsersResponse",
     "MeteringReportServiceStub",
+    "ObjectMeta",
     "PackageDetails",
     "PackageManagementServiceStub",
-    "ParticipantMeteringReport",
     "ParticipantPruningServiceStub",
     "PartyDetails",
     "PartyManagementServiceStub",
@@ -60,6 +60,10 @@ __all__ = [
     "SetTimeModelRequest",
     "SetTimeModelResponse",
     "TimeModel",
+    "UpdatePartyDetailsRequest",
+    "UpdatePartyDetailsResponse",
+    "UpdateUserRequest",
+    "UpdateUserResponse",
     "UploadDarFileRequest",
     "UploadDarFileResponse",
     "User",
