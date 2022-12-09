@@ -930,6 +930,141 @@ class Expr:
             self.exception_type = exception_type
             self.exception_expr = exception_expr
 
+    class ToInterface:
+        interface_type: "TypeConName"
+        template_type: "TypeConName"
+        template_expr: "Expr"
+
+        def __init__(
+            self, interface_type: "TypeConName", template_type: "TypeConName", template_expr: "Expr"
+        ):
+            self.interface_type = interface_type
+            self.template_type = template_type
+            self.template_expr = template_expr
+
+    class FromInterface:
+        interface_type: "TypeConName"
+        template_type: "TypeConName"
+        interface_expr: "Expr"
+
+        def __init__(
+            self,
+            interface_type: "TypeConName",
+            template_type: "TypeConName",
+            interface_expr: "Expr",
+        ):
+            self.interface_type = interface_type
+            self.template_type = template_type
+            self.interface_expr = interface_expr
+
+    class CallInterface:
+        interface_type: "TypeConName"
+        method_name: str
+        interface_expr: "Expr"
+
+        def __init__(self, interface_type: "TypeConName", method_name: str, interface_expr: "Expr"):
+            self.interface_type = interface_type
+            self.method_name = method_name
+            self.interface_expr = interface_expr
+
+    class ViewInterface:
+        interface: "TypeConName"
+        expr: "Expr"
+
+        def __init__(self, interface: "TypeConName", expr: "Expr"):
+            self.interface = interface
+            self.expr = expr
+
+    class SignatoryInterface:
+        interface: "TypeConName"
+        expr: "Expr"
+
+        def __init__(self, interface: "TypeConName", expr: "Expr"):
+            self.interface = interface
+            self.expr = expr
+
+    class ObserverInterface:
+        interface: "TypeConName"
+        expr: "Expr"
+
+        def __init__(self, interface: "TypeConName", expr: "Expr"):
+            self.interface = interface
+            self.expr = expr
+
+    class UnsafeFromInterface:
+        interface_type: "TypeConName"
+        template_type: "TypeConName"
+        contract_id_expr: "Expr"
+        interface_expr: "Expr"
+
+        def __init__(
+            self,
+            interface_type: "TypeConName",
+            template_type: "TypeConName",
+            contract_id_expr: "Expr",
+            interface_expr: "Expr",
+        ):
+            self.interface_type = interface_type
+            self.template_type = template_type
+            self.contract_id_expr = contract_id_expr
+            self.interface_expr = interface_expr
+
+    class InterfaceTemplateTypeRep:
+        interface: "TypeConName"
+        expr: "Expr"
+
+        def __init__(self, interface: "TypeConName", expr: "Expr"):
+            self.interface = interface
+            self.expr = expr
+
+    class ToRequiredInterface:
+        required_interface: "TypeConName"
+        requiring_interface: "TypeConName"
+        expr: "Expr"
+
+        def __init__(
+            self,
+            required_interface: "TypeConName",
+            requiring_interface: "TypeConName",
+            expr: "Expr",
+        ):
+            self.required_interface = required_interface
+            self.requiring_interface = requiring_interface
+            self.expr = expr
+
+    class FromRequiredInterface:
+        required_interface: "TypeConName"
+        requiring_interface: "TypeConName"
+        expr: "Expr"
+
+        def __init__(
+            self,
+            required_interface: "TypeConName",
+            requiring_interface: "TypeConName",
+            expr: "Expr",
+        ):
+            self.required_interface = required_interface
+            self.requiring_interface = requiring_interface
+            self.expr = expr
+
+    class UnsafeFromRequiredInterface:
+        required_interface: "TypeConName"
+        requiring_interface: "TypeConName"
+        contract_id_expr: "Expr"
+        interface_expr: "Expr"
+
+        def __init__(
+            self,
+            required_interface: "TypeConName",
+            requiring_interface: "TypeConName",
+            contract_id_expr: "Expr",
+            interface_expr: "Expr",
+        ):
+            self.required_interface = required_interface
+            self.requiring_interface = requiring_interface
+            self.contract_id_expr = contract_id_expr
+            self.interface_expr = interface_expr
+
     class Experimental:
         name: str
         type: "Type"
@@ -978,6 +1113,17 @@ class Expr:
         to_any_exception: "Union[Expr.ToAnyException, _Missing]" = MISSING,
         from_any_exception: "Union[Expr.FromAnyException, _Missing]" = MISSING,
         throw: "Union[Expr.Throw, _Missing]" = MISSING,
+        to_interface: "Union[Expr.ToInterface, _Missing]" = MISSING,
+        from_interface: "Union[Expr.FromInterface, _Missing]" = MISSING,
+        call_interface: "Union[Expr.CallInterface, _Missing]" = MISSING,
+        signatory_interface: "Union[Expr.SignatoryInterface, _Missing]" = MISSING,
+        observer_interface: "Union[Expr.ObserverInterface, _Missing]" = MISSING,
+        view_interface: "Union[Expr.ViewInterface, _Missing]" = MISSING,
+        unsafe_from_interface: "Union[Expr.UnsafeFromInterface, _Missing]" = MISSING,
+        interface_template_type_rep: "Union[Expr.InterfaceTemplateTypeRep, _Missing]" = MISSING,
+        to_required_interface: "Union[Expr.ToRequiredInterface, _Missing]" = MISSING,
+        from_required_interface: "Union[Expr.FromRequiredInterface, _Missing]" = MISSING,
+        unsafe_from_required_interface: "Union[Expr.UnsafeFromRequiredInterface, _Missing]" = MISSING,
         experimental: "Union[Expr.Experimental, _Missing]" = MISSING,
         location: "Optional[Location]" = None,
     ):
@@ -1063,21 +1209,54 @@ class Expr:
         elif from_any is not MISSING:
             object.__setattr__(self, "_Sum_name", "from_any")
             object.__setattr__(self, "_Sum_value", from_any)
+        elif type_rep is not MISSING:
+            object.__setattr__(self, "_Sum_name", "type_rep")
+            object.__setattr__(self, "_Sum_value", type_rep)
         elif to_any_exception is not MISSING:
             object.__setattr__(self, "_Sum_name", "to_any_exception")
             object.__setattr__(self, "_Sum_value", to_any_exception)
         elif from_any_exception is not MISSING:
             object.__setattr__(self, "_Sum_name", "from_any_exception")
             object.__setattr__(self, "_Sum_value", from_any_exception)
-        elif type_rep is not MISSING:
-            object.__setattr__(self, "_Sum_name", "type_rep")
-            object.__setattr__(self, "_Sum_value", type_rep)
-        elif experimental is not MISSING:
-            object.__setattr__(self, "_Sum_name", "experimental")
-            object.__setattr__(self, "_Sum_value", experimental)
         elif throw is not MISSING:
             object.__setattr__(self, "_Sum_name", "throw")
             object.__setattr__(self, "_Sum_value", throw)
+        elif to_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "to_interface")
+            object.__setattr__(self, "_Sum_value", to_interface)
+        elif from_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "from_interface")
+            object.__setattr__(self, "_Sum_value", from_interface)
+        elif call_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "call_interface")
+            object.__setattr__(self, "_Sum_value", call_interface)
+        elif signatory_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "signatory_interface")
+            object.__setattr__(self, "_Sum_value", signatory_interface)
+        elif observer_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "observer_interface")
+            object.__setattr__(self, "_Sum_value", observer_interface)
+        elif view_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "view_interface")
+            object.__setattr__(self, "_Sum_value", view_interface)
+        elif unsafe_from_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "unsafe_from_interface")
+            object.__setattr__(self, "_Sum_value", unsafe_from_interface)
+        elif interface_template_type_rep is not MISSING:
+            object.__setattr__(self, "_Sum_name", "interface_template_type_rep")
+            object.__setattr__(self, "_Sum_value", interface_template_type_rep)
+        elif to_required_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "to_required_interface")
+            object.__setattr__(self, "_Sum_value", to_required_interface)
+        elif from_required_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "from_required_interface")
+            object.__setattr__(self, "_Sum_value", from_required_interface)
+        elif unsafe_from_required_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "unsafe_from_required_interface")
+            object.__setattr__(self, "_Sum_value", unsafe_from_required_interface)
+        elif experimental is not MISSING:
+            object.__setattr__(self, "_Sum_name", "experimental")
+            object.__setattr__(self, "_Sum_value", experimental)
         else:
             raise ValueError(f"At least one valid Sum value must be supplied!")
 
@@ -1204,6 +1383,54 @@ class Expr:
     def throw(self) -> "Optional[Throw]":
         return self._Sum_value if self._Sum_name == "throw" else None
 
+    @property
+    def to_interface(self) -> "Optional[ToInterface]":
+        return self._Sum_value if self._Sum_name == "to_interface" else None
+
+    @property
+    def from_interface(self) -> "Optional[FromInterface]":
+        return self._Sum_value if self._Sum_name == "from_interface" else None
+
+    @property
+    def call_interface(self) -> "Optional[CallInterface]":
+        return self._Sum_value if self._Sum_name == "call_interface" else None
+
+    @property
+    def signatory_interface(self) -> "Optional[SignatoryInterface]":
+        return self._Sum_value if self._Sum_name == "signatory_interface" else None
+
+    @property
+    def observer_interface(self) -> "Optional[ObserverInterface]":
+        return self._Sum_value if self._Sum_name == "observer_interface" else None
+
+    @property
+    def view_interface(self) -> "Optional[ViewInterface]":
+        return self._Sum_value if self._Sum_name == "view_interface" else None
+
+    @property
+    def unsafe_from_interface(self) -> "Optional[UnsafeFromInterface]":
+        return self._Sum_value if self._Sum_name == "unsafe_from_interface" else None
+
+    @property
+    def interface_template_type_rep(self) -> "Optional[InterfaceTemplateTypeRep]":
+        return self._Sum_value if self._Sum_name == "interface_template_type_rep" else None
+
+    @property
+    def to_required_interface(self) -> "Optional[ToRequiredInterface]":
+        return self._Sum_value if self._Sum_name == "to_required_interface" else None
+
+    @property
+    def from_required_interface(self) -> "Optional[FromRequiredInterface]":
+        return self._Sum_value if self._Sum_name == "from_required_interface" else None
+
+    @property
+    def unsafe_from_required_interface(self) -> "Optional[UnsafeFromRequiredInterface]":
+        return self._Sum_value if self._Sum_name == "unsafe_from_required_interface" else None
+
+    @property
+    def experimental(self) -> "Optional[Experimental]":
+        return self._Sum_value if self._Sum_name == "experimental" else None
+
     # noinspection PyPep8Naming
     def Sum_match(
         self,
@@ -1238,6 +1465,17 @@ class Expr:
         to_any_exception: "_typing.Callable[[Expr.ToAnyException], _T]",
         from_any_exception: "_typing.Callable[[Expr.FromAnyException], _T]",
         throw: "_typing.Callable[[Expr.Throw], _T]",
+        to_interface: "_typing.Callable[[ToInterface], _T]",
+        from_interface: "_typing.Callable[[FromInterface], _T]",
+        call_interface: "_typing.Callable[[CallInterface], _T]",
+        signatory_interface: "_typing.Callable[[SignatoryInterface], _T]",
+        observer_interface: "_typing.Callable[[ObserverInterface], _T]",
+        view_interface: "_typing.Callable[[ViewInterface], _T]",
+        unsafe_from_interface: "_typing.Callable[[UnsafeFromInterface], _T]",
+        interface_template_type_rep: "_typing.Callable[[InterfaceTemplateTypeRep], _T]",
+        to_required_interface: "_typing.Callable[[ToRequiredInterface], _T]",
+        from_required_interface: "_typing.Callable[[FromRequiredInterface], _T]",
+        unsafe_from_required_interface: "_typing.Callable[[UnsafeFromRequiredInterface], _T]",
         experimental: "_typing.Callable[[Expr.Experimental], _T]",
     ) -> "T":
         if self._Sum_name == "var":
@@ -1304,6 +1542,28 @@ class Expr:
             return type_rep(self.type_rep)  # type: ignore
         elif self._Sum_name == "throw":
             return throw(self.throw)  # type: ignore
+        elif self._Sum_name == "to_interface":
+            return to_interface(self.to_interface)  # type: ignore
+        elif self._Sum_name == "from_interface":
+            return from_interface(self.from_interface)  # type: ignore
+        elif self._Sum_name == "call_interface":
+            return call_interface(self.call_interface)  # type: ignore
+        elif self._Sum_name == "signatory_interface":
+            return signatory_interface(self.signatory_interface)  # type: ignore
+        elif self._Sum_name == "observer_interface":
+            return observer_interface(self.observer_interface)  # type: ignore
+        elif self._Sum_name == "view_interface":
+            return view_interface(self.view_interface)  # type: ignore
+        elif self._Sum_name == "unsafe_from_interface":
+            return unsafe_from_interface(self.unsafe_from_interface)  # type: ignore
+        elif self._Sum_name == "interface_template_type_rep":
+            return interface_template_type_rep(self.interface_template_type_rep)  # type: ignore
+        elif self._Sum_name == "to_required_interface":
+            return to_required_interface(self.to_required_interface)  # type: ignore
+        elif self._Sum_name == "from_required_interface":
+            return from_required_interface(self.from_required_interface)  # type: ignore
+        elif self._Sum_name == "unsafe_from_required_interface":
+            return unsafe_from_required_interface(self.unsafe_from_required_interface)  # type: ignore
         elif self._Sum_name == "experimental":
             return experimental(self.experimental)  # type: ignore
         else:
@@ -2114,6 +2374,7 @@ class DefDataType:
         record: "Union[DefDataType.Fields, _Missing]" = MISSING,
         variant: "Union[DefDataType.Fields, _Missing]" = MISSING,
         enum: "Union[DefDataType.EnumConstructors, _Missing]" = MISSING,
+        interface: "Union[Unit, _Missing]" = MISSING,
         synonym: "Union[Type, _Missing]" = MISSING,
         serializable: "Union[bool, _Missing]" = MISSING,
         location: "Union[Location, _Missing]" = MISSING,
@@ -2129,6 +2390,9 @@ class DefDataType:
         elif enum is not MISSING:
             self._DataCons_name = "enum"
             self._DataCons_value = enum  # type: ignore
+        elif interface is not MISSING:
+            self._DataCons_name = "interface"
+            self._DataCons_value = interface
         elif synonym is not MISSING:
             self._DataCons_name = "synonym"
             self._DataCons_value = synonym  # type: ignore
@@ -2146,6 +2410,13 @@ class DefDataType:
     @property
     def enum(self) -> "Optional[DefDataType.EnumConstructors]":
         if self._DataCons_name == "enum":
+            return self._DataCons_value  # type: ignore
+        else:
+            return None
+
+    @property
+    def interface(self) -> "Optional[Unit]":
+        if self._DataCons_name == "interface":
             return self._DataCons_value  # type: ignore
         else:
             return None
