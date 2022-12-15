@@ -660,6 +660,16 @@ class ProtobufParser:
             return lf.Update(embed_expr=self.parse_Update_EmbedExpr(pb.embed_expr))
         elif sum_name == "try_catch":
             return lf.Update(try_catch=self.parse_Update_TryCatch(pb.try_catch))
+        elif sum_name == "create_interface":
+            return lf.Update(
+                create_interface=self.parse_Update_CreateInterface(pb.create_interface)
+            )
+        elif sum_name == "exercise_interface":
+            return lf.Update(
+                exercise_interface=self.parse_Update_ExerciseInterface(pb.exercise_interface)
+            )
+        elif sum_name == "fetch_interface":
+            return lf.Update(fetch_interface=self.parse_Update_FetchInterface(pb.fetch_interface))
         else:
             raise ValueError(f"unknown Sum value: {sum_name!r}")
 
@@ -703,6 +713,32 @@ class ProtobufParser:
             try_expr=self.parse_Expr(pb.try_expr),
             var=self.interned_strings[pb.var_interned_str],
             catch_expr=self.parse_Expr(pb.catch_expr),
+        )
+
+    def parse_Update_CreateInterface(
+        self, pb: pblf.Update.CreateInterface
+    ) -> lf.Update.CreateInterface:
+        return lf.Update.CreateInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            expr=self.parse_Expr(pb.expr),
+        )
+
+    def parse_Update_ExerciseInterface(
+        self, pb: pblf.Update.ExerciseInterface
+    ) -> lf.Update.ExerciseInterface:
+        return lf.Update.ExerciseInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            cid=self.parse_Expr(pb.cid),
+            arg=self.parse_Expr(pb.arg),
+            guard=self.parse_Expr(pb.guard),
+        )
+
+    def parse_Update_FetchInterface(
+        self, pb: pblf.Update.FetchInterface
+    ) -> lf.Update.FetchInterface:
+        return lf.Update.FetchInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            cid=self.parse_Expr(pb.cid),
         )
 
     def parse_Scenario(self, pb: pblf.Scenario) -> lf.Scenario:
