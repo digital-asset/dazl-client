@@ -1796,6 +1796,34 @@ class Update:
             self.var = var
             self.catch_expr = catch_expr
 
+    class CreateInterface:
+        interface: TypeConName
+        expr: Expr
+
+        def __init__(self, interface: TypeConName, expr: Expr):
+            self.interface = interface
+            self.expr = expr
+
+    class ExerciseInterface:
+        interface: TypeConName
+        cid: Expr
+        arg: Expr
+        guard: Expr
+
+        def __init__(self, interface: TypeConName, cid: Expr, arg: Expr, guard: Expr):
+            self.interface = interface
+            self.cid = cid
+            self.arg = arg
+            self.guard = guard
+
+    class FetchInterface:
+        interface: TypeConName
+        cid: Expr
+
+        def __init__(self, interface: TypeConName, cid: Expr):
+            self.interface = interface
+            self.cid = cid
+
     __slots__ = "_Sum_name", "_Sum_value"
     _Sum_name: str
     _Sum_value: Any
@@ -1813,6 +1841,9 @@ class Update:
         fetch_by_key: "Union[Update.RetrieveByKey, _Missing]" = MISSING,
         embed_expr: "Union[Update.EmbedExpr, _Missing]" = MISSING,
         try_catch: "Union[Update.TryCatch, _Missing]" = MISSING,
+        create_interface: "Union[Update.CreateInterface, _Missing]" = MISSING,
+        exercise_interface: "Union[Update.ExerciseInterface, _Missing]" = MISSING,
+        fetch_interface: "Union[Update.FetchInterface, _Missing]" = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -1847,6 +1878,15 @@ class Update:
         elif try_catch is not MISSING:
             object.__setattr__(self, "_Sum_name", "try_catch")
             object.__setattr__(self, "_Sum_value", try_catch)
+        elif create_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "create_interface")
+            object.__setattr__(self, "_Sum_value", create_interface)
+        elif exercise_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "exercise_interface")
+            object.__setattr__(self, "_Sum_value", exercise_interface)
+        elif fetch_interface is not MISSING:
+            object.__setattr__(self, "_Sum_name", "fetch_interface")
+            object.__setattr__(self, "_Sum_value", fetch_interface)
 
     @property
     def pure(self) -> "Optional[Pure]":
@@ -1887,6 +1927,18 @@ class Update:
         """see similar constructor in `Scenario` on why this is useful."""
         return self._Sum_value if self._Sum_name == "embed_expr" else None  # type: ignore
 
+    @property
+    def create_interface(self) -> "Optional[CreateInterface]":
+        return self._Sum_value if self._Sum_name == "create_interface" else None  # type: ignore
+
+    @property
+    def exercise_interface(self) -> "Optional[ExerciseInterface]":
+        return self._Sum_value if self._Sum_name == "exercise_interface" else None  # type: ignore
+
+    @property
+    def fetch_interface(self) -> "Optional[FetchInterface]":
+        return self._Sum_value if self._Sum_name == "fetch_interface" else None  # type: ignore
+
     def Sum_match(
         self,
         pure: "Callable[[Pure], T]",
@@ -1898,25 +1950,34 @@ class Update:
         lookup_by_key: "Callable[[RetrieveByKey], T]",
         fetch_by_key: "Callable[[RetrieveByKey], T]",
         embed_expr: "Callable[[EmbedExpr], T]",
+        create_interface: "Callable[[CreateInterface], T]",
+        exercise_interface: "Callable[[ExerciseInterface], T]",
+        fetch_interface: "Callable[[FetchInterface], T]",
     ) -> T:
         if self._Sum_name == "pure":
             return pure(self._Sum_value)  # type: ignore
-        if self._Sum_name == "block":
+        elif self._Sum_name == "block":
             return block(self._Sum_value)  # type: ignore
-        if self._Sum_name == "create":
+        elif self._Sum_name == "create":
             return create(self._Sum_value)  # type: ignore
-        if self._Sum_name == "exercise":
+        elif self._Sum_name == "exercise":
             return exercise(self._Sum_value)  # type: ignore
-        if self._Sum_name == "fetch":
+        elif self._Sum_name == "fetch":
             return fetch(self._Sum_value)  # type: ignore
-        if self._Sum_name == "get_time":
+        elif self._Sum_name == "get_time":
             return get_time(self._Sum_value)  # type: ignore
-        if self._Sum_name == "lookup_by_key":
+        elif self._Sum_name == "lookup_by_key":
             return lookup_by_key(self._Sum_value)  # type: ignore
-        if self._Sum_name == "fetch_by_key":
+        elif self._Sum_name == "fetch_by_key":
             return fetch_by_key(self._Sum_value)  # type: ignore
-        if self._Sum_name == "embed_expr":
+        elif self._Sum_name == "embed_expr":
             return embed_expr(self._Sum_value)  # type: ignore
+        elif self._Sum_name == "create_interface":
+            return create_interface(self._Sum_value)  # type: ignore
+        elif self._Sum_name == "exercise_interface":
+            return exercise_interface(self._Sum_value)  # type: ignore
+        elif self._Sum_name == "fetch_interface":
+            return fetch_interface(self._Sum_value)  # type: ignore
         else:
             raise ValueError(f"Unknown Update.Sum case: {self._Sum_name}")
 
