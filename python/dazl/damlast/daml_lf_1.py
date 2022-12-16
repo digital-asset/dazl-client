@@ -3,6 +3,12 @@ import builtins as _builtins
 import sys
 
 
+class UnitType:
+    pass
+
+Unit = UnitType()
+
+
 class PrimType(_IntEnum):
     UNIT = 0
     BOOL = 1

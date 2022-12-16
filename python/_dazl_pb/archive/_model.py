@@ -37,6 +37,24 @@ class ArchiveMeta(_ContainerMeta):
     """
 
 
+def go_public_name(name: str) -> str:
+    with StringIO() as buf:
+     for m in name.split('.'):
+        for n in m.split('_'):
+            buf.write(n[0].upper())
+            buf.write(n[1:])
+     return buf.getvalue()
+
+
+def go_private_name(name: str) -> str:
+    n= go_public_name(name)
+    name = n[0].lower() + n[1:]
+
+    if name in ("case", "const", "func", "import", "interface", "package", "range", "struct", "type", "var"):
+        return name + "_"
+    return name
+
+
 class MessageMeta(_ContainerMeta):
     """
     Information about a Daml-LF message.
@@ -46,6 +64,14 @@ class MessageMeta(_ContainerMeta):
         super().__init__()
         self.name = name
         self.members = list()  # type: List[MemberMeta]
+
+    @property
+    def go_public_name(self):
+        return go_public_name(self.name)
+
+    @property
+    def go_private_name(self):
+        return go_private_name(self.name)
 
     @property
     def py_short_name(self):
@@ -112,6 +138,10 @@ class EnumMeta:
             self.fields.update(fields)
 
     @property
+    def go_public_name(self):
+        return self.name
+
+    @property
     def py_short_name(self):
         return self.name.rpartition(".")[2]
 
@@ -125,6 +155,25 @@ class FieldMeta:
         self.name = name
         self.data_type = data_type
         self.enclosing_type = enclosing_type
+
+    @property
+    def go_public_name(self):
+        return go_public_name(self.name)
+
+    @property
+    def go_private_name(self):
+        return go_private_name(self.name)
+
+    @property
+    def go_type(self):
+        if self.data_type == "str":
+            return "string"
+        elif self.data_type == "bool":
+            return "bool"
+        elif self.data_type == "int":
+            return "int"
+        else:
+            return go_public_name(self.data_type)
 
     @property
     def py_name(self):
@@ -165,6 +214,18 @@ class OneOfMeta:
     def __init__(self, name: str):
         self.name = name
         self.cases = list()  # type: List[FieldMeta]
+
+    @property
+    def go_public_name(self):
+        return go_public_name(self.name)
+
+    @property
+    def go_private_name(self):
+        return go_private_name(self.name)
+
+    @property
+    def go_type(self):
+        return "_"
 
     @property
     def py_name(self):

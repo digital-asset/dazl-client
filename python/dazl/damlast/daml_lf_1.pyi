@@ -10,6 +10,7 @@ else:
     from typing_extensions import Literal as _L
 _T = _typing.TypeVar("_T")
 
+
 class PrimType(_IntEnum):
     UNIT = 0
     BOOL = 1
