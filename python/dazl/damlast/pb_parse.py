@@ -730,7 +730,7 @@ class ProtobufParser:
             interface=self.parse_TypeConName(pb.interface),
             cid=self.parse_Expr(pb.cid),
             arg=self.parse_Expr(pb.arg),
-            guard=self.parse_Expr(pb.guard),
+            guard=self.parse_Expr(pb.guard) if pb.HasField("guard") else None,
         )
 
     def parse_Update_FetchInterface(
