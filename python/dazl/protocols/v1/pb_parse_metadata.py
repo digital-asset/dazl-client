@@ -276,7 +276,7 @@ def _parse_daml_metadata_pb(archive: "Archive") -> "PackageStore":
                 tt = create_data_type(current_module, dt)
                 if isinstance(tt, (RecordType, VariantType, EnumType)) and tt.name is not None:
                     psb.add_type(tt.name.con, tt)
-                else:
+                elif tt is not None:
                     LOG.warning("Unexpected non-complex type will be ignored: %r", tt)
 
             for template_pb in module.templates:
@@ -325,7 +325,7 @@ def _parse_daml_metadata_pb(archive: "Archive") -> "PackageStore":
 # noinspection PyDeprecation
 def create_data_type(
     current_module_ref: "ModuleRef", dt: "DefDataType"
-) -> "Union[RecordType, VariantType, EnumType, ScalarType]":
+) -> "Union[None, RecordType, VariantType, EnumType, ScalarType]":
     warnings.warn(
         "create_data_type is deprecated; there is no replacement.", DeprecationWarning, stacklevel=2
     )
@@ -357,5 +357,7 @@ def create_data_type(
             return VariantType(NamedArgumentList(d.items()), tt, type_vars)
         elif dt.enum is not None:
             return EnumType(tt, dt.enum.constructors)
+        elif dt.interface is not None:
+            return None
         else:
             return SCALAR_TYPE_UNIT

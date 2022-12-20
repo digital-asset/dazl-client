@@ -1808,9 +1808,9 @@ class Update:
         interface: TypeConName
         cid: Expr
         arg: Expr
-        guard: Expr
+        guard: Optional[Expr]
 
-        def __init__(self, interface: TypeConName, cid: Expr, arg: Expr, guard: Expr):
+        def __init__(self, interface: TypeConName, cid: Expr, arg: Expr, guard: Optional[Expr]):
             self.interface = interface
             self.cid = cid
             self.arg = arg
