@@ -5,6 +5,8 @@
 Simple command-line handlers.
 """
 
+from __future__ import annotations
+
 import logging
 from typing import List, Sequence
 

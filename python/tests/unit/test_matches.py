@@ -5,6 +5,8 @@
 This module contains tests for testing contract data against a match object.
 """
 
+from __future__ import annotations
+
 from dazl.query import is_match
 
 

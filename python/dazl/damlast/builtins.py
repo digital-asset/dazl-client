@@ -6,6 +6,8 @@ Define a few DAML values and functions that have been inlined in Python for effi
 simplicity.
 """
 
+from __future__ import annotations
+
 from typing import Any, Optional, Sequence
 import warnings
 

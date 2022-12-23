@@ -5,6 +5,23 @@
 Migrate
 #######
 
+Migrating to the Daml Python bindings v8.0
+==========================================
+
+v8 does not introduce any new APIs, but drops a lot of symbols that were deprecated in v7 and earlier.
+If you have been upgrading to new versions of the client bindings as they became available and have
+been reacting to `DeprecationWarning` notifications as they appear, then upgrading to v8 is not
+expected to break anything.
+
+Notable symbols that have been removed:
+
+ * dazl.setup_default_logger
+   Instead, prefer to set up your own logger. This code suffices as a replacement for most use cases:
+
+   .. code-block: python::
+      import logging
+      logging.basicConfig()
+
 Migrating to the Daml Python bindings v7.5
 ==========================================
 

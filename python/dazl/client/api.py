@@ -17,6 +17,8 @@ This module contains the public API for interacting with the ledger from the per
 specific party.
 """
 
+from __future__ import annotations
+
 from asyncio import Future, ensure_future, get_event_loop
 from contextlib import contextmanager
 from functools import partial, wraps
@@ -74,10 +76,6 @@ from .events import EventKey
 from .ledger import LedgerMetadata
 from .state import ContractContextualData, ContractContextualDataCollection, ContractsState
 
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
-    from ..model.types import TemplateNameLike
-
 __all__ = [
     "DEFAULT_TIMEOUT_SECONDS",
     "simple_client",
@@ -97,7 +95,6 @@ DEFAULT_TIMEOUT_SECONDS = 30
 def simple_client(
     url: Optional[str] = None,
     party: Union[None, str, Party] = None,
-    log_level: Optional[int] = INFO,
 ):
     """
     Start up a single client connecting to a single specific party.
@@ -108,20 +105,10 @@ def simple_client(
     :param party:
         The party to connect as. Defaults to the value of the ``DAML_LEDGER_PARTY`` environment
         variable if it is set.
-    :param log_level:
-        If non-``None``, configure a default logger that logs output at the specified level. The
-        default value is ``INFO``.
     :return:
         A :class:`SimplePartyClient` that can be used in a completely blocking, synchronous
         fashion.
     """
-    if log_level is not None:
-        from .. import setup_default_logger
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            setup_default_logger(log_level)
-
     if url is None:
         url = os.getenv("DAML_LEDGER_URL")
     if not url:
@@ -872,7 +859,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         arguments: Optional[dict] = None,
         workflow_id: Optional[str] = None,
         deduplication_time: Optional[TimeDeltaLike] = None,
@@ -1052,7 +1039,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_exercise_by_key(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         contract_key: Any,
         choice_name: str,
         arguments: Optional[dict] = None,
@@ -1152,7 +1139,7 @@ class AIOPartyClient(PartyClient):
 
     def submit_create_and_exercise(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         arguments: dict,
         choice_name: str,
         choice_arguments: Optional[dict] = None,
@@ -1713,7 +1700,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_create(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         arguments: Optional[dict] = None,
         workflow_id: Optional[str] = None,
         deduplication_time: Optional[TimeDeltaLike] = None,
@@ -1889,7 +1876,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_exercise_by_key(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         contract_key: Any,
         choice_name: str,
         arguments: Optional[dict] = None,
@@ -1986,7 +1973,7 @@ class SimplePartyClient(PartyClient):
 
     def submit_create_and_exercise(
         self,
-        template_name: TemplateNameLike,
+        template_name: Union[str, TypeConName],
         arguments: dict,
         choice_name: str,
         choice_arguments: Optional[dict] = None,

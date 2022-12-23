@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from asyncio import new_event_loop, run_coroutine_threadsafe, set_event_loop, sleep
 from queue import Queue
 from threading import Thread

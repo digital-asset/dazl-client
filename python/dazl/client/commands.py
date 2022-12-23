@@ -5,6 +5,8 @@ Command types that are used in the dazl v5 API.
 
 These symbols are primarily kept for backwards compatibility.
 """
+from __future__ import annotations
+
 from dataclasses import dataclass, fields
 from datetime import timedelta
 from typing import Any, Collection, List, Mapping, Optional, Sequence, Tuple, Union

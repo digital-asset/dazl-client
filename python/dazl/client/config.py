@@ -5,11 +5,12 @@
 This module contains configuration parameters used by the rest of the library.
 """
 
+from __future__ import annotations
+
 # We override types in this file LOTS because mypy does not understand what is happening
 # with the ``config_field`` function. There doesn't appear to be a way to describe
 # a dataclasses-like ``field`` function, which is why this config will be dropped
 # in dazl 8's API.
-
 import argparse
 from dataclasses import asdict, dataclass, field, fields
 from typing import (
