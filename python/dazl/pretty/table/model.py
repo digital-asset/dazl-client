@@ -35,7 +35,7 @@ class TableBuilder:
     State built up during a ledger run.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.entries = dict()  # type: Dict[ContractId, RowBuilder]
 
     def add(

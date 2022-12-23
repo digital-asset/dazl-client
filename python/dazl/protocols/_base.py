@@ -150,6 +150,7 @@ class LedgerClient:
         """
         Return the (current) last offset of the ledger.
         """
+        raise NotImplementedError("events_end must be implemented")
 
 
 class _LedgerConnection:

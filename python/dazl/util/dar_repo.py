@@ -4,14 +4,14 @@ from contextlib import ExitStack
 from os import PathLike, fspath
 from pathlib import Path
 import time
-from typing import List, Sequence, Union
+from typing import List, Sequence, Set, Union
 import warnings
 
 from .. import LOG
 
 
 class LocalDarRepository:
-    def __init__(self):
+    def __init__(self) -> None:
         warnings.warn(
             "LocalDarRepository is deprecated; use PackageLookup instead",
             DeprecationWarning,
@@ -19,7 +19,7 @@ class LocalDarRepository:
         )
         self._context = ExitStack()
         self._dar_paths = []  # type: List[Path]
-        self._files = set()
+        self._files = set()  # type: Set[Path]
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
 

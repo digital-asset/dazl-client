@@ -174,7 +174,7 @@ class TemplateContractData:
     Storage for state related to a specific :class:`Template`.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         # raw ContractId to ContractContextualData
         self._data = dict()  # type: Dict[str, ContractContextualData]
         # outstanding ACS queries

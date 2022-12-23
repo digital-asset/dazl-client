@@ -1477,7 +1477,7 @@ class Expr:
         from_required_interface: "_typing.Callable[[FromRequiredInterface], _T]",
         unsafe_from_required_interface: "_typing.Callable[[UnsafeFromRequiredInterface], _T]",
         experimental: "_typing.Callable[[Expr.Experimental], _T]",
-    ) -> "T":
+    ) -> "_T":
         if self._Sum_name == "var":
             return var(self.var)  # type: ignore
         elif self._Sum_name == "val":
