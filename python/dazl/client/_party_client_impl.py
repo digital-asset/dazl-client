@@ -663,11 +663,17 @@ class _PartyClientImpl:
             else:
                 LOG.debug("Command finished: %s", pending_command)
 
-    async def main_writer(self):
+    async def main_writer(self) -> None:
         """
         Main coroutine for submitting commands.
         """
         LOG.info("Writer loop for party %s is starting...", self.party)
+        if self._pool is None:
+            raise RuntimeError("unexpected start to main_writer with undefined pool")
+        if self._client_fut is None:
+            raise RuntimeError("unexpected start to main_writer with undefined client")
+        if self._config is None:
+            raise RuntimeError("unexpected start to main_writer with undefined config")
         ledger_fut = ensure_future(self._pool.ledger())
 
         client = await self._client_fut  # type: LedgerClient

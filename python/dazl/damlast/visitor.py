@@ -76,6 +76,17 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_to_any_exception,
             self.visit_expr_from_any_exception,
             self.visit_expr_throw,
+            self.visit_expr_to_interface,
+            self.visit_expr_from_interface,
+            self.visit_expr_call_interface,
+            self.visit_expr_signatory_interface,
+            self.visit_expr_observer_interface,
+            self.visit_expr_view_interface,
+            self.visit_expr_unsafe_from_interface,
+            self.visit_expr_interface_template_type_rep,
+            self.visit_expr_to_required_interface,
+            self.visit_expr_from_required_interface,
+            self.visit_expr_unsafe_from_required_interface,
             self.visit_expr_experimental,
         )
 
@@ -170,6 +181,43 @@ class ExprVisitor(Generic[RE]):
         raise NotImplementedError
 
     def visit_expr_from_any_exception(self, from_any_exception: "Expr.FromAnyException") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_to_interface(self, throw: "Expr.ToInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_from_interface(self, throw: "Expr.FromInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_call_interface(self, throw: "Expr.CallInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_signatory_interface(self, throw: "Expr.SignatoryInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_observer_interface(self, throw: "Expr.ObserverInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_view_interface(self, throw: "Expr.ViewInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_unsafe_from_interface(self, throw: "Expr.UnsafeFromInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_interface_template_type_rep(
+        self, throw: "Expr.InterfaceTemplateTypeRep"
+    ) -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_to_required_interface(self, throw: "Expr.ToRequiredInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_from_required_interface(self, throw: "Expr.FromRequiredInterface") -> "RE":
+        raise NotImplementedError
+
+    def visit_expr_unsafe_from_required_interface(
+        self, throw: "Expr.UnsafeFromRequiredInterface"
+    ) -> "RE":
         raise NotImplementedError
 
     def visit_expr_experimental(self, experimental: "Expr.Experimental") -> "RE":

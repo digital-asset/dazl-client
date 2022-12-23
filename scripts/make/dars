@@ -21,7 +21,7 @@ do
   case "${1}" in
   -M)
     echo "${dar}: ${daml_yaml} $(find "${daml_dir}" -name '*.daml' -type f | tr '\n' ' ')"
-    echo "	cd \"${daml_dir}\" && DAML_SDK_VERSION=1.18.1 daml build"
+    echo "	cd \"${daml_dir}\" && daml build"
     echo ""
     ;;
   -d)

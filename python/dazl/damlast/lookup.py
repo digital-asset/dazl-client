@@ -506,7 +506,7 @@ class PackageExceptionTracker:
     retryable.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._seen_types = set()  # type: Set[str]
         self._seen_packages = set()  # type: Set[PackageRef]
         self._pkg_refs = list()  # type: List[PackageRef]

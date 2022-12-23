@@ -46,7 +46,7 @@ class SymbolTable:
     messages within the same file can be referenced without being fully-qualified.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._packages = {}  # type: Dict[str, str]
         self._imports = {}  # type: Dict[str, str]
         self._map_types = {}  # type: Dict[str, Tuple[FieldDescriptorProto, FieldDescriptorProto]]

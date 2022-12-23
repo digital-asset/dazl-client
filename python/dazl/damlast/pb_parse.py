@@ -311,6 +311,63 @@ class ProtobufParser:
             )
         elif sum_name == "throw":
             return lf.Expr(throw=self.parse_Expr_Throw(pb.throw), location=location)
+        elif sum_name == "to_interface":
+            return lf.Expr(
+                to_interface=self.parse_Expr_ToInterface(pb.to_interface), location=location
+            )
+        elif sum_name == "from_interface":
+            return lf.Expr(
+                from_interface=self.parse_Expr_FromInterface(pb.from_interface), location=location
+            )
+        elif sum_name == "call_interface":
+            return lf.Expr(
+                call_interface=self.parse_Expr_CallInterface(pb.call_interface), location=location
+            )
+        elif sum_name == "signatory_interface":
+            return lf.Expr(
+                signatory_interface=self.parse_Expr_SignatoryInterface(pb.signatory_interface),
+                location=location,
+            )
+        elif sum_name == "observer_interface":
+            return lf.Expr(
+                observer_interface=self.parse_Expr_ObserverInterface(pb.observer_interface),
+                location=location,
+            )
+        elif sum_name == "view_interface":
+            return lf.Expr(
+                view_interface=self.parse_Expr_ViewInterface(pb.view_interface), location=location
+            )
+        elif sum_name == "unsafe_from_interface":
+            return lf.Expr(
+                unsafe_from_interface=self.parse_Expr_UnsafeFromInterface(pb.unsafe_from_interface),
+                location=location,
+            )
+        elif sum_name == "interface_template_type_rep":
+            return lf.Expr(
+                interface_template_type_rep=self.parse_Expr_InterfaceTemplateTypeRep(
+                    pb.interface_template_type_rep
+                ),
+                location=location,
+            )
+        elif sum_name == "to_required_interface":
+            return lf.Expr(
+                to_required_interface=self.parse_Expr_ToRequiredInterface(pb.to_required_interface),
+                location=location,
+            )
+        elif sum_name == "from_required_interface":
+            return lf.Expr(
+                from_required_interface=self.parse_Expr_FromRequiredInterface(
+                    pb.from_required_interface
+                ),
+                location=location,
+            )
+        elif sum_name == "unsafe_from_required_interface":
+            return lf.Expr(
+                unsafe_from_required_interface=self.parse_Expr_UnsafeFromRequiredInterface(
+                    pb.unsafe_from_required_interface
+                ),
+                location=location,
+            )
         elif sum_name == "experimental":
             return lf.Expr(
                 experimental=self.parse_Expr_Experimental(pb.experimental), location=location
@@ -430,6 +487,95 @@ class ProtobufParser:
             exception_expr=self.parse_Expr(pb.exception_expr),
         )
 
+    def parse_Expr_ToInterface(self, pb: pblf.Expr.ToInterface) -> lf.Expr.ToInterface:
+        return lf.Expr.ToInterface(
+            interface_type=self.parse_TypeConName(pb.interface_type),
+            template_type=self.parse_TypeConName(pb.template_type),
+            template_expr=self.parse_Expr(pb.template_expr),
+        )
+
+    def parse_Expr_FromInterface(self, pb: pblf.Expr.FromInterface) -> lf.Expr.FromInterface:
+        return lf.Expr.FromInterface(
+            interface_type=self.parse_TypeConName(pb.interface_type),
+            template_type=self.parse_TypeConName(pb.template_type),
+            interface_expr=self.parse_Expr(pb.interface_expr),
+        )
+
+    def parse_Expr_CallInterface(self, pb: pblf.Expr.CallInterface) -> lf.Expr.CallInterface:
+        return lf.Expr.CallInterface(
+            interface_type=self.parse_TypeConName(pb.interface_type),
+            method_name=self.interned_strings[pb.method_interned_name],
+            interface_expr=self.parse_Expr(pb.interface_expr),
+        )
+
+    def parse_Expr_SignatoryInterface(
+        self, pb: pblf.Expr.SignatoryInterface
+    ) -> lf.Expr.SignatoryInterface:
+        return lf.Expr.SignatoryInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            expr=self.parse_Expr(pb.expr),
+        )
+
+    def parse_Expr_ObserverInterface(
+        self, pb: pblf.Expr.ObserverInterface
+    ) -> lf.Expr.ObserverInterface:
+        return lf.Expr.ObserverInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            expr=self.parse_Expr(pb.expr),
+        )
+
+    def parse_Expr_ViewInterface(self, pb: pblf.Expr.ViewInterface) -> lf.Expr.ViewInterface:
+        return lf.Expr.ViewInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            expr=self.parse_Expr(pb.expr),
+        )
+
+    def parse_Expr_UnsafeFromInterface(
+        self, pb: pblf.Expr.UnsafeFromInterface
+    ) -> lf.Expr.UnsafeFromInterface:
+        return lf.Expr.UnsafeFromInterface(
+            interface_type=self.parse_TypeConName(pb.interface_type),
+            template_type=self.parse_TypeConName(pb.template_type),
+            contract_id_expr=self.parse_Expr(pb.contract_id_expr),
+            interface_expr=self.parse_Expr(pb.interface_expr),
+        )
+
+    def parse_Expr_InterfaceTemplateTypeRep(
+        self, pb: pblf.Expr.InterfaceTemplateTypeRep
+    ) -> lf.Expr.InterfaceTemplateTypeRep:
+        return lf.Expr.InterfaceTemplateTypeRep(
+            interface=self.parse_TypeConName(pb.interface),
+            expr=self.parse_Expr(pb.expr),
+        )
+
+    def parse_Expr_ToRequiredInterface(
+        self, pb: pblf.Expr.ToRequiredInterface
+    ) -> lf.Expr.ToRequiredInterface:
+        return lf.Expr.ToRequiredInterface(
+            required_interface=self.parse_TypeConName(pb.required_interface),
+            requiring_interface=self.parse_TypeConName(pb.requiring_interface),
+            expr=self.parse_Expr(pb.expr),
+        )
+
+    def parse_Expr_FromRequiredInterface(
+        self, pb: pblf.Expr.FromRequiredInterface
+    ) -> lf.Expr.FromRequiredInterface:
+        return lf.Expr.FromRequiredInterface(
+            required_interface=self.parse_TypeConName(pb.required_interface),
+            requiring_interface=self.parse_TypeConName(pb.requiring_interface),
+            expr=self.parse_Expr(pb.expr),
+        )
+
+    def parse_Expr_UnsafeFromRequiredInterface(
+        self, pb: pblf.Expr.UnsafeFromRequiredInterface
+    ) -> lf.Expr.UnsafeFromRequiredInterface:
+        return lf.Expr.UnsafeFromRequiredInterface(
+            required_interface=self.parse_TypeConName(pb.required_interface),
+            requiring_interface=self.parse_TypeConName(pb.requiring_interface),
+            contract_id_expr=self.parse_Expr(pb.contract_id_expr),
+            interface_expr=self.parse_Expr(pb.interface_expr),
+        )
+
     def parse_Expr_Experimental(self, pb: pblf.Expr.Experimental) -> lf.Expr.Experimental:
         return lf.Expr.Experimental(name=pb.name, type=self.parse_Type(pb.type))
 
@@ -516,6 +662,16 @@ class ProtobufParser:
             return lf.Update(embed_expr=self.parse_Update_EmbedExpr(pb.embed_expr))
         elif sum_name == "try_catch":
             return lf.Update(try_catch=self.parse_Update_TryCatch(pb.try_catch))
+        elif sum_name == "create_interface":
+            return lf.Update(
+                create_interface=self.parse_Update_CreateInterface(pb.create_interface)
+            )
+        elif sum_name == "exercise_interface":
+            return lf.Update(
+                exercise_interface=self.parse_Update_ExerciseInterface(pb.exercise_interface)
+            )
+        elif sum_name == "fetch_interface":
+            return lf.Update(fetch_interface=self.parse_Update_FetchInterface(pb.fetch_interface))
         else:
             raise ValueError(f"unknown Sum value: {sum_name!r}")
 
@@ -559,6 +715,32 @@ class ProtobufParser:
             try_expr=self.parse_Expr(pb.try_expr),
             var=self.interned_strings[pb.var_interned_str],
             catch_expr=self.parse_Expr(pb.catch_expr),
+        )
+
+    def parse_Update_CreateInterface(
+        self, pb: pblf.Update.CreateInterface
+    ) -> lf.Update.CreateInterface:
+        return lf.Update.CreateInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            expr=self.parse_Expr(pb.expr),
+        )
+
+    def parse_Update_ExerciseInterface(
+        self, pb: pblf.Update.ExerciseInterface
+    ) -> lf.Update.ExerciseInterface:
+        return lf.Update.ExerciseInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            cid=self.parse_Expr(pb.cid),
+            arg=self.parse_Expr(pb.arg),
+            guard=self.parse_Expr(pb.guard) if pb.HasField("guard") else None,
+        )
+
+    def parse_Update_FetchInterface(
+        self, pb: pblf.Update.FetchInterface
+    ) -> lf.Update.FetchInterface:
+        return lf.Update.FetchInterface(
+            interface=self.parse_TypeConName(pb.interface),
+            cid=self.parse_Expr(pb.cid),
         )
 
     def parse_Scenario(self, pb: pblf.Scenario) -> lf.Scenario:
@@ -704,6 +886,14 @@ class ProtobufParser:
                 serializable=serializable,
                 location=location,
                 enum=self.parse_DefDataType_EnumConstructors(pb.enum),
+            )
+        elif DataCons_name == "interface":
+            return lf.DefDataType(
+                name=name,
+                params=params,
+                serializable=serializable,
+                location=location,
+                interface=lf.UNIT,
             )
         else:
             raise ValueError(f"unknown DataCons value: {DataCons_name!r}")

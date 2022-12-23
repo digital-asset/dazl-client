@@ -7,7 +7,7 @@ from io import BytesIO
 from os import PathLike
 from pathlib import Path
 import threading
-from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional, Union
+from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional, TypeVar, Union
 import warnings
 from zipfile import ZipFile
 
@@ -21,6 +21,8 @@ from .parse import parse_archive
 Dar = Union[bytes, str, Path, BinaryIO]
 
 __all__ = ["Dar", "DarFile", "CachedDarFile", "get_dar_package_ids"]
+
+Self = TypeVar("Self")
 
 
 class DarFile:
@@ -65,7 +67,7 @@ class DarFile:
         else:
             raise TypeError("DarFile only understands file paths or binary blobs")
 
-    def __enter__(self) -> "DarFile":
+    def __enter__(self: Self) -> "Self":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

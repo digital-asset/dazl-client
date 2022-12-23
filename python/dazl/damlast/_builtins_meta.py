@@ -8,10 +8,15 @@ Daml-LF files.
 
 from __future__ import annotations
 
-from typing import Any, Optional, Sequence, Type as PyType, Union
+from typing import Any, Dict, Optional, Sequence, Type as PyType, Union
+import warnings
 
 from .daml_lf_1 import BuiltinFunction, Expr, Type, ValName
 from .util import package_local_name
+
+warnings.warn(
+    "The symbols in dazl.damlast.builtin are deprecated", DeprecationWarning, stacklevel=2
+)
 
 
 class _BuiltinMeta(type):
@@ -49,15 +54,15 @@ class Builtin(metaclass=_BuiltinMeta):
 
 
 class BuiltinTable:
-    def __init__(self):
-        self.by_name = dict()  # type: [BuiltinFunction, PyType[Builtin]]
-        self.by_builtin = dict()  # type: [str, PyType[Builtin]]
+    def __init__(self) -> None:
+        self.by_name = dict()  # type: Dict[BuiltinFunction, PyType[Builtin]]
+        self.by_builtin = dict()  # type: Dict[str, PyType[Builtin]]
 
     def add(self, builtin: "PyType[Builtin]"):
         if builtin.builtin is not None:
-            self.by_builtin[builtin.builtin] = builtin
+            self.by_builtin[builtin.builtin] = builtin  # type: ignore
         elif builtin.name is not None:
-            self.by_name[builtin.name] = builtin
+            self.by_name[builtin.name] = builtin  # type: ignore
         else:
             raise ValueError(f"A builtin could not be registered! {builtin!r}")
 
@@ -67,11 +72,11 @@ class BuiltinTable:
         """
         if isinstance(ref, BuiltinFunction):
             # All BuiltinFunctions MUST be defined
-            return self.by_builtin[ref]
+            return self.by_builtin[ref]  # type: ignore
         elif isinstance(ref, ValName):
-            return self.by_name.get(package_local_name(ref))
+            return self.by_name.get(package_local_name(ref))  # type: ignore
         elif isinstance(ref, str):
-            return self.by_name.get(ref)
+            return self.by_name.get(ref)  # type: ignore
         else:
             raise TypeError(f"unexpected key type: {ref!r}")
 

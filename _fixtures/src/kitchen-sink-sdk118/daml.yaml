@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 sdk-version: 1.18.1
-name: kitchen-sink
+name: kitchen-sink-sdk118
 version: 1.0.0
 source: KitchenSink
 dependencies:

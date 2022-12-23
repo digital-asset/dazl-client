@@ -854,8 +854,8 @@ class Connection(aio.Connection):
     async def allocate_party(
         self,
         *,
-        identifier_hint: str = None,
-        display_name: str = None,
+        identifier_hint: Optional[str] = None,
+        display_name: Optional[str] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> PartyInfo:
         """

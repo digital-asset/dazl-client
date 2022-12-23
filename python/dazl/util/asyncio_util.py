@@ -373,7 +373,7 @@ class LongRunningAwaitable:
 class ServiceQueue(Generic[T]):
 
     # noinspection PyDeprecation
-    def __init__(self):
+    def __init__(self) -> None:
         warnings.warn(
             "ServiceQueue is deprecated; there is no planned replacement",
             DeprecationWarning,
@@ -417,12 +417,6 @@ class ServiceQueue(Generic[T]):
         self._q.put_nowait((None, fut))
         return fut
 
-    def abort(self) -> Sequence[T_co]:
-        """
-        Gracefully terminate the open iterator as quickly as possible and return all remaining
-        elements in the queue.
-        """
-
     async def next(self) -> Optional[T_co]:
         if not self._service_fut.done():
             await self._service_fut
@@ -437,7 +431,7 @@ class ServiceQueue(Generic[T]):
             fut.set_result(None)
             return None
         else:
-            self._prev_fut = fut
+            self._prev_fut = fut  # type: ignore
             return value
 
     def __aiter__(self):
