@@ -68,7 +68,7 @@ class EvaluationScope:
         return self._vars[var_name]
 
     def resolve_type(self, type_ref) -> "Type":
-        pass
+        raise RuntimeError("this function is not implemented")
 
     def resolve_value(self, value_ref) -> "Optional[Expr]":
         if value_ref in self._blocked_value_refs:

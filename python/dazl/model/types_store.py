@@ -61,7 +61,7 @@ class PackageStoreBuilder:
     Convenience class for building up a :class:`PackageStore`.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         warnings.warn(
             "PackageStoreBuilder is deprecated; there is no direct replacement.",
             DeprecationWarning,

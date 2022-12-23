@@ -722,13 +722,8 @@ class TemplateChoice:
         self._controllers = controllers
 
     @property
-    def type(self):
+    def type(self) -> Type:
         return self.data_type
-
-    def controllers(self, cdata: ContractData) -> Collection[Party]:
-        """
-        Return every :class:`Party` that can exercise this choice given the specified contract data.
-        """
 
 
 def as_commands(commands_ish, allow_callables=False):

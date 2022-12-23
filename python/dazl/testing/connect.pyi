@@ -35,7 +35,7 @@ def connect_with_new_party(
     act_as: Union[None, Party, Collection[Party]] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[str, bytes, PathLike, BinaryIO] = None,
+    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
     display_name: Union[None, str, NameGenFn] = None
 ) -> AsyncContextManager[ConnectionWithParty]: ...
@@ -48,7 +48,7 @@ def connect_with_new_party(
     act_as: Union[None, Party, Collection[Party]] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[str, bytes, PathLike, BinaryIO] = None,
+    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
     display_name: Union[None, str, NameGenFn] = None
 ) -> AsyncContextManager[Tuple[ConnectionWithParty, ConnectionWithParty]]: ...
@@ -61,7 +61,7 @@ def connect_with_new_party(
     act_as: Union[None, Party, Collection[Party]] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[str, bytes, PathLike, BinaryIO] = None,
+    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
     display_name: Union[None, str, NameGenFn] = None
 ) -> AsyncContextManager[Tuple[ConnectionWithParty, ConnectionWithParty, ConnectionWithParty]]: ...
@@ -74,7 +74,7 @@ def connect_with_new_party(
     act_as: Union[None, Party, Collection[Party]] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[str, bytes, PathLike, BinaryIO] = None,
+    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
     display_name: Union[None, str, NameGenFn] = None
 ) -> AsyncContextManager[
@@ -89,7 +89,7 @@ def connect_with_new_party(
     act_as: Union[None, Party, Collection[Party]] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[str, bytes, PathLike, BinaryIO] = None,
+    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
     display_name: Union[None, str, NameGenFn] = None
 ) -> AsyncContextManager[Sequence[ConnectionWithParty]]: ...
