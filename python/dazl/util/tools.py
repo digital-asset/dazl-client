@@ -14,7 +14,7 @@ K = TypeVar("K")
 V = TypeVar("V")
 
 
-__all__ = ["boundary_iter", "flatten", "as_list", "get_matches"]
+__all__ = ["boundary_iter", "flatten", "as_list"]
 
 
 def boundary_iter(obj: Iterable[T]) -> Generator[Tuple[bool, T], None, None]:

@@ -5,12 +5,16 @@ from __future__ import annotations
 
 from types import MappingProxyType
 from typing import Collection, Mapping, Optional
+import warnings
 
-from .builtins import builtins
 from .daml_lf_1 import Block, Expr, Type, ValName
 from .protocols import SymbolLookup
 from .util import package_local_name
 from .visitor import IdentityVisitor
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from .builtins import builtins
 
 
 class RewriteVisitor(IdentityVisitor):
