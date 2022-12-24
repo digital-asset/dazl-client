@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from unittest import TestCase
 
-from dazl.client.commands import CommandBuilder, CommandDefaults, CommandPayload, create
+from dazl.client.commands import CommandBuilder, CommandDefaults, CommandPayload
 from dazl.damlast.lookup import parse_type_con_name
 from dazl.ledger import CreateCommand, ExerciseCommand
 from dazl.prim import ContractId, Party
@@ -30,8 +30,7 @@ class TestCommandBuilderTest(TestCase):
     """
 
     def test_single_create_untyped(self):
-        with pytest.warns(DeprecationWarning):
-            expr = create("Sample:Untyped", {"arg": 1})
+        expr = CreateCommand("Sample:Untyped", {"arg": 1})
 
         expected = [
             CommandPayload(

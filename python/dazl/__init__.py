@@ -23,10 +23,6 @@ __all__ = [
     "SimplePartyClient",
     "__version__",
     "async_network",
-    "create",
-    "create_and_exercise",
-    "exercise",
-    "exercise_by_key",
     "frozendict",
     "run",
     "simple_client",
@@ -35,17 +31,14 @@ __all__ = [
 
 from ._logging import LOG
 from .client import AIOPartyClient, Network, SimplePartyClient, async_network, run, simple_client
-from .client.commands import (
+from .ledger import (
+    Command,
     CreateAndExerciseCommand,
     CreateCommand,
     ExerciseByKeyCommand,
     ExerciseCommand,
-    create,
-    create_and_exercise,
-    exercise,
-    exercise_by_key,
+    connect,
 )
-from .ledger import Command, connect
 from .pretty.table import write_acs
 from .prim import ContractData, ContractId, DazlError, FrozenDict as frozendict, Party
 
