@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 """
 Ensure that v7 Commands and v8 Commands behave as expected, particularly with respect to

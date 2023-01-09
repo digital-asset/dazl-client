@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -73,4 +73,4 @@ except ImportError:
     pass
 
 
-__version__ = "7.10.3"
+__version__ = "7.10.4"
