@@ -9,7 +9,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from dazl import create, exercise, Network, write_acs
+from dazl import Network, write_acs, ExerciseCommand, CreateCommand
 
 LOG = logging.getLogger('integration_test')
 
@@ -43,7 +43,7 @@ class PartyBot:
                     address=receiver_address,
                     content=[0, 1, 2, 3, 4])))
 
-            return [exercise(event.cid, choice_name, choice_args)
+            return [ExerciseCommand(event.cid, choice_name, choice_args)
                     for choice_name, choice_args in choices]
 
 
@@ -71,7 +71,7 @@ class PostOffice:
         address = event.cdata['address']
         receiver_cid = self._addrs.get(address)
         if receiver_cid is not None:
-            return exercise(event.cid, 'Sort', dict(receiverCid=receiver_cid))
+            return ExerciseCommand(event.cid, 'Sort', dict(receiverCid=receiver_cid))
         else:
             self._unknown_letters[address].append(event.cid)
             self._unsorted_letter_count += 1
@@ -91,11 +91,11 @@ def run_test(url, keepalive=False):
 
     post_office = PostOffice()
 
-    postman_client.add_ledger_ready(lambda event: create('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
-    postman_client.add_ledger_created('Main:PostmanRole', lambda event: [exercise(event.cid, 'InviteParticipant', m) for m in members])
+    postman_client.add_ledger_ready(lambda event: CreateCommand('Main:PostmanRole', dict(postman=POSTMAN_PARTY)))
+    postman_client.add_ledger_created('Main:PostmanRole', lambda event: [ExerciseCommand(event.cid, 'InviteParticipant', m) for m in members])
     postman_client.add_ledger_created('Main:UnsortedLetter', post_office.sort_and_deliver_letter)
     postman_client.add_ledger_created('Main:ReceiverRole', post_office.register_address)
-    postman_client.add_ledger_created('Main:SortedLetter', lambda event: exercise(event.cid, 'Deliver'))
+    postman_client.add_ledger_created('Main:SortedLetter', lambda event: ExerciseCommand(event.cid, 'Deliver'))
 
     @postman_client.ledger_exercised('Main:PostmanRole', 'InviteParticipant')
     def log(event):
@@ -104,8 +104,8 @@ def run_test(url, keepalive=False):
     for member_client in member_clients:
         bot = PartyBot(member_client.party)
         # every member automatically accepts
-        member_client.add_ledger_created('Main:InviteAuthorRole', lambda event: exercise(event.cid, 'AcceptInviteAuthorRole'))
-        member_client.add_ledger_created('Main:InviteReceiverRole', lambda event: exercise(event.cid, 'AcceptInviteReceiverRole'))
+        member_client.add_ledger_created('Main:InviteAuthorRole', lambda event: ExerciseCommand(event.cid, 'AcceptInviteAuthorRole'))
+        member_client.add_ledger_created('Main:InviteReceiverRole', lambda event: ExerciseCommand(event.cid, 'AcceptInviteReceiverRole'))
         # every member, upon joining, sends messages to five of their best friends
         member_client.add_ledger_created('Main:AuthorRole', bot.send_to_five_friends)
 

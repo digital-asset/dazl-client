@@ -21,8 +21,7 @@ from __future__ import annotations
 
 from asyncio import Future, ensure_future, get_event_loop
 from contextlib import contextmanager
-from functools import partial, wraps
-from logging import INFO
+from functools import wraps
 import os
 from pathlib import Path
 from typing import Any, Awaitable, BinaryIO, Collection, List, Optional, Tuple, Union
@@ -857,49 +856,6 @@ class AIOPartyClient(PartyClient):
             command_id=command_id,
         )
 
-    def submit_create(
-        self,
-        template_name: Union[str, TypeConName],
-        arguments: Optional[dict] = None,
-        workflow_id: Optional[str] = None,
-        deduplication_time: Optional[TimeDeltaLike] = None,
-    ) -> Awaitable[None]:
-        """
-        Submit a single create command. Equivalent to calling :meth:`submit` with a single
-        ``create``.
-
-        :param template_name:
-            The name of the template.
-        :param arguments:
-            The arguments to the create (as a ``dict``).
-        :param workflow_id:
-            The optional workflow ID to stamp on the outgoing command.
-        :param deduplication_time:
-            The length of the time window during which all commands with the same party and command
-            ID will be deduplicated. Duplicate commands submitted before the end of this window
-            return an ``ALREADY_EXISTS`` error.
-        :return:
-            A future that resolves when the command has made it to the ledger _or_ an error
-            occurred when trying to process them.
-        """
-        warnings.warn(
-            "submit_create is deprecated; use create instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        from .. import create
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            cmd = create(template_name, arguments)
-
-        return self.submit(
-            cmd,
-            workflow_id=workflow_id,
-            deduplication_time=deduplication_time,
-        )
-
     async def exercise(
         self,
         __contract_id: ContractId,
@@ -939,53 +895,6 @@ class AIOPartyClient(PartyClient):
             ExerciseCommand(contract_id=__contract_id, choice=__choice_name, argument=__argument),
             workflow_id=workflow_id,
             command_id=command_id,
-        )
-
-    def submit_exercise(
-        self,
-        cid: ContractId,
-        choice_name: str,
-        arguments: Optional[dict] = None,
-        workflow_id: Optional[str] = None,
-        deduplication_time: Optional[TimeDeltaLike] = None,
-    ) -> Awaitable[None]:
-        """
-        Submit a single exercise choice. Equivalent to calling :meth:`submit` with a single
-        ``exercise``.
-
-        :param cid:
-            The :class:`ContractId` on which a choice is being exercised.
-        :param choice_name:
-            The name of the choice to exercise.
-        :param arguments:
-            The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
-            choices.
-        :param workflow_id:
-            The optional workflow ID to stamp on the outgoing command.
-        :param deduplication_time:
-            The length of the time window during which all commands with the same party and command
-            ID will be deduplicated. Duplicate commands submitted before the end of this window
-            return an ``ALREADY_EXISTS`` error.
-        :return:
-            A future that resolves when the command has made it to the ledger _or_ an error
-            occurred when trying to process them.
-        """
-        warnings.warn(
-            "submit_exercise is deprecated; use exercise instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        from .. import exercise
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            cmd = exercise(cid, choice_name, arguments)
-
-        return self.submit(
-            cmd,
-            workflow_id=workflow_id,
-            deduplication_time=deduplication_time,
         )
 
     async def exercise_by_key(
@@ -1035,53 +944,6 @@ class AIOPartyClient(PartyClient):
             ),
             workflow_id=workflow_id,
             command_id=command_id,
-        )
-
-    def submit_exercise_by_key(
-        self,
-        template_name: Union[str, TypeConName],
-        contract_key: Any,
-        choice_name: str,
-        arguments: Optional[dict] = None,
-        workflow_id: Optional[str] = None,
-        deduplication_time: Optional[TimeDeltaLike] = None,
-    ) -> Awaitable[None]:
-        """
-        Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
-        single ``exercise_by_key``.
-
-        :param template_name:
-            The name of the template on which to do an exercise-by-key.
-        :param contract_key:
-            The value that should uniquely identify a contract for the specified template.
-        :param choice_name:
-            The name of the choice to exercise.
-        :param arguments:
-            The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
-            choices.
-        :param workflow_id:
-            The optional workflow ID to stamp on the outgoing command.
-        :param deduplication_time:
-            The length of the time window during which all commands with the same party and command
-            ID will be deduplicated. Duplicate commands submitted before the end of this window
-            return an ``ALREADY_EXISTS`` error.
-        """
-        warnings.warn(
-            "submit_exercise_by_key is deprecated; use exercise_by_key instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        from .. import exercise_by_key
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            cmd = (exercise_by_key(template_name, contract_key, choice_name, arguments),)
-
-        return self.submit(
-            cmd,
-            workflow_id=workflow_id,
-            deduplication_time=deduplication_time,
         )
 
     async def create_and_exercise(
@@ -1135,52 +997,6 @@ class AIOPartyClient(PartyClient):
             ),
             workflow_id=workflow_id,
             command_id=command_id,
-        )
-
-    def submit_create_and_exercise(
-        self,
-        template_name: Union[str, TypeConName],
-        arguments: dict,
-        choice_name: str,
-        choice_arguments: Optional[dict] = None,
-        workflow_id: Optional[str] = None,
-        deduplication_time: Optional[TimeDeltaLike] = None,
-    ) -> Awaitable[None]:
-        """
-        Synchronously submit a single create-and-exercise command. Equivalent to calling
-        :meth:`submit` with a single ``create_and_exercise``.
-
-        :param template_name:
-            The name of the template on which to do an exercise-by-key.
-        :param arguments:
-            The arguments to the create (as a ``dict``).
-        :param choice_name:
-            The name of the choice to exercise.
-        :param choice_arguments:
-            The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
-        :param workflow_id:
-            The optional workflow ID to stamp on the outgoing command.
-        :param deduplication_time:
-            The length of the time window during which all commands with the same party and command
-            ID will be deduplicated. Duplicate commands submitted before the end of this window
-            return an ``ALREADY_EXISTS`` error.
-        """
-        warnings.warn(
-            "submit_create_and_exercise is deprecated; use create_and_exercise instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        from .. import create_and_exercise
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            cmd = create_and_exercise(template_name, arguments, choice_name, choice_arguments)
-
-        return self.submit(
-            cmd,
-            workflow_id=workflow_id,
-            deduplication_time=deduplication_time,
         )
 
     # </editor-fold>
@@ -1698,46 +1514,6 @@ class SimplePartyClient(PartyClient):
             )
         )
 
-    def submit_create(
-        self,
-        template_name: Union[str, TypeConName],
-        arguments: Optional[dict] = None,
-        workflow_id: Optional[str] = None,
-        deduplication_time: Optional[TimeDeltaLike] = None,
-    ) -> None:
-        """
-        Synchronously submit a single create command. Equivalent to calling :meth:`submit` with a
-        single ``create``.
-
-        :param template_name:
-            The name of the template.
-        :param arguments:
-            The arguments to the create (as a ``dict``).
-        :param workflow_id:
-            The optional workflow ID to stamp on the outgoing command.
-        :param deduplication_time:
-            The length of the time window during which all commands with the same party and command
-            ID will be deduplicated. Duplicate commands submitted before the end of this window
-            return an ``ALREADY_EXISTS`` error.
-        """
-        warnings.warn(
-            "submit_create is deprecated; use create instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        from .. import create
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            cmd = create(template_name, arguments)
-
-        return self.submit(
-            cmd,
-            workflow_id=workflow_id,
-            deduplication_time=deduplication_time,
-        )
-
     def exercise(
         self,
         __contract_id: ContractId,
@@ -1779,50 +1555,6 @@ class SimplePartyClient(PartyClient):
                 workflow_id=workflow_id,
                 command_id=command_id,
             )
-        )
-
-    def submit_exercise(
-        self,
-        cid: ContractId,
-        choice_name: str,
-        arguments: Optional[dict] = None,
-        workflow_id: Optional[str] = None,
-        deduplication_time: Optional[TimeDeltaLike] = None,
-    ) -> None:
-        """
-        Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
-        single ``exercise``.
-
-        :param cid:
-            The :class:`ContractId` on which a choice is being exercised.
-        :param choice_name:
-            The name of the choice to exercise.
-        :param arguments:
-            The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
-            choices.
-        :param workflow_id:
-            The optional workflow ID to stamp on the outgoing command.
-        :param deduplication_time:
-            The length of the time window during which all commands with the same party and command
-            ID will be deduplicated. Duplicate commands submitted before the end of this window
-            return an ``ALREADY_EXISTS`` error.
-        """
-        warnings.warn(
-            "submit_exercise is deprecated; use exercise instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        from .. import exercise
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            cmd = exercise(cid, choice_name, arguments)
-
-        return self.submit(
-            cmd,
-            workflow_id=workflow_id,
-            deduplication_time=deduplication_time,
         )
 
     def exercise_by_key(
@@ -1874,53 +1606,6 @@ class SimplePartyClient(PartyClient):
             )
         )
 
-    def submit_exercise_by_key(
-        self,
-        template_name: Union[str, TypeConName],
-        contract_key: Any,
-        choice_name: str,
-        arguments: Optional[dict] = None,
-        workflow_id: Optional[str] = None,
-        deduplication_time: Optional[TimeDeltaLike] = None,
-    ) -> None:
-        """
-        Synchronously submit a single exercise choice. Equivalent to calling :meth:`submit` with a
-        single ``exercise_by_key``.
-
-        :param template_name:
-            The name of the template on which to do an exercise-by-key.
-        :param contract_key:
-            The value that should uniquely identify a contract for the specified template.
-        :param choice_name:
-            The name of the choice to exercise.
-        :param arguments:
-            The arguments to the create (as a ``dict``). Can be omitted (``None``) for no-argument
-            choices.
-        :param workflow_id:
-            The optional workflow ID to stamp on the outgoing command.
-        :param deduplication_time:
-            The length of the time window during which all commands with the same party and command
-            ID will be deduplicated. Duplicate commands submitted before the end of this window
-            return an ``ALREADY_EXISTS`` error.
-        """
-        warnings.warn(
-            "submit_exercise_by_key is deprecated; use exercise_by_key instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        from .. import exercise_by_key
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            cmd = exercise_by_key(template_name, contract_key, choice_name, arguments)
-
-        return self.submit(
-            cmd,
-            workflow_id=workflow_id,
-            deduplication_time=deduplication_time,
-        )
-
     def create_and_exercise(
         self,
         __template_id: Union[str, TypeConName],
@@ -1969,52 +1654,6 @@ class SimplePartyClient(PartyClient):
                 workflow_id=workflow_id,
                 command_id=command_id,
             )
-        )
-
-    def submit_create_and_exercise(
-        self,
-        template_name: Union[str, TypeConName],
-        arguments: dict,
-        choice_name: str,
-        choice_arguments: Optional[dict] = None,
-        workflow_id: Optional[str] = None,
-        deduplication_time: Optional[TimeDeltaLike] = None,
-    ) -> None:
-        """
-        Synchronously submit a single create-and-exercise command. Equivalent to calling
-        :meth:`submit` with a single ``create_and_exercise``.
-
-        :param template_name:
-            The name of the template on which to do an exercise-by-key.
-        :param arguments:
-            The arguments to the create (as a ``dict``).
-        :param choice_name:
-            The name of the choice to exercise.
-        :param choice_arguments:
-            The arguments to the exercise (as a ``dict``). Can be omitted (``None``) for no-argument
-        :param workflow_id:
-            The optional workflow ID to stamp on the outgoing command.
-        :param deduplication_time:
-            The length of the time window during which all commands with the same party and command
-            ID will be deduplicated. Duplicate commands submitted before the end of this window
-            return an ``ALREADY_EXISTS`` error.
-        """
-        warnings.warn(
-            "submit_create_and_exercise is deprecated; use create_and_exercise instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        from .. import create_and_exercise
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            cmd = create_and_exercise(template_name, arguments, choice_name, choice_arguments)
-
-        return self.submit(
-            cmd,
-            workflow_id=workflow_id,
-            deduplication_time=deduplication_time,
         )
 
     # endregion
