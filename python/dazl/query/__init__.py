@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from collections.abc import Mapping as MappingABC
 from typing import Any, Callable, Collection, Dict, Mapping, Optional, Union
 
@@ -25,7 +27,7 @@ class Filter:
         self,
         *,
         server_side: Optional[ContractData] = None,
-        client_side: Optional[Callable[[ContractData], bool]] = None
+        client_side: Optional[Callable[[ContractData], bool]] = None,
     ):
         self.server_side = server_side
         self.client_side = client_side

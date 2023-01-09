@@ -24,6 +24,8 @@ To create a Protobuf plugin in Python, define an entrypoint as so:
        return response
 """
 
+from __future__ import annotations
+
 from functools import wraps
 import os
 from pathlib import Path

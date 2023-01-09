@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
+from __future__ import annotations
+
 from asyncio import AbstractEventLoop, get_event_loop
 from datetime import datetime, timedelta
 from typing import Callable, Optional

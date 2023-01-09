@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from pathlib import Path
 import time
 
@@ -8,7 +10,7 @@ from dazl import LOG
 from dazl.damlast import DarFile
 import pytest
 
-from .dars import KitchenSink1_18, KitchenSink2_4, KitchenSink2_5
+from .dars import KitchenSink1_18, KitchenSink2_5
 
 ARCHIVES: Path = Path(__file__).absolute().parent.parent.parent.parent / "_fixtures" / "archives"
 
@@ -30,7 +32,7 @@ def test_dar_version_compatibility(dar):
     )
 
 
-@pytest.mark.parametrize("dar", [KitchenSink1_18, KitchenSink2_4, KitchenSink2_5])
+@pytest.mark.parametrize("dar", [KitchenSink1_18, KitchenSink2_5])
 def test_dar_kitchen_sink(dar):
     start_time = time.time()
     dar_file = DarFile(dar)

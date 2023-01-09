@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from ._basic import all_decl
 from .imports import ImportContext, rewrite_file_content
 from .pb import py_message_package, py_scalar_type, py_service_package

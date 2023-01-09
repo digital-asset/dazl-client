@@ -6,6 +6,8 @@ Contains functions for working with "native" Python types as they correspond to 
 Ledger API.
 """
 
+from __future__ import annotations
+
 from typing import Any, Dict, Mapping, Tuple
 
 __all__ = ["to_record", "to_variant"]

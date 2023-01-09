@@ -6,6 +6,8 @@ This module contains the abstract base class that defines the protocol for inter
 process that implements the Ledger API.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import timedelta
 import threading

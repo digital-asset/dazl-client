@@ -4,14 +4,14 @@
 """
 Conversion methods from Ledger API Protobuf-generated types to dazl/Pythonic types.
 """
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Sequence, Union, cast
-import warnings
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Union, cast
 
 from ... import LOG
 from ..._gen.com.daml.ledger.api import v1 as lapipb
-from ...damlast.daml_lf_1 import TypeConName
 from ...damlast.daml_types import con
 from ...damlast.lookup import find_choice
 from ...damlast.protocols import SymbolLookup
@@ -31,10 +31,6 @@ from ..events import (
     TransactionStartEvent,
 )
 
-if TYPE_CHECKING:
-    from ...model.types_store import PackageStore
-
-
 DECODER = ProtobufDecoder()
 
 
@@ -46,7 +42,6 @@ class BaseEventDeserializationContext:
 
     client: "Any"
     lookup: "SymbolLookup"
-    store: "PackageStore"
     party: "Party"
     ledger_id: str
 
@@ -54,15 +49,13 @@ class BaseEventDeserializationContext:
         return Context(DECODER, self.lookup)
 
     def offset_event(self, time: Optional[datetime], offset: str) -> OffsetEvent:
-        return OffsetEvent(
-            self.client, self.party, time, self.ledger_id, self.lookup, self.store, offset
-        )
+        return OffsetEvent(self.client, self.party, time, self.ledger_id, self.lookup, offset)
 
     def active_contract_set(
         self, offset: str, workflow_id: str
     ) -> "ActiveContractSetEventDeserializationContext":
         return ActiveContractSetEventDeserializationContext(
-            self.client, self.lookup, self.store, self.party, self.ledger_id, offset, workflow_id
+            self.client, self.lookup, self.party, self.ledger_id, offset, workflow_id
         )
 
     def transaction(
@@ -71,7 +64,6 @@ class BaseEventDeserializationContext:
         return TransactionEventDeserializationContext(
             self.client,
             self.lookup,
-            self.store,
             self.party,
             self.ledger_id,
             time,
@@ -99,7 +91,6 @@ class ActiveContractSetEventDeserializationContext(BaseEventDeserializationConte
             None,
             self.ledger_id,
             self.lookup,
-            self.store,
             self.offset,
             contract_events,
         )
@@ -111,7 +102,6 @@ class ActiveContractSetEventDeserializationContext(BaseEventDeserializationConte
             time=None,
             ledger_id=self.ledger_id,
             lookup=self.lookup,
-            package_store=self.store,
             offset=self.offset,
             command_id="",
             workflow_id=self.workflow_id,
@@ -140,7 +130,6 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             self.time,
             self.ledger_id,
             self.lookup,
-            self.store,
             self.offset,
             self.command_id,
             self.workflow_id,
@@ -154,7 +143,6 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             self.time,
             self.ledger_id,
             self.lookup,
-            self.store,
             self.offset,
             self.command_id,
             self.workflow_id,
@@ -168,7 +156,6 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             time=self.time,
             ledger_id=self.ledger_id,
             lookup=self.lookup,
-            package_store=self.store,
             offset=self.offset,
             command_id=self.command_id,
             workflow_id=self.workflow_id,
@@ -198,7 +185,6 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             time=self.time,
             ledger_id=self.ledger_id,
             lookup=self.lookup,
-            package_store=self.store,
             offset=self.offset,
             command_id=self.command_id,
             workflow_id=self.workflow_id,
@@ -224,7 +210,6 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
             time=self.time,
             ledger_id=self.ledger_id,
             lookup=self.lookup,
-            package_store=self.store,
             offset=self.offset,
             command_id=self.command_id,
             workflow_id=self.workflow_id,
@@ -514,8 +499,3 @@ def to_archived_event(
     ctx = context.deserializer_context()
     cid = ctx.convert_contract_id(tt, ar.contract_id)
     return context.contract_archived_event(cid, None, event_id, witness_parties)
-
-
-def to_type_con_name(identifier: "lapipb.Identifier") -> "TypeConName":
-    warnings.warn("Use Codec.decode_identifier instead.", DeprecationWarning, stacklevel=2)
-    return Codec.decode_identifier(identifier)

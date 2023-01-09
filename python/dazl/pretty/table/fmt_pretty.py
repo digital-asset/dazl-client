@@ -6,6 +6,8 @@ Pretty print format that orders templates by ID, and attempts to render a more c
 representation.
 """
 
+from __future__ import annotations
+
 from collections import defaultdict
 from typing import AbstractSet, Generator, Iterable, Mapping, Sequence
 

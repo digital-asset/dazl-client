@@ -15,6 +15,8 @@ It provides:
 For a higher-level, more declarative API, see :mod:`dazl.query`.
 """
 
+from __future__ import annotations
+
 from . import config
 from ._base_model import (
     CREATE_IF_MISSING,

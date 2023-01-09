@@ -8,6 +8,8 @@ In a perfect world, we'd only have one file where this is all declared; that wou
 work, and the cure may very well be worse than the disease though.
 """
 
+from __future__ import annotations
+
 from ast import literal_eval
 from configparser import ConfigParser
 from pathlib import Path

@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from io import BytesIO
 from os import PathLike
 from pathlib import Path
@@ -12,6 +14,7 @@ from zipfile import ZipFile
 from .._gen.com.daml.daml_lf_1_15 import daml_lf_pb2 as pb
 from ..prim import TimeDeltaLike
 from .daml_lf_1 import Archive, Package, PackageRef
+from .errors import PackageNotFoundError
 from .parse import parse_archive
 
 # Wherever the API expects a DAR, we can take a file path, `bytes`, or a byte buffer.
@@ -159,28 +162,6 @@ class DarFile:
         """
         return DarFileBlockingPackageService(self)
 
-    async def get_package(self, package_id: "PackageRef") -> bytes:
-        """
-        This method is deprecated; use :meth:`DarFile.async_package_service` instead.
-        """
-        warnings.warn(
-            "DarFile.get_package is deprecated; use DarFile.async_package_service.get_package instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.package_bytes(package_id)
-
-    async def list_package_ids(self):
-        """
-        This method is deprecated; use :meth:`DarFile.async_package_service` instead.
-        """
-        warnings.warn(
-            "DarFile.list_package_ids is deprecated; use DarFile.async_package_service.list_package_ids instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.package_ids()
-
     def _dalf_names(self) -> "Generator[PackageRef, None, None]":
         """
         Return a generator over the names of DALF files in this DarFile.
@@ -223,11 +204,7 @@ class CachedDarFile:
                         self._archives = dar.archives()
         return self._archives
 
-    def package(self, package_id: "PackageRef") -> "Package":
-        # TODO: This import needs to be local as long as the dazl.util.dar module still exists
-        #  to avoid import cycles. Move this to the top of the file when dazl.util.dar is removed.
-        from .errors import PackageNotFoundError
-
+    def package(self, package_id: PackageRef) -> Package:
         for archive in self.archives():
             if archive.hash == package_id:
                 return archive.package

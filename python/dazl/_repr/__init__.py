@@ -6,6 +6,8 @@ Default ``repr`` rules for dazl.
 THIS IS NOT A PUBLIC API, AND ITS CONTENTS ARE SUBJECT TO CHANGE AT ANY TIME!
 """
 
+from __future__ import annotations
+
 import builtins
 from reprlib import Repr
 from typing import Collection

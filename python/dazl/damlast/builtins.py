@@ -6,18 +6,23 @@ Define a few DAML values and functions that have been inlined in Python for effi
 simplicity.
 """
 
+from __future__ import annotations
+
 from typing import Any, Optional, Sequence
 import warnings
 
 from . import daml_types as daml
-from ._builtins_meta import Builtin, BuiltinTable
 from .daml_lf_1 import BuiltinFunction, Expr, PrimLit, Type
 
 warnings.warn(
     "The symbols in dazl.damlast.builtin are deprecated", DeprecationWarning, stacklevel=2
 )
 
-builtins = BuiltinTable()
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from ._builtins_meta import Builtin, BuiltinTable
+
+    builtins = BuiltinTable()
 
 
 @builtins.add

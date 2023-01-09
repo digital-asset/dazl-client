@@ -1,12 +1,15 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 import http.server
+from http.server import HTTPServer
 import tempfile
+from threading import Thread
 
 from dazl import Network, Party
 from dazl.client.config import ConfigurationError, NetworkConfig, fetch_config
-from dazl_internal.background_http_server import TestHTTPServer
 
 # Ensure the key/value pairs that initialize a manager create an appropriate configuration.
 
@@ -90,3 +93,29 @@ class SimpleHandler(http.server.BaseHTTPRequestHandler):
 
     def log_message(self, format_, *args):
         pass
+
+
+class TestHTTPServer:
+    """
+    Runner for an HTTP server in a background thread.
+    """
+
+    def __init__(self, handler, port=0):
+        self._thread = Thread(target=self._run)
+        self.server = HTTPServer(("localhost", port), handler)
+
+    @property
+    def port(self):
+        return self.server.server_port
+
+    def __enter__(self):
+        self._thread.start()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.server.shutdown()
+        self._thread.join()
+
+    def _run(self):
+        self.server.serve_forever()
+        self.server.socket.close()

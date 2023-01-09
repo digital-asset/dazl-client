@@ -5,14 +5,16 @@ Command types that are used in the dazl v5 API.
 
 These symbols are primarily kept for backwards compatibility.
 """
+from __future__ import annotations
+
 from dataclasses import dataclass, fields
 from datetime import timedelta
 from typing import Any, Collection, List, Mapping, Optional, Sequence, Tuple, Union
 import uuid
 import warnings
 
-from ..damlast.daml_lf_1 import TypeConName
-from ..ledger import api_types
+from ..damlast import TypeConName
+from ..ledger import Command, CreateAndExerciseCommand, CreateCommand, ExerciseCommand
 from ..prim import ContractData, ContractId, Party
 
 __all__ = [
@@ -20,225 +22,12 @@ __all__ = [
     "CommandDefaults",
     "CommandPayload",
     "CommandsOrCommandSequence",
-    "CreateAndExerciseCommand",
-    "CreateCommand",
     "EventHandlerResponse",
-    "ExerciseByKeyCommand",
-    "ExerciseCommand",
-    "create",
-    "create_and_exercise",
-    "exercise",
-    "exercise_by_key",
     "flatten_command_sequence",
 ]
 
 
-class CreateCommand(api_types.CreateCommand):
-    """
-    A command that creates a contract without any predecessors.
-    """
-
-    def __init__(
-        self, template: "Union[str, TypeConName]", arguments: "Optional[ContractData]" = None
-    ):
-        warnings.warn(
-            "dazl.client.commands.CreateCommand is deprecated; "
-            "prefer calling dazl.ledger.Connection.create or "
-            "dazl.client.PartyClient.submit_create, "
-            "or use dazl.ledger.CreateCommand instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(template, arguments or {})
-
-    @property
-    def template_type(self) -> "TypeConName":
-        """
-        Use :meth:`template_id` instead.
-        """
-        warnings.warn(
-            "CreateCommand.template_type is deprecated; use CreateCommand.template_id instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.template_id
-
-    @property
-    def arguments(self) -> "Mapping[str, Any]":
-        """
-        Use :meth:`payload` instead.
-        """
-        warnings.warn(
-            "CreateCommand.arguments is deprecated; use CreateCommand.payload instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.payload
-
-
-class CreateAndExerciseCommand(api_types.CreateAndExerciseCommand):
-    """
-    A command that exercises a choice on a newly-created contract, in a single transaction.
-    """
-
-    def __init__(
-        self,
-        template: "Union[str, TypeConName]",
-        arguments: "Mapping[str, Any]",
-        choice: str,
-        choice_argument: "Optional[Any]" = None,
-    ):
-        warnings.warn(
-            "dazl.client.commands.CreateAndExerciseCommand is deprecated; "
-            "prefer calling dazl.ledger.Connection.create_and_exercise or "
-            "dazl.client.PartyClient.submit_create_and_exercise, "
-            "or use dazl.ledger.CreateAndExerciseCommand instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(template, arguments, choice, choice_argument)
-
-    @property
-    def template_type(self) -> "TypeConName":
-        """
-        Use :meth:`template_id` instead.
-        """
-        warnings.warn(
-            "CreateAndExerciseCommand.template_type is deprecated; "
-            "use CreateAndExerciseCommand.template_id instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.template_id
-
-    @property
-    def arguments(self) -> "Any":
-        """
-        Use :meth:`payload` instead.
-        """
-        warnings.warn(
-            "CreateAndExerciseCommand.arguments is deprecated; "
-            "use CreateAndExerciseCommand.payload instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.payload
-
-    @property
-    def choice_argument(self) -> "Any":
-        """
-        Use :meth:`argument` instead.
-        """
-        warnings.warn(
-            "CreateAndExerciseCommand.choice_argument is deprecated; "
-            "use CreateAndExerciseCommand.argument instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.argument
-
-
-class ExerciseCommand(api_types.ExerciseCommand):
-    """
-    A command that exercises a choice on a contract identified by its contract ID.
-    """
-
-    def __init__(self, contract: "ContractId", choice: str, arguments: "Optional[Any]" = None):
-        warnings.warn(
-            "dazl.client.commands.ExerciseCommand is deprecated; "
-            "prefer calling dazl.ledger.Connection.exercise or "
-            "dazl.client.PartyClient.submit_exercise, "
-            "or use dazl.ledger.ExerciseCommand instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(contract, choice, arguments)
-
-    @property
-    def contract(self) -> "ContractId":
-        """
-        Use :meth:`contract_id` instead.
-        """
-        warnings.warn(
-            "ExerciseCommand.contract is deprecated; use ExerciseCommand.contract_id instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.contract_id
-
-    @property
-    def arguments(self) -> "Any":
-        """
-        Use :meth:`argument` instead.
-        """
-        warnings.warn(
-            "ExerciseCommand.arguments is deprecated; use ExerciseCommand.argument instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.argument
-
-
-class ExerciseByKeyCommand(api_types.ExerciseByKeyCommand):
-    def __init__(
-        self,
-        template: "Union[str, TypeConName]",
-        contract_key: "Any",
-        choice: str,
-        choice_argument: "Optional[Any]" = None,
-    ):
-        warnings.warn(
-            "dazl.client.commands.ExerciseByKeyCommand is deprecated; "
-            "prefer calling dazl.ledger.Connection.exercise_by_key or "
-            "dazl.client.PartyClient.submit_exercise_by_key, "
-            "or use dazl.ledger.ExerciseByKeyCommand instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(template, contract_key, choice, choice_argument)
-
-    @property
-    def template_type(self) -> "TypeConName":
-        """
-        Use :meth:`template_id` instead.
-        """
-        warnings.warn(
-            "ExerciseByKeyCommand.template_type is deprecated; "
-            "use ExerciseByKeyCommand.template_id instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.template_id
-
-    @property
-    def contract_key(self) -> "Any":
-        """
-        Use :meth:`argument` instead.
-        """
-        warnings.warn(
-            "ExerciseByKeyCommand.contract_key is deprecated; "
-            "use ExerciseByKeyCommand.key instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        return self.key
-
-    @property
-    def choice_argument(self) -> "Any":
-        """
-        Use :meth:`argument` instead.
-        """
-        warnings.warn(
-            "ExerciseByKeyCommand.choice_argument is deprecated; "
-            "use ExerciseByKeyCommand.argument instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.argument
-
-
-CommandsOrCommandSequence = Union[None, api_types.Command, Sequence[Optional[api_types.Command]]]
+CommandsOrCommandSequence = Union[None, Command, Sequence[Optional[Command]]]
 
 
 # noinspection PyDeprecation
@@ -248,7 +37,7 @@ class CommandBuilder:
     """
 
     @classmethod
-    def coerce(cls, obj, atomic_default=False) -> "CommandBuilder":
+    def coerce(cls, obj: EventHandlerResponse, atomic_default: bool = False) -> CommandBuilder:
         """
         Create a :class:`CommandBuilder` from the objects that an event handler is allowed to
         return.
@@ -283,7 +72,7 @@ class CommandBuilder:
             stacklevel=2,
         )
         self._atomic_default = atomic_default
-        self._commands = [[]]  # type: List[List[api_types.Command]]
+        self._commands = [[]]  # type: List[List[Command]]
         self._defaults = CommandDefaults()
 
     def defaults(
@@ -308,24 +97,29 @@ class CommandBuilder:
         if deduplication_time is not None:
             self._defaults.default_deduplication_time = deduplication_time
 
-    def create(self, template, arguments=None) -> "CommandBuilder":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            return self.append(create(template, arguments=arguments))
+    def create(self, template: Union[str, TypeConName], arguments: ContractData) -> CommandBuilder:
+        return self.append(CreateCommand(template_id=template, payload=arguments))
 
-    def exercise(self, contract, choice, arguments=None) -> "CommandBuilder":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            return self.append(exercise(contract, choice, arguments=arguments))
+    def exercise(
+        self, contract: ContractId, choice: str, arguments: Optional[Mapping[str, Any]] = None
+    ) -> CommandBuilder:
+        return self.append(ExerciseCommand(contract_id=contract, choice=choice, argument=arguments))
 
     def create_and_exercise(
-        self, template, create_arguments, choice_name, choice_arguments=None
-    ) -> "CommandBuilder":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            return self.append(
-                create_and_exercise(template, create_arguments, choice_name, choice_arguments)
+        self,
+        template: Union[str, TypeConName],
+        create_arguments: ContractData,
+        choice_name: str,
+        choice_arguments: Optional[Mapping[str, Any]] = None,
+    ) -> CommandBuilder:
+        return self.append(
+            CreateAndExerciseCommand(
+                template_id=template,
+                payload=create_arguments,
+                choice=choice_name,
+                argument=choice_arguments,
             )
+        )
 
     def append(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
         """
@@ -415,17 +209,17 @@ class CommandBuilder:
 
 def flatten_command_sequence(
     commands: "Sequence[CommandsOrCommandSequence]",
-) -> "List[api_types.Command]":
+) -> "List[Command]":
     """
     Convert a list of mixed commands, ``None``, and list of commands into an ordered sequence of
     non-``None`` commands.
     """
-    ret = []  # type: List[api_types.Command]
+    ret = []  # type: List[Command]
     errors = []  # type: List[Tuple[Sequence[int], CommandsOrCommandSequence]]
 
     for i, obj in enumerate(commands):
         if obj is not None:
-            if isinstance(obj, api_types.Command):
+            if isinstance(obj, Command):
                 ret.append(obj)
             else:
                 try:
@@ -434,7 +228,7 @@ def flatten_command_sequence(
                     errors.append(((i,), obj))
                     continue
                 for j, cmd in enumerate(cmd_iter):
-                    if isinstance(cmd, api_types.Command):
+                    if isinstance(cmd, Command):
                         ret.append(cmd)
                     else:
                         errors.append(((i, j), cmd))
@@ -488,8 +282,8 @@ class CommandPayload:
     workflow_id: str
     application_id: str
     command_id: str
-    commands: "Sequence[api_types.Command]"
-    deduplication_time: "Optional[timedelta]" = None
+    commands: Sequence[Command]
+    deduplication_time: Optional[timedelta] = None
 
     def __post_init__(self):
         missing_fields = [
@@ -503,73 +297,4 @@ class CommandPayload:
             )
 
 
-# noinspection PyDeprecation
-def create(template, arguments=None):
-    warnings.warn(
-        "dazl.client.commands.create is deprecated; "
-        "prefer calling dazl.ledger.Connection.create or "
-        "dazl.client.PartyClient.submit_create, "
-        "or use dazl.ledger.CreateCommand instead.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
-        return CreateCommand(template, arguments)
-
-
-# noinspection PyDeprecation
-def create_and_exercise(template, create_arguments, choice_name, choice_argument):
-    warnings.warn(
-        "dazl.client.commands.CreateAndExerciseCommand is deprecated; "
-        "prefer calling dazl.ledger.Connection.create_and_exercise or "
-        "dazl.client.PartyClient.submit_create_and_exercise, "
-        "or use dazl.ledger.CreateAndExerciseCommand instead.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
-        return CreateAndExerciseCommand(template, create_arguments, choice_name, choice_argument)
-
-
-# noinspection PyDeprecation
-def exercise(contract, choice, arguments=None):
-    warnings.warn(
-        "dazl.client.commands.exercise is deprecated; "
-        "prefer calling dazl.ledger.Connection.exercise or "
-        "dazl.client.PartyClient.submit_exercise, "
-        "or use dazl.ledger.ExerciseCommand instead.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-
-    if not isinstance(choice, str):
-        raise ValueError(
-            "choice must be a string name, a template type, or an instantiated template"
-        )
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
-        return ExerciseCommand(contract, choice, arguments)
-
-
-# noinspection PyDeprecation
-def exercise_by_key(template, contract_key, choice_name, choice_argument):
-    warnings.warn(
-        "dazl.client.commands.ExerciseByKeyCommand is deprecated; "
-        "prefer calling dazl.ledger.Connection.exercise_by_key or "
-        "dazl.client.PartyClient.submit_exercise_by_key, "
-        "or use dazl.ledger.ExerciseByKeyCommand instead.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
-        return ExerciseByKeyCommand(template, contract_key, choice_name, choice_argument)
-
-
-EventHandlerResponse = Union[CommandsOrCommandSequence, CommandBuilder, CommandPayload]
+EventHandlerResponse = Union[CommandsOrCommandSequence, CommandBuilder]

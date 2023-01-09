@@ -5,6 +5,8 @@
 This module contains utilities for deterministically outputting contract information.
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Optional, TextIO
 
 from .fmt_base import get_formatter

@@ -5,6 +5,8 @@
 This module contains helper utilities for working within the constraints of Python's type system.
 """
 
+from __future__ import annotations
+
 from types import MappingProxyType
 from typing import Any, Dict, Optional, Type, TypeVar
 

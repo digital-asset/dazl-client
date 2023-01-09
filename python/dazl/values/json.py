@@ -8,6 +8,8 @@ Documentation for this encoding format can be found at:
 https://docs.daml.com/json-api/lf-value-specification.html
 """
 
+from __future__ import annotations
+
 from typing import Any
 
 from ..damlast.daml_lf_1 import DefDataType, Type as DamlType

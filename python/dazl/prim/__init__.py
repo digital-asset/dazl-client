@@ -6,6 +6,8 @@ Contains primitive declarations and functions for working with "native" Python t
 correspond to types over the Ledger API.
 """
 
+from __future__ import annotations
+
 from .basic import (
     LEDGER_STRING_REGEX,
     NAME_STRING_REGEX,

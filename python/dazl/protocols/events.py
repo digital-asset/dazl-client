@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 # TODO: `automodule reading` directive doesn't appear to work here, have to list each class individually.
 """
 Read-Side Types
@@ -65,7 +67,6 @@ from ..prim import ContractData, ContractId, Party
 
 if TYPE_CHECKING:
     from ..client.state import ContractContextualData
-    from ..model.types_store import PackageStore
 
 __all__ = [
     "BaseEvent",
@@ -97,7 +98,6 @@ class BaseEvent:
     time: "Optional[datetime]"
     ledger_id: str
     lookup: "SymbolLookup"
-    package_store: "PackageStore"
 
     def acs_find_active(self, template: "Union[str, TypeConName]", match=None):
         return self.client.find_active(template, match)

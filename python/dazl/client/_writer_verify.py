@@ -1,14 +1,17 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from typing import Any
-import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
+from ..ledger import CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
 from ..prim import ContractId
 from ..protocols.serializers import AbstractSerializer
 from ..values import CanonicalMapper
-from .commands import CreateAndExerciseCommand, CreateCommand, ExerciseByKeyCommand, ExerciseCommand
+
+__all__ = ["ValidateSerializer"]
 
 
 class ValidateSerializer(AbstractSerializer):
@@ -22,48 +25,38 @@ class ValidateSerializer(AbstractSerializer):
 
     mapper = CanonicalMapper()
 
-    def serialize_create_command(
-        self, name: "TypeConName", template_args: "Any"
-    ) -> "CreateCommand":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            return CreateCommand(template=name, arguments=template_args)
+    def serialize_create_command(self, name: TypeConName, template_args: Any) -> CreateCommand:
+        return CreateCommand(template_id=name, payload=template_args)
 
     def serialize_exercise_command(
-        self, contract_id: "ContractId", choice_name: str, choice_args: "Any"
-    ) -> "ExerciseCommand":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            return ExerciseCommand(contract=contract_id, choice=choice_name, arguments=choice_args)
+        self, contract_id: ContractId, choice_name: str, choice_args: Any
+    ) -> ExerciseCommand:
+        return ExerciseCommand(contract_id=contract_id, choice=choice_name, argument=choice_args)
 
     def serialize_exercise_by_key_command(
         self,
-        template_name: "TypeConName",
+        template_name: TypeConName,
         key_arguments: Any,
         choice_name: str,
-        choice_arguments: "Any",
-    ) -> "ExerciseByKeyCommand":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            return ExerciseByKeyCommand(
-                template=template_name,
-                contract_key=key_arguments,
-                choice=choice_name,
-                choice_argument=choice_arguments,
-            )
+        choice_arguments: Any,
+    ) -> ExerciseByKeyCommand:
+        return ExerciseByKeyCommand(
+            template_id=template_name,
+            key=key_arguments,
+            choice=choice_name,
+            argument=choice_arguments,
+        )
 
     def serialize_create_and_exercise_command(
         self,
-        template_name: "TypeConName",
+        template_name: TypeConName,
         create_arguments: Any,
         choice_name: str,
-        choice_arguments: "Any",
-    ) -> "CreateAndExerciseCommand":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            return CreateAndExerciseCommand(
-                template=template_name,
-                arguments=create_arguments,
-                choice=choice_name,
-                choice_argument=choice_arguments,
-            )
+        choice_arguments: Any,
+    ) -> CreateAndExerciseCommand:
+        return CreateAndExerciseCommand(
+            template_id=template_name,
+            payload=create_arguments,
+            choice=choice_name,
+            argument=choice_arguments,
+        )

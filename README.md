@@ -25,11 +25,9 @@ pip install --user dazl
 
 Requirements
 ------------
-* Python 3.6+
+* Python 3.7+
 * [Daml Connect](https://www.daml.com)
 * Python gRPC libraries (1.32.0 or later) and Protobuf
-
-**WARNING:** The next major version of dazl (v8.0.0) will require **Python 3.7** or later.
 
 Examples
 --------
@@ -47,12 +45,7 @@ async def main():
         contract = { 'issuer' : 'Alice', 'owner' : 'Alice', 'name' : 'hello world!' }
         await client.create('Main:Asset', contract)
 
-# Python 3.7+
 asyncio.run(main())
-
-# Python 3.6+
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
 ```
 
 Connect to the ledger as a single party, print all contracts, and close:
@@ -69,12 +62,7 @@ async def main():
 
     print(snapshot)
 
-# Python 3.7+
 asyncio.run(main())
-
-# Python 3.6+
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
 ```
 
 Building locally
@@ -105,4 +93,4 @@ make test
 Support
 -------
 
-The Daml Python bindings library is supported under the Daml Enterprise license. If you do not have a Daml Enterprise license and are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).
+The Daml Python bindings library are supported under the Daml Enterprise license. If you do not have a Daml Enterprise license and are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).

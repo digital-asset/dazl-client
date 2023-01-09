@@ -4,34 +4,21 @@
 """
 Conversion methods to Ledger API Protobuf-generated types from dazl/Pythonic types.
 """
-from typing import TYPE_CHECKING, Any, Union
-import warnings
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ...damlast.daml_lf_1 import TypeConName
 from ...damlast.util import module_local_name, module_name, package_ref
-from ...ledger.grpc.codec_aio import Codec
 from ...prim import ContractId, timedelta_to_duration
 from ...values.protobuf import ProtobufEncoder, set_value
 from ..serializers import AbstractSerializer
 
 if TYPE_CHECKING:
     from ...client.commands import CommandPayload
-    from ...model.types import TypeReference
-    from ...model.writing import CommandPayload
 
-__all__ = ["as_identifier", "ProtobufSerializer"]
-
-
-def as_identifier(tref: "Union[TypeReference, TypeConName]") -> "lapipb.Identifier":
-    from ...model.types import TypeReference
-
-    warnings.warn("Use Codec.encode_identifier instead.", DeprecationWarning, stacklevel=2)
-
-    if isinstance(tref, TypeReference):
-        tref = tref.con
-
-    return Codec.encode_identifier(tref)
+__all__ = ["ProtobufSerializer"]
 
 
 class ProtobufSerializer(AbstractSerializer):

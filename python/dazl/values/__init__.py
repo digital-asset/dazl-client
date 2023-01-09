@@ -9,6 +9,8 @@ The :mod:`dazl.values` module contains utilities for converting between differen
 of DAML-LF types.
 """
 
+from __future__ import annotations
+
 from .canonical import CanonicalMapper
 from .context import Context
 from .json import JsonDecoder, JsonEncoder

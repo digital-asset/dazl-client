@@ -4,6 +4,8 @@
 `asyncio`-flavored protocols and base classes for connecting to a Daml ledger.
 """
 
+from __future__ import annotations
+
 from collections import defaultdict
 from inspect import iscoroutine
 import sys

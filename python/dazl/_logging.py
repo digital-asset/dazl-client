@@ -8,6 +8,8 @@ This is an internal API and not meant to be used directly outside of dazl; symbo
 file may change at any time.
 """
 
+from __future__ import annotations
+
 from functools import partial
 import logging
 import sys
@@ -112,7 +114,7 @@ class TimedLogMessageContext:
                 *self.args,
                 elapsed_ms,
                 exc_info=(exc_type, exc_val, exc_tb),
-                **self.kwargs
+                **self.kwargs,
             )
         else:
             self.logger.log(

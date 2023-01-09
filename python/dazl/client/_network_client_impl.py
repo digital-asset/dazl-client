@@ -1,5 +1,7 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
 import asyncio
 from asyncio import Future, ensure_future, gather, sleep, wait_for
 from collections import defaultdict
@@ -592,7 +594,6 @@ class _NetworkRunner:
                 None,
                 metadata.ledger_id,
                 self._network_impl.lookup,
-                metadata._store,
             )
             init_futs.append(ensure_future(self._network_impl.emit_event(init_evt)))
         for party_impl in party_impls:
@@ -616,7 +617,6 @@ class _NetworkRunner:
                 None,
                 metadata.ledger_id,
                 self._network_impl.lookup,
-                metadata._store,
                 offset,
             )
             ready_futs.append(ensure_future(self._network_impl.emit_event(ready_evt)))

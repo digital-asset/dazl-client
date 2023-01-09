@@ -6,6 +6,8 @@ Backwards compatibility symbols in support of the to-be-removed dazl.client.pkg_
 This file is here in order to avoid import cycles.
 """
 
+from __future__ import annotations
+
 from asyncio import get_event_loop
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import timedelta

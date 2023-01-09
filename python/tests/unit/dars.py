@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Mapping
 
@@ -32,7 +34,6 @@ AllParty = DARS["all-party"]
 Complicated = DARS["complicated"]
 DottedFields = DARS["dotted-fields"]
 KitchenSink1_18 = DARS["kitchen-sink-sdk118"]
-KitchenSink2_4 = DARS["kitchen-sink-sdk24"]
 KitchenSink2_5 = DARS["kitchen-sink-sdk25"]
 MapSupport = DARS["map-support"]
 Pending = DARS["pending"]

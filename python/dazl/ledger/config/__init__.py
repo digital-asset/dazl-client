@@ -112,6 +112,8 @@ The :class:`URLConfig` protocol specifies the ledger implementation that ``dazl`
 
 """
 
+from __future__ import annotations
+
 import itertools
 import logging
 from logging import Logger

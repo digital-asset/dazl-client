@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from __future__ import annotations
+
 from collections.abc import Sequence as Seq
 from os import PathLike
 import sys
@@ -37,7 +39,7 @@ def connect_with_new_party(
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None
+    display_name: Union[None, str, NameGenFn] = None,
 ) -> AsyncContextManager[ConnectionWithParty]: ...
 @overload
 def connect_with_new_party(
@@ -50,7 +52,7 @@ def connect_with_new_party(
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None
+    display_name: Union[None, str, NameGenFn] = None,
 ) -> AsyncContextManager[Tuple[ConnectionWithParty, ConnectionWithParty]]: ...
 @overload
 def connect_with_new_party(
@@ -63,7 +65,7 @@ def connect_with_new_party(
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None
+    display_name: Union[None, str, NameGenFn] = None,
 ) -> AsyncContextManager[Tuple[ConnectionWithParty, ConnectionWithParty, ConnectionWithParty]]: ...
 @overload
 def connect_with_new_party(
@@ -76,7 +78,7 @@ def connect_with_new_party(
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None
+    display_name: Union[None, str, NameGenFn] = None,
 ) -> AsyncContextManager[
     Tuple[ConnectionWithParty, ConnectionWithParty, ConnectionWithParty, ConnectionWithParty]
 ]: ...
@@ -91,7 +93,7 @@ def connect_with_new_party(
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
     identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None
+    display_name: Union[None, str, NameGenFn] = None,
 ) -> AsyncContextManager[Sequence[ConnectionWithParty]]: ...
 
 class ConnectionWithParty(Seq["ConnectionWithParty"]):

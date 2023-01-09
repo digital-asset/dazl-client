@@ -5,6 +5,8 @@
 This model contains definitions for the data classes used at the client layer of this library.
 """
 
+from __future__ import annotations
+
 from enum import IntEnum
 import sys
 from typing import NamedTuple, Optional

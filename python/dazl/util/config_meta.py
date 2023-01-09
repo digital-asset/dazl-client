@@ -5,6 +5,8 @@
 This module contains utilities required by :mod:`dazl.client.config`.
 """
 
+from __future__ import annotations
+
 from argparse import _ActionsContainer
 from dataclasses import Field, dataclass, field, fields
 import logging
@@ -21,7 +23,7 @@ def config_field(
     long_alias: Optional[str] = None,
     short_alias: Optional[str] = None,
     deprecated_alias: Optional[str] = None,
-    environment_variable: Optional[str] = None
+    environment_variable: Optional[str] = None,
 ) -> Field:
     return field(
         default=default_value,  # type: ignore
@@ -89,7 +91,7 @@ def add_argument(parser: "_ActionsContainer", key: str, config_param: "ConfigPar
                 type=config_param.param_type.value_ctor,
                 metavar=config_param.param_type.metavar,
                 help=config_param.description,
-                default=default_value
+                default=default_value,
             )
 
 
