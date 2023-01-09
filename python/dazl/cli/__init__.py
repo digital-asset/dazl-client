@@ -14,14 +14,12 @@ from .._logging import configure as configure_logger
 from ..client.errors import ConfigurationError
 from ._base import CliCommand
 from .ls import ListAllCommand
-from .metadata import PrintMetadataCommand
 from .tail import TailCommand
 from .upload import UploadCommand
 from .version import VersionCommand
 
 COMMANDS = [
     ListAllCommand(),
-    PrintMetadataCommand(),
     TailCommand(),
     UploadCommand(),
     VersionCommand(),
