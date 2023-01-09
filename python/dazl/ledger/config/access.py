@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 from __future__ import annotations
@@ -385,7 +385,7 @@ class PropertyBasedAccessConfig(AccessConfig):
         self._parties.maybe_add(act_as, True)
         self._admin = bool(admin)
         self._ledger_id = ledger_id
-        self._application_name = application_name or "dazl-client"
+        self._application_name = application_name or "DAZL-Client"
 
     @property
     def token(self) -> str:
