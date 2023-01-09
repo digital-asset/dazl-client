@@ -162,28 +162,6 @@ class DarFile:
         """
         return DarFileBlockingPackageService(self)
 
-    async def get_package(self, package_id: "PackageRef") -> bytes:
-        """
-        This method is deprecated; use :meth:`DarFile.async_package_service` instead.
-        """
-        warnings.warn(
-            "DarFile.get_package is deprecated; use DarFile.async_package_service.get_package instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.package_bytes(package_id)
-
-    async def list_package_ids(self):
-        """
-        This method is deprecated; use :meth:`DarFile.async_package_service` instead.
-        """
-        warnings.warn(
-            "DarFile.list_package_ids is deprecated; use DarFile.async_package_service.list_package_ids instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.package_ids()
-
     def _dalf_names(self) -> "Generator[PackageRef, None, None]":
         """
         Return a generator over the names of DALF files in this DarFile.

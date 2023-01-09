@@ -9,11 +9,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Union, cast
-import warnings
 
 from ... import LOG
 from ..._gen.com.daml.ledger.api import v1 as lapipb
-from ...damlast.daml_lf_1 import TypeConName
 from ...damlast.daml_types import con
 from ...damlast.lookup import find_choice
 from ...damlast.protocols import SymbolLookup
@@ -501,8 +499,3 @@ def to_archived_event(
     ctx = context.deserializer_context()
     cid = ctx.convert_contract_id(tt, ar.contract_id)
     return context.contract_archived_event(cid, None, event_id, witness_parties)
-
-
-def to_type_con_name(identifier: "lapipb.Identifier") -> "TypeConName":
-    warnings.warn("Use Codec.decode_identifier instead.", DeprecationWarning, stacklevel=2)
-    return Codec.decode_identifier(identifier)
