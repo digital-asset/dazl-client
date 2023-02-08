@@ -371,7 +371,6 @@ class LongRunningAwaitable:
 
 
 class ServiceQueue(Generic[T]):
-
     # noinspection PyDeprecation
     def __init__(self) -> None:
         warnings.warn(

@@ -134,7 +134,6 @@ class AutodetectLedgerNetwork(LedgerNetwork):
     def _get_connection(
         self, settings: "HTTPConnectionSettings", context_path: "Optional[str]"
     ) -> "AutodetectConnection":
-
         if not self._lock.acquire(timeout=5):
             raise TimeoutError("Could not acquire an internal lock quickly enough.")
         try:

@@ -9,7 +9,6 @@ from pygments.token import Keyword
 
 
 class DAMLLexer(HaskellLexer):
-
     name = "DAML"
     aliases = ["daml"]
     filenames = ["*.daml"]

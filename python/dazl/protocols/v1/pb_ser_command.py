@@ -22,7 +22,6 @@ __all__ = ["ProtobufSerializer"]
 
 
 class ProtobufSerializer(AbstractSerializer):
-
     mapper = ProtobufEncoder()
 
     ################################################################################################
