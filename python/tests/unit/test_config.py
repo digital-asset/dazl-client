@@ -78,7 +78,6 @@ def test_fetch_from_file():
 
 
 class SimpleHandler(http.server.BaseHTTPRequestHandler):
-
     BODY = "{}"
 
     # noinspection PyPep8Naming

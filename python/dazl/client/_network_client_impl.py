@@ -49,7 +49,6 @@ T = TypeVar("T")
 
 
 class _NetworkImpl:
-
     __slots__ = (
         "lookup",
         "invoker",

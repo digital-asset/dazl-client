@@ -19,7 +19,6 @@ __all__ = ["PrometheusMetricEvents"]
 
 
 class PrometheusMetricEvents(MetricEvents):
-
     _DEFAULT = None  # type: ClassVar[PrometheusMetricEvents]
 
     @classmethod

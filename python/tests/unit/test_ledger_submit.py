@@ -14,7 +14,6 @@ from tests.unit import dars
 
 @pytest.mark.asyncio
 async def test_command_submission_with_stdlib_values(sandbox: SandboxLauncher) -> None:
-
     async with dazl.connect(url=sandbox.url, admin=True) as conn:
         party_info, _ = await gather(
             conn.allocate_party(), conn.upload_package(dars.KitchenSink1_18.read_bytes())

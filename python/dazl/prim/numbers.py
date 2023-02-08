@@ -9,7 +9,7 @@ from typing import Any, Optional
 __all__ = ["to_int", "to_decimal", "decimal_to_str"]
 
 
-def to_int(obj: "Any") -> int:
+def to_int(obj: Any) -> int:
     if isinstance(obj, int):
         return obj
     elif isinstance(obj, str):
@@ -19,7 +19,7 @@ def to_int(obj: "Any") -> int:
     raise ValueError(f"Could not parse as an int: {obj!r}")
 
 
-def to_decimal(obj: "Optional[Any]") -> "Optional[Decimal]":
+def to_decimal(obj: Optional[Any]) -> Optional[Decimal]:
     """
     Convert any of the common wire representations of a ``Decimal`` to a ``Decimal``.
     """
@@ -36,10 +36,14 @@ def to_decimal(obj: "Optional[Any]") -> "Optional[Decimal]":
     raise ValueError(f"Could not parse as a Decimal: {obj!r}")
 
 
-def decimal_to_str(d: "Decimal") -> str:
+def decimal_to_str(d: Decimal) -> str:
     """
     Return a string representation of a :class:`Decimal` that is safe to be used over the
     Ledger API. Concretely, this means staying away from scientific notation.
     """
-    precision = max(0, -d.as_tuple().exponent)
-    return format(d, f".{precision}f")
+    exponent = d.as_tuple().exponent
+    if isinstance(exponent, int):
+        precision = max(0, -exponent)
+        return format(d, f".{precision}f")
+    else:
+        raise ValueError(f"Not a legal Decimal: {d!r})")

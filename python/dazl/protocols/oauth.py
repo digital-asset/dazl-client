@@ -25,7 +25,6 @@ async def oauth_flow(settings: "OAuthSettings") -> "OAuthSettings":
     from ..client._conn_settings import OAuthSettings
 
     if not settings.token:
-
         if settings.auth_audience == None:
             logging.error("ERROR: Need to supply an oAuth audience")
             raise ValueError("ERROR: Need to supply an oAuth audience")
