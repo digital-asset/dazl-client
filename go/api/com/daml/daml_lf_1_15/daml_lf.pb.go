@@ -10,7 +10,6 @@
 package daml_lf_1_15
 
 import (
-	daml_lf_15 "github.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_15"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
