@@ -19,6 +19,7 @@ python/dist
 python/pip-wheel-metadata
 app.log
 canton.log
+canton.*.log
 canton_errors.log
 navigator.log
 sandbox.log

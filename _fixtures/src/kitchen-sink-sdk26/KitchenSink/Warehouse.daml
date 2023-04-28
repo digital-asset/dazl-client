@@ -13,6 +13,8 @@ template Warehouse
   where
     signatory warehouse
     observer suppliers
+    key (warehouse, location): (Party, Text)
+    maintainer key._1
 
     choice AddStock : ContractId WarehouseStock
       with

@@ -127,6 +127,7 @@ class Connection(_Connection, PackageService, Protocol):
         __choice_name: str,
         __argument: Optional[ContractData] = None,
         *,
+        choice_interface_id: Union[None, str, TypeConName] = None,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,

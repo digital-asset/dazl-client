@@ -35,6 +35,7 @@ __all__ = [
     "Case",
     "CaseAlt",
     "DefDataType",
+    "DefInterface",
     "DefTemplate",
     "DefTypeSyn",
     "DefValue",
@@ -2404,6 +2405,29 @@ class DefTemplate:
     key: "Optional[DefKey]"
 
 
+@dataclass(frozen=True)
+class InterfaceMethod:
+    method_name: str
+    location: "Optional[Location]"
+
+
+@dataclass(frozen=True)
+class DefInterface:
+    @dataclass(frozen=True)
+    class CoImplements:
+        template: "TypeConName"
+        # as a performance optimization, we don't read the body Expr for an interface because
+        # reading Expr trees is slow; this will be added in dazl v8
+
+    tycon: "DottedName"
+    methods: "Sequence[InterfaceMethod]"
+    choices: "Sequence[TemplateChoice]"
+    co_implements: "Sequence[DefInterface.CoImplements]"
+    view: "Type"
+    requires: "Sequence[TypeConName]"
+    location: "Optional[Location]"
+
+
 class DefDataType:
     """
     A record, variant, or enum data type definition.
@@ -2603,6 +2627,7 @@ class Module:
     data_types: "Sequence[DefDataType]"
     values: "Sequence[DefValue]"
     templates: "Sequence[DefTemplate]"
+    interfaces: "Sequence[DefInterface]"
 
 
 @dataclass(frozen=True)

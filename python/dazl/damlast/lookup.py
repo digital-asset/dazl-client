@@ -35,6 +35,7 @@ from .. import LOG
 from .daml_lf_1 import (
     Archive,
     DefDataType,
+    DefInterface,
     DefTemplate,
     DefValue,
     DottedName,
@@ -224,6 +225,12 @@ class EmptyLookup(SymbolLookup):
     def template(self, ref: "Any") -> "NoReturn":
         raise empty_lookup_impl(ref)
 
+    def interface_name(self, ref: "Any") -> "NoReturn":
+        raise empty_lookup_impl(ref)
+
+    def interface(self, ref: "Any") -> "NoReturn":
+        raise empty_lookup_impl(ref)
+
 
 class PackageLookup(SymbolLookup):
     """
@@ -236,6 +243,8 @@ class PackageLookup(SymbolLookup):
         data_types = {}  # type: Dict[str, Tuple[TypeConName, DefDataType]]
         values = {}  # type: Dict[str, Tuple[ValName, DefValue]]
         templates = {}  # type: Dict[str, Tuple[TypeConName, DefTemplate]]
+        interfaces = {}  # type: Dict[str, Tuple[TypeConName, DefInterface]]
+
         for module in self.archive.package.modules:
             module_ref = ModuleRef(archive.hash, module.name)
 
@@ -251,9 +260,14 @@ class PackageLookup(SymbolLookup):
                 tmpl_name = TypeConName(module_ref, tmpl.tycon.segments)
                 templates[f"{module.name}:{tmpl.tycon}"] = (tmpl_name, tmpl)
 
+            for iface in module.interfaces:
+                iface_name = TypeConName(module_ref, iface.tycon.segments)
+                interfaces[f"{module.name}:{iface.tycon}"] = (iface_name, iface)
+
         self._data_types = MappingProxyType(data_types)
         self._values = MappingProxyType(values)
         self._templates = MappingProxyType(templates)
+        self._interfaces = MappingProxyType(interfaces)
 
     def archives(self) -> "Collection[Archive]":
         return [self.archive]
@@ -311,8 +325,8 @@ class PackageLookup(SymbolLookup):
 
     def local_value(self, name: str) -> "Optional[DefValue]":
         """
-        Variation of :meth:`data_type` that assumes the name is already scoped to this package.
-        Unlike :meth:`data_type`, this method returns ``None`` in the case of no match.
+        Variation of :meth:`value` that assumes the name is already scoped to this package.
+        Unlike :meth:`value`, this method returns ``None`` in the case of no match.
 
         You should not normally use this method directly, and instead prefer to use the methods of
         the :class:`SymbolLookup` protocol.
@@ -321,7 +335,7 @@ class PackageLookup(SymbolLookup):
             A name to search for. Must be of the form ``"ModuleName:EntityName"``, where both
             modules and entities are dot-delimited.
         :return:
-            Either a matching :class:`DefDataType`, or ``None`` if no match.
+            Either a matching :class:`DefValue`, or ``None`` if no match.
         """
         r = self._values.get(name)
         return r[1] if r is not None else None
@@ -354,6 +368,24 @@ class PackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
+    def interface_name(self, ref: "Any") -> "TypeConName":
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            iface = self.local_interface_name(name)
+            if iface is not None:
+                return iface
+
+        raise NameNotFoundError(ref)
+
+    def interface(self, ref: "Any") -> "DefInterface":
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            iface = self.local_interface(name)
+            if iface is not None:
+                return iface
+
+        raise NameNotFoundError(ref)
+
     def local_template_names(self) -> "Collection[TypeConName]":
         return [n for n, _ in self._templates.values()]
 
@@ -363,8 +395,8 @@ class PackageLookup(SymbolLookup):
 
     def local_template(self, name: str) -> "Optional[DefTemplate]":
         """
-        Variation of :meth:`data_type` that assumes the name is already scoped to this package.
-        Unlike :meth:`data_type`, this method returns ``None`` in the case of no match.
+        Variation of :meth:`template` that assumes the name is already scoped to this package.
+        Unlike :meth:`template`, this method returns ``None`` in the case of no match.
 
         You should not normally use this method directly, and instead prefer to use the methods of
         the :class:`SymbolLookup` protocol.
@@ -373,9 +405,30 @@ class PackageLookup(SymbolLookup):
             A name to search for. Must be of the form ``"ModuleName:EntityName"``, where both
             modules and entities are dot-delimited.
         :return:
-            Either a matching :class:`DefDataType`, or ``None`` if no match.
+            Either a matching :class:`DefTemplate`, or ``None`` if no match.
         """
         r = self._templates.get(name)
+        return r[1] if r is not None else None
+
+    def local_interface_name(self, name: str) -> "Optional[TypeConName]":
+        r = self._interfaces.get(name)
+        return r[0] if r is not None else None
+
+    def local_interface(self, name: str) -> "Optional[DefInterface]":
+        """
+        Variation of :meth:`interface` that assumes the name is already scoped to this package.
+        Unlike :meth:`interface`, this method returns ``None`` in the case of no match.
+
+        You should not normally use this method directly, and instead prefer to use the methods of
+        the :class:`SymbolLookup` protocol.
+
+        :param name:
+            A name to search for. Must be of the form ``"ModuleName:EntityName"``, where both
+            modules and entities are dot-delimited.
+        :return:
+            Either a matching :class:`DefInterface`, or ``None`` if no match.
+        """
+        r = self._interfaces.get(name)
         return r[1] if r is not None else None
 
 
@@ -493,6 +546,24 @@ class MultiPackageLookup(SymbolLookup):
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):
             tmpl = lookup.local_template(name)
+            if tmpl is not None:
+                return tmpl
+
+        raise NameNotFoundError(ref)
+
+    def interface_name(self, ref: "Any") -> "TypeConName":
+        pkg, name = validate_template(ref)
+        for lookup in self._lookups(pkg):
+            n = lookup.local_interface_name(name)
+            if n is not None:
+                return n
+
+        raise NameNotFoundError(ref)
+
+    def interface(self, ref: "Any") -> "DefInterface":
+        pkg, name = validate_template(ref)
+        for lookup in self._lookups(pkg):
+            tmpl = lookup.local_interface(name)
             if tmpl is not None:
                 return tmpl
 

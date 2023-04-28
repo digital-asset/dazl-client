@@ -1,8 +1,8 @@
 # Copyright (c) 2017-2023, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-sdk-version: 2.5.0-snapshot.20221201.11065.0.caac1d10
-name: kitchen-sink-sdk25
+sdk-version: 2.6.3
+name: kitchen-sink-sdk26
 version: 1.0.0
 build-options: [--target=1.15]
 source: KitchenSink

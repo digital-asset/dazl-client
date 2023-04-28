@@ -53,6 +53,8 @@ __all__ = [
     "SubmitResponse",
     "User",
     "Version",
+    "VersionFeatures",
+    "VersionUserManagementFeature",
 ]
 
 
@@ -207,13 +209,20 @@ class ExerciseCommand(Command):
     exercising the choice.
     """
 
-    __slots__ = ("_choice", "_contract_id", "_argument")
+    __slots__ = ("_choice", "_contract_id", "_argument", "_choice_interface_id")
     if TYPE_CHECKING:
         _choice: str
         _contract_id: ContractId
         _argument: Optional[Any]
+        _choice_interface_id: Optional[TypeConName]
 
-    def __init__(self, contract_id: ContractId, choice: str, argument: Optional[Any] = None):
+    def __init__(
+        self,
+        contract_id: ContractId,
+        choice: str,
+        argument: Optional[Any] = None,
+        choice_interface_id: Optional[TypeConName] = None,
+    ):
         """
         Initialize an :class:`ExerciseCommand`.
 
@@ -223,10 +232,17 @@ class ExerciseCommand(Command):
             The choice to exercise.
         :param argument:
             The choice arguments. Can be omitted for choices that take no arguments.
+        :param choice_interface_id:
+            An optional interface ID, if exercising a choice on an interface.
         """
         object.__setattr__(self, "_choice", safe_cast(str, choice))
         object.__setattr__(self, "_contract_id", safe_cast(ContractId, contract_id))
         object.__setattr__(self, "_argument", dict(argument) if argument is not None else dict())
+        object.__setattr__(
+            self,
+            "_choice_interface_id",
+            validate_template_id(choice_interface_id) if choice_interface_id else None,
+        )
 
     @property
     def contract_id(self) -> ContractId:
@@ -249,16 +265,27 @@ class ExerciseCommand(Command):
         """
         return self._argument
 
+    @property
+    def choice_interface_id(self) -> Optional[TypeConName]:
+        """
+        The interface ID, if this choice is meant to be exercised on an interface.
+        """
+        return self._choice_interface_id
+
     def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, ExerciseCommand)
             and self.choice == other.choice
             and self.contract_id == other.contract_id
             and self.argument == other.argument
+            and self.choice_interface_id == other.choice_interface_id
         )
 
     def __repr__(self):
-        return f"ExerciseCommand({self.choice!r}, {self.contract_id}, {self.argument})"
+        if self.choice_interface_id:
+            return f"ExerciseCommand({self.choice!r}, {self.contract_id}, {self.argument}, choice_interface_id={self.choice_interface_id})"
+        else:
+            return f"ExerciseCommand({self.choice!r}, {self.contract_id}, {self.argument})"
 
 
 class ExerciseByKeyCommand(Command):
@@ -270,7 +297,7 @@ class ExerciseByKeyCommand(Command):
     result of exercising the choice.
     """
 
-    __slots__ = ("_template_id", "_key", "_choice", "_argument")
+    __slots__ = ("_template_id", "_key", "_choice", "_argument", "_choice_interface_id")
     if TYPE_CHECKING:
         _template_id: TypeConName
         _key: Any

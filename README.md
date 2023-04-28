@@ -29,7 +29,7 @@ Requirements
 * [Daml Connect](https://www.daml.com)
 * Python gRPC libraries (1.32.0 or later) and Protobuf
 
-**WARNING:** The next major version of dazl (v8.0.0) will require **Python 3.7** or later.
+**WARNING:** The next major version of dazl (v8.0.0) will require **Python 3.8** or later.
 
 Examples
 --------

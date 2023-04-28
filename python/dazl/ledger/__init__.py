@@ -259,10 +259,12 @@ class Connection(PackageService, Protocol):
         __choice_name,
         __argument,
         *,
+        choice_interface_id=None,
         workflow_id=None,
         command_id=None,
         read_as=None,
         act_as=None,
+        timeout=None,
     ):
         """
         Exercise a choice on a contract identified by its contract ID.
@@ -282,6 +284,8 @@ class Connection(PackageService, Protocol):
 
             Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
+        :param choice_interface_id:
+            An optional interface ID, when exercising choices that are defined on interfaces.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -309,6 +313,7 @@ class Connection(PackageService, Protocol):
         command_id=None,
         read_as=None,
         act_as=None,
+        timeout=None,
     ):
         """
         Exercise a choice on a newly-created contract, in a single transaction.
@@ -344,6 +349,9 @@ class Connection(PackageService, Protocol):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -361,6 +369,7 @@ class Connection(PackageService, Protocol):
         command_id=None,
         read_as=None,
         act_as=None,
+        timeout=None,
     ):
         """
         Exercise a choice on a contract identified by its contract key.
@@ -395,6 +404,9 @@ class Connection(PackageService, Protocol):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -409,6 +421,7 @@ class Connection(PackageService, Protocol):
         command_id=None,
         read_as=None,
         act_as=None,
+        timeout=None,
     ):
         """
         Archive a choice on a contract identified by its contract ID.
@@ -428,6 +441,9 @@ class Connection(PackageService, Protocol):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -443,6 +459,7 @@ class Connection(PackageService, Protocol):
         command_id=None,
         read_as=None,
         act_as=None,
+        timeout=None,
     ):
         """
         Exercise a choice on a contract identified by its contract key.
@@ -467,6 +484,9 @@ class Connection(PackageService, Protocol):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.

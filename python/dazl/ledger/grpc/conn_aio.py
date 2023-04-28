@@ -257,6 +257,7 @@ class Connection(aio.Connection):
         __choice_name: str,
         __argument: Optional[ContractData] = None,
         *,
+        choice_interface_id: Union[None, str, TypeConName] = None,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
@@ -281,6 +282,8 @@ class Connection(aio.Connection):
 
             Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
+        :param choice_interface_id:
+            When exercising a choice on an interface, the interface ID.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -307,7 +310,10 @@ class Connection(aio.Connection):
         commands = [
             lapipb.Command(
                 exercise=await self._codec.encode_exercise_command(
-                    __contract_id, __choice_name, __argument
+                    __contract_id,
+                    __choice_name,
+                    __argument,
+                    choice_interface_id=choice_interface_id,
                 )
             )
         ]
@@ -328,6 +334,7 @@ class Connection(aio.Connection):
         __choice_name: str,
         __argument: Optional[ContractData] = None,
         *,
+        choice_interface_id: Union[None, str, TypeConName] = None,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
@@ -368,6 +375,8 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            An optional timeout on the request.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -441,6 +450,8 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            An optional timeout on the request.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -459,7 +470,12 @@ class Connection(aio.Connection):
             )
         ]
         request = self._submit_and_wait_request(commands, meta)
-        response = await stub.SubmitAndWaitForTransactionTree(request)
+        response = await retry(
+            lambda: stub.SubmitAndWaitForTransactionTree(
+                request, timeout=retry_timeout.total_seconds()
+            ),
+            timeout=retry_timeout,
+        )
 
         return await self._codec.decode_exercise_response(response.transaction)
 
@@ -491,6 +507,8 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            An optional timeout on the request.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -540,6 +558,8 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            An optional timeout on the request.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -605,6 +625,9 @@ class Connection(aio.Connection):
     async def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = None) -> str:
         """
         Return the offset at the end of the ledger.
+
+        :param timeout:
+            An optional timeout on the request.
         """
         retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.TransactionServiceStub(self.channel)
@@ -647,6 +670,8 @@ class Connection(aio.Connection):
         :param read_as:
             An optional set of read-as parties to use to submit this query. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            An optional timeout on the request.
         """
         offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
         return QueryStream(
@@ -684,6 +709,8 @@ class Connection(aio.Connection):
         :param read_as:
             An optional set of read-as parties to use to submit this query. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            An optional timeout on the request.
         """
         offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
         return QueryStream(

@@ -12,6 +12,7 @@ This module contains the mapping between Protobuf objects and Python/dazl types.
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 
 from collections.abc import Mapping as _Mapping
+from dataclasses import dataclass
 from typing import Any, List, Optional, Sequence, Set, Tuple, Union
 
 from google.protobuf.json_format import MessageToDict
@@ -19,6 +20,7 @@ from google.protobuf.json_format import MessageToDict
 from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import (
+    DefInterface,
     DefTemplate,
     DottedName,
     ModuleRef,
@@ -32,7 +34,7 @@ from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
-from ...prim import ContractData, ContractId, Party, to_datetime
+from ...prim import ContractData, ContractId, Party
 from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
 from .._offsets import End
@@ -129,15 +131,22 @@ class Codec:
         contract_id: ContractId,
         choice_name: str,
         argument: Optional[Any] = None,
+        choice_interface_id: Union[None, str, TypeConName] = None,
     ) -> lapipb.ExerciseCommand:
-        item_type, _, choice = await self._look_up_choice(contract_id.value_type, choice_name)
+        choice_lookup = await self._look_up_choice(
+            contract_id.value_type, choice_name, choice_interface_id=choice_interface_id
+        )
 
         cmd_pb = lapipb.ExerciseCommand(
-            template_id=self.encode_identifier(item_type),
+            # template_id here actually means either template_id or contract_id
+            # (see https://github.com/digital-asset/daml/issues/14747)
+            template_id=self.encode_identifier(choice_lookup.contract_type_id),
             contract_id=contract_id.value,
             choice=choice_name,
         )
-        value_field, value_pb = await self.encode_value(choice.arg_binder.type, argument)
+        value_field, value_pb = await self.encode_value(
+            choice_lookup.choice.arg_binder.type, argument
+        )
         set_value(cmd_pb.choice_argument, value_field, value_pb)
 
         return cmd_pb
@@ -149,15 +158,17 @@ class Codec:
         choice_name: str,
         argument: Optional[Any] = None,
     ) -> lapipb.CreateAndExerciseCommand:
-        item_type, _, choice = await self._look_up_choice(template_id, choice_name)
+        choice_lookup = await self._look_up_choice(template_id, choice_name)
 
-        payload_field, payload_pb = await self.encode_value(con(item_type), payload)
+        payload_field, payload_pb = await self.encode_value(con(choice_lookup.template_id), payload)
         if payload_field != "record":
             raise ValueError("unexpected non-record type when constructing payload")
-        argument_field, argument_pb = await self.encode_value(choice.arg_binder.type, argument)
+        argument_field, argument_pb = await self.encode_value(
+            choice_lookup.choice.arg_binder.type, argument
+        )
         cmd_pb = lapipb.CreateAndExerciseCommand(
             create_arguments=payload_pb,
-            template_id=self.encode_identifier(item_type),
+            template_id=self.encode_identifier(choice_lookup.contract_type_id),
             choice=choice_name,
         )
         set_value(cmd_pb.choice_argument, argument_field, argument_pb)
@@ -171,18 +182,20 @@ class Codec:
         key: Any,
         argument: Optional[ContractData] = None,
     ) -> lapipb.ExerciseByKeyCommand:
-        item_type, template, choice = await self._look_up_choice(template_id, choice_name)
-        if template.key is None:
+        choice_lookup = await self._look_up_choice(template_id, choice_name)
+        if choice_lookup.template.key is None:
             raise ValueError(
                 f"cannot encode ExerciseByKeyCommand; template {template_id} does not have a contract key defined"
             )
 
         cmd_pb = lapipb.ExerciseByKeyCommand(
-            template_id=self.encode_identifier(item_type),
+            template_id=self.encode_identifier(choice_lookup.template_id),
             choice=choice_name,
         )
-        key_field, key_pb = await self.encode_value(template.key.type, key)
-        value_field, value_pb = await self.encode_value(choice.arg_binder.type, argument)
+        key_field, key_pb = await self.encode_value(choice_lookup.template.key.type, key)
+        value_field, value_pb = await self.encode_value(
+            choice_lookup.choice.arg_binder.type, argument
+        )
         set_value(cmd_pb.contract_key, key_field, key_pb)
         set_value(cmd_pb.choice_argument, value_field, value_pb)
 
@@ -296,7 +309,6 @@ class Codec:
         """
         from ... import LOG
 
-        found_choice = None
         result = None
         cid = None
 
@@ -310,29 +322,43 @@ class Codec:
                 # Find the "first" exercised node and grab its result value
                 if cid is None:
                     cid = self.decode_contract_id(event_pb.exercised)
-
-                    template = self._lookup.template(cid.value_type)
-
-                    if found_choice is None:
-                        for choice in template.choices:
-                            if choice.name == event_pb.exercised.choice:
-                                found_choice = choice
-                                break
-                        if found_choice is not None:
-                            result = await self.decode_value(
-                                found_choice.ret_type,
-                                event_pb.exercised.exercise_result,
-                            )
-                        else:
-                            LOG.error(
-                                "Received an exercise node that referred to a choice that doesn't exist!"
-                            )
+                    ret_type = self._resolve_exercise_response_type(event_pb.exercised)
+                    if ret_type is not None:
+                        result = await self.decode_value(
+                            ret_type,
+                            event_pb.exercised.exercise_result,
+                        )
 
                 events.extend(await self._decode_exercised_child_events(tree, [event_id]))
             else:
                 LOG.warning("Received an unknown event type: %s", event_pb_type)
 
         return ExerciseResponse(result, events)
+
+    def _resolve_exercise_response_type(self, event_pb: lapipb.ExercisedEvent) -> Optional[Type]:
+        from ... import LOG
+
+        if event_pb.interface_id.entity_name:
+            interface_id = Codec.decode_identifier(event_pb.interface_id)
+            interface = self._lookup.interface(interface_id)
+            for choice in interface.choices:
+                if choice.name == event_pb.choice:
+                    return choice.ret_type
+            LOG.error(
+                "Received an exercise node that referred to an interface choice that doesn't exist!"
+            )
+            return None
+
+        else:
+            template_id = Codec.decode_identifier(event_pb.template_id)
+            template = self._lookup.template(template_id)
+            for choice in template.choices:
+                if choice.name == event_pb.choice:
+                    return choice.ret_type
+            LOG.error(
+                "Received an exercise node that referred to a template choice that doesn't exist!"
+            )
+            return None
 
     async def _decode_exercised_child_events(
         self, tree: lapipb.TransactionTree, event_ids: Sequence[str]
@@ -441,13 +467,55 @@ class Codec:
         )
 
     async def _look_up_choice(
-        self, template_id: Any, choice_name: str
-    ) -> Tuple[TypeConName, DefTemplate, TemplateChoice]:
+        self,
+        template_id: Any,
+        choice_name: str,
+        choice_interface_id: Union[None, str, TypeConName] = None,
+    ) -> "ChoiceLookup":
+        """
+        Look up a choice by its name on a template and/or interface.
+        """
+        choice = None  # type: Optional[TemplateChoice]
+        contract_type_id = None  # type: Optional[TypeConName]
+        interface = None  # type: Optional[DefInterface]
+
+        if choice_interface_id is not None:
+            # if an interface is specified, try to find the relevant choice
+            # from the interface instead of the template
+            contract_type_id = await self._loader.do_with_retry(
+                lambda: self._lookup.interface_name(choice_interface_id)
+            )
+
+            interface = self._lookup.interface(contract_type_id)
+            choice = next(iter(c for c in interface.choices if c.name == choice_name), None)
+            if choice is None:
+                raise ValueError(f"interface {interface.tycon} has no choice named {choice_name}")
+
         template_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)
         )
+        if contract_type_id is None:
+            contract_type_id = template_type
+
         template = self._lookup.template(template_type)
-        for choice in template.choices:
-            if choice.name == choice_name:
-                return template_type, template, choice
-        raise ValueError(f"template {template.tycon} has no choice named {choice_name}")
+        if choice is None:
+            choice = next(iter(c for c in template.choices if c.name == choice_name), None)
+            if choice is None:
+                raise ValueError(f"template {template.tycon} has no choice named {choice_name}")
+
+        return ChoiceLookup(
+            contract_type_id=contract_type_id,
+            template_id=template_type,
+            template=template,
+            interface=interface,
+            choice=choice,
+        )
+
+
+@dataclass(frozen=True)
+class ChoiceLookup:
+    contract_type_id: TypeConName
+    template_id: TypeConName
+    template: DefTemplate
+    interface: Optional[DefInterface]
+    choice: TemplateChoice
