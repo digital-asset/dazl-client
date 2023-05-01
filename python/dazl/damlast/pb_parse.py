@@ -854,6 +854,30 @@ class ProtobufParser:
             kwargs["complex_key"] = self.parse_Expr(pb.complex_key)
         return lf.DefTemplate.DefKey(**kwargs)
 
+    def parse_InterfaceMethod(self, pb: pblf.InterfaceMethod) -> lf.InterfaceMethod:
+        return lf.InterfaceMethod(
+            method_name=self.interned_strings[pb.method_interned_name],
+            location=self.parse_Location(pb.location),
+        )
+
+    def parse_DefInterface(self, pb: pblf.DefInterface) -> lf.DefInterface:
+        return lf.DefInterface(
+            tycon=lf.DottedName(self.interned_dotted_names[pb.tycon_interned_dname]),
+            methods=tuple(self.parse_InterfaceMethod(method) for method in pb.methods),
+            choices=tuple(self.parse_TemplateChoice(choice) for choice in pb.choices),
+            co_implements=tuple(
+                self.parse_DefInterface_CoImplements(co_impl) for co_impl in pb.coImplements
+            ),
+            view=self.parse_Type(pb.view),
+            requires=tuple(self.parse_TypeConName(req) for req in pb.requires),
+            location=self.parse_Location(pb.location),
+        )
+
+    def parse_DefInterface_CoImplements(
+        self, pb: pblf.DefInterface.CoImplements
+    ) -> lf.DefInterface.CoImplements:
+        return lf.DefInterface.CoImplements(template=self.parse_TypeConName(pb.template))
+
     def parse_DefDataType(self, pb: pblf.DefDataType) -> lf.DefDataType:
         name = self._resolve_dotted_name(pb.name_dname, pb.name_interned_dname)
         params = tuple(self.parse_TypeVarWithKind(param) for param in pb.params)
@@ -955,6 +979,9 @@ class ProtobufParser:
                 values=tuple(child_parser.parse_DefValue(value) for value in pb.values),
                 templates=tuple(
                     child_parser.parse_DefTemplate(template) for template in pb.templates
+                ),
+                interfaces=tuple(
+                    child_parser.parse_DefInterface(interface) for interface in pb.interfaces
                 ),
             )
         finally:

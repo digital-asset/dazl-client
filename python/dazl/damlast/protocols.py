@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from .daml_lf_1 import (
         Archive,
         DefDataType,
+        DefInterface,
         DefTemplate,
         DefValue,
         Package,
@@ -130,3 +131,16 @@ class SymbolLookup(Protocol):
         Return the :class:`DefTemplate` for the specified name.
         """
         raise NotImplementedError("SymbolLookup.template must be implemented")
+
+    def interface_name(self, ref: "Any") -> "TypeConName":
+        """
+        Return the :class:`TypeConName` that refers to a :class:`DefInterface` that is known to
+        exist in this lookup.
+        """
+        raise NotImplementedError("SymbolLookup.interface_name must be implemented")
+
+    def interface(self, ref: "Any") -> "DefInterface":
+        """
+        Return the :class:`DefInterface` for the specified name.
+        """
+        raise NotImplementedError("SymbolLookup.interface must be implemented")

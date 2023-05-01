@@ -8,9 +8,8 @@ function install {
         curl -sSL https://get.daml.com/ | sh
         link
     fi
-    daml install 2.5.0-snapshot.20221201.11065.0.caac1d10
-    daml install 2.4.0
-    daml install 1.18.1
+    daml install 2.6.3
+    daml install 1.18.3
 }
 
 function link {
