@@ -38,7 +38,7 @@
         <link rel="index" title="Index"
               href="#"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.15 documentation" href="index.html"/> 
+    <link rel="top" title="dazl 7.11.0 documentation" href="index.html"/> 
 </head>
 <body>
 
@@ -101,9 +101,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dazl.ledger.config.html#dazl.ledger.config.AccessConfig">AccessConfig (class in dazl.ledger.config)</a>
 </li>
-      <li><a href="dazl.ledger.config.html#dazl.ledger.config.AccessConfig.act_as">act_as (dazl.ledger.config.AccessConfig property)</a>
+      <li><a href="dazl.ledger.html#dazl.ledger.CommandMeta.act_as">act_as (dazl.ledger.CommandMeta attribute)</a>
 
       <ul>
+        <li><a href="dazl.ledger.config.html#dazl.ledger.config.AccessConfig.act_as">(dazl.ledger.config.AccessConfig property)</a>
+</li>
         <li><a href="dazl.ledger.config.html#dazl.ledger.config.PropertyBasedAccessConfig.act_as">(dazl.ledger.config.PropertyBasedAccessConfig property)</a>
 </li>
         <li><a href="dazl.ledger.config.html#dazl.ledger.config.TokenBasedAccessConfig.act_as">(dazl.ledger.config.TokenBasedAccessConfig property)</a>
@@ -260,6 +262,8 @@
 </li>
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.archives">(dazl.damlast.lookup.PackageLookup method)</a>
 </li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.archives">(dazl.damlast.lookup.SymbolLookup method)</a>
+</li>
       </ul></li>
       <li><a href="dazl.ledger.html#dazl.ledger.CreateAndExerciseCommand.argument">argument (dazl.ledger.CreateAndExerciseCommand property)</a>
 
@@ -339,6 +343,8 @@
         <li><a href="dazl.html#dazl.ExerciseByKeyCommand.choice_argument">(dazl.ExerciseByKeyCommand property)</a>
 </li>
       </ul></li>
+      <li><a href="dazl.ledger.html#dazl.ledger.ExerciseCommand.choice_interface_id">choice_interface_id (dazl.ledger.ExerciseCommand property)</a>
+</li>
       <li><a href="dazl.ledger.aio.html#dazl.ledger.aio.Connection.close">close() (dazl.ledger.aio.Connection method)</a>
 
       <ul>
@@ -347,7 +353,7 @@
         <li><a href="dazl.ledger.html#dazl.ledger.QueryStream.close">(dazl.ledger.QueryStream method)</a>
 </li>
       </ul></li>
-      <li><a href="dazl.ledger.aio.html#dazl.ledger.aio.Connection.codec">codec() (dazl.ledger.aio.Connection property)</a>
+      <li><a href="dazl.ledger.aio.html#dazl.ledger.aio.Connection.codec">codec (dazl.ledger.aio.Connection property)</a>
 </li>
       <li><a href="dazl.pretty.html#dazl.pretty.PrettyOptions.column_width">column_width (dazl.pretty.PrettyOptions attribute)</a>, <a href="dazl.pretty.html#id0">[1]</a>
 </li>
@@ -357,11 +363,15 @@
         <li><a href="dazl.ledger.html#dazl.ledger.Command">(class in dazl.ledger)</a>
 </li>
       </ul></li>
+      <li><a href="dazl.ledger.html#dazl.ledger.CommandMeta.command_id">command_id (dazl.ledger.CommandMeta attribute)</a>
+</li>
+      <li><a href="dazl.ledger.html#dazl.ledger.CommandMeta">CommandMeta (class in dazl.ledger)</a>
+</li>
       <li><a href="dazl.damlast.html#dazl.damlast.daml_types.con">con() (in module dazl.damlast.daml_types)</a>
 </li>
       <li><a href="dazl.ledger.config.html#dazl.ledger.config.Config">Config (class in dazl.ledger.config)</a>
 </li>
-      <li><a href="dazl.ledger.aio.html#dazl.ledger.aio.Connection.config">config() (dazl.ledger.aio.Connection property)</a>
+      <li><a href="dazl.ledger.aio.html#dazl.ledger.aio.Connection.config">config (dazl.ledger.aio.Connection property)</a>
 </li>
       <li><a href="dazl.html#dazl.connect">connect() (in module dazl)</a>
 
@@ -383,6 +393,8 @@
 </li>
       <li><a href="dazl.ledger.html#dazl.ledger.Connection.exercise">Connection.exercise() (in module dazl.ledger)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dazl.html#dazl.ExerciseCommand.contract">contract (dazl.ExerciseCommand property)</a>
 </li>
       <li><a href="dazl.html#dazl.ContractId.contract_id">contract_id (dazl.ContractId property)</a>
@@ -395,11 +407,7 @@
         <li><a href="dazl.ledger.html#dazl.ledger.ExerciseCommand.contract_id">(dazl.ledger.ExerciseCommand property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dazl.html#dazl.ExerciseByKeyCommand.contract_key">contract_key (dazl.ExerciseByKeyCommand property)</a>
-</li>
-      <li><a href="dazl.html#dazl.ContractData">ContractData (in module dazl)</a>
 </li>
       <li><a href="dazl.html#dazl.ContractId">ContractId (class in dazl)</a>
 </li>
@@ -476,6 +484,8 @@
 </li>
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.data_type">(dazl.damlast.lookup.PackageLookup method)</a>
 </li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.data_type">(dazl.damlast.lookup.SymbolLookup method)</a>
+</li>
       </ul></li>
       <li><a href="dazl.damlast.html#dazl.damlast.lookup.EmptyLookup.data_type_name">data_type_name() (dazl.damlast.lookup.EmptyLookup method)</a>
 
@@ -483,6 +493,8 @@
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.MultiPackageLookup.data_type_name">(dazl.damlast.lookup.MultiPackageLookup method)</a>
 </li>
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.data_type_name">(dazl.damlast.lookup.PackageLookup method)</a>
+</li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.data_type_name">(dazl.damlast.lookup.SymbolLookup method)</a>
 </li>
       </ul></li>
       <li><a href="glossary.html#term-dazl"><strong>dazl</strong></a>
@@ -891,10 +903,30 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dazl.client.html#dazl.client.bots.Bot.id">id (dazl.client.bots.Bot property)</a>
 </li>
-      <li><a href="dazl.ledger.html#dazl.ledger.PartyInfo.is_local">is_local (dazl.ledger.PartyInfo property)</a>
+      <li><a href="dazl.damlast.html#dazl.damlast.lookup.EmptyLookup.interface">interface() (dazl.damlast.lookup.EmptyLookup method)</a>
+
+      <ul>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.MultiPackageLookup.interface">(dazl.damlast.lookup.MultiPackageLookup method)</a>
 </li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.interface">(dazl.damlast.lookup.PackageLookup method)</a>
+</li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.interface">(dazl.damlast.lookup.SymbolLookup method)</a>
+</li>
+      </ul></li>
+      <li><a href="dazl.damlast.html#dazl.damlast.lookup.EmptyLookup.interface_name">interface_name() (dazl.damlast.lookup.EmptyLookup method)</a>
+
+      <ul>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.MultiPackageLookup.interface_name">(dazl.damlast.lookup.MultiPackageLookup method)</a>
+</li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.interface_name">(dazl.damlast.lookup.PackageLookup method)</a>
+</li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.interface_name">(dazl.damlast.lookup.SymbolLookup method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dazl.ledger.html#dazl.ledger.PartyInfo.is_local">is_local (dazl.ledger.PartyInfo property)</a>
+</li>
       <li><a href="dazl.ledger.aio.html#dazl.ledger.aio.QueryStream.items">items() (dazl.ledger.aio.QueryStream method)</a>
 
       <ul>
@@ -1030,6 +1062,8 @@
       <li><a href="dazl.model.html#dazl.model.types.ListType">ListType (class in dazl.model.types)</a>
 </li>
       <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.local_data_type">local_data_type() (dazl.damlast.lookup.PackageLookup method)</a>
+</li>
+      <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.local_interface">local_interface() (dazl.damlast.lookup.PackageLookup method)</a>
 </li>
       <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.local_template">local_template() (dazl.damlast.lookup.PackageLookup method)</a>
 </li>
@@ -1207,6 +1241,8 @@
 </li>
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.package_ids">(dazl.damlast.lookup.PackageLookup method)</a>
 </li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.package_ids">(dazl.damlast.lookup.SymbolLookup method)</a>
+</li>
       </ul></li>
       <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageExceptionTracker">PackageExceptionTracker (class in dazl.damlast.lookup)</a>
 </li>
@@ -1238,8 +1274,6 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dazl.html#dazl.Party">Party() (in module dazl)</a>
-</li>
       <li><a href="dazl.client.html#dazl.client.api.Network.party_bots">party_bots() (dazl.client.api.Network method)</a>
 
       <ul>
@@ -1296,9 +1330,11 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dazl.ledger.config.html#dazl.ledger.config.AccessConfig.read_as">read_as (dazl.ledger.config.AccessConfig property)</a>
+      <li><a href="dazl.ledger.html#dazl.ledger.CommandMeta.read_as">read_as (dazl.ledger.CommandMeta attribute)</a>
 
       <ul>
+        <li><a href="dazl.ledger.config.html#dazl.ledger.config.AccessConfig.read_as">(dazl.ledger.config.AccessConfig property)</a>
+</li>
         <li><a href="dazl.ledger.config.html#dazl.ledger.config.PropertyBasedAccessConfig.read_as">(dazl.ledger.config.PropertyBasedAccessConfig property)</a>
 </li>
         <li><a href="dazl.ledger.config.html#dazl.ledger.config.TokenBasedAccessConfig.read_as">(dazl.ledger.config.TokenBasedAccessConfig property)</a>
@@ -1341,6 +1377,8 @@
       <li><a href="dazl.client.html#dazl.client.bots.Bot.resume">resume() (dazl.client.bots.Bot method)</a>
 </li>
       <li><a href="dazl.client.html#dazl.client.bots.BotState.RESUMING">RESUMING (dazl.client.bots.BotState attribute)</a>
+</li>
+      <li><a href="dazl.ledger.config.html#dazl.ledger.config.URLConfig.retry_timeout">retry_timeout (dazl.ledger.config.URLConfig property)</a>
 </li>
       <li><a href="dazl.ledger.aio.html#dazl.ledger.aio.QueryStream.run">run() (dazl.ledger.aio.QueryStream method)</a>
 
@@ -1530,6 +1568,8 @@
         <li><a href="dazl.html#dazl.SimplePartyClient.submit_exercise_by_key">(dazl.SimplePartyClient method)</a>
 </li>
       </ul></li>
+      <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup">SymbolLookup (class in dazl.damlast.lookup)</a>
+</li>
       <li><a href="dazl.damlast.html#dazl.damlast.daml_types.syn">syn() (in module dazl.damlast.daml_types)</a>
 </li>
   </ul></td>
@@ -1544,6 +1584,8 @@
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.MultiPackageLookup.template">(dazl.damlast.lookup.MultiPackageLookup method)</a>
 </li>
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.template">(dazl.damlast.lookup.PackageLookup method)</a>
+</li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.template">(dazl.damlast.lookup.SymbolLookup method)</a>
 </li>
       </ul></li>
       <li><a href="dazl.html#dazl.ContractId.template_id">template_id (dazl.ContractId property)</a>
@@ -1563,6 +1605,8 @@
 </li>
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.template_name">(dazl.damlast.lookup.PackageLookup method)</a>
 </li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.template_name">(dazl.damlast.lookup.SymbolLookup method)</a>
+</li>
       </ul></li>
       <li><a href="dazl.damlast.html#dazl.damlast.lookup.EmptyLookup.template_names">template_names() (dazl.damlast.lookup.EmptyLookup method)</a>
 
@@ -1570,6 +1614,8 @@
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.MultiPackageLookup.template_names">(dazl.damlast.lookup.MultiPackageLookup method)</a>
 </li>
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.template_names">(dazl.damlast.lookup.PackageLookup method)</a>
+</li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.template_names">(dazl.damlast.lookup.SymbolLookup method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1590,6 +1636,14 @@
         <li><a href="dazl.ledger.config.html#dazl.ledger.config.PropertyBasedAccessConfig.token">(dazl.ledger.config.PropertyBasedAccessConfig property)</a>
 </li>
         <li><a href="dazl.ledger.config.html#dazl.ledger.config.TokenBasedAccessConfig.token">(dazl.ledger.config.TokenBasedAccessConfig property)</a>
+</li>
+      </ul></li>
+      <li><a href="dazl.ledger.config.html#dazl.ledger.config.AccessConfig.token_version">token_version (dazl.ledger.config.AccessConfig property)</a>
+
+      <ul>
+        <li><a href="dazl.ledger.config.html#dazl.ledger.config.PropertyBasedAccessConfig.token_version">(dazl.ledger.config.PropertyBasedAccessConfig property)</a>
+</li>
+        <li><a href="dazl.ledger.config.html#dazl.ledger.config.TokenBasedAccessConfig.token_version">(dazl.ledger.config.TokenBasedAccessConfig property)</a>
 </li>
       </ul></li>
       <li><a href="dazl.ledger.config.html#dazl.ledger.config.TokenBasedAccessConfig">TokenBasedAccessConfig (class in dazl.ledger.config)</a>
@@ -1631,6 +1685,8 @@
 </li>
         <li><a href="dazl.damlast.html#dazl.damlast.lookup.PackageLookup.value">(dazl.damlast.lookup.PackageLookup method)</a>
 </li>
+        <li><a href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup.value">(dazl.damlast.lookup.SymbolLookup method)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1645,6 +1701,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dazl.client.html#dazl.client.bots.Bot.wants_any_keys">wants_any_keys() (dazl.client.bots.Bot method)</a>
+</li>
+      <li><a href="dazl.ledger.html#dazl.ledger.CommandMeta.workflow_id">workflow_id (dazl.ledger.CommandMeta attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1664,7 +1722,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.15',
+            VERSION:'7.11.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

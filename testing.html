@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.15 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.11.0 documentation" href="index.html"/>
         <link rel="next" title="Migrate" href="migrating.html"/>
         <link rel="prev" title="Basics" href="basics.html"/> 
 </head>
@@ -77,9 +77,9 @@
     
   <section id="testing">
 <h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
-<p>Code that you write against <cite>dazl</cite> will typically need a Sandbox to be running. You can use a setup
-similar to what <code class="docutils literal notranslate"><span class="pre">dazl</span></code> does for its own tests.</p>
-<p><code class="docutils literal notranslate"><span class="pre">dazl</span></code> starts a single Sandbox process for all of its tests, because starting and stopping Sandbox
+<p>Code that you write against the Daml Python bindings will typically need a Sandbox to be running. You can use a setup
+similar to what the Daml Python bingings do for their own tests.</p>
+<p>The Daml Python bindings start a single Sandbox process for all of their tests, because starting and stopping Sandbox
 instances repeatedly can greatly slow down the test suite. To achieve good isolation between tests,
 use freshly-allocated <code class="docutils literal notranslate"><span class="pre">Party</span></code> in instances instead. Because of DAML’s privacy model, islands of
 <code class="docutils literal notranslate"><span class="pre">Party</span></code> s that are mutually unaware of each other are guaranteed to never see unintended
@@ -133,7 +133,7 @@ contracts.</p>
 </section>
 <section id="pytest">
 <h2>pytest<a class="headerlink" href="#pytest" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">dazl</span></code> uses pytest internally, which supports session-scoped fixtures and avoids the need for
+<p>The Daml Python bindings use pytest internally, which supports session-scoped fixtures and avoids the need for
 globals:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
@@ -174,7 +174,7 @@ globals:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.15',
+            VERSION:'7.11.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

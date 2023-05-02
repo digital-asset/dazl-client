@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.15 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.11.0 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.protocols package" href="dazl.protocols.html"/>
         <link rel="prev" title="dazl.model package" href="dazl.model.html"/> 
@@ -91,45 +91,49 @@
 <p>This module contains utilities for pretty-printing various types in dazl.</p>
 <span class="target" id="module-dazl.pretty.render_daml"></span><span class="target" id="module-dazl.pretty.util"></span><dl class="py class">
 <dt class="sig sig-object py" id="dazl.pretty.DAMLLexer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></span><span class="sig-name descname"><span class="pre">DAMLLexer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.pretty.DAMLLexer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></span><span class="sig-name descname"><span class="pre">DAMLLexer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.pretty.DAMLLexer" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="dazl.pretty.DAMLLexer.aliases">
-<span class="sig-name descname"><span class="pre">aliases</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['daml']</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.aliases" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">aliases</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['daml']</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.aliases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcuts for the lexer</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dazl.pretty.DAMLLexer.daml_reserved">
-<span class="sig-name descname"><span class="pre">daml_reserved</span></span><em class="property"> <span class="pre">=</span> <span class="pre">('template',</span> <span class="pre">'with',</span> <span class="pre">'controller',</span> <span class="pre">'can',</span> <span class="pre">'ensure',</span> <span class="pre">'daml',</span> <span class="pre">'observer',</span> <span class="pre">'signatory',</span> <span class="pre">'agreement',</span> <span class="pre">'controller',</span> <span class="pre">'nonconsuming',</span> <span class="pre">'return',</span> <span class="pre">'this')</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.daml_reserved" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">daml_reserved</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('template',</span> <span class="pre">'with',</span> <span class="pre">'controller',</span> <span class="pre">'can',</span> <span class="pre">'ensure',</span> <span class="pre">'daml',</span> <span class="pre">'observer',</span> <span class="pre">'signatory',</span> <span class="pre">'agreement',</span> <span class="pre">'controller',</span> <span class="pre">'nonconsuming',</span> <span class="pre">'return',</span> <span class="pre">'this')</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.daml_reserved" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dazl.pretty.DAMLLexer.filenames">
-<span class="sig-name descname"><span class="pre">filenames</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['*.daml']</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.filenames" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">filenames</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['*.daml']</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.filenames" title="Permalink to this definition">¶</a></dt>
 <dd><p>File name globs</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dazl.pretty.DAMLLexer.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'DAML'</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DAML'</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the lexer</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dazl.pretty.DAMLLexer.tokens">
-<span class="sig-name descname"><span class="pre">tokens</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'root':</span> <span class="pre">[(&quot;\\b(template|with|controller|can|ensure|daml|observer|signatory|agreement|controller|nonconsuming|return|this)(?!\\')\\b&quot;,</span> <span class="pre">Token.Keyword.Reserved),</span> <span class="pre">('\\b(True|False)\\b',</span> <span class="pre">Token.Keyword.Constant),</span> <span class="pre">inherit]}</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.tokens" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dict of <code class="docutils literal notranslate"><span class="pre">{'state':</span> <span class="pre">[(regex,</span> <span class="pre">tokentype,</span> <span class="pre">new_state),</span> <span class="pre">...],</span> <span class="pre">...}</span></code></p>
-<p>The initial state is ‘root’.
-<code class="docutils literal notranslate"><span class="pre">new_state</span></code> can be omitted to signify no state transition.
-If it is a string, the state is pushed on the stack and changed.
-If it is a tuple of strings, all states are pushed on the stack and
-the current state will be the topmost.
-It can also be <code class="docutils literal notranslate"><span class="pre">combined('state1',</span> <span class="pre">'state2',</span> <span class="pre">...)</span></code>
+<span class="sig-name descname"><span class="pre">tokens</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'root':</span> <span class="pre">[(&quot;\\b(template|with|controller|can|ensure|daml|observer|signatory|agreement|controller|nonconsuming|return|this)(?!\\')\\b&quot;,</span> <span class="pre">Token.Keyword.Reserved),</span> <span class="pre">('\\b(True|False)\\b',</span> <span class="pre">Token.Keyword.Constant),</span> <span class="pre">inherit]}</span></em><a class="headerlink" href="#dazl.pretty.DAMLLexer.tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>At all time there is a stack of states. Initially, the stack contains
+a single state ‘root’. The top of the stack is called “the current state”.</p>
+<p>Dict of <code class="docutils literal notranslate"><span class="pre">{'state':</span> <span class="pre">[(regex,</span> <span class="pre">tokentype,</span> <span class="pre">new_state),</span> <span class="pre">...],</span> <span class="pre">...}</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">new_state</span></code> can be omitted to signify no state transition.
+If <code class="docutils literal notranslate"><span class="pre">new_state</span></code> is a string, it is pushed on the stack. This ensure
+the new current state is <code class="docutils literal notranslate"><span class="pre">new_state</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">new_state</span></code> is a tuple of strings, all of those strings are pushed
+on the stack and the current state will be the last element of the list.
+<code class="docutils literal notranslate"><span class="pre">new_state</span></code> can also be <code class="docutils literal notranslate"><span class="pre">combined('state1',</span> <span class="pre">'state2',</span> <span class="pre">...)</span></code>
 to signify a new, anonymous state combined from the rules of two
 or more existing ones.
 Furthermore, it can be ‘#pop’ to signify going back one step in
 the state stack, or ‘#push’ to push the current state on the stack
-again.</p>
+again. Note that if you push while in a combined state, the combined
+state itself is pushed, and not only the state in which the rule is
+defined.</p>
 <p>The tuple can also be replaced with <code class="docutils literal notranslate"><span class="pre">include('state')</span></code>, in which
 case the rules from the state named by the string are included in the
 current one.</p>
@@ -139,7 +143,7 @@ current one.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dazl.pretty.PrettyOptions">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></span><span class="sig-name descname"><span class="pre">PrettyOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_width</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_hidden_types</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'daml'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.pretty.PrettyOptions" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></span><span class="sig-name descname"><span class="pre">PrettyOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_hidden_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'daml'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.pretty.PrettyOptions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display options for pretty-printing DAML ASTs.</p>
 <p>Instance attributes:</p>
 <dl class="py attribute">
@@ -164,24 +168,24 @@ generated names.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">column_width</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">column_width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">format</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><em class="property"> <span class="pre">=</span> <span class="pre">'daml'</span></em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">format</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'daml'</span></em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">show_hidden_types</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">show_hidden_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dazl.pretty.get_pretty_printer">
-<span class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></span><span class="sig-name descname"><span class="pre">get_pretty_printer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dazl.pretty.PrettyOptions" title="dazl.pretty.options.PrettyOptions"><span class="pre">dazl.pretty.options.PrettyOptions</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dazl.damlast.protocols.SymbolLookup</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dazl.pretty._render_base.PrettyPrintBase</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dazl.pretty.get_pretty_printer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dazl.pretty.</span></span><span class="sig-name descname"><span class="pre">get_pretty_printer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dazl.pretty.PrettyOptions" title="dazl.pretty.options.PrettyOptions"><span class="pre">dazl.pretty.options.PrettyOptions</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="dazl.damlast.html#dazl.damlast.lookup.SymbolLookup" title="dazl.damlast.protocols.SymbolLookup"><span class="pre">dazl.damlast.protocols.SymbolLookup</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">dazl.pretty._render_base.PrettyPrintBase</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dazl.pretty.get_pretty_printer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -194,7 +198,7 @@ generated names.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.15',
+            VERSION:'7.11.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

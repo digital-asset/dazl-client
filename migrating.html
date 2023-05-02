@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.15 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.11.0 documentation" href="index.html"/>
         <link rel="next" title="dazl package" href="dazl.html"/>
         <link rel="prev" title="Testing" href="testing.html"/> 
 </head>
@@ -62,12 +62,12 @@
 <li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Migrate</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#migrating-to-dazl-v7-5">Migrating to dazl v7.5</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#migrating-to-the-daml-python-bindings-v7-5">Migrating to the Daml Python bindings v7.5</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#command-submission-changes-dazl-network-and-dazl-connect">Command submission changes (<code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> and <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code>)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#command-line-changes">Command-line changes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#migrating-to-dazl-v7">Migrating to dazl v7</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#migrating-to-the-daml-python-bindings-v7">Migrating to the Daml Python bindings v7</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#template-formats">Template formats</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sandbox-wrapper">Sandbox Wrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#time-model-changes">Time Model changes</a></li>
@@ -95,11 +95,11 @@
     
   <section id="migrate">
 <h1>Migrate<a class="headerlink" href="#migrate" title="Permalink to this headline">¶</a></h1>
-<section id="migrating-to-dazl-v7-5">
-<h2>Migrating to dazl v7.5<a class="headerlink" href="#migrating-to-dazl-v7-5" title="Permalink to this headline">¶</a></h2>
-<p>dazl v7.5.0 introduces a new API, <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code> for adding support to more modern features of
-Daml Connect. The <code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> API will continue to be supported in dazl v8 (the next major
-version of dazl), but you are encouraged to use <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code> going forward.</p>
+<section id="migrating-to-the-daml-python-bindings-v7-5">
+<h2>Migrating to the Daml Python bindings v7.5<a class="headerlink" href="#migrating-to-the-daml-python-bindings-v7-5" title="Permalink to this headline">¶</a></h2>
+<p>The Daml Python bindings v7.5.0 introduces a new API, <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code> for adding support to more modern features of
+Daml Connect. The <code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> API will continue to be supported in the Daml Python bindings v8 (the next major
+version of the Daml Python bindings), but you are encouraged to use <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code> going forward.</p>
 <p><code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code> embraces design patterns and technical capabilities that have been introduced to
 Daml and some of the underlying Python libraries over the last few years.</p>
 <ul>
@@ -113,34 +113,34 @@ the need for clients to attempt to keep otherwise independent streams correlated
 focused on single connections.</p>
 </li>
 <li><p>Daml HTTP JSON API (stable as of DAML SDK 1.3.0)</p>
-<p>While not yet directly supported (this is planned for dazl v8.0.0), the HTTP JSON API supports
+<p>While not yet directly supported (this is planned for the Daml Python bindings v8.0.0), the HTTP JSON API supports
 most use-cases for applications that need to communicate with a ledger. The new API is slightly
 restructured for both compatibility with the HTTP JSON API and parity with the JavaScript
 <a class="reference external" href="https://www.npmjs.com/package/&#64;daml/ledger">&#64;daml/ledger</a> library.</p>
 </li>
 <li><p>Daml Authentication/authorization using JSON Web Tokens (JWT)</p>
-<p>dazl was originally built with the simple assumption that a <code class="docutils literal notranslate"><span class="pre">Party</span></code> exists 1:1 to a set of
-credentials. As the Daml Ledger API evolved, this assumption no longer holds. The new dazl API
-treats tokens more as a</p>
+<p>The Daml Python bindings were originally built with the simple assumption that a <code class="docutils literal notranslate"><span class="pre">Party</span></code> exists 1:1 to a set of
+credentials. As the Daml Ledger API evolved, this assumption no longer holds. The new Daml Python bindings API
+treats tokens more opaquely, and removes the assumption that connections are tied to a specific single <code class="docutils literal notranslate"><span class="pre">Party</span></code>.</p>
 </li>
 <li><p>Daml return values from exercise choices</p>
 <p>Exercise return values have been available from the Ledger API since Daml was open sourced back
-in April 2019. dazl’s API has finally been updated to take this feature into account.</p>
+in April 2019. The Daml Python bindings’s API has finally been updated to take this feature into account.</p>
 </li>
 <li><p>“Unsubscribing” from streams</p>
-<p><code class="docutils literal notranslate"><span class="pre">dazl</span></code> has never had a straightforward way of abandoning event callbacks that were no longer
+<p>The Daml Python bindings have never had a straightforward way of abandoning event callbacks that were no longer
 needed. The new API makes stream lifecycle more explicit and the responsibility of the user of the
 library. Disposing of streams is now simpler to reason about.</p>
 </li>
 <li><p>Native gRPC support for asyncio: <a class="reference external" href="https://github.com/grpc/proposal/pull/155">https://github.com/grpc/proposal/pull/155</a></p>
 <p>As of gRPC 1.32.0, the Python gRPC libraries natively support <code class="docutils literal notranslate"><span class="pre">asyncio</span></code>. This, combined with
-client streams that are no longer coupled to each other, means the internals of <code class="docutils literal notranslate"><span class="pre">dazl</span></code> are
+client streams that are no longer coupled to each other, means the internals of the Daml Python bindings are
 significantly simpler while also improving performance.</p>
 </li>
 </ul>
 <section id="command-submission-changes-dazl-network-and-dazl-connect">
 <h3>Command submission changes (<code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> and <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code>)<a class="headerlink" href="#command-submission-changes-dazl-network-and-dazl-connect" title="Permalink to this headline">¶</a></h3>
-<p>The most visible change from trying to align <code class="docutils literal notranslate"><span class="pre">dazl</span></code> to the
+<p>The most visible change from trying to align the Daml Python bindings to the
 <a class="reference external" href="https://www.npmjs.com/package/&#64;daml/ledger">&#64;daml/ledger</a> library is a renaming of the properties
 of the <code class="docutils literal notranslate"><span class="pre">Command</span></code> class hierarchy.</p>
 <p>In general, however, you should prefer the command submission
@@ -199,9 +199,9 @@ to your code should be as simple as changing imports:</p>
 <p>These command classes can and should be used in both the <code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> API and the
 <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code> API.</p>
 <p>The changes:</p>
-<p><code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code>, which has been the primary entry point for dazl code since dazl v5, will be
-deprecated in dazl v8.0.0. Transitional releases (starting with v7.5.0) will include both APIs, an
-<code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> will be fully removed in dazl v9.0.0.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code>, which has been the primary entry point for the Daml Python binding’s code since Daml Python bindings v5, will be
+deprecated in the Daml Python bindings v8.0.0. Transitional releases (starting with v7.5.0) will include both APIs, an
+<code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> will be fully removed in the Daml Python bindings v9.0.0.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># dazl v5-v7</span>
 <span class="kn">import</span> <span class="nn">dazl</span>
 
@@ -304,31 +304,33 @@ should generally</p>
 </section>
 <section id="command-line-changes">
 <h3>Command-line changes<a class="headerlink" href="#command-line-changes" title="Permalink to this headline">¶</a></h3>
-<p>The standard set of command line options provided by <code class="docutils literal notranslate"><span class="pre">dazl.run</span></code> has changed. This also impacts any
-dazl commands (<code class="docutils literal notranslate"><span class="pre">dazl</span> <span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">dazl</span> <span class="pre">tail</span></code>, etc.) as well as any custom commands that use
-<code class="docutils literal notranslate"><span class="pre">dazl.run</span></code>:</p>
+<dl class="simple">
+<dt>The standard set of command line options provided by <code class="docutils literal notranslate"><span class="pre">dazl.run</span></code> has changed. This also impacts any</dt><dd><p>Daml Python bindings commands (<code class="docutils literal notranslate"><span class="pre">dazl</span> <span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">dazl</span> <span class="pre">tail</span></code>, etc.) as well as any custom commands that use</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">dazl.run</span></code>:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">-p</span></code> is now used to denote the Ledger API port and <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">Party</span></code>. In dazl v8, supplying a
-string argument to <code class="docutils literal notranslate"><span class="pre">-p</span></code> will be still interpreted as a <code class="docutils literal notranslate"><span class="pre">Party</span></code> but you will get a warning;
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span></code> is now used to denote the Ledger API port and <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">Party</span></code>. In the Daml Python bindings v8,
+supplying a string argument to <code class="docutils literal notranslate"><span class="pre">-p</span></code> will be still interpreted as a <code class="docutils literal notranslate"><span class="pre">Party</span></code> but you will get a warning;
 switch to <code class="docutils literal notranslate"><span class="pre">--act-as</span></code> or <code class="docutils literal notranslate"><span class="pre">--read-as</span></code> instead. This backwards compatible behavior will be
-removed in dazl v9.0.0.</p></li>
+removed in the Daml Python bindings v9.0.0.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--party</span></code>/<code class="docutils literal notranslate"><span class="pre">--parties</span></code> has been renamed to <code class="docutils literal notranslate"><span class="pre">--act-as</span></code> (<code class="docutils literal notranslate"><span class="pre">-u</span></code>); <code class="docutils literal notranslate"><span class="pre">--party-groups</span></code> has been
 renamed to <code class="docutils literal notranslate"><span class="pre">--read-as</span></code> (<code class="docutils literal notranslate"><span class="pre">-r</span></code>). Both <code class="docutils literal notranslate"><span class="pre">--act-as</span></code> and <code class="docutils literal notranslate"><span class="pre">--read-as</span></code> take a comma-separated list
 of parties, or as an alternative can be specified multiple times. This matches the terminology
 used in multi-party submissions as added in Daml Connect 1.9. The older forms of these flags will
-be removed in dazl v9.0.0.</p></li>
+be removed in the Daml Python bindings v9.0.0.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--package-fetch-poll-interval</span></code> replaces <code class="docutils literal notranslate"><span class="pre">--eager-package-fetch</span></code>.
-If unspecified or zero, package polling is disabled. Note that <code class="docutils literal notranslate"><span class="pre">dazl</span></code> will still generally
+If unspecified or zero, package polling is disabled. Note that the Daml Python bindings will still generally
 discover packages as it needs to. This is really only of value if you are explicitly interested
 in keeping metadata up-to-date because you are using package metadata, and you should generally
 NOT use this for performance reasons.</p>
 <p>Setting <code class="docutils literal notranslate"><span class="pre">-eager-package-fetch</span></code> is the same as specifying <code class="docutils literal notranslate"><span class="pre">--package-fetch-poll-interval=1</span></code>,
-as dazl previously polled for package updates once a second.</p>
+as the Daml Python bindings previously polled for package updates once a second.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--enable-http-proxy</span></code> has been renamed to <code class="docutils literal notranslate"><span class="pre">--use-http-proxy</span></code>; the old flag will be removed in
-dazl v9.0.0.</p></li>
+the Daml Python bindings v9.0.0.</p></li>
 <li><dl class="simple">
-<dt>The following flags have no effect in dazl v8 and will be removed in dazl v8.0.0::</dt><dd><ul class="simple">
+<dt>The following flags have no effect in the Daml Python bindings v8 and will be removed in the Daml Python bindings v8.0.0::</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--idle-timeout</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--max-command-batch-timeout</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--max-connection-batch-size</span></code></p></li>
@@ -345,11 +347,11 @@ dazl v9.0.0.</p></li>
 </ul>
 </section>
 </section>
-<section id="migrating-to-dazl-v7">
-<h2>Migrating to dazl v7<a class="headerlink" href="#migrating-to-dazl-v7" title="Permalink to this headline">¶</a></h2>
+<section id="migrating-to-the-daml-python-bindings-v7">
+<h2>Migrating to the Daml Python bindings v7<a class="headerlink" href="#migrating-to-the-daml-python-bindings-v7" title="Permalink to this headline">¶</a></h2>
 <section id="template-formats">
 <h3>Template formats<a class="headerlink" href="#template-formats" title="Permalink to this headline">¶</a></h3>
-<p>Versions of <cite>dazl</cite> prior to version 7 understood previously-used conventions for template names
+<p>Versions of the Daml Python bindings prior to version 7 understood previously-used conventions for template names
 other than the form <code class="docutils literal notranslate"><span class="pre">package_ref:module_name:entity_name</span></code>. As of version 7, this is the only
 understood format, and other forms are now unrecognized.</p>
 <p>Concretely, this will mean you need to change code usages such as:</p>
@@ -366,14 +368,14 @@ understood format, and other forms are now unrecognized.</p>
 <section id="sandbox-wrapper">
 <h3>Sandbox Wrapper<a class="headerlink" href="#sandbox-wrapper" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">dazl.sandbox()</span></code> function has been removed. In order to set up tests around applications that
-use <code class="docutils literal notranslate"><span class="pre">dazl</span></code> as a library, see the testing guide.</p>
+use the Daml Python bindings as a library, see the testing guide.</p>
 </section>
 <section id="time-model-changes">
 <h3>Time Model changes<a class="headerlink" href="#time-model-changes" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://github.com/digital-asset/daml/releases/tag/v1.0.0">DAML SDK 1.0</a> brought some changes to
 the way that time works over the Ledger API. Clients no longer need to behave differently for
 ledgers that run in static time vs. real time mode.</p>
-<p>The default time model for the DAML SDK Sandbox has changed to real time. Consequently, the <cite>dazl</cite>
+<p>The default time model for the DAML SDK Sandbox has changed to real time. Consequently, the Daml Python bindings
 APIs for manipulating static time have been removed and no replacement API is available. Static time
 is generally only useful in non-production contexts and use cases that require static time are
 better addressed with DAML scenarios.</p>
@@ -435,7 +437,7 @@ better addressed with DAML scenarios.</p>
 <section id="library-initialization">
 <h3>Library Initialization<a class="headerlink" href="#library-initialization" title="Permalink to this headline">¶</a></h3>
 <p>Old API:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original Daml Python bindings API</span>
 <span class="k">with</span> <span class="n">create_client</span><span class="p">(</span><span class="n">participant_url</span><span class="o">=</span><span class="s1">&#39;http://localhost:7600&#39;</span><span class="p">,</span> <span class="n">parties</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">manager</span><span class="p">:</span>
     <span class="n">alice_client</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span>
     <span class="n">bob_client</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;Bob&#39;</span><span class="p">)</span>
@@ -463,7 +465,7 @@ for consistency across event handlers.</p>
 <p>Initialization has been collapsed into a single event, where formerly, there were two events
 (<code class="docutils literal notranslate"><span class="pre">on_init</span></code> and <code class="docutils literal notranslate"><span class="pre">on_init_metadata</span></code>):</p>
 <p>Old API:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original Daml Python bindings API</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;Some Party&#39;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">on_init</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ledger initialization is happening&#39;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">on_init_metadata</span><span class="p">(</span><span class="k">lambda</span> <span class="n">store</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ledger package store: </span><span class="si">{</span><span class="n">store</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
@@ -478,7 +480,7 @@ for consistency across event handlers.</p>
 <section id="ready-event-listeners">
 <h3>Ready Event Listeners<a class="headerlink" href="#ready-event-listeners" title="Permalink to this headline">¶</a></h3>
 <p>Old API:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original Daml Python bindings API</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;Some Party&#39;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">on_ready</span><span class="p">(</span><span class="k">lambda</span> <span class="n">party_name</span><span class="p">,</span> <span class="n">client</span>\<span class="n">_</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Party </span><span class="si">{</span><span class="n">party_name</span><span class="si">}</span><span class="s1"> is ready&#39;</span><span class="p">))</span>
 </pre></div>
@@ -496,7 +498,7 @@ for consistency across event handlers.</p>
 the contract ID, contract data, and additional metadata about the event, such as the time of
 execution, ledger ID, and access to the active contract set.</p>
 <p>Old API:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original dazl API</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># original Daml Python bindings API</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;Some Party&#39;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">on_created</span><span class="p">(</span><span class="s1">&#39;Some.Asset&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">cdata</span><span class="p">))</span>
 <span class="n">client</span><span class="o">.</span><span class="n">on_archived</span><span class="p">(</span><span class="s1">&#39;Some.Asset&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">cid</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">cid</span><span class="p">))</span>
@@ -521,7 +523,7 @@ execution, ledger ID, and access to the active contract set.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.15',
+            VERSION:'7.11.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

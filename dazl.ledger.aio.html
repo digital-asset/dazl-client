@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.15 documentation" href="index.html"/>
+    <link rel="top" title="dazl 7.11.0 documentation" href="index.html"/>
         <link rel="up" title="dazl package" href="dazl.html"/>
         <link rel="next" title="dazl.ledger.blocking" href="dazl.ledger.blocking.html"/>
         <link rel="prev" title="dazl.ledger" href="dazl.ledger.html"/> 
@@ -93,7 +93,7 @@
 <code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.ledger.grpc.conn_aio.Connection</span></code>.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.aio.</span></span><span class="sig-name descname"><span class="pre">Connection</span></span><a class="headerlink" href="#dazl.ledger.aio.Connection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.aio.</span></span><span class="sig-name descname"><span class="pre">Connection</span></span><a class="headerlink" href="#dazl.ledger.aio.Connection" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection.codec">
 <span class="sig-name descname"><span class="pre">codec</span></span><a class="headerlink" href="#dazl.ledger.aio.Connection.codec" title="Permalink to this definition">¶</a></dt>
@@ -122,15 +122,15 @@ rejected. All existing streams made from this connection are closed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection.create">
-<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">template_id</span></em>, <em class="sig-param"><span class="pre">payload</span></em>, <em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.create" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a contract for a given template.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>template_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>dazl.damlast.TypeConName</em>) – The template of the contract to be created.</p></li>
-<li><p><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a>) – Template arguments for the contract to be created.</p></li>
-<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional workflow ID.</p></li>
-<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional command ID. If unspecified, a random one will be created.</p></li>
+<li><p><strong>template_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>dazl.damlast.TypeConName</em>) – The template of the contract to be created.</p></li>
+<li><p><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – Template arguments for the contract to be created.</p></li>
+<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional command ID. If unspecified, a random one will be created.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -142,16 +142,16 @@ contract ID.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection.create_and_exercise">
-<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">create_and_exercise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">template_id</span></em>, <em class="sig-param"><span class="pre">payload</span></em>, <em class="sig-param"><span class="pre">choice_name</span></em>, <span class="optional">[</span><em class="sig-param"><span class="pre">argument</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.create_and_exercise" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">create_and_exercise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choice_name</span></span></em>, <span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow_id=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_id=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.create_and_exercise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exercise a choice on a newly-created contract, in a single transaction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>contract_id</strong> (<em>dazl.prim.ContractId</em>) – The contract ID of the contract to exercise.</p></li>
-<li><p><strong>choice_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the choice to exercise.</p></li>
-<li><p><strong>argument</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The choice arguments. Can be omitted for choices that take no argument.</p></li>
-<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional workflow ID.</p></li>
-<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional command ID. If unspecified, a random one will be created.</p></li>
+<li><p><strong>choice_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the choice to exercise.</p></li>
+<li><p><strong>argument</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a><em> or </em><em>None</em>) – The choice arguments. Can be omitted for choices that take no argument.</p></li>
+<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional command ID. If unspecified, a random one will be created.</p></li>
 <li><p><strong>workflow_id</strong> – An optional workflow ID.</p></li>
 <li><p><strong>command_id</strong> – An optional command ID. If unspecified, a random one will be created.</p></li>
 </ul>
@@ -165,16 +165,16 @@ together with a list of events that occurred as a result of exercising the choic
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection.exercise">
-<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">exercise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">contract_id</span></em>, <em class="sig-param"><span class="pre">choice_name</span></em>, <span class="optional">[</span><em class="sig-param"><span class="pre">argument</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.exercise" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">exercise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choice_name</span></span></em>, <span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow_id=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_id=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.exercise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exercise a choice on a contract identified by its contract ID.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>contract_id</strong> (<em>dazl.prim.ContractId</em>) – The contract ID of the contract to exercise.</p></li>
-<li><p><strong>choice_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the choice to exercise.</p></li>
-<li><p><strong>argument</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The choice arguments. Can be omitted for choices that take no argument.</p></li>
-<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional workflow ID.</p></li>
-<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional command ID. If unspecified, a random one will be created.</p></li>
+<li><p><strong>choice_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the choice to exercise.</p></li>
+<li><p><strong>argument</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a><em> or </em><em>None</em>) – The choice arguments. Can be omitted for choices that take no argument.</p></li>
+<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional command ID. If unspecified, a random one will be created.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -186,13 +186,13 @@ together with a list of events that occurred as a result of exercising the choic
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection.exercise_by_key">
-<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">exercise_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">template_id</span></em>, <em class="sig-param"><span class="pre">choice_name</span></em>, <em class="sig-param"><span class="pre">key</span></em>, <span class="optional">[</span><em class="sig-param"><span class="pre">argument</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.exercise_by_key" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">exercise_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choice_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow_id=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_id=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.exercise_by_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exercise a choice on a contract identified by its contract key.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection.submit">
-<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">commands</span></em>, <em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">workflow_id=None</span></em>, <em class="sig-param"><span class="pre">command_id=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.submit" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">commands</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.submit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submit one or more commands to the Ledger API.</p>
 <p>You should generally prefer trying to use <a class="reference internal" href="#dazl.ledger.aio.Connection.create" title="dazl.ledger.aio.Connection.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a>, <a class="reference internal" href="#dazl.ledger.aio.Connection.exercise" title="dazl.ledger.aio.Connection.exercise"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exercise()</span></code></a>,
 <a class="reference internal" href="#dazl.ledger.aio.Connection.exercise_by_key" title="dazl.ledger.aio.Connection.exercise_by_key"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exercise_by_key()</span></code></a>, or <a class="reference internal" href="#dazl.ledger.aio.Connection.create_and_exercise" title="dazl.ledger.aio.Connection.create_and_exercise"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_exercise()</span></code></a>, as they are available over both
@@ -205,9 +205,9 @@ use case.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>commands</strong> (<a class="reference internal" href="dazl.ledger.html#dazl.ledger.Command" title="dazl.ledger.Command"><em>dazl.ledger.Command</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>[</em><a class="reference internal" href="dazl.ledger.html#dazl.ledger.Command" title="dazl.ledger.Command"><em>dazl.ledger.Command</em></a><em>]</em>) – The sequence of commands to submit to the ledger.</p></li>
-<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional workflow ID.</p></li>
-<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional command ID. If unspecified, a random one will be created.</p></li>
+<li><p><strong>commands</strong> (<a class="reference internal" href="dazl.ledger.html#dazl.ledger.Command" title="dazl.ledger.Command"><em>dazl.ledger.Command</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>[</em><a class="reference internal" href="dazl.ledger.html#dazl.ledger.Command" title="dazl.ledger.Command"><em>dazl.ledger.Command</em></a><em>]</em>) – The sequence of commands to submit to the ledger.</p></li>
+<li><p><strong>workflow_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional workflow ID.</p></li>
+<li><p><strong>command_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional command ID. If unspecified, a random one will be created.</p></li>
 </ul>
 </dd>
 </dl>
@@ -215,16 +215,16 @@ use case.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection.query">
-<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">template_id</span></em>, <span class="optional">]</span><span class="optional">[</span><em class="sig-param"><span class="pre">query</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.query" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em>, <span class="optional">]</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.query" title="Permalink to this definition">¶</a></dt>
 <dt class="sig sig-object py" id="dazl.ledger.aio.Connection.stream">
-<span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">template_id</span></em>, <span class="optional">]</span><span class="optional">[</span><em class="sig-param"><span class="pre">query</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">offset=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.stream" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">template_id</span></span></em>, <span class="optional">]</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dazl.ledger.aio.Connection.stream" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>template_id</strong> (str or <code class="xref py py-class docutils literal notranslate"><span class="pre">dazl.damlast.TypeConName</span></code>) – The name of the template for which to fetch contracts. If omitted or <cite>“*”</cite>, contracts for
 all templates are returned.</p></li>
 <li><p><strong>query</strong> – A <code class="docutils literal notranslate"><span class="pre">dict</span></code> whose keys represent exact values to be matched.</p></li>
-<li><p><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – An optional offset at which to start receiving events. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, start from the
+<li><p><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>None</em>) – An optional offset at which to start receiving events. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, start from the
 beginning. Can only be supplied to <a class="reference internal" href="#dazl.ledger.aio.Connection.stream" title="dazl.ledger.aio.Connection.stream"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stream()</span></code></a>.</p></li>
 </ul>
 </dd>
@@ -252,7 +252,7 @@ afterwards the stream remains open, and subsequent <code class="xref py py-class
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dazl.ledger.aio.QueryStream">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.aio.</span></span><span class="sig-name descname"><span class="pre">QueryStream</span></span><a class="headerlink" href="#dazl.ledger.aio.QueryStream" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dazl.ledger.aio.</span></span><span class="sig-name descname"><span class="pre">QueryStream</span></span><a class="headerlink" href="#dazl.ledger.aio.QueryStream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Protocol for classes that provide for asynchronous reading from a stream of events from a Daml
 ledger.</p>
 <p><strong>Reading from and controlling the stream</strong></p>
@@ -339,7 +339,7 @@ ledger methods can be used:</p>
 stream.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>TypeConName</em>) – An optional name of a template to further filter <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code>.</p>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>TypeConName</em>) – An optional name of a template to further filter <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEvent</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -357,7 +357,7 @@ stream.</p>
 stream.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>TypeConName</em>) – An optional name of a template to further filter <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>.</p>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>TypeConName</em>) – An optional name of a template to further filter <code class="xref py py-class docutils literal notranslate"><span class="pre">ArchiveEvent</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,7 +383,7 @@ stream.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.15',
+            VERSION:'7.11.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

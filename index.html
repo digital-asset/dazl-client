@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="dazl 7.5.15 documentation" href="#"/>
+    <link rel="top" title="dazl 7.11.0 documentation" href="#"/>
         <link rel="next" title="Basics" href="basics.html"/> 
 </head>
 <body>
@@ -72,7 +72,7 @@
     
   <section id="dazl-da-client-library-for-python">
 <h1>dazl: DA client library for Python<a class="headerlink" href="#dazl-da-client-library-for-python" title="Permalink to this headline">¶</a></h1>
-<p>Version 7.5.15</p>
+<p>Version 7.11.0</p>
 <section id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>You will need Python 3.6 or later and a Daml Ledger.</p>
@@ -82,7 +82,9 @@
 <p>This section assumes that you already have a running ledger with the standard <cite>daml new</cite> model
 loaded, and have imported <cite>dazl</cite>.</p>
 <p>Connect to the ledger and submit a single command:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">est</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;typecheck only&quot;</span><span class="p">)</span>
+<span class="n">c</span> <span class="k">def</span> <span class="nf">test_send_single_command</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="kn">import</span> <span class="nn">dazl</span>
 
 <span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://localhost:6865&quot;</span><span class="p">,</span> <span class="n">act_as</span><span class="o">=</span><span class="n">dazl</span><span class="o">.</span><span class="n">Party</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;issuer&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world!&quot;</span><span class="p">}</span>
@@ -90,7 +92,9 @@ loaded, and have imported <cite>dazl</cite>.</p>
 </pre></div>
 </div>
 <p>Connect to the ledger as a single party, print all contracts, and close:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">est</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;typecheck only&quot;</span><span class="p">)</span>
+<span class="n">c</span> <span class="k">def</span> <span class="nf">test_read</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="kn">import</span> <span class="nn">dazl</span>
 
 <span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://localhost:6865&quot;</span><span class="p">,</span> <span class="n">read_as</span><span class="o">=</span><span class="n">dazl</span><span class="o">.</span><span class="n">Party</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
     <span class="n">contracts</span> <span class="o">=</span> <span class="p">{}</span>
@@ -101,7 +105,9 @@ loaded, and have imported <cite>dazl</cite>.</p>
 </pre></div>
 </div>
 <p>Connect to the ledger using asynchronous callbacks:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dazl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">est</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;typecheck only&quot;</span><span class="p">)</span>
+<span class="n">c</span> <span class="k">def</span> <span class="nf">test_read_using_callback</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="kn">import</span> <span class="nn">dazl</span>
 
 <span class="k">async</span> <span class="k">with</span> <span class="n">dazl</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://localhost:6865&quot;</span><span class="p">,</span> <span class="n">read_as</span><span class="o">=</span><span class="n">dazl</span><span class="o">.</span><span class="n">Party</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
     <span class="n">contracts</span> <span class="o">=</span> <span class="p">{}</span>
@@ -136,12 +142,12 @@ loaded, and have imported <cite>dazl</cite>.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="migrating.html">Migrate</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-to-dazl-v7-5">Migrating to dazl v7.5</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-to-the-daml-python-bindings-v7-5">Migrating to the Daml Python bindings v7.5</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#command-submission-changes-dazl-network-and-dazl-connect">Command submission changes (<code class="docutils literal notranslate"><span class="pre">dazl.Network</span></code> and <code class="docutils literal notranslate"><span class="pre">dazl.connect</span></code>)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#command-line-changes">Command-line changes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-to-dazl-v7">Migrating to dazl v7</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="migrating.html#migrating-to-the-daml-python-bindings-v7">Migrating to the Daml Python bindings v7</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#template-formats">Template formats</a></li>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#sandbox-wrapper">Sandbox Wrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="migrating.html#time-model-changes">Time Model changes</a></li>
@@ -229,7 +235,7 @@ loaded, and have imported <cite>dazl</cite>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'',
-            VERSION:'7.5.15',
+            VERSION:'7.11.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
