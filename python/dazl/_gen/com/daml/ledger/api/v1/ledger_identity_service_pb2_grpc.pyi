@@ -31,4 +31,4 @@ class _LedgerIdentityServiceBlockingStub(LedgerIdentityServiceStub):
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _LedgerIdentityServiceAsyncStub(LedgerIdentityServiceStub):
-    def GetLedgerIdentity(self, __1: GetLedgerIdentityRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, GetLedgerIdentityResponse]: ...
+    def GetLedgerIdentity(self, __1: GetLedgerIdentityRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, GetLedgerIdentityResponse]: ...  # type: ignore

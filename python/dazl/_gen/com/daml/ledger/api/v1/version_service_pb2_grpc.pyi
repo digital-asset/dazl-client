@@ -31,4 +31,4 @@ class _VersionServiceBlockingStub(VersionServiceStub):
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _VersionServiceAsyncStub(VersionServiceStub):
-    def GetLedgerApiVersion(self, __1: GetLedgerApiVersionRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, GetLedgerApiVersionResponse]: ...
+    def GetLedgerApiVersion(self, __1: GetLedgerApiVersionRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, GetLedgerApiVersionResponse]: ...  # type: ignore

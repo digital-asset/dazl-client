@@ -4,7 +4,18 @@ from __future__ import annotations
 
 from datetime import datetime
 import sys
-from typing import AbstractSet, Any, Collection, Iterator, Optional, Sequence, TypeVar, Union
+from typing import (
+    AbstractSet,
+    Any,
+    Collection,
+    Iterator,
+    Optional,
+    Protocol,
+    Sequence,
+    TypeVar,
+    Union,
+    runtime_checkable,
+)
 
 from .. import (
     Connection as _Connection,
@@ -27,11 +38,6 @@ from ..api_types import (
     Version,
 )
 from .pkgloader import PackageLoader
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-else:
-    from typing_extensions import Protocol, runtime_checkable
 
 __all__ = ["PackageService", "Connection", "QueryStream", "PackageLoader"]
 

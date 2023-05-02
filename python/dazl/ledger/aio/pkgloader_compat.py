@@ -11,8 +11,7 @@ from __future__ import annotations
 from asyncio import get_event_loop
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import timedelta
-import sys
-from typing import AbstractSet, Optional
+from typing import AbstractSet, Optional, Protocol
 import warnings
 
 from dazl.damlast.daml_lf_1 import PackageRef
@@ -20,11 +19,6 @@ from dazl.damlast.lookup import MultiPackageLookup
 
 from ...prim import TimeDeltaLike
 from .pkgloader import DEFAULT_TIMEOUT, PackageLoader as NewPackageLoader
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol
-else:
-    from typing_extensions import Protocol
 
 __all__ = ["SyncPackageService", "PackageLoader"]
 

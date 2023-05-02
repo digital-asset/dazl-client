@@ -3,16 +3,10 @@
 
 from __future__ import annotations
 
-import sys
-from typing import List, Optional, Sequence
+from typing import List, Literal, Optional, Sequence
 
 from . import daml_lf_1 as lf
 from .._gen.com.daml.daml_lf_1_15 import daml_lf_1_pb2 as pblf
-
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
 
 __all__ = ["ProtobufParser"]
 

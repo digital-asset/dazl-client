@@ -6,12 +6,7 @@ from __future__ import annotations
 from collections import defaultdict
 import sys
 from types import MappingProxyType
-from typing import Any, Collection, DefaultDict, Mapping, Optional, Set, TypeVar
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol
-else:
-    from typing_extensions import Protocol
+from typing import Any, Collection, DefaultDict, Mapping, Optional, Protocol, Set, TypeVar
 
 __all__ = ["merge"]
 

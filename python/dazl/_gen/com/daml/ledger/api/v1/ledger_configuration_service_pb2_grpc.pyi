@@ -31,4 +31,4 @@ class _LedgerConfigurationServiceBlockingStub(LedgerConfigurationServiceStub):
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _LedgerConfigurationServiceAsyncStub(LedgerConfigurationServiceStub):
-    def GetLedgerConfiguration(self, __1: GetLedgerConfigurationRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryStreamCall[_typing.Any, GetLedgerConfigurationResponse]: ...
+    def GetLedgerConfiguration(self, __1: GetLedgerConfigurationRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryStreamCall[_typing.Any, GetLedgerConfigurationResponse]: ...  # type: ignore

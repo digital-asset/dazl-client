@@ -9,28 +9,25 @@ import json
 from logging import Logger
 import os
 from pathlib import Path
-import sys
 from typing import (
     TYPE_CHECKING,
     AbstractSet,
     Any,
     Collection,
     Iterator,
+    Literal,
     Mapping,
     MutableSet,
     Optional,
+    Protocol,
     Union,
+    runtime_checkable,
 )
 import warnings
 
 from ... import _repr
 from ...prim import Party
 from .exc import ConfigError
-
-if sys.version_info >= (3, 8):
-    from typing import Literal, Protocol, runtime_checkable
-else:
-    from typing_extensions import Literal, Protocol, runtime_checkable
 
 __all__ = [
     "AccessConfig",

@@ -8,13 +8,7 @@ This model contains definitions for the data classes used at the client layer of
 from __future__ import annotations
 
 from enum import IntEnum
-import sys
-from typing import NamedTuple, Optional
-
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
+from typing import Literal, NamedTuple, Optional
 
 __all__ = [
     "ExitCode",

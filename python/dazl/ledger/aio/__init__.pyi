@@ -15,10 +15,12 @@ from typing import (
     DefaultDict,
     List,
     Optional,
+    Protocol,
     Sequence,
     TypeVar,
     Union,
     overload,
+    runtime_checkable,
 )
 
 from .. import (
@@ -43,11 +45,6 @@ from ..api_types import (
     Version,
 )
 from .pkgloader import PackageLoader
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-else:
-    from typing_extensions import Protocol, runtime_checkable
 
 __all__ = ["PackageService", "Connection", "QueryStream", "QueryStreamBase", "PackageLoader"]
 

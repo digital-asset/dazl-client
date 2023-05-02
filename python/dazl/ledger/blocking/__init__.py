@@ -13,15 +13,9 @@ Thread-blocking protocols and base classes for connecting to a Daml ledger.
 
 from __future__ import annotations
 
-import sys
+from typing import Protocol, runtime_checkable
 
 from .. import Connection as _Connection, QueryStream as _QueryStream
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-else:
-    from typing_extensions import Protocol, runtime_checkable
-
 
 __all__ = ["PackageService", "Connection", "QueryStream", "PackageLoader"]
 

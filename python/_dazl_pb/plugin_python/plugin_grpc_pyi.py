@@ -115,7 +115,7 @@ def write_service(buf: "TextIO", sd: "ServiceDescriptorProto", ictx: "ImportCont
             abuf.write(", metadata: _typing.Optional[_grpc_aio.Metadata] = ...,")
             abuf.write(f" {credentials_param}, {wait_for_ready_param}, {compression_param}) -> ")
             abuf.write(a_ret.py_str)
-            abuf.write(": ...\n")
+            abuf.write(": ...  # type: ignore\n")
 
             bbuf.write(
                 f"    def {method.name}(self, __1: {arg.py_str}, {timeout_param}, "

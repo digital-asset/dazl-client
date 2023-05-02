@@ -31,8 +31,8 @@ class ActiveContractsServiceServicer(object):
     """
 
     def GetActiveContracts(self, request, context):
-        """Returns a stream of the latest snapshot of active contracts.
-        If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
+        """Returns a stream of the snapshot of the active contracts at a ledger offset.
+        If there are no active contracts, the stream returns a single response message with the offset at which the snapshot has been taken.
         Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
         Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
         """

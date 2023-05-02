@@ -5,18 +5,12 @@ from __future__ import annotations
 
 from asyncio import gather
 from os import PathLike
-import sys
-from typing import BinaryIO, Callable, Collection, List, Optional, Sequence, Union
+from typing import Callable, Collection, List, Literal, Optional, Sequence, Union
 
 from .. import connect
 from ..ledger import PartyInfo
 from ..ledger.aio import Connection
 from ..prim import Party
-
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
 
 __all__ = ["connect_with_new_party"]
 

@@ -31,4 +31,4 @@ class _ActiveContractsServiceBlockingStub(ActiveContractsServiceStub):
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _ActiveContractsServiceAsyncStub(ActiveContractsServiceStub):
-    def GetActiveContracts(self, __1: GetActiveContractsRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryStreamCall[_typing.Any, GetActiveContractsResponse]: ...
+    def GetActiveContracts(self, __1: GetActiveContractsRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryStreamCall[_typing.Any, GetActiveContractsResponse]: ...  # type: ignore

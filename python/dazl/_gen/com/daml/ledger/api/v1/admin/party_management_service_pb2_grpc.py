@@ -14,7 +14,10 @@ class PartyManagementServiceStub(object):
     and managing the participant-local party metadata.
 
     The authorization rules for its RPCs are specified on the ``<RpcName>Request``
-    messages as boolean expressions over the fact ``HasRight(r)`` denoting whether the authenticated user has right ``r``.
+    messages as boolean expressions over these facts:
+    (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
+    (2) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
+    of the authenticated user and the user has an IdentityProviderAdmin right.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -63,7 +66,10 @@ class PartyManagementServiceServicer(object):
     and managing the participant-local party metadata.
 
     The authorization rules for its RPCs are specified on the ``<RpcName>Request``
-    messages as boolean expressions over the fact ``HasRight(r)`` denoting whether the authenticated user has right ``r``.
+    messages as boolean expressions over these facts:
+    (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
+    (2) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
+    of the authenticated user and the user has an IdentityProviderAdmin right.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -124,7 +130,7 @@ class PartyManagementServiceServicer(object):
 
     def UpdatePartyDetails(self, request, context):
         """Update selected modifiable participant-local attributes of a party details resource.
-        Can update the participant's local information for both local and non-local parties.
+        Can update the participant's local information for local parties.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -170,7 +176,10 @@ class PartyManagementService(object):
     and managing the participant-local party metadata.
 
     The authorization rules for its RPCs are specified on the ``<RpcName>Request``
-    messages as boolean expressions over the fact ``HasRight(r)`` denoting whether the authenticated user has right ``r``.
+    messages as boolean expressions over these facts:
+    (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
+    (2) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
+    of the authenticated user and the user has an IdentityProviderAdmin right.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
