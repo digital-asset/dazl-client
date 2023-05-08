@@ -2,10 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-import asyncio
 from asyncio import CancelledError, Future, InvalidStateError, ensure_future, get_event_loop, sleep
 from collections.abc import Mapping as MappingBase
-import sys
 from types import MappingProxyType
 from typing import (
     AsyncIterator,
@@ -14,6 +12,7 @@ from typing import (
     Dict,
     Iterator,
     List,
+    Literal,
     Mapping,
     Optional,
     Sequence,
@@ -30,11 +29,6 @@ from ..ledger.aio import Connection
 from ..ledger.errors import ProtocolWarning
 from ..prim import ContractData, ContractId
 from ..query import ContractMatch, Queries, is_match
-
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
 
 __all__ = ["ACS", "Snapshot", "snapshots"]
 

@@ -7,7 +7,7 @@ Daml `gRPC Ledger API <https://docs.daml.com/app-dev/ledger-api.html>`_ or
 """
 from __future__ import annotations
 
-import sys
+from typing import Protocol, runtime_checkable
 
 from .api_types import (
     ActAs,
@@ -31,12 +31,6 @@ from .api_types import (
     SubmitResponse,
     User,
 )
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-else:
-    from typing_extensions import Protocol, runtime_checkable
-
 
 __all__ = [
     "aio",

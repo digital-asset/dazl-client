@@ -8,20 +8,13 @@ import ipaddress
 from logging import Logger, getLogger
 import os
 from reprlib import repr
-import sys
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Protocol, runtime_checkable
 from urllib.parse import urlparse
 import warnings
 
 from ...prim import TimeDeltaLike, to_timedelta
 from .exc import ConfigError, ConfigWarning
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-else:
-    from typing_extensions import Protocol, runtime_checkable
-
 
 __all__ = [
     "URLConfig",

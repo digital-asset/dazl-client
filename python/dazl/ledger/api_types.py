@@ -11,11 +11,13 @@ from typing import (
     AbstractSet,
     Any,
     Collection,
+    Final,
     Mapping,
     NoReturn,
     Optional,
     Sequence,
     Union,
+    final,
 )
 import uuid
 
@@ -24,12 +26,6 @@ from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
 from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_parties
 from ..util.typing import safe_cast
-
-if sys.version_info >= (3, 8):
-    from typing import Final, final
-else:
-    from typing_extensions import Final, final
-
 
 __all__ = [
     "ActAs",

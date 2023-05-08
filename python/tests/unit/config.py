@@ -3,13 +3,7 @@
 from __future__ import annotations
 
 import os
-import sys
-from typing import Sequence, Union
-
-if sys.version_info >= (3, 8):
-    from typing import Final
-else:
-    from typing_extensions import Final
+from typing import Final, Sequence, Union
 
 __all__ = ["daml_sdk_versions", "known_version_1", "known_version_2", "known_versions"]
 

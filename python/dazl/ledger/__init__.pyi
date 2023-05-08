@@ -14,11 +14,14 @@ from typing import (
     Callable,
     Collection,
     Iterator,
+    Literal,
     Optional,
+    Protocol,
     Sequence,
     TypeVar,
     Union,
     overload,
+    runtime_checkable,
 )
 
 from ..damlast import TypeConName
@@ -52,11 +55,6 @@ from .api_types import (
 )
 from .blocking import Connection as BlockingConnection, QueryStream as BlockingQueryStream
 from .config import Config
-
-if sys.version_info >= (3, 8):
-    from typing import Literal, Protocol, runtime_checkable
-else:
-    from typing_extensions import Literal, Protocol, runtime_checkable
 
 __all__ = [
     "aio",

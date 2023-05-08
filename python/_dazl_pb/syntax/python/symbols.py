@@ -178,7 +178,7 @@ class SymbolTable:
 
             if literals:
                 # the Pythonic representation of a list is exactly what we need here
-                return PyType(py_str=f"_L{literals}")
+                return PyType(py_str=f"_typing.Literal{literals}")
             else:
                 # there are no allowable values; use the bottom type
                 return BOTTOM

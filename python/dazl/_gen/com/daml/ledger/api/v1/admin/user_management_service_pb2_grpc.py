@@ -14,9 +14,13 @@ class UserManagementServiceStub(object):
     served by a participant node.
 
     The authorization rules for its RPCs are specified on the ``<RpcName>Request``
-    messages as boolean expressions over these two facts:
+    messages as boolean expressions over these facts:
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
+    (3) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
+    of the authenticated user and the user has an IdentityProviderAdmin right.
+    If `user_id` is set to the empty string (the default), then the data for the authenticated user will be retrieved.
+    If `identity_provider_id` is set to the empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -84,9 +88,13 @@ class UserManagementServiceServicer(object):
     served by a participant node.
 
     The authorization rules for its RPCs are specified on the ``<RpcName>Request``
-    messages as boolean expressions over these two facts:
+    messages as boolean expressions over these facts:
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
+    (3) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
+    of the authenticated user and the user has an IdentityProviderAdmin right.
+    If `user_id` is set to the empty string (the default), then the data for the authenticated user will be retrieved.
+    If `identity_provider_id` is set to the empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -214,9 +222,13 @@ class UserManagementService(object):
     served by a participant node.
 
     The authorization rules for its RPCs are specified on the ``<RpcName>Request``
-    messages as boolean expressions over these two facts:
+    messages as boolean expressions over these facts:
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedUser(uid)`` denoting whether ``uid`` is the empty string or equal to the id of the authenticated user.
+    (3) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
+    of the authenticated user and the user has an IdentityProviderAdmin right.
+    If `user_id` is set to the empty string (the default), then the data for the authenticated user will be retrieved.
+    If `identity_provider_id` is set to the empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.

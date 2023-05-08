@@ -14,11 +14,11 @@ keywords = ["daml", "blockchain", "dlt", "distributed ledger", "digital asset"]
 packages = [{ include = "dazl", from = "python" }, { include = "_dazl_pb", from = "python" }]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 aiohttp = { version = "*", optional = true }
 google-auth = { version = "*", optional = true }
 googleapis_common_protos = "^1"
-grpcio = ">=1.32.0"
+grpcio = ">=1.50.0"
 oauthlib = { version = "*", optional = true }
 prometheus_client = { version = "*", optional = true }
 protobuf = ">=3.19.0"
@@ -33,7 +33,7 @@ typing_extensions = { version = "*" }
 black = "*"
 cryptography = "*"
 grpc-stubs = "*"
-grpcio-tools = ">=1.32.0"
+grpcio-tools = ">=1.50.0"
 isort = "^5"
 mypy = "*"
 pyjwt = "*"

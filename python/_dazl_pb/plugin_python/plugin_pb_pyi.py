@@ -56,12 +56,6 @@ def typing_file(fd: "FileDescriptorProto", ictx: "ImportContext") -> "CodeGenera
     ictx.add_system_import("", "typing as _typing")
 
     imports = ictx.py_import_block(py_message_package(fd.name))
-    imports += (
-        "\nif sys.version_info >= (3, 8):\n"
-        "    from typing import Literal as _L\n"
-        "else:\n"
-        "    from typing_extensions import Literal as _L\n"
-    )
 
     all_str = all_decl(md.name for md in fd.message_type)
 
@@ -74,9 +68,9 @@ def write_enum(buf: "TextIO", d: "EnumDescriptorProto", ictx: "ImportContext") -
     buf.write(f"class {d.name}:\n")
     buf.write(f"    DESCRIPTOR: _typing.ClassVar[EnumDescriptor] = ...\n")
     for v in d.value:
-        buf.write(f"    {v.name}: _typing.ClassVar[_L[{v.number}]] = ...\n")
+        buf.write(f"    {v.name}: _typing.ClassVar[_typing.Literal[{v.number}]] = ...\n")
     for v in d.value:
-        buf.write(f"{v.name} = _L[{v.number}]\n")
+        buf.write(f"{v.name} = _typing.Literal[{v.number}]\n")
     buf.write("\n")
 
 
@@ -165,7 +159,7 @@ def write_message(buf: "TextIO", md: "DescriptorProto", ictx: "ImportContext") -
                 field_names[md.oneof_decl[fld.oneof_index].name] = None
             field_names[fld.name] = None
         field_names_str = ", ".join(json.dumps(fld) for fld in field_names)
-        args = f"self, field_name: _L[{field_names_str}]"
+        args = f"self, field_name: _typing.Literal[{field_names_str}]"
         buf.write(f"    def HasField({args}) -> _builtins.bool: ...\n")
         buf.write(f"    def ClearField({args}) -> None: ...\n")
     else:
@@ -177,8 +171,8 @@ def write_message(buf: "TextIO", md: "DescriptorProto", ictx: "ImportContext") -
         for oneof_group_name, oneof_group_fields in oneof_groups.items():
             if len(oneof_groups) > 1:
                 buf.write("    @_typing.overload\n")
-            args = f'self, oneof_group: _L["{oneof_group_name}"]'
-            ret = f"_L[{', '.join(json.dumps(f) if f else 'None' for f in oneof_group_fields)}]"
+            args = f'self, oneof_group: _typing.Literal["{oneof_group_name}"]'
+            ret = f"_typing.Literal[{', '.join(json.dumps(f) if f else 'None' for f in oneof_group_fields)}]"
             buf.write(f"    def WhichOneof({args}) -> {ret}: ...\n")
     else:
         args = "self, oneof_group: _typing.NoReturn"

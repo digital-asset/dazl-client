@@ -9,7 +9,7 @@ from __future__ import annotations
 from collections import defaultdict
 from inspect import iscoroutine
 import sys
-from typing import Any, Callable, TypeVar, Union, no_type_check
+from typing import Any, Callable, Protocol, TypeVar, Union, no_type_check, runtime_checkable
 import warnings
 
 from .. import Connection as _Connection, QueryStream as _QueryStream
@@ -17,12 +17,6 @@ from ...damlast.daml_lf_1 import TypeConName
 from ...damlast.lookup import matching_normalizations, normalize
 from ..api_types import ArchiveEvent, Boundary, CreateEvent, Event, ExerciseResponse
 from ..errors import CallbackReturnWarning
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-else:
-    from typing_extensions import Protocol, runtime_checkable
-
 
 __all__ = ["PackageService", "Connection", "QueryStream", "QueryStreamBase", "PackageLoader"]
 

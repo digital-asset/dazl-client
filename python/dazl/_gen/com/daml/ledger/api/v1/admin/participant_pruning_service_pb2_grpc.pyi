@@ -31,4 +31,4 @@ class _ParticipantPruningServiceBlockingStub(ParticipantPruningServiceStub):
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _ParticipantPruningServiceAsyncStub(ParticipantPruningServiceStub):
-    def Prune(self, __1: PruneRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, PruneResponse]: ...
+    def Prune(self, __1: PruneRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, PruneResponse]: ...  # type: ignore

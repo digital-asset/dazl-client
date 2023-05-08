@@ -5,12 +5,12 @@ from __future__ import annotations
 
 from collections.abc import Sequence as Seq
 from os import PathLike
-import sys
 from typing import (
     AsyncContextManager,
     BinaryIO,
     Callable,
     Collection,
+    Literal,
     Optional,
     Sequence,
     Tuple,
@@ -21,10 +21,6 @@ from typing import (
 from ..ledger.aio import Connection
 from ..prim import Party
 
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
 __all__ = ["connect_with_new_party"]
 NameGenFn = Callable[[int], Optional[str]]
 

@@ -147,7 +147,8 @@ class Connection(aio.Connection):
         Close the underlying channel. Once the channel is closed, future command submissions,
         streams in progress, and any future streams will fail.
         """
-        await self._channel.close()
+        # TODO: grpc-stubs have a bug here; close does not require a parameter
+        await self._channel.close()  # type: ignore
 
     def _retry_timeout(self, timeout: Optional[TimeDeltaLike]) -> timedelta:
         return to_timedelta(timeout) if timeout is not None else self._config.url.retry_timeout
