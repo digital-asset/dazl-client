@@ -8,7 +8,7 @@ function install {
         curl -sSL https://get.daml.com/ | sh
         link
     fi
-    daml install 2.5.0
+    daml install 2.7.1
     daml install 1.18.3
 }
 

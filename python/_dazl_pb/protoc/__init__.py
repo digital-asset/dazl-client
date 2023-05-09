@@ -26,6 +26,7 @@ To create a Protobuf plugin in Python, define an entrypoint as so:
 
 from __future__ import annotations
 
+from importlib import resources
 from functools import wraps
 import os
 from pathlib import Path
@@ -39,7 +40,6 @@ from typing import Callable, List, NoReturn
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest, CodeGeneratorResponse
 from google.protobuf.descriptor_pb2 import FileDescriptorSet
 from grpc_tools import protoc as _protoc
-import pkg_resources
 
 __all__ = ["main", "protoc_plugin", "run_plugin"]
 
@@ -57,7 +57,7 @@ def _main(argv):
     os.environ["PATH"] = f'{os.getenv("PATH")}:{os.path.dirname(sys.executable)}'
 
     includes = [
-        pkg_resources.resource_filename("grpc_tools", "_proto"),
+        resources.path("grpc_tools", "_proto"),
         *site.getsitepackages(),
     ]
     return _protoc.main(argv + ["-I" + inc for inc in includes])

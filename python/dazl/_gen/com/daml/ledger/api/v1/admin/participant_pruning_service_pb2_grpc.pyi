@@ -17,10 +17,10 @@ __all__ = [
 
 # noinspection PyPep8Naming,DuplicatedCode
 class ParticipantPruningServiceStub:
-    @classmethod
+    @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc.Channel) -> _ParticipantPruningServiceBlockingStub: ...  # type: ignore
-    @classmethod
+    @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _ParticipantPruningServiceAsyncStub: ...  # type: ignore
     def Prune(self, __1: PruneRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[PruneResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, PruneResponse]]: ...
