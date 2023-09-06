@@ -35,15 +35,13 @@ def sandbox(request, sandbox_v1, sandbox_v2) -> "Generator[testing.SandboxLaunch
 
 @pytest.fixture(scope="session")
 def sandbox_v1() -> "Generator[testing.SandboxLauncher, None, None]":
-    with testing.sandbox(project_root=None, version="1.18.1") as sb:
+    with testing.sandbox(project_root=None, version="1.18.3") as sb:
         yield sb
 
 
 @pytest.fixture(scope="session")
 def sandbox_v2() -> "Generator[testing.SandboxLauncher, None, None]":
-    with testing.sandbox(
-        project_root=None, version="2.5.0-snapshot.20221201.11065.0.caac1d10"
-    ) as sb:
+    with testing.sandbox(project_root=None, version="2.7.1") as sb:
         yield sb
 
 

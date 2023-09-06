@@ -8,8 +8,8 @@ from typing import Final, Sequence, Union
 __all__ = ["daml_sdk_versions", "known_version_1", "known_version_2", "known_versions"]
 
 
-known_version_1: Final = "1.18.1"
-known_version_2: Final = "2.2.0"
+known_version_1: Final = "1.18.3"
+known_version_2: Final = "2.7.1"
 known_versions: Final = (known_version_1, known_version_2)
 
 

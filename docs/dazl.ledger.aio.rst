@@ -13,13 +13,11 @@ This protocol is currently implemented by the `asyncio` gRPC Ledger API implemen
 
 .. py:class:: Connection
 
-   .. py:method:: codec
-      :property:
+   .. py:property:: codec
 
       The codec object.
 
-   .. py:method:: config
-      :property:
+   .. py:property:: config
 
       The :class:`dazl.ledger.config.Config` that was used to initialize this connection.
 
@@ -181,20 +179,17 @@ This protocol is currently implemented by the `asyncio` gRPC Ledger API implemen
 
     .. py:method:: creates()
          :abstractmethod:
-         :async-for: event
 
          Return an iterator (or async iterator) over only :class:`CreateEvent` instances.
 
     .. py:method:: events()
          :abstractmethod:
-         :async-for: event
 
          Return an iterator (or async iterator) over :class:`CreateEvent` and :class:`ArchiveEvent`
          instances.
 
     .. py:method:: items()
          :abstractmethod:
-         :async-for: event_or_boundary
 
          Return an iterator (or async iterator) over *all* objects (:class:`CreateEvent`,
          :class:`ArchiveEvent`, and :class:`Boundary`).

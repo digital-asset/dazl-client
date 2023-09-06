@@ -17,10 +17,10 @@ __all__ = [
 
 # noinspection PyPep8Naming,DuplicatedCode
 class TransactionServiceStub:
-    @classmethod
+    @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc.Channel) -> _TransactionServiceBlockingStub: ...  # type: ignore
-    @classmethod
+    @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _TransactionServiceAsyncStub: ...  # type: ignore
     def GetTransactions(self, __1: GetTransactionsRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[_grpc.CallIterator[GetTransactionsResponse], _grpc_aio.UnaryStreamCall[_typing.Any, GetTransactionsResponse]]: ...

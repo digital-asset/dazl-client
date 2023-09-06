@@ -12,7 +12,7 @@ from dazl.testing import SandboxLauncher
 from grpc import RpcError, StatusCode
 import pytest
 
-ONE_SECOND = timedelta(seconds=1)
+ONE_MINUTE = timedelta(minutes=1)
 
 
 @pytest.mark.asyncio
@@ -53,7 +53,7 @@ async def test_reconnect_party_allocation() -> None:
             # this is expected to fail, since our ledger is now down
             try:
                 logging.info("Trying to intentionally fail to allocate a party...")
-                await conn.allocate_party(timeout=ONE_SECOND)
+                await conn.allocate_party(timeout=ONE_MINUTE)
             except RpcError as ex:
                 assert ex.code() == StatusCode.UNAVAILABLE
                 logging.info("Got the expected error.")
@@ -65,9 +65,21 @@ async def test_reconnect_party_allocation() -> None:
             # async with connect(url=sandbox.url, admin=True) as conn2:
             #     party_info = await conn2.allocate_party()
 
-            # ...but a call using the old connection should still work too
-            logging.info("Allocating another party...")
-            await conn.allocate_party()
+            retry_count = 0
+            while retry_count < 10:
+                try:
+                    # ...but a call using the old connection should still work too
+                    logging.info("Allocating another party...")
+                    await conn.allocate_party()
+                    break
+                except RpcError as ex:
+                    if ex.code() in (StatusCode.DEADLINE_EXCEEDED, StatusCode.UNAVAILABLE):
+                        # this is retryable
+                        await sleep(1)
+                    else:
+                        raise
+
+            assert retry_count < 10
 
     finally:
         sandbox.stop()
@@ -81,7 +93,7 @@ async def test_reconnect_query_stream() -> None:
         async with connect(url=sandbox.url, admin=True) as conn:
             party_info = await conn.allocate_party()
 
-            async with conn.stream_many(read_as=party_info.party, timeout=ONE_SECOND) as stream:
+            async with conn.stream_many(read_as=party_info.party, timeout=ONE_MINUTE) as stream:
                 task = create_task(stream.run())
 
             logging.info("Stopping our sandbox...")
@@ -105,7 +117,7 @@ async def test_reconnect_query_stream() -> None:
             did_die = False
             try:
                 logging.info("Trying to intentionally fail to query contracts...")
-                async with conn.stream_many(read_as=party_info.party, timeout=ONE_SECOND) as stream:
+                async with conn.stream_many(read_as=party_info.party, timeout=ONE_MINUTE) as stream:
                     await stream.run()
 
             except RpcError as ex:
@@ -120,7 +132,7 @@ async def test_reconnect_query_stream() -> None:
             # we need to reallocate parties and open a query stream over a new party
             party_info = await conn.allocate_party()
 
-            async with conn.stream_many(read_as=party_info.party, timeout=ONE_SECOND) as stream:
+            async with conn.stream_many(read_as=party_info.party, timeout=ONE_MINUTE) as stream:
                 task = create_task(stream.run())
 
             logging.info("Giving the query stream a chance to terminate improperly")

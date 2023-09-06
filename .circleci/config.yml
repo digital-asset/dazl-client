@@ -5,7 +5,7 @@ commands:
     parameters:
       python_version:
         type: string
-      
+
     steps:
       - restore_cache:
           key: jq-{{ checksum ".circleci/install-jq" }}
@@ -32,7 +32,7 @@ commands:
       - save_cache:
           key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>
           paths:
-           - .venv    
+           - .venv
 
 jobs:
   check-py:
@@ -41,7 +41,7 @@ jobs:
         type: string
     docker:
       - image: cimg/python:<<parameters.python_version>>-browsers
-    resource_class: medium+
+    resource_class: medium
     steps:
       - checkout
       - restore_dazl_cache:
@@ -61,7 +61,7 @@ jobs:
         type: string
     docker:
       - image: cimg/python:<<parameters.python_version>>-browsers
-    resource_class: medium+
+    resource_class: large
     steps:
       - checkout
       - restore_dazl_cache:
@@ -115,8 +115,8 @@ jobs:
           name: Success
           command: |
             echo "success!"
-            
-version: 2.1               
+
+version: 2.1
 workflows:
   workflow:
     jobs:
