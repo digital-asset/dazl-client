@@ -9,7 +9,7 @@ __all__ = ["daml_sdk_versions", "known_version_1", "known_version_2", "known_ver
 
 
 known_version_1: Final = "1.18.3"
-known_version_2: Final = "2.7.1"
+known_version_2: Final = "2.7.3"
 known_versions: Final = (known_version_1, known_version_2)
 
 

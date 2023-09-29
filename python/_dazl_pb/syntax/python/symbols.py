@@ -19,10 +19,11 @@ from .types import (
     BOTTOM,
     COMPOSITE_CONTAINER,
     ITERABLE,
-    MAP_CONTAINER,
     MAPPING,
+    MESSAGE_MAP_CONTAINER,
     OPTIONAL,
     SCALAR_CONTAINER,
+    SCALAR_MAP_CONTAINER,
     PyType,
 )
 
@@ -116,7 +117,10 @@ class SymbolTable:
             key_type = self._base_py_type(map_type[0], Usage.GETTER)
             value_type = self._base_py_type(map_type[1], Usage.GETTER)
             if usage == Usage.GETTER:
-                return MAP_CONTAINER.apply(key_type, value_type)
+                if value_type.settable:
+                    return SCALAR_MAP_CONTAINER.apply(key_type, value_type)
+                else:
+                    return MESSAGE_MAP_CONTAINER.apply(key_type, value_type)
             elif usage == Usage.INIT:
                 return OPTIONAL.apply(MAPPING.apply(key_type, value_type))
             elif usage == Usage.ARG or usage == Usage.RET:
