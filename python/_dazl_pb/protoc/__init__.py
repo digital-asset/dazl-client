@@ -56,11 +56,9 @@ def main() -> "NoReturn":
 def _main(argv):
     os.environ["PATH"] = f'{os.getenv("PATH")}:{os.path.dirname(sys.executable)}'
 
-    includes = [
-        resources.path("grpc_tools", "_proto"),
-        *site.getsitepackages(),
-    ]
-    return _protoc.main(argv + ["-I" + inc for inc in includes])
+    with resources.path("grpc_tools", "_proto") as proto_includes:
+        includes = [str(proto_includes), *site.getsitepackages()]
+        return _protoc.main(argv + ["-I" + inc for inc in includes])
 
 
 def protoc_plugin(

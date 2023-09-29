@@ -67,10 +67,10 @@ def write_service(buf: "TextIO", sd: "ServiceDescriptorProto", ictx: "ImportCont
         stub_buf.write(
             f"# noinspection PyPep8Naming,DuplicatedCode\n"
             f"class {sd.name}Stub:\n"
-            f"    @classmethod\n"
+            f"    @classmethod  # type: ignore\n"
             f"    @_typing.overload\n"
             f"    def __new__(cls, channel: _grpc.Channel) -> {bstub}: ...  # type: ignore\n"
-            f"    @classmethod\n"
+            f"    @classmethod  # type: ignore\n"
             f"    @_typing.overload\n"
             f"    def __new__(cls, channel: _grpc_aio.Channel) -> {astub}: ...  # type: ignore\n"
         )

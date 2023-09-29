@@ -21,7 +21,8 @@ __all__ = [
     "ENUM_DESCRIPTOR",
     "SCALAR_CONTAINER",
     "COMPOSITE_CONTAINER",
-    "MAP_CONTAINER",
+    "SCALAR_MAP_CONTAINER",
+    "MESSAGE_MAP_CONTAINER",
     "BOTTOM",
 ]
 
@@ -85,5 +86,6 @@ SCALAR_CONTAINER = PyType(
 COMPOSITE_CONTAINER = PyType(
     package="google.protobuf.internal.containers", py_str="RepeatedCompositeFieldContainer"
 )
-MAP_CONTAINER = PyType(package="google.protobuf.internal.containers", py_str="MessageMap")
+SCALAR_MAP_CONTAINER = PyType(package="google.protobuf.internal.containers", py_str="ScalarMap")
+MESSAGE_MAP_CONTAINER = PyType(package="google.protobuf.internal.containers", py_str="MessageMap")
 BOTTOM = PyType(py_str="_typing.NoReturn")

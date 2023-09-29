@@ -41,7 +41,7 @@ def sandbox_v1() -> "Generator[testing.SandboxLauncher, None, None]":
 
 @pytest.fixture(scope="session")
 def sandbox_v2() -> "Generator[testing.SandboxLauncher, None, None]":
-    with testing.sandbox(project_root=None, version="2.7.1") as sb:
+    with testing.sandbox(project_root=None, version="2.7.3") as sb:
         yield sb
 
 
