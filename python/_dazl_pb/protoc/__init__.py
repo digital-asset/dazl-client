@@ -44,7 +44,7 @@ from grpc_tools import protoc as _protoc
 __all__ = ["main", "protoc_plugin", "run_plugin"]
 
 
-def main() -> "NoReturn":
+def main() -> NoReturn:
     """
     Entrypoint that runs ``protoc``, but with locally exported binary plugins, and automatically
     including Protobuf files that are built into ``grpc_tools`` and that have been pulled through
@@ -62,8 +62,8 @@ def _main(argv):
 
 
 def protoc_plugin(
-    fn: "Callable[[CodeGeneratorRequest], CodeGeneratorResponse]",
-) -> "Callable[[], NoReturn]":
+    fn: Callable[[CodeGeneratorRequest], CodeGeneratorResponse],
+) -> Callable[[], NoReturn]:
     """
     Decorator that converts a callable function to a ``protoc`` plugin.
 
@@ -72,7 +72,7 @@ def protoc_plugin(
     """
 
     @wraps(fn)
-    def _body() -> "NoReturn":
+    def _body() -> NoReturn:
         try:
             data = sys.stdin.buffer.read()
             request = CodeGeneratorRequest.FromString(data)
@@ -89,16 +89,14 @@ def protoc_plugin(
     return _body
 
 
-def run_plugin(plugin_name: "str", request: "CodeGeneratorRequest") -> "CodeGeneratorResponse":
+def run_plugin(plugin_name: str, request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     if plugin_name in ("python", "grpc_python"):
         return run_plugin_built_in(plugin_name, request)
     else:
         return run_plugin_external(plugin_name, request)
 
 
-def run_plugin_built_in(
-    plugin_name: "str", request: "CodeGeneratorRequest"
-) -> "CodeGeneratorResponse":
+def run_plugin_built_in(plugin_name: str, request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     with TemporaryDirectory() as tmpdir:
         input_file = Path(tmpdir) / "in.bin"
         output_dir = Path(tmpdir) / "out"
@@ -127,9 +125,7 @@ def run_plugin_built_in(
         return CodeGeneratorResponse(file=files)
 
 
-def run_plugin_external(
-    plugin_name: "str", request: "CodeGeneratorRequest"
-) -> "CodeGeneratorResponse":
+def run_plugin_external(plugin_name: str, request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     args = ["protoc-gen-" + plugin_name]  # type: List[str]
     proc = subprocess.run(args, input=request.SerializeToString(), capture_output=True)  # type: ignore
 

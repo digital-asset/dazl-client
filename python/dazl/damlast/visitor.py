@@ -29,22 +29,31 @@ RP = TypeVar("RP", covariant=True)
 RM = TypeVar("RM", covariant=True)
 RE = TypeVar("RE", covariant=True)
 RT = TypeVar("RT", covariant=True)
-_tuple = tuple
+
+
+__all__ = [
+    "ExprVisitor",
+    "IdentityTypeVisitor",
+    "IdentityVisitor",
+    "ModuleVisitor",
+    "PackageVisitor",
+    "TypeVisitor",
+]
 
 
 class PackageVisitor(Generic[RP]):
-    def visit_package(self, package: "Package") -> "RP":
+    def visit_package(self, p: Package, /) -> RP:
         raise NotImplementedError
 
 
 class ModuleVisitor(Generic[RM]):
-    def visit_module(self, module: "Module") -> "RM":
+    def visit_module(self, m: Module, /) -> RM:
         raise NotImplementedError
 
 
 class ExprVisitor(Generic[RE]):
-    def visit_expr(self, expr: "Expr") -> "RE":
-        return expr.Sum_match(
+    def visit_expr(self, e: Expr, /) -> RE:
+        return e.Sum_match(
             self.visit_expr_var,
             self.visit_expr_val,
             self.visit_expr_builtin,
@@ -90,143 +99,141 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_experimental,
         )
 
-    def visit_expr_var(self, var: str) -> "RE":
+    def visit_expr_var(self, e: str, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_val(self, val: "ValName") -> "RE":
+    def visit_expr_val(self, e: ValName, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_builtin(self, builtin: "BuiltinFunction") -> "RE":
+    def visit_expr_builtin(self, e: BuiltinFunction, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_prim_con(self, prim_con: "PrimCon") -> "RE":
+    def visit_expr_prim_con(self, e: PrimCon, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_prim_lit(self, prim_lit: "PrimLit") -> "RE":
+    def visit_expr_prim_lit(self, e: PrimLit, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_rec_con(self, rec_con: "Expr.RecCon") -> "RE":
+    def visit_expr_rec_con(self, e: Expr.RecCon, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_rec_proj(self, rec_proj: "Expr.RecProj") -> "RE":
+    def visit_expr_rec_proj(self, e: Expr.RecProj, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_variant_con(self, variant_con: "Expr.VariantCon") -> "RE":
+    def visit_expr_variant_con(self, e: Expr.VariantCon, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_enum_con(self, enum_con: "Expr.EnumCon") -> "RE":
+    def visit_expr_enum_con(self, e: Expr.EnumCon, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_struct_con(self, struct_con: "Expr.StructCon") -> "RE":
+    def visit_expr_struct_con(self, e: Expr.StructCon, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_struct_proj(self, struct_proj: "Expr.StructProj") -> "RE":
+    def visit_expr_struct_proj(self, e: Expr.StructProj, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_app(self, app: "Expr.App") -> "RE":
+    def visit_expr_app(self, e: Expr.App, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_ty_app(self, ty_app: "Expr.TyApp") -> "RE":
+    def visit_expr_ty_app(self, e: Expr.TyApp, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_abs(self, abs_: "Expr.Abs") -> "RE":
+    def visit_expr_abs(self, e: Expr.Abs, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_ty_abs(self, ty_abs: "Expr.TyAbs") -> "RE":
+    def visit_expr_ty_abs(self, e: Expr.TyAbs, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_case(self, case: "Case") -> "RE":
+    def visit_expr_case(self, e: Case, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_let(self, let: "Block") -> "RE":
+    def visit_expr_let(self, e: Block, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_nil(self, nil: "Expr.Nil") -> "RE":
+    def visit_expr_nil(self, e: Expr.Nil, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_cons(self, cons: "Expr.Cons") -> "RE":
+    def visit_expr_cons(self, e: Expr.Cons, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_update(self, update: "Update") -> "RE":
+    def visit_expr_update(self, e: Update, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_scenario(self, scenario: "Scenario") -> "RE":
+    def visit_expr_scenario(self, e: Scenario, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_rec_upd(self, rec_upd: "Expr.RecUpd") -> "RE":
+    def visit_expr_rec_upd(self, e: Expr.RecUpd, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_struct_upd(self, struct_upd: "Expr.StructUpd") -> "RE":
+    def visit_expr_struct_upd(self, e: Expr.StructUpd, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_optional_none(self, optional_none: "Expr.OptionalNone") -> "RE":
+    def visit_expr_optional_none(self, e: Expr.OptionalNone, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_optional_some(self, optional_some: "Expr.OptionalSome") -> "RE":
+    def visit_expr_optional_some(self, e: Expr.OptionalSome, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_to_any(self, to_any: "Expr.ToAny") -> "RE":
+    def visit_expr_to_any(self, e: Expr.ToAny, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_from_any(self, from_any: "Expr.FromAny") -> "RE":
+    def visit_expr_from_any(self, e: Expr.FromAny, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_type_rep(self, type_rep: "Type") -> "RE":
+    def visit_expr_type_rep(self, e: Type, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_throw(self, throw: "Expr.Throw") -> "RE":
+    def visit_expr_throw(self, e: Expr.Throw, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_to_any_exception(self, to_any_exception: "Expr.ToAnyException") -> "RE":
+    def visit_expr_to_any_exception(self, e: Expr.ToAnyException, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_from_any_exception(self, from_any_exception: "Expr.FromAnyException") -> "RE":
+    def visit_expr_from_any_exception(self, e: Expr.FromAnyException, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_to_interface(self, throw: "Expr.ToInterface") -> "RE":
+    def visit_expr_to_interface(self, e: Expr.ToInterface, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_from_interface(self, throw: "Expr.FromInterface") -> "RE":
+    def visit_expr_from_interface(self, e: Expr.FromInterface, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_call_interface(self, throw: "Expr.CallInterface") -> "RE":
+    def visit_expr_call_interface(self, e: Expr.CallInterface, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_signatory_interface(self, throw: "Expr.SignatoryInterface") -> "RE":
+    def visit_expr_signatory_interface(self, e: Expr.SignatoryInterface, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_observer_interface(self, throw: "Expr.ObserverInterface") -> "RE":
+    def visit_expr_observer_interface(self, e: Expr.ObserverInterface, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_view_interface(self, throw: "Expr.ViewInterface") -> "RE":
+    def visit_expr_view_interface(self, e: Expr.ViewInterface, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_unsafe_from_interface(self, throw: "Expr.UnsafeFromInterface") -> "RE":
+    def visit_expr_unsafe_from_interface(self, e: Expr.UnsafeFromInterface, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_interface_template_type_rep(
-        self, throw: "Expr.InterfaceTemplateTypeRep"
-    ) -> "RE":
+    def visit_expr_interface_template_type_rep(self, e: Expr.InterfaceTemplateTypeRep, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_to_required_interface(self, throw: "Expr.ToRequiredInterface") -> "RE":
+    def visit_expr_to_required_interface(self, e: Expr.ToRequiredInterface, /) -> RE:
         raise NotImplementedError
 
-    def visit_expr_from_required_interface(self, throw: "Expr.FromRequiredInterface") -> "RE":
+    def visit_expr_from_required_interface(self, e: Expr.FromRequiredInterface, /) -> RE:
         raise NotImplementedError
 
     def visit_expr_unsafe_from_required_interface(
-        self, throw: "Expr.UnsafeFromRequiredInterface"
-    ) -> "RE":
+        self, e: Expr.UnsafeFromRequiredInterface, /
+    ) -> RE:
         raise NotImplementedError
 
-    def visit_expr_experimental(self, experimental: "Expr.Experimental") -> "RE":
+    def visit_expr_experimental(self, e: Expr.Experimental, /) -> RE:
         raise NotImplementedError
 
 
 class TypeVisitor(Generic[RT]):
-    def visit_type(self, type: "Type") -> "RT":
-        return type.Sum_match(
+    def visit_type(self, t: Type, /) -> RT:
+        return t.Sum_match(
             self.visit_type_var,
             self.visit_type_con,
             self.visit_type_prim,
@@ -236,71 +243,68 @@ class TypeVisitor(Generic[RT]):
             self.visit_type_syn,
         )
 
-    def visit_type_var(self, var: "Type.Var") -> "RT":
+    def visit_type_var(self, t: Type.Var, /) -> RT:
         raise NotImplementedError
 
-    def visit_type_con(self, con: "Type.Con") -> "RT":
+    def visit_type_con(self, t: Type.Con, /) -> RT:
         raise NotImplementedError
 
-    def visit_type_prim(self, prim: "Type.Prim") -> "RT":
+    def visit_type_prim(self, t: Type.Prim, /) -> RT:
         raise NotImplementedError
 
-    def visit_type_forall(self, forall: "Type.Forall") -> "RT":
+    def visit_type_forall(self, t: Type.Forall, /) -> RT:
         raise NotImplementedError
 
-    def visit_type_struct(self, struct: "Type.Struct") -> "RT":
+    def visit_type_struct(self, t: Type.Struct, /) -> RT:
         raise NotImplementedError
 
-    def visit_type_nat(self, nat: int) -> "RT":
+    def visit_type_nat(self, nat: int) -> RT:
         raise NotImplementedError
 
-    def visit_type_syn(self, syn: "Type.Syn") -> "RT":
+    def visit_type_syn(self, t: Type.Syn) -> RT:
         raise NotImplementedError
 
 
 class IdentityTypeVisitor(TypeVisitor[Type]):
-    def resolve_type(self, var: "str") -> "Optional[Type]":
+    def resolve_type(self, var: str, /) -> Optional[Type]:
         """
         Return a :class:`Type` for the specified variable, or ``None`` if there is no mapping for
         that type variable.
         """
         raise NotImplementedError
 
-    def visit_type_var(self, var: "Type.Var") -> "Type":
-        resolved_type = self.resolve_type(var.var)
+    def visit_type_var(self, t: Type.Var, /) -> Type:
+        resolved_type = self.resolve_type(t.var)
         if resolved_type is not None:
             base_type = self.visit_type(resolved_type)
         else:
-            base_type = Type(var=var)
+            base_type = Type(var=t)
 
-        if var.args:
-            new_args = tuple(self.visit_type(arg) for arg in var.args)
-            return Type(var=Type.Var(var=var.var, args=new_args))
+        if t.args:
+            new_args = tuple(self.visit_type(arg) for arg in t.args)
+            return Type(var=Type.Var(var=t.var, args=new_args))
         else:
             return base_type
 
-    def visit_type_con(self, con: "Type.Con") -> "Type":
-        new_args = tuple(self.visit_type(arg) for arg in con.args)
-        return Type(con=Type.Con(tycon=con.tycon, args=new_args))
+    def visit_type_con(self, t: Type.Con, /) -> Type:
+        new_args = tuple(self.visit_type(arg) for arg in t.args)
+        return Type(con=Type.Con(tycon=t.tycon, args=new_args))
 
-    def visit_type_prim(self, prim: "Type.Prim") -> "Type":
-        new_args = tuple(self.visit_type(arg) for arg in prim.args)
-        return Type(prim=Type.Prim(prim=prim.prim, args=new_args))
+    def visit_type_prim(self, t: Type.Prim, /) -> Type:
+        new_args = tuple(self.visit_type(arg) for arg in t.args)
+        return Type(prim=Type.Prim(prim=t.prim, args=new_args))
 
-    def visit_type_forall(self, forall: "Type.Forall") -> "Type":
-        new_body = self.visit_type(forall.body)
-        return Type(forall=Type.Forall(forall.vars, new_body))
+    def visit_type_forall(self, t: Type.Forall, /) -> Type:
+        new_body = self.visit_type(t.body)
+        return Type(forall=Type.Forall(t.vars, new_body))
 
-    def visit_type_struct(self, struct: "Type.Struct") -> "Type":
-        new_fields = _tuple(
-            [
-                FieldWithType(field=fwt.field, type=self.visit_type(fwt.type))
-                for fwt in struct.fields
-            ]
+    def visit_type_struct(self, t: Type.Struct, /) -> Type:
+        new_fields = tuple(
+            FieldWithType(field=fwt.field, type=self.visit_type(fwt.type)) for fwt in t.fields
         )
         return Type(struct=Type.Struct(fields=new_fields))
 
-    def visit_type_nat(self, nat: int) -> "Type":
+    def visit_type_nat(self, nat: int, /) -> Type:
         return Type(nat=nat)
 
 
@@ -309,131 +313,123 @@ class IdentityVisitor(ExprVisitor[Expr], IdentityTypeVisitor):
     Implementation of :class:`ExprVisitor` that returns the same object for every case.
     """
 
-    def visit_expr(self, expr: "Expr") -> "Expr":
-        return super(IdentityVisitor, self).visit_expr(expr)
+    def visit_expr(self, e: Expr) -> Expr:
+        return super(IdentityVisitor, self).visit_expr(e)
 
-    def visit_expr_var(self, var: str) -> "Expr":
-        return Expr(var=var)
+    def visit_expr_var(self, e: str, /) -> Expr:
+        return Expr(var=e)
 
-    def visit_expr_val(self, val: "ValName") -> "Expr":
-        return Expr(val=val)
+    def visit_expr_val(self, e: ValName, /) -> Expr:
+        return Expr(val=e)
 
-    def visit_expr_builtin(self, builtin: "BuiltinFunction") -> "Expr":
-        return Expr(builtin=builtin)
+    def visit_expr_builtin(self, e: BuiltinFunction, /) -> Expr:
+        return Expr(builtin=e)
 
-    def visit_expr_prim_con(self, prim_con: "PrimCon") -> "Expr":
-        return Expr(prim_con=prim_con)
+    def visit_expr_prim_con(self, e: PrimCon, /) -> Expr:
+        return Expr(prim_con=e)
 
-    def visit_expr_prim_lit(self, prim_lit: "PrimLit") -> "Expr":
-        return Expr(prim_lit=prim_lit)
+    def visit_expr_prim_lit(self, e: PrimLit, /) -> Expr:
+        return Expr(prim_lit=e)
 
-    def visit_expr_rec_con(self, rec_con: "Expr.RecCon") -> "Expr":
-        new_fields = tuple(
-            [FieldWithExpr(fwt.field, self.visit_expr(fwt.expr)) for fwt in rec_con.fields]
-        )
-        new_tycon = self.visit_type_con(rec_con.tycon).con
+    def visit_expr_rec_con(self, e: Expr.RecCon, /) -> Expr:
+        new_fields = tuple(FieldWithExpr(fwt.field, self.visit_expr(fwt.expr)) for fwt in e.fields)
+        new_tycon = self.visit_type_con(e.tycon).con
         return Expr(rec_con=Expr.RecCon(tycon=new_tycon, fields=new_fields))
 
-    def visit_expr_rec_proj(self, rec_proj: "Expr.RecProj") -> "Expr":
-        new_tycon = self.visit_type_con(rec_proj.tycon).con
-        new_record = self.visit_expr(rec_proj.record)
-        return Expr(rec_proj=Expr.RecProj(tycon=new_tycon, field=rec_proj.field, record=new_record))
+    def visit_expr_rec_proj(self, e: Expr.RecProj, /) -> Expr:
+        new_tycon = self.visit_type_con(e.tycon).con
+        new_record = self.visit_expr(e.record)
+        return Expr(rec_proj=Expr.RecProj(tycon=new_tycon, field=e.field, record=new_record))
 
-    def visit_expr_variant_con(self, variant_con: "Expr.VariantCon") -> "Expr":
-        new_type_con = self.visit_type_con(variant_con.tycon).con
-        new_variant_arg = self.visit_expr(variant_con.variant_arg)
+    def visit_expr_variant_con(self, e: Expr.VariantCon, /) -> Expr:
+        new_type_con = self.visit_type_con(e.tycon).con
+        new_variant_arg = self.visit_expr(e.variant_arg)
         return Expr(
             variant_con=Expr.VariantCon(
-                tycon=new_type_con, variant_con=variant_con.variant_con, variant_arg=new_variant_arg
+                tycon=new_type_con, variant_con=e.variant_con, variant_arg=new_variant_arg
             )
         )
 
-    def visit_expr_enum_con(self, enum_con: "Expr.EnumCon") -> "Expr":
-        return Expr(enum_con=Expr.EnumCon(tycon=enum_con.tycon, enum_con=enum_con.enum_con))
+    def visit_expr_enum_con(self, e: Expr.EnumCon, /) -> Expr:
+        return Expr(enum_con=Expr.EnumCon(tycon=e.tycon, enum_con=e.enum_con))
 
-    def visit_expr_struct_con(self, struct_con: "Expr.StructCon") -> "Expr":
-        new_fields = tuple(
-            [FieldWithExpr(fwt.field, self.visit_expr(fwt.expr)) for fwt in struct_con.fields]
-        )
+    def visit_expr_struct_con(self, e: Expr.StructCon, /) -> Expr:
+        new_fields = tuple(FieldWithExpr(fwt.field, self.visit_expr(fwt.expr)) for fwt in e.fields)
         return Expr(struct_con=Expr.StructCon(fields=new_fields))
 
-    def visit_expr_struct_proj(self, struct_proj: "Expr.StructProj") -> "Expr":
-        new_struct = self.visit_expr(struct_proj.struct)
-        return Expr(struct_proj=Expr.StructProj(field=struct_proj.field, struct=new_struct))
+    def visit_expr_struct_proj(self, e: Expr.StructProj, /) -> Expr:
+        new_struct = self.visit_expr(e.struct)
+        return Expr(struct_proj=Expr.StructProj(field=e.field, struct=new_struct))
 
-    def visit_expr_app(self, app: "Expr.App") -> "Expr":
-        new_fun = self.visit_expr(app.fun)
-        new_args = tuple([self.visit_expr(arg) for arg in app.args])
+    def visit_expr_app(self, e: Expr.App, /) -> Expr:
+        new_fun = self.visit_expr(e.fun)
+        new_args = tuple([self.visit_expr(arg) for arg in e.args])
         return Expr(app=Expr.App(new_fun, new_args))
 
-    def visit_expr_ty_app(self, ty_app: "Expr.TyApp") -> "Expr":
-        new_expr = self.visit_expr(ty_app.expr)
-        new_types = tuple([self.visit_type(t) for t in ty_app.types])
+    def visit_expr_ty_app(self, e: Expr.TyApp, /) -> Expr:
+        new_expr = self.visit_expr(e.expr)
+        new_types = tuple(self.visit_type(t) for t in e.types)
         return Expr(ty_app=Expr.TyApp(new_expr, new_types))
 
-    def visit_expr_abs(self, abs_: "Expr.Abs") -> "Expr":
-        new_body = self.visit_expr(abs_.body)
-        return Expr(abs=Expr.Abs(param=abs_.param, body=new_body))
+    def visit_expr_abs(self, e: Expr.Abs, /) -> Expr:
+        new_body = self.visit_expr(e.body)
+        return Expr(abs=Expr.Abs(param=e.param, body=new_body))
 
-    def visit_expr_ty_abs(self, ty_abs: "Expr.TyAbs") -> "Expr":
-        new_body = self.visit_expr(ty_abs.body)
-        return Expr(ty_abs=Expr.TyAbs(param=ty_abs.param, body=new_body))
+    def visit_expr_ty_abs(self, e: Expr.TyAbs, /) -> Expr:
+        new_body = self.visit_expr(e.body)
+        return Expr(ty_abs=Expr.TyAbs(param=e.param, body=new_body))
 
-    def visit_expr_case(self, case: "Case") -> "Expr":
-        new_scrut = self.visit_expr(case.scrut)
+    def visit_expr_case(self, e: Case, /) -> Expr:
+        new_scrut = self.visit_expr(e.scrut)
         # TODO: Real implementation
-        new_alts = [alt for alt in case.alts]
+        new_alts = [alt for alt in e.alts]
         return Expr(case=Case(scrut=new_scrut, alts=new_alts))
 
-    def visit_expr_let(self, let: "Block") -> "Expr":
+    def visit_expr_let(self, e: Block, /) -> Expr:
         new_bindings = [
             Binding(
                 VarWithType(binding.binder.var, self.visit_type(binding.binder.type)),
                 self.visit_expr(binding.bound),
             )
-            for binding in let.bindings
+            for binding in e.bindings
         ]
-        new_body = self.visit_expr(let.body)
+        new_body = self.visit_expr(e.body)
         return Expr(let=Block(bindings=new_bindings, body=new_body))
 
-    def visit_expr_nil(self, nil: "Expr.Nil") -> "Expr":
-        return Expr(nil=Expr.Nil(self.visit_type(nil.type)))
+    def visit_expr_nil(self, e: Expr.Nil, /) -> Expr:
+        return Expr(nil=Expr.Nil(self.visit_type(e.type)))
 
-    def visit_expr_cons(self, cons: "Expr.Cons") -> "Expr":
-        new_type = self.visit_type(cons.type)
-        new_front = tuple(self.visit_expr(front) for front in cons.front)
-        new_tail = self.visit_expr(cons.tail)
+    def visit_expr_cons(self, e: Expr.Cons, /) -> Expr:
+        new_type = self.visit_type(e.type)
+        new_front = tuple(self.visit_expr(front) for front in e.front)
+        new_tail = self.visit_expr(e.tail)
         return Expr(cons=Expr.Cons(type=new_type, front=new_front, tail=new_tail))
 
-    def visit_expr_update(self, update: "Update") -> "Expr":
-        return Expr(update=update)
+    def visit_expr_update(self, e: Update, /) -> Expr:
+        return Expr(update=e)
 
-    def visit_expr_scenario(self, scenario: "Scenario") -> "Expr":
-        return Expr(scenario=scenario)
+    def visit_expr_scenario(self, e: Scenario, /) -> Expr:
+        return Expr(scenario=e)
 
-    def visit_expr_rec_upd(self, rec_upd: "Expr.RecUpd") -> "Expr":
-        return Expr(rec_upd=rec_upd)
+    def visit_expr_rec_upd(self, e: Expr.RecUpd, /) -> Expr:
+        return Expr(rec_upd=e)
 
-    def visit_expr_struct_upd(self, struct_upd: "Expr.StructUpd") -> "Expr":
-        return Expr(struct_upd=struct_upd)
+    def visit_expr_struct_upd(self, e: Expr.StructUpd, /) -> Expr:
+        return Expr(struct_upd=e)
 
-    def visit_expr_optional_none(self, optional_none: "Expr.OptionalNone") -> "Expr":
-        new_type = self.visit_type(optional_none.type)
+    def visit_expr_optional_none(self, e: Expr.OptionalNone, /) -> Expr:
+        new_type = self.visit_type(e.type)
         return Expr(optional_none=Expr.OptionalNone(type=new_type))
 
-    def visit_expr_optional_some(self, optional_some: "Expr.OptionalSome") -> "Expr":
-        new_type = self.visit_type(optional_some.type)
-        new_body = self.visit_expr(optional_some.body)
+    def visit_expr_optional_some(self, e: Expr.OptionalSome, /) -> Expr:
+        new_type = self.visit_type(e.type)
+        new_body = self.visit_expr(e.body)
         return Expr(optional_some=Expr.OptionalSome(type=new_type, body=new_body))
 
-    def visit_expr_to_any(self, to_any: "Expr.ToAny") -> "Expr":
-        return Expr(
-            to_any=Expr.ToAny(type=self.visit_type(to_any.type), expr=self.visit_expr(to_any.expr))
-        )
+    def visit_expr_to_any(self, e: Expr.ToAny, /) -> Expr:
+        return Expr(to_any=Expr.ToAny(type=self.visit_type(e.type), expr=self.visit_expr(e.expr)))
 
-    def visit_expr_from_any(self, from_any: "Expr.FromAny") -> "Expr":
+    def visit_expr_from_any(self, e: Expr.FromAny, /) -> Expr:
         return Expr(
-            from_any=Expr.FromAny(
-                type=self.visit_type(from_any.type), expr=self.visit_expr(from_any.expr)
-            )
+            from_any=Expr.FromAny(type=self.visit_type(e.type), expr=self.visit_expr(e.expr))
         )

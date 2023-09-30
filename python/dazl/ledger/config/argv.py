@@ -270,11 +270,11 @@ def add_no_effect_deprecated_flag(parser, *name_or_flags: str, **kwargs):
 
 # noinspection PyShadowingBuiltins
 def add_text_or_file_argument(
-    parser: "_ArgumentGroup",
+    parser: _ArgumentGroup,
     *name_or_flags: str,
-    metavar: "Optional[str]" = None,
+    metavar: Optional[str] = None,
     metavar_file: str = "FILE",
-    help: "Optional[str]" = None,
+    help: Optional[str] = None,
 ) -> None:
     """
     Add a (user-facing) argument that can be passed in as a text value on the command-line or as a
@@ -307,10 +307,10 @@ def add_text_or_file_argument(
 
 # noinspection PyShadowingBuiltins
 def add_bool_argument(
-    parser: "_ArgumentGroup",
+    parser: _ArgumentGroup,
     *name_or_flags: str,
-    hidden_true_flags: "Optional[Sequence[str]]" = None,
-    help: "Optional[str]" = None,
+    hidden_true_flags: Optional[Sequence[str]] = None,
+    help: Optional[str] = None,
 ):
     """
     This is partially an alternative to Python 3.9's argparse.BooleanOptionalAction, but this

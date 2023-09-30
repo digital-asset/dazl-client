@@ -30,7 +30,7 @@ class Concat(Builtin):
     name = "DA.Internal.Prelude:concat"
     args = (daml.List(daml.List(daml.var("x"))),)
 
-    def evaluate(self, _: "Sequence[Type]", args: "Sequence[Any]") -> "Any":
+    def evaluate(self, _: Sequence[Type], args: Sequence[Any]) -> Any:
         xxs = args[0]
 
         result = []
@@ -38,7 +38,7 @@ class Concat(Builtin):
             result.extend(xs)
         return result
 
-    def simplify(self, _: "Sequence[Type]", args: "Sequence[Expr]") -> "Optional[Expr]":
+    def simplify(self, _: Sequence[Type], args: Sequence[Expr]) -> Optional[Expr]:
         xxs = args[0]
 
         # if there is a single-element list as an arg to concat, simply remove the function call

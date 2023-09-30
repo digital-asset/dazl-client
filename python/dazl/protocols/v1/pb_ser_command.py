@@ -29,8 +29,8 @@ class ProtobufSerializer(AbstractSerializer):
     ################################################################################################
 
     def serialize_command_request(
-        self, command_payload: "CommandPayload"
-    ) -> "lapipb.SubmitAndWaitRequest":
+        self, command_payload: CommandPayload
+    ) -> lapipb.SubmitAndWaitRequest:
         commands = [self.serialize_command(command) for command in command_payload.commands]
         if command_payload.deduplication_time is not None:
             return lapipb.SubmitAndWaitRequest(
@@ -56,9 +56,7 @@ class ProtobufSerializer(AbstractSerializer):
                 )
             )
 
-    def serialize_create_command(
-        self, name: "TypeConName", template_args: "Any"
-    ) -> "lapipb.Command":
+    def serialize_create_command(self, name: TypeConName, template_args: Any) -> lapipb.Command:
         create_ctor, create_value = template_args
         if create_ctor != "record":
             raise ValueError("Template values must resemble records")
@@ -69,7 +67,7 @@ class ProtobufSerializer(AbstractSerializer):
         return lapipb.Command(create=cmd)
 
     def serialize_exercise_command(
-        self, contract_id: "ContractId", choice_name: str, choice_args: "Any"
+        self, contract_id: ContractId, choice_name: str, choice_args: Any
     ) -> lapipb.Command:
         type_ref = contract_id.value_type
         ctor, value = choice_args
@@ -83,7 +81,7 @@ class ProtobufSerializer(AbstractSerializer):
 
     def serialize_exercise_by_key_command(
         self,
-        template_name: "TypeConName",
+        template_name: TypeConName,
         key_arguments: Any,
         choice_name: str,
         choice_arguments: Any,
@@ -100,8 +98,8 @@ class ProtobufSerializer(AbstractSerializer):
 
     def serialize_create_and_exercise_command(
         self,
-        template_name: "TypeConName",
-        create_arguments: "Any",
+        template_name: TypeConName,
+        create_arguments: Any,
         choice_name: str,
         choice_arguments: Any,
     ) -> lapipb.Command:
@@ -118,7 +116,7 @@ class ProtobufSerializer(AbstractSerializer):
         return lapipb.Command(createAndExercise=cmd)
 
 
-def _set_template(message: "lapipb.Identifier", name: "TypeConName") -> None:
+def _set_template(message: lapipb.Identifier, name: TypeConName) -> None:
     message.package_id = package_ref(name)
     message.module_name = str(module_name(name))
     message.entity_name = module_local_name(name)

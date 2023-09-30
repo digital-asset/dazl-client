@@ -35,7 +35,7 @@ def main():
     exit(_main(argv))
 
 
-def _main(argv: "Sequence[str]") -> int:
+def _main(argv: Sequence[str]) -> int:
     if len(argv) > 1:
         command = argv[1]
         command_args = argv[2:]

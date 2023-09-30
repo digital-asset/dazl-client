@@ -12,34 +12,32 @@ __all__ = ["Party", "to_party", "to_parties"]
 Party = NewType("Party", str)
 
 
-def to_party(o: "Any") -> "Party":
+def to_party(o: Any, /) -> Party:
     return Party(to_str(o))
 
 
 @overload
-def to_parties(__object: None) -> None:
+def to_parties(o: None, /) -> None:
     ...
 
 
 @overload
-def to_parties(
-    __object: "Union[str, Party, Collection[str], Collection[Party]]",
-) -> "Sequence[Party]":
+def to_parties(o: Union[str, Party, Collection[str], Collection[Party]], /) -> Sequence[Party]:
     ...
 
 
 def to_parties(
-    __object: "Union[None, str, Party, Collection[str], Collection[Party]]",
-) -> "Union[None, Sequence[Party]]":
+    o: Union[None, str, Party, Collection[str], Collection[Party]], /
+) -> Union[None, Sequence[Party]]:
     """
     Return the specified object as a collection of parties.
 
-    :param __object:
+    :param o:
         The object to convert to a set of parties.
     """
-    if __object is None:
+    if o is None:
         return None
-    elif isinstance(__object, str):
-        return (Party(__object),)
+    elif isinstance(o, str):
+        return (Party(o),)
     else:
-        return tuple(Party(p) for p in __object)
+        return tuple(Party(p) for p in o)

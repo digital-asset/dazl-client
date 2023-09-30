@@ -69,7 +69,7 @@ def is_port_alive(port: int) -> bool:
         sock.close()
 
 
-def find_nearest_ancestor(file_name: str, relative_to: Union[str, Path]) -> "Optional[Path]":
+def find_nearest_ancestor(file_name: str, relative_to: Union[str, Path]) -> Optional[Path]:
     """
     Return a path to a file that has the specified file name, or ``None`` if no ancestor could be
     found.

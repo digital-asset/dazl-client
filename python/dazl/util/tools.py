@@ -17,7 +17,7 @@ V = TypeVar("V")
 __all__ = ["boundary_iter", "flatten", "as_list"]
 
 
-def boundary_iter(obj: Iterable[T]) -> Generator[Tuple[bool, T], None, None]:
+def boundary_iter(obj: Iterable[T], /) -> Generator[Tuple[bool, T], None, None]:
     """
     Iterates over an iterable, returning a boolean and the underlying values indicating
     whether the iterator has reached its last item.
@@ -51,14 +51,14 @@ def boundary_iter(obj: Iterable[T]) -> Generator[Tuple[bool, T], None, None]:
             break
 
 
-def flatten(obj):
+def flatten(obj, /):
     ret = []
     for sublist in obj:
         ret.extend(sublist)
     return ret
 
 
-def as_list(obj: "Union[None, T, Collection[Union[None, T]]]") -> "List[T]":
+def as_list(obj: Union[None, T, Collection[Union[None, T]]], /) -> List[T]:
     """
     Convert an object that is either nothing, a single object, or a collection, to a list of type
     of that object.

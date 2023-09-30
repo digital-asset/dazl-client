@@ -87,7 +87,7 @@ class _PartyClientImpl:
     party: Party
     bots: BotCollection
 
-    def __init__(self, parent: "_NetworkImpl", party: "Party"):
+    def __init__(self, parent: _NetworkImpl, party: Party):
         self.parent = parent
         self.metrics = parent._metrics
         self.invoker = parent.invoker
@@ -108,7 +108,7 @@ class _PartyClientImpl:
             warnings.simplefilter("ignore", DeprecationWarning)
             self._writer = _PartyClientWriterState()
 
-    def connect_in(self, pool: "LedgerNetwork") -> "Future":
+    def connect_in(self, pool: LedgerNetwork) -> Future:
         self._config = config = self.resolved_config()
 
         oauth = None
@@ -143,7 +143,7 @@ class _PartyClientImpl:
     def set_config(self, **kwargs):
         self._config_values.update(kwargs)
 
-    def resolved_config(self) -> "PartyConfig":
+    def resolved_config(self) -> PartyConfig:
         parent_base_config = asdict(self.parent.resolved_anonymous_config())
         parent_party_config = (
             _find_party_config(self.parent.get_config_raw("parties", ()), self.party) or {}
@@ -157,8 +157,8 @@ class _PartyClientImpl:
         return PartyConfig(**{k: v for k, v in all_config.items() if k in config_names})
 
     def initialize(
-        self, current_time: "Optional[datetime]", metadata: LedgerMetadata
-    ) -> "Awaitable[None]":
+        self, current_time: Optional[datetime], metadata: LedgerMetadata
+    ) -> Awaitable[None]:
         """
         Initialize the state of the ledger.
 
@@ -185,15 +185,15 @@ class _PartyClientImpl:
     def add_event_handler(
         self,
         key: str,
-        handler: "BotCallback",
-        filter: "Optional[BotFilter]",
-        party_client: "PartyClient",
-    ) -> "Bot":
+        handler: BotCallback,
+        filter: Optional[BotFilter],
+        party_client: PartyClient,
+    ) -> Bot:
         if party_client is None:
             raise ValueError("a party_client is required here")
         return self.bots.add_single(key, handler, filter, party_client=party_client)
 
-    def emit_event(self, data: BaseEvent) -> "Awaitable[Any]":
+    def emit_event(self, data: BaseEvent) -> Awaitable[Any]:
         """
         Emit an event.
 
@@ -206,7 +206,7 @@ class _PartyClientImpl:
         return self.bots.notify(data)
 
     async def emit_ready(
-        self, metadata: LedgerMetadata, time: "Optional[datetime]", offset: "Optional[str]"
+        self, metadata: LedgerMetadata, time: Optional[datetime], offset: Optional[str]
     ) -> None:
         """
         Emit a ready event specific to this client. This may also emit initial create events and
@@ -237,20 +237,20 @@ class _PartyClientImpl:
 
     # region Active/Historical Contract Set management
 
-    def find_by_id(self, cid: "Union[str, ContractId]") -> "Optional[ContractContextualData]":
+    def find_by_id(self, cid: Union[str, ContractId]) -> Optional[ContractContextualData]:
         return self._acs.get(cid)
 
     def find(
-        self, template: Any, match: "ContractMatch" = None, include_archived: bool = False
-    ) -> "ContractContextualDataCollection":
+        self, template: Any, match: ContractMatch = None, include_archived: bool = False
+    ) -> ContractContextualDataCollection:
         return self._acs.read_full(template, match, include_archived=include_archived)
 
-    def find_active(self, template: Any, match: "ContractMatch" = None) -> "ContractsState":
+    def find_active(self, template: Any, match: ContractMatch = None) -> ContractsState:
         return self._acs.read_active(template, match)
 
     def find_historical(
-        self, template: Any, match: "ContractMatch" = None
-    ) -> "ContractContextualDataCollection":
+        self, template: Any, match: ContractMatch = None
+    ) -> ContractContextualDataCollection:
         return self._acs.read_full(template, match, include_archived=True)
 
     def find_nonempty(
@@ -263,8 +263,8 @@ class _PartyClientImpl:
     # region Read Path
 
     async def read_acs(
-        self, until_offset: "Optional[str]", raise_events: bool
-    ) -> "Tuple[Optional[str], Future]":
+        self, until_offset: Optional[str], raise_events: bool
+    ) -> Tuple[Optional[str], Future]:
         """
         Initial bootstrap of events from the read side. Only one instance of this coroutine
         should be active at a time per client. An initial block of events is read using the
@@ -317,8 +317,8 @@ class _PartyClientImpl:
         return await self.read_transactions(until_offset, raise_events)
 
     async def read_transactions(
-        self, until_offset: "Optional[str]", raise_events: bool
-    ) -> "Tuple[Optional[str], Future]":
+        self, until_offset: Optional[str], raise_events: bool
+    ) -> Tuple[Optional[str], Future]:
         """
         Main processing method of events from the read side. Only one instance of this coroutine
         should be active at a time per client.
@@ -424,7 +424,7 @@ class _PartyClientImpl:
         client = await self._client_fut
         return await client.events_end()
 
-    async def _template_filter(self) -> "Optional[Collection[TypeConName]]":
+    async def _template_filter(self) -> Optional[Collection[TypeConName]]:
         if self._config is None or self._pool is None:
             raise RuntimeError("_template_filter must be called only after a party has started")
 
@@ -599,11 +599,11 @@ class _PartyClientImpl:
 
     def write_commands(
         self,
-        commands: "EventHandlerResponse",
+        commands: EventHandlerResponse,
         ignore_errors: bool = False,
-        workflow_id: "Optional[str]" = None,
-        command_id: "Optional[str]" = None,
-        deduplication_time: "Optional[TimeDeltaLike]" = None,
+        workflow_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+        deduplication_time: Optional[TimeDeltaLike] = None,
     ) -> Awaitable[None]:
         """
         Submit a command or list of commands.
@@ -767,8 +767,8 @@ class _PartyClientReaderState:
 
 @dataclass
 class _PartyClientWriterState:
-    pending_commands: "ServiceQueue[_PendingCommand]" = field(default_factory=ServiceQueue)
-    inflight_commands: "List[_PendingCommand]" = field(default_factory=list)
+    pending_commands: ServiceQueue[_PendingCommand] = field(default_factory=ServiceQueue)
+    inflight_commands: List[_PendingCommand] = field(default_factory=list)
     inflight_count: int = 0
 
 
@@ -835,7 +835,7 @@ class _PendingCommand:
 
 
 def submit_command_async(
-    client: LedgerClient, p: "_PendingCommand", commands: Sequence[CommandPayload]
+    client: LedgerClient, p: _PendingCommand, commands: Sequence[CommandPayload]
 ) -> Awaitable[None]:
     """
     Submit a command asynchronously.
@@ -882,7 +882,7 @@ def submit_command_async(
         return named_gather("SubmitCommandAsync()", *coros, return_exceptions=True)
 
 
-def _find_party_config(party_configs: "Collection[dict]", party: Party) -> "Optional[dict]":
+def _find_party_config(party_configs: Collection[dict], party: Party) -> Optional[dict]:
     """
     Look within a config dictionary (as specified by FlatConfig) for a configuration object that is
     specific to this party.

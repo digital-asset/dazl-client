@@ -18,7 +18,7 @@ class ConnectionThunk:
     A blocking Connection wrapper around an asynchronous connection.
     """
 
-    def __init__(self, conn_fn: "Callable[[], Connection]", *, name: "Optional[str]" = None):
+    def __init__(self, conn_fn: Callable[[], Connection], *, name: Optional[str] = None):
         self._conn_fn = conn_fn
         self._conn = None
         self._thread = Thread(target=self._main, name=name, daemon=True)
@@ -138,7 +138,7 @@ class QueryStreamThunk:
     A blocking QueryStream wrapper around an asynchronous query stream.
     """
 
-    def __init__(self, stream: "QueryStream", loop):
+    def __init__(self, stream: QueryStream, loop):
         self._loop = loop
         self._stream = stream
         self._q = Queue()  # type: ignore

@@ -19,10 +19,10 @@ def cert_gen(
     state_or_province_name: str = "stateOrProvinceName",
     organization_name: str = "organizationName",
     organization_unit_name: str = "organizationUnitName",
-    subject_alternative_name: "Optional[Collection[str]]" = None,
+    subject_alternative_name: Optional[Collection[str]] = None,
     serial_number: int = 0,
     validity_end_in_seconds: int = 10 * 365 * 24 * 60 * 60,
-) -> "Certificate":
+) -> Certificate:
     from OpenSSL import crypto
 
     # can look at generated file using openssl:

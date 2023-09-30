@@ -211,14 +211,14 @@ class Network:
 
     # <editor-fold desc="Global/Party client creation">
 
-    def simple_global(self) -> "SimpleGlobalClient":
+    def simple_global(self) -> SimpleGlobalClient:
         """
         Return a :class:`GlobalClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
         """
         return self._impl.global_impl(SimpleGlobalClient)
 
-    def aio_global(self) -> "AIOGlobalClient":
+    def aio_global(self) -> AIOGlobalClient:
         """
         Return a :class:`GlobalClient` that works on an asyncio event loop.
 
@@ -229,7 +229,7 @@ class Network:
         self._impl.freeze()
         return client
 
-    def simple_party(self, party: Union[str, Party]) -> "SimplePartyClient":
+    def simple_party(self, party: Union[str, Party]) -> SimplePartyClient:
         """
         Return a :class:`PartyClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
@@ -238,14 +238,14 @@ class Network:
         """
         return self._impl.party_impl_wrapper(to_party(party), SimplePartyClient)
 
-    def simple_new_party(self) -> "SimplePartyClient":
+    def simple_new_party(self) -> SimplePartyClient:
         """
         Return a :class:`PartyClient` that exposes thread-safe, synchronous (blocking) methods for
         communicating with a ledger. Callbacks are dispatched to background threads.
         """
         return self.simple_party(str(uuid4()))
 
-    def aio_party(self, party: Union[str, Party]) -> "AIOPartyClient":
+    def aio_party(self, party: Union[str, Party]) -> AIOPartyClient:
         """
         Return a :class:`PartyClient` that works on an asyncio event loop.
 
@@ -253,7 +253,7 @@ class Network:
         """
         return self._impl.party_impl_wrapper(Party(party), AIOPartyClient)
 
-    def aio_new_party(self) -> "AIOPartyClient":
+    def aio_new_party(self) -> AIOPartyClient:
         """
         Return a :class:`PartyClient` for a random party that works on an asyncio event loop.
         This will never return the same object twice.
@@ -361,7 +361,7 @@ class Network:
         LOG.info("The internal run_until_complete event loop has now completed.")
 
     def run_forever(
-        self, *coroutines: "Awaitable[None]", install_signal_handlers: "Optional[bool]" = None
+        self, *coroutines: Awaitable[None], install_signal_handlers: Optional[bool] = None
     ) -> None:
         """
         Block the main thread and run the application in an event loop on the main thread. The loop
@@ -1056,7 +1056,7 @@ class AIOPartyClient(PartyClient):
         return self._impl.find_historical(template, match)
 
     def find_one(
-        self, template: Any, match: "ContractMatch" = None, timeout: float = DEFAULT_TIMEOUT_SECONDS
+        self, template: Any, match: ContractMatch = None, timeout: float = DEFAULT_TIMEOUT_SECONDS
     ) -> Awaitable[Tuple[ContractId, ContractData]]:
         """
         Return data from the current active contract set when at least some amount of rows exist in
@@ -1106,7 +1106,7 @@ class AIOPartyClient(PartyClient):
 
     # <editor-fold desc="Ledger/client metadata">
 
-    def set_config(self, url: "Optional[str]", **kwargs):
+    def set_config(self, url: Optional[str], **kwargs):
         self._impl.set_config(url=url, **kwargs)
 
     async def ensure_dar(
@@ -1124,7 +1124,7 @@ class AIOPartyClient(PartyClient):
         raw_bytes = get_bytes(contents)
         return await self._impl.parent.upload_package(raw_bytes, timeout)
 
-    def ready(self) -> "Awaitable[None]":
+    def ready(self) -> Awaitable[None]:
         """
         Block until the ledger client has caught up to the current head and is ready to send
         commands.
@@ -1146,7 +1146,7 @@ class SimplePartyClient(PartyClient):
 
     # <editor-fold desc="Event handler registration">
 
-    def ledger_init(self) -> "EventHandlerDecorator[InitEvent]":
+    def ledger_init(self) -> EventHandlerDecorator[InitEvent]:
         """
         Decorator for registering a callback to be invoked when the :class:`PartyClient` has been
         instructed to begin, but before any network activity is started.
@@ -1353,7 +1353,7 @@ class SimplePartyClient(PartyClient):
             self._impl.add_event_handler(key, _background_ledger_contract_create, filter_fn, self)
 
     def ledger_exercised(
-        self, template: "Any", choice: str
+        self, template: Any, choice: str
     ) -> EventHandlerDecorator[ContractExercisedEvent]:
         """
         Register a callback to be invoked when the :class:`PartyClient` encounters an exercised
@@ -1390,8 +1390,8 @@ class SimplePartyClient(PartyClient):
 
         @wraps(handler)
         def _background_ledger_contract_exercised(
-            event: "ContractExercisedEvent",
-        ) -> "Awaitable[EventHandlerResponse]":
+            event: ContractExercisedEvent,
+        ) -> Awaitable[EventHandlerResponse]:
             return self._impl.invoker.run_in_executor(lambda: handler(event))
 
         for key in EventKey.contract_exercised(True, template, choice):
@@ -1670,7 +1670,7 @@ class SimplePartyClient(PartyClient):
             lambda: self._impl.find(template, match, include_archived=include_archived)
         )
 
-    def find_active(self, template: Any, match: ContractMatch = None) -> "ContractsState":
+    def find_active(self, template: Any, match: ContractMatch = None) -> ContractsState:
         """
         Immediately return data from the current active contract set.
 

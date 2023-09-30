@@ -14,7 +14,7 @@ from dazl.prim import Party
 __all__ = ["blocking_setup"]
 
 
-def blocking_setup(url: str, dar: "Path") -> "Party":
+def blocking_setup(url: str, dar: Path) -> Party:
     """
     Set up a ledger for a test in a completely blocking fashion.
 
@@ -34,12 +34,12 @@ def blocking_setup(url: str, dar: "Path") -> "Party":
 
 
 class Setup:
-    def __init__(self, url: str, dar: "Path"):
+    def __init__(self, url: str, dar: Path):
         self.url = url
         self.dar = dar
         self.party = None  # type: Optional[Party]
 
-    def run(self) -> "Party":
+    def run(self) -> Party:
         # upload our DAR and allocate our Party in a completely separate thread as to try to avoid
         # polluting the current context
         t = Thread(target=self._main)
@@ -55,7 +55,7 @@ class Setup:
         set_event_loop(loop)
         self.party = loop.run_until_complete(self.__main())
 
-    async def __main(self) -> "Party":
+    async def __main(self) -> Party:
         async with connect(url=self.url, admin=True) as conn:
             party_info = await conn.allocate_party()
             await conn.upload_package(self.dar.read_bytes())

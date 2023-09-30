@@ -29,7 +29,7 @@ def connect_with_new_party(
     dar=None,
     identifier_hint=None,
     display_name=None,
-) -> "ConnectWithNewParty":
+) -> ConnectWithNewParty:
     """
     A helper function for connecting to a ledger as a brand new party. This isn't normally useful
     outside of tests, where having creating new parties for each test helps keep test data isolated.
@@ -111,7 +111,7 @@ class ConnectionWithParty:
         self.connection = connection
         self.party = party
 
-    def __getitem__(self, item: Literal[0]) -> "ConnectionWithParty":
+    def __getitem__(self, item: Literal[0]) -> ConnectionWithParty:
         return self
 
     def __len__(self) -> Literal[1]:
@@ -164,7 +164,7 @@ class ConnectWithNewParty:
         self.display_name_fn = display_name_fn
         self.connections = []  # type: List[Connection]
 
-    async def __aenter__(self) -> "Sequence[ConnectionWithParty]":
+    async def __aenter__(self) -> Sequence[ConnectionWithParty]:
         party_infos = await self._set_up_ledger()
         ret = []
         for party_info in party_infos:

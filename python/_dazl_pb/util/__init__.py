@@ -8,7 +8,7 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest, CodeGenera
 __all__ = ["with_file_header", "services_only"]
 
 
-def with_file_header(response: "CodeGeneratorResponse", header: str) -> "CodeGeneratorResponse":
+def with_file_header(response: CodeGeneratorResponse, header: str) -> CodeGeneratorResponse:
     """
     Add a file header to each file in the response, and return a new :class:`CodeGeneratorResponse`
     with the modified files.
@@ -25,7 +25,7 @@ def with_file_header(response: "CodeGeneratorResponse", header: str) -> "CodeGen
     )
 
 
-def services_only(request: "CodeGeneratorRequest") -> "CodeGeneratorRequest":
+def services_only(request: CodeGeneratorRequest) -> CodeGeneratorRequest:
     """
     Create a :class:`CodeGeneratorRequest` with the non-gRPC files stripped out (those without
     ``service`` declarations. The original request is not modified.

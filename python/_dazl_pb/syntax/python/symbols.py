@@ -53,7 +53,7 @@ class SymbolTable:
         self._map_types = {}  # type: Dict[str, Tuple[FieldDescriptorProto, FieldDescriptorProto]]
         self._enums = {}  # type: Dict[str, Dict[str, int]]
 
-    def load_file(self, fd: "FileDescriptorProto") -> None:
+    def load_file(self, fd: FileDescriptorProto) -> None:
         """
         Load a single file.
         """
@@ -63,7 +63,7 @@ class SymbolTable:
         for md in fd.message_type:
             self.load_message(md, fd.name, prefix, "")
 
-    def load_enum(self, d: "EnumDescriptorProto", file_name: str, proto_prefix: str) -> None:
+    def load_enum(self, d: EnumDescriptorProto, file_name: str, proto_prefix: str) -> None:
         """
         Load information about the specified enum.
 
@@ -82,7 +82,7 @@ class SymbolTable:
         self._enums[proto_type_name] = {v.name: v.number for v in d.value}
 
     def load_message(
-        self, d: "DescriptorProto", file_name: str, proto_prefix: str, local_prefix: str
+        self, d: DescriptorProto, file_name: str, proto_prefix: str, local_prefix: str
     ) -> None:
         """
         Load information about the specified message.
@@ -111,7 +111,7 @@ class SymbolTable:
         for nd in d.nested_type:
             self.load_message(nd, file_name, proto_type_name, py_type_name)
 
-    def py_type(self, fd: "FieldDescriptorProto", usage: "Usage") -> "PyType":
+    def py_type(self, fd: FieldDescriptorProto, usage: Usage) -> PyType:
         map_type = self._map_types.get(fd.type_name)
         if map_type is not None:
             key_type = self._base_py_type(map_type[0], Usage.GETTER)
@@ -159,7 +159,7 @@ class SymbolTable:
         else:
             raise ValueError
 
-    def _base_py_type(self, fd: "FieldDescriptorProto", usage: "Usage") -> "PyType":
+    def _base_py_type(self, fd: FieldDescriptorProto, usage: Usage) -> PyType:
         """
         Return a Python string that represents the type of the requested field, ignoring whether
         or not it is a repeated field.

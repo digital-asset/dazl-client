@@ -50,7 +50,7 @@ async def run_iteration(
     return final_offset, [fut for fut in read_coroutines if not fut.done()]
 
 
-async def read_initial_acs(party_impls: "Collection[_PartyClientImpl]") -> "Optional[str]":
+async def read_initial_acs(party_impls: Collection[_PartyClientImpl]) -> Optional[str]:
     """
     Perform the initial synchronization of the Active Contract Set with the server, using the
     Active Contract Set service.
@@ -87,8 +87,8 @@ async def read_initial_acs(party_impls: "Collection[_PartyClientImpl]") -> "Opti
 
 
 async def read_transaction_event_stream(
-    party_impls: "Collection[_PartyClientImpl]",
-) -> "Optional[str]":
+    party_impls: Collection[_PartyClientImpl],
+) -> Optional[str]:
     LOG.info("Reading current ledger state...")
     if not party_impls:
         return None
@@ -101,8 +101,8 @@ async def read_transaction_event_stream(
 
 
 async def read_transactions(
-    party_impls: "Collection[_PartyClientImpl]", until_offset: "Optional[str]", raise_events: bool
-) -> "Tuple[Collection[str], Future]":
+    party_impls: Collection[_PartyClientImpl], until_offset: Optional[str], raise_events: bool
+) -> Tuple[Collection[str], Future]:
     """
     Read transactions from a collection of PartyImpls.
 
@@ -127,7 +127,7 @@ async def read_transactions(
         return offsets, named_gather(repr(futures), *futures, return_exceptions=True)
 
 
-def max_offset(offsets: "Collection[Optional[str]]") -> "Optional[str]":
+def max_offset(offsets: Collection[Optional[str]], /) -> Optional[str]:
     """
     Return the most "recent" offset from a collection of offsets.
 

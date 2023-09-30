@@ -77,12 +77,12 @@ class CommandBuilder:
 
     def defaults(
         self,
-        party: "Optional[Party]" = None,
-        ledger_id: "Optional[str]" = None,
-        workflow_id: "Optional[str]" = None,
-        application_id: "Optional[str]" = None,
-        command_id: "Optional[str]" = None,
-        deduplication_time: "Optional[timedelta]" = None,
+        party: Optional[Party] = None,
+        ledger_id: Optional[str] = None,
+        workflow_id: Optional[str] = None,
+        application_id: Optional[str] = None,
+        command_id: Optional[str] = None,
+        deduplication_time: Optional[timedelta] = None,
     ) -> None:
         if party is not None:
             self._defaults.default_party = party
@@ -121,7 +121,7 @@ class CommandBuilder:
             )
         )
 
-    def append(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
+    def append(self, *commands: CommandsOrCommandSequence) -> CommandBuilder:
         """
         Append one or more commands, or list of commands to the :class:`CommandBuilder` in flight.
         This method respects the value of ``atomic_default`` that this object was constructed with.
@@ -139,15 +139,15 @@ class CommandBuilder:
         else:
             return self.append_nonatomically(*commands)
 
-    def append_atomically(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
+    def append_atomically(self, *commands: CommandsOrCommandSequence) -> CommandBuilder:
         self._commands.extend([flatten_command_sequence(commands)])
         return self
 
-    def append_nonatomically(self, *commands: "CommandsOrCommandSequence") -> "CommandBuilder":
+    def append_nonatomically(self, *commands: CommandsOrCommandSequence) -> CommandBuilder:
         self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
         return self
 
-    def build(self, defaults: "Optional[CommandDefaults]" = None) -> "Collection[CommandPayload]":
+    def build(self, defaults: Optional[CommandDefaults] = None) -> Collection[CommandPayload]:
         """
         Return a collection of commands.
         """
@@ -207,9 +207,7 @@ class CommandBuilder:
         return f"CommandBuilder({self._commands})"
 
 
-def flatten_command_sequence(
-    commands: "Sequence[CommandsOrCommandSequence]",
-) -> "List[Command]":
+def flatten_command_sequence(commands: Sequence[CommandsOrCommandSequence]) -> List[Command]:
     """
     Convert a list of mixed commands, ``None``, and list of commands into an ordered sequence of
     non-``None`` commands.

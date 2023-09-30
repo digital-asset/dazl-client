@@ -16,7 +16,7 @@ from ._header import HEADER
 __all__ = ["run_plugin"]
 
 
-def run_plugin(request: "CodeGeneratorRequest") -> "CodeGeneratorResponse":
+def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     """
     Create `__init__.py` files for all directories.
     """
@@ -34,7 +34,7 @@ def run_plugin(request: "CodeGeneratorRequest") -> "CodeGeneratorResponse":
     )
 
 
-def package_file(proto_dir: str, request: "CodeGeneratorRequest") -> "CodeGeneratorResponse.File":
+def package_file(proto_dir: str, request: CodeGeneratorRequest) -> CodeGeneratorResponse.File:
     proto_package = proto_dir.replace("/", ".")
 
     import_map = defaultdict(set)  # type: DefaultDict[str, Set[str]]

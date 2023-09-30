@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from __future__ import annotations
 
 import os
@@ -13,9 +14,7 @@ known_version_2: Final = "2.7.3"
 known_versions: Final = (known_version_1, known_version_2)
 
 
-def daml_sdk_versions(
-    allowed_versions: "Union[None, str, Sequence[str]]" = None,
-) -> "Sequence[str]":
+def daml_sdk_versions(allowed_versions: Union[None, str, Sequence[str]] = None) -> Sequence[str]:
     if allowed_versions is None:
         allowed_versions = known_versions
     elif isinstance(allowed_versions, str):

@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import abc
 from datetime import datetime
-import sys
 from typing import (
     TYPE_CHECKING,
     AbstractSet,
@@ -104,7 +103,7 @@ class CreateCommand(Command):
         """
         return self._payload
 
-    def __eq__(self, other: "Any") -> bool:
+    def __eq__(self, other: Any, /) -> bool:
         return (
             isinstance(other, CreateCommand)
             and self.template_id == other.template_id
@@ -370,17 +369,17 @@ class CommandMeta:
     __slots__ = "workflow_id", "command_id", "read_as", "act_as"
 
     if TYPE_CHECKING:
-        workflow_id: "Optional[str]"
-        command_id: "Optional[str]"
-        read_as: "Optional[Sequence[Party]]"
-        act_as: "Optional[Sequence[Party]]"
+        workflow_id: Optional[str]
+        command_id: Optional[str]
+        read_as: Optional[Sequence[Party]]
+        act_as: Optional[Sequence[Party]]
 
     def __init__(
         self,
-        workflow_id: "Optional[str]",
-        command_id: "Optional[str]",
-        read_as: "Union[None, Party, Collection[Party]]",
-        act_as: "Union[None, Party, Collection[Party]]",
+        workflow_id: Optional[str],
+        command_id: Optional[str],
+        read_as: Union[None, Party, Collection[Party]],
+        act_as: Union[None, Party, Collection[Party]],
     ):
         if workflow_id:
             if not LEDGER_STRING_REGEX.match(workflow_id):
@@ -696,7 +695,7 @@ class PartyInfo:
         object.__setattr__(self, "_is_local", is_local)
 
     @property
-    def party(self) -> "Party":
+    def party(self) -> Party:
         """
         The stable unique identifier of a Daml ``Party``.
         """
@@ -720,10 +719,10 @@ class PartyInfo:
 class Version:
     __slots__ = ("version", "features")
 
-    version: "Final[str]"  # type: ignore
-    features: "Final[VersionFeatures]"  # type: ignore
+    version: Final[str]  # type: ignore
+    features: Final[VersionFeatures]  # type: ignore
 
-    def __init__(self, version: str, features: "VersionFeatures"):
+    def __init__(self, version: str, features: VersionFeatures):
         object.__setattr__(self, "version", version)
         object.__setattr__(self, "features", features)
 
@@ -731,18 +730,18 @@ class Version:
 class VersionFeatures:
     __slots__ = ("user_management",)
 
-    user_management: "Final[VersionUserManagementFeature]"  # type: ignore
+    user_management: Final[VersionUserManagementFeature]  # type: ignore
 
-    def __init__(self, user_management: "VersionUserManagementFeature"):
+    def __init__(self, user_management: VersionUserManagementFeature):
         object.__setattr__(self, "user_management", user_management)
 
 
 class VersionUserManagementFeature:
     __slots__ = ("supported", "max_rights_per_user", "max_users_page_size")
 
-    supported: "Final[bool]"  # type: ignore
-    max_rights_per_user: "Final[int]"  # type: ignore
-    max_users_page_size: "Final[int]"  # type: ignore
+    supported: Final[bool]  # type: ignore
+    max_rights_per_user: Final[int]  # type: ignore
+    max_users_page_size: Final[int]  # type: ignore
 
     def __init__(self, supported: bool, max_rights_per_user: int, max_users_page_size: int):
         object.__setattr__(self, "supported", supported)
@@ -754,16 +753,16 @@ class MeteringReport:
     __slots__ = ("participant", "request", "final", "applications")
 
     participant: str
-    request: "MeteringReportRequest"
+    request: MeteringReportRequest
     final: bool
-    applications: "Sequence[MeteringReportApplication]"
+    applications: Sequence[MeteringReportApplication]
 
     def __init__(
         self,
         participant: str,
-        request: "MeteringReportRequest",
+        request: MeteringReportRequest,
         final: bool,
-        applications: "Sequence[MeteringReportApplication]",
+        applications: Sequence[MeteringReportApplication],
     ):
         object.__setattr__(self, "participant", participant)
         object.__setattr__(self, "request", request)

@@ -20,7 +20,7 @@ FROM = re.compile(r"from ([\w.]+) import (\w+) as (\w+)")
 
 
 class ImportContext:
-    def __init__(self, parent: "SymbolTable"):
+    def __init__(self, parent: SymbolTable):
         self._imports = defaultdict(set)  # type: DefaultDict[str, Set[str]]
         self._system_imports = defaultdict(set)  # type: DefaultDict[str, Set[str]]
         self._parent = parent
@@ -39,7 +39,7 @@ class ImportContext:
         """
         self._imports[__from].add(__import)
 
-    def py_type(self, fd: "Union[FieldDescriptorProto, str]", usage: "Usage") -> "PyType":
+    def py_type(self, fd: Union[FieldDescriptorProto, str], usage: Usage) -> PyType:
         if isinstance(fd, str):
             fd = FieldDescriptorProto(type=FieldDescriptorProto.TYPE_MESSAGE, type_name=fd)
 
@@ -48,7 +48,7 @@ class ImportContext:
             self._imports[k].update(v)
         return pt
 
-    def required_imports(self) -> "Mapping[str, Sequence[str]]":
+    def required_imports(self) -> Mapping[str, Sequence[str]]:
         return {__from: sorted(__import) for __from, __import in self._imports.items()}
 
     def py_import_block(self, relative_to: str) -> str:
@@ -78,13 +78,13 @@ class ImportContext:
         )
 
 
-def relative_package(__current_package: str, __target_package: str) -> str:
+def relative_package(current_package: str, target_package: str, /) -> str:
     """
     Return a replacement string for the target package that can be used to import that target
     package, but in a way that is interpreted relative to the current package.
 
-    :param __current_package:
-    :param __target_package:
+    :param current_package:
+    :param target_package:
     :return:
 
     >>> relative_package("com.daml.ledger.api.v1.commands_pb2", "com.daml.ledger.api.v1.value_pb2")
@@ -94,8 +94,8 @@ def relative_package(__current_package: str, __target_package: str) -> str:
     >>> relative_package("com.abc.xyz.ghi.jkl", "com.abc.def")
     '...def'
     """
-    cur_elems = __current_package.split(".")
-    target_elems = __target_package.split(".")
+    cur_elems = current_package.split(".")
+    target_elems = target_package.split(".")
 
     i = 0
     for i, (cur, target) in enumerate(zip(cur_elems, target_elems)):
@@ -106,7 +106,7 @@ def relative_package(__current_package: str, __target_package: str) -> str:
     return "." * (len(cur_elems) - i) + ".".join(target_elems[i:])
 
 
-def render_import_group(import_group: "Mapping[str, Collection[str]]") -> str:
+def render_import_group(import_group: Mapping[str, Collection[str]]) -> str:
     with StringIO() as buf:
         for f, i in import_group.items():
             import_expr = ", ".join(sorted(i))

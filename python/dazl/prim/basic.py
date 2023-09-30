@@ -23,7 +23,7 @@ PARTY_ID_STRING_REGEX = re.compile(r"[A-Za-z0-9:\-_ ]")
 LEDGER_STRING_REGEX = re.compile(r"[A-Za-z0-9#:\-_/ ]")
 
 
-def to_bool(obj: "Optional[Any]") -> "Optional[bool]":
+def to_bool(obj: Optional[Any], /) -> Optional[bool]:
     """
     Convert any of the common wire representations of a ``bool`` to a ``bool``.
     """
@@ -44,7 +44,7 @@ def to_bool(obj: "Optional[Any]") -> "Optional[bool]":
     raise ValueError(f"Could not parse as a boolean: {obj!r}")
 
 
-def to_str(obj: "Any") -> str:
+def to_str(obj: Any, /) -> str:
     """
     Convert any object to a string. This simply calls ``str`` on the object to produce a string
     representation.

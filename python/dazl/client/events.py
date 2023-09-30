@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from __future__ import annotations
 
 from typing import Any, Callable, Collection, Iterator, TypeVar
@@ -25,17 +26,17 @@ T = TypeVar("T")
 
 
 def create_dispatch(
-    on_init: "Callable[[InitEvent], T]",
-    on_ready: "Callable[[ReadyEvent], T]",
-    on_offset: "Callable[[OffsetEvent], T]",
-    on_transaction_start: "Callable[[TransactionStartEvent], T]",
-    on_transaction_end: "Callable[[TransactionEndEvent], T]",
-    on_contract_created: "Callable[[ContractCreateEvent], T]",
-    on_contract_exercised: "Callable[[ContractExercisedEvent], T]",
-    on_contract_archived: "Callable[[ContractArchiveEvent], T]",
-    on_packages_added: "Callable[[PackagesAddedEvent], T]",
-) -> "Callable[[BaseEvent], T]":
-    def handle(event: "BaseEvent") -> "T":
+    on_init: Callable[[InitEvent], T],
+    on_ready: Callable[[ReadyEvent], T],
+    on_offset: Callable[[OffsetEvent], T],
+    on_transaction_start: Callable[[TransactionStartEvent], T],
+    on_transaction_end: Callable[[TransactionEndEvent], T],
+    on_contract_created: Callable[[ContractCreateEvent], T],
+    on_contract_exercised: Callable[[ContractExercisedEvent], T],
+    on_contract_archived: Callable[[ContractArchiveEvent], T],
+    on_packages_added: Callable[[PackagesAddedEvent], T],
+) -> Callable[[BaseEvent], T]:
+    def handle(event: BaseEvent, /) -> T:
         if isinstance(event, ContractCreateEvent):
             return on_contract_created(event)
         elif isinstance(event, ContractExercisedEvent):
@@ -60,7 +61,7 @@ def create_dispatch(
     return handle
 
 
-def _template_reverse_globs(primary_only: bool, package_id: str, type_name: str) -> "Iterator[str]":
+def _template_reverse_globs(primary_only: bool, package_id: str, type_name: str) -> Iterator[str]:
     """
     Return an iterator over strings that glob to a specified type.
 
@@ -170,7 +171,7 @@ class EventKey:
         return EventKey._contract(primary_only, "archive", template)
 
     @staticmethod
-    def packages_added(initial: bool, changed: bool) -> "Collection[str]":
+    def packages_added(initial: bool, changed: bool) -> Collection[str]:
         keys = []
         if initial:
             keys.append("packages-added/initial")
@@ -179,7 +180,7 @@ class EventKey:
         return tuple(keys)
 
     @staticmethod
-    def _contract(primary_only: bool, prefix: str, template: "Any") -> Collection[str]:
+    def _contract(primary_only: bool, prefix: str, template: Any) -> Collection[str]:
         m, t = validate_template(template)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)

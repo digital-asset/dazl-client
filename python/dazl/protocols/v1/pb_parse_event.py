@@ -40,12 +40,12 @@ class BaseEventDeserializationContext:
     Attributes required throughout the deserialization of an event stream.
     """
 
-    client: "Any"
-    lookup: "SymbolLookup"
-    party: "Party"
+    client: Any
+    lookup: SymbolLookup
+    party: Party
     ledger_id: str
 
-    def deserializer_context(self) -> "Context":
+    def deserializer_context(self) -> Context:
         return Context(DECODER, self.lookup)
 
     def offset_event(self, time: Optional[datetime], offset: str) -> OffsetEvent:
@@ -53,14 +53,14 @@ class BaseEventDeserializationContext:
 
     def active_contract_set(
         self, offset: str, workflow_id: str
-    ) -> "ActiveContractSetEventDeserializationContext":
+    ) -> ActiveContractSetEventDeserializationContext:
         return ActiveContractSetEventDeserializationContext(
             self.client, self.lookup, self.party, self.ledger_id, offset, workflow_id
         )
 
     def transaction(
         self, time: datetime, offset: str, command_id: str, workflow_id: str
-    ) -> "TransactionEventDeserializationContext":
+    ) -> TransactionEventDeserializationContext:
         return TransactionEventDeserializationContext(
             self.client,
             self.lookup,
@@ -83,8 +83,8 @@ class ActiveContractSetEventDeserializationContext(BaseEventDeserializationConte
     workflow_id: str
 
     def active_contract_set_event(
-        self, contract_events: "Sequence[ContractCreateEvent]"
-    ) -> "ActiveContractSetEvent":
+        self, contract_events: Sequence[ContractCreateEvent]
+    ) -> ActiveContractSetEvent:
         return ActiveContractSetEvent(
             self.client,
             self.party,
@@ -221,8 +221,8 @@ class TransactionEventDeserializationContext(BaseEventDeserializationContext):
 
 
 def serialize_transactions_request(
-    f: "TransactionFilter", ledger_id: str, party: Party
-) -> "lapipb.GetTransactionsRequest":
+    f: TransactionFilter, ledger_id: str, party: Party
+) -> lapipb.GetTransactionsRequest:
     if f.current_offset is not None:
         ledger_offset = lapipb.LedgerOffset(absolute=f.current_offset)
     else:
@@ -242,24 +242,24 @@ def serialize_transactions_request(
 
 
 def serialize_acs_request(
-    f: "ContractFilter", ledger_id: str, party: Party
-) -> "lapipb.GetActiveContractsRequest":
+    f: ContractFilter, ledger_id: str, party: Party
+) -> lapipb.GetActiveContractsRequest:
     return lapipb.GetActiveContractsRequest(
         ledger_id=ledger_id, filter=serialize_transaction_filter(f, party)
     )
 
 
 def serialize_event_id_request(
-    ledger_id: str, event_id: str, requesting_parties: "Sequence[Party]"
-) -> "lapipb.GetTransactionByEventIdRequest":
+    ledger_id: str, event_id: str, requesting_parties: Sequence[Party]
+) -> lapipb.GetTransactionByEventIdRequest:
     return lapipb.GetTransactionByEventIdRequest(
         ledger_id=ledger_id, event_id=event_id, requesting_parties=requesting_parties
     )
 
 
 def serialize_transaction_filter(
-    contract_filter: "ContractFilter", party: Party
-) -> "lapipb.TransactionFilter":
+    contract_filter: ContractFilter, party: Party
+) -> lapipb.TransactionFilter:
     identifiers = (
         [Codec.encode_identifier(tt) for tt in contract_filter.templates]
         if contract_filter.templates is not None
@@ -283,11 +283,11 @@ def serialize_transaction_filter(
 
 
 def to_transaction_events(
-    context: "BaseEventDeserializationContext",
-    tx_stream_pb: "Iterable[lapipb.GetTransactionsResponse]",
-    tt_stream_pb: "Optional[Iterable[lapipb.GetTransactionTreesResponse]]",
-    last_offset_override: "Optional[str]",
-) -> "Sequence[BaseEvent]":
+    context: BaseEventDeserializationContext,
+    tx_stream_pb: Iterable[lapipb.GetTransactionsResponse],
+    tt_stream_pb: Optional[Iterable[lapipb.GetTransactionTreesResponse]],
+    last_offset_override: Optional[str],
+) -> Sequence[BaseEvent]:
     """
     Convert a stream of :class:`GetTransactionsResponse` into a sequence of events.
 
@@ -334,8 +334,8 @@ def to_transaction_events(
 
 
 def to_acs_events(
-    context: "BaseEventDeserializationContext", acs_stream_pb: "Iterable[Any]"
-) -> "Sequence[ActiveContractSetEvent]":
+    context: BaseEventDeserializationContext, acs_stream_pb: Iterable[Any]
+) -> Sequence[ActiveContractSetEvent]:
     return [
         acs_evt
         for acs_response_pb in acs_stream_pb
@@ -344,8 +344,8 @@ def to_acs_events(
 
 
 def from_transaction_tree(
-    context: "BaseEventDeserializationContext", tt_pb: "lapipb.TransactionTree"
-) -> "Sequence[OffsetEvent]":
+    context: BaseEventDeserializationContext, tt_pb: lapipb.TransactionTree
+) -> Sequence[OffsetEvent]:
     t_context = context.transaction(
         time=to_datetime(tt_pb.effective_at),
         offset=tt_pb.offset,
@@ -363,7 +363,7 @@ def from_transaction_tree(
 
 
 def to_acs_event(
-    context: "BaseEventDeserializationContext", acs_pb: "lapipb.GetActiveContractsResponse"
+    context: BaseEventDeserializationContext, acs_pb: lapipb.GetActiveContractsResponse
 ):
     acs_context = context.active_contract_set(acs_pb.offset, acs_pb.workflow_id)
     contract_events = [
@@ -375,8 +375,8 @@ def to_acs_event(
 
 
 def to_transaction_chunk(
-    context: "BaseEventDeserializationContext", tx_pb: "lapipb.Transaction"
-) -> "Sequence[OffsetEvent]":
+    context: BaseEventDeserializationContext, tx_pb: lapipb.Transaction
+) -> Sequence[OffsetEvent]:
     """
     Return a sequence of events parsed from a Ledger API ``Transaction`` protobuf message.
 
@@ -410,9 +410,11 @@ def to_transaction_chunk(
 
 
 def to_event(
-    context: "Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]",
-    evt_pb: "Union[lapipb.Event, lapipb.TreeEvent]",
-) -> "Optional[OffsetEvent]":
+    context: Union[
+        TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext
+    ],
+    evt_pb: Union[lapipb.Event, lapipb.TreeEvent],
+) -> Optional[OffsetEvent]:
     # TODO: mypy should understand that
     try:
         event_type = evt_pb.WhichOneof("event")  # type: ignore
@@ -440,9 +442,11 @@ def to_event(
 
 
 def to_created_event(
-    context: "Union[TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext]",
-    cr: "lapipb.CreatedEvent",
-) -> "Optional[ContractCreateEvent]":
+    context: Union[
+        TransactionEventDeserializationContext, ActiveContractSetEventDeserializationContext
+    ],
+    cr: lapipb.CreatedEvent,
+) -> Optional[ContractCreateEvent]:
     tt = con(Codec.decode_identifier(cr.template_id))
 
     ctx = context.deserializer_context()
@@ -455,8 +459,8 @@ def to_created_event(
 
 
 def to_exercised_event(
-    context: "TransactionEventDeserializationContext", er: "lapipb.ExercisedEvent"
-) -> "Optional[ContractExercisedEvent]":
+    context: TransactionEventDeserializationContext, er: lapipb.ExercisedEvent
+) -> Optional[ContractExercisedEvent]:
     name = Codec.decode_identifier(er.template_id)
     tt = con(name)
 
@@ -490,8 +494,8 @@ def to_exercised_event(
 
 
 def to_archived_event(
-    context: "TransactionEventDeserializationContext", ar: "lapipb.ArchivedEvent"
-) -> "Optional[ContractArchiveEvent]":
+    context: TransactionEventDeserializationContext, ar: lapipb.ArchivedEvent
+) -> Optional[ContractArchiveEvent]:
     tt = con(Codec.decode_identifier(ar.template_id))
     event_id = ar.event_id
     witness_parties = tuple(ar.witness_parties)

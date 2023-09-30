@@ -21,8 +21,8 @@ class LedgerMetadata:
     """
 
     ledger_id: str
-    package_loader: "PackageLoader"
-    serializer: "Serializer"
+    package_loader: PackageLoader
+    serializer: Serializer
     protocol_version: str
 
     def __init__(

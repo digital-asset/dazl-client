@@ -20,7 +20,7 @@ from ._base import CliCommand
 __all__ = ["TailCommand"]
 
 
-def elide_at(s: str, limit: "Optional[int]") -> str:
+def elide_at(s: str, limit: Optional[int]) -> str:
     if limit and len(s) > limit:
         return s[:limit] + "..."
     return s
@@ -84,7 +84,7 @@ class TailCommand(CliCommand):
 
         return 0
 
-    def setup_monitor_stream(self, network: "Network", party: "Party", args):
+    def setup_monitor_stream(self, network: Network, party: Party, args):
         party_client = network.aio_party(party)
 
         PLOG = logging.getLogger(f"tail-{party}")

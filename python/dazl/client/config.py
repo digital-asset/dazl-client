@@ -306,7 +306,7 @@ C = TypeVar("C", bound="_TopLevelConfig")
 @dataclass(frozen=True)
 class _TopLevelConfig:
     @classmethod
-    def parse_kwargs(cls: Type[C], *config: "C", **kwargs) -> "C":
+    def parse_kwargs(cls: Type[C], *config: C, **kwargs) -> C:
         """
         Create a :class:`NetworkConfig` for the configuration settings.
 
@@ -328,7 +328,7 @@ class _TopLevelConfig:
         return configurations[0].validate()
 
     @classmethod
-    def get_config(cls: Type[C], args: "argparse.Namespace") -> "C":
+    def get_config(cls: Type[C], args: argparse.Namespace) -> C:
         """
         Convert an ``argparse.Namespace`` to a fully-formed and valid :class:`NetworkConfig`.
         """
@@ -339,10 +339,10 @@ class _TopLevelConfig:
         return network_config.validate()
 
     @classmethod
-    def unflatten(cls: Type[C], config: "_FlatConfig") -> "C":
+    def unflatten(cls: Type[C], config: _FlatConfig) -> C:
         raise NotImplementedError
 
-    def validate(self: C) -> "C":
+    def validate(self: C) -> C:
         """
         Return this config, or raise a ConfigurationError if there is something wrong with the
         parameters of this object.
@@ -355,11 +355,11 @@ class _TopLevelConfig:
 
 @dataclass(frozen=True)
 class NetworkConfig(_NetworkConfig, _TopLevelConfig):
-    parties: "Sequence[PartyConfig]" = field(default_factory=tuple)
+    parties: Sequence[PartyConfig] = field(default_factory=tuple)
 
     @classmethod
     @no_type_check
-    def unflatten(cls, config: "_FlatConfig") -> "NetworkConfig":
+    def unflatten(cls, config: _FlatConfig) -> NetworkConfig:
         """
         Convert a :class:`_FlatConfig` to a :class:`NetworkConfig`.
         """
@@ -369,7 +369,7 @@ class NetworkConfig(_NetworkConfig, _TopLevelConfig):
         parties = tuple(PartyConfig(party=party, **party_dict) for party in config.parties)
         return NetworkConfig(parties=parties, **network_dict)
 
-    def validate(self) -> "NetworkConfig":
+    def validate(self) -> NetworkConfig:
         failures = set()
         LOG.debug("Configuration: %s", self)
         if self.parties:
@@ -392,7 +392,7 @@ class AnonymousNetworkConfig(_NetworkConfig, _TopLevelConfig):
 
     @classmethod
     @no_type_check
-    def unflatten(cls, config: "_FlatConfig") -> "AnonymousNetworkConfig":
+    def unflatten(cls, config: _FlatConfig) -> AnonymousNetworkConfig:
         """
         Convert a :class:`_FlatConfig` to a :class:`NetworkConfig`.
         """
@@ -402,7 +402,7 @@ class AnonymousNetworkConfig(_NetworkConfig, _TopLevelConfig):
         }
         return AnonymousNetworkConfig(**network_dict)
 
-    def validate(self) -> "AnonymousNetworkConfig":
+    def validate(self) -> AnonymousNetworkConfig:
         failures = []
 
         if not self.url:
@@ -415,7 +415,7 @@ class AnonymousNetworkConfig(_NetworkConfig, _TopLevelConfig):
 
 
 def configure_parser(
-    arg_parser: "ArgumentParser", config_file_support: bool = False, parties: bool = True
+    arg_parser: ArgumentParser, config_file_support: bool = False, parties: bool = True
 ):
     """
     Add standard options to an arg parser (later to be extracted out by ``get_config``).
@@ -454,7 +454,7 @@ def configure_parser(
 
 
 @no_type_check
-def fetch_config(path_or_url: "Optional[str]") -> "Optional[str]":
+def fetch_config(path_or_url: Optional[str]) -> Optional[str]:
     """
     Attempts to fetch a config file from what looks like either a path or a URL.
 
@@ -490,7 +490,7 @@ def fetch_config(path_or_url: "Optional[str]") -> "Optional[str]":
     return config_str
 
 
-def _get_env_defaults() -> "Mapping[str, Any]":
+def _get_env_defaults() -> Mapping[str, Any]:
     """
     Produce a mapping of configuration keys to values set in the environment through environment
     variables.
@@ -509,7 +509,7 @@ def _get_env_defaults() -> "Mapping[str, Any]":
     return kwargs
 
 
-def _parse_args_ns(args: "argparse.Namespace") -> "Mapping[str, Any]":
+def _parse_args_ns(args: argparse.Namespace) -> Mapping[str, Any]:
     """
     Convert the values
     :param args:
@@ -521,7 +521,7 @@ def _parse_args_ns(args: "argparse.Namespace") -> "Mapping[str, Any]":
 
 
 @no_type_check
-def _parse_args_dict(d: "Mapping[str, Any]") -> "Mapping[str, Any]":
+def _parse_args_dict(d: Mapping[str, Any]) -> Mapping[str, Any]:
     """
     Convert the key-value pairs in this mapping to keys that are defined on :class:`_FlatConfig`.
 

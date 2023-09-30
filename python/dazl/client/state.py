@@ -216,7 +216,7 @@ class TemplateContractData:
             and is_match(match, cxd.cdata)
         ]
 
-    def register_query(self, query: "PendingQuery") -> None:
+    def register_query(self, query: PendingQuery) -> None:
         self._queries.append(query)
 
 
@@ -230,7 +230,7 @@ class PendingQuery:
         self.match = match
         self.min_count = min_count
 
-    def check_ready(self, tcd: "TemplateContractData") -> bool:
+    def check_ready(self, tcd: TemplateContractData) -> bool:
         matches = tcd.subset(self.match, False)
         if len(matches) >= self.min_count:
             cast(Future, self.future).set_result(matches)

@@ -17,7 +17,7 @@ from ._header import HEADER
 __all__ = ["run_plugin"]
 
 
-def run_plugin(request: "CodeGeneratorRequest") -> "CodeGeneratorResponse":
+def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     """
     Generate .pyi (typing stubs files) for gPRC services.
     """
@@ -37,7 +37,7 @@ def run_plugin(request: "CodeGeneratorRequest") -> "CodeGeneratorResponse":
     )
 
 
-def typing_file(fd: "FileDescriptorProto", ictx: "ImportContext") -> "CodeGeneratorResponse.File":
+def typing_file(fd: FileDescriptorProto, ictx: ImportContext) -> CodeGeneratorResponse.File:
     name = os.path.splitext(fd.name)[0] + "_pb2_grpc.pyi"
     with StringIO() as buf:
         for sd in fd.service:
@@ -57,7 +57,7 @@ def typing_file(fd: "FileDescriptorProto", ictx: "ImportContext") -> "CodeGenera
     return CodeGeneratorResponse.File(name=name, content=f"{HEADER}\n{imports}\n{all_str}\n{body}")
 
 
-def write_service(buf: "TextIO", sd: "ServiceDescriptorProto", ictx: "ImportContext") -> None:
+def write_service(buf: TextIO, sd: ServiceDescriptorProto, ictx: ImportContext) -> None:
     buf.write("\n")
 
     with StringIO() as stub_buf, StringIO() as abuf, StringIO() as bbuf:

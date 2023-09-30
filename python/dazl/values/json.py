@@ -34,27 +34,27 @@ class JsonEncoder(CanonicalMapper):
     Convert native Python types to DAML-LF JSON encoded types.
     """
 
-    def prim_timestamp(self, context: "Context", obj: "Any") -> "Any":
+    def prim_timestamp(self, context: Context, obj: Any) -> Any:
         return datetime_to_str(to_datetime(obj))
 
-    def prim_date(self, context: "Context", obj: "Any") -> "Any":
+    def prim_date(self, context: Context, obj: Any) -> Any:
         return date_to_str(to_date(obj))
 
-    def prim_contract_id(self, context: "Context", item_type: "DamlType", obj: "Any") -> "Any":
+    def prim_contract_id(self, context: Context, item_type: DamlType, obj: Any) -> Any:
         return obj.contract_id
 
-    def prim_numeric(self, context: "Context", nat: int, obj: "Any") -> "Any":
+    def prim_numeric(self, context: Context, nat: int, obj: Any) -> Any:
         d = to_decimal(obj)
         return decimal_to_str(d) if d is not None else None
 
     def _ctor_value_to_variant(
         self,
-        context: "Context",
-        dt: "DefDataType",
-        variant: "DefDataType.Fields",
+        context: Context,
+        dt: DefDataType,
+        variant: DefDataType.Fields,
         ctor: str,
-        value: "Any",
-    ) -> "Any":
+        value: Any,
+    ) -> Any:
         """
         Format a variant according to the DAML-LF JSON spec (an object with a "tag" and "value"
         field).
