@@ -47,7 +47,7 @@ def unpack_arrow_type(type: "Optional[Type]") -> "Sequence[Type]":
 
 
 # noinspection PyShadowingBuiltins
-def pack_arrow_type(types: "Sequence[Type]") -> "Optional[Type]":
+def pack_arrow_type(types: Sequence[Type]) -> Optional[Type]:
     """
     Compute the arrow type that is the result of repeatedly applying values to a function and
     returning it.
@@ -62,7 +62,7 @@ def pack_arrow_type(types: "Sequence[Type]") -> "Optional[Type]":
 
 
 # noinspection PyShadowingBuiltins
-def arrow_type(input: "Type", output: "Type") -> "Type":
+def arrow_type(input: Type, output: Type) -> Type:
     """
     Convenience function for constructing a :class:`Type` of ``prim`` that is an abstraction taking
     the input type and returning the output type.
@@ -77,7 +77,7 @@ def arrow_type(input: "Type", output: "Type") -> "Type":
     return Arrow(input, output)
 
 
-def list_type(elem_type: "Type") -> "Type":
+def list_type(elem_type: Type) -> Type:
     """
     Convenience function for constructing a :class:`Type` of ``prim`` list.
     """
@@ -95,7 +95,7 @@ def type_var_with_kind(var: str, type: Kind = Kind(star=UNIT)):
     return TypeVarWithKind(var, type)
 
 
-def def_value(name: "Union[str, Sequence[str]]", daml_type: "Type", expr: "Expr") -> "DefValue":
+def def_value(name: Union[str, Sequence[str]], daml_type: Type, expr: Expr) -> DefValue:
     if isinstance(name, str):
         name = (name,)
     name_with_type = DefValue.NameWithType(name=name, type=daml_type)

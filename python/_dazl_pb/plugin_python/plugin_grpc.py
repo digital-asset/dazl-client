@@ -12,7 +12,7 @@ from ._header import HEADER
 __all__ = ["run_plugin"]
 
 
-def run_plugin(request: "CodeGeneratorRequest") -> "CodeGeneratorResponse":
+def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     response = protoc.run_plugin("grpc_python", util.services_only(request))
     for file in response.file:
         file.content = rewrite_file_content(file.name, file.content)

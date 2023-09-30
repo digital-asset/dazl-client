@@ -67,9 +67,7 @@ def ensure_person_contract(network: Network, party: Party) -> None:
     client.add_ledger_ready(lambda _: client.create("TestServer:Person", dict(party=party)))  # type: ignore
 
 
-async def client_main(
-    network: Network, server_port: int, alice: "Party", bob: "Party", carol: "Party"
-):
+async def client_main(network: Network, server_port: int, alice: Party, bob: Party, carol: Party):
     """
     The main method of a client running against the server endpoint exposed by the dazl app above.
     """

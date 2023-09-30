@@ -36,38 +36,38 @@ INT_TYPES = frozenset(
 )
 
 
-def py_scalar_type(__fd_type: "FieldDescriptorProto.Type.V") -> "Optional[PyType]":
+def py_scalar_type(fd_type: "FieldDescriptorProto.Type.V", /) -> Optional[PyType]:
     """
     Return an appropriate :class:`PyType` for the given field type, or ``None`` if the type is a
     complex type that cannot be represented by a simple Python type.
 
-    :param __fd_type: The type descriptor.
+    :param fd_type: The type descriptor.
     :return: A representative :class:`PyType`.
     """
-    if __fd_type in FLOAT_TYPES:
+    if fd_type in FLOAT_TYPES:
         return FLOAT
-    elif __fd_type in INT_TYPES:
+    elif fd_type in INT_TYPES:
         return INT
-    elif __fd_type == FieldDescriptorProto.TYPE_BOOL:
+    elif fd_type == FieldDescriptorProto.TYPE_BOOL:
         return BOOL
-    elif __fd_type == FieldDescriptorProto.TYPE_STRING:
+    elif fd_type == FieldDescriptorProto.TYPE_STRING:
         return STRING
-    elif __fd_type == FieldDescriptorProto.TYPE_BYTES:
+    elif fd_type == FieldDescriptorProto.TYPE_BYTES:
         return BYTES
     return None
 
 
-def py_message_package(__file_name: str) -> str:
+def py_message_package(file_name: str, /) -> str:
     """
     Return the Python package name for a ``.proto`` file with the specified name that contains
     Protobuf messages.
 
-    :param __file_name: The path to a .proto file.
+    :param file_name: The path to a .proto file.
     :return: A Python module name for Protobuf messages.
     >>> py_message_package("foo/bar/messages.proto")
     'foo.bar.messages_pb2'
     """
-    return os.path.splitext(__file_name)[0].replace("/", ".") + _PROTO_MODULE_SUFFIX
+    return os.path.splitext(file_name)[0].replace("/", ".") + _PROTO_MODULE_SUFFIX
 
 
 def py_service_package(__file_name: str) -> str:

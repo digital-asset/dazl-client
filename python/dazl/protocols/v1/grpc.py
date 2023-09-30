@@ -64,12 +64,12 @@ __all__ = [
 
 
 class GRPCv1LedgerClient(LedgerClient):
-    def __init__(self, connection: "GRPCv1Connection", ledger: "LedgerMetadata", party: Party):
+    def __init__(self, connection: GRPCv1Connection, ledger: LedgerMetadata, party: Party):
         self.connection = safe_cast(GRPCv1Connection, connection)
         self.ledger = ledger
         self.party = to_party(party)
 
-    async def commands(self, command_payload: "CommandPayload") -> None:
+    async def commands(self, command_payload: CommandPayload, /) -> None:
         from .pb_ser_command import ProtobufSerializer
 
         serializer = cast(ProtobufSerializer, self.ledger.serializer)
@@ -79,7 +79,7 @@ class GRPCv1LedgerClient(LedgerClient):
         )
         return None
 
-    async def commands_transaction(self, __1: "CommandPayload") -> lapipb.Transaction:
+    async def commands_transaction(self, __1: CommandPayload, /) -> lapipb.Transaction:
         from .pb_ser_command import ProtobufSerializer
 
         serializer = cast(ProtobufSerializer, self.ledger.serializer)
@@ -89,7 +89,7 @@ class GRPCv1LedgerClient(LedgerClient):
         )
         return response.transaction
 
-    async def commands_transaction_tree(self, __1: "CommandPayload") -> lapipb.TransactionTree:
+    async def commands_transaction_tree(self, __1: CommandPayload, /) -> lapipb.TransactionTree:
         from .pb_ser_command import ProtobufSerializer
 
         serializer = cast(ProtobufSerializer, self.ledger.serializer)
@@ -99,7 +99,7 @@ class GRPCv1LedgerClient(LedgerClient):
         )
         return response.transaction
 
-    async def active_contracts(self, contract_filter: "ContractFilter") -> "Sequence[BaseEvent]":
+    async def active_contracts(self, contract_filter: ContractFilter, /) -> Sequence[BaseEvent]:
         with LOG.info_timed("ACS request serialization"):
             request = serialize_acs_request(contract_filter, self.ledger.ledger_id, self.party)
             context = BaseEventDeserializationContext(
@@ -142,7 +142,7 @@ class GRPCv1LedgerClient(LedgerClient):
                 lambda: to_acs_events(context, acs_responses)
             )
 
-    async def events(self, transaction_filter: "TransactionFilter") -> "Sequence[BaseEvent]":
+    async def events(self, transaction_filter: TransactionFilter, /) -> Sequence[BaseEvent]:
         request = serialize_transactions_request(
             transaction_filter, self.ledger.ledger_id, self.party
         )
@@ -181,7 +181,7 @@ class GRPCv1LedgerClient(LedgerClient):
         )
 
 
-def grpc_set_time(connection: "GRPCv1Connection", ledger_id: str, new_datetime: datetime) -> None:
+def grpc_set_time(connection: GRPCv1Connection, ledger_id: str, new_datetime: datetime) -> None:
     get_request = lapitestingpb.GetTimeRequest(ledger_id=ledger_id)
     get_response = connection.time_service.GetTime(get_request)
     ts = next(iter(get_response))
@@ -284,7 +284,7 @@ def grpc_main_thread(connection: GRPCv1Connection, ledger_id: str) -> Iterable[L
 
 
 class GRPCPackageProvider:
-    def __init__(self, connection: "GRPCv1Connection", ledger_id: str):
+    def __init__(self, connection: GRPCv1Connection, ledger_id: str):
         self.connection = connection
         self.ledger_id = ledger_id
 
@@ -302,19 +302,19 @@ class GRPCPackageProvider:
         package_info = self.connection.package_service.GetPackage(request, timeout=timeout_secs)
         return package_info.archive_payload
 
-    def get_package_ids(self) -> "AbstractSet[PackageRef]":
+    def get_package_ids(self) -> AbstractSet[PackageRef]:
         return self.package_ids()
 
-    def fetch_package(self, package_id: "PackageRef") -> bytes:
+    def fetch_package(self, package_id: PackageRef) -> bytes:
         return self.package_bytes(package_id)
 
-    def get_all_packages(self) -> "Mapping[PackageRef, bytes]":
+    def get_all_packages(self) -> Mapping[PackageRef, bytes]:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             return {pkg_id: self.fetch_package(pkg_id) for pkg_id in self.get_package_ids()}
 
 
-def grpc_create_channel(settings: "HTTPConnectionSettings") -> Channel:
+def grpc_create_channel(settings: HTTPConnectionSettings) -> Channel:
     target = f"{settings.host}:{settings.port}"
     options = [("grpc.max_send_message_length", -1), ("grpc.max_receive_message_length", -1)]
 
@@ -383,10 +383,10 @@ def grpc_create_channel(settings: "HTTPConnectionSettings") -> Channel:
 class GRPCv1Connection(_LedgerConnection):
     def __init__(
         self,
-        invoker: "Invoker",
-        options: "LedgerConnectionOptions",
-        settings: "HTTPConnectionSettings",
-        context_path: "Optional[str]",
+        invoker: Invoker,
+        options: LedgerConnectionOptions,
+        settings: HTTPConnectionSettings,
+        context_path: Optional[str],
     ):
         super(GRPCv1Connection, self).__init__(invoker, options, settings, context_path)
         self._closed = Event()

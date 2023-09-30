@@ -93,25 +93,25 @@ class BaseEvent:
     Superclass of all dazl events.
     """
 
-    client: "Any"
-    party: "Optional[Party]"
-    time: "Optional[datetime]"
+    client: Any
+    party: Optional[Party]
+    time: Optional[datetime]
     ledger_id: str
-    lookup: "SymbolLookup"
+    lookup: SymbolLookup
 
-    def acs_find_active(self, template: "Union[str, TypeConName]", match=None):
+    def acs_find_active(self, template: Union[str, TypeConName], match=None):
         return self.client.find_active(template, match)
 
-    def acs_find_by_id(self, cid: "Union[str, ContractId]") -> "Optional[ContractContextualData]":
+    def acs_find_by_id(self, cid: Union[str, ContractId]) -> Optional[ContractContextualData]:
         return self.client.find_by_id(cid)
 
-    def acs_find_one(self, template: "Union[str, TypeConName]", match=None):
+    def acs_find_one(self, template: Union[str, TypeConName], match=None):
         return self.client.find_one(template, match=match)
 
-    def acs_find_historical(self, template: "Union[str, TypeConName]", match=None):
+    def acs_find_historical(self, template: Union[str, TypeConName], match=None):
         return self.client.find_historical(template, match)
 
-    def acs_find_nonempty(self, template: "Union[str, TypeConName]", match=None):
+    def acs_find_nonempty(self, template: Union[str, TypeConName], match=None):
         return self.client.find_nonempty(template, match=match)
 
     def __repr__(self):
@@ -155,7 +155,7 @@ class ActiveContractSetEvent(OffsetEvent):
     Event raised on initial read of the active contract set.
     """
 
-    contract_events: "Sequence[ContractCreateEvent]"
+    contract_events: Sequence[ContractCreateEvent]
 
 
 @dataclass(frozen=True)
@@ -176,7 +176,7 @@ class TransactionStartEvent(BaseTransactionEvent):
     :class:`ContractCreateEvent` or :class:`ContractArchiveEvent`.
     """
 
-    contract_events: "Sequence[ContractEvent]"
+    contract_events: Sequence[ContractEvent]
 
 
 @dataclass(frozen=True)
@@ -186,7 +186,7 @@ class TransactionEndEvent(BaseTransactionEvent):
     corresponding :class:`ContractCreateEvent` or :class:`ContractArchiveEvent`.
     """
 
-    contract_events: "Sequence[ContractEvent]"
+    contract_events: Sequence[ContractEvent]
 
 
 @dataclass(frozen=True)
@@ -246,14 +246,14 @@ class PackagesAddedEvent(BaseEvent):
 
 @dataclass(frozen=True)
 class ContractFilter:
-    templates: "Optional[Collection[TypeConName]]" = None
-    party_groups: "Optional[Collection[Party]]" = None
+    templates: Optional[Collection[TypeConName]] = None
+    party_groups: Optional[Collection[Party]] = None
 
 
 @dataclass(frozen=True)
 class TransactionFilter(ContractFilter):
-    current_offset: "Optional[str]" = None
-    destination_offset: "Optional[str]" = None
+    current_offset: Optional[str] = None
+    destination_offset: Optional[str] = None
 
     def __post_init__(self):
         if self.current_offset is not None and self.destination_offset is not None:

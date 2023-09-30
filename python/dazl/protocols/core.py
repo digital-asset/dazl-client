@@ -50,53 +50,51 @@ class ReadyEvent(Event):
 class CreateEvent(Event):
     __slots__ = ("_cid", "_cdata")
 
-    _cid: "ContractId"
-    _cdata: "ContractData"
+    _cid: ContractId
+    _cdata: ContractData
 
-    def __init__(self, cid: "ContractId", cdata: "ContractData"):
+    def __init__(self, cid: ContractId, cdata: ContractData):
         object.__setattr__(self, "_cid", cid)
         object.__setattr__(self, "_cdata", cdata)
 
     @property
-    def cid(self) -> "ContractId":
+    def cid(self) -> ContractId:
         return self._cid
 
     @property
-    def cdata(self) -> "ContractData":
+    def cdata(self) -> ContractData:
         return self._cdata
 
 
 class ArchiveEvent(Event):
     __slots__ = ("_cid",)
 
-    _cid: "ContractId"
+    _cid: ContractId
 
-    def __init__(self, cid: "ContractId"):
+    def __init__(self, cid: ContractId):
         object.__setattr__(self, "_cid", cid)
 
     @property
-    def cid(self) -> "ContractId":
+    def cid(self) -> ContractId:
         return self._cid
 
 
 class ExerciseResponse:
     __slots__ = "_result", "_events"
 
-    _result: "Optional[Any]"
-    _events: "Sequence[Union[CreateEvent, ArchiveEvent]]"
+    _result: Optional[Any]
+    _events: Sequence[Union[CreateEvent, ArchiveEvent]]
 
-    def __init__(
-        self, result: "Optional[Any]", events: "Sequence[Union[CreateEvent, ArchiveEvent]]"
-    ):
+    def __init__(self, result: Optional[Any], events: Sequence[Union[CreateEvent, ArchiveEvent]]):
         object.__setattr__(self, "_result", result)
         object.__setattr__(self, "_events", tuple(events))
 
     @property
-    def result(self) -> "Optional[Any]":
+    def result(self) -> Optional[Any]:
         return self._result
 
     @property
-    def events(self) -> "Sequence[Union[CreateEvent, ArchiveEvent]]":
+    def events(self) -> Sequence[Union[CreateEvent, ArchiveEvent]]:
         return self._events
 
     def __repr__(self):
@@ -106,17 +104,17 @@ class ExerciseResponse:
 class PartyInfo:
     __slots__ = "_party", "_display_name", "_is_local"
 
-    _party: "Party"
+    _party: Party
     _display_name: str
     _is_local: bool
 
-    def __init__(self, party: "Party", display_name: str, is_local: bool):
+    def __init__(self, party: Party, display_name: str, is_local: bool):
         object.__setattr__(self, "_party", party)
         object.__setattr__(self, "_display_name", display_name)
         object.__setattr__(self, "_is_local", is_local)
 
     @property
-    def party(self) -> "Party":
+    def party(self) -> Party:
         return self._party
 
     @property

@@ -45,14 +45,14 @@ class LedgerOffsetRange:
     so this class actually represents the commonality between these two interfaces.
     """
 
-    def __init__(self, __begin: "Union[None, str]", __end: "Union[None, str, End]"):
+    def __init__(self, begin: Union[None, str], end: Union[None, str, End], /):
         """
         Initialize a :class:`LedgerOffsetRange`.
 
-        :param __begin:
+        :param begin:
             The start of the stream. If ``None``, then read from the beginning of the ledger.
             Otherwise, must be a legal ledger offset.
-        :param __end:
+        :param end:
             The end of the stream. If ``None``, then keep reading from the stream forever; if
             ``END``, then terminate when reaching the _current_ end of stream.
 
@@ -60,10 +60,10 @@ class LedgerOffsetRange:
             allowed here on the HTTP JSON API does not provide a mechanism for reading *to* a
             specific transaction offset.
         """
-        self.begin = __begin
-        self.end = __end
+        self.begin = begin
+        self.end = end
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: Any, /) -> bool:
         return (
             isinstance(other, LedgerOffsetRange)
             and self.begin == other.begin

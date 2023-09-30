@@ -15,7 +15,7 @@ __all__ = ["to_record", "to_variant"]
 VARIANT_KEYS = frozenset(["tag", "value"])
 
 
-def to_record(obj: "Any") -> "Mapping[str, Any]":
+def to_record(obj: Any, /) -> Mapping[str, Any]:
     """
     "Unflattens" fields of a dict to support nested records.
     """
@@ -40,7 +40,7 @@ def to_record(obj: "Any") -> "Mapping[str, Any]":
     return reformatted
 
 
-def to_variant(obj: "Any") -> "Tuple[str, Any]":
+def to_variant(obj: Any, /) -> Tuple[str, Any]:
     """
     Return the constructor and value that is represented by the given object.
     """

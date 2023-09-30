@@ -81,7 +81,7 @@ def _rewrite_exceptions(fn: Fn) -> Fn:
 
 
 class ExceptionTranslator:
-    def __init__(self, conn: "Connection"):
+    def __init__(self, conn: Connection):
         self.conn = conn
 
     def __enter__(self):
@@ -132,7 +132,7 @@ class AllowCancellation:
         return None
 
 
-def _translate_exceptions(conn: "Connection") -> ExceptionTranslator:
+def _translate_exceptions(conn: Connection) -> ExceptionTranslator:
     """
     Return an (async) context manager that translates exceptions thrown from low-level gRPC calls
     to high-level dazl exceptions.

@@ -37,10 +37,10 @@ class PackageLoader:
 
     def __init__(
         self,
-        package_lookup: "MultiPackageLookup",
-        conn: "Optional[PackageService]" = None,
-        timeout: "Optional[timedelta]" = DEFAULT_TIMEOUT,
-        executor: "Optional[ThreadPoolExecutor]" = None,
+        package_lookup: MultiPackageLookup,
+        conn: Optional[PackageService] = None,
+        timeout: Optional[timedelta] = DEFAULT_TIMEOUT,
+        executor: Optional[ThreadPoolExecutor] = None,
     ):
         self._package_lookup = package_lookup
         self._conn = conn
@@ -49,10 +49,10 @@ class PackageLoader:
         self._futures = dict()  # type: Dict[PackageRef, Future[Package]]
         self._executor = executor or ThreadPoolExecutor(3)
 
-    def set_connection(self, conn: "Optional[PackageService]"):
+    def set_connection(self, conn: Optional[PackageService]):
         self._conn = conn
 
-    def do_with_retry(self, fn: "Callable[[], T]") -> "T":
+    def do_with_retry(self, fn: Callable[[], T]) -> T:
         """
         Perform a synchronous action that assumes the existence of one or more packages. In the
         event the function raises :class:`PackageNotFoundError` or a wildcarded
@@ -74,7 +74,7 @@ class PackageLoader:
             with guard:
                 return fn()
 
-    def load(self, ref: "PackageRef") -> "Optional[Package]":
+    def load(self, ref: PackageRef) -> Optional[Package]:
         """
         Load a package ID from the remote server. If the package has additional dependencies, they
         are also loaded.
@@ -109,7 +109,7 @@ class PackageLoader:
 
         return package
 
-    def _load(self, package_id: "PackageRef") -> "Package":
+    def _load(self, package_id: PackageRef) -> Package:
         LOG.info("Loading package: %s", package_id)
 
         conn = self._conn
@@ -125,7 +125,7 @@ class PackageLoader:
         return archive.package
 
     @staticmethod
-    def __fetch_package_bytes(conn: "PackageService", package_id: "PackageRef") -> bytes:
+    def __fetch_package_bytes(conn: PackageService, package_id: PackageRef) -> bytes:
         sleep_interval = 1
 
         while True:

@@ -9,11 +9,11 @@ from typing import Iterable
 __all__ = ["all_decl"]
 
 
-def all_decl(__names: "Iterable[str]") -> str:
-    if __names:
+def all_decl(names: Iterable[str], /) -> str:
+    if names:
         with StringIO() as buf:
             buf.write("__all__ = [\n")
-            for name in __names:
+            for name in names:
                 buf.write(f'    "{name}",\n')
             buf.write("]\n")
 

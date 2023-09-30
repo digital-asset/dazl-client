@@ -13,7 +13,7 @@ import time
 from ..prim import DazlError, TimeDeltaLike, to_timedelta
 
 
-def kill_process_tree(process: "Popen"):
+def kill_process_tree(process: Popen):
     """
     Kill a process and its children.
     """
@@ -48,7 +48,7 @@ def kill_process_tree(process: "Popen"):
         process.communicate()
 
 
-def wait_for_process_port(process: "Popen", port: int, timeout: "TimeDeltaLike") -> None:
+def wait_for_process_port(process: Popen, port: int, timeout: TimeDeltaLike) -> None:
     from .io import is_port_alive
 
     alive = False
@@ -76,7 +76,7 @@ class ProcessLogger:
     Pipe stdout and stderr from a process to the logger.
     """
 
-    def __init__(self, process: "Popen", logger: "logging.Logger"):
+    def __init__(self, process: Popen, logger: logging.Logger):
         self.process = process
         self.logger = logger
         self._evt = Event()

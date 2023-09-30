@@ -31,10 +31,10 @@ class Serializer:
     Serializer interface for objects on the write-side of the API.
     """
 
-    def serialize_value(self, tt: "Type", obj: "Any") -> "Any":
+    def serialize_value(self, tt: Type, obj: Any) -> Any:
         raise NotImplementedError("serialize_value requires an implementation")
 
-    def serialize_command(self, command: "Any") -> "Any":
+    def serialize_command(self, command: Any) -> Any:
         raise NotImplementedError("serialize_command requires an implementation")
 
 
@@ -44,22 +44,22 @@ class AbstractSerializer(Serializer):
     serialization have been implemented.
     """
 
-    def __init__(self, lookup: "SymbolLookup"):
+    def __init__(self, lookup: SymbolLookup):
         self.lookup = lookup
 
     @property
-    def mapper(self) -> "ValueMapper":
+    def mapper(self) -> ValueMapper:
         raise NotImplementedError(f"{type(self)}.mapper() must be defined")
 
-    def serialize_value(self, tt: "Type", obj: Any) -> "Any":
+    def serialize_value(self, tt: Type, obj: Any) -> Any:
         from ..values import Context
 
         return Context(self.mapper, self.lookup).convert(tt, obj)
 
-    def serialize_commands(self, commands: "Sequence[Command]") -> "Sequence[Any]":
+    def serialize_commands(self, commands: Sequence[Command]) -> Sequence[Any]:
         return [self.serialize_command(cmd) for cmd in commands]
 
-    def serialize_command(self, command: "Command") -> "Any":
+    def serialize_command(self, command: Command) -> Any:
         if isinstance(command, CreateCommand):
             name = self.lookup.template_name(command.template_id)
             value = self.serialize_value(con(name), command.payload)
@@ -95,22 +95,22 @@ class AbstractSerializer(Serializer):
         else:
             raise ValueError(f"unknown Command type: {command!r}")
 
-    def serialize_create_command(self, name: "TypeConName", template_args: "Any") -> "Any":
+    def serialize_create_command(self, name: TypeConName, template_args: Any) -> Any:
         raise NotImplementedError("serialize_create_command requires an implementation")
 
     def serialize_exercise_command(
-        self, contract_id: "ContractId", choice_name: str, choice_args: "Any"
-    ) -> "Any":
+        self, contract_id: ContractId, choice_name: str, choice_args: Any
+    ) -> Any:
         raise NotImplementedError("serialize_exercise_command requires an implementation")
 
     def serialize_exercise_by_key_command(
-        self, name: "TypeConName", key_arguments: "Any", choice_name: str, choice_arguments: "Any"
-    ) -> "Any":
+        self, name: TypeConName, key_arguments: Any, choice_name: str, choice_arguments: Any
+    ) -> Any:
         raise NotImplementedError("serialize_exercise_by_key_command requires an implementation")
 
     def serialize_create_and_exercise_command(
-        self, name: "TypeConName", create_args: "Any", choice_name: str, choice_arguments: "Any"
-    ) -> "Any":
+        self, name: TypeConName, create_args: Any, choice_name: str, choice_arguments: Any
+    ) -> Any:
         raise NotImplementedError(
             "serialize_create_and_exercise_command requires an implementation"
         )

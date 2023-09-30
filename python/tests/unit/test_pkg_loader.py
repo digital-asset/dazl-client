@@ -35,13 +35,13 @@ async def test_pkg_loader_only_fetches_once(executor):
         def __init__(self):
             self.call_count = 0
 
-        async def get_package(self, package_id: "PackageRef") -> bytes:
+        async def get_package(self, package_id: PackageRef) -> bytes:
             self.call_count += 1
             if package_id != pkg_ref:
                 raise Exception
             return contents
 
-        async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+        async def list_package_ids(self) -> AbstractSet[PackageRef]:
             return frozenset([pkg_ref])
 
     conn = MockPackageService()
@@ -75,7 +75,7 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
         def __init__(self):
             self.call_count = 0
 
-        async def get_package(self, package_id: "PackageRef") -> bytes:
+        async def get_package(self, package_id: PackageRef) -> bytes:
             self.call_count += 1
             if package_id != pkg_ref:
                 raise Exception
@@ -83,7 +83,7 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
             await evt2.wait()
             return contents
 
-        async def list_package_ids(self) -> "AbstractSet[PackageRef]":
+        async def list_package_ids(self) -> AbstractSet[PackageRef]:
             # we don't expect this method to be called in the test
             raise Exception
 

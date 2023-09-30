@@ -23,12 +23,12 @@ class SSLConfig:
 
     def __init__(
         self,
-        ca: "Optional[bytes]" = None,
-        ca_file: "Optional[PathLike]" = None,
-        cert: "Optional[bytes]" = None,
-        cert_file: "Optional[PathLike]" = None,
-        cert_key: "Optional[bytes]" = None,
-        cert_key_file: "Optional[PathLike]" = None,
+        ca: Optional[bytes] = None,
+        ca_file: Optional[PathLike] = None,
+        cert: Optional[bytes] = None,
+        cert_file: Optional[PathLike] = None,
+        cert_key: Optional[bytes] = None,
+        cert_key_file: Optional[PathLike] = None,
         logger: Optional[Logger] = None,
     ):
         self._ca: Optional[bytes]
@@ -69,21 +69,21 @@ class SSLConfig:
         return bool(self._ca or self._cert or self._cert_key)
 
     @property
-    def ca(self) -> "Optional[bytes]":
+    def ca(self) -> Optional[bytes]:
         """
         Server certificate authority file.
         """
         return self._ca
 
     @property
-    def cert(self) -> "Optional[bytes]":
+    def cert(self) -> Optional[bytes]:
         """
         Client certificate file.
         """
         return self._cert
 
     @property
-    def cert_key(self) -> "Optional[bytes]":
+    def cert_key(self) -> Optional[bytes]:
         """
         Client certificate and key file.
         """

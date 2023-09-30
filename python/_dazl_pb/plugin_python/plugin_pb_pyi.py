@@ -19,7 +19,7 @@ from ._header import HEADER
 __all__ = ["run_plugin", "typing_file"]
 
 
-def run_plugin(request: "CodeGeneratorRequest") -> "CodeGeneratorResponse":
+def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     """
     Generate .pyi (typing stubs files) for Protobuf objects.
     """
@@ -37,7 +37,7 @@ def run_plugin(request: "CodeGeneratorRequest") -> "CodeGeneratorResponse":
     )
 
 
-def typing_file(fd: "FileDescriptorProto", ictx: "ImportContext") -> "CodeGeneratorResponse.File":
+def typing_file(fd: FileDescriptorProto, ictx: ImportContext) -> CodeGeneratorResponse.File:
     name = os.path.splitext(fd.name)[0] + "_pb2.pyi"
 
     # first, generate all message and enum bodies
@@ -62,7 +62,7 @@ def typing_file(fd: "FileDescriptorProto", ictx: "ImportContext") -> "CodeGenera
     return CodeGeneratorResponse.File(name=name, content=f"{HEADER}\n{imports}\n{all_str}\n{body}")
 
 
-def write_enum(buf: "TextIO", d: "EnumDescriptorProto", ictx: "ImportContext") -> None:
+def write_enum(buf: TextIO, d: EnumDescriptorProto, ictx: ImportContext) -> None:
     ictx.add_import("google.protobuf.descriptor", "EnumDescriptor")
 
     buf.write(f"class {d.name}:\n")
@@ -74,7 +74,7 @@ def write_enum(buf: "TextIO", d: "EnumDescriptorProto", ictx: "ImportContext") -
     buf.write("\n")
 
 
-def write_message(buf: "TextIO", md: "DescriptorProto", ictx: "ImportContext") -> None:
+def write_message(buf: TextIO, md: DescriptorProto, ictx: ImportContext) -> None:
     if md.options.map_entry:
         # map types are represented as auto-generated messages;
         # there is nothing to emit for these types

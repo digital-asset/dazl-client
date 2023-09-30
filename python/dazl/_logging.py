@@ -41,21 +41,21 @@ class ExtendedLogger(Logger):  # type: ignore
         """
         self.log(VERBOSE, msg, *args, **kwargs)
 
-    def verbose_timed(self, msg, *args, **kwargs) -> "TimedLogMessageContext":
+    def verbose_timed(self, msg, *args, **kwargs) -> TimedLogMessageContext:
         """
         Log a message with level ``VERBOSE`` on the logger, additionally annotating the log message
         with the time it took to complete the block.
         """
         return TimedLogMessageContext(self, VERBOSE, msg, args, kwargs)
 
-    def debug_timed(self, msg, *args, **kwargs) -> "TimedLogMessageContext":
+    def debug_timed(self, msg, *args, **kwargs) -> TimedLogMessageContext:
         """
         Log a message with level ``DEBUG`` on the logger, additionally annotating the log message
         with the time it took to complete the block.
         """
         return TimedLogMessageContext(self, logging.DEBUG, msg, args, kwargs)
 
-    def info_timed(self, msg, *args, **kwargs) -> "TimedLogMessageContext":
+    def info_timed(self, msg, *args, **kwargs) -> TimedLogMessageContext:
         """
         Log a message with level ``INFO`` on the logger, additionally annotating the log message
         with the time it took to complete the block.

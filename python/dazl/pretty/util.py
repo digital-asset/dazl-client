@@ -31,7 +31,7 @@ def unmangle_name(s: str) -> str:
     )
 
 
-def is_hidden_module_name(name: "Sequence[str]") -> bool:
+def is_hidden_module_name(name: Sequence[str]) -> bool:
     if len(name) == 1 and name[0] in ("GhcPrim", "Prelude"):
         return True
     if len(name) >= 2:

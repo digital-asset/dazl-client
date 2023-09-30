@@ -36,7 +36,7 @@ class DazlPartyMissingError(DazlError):
     found.
     """
 
-    def __init__(self, party: "Party"):
+    def __init__(self, party: Party):
         super().__init__(f"party {party!r} does not have a defined client")
         self.party = party
 

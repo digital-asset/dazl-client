@@ -36,7 +36,7 @@ class DarFile:
 
     filename: Optional[str]
 
-    def __init__(self, dar: "Dar"):
+    def __init__(self, dar: Dar):
         """
         Initialize a new DarFile.
 
@@ -67,7 +67,7 @@ class DarFile:
         else:
             raise TypeError("DarFile only understands file paths or binary blobs")
 
-    def __enter__(self: Self) -> "Self":
+    def __enter__(self: Self) -> Self:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -78,7 +78,7 @@ class DarFile:
         if self._buf is not None:
             self._buf.close()
 
-    def manifest(self) -> "Optional[Mapping[str, str]]":
+    def manifest(self) -> Optional[Mapping[str, str]]:
         """
         Return the contents of the manifest of this DAR.
         """
@@ -93,14 +93,14 @@ class DarFile:
         else:
             return None
 
-    def sdk_version(self) -> "Optional[str]":
+    def sdk_version(self) -> Optional[str]:
         """
         Return the SDK version used to compile this dar (if this information is available).
         """
         manifest = self.manifest()
         return manifest.get("Sdk-Version") if manifest is not None else None
 
-    def archives(self) -> "Collection[Archive]":
+    def archives(self) -> Collection[Archive]:
         """
         Return :class:`Archive` instances from this :class:`DarFile`.
 
@@ -109,7 +109,7 @@ class DarFile:
         """
         return [parse_archive(PackageRef(a.hash), a.payload) for a in self._pb_archives()]
 
-    def package(self, package_id: "PackageRef") -> "Package":
+    def package(self, package_id: PackageRef) -> Package:
         """
         Return the :class:`Package` corresponding to the specified :class:`PackageRef`.
 
@@ -121,7 +121,7 @@ class DarFile:
         payload = self.package_bytes(package_id)
         return parse_archive(package_id, payload).package
 
-    def package_bytes(self, package_id: "PackageRef") -> bytes:
+    def package_bytes(self, package_id: PackageRef) -> bytes:
         """
         Return bytes corresponding to the specified :class:`PackageRef`. If this DAR were to be
         uploaded to a ledger, these are the bytes that would be returned for the specified
@@ -139,20 +139,20 @@ class DarFile:
         # apt error) because PackageNotFoundError implies the operation is retryable
         raise Exception(f"package not found in a DAR: {package_id!r}")
 
-    def package_ids(self) -> "AbstractSet[PackageRef]":
+    def package_ids(self) -> AbstractSet[PackageRef]:
         """
         Return the set of package IDs from this DAR.
         """
         return frozenset(PackageRef(a.hash) for a in self._pb_archives())
 
-    def async_package_service(self) -> "DarFileAsyncPackageService":
+    def async_package_service(self) -> DarFileAsyncPackageService:
         """
         Return an implementation of :class:`dazl.ledger.aio.PackageService` that is backed by
         the contents of this :class:`DarFile`.
         """
         return DarFileAsyncPackageService(self)
 
-    def blocking_package_service(self) -> "DarFileBlockingPackageService":
+    def blocking_package_service(self) -> DarFileBlockingPackageService:
         """
         Return an implementation of :class:`dazl.ledger.blocking.PackageService` that is backed by
         the contents of this :class:`DarFile`.
@@ -162,13 +162,13 @@ class DarFile:
         """
         return DarFileBlockingPackageService(self)
 
-    def _dalf_names(self) -> "Generator[PackageRef, None, None]":
+    def _dalf_names(self) -> Generator[PackageRef, None, None]:
         """
         Return a generator over the names of DALF files in this DarFile.
         """
         return (PackageRef(name) for name in self._zip.namelist() if name.endswith(".dalf"))
 
-    def _pb_archives(self) -> "Generator[pb.Archive, None, None]":
+    def _pb_archives(self) -> Generator[pb.Archive, None, None]:
         """
         Return a generator over :class:`pb.Archive` instances. Crucially, the Protobuf messages
         contain DAML-LF as a ``bytes`` field that has not yet been parsed.
@@ -189,14 +189,14 @@ class CachedDarFile:
     memory. This will generally improve performance at the expense of increased memory usage.
     """
 
-    def __init__(self, dar: "Dar"):
+    def __init__(self, dar: Dar):
         self._dar = dar
         from threading import Lock
 
         self._lock = Lock()
         self._archives = None  # type: Optional[Collection[Archive]]
 
-    def archives(self) -> "Collection[Archive]":
+    def archives(self) -> Collection[Archive]:
         if self._archives is None:
             with self._lock:
                 if self._archives is None:
@@ -211,11 +211,11 @@ class CachedDarFile:
 
         raise PackageNotFoundError(package_id)
 
-    def package_ids(self) -> "AbstractSet[PackageRef]":
+    def package_ids(self) -> AbstractSet[PackageRef]:
         return frozenset([archive.hash for archive in self.archives()])
 
 
-def get_dar_package_ids(dar: "Dar") -> "AbstractSet[PackageRef]":
+def get_dar_package_ids(dar: Dar) -> AbstractSet[PackageRef]:
     """
     Return the package IDs for a DAR.
     """
@@ -224,23 +224,23 @@ def get_dar_package_ids(dar: "Dar") -> "AbstractSet[PackageRef]":
 
 
 class DarFileAsyncPackageService:
-    def __init__(self, __dar_file: "DarFile"):
-        self._dar_file = __dar_file
+    def __init__(self, dar_file: DarFile, /):
+        self._dar_file = dar_file
 
     async def get_package(
-        self, package_id: "PackageRef", timeout: Optional[TimeDeltaLike] = None
+        self, package_id: PackageRef, timeout: Optional[TimeDeltaLike] = None
     ) -> bytes:
         return self._dar_file.package_bytes(package_id)
 
     async def list_package_ids(
         self, *, timeout: Optional[TimeDeltaLike] = None
-    ) -> "AbstractSet[PackageRef]":
+    ) -> AbstractSet[PackageRef]:
         return self._dar_file.package_ids()
 
 
 class DarFileBlockingPackageService:
-    def __init__(self, __dar_file: "DarFile"):
-        self._dar_file = __dar_file
+    def __init__(self, dar_file: DarFile, /):
+        self._dar_file = dar_file
         self._lock = threading.RLock()
 
     def get_package(

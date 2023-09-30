@@ -39,10 +39,10 @@ class PackageLoader:
 
     def __init__(
         self,
-        package_lookup: "MultiPackageLookup",
-        conn: "Optional[PackageService]" = None,
-        timeout: "Optional[timedelta]" = DEFAULT_TIMEOUT,
-        executor: "Optional[ThreadPoolExecutor]" = None,
+        package_lookup: MultiPackageLookup,
+        conn: Optional[PackageService] = None,
+        timeout: Optional[timedelta] = DEFAULT_TIMEOUT,
+        executor: Optional[ThreadPoolExecutor] = None,
     ):
         self._package_lookup = package_lookup
         self._conn = conn
@@ -50,10 +50,10 @@ class PackageLoader:
         self._futures = dict()  # type: Dict[PackageRef, Awaitable[Package]]
         self._executor = executor or ThreadPoolExecutor(3)
 
-    def set_connection(self, conn: "Optional[PackageService]"):
+    def set_connection(self, conn: Optional[PackageService]):
         self._conn = conn
 
-    async def do_with_retry(self, fn: "Callable[[], T]") -> "T":
+    async def do_with_retry(self, fn: Callable[[], T]) -> T:
         """
         Perform a synchronous action that assumes the existence of one or more packages. In the
         event the function raises :class:`PackageNotFoundError` or a wildcarded
@@ -75,7 +75,7 @@ class PackageLoader:
             with guard:
                 return fn()
 
-    async def preload(self, *contents: "Dar") -> None:
+    async def preload(self, *contents: Dar) -> None:
         """
         Populate a :class:`PackageCache` with types from DARs.
 
@@ -83,7 +83,7 @@ class PackageLoader:
             One or more DARs to load into a local package cache.
         """
 
-    async def load(self, ref: "PackageRef") -> "Optional[Package]":
+    async def load(self, ref: PackageRef) -> Optional[Package]:
         """
         Load a package ID from the remote server. If the package has additional dependencies, they
         are also loaded.
@@ -113,7 +113,7 @@ class PackageLoader:
 
         return package
 
-    async def _load(self, package_id: "PackageRef") -> "Package":
+    async def _load(self, package_id: PackageRef) -> Package:
         LOG.info("Loading package: %s", package_id)
 
         loop = get_event_loop()
@@ -134,7 +134,7 @@ class PackageLoader:
         return archive.package
 
     @staticmethod
-    async def __fetch_package_bytes(conn: "PackageService", package_id: "PackageRef") -> bytes:
+    async def __fetch_package_bytes(conn: PackageService, package_id: PackageRef) -> bytes:
         sleep_interval = 1
 
         while True:

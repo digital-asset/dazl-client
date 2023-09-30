@@ -229,7 +229,7 @@ class SandboxLauncher:
         self._process = None
         self._exit_stack.close()
 
-    def __enter__(self) -> "SandboxLauncher":
+    def __enter__(self) -> SandboxLauncher:
         """
         Start the sandbox.
         """
@@ -242,7 +242,7 @@ class SandboxLauncher:
         """
         self.stop()
 
-    async def __aenter__(self) -> "SandboxLauncher":
+    async def __aenter__(self) -> SandboxLauncher:
         """
         Start the sandbox.
         """
@@ -286,7 +286,7 @@ class SandboxOptions:
         object.__setattr__(self, "cert_file", cert_file)
         object.__setattr__(self, "key_file", key_file)
 
-    def daml_cmdline(self, __major_version: int) -> "Sequence[str]":
+    def daml_cmdline(self, __major_version: int) -> Sequence[str]:
         if __major_version <= 1:
             return self._daml1_cmdline()
         elif __major_version == 2:

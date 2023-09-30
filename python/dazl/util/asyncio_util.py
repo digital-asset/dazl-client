@@ -129,7 +129,7 @@ def isolated_async(async_fn):
     return invoke
 
 
-def await_then(awaitable: "Awaitable[T_co]", func: "Callable[[T_co], U]") -> "Awaitable[U]":
+def await_then(awaitable: Awaitable[T_co], func: Callable[[T_co], U]) -> Awaitable[U]:
     """
     Call a function on the result of an Awaitable, and then return an Awaitable that is resolved
     with that result.
@@ -189,8 +189,8 @@ class FailedInvocation:
 
 def execute_in_loop(
     loop: AbstractEventLoop,
-    coro_fn: "Callable[[], Union[Awaitable[T_co], T_co]]",
-    timeout: "Optional[TimeDeltaLike]" = 30.0,
+    coro_fn: Callable[[], Union[Awaitable[T_co], T_co]],
+    timeout: Optional[TimeDeltaLike] = 30.0,
 ) -> T_co:
     """
     Run a coroutine in a target loop. Exceptions thrown by the coroutine are
@@ -788,7 +788,7 @@ class Signal:
             self._fut = None
 
     # noinspection PyDeprecation
-    def wait(self) -> "Awaitable[None]":
+    def wait(self) -> Awaitable[None]:
         if self._fut is None:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", DeprecationWarning)

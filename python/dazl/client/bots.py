@@ -63,7 +63,7 @@ class _BotRunLevel(Enum):
 
 
 class Bot:
-    def __init__(self, party_client: "Optional[PartyClient]", name: str):
+    def __init__(self, party_client: Optional[PartyClient], name: str):
         self._handlers: DefaultDict[str, List[BotEntry]] = defaultdict(list)
         self._party_client = party_client
         self._id = uuid4().hex
@@ -73,20 +73,20 @@ class Bot:
         self._idle = True
         self._run_level = _BotRunLevel.CONTINUE
 
-    def event_keys(self) -> "AbstractSet[str]":
+    def event_keys(self) -> AbstractSet[str]:
         """
         Return the set of keys that event handlers in this bot are configured to handle.
         """
         return frozenset(self._handlers)
 
-    def wants_any_keys(self, keys: "Collection[str]") -> bool:
+    def wants_any_keys(self, keys: Collection[str]) -> bool:
         return bool(set(keys).intersection(self._handlers))
 
     def add_event_handler(
         self,
-        keys: "Union[str, Collection[str]]",
-        handler: "BotCallback",
-        filter_fn: "Optional[BotFilter]" = None,
+        keys: Union[str, Collection[str]],
+        handler: BotCallback,
+        filter_fn: Optional[BotFilter] = None,
     ) -> None:
         """
         Add a new event handler to this bot for the specified event.
@@ -167,7 +167,7 @@ class Bot:
         except Exception:  # noqa
             LOG.exception("A bot thread died abnormally.")
 
-    async def _handle_event(self, event: "BaseEvent") -> None:
+    async def _handle_event(self, event: BaseEvent) -> None:
         """
         Process an event, mostly by calling appropriate callbacks.
 
@@ -196,7 +196,7 @@ class Bot:
                         LOG.exception("An event handler in a bot has thrown an exception!")
         LOG.debug("Party %s finished handling events.", self.party)
 
-    def notify(self, event: "BaseEvent") -> "Awaitable[None]":
+    def notify(self, event: BaseEvent) -> Awaitable[None]:
         """
         Notifies handler(s) associated with this bot that the given event has occurred. Note that
         this notification is asynchronous: in other words, event handlers will not have processed
@@ -215,7 +215,7 @@ class Bot:
             self._signal.notify_all()
         return bot_invocation.future
 
-    def _dispatch(self, event: "BaseEvent") -> None:
+    def _dispatch(self, event: BaseEvent) -> None:
         for event_key in EventKey.from_event(event):
             self._handlers.get(event_key)
 
@@ -265,20 +265,20 @@ class Bot:
         return self._id
 
     @property
-    def name(self):
+    def name(self) -> str:
         """
         The name of this bot. Defaults to the name of the original event handler if unspecified.
         """
         return self._name
 
     @property
-    def party(self) -> "Optional[Party]":
+    def party(self) -> Optional[Party]:
         """
         Primary party that this bot receives events for (and potentially generates commands for).
         """
         return self._party_client.party if self._party_client is not None else None
 
-    def entries(self) -> "Sequence[BotEntry]":
+    def entries(self) -> Sequence[BotEntry]:
         """
         The collection of individual event handlers in a bot, in the order that they will be
         executed.
@@ -286,7 +286,7 @@ class Bot:
         return tuple(entry for collection in self._handlers.values() for entry in collection)
 
     @property
-    def state(self) -> "BotState":
+    def state(self) -> BotState:
         """
         Current running state of the bot.
         """
@@ -322,7 +322,7 @@ class BotCollection(Sequence[Bot]):
     caller).
     """
 
-    def __init__(self, party: "Optional[Party]"):
+    def __init__(self, party: Optional[Party]):
         self.party = party
         self._bots = []  # type: List[Bot]
         self._fut = None  # type: Optional[LongRunningAwaitable]
@@ -349,7 +349,7 @@ class BotCollection(Sequence[Bot]):
             bots = list(self._bots)
         return iter(bots)
 
-    def add_new(self, name: str, party_client: "Optional[PartyClient]" = None) -> "Bot":
+    def add_new(self, name: str, party_client: Optional[PartyClient] = None) -> Bot:
         bot = Bot(party_client, name)
         with self._lock:
             self._bots.append(bot)
@@ -362,12 +362,12 @@ class BotCollection(Sequence[Bot]):
 
     def add_single(
         self,
-        keys: "Union[str, Sequence[str]]",
-        handler: "BotCallback",
-        filter_fn: "Optional[BotFilter]" = None,
-        name: "Optional[str]" = None,
-        party_client: "Optional[PartyClient]" = None,
-    ) -> "Bot":
+        keys: Union[str, Sequence[str]],
+        handler: BotCallback,
+        filter_fn: Optional[BotFilter] = None,
+        name: Optional[str] = None,
+        party_client: Optional[PartyClient] = None,
+    ) -> Bot:
         """
         Convenience method for creating a bot with a single event handler.
         """
@@ -383,7 +383,7 @@ class BotCollection(Sequence[Bot]):
             bot.add_event_handler(key, handler, filter_fn)
         return bot
 
-    def notify(self, event: "BaseEvent"):
+    def notify(self, event: BaseEvent):
         futures = []
         try:
             event_keys = EventKey.from_event(event)

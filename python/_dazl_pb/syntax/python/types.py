@@ -35,14 +35,14 @@ class PyType:
     def __init__(
         self,
         *,
-        package: "Optional[str]" = None,
+        package: Optional[str] = None,
         py_str: str,
-        imports: "Optional[Mapping[str, Collection[str]]]" = None,
+        imports: Optional[Mapping[str, Collection[str]]] = None,
     ):
         self.py_str = py_str
         self._imports = merge(imports, {package: [py_str]} if package else None)
 
-    def apply(self, *args: "PyType") -> "PyType":
+    def apply(self, *args: PyType) -> PyType:
         """
         Produce a new type that is the application of this generic type with the specified type
         parameter.

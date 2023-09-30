@@ -1,7 +1,6 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-
 from __future__ import annotations
 
 from argparse import ArgumentParser
@@ -48,7 +47,7 @@ class ListAllCommand(CliCommand):
         network.run_until_complete(self._main(network, fmt, include_archived))
         return 0
 
-    async def _main(self, network: "Network", fmt: str, include_archived: bool):
+    async def _main(self, network: Network, fmt: str, include_archived: bool):
         import sys
 
         LOG.debug("Starting our parties...")

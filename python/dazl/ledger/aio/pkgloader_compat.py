@@ -59,9 +59,9 @@ class PackageLoader(NewPackageLoader):
 
     def __init__(
         self,
-        package_lookup: "MultiPackageLookup",
-        conn: "Optional[SyncPackageService]" = None,
-        timeout: "Optional[timedelta]" = DEFAULT_TIMEOUT,
+        package_lookup: MultiPackageLookup,
+        conn: Optional[SyncPackageService] = None,
+        timeout: Optional[timedelta] = DEFAULT_TIMEOUT,
     ):
         warnings.warn(
             "dazl.client.pkg_loader.PackageLoader has moved to "
@@ -76,7 +76,7 @@ class PackageLoader(NewPackageLoader):
 
 
 class PackageServiceWrapper:
-    def __init__(self, impl: "SyncPackageService", executor: "ThreadPoolExecutor"):
+    def __init__(self, impl: SyncPackageService, executor: ThreadPoolExecutor):
         self.impl = impl
         self.executor = executor
 
@@ -90,7 +90,7 @@ class PackageServiceWrapper:
 
     async def list_package_ids(
         self, *, timeout: Optional[TimeDeltaLike] = None
-    ) -> "AbstractSet[PackageRef]":
+    ) -> AbstractSet[PackageRef]:
         loop = get_event_loop()
         return await loop.run_in_executor(
             self.executor, lambda: self.impl.package_ids(timeout=timeout)

@@ -17,9 +17,9 @@ from ..prim import Party
 
 def config_field(
     description: str,
-    param_type: "Optional[ConfigParameterType]" = None,
+    param_type: Optional[ConfigParameterType] = None,
     *,
-    default_value: "Optional[Any]" = None,
+    default_value: Optional[Any] = None,
     long_alias: Optional[str] = None,
     short_alias: Optional[str] = None,
     deprecated_alias: Optional[str] = None,
@@ -51,7 +51,7 @@ def config_fields(class_or_instance: Any) -> "Sequence[Tuple[Field, ConfigParame
 @dataclass(frozen=True)
 class ConfigParameter:
     description: str
-    param_type: "Optional[ConfigParameterType]" = None
+    param_type: Optional[ConfigParameterType] = None
     default_value: Any = None
     long_aliases: FrozenSet[str] = field(default_factory=frozenset)
     short_aliases: FrozenSet[str] = field(default_factory=frozenset)
@@ -65,7 +65,7 @@ class ConfigParameterType:
     value_ctor: Callable[[Any], Any]
 
 
-def add_argument(parser: "_ActionsContainer", key: str, config_param: "ConfigParameter") -> None:
+def add_argument(parser: _ActionsContainer, key: str, config_param: ConfigParameter) -> None:
     if config_param.param_type is not None:
         aliases = ["--" + key.replace("_", "-")]
         for alias in config_param.short_aliases:
@@ -95,11 +95,11 @@ def add_argument(parser: "_ActionsContainer", key: str, config_param: "ConfigPar
             )
 
 
-def _parse_url(obj):
+def _parse_url(obj, /):
     return obj
 
 
-def _parse_log_level(obj) -> int:
+def _parse_log_level(obj, /) -> int:
     if not obj:
         return logging.WARNING
     if isinstance(obj, str):
@@ -108,22 +108,22 @@ def _parse_log_level(obj) -> int:
     return p
 
 
-def _parse_str(obj: Any) -> Optional[str]:
+def _parse_str(obj: Any, /) -> Optional[str]:
     return str(obj) if obj is not None else None
 
 
-def _parse_block_offset(obj):
+def _parse_block_offset(obj, /):
     return obj
 
 
-def _parse_party_list(obj) -> "Sequence[Party]":
+def _parse_party_list(obj, /) -> Sequence[Party]:
     if isinstance(obj, str):
         return [Party(p) for p in obj.split(",")]
     else:
         return obj
 
 
-def _parse_package_id_list(obj) -> "Sequence[str]":
+def _parse_package_id_list(obj, /) -> Sequence[str]:
     if isinstance(obj, str):
         return obj.split(",")
     else:

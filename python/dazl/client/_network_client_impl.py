@@ -1,5 +1,6 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from __future__ import annotations
 
 import asyncio
@@ -66,7 +67,7 @@ class _NetworkImpl:
         "_metrics",
     )
 
-    def __init__(self, metrics: "Optional[MetricEvents]" = None):
+    def __init__(self, metrics: Optional[MetricEvents] = None):
         self.lookup = MultiPackageLookup()
         self.invoker = Invoker()
         self.codec = Codec(self, self.lookup)
@@ -96,7 +97,7 @@ class _NetworkImpl:
         self._config = dict()  # type: Dict[str, Any]
         self.bots = BotCollection(None)
 
-    def set_config(self, *configs: "Union[NetworkConfig, AnonymousNetworkConfig]", **kwargs):
+    def set_config(self, *configs: Union[NetworkConfig, AnonymousNetworkConfig], **kwargs):
         for config in configs:
             self._config.update({k: v for k, v in asdict(config).items() if v is not None})
         self._config.update({k: v for k, v in kwargs.items() if v is not None})
@@ -105,7 +106,7 @@ class _NetworkImpl:
     def get_config_raw(self, key: str, default: Any) -> Any:
         return self._config.get(key, default)
 
-    def resolved_config(self) -> "NetworkConfig":
+    def resolved_config(self) -> NetworkConfig:
         config = self.resolved_anonymous_config()
         return NetworkConfig(
             **asdict(config),
@@ -114,7 +115,7 @@ class _NetworkImpl:
             ),
         )
 
-    def resolved_anonymous_config(self) -> "AnonymousNetworkConfig":
+    def resolved_anonymous_config(self) -> AnonymousNetworkConfig:
         return AnonymousNetworkConfig.parse_kwargs(**self._config)
 
     def freeze(self):
@@ -265,7 +266,7 @@ class _NetworkImpl:
         if thread is not None:
             thread.join(timeout=timeout)
 
-    def global_impl(self, ctor: "Callable[[_NetworkImpl], T]") -> T:
+    def global_impl(self, ctor: Callable[[_NetworkImpl], T]) -> T:
         with self._lock:
             inst = self._global_impls.get(ctor)  # type: ignore
             if inst is None:
@@ -273,7 +274,7 @@ class _NetworkImpl:
                 self._global_impls[ctor] = inst  # type: ignore
             return inst
 
-    def party_impl_wrapper(self, party: Party, ctor: "Callable[[_PartyClientImpl], T]") -> "T":
+    def party_impl_wrapper(self, party: Party, ctor: Callable[[_PartyClientImpl], T]) -> T:
         return self.party_impl(party, ctor=ctor)
 
     def party_impl(self, party, ctor=None, if_missing: IfMissingPartyBehavior = CREATE_IF_MISSING):
@@ -315,18 +316,18 @@ class _NetworkImpl:
                 mm[party] = inst
             return inst
 
-    def parties(self) -> "Collection[Party]":
+    def parties(self) -> Collection[Party]:
         """
         Return a snapshot of the set of parties that exist right now.
         """
         with self._lock:
             return list(self._party_impls)
 
-    def party_impls(self) -> "Collection[_PartyClientImpl]":
+    def party_impls(self) -> Collection[_PartyClientImpl]:
         with self._lock:
             return list(self._party_impls.values())
 
-    def find_bot(self, bot_id) -> "Optional[Bot]":
+    def find_bot(self, bot_id) -> Optional[Bot]:
         """
         Return the bot of the specified ID, or ``None`` if no matching bot is found.
         """
@@ -336,7 +337,7 @@ class _NetworkImpl:
                     return bot
         return None
 
-    def simple_metadata(self, timeout: "TimeDeltaLike") -> "LedgerMetadata":
+    def simple_metadata(self, timeout: TimeDeltaLike) -> LedgerMetadata:
         """
         Retrieve metadata about the ledger.
 
@@ -354,7 +355,7 @@ class _NetworkImpl:
         with self._lock:
             return self.invoker.run_in_loop(self._pool.ledger, timeout=timeout)
 
-    async def aio_metadata(self) -> "LedgerMetadata":
+    async def aio_metadata(self) -> LedgerMetadata:
         """
         Coroutine version of :meth:`metadata`.
         """
@@ -362,18 +363,18 @@ class _NetworkImpl:
         return await pool.ledger()
 
     async def get_package(
-        self, package_id: "PackageRef", *, timeout: Optional[TimeDeltaLike] = None
+        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = None
     ) -> bytes:
         pkg_service = await self._package_service()
         return await pkg_service.get_package(package_id, timeout=timeout)
 
     async def list_package_ids(
         self, *, timeout: Optional[TimeDeltaLike] = None
-    ) -> "AbstractSet[PackageRef]":
+    ) -> AbstractSet[PackageRef]:
         pkg_service = await self._package_service()
         return await pkg_service.list_package_ids(timeout=timeout)
 
-    async def upload_package(self, contents: bytes, timeout: "TimeDeltaLike") -> None:
+    async def upload_package(self, contents: bytes, timeout: TimeDeltaLike) -> None:
         """
         Ensure packages specified by the given byte array are loaded on the remote server. This
         method only returns once packages are reported by the Package Service.
@@ -387,14 +388,12 @@ class _NetworkImpl:
         await pool.upload_package(contents)
         await self.ensure_package_ids(package_ids, timeout)
 
-    async def ensure_package_ids(
-        self, package_ids: "Collection[PackageRef]", timeout: "TimeDeltaLike"
-    ):
+    async def ensure_package_ids(self, package_ids: Collection[PackageRef], timeout: TimeDeltaLike):
         await wait_for(
             self.__ensure_package_ids(package_ids), to_timedelta(timeout).total_seconds()
         )
 
-    async def __ensure_package_ids(self, package_ids: "Collection[PackageRef]"):
+    async def __ensure_package_ids(self, package_ids: Collection[PackageRef]):
         metadata = await self.aio_metadata()
         await gather(*(metadata.package_loader.load(pkg_ref) for pkg_ref in package_ids))
 
@@ -432,14 +431,14 @@ class _NetworkImpl:
 
     # noinspection PyShadowingBuiltins
 
-    def add_event_handler(self, key, handler: "Callable[[BaseEvent], None]") -> "Bot":
+    def add_event_handler(self, key, handler: Callable[[BaseEvent], None]) -> Bot:
         """
         Add an event handler to a specific event. Unlike event listeners on party clients, these
         event handlers are not allowed to return anything in response to handling an event.
         """
         return self.bots.add_single(key, handler, None)
 
-    def emit_event(self, data: BaseEvent) -> "Awaitable[Any]":
+    def emit_event(self, data: BaseEvent) -> Awaitable[Any]:
         return self.bots.notify(data)
 
     # endregion
@@ -460,7 +459,7 @@ class _NetworkImpl:
 
 
 class _NetworkRunner:
-    def __init__(self, pool: LedgerNetwork, network_impl: "_NetworkImpl", user_coroutines):
+    def __init__(self, pool: LedgerNetwork, network_impl: _NetworkImpl, user_coroutines):
         self.pool = pool
         self.initialized_parties = set()  # type: Set[Party]
         self._network_impl = network_impl
@@ -515,7 +514,7 @@ class _NetworkRunner:
         LOG.info("network_run: finished.")
         self._writers = []
 
-    async def beat(self, party_impls: "Collection[_PartyClientImpl]") -> Tuple[Optional[str], bool]:
+    async def beat(self, party_impls: Collection[_PartyClientImpl]) -> Tuple[Optional[str], bool]:
         """
         Called periodically to schedule reads and writes.
         """
@@ -545,7 +544,7 @@ class _NetworkRunner:
         return offset, True
 
     async def _init(
-        self, party_impls: "Collection[_PartyClientImpl]", first_offset: "Optional[str]"
+        self, party_impls: Collection[_PartyClientImpl], first_offset: Optional[str]
     ) -> Optional[str]:
         # region log
         if LOG.isEnabledFor(logging.DEBUG):

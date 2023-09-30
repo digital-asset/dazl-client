@@ -23,7 +23,7 @@ class RunLevel(OrderedEnum):
     STOPPED = 4
 
 
-def validate_install_signal_handlers(user_install_signal_handlers: "Optional[bool]" = None) -> bool:
+def validate_install_signal_handlers(user_install_signal_handlers: Optional[bool] = None) -> bool:
     if user_install_signal_handlers is None:
         # The default behavior for signal handling is to suppress if we are already running in a
         # background thread or we are being run within unit tests.

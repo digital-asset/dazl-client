@@ -30,9 +30,9 @@ class Context:
 
     def __init__(
         self,
-        mapper: "ValueMapper",
-        lookup: "Optional[SymbolLookup]" = None,
-        path: "Sequence[str]" = (),
+        mapper: ValueMapper,
+        lookup: Optional[SymbolLookup] = None,
+        path: Sequence[str] = (),
     ):
         """
         Initialize a Context.
@@ -49,7 +49,7 @@ class Context:
         self.lookup = lookup if lookup is not None else EmptyLookup()
         self.path = tuple(path)
 
-    def convert(self, item_type: "Type", obj: "Any"):
+    def convert(self, item_type: Type, obj: Any):
         """
         Convert a value from one representation to another.
 
@@ -113,10 +113,10 @@ class Context:
 
     def convert_list(
         self,
-        element_type: "Type",
-        elements: "Sequence[Any]",
-        mapper: "Optional[ValueMapper]" = None,
-    ) -> "List[Any]":
+        element_type: Type,
+        elements: Sequence[Any],
+        mapper: Optional[ValueMapper] = None,
+    ) -> List[Any]:
         """
         Convert a _list_ of elements, each of an assumed type.
 
@@ -139,8 +139,8 @@ class Context:
         ]
 
     def convert_optional(
-        self, element_type: "Type", element: "Optional[Any]", mapper: "Optional[ValueMapper]" = None
-    ) -> "List[Any]":
+        self, element_type: Type, element: Optional[Any], mapper: Optional[ValueMapper] = None
+    ) -> List[Any]:
         """
         Convert a _list_ of elements, each of an assumed type.
 
@@ -167,10 +167,10 @@ class Context:
 
     def convert_text_map(
         self,
-        element_type: "Type",
-        elements: "Mapping[str, Any]",
-        mapper: "Optional[ValueMapper]" = None,
-    ) -> "Dict[str, Any]":
+        element_type: Type,
+        elements: Mapping[str, Any],
+        mapper: Optional[ValueMapper] = None,
+    ) -> Dict[str, Any]:
         """
         Convert a _map_ of elements, each of an assumed type.
 
@@ -194,11 +194,11 @@ class Context:
 
     def convert_gen_map(
         self,
-        key_type: "Type",
-        value_type: "Type",
-        elements: "Mapping[Any, Any]",
-        mapper: "Optional[ValueMapper]" = None,
-    ) -> "Dict[str, Any]":
+        key_type: Type,
+        value_type: Type,
+        elements: Mapping[Any, Any],
+        mapper: Optional[ValueMapper] = None,
+    ) -> Dict[str, Any]:
         """
         Convert a _map_ of elements, each of an assumed type.
 
@@ -224,7 +224,7 @@ class Context:
             for i, (key, value) in enumerate(elements.items())
         }
 
-    def convert_contract_id(self, element_type: "Type", contract_id: "Any") -> "ContractId":
+    def convert_contract_id(self, element_type: Type, contract_id: Any) -> ContractId:
         """
         Convert a contract ID string to a :class:`ContractId`.
         """
@@ -235,7 +235,7 @@ class Context:
         else:
             return ContractId(element_type.con.tycon, contract_id)
 
-    def resolve_data_type(self, con: "Type.Con") -> "DefDataType":
+    def resolve_data_type(self, con: Type.Con) -> DefDataType:
         """
         Resolve a :class:`DefDataType`, including applying any type parameters.
 
@@ -285,7 +285,7 @@ class Context:
         else:
             raise ValueError("unknown DefDataType cannot have variables applied to them")
 
-    def append_path(self, path: str, mapper: "Optional[ValueMapper]" = None) -> "Context":
+    def append_path(self, path: str, mapper: Optional[ValueMapper] = None) -> Context:
         """
         Return a new :class:`Context` marked at a deeper path within an object hierarchy.
 
@@ -300,7 +300,7 @@ class Context:
             mapper if mapper is not None else self.mapper, self.lookup, self.path + (path,)
         )
 
-    def value_validate_enum(self, value: "Any", enum: "DefDataType.EnumConstructors") -> str:
+    def value_validate_enum(self, value: Any, enum: DefDataType.EnumConstructors) -> str:
         """
         Return either a confirmed valid value from the list of possible enums, or throw an error.
 
@@ -325,7 +325,7 @@ class Context:
 
         self.value_error(value, f"expected one of {enum.constructors}")
 
-    def value_warn(self, value: "Any", message: str) -> "None":
+    def value_warn(self, value: Any, message: str) -> None:
         """
         Raise a :class:`ValueWarning`, enriched with information in the current context.
         """
@@ -335,7 +335,7 @@ class Context:
             stacklevel=2,
         )
 
-    def value_error(self, value: "Any", message: str) -> "NoReturn":
+    def value_error(self, value: Any, message: str) -> NoReturn:
         """
         Raise a :class:`ValueError`, enriched with information in the current context.
         """
@@ -351,8 +351,8 @@ class Context:
         return len(self.path)
 
     def _replace_all_type_vars(
-        self, type_vars: "Mapping[str, Type]", fields: "DefDataType.Fields"
-    ) -> "DefDataType.Fields":
+        self, type_vars: Mapping[str, Type], fields: DefDataType.Fields
+    ) -> DefDataType.Fields:
         """
         Substitute type variables from the given mapping into each of the provided fields.
         """
@@ -363,10 +363,10 @@ class Context:
 
 
 class ReplacingTypeVisitor(IdentityTypeVisitor):
-    def __init__(self, type_vars: "Mapping[str, Type]"):
+    def __init__(self, type_vars: Mapping[str, Type]):
         self.type_vars = type_vars
 
-    def resolve_type(self, var: "str") -> "Optional[Type]":
+    def resolve_type(self, var: str) -> Optional[Type]:
         replacement = self.type_vars.get(var)
         if replacement is None:
             raise UnboundVarError(var)

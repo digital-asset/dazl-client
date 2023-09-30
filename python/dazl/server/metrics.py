@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from aiohttp import web
 
 
-def build_routes(network_impl: "_NetworkImpl", registry=None) -> "Collection[web.AbstractRouteDef]":
+def build_routes(network_impl: _NetworkImpl, registry=None) -> Collection[web.AbstractRouteDef]:
     # this import is optional, so do it as late as possible
     from aiohttp import web
 
@@ -26,7 +26,7 @@ def build_routes(network_impl: "_NetworkImpl", registry=None) -> "Collection[web
 
     @dataclass(frozen=True)
     class ReadyResult:
-        parties: "Mapping[Party, ReadyPartyResult]"
+        parties: Mapping[Party, ReadyPartyResult]
 
     @dataclass(frozen=True)
     class ReadyPartyResult:
@@ -34,7 +34,7 @@ def build_routes(network_impl: "_NetworkImpl", registry=None) -> "Collection[web
         ready: bool
 
     @routes.get("/metrics")
-    async def get_metrics(request: "web.Request") -> "web.Response":
+    async def get_metrics(request: web.Request) -> web.Response:
         encoder, content_type = exposition.choose_encoder(request.headers["Accept"])
         metrics_bytes: bytes = encoder(registry)
         return web.HTTPOk(body=metrics_bytes, content_type="text/plain; version=0.0.4")
