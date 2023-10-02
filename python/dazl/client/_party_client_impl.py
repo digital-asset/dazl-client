@@ -541,7 +541,8 @@ class _PartyClientImpl:
 
     async def write_create(
         self,
-        __cmd: CreateCommand,
+        cmd: CreateCommand,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -551,7 +552,7 @@ class _PartyClientImpl:
         await self.write_commands([])
         try:
             client, payload = await self._payload(
-                __cmd, workflow_id=workflow_id, command_id=command_id
+                cmd, workflow_id=workflow_id, command_id=command_id
             )
             tx = await client.commands_transaction(payload)
 
@@ -572,7 +573,8 @@ class _PartyClientImpl:
 
     async def write_exercise(
         self,
-        __cmd: Union[CreateAndExerciseCommand, ExerciseCommand, ExerciseByKeyCommand],
+        cmd: Union[CreateAndExerciseCommand, ExerciseCommand, ExerciseByKeyCommand],
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -583,7 +585,7 @@ class _PartyClientImpl:
 
         try:
             client, payload = await self._payload(
-                __cmd, workflow_id=workflow_id, command_id=command_id
+                cmd, workflow_id=workflow_id, command_id=command_id
             )
             tt = await client.commands_transaction_tree(payload)
 

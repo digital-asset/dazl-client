@@ -88,7 +88,7 @@ class Codec:
     def lookup(self) -> SymbolLookup:
         return self._lookup
 
-    async def encode_command(self, cmd: Command) -> lapipb.Command:
+    async def encode_command(self, cmd: Command, /) -> lapipb.Command:
         if isinstance(cmd, CreateCommand):
             return lapipb.Command(
                 create=await self.encode_create_command(cmd.template_id, cmd.payload)
@@ -115,7 +115,7 @@ class Codec:
             raise ValueError(f"unknown Command type: {cmd!r}")
 
     async def encode_create_command(
-        self, template_id: Union[str, Any], payload: ContractData
+        self, template_id: Union[str, Any], payload: ContractData, /
     ) -> lapipb.CreateCommand:
         item_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)
@@ -126,10 +126,7 @@ class Codec:
         )
 
     async def encode_exercise_command(
-        self,
-        contract_id: ContractId,
-        choice_name: str,
-        argument: Optional[Any] = None,
+        self, contract_id: ContractId, choice_name: str, argument: Optional[Any] = None, /
     ) -> lapipb.ExerciseCommand:
         item_type, _, choice = await self._look_up_choice(contract_id.value_type, choice_name)
 
@@ -149,6 +146,7 @@ class Codec:
         payload: ContractData,
         choice_name: str,
         argument: Optional[Any] = None,
+        /,
     ) -> lapipb.CreateAndExerciseCommand:
         item_type, _, choice = await self._look_up_choice(template_id, choice_name)
 
@@ -171,6 +169,7 @@ class Codec:
         choice_name: str,
         key: Any,
         argument: Optional[ContractData] = None,
+        /,
     ) -> lapipb.ExerciseByKeyCommand:
         item_type, template, choice = await self._look_up_choice(template_id, choice_name)
         if template.key is None:
@@ -189,7 +188,7 @@ class Codec:
 
         return cmd_pb
 
-    async def encode_filters(self, template_ids: Sequence[TypeConName]) -> lapipb.Filters:
+    async def encode_filters(self, template_ids: Sequence[TypeConName], /) -> lapipb.Filters:
         # Search for a reference to the "wildcard" template; if any of the requested template_ids
         # is "*", then return results for all templates. We do this first because resolving template
         # IDs otherwise requires do_with_retry, which can be expensive.
@@ -214,7 +213,7 @@ class Codec:
             )
         )
 
-    async def encode_value(self, item_type: Type, obj: Any) -> Tuple[str, Optional[Any]]:
+    async def encode_value(self, item_type: Type, obj: Any, /) -> Tuple[str, Optional[Any]]:
         """
         Convert a dazl/Python value to its Protobuf equivalent.
         """
@@ -223,7 +222,7 @@ class Codec:
         )
 
     @staticmethod
-    def encode_identifier(name: TypeConName) -> lapipb.Identifier:
+    def encode_identifier(name: TypeConName, /) -> lapipb.Identifier:
         return lapipb.Identifier(
             package_id=package_ref(name),
             module_name=str(module_name(name)),
@@ -231,11 +230,11 @@ class Codec:
         )
 
     @staticmethod
-    def encode_user(user: User) -> lapiadminpb.User:
+    def encode_user(user: User, /) -> lapiadminpb.User:
         return lapiadminpb.User(id=user.id, primary_party=user.primary_party)
 
     @staticmethod
-    def encode_right(right: Right) -> lapiadminpb.Right:
+    def encode_right(right: Right, /) -> lapiadminpb.Right:
         if right == Admin:
             return lapiadminpb.Right(participant_admin=lapiadminpb.Right.ParticipantAdmin())
         elif isinstance(right, ReadAs):
@@ -246,14 +245,14 @@ class Codec:
             raise ValueError(f"unknown kind of right: {right!r}")
 
     @staticmethod
-    def encode_begin_offset(offset: Optional[str]) -> lapipb.LedgerOffset:
+    def encode_begin_offset(offset: Optional[str], /) -> lapipb.LedgerOffset:
         if offset is None:
             return lapipb.LedgerOffset(boundary=0)
         else:
             return lapipb.LedgerOffset(absolute=offset)
 
     @staticmethod
-    def encode_end_offset(offset: Union[str, None, End]) -> Optional[lapipb.LedgerOffset]:
+    def encode_end_offset(offset: Union[str, None, End], /) -> Optional[lapipb.LedgerOffset]:
         if offset is None:
             # there is no ending offset (the stream will never naturally terminate)
             return None
@@ -264,7 +263,7 @@ class Codec:
             # the offset is absolute
             return lapipb.LedgerOffset(absolute=offset)
 
-    async def decode_created_event(self, event: lapipb.CreatedEvent) -> CreateEvent:
+    async def decode_created_event(self, event: lapipb.CreatedEvent, /) -> CreateEvent:
         cid = self.decode_contract_id(event)
         cdata = await self.decode_value(con(cid.value_type), event.create_arguments)
         if not isinstance(cdata, _Mapping):
@@ -286,11 +285,11 @@ class Codec:
             key,
         )
 
-    async def decode_archived_event(self, event: lapipb.ArchivedEvent) -> ArchiveEvent:
+    async def decode_archived_event(self, event: lapipb.ArchivedEvent, /) -> ArchiveEvent:
         cid = self.decode_contract_id(event)
         return ArchiveEvent(cid)
 
-    async def decode_exercise_response(self, tree: lapipb.TransactionTree) -> ExerciseResponse:
+    async def decode_exercise_response(self, tree: lapipb.TransactionTree, /) -> ExerciseResponse:
         """
         Convert a Protobuf TransactionTree response to an ExerciseResponse. The TransactionTree is
         expected to only contain a single exercise node at the root level.
@@ -358,7 +357,7 @@ class Codec:
                 LOG.warning("Received an unknown event type: %s", event_pb_type)
         return events
 
-    async def decode_value(self, item_type: Type, obj: Any) -> Optional[Any]:
+    async def decode_value(self, item_type: Type, obj: Any, /) -> Optional[Any]:
         """
         Convert a Protobuf Ledger API value to its dazl/Python equivalent.
         """
@@ -367,13 +366,13 @@ class Codec:
         )
 
     def decode_contract_id(
-        self, event: Union[lapipb.CreatedEvent, lapipb.ExercisedEvent, lapipb.ArchivedEvent]
+        self, event: Union[lapipb.CreatedEvent, lapipb.ExercisedEvent, lapipb.ArchivedEvent], /
     ) -> ContractId:
         vt = Codec.decode_identifier(event.template_id)
         return self._decode_context.convert(ContractIdType(con(vt)), event.contract_id)
 
     @staticmethod
-    def decode_identifier(identifier: lapipb.Identifier) -> TypeConName:
+    def decode_identifier(identifier: lapipb.Identifier, /) -> TypeConName:
         return TypeConName(
             ModuleRef(
                 PackageRef(identifier.package_id), DottedName(identifier.module_name.split("."))
@@ -382,11 +381,11 @@ class Codec:
         )
 
     @staticmethod
-    def decode_user(user: lapiadminpb.User) -> User:
+    def decode_user(user: lapiadminpb.User, /) -> User:
         return User(id=user.id, primary_party=Party(user.primary_party))
 
     @staticmethod
-    def decode_right(right: lapiadminpb.Right) -> Right:
+    def decode_right(right: lapiadminpb.Right, /) -> Right:
         kind = right.WhichOneof("kind")
         if kind == "participant_admin":
             return Admin
@@ -398,31 +397,31 @@ class Codec:
             raise ValueError(f"unexpected kind of right: {kind}")
 
     @staticmethod
-    def decode_party_info(party_details: lapiadminpb.PartyDetails) -> PartyInfo:
+    def decode_party_info(party_details: lapiadminpb.PartyDetails, /) -> PartyInfo:
         return PartyInfo(
             Party(party_details.party), party_details.display_name, party_details.is_local
         )
 
     @staticmethod
-    def decode_version(__obj: lapipb.GetLedgerApiVersionResponse) -> Version:
+    def decode_version(obj: lapipb.GetLedgerApiVersionResponse, /) -> Version:
         return Version(
-            version=__obj.version,
+            version=obj.version,
             features=VersionFeatures(
                 user_management=VersionUserManagementFeature(
-                    supported=__obj.features.user_management.supported,
-                    max_rights_per_user=__obj.features.user_management.max_rights_per_user,
-                    max_users_page_size=__obj.features.user_management.max_users_page_size,
+                    supported=obj.features.user_management.supported,
+                    max_rights_per_user=obj.features.user_management.max_rights_per_user,
+                    max_users_page_size=obj.features.user_management.max_users_page_size,
                 ),
             ),
         )
 
     @staticmethod
     def decode_get_metering_report_response(
-        __obj: lapiadminpb.GetMeteringReportResponse,
+        obj: lapiadminpb.GetMeteringReportResponse, /
     ) -> MeteringReport:
         # unfortunately with a JSON-based format, we lose a considerable degree
         # of type safety, and this (rightfully) makes mypy complain loudly
-        report_json = MessageToDict(__obj.metering_report_json)
+        report_json = MessageToDict(obj.metering_report_json)
 
         return MeteringReport(
             request=MeteringReportRequest(
@@ -442,7 +441,7 @@ class Codec:
         )
 
     async def _look_up_choice(
-        self, template_id: Any, choice_name: str
+        self, template_id: Any, choice_name: str, /
     ) -> Tuple[TypeConName, DefTemplate, TemplateChoice]:
         template_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id)

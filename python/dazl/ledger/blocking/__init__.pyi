@@ -59,7 +59,8 @@ class Connection(_Connection, PackageService, Protocol):
     def close(self) -> None: ...
     def submit(
         self,
-        __commands: Union[Command, Sequence[Command]],
+        commands: Union[Command, Sequence[Command]],
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -69,8 +70,9 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> None: ...
     def create(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -80,9 +82,10 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> CreateEvent: ...
     def exercise(
         self,
-        __contract_id: ContractId,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        contract_id: ContractId,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -92,10 +95,11 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> ExerciseResponse: ...
     def create_and_exercise(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -105,10 +109,11 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> ExerciseResponse: ...
     def exercise_by_key(
         self,
-        __template_id: Union[str, TypeConName],
-        __choice_name: str,
-        __key: Any,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        choice_name: str,
+        key: Any,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -118,7 +123,8 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> ExerciseResponse: ...
     def archive(
         self,
-        __contract_id: ContractId,
+        contract_id: ContractId,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -128,8 +134,9 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> ArchiveEvent: ...
     def archive_by_key(
         self,
-        __template_id: str,
-        __key: Any,
+        template_id: str,
+        key: Any,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -140,8 +147,10 @@ class Connection(_Connection, PackageService, Protocol):
     def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = ...) -> str: ...
     def query(
         self,
-        __template_id: Union[str, TypeConName] = "*",
-        __query: Query = None,
+        template_id: Union[str, TypeConName] = "*",
+        query: Query = None,
+        /,
+        *,
         read_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
@@ -153,8 +162,9 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> QueryStream: ...
     def stream(
         self,
-        __template_id: Union[str, TypeConName] = "*",
-        __query: Query = None,
+        template_id: Union[str, TypeConName] = "*",
+        query: Query = None,
+        /,
         *,
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
@@ -168,7 +178,7 @@ class Connection(_Connection, PackageService, Protocol):
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def get_user(
-        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = ...
+        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> User: ...
     def create_user(
         self,
@@ -179,7 +189,7 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> User: ...
     def list_users(self, *, timeout: Optional[TimeDeltaLike] = ...) -> Sequence[User]: ...
     def list_user_rights(
-        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = ...
+        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> Sequence[Right]: ...
     def allocate_party(
         self,
@@ -193,7 +203,7 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> Sequence[PartyInfo]: ...
     def get_version(self, *, timeout: Optional[TimeDeltaLike] = ...) -> Version: ...
     def upload_package(
-        self, contents: bytes, *, timeout: Optional[TimeDeltaLike] = ...
+        self, contents: bytes, /, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> None: ...
     def get_metering_report(
         self,

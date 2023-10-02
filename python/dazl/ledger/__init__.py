@@ -34,6 +34,7 @@ from .api_types import (
 
 __all__ = [
     "aio",
+    "connect",
     "ActAs",
     "Admin",
     "ArchiveEvent",
@@ -87,23 +88,21 @@ class PackageService(Protocol):
     protocol extends this interface.
     """
 
-    def get_package(self, __package_id):
+    def get_package(self, package_id, /, *, timeout=None):
         """
         Given a package ID, fetch the binary data for the corresponding DALF.
 
-        :param __package_id:
-            The package ID of the DALF to retrieve.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :return:
-            The byte array contents of the DALF associated with the package ID.
+        :param package_id: The package ID of the DALF to retrieve.
+        :param timeout: The maximum length of time to wait before giving up.
+        :return: The byte array contents of the DALF associated with the package ID.
         """
         raise NotImplementedError
 
-    def list_package_ids(self):
+    def list_package_ids(self, *, timeout=None):
         """
         Fetch a list of all known package IDs.
+
+        :param timeout: The maximum length of time to wait before giving up.
         """
         raise NotImplementedError
 
@@ -168,7 +167,8 @@ class Connection(PackageService, Protocol):
 
     def submit(
         self,
-        __commands,
+        commands,
+        /,
         *,
         workflow_id=None,
         command_id=None,
@@ -193,11 +193,8 @@ class Connection(PackageService, Protocol):
         On *blocking* connections, this method blocks the current thread until the connection is
         closed and all network activity has stopped.
 
-        :param __commands:
+        :param commands:
             A command or sequence of commands to submit to the ledger.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -213,8 +210,9 @@ class Connection(PackageService, Protocol):
 
     def create(
         self,
-        __template_id,
-        __payload,
+        template_id,
+        payload,
+        /,
         *,
         workflow_id=None,
         command_id=None,
@@ -224,12 +222,12 @@ class Connection(PackageService, Protocol):
         """
         Create a contract for a given template.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created.
 
             Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
-        :param __payload:
+        :param payload:
             Template arguments for the contract to be created.
 
             Note that future versions reserve the right to rename this parameter name at any
@@ -251,9 +249,10 @@ class Connection(PackageService, Protocol):
 
     def exercise(
         self,
-        __contract_id,
-        __choice_name,
-        __argument,
+        contract_id,
+        choice_name,
+        argument,
+        /,
         *,
         workflow_id=None,
         command_id=None,
@@ -263,21 +262,12 @@ class Connection(PackageService, Protocol):
         """
         Exercise a choice on a contract identified by its contract ID.
 
-        :param __contract_id:
+        :param contract_id:
             The contract ID of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -296,10 +286,11 @@ class Connection(PackageService, Protocol):
 
     def create_and_exercise(
         self,
-        __template_id,
-        __payload,
-        __choice_name,
-        __argument=None,
+        template_id,
+        payload,
+        choice_name,
+        argument=None,
+        /,
         *,
         workflow_id=None,
         command_id=None,
@@ -309,27 +300,15 @@ class Connection(PackageService, Protocol):
         """
         Exercise a choice on a newly-created contract, in a single transaction.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __payload:
+        :param payload:
             Template arguments for the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument (positional
             argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -348,10 +327,11 @@ class Connection(PackageService, Protocol):
 
     def exercise_by_key(
         self,
-        __template_id,
-        __choice_name,
-        __key,
-        __argument,
+        template_id,
+        choice_name,
+        key,
+        argument,
+        /,
         *,
         workflow_id=None,
         command_id=None,
@@ -361,26 +341,14 @@ class Connection(PackageService, Protocol):
         """
         Exercise a choice on a contract identified by its contract key.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __key:
+        :param key:
             The key of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -399,7 +367,8 @@ class Connection(PackageService, Protocol):
 
     def archive(
         self,
-        __contract_id,
+        contract_id,
+        /,
         *,
         workflow_id=None,
         command_id=None,
@@ -409,11 +378,8 @@ class Connection(PackageService, Protocol):
         """
         Archive a choice on a contract identified by its contract ID.
 
-        :param __contract_id:
+        :param contract_id:
             The contract ID of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -432,8 +398,9 @@ class Connection(PackageService, Protocol):
 
     def archive_by_key(
         self,
-        __template_id,
-        __key,
+        template_id,
+        key,
+        /,
         *,
         workflow_id=None,
         command_id=None,
@@ -443,16 +410,10 @@ class Connection(PackageService, Protocol):
         """
         Exercise a choice on a contract identified by its contract key.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __key:
+        :param key:
             The key of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -469,7 +430,7 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
-    def query(self, __template_id="*", __query=None, *, read_as=None):
+    def query(self, template_id="*", query=None, /, *, read_as=None):
         """
         Return the create events from the active contract set service as a stream.
 
@@ -477,16 +438,10 @@ class Connection(PackageService, Protocol):
         set of templates, you may want to consider :class:`ACS` instead, which is a utility class
         that helps you maintain a "live" state of the ACS.
 
-        :param __template_id:
+        :param template_id:
             The name of the template for which to fetch contracts.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __query:
+        :param query:
             A filter to apply to the set of returned contracts.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param read_as:
             An optional set of read-as parties to use to submit this query. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
@@ -523,7 +478,7 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
-    def stream(self, __template_id="*", __query=None, *, offset=None, read_as=None):
+    def stream(self, template_id="*", query=None, /, *, offset=None, read_as=None):
         """
         Stream create/archive events.
 
@@ -533,18 +488,12 @@ class Connection(PackageService, Protocol):
         Otherwise, ``offset`` can be supplied to resume a stream from a prior point where a
         ``Boundary`` was returned from a previous stream.
 
-        :param __template_id:
+        :param template_id:
             The name of the template for which to fetch contracts.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __query:
+        :param query:
             A filter to apply to the set of returned contracts. Note that this does not filter
             :class:`ArchiveEvent`; readers of the stream MUST be able to cope with "mismatched"
             archives that come from the result of applying a filter.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param offset:
             An optional offset at which to start receiving events. If ``None``, start from the
             beginning.
@@ -583,7 +532,7 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
-    def get_user(self, user_id=None):
+    def get_user(self, user_id=None, /):
         """
         Get the user data of a specific user or the authenticated user.
 
@@ -629,18 +578,15 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
-    def upload_package(self, __contents):
+    def upload_package(self, contents, /):
         """
         Upload a byte array as a DAR file to the remote Daml ledger.
 
         This method requires that the connection be created with ``admin=true``, or a token that
         contains an ``admin=true`` claim.
 
-        :param __contents:
+        :param contents:
             The contents of a DAR file (for example, as obtained from running ``daml build``).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         """
         raise NotImplementedError
 

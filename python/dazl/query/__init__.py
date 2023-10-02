@@ -89,18 +89,18 @@ def parse_query(*q: Queries, server_side_filters: bool) -> "Optional[Mapping[Typ
     return tq
 
 
-def _parse_query_filter(__tq: Query, *, server_side_filters: bool) -> Filter:
-    if not __tq:
+def _parse_query_filter(tq: Query, /, *, server_side_filters: bool) -> Filter:
+    if not tq:
         return EMPTY
-    if callable(__tq):
-        return Filter(client_side=__tq)
+    if callable(tq):
+        return Filter(client_side=tq)
     if server_side_filters:
-        return Filter(server_side=__tq)
+        return Filter(server_side=tq)
     else:
-        return Filter(client_side=lambda cdata: is_match(__tq, cdata))
+        return Filter(client_side=lambda cdata: is_match(tq, cdata))
 
 
-def is_match(predicate: ContractMatch, cdata: ContractData) -> bool:
+def is_match(predicate: ContractMatch, cdata: ContractData, /) -> bool:
     """
     Determine whether a contract matches a predicate expression.
     """
