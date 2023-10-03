@@ -824,8 +824,9 @@ class AIOPartyClient(PartyClient):
 
     async def create(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -833,16 +834,10 @@ class AIOPartyClient(PartyClient):
         """
         Create a contract for a given template.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __payload:
+        :param payload:
             Template arguments for the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -851,16 +846,17 @@ class AIOPartyClient(PartyClient):
             The :class:`CreateEvent` that represents the contract that was successfully created.
         """
         return await self._impl.write_create(
-            CreateCommand(template_id=__template_id, payload=__payload),
+            CreateCommand(template_id=template_id, payload=payload),
             workflow_id=workflow_id,
             command_id=command_id,
         )
 
     async def exercise(
         self,
-        __contract_id: ContractId,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        contract_id: ContractId,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -868,21 +864,12 @@ class AIOPartyClient(PartyClient):
         """
         Exercise a choice on a contract identified by its contract ID.
 
-        :param __contract_id:
+        :param contract_id:
             The contract ID of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -892,17 +879,18 @@ class AIOPartyClient(PartyClient):
             of exercising the choice.
         """
         return await self._impl.write_exercise(
-            ExerciseCommand(contract_id=__contract_id, choice=__choice_name, argument=__argument),
+            ExerciseCommand(contract_id=contract_id, choice=choice_name, argument=argument),
             workflow_id=workflow_id,
             command_id=command_id,
         )
 
     async def exercise_by_key(
         self,
-        __template_id: Union[str, TypeConName],
-        __choice_name: str,
-        __key: Any,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        choice_name: str,
+        key: Any,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -910,26 +898,14 @@ class AIOPartyClient(PartyClient):
         """
         Exercise a choice on a contract identified by its contract ID.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __key:
+        :param key:
             The key of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -940,7 +916,7 @@ class AIOPartyClient(PartyClient):
         """
         return await self._impl.write_exercise(
             ExerciseByKeyCommand(
-                template_id=__template_id, choice=__choice_name, key=__key, argument=__argument
+                template_id=template_id, choice=choice_name, key=key, argument=argument
             ),
             workflow_id=workflow_id,
             command_id=command_id,
@@ -948,10 +924,11 @@ class AIOPartyClient(PartyClient):
 
     async def create_and_exercise(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -959,27 +936,15 @@ class AIOPartyClient(PartyClient):
         """
         Exercise a choice on a newly-created contract, in a single transaction.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __payload:
+        :param payload:
             Template arguments for the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument (positional
             argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -990,10 +955,10 @@ class AIOPartyClient(PartyClient):
         """
         return await self._impl.write_exercise(
             CreateAndExerciseCommand(
-                template_id=__template_id,
-                payload=__payload,
-                choice=__choice_name,
-                argument=__argument,
+                template_id=template_id,
+                payload=payload,
+                choice=choice_name,
+                argument=argument,
             ),
             workflow_id=workflow_id,
             command_id=command_id,
@@ -1480,8 +1445,9 @@ class SimplePartyClient(PartyClient):
 
     def create(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -1489,16 +1455,10 @@ class SimplePartyClient(PartyClient):
         """
         Create a contract for a given template.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __payload:
+        :param payload:
             Template arguments for the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -1508,7 +1468,7 @@ class SimplePartyClient(PartyClient):
         """
         return self._impl.invoker.run_in_loop(
             lambda: self._impl.write_create(
-                CreateCommand(__template_id, __payload),
+                CreateCommand(template_id, payload),
                 workflow_id=workflow_id,
                 command_id=command_id,
             )
@@ -1516,9 +1476,10 @@ class SimplePartyClient(PartyClient):
 
     def exercise(
         self,
-        __contract_id: ContractId,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        contract_id: ContractId,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -1526,21 +1487,12 @@ class SimplePartyClient(PartyClient):
         """
         Exercise a choice on a contract identified by its contract ID.
 
-        :param __contract_id:
+        :param contract_id:
             The contract ID of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -1551,7 +1503,7 @@ class SimplePartyClient(PartyClient):
         """
         return self._impl.invoker.run_in_loop(
             lambda: self._impl.write_exercise(
-                ExerciseCommand(__contract_id, __choice_name, __argument),
+                ExerciseCommand(contract_id, choice_name, argument),
                 workflow_id=workflow_id,
                 command_id=command_id,
             )
@@ -1559,10 +1511,11 @@ class SimplePartyClient(PartyClient):
 
     def exercise_by_key(
         self,
-        __template_id: Union[str, TypeConName],
-        __choice_name: str,
-        __key: Any,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        choice_name: str,
+        key: Any,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -1570,26 +1523,14 @@ class SimplePartyClient(PartyClient):
         """
         Exercise a choice on a contract identified by its contract ID.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __key:
+        :param key:
             The key of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -1600,7 +1541,7 @@ class SimplePartyClient(PartyClient):
         """
         return self._impl.invoker.run_in_loop(
             lambda: self._impl.write_exercise(
-                ExerciseByKeyCommand(__template_id, __choice_name, __key, __argument),
+                ExerciseByKeyCommand(template_id, choice_name, key, argument),
                 workflow_id=workflow_id,
                 command_id=command_id,
             )
@@ -1608,10 +1549,10 @@ class SimplePartyClient(PartyClient):
 
     def create_and_exercise(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -1619,27 +1560,15 @@ class SimplePartyClient(PartyClient):
         """
         Exercise a choice on a newly-created contract, in a single transaction.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __payload:
+        :param payload:
             Template arguments for the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument (positional
             argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -1650,7 +1579,7 @@ class SimplePartyClient(PartyClient):
         """
         return self._impl.invoker.run_in_loop(
             lambda: self._impl.write_exercise(
-                CreateAndExerciseCommand(__template_id, __payload, __choice_name, __argument),
+                CreateAndExerciseCommand(template_id, payload, choice_name, argument),
                 workflow_id=workflow_id,
                 command_id=command_id,
             )

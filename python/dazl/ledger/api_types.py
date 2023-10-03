@@ -50,6 +50,8 @@ __all__ = [
     "SubmitResponse",
     "User",
     "Version",
+    "VersionFeatures",
+    "VersionUserManagementFeature",
 ]
 
 
@@ -645,8 +647,8 @@ class ReadAs(Right):
 
     party: Party
 
-    def __init__(self, __party: Party):
-        object.__setattr__(self, "party", __party)
+    def __init__(self, party: Party, /):
+        object.__setattr__(self, "party", party)
 
     def __repr__(self) -> str:
         return f"ReadAs({self.party!r})"
@@ -659,8 +661,8 @@ class ActAs(Right):
 
     party: Party
 
-    def __init__(self, __party: Party):
-        object.__setattr__(self, "party", __party)
+    def __init__(self, party: Party, /):
+        object.__setattr__(self, "party", party)
 
     def __repr__(self) -> str:
         return f"ActAs({self.party!r})"

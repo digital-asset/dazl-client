@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from collections import defaultdict
-import sys
 from types import MappingProxyType
 from typing import Any, Collection, DefaultDict, Mapping, Optional, Protocol, Set, TypeVar
 
@@ -12,7 +11,7 @@ __all__ = ["merge"]
 
 
 class SupportsLessThan(Protocol):
-    def __lt__(self, __other: Any) -> bool:
+    def __lt__(self, other: Any, /) -> bool:
         ...
 
 
@@ -20,7 +19,7 @@ K = TypeVar("K")
 V = TypeVar("V", bound=SupportsLessThan)  # noqa: Y001
 
 
-def merge(*m: "Optional[Mapping[K, Collection[V]]]") -> "Mapping[K, Collection[V]]":
+def merge(*m: Optional[Mapping[K, Collection[V]]]) -> Mapping[K, Collection[V]]:
     """
     Combine multiple key-values mappings into a single key-values mapping.
     """

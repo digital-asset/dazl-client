@@ -157,7 +157,8 @@ class Connection(aio.Connection):
 
     async def submit(
         self,
-        __commands: Union[Command, Sequence[Command]],
+        commands: Union[Command, Sequence[Command]],
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -178,17 +179,17 @@ class Connection(aio.Connection):
         into Daml so that only a single command is needed from the outside in order to satisfy your
         use case.
         """
-        if __commands is None:
+        if commands is None:
             return
-        elif isinstance(__commands, Command):
-            __commands = [__commands]
+        elif isinstance(commands, Command):
+            commands = [commands]
         retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
             workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
         )
-        commands = await asyncio.gather(*map(self._codec.encode_command, __commands))
+        commands = await asyncio.gather(*map(self._codec.encode_command, commands))
         request = self._submit_and_wait_request(commands, meta)
         await retry(
             lambda: stub.SubmitAndWait(request, timeout=retry_timeout.total_seconds()),
@@ -197,8 +198,9 @@ class Connection(aio.Connection):
 
     async def create(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -209,16 +211,10 @@ class Connection(aio.Connection):
         """
         Create a contract for a given template.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __payload:
+        :param payload:
             Template arguments for the contract to be created.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -242,7 +238,7 @@ class Connection(aio.Connection):
             workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
         )
         commands = [
-            lapipb.Command(create=await self._codec.encode_create_command(__template_id, __payload))
+            lapipb.Command(create=await self._codec.encode_create_command(template_id, payload))
         ]
         request = self._submit_and_wait_request(commands, meta)
 
@@ -256,9 +252,10 @@ class Connection(aio.Connection):
 
     async def exercise(
         self,
-        __contract_id: ContractId,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        contract_id: ContractId,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -269,21 +266,12 @@ class Connection(aio.Connection):
         """
         Exercise a choice on a contract identified by its contract ID.
 
-        :param __contract_id:
+        :param contract_id:
             The contract ID of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -310,7 +298,7 @@ class Connection(aio.Connection):
         commands = [
             lapipb.Command(
                 exercise=await self._codec.encode_exercise_command(
-                    __contract_id, __choice_name, __argument
+                    contract_id, choice_name, argument
                 )
             )
         ]
@@ -326,10 +314,11 @@ class Connection(aio.Connection):
 
     async def create_and_exercise(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -340,27 +329,15 @@ class Connection(aio.Connection):
         """
         Exercise a choice on a newly-created contract, in a single transaction.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __payload:
+        :param payload:
             Template arguments for the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument (positional
             argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -371,6 +348,9 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -384,7 +364,7 @@ class Connection(aio.Connection):
         commands = [
             lapipb.Command(
                 createAndExercise=await self._codec.encode_create_and_exercise_command(
-                    __template_id, __payload, __choice_name, __argument
+                    template_id, payload, choice_name, argument
                 )
             )
         ]
@@ -400,40 +380,29 @@ class Connection(aio.Connection):
 
     async def exercise_by_key(
         self,
-        __template_id: Union[str, TypeConName],
-        __choice_name: str,
-        __key: Any,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        choice_name: str,
+        key: Any,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
-    ) -> "ExerciseResponse":
+    ) -> ExerciseResponse:
         """
         Exercise a choice on a contract identified by its contract key.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __choice_name:
+        :param choice_name:
             The name of the choice to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __key:
+        :param key:
             The key of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __argument:
+        :param argument:
             The choice arguments. Can be omitted for choices that take no argument.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -444,6 +413,9 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
@@ -457,18 +429,21 @@ class Connection(aio.Connection):
         commands = [
             lapipb.Command(
                 exerciseByKey=await self._codec.encode_exercise_by_key_command(
-                    __template_id, __choice_name, __key, __argument
+                    template_id, choice_name, key, argument
                 )
             )
         ]
         request = self._submit_and_wait_request(commands, meta)
-        response = await stub.SubmitAndWaitForTransactionTree(request)
+        response = await stub.SubmitAndWaitForTransactionTree(
+            request, timeout=retry_timeout.total_seconds()
+        )
 
         return await self._codec.decode_exercise_response(response.transaction)
 
     async def archive(
         self,
-        __contract_id: ContractId,
+        contract_id: ContractId,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -479,11 +454,8 @@ class Connection(aio.Connection):
         """
         Archive a choice on a contract identified by its contract ID.
 
-        :param __contract_id:
+        :param contract_id:
             The contract ID of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
         :param command_id:
@@ -497,9 +469,12 @@ class Connection(aio.Connection):
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         """
         await self.exercise(
-            __contract_id,
+            contract_id,
             "Archive",
             workflow_id=workflow_id,
             command_id=command_id,
@@ -507,12 +482,13 @@ class Connection(aio.Connection):
             act_as=act_as,
             timeout=timeout,
         )
-        return ArchiveEvent(__contract_id)
+        return ArchiveEvent(contract_id)
 
     async def archive_by_key(
         self,
-        __template_id: str,
-        __key: Any,
+        template_id: str,
+        key: Any,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -523,15 +499,10 @@ class Connection(aio.Connection):
         """
         Exercise a choice on a contract identified by its contract key.
 
-        :param __template_id:
+        :param template_id:
             The template of the contract to be created (positional argument only).
-
-            Note that future versions reserve the right to rename this parameter name at any
-            time; it should be passed in as a positional parameter and never by name.
-        :param __key:
+        :param key:
             The key of the contract to exercise.
-
-            Note that future versions reserve the right to rename this parameter name at any
             time; it should be passed in as a positional parameter and never by name.
         :param workflow_id:
             An optional workflow ID.
@@ -546,11 +517,14 @@ class Connection(aio.Connection):
         :return:
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         """
         response = await self.exercise_by_key(
-            __template_id,
+            template_id,
             "Archive",
-            __key,
+            key,
             workflow_id=workflow_id,
             command_id=command_id,
             read_as=read_as,
@@ -560,9 +534,7 @@ class Connection(aio.Connection):
         return next(iter(event for event in response.events if isinstance(event, ArchiveEvent)))
 
     def _submit_and_wait_request(
-        self,
-        commands: Collection[lapipb.Command],
-        meta: CommandMeta,
+        self, commands: Collection[lapipb.Command], meta: CommandMeta, /
     ) -> lapipb.SubmitAndWaitRequest:
         # this is support for versions of Daml Connect prior to 1.9.0
         act_as = meta.act_as
@@ -621,14 +593,15 @@ class Connection(aio.Connection):
 
     def query(
         self,
-        __template_id: Union[str, TypeConName] = "*",
-        __query: Query = None,
+        template_id: Union[str, TypeConName] = "*",
+        query: Query = None,
+        /,
         *,
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
-    ) -> "QueryStream":
+    ) -> QueryStream:
         """
         Return the create events from the active contract set service as a stream.
 
@@ -636,9 +609,9 @@ class Connection(aio.Connection):
         set of templates, you may want to consider :class:`ACS` instead, which is a utility class
         that helps you maintain a "live" state of the ACS.
 
-        :param __template_id:
+        :param template_id:
             The name of the template for which to fetch contracts.
-        :param __query:
+        :param query:
             A filter to apply to the set of returned contracts.
         :param begin_offset:
             The starting offset at which to read an active contract set. If ``None``, contracts
@@ -654,7 +627,7 @@ class Connection(aio.Connection):
         offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
         return QueryStream(
             self,
-            parse_query({__template_id: __query}, server_side_filters=False),
+            parse_query({template_id: query}, server_side_filters=False),
             offset,
             self._read_as(read_as),
             self._retry_timeout(timeout),
@@ -667,7 +640,7 @@ class Connection(aio.Connection):
         end_offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
-    ) -> "QueryStream":
+    ) -> QueryStream:
         """
         Return the create events from the active contract set service as a stream.
 
@@ -699,13 +672,14 @@ class Connection(aio.Connection):
 
     def stream(
         self,
-        __template_id: Union[str, TypeConName] = "*",
-        __query: Query = None,
+        template_id: Union[str, TypeConName] = "*",
+        query: Query = None,
+        /,
         *,
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
-    ) -> "QueryStream":
+    ) -> QueryStream:
         """
         Stream create/archive events.
 
@@ -715,9 +689,9 @@ class Connection(aio.Connection):
         Otherwise, ``offset`` can be supplied to resume a stream from a prior point where a
         ``Boundary`` was returned from a previous stream.
 
-        :param __template_id:
+        :param template_id:
             The name of the template for which to fetch contracts.
-        :param __query:
+        :param query:
             A filter to apply to the set of returned contracts. Note that this does not filter
             :class:`ArchiveEvent`; readers of the stream MUST be able to cope with "mismatched"
             archives that come from the result of applying a filter.
@@ -730,7 +704,7 @@ class Connection(aio.Connection):
         """
         return QueryStream(
             self,
-            parse_query({__template_id: __query}, server_side_filters=False),
+            parse_query({template_id: query}, server_side_filters=False),
             from_offset_until_forever(offset),
             self._read_as(read_as),
             self._retry_timeout(timeout),
@@ -793,7 +767,7 @@ class Connection(aio.Connection):
     # region User Management calls
 
     async def get_user(
-        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = None
+        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = None
     ) -> User:
         retry_timeout = self._retry_timeout(timeout)
         stub = lapiadminpb.UserManagementServiceStub(self.channel)

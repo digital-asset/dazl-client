@@ -64,12 +64,10 @@ __all__ = [
     "validate_template",
 ]
 
-from ..prim import TimeDeltaLike
-
 STAR = PackageRef("*")
 
 
-def parse_type_con_name(val: str) -> TypeConName:
+def parse_type_con_name(val: str, /) -> TypeConName:
     """
     Parse the given string as a type constructor.
     """
@@ -82,7 +80,7 @@ def parse_type_con_name(val: str) -> TypeConName:
     return TypeConName(module_ref, entity_name.split("."))
 
 
-def empty_lookup_impl(ref: Any) -> NoReturn:
+def empty_lookup_impl(ref: Any, /) -> NoReturn:
     pkg, _ = validate_template(ref)
     if pkg != STAR:
         raise PackageNotFoundError(pkg)
@@ -90,15 +88,12 @@ def empty_lookup_impl(ref: Any) -> NoReturn:
         raise NameNotFoundError(ref)
 
 
-def validate_template(template: Any) -> Tuple[PackageRef, str]:
+def validate_template(template: Any, /) -> Tuple[PackageRef, str]:
     """
     Return a module and type name component from something that can be interpreted as a template.
 
     :param template:
         Any object that can be interpreted as an identifier for a template.
-    :param allow_deprecated_identifiers:
-        Allow deprecated identifiers (:class:`UnresolvedTypeReference` and a period delimiter
-        instead of a colon between module names and entity names).
     :return:
         A tuple of package ID and ``Module.Name:EntityName`` (the package-scoped identifier for the
         type). The special value ``'*'`` is used if either the package ID, module name, or both
@@ -137,7 +132,7 @@ def validate_template(template: Any) -> Tuple[PackageRef, str]:
         raise ValueError(f"Don't know how to convert {template!r} into a template")
 
 
-def normalize(__name: Union[None, str, TypeConName]) -> str:
+def normalize(name: Union[None, str, TypeConName], /) -> str:
     """
     Return the canonical form for a string that represents a template ID or partial match of a
     template ID.
@@ -145,21 +140,21 @@ def normalize(__name: Union[None, str, TypeConName]) -> str:
     Concretely, this function converts ``"MyMod:MyTemplate"`` to ``"*:MyMod:MyTemplate"`` and leaves
     most other strings unchanged.
 
-    :param __name:
+    :param name:
         A template ID, expressed in either string form or as an instance of :class:`TypeConName`.
     :return:
         A string in canonical form (either ``PACKAGE_REF:MODULE_NAME:ENTITY_NAME`` or
         ``PACKAGE_REF:*``, where ``PACKAGE_REF`` is also allowed to be ``*``).
     """
-    p, m = validate_template(__name)
+    p, m = validate_template(name)
     return f"{p}:{m}"
 
 
-def matching_normalizations(__name: Union[str, TypeConName]) -> Sequence[str]:
+def matching_normalizations(name: Union[str, TypeConName], /) -> Sequence[str]:
     """
     Return strings that are possible matches for the given template ID.
     """
-    p, m = validate_template(__name)
+    p, m = validate_template(name)
 
     # throw away duplicates that arise from `name` not being fully specified (p and/or m are
     # allowed to be asterisks too)

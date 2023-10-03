@@ -1,11 +1,11 @@
 # Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+
 from __future__ import annotations
 
 from datetime import datetime
 from logging import Logger
 from os import PathLike
-import sys
 from typing import (
     AbstractSet,
     Any,
@@ -89,13 +89,13 @@ BoundaryFn = TypeVar("BoundaryFn", bound=Callable[[Boundary], SubmitResponse])
 # overloaded for the asynchronous variants. See dazl.ledger.aio's typing file.
 
 class OnCreateDecorator(Protocol):
-    def __call__(self, __fn: CreateFn) -> CreateFn: ...
+    def __call__(self, fn: CreateFn, /) -> CreateFn: ...
 
 class OnArchiveDecorator(Protocol):
-    def __call__(self, __fn: ArchiveFn) -> ArchiveFn: ...
+    def __call__(self, fn: ArchiveFn, /) -> ArchiveFn: ...
 
 class OnBoundaryDecorator(Protocol):
-    def __call__(self, __fn: BoundaryFn) -> BoundaryFn: ...
+    def __call__(self, fn: BoundaryFn, /) -> BoundaryFn: ...
 
 # These overload declarations were painfully constructed in careful consultation with:
 #     https://github.com/python/mypy/issues/6580
@@ -236,7 +236,7 @@ def connect(
 
 class PackageService(Protocol):
     def get_package(
-        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = ...
+        self, package_id: PackageRef, /, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> Union[bytes, Awaitable[bytes]]: ...
     def list_package_ids(
         self, *, timeout: Optional[TimeDeltaLike] = ...
@@ -254,8 +254,9 @@ class Connection(PackageService, Protocol):
     def close(self) -> Union[None, Awaitable[None]]: ...
     def create(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -265,10 +266,11 @@ class Connection(PackageService, Protocol):
     ) -> Union[CreateEvent, Awaitable[CreateEvent]]: ...
     def create_and_exercise(
         self,
-        __template_id: Union[str, TypeConName],
-        __payload: ContractData,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        payload: ContractData,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -278,9 +280,10 @@ class Connection(PackageService, Protocol):
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def exercise(
         self,
-        __contract_id: ContractId,
-        __choice_name: str,
-        __argument: Optional[ContractData] = None,
+        contract_id: ContractId,
+        choice_name: str,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -290,10 +293,11 @@ class Connection(PackageService, Protocol):
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def exercise_by_key(
         self,
-        __template_id: Union[str, TypeConName],
-        __choice_name: str,
-        __key: Any,
-        __argument: Optional[ContractData] = None,
+        template_id: Union[str, TypeConName],
+        choice_name: str,
+        key: Any,
+        argument: Optional[ContractData] = None,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -303,7 +307,8 @@ class Connection(PackageService, Protocol):
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def submit(
         self,
-        __commands: Union[Command, Sequence[Command]],
+        commands: Union[Command, Sequence[Command]],
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -316,7 +321,8 @@ class Connection(PackageService, Protocol):
     ) -> Union[str, Awaitable[str]]: ...
     def archive(
         self,
-        __contract_id: ContractId,
+        contract_id: ContractId,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -326,8 +332,9 @@ class Connection(PackageService, Protocol):
     ) -> Union[ArchiveEvent, Awaitable[ArchiveEvent]]: ...
     def archive_by_key(
         self,
-        __template_id: str,
-        __key: Any,
+        template_id: str,
+        key: Any,
+        /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
@@ -337,8 +344,9 @@ class Connection(PackageService, Protocol):
     ) -> Union[ArchiveEvent, Awaitable[ArchiveEvent]]: ...
     def query(
         self,
-        __template_id: Union[str, TypeConName] = "*",
-        __query: Query = None,
+        template_id: Union[str, TypeConName] = "*",
+        query: Query = None,
+        /,
         *,
         read_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
@@ -351,8 +359,9 @@ class Connection(PackageService, Protocol):
     ) -> QueryStream: ...
     def stream(
         self,
-        __template_id: Union[str, TypeConName] = "*",
-        __query: Query = None,
+        template_id: Union[str, TypeConName] = "*",
+        query: Query = None,
+        /,
         *,
         offset: Optional[str] = None,
         read_as: Union[None, Party, Collection[Party]] = None,
@@ -366,7 +375,7 @@ class Connection(PackageService, Protocol):
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def get_user(
-        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = ...
+        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> Union[User, Awaitable[User]]: ...
     def create_user(
         self,
@@ -379,7 +388,7 @@ class Connection(PackageService, Protocol):
         self, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> Union[Sequence[User], Awaitable[Sequence[User]]]: ...
     def list_user_rights(
-        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = ...
+        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> Union[Sequence[Right], Awaitable[Sequence[Right]]]: ...
     def allocate_party(
         self,
@@ -392,7 +401,7 @@ class Connection(PackageService, Protocol):
         self, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> Union[Sequence[PartyInfo], Awaitable[Sequence[PartyInfo]]]: ...
     def upload_package(
-        self, __contents: bytes, *, timeout: Optional[TimeDeltaLike] = ...
+        self, contents: bytes, /, *, timeout: Optional[TimeDeltaLike] = ...
     ) -> Union[None, Awaitable[None]]: ...
     def get_version(
         self, *, timeout: Optional[TimeDeltaLike] = ...
@@ -411,23 +420,23 @@ class QueryStream(Protocol):
     @overload
     def on_create(self) -> OnCreateDecorator: ...
     @overload
-    def on_create(self, __fn: CreateFn) -> CreateFn: ...
+    def on_create(self, fn: CreateFn, /) -> CreateFn: ...
     @overload
-    def on_create(self, __name: Union[str, TypeConName]) -> OnCreateDecorator: ...
+    def on_create(self, name: Union[str, TypeConName], /) -> OnCreateDecorator: ...
     @overload
-    def on_create(self, __name: Union[str, TypeConName], __fn: CreateFn) -> CreateFn: ...
+    def on_create(self, name: Union[str, TypeConName], fn: CreateFn, /) -> CreateFn: ...
     @overload
     def on_archive(self) -> OnArchiveDecorator: ...
     @overload
-    def on_archive(self, __fn: ArchiveFn) -> ArchiveFn: ...
+    def on_archive(self, fn: ArchiveFn, /) -> ArchiveFn: ...
     @overload
-    def on_archive(self, __name: Union[str, TypeConName]) -> OnArchiveDecorator: ...
+    def on_archive(self, name: Union[str, TypeConName], /) -> OnArchiveDecorator: ...
     @overload
-    def on_archive(self, __name: Union[str, TypeConName], __fn: ArchiveFn) -> ArchiveFn: ...
+    def on_archive(self, name: Union[str, TypeConName], fn: ArchiveFn, /) -> ArchiveFn: ...
     @overload
     def on_boundary(self) -> OnBoundaryDecorator: ...
     @overload
-    def on_boundary(self, __fn: BoundaryFn) -> BoundaryFn: ...
+    def on_boundary(self, fn: BoundaryFn, /) -> BoundaryFn: ...
     def close(self) -> Union[None, Awaitable[None]]: ...
     def run(self) -> Union[None, Awaitable[None]]: ...
     def creates(self) -> Union[Iterator[CreateEvent], AsyncIterator[CreateEvent]]: ...

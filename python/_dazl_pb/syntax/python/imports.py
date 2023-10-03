@@ -25,19 +25,19 @@ class ImportContext:
         self._system_imports = defaultdict(set)  # type: DefaultDict[str, Set[str]]
         self._parent = parent
 
-    def add_system_import(self, __from: str, __import: str) -> None:
-        self._system_imports[__from].add(__import)
+    def add_system_import(self, from_: str, import_: str, /) -> None:
+        self._system_imports[from_].add(import_)
 
-    def add_import(self, __from: str, __import: str) -> None:
+    def add_import(self, from_: str, import_: str, /) -> None:
         """
         Add an import to this context.
 
-        :param __from:
+        :param from_:
             The Python module to import _from_.
-        :param __import:
+        :param import_:
             The Python module to import.
         """
-        self._imports[__from].add(__import)
+        self._imports[from_].add(import_)
 
     def py_type(self, fd: Union[FieldDescriptorProto, str], usage: Usage) -> PyType:
         if isinstance(fd, str):
@@ -49,23 +49,23 @@ class ImportContext:
         return pt
 
     def required_imports(self) -> Mapping[str, Sequence[str]]:
-        return {__from: sorted(__import) for __from, __import in self._imports.items()}
+        return {from_: sorted(import_) for from_, import_ in self._imports.items()}
 
     def py_import_block(self, relative_to: str) -> str:
         absolute_imports = {}  # type: Dict[str, Collection[str]]
         relative_imports = {}  # type: Dict[str, Collection[str]]
 
-        for __from, __imports in sorted(self.required_imports().items()):
-            if __from == relative_to:
+        for from_, imports_ in sorted(self.required_imports().items()):
+            if from_ == relative_to:
                 # we don't need to include imports to our own file
                 continue
 
-            elif __from.startswith("com.daml."):
+            elif from_.startswith("com.daml."):
                 # rewrite our own imports as relative imports
-                relative_imports[relative_package(relative_to, __from)] = __imports
+                relative_imports[relative_package(relative_to, from_)] = imports_
 
             else:
-                absolute_imports[__from] = __imports
+                absolute_imports[from_] = imports_
 
         import_groups = [
             self._system_imports,

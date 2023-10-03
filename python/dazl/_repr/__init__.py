@@ -23,12 +23,12 @@ __all__ = ["list", "str", "REPR"]
 
 
 # noinspection PyShadowingBuiltins
-def list(__obj: Collection) -> builtins.str:
+def list(obj: Collection, /) -> builtins.str:
     # the typing rules for reprlib are too strict; in reality `repr_list` takes any
     # iterable
-    return REPR.repr_list(__obj, REPR.maxlevel)  # type: ignore
+    return REPR.repr_list(obj, REPR.maxlevel)  # type: ignore
 
 
 # noinspection PyShadowingBuiltins
-def str(__obj: builtins.str) -> builtins.str:
-    return REPR.repr_str(__obj, REPR.maxlevel)
+def str(obj: builtins.str, /) -> builtins.str:
+    return REPR.repr_str(obj, REPR.maxlevel)
