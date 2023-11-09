@@ -66,7 +66,7 @@ $(go_src_gen_grpc): $(go_src_gen_root)/%: $(go_tmp_gen_root)/% COPYRIGHT
 	{ sed 's/^/\/\/ /' COPYRIGHT ; cat $< ; } > $@
 
 $(foreach d,$(proto_rel_grpc),$(go_tmp_gen_root)/$(d:.proto=_grpc.pb.go)): .cache/witnesses/go-grpc
-.cache/witnesses/go-grpc: .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc $(proto_src_grpc)
+.cache/witnesses/go-grpc: .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc $(proto_src_grpc) .cache/witnesses/proto
 	@mkdir -p $(go_tmp_gen_root)
 	PATH=.cache/bin:"${PATH}" $(protoc) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative --go-grpc_out=$(go_tmp_gen_root) --go-grpc_opt=paths=source_relative $(proto_src_grpc)
 
@@ -127,7 +127,7 @@ $(py_sdist) $(py_bdist) &: $(py_src)
 
 # python: Protobuf generated code (non-gRPC)
 $(py_src_gen): $(py_src_gen_root)/%: .cache/witnesses/python
-.cache/witnesses/python:
+.cache/witnesses/python: .venv/poetry.lock .cache/witnesses/proto
 	@mkdir -p $(@D)
 	$(protoc) --dazl-python_out="$(py_src_gen_root)" -I$(proto_dir) $(proto_src_pb)
 

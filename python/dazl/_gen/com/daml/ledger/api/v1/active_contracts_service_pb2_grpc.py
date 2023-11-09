@@ -11,6 +11,7 @@ from . import active_contracts_service_pb2 as com_dot_daml_dot_ledger_dot_api_do
 
 class ActiveContractsServiceStub(object):
     """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
+    In V2 Ledger API this service is not available anymore. Use v2.StateService instead.
     """
 
     def __init__(self, channel):
@@ -28,6 +29,7 @@ class ActiveContractsServiceStub(object):
 
 class ActiveContractsServiceServicer(object):
     """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
+    In V2 Ledger API this service is not available anymore. Use v2.StateService instead.
     """
 
     def GetActiveContracts(self, request, context):
@@ -57,6 +59,7 @@ def add_ActiveContractsServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class ActiveContractsService(object):
     """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
+    In V2 Ledger API this service is not available anymore. Use v2.StateService instead.
     """
 
     @staticmethod

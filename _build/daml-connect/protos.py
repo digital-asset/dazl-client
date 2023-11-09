@@ -4,7 +4,9 @@
 #
 # Utilities for working with Daml Connect.
 #
-# This script has no external dependencies and can run in Python 3.6+.
+# This script has no external dependencies and can run in Python 3.8+.
+
+from __future__ import annotations
 
 from argparse import ArgumentParser
 from collections import defaultdict
@@ -27,7 +29,7 @@ class Protos:
     Simple app to download, list, and update the Protobuf files that are used to generate parts of dazl.
     """
 
-    def __init__(self, cache_dir: "Union[str, os.PathLike]" = default_cache_dir):
+    def __init__(self, cache_dir: Union[str, os.PathLike] = default_cache_dir):
         self.cache_dir = os.fspath(cache_dir)
         self.manifest_file = os.fspath(Path(__file__).absolute().parent / "daml-connect.conf")
         if os.path.exists(self.manifest_file):
@@ -39,7 +41,7 @@ class Protos:
             self.version = None
         self.kind = None
 
-    def main(self) -> "None":
+    def main(self) -> None:
         parser = ArgumentParser()
         parser.add_argument(
             "--cache-dir",
@@ -97,8 +99,6 @@ class Protos:
            so the zip file's enclosing directory is not helpful
          * Versions other than the most recent Daml-LF version are excluded from the output
          * "go package" directives are added to all of the files
-         * Daml-LF 1.14 has an improper package name that breaks code generation; fix it.
-            (see https://github.com/digital-asset/daml/blob/1ee53c0736cbb758a9968d5c7ab6c57b24a87ed0/daml-lf/archive/src/main/protobuf/com/daml/daml_lf_1_14/daml_lf.proto#L5)
         """
         self.download()
 
@@ -117,22 +117,17 @@ class Protos:
                         r
                     ) as buf_in, (self.protobufs_output_path / path).open("w") as buf_out:
                         for line in buf_in:
-                            # patch a mislabeled file:
-                            # see https://github.com/digital-asset/daml/blob/1ee53c0736cbb758a9968d5c7ab6c57b24a87ed0/daml-lf/archive/src/main/protobuf/com/daml/daml_lf_1_14/daml_lf.proto#L5
-                            if line == "package daml_lf_1_13;\n":
-                                buf_out.write("package daml_lf_1;\n")
-                            else:
-                                # insert a line after option java_package that specifies the go_package
-                                buf_out.write(line)
-                                if line.startswith("option java_package = "):
-                                    java_pkg = line.partition('"')[2].rpartition('"')[0]
-                                    go_pkg = (
-                                        "github.com/digital-asset/dazl-client/v7/go/api/"
-                                        + java_pkg.replace(".", "/")
-                                    )
-                                    buf_out.write(f'option go_package = "{go_pkg}";\n')
+                            # insert a line after option java_package that specifies the go_package
+                            buf_out.write(line)
+                            if line.startswith("option java_package = "):
+                                java_pkg = line.partition('"')[2].rpartition('"')[0]
+                                go_pkg = (
+                                    "github.com/digital-asset/dazl-client/v7/go/api/"
+                                    + java_pkg.replace(".", "/")
+                                )
+                                buf_out.write(f'option go_package = "{go_pkg}";\n')
 
-    def download(self) -> "None":
+    def download(self) -> None:
         """
         Download the Protobuf files for a particular Daml Connect version to a local cache directory.
         """
@@ -141,7 +136,7 @@ class Protos:
             url = f"https://github.com/digital-asset/daml/releases/download/v{self.version}/{self.protobufs_file_name}"
             urlretrieve(url, self.protobufs_zip_path)
 
-    def update(self) -> "None":
+    def update(self) -> None:
         """
         Updates the version of Daml Connect and Daml-LF that dazl is built against.
         Running this script modifies some files that are checked in to the repository; these files
@@ -160,11 +155,11 @@ class Protos:
         return f"protobufs-{self.version}.zip"
 
     @property
-    def protobufs_zip_path(self) -> "Path":
+    def protobufs_zip_path(self) -> Path:
         return Path(self.cache_dir) / "download" / self.protobufs_file_name
 
     @property
-    def protobufs_output_path(self) -> "Path":
+    def protobufs_output_path(self) -> Path:
         return Path(self.cache_dir) / "protos"
 
 
@@ -175,20 +170,20 @@ def get_doc(fn):
             return line
 
 
-def detect_file_kind(buf: "TextIO") -> "str":
+def detect_file_kind(buf: TextIO) -> str:
     for line in buf:
         if line.lstrip().startswith("service "):
             return "grpc"
     return "pb"
 
 
-def detect_daml_lf_dir(paths: "Collection[str]") -> "Optional[str]":
+def detect_daml_lf_dir(paths: Collection[str]) -> Optional[str]:
     """
     Find the biggest Daml-LF v1 version in the set of file names from a Protobuf archive, and return
     the path that contains the associated files (with a trailing slash).
 
     If there is ever a Daml-LF 2, then this logic will need to be revisited; however, when that
-    happens, there are likely to be even larger changes required so we won't worry about this too
+    happens, there are likely to be even larger changes required, so we won't worry about this too
     much right now.
 
     :param paths: The paths in a Protobuf zipfile to examine.
@@ -223,7 +218,7 @@ def detect_daml_lf_dir(paths: "Collection[str]") -> "Optional[str]":
 
 class ProtobufManifest:
     @classmethod
-    def from_zip_file(cls, version: str, protobufs_zip: "ZipFile"):
+    def from_zip_file(cls, version: str, protobufs_zip: ZipFile):
         paths_by_kind = defaultdict(set)
 
         daml_lf_dir = detect_daml_lf_dir(protobufs_zip.namelist())
@@ -251,7 +246,7 @@ class ProtobufManifest:
         )
 
     @classmethod
-    def from_conf_file(cls, buf: "TextIO"):
+    def from_conf_file(cls, buf: TextIO):
         version = None
         paths = []
 
@@ -265,11 +260,11 @@ class ProtobufManifest:
 
         return cls(version, paths)
 
-    def __init__(self, version: str, paths: "Sequence[Tuple[str, str]]"):
+    def __init__(self, version: str, paths: Sequence[Tuple[str, str]]):
         self.version = version
         self.paths = tuple(sorted(paths, key=lambda t: t[1]))
 
-    def dump(self, buf: "TextIO") -> None:
+    def dump(self, buf: TextIO) -> None:
         for line in (root_dir / "COPYRIGHT").read_text().splitlines():
             buf.write(f"# {line}\n")
         buf.write("#\n")
