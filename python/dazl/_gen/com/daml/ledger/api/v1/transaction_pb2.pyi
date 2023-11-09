@@ -2,63 +2,60 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from . import event_pb2 as _event_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf.internal import containers as _containers
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.internal.containers import MessageMap, RepeatedCompositeFieldContainer, RepeatedScalarFieldContainer
-from google.protobuf.message import Message as _Message
-from google.protobuf.timestamp_pb2 import Timestamp
+class TransactionTree(_message.Message):
+    __slots__ = ["transaction_id", "command_id", "workflow_id", "effective_at", "offset", "events_by_id", "root_event_ids"]
+    class EventsByIdEntry(_message.Message):
+        __slots__ = ["key", "value"]
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: TreeEvent
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[TreeEvent, _Mapping]] = ...) -> None: ...
+    TRANSACTION_ID_FIELD_NUMBER: _ClassVar[int]
+    COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
+    WORKFLOW_ID_FIELD_NUMBER: _ClassVar[int]
+    EFFECTIVE_AT_FIELD_NUMBER: _ClassVar[int]
+    OFFSET_FIELD_NUMBER: _ClassVar[int]
+    EVENTS_BY_ID_FIELD_NUMBER: _ClassVar[int]
+    ROOT_EVENT_IDS_FIELD_NUMBER: _ClassVar[int]
+    transaction_id: str
+    command_id: str
+    workflow_id: str
+    effective_at: _timestamp_pb2.Timestamp
+    offset: str
+    events_by_id: _containers.MessageMap[str, TreeEvent]
+    root_event_ids: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, transaction_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., effective_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., offset: _Optional[str] = ..., events_by_id: _Optional[_Mapping[str, TreeEvent]] = ..., root_event_ids: _Optional[_Iterable[str]] = ...) -> None: ...
 
-from .event_pb2 import CreatedEvent, Event, ExercisedEvent
+class TreeEvent(_message.Message):
+    __slots__ = ["created", "exercised"]
+    CREATED_FIELD_NUMBER: _ClassVar[int]
+    EXERCISED_FIELD_NUMBER: _ClassVar[int]
+    created: _event_pb2.CreatedEvent
+    exercised: _event_pb2.ExercisedEvent
+    def __init__(self, created: _Optional[_Union[_event_pb2.CreatedEvent, _Mapping]] = ..., exercised: _Optional[_Union[_event_pb2.ExercisedEvent, _Mapping]] = ...) -> None: ...
 
-__all__ = [
-    "TransactionTree",
-    "TreeEvent",
-    "Transaction",
-]
-
-
-class TransactionTree(_Message):
-    transaction_id: _builtins.str
-    command_id: _builtins.str
-    workflow_id: _builtins.str
-    @property
-    def effective_at(self) -> Timestamp: ...
-    offset: _builtins.str
-    @property
-    def events_by_id(self) -> MessageMap[_builtins.str, TreeEvent]: ...
-    @property
-    def root_event_ids(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    def __init__(self, *, transaction_id: _typing.Optional[_builtins.str] = ..., command_id: _typing.Optional[_builtins.str] = ..., workflow_id: _typing.Optional[_builtins.str] = ..., effective_at: _typing.Optional[Timestamp] = ..., offset: _typing.Optional[_builtins.str] = ..., events_by_id: _typing.Optional[_typing.Mapping[_builtins.str, TreeEvent]] = ..., root_event_ids: _typing.Optional[_typing.Iterable[_builtins.str]] = ...): ...
-    def HasField(self, field_name: _typing.Literal["transaction_id", "command_id", "workflow_id", "effective_at", "offset", "events_by_id", "root_event_ids"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _typing.Literal["transaction_id", "command_id", "workflow_id", "effective_at", "offset", "events_by_id", "root_event_ids"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class TreeEvent(_Message):
-    @property
-    def created(self) -> CreatedEvent: ...
-    @property
-    def exercised(self) -> ExercisedEvent: ...
-    @_typing.overload
-    def __init__(self): ...
-    @_typing.overload
-    def __init__(self, *, created: CreatedEvent = ...): ...
-    @_typing.overload
-    def __init__(self, *, exercised: ExercisedEvent = ...): ...
-    def HasField(self, field_name: _typing.Literal["kind", "created", "exercised"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _typing.Literal["kind", "created", "exercised"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.Literal["kind"]) -> _typing.Literal[None, "created", "exercised"]: ...
-
-class Transaction(_Message):
-    transaction_id: _builtins.str
-    command_id: _builtins.str
-    workflow_id: _builtins.str
-    @property
-    def effective_at(self) -> Timestamp: ...
-    @property
-    def events(self) -> RepeatedCompositeFieldContainer[Event]: ...
-    offset: _builtins.str
-    def __init__(self, *, transaction_id: _typing.Optional[_builtins.str] = ..., command_id: _typing.Optional[_builtins.str] = ..., workflow_id: _typing.Optional[_builtins.str] = ..., effective_at: _typing.Optional[Timestamp] = ..., events: _typing.Optional[_typing.Iterable[Event]] = ..., offset: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _typing.Literal["transaction_id", "command_id", "workflow_id", "effective_at", "events", "offset"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _typing.Literal["transaction_id", "command_id", "workflow_id", "effective_at", "events", "offset"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class Transaction(_message.Message):
+    __slots__ = ["transaction_id", "command_id", "workflow_id", "effective_at", "events", "offset"]
+    TRANSACTION_ID_FIELD_NUMBER: _ClassVar[int]
+    COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
+    WORKFLOW_ID_FIELD_NUMBER: _ClassVar[int]
+    EFFECTIVE_AT_FIELD_NUMBER: _ClassVar[int]
+    EVENTS_FIELD_NUMBER: _ClassVar[int]
+    OFFSET_FIELD_NUMBER: _ClassVar[int]
+    transaction_id: str
+    command_id: str
+    workflow_id: str
+    effective_at: _timestamp_pb2.Timestamp
+    events: _containers.RepeatedCompositeFieldContainer[_event_pb2.Event]
+    offset: str
+    def __init__(self, transaction_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., effective_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., events: _Optional[_Iterable[_Union[_event_pb2.Event, _Mapping]]] = ..., offset: _Optional[str] = ...) -> None: ...

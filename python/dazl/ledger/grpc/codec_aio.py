@@ -247,7 +247,7 @@ class Codec:
     @staticmethod
     def encode_begin_offset(offset: Optional[str], /) -> lapipb.LedgerOffset:
         if offset is None:
-            return lapipb.LedgerOffset(boundary=0)
+            return lapipb.LedgerOffset(boundary=lapipb.LedgerOffset.LEDGER_BEGIN)
         else:
             return lapipb.LedgerOffset(absolute=offset)
 
@@ -258,7 +258,7 @@ class Codec:
             return None
         elif isinstance(offset, End):
             # the offset goes up until the current end of the ledger
-            return lapipb.LedgerOffset(boundary=1)
+            return lapipb.LedgerOffset(boundary=lapipb.LedgerOffset.LEDGER_END)
         else:
             # the offset is absolute
             return lapipb.LedgerOffset(absolute=offset)

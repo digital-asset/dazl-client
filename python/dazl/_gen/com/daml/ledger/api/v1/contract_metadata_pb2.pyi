@@ -2,23 +2,19 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.message import Message as _Message
-from google.protobuf.timestamp_pb2 import Timestamp
-
-__all__ = [
-    "ContractMetadata",
-]
-
-
-class ContractMetadata(_Message):
-    @property
-    def created_at(self) -> Timestamp: ...
-    contract_key_hash: _builtins.bytes
-    driver_metadata: _builtins.bytes
-    def __init__(self, *, created_at: _typing.Optional[Timestamp] = ..., contract_key_hash: _typing.Optional[_builtins.bytes] = ..., driver_metadata: _typing.Optional[_builtins.bytes] = ...): ...
-    def HasField(self, field_name: _typing.Literal["created_at", "contract_key_hash", "driver_metadata"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _typing.Literal["created_at", "contract_key_hash", "driver_metadata"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class ContractMetadata(_message.Message):
+    __slots__ = ["created_at", "contract_key_hash", "driver_metadata"]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_KEY_HASH_FIELD_NUMBER: _ClassVar[int]
+    DRIVER_METADATA_FIELD_NUMBER: _ClassVar[int]
+    created_at: _timestamp_pb2.Timestamp
+    contract_key_hash: bytes
+    driver_metadata: bytes
+    def __init__(self, created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contract_key_hash: _Optional[bytes] = ..., driver_metadata: _Optional[bytes] = ...) -> None: ...
