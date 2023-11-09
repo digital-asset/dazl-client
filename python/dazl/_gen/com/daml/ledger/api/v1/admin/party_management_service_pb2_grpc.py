@@ -18,6 +18,8 @@ class PartyManagementServiceStub(object):
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
     of the authenticated user and the user has an IdentityProviderAdmin right.
+    If `identity_provider_id` is set to an empty string, then it's effectively set to the value of access token's 'iss' field if that is provided.
+    If `identity_provider_id` remains an empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -59,6 +61,11 @@ class PartyManagementServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsResponse.FromString,
                 )
+        self.UpdatePartyIdentityProviderId = channel.unary_unary(
+                '/com.daml.ledger.api.v1.admin.PartyManagementService/UpdatePartyIdentityProviderId',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderResponse.FromString,
+                )
 
 
 class PartyManagementServiceServicer(object):
@@ -70,6 +77,8 @@ class PartyManagementServiceServicer(object):
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
     of the authenticated user and the user has an IdentityProviderAdmin right.
+    If `identity_provider_id` is set to an empty string, then it's effectively set to the value of access token's 'iss' field if that is provided.
+    If `identity_provider_id` remains an empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -136,6 +145,13 @@ class PartyManagementServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdatePartyIdentityProviderId(self, request, context):
+        """Update the assignment of a party from one IDP to another.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_PartyManagementServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -164,6 +180,11 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsResponse.SerializeToString,
             ),
+            'UpdatePartyIdentityProviderId': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdatePartyIdentityProviderId,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'com.daml.ledger.api.v1.admin.PartyManagementService', rpc_method_handlers)
@@ -180,6 +201,8 @@ class PartyManagementService(object):
     (1) ``HasRight(r)`` denoting whether the authenticated user has right ``r`` and
     (2) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
     of the authenticated user and the user has an IdentityProviderAdmin right.
+    If `identity_provider_id` is set to an empty string, then it's effectively set to the value of access token's 'iss' field if that is provided.
+    If `identity_provider_id` remains an empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -272,5 +295,22 @@ class PartyManagementService(object):
         return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.PartyManagementService/UpdatePartyDetails',
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdatePartyIdentityProviderId(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.PartyManagementService/UpdatePartyIdentityProviderId',
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -13,6 +13,7 @@ class LedgerIdentityServiceStub(object):
     """DEPRECATED: This service is now deprecated and ledger identity string is optional for all Ledger API requests.
 
     Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
+    In V2 Ledger API this service is not available anymore.
     """
 
     def __init__(self, channel):
@@ -32,6 +33,7 @@ class LedgerIdentityServiceServicer(object):
     """DEPRECATED: This service is now deprecated and ledger identity string is optional for all Ledger API requests.
 
     Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
+    In V2 Ledger API this service is not available anymore.
     """
 
     def GetLedgerIdentity(self, request, context):
@@ -60,6 +62,7 @@ class LedgerIdentityService(object):
     """DEPRECATED: This service is now deprecated and ledger identity string is optional for all Ledger API requests.
 
     Allows clients to verify that the server they are communicating with exposes the ledger they wish to operate on.
+    In V2 Ledger API this service is not available anymore.
     """
 
     @staticmethod

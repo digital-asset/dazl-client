@@ -11,6 +11,7 @@ from . import transaction_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_
 
 class TransactionServiceStub(object):
     """Allows clients to read transactions from the ledger.
+    In V2 Ledger API this service is not available anymore. Use v2.UpdateService instead.
     """
 
     def __init__(self, channel):
@@ -63,6 +64,7 @@ class TransactionServiceStub(object):
 
 class TransactionServiceServicer(object):
     """Allows clients to read transactions from the ledger.
+    In V2 Ledger API this service is not available anymore. Use v2.UpdateService instead.
     """
 
     def GetTransactions(self, request, context):
@@ -179,6 +181,7 @@ def add_TransactionServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class TransactionService(object):
     """Allows clients to read transactions from the ledger.
+    In V2 Ledger API this service is not available anymore. Use v2.UpdateService instead.
     """
 
     @staticmethod

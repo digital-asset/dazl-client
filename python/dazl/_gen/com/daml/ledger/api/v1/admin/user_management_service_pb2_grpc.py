@@ -20,7 +20,8 @@ class UserManagementServiceStub(object):
     (3) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
     of the authenticated user and the user has an IdentityProviderAdmin right.
     If `user_id` is set to the empty string (the default), then the data for the authenticated user will be retrieved.
-    If `identity_provider_id` is set to the empty string, the default identity provider will be assumed.
+    If `identity_provider_id` is set to an empty string, then it's effectively set to the value of access token's 'iss' field if that is provided.
+    If `identity_provider_id` remains an empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -81,6 +82,11 @@ class UserManagementServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.ListUserRightsRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.ListUserRightsResponse.FromString,
                 )
+        self.UpdateUserIdentityProviderId = channel.unary_unary(
+                '/com.daml.ledger.api.v1.admin.UserManagementService/UpdateUserIdentityProviderId',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserIdentityProviderRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserIdentityProviderResponse.FromString,
+                )
 
 
 class UserManagementServiceServicer(object):
@@ -94,7 +100,8 @@ class UserManagementServiceServicer(object):
     (3) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
     of the authenticated user and the user has an IdentityProviderAdmin right.
     If `user_id` is set to the empty string (the default), then the data for the authenticated user will be retrieved.
-    If `identity_provider_id` is set to the empty string, the default identity provider will be assumed.
+    If `identity_provider_id` is set to an empty string, then it's effectively set to the value of access token's 'iss' field if that is provided.
+    If `identity_provider_id` remains an empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -167,6 +174,13 @@ class UserManagementServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateUserIdentityProviderId(self, request, context):
+        """Update the assignment of a user from one IDP to another.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UserManagementServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -210,6 +224,11 @@ def add_UserManagementServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.ListUserRightsRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.ListUserRightsResponse.SerializeToString,
             ),
+            'UpdateUserIdentityProviderId': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateUserIdentityProviderId,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserIdentityProviderRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserIdentityProviderResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'com.daml.ledger.api.v1.admin.UserManagementService', rpc_method_handlers)
@@ -228,7 +247,8 @@ class UserManagementService(object):
     (3) ``IsAuthenticatedIdentityProviderAdmin(idp)`` denoting whether ``idp`` is equal to the ``identity_provider_id``
     of the authenticated user and the user has an IdentityProviderAdmin right.
     If `user_id` is set to the empty string (the default), then the data for the authenticated user will be retrieved.
-    If `identity_provider_id` is set to the empty string, the default identity provider will be assumed.
+    If `identity_provider_id` is set to an empty string, then it's effectively set to the value of access token's 'iss' field if that is provided.
+    If `identity_provider_id` remains an empty string, the default identity provider will be assumed.
 
     The fields of request messages (and sub-messages) are marked either as ``Optional`` or ``Required``:
     (1) ``Optional`` denoting the client may leave the field unset when sending a request.
@@ -376,5 +396,22 @@ class UserManagementService(object):
         return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.UserManagementService/ListUserRights',
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.ListUserRightsRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.ListUserRightsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateUserIdentityProviderId(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.admin.UserManagementService/UpdateUserIdentityProviderId',
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserIdentityProviderRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_user__management__service__pb2.UpdateUserIdentityProviderResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
