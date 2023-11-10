@@ -90,7 +90,7 @@ def protoc_plugin(
 
 
 def run_plugin(plugin_name: str, request: CodeGeneratorRequest) -> CodeGeneratorResponse:
-    if plugin_name in ("python", "grpc_python"):
+    if plugin_name in ("python", "grpc_python", "pyi"):
         return run_plugin_built_in(plugin_name, request)
     else:
         return run_plugin_external(plugin_name, request)

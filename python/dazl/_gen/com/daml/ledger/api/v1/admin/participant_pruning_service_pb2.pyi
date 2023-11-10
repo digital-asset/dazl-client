@@ -2,28 +2,22 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Optional as _Optional
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.message import Message as _Message
+class PruneRequest(_message.Message):
+    __slots__ = ["prune_up_to", "submission_id", "prune_all_divulged_contracts"]
+    PRUNE_UP_TO_FIELD_NUMBER: _ClassVar[int]
+    SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
+    PRUNE_ALL_DIVULGED_CONTRACTS_FIELD_NUMBER: _ClassVar[int]
+    prune_up_to: str
+    submission_id: str
+    prune_all_divulged_contracts: bool
+    def __init__(self, prune_up_to: _Optional[str] = ..., submission_id: _Optional[str] = ..., prune_all_divulged_contracts: bool = ...) -> None: ...
 
-__all__ = [
-    "PruneRequest",
-    "PruneResponse",
-]
-
-
-class PruneRequest(_Message):
-    prune_up_to: _builtins.str
-    submission_id: _builtins.str
-    prune_all_divulged_contracts: _builtins.bool
-    def __init__(self, *, prune_up_to: _typing.Optional[_builtins.str] = ..., submission_id: _typing.Optional[_builtins.str] = ..., prune_all_divulged_contracts: _typing.Optional[_builtins.bool] = ...): ...
-    def HasField(self, field_name: _typing.Literal["prune_up_to", "submission_id", "prune_all_divulged_contracts"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _typing.Literal["prune_up_to", "submission_id", "prune_all_divulged_contracts"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class PruneResponse(_Message):
-    def __init__(self): ...
-    def HasField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def ClearField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class PruneResponse(_message.Message):
+    __slots__ = []  # type: ignore
+    def __init__(self) -> None: ...

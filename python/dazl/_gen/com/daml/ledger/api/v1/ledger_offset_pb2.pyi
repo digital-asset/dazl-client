@@ -2,25 +2,23 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.message import Message as _Message
-
-__all__ = [
-    "LedgerOffset",
-]
-
-
-class LedgerOffset(_Message):
-    absolute: _builtins.str
-    boundary: _typing.Literal[0, 1]
-    @_typing.overload
-    def __init__(self): ...
-    @_typing.overload
-    def __init__(self, *, absolute: _builtins.str = ...): ...
-    @_typing.overload
-    def __init__(self, *, boundary: _typing.Literal['LEDGER_BEGIN', 0, 'LEDGER_END', 1] = ...): ...
-    def HasField(self, field_name: _typing.Literal["value", "absolute", "boundary"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _typing.Literal["value", "absolute", "boundary"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.Literal["value"]) -> _typing.Literal[None, "absolute", "boundary"]: ...
+class LedgerOffset(_message.Message):
+    __slots__ = ["absolute", "boundary"]
+    class LedgerBoundary(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []  # type: ignore
+        LEDGER_BEGIN: _ClassVar[LedgerOffset.LedgerBoundary]
+        LEDGER_END: _ClassVar[LedgerOffset.LedgerBoundary]
+    LEDGER_BEGIN: LedgerOffset.LedgerBoundary
+    LEDGER_END: LedgerOffset.LedgerBoundary
+    ABSOLUTE_FIELD_NUMBER: _ClassVar[int]
+    BOUNDARY_FIELD_NUMBER: _ClassVar[int]
+    absolute: str
+    boundary: LedgerOffset.LedgerBoundary
+    def __init__(self, absolute: _Optional[str] = ..., boundary: _Optional[_Union[LedgerOffset.LedgerBoundary, str]] = ...) -> None: ...

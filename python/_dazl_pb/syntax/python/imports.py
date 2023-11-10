@@ -130,8 +130,27 @@ def rewrite_file_content(name: str, content: str) -> str:
     current_module = name.rpartition("/")[0].replace("/", ".")
     with StringIO() as out_buf, StringIO(content) as in_buf:
         for line in in_buf.readlines():
-            out_buf.write(rewrite_import(current_module, line))
+            if should_ignore_for_mypy(line):
+                out_buf.write(line.rstrip() + "  # type: ignore\n")
+            else:
+                out_buf.write(rewrite_import(current_module, line))
         return out_buf.getvalue()
+
+
+def should_ignore_for_mypy(line: str) -> bool:
+    """
+    Determine if the specified line of Python code might make mypy upset.
+    """
+    return (
+        # the default pyi plugin doesn't add type annotations for slots
+        # for empty messages, and mypy gets upset about this
+        line.strip() == "__slots__ = []"
+        or
+        # the Value object in the Ledger API names a field bool, and so
+        # mypy gets annoyed with the generated code because `bool` is seen
+        # as a type as well as a variable, even though it's legal Python
+        "bool: bool" in line
+    )
 
 
 def rewrite_import(parent_module: str, line: str) -> str:

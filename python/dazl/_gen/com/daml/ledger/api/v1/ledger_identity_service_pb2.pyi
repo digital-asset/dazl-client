@@ -2,26 +2,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Optional as _Optional
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.message import Message as _Message
+class GetLedgerIdentityRequest(_message.Message):
+    __slots__ = []  # type: ignore
+    def __init__(self) -> None: ...
 
-__all__ = [
-    "GetLedgerIdentityRequest",
-    "GetLedgerIdentityResponse",
-]
-
-
-class GetLedgerIdentityRequest(_Message):
-    def __init__(self): ...
-    def HasField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def ClearField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetLedgerIdentityResponse(_Message):
-    ledger_id: _builtins.str
-    def __init__(self, *, ledger_id: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _typing.Literal["ledger_id"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _typing.Literal["ledger_id"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetLedgerIdentityResponse(_message.Message):
+    __slots__ = ["ledger_id"]
+    LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
+    ledger_id: str
+    def __init__(self, ledger_id: _Optional[str] = ...) -> None: ...
