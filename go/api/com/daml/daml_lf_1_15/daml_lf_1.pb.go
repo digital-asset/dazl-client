@@ -55,7 +55,7 @@
 // 	protoc        v4.24.3
 // source: com/daml/daml_lf_1_15/daml_lf_1.proto
 
-package daml_lf_15
+package daml_lf_1_15
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

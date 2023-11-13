@@ -29,11 +29,12 @@ def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     request = util.services_only(request)
 
     return CodeGeneratorResponse(
+        supported_features=CodeGeneratorResponse.FEATURE_PROTO3_OPTIONAL,
         file=[
             typing_file(pf, ImportContext(symbol_table))
             for pf in request.proto_file
             if pf.name in request.file_to_generate
-        ]
+        ],
     )
 
 
