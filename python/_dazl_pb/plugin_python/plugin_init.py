@@ -30,7 +30,8 @@ def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
             directories.add("/".join(components[:i]))
 
     return CodeGeneratorResponse(
-        file=[package_file(proto_dir, request) for proto_dir in sorted(directories)]
+        supported_features=CodeGeneratorResponse.FEATURE_PROTO3_OPTIONAL,
+        file=[package_file(proto_dir, request) for proto_dir in sorted(directories)],
     )
 
 

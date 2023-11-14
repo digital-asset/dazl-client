@@ -10,7 +10,6 @@
 package daml_lf_1_15
 
 import (
-	daml_lf_15 "github.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_15"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -126,7 +125,7 @@ func (m *ArchivePayload) GetSum() isArchivePayload_Sum {
 	return nil
 }
 
-func (x *ArchivePayload) GetDamlLf_1() *daml_lf_15.Package {
+func (x *ArchivePayload) GetDamlLf_1() *Package {
 	if x, ok := x.GetSum().(*ArchivePayload_DamlLf_1); ok {
 		return x.DamlLf_1
 	}
@@ -138,7 +137,7 @@ type isArchivePayload_Sum interface {
 }
 
 type ArchivePayload_DamlLf_1 struct {
-	DamlLf_1 *daml_lf_15.Package `protobuf:"bytes,2,opt,name=daml_lf_1,json=damlLf1,proto3,oneof"`
+	DamlLf_1 *Package `protobuf:"bytes,2,opt,name=daml_lf_1,json=damlLf1,proto3,oneof"`
 }
 
 func (*ArchivePayload_DamlLf_1) isArchivePayload_Sum() {}
@@ -271,10 +270,10 @@ func file_com_daml_daml_lf_1_15_daml_lf_proto_rawDescGZIP() []byte {
 var file_com_daml_daml_lf_1_15_daml_lf_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_com_daml_daml_lf_1_15_daml_lf_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_com_daml_daml_lf_1_15_daml_lf_proto_goTypes = []interface{}{
-	(HashFunction)(0),          // 0: daml_lf_1_15.HashFunction
-	(*ArchivePayload)(nil),     // 1: daml_lf_1_15.ArchivePayload
-	(*Archive)(nil),            // 2: daml_lf_1_15.Archive
-	(*daml_lf_15.Package)(nil), // 3: daml_lf_1.Package
+	(HashFunction)(0),      // 0: daml_lf_1_15.HashFunction
+	(*ArchivePayload)(nil), // 1: daml_lf_1_15.ArchivePayload
+	(*Archive)(nil),        // 2: daml_lf_1_15.Archive
+	(*Package)(nil),        // 3: daml_lf_1.Package
 }
 var file_com_daml_daml_lf_1_15_daml_lf_proto_depIdxs = []int32{
 	3, // 0: daml_lf_1_15.ArchivePayload.daml_lf_1:type_name -> daml_lf_1.Package

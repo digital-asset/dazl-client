@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from io import StringIO
+from os.path import commonprefix
 import re
 from typing import Collection, DefaultDict, Dict, Iterable, Mapping, Sequence, Set, Union
 
@@ -60,7 +61,7 @@ class ImportContext:
                 # we don't need to include imports to our own file
                 continue
 
-            elif from_.startswith("com.daml."):
+            elif from_.startswith("com.daml.") or from_.startswith("com.digitalasset."):
                 # rewrite our own imports as relative imports
                 relative_imports[relative_package(relative_to, from_)] = imports_
 
@@ -159,10 +160,16 @@ def rewrite_import(parent_module: str, line: str) -> str:
         module_name = result.group(1)
         identifier_name = result.group(2)
         local_name = result.group(3)
-        if module_name.startswith("google."):
-            # don't rewrite Google imports; simply do nothing
-            return line
+
         if module_name == parent_module:
             return f"from . import {identifier_name} as {local_name}\n"
+        elif module_name.startswith("com.digitalasset.") or module_name.startswith("com.daml."):
+            module_components = module_name.split(".")
+            parent_components = parent_module.split(".")
+
+            prefix_len = len(commonprefix((module_components, parent_components)))
+            dots_up = len(parent_components) - prefix_len
+
+            return f"from .{dots_up * '.'}{'.'.join(module_components[prefix_len:])} import {identifier_name} as {local_name}\n"
 
     return line

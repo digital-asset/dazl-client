@@ -8,12 +8,24 @@
 
 from __future__ import annotations
 
+import sys
 from argparse import ArgumentParser
-from collections import defaultdict
 import io
 import os
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Collection, Optional, Sequence, Set, TextIO, Tuple, Union
+from typing import (
+    Collection,
+    Optional,
+    Sequence,
+    Set,
+    TextIO,
+    Union,
+    Literal,
+    List,
+    Iterator,
+    Mapping,
+)
 from urllib.request import urlretrieve
 
 __all__ = ["Protos"]
@@ -24,17 +36,86 @@ root_dir = Path(__file__).absolute().parent.parent.parent
 default_cache_dir = root_dir / ".cache"
 
 
+# region Data Types
+
+
+@dataclass(frozen=True)
+class ProtobufManifest:
+    version: str
+    entries: Sequence[ProtobufManifestEntry]
+
+    def dir_entries(self) -> Iterator[ProtobufManifestDir]:
+        for entry in self.entries:
+            if isinstance(entry, ProtobufManifestDir):
+                yield entry
+
+    def file_entries(
+        self, source: Literal[None, "canton", "daml"] = None
+    ) -> Iterator[ProtobufManifestFile]:
+        for entry in self.entries:
+            if isinstance(entry, ProtobufManifestFile):
+                if source is None or source == entry.source:
+                    yield entry
+
+
+@dataclass(frozen=True)
+class ProtobufManifestDir:
+    path: str
+
+    def __str__(self):
+        return f"dir {self.path}"
+
+
+@dataclass(frozen=True)
+class ProtobufManifestFile:
+    file_type: Literal["pb", "grpc"]
+    source: Literal["canton", "daml"]
+    path: str
+
+    def __str__(self) -> str:
+        return f"file {self.file_type} {self.source} {self.path}"
+
+
+ProtobufManifestEntry = Union[ProtobufManifestDir, ProtobufManifestFile]
+
+
+# endregion
+
+
+class ProtobufArchives:
+    def __init__(self, version: str, canton_zip: Path, daml_zip: Path):
+        self.canton_zip = ZipFile(canton_zip)
+        self.daml_zip = ZipFile(daml_zip)
+        self.manifest = manifest_from_zip_files(version, self.canton_zip, self.daml_zip)
+        self.canton_files = canton_proto_files(self.canton_zip.namelist())
+        self.daml_files = daml_proto_files(self.daml_zip.namelist())
+
+        for k, v in self.canton_files.items():
+            print(k, " -> ", v)
+        for k, v in self.daml_files.items():
+            print(k, " -> ", v)
+
+    def __enter__(self) -> ProtobufArchives:
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.canton_zip.close()
+        self.daml_zip.close()
+
+
 class Protos:
     """
     Simple app to download, list, and update the Protobuf files that are used to generate parts of dazl.
     """
+
+    kind: Optional[str]
 
     def __init__(self, cache_dir: Union[str, os.PathLike] = default_cache_dir):
         self.cache_dir = os.fspath(cache_dir)
         self.manifest_file = os.fspath(Path(__file__).absolute().parent / "daml-connect.conf")
         if os.path.exists(self.manifest_file):
             with open(self.manifest_file, "r") as f:
-                self.cached_manifest = ProtobufManifest.from_conf_file(f)
+                self.cached_manifest = manifest_from_conf_file(f)
             self.version = self.cached_manifest.version
         else:
             self.cached_manifest = None
@@ -82,12 +163,22 @@ class Protos:
         manifest = self.cached_manifest
         if manifest is None:
             self.download()
-            with ZipFile(self.protobufs_zip_path) as z:
-                manifest = ProtobufManifest.from_zip_file(self.version, z)
+            with (
+                ZipFile(self.protobufs_download_path / self.canton_distro_file_name) as canton_zip,
+                ZipFile(self.protobufs_download_path / self.daml_protobufs_file_name) as daml_zip,
+            ):
+                manifest = manifest_from_zip_files(self.version, canton_zip, daml_zip)
 
-        for k, p in manifest.paths:
-            if self.kind is None or self.kind == k:
-                print(p)
+        for entry in manifest.entries:
+            if self.kind == "dir":
+                if isinstance(entry, ProtobufManifestDir):
+                    print(entry.path)
+            elif self.kind == "pb":
+                if isinstance(entry, ProtobufManifestFile) and entry.file_type == "pb":
+                    print(entry.path)
+            elif self.kind == "grpc":
+                if isinstance(entry, ProtobufManifestFile) and entry.file_type == "grpc":
+                    print(entry.path)
 
     def unpack(self):
         """
@@ -103,38 +194,103 @@ class Protos:
         self.download()
 
         self.protobufs_output_path.mkdir(parents=True, exist_ok=True)
-        with ZipFile(self.protobufs_zip_path) as z:
-            manifest = ProtobufManifest.from_zip_file(self.version, z)
-
+        with ProtobufArchives(
+            self.cached_manifest.version,
+            self.protobufs_download_path / self.canton_distro_file_name,
+            self.protobufs_download_path / self.daml_protobufs_file_name,
+        ) as archives:
             # first, create all of our necessary directories
-            for (kind, path) in manifest.paths:
-                if kind == "dir":
-                    (self.protobufs_output_path / path).mkdir(exist_ok=True)
+            for entry in archives.manifest.dir_entries():
+                (self.protobufs_output_path / entry.path).mkdir(exist_ok=True)
 
-            for (kind, path) in manifest.paths:
-                if kind in ("pb", "grpc"):
-                    with z.open(f"protos-{manifest.version}/{path}") as r, io.TextIOWrapper(
-                        r
-                    ) as buf_in, (self.protobufs_output_path / path).open("w") as buf_out:
-                        for line in buf_in:
-                            # insert a line after option java_package that specifies the go_package
+            for short_name, zip_name in archives.canton_files.items():
+                with (
+                    archives.canton_zip.open(zip_name) as r,
+                    io.TextIOWrapper(r) as buf_in,
+                    (self.protobufs_output_path / short_name).open("w") as buf_out,
+                ):
+                    # slightly rewrite Protobuf files to make them more amenable
+                    # to our own codegen process
+                    for line in buf_in:
+                        if line.strip().startswith("None = "):
+                            # the gRPC Python code generator spits out invalid Python
+                            # code when fields are called None, so rename fields that
+                            # we encounter that are called None
+                            buf_out.write(line.replace("None", "None_"))
+                        elif (
+                            line.strip()
+                            == 'import "com/digitalasset/canton/topology/admin/v0/topology_ext.proto";'
+                        ):
+                            # this import needs to be rewritten because we move this
+                            # file around in order to make its package name match
+                            buf_out.write(
+                                'import "com/digitalasset/canton/protocol/v0/topology_ext.proto";\n'
+                            )
+                        elif (
+                            line.strip()
+                            == 'import "com/digitalasset/canton/time/admin/v0/domain_time_service.proto";'
+                        ):
+                            # this import needs to be rewritten because we move this
+                            # file around in order to make its package name match
+                            buf_out.write(
+                                'import "com/digitalasset/canton/domain/api/v0/domain_time_service.proto";\n'
+                            )
+                        elif "scalapb" in line:
+                            # scalapb imports must be ignored, because we don't have
+                            # those proto files handy (and they're not actually required
+                            # for our own purpsoes too)
+                            pass
+                        else:
+                            # write all other lines as-is, but also look for the
+                            # java_package directive as a hint for where we write our
+                            # own things
                             buf_out.write(line)
-                            if line.startswith("option java_package = "):
-                                java_pkg = line.partition('"')[2].rpartition('"')[0]
-                                go_pkg = (
-                                    "github.com/digital-asset/dazl-client/v7/go/api/"
-                                    + java_pkg.replace(".", "/")
-                                )
+                            if line.startswith("package "):
+                                _, _, proto_pkg = line.partition(" ")
+                                proto_pkg = proto_pkg.strip().replace(";", "")
+                                if (
+                                    short_name
+                                    == "com/digitalasset/canton/domain/admin/v0/sequencer_initialization_service.proto"
+                                ):
+                                    # avoid import cycles
+                                    go_pkg = "github.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/admin/v0/sequencerinitializationservice"
+                                else:
+                                    go_pkg = (
+                                        "github.com/digital-asset/dazl-client/v7/go/api/"
+                                        + proto_pkg.replace(".", "/")
+                                    )
+
                                 buf_out.write(f'option go_package = "{go_pkg}";\n')
+
+            for short_name, zip_name in archives.daml_files.items():
+                with (
+                    archives.daml_zip.open(zip_name) as r,
+                    io.TextIOWrapper(r) as buf_in,
+                    (self.protobufs_output_path / short_name).open("w") as buf_out,
+                ):
+                    for line in buf_in:
+                        buf_out.write(line)
+                        if line.startswith("option java_package = "):
+                            java_pkg = line.partition('"')[2].rpartition('"')[0]
+                            go_pkg = (
+                                "github.com/digital-asset/dazl-client/v7/go/api/"
+                                + java_pkg.replace(".", "/")
+                            )
+                            buf_out.write(f'option go_package = "{go_pkg}";\n')
 
     def download(self) -> None:
         """
         Download the Protobuf files for a particular Daml Connect version to a local cache directory.
         """
-        if not self.protobufs_zip_path.exists():
-            self.protobufs_zip_path.parent.mkdir(parents=True, exist_ok=True)
-            url = f"https://github.com/digital-asset/daml/releases/download/v{self.version}/{self.protobufs_file_name}"
-            urlretrieve(url, self.protobufs_zip_path)
+        if not (self.protobufs_download_path / self.canton_distro_file_name).exists():
+            self.protobufs_download_path.mkdir(parents=True, exist_ok=True)
+            url = f"https://github.com/digital-asset/canton/releases/download/v{self.version}/{self.canton_distro_file_name}"
+            urlretrieve(url, self.protobufs_download_path / self.canton_distro_file_name)
+
+        if not (self.protobufs_download_path / self.daml_protobufs_file_name).exists():
+            self.protobufs_download_path.mkdir(parents=True, exist_ok=True)
+            url = f"https://github.com/digital-asset/daml/releases/download/v{self.version}/{self.daml_protobufs_file_name}"
+            urlretrieve(url, self.protobufs_download_path / self.daml_protobufs_file_name)
 
     def update(self) -> None:
         """
@@ -144,19 +300,26 @@ class Protos:
         """
         self.download()
 
-        with ZipFile(self.protobufs_zip_path) as z:
-            manifest = ProtobufManifest.from_zip_file(self.version, z)
+        with (
+            ZipFile(self.protobufs_download_path / self.canton_distro_file_name) as canton_zip,
+            ZipFile(self.protobufs_download_path / self.daml_protobufs_file_name) as daml_zip,
+        ):
+            manifest = manifest_from_zip_files(self.version, canton_zip, daml_zip)
 
         with open(self.manifest_file, "w") as buf:
-            manifest.dump(buf)
+            dump_manifest(manifest, buf)
 
     @property
-    def protobufs_file_name(self) -> str:
+    def canton_distro_file_name(self) -> str:
+        return f"canton-open-source-{self.version}.zip"
+
+    @property
+    def daml_protobufs_file_name(self) -> str:
         return f"protobufs-{self.version}.zip"
 
     @property
-    def protobufs_zip_path(self) -> Path:
-        return Path(self.cache_dir) / "download" / self.protobufs_file_name
+    def protobufs_download_path(self) -> Path:
+        return Path(self.cache_dir) / "download"
 
     @property
     def protobufs_output_path(self) -> Path:
@@ -170,7 +333,7 @@ def get_doc(fn):
             return line
 
 
-def detect_file_kind(buf: TextIO) -> str:
+def detect_file_kind(buf: TextIO) -> Literal["pb", "grpc"]:
     for line in buf:
         if line.lstrip().startswith("service "):
             return "grpc"
@@ -216,65 +379,134 @@ def detect_daml_lf_dir(paths: Collection[str]) -> Optional[str]:
         return None
 
 
-class ProtobufManifest:
-    @classmethod
-    def from_zip_file(cls, version: str, protobufs_zip: ZipFile):
-        paths_by_kind = defaultdict(set)
+def manifest_from_zip_files(
+    version: str, canton_zip: ZipFile, daml_zip: ZipFile
+) -> ProtobufManifest:
+    file_entries = set()  # type: Set[ProtobufManifestFile]
 
-        daml_lf_dir = detect_daml_lf_dir(protobufs_zip.namelist())
-        for name in protobufs_zip.namelist():
-            _, _, truncated_path = name.partition("/")
+    for short_name, zip_name in canton_proto_files(canton_zip.namelist()).items():
+        with canton_zip.open(zip_name, "r") as f:
+            with io.TextIOWrapper(f) as buf:
+                kind = detect_file_kind(buf)
+        file_entries.add(ProtobufManifestFile(kind, "canton", short_name))
 
-            if truncated_path.startswith("com/daml/ledger/api/v1/"):
-                with protobufs_zip.open(name, "r") as f:
-                    with io.TextIOWrapper(f) as buf:
-                        kind = detect_file_kind(buf)
-                paths_by_kind[kind].add(truncated_path)
+    for short_name, zip_name in daml_proto_files(daml_zip.namelist()).items():
+        with daml_zip.open(zip_name, "r") as f:
+            with io.TextIOWrapper(f) as buf:
+                kind = detect_file_kind(buf)
+        file_entries.add(ProtobufManifestFile(kind, "daml", short_name))
 
-            elif truncated_path.startswith(daml_lf_dir):
-                paths_by_kind["pb"].add(truncated_path)
+    unique_dirs = {parent_dir for entry in file_entries for parent_dir in parent_dirs(entry.path)}
+    return ProtobufManifest(
+        version=version,
+        entries=tuple(
+            sorted(
+                (*file_entries, *(ProtobufManifestDir(d) for d in unique_dirs)),
+                key=lambda e: e.path,
+            )
+        ),
+    )
 
-        # find all of the unique directories and their parents
-        paths_by_kind["dir"] = {
-            parent_dir
-            for paths in paths_by_kind.values()
-            for path in paths
-            for parent_dir in parent_dirs(path)
-        }
-        return cls(
-            version, [(kind, path) for kind, paths in paths_by_kind.items() for path in paths]
-        )
 
-    @classmethod
-    def from_conf_file(cls, buf: TextIO):
-        version = None
-        paths = []
+def manifest_from_conf_file(buf: TextIO) -> ProtobufManifest:
+    """
+    Parse a manifest.conf file
+    """
+    version = None  # type: Optional[str]
+    entries = []  # type: List[ProtobufManifestEntry]
 
-        for line in buf:
-            if not line.startswith("#"):
-                k, _, p = line.rstrip().partition(" ")
-                if k == "version":
-                    version = p
-                else:
-                    paths.append((k, p))
+    for line in buf:
+        if line.startswith("#"):
+            continue
+        elif line.startswith("version "):
+            _, _, version = line.rstrip().partition(" ")
+        elif line.startswith("file "):
+            args = line.rstrip().split(" ", maxsplit=4)
+            try:
+                entries.append(ProtobufManifestFile(args[1], args[2], args[3]))
+            except TypeError:
+                print(args)
+                raise
+        elif line.startswith("dir "):
+            entries.append(ProtobufManifestDir(line.rstrip()))
 
-        return cls(version, paths)
+    if version is not None:
+        return ProtobufManifest(version, entries)
+    else:
+        raise ValueError("couldn't find a version line")
 
-    def __init__(self, version: str, paths: Sequence[Tuple[str, str]]):
-        self.version = version
-        self.paths = tuple(sorted(paths, key=lambda t: t[1]))
 
-    def dump(self, buf: TextIO) -> None:
-        for line in (root_dir / "COPYRIGHT").read_text().splitlines():
-            buf.write(f"# {line}\n")
-        buf.write("#\n")
-        buf.write("# This file is automatically generated. To regenerate, run\n")
-        buf.write(f"#     _build/daml-connect/protos.py update {self.version}\n")
-        buf.write(f"version {self.version}\n")
+def canton_proto_files(zip_file_names: Collection[str]) -> Mapping[str, str]:
+    """
+    Return paths to Canton protobuf/gRPC files that are interesting for code generation.
+    The key is the "short" file path (starting with com/digitalasset) and the value is
+    the full file path as it exists in the Canton .zip file distribution.
+    """
+    file_names = {}
+    for name in zip_file_names:
+        components = name.split("/")
+        short_name = "/".join(name.split("/")[3:])
 
-        # for convenience and determinism, sort the remaining lines by file name
-        for line_tuple in sorted(self.paths, key=lambda t: t[1]):
-            buf.write(f"{' '.join(line_tuple)}\n")
+        if short_name == "com/digitalasset/canton/topology/admin/v0/topology_ext.proto":
+            # this file has a different package name from its file location for historical
+            # reasons, but leaving it like this breaks Python codegen because it has
+            # an expectation that these lines match
+            file_names["com/digitalasset/canton/protocol/v0/topology_ext.proto"] = name
+
+        elif short_name == "com/digitalasset/canton/time/admin/v0/domain_time_service.proto":
+            file_names["com/digitalasset/canton/domain/api/v0/domain_time_service.proto"] = name
+
+        elif (
+            components[1] == "protobuf"
+            and components[-1].endswith(".proto")
+            and not name.endswith("package.proto")
+        ):
+            # grab everything in the */protobuf directory that is a Protobuf file except
+            # for the package.proto files, since those are just configuration for
+            # Scala code generation, and that doesn't apply here
+            file_names[short_name] = name
+    return file_names
+
+
+def daml_proto_files(zip_file_names: Collection[str]) -> Mapping[str, str]:
+    """
+    Return paths to Daml protobuf/gRPC files that are interesting for code generation.
+    The key is the "short" file path (starting with com/daml) and the value is
+    the full file path as it exists in the Canton .zip file distribution.
+
+    :param zip_file_names:
+        The names of files inside the Daml protobuf distribution.
+    """
+    file_names = {}
+
+    daml_lf_dir = detect_daml_lf_dir(zip_file_names)
+    if daml_lf_dir is None:
+        print(zip_file_names)
+        raise ValueError("could not detect daml_lf_dir")
+    for name in zip_file_names:
+        short_name = "/".join(name.split("/")[1:])
+
+        if short_name.startswith("com/daml/ledger/api/v1/") and short_name.endswith(".proto"):
+            # Ledger API protos
+            file_names[short_name] = name
+        elif short_name.startswith(daml_lf_dir) and short_name.endswith(".proto"):
+            # Daml-LF protos
+            file_names[short_name] = name
+
+    return file_names
+
+
+def dump_manifest(manifest: ProtobufManifest, buf: TextIO) -> None:
+    for line in (root_dir / "COPYRIGHT").read_text().splitlines():
+        buf.write(f"# {line}\n")
+    buf.write("#\n")
+    buf.write("# This file is automatically generated. To regenerate, run\n")
+    buf.write(f"#     _build/daml-connect/protos.py update {manifest.version}\n")
+    buf.write(f"version {manifest.version}\n")
+
+    # for convenience and determinism, sort the remaining lines by file name
+    for line_tuple in manifest.entries:
+        buf.write(f"{line_tuple}\n")
 
 
 def parent_dirs(p: str) -> Sequence[str]:
