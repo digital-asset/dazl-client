@@ -126,7 +126,7 @@ def run_plugin_built_in(plugin_name: str, request: CodeGeneratorRequest) -> Code
 
 
 def run_plugin_external(plugin_name: str, request: CodeGeneratorRequest) -> CodeGeneratorResponse:
-    args = ["protoc-gen-" + plugin_name]  # type: List[str]
+    args = [".cache/bin/protoc-gen-" + plugin_name]  # type: List[str]
     proc = subprocess.run(args, input=request.SerializeToString(), capture_output=True)  # type: ignore
 
     response = CodeGeneratorResponse()
