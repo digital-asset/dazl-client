@@ -11,6 +11,7 @@ __all__ = ["run_plugin"]
 
 
 def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
+    request.parameter = "paths=source_relative"
     # the default Go plugin already seems to respect copyright headers, so we don't actually
     # need to make any changes to the generated code
     return protoc.run_plugin("go", request)

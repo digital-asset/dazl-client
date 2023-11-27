@@ -12,5 +12,6 @@ __all__ = ["run_plugin"]
 
 
 def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
-    response = protoc.run_plugin("grpc_go", request)
+    request.parameter = "paths=source_relative"
+    response = protoc.run_plugin("go-grpc", util.services_only(request))
     return util.with_file_header(response, HEADER)

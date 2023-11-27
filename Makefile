@@ -43,32 +43,13 @@ go_src_gen_pb := $(foreach d,$(proto_rel_pb),$(go_src_gen_root)/$(d:.proto=.pb.g
 go_src_gen_grpc := $(foreach d,$(proto_rel_grpc),$(go_src_gen_root)/$(d:.proto=_grpc.pb.go))
 go_src_gen := $(go_src_gen_pb) $(go_src_gen_grpc)
 
-go_tmp_gen_root := .cache/go-gen
-
 # go: run all source generation
 .PHONY: go-gen
 go-gen: $(go_src_gen)
-
-# go: Protobuf generated code (non-gRPC)
-$(go_src_gen_pb): $(go_src_gen_root)/%: $(go_tmp_gen_root)/% COPYRIGHT
-	@mkdir -p $(@D)
-	cp $< $@
-
-$(foreach d,$(proto_rel_pb),$(go_tmp_gen_root)/$(d:.proto=.pb.go)): .cache/witnesses/go-pb
-.cache/witnesses/go-pb: .cache/bin/protoc-gen-go $(proto_src_pb)
-	@mkdir -p $(go_tmp_gen_root)
-	PATH=.cache/bin:"${PATH}" $(protoc) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative $(proto_src_pb)
-
-# go: Protobuf generated code (gRPC)
-#  NOTE: Go's gRPC-generated code does NOT include a copyright, so we need to add that ourselves
-$(go_src_gen_grpc): $(go_src_gen_root)/%: $(go_tmp_gen_root)/% COPYRIGHT
-	@mkdir -p $(@D)
-	{ sed 's/^/\/\/ /' COPYRIGHT ; cat $< ; } > $@
-
-$(foreach d,$(proto_rel_grpc),$(go_tmp_gen_root)/$(d:.proto=_grpc.pb.go)): .cache/witnesses/go-grpc
-.cache/witnesses/go-grpc: .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc $(proto_src_grpc) .cache/witnesses/proto
-	@mkdir -p $(go_tmp_gen_root)
-	PATH=.cache/bin:"${PATH}" $(protoc) -I$(proto_dir) --go_out=$(go_tmp_gen_root) --go_opt=paths=source_relative --go-grpc_out=$(go_tmp_gen_root) --go-grpc_opt=paths=source_relative $(proto_src_grpc)
+$(go_src_gen) &: .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc $(proto_src_pb) $(proto_src_grpc) .cache/witnesses/proto COPYRIGHT
+	@rm -fr $(go_src_gen_root)
+	@mkdir -p $(go_src_gen_root)
+	$(protoc) -I$(proto_dir) --dazl-go_out=$(go_src_gen_root) $(proto_src_pb)
 
 .cache/bin/protoc-gen-go:
 	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27.1
@@ -125,7 +106,7 @@ python-typecheck: .venv/poetry.lock
 $(py_sdist) $(py_bdist) &: $(py_src)
 	poetry build
 
-# python: Protobuf generated code (non-gRPC)
+# python: Protobuf generated code
 $(py_src_gen): $(py_src_gen_root)/%: .cache/witnesses/python
 .cache/witnesses/python: .venv/poetry.lock .cache/witnesses/proto
 	@mkdir -p $(@D)
@@ -223,5 +204,3 @@ $(docs_html_tgz): .venv/poetry.lock $(docs_src)
 $(docs_markdown_tgz): .venv/poetry.lock $(docs_src)
 	poetry run sphinx-build -b markdown docs $(docs_markdown_dir)
 	(cd dist && tar czf $(@F) $(notdir $(docs_markdown_dir)))
-
-

@@ -28,11 +28,16 @@ def with_file_header(response: CodeGeneratorResponse, header: str) -> CodeGenera
 def services_only(request: CodeGeneratorRequest) -> CodeGeneratorRequest:
     """
     Create a :class:`CodeGeneratorRequest` with the non-gRPC files stripped out (those without
-    ``service`` declarations. The original request is not modified.
+    ``service`` declarations). The original request is not modified.
     """
-    # include all of the Protobuf files, but restrict the list of "files_to_generate"
+    # include all the Protobuf files, but restrict the list of "files_to_generate" to those
+    # with at least one defined gRPC service
     files_with_services = {f.name for f in request.proto_file if len(f.service) > 0}
-    return CodeGeneratorRequest(
+    rewritten_request = CodeGeneratorRequest(
         proto_file=request.proto_file,
         file_to_generate=[f for f in request.file_to_generate if f in files_with_services],
+        compiler_version=request.compiler_version,
     )
+    if request.HasField("parameter"):
+        rewritten_request.parameter = request.parameter
+    return rewritten_request
