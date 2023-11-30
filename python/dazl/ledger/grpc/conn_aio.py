@@ -183,14 +183,23 @@ class Connection(aio.Connection):
             return
         elif isinstance(commands, Command):
             commands = [commands]
+
+        if len(commands) == 0:
+            return
+
         retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
             workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
         )
-        commands = await asyncio.gather(*map(self._codec.encode_command, commands))
-        request = self._submit_and_wait_request(commands, meta)
+
+        if len(commands) == 1:
+            command_seq = [await self._codec.encode_command(commands[0])]
+        else:
+            command_seq = await asyncio.gather(*map(self._codec.encode_command, commands))
+
+        request = self._submit_and_wait_request(command_seq, meta)
         await retry(
             lambda: stub.SubmitAndWait(request, timeout=retry_timeout.total_seconds()),
             timeout=retry_timeout,
