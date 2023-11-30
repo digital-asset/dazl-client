@@ -19,6 +19,7 @@ from typing import (
     Dict,
     List,
     Optional,
+    Sequence,
     Set,
     Tuple,
     TypeVar,
@@ -514,7 +515,7 @@ class _NetworkRunner:
         LOG.info("network_run: finished.")
         self._writers = []
 
-    async def beat(self, party_impls: Collection[_PartyClientImpl]) -> Tuple[Optional[str], bool]:
+    async def beat(self, party_impls: Sequence[_PartyClientImpl], /) -> Tuple[Optional[str], bool]:
         """
         Called periodically to schedule reads and writes.
         """

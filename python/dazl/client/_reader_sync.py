@@ -9,7 +9,7 @@ as practical.
 from __future__ import annotations
 
 from asyncio import Future, ensure_future, gather, sleep
-from typing import TYPE_CHECKING, Collection, List, Optional, Tuple
+from typing import TYPE_CHECKING, Collection, List, Optional, Sequence, Tuple
 
 from .. import LOG
 from ..util.asyncio_util import completed, named_gather
@@ -19,8 +19,8 @@ if TYPE_CHECKING:
 
 
 async def run_iteration(
-    party_impls: "Collection[_PartyClientImpl]",
-) -> "Tuple[Optional[str], Collection[Future]]":
+    party_impls: Sequence[_PartyClientImpl], /
+) -> Tuple[Optional[str], Sequence[Future]]:
     """
     Read the next set of transactions for the set of parties. This coroutine ends when all
     parties are caught up to the same offset.
@@ -87,7 +87,7 @@ async def read_initial_acs(party_impls: Collection[_PartyClientImpl]) -> Optiona
 
 
 async def read_transaction_event_stream(
-    party_impls: Collection[_PartyClientImpl],
+    party_impls: Sequence[_PartyClientImpl], /
 ) -> Optional[str]:
     LOG.info("Reading current ledger state...")
     if not party_impls:
@@ -101,8 +101,8 @@ async def read_transaction_event_stream(
 
 
 async def read_transactions(
-    party_impls: Collection[_PartyClientImpl], until_offset: Optional[str], raise_events: bool
-) -> Tuple[Collection[str], Future]:
+    party_impls: Sequence[_PartyClientImpl], /, until_offset: Optional[str], raise_events: bool
+) -> Tuple[Sequence[Optional[str]], Future]:
     """
     Read transactions from a collection of PartyImpls.
 
@@ -111,12 +111,12 @@ async def read_transactions(
     :param raise_events:
     :return:
         A tuple containing:
-         * a set of the offsets returned from all readers, and
+         * the offsets returned from all readers, and
          * a Future that is resolved when all events across all readers have resolved either
            successfully or unsuccessfully.
     """
     tuples = await gather(*(pi.read_transactions(until_offset, raise_events) for pi in party_impls))
-    offsets = sorted({t[0] for t in tuples})
+    offsets = [t[0] for t in tuples]
     futures = [ensure_future(t[1]) for t in tuples]
     futures = [fut for fut in futures if not fut.done()]
     if not futures:

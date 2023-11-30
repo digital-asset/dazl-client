@@ -7,7 +7,7 @@ proto_dir := $(cache_dir)/protos
 python := poetry run python3
 protoc := poetry run python3 -m _dazl_pb.protoc
 
-version := $(shell python3 -c "import configparser; config = configparser.ConfigParser(); config.read('pyproject.toml'); print(config['tool.poetry']['version'][1:-1])")
+version := $(strip $(shell cat VERSION))
 docs_src := $(shell find docs -name '*.rst') $(py_src)
 docs_html_dir := dist/dazl-docs-$(version)-html
 docs_html_tgz := $(docs_html_dir).tar.gz
