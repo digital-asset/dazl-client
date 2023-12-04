@@ -3,9 +3,7 @@
 
 from __future__ import annotations
 
-from ..protoc import protoc_plugin
-from .plugin import run_all_plugins
+from .go import go_files
+from .python import python_files
 
-__all__ = ["main"]
-
-main = protoc_plugin(run_all_plugins)
+__all__ = ["python_files", "go_files"]

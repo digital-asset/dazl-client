@@ -3,9 +3,8 @@
 
 from __future__ import annotations
 
-from ..protoc import protoc_plugin
-from .plugin import run_all_plugins
+"""
+Internal utilities for maintaining this codebase.
 
-__all__ = ["main"]
-
-main = protoc_plugin(run_all_plugins)
+The symbols in this module are NOT part of the public APIs, and will be changed without notice!
+"""
