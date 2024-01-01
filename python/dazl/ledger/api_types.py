@@ -21,6 +21,7 @@ from typing import (
 import uuid
 
 from .. import _repr
+from .._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
 from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_parties
@@ -619,13 +620,23 @@ class User:
     Full information about a ``User``.
     """
 
-    __slots__ = ("id", "primary_party")
+    __slots__ = ("id", "primary_party", "resource_version", "annotations")
     id: str
     primary_party: Party
+    resource_version: Optional[str]
+    annotations: Optional[Mapping[str, str]]
 
-    def __init__(self, id: str, primary_party: Party):
+    def __init__(
+        self,
+        id: str,
+        primary_party: Party,
+        resource_version: Optional[str] = None,
+        annotations: Optional[Mapping[str, str]] = None,
+    ):
         self.id = id
         self.primary_party = primary_party
+        self.resource_version = resource_version
+        self.annotations = annotations
 
 
 class Right(abc.ABC):

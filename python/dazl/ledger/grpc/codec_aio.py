@@ -231,7 +231,13 @@ class Codec:
 
     @staticmethod
     def encode_user(user: User, /) -> lapiadminpb.User:
-        return lapiadminpb.User(id=user.id, primary_party=user.primary_party)
+        return lapiadminpb.User(
+            id=user.id,
+            primary_party=user.primary_party,
+            metadata=lapiadminpb.ObjectMeta(
+                resource_version=user.resource_version, annotations=user.annotations
+            ),
+        )
 
     @staticmethod
     def encode_right(right: Right, /) -> lapiadminpb.Right:
@@ -382,7 +388,12 @@ class Codec:
 
     @staticmethod
     def decode_user(user: lapiadminpb.User, /) -> User:
-        return User(id=user.id, primary_party=Party(user.primary_party))
+        return User(
+            id=user.id,
+            primary_party=Party(user.primary_party),
+            resource_version=user.metadata.resource_version,
+            annotations=dict(user.metadata.annotations),
+        )
 
     @staticmethod
     def decode_right(right: lapiadminpb.Right, /) -> Right:
