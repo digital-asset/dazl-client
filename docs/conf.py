@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 import dazl
@@ -38,7 +38,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "dazl"
-copyright = "2017-2023, Digital Asset"
+copyright = "2017-2024, Digital Asset"
 author = "Digital Asset"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -55,7 +55,7 @@ release = dazl.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'en'
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
