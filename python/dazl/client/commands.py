@@ -15,7 +15,7 @@ import warnings
 
 from ..damlast import TypeConName
 from ..ledger import Command, CreateAndExerciseCommand, CreateCommand, ExerciseCommand
-from ..ledger.api_types import Commands
+from ..ledger.api_types import Commands, is_command
 from ..prim import ContractData, ContractId, Party
 
 __all__ = [
@@ -214,16 +214,16 @@ def flatten_command_sequence(commands: Sequence[Commands]) -> List[Command]:
 
     for i, obj in enumerate(commands):
         if obj is not None:
-            if isinstance(obj, Command):
+            if is_command(obj):
                 ret.append(obj)
             else:
                 try:
-                    cmd_iter = iter(obj)
+                    cmd_iter = iter(obj)  # type: ignore
                 except TypeError:
                     errors.append(((i,), obj))
                     continue
                 for j, cmd in enumerate(cmd_iter):
-                    if isinstance(cmd, Command):
+                    if is_command(cmd):
                         ret.append(cmd)
                     else:
                         errors.append(((i, j), cmd))

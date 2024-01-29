@@ -32,6 +32,7 @@ import warnings
 
 from .. import LOG
 from ..ledger import Command, CreateEvent, ExerciseResponse
+from ..ledger.api_types import is_command
 from ..prim import Party
 from ..protocols.events import BaseEvent
 from ..util.asyncio_util import LongRunningAwaitable, Signal, completed, failed, propagate
@@ -489,7 +490,7 @@ def wrap_as_command_submission(
 
         if ret is None:
             return completed(None)
-        elif isinstance(ret, (CommandBuilder, Command, list, tuple)):
+        elif is_command(ret) or isinstance(ret, (CommandBuilder, list, tuple)):
             try:
                 ret_fut = submit_fn(ret)
             except BaseException as exception:
@@ -523,7 +524,7 @@ def wrap_as_command_submission(
                         fut.set_result(None)
                     elif isinstance(ret, (CreateEvent, ExerciseResponse)):
                         fut.set_result(ret)
-                    elif isinstance(ret, (CommandBuilder, Command, list, tuple)):
+                    elif is_command(ret) or isinstance(ret, (CommandBuilder, list, tuple)):
                         propagate(ensure_future(submit_fn(ret)), fut)
                     elif inspect.isawaitable(ret):
                         LOG.error("A callback cannot return an Awaitable of an Awaitable")
