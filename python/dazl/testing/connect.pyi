@@ -9,7 +9,6 @@ from typing import (
     AsyncContextManager,
     BinaryIO,
     Callable,
-    Collection,
     Literal,
     Optional,
     Sequence,
@@ -19,7 +18,7 @@ from typing import (
 )
 
 from ..ledger.aio import Connection
-from ..prim import Party
+from ..prim import Parties, Party
 
 __all__ = ["connect_with_new_party"]
 NameGenFn = Callable[[int], Optional[str]]
@@ -29,8 +28,8 @@ def connect_with_new_party(
     *,
     party_count: Literal[1] = 1,
     url: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
@@ -42,8 +41,8 @@ def connect_with_new_party(
     *,
     party_count: Literal[2],
     url: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
@@ -55,8 +54,8 @@ def connect_with_new_party(
     *,
     party_count: Literal[3],
     url: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
@@ -68,8 +67,8 @@ def connect_with_new_party(
     *,
     party_count: Literal[4],
     url: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
@@ -83,8 +82,8 @@ def connect_with_new_party(
     *,
     party_count: int,
     url: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     dar: Union[None, str, bytes, PathLike, BinaryIO] = None,

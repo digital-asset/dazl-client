@@ -15,19 +15,16 @@ import warnings
 
 from ..damlast import TypeConName
 from ..ledger import Command, CreateAndExerciseCommand, CreateCommand, ExerciseCommand
+from ..ledger.api_types import Commands
 from ..prim import ContractData, ContractId, Party
 
 __all__ = [
     "CommandBuilder",
     "CommandDefaults",
     "CommandPayload",
-    "CommandsOrCommandSequence",
     "EventHandlerResponse",
     "flatten_command_sequence",
 ]
-
-
-CommandsOrCommandSequence = Union[None, Command, Sequence[Optional[Command]]]
 
 
 # noinspection PyDeprecation
@@ -121,7 +118,7 @@ class CommandBuilder:
             )
         )
 
-    def append(self, *commands: CommandsOrCommandSequence) -> CommandBuilder:
+    def append(self, *commands: Commands) -> CommandBuilder:
         """
         Append one or more commands, or list of commands to the :class:`CommandBuilder` in flight.
         This method respects the value of ``atomic_default`` that this object was constructed with.
@@ -139,11 +136,11 @@ class CommandBuilder:
         else:
             return self.append_nonatomically(*commands)
 
-    def append_atomically(self, *commands: CommandsOrCommandSequence) -> CommandBuilder:
+    def append_atomically(self, *commands: Commands) -> CommandBuilder:
         self._commands.extend([flatten_command_sequence(commands)])
         return self
 
-    def append_nonatomically(self, *commands: CommandsOrCommandSequence) -> CommandBuilder:
+    def append_nonatomically(self, *commands: Commands) -> CommandBuilder:
         self._commands.extend([[cmd] for cmd in flatten_command_sequence(commands)])
         return self
 
@@ -207,13 +204,13 @@ class CommandBuilder:
         return f"CommandBuilder({self._commands})"
 
 
-def flatten_command_sequence(commands: Sequence[CommandsOrCommandSequence]) -> List[Command]:
+def flatten_command_sequence(commands: Sequence[Commands]) -> List[Command]:
     """
     Convert a list of mixed commands, ``None``, and list of commands into an ordered sequence of
     non-``None`` commands.
     """
     ret = []  # type: List[Command]
-    errors = []  # type: List[Tuple[Sequence[int], CommandsOrCommandSequence]]
+    errors = []  # type: List[Tuple[Sequence[int], Commands]]
 
     for i, obj in enumerate(commands):
         if obj is not None:
@@ -295,4 +292,4 @@ class CommandPayload:
             )
 
 
-EventHandlerResponse = Union[CommandsOrCommandSequence, CommandBuilder]
+EventHandlerResponse = Union[None, Commands, CommandBuilder]

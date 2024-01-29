@@ -121,7 +121,7 @@ from os import PathLike
 from typing import Collection, Optional, Union
 
 from ...damlast.lookup import MultiPackageLookup
-from ...prim import Party, TimeDeltaLike
+from ...prim import Parties, Party, TimeDeltaLike
 from .access import AccessConfig, PropertyBasedAccessConfig, TokenBasedAccessConfig, create_access
 from .argv import configure_parser
 from .ssl import SSLConfig
@@ -160,8 +160,8 @@ class Config:
         host: Optional[str] = None,
         port: Optional[int] = None,
         scheme: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         admin: Optional[bool] = False,
         ledger_id: Optional[str] = None,
         application_name: Optional[str] = None,

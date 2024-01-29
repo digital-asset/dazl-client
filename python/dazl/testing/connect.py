@@ -118,7 +118,7 @@ class ConnectionWithParty:
         return 1
 
 
-def as_party_collection(p: Union[None, Party, Collection[Party]]) -> Collection[Party]:
+def as_party_collection(p: Optional[Parties]) -> Collection[Party]:
     if not p:
         return []
     elif isinstance(p, str):

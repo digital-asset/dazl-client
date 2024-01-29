@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import abc
 from datetime import datetime
+import sys
 from typing import (
     TYPE_CHECKING,
     AbstractSet,
@@ -21,11 +22,16 @@ from typing import (
 import uuid
 
 from .. import _repr
-from .._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
-from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_parties
+from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Parties, Party, to_parties
 from ..util.typing import safe_cast
+
+if sys.version_info >= (3, 11):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
+
 
 __all__ = [
     "ActAs",
@@ -34,6 +40,7 @@ __all__ = [
     "Boundary",
     "Command",
     "CommandMeta",
+    "Commands",
     "CreateAndExerciseCommand",
     "CreateCommand",
     "CreateEvent",
@@ -68,6 +75,9 @@ class Command:
         Raise :class:`AttributeError`; instances of this class are immutable.
         """
         raise AttributeError("Command instances are read-only")
+
+
+Commands: TypeAlias = Union[Command, Sequence[Command]]
 
 
 class CreateCommand(Command):
@@ -381,8 +391,8 @@ class CommandMeta:
         self,
         workflow_id: Optional[str],
         command_id: Optional[str],
-        read_as: Union[None, Party, Collection[Party]],
-        act_as: Union[None, Party, Collection[Party]],
+        read_as: Optional[Parties],
+        act_as: Optional[Parties],
     ):
         if workflow_id:
             if not LEDGER_STRING_REGEX.match(workflow_id):
