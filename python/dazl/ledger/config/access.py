@@ -26,7 +26,7 @@ from typing import (
 import warnings
 
 from ... import _repr
-from ...prim import Party
+from ...prim import Parties, Party
 from .exc import ConfigError
 
 __all__ = [
@@ -62,8 +62,8 @@ def parties_from_env(*env_vars: str) -> AbstractSet[Party]:
 #  anyway.
 def create_access(
     *,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = None,
     ledger_id: Optional[str] = None,
     application_name: Optional[str] = None,
@@ -352,8 +352,8 @@ class PropertyBasedAccessConfig(AccessConfig):
 
     def __init__(
         self,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         admin: Optional[bool] = False,
         ledger_id: Optional[str] = None,
         application_name: Optional[str] = None,
@@ -466,7 +466,7 @@ class PropertyBasedAccessConfig(AccessConfig):
         return None
 
 
-def parties(p: Union[None, Party, Collection[Party]]) -> Collection[Party]:
+def parties(p: Optional[Parties]) -> Collection[Party]:
     if p is None:
         return []
     elif isinstance(p, str):
@@ -541,9 +541,7 @@ class PartyRights(SetBase):
         self.read_as = PartyRightsSet(self, False)
         self.act_as = PartyRightsSet(self, True)
 
-    def maybe_add(
-        self, value: "Union[None, Party, Collection[Party]]", has_act_rights: bool
-    ) -> None:
+    def maybe_add(self, value: "Optional[Parties]", has_act_rights: bool) -> None:
         if value is None:
             return
 

@@ -36,6 +36,7 @@ from ...damlast.util import is_match
 from ...prim import (
     ContractData,
     ContractId,
+    Parties,
     Party,
     TimeDeltaLike,
     datetime_to_timestamp,
@@ -52,6 +53,7 @@ from ..api_types import (
     Boundary,
     Command,
     CommandMeta,
+    Commands,
     CreateEvent,
     ExerciseResponse,
     MeteringReport,
@@ -157,13 +159,13 @@ class Connection(aio.Connection):
 
     async def submit(
         self,
-        commands: Union[Command, Sequence[Command]],
+        commands: Commands,
         /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> None:
         """
@@ -213,8 +215,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> CreateEvent:
         """
@@ -268,8 +270,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ExerciseResponse:
         """
@@ -331,8 +333,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ExerciseResponse:
         """
@@ -397,8 +399,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ExerciseResponse:
         """
@@ -456,8 +458,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ArchiveEvent:
         """
@@ -501,8 +503,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ArchiveEvent:
         """
@@ -570,8 +572,8 @@ class Connection(aio.Connection):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ):
         read_as = self._read_as(read_as)
@@ -608,7 +610,7 @@ class Connection(aio.Connection):
         *,
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> QueryStream:
         """
@@ -647,7 +649,7 @@ class Connection(aio.Connection):
         *queries: Queries,
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> QueryStream:
         """
@@ -686,7 +688,7 @@ class Connection(aio.Connection):
         /,
         *,
         offset: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> QueryStream:
         """
@@ -723,7 +725,7 @@ class Connection(aio.Connection):
         self,
         *queries: Queries,
         offset: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> "QueryStream":
         """
@@ -754,7 +756,7 @@ class Connection(aio.Connection):
             self._retry_timeout(timeout),
         )
 
-    def _read_as(self, read_as: Union[None, Party, Collection[Party]] = None) -> Collection[Party]:
+    def _read_as(self, read_as: Optional[Parties] = None) -> Collection[Party]:
         if read_as is None:
             return self.config.access.read_as
         else:

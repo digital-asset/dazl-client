@@ -7,7 +7,6 @@ from datetime import datetime
 from typing import (
     AbstractSet,
     Any,
-    Collection,
     Iterator,
     Optional,
     Protocol,
@@ -23,12 +22,12 @@ from .. import (
     QueryStream as _QueryStream,
 )
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
-from ...prim import ContractData, ContractId, Party, TimeDeltaLike
+from ...prim import ContractData, ContractId, Parties, TimeDeltaLike
 from ...query import Queries, Query
 from ..api_types import (
     ArchiveEvent,
     Boundary,
-    Command,
+    Commands,
     CreateEvent,
     ExerciseResponse,
     MeteringReport,
@@ -59,13 +58,13 @@ class Connection(_Connection, PackageService, Protocol):
     def close(self) -> None: ...
     def submit(
         self,
-        commands: Union[Command, Sequence[Command]],
+        commands: Commands,
         /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> None: ...
     def create(
@@ -76,8 +75,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> CreateEvent: ...
     def exercise(
@@ -89,8 +88,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     def create_and_exercise(
@@ -103,8 +102,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     def exercise_by_key(
@@ -117,8 +116,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     def archive(
@@ -128,8 +127,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ArchiveEvent: ...
     def archive_by_key(
@@ -140,8 +139,8 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ArchiveEvent: ...
     def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = ...) -> str: ...
@@ -151,13 +150,13 @@ class Connection(_Connection, PackageService, Protocol):
         query: Query = None,
         /,
         *,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def query_many(
         self,
         *queries: Queries,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def stream(
@@ -167,14 +166,14 @@ class Connection(_Connection, PackageService, Protocol):
         /,
         *,
         offset: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def stream_many(
         self,
         *queries: Queries,
         offset: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def get_user(

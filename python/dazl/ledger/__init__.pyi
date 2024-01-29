@@ -12,7 +12,6 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
-    Collection,
     Iterator,
     Literal,
     Optional,
@@ -27,7 +26,7 @@ from typing import (
 from ..damlast import TypeConName
 from ..damlast.daml_lf_1 import PackageRef
 from ..damlast.lookup import SymbolLookup
-from ..prim import ContractData, ContractId, Party, TimeDeltaLike
+from ..prim import ContractData, ContractId, Parties, TimeDeltaLike
 from ..query import Queries, Query
 from .aio import Connection as AioConnection, QueryStream as AioQueryStream
 from .api_types import (
@@ -37,6 +36,7 @@ from .api_types import (
     Boundary,
     Command,
     CommandMeta,
+    Commands,
     CreateAndExerciseCommand,
     CreateCommand,
     CreateEvent,
@@ -123,8 +123,8 @@ def connect(
     host: Optional[str] = None,
     port: Optional[int] = None,
     scheme: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     application_name: Optional[str] = None,
@@ -153,8 +153,8 @@ def connect(
     host: Optional[str] = None,
     port: Optional[int] = None,
     scheme: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     application_name: Optional[str] = None,
@@ -183,8 +183,8 @@ def connect(
     host: Optional[str] = None,
     port: Optional[int] = None,
     scheme: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     application_name: Optional[str] = None,
@@ -213,8 +213,8 @@ def connect(
     host: Optional[str] = None,
     port: Optional[int] = None,
     scheme: Optional[str] = None,
-    read_as: Union[None, Party, Collection[Party]] = None,
-    act_as: Union[None, Party, Collection[Party]] = None,
+    read_as: Optional[Parties] = None,
+    act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
     application_name: Optional[str] = None,
@@ -260,8 +260,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Union[CreateEvent, Awaitable[CreateEvent]]: ...
     def create_and_exercise(
@@ -274,8 +274,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def exercise(
@@ -287,8 +287,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def exercise_by_key(
@@ -301,19 +301,19 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Union[ExerciseResponse, Awaitable[ExerciseResponse]]: ...
     def submit(
         self,
-        commands: Union[Command, Sequence[Command]],
+        commands: Commands,
         /,
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Union[None, Awaitable[None]]: ...
     def get_ledger_end(
@@ -326,8 +326,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Union[ArchiveEvent, Awaitable[ArchiveEvent]]: ...
     def archive_by_key(
@@ -338,8 +338,8 @@ class Connection(PackageService, Protocol):
         *,
         workflow_id: Optional[str] = None,
         command_id: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
-        act_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
+        act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Union[ArchiveEvent, Awaitable[ArchiveEvent]]: ...
     def query(
@@ -348,13 +348,13 @@ class Connection(PackageService, Protocol):
         query: Query = None,
         /,
         *,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def query_many(
         self,
         *queries: Queries,
-        read_as: Union[None, Party, Collection[Party]],
+        read_as: Optional[Parties],
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def stream(
@@ -364,14 +364,14 @@ class Connection(PackageService, Protocol):
         /,
         *,
         offset: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def stream_many(
         self,
         *queries: Queries,
         offset: Optional[str] = None,
-        read_as: Union[None, Party, Collection[Party]] = None,
+        read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def get_user(

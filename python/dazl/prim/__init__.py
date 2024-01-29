@@ -35,7 +35,7 @@ from .errors import DazlError, DazlWarning
 from .json import JSONEncoder
 from .map import FrozenDict
 from .numbers import decimal_to_str, to_decimal, to_int
-from .party import Party, to_parties, to_party
+from .party import Parties, Party, to_parties, to_party
 
 __all__ = [
     "LEDGER_STRING_REGEX",
@@ -67,6 +67,7 @@ __all__ = [
     "to_decimal",
     "to_int",
     "Party",
+    "Parties",
     "to_party",
     "to_parties",
 ]
