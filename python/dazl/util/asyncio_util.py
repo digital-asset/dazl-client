@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from asyncio import (
     AbstractEventLoop,
-    AbstractEventLoopPolicy,
     CancelledError,
     Future,
     InvalidStateError,
@@ -16,14 +15,11 @@ from asyncio import (
     ensure_future,
     gather,
     get_event_loop,
-    new_event_loop,
+    get_running_loop,
 )
 from dataclasses import dataclass
-from functools import partial, wraps
+from functools import wraps
 from inspect import isawaitable, iscoroutinefunction
-from queue import Queue
-import sys
-import threading
 from typing import (
     Any,
     Awaitable,
@@ -33,7 +29,6 @@ from typing import (
     Iterable,
     List,
     Optional,
-    Sequence,
     Tuple,
     TypeVar,
     Union,
@@ -52,81 +47,6 @@ U = TypeVar("U")
 _PENDING = "PENDING"
 _CANCELLED = "CANCELLED"
 _FINISHED = "FINISHED"
-
-
-def non_reentrant(async_fn):
-    if not iscoroutinefunction(async_fn):
-        raise ValueError("expected a coroutine function")
-
-    calls = []
-
-    @wraps(async_fn)
-    async def _wrap(*args, **kwargs):
-        if not calls:
-            calls.append(None)
-            try:
-                return await async_fn(*args, **kwargs)
-            finally:
-                calls.pop()
-        else:
-            raise InvalidStateError("calls to %r cannot be re-entrant", async_fn)
-
-    return _wrap
-
-
-def isolated_async(async_fn):
-    """
-    Wrap an async function in a thread with its own event loop.
-
-    This function runs by itself in an event loop created specifically for this object on its own thread.
-
-    This function can be used as a decorator to convert an ``async def`` method to a simple method that blocks while
-    executing the method on a background thread.
-
-    :param async_fn:
-        The ``async`` function to invoke.
-    :return:
-        A function that, when invoked, passes its parameters to the underlying function on a background thread in an
-        isolated event loop.
-    """
-    queue = Queue()
-
-    @wraps(async_fn)
-    def invoke(*args, **kwargs):
-        """
-        Invoke the wrapped ``async`` method on a background thread, passing in the specified
-        arguments, and returning the value that the wrapped method returns, or raises an Exception
-        if the ``async`` function throws.
-
-        :param args: The positional arguments to pass.
-        :param kwargs: The keyword arguments to pass.
-        :return: The value from the ``async`` function.
-        """
-        thread = threading.Thread(target=partial(_main, args, kwargs))
-        thread.start()
-        thread.join()
-
-        result, typ, value, traceback = queue.get()
-        if typ is not None:
-            # if we have exception information, then an exception was thrown; rethrow it
-            raise typ(value).with_traceback(traceback)
-
-        else:
-            # we don't have an exception, so assume the result is what we need to pass back
-            return result
-
-    def _main(args, kwargs):
-        try:
-            loop = new_event_loop()
-            result = loop.run_until_complete(async_fn(*args, **kwargs))
-            loop.close()
-
-            queue.put_nowait((result, None, None, None))
-        except:
-            typ, value, traceback = sys.exc_info()
-            queue.put_nowait((None, typ, value, traceback))
-
-    return invoke
 
 
 def await_then(awaitable: Awaitable[T_co], func: Callable[[T_co], U]) -> Awaitable[U]:
@@ -245,18 +165,14 @@ def execute_in_loop(
     return result
 
 
-def completed(value, loop=None) -> Future:
-    if loop is None:
-        loop = get_event_loop()
-    fut = loop.create_future()
+def completed(value) -> Future:
+    fut = get_event_loop().create_future()
     fut.set_result(value)
     return fut
 
 
-def failed(exception: BaseException, loop=None) -> Future:
-    if loop is None:
-        loop = get_event_loop()
-    fut = loop.create_future()
+def failed(exception: BaseException) -> Future:
+    fut = get_event_loop().create_future()
     fut.set_exception(exception)
     return fut
 
@@ -346,11 +262,9 @@ class LongRunningAwaitable:
     finished.
     """
 
-    def __init__(self, awaitables: Optional[Iterable[Awaitable[Any]]] = None):
+    def __init__(self) -> None:
         self._fut = get_event_loop().create_future()
         self._coros = []  # type: List[Awaitable[Any]]
-        if awaitables is not None:
-            self.extend(awaitables)
 
     def append(self, *awaitables: Awaitable[Any]) -> None:
         self.extend(awaitables)
@@ -506,10 +420,10 @@ class ContextFreeFuture(Awaitable[T_co]):
         to invoke :meth:`set_loop` directly.
         """
         if self.__loop is None:
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore", DeprecationWarning)
-                # noinspection PyDeprecation
+            try:
                 self.__loop = get_running_loop()
+            except RuntimeError:
+                pass
         return self.__loop
 
     def set_loop(self, loop: AbstractEventLoop) -> None:
@@ -657,92 +571,6 @@ class ContextFreeFuture(Awaitable[T_co]):
         return self.result()  # May raise too.
 
 
-class DeferredStartTask:
-    """
-    A :class:`Task`-like object that delays starting its coroutine until the :meth:`start` method is
-    called.
-    """
-
-    _asyncio_future_blocking = False
-
-    def __init__(self, cb: Callable[[], Future], start=False, name=None):
-        if not callable(cb):
-            raise ValueError("cb must be callable")
-
-        if start:
-            self._future = cb()
-            self._callback = None
-        else:
-            self._future = get_event_loop().create_future()
-            self._callback = cb
-
-        # This is required to be compatible with the interface of a Future.
-        self._loop = self._future._loop
-        self._name = name or repr(cb)
-
-    def start(self) -> None:
-        """
-        Actually invoke the underlying function (but only if it hasn't been invoked already).
-        """
-        cb = self._callback
-        if cb is not None:
-            self._callback = None
-            propagate(from_=ensure_future(cb()), to=self._future)
-
-    def started(self) -> bool:
-        return self._callback is None
-
-    def cancelled(self) -> bool:
-        return self._future.cancelled()
-
-    def cancel(self) -> bool:
-        self._callback = None
-        return self._future.cancel()
-
-    def result(self) -> Any:
-        return self._future.result()
-
-    def done(self) -> bool:
-        return self._future.done()
-
-    def exception(self) -> Optional[BaseException]:
-        return self._future.exception()
-
-    def add_done_callback(self, callback: "Callable[[Future], Any]", context=None) -> None:
-        if context is None:
-            self._future.add_done_callback(callback)
-        else:
-            self._future.add_done_callback(callback, context=context)  # type: ignore
-
-    def __await__(self):
-        return self._future.__await__()
-
-    def __repr__(self):
-        state = self._future._state if self.started() else "NOT_STARTED"
-        return f"DeferredStartTask({self._name!r}, state={state})"
-
-
-@no_type_check
-def get_running_loop() -> Optional[AbstractEventLoop]:
-    warnings.warn(
-        "get_running_loop() is deprecated, as support for Python 3.6 will be dropped in dazl 8. "
-        "Use Python 3.7+'s asyncio.get_running_loop() instead.",
-        DeprecationWarning,
-    )
-    try:
-        from asyncio import get_running_loop
-
-        try:
-            return get_running_loop()
-        except RuntimeError:
-            return None
-    except ImportError:
-        # noinspection PyProtectedMember
-        from asyncio import _get_running_loop
-
-        return _get_running_loop()
-
-
 # noinspection PyDeprecation
 def safe_create_future():
     warnings.warn(
@@ -750,9 +578,10 @@ def safe_create_future():
         DeprecationWarning,
         stacklevel=2,
     )
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", DeprecationWarning)
+    try:
         loop = get_running_loop()
+    except RuntimeError:
+        loop = None
     return loop.create_future() if loop is not None else ContextFreeFuture()
 
 
@@ -794,20 +623,3 @@ class Signal:
                 warnings.simplefilter("ignore", DeprecationWarning)
                 self._fut = safe_create_future()
         return self._fut
-
-
-class UnsettableEventLoopPolicy(AbstractEventLoopPolicy):
-    def get_event_loop(self) -> AbstractEventLoop:
-        raise Exception("Called get_event_loop")
-
-    def set_event_loop(self, loop: Optional[AbstractEventLoop]) -> None:
-        raise Exception("Called set_event_loop")
-
-    def new_event_loop(self) -> AbstractEventLoop:
-        raise Exception("Called new_event_loop")
-
-    def get_child_watcher(self) -> Any:
-        raise Exception("get_child_watcher")
-
-    def set_child_watcher(self, watcher: Any) -> None:
-        raise Exception("set_child_watcher")

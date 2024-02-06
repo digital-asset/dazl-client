@@ -12,6 +12,8 @@ import time
 
 from ..prim import DazlError, TimeDeltaLike, to_timedelta
 
+__all__ = ["kill_process_tree", "wait_for_process_port", "ProcessLogger", "ProcessDiedException"]
+
 
 def kill_process_tree(process: Popen):
     """

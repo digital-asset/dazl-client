@@ -5,8 +5,10 @@ from __future__ import annotations
 
 from typing import Optional
 
+__all__ = ["n_things"]
 
-def n_things(count: int, plural_noun: str, singular_noun: Optional[str] = None):
+
+def n_things(count: int, plural_noun: str, singular_noun: Optional[str] = None) -> str:
     if count == 1:
         if singular_noun is None:
             return f"1 {plural_noun[0:-1]}"

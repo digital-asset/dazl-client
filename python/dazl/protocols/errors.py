@@ -9,7 +9,6 @@ __all__ = [
     "UserTerminateRequest",
     "StreamError",
     "ProtocolWarning",
-    "CallbackReturnWarning",
 ]
 
 
