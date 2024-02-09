@@ -3,15 +3,38 @@
 
 from __future__ import annotations
 
-from logging import Logger
 from os import PathLike, fspath
-from typing import TYPE_CHECKING, Optional
+import sys
+from typing import TYPE_CHECKING, Optional, TypedDict
+
+from .log import LoggerArgs
+
+if sys.version_info >= (3, 12):
+    from typing import Unpack
+else:
+    from typing_extensions import Unpack
 
 if TYPE_CHECKING:
     # We refer to the Config class in a docstring and
     # without this import, Sphinx can't resolve the reference
     # noinspection PyUnresolvedReferences
     from . import Config
+
+
+__all__ = ["SSLConfig", "SSLConfigArgs", "_SSLConfigArgs"]
+
+
+class SSLConfigArgs(TypedDict, total=False):
+    ca: Optional[bytes]
+    ca_file: Optional[PathLike]
+    cert: Optional[bytes]
+    cert_file: Optional[PathLike]
+    cert_key: Optional[bytes]
+    cert_key_file: Optional[PathLike]
+
+
+class _SSLConfigArgs(SSLConfigArgs, LoggerArgs, total=False):
+    pass
 
 
 class SSLConfig:
@@ -21,45 +44,30 @@ class SSLConfig:
     See :meth:`Config.create` for a more detailed description of these parameters.
     """
 
-    def __init__(
-        self,
-        ca: Optional[bytes] = None,
-        ca_file: Optional[PathLike] = None,
-        cert: Optional[bytes] = None,
-        cert_file: Optional[PathLike] = None,
-        cert_key: Optional[bytes] = None,
-        cert_key_file: Optional[PathLike] = None,
-        logger: Optional[Logger] = None,
-    ):
-        self._ca: Optional[bytes]
-        self._cert: Optional[bytes]
-        self._cert_key: Optional[bytes]
+    def __init__(self, **kwargs: Unpack[_SSLConfigArgs]):
+        self._ca = kwargs.get("ca", None)
+        self._cert = kwargs.get("cert", None)
+        self._cert_key = kwargs.get("cert_key", None)
 
-        if ca_file:
-            if ca:
+        if ca_file := kwargs.get("ca_file", None):
+            if self._ca:
                 raise ValueError("ca and ca_file cannot both be specified at the same time")
             with open(fspath(ca_file), "rb") as f:
                 self._ca = f.read()
-        else:
-            self._ca = ca
 
-        if cert_file:
-            if cert:
+        if cert_file := kwargs.get("cert_file", None):
+            if self._cert:
                 raise ValueError("cert and cert_file cannot both be specified at the same time")
             with open(fspath(cert_file), "rb") as f:
                 self._cert = f.read()
-        else:
-            self._cert = cert
 
-        if cert_key_file:
-            if cert_key:
+        if cert_key_file := kwargs.get("cert_key_file", None):
+            if self._cert_key:
                 raise ValueError(
                     "cert_key and cert_key_file cannot both be specified at the same time"
                 )
             with open(fspath(cert_key_file), "rb") as f:
                 self._cert_key = f.read()
-        else:
-            self._cert_key = cert_key
 
     def __bool__(self):
         """

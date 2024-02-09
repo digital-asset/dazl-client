@@ -4,8 +4,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from logging import Logger
-from os import PathLike
+import sys
 from typing import (
     AbstractSet,
     Any,
@@ -25,7 +24,6 @@ from typing import (
 
 from ..damlast import TypeConName
 from ..damlast.daml_lf_1 import PackageRef
-from ..damlast.lookup import SymbolLookup
 from ..prim import ContractData, ContractId, Parties, TimeDeltaLike
 from ..query import Queries, Query
 from .aio import Connection as AioConnection, QueryStream as AioQueryStream
@@ -54,7 +52,12 @@ from .api_types import (
     Version,
 )
 from .blocking import Connection as BlockingConnection, QueryStream as BlockingQueryStream
-from .config import Config
+from .config import Config, ConfigArgs
+
+if sys.version_info >= (3, 12):
+    from typing import Unpack
+else:
+    from typing_extensions import Unpack
 
 __all__ = [
     "aio",
@@ -113,126 +116,20 @@ class OnBoundaryDecorator(Protocol):
 # dazl.ledger.blocking above, even though that's not actually the case. Either way we silence
 # that warning too.
 #
-# TODO: Look into ways of generating this signatures from Config.create
-#
-# noinspection PyShadowingNames
 @overload
-def connect(
-    *,
-    url: Optional[str] = None,
-    host: Optional[str] = None,
-    port: Optional[int] = None,
-    scheme: Optional[str] = None,
-    read_as: Optional[Parties] = None,
-    act_as: Optional[Parties] = None,
-    admin: Optional[bool] = False,
-    ledger_id: Optional[str] = None,
-    application_name: Optional[str] = None,
-    oauth_token: Optional[str] = None,
-    oauth_token_file: Optional[str] = None,
-    ca: Optional[bytes] = None,
-    ca_file: Optional[PathLike] = None,
-    cert: Optional[bytes] = None,
-    cert_file: Optional[PathLike] = None,
-    cert_key: Optional[bytes] = None,
-    cert_key_file: Optional[PathLike] = None,
-    connect_timeout: Optional[TimeDeltaLike] = None,
-    use_http_proxy: bool = True,
-    logger: Optional[Logger] = None,
-    logger_name: Optional[str] = None,
-    log_level: Optional[str] = None,
-    lookup: Optional[SymbolLookup] = None,
-) -> AioConnection: ...
+def connect(**kwargs: Unpack[ConfigArgs]) -> AioConnection: ...
 
 # noinspection PyShadowingNames
 @overload
-def connect(
-    *,
-    blocking: Literal[False],
-    url: Optional[str] = None,
-    host: Optional[str] = None,
-    port: Optional[int] = None,
-    scheme: Optional[str] = None,
-    read_as: Optional[Parties] = None,
-    act_as: Optional[Parties] = None,
-    admin: Optional[bool] = False,
-    ledger_id: Optional[str] = None,
-    application_name: Optional[str] = None,
-    oauth_token: Optional[str] = None,
-    oauth_token_file: Optional[str] = None,
-    ca: Optional[bytes] = None,
-    ca_file: Optional[PathLike] = None,
-    cert: Optional[bytes] = None,
-    cert_file: Optional[PathLike] = None,
-    cert_key: Optional[bytes] = None,
-    cert_key_file: Optional[PathLike] = None,
-    connect_timeout: Optional[TimeDeltaLike] = None,
-    use_http_proxy: bool = True,
-    logger: Optional[Logger] = None,
-    logger_name: Optional[str] = None,
-    log_level: Optional[str] = None,
-    lookup: Optional[SymbolLookup] = None,
-) -> AioConnection: ...
+def connect(*, blocking: Literal[False], **kwargs: Unpack[ConfigArgs]) -> AioConnection: ...
 
 # noinspection PyShadowingNames
 @overload
-def connect(
-    *,
-    blocking: Literal[True],
-    url: Optional[str] = None,
-    host: Optional[str] = None,
-    port: Optional[int] = None,
-    scheme: Optional[str] = None,
-    read_as: Optional[Parties] = None,
-    act_as: Optional[Parties] = None,
-    admin: Optional[bool] = False,
-    ledger_id: Optional[str] = None,
-    application_name: Optional[str] = None,
-    oauth_token: Optional[str] = None,
-    oauth_token_file: Optional[str] = None,
-    ca: Optional[bytes] = None,
-    ca_file: Optional[PathLike] = None,
-    cert: Optional[bytes] = None,
-    cert_file: Optional[PathLike] = None,
-    cert_key: Optional[bytes] = None,
-    cert_key_file: Optional[PathLike] = None,
-    connect_timeout: Optional[TimeDeltaLike] = None,
-    use_http_proxy: bool = True,
-    logger: Optional[Logger] = None,
-    logger_name: Optional[str] = None,
-    log_level: Optional[str] = None,
-    lookup: Optional[SymbolLookup] = None,
-) -> BlockingConnection: ...
+def connect(*, blocking: Literal[True], **kwargs: Unpack[ConfigArgs]) -> BlockingConnection: ...
 
 # noinspection PyShadowingNames
 @overload
-def connect(
-    *,
-    blocking: bool,
-    url: Optional[str] = None,
-    host: Optional[str] = None,
-    port: Optional[int] = None,
-    scheme: Optional[str] = None,
-    read_as: Optional[Parties] = None,
-    act_as: Optional[Parties] = None,
-    admin: Optional[bool] = False,
-    ledger_id: Optional[str] = None,
-    application_name: Optional[str] = None,
-    oauth_token: Optional[str] = None,
-    oauth_token_file: Optional[str] = None,
-    ca: Optional[bytes] = None,
-    ca_file: Optional[PathLike] = None,
-    cert: Optional[bytes] = None,
-    cert_file: Optional[PathLike] = None,
-    cert_key: Optional[bytes] = None,
-    cert_key_file: Optional[PathLike] = None,
-    connect_timeout: Optional[TimeDeltaLike] = None,
-    use_http_proxy: bool = True,
-    logger: Optional[Logger] = None,
-    logger_name: Optional[str] = None,
-    log_level: Optional[str] = None,
-    lookup: Optional[SymbolLookup] = None,
-) -> Connection: ...
+def connect(*, blocking: bool, **kwargs: Unpack[ConfigArgs]) -> Connection: ...
 
 class PackageService(Protocol):
     def get_package(

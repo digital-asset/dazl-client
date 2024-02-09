@@ -117,18 +117,31 @@ from __future__ import annotations
 import itertools
 import logging
 from logging import Logger
-from os import PathLike
-from typing import Collection, Optional, Union
+import sys
+from typing import Optional
 
 from ...damlast.lookup import MultiPackageLookup
-from ...prim import Parties, Party, TimeDeltaLike
-from .access import AccessConfig, PropertyBasedAccessConfig, TokenBasedAccessConfig, create_access
+from .access import (
+    AccessConfig,
+    AccessConfigArgs,
+    PropertyBasedAccessConfig,
+    TokenBasedAccessConfig,
+    _AccessConfigArgs,
+    create_access,
+)
 from .argv import configure_parser
-from .ssl import SSLConfig
-from .url import URLConfig, create_url
+from .log import LoggerArgs
+from .ssl import SSLConfig, SSLConfigArgs, _SSLConfigArgs
+from .url import URLConfig, URLConfigArgs, _URLConfigArgs, create_url
+
+if sys.version_info >= (3, 12):
+    from typing import Unpack
+else:
+    from typing_extensions import Unpack
 
 __all__ = [
     "Config",
+    "ConfigArgs",
     "AccessConfig",
     "SSLConfig",
     "URLConfig",
@@ -145,6 +158,12 @@ __all__ = [
 id_generator = itertools.count()
 
 
+class ConfigArgs(AccessConfigArgs, SSLConfigArgs, URLConfigArgs, LoggerArgs, total=False):
+    logger_name: Optional[str]
+    log_level: Optional[str]
+    lookup: Optional[MultiPackageLookup]
+
+
 # PyCharm thinks ``from .url import ...`` clashes with variables named ``url``
 # (same with ``ssl`` and ``access``).
 # noinspection PyShadowingNames
@@ -154,33 +173,7 @@ class Config:
     """
 
     @classmethod
-    def create(
-        cls,
-        url: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        scheme: Optional[str] = None,
-        read_as: Optional[Parties] = None,
-        act_as: Optional[Parties] = None,
-        admin: Optional[bool] = False,
-        ledger_id: Optional[str] = None,
-        application_name: Optional[str] = None,
-        oauth_token: Optional[str] = None,
-        oauth_token_file: Optional[str] = None,
-        ca: Optional[bytes] = None,
-        ca_file: Optional[PathLike] = None,
-        cert: Optional[bytes] = None,
-        cert_file: Optional[PathLike] = None,
-        cert_key: Optional[bytes] = None,
-        cert_key_file: Optional[PathLike] = None,
-        connect_timeout: Optional[TimeDeltaLike] = None,
-        retry_timeout: Optional[TimeDeltaLike] = None,
-        use_http_proxy: bool = True,
-        logger: Optional[Logger] = None,
-        logger_name: Optional[str] = None,
-        log_level: Optional[str] = None,
-        lookup: "Optional[MultiPackageLookup]" = None,
-    ) -> "Config":
+    def create(cls, **kwargs: Unpack[ConfigArgs]) -> Config:
         """
         Create a :class:`Config` object from the supplied parameters.
 
@@ -317,6 +310,9 @@ class Config:
             An alternate symbol table to use to store package information. You should not normally
             need to set this value.
         """
+        logger = kwargs.get("logger", None)
+        logger_name = kwargs.get("logger_name", None)
+        log_level = kwargs.get("log_level")
         if logger is None:
             if not logger_name:
                 logger_name = f"dazl.conn.{next(id_generator)}"
@@ -324,37 +320,65 @@ class Config:
             if log_level is not None:
                 logger.setLevel(log_level)
 
-        url_config = create_url(
-            url=url,
-            host=host,
-            port=port,
-            scheme=scheme,
-            connect_timeout=connect_timeout,
-            retry_timeout=retry_timeout,
-            use_http_proxy=use_http_proxy,
-            logger=logger,
-        )
+        lookup = kwargs.get("lookup", None)
 
-        access_config = create_access(
-            read_as=read_as,
-            act_as=act_as,
-            admin=admin,
-            ledger_id=ledger_id,
-            application_name=application_name,
-            oauth_token=oauth_token,
-            oauth_token_file=oauth_token_file,
-            logger=logger,
-        )
+        url_config_args = _URLConfigArgs()
+        if "url" in kwargs:
+            url_config_args["url"] = kwargs["url"]
+        if "host" in kwargs:
+            url_config_args["host"] = kwargs["host"]
+        if "port" in kwargs:
+            url_config_args["port"] = kwargs["port"]
+        if "scheme" in kwargs:
+            url_config_args["scheme"] = kwargs["scheme"]
+        if "connect_timeout" in kwargs:
+            url_config_args["connect_timeout"] = kwargs["connect_timeout"]
+        if "retry_timeout" in kwargs:
+            url_config_args["retry_timeout"] = kwargs["retry_timeout"]
+        if "use_http_proxy" in kwargs:
+            url_config_args["use_http_proxy"] = kwargs["use_http_proxy"]
+        if logger is not None:
+            url_config_args["logger"] = logger
 
-        ssl_config = SSLConfig(
-            ca=ca,
-            ca_file=ca_file,
-            cert=cert,
-            cert_file=cert_file,
-            cert_key=cert_key,
-            cert_key_file=cert_key_file,
-            logger=logger,
-        )
+        url_config = create_url(**url_config_args)
+
+        access_config_args = _AccessConfigArgs()
+        if "read_as" in kwargs:
+            access_config_args["read_as"] = kwargs["read_as"]
+        if "act_as" in kwargs:
+            access_config_args["act_as"] = kwargs["act_as"]
+        if "admin" in kwargs:
+            access_config_args["admin"] = kwargs["admin"]
+        if "ledger_id" in kwargs:
+            access_config_args["ledger_id"] = kwargs["ledger_id"]
+        if "application_name" in kwargs:
+            access_config_args["application_name"] = kwargs["application_name"]
+        if "oauth_token" in kwargs:
+            access_config_args["oauth_token"] = kwargs["oauth_token"]
+        if "oauth_token_file" in kwargs:
+            access_config_args["oauth_token_file"] = kwargs["oauth_token_file"]
+        if logger is not None:
+            access_config_args["logger"] = logger
+
+        access_config = create_access(**access_config_args)
+
+        ssl_config_args = _SSLConfigArgs()
+        if "ca" in kwargs:
+            ssl_config_args["ca"] = kwargs["ca"]
+        if "ca_file" in kwargs:
+            ssl_config_args["ca_file"] = kwargs["ca_file"]
+        if "cert" in kwargs:
+            ssl_config_args["cert"] = kwargs["cert"]
+        if "cert_file" in kwargs:
+            ssl_config_args["cert_file"] = kwargs["cert_file"]
+        if "cert_key" in kwargs:
+            ssl_config_args["cert_key"] = kwargs["cert_key"]
+        if "cert_key_file" in kwargs:
+            ssl_config_args["cert_key_file"] = kwargs["cert_key_file"]
+        if logger is not None:
+            ssl_config_args["logger"] = logger
+
+        ssl_config = SSLConfig(**ssl_config_args)
 
         return cls(access_config, ssl_config, url_config, logger, lookup)
 
@@ -364,7 +388,7 @@ class Config:
         ssl: SSLConfig,
         url: URLConfig,
         logger: Logger,
-        lookup: "Optional[MultiPackageLookup]" = None,
+        lookup: Optional[MultiPackageLookup] = None,
     ):
         """
         Initialize an instance of :class:`Config`.
