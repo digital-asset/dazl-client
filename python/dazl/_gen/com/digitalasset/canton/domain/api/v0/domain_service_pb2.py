@@ -18,13 +18,14 @@ _sym_db = _symbol_database.Default()
 from . import service_agreement_pb2 as com_dot_digitalasset_dot_canton_dot_domain_dot_api_dot_v0_dot_service__agreement__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/digitalasset/canton/domain/api/v0/domain_service.proto\x12%com.digitalasset.canton.domain.api.v0\x1a=com/digitalasset/canton/domain/api/v0/service_agreement.proto2\xb3\x01\n\rDomainService\x12\x9c\x01\n\x13GetServiceAgreement\x12\x41.com.digitalasset.canton.domain.api.v0.GetServiceAgreementRequest\x1a\x42.com.digitalasset.canton.domain.api.v0.GetServiceAgreementResponse\x1a\x03\x88\x02\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/digitalasset/canton/domain/api/v0/domain_service.proto\x12%com.digitalasset.canton.domain.api.v0\x1a=com/digitalasset/canton/domain/api/v0/service_agreement.proto2\xb3\x01\n\rDomainService\x12\x9c\x01\n\x13GetServiceAgreement\x12\x41.com.digitalasset.canton.domain.api.v0.GetServiceAgreementRequest\x1a\x42.com.digitalasset.canton.domain.api.v0.GetServiceAgreementResponse\x1a\x03\x88\x02\x01\x42VZTgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/api/v0b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.domain.api.v0.domain_service_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'ZTgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/api/v0'
   _DOMAINSERVICE._options = None
   _DOMAINSERVICE._serialized_options = b'\210\002\001'
   _globals['_DOMAINSERVICE']._serialized_start=165

@@ -19,13 +19,14 @@ from ...api.v0 import sequencer_connection_pb2 as com_dot_digitalasset_dot_canto
 from ....protocol.v1 import sequencing_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v1_dot_sequencing__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nMcom/digitalasset/canton/domain/admin/v2/mediator_initialization_service.proto\x12\'com.digitalasset.canton.domain.admin.v2\x1a@com/digitalasset/canton/domain/api/v0/sequencer_connection.proto\x1a\x34\x63om/digitalasset/canton/protocol/v1/sequencing.proto\"\xcd\x02\n\x19InitializeMediatorRequest\x12\x1b\n\tdomain_id\x18\x01 \x01(\tR\x08\x64omainId\x12h\n\x11\x64omain_parameters\x18\x02 \x01(\x0b\x32;.com.digitalasset.canton.protocol.v1.StaticDomainParametersR\x10\x64omainParameters\x12o\n\x15sequencer_connections\x18\x03 \x03(\x0b\x32:.com.digitalasset.canton.domain.api.v0.SequencerConnectionR\x14sequencerConnections\x12\x38\n\x17sequencerTrustThreshold\x18\x04 \x01(\rR\x17sequencerTrustThreshold\"\x1c\n\x1aInitializeMediatorResponse2\xb7\x01\n\x1dMediatorInitializationService\x12\x95\x01\n\nInitialize\x12\x42.com.digitalasset.canton.domain.admin.v2.InitializeMediatorRequest\x1a\x43.com.digitalasset.canton.domain.admin.v2.InitializeMediatorResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nMcom/digitalasset/canton/domain/admin/v2/mediator_initialization_service.proto\x12\'com.digitalasset.canton.domain.admin.v2\x1a@com/digitalasset/canton/domain/api/v0/sequencer_connection.proto\x1a\x34\x63om/digitalasset/canton/protocol/v1/sequencing.proto\"\xcd\x02\n\x19InitializeMediatorRequest\x12\x1b\n\tdomain_id\x18\x01 \x01(\tR\x08\x64omainId\x12h\n\x11\x64omain_parameters\x18\x02 \x01(\x0b\x32;.com.digitalasset.canton.protocol.v1.StaticDomainParametersR\x10\x64omainParameters\x12o\n\x15sequencer_connections\x18\x03 \x03(\x0b\x32:.com.digitalasset.canton.domain.api.v0.SequencerConnectionR\x14sequencerConnections\x12\x38\n\x17sequencerTrustThreshold\x18\x04 \x01(\rR\x17sequencerTrustThreshold\"\x1c\n\x1aInitializeMediatorResponse2\xb7\x01\n\x1dMediatorInitializationService\x12\x95\x01\n\nInitialize\x12\x42.com.digitalasset.canton.domain.admin.v2.InitializeMediatorRequest\x1a\x43.com.digitalasset.canton.domain.admin.v2.InitializeMediatorResponseBXZVgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/admin/v2b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.domain.admin.v2.mediator_initialization_service_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'ZVgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/admin/v2'
   _globals['_INITIALIZEMEDIATORREQUEST']._serialized_start=243
   _globals['_INITIALIZEMEDIATORREQUEST']._serialized_end=576
   _globals['_INITIALIZEMEDIATORRESPONSE']._serialized_start=578

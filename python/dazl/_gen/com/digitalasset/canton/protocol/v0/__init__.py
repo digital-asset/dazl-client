@@ -7,8 +7,8 @@ from .sequencing_pb2 import AggregationRule, Batch, CompressedBatch, DeliverErro
 from .topology_ext_pb2 import TopologyTransactions
 from .common_pb2 import DriverContractMetadata, GlobalKey, SerializableContract, ViewType
 from .merkle_pb2 import BlindableNode, GenTransactionTree, MerkleSeq, MerkleSeqElement
-from .participant_transaction_pb2 import ActionDescription, CommonMetadata, DeduplicationPeriod, EncryptedViewMessage, FullInformeeTree, Informee, InformeeMessage, LightTransactionViewTree, ParticipantMetadata, ParticipantRandomnessLookup, RootHashMessage, SubmitterMetadata, ViewCommonData, ViewNode, ViewParticipantData
 from .participant_transfer_pb2 import TransferId, TransferInCommonData, TransferInMediatorMessage, TransferInView, TransferOutCommonData, TransferOutMediatorMessage, TransferOutView, TransferViewTree
+from .participant_transaction_pb2 import ActionDescription, CommonMetadata, DeduplicationPeriod, EncryptedViewMessage, FullInformeeTree, Informee, InformeeMessage, LightTransactionViewTree, ParticipantMetadata, ParticipantRandomnessLookup, RootHashMessage, SubmitterMetadata, ViewCommonData, ViewNode, ViewParticipantData
 from .acs_commitments_pb2 import AcsCommitment
 from .causality_pb2 import CausalityMessage, CausalityUpdate, TransactionUpdate, TransferInUpdate, TransferOutUpdate, VectorClock
 from .mediator_response_pb2 import LocalReject, LocalVerdict, MediatorResponse

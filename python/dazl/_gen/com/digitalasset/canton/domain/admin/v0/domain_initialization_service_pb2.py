@@ -19,13 +19,14 @@ from ...api.v0 import sequencer_connection_pb2 as com_dot_digitalasset_dot_canto
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nKcom/digitalasset/canton/domain/admin/v0/domain_initialization_service.proto\x12\'com.digitalasset.canton.domain.admin.v0\x1a@com/digitalasset/canton/domain/api/v0/sequencer_connection.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x89\x01\n\x19\x44omainNodeSequencerConfig\x12l\n\x13sequencerConnection\x18\x01 \x01(\x0b\x32:.com.digitalasset.canton.domain.api.v0.SequencerConnectionR\x13sequencerConnection\"o\n\x11\x44omainInitRequest\x12Z\n\x06\x63onfig\x18\x01 \x01(\x0b\x32\x42.com.digitalasset.canton.domain.admin.v0.DomainNodeSequencerConfigR\x06\x63onfig2y\n\x1b\x44omainInitializationService\x12Z\n\x04Init\x12:.com.digitalasset.canton.domain.admin.v0.DomainInitRequest\x1a\x16.google.protobuf.Emptyb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nKcom/digitalasset/canton/domain/admin/v0/domain_initialization_service.proto\x12\'com.digitalasset.canton.domain.admin.v0\x1a@com/digitalasset/canton/domain/api/v0/sequencer_connection.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x89\x01\n\x19\x44omainNodeSequencerConfig\x12l\n\x13sequencerConnection\x18\x01 \x01(\x0b\x32:.com.digitalasset.canton.domain.api.v0.SequencerConnectionR\x13sequencerConnection\"o\n\x11\x44omainInitRequest\x12Z\n\x06\x63onfig\x18\x01 \x01(\x0b\x32\x42.com.digitalasset.canton.domain.admin.v0.DomainNodeSequencerConfigR\x06\x63onfig2y\n\x1b\x44omainInitializationService\x12Z\n\x04Init\x12:.com.digitalasset.canton.domain.admin.v0.DomainInitRequest\x1a\x16.google.protobuf.EmptyBXZVgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/admin/v0b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.domain.admin.v0.domain_initialization_service_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'ZVgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/admin/v0'
   _globals['_DOMAINNODESEQUENCERCONFIG']._serialized_start=216
   _globals['_DOMAINNODESEQUENCERCONFIG']._serialized_end=353
   _globals['_DOMAININITREQUEST']._serialized_start=355

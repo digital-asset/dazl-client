@@ -6,7 +6,7 @@
 // - protoc             v4.24.3
 // source: com/digitalasset/canton/domain/admin/v0/sequencer_initialization_service.proto
 
-package v0sequencerinitializationservice
+package sequencerinitializationservice
 
 import (
 	context "context"
