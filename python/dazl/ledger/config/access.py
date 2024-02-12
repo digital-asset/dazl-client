@@ -6,9 +6,9 @@ from __future__ import annotations
 import base64
 from collections.abc import MutableSet as MutableSetBase, Set as SetBase
 import json
-from logging import Logger
 import os
 from pathlib import Path
+import sys
 from typing import (
     TYPE_CHECKING,
     AbstractSet,
@@ -20,6 +20,7 @@ from typing import (
     MutableSet,
     Optional,
     Protocol,
+    TypedDict,
     Union,
     runtime_checkable,
 )
@@ -28,9 +29,17 @@ import warnings
 from ... import _repr
 from ...prim import Parties, Party
 from .exc import ConfigError
+from .log import LoggerArgs
+
+if sys.version_info >= (3, 12):
+    from typing import Unpack
+else:
+    from typing_extensions import Unpack
 
 __all__ = [
     "AccessConfig",
+    "AccessConfigArgs",
+    "_AccessConfigArgs",
     "TokenBasedAccessConfig",
     "PropertyBasedAccessConfig",
     "PartyRights",
@@ -52,6 +61,20 @@ def parties_from_env(*env_vars: str) -> AbstractSet[Party]:
     return {Party(p) for env_var in env_vars for p in os.getenv(env_var, "").split(",") if p}
 
 
+class AccessConfigArgs(TypedDict, total=False):
+    read_as: Optional[Parties]
+    act_as: Optional[Parties]
+    admin: Optional[bool]
+    ledger_id: Optional[str]
+    application_name: Optional[str]
+    oauth_token: Optional[str]
+    oauth_token_file: Optional[str]
+
+
+class _AccessConfigArgs(AccessConfigArgs, LoggerArgs, total=False):
+    pass
+
+
 # mypy note: typing.overload cannot properly express a more correct signature for this function,
 #  which is that if oauth_token is supplied, then a TokenBasedAccessConfig class is returned and
 #  otherwise, a PropertyBasedAccessConfig class is returned. Trying to type this properly with
@@ -60,22 +83,20 @@ def parties_from_env(*env_vars: str) -> AbstractSet[Party]:
 #  It's also worth nothing that our only usage of this function also supplies all parameters since
 #  we're effectively just passing **kwargs around, so it's not clear a more accurate type helps much
 #  anyway.
-def create_access(
-    *,
-    read_as: Optional[Parties] = None,
-    act_as: Optional[Parties] = None,
-    admin: Optional[bool] = None,
-    ledger_id: Optional[str] = None,
-    application_name: Optional[str] = None,
-    oauth_token: Optional[str] = None,
-    oauth_token_file: Optional[str] = None,
-    logger: Optional[Logger] = None,
-) -> "AccessConfig":
+def create_access(**kwargs: Unpack[_AccessConfigArgs]) -> AccessConfig:
     """
     Create an appropriate instance of :class:`AccessConfig`.
 
     See :meth:`Config.create` for a more detailed description of these parameters.
     """
+    read_as = kwargs.get("read_as", None)
+    act_as = kwargs.get("act_as", None)
+    admin = kwargs.get("admin", None)
+    ledger_id = kwargs.get("ledger_id", None)
+    application_name = kwargs.get("application_name", None)
+    oauth_token = kwargs.get("oauth_token", None)
+    oauth_token_file = kwargs.get("oauth_token_file", None)
+
     # admin = None is effectively the same as admin = False in this context
     is_property_based = read_as or act_as or admin or ledger_id or application_name
     if not is_property_based and not oauth_token and not oauth_token_file:

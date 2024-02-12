@@ -8,16 +8,25 @@ import ipaddress
 from logging import Logger, getLogger
 import os
 from reprlib import repr
+import sys
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Optional, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Optional, Protocol, TypedDict, runtime_checkable
 from urllib.parse import urlparse
 import warnings
 
 from ...prim import TimeDeltaLike, to_timedelta
 from .exc import ConfigError, ConfigWarning
+from .log import LoggerArgs
+
+if sys.version_info >= (3, 12):
+    from typing import Unpack
+else:
+    from typing_extensions import Unpack
 
 __all__ = [
     "URLConfig",
+    "URLConfigArgs",
+    "_URLConfigArgs",
     "create_url",
     "KNOWN_SCHEME_PORTS",
     "DEFAULT_CONNECT_TIMEOUT",
@@ -46,23 +55,36 @@ DAML_LEDGER_PORT = "DAML_LEDGER_PORT"
 DAML_LEDGER_SCHEME = "DAML_LEDGER_SCHEME"
 
 
-def create_url(
-    *,
-    url: Optional[str] = None,
-    host: Optional[str] = None,
-    port: Optional[int] = None,
-    scheme: Optional[str] = None,
-    connect_timeout: Optional[TimeDeltaLike] = None,
-    retry_timeout: Optional[TimeDeltaLike] = None,
-    use_http_proxy: Optional[bool] = None,
-    logger: Optional[Logger] = None,
-):
+class URLConfigArgs(TypedDict, total=False):
+    url: Optional[str]
+    host: Optional[str]
+    port: Optional[int]
+    scheme: Optional[str]
+    connect_timeout: Optional[TimeDeltaLike]
+    retry_timeout: Optional[TimeDeltaLike]
+    use_http_proxy: Optional[bool]
+
+
+class _URLConfigArgs(URLConfigArgs, LoggerArgs, total=False):
+    pass
+
+
+def create_url(**kwargs: Unpack[_URLConfigArgs]):
     """
     Create an instance of :class:`URLConfig`, possibly with values taken from environment variables,
     or defaulted if otherwise unspecified.
 
     See :meth:`Config.create` for a more detailed description of these parameters.
     """
+    url = kwargs.get("url", None)
+    host = kwargs.get("host", None)
+    port = kwargs.get("port", None)
+    scheme = kwargs.get("scheme", None)
+    connect_timeout = kwargs.get("connect_timeout", None)
+    retry_timeout = kwargs.get("retry_timeout", None)
+    use_http_proxy = kwargs.get("use_http_proxy", None)
+    logger = kwargs.get("logger", None)
+
     if logger is None:
         logger = getLogger("dazl.conn")
 
