@@ -5,7 +5,6 @@ cache_dir=.cache
 
 proto_dir := $(cache_dir)/protos
 python := poetry run python3
-protoc := poetry run python3 -m _dazl_pb.protoc
 
 version := $(strip $(shell cat VERSION))
 docs_src := $(shell find docs -name '*.rst') $(py_src)
@@ -15,35 +14,15 @@ docs_markdown_dir := dist/dazl-docs-$(version)-markdown
 docs_markdown_tgz := $(docs_markdown_dir).tar.gz
 packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
 
-protos := _build/daml-connect/protos.py
-proto_filelist = _build/filelists/protobufs.txt
-proto_gen_go_src := $(shell cat _build/filelists/go.txt)
-proto_gen_python_src := $(shell cat _build/filelists/python.txt)
-proto_src := $(shell cat $(proto_filelist))
-
 ####################################################################################################
-# Protobuf
+# general targets
 
-# proto: the (slightly modified) Protobuf files from Daml Connect
-$(proto_src): $(protos)
-	@mkdir -p $(@D)
-	$(protos) unpack
-
-.cache/protos.pb: $(protos)
-	$(protoc) -I.cache/protos -o "$@" --include_imports --include_source_info --retain_options @_build/filelists/protobufs.txt
+.PHONY: generate
+generate: .venv/poetry.lock .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc
+	$(python) -m _dazl update 2.8.1
 
 ####################################################################################################
 # Go
-
-go_src_gen_root := go/api
-
-# go: run all source generation
-.PHONY: go-gen
-go-gen: $(go_src_gen)
-$(go_src_gen) &: .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc $(proto_src) COPYRIGHT
-	@rm -fr "$(go_src_gen_root)"
-	@mkdir -p "$(go_src_gen_root)"
-	$(protoc) -I$(proto_dir) --dazl-go_out=$(go_src_gen_root) "@$(proto_filelist)"
 
 .cache/bin/protoc-gen-go:
 	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27.1
@@ -77,10 +56,6 @@ python-format-test: .venv/poetry.lock
 	poetry run isort python $(protos) --check-only
 	poetry run black python $(protos) --check
 
-# python: run all source generation
-.PHONY: python-gen
-python-gen: $(proto_gen_python_src)
-
 # python: run mypy
 .PHONY: python-typecheck
 python-typecheck: .venv/poetry.lock
@@ -89,12 +64,6 @@ python-typecheck: .venv/poetry.lock
 # python: build BOTH $(py_bdist) and $(py_sdist)
 $(py_sdist) $(py_bdist) &: $(py_src)
 	poetry build
-
-# python: Protobuf generated code
-$(proto_gen_python_src) &: .venv/poetry.lock $(proto_src)
-	@rm -fr "$(@D)"
-	@mkdir -p "$(@D)"
-	$(protoc) --dazl-python_out="$(py_src_gen_root)" -I$(proto_dir) "@$(proto_filelist)"
 
 # python: witness that makes sure the current venv is up to date with our lock file
 .venv/poetry.lock: poetry.lock

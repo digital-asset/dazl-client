@@ -18,13 +18,14 @@ _sym_db = _symbol_database.Default()
 from ....protocol.v0 import sequencing_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v0_dot_sequencing__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n=com/digitalasset/canton/domain/api/v0/service_agreement.proto\x12%com.digitalasset.canton.domain.api.v0\x1a\x34\x63om/digitalasset/canton/protocol/v0/sequencing.proto\"\x1c\n\x1aGetServiceAgreementRequest\"r\n\x1bGetServiceAgreementResponse\x12S\n\tagreement\x18\x01 \x01(\x0b\x32\x35.com.digitalasset.canton.protocol.v0.ServiceAgreementR\tagreementb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n=com/digitalasset/canton/domain/api/v0/service_agreement.proto\x12%com.digitalasset.canton.domain.api.v0\x1a\x34\x63om/digitalasset/canton/protocol/v0/sequencing.proto\"\x1c\n\x1aGetServiceAgreementRequest\"r\n\x1bGetServiceAgreementResponse\x12S\n\tagreement\x18\x01 \x01(\x0b\x32\x35.com.digitalasset.canton.protocol.v0.ServiceAgreementR\tagreementBVZTgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/api/v0b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.domain.api.v0.service_agreement_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'ZTgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/api/v0'
   _globals['_GETSERVICEAGREEMENTREQUEST']._serialized_start=158
   _globals['_GETSERVICEAGREEMENTREQUEST']._serialized_end=186
   _globals['_GETSERVICEAGREEMENTRESPONSE']._serialized_start=188

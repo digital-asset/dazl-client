@@ -17,13 +17,14 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n?com/digitalasset/canton/version/untyped_versioned_message.proto\x12\x1f\x63om.digitalasset.canton.version\"T\n\x17UntypedVersionedMessage\x12\x14\n\x04\x64\x61ta\x18\x01 \x01(\x0cH\x00R\x04\x64\x61ta\x12\x18\n\x07version\x18\x02 \x01(\x05R\x07versionB\t\n\x07wrapperb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n?com/digitalasset/canton/version/untyped_versioned_message.proto\x12\x1f\x63om.digitalasset.canton.version\"T\n\x17UntypedVersionedMessage\x12\x14\n\x04\x64\x61ta\x18\x01 \x01(\x0cH\x00R\x04\x64\x61ta\x12\x18\n\x07version\x18\x02 \x01(\x05R\x07versionB\t\n\x07wrapperBPZNgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/versionb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.version.untyped_versioned_message_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'ZNgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/version'
   _globals['_UNTYPEDVERSIONEDMESSAGE']._serialized_start=100
   _globals['_UNTYPEDVERSIONEDMESSAGE']._serialized_end=184
 # @@protoc_insertion_point(module_scope)

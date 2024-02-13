@@ -4,42 +4,40 @@
 from __future__ import annotations
 
 from io import StringIO
-import os
+from pathlib import Path
 from typing import TextIO
 
-from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest, CodeGeneratorResponse
-from google.protobuf.descriptor_pb2 import FileDescriptorProto, ServiceDescriptorProto
+from google.protobuf.descriptor_pb2 import (
+    FileDescriptorProto,
+    FileDescriptorSet,
+    ServiceDescriptorProto,
+)
 
-from .. import util
 from ..syntax.python import ImportContext, SymbolTable, Usage, all_decl, py_service_package
-from ._header import HEADER
+from .python_header import HEADER
+from .util import get_root_name
 
-__all__ = ["run_plugin"]
+__all__ = ["write_grpc_pyi_files"]
 
 
-def run_plugin(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
+def write_grpc_pyi_files(fds: FileDescriptorSet, to: Path) -> None:
     """
     Generate .pyi (typing stubs files) for gPRC services.
     """
     # build a mapping of all types that we'll ever need to generate any of the requested files
     symbol_table = SymbolTable()
-    for fd in request.proto_file:
-        symbol_table.load_file(fd)
+    for f in fds.file:
+        symbol_table.load_file(f)
 
-    request = util.services_only(request)
-
-    return CodeGeneratorResponse(
-        supported_features=CodeGeneratorResponse.FEATURE_PROTO3_OPTIONAL,
-        file=[
-            typing_file(pf, ImportContext(symbol_table))
-            for pf in request.proto_file
-            if pf.name in request.file_to_generate
-        ],
-    )
+    for f in fds.file:
+        if f.service:
+            root_name, _ = get_root_name(f.name)
+            content = typing_file(f, ImportContext(symbol_table))
+            p = to / (root_name + "_pb2_grpc.pyi")
+            p.write_text(content)
 
 
-def typing_file(fd: FileDescriptorProto, ictx: ImportContext) -> CodeGeneratorResponse.File:
-    name = os.path.splitext(fd.name)[0] + "_pb2_grpc.pyi"
+def typing_file(fd: FileDescriptorProto, ictx: ImportContext) -> str:
     with StringIO() as buf:
         for sd in fd.service:
             write_service(buf, sd, ictx)
@@ -55,7 +53,7 @@ def typing_file(fd: FileDescriptorProto, ictx: ImportContext) -> CodeGeneratorRe
 
     all_str = all_decl(md.name + "Stub" for md in fd.service)
 
-    return CodeGeneratorResponse.File(name=name, content=f"{HEADER}\n{imports}\n{all_str}\n{body}")
+    return f"{HEADER}\n{imports}\n{all_str}\n{body}"
 
 
 def write_service(buf: TextIO, sd: ServiceDescriptorProto, ictx: ImportContext) -> None:

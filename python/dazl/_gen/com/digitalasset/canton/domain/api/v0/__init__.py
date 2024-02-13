@@ -3,9 +3,9 @@
 # fmt: off
 # isort: skip_file
 
+from .sequencer_connection_pb2 import SequencerApiType, SequencerConnection
 from .sequencer_service_pb2 import AcknowledgeRequest, SendAsyncResponse, SendAsyncSignedResponse, SendAsyncUnauthenticatedVersionedRequest, SendAsyncVersionedRequest, SequencedEventTrafficState, SubscriptionRequest, SubscriptionResponse, TopologyStateForInitRequest, TopologyStateForInitResponse, VersionedSubscriptionResponse
 from .sequencer_service_pb2_grpc import SequencerServiceStub
-from .sequencer_connection_pb2 import SequencerApiType, SequencerConnection
 from .service_agreement_pb2 import GetServiceAgreementRequest, GetServiceAgreementResponse
 from .domain_service_pb2_grpc import DomainServiceStub
 from .domain_time_service_pb2 import AwaitTimeRequest, FetchTimeRequest, FetchTimeResponse
