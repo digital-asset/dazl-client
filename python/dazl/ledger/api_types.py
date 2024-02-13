@@ -12,6 +12,7 @@ from typing import (
     Any,
     Collection,
     Final,
+    List,
     Mapping,
     NoReturn,
     Optional,
@@ -27,10 +28,14 @@ from ..damlast.lookup import parse_type_con_name
 from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Parties, Party, to_parties
 from ..util.typing import safe_cast
 
-if sys.version_info >= (3, 11):
-    from typing import TypeAlias
-else:
+if sys.version_info >= (3, 12):
+    from typing import TypeAlias, TypeGuard
+elif sys.version_info >= (3, 10):
+    from typing import TypeGuard
+
     from typing_extensions import TypeAlias
+else:
+    from typing_extensions import TypeAlias, TypeGuard
 
 
 __all__ = [
@@ -63,7 +68,32 @@ __all__ = [
 ]
 
 
-class Command:
+def is_command(obj: Any, /) -> TypeGuard[Command]:
+    """
+    Determine whether an object is a :class:`Command`.
+
+    This function is equivalent to calling ``isinstance(obj, Command)``. If you are using
+    Python 3.10 or later, ``isinstance(obj, Command)`` should be preferred, but on Python 3.8 and 3.9,
+    ``isinstance(obj, Command)`` will fail to typecheck due to ``Union`` not being understood as a
+    valid argument. If your code must be compatible with Python 3.8 and 3.9 _and_ you wish to use a
+    typechecker, use this convenience function instead.
+    """
+    return isinstance(obj, _Command)
+
+
+def to_commands(*commands: Optional[Commands]) -> Sequence[Command]:
+    cmds = []  # type: List[Command]
+    if commands is not None:
+        for c in commands:
+            if c is not None:
+                if is_command(c):
+                    cmds.append(c)
+                else:
+                    cmds.extend(to_commands(*c))  # type: ignore
+    return cmds
+
+
+class _Command:
     """
     Base class for write-side commands.
 
@@ -77,18 +107,20 @@ class Command:
         raise AttributeError("Command instances are read-only")
 
 
-Commands: TypeAlias = Union[Command, Sequence[Command]]
-
-
-class CreateCommand(Command):
+@final
+class CreateCommand(_Command):
     """
     A command that creates a contract without any predecessors.
+
+    Attributes:
+    - template_id: The template of the contract to be created.
+    - payload: The template arguments for the contract to be created.
     """
 
-    __slots__ = ("_template_id", "_payload")
-    if TYPE_CHECKING:
-        _template_id: TypeConName
-        _payload: ContractData
+    __slots__ = ("template_id", "payload")
+    __match_args__ = ("template_id", "payload")
+    template_id: Final[TypeConName]  # type: ignore
+    payload: Final[ContractData]  # type: ignore
 
     def __init__(self, template_id: Union[str, TypeConName], payload: ContractData):
         """
@@ -99,22 +131,8 @@ class CreateCommand(Command):
         :param payload:
             The template arguments for the contract to be created.
         """
-        object.__setattr__(self, "_template_id", validate_template_id(template_id))
-        object.__setattr__(self, "_payload", payload)
-
-    @property
-    def template_id(self) -> TypeConName:
-        """
-        Return the template of the contract to be created.
-        """
-        return self._template_id
-
-    @property
-    def payload(self) -> Mapping[str, Any]:
-        """
-        Return the template arguments for the contract to be created.
-        """
-        return self._payload
+        object.__setattr__(self, "template_id", validate_template_id(template_id))
+        object.__setattr__(self, "payload", payload)
 
     def __eq__(self, other: Any, /) -> bool:
         return (
@@ -127,21 +145,28 @@ class CreateCommand(Command):
         return f"CreateCommand({self.template_id}, {self.payload})"
 
 
-class CreateAndExerciseCommand(Command):
+@final
+class CreateAndExerciseCommand(_Command):
     """
     A command that exercises a choice on a newly-created contract in a single transaction.
 
     Instead of creating an instance of this command and submitting it with :meth:`Connection.submit`,
     consider using :meth:`Connection.create_and_exercise` instead, which also gives you access to
     the result of exercising the choice.
+
+    Attributes:
+    - template_id: The template of the contract to be created.
+    - payload: The template arguments for the contract to be created.
+    - choice: The choice to exercise.
+    - argument: The choice arguments. Can be omitted for choices that take no arguments.
     """
 
-    __slots__ = ("_template_id", "_payload", "_choice", "_argument")
-    if TYPE_CHECKING:
-        _template_id: TypeConName
-        _payload: ContractData
-        _choice: str
-        _argument: Any
+    __slots__ = ("template_id", "payload", "choice", "argument")
+    __match_args__ = ("template_id", "payload", "choice", "argument")
+    template_id: Final[TypeConName]  # type: ignore
+    payload: Final[ContractData]  # type: ignore
+    choice: Final[str]  # type: ignore
+    argument: Final[Any]  # type: ignore
 
     def __init__(
         self,
@@ -162,38 +187,10 @@ class CreateAndExerciseCommand(Command):
         :param argument:
             The choice arguments. Can be omitted for choices that take no arguments.
         """
-        object.__setattr__(self, "_template_id", validate_template_id(template_id))
-        object.__setattr__(self, "_payload", payload)
-        object.__setattr__(self, "_choice", choice)
-        object.__setattr__(self, "_argument", dict(argument) if argument is not None else dict())
-
-    @property
-    def template_id(self) -> TypeConName:
-        """
-        The template of the contract to be created.
-        """
-        return self._template_id
-
-    @property
-    def payload(self) -> ContractData:
-        """
-        The template arguments for the contract to be created.
-        """
-        return self._payload
-
-    @property
-    def choice(self) -> str:
-        """
-        The choice to exercise.
-        """
-        return self._choice
-
-    @property
-    def argument(self) -> Any:
-        """
-        The choice arguments.
-        """
-        return self._argument
+        object.__setattr__(self, "template_id", validate_template_id(template_id))
+        object.__setattr__(self, "payload", payload)
+        object.__setattr__(self, "choice", choice)
+        object.__setattr__(self, "argument", dict(argument) if argument is not None else dict())
 
     def __eq__(self, other: Any) -> bool:
         return (
@@ -208,7 +205,8 @@ class CreateAndExerciseCommand(Command):
         return f"CreateAndExerciseCommand({self.template_id}, {self.payload}, {self.choice!r}, {self.argument})"
 
 
-class ExerciseCommand(Command):
+@final
+class ExerciseCommand(_Command):
     """
     A command that exercises a choice on a contract identified by its contract ID.
 
@@ -217,11 +215,11 @@ class ExerciseCommand(Command):
     exercising the choice.
     """
 
-    __slots__ = ("_choice", "_contract_id", "_argument")
-    if TYPE_CHECKING:
-        _choice: str
-        _contract_id: ContractId
-        _argument: Optional[Any]
+    __slots__ = ("contract_id", "choice", "argument")
+    __match_args__ = ("contract_id", "choice", "argument")
+    contract_id: Final[ContractId]  # type: ignore
+    choice: Final[str]  # type: ignore
+    argument: Final[Any]  # type: ignore
 
     def __init__(self, contract_id: ContractId, choice: str, argument: Optional[Any] = None):
         """
@@ -234,44 +232,24 @@ class ExerciseCommand(Command):
         :param argument:
             The choice arguments. Can be omitted for choices that take no arguments.
         """
-        object.__setattr__(self, "_choice", safe_cast(str, choice))
-        object.__setattr__(self, "_contract_id", safe_cast(ContractId, contract_id))
-        object.__setattr__(self, "_argument", dict(argument) if argument is not None else dict())
-
-    @property
-    def contract_id(self) -> ContractId:
-        """
-        The contract ID of the contract to exercise.
-        """
-        return self._contract_id
-
-    @property
-    def choice(self) -> str:
-        """
-        The choice to exercise.
-        """
-        return self._choice
-
-    @property
-    def argument(self) -> Any:
-        """
-        The choice arguments.
-        """
-        return self._argument
+        object.__setattr__(self, "contract_id", safe_cast(ContractId, contract_id))
+        object.__setattr__(self, "choice", safe_cast(str, choice))
+        object.__setattr__(self, "argument", dict(argument) if argument is not None else dict())
 
     def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, ExerciseCommand)
-            and self.choice == other.choice
             and self.contract_id == other.contract_id
+            and self.choice == other.choice
             and self.argument == other.argument
         )
 
     def __repr__(self):
-        return f"ExerciseCommand({self.choice!r}, {self.contract_id}, {self.argument})"
+        return f"ExerciseCommand({self.contract_id}, {self.choice!r}, {self.argument})"
 
 
-class ExerciseByKeyCommand(Command):
+@final
+class ExerciseByKeyCommand(_Command):
     """
     A command that exercises a choice on a contract identified by its contract key.
 
@@ -280,12 +258,12 @@ class ExerciseByKeyCommand(Command):
     result of exercising the choice.
     """
 
-    __slots__ = ("_template_id", "_key", "_choice", "_argument")
-    if TYPE_CHECKING:
-        _template_id: TypeConName
-        _key: Any
-        _choice: str
-        _argument: Optional[Any]
+    __slots__ = ("template_id", "key", "choice", "argument")
+    __match_args__ = ("template_id", "key", "choice", "argument")
+    template_id: TypeConName
+    key: Any
+    choice: str
+    argument: Optional[Any]
 
     def __init__(
         self,
@@ -306,38 +284,10 @@ class ExerciseByKeyCommand(Command):
         :param argument:
             The choice arguments. Can be omitted for choices that take no arguments.
         """
-        object.__setattr__(self, "_template_id", validate_template_id(template_id))
-        object.__setattr__(self, "_key", key)
-        object.__setattr__(self, "_choice", choice)
-        object.__setattr__(self, "_argument", dict(argument) if argument is not None else dict())
-
-    @property
-    def template_id(self) -> TypeConName:
-        """
-        The contract template type.
-        """
-        return self._template_id
-
-    @property
-    def key(self) -> Any:
-        """
-        The contract key of the contract to exercise.
-        """
-        return self._key
-
-    @property
-    def choice(self) -> str:
-        """
-        The choice to exercise.
-        """
-        return self._choice
-
-    @property
-    def argument(self) -> Any:
-        """
-        The choice arguments.
-        """
-        return self._argument
+        object.__setattr__(self, "template_id", validate_template_id(template_id))
+        object.__setattr__(self, "key", key)
+        object.__setattr__(self, "choice", choice)
+        object.__setattr__(self, "argument", dict(argument) if argument is not None else dict())
 
     def __eq__(self, other: Any) -> bool:
         return (
@@ -350,6 +300,26 @@ class ExerciseByKeyCommand(Command):
 
     def __repr__(self):
         return f"ExerciseByKeyCommand({self.template_id}, {self.key}, {self.choice!r}, {self.argument})"
+
+
+if TYPE_CHECKING:
+    # export Command as a union type so that exhaustive type checking can be performed
+    # in Python 3.8 and Python 3.9, Union types are not allowed to be used for isinstance checks,
+    # so the is_command convenience function should be used instead.
+    if sys.version_info >= (3, 10):
+        Command: TypeAlias = (
+            CreateCommand | ExerciseCommand | CreateAndExerciseCommand | ExerciseByKeyCommand
+        )
+    else:
+        Command: TypeAlias = Union[
+            CreateCommand, ExerciseCommand, CreateAndExerciseCommand, ExerciseByKeyCommand
+        ]
+else:
+    # export Command as an actual type so that isinstance checks can be performed
+    Command = _Command
+
+
+Commands: TypeAlias = Union[Command, Sequence[Command]]
 
 
 class CommandMeta:
@@ -381,11 +351,10 @@ class CommandMeta:
 
     __slots__ = "workflow_id", "command_id", "read_as", "act_as"
 
-    if TYPE_CHECKING:
-        workflow_id: Optional[str]
-        command_id: Optional[str]
-        read_as: Optional[Sequence[Party]]
-        act_as: Optional[Sequence[Party]]
+    workflow_id: Optional[str]
+    command_id: Optional[str]
+    read_as: Optional[Sequence[Party]]
+    act_as: Optional[Sequence[Party]]
 
     def __init__(
         self,

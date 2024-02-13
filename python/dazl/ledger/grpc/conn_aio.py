@@ -62,6 +62,8 @@ from ..api_types import (
     Right,
     User,
     Version,
+    is_command,
+    to_commands,
 )
 from ..config import Config
 from ..config.access import TokenBasedAccessConfig
@@ -181,12 +183,8 @@ class Connection(aio.Connection):
         into Daml so that only a single command is needed from the outside in order to satisfy your
         use case.
         """
-        if commands is None:
-            return
-        elif isinstance(commands, Command):
-            commands = [commands]
-
-        if len(commands) == 0:
+        commands = to_commands(commands)
+        if not commands:
             return
 
         retry_timeout = self._retry_timeout(timeout)

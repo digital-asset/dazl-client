@@ -4,10 +4,16 @@
 from __future__ import annotations
 
 from concurrent.futures.thread import ThreadPoolExecutor
+import sys
 from typing import Generator
 
 from dazl import testing
 import pytest
+
+# match statements are syntax errors in Python 3.8 and 3.9; we must exclude them from
+# test discovery or pytest will fail to discover tests properly
+if sys.version_info < (3, 10):
+    collect_ignore_glob = ["*_py3_10.py"]
 
 
 @pytest.fixture(scope="session", params=["1", "2"])
