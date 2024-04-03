@@ -148,12 +148,14 @@ def create_url(**kwargs: Unpack[_URLConfigArgs]):
 
     return SimpleURLConfig(
         url=url,
-        connect_timeout=to_timedelta(connect_timeout)
-        if connect_timeout is not None
-        else DEFAULT_CONNECT_TIMEOUT,
-        retry_timeout=to_timedelta(retry_timeout)
-        if retry_timeout is not None
-        else DEFAULT_RETRY_TIMEOUT,
+        connect_timeout=(
+            to_timedelta(connect_timeout)
+            if connect_timeout is not None
+            else DEFAULT_CONNECT_TIMEOUT
+        ),
+        retry_timeout=(
+            to_timedelta(retry_timeout) if retry_timeout is not None else DEFAULT_RETRY_TIMEOUT
+        ),
         use_http_proxy=use_http_proxy,
     )
 

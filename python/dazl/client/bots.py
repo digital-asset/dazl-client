@@ -334,12 +334,10 @@ class BotCollection(Sequence[Bot]):
             return len(self._bots)
 
     @overload
-    def __getitem__(self, i: int) -> Bot:
-        ...
+    def __getitem__(self, i: int) -> Bot: ...
 
     @overload
-    def __getitem__(self, i: slice) -> Sequence[Bot]:
-        ...
+    def __getitem__(self, i: slice) -> Sequence[Bot]: ...
 
     def __getitem__(self, i):
         with self._lock:

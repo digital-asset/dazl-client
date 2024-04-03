@@ -14,13 +14,11 @@ from typing import BinaryIO, Optional, Union, overload
 
 
 @overload
-def get_bytes(_: None) -> None:
-    ...
+def get_bytes(_: None) -> None: ...
 
 
 @overload
-def get_bytes(_: "Union[bytes, str, Path, BinaryIO]") -> bytes:
-    ...
+def get_bytes(_: "Union[bytes, str, Path, BinaryIO]") -> bytes: ...
 
 
 def get_bytes(src):
