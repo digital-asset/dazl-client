@@ -24,13 +24,11 @@ def to_party(o: Any, /) -> Party:
 
 
 @overload
-def to_parties(o: None, /) -> None:
-    ...
+def to_parties(o: None, /) -> None: ...
 
 
 @overload
-def to_parties(o: Union[str, Collection[str], Parties], /) -> Sequence[Party]:
-    ...
+def to_parties(o: Union[str, Collection[str], Parties], /) -> Sequence[Party]: ...
 
 
 def to_parties(o: Union[None, str, Collection[str], Parties], /) -> Union[None, Sequence[Party]]:

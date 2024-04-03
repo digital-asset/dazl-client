@@ -34,9 +34,9 @@ def config_field(
                 default_value=default_value,
                 long_aliases=frozenset([long_alias]) if long_alias else frozenset(),
                 short_aliases=frozenset([short_alias]) if short_alias else frozenset(),
-                deprecated_aliases=frozenset([deprecated_alias])
-                if deprecated_alias
-                else frozenset(),
+                deprecated_aliases=(
+                    frozenset([deprecated_alias]) if deprecated_alias else frozenset()
+                ),
                 environment_variable=environment_variable,
             )
         },
