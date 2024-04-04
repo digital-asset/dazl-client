@@ -1165,5 +1165,9 @@ class QueryStream(aio.QueryStreamBase):
             if is_match(name, event.contract_id.value_type):
                 return f.client_side is None or f.client_side(event.payload)
 
-        # we checked every name, but none of them matched
-        return False
+        # TODO: We checked every name, but none of them matched. This means we received an event for an
+        #  unexpected template name, and that could happen if the query was _interface_ based, as
+        #  opposed to _template_ based. For now, return True so that interface-based queries work at all,
+        #  but a better fix would be to check templates against a filter on the interface. This requires
+        #  us to have a bit more intelligence about the types coming over the wire.
+        return True
