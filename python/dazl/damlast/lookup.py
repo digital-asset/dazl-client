@@ -439,10 +439,7 @@ class MultiPackageLookup(SymbolLookup):
         names = []  # type: List[TypeConName]
 
         pkg, name = validate_template(ref)
-        try:
-            lookups = self._lookups(pkg)
-        except PackageNotFoundError:
-            return []
+        lookups = self._lookups(pkg)
 
         for lookup in lookups:
             if name == "*":
