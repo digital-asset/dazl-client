@@ -30,10 +30,6 @@ from ..util.typing import safe_cast
 
 if sys.version_info >= (3, 12):
     from typing import TypeAlias, TypeGuard
-elif sys.version_info >= (3, 10):
-    from typing import TypeGuard
-
-    from typing_extensions import TypeAlias
 else:
     from typing_extensions import TypeAlias, TypeGuard
 
@@ -302,23 +298,9 @@ class ExerciseByKeyCommand(_Command):
         return f"ExerciseByKeyCommand({self.template_id}, {self.key}, {self.choice!r}, {self.argument})"
 
 
-if TYPE_CHECKING:
-    # export Command as a union type so that exhaustive type checking can be performed
-    # in Python 3.8 and Python 3.9, Union types are not allowed to be used for isinstance checks,
-    # so the is_command convenience function should be used instead.
-    if sys.version_info >= (3, 10):
-        Command: TypeAlias = (
-            CreateCommand | ExerciseCommand | CreateAndExerciseCommand | ExerciseByKeyCommand
-        )
-    else:
-        Command: TypeAlias = Union[
-            CreateCommand, ExerciseCommand, CreateAndExerciseCommand, ExerciseByKeyCommand
-        ]
-else:
-    # export Command as an actual type so that isinstance checks can be performed
-    Command = _Command
-
-
+Command: TypeAlias = (
+    CreateCommand | ExerciseCommand | CreateAndExerciseCommand | ExerciseByKeyCommand
+)
 Commands: TypeAlias = Union[Command, Sequence[Command]]
 
 

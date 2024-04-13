@@ -4,15 +4,9 @@
 from __future__ import annotations
 
 import sys
-from typing import AsyncIterator, Awaitable, Callable, Generic, Iterator, TypeVar
+from typing import AsyncIterator, Awaitable, Callable, Generic, Iterator, ParamSpec, TypeVar
 
 from dazl.ledger import aio, blocking
-
-if sys.version_info >= (3, 10):
-    from typing import ParamSpec
-else:
-    from typing_extensions import ParamSpec
-
 
 P = ParamSpec("P")
 R = TypeVar("R")
