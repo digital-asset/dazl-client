@@ -11,6 +11,7 @@ from typing import Awaitable, Collection, Dict, List, Optional, Tuple, Union, ca
 import warnings
 
 from ..damlast.daml_lf_1 import TypeConName
+from ..damlast.errors import PackageNotFoundError
 from ..damlast.lookup import parse_type_con_name
 from ..damlast.protocols import SymbolLookup
 from ..damlast.util import package_ref
@@ -156,8 +157,14 @@ class ActiveContractSet:
             query.future, lambda cxds: {cxd.cid: cxd.cdata for cxd in cxds if cxd.cdata is not None}
         )
 
-    def _get_template_state(self, template_name: str) -> "Dict[TypeConName, TemplateContractData]":
-        names = self.lookup.template_names(template_name)
+    def _get_template_state(self, template_name: str) -> Dict[TypeConName, TemplateContractData]:
+        try:
+            names = self.lookup.template_names(template_name)
+        except PackageNotFoundError:
+            # The template name is unknown. When reading from the ACS, unknown templates trivially correspond to
+            # no contracts; otherwise, we would have seen one of those contracts, and seeing that contract would
+            # have triggered us to load that package.
+            names = []
 
         if not names:
             # the warning about unknown template names is really only relevant for wildcard
