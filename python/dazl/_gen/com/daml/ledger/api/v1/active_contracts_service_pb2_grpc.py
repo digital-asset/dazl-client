@@ -11,6 +11,7 @@ from . import active_contracts_service_pb2 as com_dot_daml_dot_ledger_dot_api_do
 
 class ActiveContractsServiceStub(object):
     """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
+    In V2 Ledger API this service is not available anymore. Use v2.StateService instead.
     """
 
     def __init__(self, channel):
@@ -28,11 +29,12 @@ class ActiveContractsServiceStub(object):
 
 class ActiveContractsServiceServicer(object):
     """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
+    In V2 Ledger API this service is not available anymore. Use v2.StateService instead.
     """
 
     def GetActiveContracts(self, request, context):
-        """Returns a stream of the latest snapshot of active contracts.
-        If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
+        """Returns a stream of the snapshot of the active contracts at a ledger offset.
+        If there are no active contracts, the stream returns a single response message with the offset at which the snapshot has been taken.
         Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
         Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
         """
@@ -57,6 +59,7 @@ def add_ActiveContractsServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class ActiveContractsService(object):
     """Allows clients to initialize themselves according to a fairly recent state of the ledger without reading through all transactions that were committed since the ledger's creation.
+    In V2 Ledger API this service is not available anymore. Use v2.StateService instead.
     """
 
     @staticmethod

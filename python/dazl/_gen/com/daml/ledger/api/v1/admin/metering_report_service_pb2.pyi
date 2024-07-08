@@ -2,41 +2,29 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf import struct_pb2 as _struct_pb2
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.message import Message as _Message
-from google.protobuf.struct_pb2 import Struct
-from google.protobuf.timestamp_pb2 import Timestamp
+class GetMeteringReportRequest(_message.Message):
+    __slots__ = ["to", "application_id"]
+    FROM_FIELD_NUMBER: _ClassVar[int]
+    TO_FIELD_NUMBER: _ClassVar[int]
+    APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
+    to: _timestamp_pb2.Timestamp
+    application_id: str
+    def __init__(self, to: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., application_id: _Optional[str] = ..., **kwargs) -> None: ...
 
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
-
-__all__ = [
-    "GetMeteringReportRequest",
-    "GetMeteringReportResponse",
-]
-
-
-class GetMeteringReportRequest(_Message):
-    @property
-    def to(self) -> Timestamp: ...
-    application_id: _builtins.str
-    def __init__(self, *, to: _typing.Optional[Timestamp] = ..., application_id: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["from", "to", "application_id"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["from", "to", "application_id"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetMeteringReportResponse(_Message):
-    @property
-    def request(self) -> GetMeteringReportRequest: ...
-    @property
-    def report_generation_time(self) -> Timestamp: ...
-    @property
-    def metering_report_json(self) -> Struct: ...
-    def __init__(self, *, request: _typing.Optional[GetMeteringReportRequest] = ..., report_generation_time: _typing.Optional[Timestamp] = ..., metering_report_json: _typing.Optional[Struct] = ...): ...
-    def HasField(self, field_name: _L["request", "report_generation_time", "metering_report_json"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["request", "report_generation_time", "metering_report_json"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetMeteringReportResponse(_message.Message):
+    __slots__ = ["request", "report_generation_time", "metering_report_json"]
+    REQUEST_FIELD_NUMBER: _ClassVar[int]
+    REPORT_GENERATION_TIME_FIELD_NUMBER: _ClassVar[int]
+    METERING_REPORT_JSON_FIELD_NUMBER: _ClassVar[int]
+    request: GetMeteringReportRequest
+    report_generation_time: _timestamp_pb2.Timestamp
+    metering_report_json: _struct_pb2.Struct
+    def __init__(self, request: _Optional[_Union[GetMeteringReportRequest, _Mapping]] = ..., report_generation_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., metering_report_json: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...

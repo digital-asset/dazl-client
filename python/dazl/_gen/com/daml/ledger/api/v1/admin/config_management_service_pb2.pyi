@@ -2,69 +2,50 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf import duration_pb2 as _duration_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.duration_pb2 import Duration
-from google.protobuf.message import Message as _Message
-from google.protobuf.timestamp_pb2 import Timestamp
+class GetTimeModelRequest(_message.Message):
+    __slots__ = []  # type: ignore
+    def __init__(self) -> None: ...
 
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
+class GetTimeModelResponse(_message.Message):
+    __slots__ = ["configuration_generation", "time_model"]
+    CONFIGURATION_GENERATION_FIELD_NUMBER: _ClassVar[int]
+    TIME_MODEL_FIELD_NUMBER: _ClassVar[int]
+    configuration_generation: int
+    time_model: TimeModel
+    def __init__(self, configuration_generation: _Optional[int] = ..., time_model: _Optional[_Union[TimeModel, _Mapping]] = ...) -> None: ...
 
-__all__ = [
-    "GetTimeModelRequest",
-    "GetTimeModelResponse",
-    "SetTimeModelRequest",
-    "SetTimeModelResponse",
-    "TimeModel",
-]
+class SetTimeModelRequest(_message.Message):
+    __slots__ = ["submission_id", "maximum_record_time", "configuration_generation", "new_time_model"]
+    SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
+    MAXIMUM_RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
+    CONFIGURATION_GENERATION_FIELD_NUMBER: _ClassVar[int]
+    NEW_TIME_MODEL_FIELD_NUMBER: _ClassVar[int]
+    submission_id: str
+    maximum_record_time: _timestamp_pb2.Timestamp
+    configuration_generation: int
+    new_time_model: TimeModel
+    def __init__(self, submission_id: _Optional[str] = ..., maximum_record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., configuration_generation: _Optional[int] = ..., new_time_model: _Optional[_Union[TimeModel, _Mapping]] = ...) -> None: ...
 
+class SetTimeModelResponse(_message.Message):
+    __slots__ = ["configuration_generation"]
+    CONFIGURATION_GENERATION_FIELD_NUMBER: _ClassVar[int]
+    configuration_generation: int
+    def __init__(self, configuration_generation: _Optional[int] = ...) -> None: ...
 
-class GetTimeModelRequest(_Message):
-    def __init__(self): ...
-    def HasField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def ClearField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetTimeModelResponse(_Message):
-    configuration_generation: _builtins.int
-    @property
-    def time_model(self) -> TimeModel: ...
-    def __init__(self, *, configuration_generation: _typing.Optional[_builtins.int] = ..., time_model: _typing.Optional[TimeModel] = ...): ...
-    def HasField(self, field_name: _L["configuration_generation", "time_model"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["configuration_generation", "time_model"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class SetTimeModelRequest(_Message):
-    submission_id: _builtins.str
-    @property
-    def maximum_record_time(self) -> Timestamp: ...
-    configuration_generation: _builtins.int
-    @property
-    def new_time_model(self) -> TimeModel: ...
-    def __init__(self, *, submission_id: _typing.Optional[_builtins.str] = ..., maximum_record_time: _typing.Optional[Timestamp] = ..., configuration_generation: _typing.Optional[_builtins.int] = ..., new_time_model: _typing.Optional[TimeModel] = ...): ...
-    def HasField(self, field_name: _L["submission_id", "maximum_record_time", "configuration_generation", "new_time_model"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["submission_id", "maximum_record_time", "configuration_generation", "new_time_model"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class SetTimeModelResponse(_Message):
-    configuration_generation: _builtins.int
-    def __init__(self, *, configuration_generation: _typing.Optional[_builtins.int] = ...): ...
-    def HasField(self, field_name: _L["configuration_generation"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["configuration_generation"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class TimeModel(_Message):
-    @property
-    def avg_transaction_latency(self) -> Duration: ...
-    @property
-    def min_skew(self) -> Duration: ...
-    @property
-    def max_skew(self) -> Duration: ...
-    def __init__(self, *, avg_transaction_latency: _typing.Optional[Duration] = ..., min_skew: _typing.Optional[Duration] = ..., max_skew: _typing.Optional[Duration] = ...): ...
-    def HasField(self, field_name: _L["avg_transaction_latency", "min_skew", "max_skew"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["avg_transaction_latency", "min_skew", "max_skew"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class TimeModel(_message.Message):
+    __slots__ = ["avg_transaction_latency", "min_skew", "max_skew"]
+    AVG_TRANSACTION_LATENCY_FIELD_NUMBER: _ClassVar[int]
+    MIN_SKEW_FIELD_NUMBER: _ClassVar[int]
+    MAX_SKEW_FIELD_NUMBER: _ClassVar[int]
+    avg_transaction_latency: _duration_pb2.Duration
+    min_skew: _duration_pb2.Duration
+    max_skew: _duration_pb2.Duration
+    def __init__(self, avg_transaction_latency: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., min_skew: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., max_skew: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...

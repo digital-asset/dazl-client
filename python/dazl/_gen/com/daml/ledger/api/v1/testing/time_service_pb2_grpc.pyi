@@ -18,10 +18,10 @@ __all__ = [
 
 # noinspection PyPep8Naming,DuplicatedCode
 class TimeServiceStub:
-    @classmethod
+    @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc.Channel) -> _TimeServiceBlockingStub: ...  # type: ignore
-    @classmethod
+    @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _TimeServiceAsyncStub: ...  # type: ignore
     def GetTime(self, __1: GetTimeRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[_grpc.CallIterator[GetTimeResponse], _grpc_aio.UnaryStreamCall[_typing.Any, GetTimeResponse]]: ...
@@ -34,5 +34,5 @@ class _TimeServiceBlockingStub(TimeServiceStub):
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _TimeServiceAsyncStub(TimeServiceStub):
-    def GetTime(self, __1: GetTimeRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryStreamCall[_typing.Any, GetTimeResponse]: ...
-    def SetTime(self, __1: SetTimeRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, Empty]: ...
+    def GetTime(self, __1: GetTimeRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryStreamCall[_typing.Any, GetTimeResponse]: ...  # type: ignore
+    def SetTime(self, __1: SetTimeRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, Empty]: ...  # type: ignore

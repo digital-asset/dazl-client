@@ -11,6 +11,7 @@ from . import transaction_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_
 
 class TransactionServiceStub(object):
     """Allows clients to read transactions from the ledger.
+    In V2 Ledger API this service is not available anymore. Use v2.UpdateService instead.
     """
 
     def __init__(self, channel):
@@ -54,10 +55,16 @@ class TransactionServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLedgerEndRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLedgerEndResponse.FromString,
                 )
+        self.GetLatestPrunedOffsets = channel.unary_unary(
+                '/com.daml.ledger.api.v1.TransactionService/GetLatestPrunedOffsets',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLatestPrunedOffsetsRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLatestPrunedOffsetsResponse.FromString,
+                )
 
 
 class TransactionServiceServicer(object):
     """Allows clients to read transactions from the ledger.
+    In V2 Ledger API this service is not available anymore. Use v2.UpdateService instead.
     """
 
     def GetTransactions(self, request, context):
@@ -115,6 +122,13 @@ class TransactionServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetLatestPrunedOffsets(self, request, context):
+        """Get the latest successfully pruned ledger offsets
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TransactionServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -153,6 +167,11 @@ def add_TransactionServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLedgerEndRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLedgerEndResponse.SerializeToString,
             ),
+            'GetLatestPrunedOffsets': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetLatestPrunedOffsets,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLatestPrunedOffsetsRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLatestPrunedOffsetsResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'com.daml.ledger.api.v1.TransactionService', rpc_method_handlers)
@@ -162,6 +181,7 @@ def add_TransactionServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class TransactionService(object):
     """Allows clients to read transactions from the ledger.
+    In V2 Ledger API this service is not available anymore. Use v2.UpdateService instead.
     """
 
     @staticmethod
@@ -280,5 +300,22 @@ class TransactionService(object):
         return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.TransactionService/GetLedgerEnd',
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLedgerEndRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLedgerEndResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetLatestPrunedOffsets(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.daml.ledger.api.v1.TransactionService/GetLatestPrunedOffsets',
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLatestPrunedOffsetsRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2.GetLatestPrunedOffsetsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

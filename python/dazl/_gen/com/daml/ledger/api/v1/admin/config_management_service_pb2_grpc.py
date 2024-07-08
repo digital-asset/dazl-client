@@ -16,6 +16,7 @@ class ConfigManagementServiceStub(object):
     The ledger configuration management service provides methods for the ledger administrator
     to change the current ledger configuration. The services provides methods to modify
     different aspects of the configuration.
+    In V2 Ledger API this service is not available anymore.
     """
 
     def __init__(self, channel):
@@ -43,6 +44,7 @@ class ConfigManagementServiceServicer(object):
     The ledger configuration management service provides methods for the ledger administrator
     to change the current ledger configuration. The services provides methods to modify
     different aspects of the configuration.
+    In V2 Ledger API this service is not available anymore.
     """
 
     def GetTimeModel(self, request, context):
@@ -86,6 +88,7 @@ class ConfigManagementService(object):
     The ledger configuration management service provides methods for the ledger administrator
     to change the current ledger configuration. The services provides methods to modify
     different aspects of the configuration.
+    In V2 Ledger API this service is not available anymore.
     """
 
     @staticmethod

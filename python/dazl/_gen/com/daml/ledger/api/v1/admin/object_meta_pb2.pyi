@@ -2,27 +2,24 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf.internal import containers as _containers
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.internal.containers import ScalarMap
-from google.protobuf.message import Message as _Message
-
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
-
-__all__ = [
-    "ObjectMeta",
-]
-
-
-class ObjectMeta(_Message):
-    resource_version: _builtins.str
-    @property
-    def annotations(self) -> ScalarMap[_builtins.str, _builtins.str]: ...
-    def __init__(self, *, resource_version: _typing.Optional[_builtins.str] = ..., annotations: _typing.Optional[_typing.Mapping[_builtins.str, _builtins.str]] = ...): ...
-    def HasField(self, field_name: _L["resource_version", "annotations"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["resource_version", "annotations"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class ObjectMeta(_message.Message):
+    __slots__ = ["resource_version", "annotations"]
+    class AnnotationsEntry(_message.Message):
+        __slots__ = ["key", "value"]
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: str
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
+    RESOURCE_VERSION_FIELD_NUMBER: _ClassVar[int]
+    ANNOTATIONS_FIELD_NUMBER: _ClassVar[int]
+    resource_version: str
+    annotations: _containers.ScalarMap[str, str]
+    def __init__(self, resource_version: _Optional[str] = ..., annotations: _Optional[_Mapping[str, str]] = ...) -> None: ...

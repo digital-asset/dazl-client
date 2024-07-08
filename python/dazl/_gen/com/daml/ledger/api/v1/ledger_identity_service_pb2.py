@@ -8,9 +8,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -20,27 +19,10 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n4com/daml/ledger/api/v1/ledger_identity_service.proto\x12\x16\x63om.daml.ledger.api.v1\"\x1e\n\x18GetLedgerIdentityRequest:\x02\x18\x01\"@\n\x19GetLedgerIdentityResponse\x12\x1f\n\tledger_id\x18\x01 \x01(\tB\x02\x18\x01R\x08ledgerId:\x02\x18\x01\x32\x9b\x01\n\x15LedgerIdentityService\x12}\n\x11GetLedgerIdentity\x12\x30.com.daml.ledger.api.v1.GetLedgerIdentityRequest\x1a\x31.com.daml.ledger.api.v1.GetLedgerIdentityResponse\"\x03\x88\x02\x01\x1a\x03\x88\x02\x01\x42\x99\x01\n\x16\x63om.daml.ledger.api.v1B\x1fLedgerIdentityServiceOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3')
 
-
-
-_GETLEDGERIDENTITYREQUEST = DESCRIPTOR.message_types_by_name['GetLedgerIdentityRequest']
-_GETLEDGERIDENTITYRESPONSE = DESCRIPTOR.message_types_by_name['GetLedgerIdentityResponse']
-GetLedgerIdentityRequest = _reflection.GeneratedProtocolMessageType('GetLedgerIdentityRequest', (_message.Message,), {
-  'DESCRIPTOR' : _GETLEDGERIDENTITYREQUEST,
-  '__module__' : 'com.daml.ledger.api.v1.ledger_identity_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.GetLedgerIdentityRequest)
-  })
-_sym_db.RegisterMessage(GetLedgerIdentityRequest)
-
-GetLedgerIdentityResponse = _reflection.GeneratedProtocolMessageType('GetLedgerIdentityResponse', (_message.Message,), {
-  'DESCRIPTOR' : _GETLEDGERIDENTITYRESPONSE,
-  '__module__' : 'com.daml.ledger.api.v1.ledger_identity_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.GetLedgerIdentityResponse)
-  })
-_sym_db.RegisterMessage(GetLedgerIdentityResponse)
-
-_LEDGERIDENTITYSERVICE = DESCRIPTOR.services_by_name['LedgerIdentityService']
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.daml.ledger.api.v1.ledger_identity_service_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
-
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'\n\026com.daml.ledger.api.v1B\037LedgerIdentityServiceOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1'
   _GETLEDGERIDENTITYREQUEST._options = None
@@ -53,10 +35,10 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _LEDGERIDENTITYSERVICE._serialized_options = b'\210\002\001'
   _LEDGERIDENTITYSERVICE.methods_by_name['GetLedgerIdentity']._options = None
   _LEDGERIDENTITYSERVICE.methods_by_name['GetLedgerIdentity']._serialized_options = b'\210\002\001'
-  _GETLEDGERIDENTITYREQUEST._serialized_start=80
-  _GETLEDGERIDENTITYREQUEST._serialized_end=110
-  _GETLEDGERIDENTITYRESPONSE._serialized_start=112
-  _GETLEDGERIDENTITYRESPONSE._serialized_end=176
-  _LEDGERIDENTITYSERVICE._serialized_start=179
-  _LEDGERIDENTITYSERVICE._serialized_end=334
+  _globals['_GETLEDGERIDENTITYREQUEST']._serialized_start=80
+  _globals['_GETLEDGERIDENTITYREQUEST']._serialized_end=110
+  _globals['_GETLEDGERIDENTITYRESPONSE']._serialized_start=112
+  _globals['_GETLEDGERIDENTITYRESPONSE']._serialized_end=176
+  _globals['_LEDGERIDENTITYSERVICE']._serialized_start=179
+  _globals['_LEDGERIDENTITYSERVICE']._serialized_end=334
 # @@protoc_insertion_point(module_scope)

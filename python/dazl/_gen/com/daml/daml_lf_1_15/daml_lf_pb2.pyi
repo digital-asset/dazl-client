@@ -2,48 +2,33 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from . import daml_lf_1_pb2 as _daml_lf_1_pb2
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.descriptor import EnumDescriptor
-from google.protobuf.message import Message as _Message
+class HashFunction(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []  # type: ignore
+    SHA256: _ClassVar[HashFunction]
+SHA256: HashFunction
 
-from .daml_lf_1_pb2 import Package
+class ArchivePayload(_message.Message):
+    __slots__ = ["minor", "daml_lf_1"]
+    MINOR_FIELD_NUMBER: _ClassVar[int]
+    DAML_LF_1_FIELD_NUMBER: _ClassVar[int]
+    minor: str
+    daml_lf_1: _daml_lf_1_pb2.Package
+    def __init__(self, minor: _Optional[str] = ..., daml_lf_1: _Optional[_Union[_daml_lf_1_pb2.Package, _Mapping]] = ...) -> None: ...
 
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
-
-__all__ = [
-    "ArchivePayload",
-    "Archive",
-]
-
-class HashFunction:
-    DESCRIPTOR: _typing.ClassVar[EnumDescriptor] = ...
-    SHA256: _typing.ClassVar[_L[0]] = ...
-SHA256 = _L[0]
-
-
-class ArchivePayload(_Message):
-    minor: _builtins.str
-    @property
-    def daml_lf_1(self) -> Package: ...
-    @_typing.overload
-    def __init__(self, *, minor: _typing.Optional[_builtins.str] = ...): ...
-    @_typing.overload
-    def __init__(self, *, minor: _typing.Optional[_builtins.str] = ..., daml_lf_1: Package = ...): ...
-    def HasField(self, field_name: _L["minor", "Sum", "daml_lf_1"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["minor", "Sum", "daml_lf_1"]) -> None: ...
-    def WhichOneof(self, oneof_group: _L["Sum"]) -> _L[None, "daml_lf_1"]: ...
-
-class Archive(_Message):
-    @property
-    def hash_function(self) -> _L[0]: ...
-    payload: _builtins.bytes
-    hash: _builtins.str
-    def __init__(self, *, hash_function: _typing.Optional[_L['SHA256', 0]] = ..., payload: _typing.Optional[_builtins.bytes] = ..., hash: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["hash_function", "payload", "hash"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["hash_function", "payload", "hash"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class Archive(_message.Message):
+    __slots__ = ["hash_function", "payload", "hash"]
+    HASH_FUNCTION_FIELD_NUMBER: _ClassVar[int]
+    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    HASH_FIELD_NUMBER: _ClassVar[int]
+    hash_function: HashFunction
+    payload: bytes
+    hash: str
+    def __init__(self, hash_function: _Optional[_Union[HashFunction, str]] = ..., payload: _Optional[bytes] = ..., hash: _Optional[str] = ...) -> None: ...

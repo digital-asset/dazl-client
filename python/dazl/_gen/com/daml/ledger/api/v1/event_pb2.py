@@ -8,9 +8,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -25,60 +24,20 @@ from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"com/daml/ledger/api/v1/event.proto\x12\x16\x63om.daml.ledger.api.v1\x1a.com/daml/ledger/api/v1/contract_metadata.proto\x1a\"com/daml/ledger/api/v1/value.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x19google/protobuf/any.proto\x1a\x17google/rpc/status.proto\"\xa8\x01\n\x05\x45vent\x12@\n\x07\x63reated\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v1.CreatedEventH\x00R\x07\x63reated\x12\x43\n\x08\x61rchived\x18\x03 \x01(\x0b\x32%.com.daml.ledger.api.v1.ArchivedEventH\x00R\x08\x61rchivedB\x07\n\x05\x65ventJ\x04\x08\x02\x10\x03R\texercised\"\xaa\x05\n\x0c\x43reatedEvent\x12\x19\n\x08\x65vent_id\x18\x01 \x01(\tR\x07\x65ventId\x12\x1f\n\x0b\x63ontract_id\x18\x02 \x01(\tR\ncontractId\x12\x43\n\x0btemplate_id\x18\x03 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12@\n\x0c\x63ontract_key\x18\x07 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0b\x63ontractKey\x12I\n\x10\x63reate_arguments\x18\x04 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.RecordR\x0f\x63reateArguments\x12H\n\x15\x63reate_arguments_blob\x18\x0c \x01(\x0b\x32\x14.google.protobuf.AnyR\x13\x63reateArgumentsBlob\x12N\n\x0finterface_views\x18\x0b \x03(\x0b\x32%.com.daml.ledger.api.v1.InterfaceViewR\x0einterfaceViews\x12\'\n\x0fwitness_parties\x18\x05 \x03(\tR\x0ewitnessParties\x12 \n\x0bsignatories\x18\x08 \x03(\tR\x0bsignatories\x12\x1c\n\tobservers\x18\t \x03(\tR\tobservers\x12\x43\n\x0e\x61greement_text\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValueR\ragreementText\x12\x44\n\x08metadata\x18\n \x01(\x0b\x32(.com.daml.ledger.api.v1.ContractMetadataR\x08metadata\"\xca\x01\n\rInterfaceView\x12\x45\n\x0cinterface_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x0binterfaceId\x12\x33\n\x0bview_status\x18\x02 \x01(\x0b\x32\x12.google.rpc.StatusR\nviewStatus\x12=\n\nview_value\x18\x03 \x01(\x0b\x32\x1e.com.daml.ledger.api.v1.RecordR\tviewValue\"\xb9\x01\n\rArchivedEvent\x12\x19\n\x08\x65vent_id\x18\x01 \x01(\tR\x07\x65ventId\x12\x1f\n\x0b\x63ontract_id\x18\x02 \x01(\tR\ncontractId\x12\x43\n\x0btemplate_id\x18\x03 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12\'\n\x0fwitness_parties\x18\x04 \x03(\tR\x0ewitnessParties\"\xa2\x04\n\x0e\x45xercisedEvent\x12\x19\n\x08\x65vent_id\x18\x01 \x01(\tR\x07\x65ventId\x12\x1f\n\x0b\x63ontract_id\x18\x02 \x01(\tR\ncontractId\x12\x43\n\x0btemplate_id\x18\x03 \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\ntemplateId\x12\x45\n\x0cinterface_id\x18\r \x01(\x0b\x32\".com.daml.ledger.api.v1.IdentifierR\x0binterfaceId\x12\x16\n\x06\x63hoice\x18\x05 \x01(\tR\x06\x63hoice\x12\x46\n\x0f\x63hoice_argument\x18\x06 \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0e\x63hoiceArgument\x12%\n\x0e\x61\x63ting_parties\x18\x07 \x03(\tR\ractingParties\x12\x1c\n\tconsuming\x18\x08 \x01(\x08R\tconsuming\x12\'\n\x0fwitness_parties\x18\n \x03(\tR\x0ewitnessParties\x12&\n\x0f\x63hild_event_ids\x18\x0b \x03(\tR\rchildEventIds\x12\x46\n\x0f\x65xercise_result\x18\x0c \x01(\x0b\x32\x1d.com.daml.ledger.api.v1.ValueR\x0e\x65xerciseResultJ\x04\x08\x04\x10\x05J\x04\x08\t\x10\nB\x89\x01\n\x16\x63om.daml.ledger.api.v1B\x0f\x45ventOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\xaa\x02\x16\x43om.Daml.Ledger.Api.V1b\x06proto3')
 
-
-
-_EVENT = DESCRIPTOR.message_types_by_name['Event']
-_CREATEDEVENT = DESCRIPTOR.message_types_by_name['CreatedEvent']
-_INTERFACEVIEW = DESCRIPTOR.message_types_by_name['InterfaceView']
-_ARCHIVEDEVENT = DESCRIPTOR.message_types_by_name['ArchivedEvent']
-_EXERCISEDEVENT = DESCRIPTOR.message_types_by_name['ExercisedEvent']
-Event = _reflection.GeneratedProtocolMessageType('Event', (_message.Message,), {
-  'DESCRIPTOR' : _EVENT,
-  '__module__' : 'com.daml.ledger.api.v1.event_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.Event)
-  })
-_sym_db.RegisterMessage(Event)
-
-CreatedEvent = _reflection.GeneratedProtocolMessageType('CreatedEvent', (_message.Message,), {
-  'DESCRIPTOR' : _CREATEDEVENT,
-  '__module__' : 'com.daml.ledger.api.v1.event_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.CreatedEvent)
-  })
-_sym_db.RegisterMessage(CreatedEvent)
-
-InterfaceView = _reflection.GeneratedProtocolMessageType('InterfaceView', (_message.Message,), {
-  'DESCRIPTOR' : _INTERFACEVIEW,
-  '__module__' : 'com.daml.ledger.api.v1.event_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.InterfaceView)
-  })
-_sym_db.RegisterMessage(InterfaceView)
-
-ArchivedEvent = _reflection.GeneratedProtocolMessageType('ArchivedEvent', (_message.Message,), {
-  'DESCRIPTOR' : _ARCHIVEDEVENT,
-  '__module__' : 'com.daml.ledger.api.v1.event_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.ArchivedEvent)
-  })
-_sym_db.RegisterMessage(ArchivedEvent)
-
-ExercisedEvent = _reflection.GeneratedProtocolMessageType('ExercisedEvent', (_message.Message,), {
-  'DESCRIPTOR' : _EXERCISEDEVENT,
-  '__module__' : 'com.daml.ledger.api.v1.event_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.ExercisedEvent)
-  })
-_sym_db.RegisterMessage(ExercisedEvent)
-
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.daml.ledger.api.v1.event_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
-
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'\n\026com.daml.ledger.api.v1B\017EventOuterClassZEgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1\252\002\026Com.Daml.Ledger.Api.V1'
-  _EVENT._serialized_start=231
-  _EVENT._serialized_end=399
-  _CREATEDEVENT._serialized_start=402
-  _CREATEDEVENT._serialized_end=1084
-  _INTERFACEVIEW._serialized_start=1087
-  _INTERFACEVIEW._serialized_end=1289
-  _ARCHIVEDEVENT._serialized_start=1292
-  _ARCHIVEDEVENT._serialized_end=1477
-  _EXERCISEDEVENT._serialized_start=1480
-  _EXERCISEDEVENT._serialized_end=2026
+  _globals['_EVENT']._serialized_start=231
+  _globals['_EVENT']._serialized_end=399
+  _globals['_CREATEDEVENT']._serialized_start=402
+  _globals['_CREATEDEVENT']._serialized_end=1084
+  _globals['_INTERFACEVIEW']._serialized_start=1087
+  _globals['_INTERFACEVIEW']._serialized_end=1289
+  _globals['_ARCHIVEDEVENT']._serialized_start=1292
+  _globals['_ARCHIVEDEVENT']._serialized_end=1477
+  _globals['_EXERCISEDEVENT']._serialized_start=1480
+  _globals['_EXERCISEDEVENT']._serialized_end=2026
 # @@protoc_insertion_point(module_scope)

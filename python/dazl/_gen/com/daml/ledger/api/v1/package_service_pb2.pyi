@@ -2,85 +2,66 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.descriptor import EnumDescriptor
-from google.protobuf.internal.containers import RepeatedScalarFieldContainer
-from google.protobuf.message import Message as _Message
+class PackageStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []  # type: ignore
+    UNKNOWN: _ClassVar[PackageStatus]
+    REGISTERED: _ClassVar[PackageStatus]
 
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
+class HashFunction(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []  # type: ignore
+    SHA256: _ClassVar[HashFunction]
+UNKNOWN: PackageStatus
+REGISTERED: PackageStatus
+SHA256: HashFunction
 
-__all__ = [
-    "ListPackagesRequest",
-    "ListPackagesResponse",
-    "GetPackageRequest",
-    "GetPackageResponse",
-    "GetPackageStatusRequest",
-    "GetPackageStatusResponse",
-]
+class ListPackagesRequest(_message.Message):
+    __slots__ = ["ledger_id"]
+    LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
+    ledger_id: str
+    def __init__(self, ledger_id: _Optional[str] = ...) -> None: ...
 
-class PackageStatus:
-    DESCRIPTOR: _typing.ClassVar[EnumDescriptor] = ...
-    UNKNOWN: _typing.ClassVar[_L[0]] = ...
-    REGISTERED: _typing.ClassVar[_L[1]] = ...
-UNKNOWN = _L[0]
-REGISTERED = _L[1]
+class ListPackagesResponse(_message.Message):
+    __slots__ = ["package_ids"]
+    PACKAGE_IDS_FIELD_NUMBER: _ClassVar[int]
+    package_ids: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, package_ids: _Optional[_Iterable[str]] = ...) -> None: ...
 
-class HashFunction:
-    DESCRIPTOR: _typing.ClassVar[EnumDescriptor] = ...
-    SHA256: _typing.ClassVar[_L[0]] = ...
-SHA256 = _L[0]
+class GetPackageRequest(_message.Message):
+    __slots__ = ["ledger_id", "package_id"]
+    LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
+    PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
+    ledger_id: str
+    package_id: str
+    def __init__(self, ledger_id: _Optional[str] = ..., package_id: _Optional[str] = ...) -> None: ...
 
+class GetPackageResponse(_message.Message):
+    __slots__ = ["hash_function", "archive_payload", "hash"]
+    HASH_FUNCTION_FIELD_NUMBER: _ClassVar[int]
+    ARCHIVE_PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    HASH_FIELD_NUMBER: _ClassVar[int]
+    hash_function: HashFunction
+    archive_payload: bytes
+    hash: str
+    def __init__(self, hash_function: _Optional[_Union[HashFunction, str]] = ..., archive_payload: _Optional[bytes] = ..., hash: _Optional[str] = ...) -> None: ...
 
-class ListPackagesRequest(_Message):
-    ledger_id: _builtins.str
-    def __init__(self, *, ledger_id: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["ledger_id"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["ledger_id"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetPackageStatusRequest(_message.Message):
+    __slots__ = ["ledger_id", "package_id"]
+    LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
+    PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
+    ledger_id: str
+    package_id: str
+    def __init__(self, ledger_id: _Optional[str] = ..., package_id: _Optional[str] = ...) -> None: ...
 
-class ListPackagesResponse(_Message):
-    @property
-    def package_ids(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    def __init__(self, *, package_ids: _typing.Optional[_typing.Iterable[_builtins.str]] = ...): ...
-    def HasField(self, field_name: _L["package_ids"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["package_ids"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetPackageRequest(_Message):
-    ledger_id: _builtins.str
-    package_id: _builtins.str
-    def __init__(self, *, ledger_id: _typing.Optional[_builtins.str] = ..., package_id: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["ledger_id", "package_id"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["ledger_id", "package_id"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetPackageResponse(_Message):
-    @property
-    def hash_function(self) -> _L[0]: ...
-    archive_payload: _builtins.bytes
-    hash: _builtins.str
-    def __init__(self, *, hash_function: _typing.Optional[_L['SHA256', 0]] = ..., archive_payload: _typing.Optional[_builtins.bytes] = ..., hash: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["hash_function", "archive_payload", "hash"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["hash_function", "archive_payload", "hash"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetPackageStatusRequest(_Message):
-    ledger_id: _builtins.str
-    package_id: _builtins.str
-    def __init__(self, *, ledger_id: _typing.Optional[_builtins.str] = ..., package_id: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["ledger_id", "package_id"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["ledger_id", "package_id"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetPackageStatusResponse(_Message):
-    @property
-    def package_status(self) -> _L[0, 1]: ...
-    def __init__(self, *, package_status: _typing.Optional[_L['UNKNOWN', 0, 'REGISTERED', 1]] = ...): ...
-    def HasField(self, field_name: _L["package_status"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["package_status"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetPackageStatusResponse(_message.Message):
+    __slots__ = ["package_status"]
+    PACKAGE_STATUS_FIELD_NUMBER: _ClassVar[int]
+    package_status: PackageStatus
+    def __init__(self, package_status: _Optional[_Union[PackageStatus, str]] = ...) -> None: ...
