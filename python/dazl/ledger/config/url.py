@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 from datetime import timedelta
@@ -131,12 +131,14 @@ def create_url(
 
     return SimpleURLConfig(
         url=url,
-        connect_timeout=to_timedelta(connect_timeout)
-        if connect_timeout is not None
-        else DEFAULT_CONNECT_TIMEOUT,
-        retry_timeout=to_timedelta(retry_timeout)
-        if retry_timeout is not None
-        else DEFAULT_RETRY_TIMEOUT,
+        connect_timeout=(
+            to_timedelta(connect_timeout)
+            if connect_timeout is not None
+            else DEFAULT_CONNECT_TIMEOUT
+        ),
+        retry_timeout=(
+            to_timedelta(retry_timeout) if retry_timeout is not None else DEFAULT_RETRY_TIMEOUT
+        ),
         use_http_proxy=use_http_proxy,
     )
 

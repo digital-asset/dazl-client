@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 import asyncio
 from asyncio import Future, ensure_future, gather, sleep, wait_for
@@ -47,7 +47,6 @@ T = TypeVar("T")
 
 
 class _NetworkImpl:
-
     __slots__ = (
         "lookup",
         "invoker",

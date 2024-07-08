@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 from collections import OrderedDict, defaultdict
@@ -286,9 +286,11 @@ def _parse_daml_metadata_pb(archive: "Archive") -> "PackageStore":
                     psb.add_template(
                         Template(
                             data_type=data_type,
-                            key_type=get_old_type(template_pb.key.type)
-                            if template_pb.key is not None
-                            else None,
+                            key_type=(
+                                get_old_type(template_pb.key.type)
+                                if template_pb.key is not None
+                                else None
+                            ),
                             choices=[
                                 TemplateChoice(
                                     c.name,

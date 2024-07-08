@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 """
 dazl docs sphinx theme definition.
@@ -14,7 +14,7 @@ SPHINX_ROOT = Path(__file__).parent
 ROOT = SPHINX_ROOT.parent
 
 
-__version__ = (ROOT / 'VERSION').read_text().strip()
+__version__ = (ROOT / "VERSION").read_text().strip()
 __version_full__ = __version__
 
 
@@ -22,5 +22,5 @@ def get_html_theme_path() -> str:
     return str(SPHINX_ROOT)
 
 
-def setup(app: 'Sphinx') -> None:
-    app.add_html_theme('dazl_sphinx_theme', get_html_theme_path())
+def setup(app: "Sphinx") -> None:
+    app.add_html_theme("dazl_sphinx_theme", get_html_theme_path())

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -32,9 +32,9 @@ def config_field(
                 default_value=default_value,
                 long_aliases=frozenset([long_alias]) if long_alias else frozenset(),
                 short_aliases=frozenset([short_alias]) if short_alias else frozenset(),
-                deprecated_aliases=frozenset([deprecated_alias])
-                if deprecated_alias
-                else frozenset(),
+                deprecated_aliases=(
+                    frozenset([deprecated_alias]) if deprecated_alias else frozenset()
+                ),
                 environment_variable=environment_variable,
             )
         },
