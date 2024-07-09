@@ -1,27 +1,12 @@
 # Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import sys
 from typing import List, Optional, Sequence
 
 from . import daml_lf_1 as lf
 from .._gen.com.daml.daml_lf_1_15 import daml_lf_1_pb2 as pblf
 
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
-
 __all__ = ["ProtobufParser"]
-
-# TODO: Figure out a way to define these literals in daml_lf_1_pb2.pyi where they belong
-# fmt: off
-PrimCon = Literal[0, 1, 2]
-PrimType = Literal[0, 1, 2, 3, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
-PrimLit_RoundingMode = Literal[0, 1, 2, 3, 4, 5, 6, 7]
-BuiltinFunction = Literal[0, 1, 2, 3, 6, 107, 108, 109, 110, 111, 121, 122, 7, 8, 9, 10, 11, 12, 20, 21, 96, 97, 98, 99, 100, 101, 124, 125, 126, 127, 128, 129, 130, 23, 24, 25, 147, 33, 34, 112, 36, 37, 67, 89, 39, 40, 113, 42, 43, 68, 90, 45, 46, 114, 48, 49, 69, 91, 51, 52, 115, 54, 55, 70, 92, 57, 58, 116, 60, 61, 71, 63, 94, 95, 103, 104, 117, 136, 93, 72, 73, 74, 75, 76, 77, 118, 119, 78, 79, 80, 120, 81, 82, 83, 84, 85, 86, 87, 123, 131, 132, 133, 134, 135, 88, 102, 105, 106, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146]
-
-# fmt: on
 
 
 # noinspection PyPep8Naming,PyMethodMayBeStatic
@@ -126,7 +111,7 @@ class ProtobufParser:
             tuple(self.parse_Kind(param) for param in pb.params), self.parse_Kind(pb.result)
         )
 
-    def parse_PrimType(self, pb: PrimType) -> lf.PrimType:
+    def parse_PrimType(self, pb: pblf.PrimType) -> lf.PrimType:
         return lf.PrimType(pb)
 
     def parse_Type(self, pb: pblf.Type) -> lf.Type:
@@ -186,7 +171,7 @@ class ProtobufParser:
             args=tuple(self.parse_Type(arg) for arg in pb.args),
         )
 
-    def parse_PrimCon(self, pb: PrimCon) -> lf.PrimCon:
+    def parse_PrimCon(self, pb: pblf.PrimCon) -> lf.PrimCon:
         if pb == 0:
             return lf.PrimCon.CON_UNIT
         elif pb == 1:
@@ -196,7 +181,7 @@ class ProtobufParser:
         else:
             raise ValueError(f"unknown enum value: {pb!r}")
 
-    def parse_BuiltinFunction(self, pb: BuiltinFunction) -> lf.BuiltinFunction:
+    def parse_BuiltinFunction(self, pb: pblf.BuiltinFunction) -> lf.BuiltinFunction:
         return lf.BuiltinFunction(pb)
 
     def parse_PrimLit(self, pb: pblf.PrimLit) -> lf.PrimLit:
@@ -224,7 +209,7 @@ class ProtobufParser:
         else:
             raise ValueError(f"unknown Sum value: {pb!r}")
 
-    def parse_PrimLit_RoundingMode(self, pb: PrimLit_RoundingMode) -> lf.PrimLit.RoundingMode:
+    def parse_PrimLit_RoundingMode(self, pb: pblf.PrimLit.RoundingMode) -> lf.PrimLit.RoundingMode:
         return lf.PrimLit.RoundingMode(pb)
 
     def parse_Expr(self, pb: pblf.Expr) -> lf.Expr:

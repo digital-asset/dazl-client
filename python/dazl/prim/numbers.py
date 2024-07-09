@@ -39,5 +39,9 @@ def decimal_to_str(d: "Decimal") -> str:
     Return a string representation of a :class:`Decimal` that is safe to be used over the
     Ledger API. Concretely, this means staying away from scientific notation.
     """
-    precision = max(0, -d.as_tuple().exponent)
-    return format(d, f".{precision}f")
+    exponent = d.as_tuple().exponent
+    if isinstance(exponent, int):
+        precision = max(0, -exponent)
+        return format(d, f".{precision}f")
+    else:
+        raise ValueError(f"Not a legal Decimal: {d!r})")

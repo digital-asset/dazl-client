@@ -76,6 +76,14 @@ include_trailing_comma = true
 line_length = 100
 multi_line_output = 3
 
+[tool.mypy]
+cache_dir = '.cache/mypy'
+namespace_packages = true
+
+[[tool.mypy.overrides]]
+module = ['google._upb.*', 'google.auth.transport.*', 'google.oauth2.credentials.*', 'google.protobuf.pyext.*', 'google.rpc.*', 'google.rpc.status_pb2.*', 'grpc._cython.*', 'grpc.aio.*', 'grpc_tools.*', 'prometheus_client.*', 'psutil.*', 'pygments.*', 'semver.*', 'toposort.*']
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 cache_dir = ".cache/pytest"
 log_cli = true

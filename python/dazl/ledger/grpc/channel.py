@@ -77,7 +77,7 @@ def create_channel(config: "Config") -> "Channel":
         # Python/C++ libraries refuse to allow "credentials" objects to be passed around on
         # non-TLS channels, but they don't check interceptors; use an interceptor to inject
         # an Authorization header instead
-        return insecure_channel(u.netloc, options, interceptors=[GrpcAuthInterceptor(config)])
+        return insecure_channel(u.netloc, options, interceptors=[GrpcAuthInterceptor(config)])  # type: ignore
 
     else:
         # no TLS, no tokens--simply create an insecure channel with no adornments
@@ -134,9 +134,11 @@ class GrpcAuthInterceptor(
         client_call_details: ClientCallDetails,
         request: RequestType,
     ) -> "Union[ResponseIterableType, UnaryStreamCall]":
-        return await continuation(self._modify_client_call_details(client_call_details), request)
+        return await continuation(  # type: ignore
+            self._modify_client_call_details(client_call_details), request
+        )
 
-    async def intercept_stream_unary(
+    async def intercept_stream_unary(  # type: ignore
         self,
         continuation: "Callable[[ClientCallDetails, RequestType], StreamUnaryCall]",
         client_call_details: ClientCallDetails,
@@ -152,13 +154,14 @@ class GrpcAuthInterceptor(
         client_call_details: ClientCallDetails,
         request_iterator: RequestIterableType,
     ) -> "Union[ResponseIterableType, StreamStreamCall]":
-        return await continuation(
+        return await continuation(  # type: ignore
             self._modify_client_call_details(client_call_details), request_iterator  # type: ignore
         )
 
     def _modify_client_call_details(self, client_call_details: ClientCallDetails):
         if (
-            "authorization" not in client_call_details.metadata
+            client_call_details.metadata is not None
+            and "authorization" not in client_call_details.metadata
             and self._config.access.token_version is not None
         ):
             client_call_details.metadata.add("authorization", f"Bearer {self._config.access.token}")
