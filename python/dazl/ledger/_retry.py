@@ -25,8 +25,9 @@ def is_retryable_exception(ex: Exception) -> bool:
         return True
     elif status == StatusCode.FAILED_PRECONDITION:
         details = ex.details()
-        return details is not None and details.startswith(
-            "PARTY_ALLOCATION_WITHOUT_CONNECTED_DOMAIN"
+        return details is not None and (
+            details.startswith("PARTY_ALLOCATION_WITHOUT_CONNECTED_DOMAIN")
+            or details.startswith("NO_DOMAIN_FOR_SUBMISSION")
         )
 
     return False
