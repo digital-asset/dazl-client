@@ -177,7 +177,7 @@ class SandboxLauncher:
                 raise RuntimeError("we somehow have a process without a URL")
 
             if self._use_auth or self._use_tls:
-                self._certificate = cert_gen(subject_alternative_name="localhost")
+                self._certificate = cert_gen(subject_alternative_name=["127.0.0.1", "localhost"])
 
                 temp_dir = Path(self._exit_stack.enter_context(tempfile.TemporaryDirectory()))
                 self._crt_file = temp_dir / "tmp.crt"
@@ -208,7 +208,12 @@ class SandboxLauncher:
                 universal_newlines=True,
             )
             ProcessLogger(self._process, self.log).start()
-            wait_for_process_port(self._process, self._url_source.port, DEFAULT_TIMEOUT)
+            wait_for_process_port(
+                self._process,
+                self._url_source.port,
+                DEFAULT_TIMEOUT,
+                participant_admin_port=options.participant_admin_port,
+            )
 
     def stop(self) -> None:
         """
@@ -258,6 +263,7 @@ class SandboxLauncher:
 
 class SandboxOptions:
     port: int
+    participant_admin_port: int
     project_root: Optional[str] = None
     ledger_id: Optional[str] = None
     use_auth: bool = False
@@ -269,6 +275,7 @@ class SandboxOptions:
         self,
         *,
         port: int,
+        participant_admin_port: Optional[int] = None,
         project_root: Optional[str] = None,
         ledger_id: Optional[str] = None,
         use_auth: bool = False,
@@ -277,6 +284,9 @@ class SandboxOptions:
         key_file: Optional[Path] = None,
     ):
         object.__setattr__(self, "port", port)
+        object.__setattr__(
+            self, "participant_admin_port", participant_admin_port or find_free_port()
+        )
         object.__setattr__(self, "project_root", project_root)
         object.__setattr__(self, "ledger_id", ledger_id)
         object.__setattr__(self, "use_auth", use_auth)
@@ -315,7 +325,6 @@ class SandboxOptions:
         if self.ledger_id and (self.ledger_id != "sandbox"):
             raise ValueError('for Daml 2.x ledgers, ledger ID must be unset, or set to "sandbox"')
 
-        participant_admin_port = find_free_port()
         domain_api_port = find_free_port()
         domain_admin_port = find_free_port()
 
@@ -327,7 +336,7 @@ class SandboxOptions:
         # for the time being, we don't use any of Canton's other ports, but it's important that
         # they are bound to random ports to avoid conflicts
         config_options = {
-            f"{participant}.admin-api.port": str(participant_admin_port),
+            f"{participant}.admin-api.port": str(self.participant_admin_port),
             f"{domain}.public-api.port": str(domain_api_port),
             f"{domain}.admin-api.port": str(domain_admin_port),
         }
@@ -341,12 +350,15 @@ class SandboxOptions:
                 self.cert_file
             )
         if self.use_tls:
-            # config_options["canton.participants.sandbox.ledger-api.host"] = "localhost"
             if self.cert_file is None:
                 raise ValueError("cert_file must be specified when use_auth=True")
             if self.key_file is None:
-                raise ValueError("cert_file must be specified when use_auth=True")
+                raise ValueError("key_file must be specified when use_auth=True")
 
+            # with TLS on, recent Java versions enforce SNI name consistency,
+            # but for some reason, SANs with "127.0.0.1" are also rejected, so we need
+            # to use "localhost" here
+            config_options[f"{participant}.ledger-api.address"] = "localhost"
             config_options[f"{participant}.ledger-api.tls.cert-chain-file"] = str(self.cert_file)
             config_options[f"{participant}.ledger-api.tls.private-key-file"] = str(self.key_file)
 

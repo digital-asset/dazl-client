@@ -1,13 +1,21 @@
 # Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from contextlib import ExitStack
 from datetime import datetime
 import logging
+from os import PathLike
+from pathlib import Path
 from subprocess import Popen, TimeoutExpired
 import sys
 from threading import Event, Thread
 import time
+from typing import Optional
 
+from google.protobuf.empty_pb2 import Empty
+from grpc import insecure_channel, secure_channel, ssl_channel_credentials
+
+from .._gen.com.digitalasset.canton.health.admin.v0.status_service_pb2_grpc import StatusServiceStub
 from ..prim import DazlError, TimeDeltaLike, to_timedelta
 
 
@@ -46,7 +54,14 @@ def kill_process_tree(process: "Popen"):
         process.communicate()
 
 
-def wait_for_process_port(process: "Popen", port: int, timeout: "TimeDeltaLike") -> None:
+def wait_for_process_port(
+    process: Popen,
+    port: int,
+    timeout: TimeDeltaLike,
+    *,
+    participant_admin_port: Optional[int] = None,
+    participant_admin_cert_file: Optional[PathLike] = None,
+) -> None:
     from .io import is_port_alive
 
     alive = False
@@ -59,8 +74,30 @@ def wait_for_process_port(process: "Popen", port: int, timeout: "TimeDeltaLike")
         and not alive
     ):
         alive = is_port_alive(port)
-        if not alive:
-            time.sleep(0.1)
+        if alive:
+            # testing configurations might always include a participant_admin_port, even if it's not used
+            # (for example, a Daml 1.x test); so additionally check for an active participant_admin_port
+            # and only do a status check if that port is open
+            if participant_admin_port is not None and is_port_alive(participant_admin_port):
+                logging.debug("Waiting for the participant to report itself as active...")
+                with ExitStack() as stack:
+                    if participant_admin_cert_file is not None:
+                        credentials = ssl_channel_credentials(
+                            root_certificates=Path(participant_admin_cert_file).read_bytes()
+                        )
+                        channel = stack.enter_context(
+                            secure_channel(f"localhost:{participant_admin_port}", credentials)
+                        )
+                    else:
+                        channel = stack.enter_context(
+                            insecure_channel(f"localhost:{participant_admin_port}")
+                        )
+                    status_service = StatusServiceStub(channel)
+                    response = status_service.Status(Empty())
+                    alive = response.success.active
+
+                if not alive:
+                    time.sleep(0.5)
 
     if not alive:
         return_code = process.returncode
