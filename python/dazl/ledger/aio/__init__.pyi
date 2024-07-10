@@ -109,6 +109,8 @@ class Connection(_Connection, PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
+        deduplication_duration: Optional[TimeDeltaLike] = ...,
+        deduplication_offset: Optional[str] = ...,
     ) -> None: ...
     async def create(
         self,
@@ -120,6 +122,8 @@ class Connection(_Connection, PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
+        deduplication_duration: Optional[TimeDeltaLike] = ...,
+        deduplication_offset: Optional[str] = ...,
     ) -> CreateEvent: ...
     async def exercise(
         self,
@@ -133,6 +137,8 @@ class Connection(_Connection, PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
+        deduplication_duration: Optional[TimeDeltaLike] = ...,
+        deduplication_offset: Optional[str] = ...,
     ) -> ExerciseResponse: ...
     async def create_and_exercise(
         self,
@@ -146,6 +152,8 @@ class Connection(_Connection, PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
+        deduplication_duration: Optional[TimeDeltaLike] = ...,
+        deduplication_offset: Optional[str] = ...,
     ) -> ExerciseResponse: ...
     async def exercise_by_key(
         self,
@@ -159,6 +167,8 @@ class Connection(_Connection, PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
+        deduplication_duration: Optional[TimeDeltaLike] = ...,
+        deduplication_offset: Optional[str] = ...,
     ) -> ExerciseResponse: ...
     async def archive(
         self,
@@ -169,6 +179,8 @@ class Connection(_Connection, PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
+        deduplication_duration: Optional[TimeDeltaLike] = ...,
+        deduplication_offset: Optional[str] = ...,
     ) -> ArchiveEvent: ...
     async def archive_by_key(
         self,
@@ -180,6 +192,8 @@ class Connection(_Connection, PackageService, Protocol):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = ...,
+        deduplication_duration: Optional[TimeDeltaLike] = ...,
+        deduplication_offset: Optional[str] = ...,
     ) -> ArchiveEvent: ...
     async def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = ...) -> str: ...
     def query(

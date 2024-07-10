@@ -37,6 +37,7 @@ from ...prim import (
     Party,
     TimeDeltaLike,
     datetime_to_timestamp,
+    timedelta_to_duration,
     to_parties,
     to_timedelta,
 )
@@ -162,6 +163,8 @@ class Connection(aio.Connection):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
+        deduplication_duration: Optional[TimeDeltaLike] = None,
+        deduplication_offset: Optional[str] = None,
     ) -> None:
         """
         Submit one or more commands to the Ledger API.
@@ -184,7 +187,12 @@ class Connection(aio.Connection):
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            deduplication_duration=deduplication_duration,
+            deduplication_offset=deduplication_offset,
         )
         commands = await asyncio.gather(*map(self._codec.encode_command, __commands))
         request = self._submit_and_wait_request(commands, meta)
@@ -203,6 +211,8 @@ class Connection(aio.Connection):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
+        deduplication_duration: Optional[TimeDeltaLike] = None,
+        deduplication_offset: Optional[str] = None,
     ) -> CreateEvent:
         """
         Create a contract for a given template.
@@ -237,7 +247,12 @@ class Connection(aio.Connection):
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            deduplication_duration=deduplication_duration,
+            deduplication_offset=deduplication_offset,
         )
         commands = [
             lapipb.Command(create=await self._codec.encode_create_command(__template_id, __payload))
@@ -264,6 +279,8 @@ class Connection(aio.Connection):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
+        deduplication_duration: Optional[TimeDeltaLike] = None,
+        deduplication_offset: Optional[str] = None,
     ) -> ExerciseResponse:
         """
         Exercise a choice on a contract identified by its contract ID.
@@ -306,7 +323,12 @@ class Connection(aio.Connection):
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            deduplication_duration=deduplication_duration,
+            deduplication_offset=deduplication_offset,
         )
         commands = [
             lapipb.Command(
@@ -341,6 +363,8 @@ class Connection(aio.Connection):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
+        deduplication_duration: Optional[TimeDeltaLike] = None,
+        deduplication_offset: Optional[str] = None,
     ) -> ExerciseResponse:
         """
         Exercise a choice on a newly-created contract, in a single transaction.
@@ -386,7 +410,12 @@ class Connection(aio.Connection):
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            deduplication_duration=deduplication_duration,
+            deduplication_offset=deduplication_offset,
         )
         commands = [
             lapipb.Command(
@@ -417,6 +446,8 @@ class Connection(aio.Connection):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
+        deduplication_duration: Optional[TimeDeltaLike] = None,
+        deduplication_offset: Optional[str] = None,
     ) -> "ExerciseResponse":
         """
         Exercise a choice on a contract identified by its contract key.
@@ -461,7 +492,12 @@ class Connection(aio.Connection):
         stub = lapipb.CommandServiceStub(self.channel)
 
         meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            deduplication_duration=deduplication_duration,
+            deduplication_offset=deduplication_offset,
         )
         commands = [
             lapipb.Command(
@@ -489,6 +525,8 @@ class Connection(aio.Connection):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
+        deduplication_duration: Optional[TimeDeltaLike] = None,
+        deduplication_offset: Optional[str] = None,
     ) -> ArchiveEvent:
         """
         Archive a choice on a contract identified by its contract ID.
@@ -535,6 +573,8 @@ class Connection(aio.Connection):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
+        deduplication_duration: Optional[TimeDeltaLike] = None,
+        deduplication_offset: Optional[str] = None,
     ) -> ArchiveEvent:
         """
         Exercise a choice on a contract identified by its contract key.
@@ -599,6 +639,10 @@ class Connection(aio.Connection):
                 commands=commands,
                 act_as=meta.act_as,
                 read_as=meta.read_as,
+                deduplication_duration=timedelta_to_duration(meta.deduplication_duration)
+                if meta.deduplication_duration is not None
+                else None,
+                deduplication_offset=meta.deduplication_offset,
             )
         )
 
@@ -610,13 +654,20 @@ class Connection(aio.Connection):
         read_as: Union[None, Party, Collection[Party]] = None,
         act_as: Union[None, Party, Collection[Party]] = None,
         timeout: Optional[TimeDeltaLike] = None,
+        deduplication_duration: Optional[TimeDeltaLike] = None,
+        deduplication_offset: Optional[str] = None,
     ):
         read_as = self._read_as(read_as)
         if act_as is None:
             act_as = self._config.access.act_as
 
         return CommandMeta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            deduplication_duration=deduplication_duration,
+            deduplication_offset=deduplication_offset,
         )
 
     # endregion
