@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import abc
-from datetime import datetime
+from datetime import datetime, timedelta
 import sys
 from typing import (
     TYPE_CHECKING,
@@ -20,7 +20,15 @@ import uuid
 from .. import _repr
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
-from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Party, to_parties
+from ..prim import (
+    LEDGER_STRING_REGEX,
+    ContractData,
+    ContractId,
+    Party,
+    TimeDeltaLike,
+    to_parties,
+    to_timedelta,
+)
 from ..util.typing import safe_cast
 
 if sys.version_info >= (3, 8):
@@ -394,15 +402,34 @@ class CommandMeta:
 
         An optional set of act-as parties to use to submit this command. Note that for a
         ledger with authorization, these parties must be a subset of the parties in the token.
+
+    .. py:attribute:: deduplication_duration
+        :type: timedelta | None
+
+        An optional maximum deduplication duration. Cannot be specified with deduplication_offset.
+
+    .. py:attribute:: deduplication_offset
+        :type: str | None
+
+        An optional maximum deduplication offset. Cannot be specified with deduplication_duration.
     """
 
-    __slots__ = "workflow_id", "command_id", "read_as", "act_as"
+    __slots__ = (
+        "workflow_id",
+        "command_id",
+        "read_as",
+        "act_as",
+        "deduplication_duration",
+        "deduplication_offset",
+    )
 
     if TYPE_CHECKING:
         workflow_id: "Optional[str]"
         command_id: "Optional[str]"
         read_as: "Optional[Sequence[Party]]"
         act_as: "Optional[Sequence[Party]]"
+        deduplication_duration: "Optional[timedelta]"
+        deduplication_offset: "Optional[str]"
 
     def __init__(
         self,
@@ -410,6 +437,8 @@ class CommandMeta:
         command_id: "Optional[str]",
         read_as: "Union[None, Party, Collection[Party]]",
         act_as: "Union[None, Party, Collection[Party]]",
+        deduplication_duration: "Optional[TimeDeltaLike]",
+        deduplication_offset: "Optional[str]",
     ):
         if workflow_id:
             if not LEDGER_STRING_REGEX.match(workflow_id):
@@ -423,10 +452,19 @@ class CommandMeta:
         else:
             command_id = uuid.uuid4().hex
 
+        if deduplication_duration is not None and deduplication_offset is not None:
+            raise ValueError("cannot specify both deduplication_duration and deduplication_offset")
+
         object.__setattr__(self, "workflow_id", workflow_id)
         object.__setattr__(self, "command_id", command_id)
         object.__setattr__(self, "read_as", to_parties(read_as))
         object.__setattr__(self, "act_as", to_parties(act_as))
+        object.__setattr__(
+            self,
+            "deduplication_duration",
+            to_timedelta(deduplication_duration) if deduplication_duration is not None else None,
+        )
+        object.__setattr__(self, "deduplication_offset", deduplication_offset)
 
     def __eq__(self, other: Any) -> bool:
         return (
@@ -435,6 +473,8 @@ class CommandMeta:
             and self.command_id == other.command_id
             and self.read_as == other.read_as
             and self.act_as == other.act_as
+            and self.deduplication_duration == self.deduplication_duration
+            and self.deduplication_offset == self.deduplication_offset
         )
 
     def __repr__(self) -> str:
@@ -447,6 +487,10 @@ class CommandMeta:
             s.append(f"read_as={_repr.list(self.read_as)}")
         if self.act_as is not None:
             s.append(f"act_as={_repr.list(self.act_as)}")
+        if self.deduplication_duration is not None:
+            s.append(f"deduplication_duration={self.deduplication_duration}")
+        if self.deduplication_offset is not None:
+            s.append(f"deduplication_offset={_repr.str(self.deduplication_offset)}")
         return f"{self.__class__.__name__}({', '.join(s)})"
 
 
