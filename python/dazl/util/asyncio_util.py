@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -369,7 +369,6 @@ class LongRunningAwaitable:
 
 
 class ServiceQueue(Generic[T]):
-
     # noinspection PyDeprecation
     def __init__(self) -> None:
         warnings.warn(

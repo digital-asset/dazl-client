@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
@@ -11,6 +11,7 @@ from . import ledger_configuration_service_pb2 as com_dot_daml_dot_ledger_dot_ap
 
 class LedgerConfigurationServiceStub(object):
     """LedgerConfigurationService allows clients to subscribe to changes of the ledger configuration.
+    In V2 Ledger API this service is not available anymore.
     """
 
     def __init__(self, channel):
@@ -28,6 +29,7 @@ class LedgerConfigurationServiceStub(object):
 
 class LedgerConfigurationServiceServicer(object):
     """LedgerConfigurationService allows clients to subscribe to changes of the ledger configuration.
+    In V2 Ledger API this service is not available anymore.
     """
 
     def GetLedgerConfiguration(self, request, context):
@@ -54,6 +56,7 @@ def add_LedgerConfigurationServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class LedgerConfigurationService(object):
     """LedgerConfigurationService allows clients to subscribe to changes of the ledger configuration.
+    In V2 Ledger API this service is not available anymore.
     """
 
     @staticmethod

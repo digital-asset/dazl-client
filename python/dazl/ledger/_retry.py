@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 from asyncio import CancelledError, sleep
@@ -21,10 +21,12 @@ def is_retryable_exception(ex: Exception) -> bool:
     status = ex.code()
     if status == StatusCode.UNAVAILABLE:
         return True
-    elif status == StatusCode.FAILED_PRECONDITION and ex.details().startswith(
-        "PARTY_ALLOCATION_WITHOUT_CONNECTED_DOMAIN"
-    ):
-        return True
+    elif status == StatusCode.FAILED_PRECONDITION:
+        details = ex.details()
+        return details is not None and (
+            details.startswith("PARTY_ALLOCATION_WITHOUT_CONNECTED_DOMAIN")
+            or details.startswith("NO_DOMAIN_FOR_SUBMISSION")
+        )
 
     return False
 

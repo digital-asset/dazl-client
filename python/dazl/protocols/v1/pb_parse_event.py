@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -241,12 +241,12 @@ def serialize_transactions_request(
     if f.current_offset is not None:
         ledger_offset = lapipb.LedgerOffset(absolute=f.current_offset)
     else:
-        ledger_offset = lapipb.LedgerOffset(boundary=0)
+        ledger_offset = lapipb.LedgerOffset(boundary=lapipb.LedgerOffset.LEDGER_BEGIN)
 
     if f.destination_offset is not None:
         final_offset = lapipb.LedgerOffset(absolute=f.destination_offset)
     else:
-        final_offset = lapipb.LedgerOffset(boundary=1)
+        final_offset = lapipb.LedgerOffset(boundary=lapipb.LedgerOffset.LEDGER_END)
 
     return lapipb.GetTransactionsRequest(
         ledger_id=ledger_id,

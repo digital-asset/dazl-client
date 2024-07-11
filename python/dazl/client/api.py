@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # NOTE TO IMPLEMENTORS
@@ -17,7 +17,7 @@ This module contains the public API for interacting with the ledger from the per
 specific party.
 """
 
-from asyncio import Future, ensure_future, get_event_loop
+from asyncio import Future, ensure_future, get_event_loop, sleep
 from contextlib import contextmanager
 from functools import partial, wraps
 from logging import INFO
@@ -400,6 +400,9 @@ class Network:
         with :meth:`join` if you wish to run the entire client on background threads.
         """
         if not keep_open:
+            warnings.warn(
+                "aio_run(keep_open=False) support will be removed in dazl v8 as it cannot reliably detect when callbacks are done. For script-based interactions, use the dazl v8 connect-based API instead."
+            )
             self._impl.invoker.level = RunLevel.RUN_UNTIL_IDLE
         await self._impl.aio_run(*coroutines)
         LOG.info("The aio_run coroutine has completed.")

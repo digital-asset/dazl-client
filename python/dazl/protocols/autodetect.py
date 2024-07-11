@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 from datetime import datetime
@@ -132,7 +132,6 @@ class AutodetectLedgerNetwork(LedgerNetwork):
     def _get_connection(
         self, settings: "HTTPConnectionSettings", context_path: "Optional[str]"
     ) -> "AutodetectConnection":
-
         if not self._lock.acquire(timeout=5):
             raise TimeoutError("Could not acquire an internal lock quickly enough.")
         try:

@@ -1,112 +1,95 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from . import ledger_offset_pb2 as _ledger_offset_pb2
+from . import transaction_filter_pb2 as _transaction_filter_pb2
+from . import transaction_pb2 as _transaction_pb2
+from google.protobuf.internal import containers as _containers
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.internal.containers import RepeatedCompositeFieldContainer, RepeatedScalarFieldContainer
-from google.protobuf.message import Message as _Message
+class GetTransactionsRequest(_message.Message):
+    __slots__ = ["ledger_id", "begin", "end", "filter", "verbose"]
+    LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
+    BEGIN_FIELD_NUMBER: _ClassVar[int]
+    END_FIELD_NUMBER: _ClassVar[int]
+    FILTER_FIELD_NUMBER: _ClassVar[int]
+    VERBOSE_FIELD_NUMBER: _ClassVar[int]
+    ledger_id: str
+    begin: _ledger_offset_pb2.LedgerOffset
+    end: _ledger_offset_pb2.LedgerOffset
+    filter: _transaction_filter_pb2.TransactionFilter
+    verbose: bool
+    def __init__(self, ledger_id: _Optional[str] = ..., begin: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ..., end: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ..., filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: bool = ...) -> None: ...
 
-from .ledger_offset_pb2 import LedgerOffset
-from .transaction_filter_pb2 import TransactionFilter
-from .transaction_pb2 import Transaction, TransactionTree
+class GetTransactionsResponse(_message.Message):
+    __slots__ = ["transactions"]
+    TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
+    transactions: _containers.RepeatedCompositeFieldContainer[_transaction_pb2.Transaction]
+    def __init__(self, transactions: _Optional[_Iterable[_Union[_transaction_pb2.Transaction, _Mapping]]] = ...) -> None: ...
 
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
+class GetTransactionTreesResponse(_message.Message):
+    __slots__ = ["transactions"]
+    TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
+    transactions: _containers.RepeatedCompositeFieldContainer[_transaction_pb2.TransactionTree]
+    def __init__(self, transactions: _Optional[_Iterable[_Union[_transaction_pb2.TransactionTree, _Mapping]]] = ...) -> None: ...
 
-__all__ = [
-    "GetTransactionsRequest",
-    "GetTransactionsResponse",
-    "GetTransactionTreesResponse",
-    "GetTransactionByEventIdRequest",
-    "GetTransactionByIdRequest",
-    "GetTransactionResponse",
-    "GetFlatTransactionResponse",
-    "GetLedgerEndRequest",
-    "GetLedgerEndResponse",
-]
+class GetTransactionByEventIdRequest(_message.Message):
+    __slots__ = ["ledger_id", "event_id", "requesting_parties"]
+    LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
+    EVENT_ID_FIELD_NUMBER: _ClassVar[int]
+    REQUESTING_PARTIES_FIELD_NUMBER: _ClassVar[int]
+    ledger_id: str
+    event_id: str
+    requesting_parties: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, ledger_id: _Optional[str] = ..., event_id: _Optional[str] = ..., requesting_parties: _Optional[_Iterable[str]] = ...) -> None: ...
 
+class GetTransactionByIdRequest(_message.Message):
+    __slots__ = ["ledger_id", "transaction_id", "requesting_parties"]
+    LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
+    TRANSACTION_ID_FIELD_NUMBER: _ClassVar[int]
+    REQUESTING_PARTIES_FIELD_NUMBER: _ClassVar[int]
+    ledger_id: str
+    transaction_id: str
+    requesting_parties: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, ledger_id: _Optional[str] = ..., transaction_id: _Optional[str] = ..., requesting_parties: _Optional[_Iterable[str]] = ...) -> None: ...
 
-class GetTransactionsRequest(_Message):
-    ledger_id: _builtins.str
-    @property
-    def begin(self) -> LedgerOffset: ...
-    @property
-    def end(self) -> LedgerOffset: ...
-    @property
-    def filter(self) -> TransactionFilter: ...
-    verbose: _builtins.bool
-    def __init__(self, *, ledger_id: _typing.Optional[_builtins.str] = ..., begin: _typing.Optional[LedgerOffset] = ..., end: _typing.Optional[LedgerOffset] = ..., filter: _typing.Optional[TransactionFilter] = ..., verbose: _typing.Optional[_builtins.bool] = ...): ...
-    def HasField(self, field_name: _L["ledger_id", "begin", "end", "filter", "verbose"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["ledger_id", "begin", "end", "filter", "verbose"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetTransactionResponse(_message.Message):
+    __slots__ = ["transaction"]
+    TRANSACTION_FIELD_NUMBER: _ClassVar[int]
+    transaction: _transaction_pb2.TransactionTree
+    def __init__(self, transaction: _Optional[_Union[_transaction_pb2.TransactionTree, _Mapping]] = ...) -> None: ...
 
-class GetTransactionsResponse(_Message):
-    @property
-    def transactions(self) -> RepeatedCompositeFieldContainer[Transaction]: ...
-    def __init__(self, *, transactions: _typing.Optional[_typing.Iterable[Transaction]] = ...): ...
-    def HasField(self, field_name: _L["transactions"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["transactions"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetFlatTransactionResponse(_message.Message):
+    __slots__ = ["transaction"]
+    TRANSACTION_FIELD_NUMBER: _ClassVar[int]
+    transaction: _transaction_pb2.Transaction
+    def __init__(self, transaction: _Optional[_Union[_transaction_pb2.Transaction, _Mapping]] = ...) -> None: ...
 
-class GetTransactionTreesResponse(_Message):
-    @property
-    def transactions(self) -> RepeatedCompositeFieldContainer[TransactionTree]: ...
-    def __init__(self, *, transactions: _typing.Optional[_typing.Iterable[TransactionTree]] = ...): ...
-    def HasField(self, field_name: _L["transactions"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["transactions"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetLedgerEndRequest(_message.Message):
+    __slots__ = ["ledger_id"]
+    LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
+    ledger_id: str
+    def __init__(self, ledger_id: _Optional[str] = ...) -> None: ...
 
-class GetTransactionByEventIdRequest(_Message):
-    ledger_id: _builtins.str
-    event_id: _builtins.str
-    @property
-    def requesting_parties(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    def __init__(self, *, ledger_id: _typing.Optional[_builtins.str] = ..., event_id: _typing.Optional[_builtins.str] = ..., requesting_parties: _typing.Optional[_typing.Iterable[_builtins.str]] = ...): ...
-    def HasField(self, field_name: _L["ledger_id", "event_id", "requesting_parties"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["ledger_id", "event_id", "requesting_parties"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetLedgerEndResponse(_message.Message):
+    __slots__ = ["offset"]
+    OFFSET_FIELD_NUMBER: _ClassVar[int]
+    offset: _ledger_offset_pb2.LedgerOffset
+    def __init__(self, offset: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ...) -> None: ...
 
-class GetTransactionByIdRequest(_Message):
-    ledger_id: _builtins.str
-    transaction_id: _builtins.str
-    @property
-    def requesting_parties(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    def __init__(self, *, ledger_id: _typing.Optional[_builtins.str] = ..., transaction_id: _typing.Optional[_builtins.str] = ..., requesting_parties: _typing.Optional[_typing.Iterable[_builtins.str]] = ...): ...
-    def HasField(self, field_name: _L["ledger_id", "transaction_id", "requesting_parties"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["ledger_id", "transaction_id", "requesting_parties"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetLatestPrunedOffsetsRequest(_message.Message):
+    __slots__ = []  # type: ignore
+    def __init__(self) -> None: ...
 
-class GetTransactionResponse(_Message):
-    @property
-    def transaction(self) -> TransactionTree: ...
-    def __init__(self, *, transaction: _typing.Optional[TransactionTree] = ...): ...
-    def HasField(self, field_name: _L["transaction"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["transaction"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetFlatTransactionResponse(_Message):
-    @property
-    def transaction(self) -> Transaction: ...
-    def __init__(self, *, transaction: _typing.Optional[Transaction] = ...): ...
-    def HasField(self, field_name: _L["transaction"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["transaction"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetLedgerEndRequest(_Message):
-    ledger_id: _builtins.str
-    def __init__(self, *, ledger_id: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["ledger_id"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["ledger_id"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class GetLedgerEndResponse(_Message):
-    @property
-    def offset(self) -> LedgerOffset: ...
-    def __init__(self, *, offset: _typing.Optional[LedgerOffset] = ...): ...
-    def HasField(self, field_name: _L["offset"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["offset"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class GetLatestPrunedOffsetsResponse(_message.Message):
+    __slots__ = ["participant_pruned_up_to_inclusive", "all_divulged_contracts_pruned_up_to_inclusive"]
+    PARTICIPANT_PRUNED_UP_TO_INCLUSIVE_FIELD_NUMBER: _ClassVar[int]
+    ALL_DIVULGED_CONTRACTS_PRUNED_UP_TO_INCLUSIVE_FIELD_NUMBER: _ClassVar[int]
+    participant_pruned_up_to_inclusive: _ledger_offset_pb2.LedgerOffset
+    all_divulged_contracts_pruned_up_to_inclusive: _ledger_offset_pb2.LedgerOffset
+    def __init__(self, participant_pruned_up_to_inclusive: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ..., all_divulged_contracts_pruned_up_to_inclusive: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ...) -> None: ...

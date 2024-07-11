@@ -1,120 +1,99 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from . import contract_metadata_pb2 as _contract_metadata_pb2
+from . import value_pb2 as _value_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
+from google.protobuf import any_pb2 as _any_pb2
+from google.rpc import status_pb2 as _status_pb2
+from google.protobuf.internal import containers as _containers
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.any_pb2 import Any
-from google.protobuf.internal.containers import RepeatedCompositeFieldContainer, RepeatedScalarFieldContainer
-from google.protobuf.message import Message as _Message
-from google.protobuf.wrappers_pb2 import StringValue
-from google.rpc.status_pb2 import Status
+class Event(_message.Message):
+    __slots__ = ["created", "archived"]
+    CREATED_FIELD_NUMBER: _ClassVar[int]
+    ARCHIVED_FIELD_NUMBER: _ClassVar[int]
+    created: CreatedEvent
+    archived: ArchivedEvent
+    def __init__(self, created: _Optional[_Union[CreatedEvent, _Mapping]] = ..., archived: _Optional[_Union[ArchivedEvent, _Mapping]] = ...) -> None: ...
 
-from .contract_metadata_pb2 import ContractMetadata
-from .value_pb2 import Identifier, Record, Value
+class CreatedEvent(_message.Message):
+    __slots__ = ["event_id", "contract_id", "template_id", "contract_key", "create_arguments", "create_arguments_blob", "interface_views", "witness_parties", "signatories", "observers", "agreement_text", "metadata"]
+    EVENT_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
+    TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_KEY_FIELD_NUMBER: _ClassVar[int]
+    CREATE_ARGUMENTS_FIELD_NUMBER: _ClassVar[int]
+    CREATE_ARGUMENTS_BLOB_FIELD_NUMBER: _ClassVar[int]
+    INTERFACE_VIEWS_FIELD_NUMBER: _ClassVar[int]
+    WITNESS_PARTIES_FIELD_NUMBER: _ClassVar[int]
+    SIGNATORIES_FIELD_NUMBER: _ClassVar[int]
+    OBSERVERS_FIELD_NUMBER: _ClassVar[int]
+    AGREEMENT_TEXT_FIELD_NUMBER: _ClassVar[int]
+    METADATA_FIELD_NUMBER: _ClassVar[int]
+    event_id: str
+    contract_id: str
+    template_id: _value_pb2.Identifier
+    contract_key: _value_pb2.Value
+    create_arguments: _value_pb2.Record
+    create_arguments_blob: _any_pb2.Any
+    interface_views: _containers.RepeatedCompositeFieldContainer[InterfaceView]
+    witness_parties: _containers.RepeatedScalarFieldContainer[str]
+    signatories: _containers.RepeatedScalarFieldContainer[str]
+    observers: _containers.RepeatedScalarFieldContainer[str]
+    agreement_text: _wrappers_pb2.StringValue
+    metadata: _contract_metadata_pb2.ContractMetadata
+    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., contract_key: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., create_arguments: _Optional[_Union[_value_pb2.Record, _Mapping]] = ..., create_arguments_blob: _Optional[_Union[_any_pb2.Any, _Mapping]] = ..., interface_views: _Optional[_Iterable[_Union[InterfaceView, _Mapping]]] = ..., witness_parties: _Optional[_Iterable[str]] = ..., signatories: _Optional[_Iterable[str]] = ..., observers: _Optional[_Iterable[str]] = ..., agreement_text: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., metadata: _Optional[_Union[_contract_metadata_pb2.ContractMetadata, _Mapping]] = ...) -> None: ...
 
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
+class InterfaceView(_message.Message):
+    __slots__ = ["interface_id", "view_status", "view_value"]
+    INTERFACE_ID_FIELD_NUMBER: _ClassVar[int]
+    VIEW_STATUS_FIELD_NUMBER: _ClassVar[int]
+    VIEW_VALUE_FIELD_NUMBER: _ClassVar[int]
+    interface_id: _value_pb2.Identifier
+    view_status: _status_pb2.Status
+    view_value: _value_pb2.Record
+    def __init__(self, interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., view_status: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., view_value: _Optional[_Union[_value_pb2.Record, _Mapping]] = ...) -> None: ...
 
-__all__ = [
-    "Event",
-    "CreatedEvent",
-    "InterfaceView",
-    "ArchivedEvent",
-    "ExercisedEvent",
-]
+class ArchivedEvent(_message.Message):
+    __slots__ = ["event_id", "contract_id", "template_id", "witness_parties"]
+    EVENT_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
+    TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    WITNESS_PARTIES_FIELD_NUMBER: _ClassVar[int]
+    event_id: str
+    contract_id: str
+    template_id: _value_pb2.Identifier
+    witness_parties: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., witness_parties: _Optional[_Iterable[str]] = ...) -> None: ...
 
-
-class Event(_Message):
-    @property
-    def created(self) -> CreatedEvent: ...
-    @property
-    def archived(self) -> ArchivedEvent: ...
-    @_typing.overload
-    def __init__(self): ...
-    @_typing.overload
-    def __init__(self, *, created: CreatedEvent = ...): ...
-    @_typing.overload
-    def __init__(self, *, archived: ArchivedEvent = ...): ...
-    def HasField(self, field_name: _L["event", "created", "archived"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["event", "created", "archived"]) -> None: ...
-    def WhichOneof(self, oneof_group: _L["event"]) -> _L[None, "created", "archived"]: ...
-
-class CreatedEvent(_Message):
-    event_id: _builtins.str
-    contract_id: _builtins.str
-    @property
-    def template_id(self) -> Identifier: ...
-    @property
-    def contract_key(self) -> Value: ...
-    @property
-    def create_arguments(self) -> Record: ...
-    @property
-    def create_arguments_blob(self) -> Any: ...
-    @property
-    def interface_views(self) -> RepeatedCompositeFieldContainer[InterfaceView]: ...
-    @property
-    def witness_parties(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    @property
-    def signatories(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    @property
-    def observers(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    @property
-    def agreement_text(self) -> StringValue: ...
-    @property
-    def metadata(self) -> ContractMetadata: ...
-    def __init__(self, *, event_id: _typing.Optional[_builtins.str] = ..., contract_id: _typing.Optional[_builtins.str] = ..., template_id: _typing.Optional[Identifier] = ..., contract_key: _typing.Optional[Value] = ..., create_arguments: _typing.Optional[Record] = ..., create_arguments_blob: _typing.Optional[Any] = ..., interface_views: _typing.Optional[_typing.Iterable[InterfaceView]] = ..., witness_parties: _typing.Optional[_typing.Iterable[_builtins.str]] = ..., signatories: _typing.Optional[_typing.Iterable[_builtins.str]] = ..., observers: _typing.Optional[_typing.Iterable[_builtins.str]] = ..., agreement_text: _typing.Optional[StringValue] = ..., metadata: _typing.Optional[ContractMetadata] = ...): ...
-    def HasField(self, field_name: _L["event_id", "contract_id", "template_id", "contract_key", "create_arguments", "create_arguments_blob", "interface_views", "witness_parties", "signatories", "observers", "agreement_text", "metadata"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["event_id", "contract_id", "template_id", "contract_key", "create_arguments", "create_arguments_blob", "interface_views", "witness_parties", "signatories", "observers", "agreement_text", "metadata"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class InterfaceView(_Message):
-    @property
-    def interface_id(self) -> Identifier: ...
-    @property
-    def view_status(self) -> Status: ...
-    @property
-    def view_value(self) -> Record: ...
-    def __init__(self, *, interface_id: _typing.Optional[Identifier] = ..., view_status: _typing.Optional[Status] = ..., view_value: _typing.Optional[Record] = ...): ...
-    def HasField(self, field_name: _L["interface_id", "view_status", "view_value"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["interface_id", "view_status", "view_value"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class ArchivedEvent(_Message):
-    event_id: _builtins.str
-    contract_id: _builtins.str
-    @property
-    def template_id(self) -> Identifier: ...
-    @property
-    def witness_parties(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    def __init__(self, *, event_id: _typing.Optional[_builtins.str] = ..., contract_id: _typing.Optional[_builtins.str] = ..., template_id: _typing.Optional[Identifier] = ..., witness_parties: _typing.Optional[_typing.Iterable[_builtins.str]] = ...): ...
-    def HasField(self, field_name: _L["event_id", "contract_id", "template_id", "witness_parties"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["event_id", "contract_id", "template_id", "witness_parties"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class ExercisedEvent(_Message):
-    event_id: _builtins.str
-    contract_id: _builtins.str
-    @property
-    def template_id(self) -> Identifier: ...
-    @property
-    def interface_id(self) -> Identifier: ...
-    choice: _builtins.str
-    @property
-    def choice_argument(self) -> Value: ...
-    @property
-    def acting_parties(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    consuming: _builtins.bool
-    @property
-    def witness_parties(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    @property
-    def child_event_ids(self) -> RepeatedScalarFieldContainer[_builtins.str]: ...
-    @property
-    def exercise_result(self) -> Value: ...
-    def __init__(self, *, event_id: _typing.Optional[_builtins.str] = ..., contract_id: _typing.Optional[_builtins.str] = ..., template_id: _typing.Optional[Identifier] = ..., interface_id: _typing.Optional[Identifier] = ..., choice: _typing.Optional[_builtins.str] = ..., choice_argument: _typing.Optional[Value] = ..., acting_parties: _typing.Optional[_typing.Iterable[_builtins.str]] = ..., consuming: _typing.Optional[_builtins.bool] = ..., witness_parties: _typing.Optional[_typing.Iterable[_builtins.str]] = ..., child_event_ids: _typing.Optional[_typing.Iterable[_builtins.str]] = ..., exercise_result: _typing.Optional[Value] = ...): ...
-    def HasField(self, field_name: _L["event_id", "contract_id", "template_id", "interface_id", "choice", "choice_argument", "acting_parties", "consuming", "witness_parties", "child_event_ids", "exercise_result"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["event_id", "contract_id", "template_id", "interface_id", "choice", "choice_argument", "acting_parties", "consuming", "witness_parties", "child_event_ids", "exercise_result"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class ExercisedEvent(_message.Message):
+    __slots__ = ["event_id", "contract_id", "template_id", "interface_id", "choice", "choice_argument", "acting_parties", "consuming", "witness_parties", "child_event_ids", "exercise_result"]
+    EVENT_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
+    TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    INTERFACE_ID_FIELD_NUMBER: _ClassVar[int]
+    CHOICE_FIELD_NUMBER: _ClassVar[int]
+    CHOICE_ARGUMENT_FIELD_NUMBER: _ClassVar[int]
+    ACTING_PARTIES_FIELD_NUMBER: _ClassVar[int]
+    CONSUMING_FIELD_NUMBER: _ClassVar[int]
+    WITNESS_PARTIES_FIELD_NUMBER: _ClassVar[int]
+    CHILD_EVENT_IDS_FIELD_NUMBER: _ClassVar[int]
+    EXERCISE_RESULT_FIELD_NUMBER: _ClassVar[int]
+    event_id: str
+    contract_id: str
+    template_id: _value_pb2.Identifier
+    interface_id: _value_pb2.Identifier
+    choice: str
+    choice_argument: _value_pb2.Value
+    acting_parties: _containers.RepeatedScalarFieldContainer[str]
+    consuming: bool
+    witness_parties: _containers.RepeatedScalarFieldContainer[str]
+    child_event_ids: _containers.RepeatedScalarFieldContainer[str]
+    exercise_result: _value_pb2.Value
+    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice: _Optional[str] = ..., choice_argument: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., consuming: bool = ..., witness_parties: _Optional[_Iterable[str]] = ..., child_event_ids: _Optional[_Iterable[str]] = ..., exercise_result: _Optional[_Union[_value_pb2.Value, _Mapping]] = ...) -> None: ...

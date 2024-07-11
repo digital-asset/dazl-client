@@ -1,58 +1,42 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from . import commands_pb2 as _commands_pb2
+from . import transaction_pb2 as _transaction_pb2
+from google.protobuf import empty_pb2 as _empty_pb2
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.message import Message as _Message
+class SubmitAndWaitRequest(_message.Message):
+    __slots__ = ["commands"]
+    COMMANDS_FIELD_NUMBER: _ClassVar[int]
+    commands: _commands_pb2.Commands
+    def __init__(self, commands: _Optional[_Union[_commands_pb2.Commands, _Mapping]] = ...) -> None: ...
 
-from .commands_pb2 import Commands
-from .transaction_pb2 import Transaction, TransactionTree
+class SubmitAndWaitForTransactionIdResponse(_message.Message):
+    __slots__ = ["transaction_id", "completion_offset"]
+    TRANSACTION_ID_FIELD_NUMBER: _ClassVar[int]
+    COMPLETION_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    transaction_id: str
+    completion_offset: str
+    def __init__(self, transaction_id: _Optional[str] = ..., completion_offset: _Optional[str] = ...) -> None: ...
 
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
+class SubmitAndWaitForTransactionResponse(_message.Message):
+    __slots__ = ["transaction", "completion_offset"]
+    TRANSACTION_FIELD_NUMBER: _ClassVar[int]
+    COMPLETION_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    transaction: _transaction_pb2.Transaction
+    completion_offset: str
+    def __init__(self, transaction: _Optional[_Union[_transaction_pb2.Transaction, _Mapping]] = ..., completion_offset: _Optional[str] = ...) -> None: ...
 
-__all__ = [
-    "SubmitAndWaitRequest",
-    "SubmitAndWaitForTransactionIdResponse",
-    "SubmitAndWaitForTransactionResponse",
-    "SubmitAndWaitForTransactionTreeResponse",
-]
-
-
-class SubmitAndWaitRequest(_Message):
-    @property
-    def commands(self) -> Commands: ...
-    def __init__(self, *, commands: _typing.Optional[Commands] = ...): ...
-    def HasField(self, field_name: _L["commands"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["commands"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class SubmitAndWaitForTransactionIdResponse(_Message):
-    transaction_id: _builtins.str
-    completion_offset: _builtins.str
-    def __init__(self, *, transaction_id: _typing.Optional[_builtins.str] = ..., completion_offset: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["transaction_id", "completion_offset"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["transaction_id", "completion_offset"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class SubmitAndWaitForTransactionResponse(_Message):
-    @property
-    def transaction(self) -> Transaction: ...
-    completion_offset: _builtins.str
-    def __init__(self, *, transaction: _typing.Optional[Transaction] = ..., completion_offset: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["transaction", "completion_offset"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["transaction", "completion_offset"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class SubmitAndWaitForTransactionTreeResponse(_Message):
-    @property
-    def transaction(self) -> TransactionTree: ...
-    completion_offset: _builtins.str
-    def __init__(self, *, transaction: _typing.Optional[TransactionTree] = ..., completion_offset: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["transaction", "completion_offset"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["transaction", "completion_offset"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class SubmitAndWaitForTransactionTreeResponse(_message.Message):
+    __slots__ = ["transaction", "completion_offset"]
+    TRANSACTION_FIELD_NUMBER: _ClassVar[int]
+    COMPLETION_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    transaction: _transaction_pb2.TransactionTree
+    completion_offset: str
+    def __init__(self, transaction: _Optional[_Union[_transaction_pb2.TransactionTree, _Mapping]] = ..., completion_offset: _Optional[str] = ...) -> None: ...

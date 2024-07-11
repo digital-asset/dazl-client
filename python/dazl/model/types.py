@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -648,7 +648,6 @@ class VariantType(_CompositeDataType):
 
 
 class EnumType(ConcreteType):
-
     __slots__ = ("constructors",)
 
     def __init__(self, name: "Optional[TypeReference]", constructors: "Collection[str]"):

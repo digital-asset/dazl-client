@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Utilities for working with Daml Connect.
@@ -107,11 +107,11 @@ class Protos:
             manifest = ProtobufManifest.from_zip_file(self.version, z)
 
             # first, create all of our necessary directories
-            for (kind, path) in manifest.paths:
+            for kind, path in manifest.paths:
                 if kind == "dir":
                     (self.protobufs_output_path / path).mkdir(exist_ok=True)
 
-            for (kind, path) in manifest.paths:
+            for kind, path in manifest.paths:
                 if kind in ("pb", "grpc"):
                     with z.open(f"protos-{manifest.version}/{path}") as r, io.TextIOWrapper(
                         r

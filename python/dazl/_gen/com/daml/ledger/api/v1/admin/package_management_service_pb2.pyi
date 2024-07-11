@@ -1,63 +1,45 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf.internal import containers as _containers
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
-import builtins as _builtins, sys, typing as _typing
+DESCRIPTOR: _descriptor.FileDescriptor
 
-from google.protobuf.internal.containers import RepeatedCompositeFieldContainer
-from google.protobuf.message import Message as _Message
-from google.protobuf.timestamp_pb2 import Timestamp
+class ListKnownPackagesRequest(_message.Message):
+    __slots__ = []  # type: ignore
+    def __init__(self) -> None: ...
 
-if sys.version_info >= (3, 8):
-    from typing import Literal as _L
-else:
-    from typing_extensions import Literal as _L
+class ListKnownPackagesResponse(_message.Message):
+    __slots__ = ["package_details"]
+    PACKAGE_DETAILS_FIELD_NUMBER: _ClassVar[int]
+    package_details: _containers.RepeatedCompositeFieldContainer[PackageDetails]
+    def __init__(self, package_details: _Optional[_Iterable[_Union[PackageDetails, _Mapping]]] = ...) -> None: ...
 
-__all__ = [
-    "ListKnownPackagesRequest",
-    "ListKnownPackagesResponse",
-    "PackageDetails",
-    "UploadDarFileRequest",
-    "UploadDarFileResponse",
-]
+class PackageDetails(_message.Message):
+    __slots__ = ["package_id", "package_size", "known_since", "source_description"]
+    PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
+    PACKAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
+    KNOWN_SINCE_FIELD_NUMBER: _ClassVar[int]
+    SOURCE_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    package_id: str
+    package_size: int
+    known_since: _timestamp_pb2.Timestamp
+    source_description: str
+    def __init__(self, package_id: _Optional[str] = ..., package_size: _Optional[int] = ..., known_since: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., source_description: _Optional[str] = ...) -> None: ...
 
+class UploadDarFileRequest(_message.Message):
+    __slots__ = ["dar_file", "submission_id"]
+    DAR_FILE_FIELD_NUMBER: _ClassVar[int]
+    SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
+    dar_file: bytes
+    submission_id: str
+    def __init__(self, dar_file: _Optional[bytes] = ..., submission_id: _Optional[str] = ...) -> None: ...
 
-class ListKnownPackagesRequest(_Message):
-    def __init__(self): ...
-    def HasField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def ClearField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class ListKnownPackagesResponse(_Message):
-    @property
-    def package_details(self) -> RepeatedCompositeFieldContainer[PackageDetails]: ...
-    def __init__(self, *, package_details: _typing.Optional[_typing.Iterable[PackageDetails]] = ...): ...
-    def HasField(self, field_name: _L["package_details"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["package_details"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class PackageDetails(_Message):
-    package_id: _builtins.str
-    package_size: _builtins.int
-    @property
-    def known_since(self) -> Timestamp: ...
-    source_description: _builtins.str
-    def __init__(self, *, package_id: _typing.Optional[_builtins.str] = ..., package_size: _typing.Optional[_builtins.int] = ..., known_since: _typing.Optional[Timestamp] = ..., source_description: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["package_id", "package_size", "known_since", "source_description"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["package_id", "package_size", "known_since", "source_description"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class UploadDarFileRequest(_Message):
-    dar_file: _builtins.bytes
-    submission_id: _builtins.str
-    def __init__(self, *, dar_file: _typing.Optional[_builtins.bytes] = ..., submission_id: _typing.Optional[_builtins.str] = ...): ...
-    def HasField(self, field_name: _L["dar_file", "submission_id"]) -> _builtins.bool: ...
-    def ClearField(self, field_name: _L["dar_file", "submission_id"]) -> None: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
-
-class UploadDarFileResponse(_Message):
-    def __init__(self): ...
-    def HasField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def ClearField(self, field_name: _typing.NoReturn) -> _typing.NoReturn: ...
-    def WhichOneof(self, oneof_group: _typing.NoReturn) -> _typing.NoReturn: ...
+class UploadDarFileResponse(_message.Message):
+    __slots__ = []  # type: ignore
+    def __init__(self) -> None: ...

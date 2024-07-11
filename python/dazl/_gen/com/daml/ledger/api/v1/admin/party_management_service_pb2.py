@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2024 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
@@ -8,9 +8,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -20,125 +19,40 @@ from . import object_meta_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admi
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n;com/daml/ledger/api/v1/admin/party_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\x1a.com/daml/ledger/api/v1/admin/object_meta.proto\x1a google/protobuf/field_mask.proto\"\x19\n\x17GetParticipantIdRequest\"A\n\x18GetParticipantIdResponse\x12%\n\x0eparticipant_id\x18\x01 \x01(\tR\rparticipantId\"-\n\x11GetPartiesRequest\x12\x18\n\x07parties\x18\x01 \x03(\tR\x07parties\"e\n\x12GetPartiesResponse\x12O\n\rparty_details\x18\x01 \x03(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"\x19\n\x17ListKnownPartiesRequest\"k\n\x18ListKnownPartiesResponse\x12O\n\rparty_details\x18\x01 \x03(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"\xae\x01\n\x14\x41llocatePartyRequest\x12\"\n\rparty_id_hint\x18\x01 \x01(\tR\x0bpartyIdHint\x12!\n\x0c\x64isplay_name\x18\x02 \x01(\tR\x0b\x64isplayName\x12O\n\x0elocal_metadata\x18\x03 \x01(\x0b\x32(.com.daml.ledger.api.v1.admin.ObjectMetaR\rlocalMetadata\"h\n\x15\x41llocatePartyResponse\x12O\n\rparty_details\x18\x01 \x01(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"\xa9\x01\n\x19UpdatePartyDetailsRequest\x12O\n\rparty_details\x18\x01 \x01(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\x12;\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskR\nupdateMask\"m\n\x1aUpdatePartyDetailsResponse\x12O\n\rparty_details\x18\x01 \x01(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"\xb3\x01\n\x0cPartyDetails\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x12!\n\x0c\x64isplay_name\x18\x02 \x01(\tR\x0b\x64isplayName\x12\x19\n\x08is_local\x18\x03 \x01(\x08R\x07isLocal\x12O\n\x0elocal_metadata\x18\x04 \x01(\x0b\x32(.com.daml.ledger.api.v1.admin.ObjectMetaR\rlocalMetadata2\x95\x05\n\x16PartyManagementService\x12\x81\x01\n\x10GetParticipantId\x12\x35.com.daml.ledger.api.v1.admin.GetParticipantIdRequest\x1a\x36.com.daml.ledger.api.v1.admin.GetParticipantIdResponse\x12o\n\nGetParties\x12/.com.daml.ledger.api.v1.admin.GetPartiesRequest\x1a\x30.com.daml.ledger.api.v1.admin.GetPartiesResponse\x12\x81\x01\n\x10ListKnownParties\x12\x35.com.daml.ledger.api.v1.admin.ListKnownPartiesRequest\x1a\x36.com.daml.ledger.api.v1.admin.ListKnownPartiesResponse\x12x\n\rAllocateParty\x12\x32.com.daml.ledger.api.v1.admin.AllocatePartyRequest\x1a\x33.com.daml.ledger.api.v1.admin.AllocatePartyResponse\x12\x87\x01\n\x12UpdatePartyDetails\x12\x37.com.daml.ledger.api.v1.admin.UpdatePartyDetailsRequest\x1a\x38.com.daml.ledger.api.v1.admin.UpdatePartyDetailsResponseB\xac\x01\n\x1c\x63om.daml.ledger.api.v1.adminB PartyManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n;com/daml/ledger/api/v1/admin/party_management_service.proto\x12\x1c\x63om.daml.ledger.api.v1.admin\x1a.com/daml/ledger/api/v1/admin/object_meta.proto\x1a google/protobuf/field_mask.proto\"\x19\n\x17GetParticipantIdRequest\"A\n\x18GetParticipantIdResponse\x12%\n\x0eparticipant_id\x18\x01 \x01(\tR\rparticipantId\"_\n\x11GetPartiesRequest\x12\x18\n\x07parties\x18\x01 \x03(\tR\x07parties\x12\x30\n\x14identity_provider_id\x18\x02 \x01(\tR\x12identityProviderId\"e\n\x12GetPartiesResponse\x12O\n\rparty_details\x18\x01 \x03(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"K\n\x17ListKnownPartiesRequest\x12\x30\n\x14identity_provider_id\x18\x01 \x01(\tR\x12identityProviderId\"k\n\x18ListKnownPartiesResponse\x12O\n\rparty_details\x18\x01 \x03(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"\xe0\x01\n\x14\x41llocatePartyRequest\x12\"\n\rparty_id_hint\x18\x01 \x01(\tR\x0bpartyIdHint\x12!\n\x0c\x64isplay_name\x18\x02 \x01(\tR\x0b\x64isplayName\x12O\n\x0elocal_metadata\x18\x03 \x01(\x0b\x32(.com.daml.ledger.api.v1.admin.ObjectMetaR\rlocalMetadata\x12\x30\n\x14identity_provider_id\x18\x04 \x01(\tR\x12identityProviderId\"h\n\x15\x41llocatePartyResponse\x12O\n\rparty_details\x18\x01 \x01(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"\xa9\x01\n\x19UpdatePartyDetailsRequest\x12O\n\rparty_details\x18\x01 \x01(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\x12;\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskR\nupdateMask\"m\n\x1aUpdatePartyDetailsResponse\x12O\n\rparty_details\x18\x01 \x01(\x0b\x32*.com.daml.ledger.api.v1.admin.PartyDetailsR\x0cpartyDetails\"\xe5\x01\n\x0cPartyDetails\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x12!\n\x0c\x64isplay_name\x18\x02 \x01(\tR\x0b\x64isplayName\x12\x19\n\x08is_local\x18\x03 \x01(\x08R\x07isLocal\x12O\n\x0elocal_metadata\x18\x04 \x01(\x0b\x32(.com.daml.ledger.api.v1.admin.ObjectMetaR\rlocalMetadata\x12\x30\n\x14identity_provider_id\x18\x05 \x01(\tR\x12identityProviderId\"\xb8\x01\n\"UpdatePartyIdentityProviderRequest\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x12=\n\x1bsource_identity_provider_id\x18\x02 \x01(\tR\x18sourceIdentityProviderId\x12=\n\x1btarget_identity_provider_id\x18\x03 \x01(\tR\x18targetIdentityProviderId\"%\n#UpdatePartyIdentityProviderResponse2\xbc\x06\n\x16PartyManagementService\x12\x81\x01\n\x10GetParticipantId\x12\x35.com.daml.ledger.api.v1.admin.GetParticipantIdRequest\x1a\x36.com.daml.ledger.api.v1.admin.GetParticipantIdResponse\x12o\n\nGetParties\x12/.com.daml.ledger.api.v1.admin.GetPartiesRequest\x1a\x30.com.daml.ledger.api.v1.admin.GetPartiesResponse\x12\x81\x01\n\x10ListKnownParties\x12\x35.com.daml.ledger.api.v1.admin.ListKnownPartiesRequest\x1a\x36.com.daml.ledger.api.v1.admin.ListKnownPartiesResponse\x12x\n\rAllocateParty\x12\x32.com.daml.ledger.api.v1.admin.AllocatePartyRequest\x1a\x33.com.daml.ledger.api.v1.admin.AllocatePartyResponse\x12\x87\x01\n\x12UpdatePartyDetails\x12\x37.com.daml.ledger.api.v1.admin.UpdatePartyDetailsRequest\x1a\x38.com.daml.ledger.api.v1.admin.UpdatePartyDetailsResponse\x12\xa4\x01\n\x1dUpdatePartyIdentityProviderId\x12@.com.daml.ledger.api.v1.admin.UpdatePartyIdentityProviderRequest\x1a\x41.com.daml.ledger.api.v1.admin.UpdatePartyIdentityProviderResponseB\xac\x01\n\x1c\x63om.daml.ledger.api.v1.adminB PartyManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V1.Adminb\x06proto3')
 
-
-
-_GETPARTICIPANTIDREQUEST = DESCRIPTOR.message_types_by_name['GetParticipantIdRequest']
-_GETPARTICIPANTIDRESPONSE = DESCRIPTOR.message_types_by_name['GetParticipantIdResponse']
-_GETPARTIESREQUEST = DESCRIPTOR.message_types_by_name['GetPartiesRequest']
-_GETPARTIESRESPONSE = DESCRIPTOR.message_types_by_name['GetPartiesResponse']
-_LISTKNOWNPARTIESREQUEST = DESCRIPTOR.message_types_by_name['ListKnownPartiesRequest']
-_LISTKNOWNPARTIESRESPONSE = DESCRIPTOR.message_types_by_name['ListKnownPartiesResponse']
-_ALLOCATEPARTYREQUEST = DESCRIPTOR.message_types_by_name['AllocatePartyRequest']
-_ALLOCATEPARTYRESPONSE = DESCRIPTOR.message_types_by_name['AllocatePartyResponse']
-_UPDATEPARTYDETAILSREQUEST = DESCRIPTOR.message_types_by_name['UpdatePartyDetailsRequest']
-_UPDATEPARTYDETAILSRESPONSE = DESCRIPTOR.message_types_by_name['UpdatePartyDetailsResponse']
-_PARTYDETAILS = DESCRIPTOR.message_types_by_name['PartyDetails']
-GetParticipantIdRequest = _reflection.GeneratedProtocolMessageType('GetParticipantIdRequest', (_message.Message,), {
-  'DESCRIPTOR' : _GETPARTICIPANTIDREQUEST,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.GetParticipantIdRequest)
-  })
-_sym_db.RegisterMessage(GetParticipantIdRequest)
-
-GetParticipantIdResponse = _reflection.GeneratedProtocolMessageType('GetParticipantIdResponse', (_message.Message,), {
-  'DESCRIPTOR' : _GETPARTICIPANTIDRESPONSE,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.GetParticipantIdResponse)
-  })
-_sym_db.RegisterMessage(GetParticipantIdResponse)
-
-GetPartiesRequest = _reflection.GeneratedProtocolMessageType('GetPartiesRequest', (_message.Message,), {
-  'DESCRIPTOR' : _GETPARTIESREQUEST,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.GetPartiesRequest)
-  })
-_sym_db.RegisterMessage(GetPartiesRequest)
-
-GetPartiesResponse = _reflection.GeneratedProtocolMessageType('GetPartiesResponse', (_message.Message,), {
-  'DESCRIPTOR' : _GETPARTIESRESPONSE,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.GetPartiesResponse)
-  })
-_sym_db.RegisterMessage(GetPartiesResponse)
-
-ListKnownPartiesRequest = _reflection.GeneratedProtocolMessageType('ListKnownPartiesRequest', (_message.Message,), {
-  'DESCRIPTOR' : _LISTKNOWNPARTIESREQUEST,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.ListKnownPartiesRequest)
-  })
-_sym_db.RegisterMessage(ListKnownPartiesRequest)
-
-ListKnownPartiesResponse = _reflection.GeneratedProtocolMessageType('ListKnownPartiesResponse', (_message.Message,), {
-  'DESCRIPTOR' : _LISTKNOWNPARTIESRESPONSE,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.ListKnownPartiesResponse)
-  })
-_sym_db.RegisterMessage(ListKnownPartiesResponse)
-
-AllocatePartyRequest = _reflection.GeneratedProtocolMessageType('AllocatePartyRequest', (_message.Message,), {
-  'DESCRIPTOR' : _ALLOCATEPARTYREQUEST,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.AllocatePartyRequest)
-  })
-_sym_db.RegisterMessage(AllocatePartyRequest)
-
-AllocatePartyResponse = _reflection.GeneratedProtocolMessageType('AllocatePartyResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ALLOCATEPARTYRESPONSE,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.AllocatePartyResponse)
-  })
-_sym_db.RegisterMessage(AllocatePartyResponse)
-
-UpdatePartyDetailsRequest = _reflection.GeneratedProtocolMessageType('UpdatePartyDetailsRequest', (_message.Message,), {
-  'DESCRIPTOR' : _UPDATEPARTYDETAILSREQUEST,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.UpdatePartyDetailsRequest)
-  })
-_sym_db.RegisterMessage(UpdatePartyDetailsRequest)
-
-UpdatePartyDetailsResponse = _reflection.GeneratedProtocolMessageType('UpdatePartyDetailsResponse', (_message.Message,), {
-  'DESCRIPTOR' : _UPDATEPARTYDETAILSRESPONSE,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.UpdatePartyDetailsResponse)
-  })
-_sym_db.RegisterMessage(UpdatePartyDetailsResponse)
-
-PartyDetails = _reflection.GeneratedProtocolMessageType('PartyDetails', (_message.Message,), {
-  'DESCRIPTOR' : _PARTYDETAILS,
-  '__module__' : 'com.daml.ledger.api.v1.admin.party_management_service_pb2'
-  # @@protoc_insertion_point(class_scope:com.daml.ledger.api.v1.admin.PartyDetails)
-  })
-_sym_db.RegisterMessage(PartyDetails)
-
-_PARTYMANAGEMENTSERVICE = DESCRIPTOR.services_by_name['PartyManagementService']
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.daml.ledger.api.v1.admin.party_management_service_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
-
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'\n\034com.daml.ledger.api.v1.adminB PartyManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1/admin\252\002\034Com.Daml.Ledger.Api.V1.Admin'
-  _GETPARTICIPANTIDREQUEST._serialized_start=175
-  _GETPARTICIPANTIDREQUEST._serialized_end=200
-  _GETPARTICIPANTIDRESPONSE._serialized_start=202
-  _GETPARTICIPANTIDRESPONSE._serialized_end=267
-  _GETPARTIESREQUEST._serialized_start=269
-  _GETPARTIESREQUEST._serialized_end=314
-  _GETPARTIESRESPONSE._serialized_start=316
-  _GETPARTIESRESPONSE._serialized_end=417
-  _LISTKNOWNPARTIESREQUEST._serialized_start=419
-  _LISTKNOWNPARTIESREQUEST._serialized_end=444
-  _LISTKNOWNPARTIESRESPONSE._serialized_start=446
-  _LISTKNOWNPARTIESRESPONSE._serialized_end=553
-  _ALLOCATEPARTYREQUEST._serialized_start=556
-  _ALLOCATEPARTYREQUEST._serialized_end=730
-  _ALLOCATEPARTYRESPONSE._serialized_start=732
-  _ALLOCATEPARTYRESPONSE._serialized_end=836
-  _UPDATEPARTYDETAILSREQUEST._serialized_start=839
-  _UPDATEPARTYDETAILSREQUEST._serialized_end=1008
-  _UPDATEPARTYDETAILSRESPONSE._serialized_start=1010
-  _UPDATEPARTYDETAILSRESPONSE._serialized_end=1119
-  _PARTYDETAILS._serialized_start=1122
-  _PARTYDETAILS._serialized_end=1301
-  _PARTYMANAGEMENTSERVICE._serialized_start=1304
-  _PARTYMANAGEMENTSERVICE._serialized_end=1965
+  _globals['_GETPARTICIPANTIDREQUEST']._serialized_start=175
+  _globals['_GETPARTICIPANTIDREQUEST']._serialized_end=200
+  _globals['_GETPARTICIPANTIDRESPONSE']._serialized_start=202
+  _globals['_GETPARTICIPANTIDRESPONSE']._serialized_end=267
+  _globals['_GETPARTIESREQUEST']._serialized_start=269
+  _globals['_GETPARTIESREQUEST']._serialized_end=364
+  _globals['_GETPARTIESRESPONSE']._serialized_start=366
+  _globals['_GETPARTIESRESPONSE']._serialized_end=467
+  _globals['_LISTKNOWNPARTIESREQUEST']._serialized_start=469
+  _globals['_LISTKNOWNPARTIESREQUEST']._serialized_end=544
+  _globals['_LISTKNOWNPARTIESRESPONSE']._serialized_start=546
+  _globals['_LISTKNOWNPARTIESRESPONSE']._serialized_end=653
+  _globals['_ALLOCATEPARTYREQUEST']._serialized_start=656
+  _globals['_ALLOCATEPARTYREQUEST']._serialized_end=880
+  _globals['_ALLOCATEPARTYRESPONSE']._serialized_start=882
+  _globals['_ALLOCATEPARTYRESPONSE']._serialized_end=986
+  _globals['_UPDATEPARTYDETAILSREQUEST']._serialized_start=989
+  _globals['_UPDATEPARTYDETAILSREQUEST']._serialized_end=1158
+  _globals['_UPDATEPARTYDETAILSRESPONSE']._serialized_start=1160
+  _globals['_UPDATEPARTYDETAILSRESPONSE']._serialized_end=1269
+  _globals['_PARTYDETAILS']._serialized_start=1272
+  _globals['_PARTYDETAILS']._serialized_end=1501
+  _globals['_UPDATEPARTYIDENTITYPROVIDERREQUEST']._serialized_start=1504
+  _globals['_UPDATEPARTYIDENTITYPROVIDERREQUEST']._serialized_end=1688
+  _globals['_UPDATEPARTYIDENTITYPROVIDERRESPONSE']._serialized_start=1690
+  _globals['_UPDATEPARTYIDENTITYPROVIDERRESPONSE']._serialized_end=1727
+  _globals['_PARTYMANAGEMENTSERVICE']._serialized_start=1730
+  _globals['_PARTYMANAGEMENTSERVICE']._serialized_end=2558
 # @@protoc_insertion_point(module_scope)
