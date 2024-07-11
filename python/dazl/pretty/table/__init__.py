@@ -4,4 +4,3 @@
 from __future__ import annotations
 
 from .fmt_base import DEFAULT_FORMATTER_NAME
-from .write import write_acs

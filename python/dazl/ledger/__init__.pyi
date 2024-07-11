@@ -61,6 +61,7 @@ else:
 
 __all__ = [
     "aio",
+    "connect",
     "ActAs",
     "Admin",
     "ArchiveEvent",

@@ -3,11 +3,12 @@
 
 from __future__ import annotations
 
-from typing import Sequence
+from typing import Tuple
 
-from dazl import async_network, connect
-from dazl.ledger import Command, CreateCommand, ExerciseCommand
-from dazl.protocols.events import ContractCreateEvent
+from dazl import connect
+from dazl.ledger import CreateCommand, ExerciseCommand
+from dazl.ledger.aio import Connection
+from dazl.prim import ContractData, ContractId
 from dazl.testing import SandboxLauncher
 import pytest
 
@@ -26,29 +27,43 @@ async def test_select_template_retrieves_contracts(sandbox: SandboxLauncher) -> 
 
     async with connect(url=sandbox.url, admin=True) as conn:
         party = (await conn.allocate_party()).party
+        await conn.upload_package(Pending.read_bytes())
 
-    async with async_network(url=sandbox.url, dars=Pending) as network:
-        client = network.aio_party(party)
-        client.add_ledger_ready(
-            lambda _: [
-                CreateCommand(Counter, {"owner": client.party, "value": 0}),
+    async with connect(url=sandbox.url, act_as=party) as conn:
+        await conn.submit(
+            [
+                CreateCommand(Counter, {"owner": party, "value": 0}),
                 *[
-                    CreateCommand(AccountRequest, {"owner": client.party})
+                    CreateCommand(AccountRequest, {"owner": party})
                     for _ in range(number_of_contracts)
                 ],
             ]
         )
 
-        @client.ledger_created(AccountRequest)
-        async def on_account_request(event: ContractCreateEvent) -> Sequence[Command]:
-            counter_cid, counter_cdata = await event.acs_find_one(Counter)
-            return [
-                ExerciseCommand(event.cid, "CreateAccount", dict(accountId=counter_cdata["value"])),
-                ExerciseCommand(counter_cid, "Increment"),
-            ]
+        async with conn.query(AccountRequest) as stream:
+            async for create in stream.creates():
+                counter_cid, counter_cdata = await get_counter(conn)
+                await conn.submit(
+                    [
+                        ExerciseCommand(
+                            create.contract_id,
+                            "CreateAccount",
+                            dict(accountId=counter_cdata["value"]),
+                        ),
+                        ExerciseCommand(counter_cid, "Increment"),
+                    ]
+                )
 
-        await network.aio_run(keep_open=False)
-
-        data = client.find_active(Account)
+        data = []
+        async with conn.query(Account) as stream:
+            async for payload in stream.creates():
+                data.append(payload.contract_id)
 
     assert len(data) == number_of_contracts
+
+
+async def get_counter(conn: Connection) -> Tuple[ContractId, ContractData]:
+    async with conn.query(Counter) as stream:
+        async for create in stream.creates():
+            return create.contract_id, create.payload
+    raise AssertionError("could not find a Counter contract")
