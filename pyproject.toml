@@ -15,25 +15,16 @@ packages = [{ include = "dazl", from = "python" }, { include = "_dazl", from = "
 
 [tool.poetry.dependencies]
 python = "^3.8"
-aiohttp = { version = "*", optional = true }
-google-auth = { version = "*", optional = true }
 googleapis_common_protos = "^1"
 grpcio = ">=1.50.0"
-oauthlib = { version = "*", optional = true }
-prometheus_client = { version = "*", optional = true }
 protobuf = ">=4"
 pygments = { version = "*", optional = true }
 pyOpenSSL = { version = "*", optional = true }
-requests = "*"
 semver = "*"
-toposort = "*"
 typing_extensions = { version = "*" }
 
 [tool.poetry.extras]
-oauth = ["google-auth", "oauthlib"]
-prometheus = ["prometheus_client"]
 pygments = ["pygments"]
-server = ["aiohttp"]
 tls-testing = ["pyOpenSSL"]
 
 [tool.poetry.scripts]
@@ -41,7 +32,6 @@ dazl = 'dazl.cli:main'
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
-cryptography = "*"
 grpc-stubs = "*"
 grpcio-tools = ">=1.50.0"
 isort = "^5"
@@ -79,7 +69,7 @@ cache_dir = '.cache/mypy'
 namespace_packages = true
 
 [[tool.mypy.overrides]]
-module = ['google._upb.*', 'google.auth.transport.*', 'google.oauth2.credentials.*', 'google.protobuf.pyext.*', 'google.rpc.*', 'google.rpc.status_pb2.*', 'grpc._cython.*', 'grpc.aio.*', 'grpc_tools.*', 'prometheus_client.*', 'psutil.*', 'pygments.*', 'semver.*', 'toposort.*']
+module = ['google._upb.*', 'google.protobuf.pyext.*', 'google.rpc.*', 'google.rpc.status_pb2.*', 'grpc._cython.*', 'grpc.aio.*', 'grpc_tools.*', 'psutil.*', 'pygments.*', 'semver.*']
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
