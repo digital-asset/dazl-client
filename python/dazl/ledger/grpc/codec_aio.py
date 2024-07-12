@@ -77,7 +77,9 @@ class Codec:
     identify package contents.
     """
 
-    def __init__(self, conn: PackageService, lookup: Optional[MultiPackageLookup] = None):
+    def __init__(
+        self, conn: Optional[PackageService] = None, lookup: Optional[MultiPackageLookup] = None
+    ):
         self.conn = conn
         self._lookup = lookup or SHARED_PACKAGE_DATABASE
         self._loader = PackageLoader(self._lookup, conn)

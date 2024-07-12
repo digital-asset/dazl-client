@@ -11,17 +11,10 @@ import logging
 from typing import List, Sequence
 
 from .._logging import configure as configure_logger
-from ..client.errors import ConfigurationError
 from ._base import CliCommand
-from .ls import ListAllCommand
-from .tail import TailCommand
-from .upload import UploadCommand
 from .version import VersionCommand
 
 COMMANDS = [
-    ListAllCommand(),
-    TailCommand(),
-    UploadCommand(),
     VersionCommand(),
 ]  # type: List[CliCommand]
 
@@ -42,12 +35,7 @@ def _main(argv: Sequence[str]) -> int:
 
         for cmd in COMMANDS:
             if cmd.name == command:
-                try:
-                    return run(cmd, command_args)
-                except ConfigurationError as error:
-                    for reason in error.reasons:
-                        print(reason)
-                    return -1
+                return run(cmd, command_args)
 
         print("Unknown command: " + command)
 

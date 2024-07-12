@@ -70,9 +70,6 @@ jobs:
           name: Python unit tests
           command: make python-unit-test
       - run:
-          name: Python integration tests
-          command: make python-integration-test
-      - run:
           name: Python packaging
           command: make build
       - store_test_results:

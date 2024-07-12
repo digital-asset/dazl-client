@@ -108,7 +108,7 @@ build: $(packages)  # Build everything.
 
 
 .PHONY: test
-test: python-format-test python-typecheck python-unit-test python-integration-test  ## Run all tests.
+test: python-format-test python-typecheck python-unit-test  ## Run all tests.
 
 
 .PHONY: local-ci
@@ -128,12 +128,6 @@ format: python-format
 .PHONY: python-unit-test
 python-unit-test: .venv/poetry.lock $(_fixture_dars)
 	poetry run pytest --log-cli-level=INFO --junitxml=target/test-results/junit.xml
-
-
-.PHONY: python-integration-test
-python-integration-test: .venv/poetry.lock _fixtures/src/post-office/.daml/dist/post-office-1.0.0.dar
-	cd _fixtures/src/post-office && \
-	$(python) integration-test.py $(if $(DAZL_TEST_DAML_LEDGER_URL),--url $(DAZL_TEST_DAML_LEDGER_URL))
 
 
 .PHONY: typecheck
