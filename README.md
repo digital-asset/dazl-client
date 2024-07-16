@@ -27,6 +27,8 @@ Requirements
 ------------
 * Python 3.7+
 * [Daml Connect](https://www.daml.com)
+    * Daml 1: 1.18.3
+    * Daml 2: 2.7 or later
 * Python gRPC libraries (1.32.0 or later) and Protobuf
 
 Examples
