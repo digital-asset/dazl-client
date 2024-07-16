@@ -341,6 +341,7 @@ class SandboxOptions:
             f"{participant}.admin-api.port": str(self.participant_admin_port),
             f"{domain}.public-api.port": str(domain_api_port),
             f"{domain}.admin-api.port": str(domain_admin_port),
+            f"{domain}.init.domain-parameters.protocol-version": "5",
         }
 
         if self.use_auth:
