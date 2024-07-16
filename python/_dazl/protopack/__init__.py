@@ -18,11 +18,13 @@ __all__ = ["build"]
 
 
 class Renamer(Protocol):
-    def __call__(self, zip_file_list: Collection[str], /) -> Mapping[str, str]: ...
+    def __call__(self, zip_file_list: Collection[str], /) -> Mapping[str, str]:
+        ...
 
 
 class Rewriter(Protocol):
-    def __call__(self, target_name: str, contents: str, /) -> str: ...
+    def __call__(self, target_name: str, contents: str, /) -> str:
+        ...
 
 
 def build(
