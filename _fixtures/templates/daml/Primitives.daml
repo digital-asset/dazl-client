@@ -15,9 +15,10 @@ template SimpleFields
     where
         signatory party
 
-        controller party can
-            SimpleFieldsCleanUp: ()
-                do return ()
+        choice SimpleFieldsCleanUp : ()
+            controller party
+                do
+                    return ()
 
 
 template OptionalFields
@@ -27,6 +28,7 @@ template OptionalFields
     where
         signatory party
 
-        controller party can
-            OptionalFieldsCleanUp: ()
-                do return ()
+        choice OptionalFieldsCleanUp : ()
+            controller party
+                do
+                    return ()

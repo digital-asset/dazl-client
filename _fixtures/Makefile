@@ -1,6 +1,6 @@
 .PHONY: all
 all: target/versions.txt
-	$(foreach version,$(shell cat $^),$(MAKE) archives/$(version)/Test.dar)
+	$(foreach version,$(shell cat $^),$(MAKE) archives/$(version)/Test.dar ; )
 
 
 target/versions.txt:

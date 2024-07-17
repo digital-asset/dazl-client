@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "dazl"
-version = "8.0.0b3"
+version = "8.0.0b4"
 description = "high-level Ledger API client for Daml ledgers"
 license = "Apache-2.0"
 authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 from pathlib import Path
 from shutil import rmtree
 from _util import SdkVersion
@@ -32,8 +32,8 @@ dependencies: []
     (target / 'build.sh').write_text(f'''
 #!/bin/sh
 
-mkdir -p {artifact_dar.parent}
-(cd {target} && DAML_SDK_VERSION= daml build -o {artifact_dar})
+mkdir -p {str(artifact_dar.parent)!r}
+(cd {str(target)!r} && daml build -o {str(artifact_dar)!r})
 '''.lstrip())
     (target / 'build.sh').chmod(0o755)
 
