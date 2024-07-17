@@ -55,7 +55,7 @@ class Source:
         else:
             return None
 
-    def remote_md5(self) -> bytes:
+    def remote_md5(self) -> Optional[bytes]:
         """
         Make a HEAD request for this Source's data, and retrieve its MD5.
         """
@@ -63,7 +63,7 @@ class Source:
         try:
             if response.code == 200:
                 md5_base64 = response.headers["Content-MD5"]
-                return base64.b64decode(md5_base64)
+                return base64.b64decode(md5_base64) if md5_base64 is not None else None
             else:
                 raise RuntimeError(f"when trying to fetch {self.url}, got a {response.code}")
         finally:
@@ -110,6 +110,10 @@ def download_dependencies(sdk_version: str, to: Path) -> DownloadPaths:
     for downloader in downloaders:
         if existing_hash := downloader.source.existing_file_md5(to):
             actual_hash = downloader.source.remote_md5()
+            if actual_hash is None:
+                console.print(
+                    f"    [yellow]{downloader.source.file_name} exists, but the remote did not return an MD5 hash; assuming the local file is good..."
+                )
             if existing_hash == actual_hash:
                 console.print(f"    [green]{downloader.source.file_name} already cached")
                 continue

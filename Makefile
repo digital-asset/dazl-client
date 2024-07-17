@@ -19,7 +19,7 @@ packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
 
 .PHONY: generate
 generate: .venv/poetry.lock .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc
-	$(python) -m _dazl update 2.8.1
+	$(python) -m _dazl update 2.9.1
 
 ####################################################################################################
 # Go

@@ -60,6 +60,7 @@ class SandboxLauncher:
         *,
         project_root: Union[None, str, os.PathLike] = None,
         version: Optional[str] = None,
+        protocol_version: Optional[int] = None,
         timeout: Optional[timedelta] = DEFAULT_TIMEOUT,
         ledger_id: Optional[str] = None,
         use_auth: bool = False,
@@ -78,6 +79,7 @@ class SandboxLauncher:
         self._lock = threading.RLock()
         self._project_root = project_root
         self._version = version
+        self._protocol_version = protocol_version
         self._timeout = timeout
         self._ledger_id = ledger_id
         self._process = None  # type: Optional[subprocess.Popen]
@@ -268,6 +270,7 @@ class SandboxOptions:
     participant_admin_port: int
     project_root: Optional[str] = None
     ledger_id: Optional[str] = None
+    protocol_version: Optional[int] = None
     use_auth: bool = False
     use_tls: bool = False
     cert_file: Optional[Path] = None
@@ -280,6 +283,7 @@ class SandboxOptions:
         participant_admin_port: Optional[int] = None,
         project_root: Optional[str] = None,
         ledger_id: Optional[str] = None,
+        protocol_version: Optional[int] = None,
         use_auth: bool = False,
         use_tls: bool = False,
         cert_file: Optional[Path] = None,
@@ -291,6 +295,7 @@ class SandboxOptions:
         )
         object.__setattr__(self, "project_root", project_root)
         object.__setattr__(self, "ledger_id", ledger_id)
+        object.__setattr__(self, "protocol_version", protocol_version)
         object.__setattr__(self, "use_auth", use_auth)
         object.__setattr__(self, "use_tls", use_tls)
         object.__setattr__(self, "cert_file", cert_file)
@@ -341,8 +346,12 @@ class SandboxOptions:
             f"{participant}.admin-api.port": str(self.participant_admin_port),
             f"{domain}.public-api.port": str(domain_api_port),
             f"{domain}.admin-api.port": str(domain_admin_port),
-            f"{domain}.init.domain-parameters.protocol-version": "5",
         }
+
+        if self.protocol_version is not None:
+            config_options[f"{domain}.init.domain-parameters.protocol-version"] = str(
+                self.protocol_version
+            )
 
         if self.use_auth:
             if self.cert_file is None:

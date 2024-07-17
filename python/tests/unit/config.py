@@ -10,8 +10,9 @@ __all__ = ["daml_sdk_versions", "known_version_1", "known_version_2", "known_ver
 
 
 known_version_1: Final = "1.18.3"
-known_version_2: Final = "2.7.3"
-known_versions: Final = (known_version_1, known_version_2)
+known_version_2_7: Final = "2.7.9"
+known_version_2_9: Final = "2.9.1"
+known_versions: Final = (known_version_1, known_version_2_7, known_version_2_9)
 
 
 def daml_sdk_versions(allowed_versions: Union[None, str, Sequence[str]] = None) -> Sequence[str]:
