@@ -16,8 +16,10 @@ if sys.version_info < (3, 10):
     collect_ignore_glob = ["*_py3_10.py"]
 
 
-@pytest.fixture(scope="session", params=["1", "2"])
-def sandbox(request, sandbox_v1, sandbox_v2) -> "Generator[testing.SandboxLauncher, None, None]":
+@pytest.fixture(scope="session", params=["1", "2.7", "2.9"])
+def sandbox(
+    request, sandbox_v1, sandbox_v2_7, sandbox_v2_9
+) -> Generator[testing.SandboxLauncher, None, None]:
     """
     Run an instance of the Sandbox, or use one configured through environment variables.
 
@@ -35,23 +37,41 @@ def sandbox(request, sandbox_v1, sandbox_v2) -> "Generator[testing.SandboxLaunch
     """
     if request.param == "1":
         yield sandbox_v1
+    elif request.param == "2.7":
+        yield sandbox_v2_7
     else:
-        yield sandbox_v2
+        yield sandbox_v2_9
+
+
+@pytest.fixture(scope="session", params=["2.7", "2.9"])
+def sandbox_v2(
+    request, sandbox_v2_7, sandbox_v2_9
+) -> Generator[testing.SandboxLauncher, None, None]:
+    if request.param == "2.7":
+        yield sandbox_v2_7
+    else:
+        yield sandbox_v2_9
 
 
 @pytest.fixture(scope="session")
-def sandbox_v1() -> "Generator[testing.SandboxLauncher, None, None]":
+def sandbox_v1() -> Generator[testing.SandboxLauncher, None, None]:
     with testing.sandbox(project_root=None, version="1.18.3") as sb:
         yield sb
 
 
 @pytest.fixture(scope="session")
-def sandbox_v2() -> "Generator[testing.SandboxLauncher, None, None]":
+def sandbox_v2_7() -> Generator[testing.SandboxLauncher, None, None]:
     with testing.sandbox(project_root=None, version="2.7.3") as sb:
         yield sb
 
 
+@pytest.fixture(scope="session")
+def sandbox_v2_9() -> Generator[testing.SandboxLauncher, None, None]:
+    with testing.sandbox(project_root=None, version="2.9.1", protocol_version=6) as sb:
+        yield sb
+
+
 @pytest.fixture()
-def executor() -> "Generator[ThreadPoolExecutor, None, None]":
+def executor() -> Generator[ThreadPoolExecutor, None, None]:
     with ThreadPoolExecutor(3) as executor:
         yield executor

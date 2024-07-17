@@ -1,0 +1,39 @@
+-- Copyright (c) 2017-2024, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+-- SPDX-License-Identifier: Apache-2.0
+
+module KitchenSink.Retailer where
+
+import DA.Set
+
+template Retailer
+  with
+    retailer : Party
+    name : Text
+    website : Text
+    tags : Set Text
+  where
+    signatory retailer
+    key retailer : Party
+    maintainer key
+
+    choice UpdateWebsite : ContractId Retailer
+      with
+        newWebsite : Text
+      controller retailer
+        do
+          create this with website = newWebsite
+
+
+template Order
+  with
+    customer : Party
+    payment : Numeric 2
+    retailer : Party
+    expedite : Bool
+  where
+    signatory customer, retailer
+
+    choice MarkAsShipped : ()
+      controller retailer
+        do
+          pure ()

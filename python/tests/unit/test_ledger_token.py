@@ -9,7 +9,7 @@ from dazl.ledger import ActAs, Admin, User
 from dazl.ledger.config.access import DamlLedgerApiNamespace
 import pytest
 
-from .config import daml_sdk_versions, known_version_2
+from .config import daml_sdk_versions, known_version_2_9
 from .dars import PostOffice
 
 
@@ -30,7 +30,7 @@ async def test_v1_token(daml_sdk_version: str) -> None:
 @pytest.mark.asyncio
 async def test_v2_token() -> None:
     async with testing.sandbox(
-        version=known_version_2, use_auth=True, ledger_id="sandbox"
+        version=known_version_2_9, use_auth=True, ledger_id="sandbox"
     ) as sandbox:
         # use an anonymous admin Daml V1 token to bootstrap users, because that's unfortunately
         # the only way

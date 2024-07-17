@@ -1,0 +1,81 @@
+-- Copyright (c) 2017-2024, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+-- SPDX-License-Identifier: Apache-2.0
+
+module KitchenSink.Customer where
+
+import KitchenSink.Retailer
+import KitchenSink.SKU
+
+import DA.Map qualified as M
+
+-- Customer is really more a relationship between a customer and retailer.
+template Customer
+  with
+    customer : Party
+    retailer : Party
+    name : Text
+    birthday : Date
+    createdAt : Time
+    address : [Text]
+  where
+    signatory customer
+    observer retailer
+    key (customer, retailer) : (Party, Party)
+    maintainer key._1
+
+
+template Cart
+  with
+    customer : Party
+    retailer : Party
+    createdAt : Time
+    updatedAt : Time
+    contents : M.Map SKU Int
+  where
+    signatory customer
+    observer retailer
+    key (customer, retailer) : (Party, Party)
+    maintainer key._1
+
+    ensure all (>0) $ M.values contents 
+
+    choice Add : ContractId Cart
+      with
+        moreContents : M.Map SKU Int
+      controller customer
+        do
+          create Cart with contents = combineCart 1 contents moreContents; ..
+
+    choice Remove : ContractId Cart
+      with
+        unwantedContents : M.Map SKU Int
+      controller customer
+        do
+          create Cart with contents = combineCart (-1) contents unwantedContents; ..
+
+    choice Finish : ContractId Order
+      with
+        -- | This is the payment amount for the order. If this weren't a test case DAR,
+        -- this might need to be a more complicated representation. But for now we'll assume
+        -- a currency with two digits after the decimal point.
+        payment : Numeric 2
+        expedite : Bool
+      controller customer
+        do
+          create Order with ..
+
+    choice Cancel : ()
+      controller retailer
+        do
+          pure ()
+
+
+-- combineCart takes a scale factor ``sf`` and two maps ``a`` and ``b``, and
+-- returns a map that is the result of ``a + b*sf``, with non-positive values
+-- filtered out and thrown away.
+combineCart : Ord a => Int -> M.Map a Int -> M.Map a Int -> M.Map a Int
+combineCart sf = M.merge (const _positive) (const _positive) (const $ \x y -> _positive $ x + y*sf)
+
+
+_positive: Int -> Optional Int
+_positive qty = if qty > 0 then Some qty else None
