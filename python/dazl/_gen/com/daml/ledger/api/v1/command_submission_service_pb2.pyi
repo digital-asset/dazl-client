@@ -11,7 +11,7 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SubmitRequest(_message.Message):
-    __slots__ = ["commands"]
+    __slots__ = ("commands",)
     COMMANDS_FIELD_NUMBER: _ClassVar[int]
     commands: _commands_pb2.Commands
     def __init__(self, commands: _Optional[_Union[_commands_pb2.Commands, _Mapping]] = ...) -> None: ...

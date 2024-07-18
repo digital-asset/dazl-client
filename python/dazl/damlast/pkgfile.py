@@ -8,10 +8,9 @@ from os import PathLike
 from pathlib import Path
 import threading
 from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional, TypeVar, Union
-import warnings
 from zipfile import ZipFile
 
-from .._gen.com.daml.daml_lf_1_15 import daml_lf_pb2 as pb
+from .._gen.com.daml.daml_lf_1_16 import daml_lf_pb2 as pb
 from ..prim import TimeDeltaLike
 from .daml_lf_1 import Archive, Package, PackageRef
 from .errors import PackageNotFoundError

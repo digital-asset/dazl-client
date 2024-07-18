@@ -12,15 +12,15 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SubmissionTrackingData(_message.Message):
-    __slots__ = ["transaction"]
+    __slots__ = ("transaction",)
     TRANSACTION_FIELD_NUMBER: _ClassVar[int]
     transaction: TransactionSubmissionTrackingData
     def __init__(self, transaction: _Optional[_Union[TransactionSubmissionTrackingData, _Mapping]] = ...) -> None: ...
 
 class TransactionSubmissionTrackingData(_message.Message):
-    __slots__ = ["completion_info", "rejection_cause", "domain_id"]
+    __slots__ = ("completion_info", "rejection_cause", "domain_id")
     class RejectionCause(_message.Message):
-        __slots__ = ["timeout", "rejection_reason_template"]
+        __slots__ = ("timeout", "rejection_reason_template")
         TIMEOUT_FIELD_NUMBER: _ClassVar[int]
         REJECTION_REASON_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
         timeout: _empty_pb2.Empty

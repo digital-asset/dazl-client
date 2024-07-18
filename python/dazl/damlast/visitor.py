@@ -97,6 +97,8 @@ class ExprVisitor(Generic[RE]):
             self.visit_expr_from_required_interface,
             self.visit_expr_unsafe_from_required_interface,
             self.visit_expr_experimental,
+            self.visit_expr_choice_controller,
+            self.visit_expr_choice_observer,
         )
 
     def visit_expr_var(self, e: str, /) -> RE:
@@ -228,6 +230,12 @@ class ExprVisitor(Generic[RE]):
         raise NotImplementedError
 
     def visit_expr_experimental(self, e: Expr.Experimental, /) -> RE:
+        raise NotImplementedError
+
+    def visit_expr_choice_controller(self, e: Expr.ChoiceController, /) -> RE:
+        raise NotImplementedError
+
+    def visit_expr_choice_observer(self, e: Expr.ChoiceObserver, /) -> RE:
         raise NotImplementedError
 
 

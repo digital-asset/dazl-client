@@ -3,7 +3,6 @@
 # fmt: off
 # isort: skip_file
 from ....protocol.v0 import sequencing_pb2 as _sequencing_pb2
-from ....protocol.v0 import topology_ext_pb2 as _topology_ext_pb2
 from ....v0 import trace_context_pb2 as _trace_context_pb2
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -14,21 +13,21 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SendAsyncVersionedRequest(_message.Message):
-    __slots__ = ["signed_submission_request"]
+    __slots__ = ("signed_submission_request",)
     SIGNED_SUBMISSION_REQUEST_FIELD_NUMBER: _ClassVar[int]
     signed_submission_request: bytes
     def __init__(self, signed_submission_request: _Optional[bytes] = ...) -> None: ...
 
 class SendAsyncUnauthenticatedVersionedRequest(_message.Message):
-    __slots__ = ["submission_request"]
+    __slots__ = ("submission_request",)
     SUBMISSION_REQUEST_FIELD_NUMBER: _ClassVar[int]
     submission_request: bytes
     def __init__(self, submission_request: _Optional[bytes] = ...) -> None: ...
 
 class SendAsyncResponse(_message.Message):
-    __slots__ = ["error"]
+    __slots__ = ("error",)
     class Error(_message.Message):
-        __slots__ = ["request_invalid", "request_refused", "overloaded", "sender_unknown", "shutting_down", "unavailable", "unknown_recipients"]
+        __slots__ = ("request_invalid", "request_refused", "overloaded", "sender_unknown", "shutting_down", "unavailable", "unknown_recipients")
         REQUEST_INVALID_FIELD_NUMBER: _ClassVar[int]
         REQUEST_REFUSED_FIELD_NUMBER: _ClassVar[int]
         OVERLOADED_FIELD_NUMBER: _ClassVar[int]
@@ -49,9 +48,9 @@ class SendAsyncResponse(_message.Message):
     def __init__(self, error: _Optional[_Union[SendAsyncResponse.Error, _Mapping]] = ...) -> None: ...
 
 class SendAsyncSignedResponse(_message.Message):
-    __slots__ = ["error"]
+    __slots__ = ("error",)
     class Error(_message.Message):
-        __slots__ = ["request_invalid", "request_refused", "overloaded", "sender_unknown", "shutting_down", "unavailable", "unknown_recipients", "internal", "generic"]
+        __slots__ = ("request_invalid", "request_refused", "overloaded", "sender_unknown", "shutting_down", "unavailable", "unknown_recipients", "internal", "generic")
         REQUEST_INVALID_FIELD_NUMBER: _ClassVar[int]
         REQUEST_REFUSED_FIELD_NUMBER: _ClassVar[int]
         OVERLOADED_FIELD_NUMBER: _ClassVar[int]
@@ -76,7 +75,7 @@ class SendAsyncSignedResponse(_message.Message):
     def __init__(self, error: _Optional[_Union[SendAsyncSignedResponse.Error, _Mapping]] = ...) -> None: ...
 
 class SubscriptionRequest(_message.Message):
-    __slots__ = ["member", "counter"]
+    __slots__ = ("member", "counter")
     MEMBER_FIELD_NUMBER: _ClassVar[int]
     COUNTER_FIELD_NUMBER: _ClassVar[int]
     member: str
@@ -84,7 +83,7 @@ class SubscriptionRequest(_message.Message):
     def __init__(self, member: _Optional[str] = ..., counter: _Optional[int] = ...) -> None: ...
 
 class SubscriptionResponse(_message.Message):
-    __slots__ = ["signed_sequenced_event", "trace_context"]
+    __slots__ = ("signed_sequenced_event", "trace_context")
     SIGNED_SEQUENCED_EVENT_FIELD_NUMBER: _ClassVar[int]
     TRACE_CONTEXT_FIELD_NUMBER: _ClassVar[int]
     signed_sequenced_event: _sequencing_pb2.SignedContent
@@ -92,7 +91,7 @@ class SubscriptionResponse(_message.Message):
     def __init__(self, signed_sequenced_event: _Optional[_Union[_sequencing_pb2.SignedContent, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ...) -> None: ...
 
 class VersionedSubscriptionResponse(_message.Message):
-    __slots__ = ["signed_sequenced_event", "trace_context", "traffic_state"]
+    __slots__ = ("signed_sequenced_event", "trace_context", "traffic_state")
     SIGNED_SEQUENCED_EVENT_FIELD_NUMBER: _ClassVar[int]
     TRACE_CONTEXT_FIELD_NUMBER: _ClassVar[int]
     TRAFFIC_STATE_FIELD_NUMBER: _ClassVar[int]
@@ -102,27 +101,15 @@ class VersionedSubscriptionResponse(_message.Message):
     def __init__(self, signed_sequenced_event: _Optional[bytes] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., traffic_state: _Optional[_Union[SequencedEventTrafficState, _Mapping]] = ...) -> None: ...
 
 class AcknowledgeRequest(_message.Message):
-    __slots__ = ["member", "timestamp"]
+    __slots__ = ("member", "timestamp")
     MEMBER_FIELD_NUMBER: _ClassVar[int]
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     member: str
     timestamp: _timestamp_pb2.Timestamp
     def __init__(self, member: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
-class TopologyStateForInitRequest(_message.Message):
-    __slots__ = ["member"]
-    MEMBER_FIELD_NUMBER: _ClassVar[int]
-    member: str
-    def __init__(self, member: _Optional[str] = ...) -> None: ...
-
-class TopologyStateForInitResponse(_message.Message):
-    __slots__ = ["topology_transactions"]
-    TOPOLOGY_TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
-    topology_transactions: _topology_ext_pb2.TopologyTransactions
-    def __init__(self, topology_transactions: _Optional[_Union[_topology_ext_pb2.TopologyTransactions, _Mapping]] = ...) -> None: ...
-
 class SequencedEventTrafficState(_message.Message):
-    __slots__ = ["extra_traffic_remainder", "extra_traffic_consumed"]
+    __slots__ = ("extra_traffic_remainder", "extra_traffic_consumed")
     EXTRA_TRAFFIC_REMAINDER_FIELD_NUMBER: _ClassVar[int]
     EXTRA_TRAFFIC_CONSUMED_FIELD_NUMBER: _ClassVar[int]
     extra_traffic_remainder: int

@@ -15,7 +15,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TransactionResultMessage(_message.Message):
-    __slots__ = ["request_id", "verdict", "notification_tree"]
+    __slots__ = ("request_id", "verdict", "notification_tree")
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     VERDICT_FIELD_NUMBER: _ClassVar[int]
     NOTIFICATION_TREE_FIELD_NUMBER: _ClassVar[int]
@@ -25,7 +25,7 @@ class TransactionResultMessage(_message.Message):
     def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ..., notification_tree: _Optional[_Union[InformeeTree, _Mapping]] = ...) -> None: ...
 
 class Verdict(_message.Message):
-    __slots__ = ["approve", "participant_reject", "mediator_reject"]
+    __slots__ = ("approve", "participant_reject", "mediator_reject")
     APPROVE_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_REJECT_FIELD_NUMBER: _ClassVar[int]
     MEDIATOR_REJECT_FIELD_NUMBER: _ClassVar[int]
@@ -35,19 +35,19 @@ class Verdict(_message.Message):
     def __init__(self, approve: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., participant_reject: _Optional[_Union[ParticipantReject, _Mapping]] = ..., mediator_reject: _Optional[_Union[MediatorReject, _Mapping]] = ...) -> None: ...
 
 class InformeeTree(_message.Message):
-    __slots__ = ["tree"]
+    __slots__ = ("tree",)
     TREE_FIELD_NUMBER: _ClassVar[int]
     tree: _merkle_pb2.GenTransactionTree
     def __init__(self, tree: _Optional[_Union[_merkle_pb2.GenTransactionTree, _Mapping]] = ...) -> None: ...
 
 class ParticipantReject(_message.Message):
-    __slots__ = ["reasons"]
+    __slots__ = ("reasons",)
     REASONS_FIELD_NUMBER: _ClassVar[int]
     reasons: _containers.RepeatedCompositeFieldContainer[_mediator_pb2.RejectionReason]
     def __init__(self, reasons: _Optional[_Iterable[_Union[_mediator_pb2.RejectionReason, _Mapping]]] = ...) -> None: ...
 
 class MediatorReject(_message.Message):
-    __slots__ = ["cause", "error_code", "error_category"]
+    __slots__ = ("cause", "error_code", "error_category")
     CAUSE_FIELD_NUMBER: _ClassVar[int]
     ERROR_CODE_FIELD_NUMBER: _ClassVar[int]
     ERROR_CATEGORY_FIELD_NUMBER: _ClassVar[int]
@@ -57,7 +57,7 @@ class MediatorReject(_message.Message):
     def __init__(self, cause: _Optional[str] = ..., error_code: _Optional[str] = ..., error_category: _Optional[int] = ...) -> None: ...
 
 class MalformedMediatorRequestResult(_message.Message):
-    __slots__ = ["request_id", "domain_id", "view_type", "rejection"]
+    __slots__ = ("request_id", "domain_id", "view_type", "rejection")
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     VIEW_TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -69,7 +69,7 @@ class MalformedMediatorRequestResult(_message.Message):
     def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., domain_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ..., rejection: _Optional[_Union[MediatorReject, _Mapping]] = ...) -> None: ...
 
 class TransferResult(_message.Message):
-    __slots__ = ["request_id", "origin_domain", "target_domain", "informees", "verdict"]
+    __slots__ = ("request_id", "origin_domain", "target_domain", "informees", "verdict")
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     TARGET_DOMAIN_FIELD_NUMBER: _ClassVar[int]

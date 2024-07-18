@@ -12,9 +12,9 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SequencerSnapshot(_message.Message):
-    __slots__ = ["latest_timestamp", "head_member_counters", "status", "additional"]
+    __slots__ = ("latest_timestamp", "head_member_counters", "status", "additional")
     class HeadMemberCountersEntry(_message.Message):
-        __slots__ = ["key", "value"]
+        __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -31,7 +31,7 @@ class SequencerSnapshot(_message.Message):
     def __init__(self, latest_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., head_member_counters: _Optional[_Mapping[str, int]] = ..., status: _Optional[_Union[_sequencer_administration_service_pb2.SequencerPruningStatus, _Mapping]] = ..., additional: _Optional[_Union[ImplementationSpecificInfo, _Mapping]] = ...) -> None: ...
 
 class ImplementationSpecificInfo(_message.Message):
-    __slots__ = ["implementation_name", "info"]
+    __slots__ = ("implementation_name", "info")
     IMPLEMENTATION_NAME_FIELD_NUMBER: _ClassVar[int]
     INFO_FIELD_NUMBER: _ClassVar[int]
     implementation_name: str

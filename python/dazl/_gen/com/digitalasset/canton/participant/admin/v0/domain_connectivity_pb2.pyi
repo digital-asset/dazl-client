@@ -13,7 +13,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DomainConnectionConfig(_message.Message):
-    __slots__ = ["domain_alias", "sequencerConnections", "manual_connect", "domain_id", "priority", "initialRetryDelay", "maxRetryDelay", "timeTracker", "sequencerTrustThreshold"]
+    __slots__ = ("domain_alias", "sequencerConnections", "manual_connect", "domain_id", "priority", "initialRetryDelay", "maxRetryDelay", "timeTracker", "sequencerTrustThreshold")
     DOMAIN_ALIAS_FIELD_NUMBER: _ClassVar[int]
     SEQUENCERCONNECTIONS_FIELD_NUMBER: _ClassVar[int]
     MANUAL_CONNECT_FIELD_NUMBER: _ClassVar[int]
@@ -35,43 +35,43 @@ class DomainConnectionConfig(_message.Message):
     def __init__(self, domain_alias: _Optional[str] = ..., sequencerConnections: _Optional[_Iterable[_Union[_sequencer_connection_pb2.SequencerConnection, _Mapping]]] = ..., manual_connect: bool = ..., domain_id: _Optional[str] = ..., priority: _Optional[int] = ..., initialRetryDelay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., maxRetryDelay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., timeTracker: _Optional[_Union[_time_tracker_config_pb2.DomainTimeTrackerConfig, _Mapping]] = ..., sequencerTrustThreshold: _Optional[int] = ...) -> None: ...
 
 class ReconnectDomainsRequest(_message.Message):
-    __slots__ = ["ignore_failures"]
+    __slots__ = ("ignore_failures",)
     IGNORE_FAILURES_FIELD_NUMBER: _ClassVar[int]
     ignore_failures: bool
     def __init__(self, ignore_failures: bool = ...) -> None: ...
 
 class ReconnectDomainsResponse(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class RegisterDomainRequest(_message.Message):
-    __slots__ = ["add"]
+    __slots__ = ("add",)
     ADD_FIELD_NUMBER: _ClassVar[int]
     add: DomainConnectionConfig
     def __init__(self, add: _Optional[_Union[DomainConnectionConfig, _Mapping]] = ...) -> None: ...
 
 class RegisterDomainResponse(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class ModifyDomainRequest(_message.Message):
-    __slots__ = ["modify"]
+    __slots__ = ("modify",)
     MODIFY_FIELD_NUMBER: _ClassVar[int]
     modify: DomainConnectionConfig
     def __init__(self, modify: _Optional[_Union[DomainConnectionConfig, _Mapping]] = ...) -> None: ...
 
 class ModifyDomainResponse(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class ListConfiguredDomainsRequest(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class ListConfiguredDomainsResponse(_message.Message):
-    __slots__ = ["results"]
+    __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ["config", "connected"]
+        __slots__ = ("config", "connected")
         CONFIG_FIELD_NUMBER: _ClassVar[int]
         CONNECTED_FIELD_NUMBER: _ClassVar[int]
         config: DomainConnectionConfig
@@ -82,7 +82,7 @@ class ListConfiguredDomainsResponse(_message.Message):
     def __init__(self, results: _Optional[_Iterable[_Union[ListConfiguredDomainsResponse.Result, _Mapping]]] = ...) -> None: ...
 
 class ConnectDomainRequest(_message.Message):
-    __slots__ = ["domain_alias", "retry"]
+    __slots__ = ("domain_alias", "retry")
     DOMAIN_ALIAS_FIELD_NUMBER: _ClassVar[int]
     RETRY_FIELD_NUMBER: _ClassVar[int]
     domain_alias: str
@@ -90,29 +90,29 @@ class ConnectDomainRequest(_message.Message):
     def __init__(self, domain_alias: _Optional[str] = ..., retry: bool = ...) -> None: ...
 
 class ConnectDomainResponse(_message.Message):
-    __slots__ = ["connected_successfully"]
+    __slots__ = ("connected_successfully",)
     CONNECTED_SUCCESSFULLY_FIELD_NUMBER: _ClassVar[int]
     connected_successfully: bool
     def __init__(self, connected_successfully: bool = ...) -> None: ...
 
 class DisconnectDomainRequest(_message.Message):
-    __slots__ = ["domain_alias"]
+    __slots__ = ("domain_alias",)
     DOMAIN_ALIAS_FIELD_NUMBER: _ClassVar[int]
     domain_alias: str
     def __init__(self, domain_alias: _Optional[str] = ...) -> None: ...
 
 class DisconnectDomainResponse(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class ListConnectedDomainsRequest(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class ListConnectedDomainsResponse(_message.Message):
-    __slots__ = ["connected_domains"]
+    __slots__ = ("connected_domains",)
     class Result(_message.Message):
-        __slots__ = ["domain_alias", "domain_id", "healthy"]
+        __slots__ = ("domain_alias", "domain_id", "healthy")
         DOMAIN_ALIAS_FIELD_NUMBER: _ClassVar[int]
         DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
         HEALTHY_FIELD_NUMBER: _ClassVar[int]
@@ -125,13 +125,13 @@ class ListConnectedDomainsResponse(_message.Message):
     def __init__(self, connected_domains: _Optional[_Iterable[_Union[ListConnectedDomainsResponse.Result, _Mapping]]] = ...) -> None: ...
 
 class GetAgreementRequest(_message.Message):
-    __slots__ = ["domain_alias"]
+    __slots__ = ("domain_alias",)
     DOMAIN_ALIAS_FIELD_NUMBER: _ClassVar[int]
     domain_alias: str
     def __init__(self, domain_alias: _Optional[str] = ...) -> None: ...
 
 class GetAgreementResponse(_message.Message):
-    __slots__ = ["domain_id", "agreement", "accepted"]
+    __slots__ = ("domain_id", "agreement", "accepted")
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     AGREEMENT_FIELD_NUMBER: _ClassVar[int]
     ACCEPTED_FIELD_NUMBER: _ClassVar[int]
@@ -141,7 +141,7 @@ class GetAgreementResponse(_message.Message):
     def __init__(self, domain_id: _Optional[str] = ..., agreement: _Optional[_Union[Agreement, _Mapping]] = ..., accepted: bool = ...) -> None: ...
 
 class Agreement(_message.Message):
-    __slots__ = ["id", "text"]
+    __slots__ = ("id", "text")
     ID_FIELD_NUMBER: _ClassVar[int]
     TEXT_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -149,7 +149,7 @@ class Agreement(_message.Message):
     def __init__(self, id: _Optional[str] = ..., text: _Optional[str] = ...) -> None: ...
 
 class AcceptAgreementRequest(_message.Message):
-    __slots__ = ["domain_alias", "agreement_id"]
+    __slots__ = ("domain_alias", "agreement_id")
     DOMAIN_ALIAS_FIELD_NUMBER: _ClassVar[int]
     AGREEMENT_ID_FIELD_NUMBER: _ClassVar[int]
     domain_alias: str
@@ -157,17 +157,17 @@ class AcceptAgreementRequest(_message.Message):
     def __init__(self, domain_alias: _Optional[str] = ..., agreement_id: _Optional[str] = ...) -> None: ...
 
 class AcceptAgreementResponse(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class GetDomainIdRequest(_message.Message):
-    __slots__ = ["domain_alias"]
+    __slots__ = ("domain_alias",)
     DOMAIN_ALIAS_FIELD_NUMBER: _ClassVar[int]
     domain_alias: str
     def __init__(self, domain_alias: _Optional[str] = ...) -> None: ...
 
 class GetDomainIdResponse(_message.Message):
-    __slots__ = ["domain_id"]
+    __slots__ = ("domain_id",)
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     domain_id: str
     def __init__(self, domain_id: _Optional[str] = ...) -> None: ...

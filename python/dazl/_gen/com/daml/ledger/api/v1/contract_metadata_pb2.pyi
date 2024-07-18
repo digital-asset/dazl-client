@@ -10,7 +10,7 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ContractMetadata(_message.Message):
-    __slots__ = ["created_at", "contract_key_hash", "driver_metadata"]
+    __slots__ = ("created_at", "contract_key_hash", "driver_metadata")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_KEY_HASH_FIELD_NUMBER: _ClassVar[int]
     DRIVER_METADATA_FIELD_NUMBER: _ClassVar[int]

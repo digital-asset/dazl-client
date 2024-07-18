@@ -10,13 +10,13 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetLedgerApiVersionRequest(_message.Message):
-    __slots__ = ["ledger_id"]
+    __slots__ = ("ledger_id",)
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     ledger_id: str
     def __init__(self, ledger_id: _Optional[str] = ...) -> None: ...
 
 class GetLedgerApiVersionResponse(_message.Message):
-    __slots__ = ["version", "features"]
+    __slots__ = ("version", "features")
     VERSION_FIELD_NUMBER: _ClassVar[int]
     FEATURES_FIELD_NUMBER: _ClassVar[int]
     version: str
@@ -24,15 +24,17 @@ class GetLedgerApiVersionResponse(_message.Message):
     def __init__(self, version: _Optional[str] = ..., features: _Optional[_Union[FeaturesDescriptor, _Mapping]] = ...) -> None: ...
 
 class FeaturesDescriptor(_message.Message):
-    __slots__ = ["user_management", "experimental"]
+    __slots__ = ("user_management", "party_management", "experimental")
     USER_MANAGEMENT_FIELD_NUMBER: _ClassVar[int]
+    PARTY_MANAGEMENT_FIELD_NUMBER: _ClassVar[int]
     EXPERIMENTAL_FIELD_NUMBER: _ClassVar[int]
     user_management: UserManagementFeature
+    party_management: PartyManagementFeature
     experimental: _experimental_features_pb2.ExperimentalFeatures
-    def __init__(self, user_management: _Optional[_Union[UserManagementFeature, _Mapping]] = ..., experimental: _Optional[_Union[_experimental_features_pb2.ExperimentalFeatures, _Mapping]] = ...) -> None: ...
+    def __init__(self, user_management: _Optional[_Union[UserManagementFeature, _Mapping]] = ..., party_management: _Optional[_Union[PartyManagementFeature, _Mapping]] = ..., experimental: _Optional[_Union[_experimental_features_pb2.ExperimentalFeatures, _Mapping]] = ...) -> None: ...
 
 class UserManagementFeature(_message.Message):
-    __slots__ = ["supported", "max_rights_per_user", "max_users_page_size"]
+    __slots__ = ("supported", "max_rights_per_user", "max_users_page_size")
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     MAX_RIGHTS_PER_USER_FIELD_NUMBER: _ClassVar[int]
     MAX_USERS_PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
@@ -40,3 +42,9 @@ class UserManagementFeature(_message.Message):
     max_rights_per_user: int
     max_users_page_size: int
     def __init__(self, supported: bool = ..., max_rights_per_user: _Optional[int] = ..., max_users_page_size: _Optional[int] = ...) -> None: ...
+
+class PartyManagementFeature(_message.Message):
+    __slots__ = ("max_parties_page_size",)
+    MAX_PARTIES_PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
+    max_parties_page_size: int
+    def __init__(self, max_parties_page_size: _Optional[int] = ...) -> None: ...

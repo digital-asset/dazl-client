@@ -11,11 +11,11 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetTimeModelRequest(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class GetTimeModelResponse(_message.Message):
-    __slots__ = ["configuration_generation", "time_model"]
+    __slots__ = ("configuration_generation", "time_model")
     CONFIGURATION_GENERATION_FIELD_NUMBER: _ClassVar[int]
     TIME_MODEL_FIELD_NUMBER: _ClassVar[int]
     configuration_generation: int
@@ -23,7 +23,7 @@ class GetTimeModelResponse(_message.Message):
     def __init__(self, configuration_generation: _Optional[int] = ..., time_model: _Optional[_Union[TimeModel, _Mapping]] = ...) -> None: ...
 
 class SetTimeModelRequest(_message.Message):
-    __slots__ = ["submission_id", "maximum_record_time", "configuration_generation", "new_time_model"]
+    __slots__ = ("submission_id", "maximum_record_time", "configuration_generation", "new_time_model")
     SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
     MAXIMUM_RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
     CONFIGURATION_GENERATION_FIELD_NUMBER: _ClassVar[int]
@@ -35,13 +35,13 @@ class SetTimeModelRequest(_message.Message):
     def __init__(self, submission_id: _Optional[str] = ..., maximum_record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., configuration_generation: _Optional[int] = ..., new_time_model: _Optional[_Union[TimeModel, _Mapping]] = ...) -> None: ...
 
 class SetTimeModelResponse(_message.Message):
-    __slots__ = ["configuration_generation"]
+    __slots__ = ("configuration_generation",)
     CONFIGURATION_GENERATION_FIELD_NUMBER: _ClassVar[int]
     configuration_generation: int
     def __init__(self, configuration_generation: _Optional[int] = ...) -> None: ...
 
 class TimeModel(_message.Message):
-    __slots__ = ["avg_transaction_latency", "min_skew", "max_skew"]
+    __slots__ = ("avg_transaction_latency", "min_skew", "max_skew")
     AVG_TRANSACTION_LATENCY_FIELD_NUMBER: _ClassVar[int]
     MIN_SKEW_FIELD_NUMBER: _ClassVar[int]
     MAX_SKEW_FIELD_NUMBER: _ClassVar[int]

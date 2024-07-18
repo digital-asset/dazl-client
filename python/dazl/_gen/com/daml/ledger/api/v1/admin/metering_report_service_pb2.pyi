@@ -11,7 +11,7 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetMeteringReportRequest(_message.Message):
-    __slots__ = ["to", "application_id"]
+    __slots__ = ("to", "application_id")
     FROM_FIELD_NUMBER: _ClassVar[int]
     TO_FIELD_NUMBER: _ClassVar[int]
     APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
@@ -20,7 +20,7 @@ class GetMeteringReportRequest(_message.Message):
     def __init__(self, to: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., application_id: _Optional[str] = ..., **kwargs) -> None: ...
 
 class GetMeteringReportResponse(_message.Message):
-    __slots__ = ["request", "report_generation_time", "metering_report_json"]
+    __slots__ = ("request", "report_generation_time", "metering_report_json")
     REQUEST_FIELD_NUMBER: _ClassVar[int]
     REPORT_GENERATION_TIME_FIELD_NUMBER: _ClassVar[int]
     METERING_REPORT_JSON_FIELD_NUMBER: _ClassVar[int]

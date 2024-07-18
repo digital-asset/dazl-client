@@ -9,11 +9,11 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetLedgerIdentityRequest(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class GetLedgerIdentityResponse(_message.Message):
-    __slots__ = ["ledger_id"]
+    __slots__ = ("ledger_id",)
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     ledger_id: str
     def __init__(self, ledger_id: _Optional[str] = ...) -> None: ...

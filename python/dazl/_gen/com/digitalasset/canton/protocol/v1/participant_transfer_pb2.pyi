@@ -15,7 +15,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TransferOutCommonData(_message.Message):
-    __slots__ = ["salt", "source_domain", "stakeholders", "admin_parties", "uuid", "source_mediator", "source_protocol_version"]
+    __slots__ = ("salt", "source_domain", "stakeholders", "admin_parties", "uuid", "source_mediator", "source_protocol_version")
     SALT_FIELD_NUMBER: _ClassVar[int]
     SOURCE_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     STAKEHOLDERS_FIELD_NUMBER: _ClassVar[int]
@@ -33,7 +33,7 @@ class TransferOutCommonData(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., source_domain: _Optional[str] = ..., stakeholders: _Optional[_Iterable[str]] = ..., admin_parties: _Optional[_Iterable[str]] = ..., uuid: _Optional[str] = ..., source_mediator: _Optional[str] = ..., source_protocol_version: _Optional[int] = ...) -> None: ...
 
 class TransferViewTree(_message.Message):
-    __slots__ = ["common_data", "participant_data"]
+    __slots__ = ("common_data", "participant_data")
     COMMON_DATA_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_DATA_FIELD_NUMBER: _ClassVar[int]
     common_data: _merkle_pb2.BlindableNode
@@ -41,19 +41,19 @@ class TransferViewTree(_message.Message):
     def __init__(self, common_data: _Optional[_Union[_merkle_pb2.BlindableNode, _Mapping]] = ..., participant_data: _Optional[_Union[_merkle_pb2.BlindableNode, _Mapping]] = ...) -> None: ...
 
 class TransferInMediatorMessage(_message.Message):
-    __slots__ = ["tree"]
+    __slots__ = ("tree",)
     TREE_FIELD_NUMBER: _ClassVar[int]
     tree: TransferViewTree
     def __init__(self, tree: _Optional[_Union[TransferViewTree, _Mapping]] = ...) -> None: ...
 
 class TransferOutMediatorMessage(_message.Message):
-    __slots__ = ["tree"]
+    __slots__ = ("tree",)
     TREE_FIELD_NUMBER: _ClassVar[int]
     tree: TransferViewTree
     def __init__(self, tree: _Optional[_Union[TransferViewTree, _Mapping]] = ...) -> None: ...
 
 class TransferOutView(_message.Message):
-    __slots__ = ["salt", "submitter", "contract_id", "target_domain", "target_time_proof", "target_protocol_version"]
+    __slots__ = ("salt", "submitter", "contract_id", "target_domain", "target_time_proof", "target_protocol_version")
     SALT_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -69,7 +69,7 @@ class TransferOutView(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., submitter: _Optional[str] = ..., contract_id: _Optional[str] = ..., target_domain: _Optional[str] = ..., target_time_proof: _Optional[_Union[_time_proof_pb2.TimeProof, _Mapping]] = ..., target_protocol_version: _Optional[int] = ...) -> None: ...
 
 class TransferInCommonData(_message.Message):
-    __slots__ = ["salt", "target_domain", "stakeholders", "uuid", "target_mediator", "target_protocol_version"]
+    __slots__ = ("salt", "target_domain", "stakeholders", "uuid", "target_mediator", "target_protocol_version")
     SALT_FIELD_NUMBER: _ClassVar[int]
     TARGET_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     STAKEHOLDERS_FIELD_NUMBER: _ClassVar[int]
@@ -85,7 +85,7 @@ class TransferInCommonData(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., target_domain: _Optional[str] = ..., stakeholders: _Optional[_Iterable[str]] = ..., uuid: _Optional[str] = ..., target_mediator: _Optional[str] = ..., target_protocol_version: _Optional[int] = ...) -> None: ...
 
 class TransferInView(_message.Message):
-    __slots__ = ["salt", "submitter", "contract", "transfer_out_result_event", "creating_transaction_id", "source_protocol_version"]
+    __slots__ = ("salt", "submitter", "contract", "transfer_out_result_event", "creating_transaction_id", "source_protocol_version")
     SALT_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_FIELD_NUMBER: _ClassVar[int]

@@ -10,9 +10,9 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ObjectMeta(_message.Message):
-    __slots__ = ["resource_version", "annotations"]
+    __slots__ = ("resource_version", "annotations")
     class AnnotationsEntry(_message.Message):
-        __slots__ = ["key", "value"]
+        __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str

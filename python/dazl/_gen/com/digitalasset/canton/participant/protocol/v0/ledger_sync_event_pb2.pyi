@@ -16,7 +16,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class CommandKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     Transaction: _ClassVar[CommandKind]
     TransferOut: _ClassVar[CommandKind]
     TransferIn: _ClassVar[CommandKind]
@@ -25,7 +25,7 @@ TransferOut: CommandKind
 TransferIn: CommandKind
 
 class LedgerSyncEvent(_message.Message):
-    __slots__ = ["configuration_changed", "configuration_change_rejected", "party_added_to_participant", "public_package_upload", "transaction_accepted", "command_rejected", "party_allocation_rejected", "public_package_upload_rejected", "transferred_out", "transferred_in"]
+    __slots__ = ("configuration_changed", "configuration_change_rejected", "party_added_to_participant", "public_package_upload", "transaction_accepted", "command_rejected", "party_allocation_rejected", "public_package_upload_rejected", "transferred_out", "transferred_in", "contracts_added", "contracts_purged")
     CONFIGURATION_CHANGED_FIELD_NUMBER: _ClassVar[int]
     CONFIGURATION_CHANGE_REJECTED_FIELD_NUMBER: _ClassVar[int]
     PARTY_ADDED_TO_PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
@@ -36,6 +36,8 @@ class LedgerSyncEvent(_message.Message):
     PUBLIC_PACKAGE_UPLOAD_REJECTED_FIELD_NUMBER: _ClassVar[int]
     TRANSFERRED_OUT_FIELD_NUMBER: _ClassVar[int]
     TRANSFERRED_IN_FIELD_NUMBER: _ClassVar[int]
+    CONTRACTS_ADDED_FIELD_NUMBER: _ClassVar[int]
+    CONTRACTS_PURGED_FIELD_NUMBER: _ClassVar[int]
     configuration_changed: ConfigurationChanged
     configuration_change_rejected: ConfigurationChangeRejected
     party_added_to_participant: PartyAddedToParticipant
@@ -46,10 +48,12 @@ class LedgerSyncEvent(_message.Message):
     public_package_upload_rejected: PublicPackageUploadRejected
     transferred_out: TransferredOut
     transferred_in: TransferredIn
-    def __init__(self, configuration_changed: _Optional[_Union[ConfigurationChanged, _Mapping]] = ..., configuration_change_rejected: _Optional[_Union[ConfigurationChangeRejected, _Mapping]] = ..., party_added_to_participant: _Optional[_Union[PartyAddedToParticipant, _Mapping]] = ..., public_package_upload: _Optional[_Union[PublicPackageUpload, _Mapping]] = ..., transaction_accepted: _Optional[_Union[TransactionAccepted, _Mapping]] = ..., command_rejected: _Optional[_Union[CommandRejected, _Mapping]] = ..., party_allocation_rejected: _Optional[_Union[PartyAllocationRejected, _Mapping]] = ..., public_package_upload_rejected: _Optional[_Union[PublicPackageUploadRejected, _Mapping]] = ..., transferred_out: _Optional[_Union[TransferredOut, _Mapping]] = ..., transferred_in: _Optional[_Union[TransferredIn, _Mapping]] = ...) -> None: ...
+    contracts_added: ContractsAdded
+    contracts_purged: ContractsPurged
+    def __init__(self, configuration_changed: _Optional[_Union[ConfigurationChanged, _Mapping]] = ..., configuration_change_rejected: _Optional[_Union[ConfigurationChangeRejected, _Mapping]] = ..., party_added_to_participant: _Optional[_Union[PartyAddedToParticipant, _Mapping]] = ..., public_package_upload: _Optional[_Union[PublicPackageUpload, _Mapping]] = ..., transaction_accepted: _Optional[_Union[TransactionAccepted, _Mapping]] = ..., command_rejected: _Optional[_Union[CommandRejected, _Mapping]] = ..., party_allocation_rejected: _Optional[_Union[PartyAllocationRejected, _Mapping]] = ..., public_package_upload_rejected: _Optional[_Union[PublicPackageUploadRejected, _Mapping]] = ..., transferred_out: _Optional[_Union[TransferredOut, _Mapping]] = ..., transferred_in: _Optional[_Union[TransferredIn, _Mapping]] = ..., contracts_added: _Optional[_Union[ContractsAdded, _Mapping]] = ..., contracts_purged: _Optional[_Union[ContractsPurged, _Mapping]] = ...) -> None: ...
 
 class ConfigurationChanged(_message.Message):
-    __slots__ = ["submission_id", "configuration", "participant_id", "record_time"]
+    __slots__ = ("submission_id", "configuration", "participant_id", "record_time")
     SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
     CONFIGURATION_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -61,7 +65,7 @@ class ConfigurationChanged(_message.Message):
     def __init__(self, submission_id: _Optional[str] = ..., configuration: _Optional[_Union[Configuration, _Mapping]] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class Configuration(_message.Message):
-    __slots__ = ["generation", "time_model", "max_deduplication_duration"]
+    __slots__ = ("generation", "time_model", "max_deduplication_duration")
     GENERATION_FIELD_NUMBER: _ClassVar[int]
     TIME_MODEL_FIELD_NUMBER: _ClassVar[int]
     MAX_DEDUPLICATION_DURATION_FIELD_NUMBER: _ClassVar[int]
@@ -71,7 +75,7 @@ class Configuration(_message.Message):
     def __init__(self, generation: _Optional[int] = ..., time_model: _Optional[_Union[TimeModel, _Mapping]] = ..., max_deduplication_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class TimeModel(_message.Message):
-    __slots__ = ["avg_transaction_latency", "min_skew", "max_skew"]
+    __slots__ = ("avg_transaction_latency", "min_skew", "max_skew")
     AVG_TRANSACTION_LATENCY_FIELD_NUMBER: _ClassVar[int]
     MIN_SKEW_FIELD_NUMBER: _ClassVar[int]
     MAX_SKEW_FIELD_NUMBER: _ClassVar[int]
@@ -81,7 +85,7 @@ class TimeModel(_message.Message):
     def __init__(self, avg_transaction_latency: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., min_skew: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., max_skew: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class ConfigurationChangeRejected(_message.Message):
-    __slots__ = ["submission_id", "reason", "participant_id", "recordTime", "proposed_configuration"]
+    __slots__ = ("submission_id", "reason", "participant_id", "recordTime", "proposed_configuration")
     SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
     REASON_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -95,7 +99,7 @@ class ConfigurationChangeRejected(_message.Message):
     def __init__(self, submission_id: _Optional[str] = ..., reason: _Optional[str] = ..., participant_id: _Optional[str] = ..., recordTime: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., proposed_configuration: _Optional[_Union[Configuration, _Mapping]] = ...) -> None: ...
 
 class PartyAddedToParticipant(_message.Message):
-    __slots__ = ["party", "display_name", "participant_id", "record_time", "submission_id"]
+    __slots__ = ("party", "display_name", "participant_id", "record_time", "submission_id")
     PARTY_FIELD_NUMBER: _ClassVar[int]
     DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -109,7 +113,7 @@ class PartyAddedToParticipant(_message.Message):
     def __init__(self, party: _Optional[str] = ..., display_name: _Optional[str] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., submission_id: _Optional[str] = ...) -> None: ...
 
 class PartyAllocationRejected(_message.Message):
-    __slots__ = ["submission_id", "participant_id", "record_time", "rejection_reason"]
+    __slots__ = ("submission_id", "participant_id", "record_time", "rejection_reason")
     SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
     RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
@@ -121,7 +125,7 @@ class PartyAllocationRejected(_message.Message):
     def __init__(self, submission_id: _Optional[str] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
 
 class PublicPackageUpload(_message.Message):
-    __slots__ = ["archives", "source_description", "record_time", "submission_id"]
+    __slots__ = ("archives", "source_description", "record_time", "submission_id")
     ARCHIVES_FIELD_NUMBER: _ClassVar[int]
     SOURCE_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
@@ -133,7 +137,7 @@ class PublicPackageUpload(_message.Message):
     def __init__(self, archives: _Optional[_Iterable[bytes]] = ..., source_description: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., submission_id: _Optional[str] = ...) -> None: ...
 
 class PublicPackageUploadRejected(_message.Message):
-    __slots__ = ["submission_id", "record_time", "rejection_reason"]
+    __slots__ = ("submission_id", "record_time", "rejection_reason")
     SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
     RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
     REJECTION_REASON_FIELD_NUMBER: _ClassVar[int]
@@ -143,9 +147,9 @@ class PublicPackageUploadRejected(_message.Message):
     def __init__(self, submission_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
 
 class TransactionAccepted(_message.Message):
-    __slots__ = ["completion_info", "transaction_meta", "transaction", "transaction_id", "record_time", "divulged_contracts", "blinding_info", "contract_metadata", "hosted_witnesses"]
+    __slots__ = ("completion_info", "transaction_meta", "transaction", "transaction_id", "record_time", "divulged_contracts", "blinding_info", "contract_metadata", "hosted_witnesses")
     class ContractMetadataEntry(_message.Message):
-        __slots__ = ["key", "value"]
+        __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -172,7 +176,7 @@ class TransactionAccepted(_message.Message):
     def __init__(self, completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., transaction_meta: _Optional[_Union[TransactionMeta, _Mapping]] = ..., transaction: _Optional[bytes] = ..., transaction_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., divulged_contracts: _Optional[_Iterable[_Union[DivulgedContract, _Mapping]]] = ..., blinding_info: _Optional[_Union[BlindingInfo, _Mapping]] = ..., contract_metadata: _Optional[_Mapping[str, bytes]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class CompletionInfo(_message.Message):
-    __slots__ = ["act_as", "application_id", "command_id", "optDeduplicationPeriod", "submission_id"]
+    __slots__ = ("act_as", "application_id", "command_id", "optDeduplicationPeriod", "submission_id")
     ACT_AS_FIELD_NUMBER: _ClassVar[int]
     APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
     COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
@@ -186,9 +190,9 @@ class CompletionInfo(_message.Message):
     def __init__(self, act_as: _Optional[_Iterable[str]] = ..., application_id: _Optional[str] = ..., command_id: _Optional[str] = ..., optDeduplicationPeriod: _Optional[_Union[_participant_transaction_pb2.DeduplicationPeriod, _Mapping]] = ..., submission_id: _Optional[str] = ...) -> None: ...
 
 class TransactionMeta(_message.Message):
-    __slots__ = ["ledger_time", "workflow_id", "submission_time", "submission_seed", "used_packages", "node_seeds", "by_key_nodes", "domain_id"]
+    __slots__ = ("ledger_time", "workflow_id", "submission_time", "submission_seed", "used_packages", "node_seeds", "by_key_nodes", "domain_id")
     class ByKeyNodes(_message.Message):
-        __slots__ = ["by_key_node"]
+        __slots__ = ("by_key_node",)
         BY_KEY_NODE_FIELD_NUMBER: _ClassVar[int]
         by_key_node: _containers.RepeatedScalarFieldContainer[int]
         def __init__(self, by_key_node: _Optional[_Iterable[int]] = ...) -> None: ...
@@ -211,7 +215,7 @@ class TransactionMeta(_message.Message):
     def __init__(self, ledger_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., workflow_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., submission_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., submission_seed: _Optional[bytes] = ..., used_packages: _Optional[_Iterable[str]] = ..., node_seeds: _Optional[_Iterable[_Union[NodeSeed, _Mapping]]] = ..., by_key_nodes: _Optional[_Union[TransactionMeta.ByKeyNodes, _Mapping]] = ..., domain_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class NodeSeed(_message.Message):
-    __slots__ = ["node_index", "node_seed"]
+    __slots__ = ("node_index", "node_seed")
     NODE_INDEX_FIELD_NUMBER: _ClassVar[int]
     NODE_SEED_FIELD_NUMBER: _ClassVar[int]
     node_index: int
@@ -219,7 +223,7 @@ class NodeSeed(_message.Message):
     def __init__(self, node_index: _Optional[int] = ..., node_seed: _Optional[bytes] = ...) -> None: ...
 
 class DivulgedContract(_message.Message):
-    __slots__ = ["contract_id", "contract_inst"]
+    __slots__ = ("contract_id", "contract_inst")
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_INST_FIELD_NUMBER: _ClassVar[int]
     contract_id: str
@@ -227,16 +231,16 @@ class DivulgedContract(_message.Message):
     def __init__(self, contract_id: _Optional[str] = ..., contract_inst: _Optional[bytes] = ...) -> None: ...
 
 class BlindingInfo(_message.Message):
-    __slots__ = ["disclosure", "divulgence"]
+    __slots__ = ("disclosure", "divulgence")
     class DisclosureEntry(_message.Message):
-        __slots__ = ["key", "value"]
+        __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: int
         value: Parties
         def __init__(self, key: _Optional[int] = ..., value: _Optional[_Union[Parties, _Mapping]] = ...) -> None: ...
     class DivulgenceEntry(_message.Message):
-        __slots__ = ["key", "value"]
+        __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -249,15 +253,15 @@ class BlindingInfo(_message.Message):
     def __init__(self, disclosure: _Optional[_Mapping[int, Parties]] = ..., divulgence: _Optional[_Mapping[str, Parties]] = ...) -> None: ...
 
 class Parties(_message.Message):
-    __slots__ = ["parties"]
+    __slots__ = ("parties",)
     PARTIES_FIELD_NUMBER: _ClassVar[int]
     parties: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, parties: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class CommandRejected(_message.Message):
-    __slots__ = ["completion_info", "record_time", "rejection_reason", "command_kind", "domain_id"]
+    __slots__ = ("completion_info", "record_time", "rejection_reason", "command_kind", "domain_id")
     class GrpcRejectionReasonTemplate(_message.Message):
-        __slots__ = ["status"]
+        __slots__ = ("status",)
         STATUS_FIELD_NUMBER: _ClassVar[int]
         status: bytes
         def __init__(self, status: _Optional[bytes] = ...) -> None: ...
@@ -274,7 +278,7 @@ class CommandRejected(_message.Message):
     def __init__(self, completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[_Union[CommandRejected.GrpcRejectionReasonTemplate, _Mapping]] = ..., command_kind: _Optional[_Union[CommandKind, str]] = ..., domain_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class TransferredOut(_message.Message):
-    __slots__ = ["update_id", "completion_info", "submitter", "record_time", "contract_id", "contract_stakeholders", "source_domain", "target_domain", "transfer_in_exclusivity", "workflow_id", "template_id", "is_transferring_participant", "hosted_stakeholders", "transfer_counter"]
+    __slots__ = ("update_id", "completion_info", "submitter", "record_time", "contract_id", "contract_stakeholders", "source_domain", "target_domain", "transfer_in_exclusivity", "workflow_id", "template_id", "is_transferring_participant", "hosted_stakeholders", "transfer_counter")
     UPDATE_ID_FIELD_NUMBER: _ClassVar[int]
     COMPLETION_INFO_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
@@ -306,7 +310,7 @@ class TransferredOut(_message.Message):
     def __init__(self, update_id: _Optional[str] = ..., completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., submitter: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contract_id: _Optional[str] = ..., contract_stakeholders: _Optional[_Iterable[str]] = ..., source_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., transfer_in_exclusivity: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., workflow_id: _Optional[str] = ..., template_id: _Optional[str] = ..., is_transferring_participant: bool = ..., hosted_stakeholders: _Optional[_Iterable[str]] = ..., transfer_counter: _Optional[int] = ...) -> None: ...
 
 class TransferredIn(_message.Message):
-    __slots__ = ["update_id", "completion_info", "submitter", "record_time", "ledger_create_time", "create_node", "creating_transaction_id", "contract_metadata", "transfer_out_id", "target_domain", "create_transaction_accepted", "workflow_id", "is_transferring_participant", "hosted_stakeholders", "transfer_counter"]
+    __slots__ = ("update_id", "completion_info", "submitter", "record_time", "ledger_create_time", "create_node", "creating_transaction_id", "contract_metadata", "transfer_out_id", "target_domain", "create_transaction_accepted", "workflow_id", "is_transferring_participant", "hosted_stakeholders", "transfer_counter")
     UPDATE_ID_FIELD_NUMBER: _ClassVar[int]
     COMPLETION_INFO_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
@@ -338,3 +342,44 @@ class TransferredIn(_message.Message):
     hosted_stakeholders: _containers.RepeatedScalarFieldContainer[str]
     transfer_counter: int
     def __init__(self, update_id: _Optional[str] = ..., completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., submitter: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., ledger_create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., create_node: _Optional[bytes] = ..., creating_transaction_id: _Optional[str] = ..., contract_metadata: _Optional[bytes] = ..., transfer_out_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ..., target_domain: _Optional[str] = ..., create_transaction_accepted: bool = ..., workflow_id: _Optional[str] = ..., is_transferring_participant: bool = ..., hosted_stakeholders: _Optional[_Iterable[str]] = ..., transfer_counter: _Optional[int] = ...) -> None: ...
+
+class ContractsAdded(_message.Message):
+    __slots__ = ("transaction_id", "contracts", "domain_id", "ledger_time", "record_time", "hosted_witnesses", "contract_metadata", "workflow_id")
+    class ContractMetadataEntry(_message.Message):
+        __slots__ = ("key", "value")
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: bytes
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[bytes] = ...) -> None: ...
+    TRANSACTION_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTRACTS_FIELD_NUMBER: _ClassVar[int]
+    DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
+    LEDGER_TIME_FIELD_NUMBER: _ClassVar[int]
+    RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
+    HOSTED_WITNESSES_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_METADATA_FIELD_NUMBER: _ClassVar[int]
+    WORKFLOW_ID_FIELD_NUMBER: _ClassVar[int]
+    transaction_id: str
+    contracts: _containers.RepeatedScalarFieldContainer[bytes]
+    domain_id: str
+    ledger_time: _timestamp_pb2.Timestamp
+    record_time: _timestamp_pb2.Timestamp
+    hosted_witnesses: _containers.RepeatedScalarFieldContainer[str]
+    contract_metadata: _containers.ScalarMap[str, bytes]
+    workflow_id: str
+    def __init__(self, transaction_id: _Optional[str] = ..., contracts: _Optional[_Iterable[bytes]] = ..., domain_id: _Optional[str] = ..., ledger_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ..., contract_metadata: _Optional[_Mapping[str, bytes]] = ..., workflow_id: _Optional[str] = ...) -> None: ...
+
+class ContractsPurged(_message.Message):
+    __slots__ = ("transaction_id", "contracts", "domain_id", "record_time", "hosted_witnesses")
+    TRANSACTION_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTRACTS_FIELD_NUMBER: _ClassVar[int]
+    DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
+    RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
+    HOSTED_WITNESSES_FIELD_NUMBER: _ClassVar[int]
+    transaction_id: str
+    contracts: _containers.RepeatedScalarFieldContainer[bytes]
+    domain_id: str
+    record_time: _timestamp_pb2.Timestamp
+    hosted_witnesses: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, transaction_id: _Optional[str] = ..., contracts: _Optional[_Iterable[bytes]] = ..., domain_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ...) -> None: ...

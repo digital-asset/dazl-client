@@ -48,8 +48,14 @@ class SymbolTable:
     """
 
     def __init__(self) -> None:
-        self._packages = {}  # type: Dict[str, str]
-        self._imports = {}  # type: Dict[str, str]
+        self._packages = {
+            ".google.protobuf.Empty": "google.protobuf.empty_pb2",
+            ".google.protobuf.Timestamp": "google.protobuf.timestamp_pb2",
+        }  # type: Dict[str, str]
+        self._imports = {
+            ".google.protobuf.Empty": "Empty",
+            ".google.protobuf.Timestamp": "Timestamp",
+        }  # type: Dict[str, str]
         self._map_types = {}  # type: Dict[str, Tuple[FieldDescriptorProto, FieldDescriptorProto]]
         self._enums = {}  # type: Dict[str, Dict[str, int]]
 

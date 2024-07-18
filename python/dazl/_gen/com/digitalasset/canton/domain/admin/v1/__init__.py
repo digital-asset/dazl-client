@@ -4,9 +4,7 @@
 # isort: skip_file
 
 from .sequencer_initialization_service_pb2 import InitRequest
-from .sequencer_initialization_snapshot_pb2 import SequencerSnapshot
 
 __all__ = [
     "InitRequest",
-    "SequencerSnapshot",
 ]

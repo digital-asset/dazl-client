@@ -11,19 +11,19 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetTimeRequest(_message.Message):
-    __slots__ = ["ledger_id"]
+    __slots__ = ("ledger_id",)
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     ledger_id: str
     def __init__(self, ledger_id: _Optional[str] = ...) -> None: ...
 
 class GetTimeResponse(_message.Message):
-    __slots__ = ["current_time"]
+    __slots__ = ("current_time",)
     CURRENT_TIME_FIELD_NUMBER: _ClassVar[int]
     current_time: _timestamp_pb2.Timestamp
     def __init__(self, current_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SetTimeRequest(_message.Message):
-    __slots__ = ["ledger_id", "current_time", "new_time"]
+    __slots__ = ("ledger_id", "current_time", "new_time")
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     CURRENT_TIME_FIELD_NUMBER: _ClassVar[int]
     NEW_TIME_FIELD_NUMBER: _ClassVar[int]

@@ -3,15 +3,18 @@
 # fmt: off
 # isort: skip_file
 
-from .pruning_pb2 import ClearSchedule, GetSchedule, LocatePruningTimestamp, PruningSchedule, SetCron, SetMaxDuration, SetRetention, SetSchedule
+from .pruning_pb2 import ClearSchedule, GetParticipantSchedule, GetSchedule, LocatePruningTimestamp, ParticipantPruningSchedule, PruningSchedule, SetCron, SetMaxDuration, SetParticipantSchedule, SetRetention, SetSchedule
 
 __all__ = [
     "ClearSchedule",
+    "GetParticipantSchedule",
     "GetSchedule",
     "LocatePruningTimestamp",
+    "ParticipantPruningSchedule",
     "PruningSchedule",
     "SetCron",
     "SetMaxDuration",
+    "SetParticipantSchedule",
     "SetRetention",
     "SetSchedule",
 ]

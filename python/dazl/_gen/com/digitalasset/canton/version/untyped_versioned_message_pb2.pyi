@@ -9,7 +9,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class UntypedVersionedMessage(_message.Message):
-    __slots__ = ["data", "version"]
+    __slots__ = ("data", "version")
     DATA_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
     data: bytes

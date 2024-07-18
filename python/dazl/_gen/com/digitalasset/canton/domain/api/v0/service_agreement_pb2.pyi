@@ -10,11 +10,11 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetServiceAgreementRequest(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class GetServiceAgreementResponse(_message.Message):
-    __slots__ = ["agreement"]
+    __slots__ = ("agreement",)
     AGREEMENT_FIELD_NUMBER: _ClassVar[int]
     agreement: _sequencing_pb2.ServiceAgreement
     def __init__(self, agreement: _Optional[_Union[_sequencing_pb2.ServiceAgreement, _Mapping]] = ...) -> None: ...

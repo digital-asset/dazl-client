@@ -13,7 +13,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class CompletionStreamRequest(_message.Message):
-    __slots__ = ["ledger_id", "application_id", "parties", "offset"]
+    __slots__ = ("ledger_id", "application_id", "parties", "offset")
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
     PARTIES_FIELD_NUMBER: _ClassVar[int]
@@ -25,7 +25,7 @@ class CompletionStreamRequest(_message.Message):
     def __init__(self, ledger_id: _Optional[str] = ..., application_id: _Optional[str] = ..., parties: _Optional[_Iterable[str]] = ..., offset: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ...) -> None: ...
 
 class CompletionStreamResponse(_message.Message):
-    __slots__ = ["checkpoint", "completions"]
+    __slots__ = ("checkpoint", "completions")
     CHECKPOINT_FIELD_NUMBER: _ClassVar[int]
     COMPLETIONS_FIELD_NUMBER: _ClassVar[int]
     checkpoint: Checkpoint
@@ -33,7 +33,7 @@ class CompletionStreamResponse(_message.Message):
     def __init__(self, checkpoint: _Optional[_Union[Checkpoint, _Mapping]] = ..., completions: _Optional[_Iterable[_Union[_completion_pb2.Completion, _Mapping]]] = ...) -> None: ...
 
 class Checkpoint(_message.Message):
-    __slots__ = ["record_time", "offset"]
+    __slots__ = ("record_time", "offset")
     RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     record_time: _timestamp_pb2.Timestamp
@@ -41,13 +41,13 @@ class Checkpoint(_message.Message):
     def __init__(self, record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., offset: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ...) -> None: ...
 
 class CompletionEndRequest(_message.Message):
-    __slots__ = ["ledger_id"]
+    __slots__ = ("ledger_id",)
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     ledger_id: str
     def __init__(self, ledger_id: _Optional[str] = ...) -> None: ...
 
 class CompletionEndResponse(_message.Message):
-    __slots__ = ["offset"]
+    __slots__ = ("offset",)
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     offset: _ledger_offset_pb2.LedgerOffset
     def __init__(self, offset: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ...) -> None: ...

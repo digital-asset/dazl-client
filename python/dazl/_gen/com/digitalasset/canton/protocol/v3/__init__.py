@@ -3,10 +3,15 @@
 # fmt: off
 # isort: skip_file
 
-from .participant_transaction_pb2 import ViewParticipantData
+from .mediator_pb2 import TransactionResultMessage, TransferResult, Verdict
+from .participant_transaction_pb2 import ActionDescription, ViewParticipantData
 from .synchronization_pb2 import EnvelopeContent
 
 __all__ = [
+    "ActionDescription",
     "EnvelopeContent",
+    "TransactionResultMessage",
+    "TransferResult",
+    "Verdict",
     "ViewParticipantData",
 ]

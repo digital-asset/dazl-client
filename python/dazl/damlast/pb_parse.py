@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import List, Optional, Sequence
 
 from . import daml_lf_1 as lf
-from .._gen.com.daml.daml_lf_1_15 import daml_lf_1_pb2 as pblf
+from .._gen.com.daml.daml_lf_1_16 import daml_lf_1_pb2 as pblf
 
 __all__ = ["ProtobufParser"]
 
@@ -357,6 +357,16 @@ class ProtobufParser:
             return lf.Expr(
                 experimental=self.parse_Expr_Experimental(pb.experimental), location=location
             )
+        elif sum_name == "choice_controller":
+            return lf.Expr(
+                choice_controller=self.parse_Expr_ChoiceController(pb.choice_controller),
+                location=location,
+            )
+        elif sum_name == "choice_observer":
+            return lf.Expr(
+                choice_observer=self.parse_Expr_ChoiceObserver(pb.choice_observer),
+                location=location,
+            )
         else:
             raise ValueError(f"Unknown type of Expr: {sum_name!r}")
 
@@ -564,6 +574,24 @@ class ProtobufParser:
     def parse_Expr_Experimental(self, pb: pblf.Expr.Experimental) -> lf.Expr.Experimental:
         return lf.Expr.Experimental(name=pb.name, type=self.parse_Type(pb.type))
 
+    def parse_Expr_ChoiceController(
+        self, pb: pblf.Expr.ChoiceController
+    ) -> lf.Expr.ChoiceController:
+        return lf.Expr.ChoiceController(
+            template=self.parse_TypeConName(pb.template),
+            choice=self.interned_strings[pb.choice_interned_str],
+            contract_expr=self.parse_Expr(pb.contract_expr),
+            choice_arg_expr=self.parse_Expr(pb.choice_arg_expr),
+        )
+
+    def parse_Expr_ChoiceObserver(self, pb: pblf.Expr.ChoiceObserver) -> lf.Expr.ChoiceObserver:
+        return lf.Expr.ChoiceObserver(
+            template=self.parse_TypeConName(pb.template),
+            choice=self.interned_strings[pb.choice_interned_str],
+            contract_expr=self.parse_Expr(pb.contract_expr),
+            choice_arg_expr=self.parse_Expr(pb.choice_arg_expr),
+        )
+
     def parse_CaseAlt(self, pb: pblf.CaseAlt) -> lf.CaseAlt:
         body = self.parse_Expr(pb.body)
         sum_name = pb.WhichOneof("Sum")
@@ -657,6 +685,14 @@ class ProtobufParser:
             )
         elif sum_name == "fetch_interface":
             return lf.Update(fetch_interface=self.parse_Update_FetchInterface(pb.fetch_interface))
+        elif sum_name == "dynamic_exercise":
+            return lf.Update(
+                dynamic_exercise=self.parse_Update_DynamicExercise(pb.dynamic_exercise)
+            )
+        elif sum_name == "soft_fetch":
+            return lf.Update(soft_fetch=self.parse_Update_SoftFetch(pb.soft_fetch))
+        elif sum_name == "soft_exercise":
+            return lf.Update(soft_exercise=self.parse_Update_SoftExercise(pb.soft_exercise))
         else:
             raise ValueError(f"unknown Sum value: {sum_name!r}")
 
@@ -728,6 +764,29 @@ class ProtobufParser:
             cid=self.parse_Expr(pb.cid),
         )
 
+    def parse_Update_DynamicExercise(
+        self, pb: pblf.Update.DynamicExercise
+    ) -> lf.Update.DynamicExercise:
+        return lf.Update.DynamicExercise(
+            template=self.parse_TypeConName(pb.template),
+            choice=self.interned_strings[pb.choice_interned_str],
+            cid=self.parse_Expr(pb.cid),
+            arg=self.parse_Expr(pb.arg),
+        )
+
+    def parse_Update_SoftFetch(self, pb: pblf.Update.SoftFetch) -> lf.Update.SoftFetch:
+        return lf.Update.SoftFetch(
+            template=self.parse_TypeConName(pb.template), cid=self.parse_Expr(pb.cid)
+        )
+
+    def parse_Update_SoftExercise(self, pb: pblf.Update.SoftExercise) -> lf.Update.SoftExercise:
+        return lf.Update.SoftExercise(
+            template=self.parse_TypeConName(pb.template),
+            choice=self._resolve_string(pb.choice_str, pb.choice_interned_str),
+            cid=self.parse_Expr(pb.cid),
+            arg=self.parse_Expr(pb.arg),
+        )
+
     def parse_Scenario(self, pb: pblf.Scenario) -> lf.Scenario:
         sum_name = pb.WhichOneof("Sum")
         if sum_name == "pure":
@@ -781,6 +840,7 @@ class ProtobufParser:
             consuming=pb.consuming,
             controllers=self.parse_Expr(pb.controllers),
             observers=self.parse_Expr(pb.observers) if pb.HasField("observers") else None,
+            authorizers=self.parse_Expr(pb.authorizers) if pb.HasField("authorizers") else None,
             arg_binder=self.parse_VarWithType(pb.arg_binder),
             ret_type=self.parse_Type(pb.ret_type),
             update=self.parse_Expr(pb.update),
@@ -976,6 +1036,18 @@ class ProtobufParser:
         return lf.PackageMetadata(
             name=self.interned_strings[pb.name_interned_str],
             version=self.interned_strings[pb.version_interned_str],
+            upgraded_package_id=(
+                self.parse_UpgradedPackageId(pb.upgraded_package_id)
+                if pb.HasField("upgraded_package_id")
+                else None
+            ),
+        )
+
+    def parse_UpgradedPackageId(self, pb: pblf.UpgradedPackageId) -> lf.UpgradedPackageId:
+        return lf.UpgradedPackageId(
+            upgraded_package_id=lf.PackageRef(
+                self.interned_strings[pb.upgraded_package_id_interned_str]
+            )
         )
 
     def _copy(self) -> "ProtobufParser":

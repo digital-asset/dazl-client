@@ -12,7 +12,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AdminTransferOutRequest(_message.Message):
-    __slots__ = ["submitting_party", "contract_id", "origin_domain", "target_domain", "application_id", "submission_id", "workflow_id", "command_id"]
+    __slots__ = ("submitting_party", "contract_id", "origin_domain", "target_domain", "application_id", "submission_id", "workflow_id", "command_id")
     SUBMITTING_PARTY_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_DOMAIN_FIELD_NUMBER: _ClassVar[int]
@@ -32,13 +32,13 @@ class AdminTransferOutRequest(_message.Message):
     def __init__(self, submitting_party: _Optional[str] = ..., contract_id: _Optional[str] = ..., origin_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., application_id: _Optional[str] = ..., submission_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., command_id: _Optional[str] = ...) -> None: ...
 
 class AdminTransferOutResponse(_message.Message):
-    __slots__ = ["transfer_id"]
+    __slots__ = ("transfer_id",)
     TRANSFER_ID_FIELD_NUMBER: _ClassVar[int]
     transfer_id: _participant_transfer_pb2.TransferId
     def __init__(self, transfer_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ...) -> None: ...
 
 class AdminTransferInRequest(_message.Message):
-    __slots__ = ["submitting_party_id", "target_domain", "transfer_id", "application_id", "submission_id", "workflow_id", "command_id"]
+    __slots__ = ("submitting_party_id", "target_domain", "transfer_id", "application_id", "submission_id", "workflow_id", "command_id")
     SUBMITTING_PARTY_ID_FIELD_NUMBER: _ClassVar[int]
     TARGET_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     TRANSFER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -56,11 +56,11 @@ class AdminTransferInRequest(_message.Message):
     def __init__(self, submitting_party_id: _Optional[str] = ..., target_domain: _Optional[str] = ..., transfer_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ..., application_id: _Optional[str] = ..., submission_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., command_id: _Optional[str] = ...) -> None: ...
 
 class AdminTransferInResponse(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class AdminTransferSearchQuery(_message.Message):
-    __slots__ = ["search_domain", "filter_origin_domain", "filter_timestamp", "filter_submitting_party", "limit"]
+    __slots__ = ("search_domain", "filter_origin_domain", "filter_timestamp", "filter_submitting_party", "limit")
     SEARCH_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     FILTER_ORIGIN_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     FILTER_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
@@ -74,9 +74,9 @@ class AdminTransferSearchQuery(_message.Message):
     def __init__(self, search_domain: _Optional[str] = ..., filter_origin_domain: _Optional[str] = ..., filter_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., filter_submitting_party: _Optional[str] = ..., limit: _Optional[int] = ...) -> None: ...
 
 class AdminTransferSearchResponse(_message.Message):
-    __slots__ = ["results"]
+    __slots__ = ("results",)
     class TransferSearchResult(_message.Message):
-        __slots__ = ["contract_id", "transfer_id", "origin_domain", "target_domain", "submitting_party", "ready_for_transfer_in", "target_time_proof"]
+        __slots__ = ("contract_id", "transfer_id", "origin_domain", "target_domain", "submitting_party", "ready_for_transfer_in", "target_time_proof")
         CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
         TRANSFER_ID_FIELD_NUMBER: _ClassVar[int]
         ORIGIN_DOMAIN_FIELD_NUMBER: _ClassVar[int]

@@ -13,19 +13,19 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TopologyChangeOp(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     Add: _ClassVar[TopologyChangeOp]
     Remove: _ClassVar[TopologyChangeOp]
     Replace: _ClassVar[TopologyChangeOp]
 
 class TrustLevel(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     MissingTrustLevel: _ClassVar[TrustLevel]
     Ordinary: _ClassVar[TrustLevel]
     Vip: _ClassVar[TrustLevel]
 
 class ParticipantPermission(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     MissingParticipantPermission: _ClassVar[ParticipantPermission]
     Submission: _ClassVar[ParticipantPermission]
     Confirmation: _ClassVar[ParticipantPermission]
@@ -33,7 +33,7 @@ class ParticipantPermission(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     Disabled: _ClassVar[ParticipantPermission]
 
 class RequestSide(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     MissingRequestSide: _ClassVar[RequestSide]
     Both: _ClassVar[RequestSide]
     From: _ClassVar[RequestSide]
@@ -55,7 +55,7 @@ From: RequestSide
 To: RequestSide
 
 class ParticipantState(_message.Message):
-    __slots__ = ["side", "domain", "participant", "permission", "trust_level"]
+    __slots__ = ("side", "domain", "participant", "permission", "trust_level")
     SIDE_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
@@ -69,7 +69,7 @@ class ParticipantState(_message.Message):
     def __init__(self, side: _Optional[_Union[RequestSide, str]] = ..., domain: _Optional[str] = ..., participant: _Optional[str] = ..., permission: _Optional[_Union[ParticipantPermission, str]] = ..., trust_level: _Optional[_Union[TrustLevel, str]] = ...) -> None: ...
 
 class PartyToParticipant(_message.Message):
-    __slots__ = ["side", "party", "participant", "permission"]
+    __slots__ = ("side", "party", "participant", "permission")
     SIDE_FIELD_NUMBER: _ClassVar[int]
     PARTY_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
@@ -81,7 +81,7 @@ class PartyToParticipant(_message.Message):
     def __init__(self, side: _Optional[_Union[RequestSide, str]] = ..., party: _Optional[str] = ..., participant: _Optional[str] = ..., permission: _Optional[_Union[ParticipantPermission, str]] = ...) -> None: ...
 
 class MediatorDomainState(_message.Message):
-    __slots__ = ["side", "domain", "mediator"]
+    __slots__ = ("side", "domain", "mediator")
     SIDE_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_FIELD_NUMBER: _ClassVar[int]
     MEDIATOR_FIELD_NUMBER: _ClassVar[int]
@@ -91,7 +91,7 @@ class MediatorDomainState(_message.Message):
     def __init__(self, side: _Optional[_Union[RequestSide, str]] = ..., domain: _Optional[str] = ..., mediator: _Optional[str] = ...) -> None: ...
 
 class NamespaceDelegation(_message.Message):
-    __slots__ = ["namespace", "target_key", "is_root_delegation"]
+    __slots__ = ("namespace", "target_key", "is_root_delegation")
     NAMESPACE_FIELD_NUMBER: _ClassVar[int]
     TARGET_KEY_FIELD_NUMBER: _ClassVar[int]
     IS_ROOT_DELEGATION_FIELD_NUMBER: _ClassVar[int]
@@ -101,7 +101,7 @@ class NamespaceDelegation(_message.Message):
     def __init__(self, namespace: _Optional[str] = ..., target_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., is_root_delegation: bool = ...) -> None: ...
 
 class IdentifierDelegation(_message.Message):
-    __slots__ = ["unique_identifier", "target_key"]
+    __slots__ = ("unique_identifier", "target_key")
     UNIQUE_IDENTIFIER_FIELD_NUMBER: _ClassVar[int]
     TARGET_KEY_FIELD_NUMBER: _ClassVar[int]
     unique_identifier: str
@@ -109,7 +109,7 @@ class IdentifierDelegation(_message.Message):
     def __init__(self, unique_identifier: _Optional[str] = ..., target_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ...) -> None: ...
 
 class OwnerToKeyMapping(_message.Message):
-    __slots__ = ["key_owner", "public_key"]
+    __slots__ = ("key_owner", "public_key")
     KEY_OWNER_FIELD_NUMBER: _ClassVar[int]
     PUBLIC_KEY_FIELD_NUMBER: _ClassVar[int]
     key_owner: str
@@ -117,7 +117,7 @@ class OwnerToKeyMapping(_message.Message):
     def __init__(self, key_owner: _Optional[str] = ..., public_key: _Optional[_Union[_crypto_pb2.PublicKey, _Mapping]] = ...) -> None: ...
 
 class SignedLegalIdentityClaim(_message.Message):
-    __slots__ = ["claim", "signature"]
+    __slots__ = ("claim", "signature")
     CLAIM_FIELD_NUMBER: _ClassVar[int]
     SIGNATURE_FIELD_NUMBER: _ClassVar[int]
     claim: bytes
@@ -125,7 +125,7 @@ class SignedLegalIdentityClaim(_message.Message):
     def __init__(self, claim: _Optional[bytes] = ..., signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ...) -> None: ...
 
 class LegalIdentityClaim(_message.Message):
-    __slots__ = ["unique_identifier", "x509_cert"]
+    __slots__ = ("unique_identifier", "x509_cert")
     UNIQUE_IDENTIFIER_FIELD_NUMBER: _ClassVar[int]
     X509_CERT_FIELD_NUMBER: _ClassVar[int]
     unique_identifier: str
@@ -133,7 +133,7 @@ class LegalIdentityClaim(_message.Message):
     def __init__(self, unique_identifier: _Optional[str] = ..., x509_cert: _Optional[bytes] = ...) -> None: ...
 
 class VettedPackages(_message.Message):
-    __slots__ = ["participant", "package_ids"]
+    __slots__ = ("participant", "package_ids")
     PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
     PACKAGE_IDS_FIELD_NUMBER: _ClassVar[int]
     participant: str
@@ -141,7 +141,7 @@ class VettedPackages(_message.Message):
     def __init__(self, participant: _Optional[str] = ..., package_ids: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class TopologyStateUpdate(_message.Message):
-    __slots__ = ["operation", "id", "namespace_delegation", "identifier_delegation", "owner_to_key_mapping", "party_to_participant", "signed_legal_identity_claim", "participant_state", "vetted_packages", "mediator_domain_state"]
+    __slots__ = ("operation", "id", "namespace_delegation", "identifier_delegation", "owner_to_key_mapping", "party_to_participant", "signed_legal_identity_claim", "participant_state", "vetted_packages", "mediator_domain_state")
     OPERATION_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAMESPACE_DELEGATION_FIELD_NUMBER: _ClassVar[int]
@@ -165,7 +165,7 @@ class TopologyStateUpdate(_message.Message):
     def __init__(self, operation: _Optional[_Union[TopologyChangeOp, str]] = ..., id: _Optional[str] = ..., namespace_delegation: _Optional[_Union[NamespaceDelegation, _Mapping]] = ..., identifier_delegation: _Optional[_Union[IdentifierDelegation, _Mapping]] = ..., owner_to_key_mapping: _Optional[_Union[OwnerToKeyMapping, _Mapping]] = ..., party_to_participant: _Optional[_Union[PartyToParticipant, _Mapping]] = ..., signed_legal_identity_claim: _Optional[_Union[SignedLegalIdentityClaim, _Mapping]] = ..., participant_state: _Optional[_Union[ParticipantState, _Mapping]] = ..., vetted_packages: _Optional[_Union[VettedPackages, _Mapping]] = ..., mediator_domain_state: _Optional[_Union[MediatorDomainState, _Mapping]] = ...) -> None: ...
 
 class DomainParametersChange(_message.Message):
-    __slots__ = ["domain", "domain_parameters"]
+    __slots__ = ("domain", "domain_parameters")
     DOMAIN_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
     domain: str
@@ -173,13 +173,13 @@ class DomainParametersChange(_message.Message):
     def __init__(self, domain: _Optional[str] = ..., domain_parameters: _Optional[_Union[_sequencing_pb2.DynamicDomainParameters, _Mapping]] = ...) -> None: ...
 
 class DomainGovernanceTransaction(_message.Message):
-    __slots__ = ["domain_parameters_change"]
+    __slots__ = ("domain_parameters_change",)
     DOMAIN_PARAMETERS_CHANGE_FIELD_NUMBER: _ClassVar[int]
     domain_parameters_change: DomainParametersChange
     def __init__(self, domain_parameters_change: _Optional[_Union[DomainParametersChange, _Mapping]] = ...) -> None: ...
 
 class TopologyTransaction(_message.Message):
-    __slots__ = ["state_update", "domain_governance"]
+    __slots__ = ("state_update", "domain_governance")
     STATE_UPDATE_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_GOVERNANCE_FIELD_NUMBER: _ClassVar[int]
     state_update: TopologyStateUpdate
@@ -187,7 +187,7 @@ class TopologyTransaction(_message.Message):
     def __init__(self, state_update: _Optional[_Union[TopologyStateUpdate, _Mapping]] = ..., domain_governance: _Optional[_Union[DomainGovernanceTransaction, _Mapping]] = ...) -> None: ...
 
 class SignedTopologyTransaction(_message.Message):
-    __slots__ = ["transaction", "key", "signature"]
+    __slots__ = ("transaction", "key", "signature")
     TRANSACTION_FIELD_NUMBER: _ClassVar[int]
     KEY_FIELD_NUMBER: _ClassVar[int]
     SIGNATURE_FIELD_NUMBER: _ClassVar[int]
@@ -197,7 +197,7 @@ class SignedTopologyTransaction(_message.Message):
     def __init__(self, transaction: _Optional[bytes] = ..., key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ...) -> None: ...
 
 class DomainTopologyTransactionMessage(_message.Message):
-    __slots__ = ["signature", "domain_id", "transactions"]
+    __slots__ = ("signature", "domain_id", "transactions")
     SIGNATURE_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
@@ -207,7 +207,7 @@ class DomainTopologyTransactionMessage(_message.Message):
     def __init__(self, signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., domain_id: _Optional[str] = ..., transactions: _Optional[_Iterable[bytes]] = ...) -> None: ...
 
 class RegisterTopologyTransactionRequest(_message.Message):
-    __slots__ = ["requested_by", "participant", "request_id", "signed_topology_transactions", "domain_id"]
+    __slots__ = ("requested_by", "participant", "request_id", "signed_topology_transactions", "domain_id")
     REQUESTED_BY_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
@@ -221,11 +221,11 @@ class RegisterTopologyTransactionRequest(_message.Message):
     def __init__(self, requested_by: _Optional[str] = ..., participant: _Optional[str] = ..., request_id: _Optional[str] = ..., signed_topology_transactions: _Optional[_Iterable[bytes]] = ..., domain_id: _Optional[str] = ...) -> None: ...
 
 class RegisterTopologyTransactionResponse(_message.Message):
-    __slots__ = ["requested_by", "participant", "request_id", "results", "domain_id"]
+    __slots__ = ("requested_by", "participant", "request_id", "results", "domain_id")
     class Result(_message.Message):
-        __slots__ = ["unique_path", "state", "error_message"]
+        __slots__ = ("unique_path", "state", "error_message")
         class State(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-            __slots__ = []  # type: ignore
+            __slots__ = ()
             MISSING_STATE: _ClassVar[RegisterTopologyTransactionResponse.Result.State]
             REQUESTED: _ClassVar[RegisterTopologyTransactionResponse.Result.State]
             FAILED: _ClassVar[RegisterTopologyTransactionResponse.Result.State]

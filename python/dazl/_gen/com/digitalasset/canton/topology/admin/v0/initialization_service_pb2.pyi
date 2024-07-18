@@ -11,7 +11,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class InitIdRequest(_message.Message):
-    __slots__ = ["identifier", "fingerprint", "instance"]
+    __slots__ = ("identifier", "fingerprint", "instance")
     IDENTIFIER_FIELD_NUMBER: _ClassVar[int]
     FINGERPRINT_FIELD_NUMBER: _ClassVar[int]
     INSTANCE_FIELD_NUMBER: _ClassVar[int]
@@ -21,7 +21,7 @@ class InitIdRequest(_message.Message):
     def __init__(self, identifier: _Optional[str] = ..., fingerprint: _Optional[str] = ..., instance: _Optional[str] = ...) -> None: ...
 
 class InitIdResponse(_message.Message):
-    __slots__ = ["unique_identifier", "instance"]
+    __slots__ = ("unique_identifier", "instance")
     UNIQUE_IDENTIFIER_FIELD_NUMBER: _ClassVar[int]
     INSTANCE_FIELD_NUMBER: _ClassVar[int]
     unique_identifier: str
@@ -29,7 +29,7 @@ class InitIdResponse(_message.Message):
     def __init__(self, unique_identifier: _Optional[str] = ..., instance: _Optional[str] = ...) -> None: ...
 
 class GetIdResponse(_message.Message):
-    __slots__ = ["initialized", "unique_identifier", "instance"]
+    __slots__ = ("initialized", "unique_identifier", "instance")
     INITIALIZED_FIELD_NUMBER: _ClassVar[int]
     UNIQUE_IDENTIFIER_FIELD_NUMBER: _ClassVar[int]
     INSTANCE_FIELD_NUMBER: _ClassVar[int]

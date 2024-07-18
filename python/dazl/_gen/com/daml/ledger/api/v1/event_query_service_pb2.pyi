@@ -12,7 +12,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetEventsByContractIdRequest(_message.Message):
-    __slots__ = ["contract_id", "requesting_parties"]
+    __slots__ = ("contract_id", "requesting_parties")
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
     REQUESTING_PARTIES_FIELD_NUMBER: _ClassVar[int]
     contract_id: str
@@ -20,7 +20,7 @@ class GetEventsByContractIdRequest(_message.Message):
     def __init__(self, contract_id: _Optional[str] = ..., requesting_parties: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class GetEventsByContractIdResponse(_message.Message):
-    __slots__ = ["create_event", "archive_event"]
+    __slots__ = ("create_event", "archive_event")
     CREATE_EVENT_FIELD_NUMBER: _ClassVar[int]
     ARCHIVE_EVENT_FIELD_NUMBER: _ClassVar[int]
     create_event: _event_pb2.CreatedEvent
@@ -28,7 +28,7 @@ class GetEventsByContractIdResponse(_message.Message):
     def __init__(self, create_event: _Optional[_Union[_event_pb2.CreatedEvent, _Mapping]] = ..., archive_event: _Optional[_Union[_event_pb2.ArchivedEvent, _Mapping]] = ...) -> None: ...
 
 class GetEventsByContractKeyRequest(_message.Message):
-    __slots__ = ["contract_key", "template_id", "requesting_parties", "continuation_token"]
+    __slots__ = ("contract_key", "template_id", "requesting_parties", "continuation_token")
     CONTRACT_KEY_FIELD_NUMBER: _ClassVar[int]
     TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     REQUESTING_PARTIES_FIELD_NUMBER: _ClassVar[int]
@@ -40,7 +40,7 @@ class GetEventsByContractKeyRequest(_message.Message):
     def __init__(self, contract_key: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., requesting_parties: _Optional[_Iterable[str]] = ..., continuation_token: _Optional[str] = ...) -> None: ...
 
 class GetEventsByContractKeyResponse(_message.Message):
-    __slots__ = ["create_event", "archive_event", "continuation_token"]
+    __slots__ = ("create_event", "archive_event", "continuation_token")
     CREATE_EVENT_FIELD_NUMBER: _ClassVar[int]
     ARCHIVE_EVENT_FIELD_NUMBER: _ClassVar[int]
     CONTINUATION_TOKEN_FIELD_NUMBER: _ClassVar[int]

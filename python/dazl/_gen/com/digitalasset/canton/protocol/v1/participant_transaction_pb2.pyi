@@ -17,9 +17,9 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ActionDescription(_message.Message):
-    __slots__ = ["create", "exercise", "fetch", "lookup_by_key"]
+    __slots__ = ("create", "exercise", "fetch", "lookup_by_key")
     class ExerciseActionDescription(_message.Message):
-        __slots__ = ["input_contract_id", "choice", "chosen_value", "actors", "by_key", "node_seed", "version", "failed", "interface_id"]
+        __slots__ = ("input_contract_id", "choice", "chosen_value", "actors", "by_key", "node_seed", "version", "failed", "interface_id")
         INPUT_CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
         CHOICE_FIELD_NUMBER: _ClassVar[int]
         CHOSEN_VALUE_FIELD_NUMBER: _ClassVar[int]
@@ -39,6 +39,24 @@ class ActionDescription(_message.Message):
         failed: bool
         interface_id: str
         def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., node_seed: _Optional[bytes] = ..., version: _Optional[str] = ..., failed: bool = ..., interface_id: _Optional[str] = ...) -> None: ...
+    class LookupByKeyActionDescription(_message.Message):
+        __slots__ = ("key",)
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        key: _common_pb2_1.GlobalKey
+        def __init__(self, key: _Optional[_Union[_common_pb2_1.GlobalKey, _Mapping]] = ...) -> None: ...
+    class FetchActionDescription(_message.Message):
+        __slots__ = ("input_contract_id", "actors", "by_key", "version", "template_id")
+        INPUT_CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
+        ACTORS_FIELD_NUMBER: _ClassVar[int]
+        BY_KEY_FIELD_NUMBER: _ClassVar[int]
+        VERSION_FIELD_NUMBER: _ClassVar[int]
+        TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+        input_contract_id: str
+        actors: _containers.RepeatedScalarFieldContainer[str]
+        by_key: bool
+        version: str
+        template_id: str
+        def __init__(self, input_contract_id: _Optional[str] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., version: _Optional[str] = ..., template_id: _Optional[str] = ...) -> None: ...
     CREATE_FIELD_NUMBER: _ClassVar[int]
     EXERCISE_FIELD_NUMBER: _ClassVar[int]
     FETCH_FIELD_NUMBER: _ClassVar[int]
@@ -50,7 +68,7 @@ class ActionDescription(_message.Message):
     def __init__(self, create: _Optional[_Union[_participant_transaction_pb2.ActionDescription.CreateActionDescription, _Mapping]] = ..., exercise: _Optional[_Union[ActionDescription.ExerciseActionDescription, _Mapping]] = ..., fetch: _Optional[_Union[_participant_transaction_pb2.ActionDescription.FetchActionDescription, _Mapping]] = ..., lookup_by_key: _Optional[_Union[_participant_transaction_pb2.ActionDescription.LookupByKeyActionDescription, _Mapping]] = ...) -> None: ...
 
 class ViewNode(_message.Message):
-    __slots__ = ["view_common_data", "view_participant_data", "subviews"]
+    __slots__ = ("view_common_data", "view_participant_data", "subviews")
     VIEW_COMMON_DATA_FIELD_NUMBER: _ClassVar[int]
     VIEW_PARTICIPANT_DATA_FIELD_NUMBER: _ClassVar[int]
     SUBVIEWS_FIELD_NUMBER: _ClassVar[int]
@@ -60,7 +78,7 @@ class ViewNode(_message.Message):
     def __init__(self, view_common_data: _Optional[_Union[_merkle_pb2.BlindableNode, _Mapping]] = ..., view_participant_data: _Optional[_Union[_merkle_pb2.BlindableNode, _Mapping]] = ..., subviews: _Optional[_Union[_merkle_pb2.MerkleSeq, _Mapping]] = ...) -> None: ...
 
 class ViewCommonData(_message.Message):
-    __slots__ = ["salt", "informees", "threshold"]
+    __slots__ = ("salt", "informees", "threshold")
     SALT_FIELD_NUMBER: _ClassVar[int]
     INFORMEES_FIELD_NUMBER: _ClassVar[int]
     THRESHOLD_FIELD_NUMBER: _ClassVar[int]
@@ -70,7 +88,7 @@ class ViewCommonData(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., informees: _Optional[_Iterable[_Union[Informee, _Mapping]]] = ..., threshold: _Optional[int] = ...) -> None: ...
 
 class Informee(_message.Message):
-    __slots__ = ["party", "weight", "required_trust_level"]
+    __slots__ = ("party", "weight", "required_trust_level")
     PARTY_FIELD_NUMBER: _ClassVar[int]
     WEIGHT_FIELD_NUMBER: _ClassVar[int]
     REQUIRED_TRUST_LEVEL_FIELD_NUMBER: _ClassVar[int]
@@ -80,7 +98,7 @@ class Informee(_message.Message):
     def __init__(self, party: _Optional[str] = ..., weight: _Optional[int] = ..., required_trust_level: _Optional[_Union[_topology_pb2.TrustLevel, str]] = ...) -> None: ...
 
 class EncryptedViewMessage(_message.Message):
-    __slots__ = ["view_tree", "encryption_scheme", "submitter_participant_signature", "view_hash", "randomness", "domain_id", "view_type"]
+    __slots__ = ("view_tree", "encryption_scheme", "submitter_participant_signature", "view_hash", "randomness", "domain_id", "view_type")
     VIEW_TREE_FIELD_NUMBER: _ClassVar[int]
     ENCRYPTION_SCHEME_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_PARTICIPANT_SIGNATURE_FIELD_NUMBER: _ClassVar[int]
@@ -98,7 +116,7 @@ class EncryptedViewMessage(_message.Message):
     def __init__(self, view_tree: _Optional[bytes] = ..., encryption_scheme: _Optional[_Union[_crypto_pb2.SymmetricKeyScheme, str]] = ..., submitter_participant_signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., view_hash: _Optional[bytes] = ..., randomness: _Optional[_Iterable[_Union[ParticipantRandomnessLookup, _Mapping]]] = ..., domain_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ...) -> None: ...
 
 class ParticipantRandomnessLookup(_message.Message):
-    __slots__ = ["randomness", "fingerprint"]
+    __slots__ = ("randomness", "fingerprint")
     RANDOMNESS_FIELD_NUMBER: _ClassVar[int]
     FINGERPRINT_FIELD_NUMBER: _ClassVar[int]
     randomness: bytes
@@ -106,11 +124,11 @@ class ParticipantRandomnessLookup(_message.Message):
     def __init__(self, randomness: _Optional[bytes] = ..., fingerprint: _Optional[str] = ...) -> None: ...
 
 class ViewParticipantMessage(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class InformeeMessage(_message.Message):
-    __slots__ = ["full_informee_tree", "protocol_version"]
+    __slots__ = ("full_informee_tree", "protocol_version")
     FULL_INFORMEE_TREE_FIELD_NUMBER: _ClassVar[int]
     PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
     full_informee_tree: FullInformeeTree
@@ -118,7 +136,7 @@ class InformeeMessage(_message.Message):
     def __init__(self, full_informee_tree: _Optional[_Union[FullInformeeTree, _Mapping]] = ..., protocol_version: _Optional[int] = ...) -> None: ...
 
 class LightTransactionViewTree(_message.Message):
-    __slots__ = ["tree", "subview_hashes"]
+    __slots__ = ("tree", "subview_hashes")
     TREE_FIELD_NUMBER: _ClassVar[int]
     SUBVIEW_HASHES_FIELD_NUMBER: _ClassVar[int]
     tree: _merkle_pb2.GenTransactionTree
@@ -126,13 +144,13 @@ class LightTransactionViewTree(_message.Message):
     def __init__(self, tree: _Optional[_Union[_merkle_pb2.GenTransactionTree, _Mapping]] = ..., subview_hashes: _Optional[_Iterable[bytes]] = ...) -> None: ...
 
 class FullInformeeTree(_message.Message):
-    __slots__ = ["tree"]
+    __slots__ = ("tree",)
     TREE_FIELD_NUMBER: _ClassVar[int]
     tree: _merkle_pb2.GenTransactionTree
     def __init__(self, tree: _Optional[_Union[_merkle_pb2.GenTransactionTree, _Mapping]] = ...) -> None: ...
 
 class CreatedContract(_message.Message):
-    __slots__ = ["contract", "consumed_in_core", "rolled_back"]
+    __slots__ = ("contract", "consumed_in_core", "rolled_back")
     CONTRACT_FIELD_NUMBER: _ClassVar[int]
     CONSUMED_IN_CORE_FIELD_NUMBER: _ClassVar[int]
     ROLLED_BACK_FIELD_NUMBER: _ClassVar[int]
@@ -142,29 +160,15 @@ class CreatedContract(_message.Message):
     def __init__(self, contract: _Optional[_Union[_common_pb2_1.SerializableContract, _Mapping]] = ..., consumed_in_core: bool = ..., rolled_back: bool = ...) -> None: ...
 
 class InputContract(_message.Message):
-    __slots__ = ["contract", "consumed"]
+    __slots__ = ("contract", "consumed")
     CONTRACT_FIELD_NUMBER: _ClassVar[int]
     CONSUMED_FIELD_NUMBER: _ClassVar[int]
     contract: _common_pb2_1.SerializableContract
     consumed: bool
     def __init__(self, contract: _Optional[_Union[_common_pb2_1.SerializableContract, _Mapping]] = ..., consumed: bool = ...) -> None: ...
 
-class CommonMetadata(_message.Message):
-    __slots__ = ["salt", "confirmation_policy", "domain_id", "uuid", "mediator"]
-    SALT_FIELD_NUMBER: _ClassVar[int]
-    CONFIRMATION_POLICY_FIELD_NUMBER: _ClassVar[int]
-    DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
-    UUID_FIELD_NUMBER: _ClassVar[int]
-    MEDIATOR_FIELD_NUMBER: _ClassVar[int]
-    salt: _crypto_pb2.Salt
-    confirmation_policy: bytes
-    domain_id: str
-    uuid: str
-    mediator: str
-    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., confirmation_policy: _Optional[bytes] = ..., domain_id: _Optional[str] = ..., uuid: _Optional[str] = ..., mediator: _Optional[str] = ...) -> None: ...
-
 class SubmitterMetadata(_message.Message):
-    __slots__ = ["salt", "act_as", "application_id", "command_id", "submitter_participant", "submission_id", "dedup_period", "max_sequencing_time"]
+    __slots__ = ("salt", "act_as", "application_id", "command_id", "submitter_participant", "submission_id", "dedup_period", "max_sequencing_time")
     SALT_FIELD_NUMBER: _ClassVar[int]
     ACT_AS_FIELD_NUMBER: _ClassVar[int]
     APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
@@ -182,3 +186,13 @@ class SubmitterMetadata(_message.Message):
     dedup_period: _participant_transaction_pb2.DeduplicationPeriod
     max_sequencing_time: _timestamp_pb2.Timestamp
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., application_id: _Optional[str] = ..., command_id: _Optional[str] = ..., submitter_participant: _Optional[str] = ..., submission_id: _Optional[str] = ..., dedup_period: _Optional[_Union[_participant_transaction_pb2.DeduplicationPeriod, _Mapping]] = ..., max_sequencing_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ResolvedKey(_message.Message):
+    __slots__ = ("key", "contract_id", "free")
+    KEY_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
+    FREE_FIELD_NUMBER: _ClassVar[int]
+    key: _common_pb2_1.GlobalKey
+    contract_id: str
+    free: _participant_transaction_pb2.ViewParticipantData.FreeKey
+    def __init__(self, key: _Optional[_Union[_common_pb2_1.GlobalKey, _Mapping]] = ..., contract_id: _Optional[str] = ..., free: _Optional[_Union[_participant_transaction_pb2.ViewParticipantData.FreeKey, _Mapping]] = ...) -> None: ...

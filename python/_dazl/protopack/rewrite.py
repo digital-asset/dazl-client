@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import io
+from typing import Optional
 
 __all__ = ["canton_proto_rewrite", "daml_proto_rewrite"]
 
@@ -40,12 +41,10 @@ def rewrite_canton_proto_line(short_name: str, line: str, buf_out: io.StringIO) 
 
     else:
         # write all other lines as-is, but also look for the
-        # java_package directive as a hint for where we write our
+        # package directive as a hint for where we write our
         # own things
         buf_out.write(line)
-        if line.startswith("package "):
-            _, _, proto_pkg = line.partition(" ")
-            proto_pkg = proto_pkg.strip().replace(";", "")
+        if proto_pkg := parse_proto_package(line):
             if (
                 short_name
                 == "com/digitalasset/canton/domain/admin/v0/sequencer_initialization_service.proto"
@@ -62,12 +61,38 @@ def rewrite_canton_proto_line(short_name: str, line: str, buf_out: io.StringIO) 
 
 def daml_proto_rewrite(short_name: str, input_file: str) -> str:
     with io.StringIO() as buf_out:
+        did_write_package = False
+
         for line in input_file.splitlines(keepends=True):
             buf_out.write(line)
-            if line.startswith("option java_package = "):
-                java_pkg = line.partition('"')[2].rpartition('"')[0]
-                go_pkg = "github.com/digital-asset/dazl-client/v7/go/api/" + java_pkg.replace(
-                    ".", "/"
-                )
-                buf_out.write(f'option go_package = "{go_pkg}";\n')
+
+            # prefer the java_package directive for inferring our own package location,
+            # because that's correct for Daml-LF 1.16; but TraceContext in the Ledger API
+            # doesn't define that, so fall back to the protobuf package
+            if not did_write_package:
+                suggested_pkg = parse_java_package(line)
+                if suggested_pkg is None:
+                    suggested_pkg = parse_proto_package(line)
+                if suggested_pkg is not None:
+                    go_pkg = (
+                        "github.com/digital-asset/dazl-client/v8/go/api/"
+                        + suggested_pkg.replace(".", "/")
+                    )
+                    buf_out.write(f'option go_package = "{go_pkg}";\n')
+                    did_write_package = True
         return buf_out.getvalue()
+
+
+def parse_proto_package(line: str) -> Optional[str]:
+    if line.startswith("package "):
+        _, _, proto_pkg = line.partition(" ")
+        return proto_pkg.strip().replace(";", "")
+    else:
+        return None
+
+
+def parse_java_package(line: str) -> Optional[str]:
+    if line.startswith("option java_package = "):
+        return line.partition('"')[2].rpartition('"')[0]
+    else:
+        return None

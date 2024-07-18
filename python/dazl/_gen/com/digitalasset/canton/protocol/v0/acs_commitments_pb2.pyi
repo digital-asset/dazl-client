@@ -10,7 +10,7 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AcsCommitment(_message.Message):
-    __slots__ = ["domain_id", "sending_participant", "counter_participant", "from_exclusive", "to_inclusive", "commitment"]
+    __slots__ = ("domain_id", "sending_participant", "counter_participant", "from_exclusive", "to_inclusive", "commitment")
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     SENDING_PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
     COUNTER_PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
