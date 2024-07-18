@@ -11,17 +11,17 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PruneRequest(_message.Message):
-    __slots__ = ["prune_up_to"]
+    __slots__ = ("prune_up_to",)
     PRUNE_UP_TO_FIELD_NUMBER: _ClassVar[int]
     prune_up_to: str
     def __init__(self, prune_up_to: _Optional[str] = ...) -> None: ...
 
 class PruneResponse(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class GetSafePruningOffsetRequest(_message.Message):
-    __slots__ = ["before_or_at", "ledger_end"]
+    __slots__ = ("before_or_at", "ledger_end")
     BEFORE_OR_AT_FIELD_NUMBER: _ClassVar[int]
     LEDGER_END_FIELD_NUMBER: _ClassVar[int]
     before_or_at: _timestamp_pb2.Timestamp
@@ -29,9 +29,9 @@ class GetSafePruningOffsetRequest(_message.Message):
     def __init__(self, before_or_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., ledger_end: _Optional[str] = ...) -> None: ...
 
 class GetSafePruningOffsetResponse(_message.Message):
-    __slots__ = ["safe_pruning_offset", "no_safe_pruning_offset"]
+    __slots__ = ("safe_pruning_offset", "no_safe_pruning_offset")
     class NoSafePruningOffset(_message.Message):
-        __slots__ = []  # type: ignore
+        __slots__ = ()
         def __init__(self) -> None: ...
     SAFE_PRUNING_OFFSET_FIELD_NUMBER: _ClassVar[int]
     NO_SAFE_PRUNING_OFFSET_FIELD_NUMBER: _ClassVar[int]

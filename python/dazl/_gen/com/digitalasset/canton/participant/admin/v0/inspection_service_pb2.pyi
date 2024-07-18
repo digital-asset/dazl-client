@@ -11,16 +11,16 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class LookupContractDomain(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     class Request(_message.Message):
-        __slots__ = ["contract_id"]
+        __slots__ = ("contract_id",)
         CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
         contract_id: _containers.RepeatedScalarFieldContainer[str]
         def __init__(self, contract_id: _Optional[_Iterable[str]] = ...) -> None: ...
     class Response(_message.Message):
-        __slots__ = ["results"]
+        __slots__ = ("results",)
         class ResultsEntry(_message.Message):
-            __slots__ = ["key", "value"]
+            __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -32,42 +32,42 @@ class LookupContractDomain(_message.Message):
     def __init__(self) -> None: ...
 
 class LookupTransactionDomain(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     class Request(_message.Message):
-        __slots__ = ["transaction_id"]
+        __slots__ = ("transaction_id",)
         TRANSACTION_ID_FIELD_NUMBER: _ClassVar[int]
         transaction_id: str
         def __init__(self, transaction_id: _Optional[str] = ...) -> None: ...
     class Response(_message.Message):
-        __slots__ = ["domain_id"]
+        __slots__ = ("domain_id",)
         DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
         domain_id: str
         def __init__(self, domain_id: _Optional[str] = ...) -> None: ...
     def __init__(self) -> None: ...
 
 class LookupOffsetByTime(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     class Request(_message.Message):
-        __slots__ = ["timestamp"]
+        __slots__ = ("timestamp",)
         TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
         timestamp: _timestamp_pb2.Timestamp
         def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     class Response(_message.Message):
-        __slots__ = ["offset"]
+        __slots__ = ("offset",)
         OFFSET_FIELD_NUMBER: _ClassVar[int]
         offset: str
         def __init__(self, offset: _Optional[str] = ...) -> None: ...
     def __init__(self) -> None: ...
 
 class LookupOffsetByIndex(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     class Request(_message.Message):
-        __slots__ = ["index"]
+        __slots__ = ("index",)
         INDEX_FIELD_NUMBER: _ClassVar[int]
         index: int
         def __init__(self, index: _Optional[int] = ...) -> None: ...
     class Response(_message.Message):
-        __slots__ = ["offset"]
+        __slots__ = ("offset",)
         OFFSET_FIELD_NUMBER: _ClassVar[int]
         offset: str
         def __init__(self, offset: _Optional[str] = ...) -> None: ...

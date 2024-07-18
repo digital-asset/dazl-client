@@ -11,9 +11,9 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TopologyTransactions(_message.Message):
-    __slots__ = ["items"]
+    __slots__ = ("items",)
     class Item(_message.Message):
-        __slots__ = ["sequenced", "valid_from", "valid_until", "transaction"]
+        __slots__ = ("sequenced", "valid_from", "valid_until", "transaction")
         SEQUENCED_FIELD_NUMBER: _ClassVar[int]
         VALID_FROM_FIELD_NUMBER: _ClassVar[int]
         VALID_UNTIL_FIELD_NUMBER: _ClassVar[int]

@@ -3,6 +3,8 @@
 # fmt: off
 # isort: skip_file
 
+from .command_inspection_service_pb2 import CommandState, GetCommandStatusRequest, GetCommandStatusResponse
+from .command_inspection_service_pb2_grpc import CommandInspectionServiceStub
 from .config_management_service_pb2 import GetTimeModelRequest, GetTimeModelResponse, SetTimeModelRequest, SetTimeModelResponse, TimeModel
 from .config_management_service_pb2_grpc import ConfigManagementServiceStub
 from .identity_provider_config_service_pb2 import CreateIdentityProviderConfigRequest, CreateIdentityProviderConfigResponse, DeleteIdentityProviderConfigRequest, DeleteIdentityProviderConfigResponse, GetIdentityProviderConfigRequest, GetIdentityProviderConfigResponse, IdentityProviderConfig, ListIdentityProviderConfigsRequest, ListIdentityProviderConfigsResponse, UpdateIdentityProviderConfigRequest, UpdateIdentityProviderConfigResponse
@@ -10,7 +12,7 @@ from .identity_provider_config_service_pb2_grpc import IdentityProviderConfigSer
 from .metering_report_service_pb2 import GetMeteringReportRequest, GetMeteringReportResponse
 from .metering_report_service_pb2_grpc import MeteringReportServiceStub
 from .object_meta_pb2 import ObjectMeta
-from .package_management_service_pb2 import ListKnownPackagesRequest, ListKnownPackagesResponse, PackageDetails, UploadDarFileRequest, UploadDarFileResponse
+from .package_management_service_pb2 import ListKnownPackagesRequest, ListKnownPackagesResponse, PackageDetails, UploadDarFileRequest, UploadDarFileResponse, ValidateDarFileRequest, ValidateDarFileResponse
 from .package_management_service_pb2_grpc import PackageManagementServiceStub
 from .participant_pruning_service_pb2 import PruneRequest, PruneResponse
 from .participant_pruning_service_pb2_grpc import ParticipantPruningServiceStub
@@ -22,6 +24,8 @@ from .user_management_service_pb2_grpc import UserManagementServiceStub
 __all__ = [
     "AllocatePartyRequest",
     "AllocatePartyResponse",
+    "CommandInspectionServiceStub",
+    "CommandState",
     "ConfigManagementServiceStub",
     "CreateIdentityProviderConfigRequest",
     "CreateIdentityProviderConfigResponse",
@@ -31,6 +35,8 @@ __all__ = [
     "DeleteIdentityProviderConfigResponse",
     "DeleteUserRequest",
     "DeleteUserResponse",
+    "GetCommandStatusRequest",
+    "GetCommandStatusResponse",
     "GetIdentityProviderConfigRequest",
     "GetIdentityProviderConfigResponse",
     "GetMeteringReportRequest",
@@ -86,4 +92,6 @@ __all__ = [
     "UploadDarFileResponse",
     "User",
     "UserManagementServiceStub",
+    "ValidateDarFileRequest",
+    "ValidateDarFileResponse",
 ]

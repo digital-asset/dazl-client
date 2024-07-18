@@ -12,11 +12,11 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetConnectionRequest(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class GetConnectionResponse(_message.Message):
-    __slots__ = ["sequencer_connections", "sequencerTrustThreshold"]
+    __slots__ = ("sequencer_connections", "sequencerTrustThreshold")
     SEQUENCER_CONNECTIONS_FIELD_NUMBER: _ClassVar[int]
     SEQUENCERTRUSTTHRESHOLD_FIELD_NUMBER: _ClassVar[int]
     sequencer_connections: _containers.RepeatedCompositeFieldContainer[_sequencer_connection_pb2.SequencerConnection]
@@ -24,7 +24,7 @@ class GetConnectionResponse(_message.Message):
     def __init__(self, sequencer_connections: _Optional[_Iterable[_Union[_sequencer_connection_pb2.SequencerConnection, _Mapping]]] = ..., sequencerTrustThreshold: _Optional[int] = ...) -> None: ...
 
 class SetConnectionRequest(_message.Message):
-    __slots__ = ["sequencer_connections", "sequencerTrustThreshold"]
+    __slots__ = ("sequencer_connections", "sequencerTrustThreshold")
     SEQUENCER_CONNECTIONS_FIELD_NUMBER: _ClassVar[int]
     SEQUENCERTRUSTTHRESHOLD_FIELD_NUMBER: _ClassVar[int]
     sequencer_connections: _containers.RepeatedCompositeFieldContainer[_sequencer_connection_pb2.SequencerConnection]

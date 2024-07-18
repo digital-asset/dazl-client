@@ -12,14 +12,14 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SequencerApiType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     Grpc: _ClassVar[SequencerApiType]
 Grpc: SequencerApiType
 
 class SequencerConnection(_message.Message):
-    __slots__ = ["grpc", "alias"]
+    __slots__ = ("grpc", "alias")
     class Grpc(_message.Message):
-        __slots__ = ["connections", "transportSecurity", "customTrustCertificates"]
+        __slots__ = ("connections", "transportSecurity", "customTrustCertificates")
         CONNECTIONS_FIELD_NUMBER: _ClassVar[int]
         TRANSPORTSECURITY_FIELD_NUMBER: _ClassVar[int]
         CUSTOMTRUSTCERTIFICATES_FIELD_NUMBER: _ClassVar[int]

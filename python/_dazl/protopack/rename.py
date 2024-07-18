@@ -30,6 +30,11 @@ def canton_proto_files(zip_file_names: Collection[str]) -> Mapping[str, str]:
         elif short_name == "com/digitalasset/canton/time/admin/v0/domain_time_service.proto":
             file_names["com/digitalasset/canton/domain/api/v0/domain_time_service.proto"] = name
 
+        elif short_name == "com/digitalasset/canton/protocol/v0/versioned-google-rpc-status.proto":
+            file_names["com/digitalasset/canton/protocol/v0/versioned_google_rpc_status.proto"] = (
+                name
+            )
+
         elif (
             components[1] == "protobuf"
             and components[-1].endswith(".proto")

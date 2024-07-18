@@ -12,7 +12,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class MediatorResponse(_message.Message):
-    __slots__ = ["request_id", "sender", "view_hash", "local_verdict", "root_hash", "confirming_parties", "domain_id"]
+    __slots__ = ("request_id", "sender", "view_hash", "local_verdict", "root_hash", "confirming_parties", "domain_id")
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     SENDER_FIELD_NUMBER: _ClassVar[int]
     VIEW_HASH_FIELD_NUMBER: _ClassVar[int]
@@ -30,7 +30,7 @@ class MediatorResponse(_message.Message):
     def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., sender: _Optional[str] = ..., view_hash: _Optional[bytes] = ..., local_verdict: _Optional[_Union[LocalVerdict, _Mapping]] = ..., root_hash: _Optional[bytes] = ..., confirming_parties: _Optional[_Iterable[str]] = ..., domain_id: _Optional[str] = ...) -> None: ...
 
 class LocalVerdict(_message.Message):
-    __slots__ = ["local_approve", "local_reject"]
+    __slots__ = ("local_approve", "local_reject")
     LOCAL_APPROVE_FIELD_NUMBER: _ClassVar[int]
     LOCAL_REJECT_FIELD_NUMBER: _ClassVar[int]
     local_approve: _empty_pb2.Empty
@@ -38,7 +38,7 @@ class LocalVerdict(_message.Message):
     def __init__(self, local_approve: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., local_reject: _Optional[_Union[LocalReject, _Mapping]] = ...) -> None: ...
 
 class LocalReject(_message.Message):
-    __slots__ = ["cause_prefix", "details", "resource", "error_code", "error_category"]
+    __slots__ = ("cause_prefix", "details", "resource", "error_code", "error_category")
     CAUSE_PREFIX_FIELD_NUMBER: _ClassVar[int]
     DETAILS_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_FIELD_NUMBER: _ClassVar[int]

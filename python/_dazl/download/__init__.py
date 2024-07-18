@@ -114,6 +114,7 @@ def download_dependencies(sdk_version: str, to: Path) -> DownloadPaths:
                 console.print(
                     f"    [yellow]{downloader.source.file_name} exists, but the remote did not return an MD5 hash; assuming the local file is good..."
                 )
+                continue
             if existing_hash == actual_hash:
                 console.print(f"    [green]{downloader.source.file_name} already cached")
                 continue

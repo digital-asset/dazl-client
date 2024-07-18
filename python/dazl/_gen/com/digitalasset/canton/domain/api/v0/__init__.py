@@ -4,8 +4,6 @@
 # isort: skip_file
 
 from .sequencer_connection_pb2 import SequencerApiType, SequencerConnection
-from .sequencer_service_pb2 import AcknowledgeRequest, SendAsyncResponse, SendAsyncSignedResponse, SendAsyncUnauthenticatedVersionedRequest, SendAsyncVersionedRequest, SequencedEventTrafficState, SubscriptionRequest, SubscriptionResponse, TopologyStateForInitRequest, TopologyStateForInitResponse, VersionedSubscriptionResponse
-from .sequencer_service_pb2_grpc import SequencerServiceStub
 from .service_agreement_pb2 import GetServiceAgreementRequest, GetServiceAgreementResponse
 from .domain_service_pb2_grpc import DomainServiceStub
 from .domain_time_service_pb2 import AwaitTimeRequest, FetchTimeRequest, FetchTimeResponse
@@ -14,6 +12,8 @@ from .sequencer_authentication_service_pb2 import Authentication, Challenge
 from .sequencer_authentication_service_pb2_grpc import SequencerAuthenticationServiceStub
 from .sequencer_connect_service_pb2 import SequencerConnect
 from .sequencer_connect_service_pb2_grpc import SequencerConnectServiceStub
+from .sequencer_service_pb2 import AcknowledgeRequest, SendAsyncResponse, SendAsyncSignedResponse, SendAsyncUnauthenticatedVersionedRequest, SendAsyncVersionedRequest, SequencedEventTrafficState, SubscriptionRequest, SubscriptionResponse, VersionedSubscriptionResponse
+from .sequencer_service_pb2_grpc import SequencerServiceStub
 
 __all__ = [
     "AcknowledgeRequest",
@@ -39,7 +39,5 @@ __all__ = [
     "SequencerServiceStub",
     "SubscriptionRequest",
     "SubscriptionResponse",
-    "TopologyStateForInitRequest",
-    "TopologyStateForInitResponse",
     "VersionedSubscriptionResponse",
 ]

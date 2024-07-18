@@ -12,13 +12,13 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SubmitAndWaitRequest(_message.Message):
-    __slots__ = ["commands"]
+    __slots__ = ("commands",)
     COMMANDS_FIELD_NUMBER: _ClassVar[int]
     commands: _commands_pb2.Commands
     def __init__(self, commands: _Optional[_Union[_commands_pb2.Commands, _Mapping]] = ...) -> None: ...
 
 class SubmitAndWaitForTransactionIdResponse(_message.Message):
-    __slots__ = ["transaction_id", "completion_offset"]
+    __slots__ = ("transaction_id", "completion_offset")
     TRANSACTION_ID_FIELD_NUMBER: _ClassVar[int]
     COMPLETION_OFFSET_FIELD_NUMBER: _ClassVar[int]
     transaction_id: str
@@ -26,7 +26,7 @@ class SubmitAndWaitForTransactionIdResponse(_message.Message):
     def __init__(self, transaction_id: _Optional[str] = ..., completion_offset: _Optional[str] = ...) -> None: ...
 
 class SubmitAndWaitForTransactionResponse(_message.Message):
-    __slots__ = ["transaction", "completion_offset"]
+    __slots__ = ("transaction", "completion_offset")
     TRANSACTION_FIELD_NUMBER: _ClassVar[int]
     COMPLETION_OFFSET_FIELD_NUMBER: _ClassVar[int]
     transaction: _transaction_pb2.Transaction
@@ -34,7 +34,7 @@ class SubmitAndWaitForTransactionResponse(_message.Message):
     def __init__(self, transaction: _Optional[_Union[_transaction_pb2.Transaction, _Mapping]] = ..., completion_offset: _Optional[str] = ...) -> None: ...
 
 class SubmitAndWaitForTransactionTreeResponse(_message.Message):
-    __slots__ = ["transaction", "completion_offset"]
+    __slots__ = ("transaction", "completion_offset")
     TRANSACTION_FIELD_NUMBER: _ClassVar[int]
     COMPLETION_OFFSET_FIELD_NUMBER: _ClassVar[int]
     transaction: _transaction_pb2.TransactionTree

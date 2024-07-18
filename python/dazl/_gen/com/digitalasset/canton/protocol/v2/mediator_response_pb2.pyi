@@ -12,7 +12,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class MediatorResponse(_message.Message):
-    __slots__ = ["request_id", "sender", "local_verdict", "root_hash", "confirming_parties", "domain_id", "view_position"]
+    __slots__ = ("request_id", "sender", "local_verdict", "root_hash", "confirming_parties", "domain_id", "view_position")
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     SENDER_FIELD_NUMBER: _ClassVar[int]
     LOCAL_VERDICT_FIELD_NUMBER: _ClassVar[int]
@@ -30,13 +30,13 @@ class MediatorResponse(_message.Message):
     def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., sender: _Optional[str] = ..., local_verdict: _Optional[_Union[_mediator_response_pb2.LocalVerdict, _Mapping]] = ..., root_hash: _Optional[bytes] = ..., confirming_parties: _Optional[_Iterable[str]] = ..., domain_id: _Optional[str] = ..., view_position: _Optional[_Union[ViewPosition, _Mapping]] = ...) -> None: ...
 
 class ViewPosition(_message.Message):
-    __slots__ = ["position"]
+    __slots__ = ("position",)
     POSITION_FIELD_NUMBER: _ClassVar[int]
     position: _containers.RepeatedCompositeFieldContainer[MerkleSeqIndex]
     def __init__(self, position: _Optional[_Iterable[_Union[MerkleSeqIndex, _Mapping]]] = ...) -> None: ...
 
 class MerkleSeqIndex(_message.Message):
-    __slots__ = ["is_right"]
+    __slots__ = ("is_right",)
     IS_RIGHT_FIELD_NUMBER: _ClassVar[int]
     is_right: _containers.RepeatedScalarFieldContainer[bool]
     def __init__(self, is_right: _Optional[_Iterable[bool]] = ...) -> None: ...

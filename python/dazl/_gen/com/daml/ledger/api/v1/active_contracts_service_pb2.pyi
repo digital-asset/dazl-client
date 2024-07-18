@@ -12,7 +12,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetActiveContractsRequest(_message.Message):
-    __slots__ = ["ledger_id", "filter", "verbose", "active_at_offset"]
+    __slots__ = ("ledger_id", "filter", "verbose", "active_at_offset")
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
     VERBOSE_FIELD_NUMBER: _ClassVar[int]
@@ -24,7 +24,7 @@ class GetActiveContractsRequest(_message.Message):
     def __init__(self, ledger_id: _Optional[str] = ..., filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: bool = ..., active_at_offset: _Optional[str] = ...) -> None: ...
 
 class GetActiveContractsResponse(_message.Message):
-    __slots__ = ["offset", "workflow_id", "active_contracts"]
+    __slots__ = ("offset", "workflow_id", "active_contracts")
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     WORKFLOW_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_CONTRACTS_FIELD_NUMBER: _ClassVar[int]

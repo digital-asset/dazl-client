@@ -10,7 +10,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Optional as _Op
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class StoredParties(_message.Message):
-    __slots__ = ["parties"]
+    __slots__ = ("parties",)
     PARTIES_FIELD_NUMBER: _ClassVar[int]
     parties: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, parties: _Optional[_Iterable[str]] = ...) -> None: ...

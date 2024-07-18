@@ -9,7 +9,7 @@ from .domain_service_pb2 import GetDomainParameters, ServiceAgreementAcceptance,
 from .domain_service_pb2_grpc import DomainServiceStub
 from .enterprise_mediator_administration_service_pb2 import MediatorPruningRequest
 from .enterprise_mediator_administration_service_pb2_grpc import EnterpriseMediatorAdministrationServiceStub
-from .sequencer_administration_service_pb2 import SequencerMemberStatus, SequencerPruningStatus, TrafficControlStateRequest, TrafficControlStateResponse
+from .sequencer_administration_service_pb2 import SequencerMemberStatus, SequencerPruningStatus
 from .sequencer_administration_service_pb2_grpc import SequencerAdministrationServiceStub
 from .sequencer_initialization_snapshot_pb2 import ImplementationSpecificInfo, SequencerSnapshot
 from .enterprise_sequencer_administration_service_pb2 import DisableMemberRequest, EthereumAccount, LedgerIdentity, Pruning, Snapshot
@@ -56,6 +56,4 @@ __all__ = [
     "Snapshot",
     "TopologyBootstrapRequest",
     "TopologyBootstrapServiceStub",
-    "TrafficControlStateRequest",
-    "TrafficControlStateResponse",
 ]

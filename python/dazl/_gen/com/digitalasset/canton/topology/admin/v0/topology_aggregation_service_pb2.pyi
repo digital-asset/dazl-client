@@ -13,7 +13,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ListPartiesRequest(_message.Message):
-    __slots__ = ["as_of", "limit", "filter_domain", "filter_party", "filter_participant"]
+    __slots__ = ("as_of", "limit", "filter_domain", "filter_party", "filter_participant")
     AS_OF_FIELD_NUMBER: _ClassVar[int]
     LIMIT_FIELD_NUMBER: _ClassVar[int]
     FILTER_DOMAIN_FIELD_NUMBER: _ClassVar[int]
@@ -27,13 +27,13 @@ class ListPartiesRequest(_message.Message):
     def __init__(self, as_of: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., limit: _Optional[int] = ..., filter_domain: _Optional[str] = ..., filter_party: _Optional[str] = ..., filter_participant: _Optional[str] = ...) -> None: ...
 
 class ListPartiesResponse(_message.Message):
-    __slots__ = ["results"]
+    __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ["party", "participants"]
+        __slots__ = ("party", "participants")
         class ParticipantDomains(_message.Message):
-            __slots__ = ["participant", "domains"]
+            __slots__ = ("participant", "domains")
             class DomainPermissions(_message.Message):
-                __slots__ = ["domain", "permission"]
+                __slots__ = ("domain", "permission")
                 DOMAIN_FIELD_NUMBER: _ClassVar[int]
                 PERMISSION_FIELD_NUMBER: _ClassVar[int]
                 domain: str
@@ -54,7 +54,7 @@ class ListPartiesResponse(_message.Message):
     def __init__(self, results: _Optional[_Iterable[_Union[ListPartiesResponse.Result, _Mapping]]] = ...) -> None: ...
 
 class ListKeyOwnersRequest(_message.Message):
-    __slots__ = ["as_of", "limit", "filter_domain", "filter_key_owner_type", "filter_key_owner_uid"]
+    __slots__ = ("as_of", "limit", "filter_domain", "filter_key_owner_type", "filter_key_owner_uid")
     AS_OF_FIELD_NUMBER: _ClassVar[int]
     LIMIT_FIELD_NUMBER: _ClassVar[int]
     FILTER_DOMAIN_FIELD_NUMBER: _ClassVar[int]
@@ -68,9 +68,9 @@ class ListKeyOwnersRequest(_message.Message):
     def __init__(self, as_of: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., limit: _Optional[int] = ..., filter_domain: _Optional[str] = ..., filter_key_owner_type: _Optional[str] = ..., filter_key_owner_uid: _Optional[str] = ...) -> None: ...
 
 class ListKeyOwnersResponse(_message.Message):
-    __slots__ = ["results"]
+    __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ["domain", "key_owner", "signing_keys", "encryption_keys"]
+        __slots__ = ("domain", "key_owner", "signing_keys", "encryption_keys")
         DOMAIN_FIELD_NUMBER: _ClassVar[int]
         KEY_OWNER_FIELD_NUMBER: _ClassVar[int]
         SIGNING_KEYS_FIELD_NUMBER: _ClassVar[int]

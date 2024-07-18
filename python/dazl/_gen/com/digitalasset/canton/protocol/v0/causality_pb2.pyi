@@ -12,7 +12,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class CausalityMessage(_message.Message):
-    __slots__ = ["target_domain_id", "transfer_id", "clock"]
+    __slots__ = ("target_domain_id", "transfer_id", "clock")
     TARGET_DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     TRANSFER_ID_FIELD_NUMBER: _ClassVar[int]
     CLOCK_FIELD_NUMBER: _ClassVar[int]
@@ -22,9 +22,9 @@ class CausalityMessage(_message.Message):
     def __init__(self, target_domain_id: _Optional[str] = ..., transfer_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ..., clock: _Optional[_Union[VectorClock, _Mapping]] = ...) -> None: ...
 
 class VectorClock(_message.Message):
-    __slots__ = ["origin_domain_id", "local_ts", "party_id", "clock"]
+    __slots__ = ("origin_domain_id", "local_ts", "party_id", "clock")
     class ClockEntry(_message.Message):
-        __slots__ = ["key", "value"]
+        __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -41,7 +41,7 @@ class VectorClock(_message.Message):
     def __init__(self, origin_domain_id: _Optional[str] = ..., local_ts: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., party_id: _Optional[str] = ..., clock: _Optional[_Mapping[str, _timestamp_pb2.Timestamp]] = ...) -> None: ...
 
 class CausalityUpdate(_message.Message):
-    __slots__ = ["informeeStakeholders", "ts", "domain_id", "request_counter", "transactionUpdate", "transferOutUpdate", "transferInUpdate"]
+    __slots__ = ("informeeStakeholders", "ts", "domain_id", "request_counter", "transactionUpdate", "transferOutUpdate", "transferInUpdate")
     INFORMEESTAKEHOLDERS_FIELD_NUMBER: _ClassVar[int]
     TS_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
@@ -59,17 +59,17 @@ class CausalityUpdate(_message.Message):
     def __init__(self, informeeStakeholders: _Optional[_Iterable[str]] = ..., ts: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., domain_id: _Optional[str] = ..., request_counter: _Optional[int] = ..., transactionUpdate: _Optional[_Union[TransactionUpdate, _Mapping]] = ..., transferOutUpdate: _Optional[_Union[TransferOutUpdate, _Mapping]] = ..., transferInUpdate: _Optional[_Union[TransferInUpdate, _Mapping]] = ...) -> None: ...
 
 class TransactionUpdate(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class TransferOutUpdate(_message.Message):
-    __slots__ = ["transfer_id"]
+    __slots__ = ("transfer_id",)
     TRANSFER_ID_FIELD_NUMBER: _ClassVar[int]
     transfer_id: _participant_transfer_pb2.TransferId
     def __init__(self, transfer_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ...) -> None: ...
 
 class TransferInUpdate(_message.Message):
-    __slots__ = ["transfer_id"]
+    __slots__ = ("transfer_id",)
     TRANSFER_ID_FIELD_NUMBER: _ClassVar[int]
     transfer_id: _participant_transfer_pb2.TransferId
     def __init__(self, transfer_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ...) -> None: ...

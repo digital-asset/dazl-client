@@ -3,7 +3,7 @@
 # fmt: off
 # isort: skip_file
 
-from .ledger_sync_event_pb2 import BlindingInfo, CommandKind, CommandRejected, CompletionInfo, Configuration, ConfigurationChangeRejected, ConfigurationChanged, DivulgedContract, LedgerSyncEvent, NodeSeed, Parties, PartyAddedToParticipant, PartyAllocationRejected, PublicPackageUpload, PublicPackageUploadRejected, TimeModel, TransactionAccepted, TransactionMeta, TransferredIn, TransferredOut
+from .ledger_sync_event_pb2 import BlindingInfo, CommandKind, CommandRejected, CompletionInfo, Configuration, ConfigurationChangeRejected, ConfigurationChanged, ContractsAdded, ContractsPurged, DivulgedContract, LedgerSyncEvent, NodeSeed, Parties, PartyAddedToParticipant, PartyAllocationRejected, PublicPackageUpload, PublicPackageUploadRejected, TimeModel, TransactionAccepted, TransactionMeta, TransferredIn, TransferredOut
 from .submission_tracking_pb2 import SubmissionTrackingData, TransactionSubmissionTrackingData
 
 __all__ = [
@@ -14,6 +14,8 @@ __all__ = [
     "Configuration",
     "ConfigurationChangeRejected",
     "ConfigurationChanged",
+    "ContractsAdded",
+    "ContractsPurged",
     "DivulgedContract",
     "LedgerSyncEvent",
     "NodeSeed",

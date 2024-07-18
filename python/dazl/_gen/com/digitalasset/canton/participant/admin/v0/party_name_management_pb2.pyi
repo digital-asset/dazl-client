@@ -9,7 +9,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SetPartyDisplayNameRequest(_message.Message):
-    __slots__ = ["party_id", "display_name"]
+    __slots__ = ("party_id", "display_name")
     PARTY_ID_FIELD_NUMBER: _ClassVar[int]
     DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
     party_id: str
@@ -17,5 +17,5 @@ class SetPartyDisplayNameRequest(_message.Message):
     def __init__(self, party_id: _Optional[str] = ..., display_name: _Optional[str] = ...) -> None: ...
 
 class SetPartyDisplayNameResponse(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...

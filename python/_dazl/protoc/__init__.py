@@ -13,6 +13,7 @@ from typing import Collection, Optional
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest, CodeGeneratorResponse, Version
 from google.protobuf.descriptor_pb2 import FileDescriptorSet
 import grpc_tools.protoc
+from rich.console import Console
 
 __all__ = ["run", "request", "write_response"]
 
@@ -35,12 +36,19 @@ def run(
     path = f"{Path(__file__).parent.parent.parent.parent}/.cache/bin:{path}"
     os.environ["PATH"] = path
 
+    import site
+
+    include_dirs = []
+    include_dirs.extend(site.getsitepackages())
+    include_dirs.append(grpc_tools.protoc._get_resource_file_name("grpc_tools", "_proto"))
+
     fds_path = Path(fds_file)
     with TemporaryDirectory() as tmpdir:
         tmpdir_path = Path(tmpdir)
         args = [
             "grpc_tools.protoc",
             f"--descriptor_set_in={fds_path}",
+            *(f"-I{include}" for include in include_dirs),
             *(f"--{plugin}_out={tmpdir}" for plugin in plugins),
             *options,
             *filelist,
@@ -60,10 +68,30 @@ def run(
 
 
 def generate_descriptors(root_dir: Path, to: Path) -> None:
+    console = Console()
     cwd = os.getcwd()
     os.chdir(root_dir)
+
+    proto_files = []
+    for s in root_dir.glob("**/*.proto"):
+        proto_files.append(str(s.relative_to(root_dir)))
+    proto_files.sort()
+
+    include_dirs = []
+    import site
+
+    include_dirs.extend(site.getsitepackages())
+    include_dirs.append(grpc_tools.protoc._get_resource_file_name("grpc_tools", "_proto"))
+    include_dirs.append(str(root_dir))
+
     try:
-        args = ["grpc_tools.protoc", f"--descriptor_set_out={to}"]
+        args = [
+            "grpc_tools.protoc",
+            f"--descriptor_set_out={to}",
+            *(f"-I{include}" for include in include_dirs),
+            *proto_files,
+        ]
+        console.print("Calling " + " ".join(args))
         grpc_tools.protoc.main(args)
     finally:
         os.chdir(cwd)

@@ -11,13 +11,13 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DomainNodeSequencerConfig(_message.Message):
-    __slots__ = ["sequencerConnection"]
+    __slots__ = ("sequencerConnection",)
     SEQUENCERCONNECTION_FIELD_NUMBER: _ClassVar[int]
     sequencerConnection: _sequencer_connection_pb2.SequencerConnection
     def __init__(self, sequencerConnection: _Optional[_Union[_sequencer_connection_pb2.SequencerConnection, _Mapping]] = ...) -> None: ...
 
 class DomainInitRequest(_message.Message):
-    __slots__ = ["config"]
+    __slots__ = ("config",)
     CONFIG_FIELD_NUMBER: _ClassVar[int]
     config: DomainNodeSequencerConfig
     def __init__(self, config: _Optional[_Union[DomainNodeSequencerConfig, _Mapping]] = ...) -> None: ...

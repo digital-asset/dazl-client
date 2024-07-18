@@ -10,7 +10,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ResourceLimits(_message.Message):
-    __slots__ = ["max_dirty_requests", "max_rate", "max_burst_factor"]
+    __slots__ = ("max_dirty_requests", "max_rate", "max_burst_factor")
     MAX_DIRTY_REQUESTS_FIELD_NUMBER: _ClassVar[int]
     MAX_RATE_FIELD_NUMBER: _ClassVar[int]
     MAX_BURST_FACTOR_FIELD_NUMBER: _ClassVar[int]

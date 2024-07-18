@@ -15,12 +15,12 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetDomainParameters(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     class Request(_message.Message):
-        __slots__ = []  # type: ignore
+        __slots__ = ()
         def __init__(self) -> None: ...
     class Response(_message.Message):
-        __slots__ = ["parameters_v0", "parameters_v1"]
+        __slots__ = ("parameters_v0", "parameters_v1")
         PARAMETERS_V0_FIELD_NUMBER: _ClassVar[int]
         PARAMETERS_V1_FIELD_NUMBER: _ClassVar[int]
         parameters_v0: _sequencing_pb2.StaticDomainParameters
@@ -29,13 +29,13 @@ class GetDomainParameters(_message.Message):
     def __init__(self) -> None: ...
 
 class ServiceAgreementAcceptances(_message.Message):
-    __slots__ = ["acceptances"]
+    __slots__ = ("acceptances",)
     ACCEPTANCES_FIELD_NUMBER: _ClassVar[int]
     acceptances: _containers.RepeatedCompositeFieldContainer[ServiceAgreementAcceptance]
     def __init__(self, acceptances: _Optional[_Iterable[_Union[ServiceAgreementAcceptance, _Mapping]]] = ...) -> None: ...
 
 class ServiceAgreementAcceptance(_message.Message):
-    __slots__ = ["agreement_id", "participant_id", "signature", "timestamp"]
+    __slots__ = ("agreement_id", "participant_id", "signature", "timestamp")
     AGREEMENT_ID_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
     SIGNATURE_FIELD_NUMBER: _ClassVar[int]

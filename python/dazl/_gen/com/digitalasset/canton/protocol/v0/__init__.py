@@ -3,7 +3,7 @@
 # fmt: off
 # isort: skip_file
 
-from .sequencing_pb2 import AggregationRule, Batch, CompressedBatch, DeliverErrorReason, DynamicDomainParameters, Envelope, Handshake, PossiblyIgnoredSequencedEvent, Recipients, RecipientsTree, SequencedEvent, ServiceAgreement, SignedContent, StaticDomainParameters, SubmissionRequest
+from .sequencing_pb2 import Batch, CompressedBatch, DeliverErrorReason, DynamicDomainParameters, Envelope, Handshake, PossiblyIgnoredSequencedEvent, Recipients, RecipientsTree, SequencedEvent, ServiceAgreement, SignedContent, StaticDomainParameters, SubmissionRequest
 from .topology_ext_pb2 import TopologyTransactions
 from .common_pb2 import DriverContractMetadata, GlobalKey, SerializableContract, ViewType
 from .merkle_pb2 import BlindableNode, GenTransactionTree, MerkleSeq, MerkleSeqElement
@@ -13,14 +13,15 @@ from .acs_commitments_pb2 import AcsCommitment
 from .causality_pb2 import CausalityMessage, CausalityUpdate, TransactionUpdate, TransferInUpdate, TransferOutUpdate, VectorClock
 from .mediator_response_pb2 import LocalReject, LocalVerdict, MediatorResponse
 from .mediator_pb2 import InformeeTree, MalformedMediatorRequestResult, MediatorRejection, RejectionReason, RejectionReasons, TransactionResultMessage, TransferResult, Verdict
-from .storage_pb2 import StoredParties
 from .topology_pb2 import DomainGovernanceTransaction, DomainParametersChange, DomainTopologyTransactionMessage, IdentifierDelegation, LegalIdentityClaim, MediatorDomainState, NamespaceDelegation, OwnerToKeyMapping, ParticipantPermission, ParticipantState, PartyToParticipant, RegisterTopologyTransactionRequest, RegisterTopologyTransactionResponse, RequestSide, SignedLegalIdentityClaim, SignedTopologyTransaction, TopologyChangeOp, TopologyStateUpdate, TopologyTransaction, TrustLevel, VettedPackages
-from .synchronization_pb2 import EnvelopeContent, SignedProtocolMessage, TypedSignedProtocolMessageContent
+from .quorum_pb2 import PartyIndexAndWeight, Quorum, TrustParty
+from .storage_pb2 import StoredParties
+from .synchronization_pb2 import EnvelopeContent, SignedProtocolMessage
+from .versioned_google_rpc_status_pb2 import VersionedStatus
 
 __all__ = [
     "AcsCommitment",
     "ActionDescription",
-    "AggregationRule",
     "Batch",
     "BlindableNode",
     "CausalityMessage",
@@ -61,8 +62,10 @@ __all__ = [
     "ParticipantPermission",
     "ParticipantRandomnessLookup",
     "ParticipantState",
+    "PartyIndexAndWeight",
     "PartyToParticipant",
     "PossiblyIgnoredSequencedEvent",
+    "Quorum",
     "Recipients",
     "RecipientsTree",
     "RegisterTopologyTransactionRequest",
@@ -100,9 +103,10 @@ __all__ = [
     "TransferResult",
     "TransferViewTree",
     "TrustLevel",
-    "TypedSignedProtocolMessageContent",
+    "TrustParty",
     "VectorClock",
     "Verdict",
+    "VersionedStatus",
     "VettedPackages",
     "ViewCommonData",
     "ViewNode",

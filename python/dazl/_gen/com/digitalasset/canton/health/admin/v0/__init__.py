@@ -3,18 +3,25 @@
 # fmt: off
 # isort: skip_file
 
-from .status_service_pb2 import DomainStatusInfo, HealthDumpChunk, HealthDumpRequest, MediatorNodeStatus, NodeStatus, ParticipantStatusInfo, SequencerHealthStatus, SequencerNodeStatus, TopologyQueueStatus
+from .status_service_pb2 import DomainStatusInfo, GetLastErrorTraceRequest, GetLastErrorTraceResponse, GetLastErrorsRequest, GetLastErrorsResponse, HealthDumpChunk, HealthDumpRequest, MediatorNodeStatus, NodeStatus, ParticipantStatusInfo, SequencerAdminStatus, SequencerHealthStatus, SequencerNodeStatus, SetLogLevelRequest, SetLogLevelResponse, TopologyQueueStatus
 from .status_service_pb2_grpc import StatusServiceStub
 
 __all__ = [
     "DomainStatusInfo",
+    "GetLastErrorTraceRequest",
+    "GetLastErrorTraceResponse",
+    "GetLastErrorsRequest",
+    "GetLastErrorsResponse",
     "HealthDumpChunk",
     "HealthDumpRequest",
     "MediatorNodeStatus",
     "NodeStatus",
     "ParticipantStatusInfo",
+    "SequencerAdminStatus",
     "SequencerHealthStatus",
     "SequencerNodeStatus",
+    "SetLogLevelRequest",
+    "SetLogLevelResponse",
     "StatusServiceStub",
     "TopologyQueueStatus",
 ]

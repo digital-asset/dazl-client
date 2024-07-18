@@ -16,7 +16,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TransferId(_message.Message):
-    __slots__ = ["origin_domain", "timestamp"]
+    __slots__ = ("origin_domain", "timestamp")
     ORIGIN_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     origin_domain: str
@@ -24,19 +24,19 @@ class TransferId(_message.Message):
     def __init__(self, origin_domain: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class TransferOutMediatorMessage(_message.Message):
-    __slots__ = ["tree"]
+    __slots__ = ("tree",)
     TREE_FIELD_NUMBER: _ClassVar[int]
     tree: TransferViewTree
     def __init__(self, tree: _Optional[_Union[TransferViewTree, _Mapping]] = ...) -> None: ...
 
 class TransferInMediatorMessage(_message.Message):
-    __slots__ = ["tree"]
+    __slots__ = ("tree",)
     TREE_FIELD_NUMBER: _ClassVar[int]
     tree: TransferViewTree
     def __init__(self, tree: _Optional[_Union[TransferViewTree, _Mapping]] = ...) -> None: ...
 
 class TransferViewTree(_message.Message):
-    __slots__ = ["common_data", "participant_data"]
+    __slots__ = ("common_data", "participant_data")
     COMMON_DATA_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_DATA_FIELD_NUMBER: _ClassVar[int]
     common_data: _merkle_pb2.BlindableNode
@@ -44,7 +44,7 @@ class TransferViewTree(_message.Message):
     def __init__(self, common_data: _Optional[_Union[_merkle_pb2.BlindableNode, _Mapping]] = ..., participant_data: _Optional[_Union[_merkle_pb2.BlindableNode, _Mapping]] = ...) -> None: ...
 
 class TransferOutCommonData(_message.Message):
-    __slots__ = ["salt", "origin_domain", "stakeholders", "admin_parties", "uuid", "origin_mediator"]
+    __slots__ = ("salt", "origin_domain", "stakeholders", "admin_parties", "uuid", "origin_mediator")
     SALT_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     STAKEHOLDERS_FIELD_NUMBER: _ClassVar[int]
@@ -60,7 +60,7 @@ class TransferOutCommonData(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., origin_domain: _Optional[str] = ..., stakeholders: _Optional[_Iterable[str]] = ..., admin_parties: _Optional[_Iterable[str]] = ..., uuid: _Optional[str] = ..., origin_mediator: _Optional[str] = ...) -> None: ...
 
 class TransferOutView(_message.Message):
-    __slots__ = ["salt", "submitter", "contract_id", "target_domain", "target_time_proof"]
+    __slots__ = ("salt", "submitter", "contract_id", "target_domain", "target_time_proof")
     SALT_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -74,7 +74,7 @@ class TransferOutView(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., submitter: _Optional[str] = ..., contract_id: _Optional[str] = ..., target_domain: _Optional[str] = ..., target_time_proof: _Optional[_Union[_time_proof_pb2.TimeProof, _Mapping]] = ...) -> None: ...
 
 class TransferInCommonData(_message.Message):
-    __slots__ = ["salt", "target_domain", "stakeholders", "uuid", "target_mediator"]
+    __slots__ = ("salt", "target_domain", "stakeholders", "uuid", "target_mediator")
     SALT_FIELD_NUMBER: _ClassVar[int]
     TARGET_DOMAIN_FIELD_NUMBER: _ClassVar[int]
     STAKEHOLDERS_FIELD_NUMBER: _ClassVar[int]
@@ -88,7 +88,7 @@ class TransferInCommonData(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., target_domain: _Optional[str] = ..., stakeholders: _Optional[_Iterable[str]] = ..., uuid: _Optional[str] = ..., target_mediator: _Optional[str] = ...) -> None: ...
 
 class TransferInView(_message.Message):
-    __slots__ = ["salt", "submitter", "contract", "transfer_out_result_event", "creating_transaction_id"]
+    __slots__ = ("salt", "submitter", "contract", "transfer_out_result_event", "creating_transaction_id")
     SALT_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_FIELD_NUMBER: _ClassVar[int]

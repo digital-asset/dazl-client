@@ -10,7 +10,7 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TimeProof(_message.Message):
-    __slots__ = ["event"]
+    __slots__ = ("event",)
     EVENT_FIELD_NUMBER: _ClassVar[int]
     event: _sequencing_pb2.PossiblyIgnoredSequencedEvent
     def __init__(self, event: _Optional[_Union[_sequencing_pb2.PossiblyIgnoredSequencedEvent, _Mapping]] = ...) -> None: ...

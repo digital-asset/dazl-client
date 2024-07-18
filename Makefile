@@ -25,10 +25,10 @@ generate: .venv/poetry.lock .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-gr
 # Go
 
 .cache/bin/protoc-gen-go:
-	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27.1
+	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
 
 .cache/bin/protoc-gen-go-grpc:
-	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2.0
+	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 
 ####################################################################################################
 # Python

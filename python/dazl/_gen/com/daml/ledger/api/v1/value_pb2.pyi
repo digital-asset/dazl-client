@@ -11,7 +11,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Value(_message.Message):
-    __slots__ = ["record", "variant", "contract_id", "list", "int64", "numeric", "text", "timestamp", "party", "bool", "unit", "date", "optional", "map", "enum", "gen_map"]
+    __slots__ = ("record", "variant", "contract_id", "list", "int64", "numeric", "text", "timestamp", "party", "bool", "unit", "date", "optional", "map", "enum", "gen_map")
     RECORD_FIELD_NUMBER: _ClassVar[int]
     VARIANT_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -47,7 +47,7 @@ class Value(_message.Message):
     def __init__(self, record: _Optional[_Union[Record, _Mapping]] = ..., variant: _Optional[_Union[Variant, _Mapping]] = ..., contract_id: _Optional[str] = ..., list: _Optional[_Union[List, _Mapping]] = ..., int64: _Optional[int] = ..., numeric: _Optional[str] = ..., text: _Optional[str] = ..., timestamp: _Optional[int] = ..., party: _Optional[str] = ..., bool: bool = ..., unit: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., date: _Optional[int] = ..., optional: _Optional[_Union[Optional, _Mapping]] = ..., map: _Optional[_Union[Map, _Mapping]] = ..., enum: _Optional[_Union[Enum, _Mapping]] = ..., gen_map: _Optional[_Union[GenMap, _Mapping]] = ...) -> None: ...  # type: ignore
 
 class Record(_message.Message):
-    __slots__ = ["record_id", "fields"]
+    __slots__ = ("record_id", "fields")
     RECORD_ID_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     record_id: Identifier
@@ -55,7 +55,7 @@ class Record(_message.Message):
     def __init__(self, record_id: _Optional[_Union[Identifier, _Mapping]] = ..., fields: _Optional[_Iterable[_Union[RecordField, _Mapping]]] = ...) -> None: ...
 
 class RecordField(_message.Message):
-    __slots__ = ["label", "value"]
+    __slots__ = ("label", "value")
     LABEL_FIELD_NUMBER: _ClassVar[int]
     VALUE_FIELD_NUMBER: _ClassVar[int]
     label: str
@@ -63,7 +63,7 @@ class RecordField(_message.Message):
     def __init__(self, label: _Optional[str] = ..., value: _Optional[_Union[Value, _Mapping]] = ...) -> None: ...
 
 class Identifier(_message.Message):
-    __slots__ = ["package_id", "module_name", "entity_name"]
+    __slots__ = ("package_id", "module_name", "entity_name")
     PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
     MODULE_NAME_FIELD_NUMBER: _ClassVar[int]
     ENTITY_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -73,7 +73,7 @@ class Identifier(_message.Message):
     def __init__(self, package_id: _Optional[str] = ..., module_name: _Optional[str] = ..., entity_name: _Optional[str] = ...) -> None: ...
 
 class Variant(_message.Message):
-    __slots__ = ["variant_id", "constructor", "value"]
+    __slots__ = ("variant_id", "constructor", "value")
     VARIANT_ID_FIELD_NUMBER: _ClassVar[int]
     CONSTRUCTOR_FIELD_NUMBER: _ClassVar[int]
     VALUE_FIELD_NUMBER: _ClassVar[int]
@@ -83,7 +83,7 @@ class Variant(_message.Message):
     def __init__(self, variant_id: _Optional[_Union[Identifier, _Mapping]] = ..., constructor: _Optional[str] = ..., value: _Optional[_Union[Value, _Mapping]] = ...) -> None: ...
 
 class Enum(_message.Message):
-    __slots__ = ["enum_id", "constructor"]
+    __slots__ = ("enum_id", "constructor")
     ENUM_ID_FIELD_NUMBER: _ClassVar[int]
     CONSTRUCTOR_FIELD_NUMBER: _ClassVar[int]
     enum_id: Identifier
@@ -91,21 +91,21 @@ class Enum(_message.Message):
     def __init__(self, enum_id: _Optional[_Union[Identifier, _Mapping]] = ..., constructor: _Optional[str] = ...) -> None: ...
 
 class List(_message.Message):
-    __slots__ = ["elements"]
+    __slots__ = ("elements",)
     ELEMENTS_FIELD_NUMBER: _ClassVar[int]
     elements: _containers.RepeatedCompositeFieldContainer[Value]
     def __init__(self, elements: _Optional[_Iterable[_Union[Value, _Mapping]]] = ...) -> None: ...
 
 class Optional(_message.Message):
-    __slots__ = ["value"]
+    __slots__ = ("value",)
     VALUE_FIELD_NUMBER: _ClassVar[int]
     value: Value
     def __init__(self, value: _Optional[_Union[Value, _Mapping]] = ...) -> None: ...
 
 class Map(_message.Message):
-    __slots__ = ["entries"]
+    __slots__ = ("entries",)
     class Entry(_message.Message):
-        __slots__ = ["key", "value"]
+        __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -116,9 +116,9 @@ class Map(_message.Message):
     def __init__(self, entries: _Optional[_Iterable[_Union[Map.Entry, _Mapping]]] = ...) -> None: ...
 
 class GenMap(_message.Message):
-    __slots__ = ["entries"]
+    __slots__ = ("entries",)
     class Entry(_message.Message):
-        __slots__ = ["key", "value"]
+        __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: Value

@@ -10,7 +10,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PingRequest(_message.Message):
-    __slots__ = ["target_parties", "validators", "timeout_milliseconds", "levels", "grace_period_milliseconds", "workflow_id", "id"]
+    __slots__ = ("target_parties", "validators", "timeout_milliseconds", "levels", "grace_period_milliseconds", "workflow_id", "id")
     TARGET_PARTIES_FIELD_NUMBER: _ClassVar[int]
     VALIDATORS_FIELD_NUMBER: _ClassVar[int]
     TIMEOUT_MILLISECONDS_FIELD_NUMBER: _ClassVar[int]
@@ -28,7 +28,7 @@ class PingRequest(_message.Message):
     def __init__(self, target_parties: _Optional[_Iterable[str]] = ..., validators: _Optional[_Iterable[str]] = ..., timeout_milliseconds: _Optional[int] = ..., levels: _Optional[int] = ..., grace_period_milliseconds: _Optional[int] = ..., workflow_id: _Optional[str] = ..., id: _Optional[str] = ...) -> None: ...
 
 class PingSuccess(_message.Message):
-    __slots__ = ["ping_time", "responder"]
+    __slots__ = ("ping_time", "responder")
     PING_TIME_FIELD_NUMBER: _ClassVar[int]
     RESPONDER_FIELD_NUMBER: _ClassVar[int]
     ping_time: int
@@ -36,11 +36,11 @@ class PingSuccess(_message.Message):
     def __init__(self, ping_time: _Optional[int] = ..., responder: _Optional[str] = ...) -> None: ...
 
 class PingFailure(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     def __init__(self) -> None: ...
 
 class PingResponse(_message.Message):
-    __slots__ = ["success", "failure"]
+    __slots__ = ("success", "failure")
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     FAILURE_FIELD_NUMBER: _ClassVar[int]
     success: PingSuccess

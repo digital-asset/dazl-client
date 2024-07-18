@@ -10,19 +10,19 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetLedgerConfigurationRequest(_message.Message):
-    __slots__ = ["ledger_id"]
+    __slots__ = ("ledger_id",)
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     ledger_id: str
     def __init__(self, ledger_id: _Optional[str] = ...) -> None: ...
 
 class GetLedgerConfigurationResponse(_message.Message):
-    __slots__ = ["ledger_configuration"]
+    __slots__ = ("ledger_configuration",)
     LEDGER_CONFIGURATION_FIELD_NUMBER: _ClassVar[int]
     ledger_configuration: LedgerConfiguration
     def __init__(self, ledger_configuration: _Optional[_Union[LedgerConfiguration, _Mapping]] = ...) -> None: ...
 
 class LedgerConfiguration(_message.Message):
-    __slots__ = ["max_deduplication_duration"]
+    __slots__ = ("max_deduplication_duration",)
     MAX_DEDUPLICATION_DURATION_FIELD_NUMBER: _ClassVar[int]
     max_deduplication_duration: _duration_pb2.Duration
     def __init__(self, max_deduplication_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...

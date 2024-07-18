@@ -13,7 +13,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ViewType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     MissingViewType: _ClassVar[ViewType]
     TransactionViewType: _ClassVar[ViewType]
     TransferOutViewType: _ClassVar[ViewType]
@@ -24,9 +24,9 @@ TransferOutViewType: ViewType
 TransferInViewType: ViewType
 
 class SerializableContract(_message.Message):
-    __slots__ = ["contract_id", "raw_contract_instance", "metadata", "ledger_create_time"]
+    __slots__ = ("contract_id", "raw_contract_instance", "metadata", "ledger_create_time")
     class Metadata(_message.Message):
-        __slots__ = ["non_maintainer_signatories", "non_signatory_stakeholders", "key", "maintainers"]
+        __slots__ = ("non_maintainer_signatories", "non_signatory_stakeholders", "key", "maintainers")
         NON_MAINTAINER_SIGNATORIES_FIELD_NUMBER: _ClassVar[int]
         NON_SIGNATORY_STAKEHOLDERS_FIELD_NUMBER: _ClassVar[int]
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -47,7 +47,7 @@ class SerializableContract(_message.Message):
     def __init__(self, contract_id: _Optional[str] = ..., raw_contract_instance: _Optional[bytes] = ..., metadata: _Optional[_Union[SerializableContract.Metadata, _Mapping]] = ..., ledger_create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class GlobalKey(_message.Message):
-    __slots__ = ["template_id", "key"]
+    __slots__ = ("template_id", "key")
     TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     KEY_FIELD_NUMBER: _ClassVar[int]
     template_id: bytes
@@ -55,7 +55,7 @@ class GlobalKey(_message.Message):
     def __init__(self, template_id: _Optional[bytes] = ..., key: _Optional[bytes] = ...) -> None: ...
 
 class DriverContractMetadata(_message.Message):
-    __slots__ = ["contract_salt"]
+    __slots__ = ("contract_salt",)
     CONTRACT_SALT_FIELD_NUMBER: _ClassVar[int]
     contract_salt: _crypto_pb2.Salt
     def __init__(self, contract_salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ...) -> None: ...

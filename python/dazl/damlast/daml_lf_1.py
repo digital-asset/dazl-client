@@ -1075,6 +1075,34 @@ class Expr:
             self.name = name
             self.type = type
 
+    class ChoiceController:
+        template: TypeConName
+        choice: str
+        contract_expr: Expr
+        choice_arg_expr: Expr
+
+        def __init__(
+            self, template: TypeConName, choice: str, contract_expr: Expr, choice_arg_expr: Expr
+        ):
+            self.template = template
+            self.choice = choice
+            self.contract_expr = contract_expr
+            self.choice_arg_expr = choice_arg_expr
+
+    class ChoiceObserver:
+        template: TypeConName
+        choice: str
+        contract_expr: Expr
+        choice_arg_expr: Expr
+
+        def __init__(
+            self, template: TypeConName, choice: str, contract_expr: Expr, choice_arg_expr: Expr
+        ):
+            self.template = template
+            self.choice = choice
+            self.contract_expr = contract_expr
+            self.choice_arg_expr = choice_arg_expr
+
     __slots__ = "location", "_Sum_name", "_Sum_value"
     location: Location
     _Sum_name: str
@@ -1126,6 +1154,8 @@ class Expr:
         from_required_interface: "Union[Expr.FromRequiredInterface, _Missing]" = MISSING,
         unsafe_from_required_interface: "Union[Expr.UnsafeFromRequiredInterface, _Missing]" = MISSING,
         experimental: "Union[Expr.Experimental, _Missing]" = MISSING,
+        choice_controller: "Union[Expr.ChoiceController, _Missing]" = MISSING,
+        choice_observer: "Union[Expr.ChoiceObserver, _Missing]" = MISSING,
         location: "Optional[Location]" = None,
     ):
         object.__setattr__(self, "location", location)
@@ -1258,6 +1288,12 @@ class Expr:
         elif experimental is not MISSING:
             object.__setattr__(self, "_Sum_name", "experimental")
             object.__setattr__(self, "_Sum_value", experimental)
+        elif choice_controller is not MISSING:
+            object.__setattr__(self, "_Sum_name", "choice_controller")
+            object.__setattr__(self, "_Sum_value", choice_controller)
+        elif choice_observer is not MISSING:
+            object.__setattr__(self, "_Sum_name", "choice_observer")
+            object.__setattr__(self, "_Sum_value", choice_observer)
         else:
             raise ValueError(f"At least one valid Sum value must be supplied!")
 
@@ -1432,6 +1468,14 @@ class Expr:
     def experimental(self) -> "Optional[Experimental]":
         return self._Sum_value if self._Sum_name == "experimental" else None
 
+    @property
+    def choice_controller(self) -> "Optional[ChoiceController]":
+        return self._Sum_value if self._Sum_name == "choice_controller" else None
+
+    @property
+    def choice_observer(self) -> "Optional[ChoiceObserver]":
+        return self._Sum_value if self._Sum_name == "choice_observer" else None
+
     # noinspection PyPep8Naming
     def Sum_match(
         self,
@@ -1478,6 +1522,8 @@ class Expr:
         from_required_interface: "_typing.Callable[[FromRequiredInterface], _T]",
         unsafe_from_required_interface: "_typing.Callable[[UnsafeFromRequiredInterface], _T]",
         experimental: "_typing.Callable[[Expr.Experimental], _T]",
+        choice_controller: "_typing.Callable[[Expr.ChoiceController], _T]",
+        choice_observer: "_typing.Callable[[Expr.ChoiceObserver], _T]",
     ) -> "_T":
         if self._Sum_name == "var":
             return var(self.var)  # type: ignore
@@ -1567,6 +1613,10 @@ class Expr:
             return unsafe_from_required_interface(self.unsafe_from_required_interface)  # type: ignore
         elif self._Sum_name == "experimental":
             return experimental(self.experimental)  # type: ignore
+        elif self._Sum_name == "choice_controller":
+            return choice_controller(self.choice_controller)  # type: ignore
+        elif self._Sum_name == "experimental":
+            return choice_observer(self.choice_observer)  # type: ignore
         else:
             raise Exception
 
@@ -1768,6 +1818,14 @@ class Update:
             self.template = template
             self.cid = cid
 
+    class SoftFetch:
+        template: "TypeConName"
+        cid: "Expr"
+
+        def __init__(self, template, cid):
+            self.template = template
+            self.cid = cid
+
     class EmbedExpr:
         type: "Type"  # the expression should be of type `Scenario type`
         body: "Expr"
@@ -1804,6 +1862,30 @@ class Update:
         def __init__(self, interface: TypeConName, expr: Expr):
             self.interface = interface
             self.expr = expr
+
+    class SoftExercise:
+        template: TypeConName
+        choice: str
+        cid: Expr
+        arg: Expr
+
+        def __init__(self, template: TypeConName, choice: str, cid: Expr, arg: Expr):
+            self.template = template
+            self.choice = choice
+            self.cid = cid
+            self.arg = arg
+
+    class DynamicExercise:
+        template: TypeConName
+        choice: str
+        cid: Expr
+        arg: Expr
+
+        def __init__(self, template: TypeConName, choice: str, cid: Expr, arg: Expr):
+            self.template = template
+            self.choice = choice
+            self.cid = cid
+            self.arg = arg
 
     class ExerciseInterface:
         interface: TypeConName
@@ -1845,6 +1927,9 @@ class Update:
         create_interface: "Union[Update.CreateInterface, _Missing]" = MISSING,
         exercise_interface: "Union[Update.ExerciseInterface, _Missing]" = MISSING,
         fetch_interface: "Union[Update.FetchInterface, _Missing]" = MISSING,
+        dynamic_exercise: "Union[Update.DynamicExercise, _Missing]" = MISSING,
+        soft_fetch: "Union[Update.SoftFetch, _Missing]" = MISSING,
+        soft_exercise: "Union[Update.SoftExercise, _Missing]" = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -1888,6 +1973,15 @@ class Update:
         elif fetch_interface is not MISSING:
             object.__setattr__(self, "_Sum_name", "fetch_interface")
             object.__setattr__(self, "_Sum_value", fetch_interface)
+        elif dynamic_exercise is not MISSING:
+            object.__setattr__(self, "_Sum_name", "dynamic_exercise")
+            object.__setattr__(self, "_Sum_value", dynamic_exercise)
+        elif soft_fetch is not MISSING:
+            object.__setattr__(self, "_Sum_name", "soft_fetch")
+            object.__setattr__(self, "_Sum_value", soft_fetch)
+        elif soft_exercise is not MISSING:
+            object.__setattr__(self, "_Sum_name", "soft_exercise")
+            object.__setattr__(self, "_Sum_value", soft_exercise)
 
     @property
     def pure(self) -> "Optional[Pure]":
@@ -1940,6 +2034,18 @@ class Update:
     def fetch_interface(self) -> "Optional[FetchInterface]":
         return self._Sum_value if self._Sum_name == "fetch_interface" else None  # type: ignore
 
+    @property
+    def dynamic_exercise(self) -> "Optional[DynamicExercise]":
+        return self._Sum_value if self._Sum_name == "dynamic_exercise" else None  # type: ignore
+
+    @property
+    def soft_fetch(self) -> "Optional[SoftFetch]":
+        return self._Sum_value if self._Sum_name == "soft_fetch" else None  # type: ignore
+
+    @property
+    def soft_exercise(self) -> "Optional[SoftExercise]":
+        return self._Sum_value if self._Sum_name == "soft_exercise" else None  # type: ignore
+
     def Sum_match(
         self,
         pure: "Callable[[Pure], T]",
@@ -1954,6 +2060,9 @@ class Update:
         create_interface: "Callable[[CreateInterface], T]",
         exercise_interface: "Callable[[ExerciseInterface], T]",
         fetch_interface: "Callable[[FetchInterface], T]",
+        dynamic_exercise: "Callable[[DynamicExercise], T]",
+        soft_fetch: "Callable[[SoftFetch], T]",
+        soft_exercise: "Callable[[SoftExercise], T]",
     ) -> T:
         if self._Sum_name == "pure":
             return pure(self._Sum_value)  # type: ignore
@@ -1979,6 +2088,12 @@ class Update:
             return exercise_interface(self._Sum_value)  # type: ignore
         elif self._Sum_name == "fetch_interface":
             return fetch_interface(self._Sum_value)  # type: ignore
+        elif self._Sum_name == "dynamic_exercise":
+            return dynamic_exercise(self._Sum_value)  # type: ignore
+        elif self._Sum_name == "soft_fetch":
+            return soft_fetch(self._Sum_value)  # type: ignore
+        elif self._Sum_name == "soft_exercise":
+            return soft_exercise(self._Sum_value)  # type: ignore
         else:
             raise ValueError(f"Unknown Update.Sum case: {self._Sum_name}")
 
@@ -2129,11 +2244,15 @@ class BuiltinFunction(_IntEnum):
     ROUND_DECIMAL = 6
     ADD_NUMERIC = 107
     SUB_NUMERIC = 108
-    MUL_NUMERIC = 109
-    DIV_NUMERIC = 110
+    MUL_NUMERIC_LEGACY = 109
+    MUL_NUMERIC = 149
+    DIV_NUMERIC_LEGACY = 110
+    DIV_NUMERIC = 150
     ROUND_NUMERIC = 111
-    CAST_NUMERIC = 121
-    SHIFT_NUMERIC = 122
+    CAST_NUMERIC_LEGACY = 121
+    CAST_NUMERIC = 151
+    SHIFT_NUMERIC_LEGACY = 122
+    SHIFT_NUMERIC = 152
     ADD_INT64 = 7
     SUB_INT64 = 8
     MUL_INT64 = 9
@@ -2198,7 +2317,8 @@ class BuiltinFunction(_IntEnum):
     TEXT_TO_PARTY = 95
     TEXT_TO_INT64 = 103
     TEXT_TO_DECIMAL = 104
-    TEXT_TO_NUMERIC = 117
+    TEXT_TO_NUMERIC_LEGACY = 117
+    TEXT_TO_NUMERIC = 153
     CONTRACT_ID_TO_TEXT = 136
     SHA256_TEXT = 93
     DATE_TO_UNIX_DAYS = 72
@@ -2207,7 +2327,8 @@ class BuiltinFunction(_IntEnum):
     UNIX_MICROSECONDS_TO_TIMESTAMP = 75
     INT64_TO_DECIMAL = 76
     DECIMAL_TO_INT64 = 77
-    INT64_TO_NUMERIC = 118
+    INT64_TO_NUMERIC_LEGACY = 118
+    INT64_TO_NUMERIC = 154
     NUMERIC_TO_INT64 = 119
     IMPLODE_TEXT = 78
     EQUAL_INT64 = 79
@@ -2237,9 +2358,11 @@ class BuiltinFunction(_IntEnum):
     MUL_BIGNUMERIC = 141
     DIV_BIGNUMERIC = 142
     SHIFT_RIGHT_BIGNUMERIC = 143
-    BIGNUMERIC_TO_NUMERIC = 144
+    BIGNUMERIC_TO_NUMERIC_LEGACY = 144
+    BIGNUMERIC_TO_NUMERIC = 155
     NUMERIC_TO_BIGNUMERIC = 145
     BIGNUMERIC_TO_TEXT = 146
+    TYPE_REP_TYCON_NAME = 148
 
 
 class PrimCon(_IntEnum):
@@ -2265,6 +2388,8 @@ class TemplateChoice:
     controllers: "Expr"
 
     observers: "Optional[Expr]"
+
+    authorizers: "Optional[Expr]"
 
     # Name to which the choice argument is bound and its type.
     arg_binder: "VarWithType"
@@ -2616,6 +2741,12 @@ class Package:
 class PackageMetadata:
     name: str
     version: str
+    upgraded_package_id: Optional[UpgradedPackageId]
+
+
+class UpgradedPackageId:
+    def __init__(self, upgraded_package_id: PackageRef):
+        self.upgraded_package_id = upgraded_package_id
 
 
 @dataclass(frozen=True)

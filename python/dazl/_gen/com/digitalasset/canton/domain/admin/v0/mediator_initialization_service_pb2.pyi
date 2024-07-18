@@ -14,7 +14,7 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class InitializeMediatorRequest(_message.Message):
-    __slots__ = ["domain_id", "mediator_id", "current_identity_state", "domain_parameters", "sequencer_connection", "signing_key_fingerprint"]
+    __slots__ = ("domain_id", "mediator_id", "current_identity_state", "domain_parameters", "sequencer_connection", "signing_key_fingerprint")
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     MEDIATOR_ID_FIELD_NUMBER: _ClassVar[int]
     CURRENT_IDENTITY_STATE_FIELD_NUMBER: _ClassVar[int]
@@ -30,14 +30,14 @@ class InitializeMediatorRequest(_message.Message):
     def __init__(self, domain_id: _Optional[str] = ..., mediator_id: _Optional[str] = ..., current_identity_state: _Optional[_Union[_topology_ext_pb2.TopologyTransactions, _Mapping]] = ..., domain_parameters: _Optional[_Union[_sequencing_pb2.StaticDomainParameters, _Mapping]] = ..., sequencer_connection: _Optional[_Union[_sequencer_connection_pb2.SequencerConnection, _Mapping]] = ..., signing_key_fingerprint: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class InitializeMediatorResponse(_message.Message):
-    __slots__ = ["success", "failure"]
+    __slots__ = ("success", "failure")
     class Success(_message.Message):
-        __slots__ = ["mediator_key"]
+        __slots__ = ("mediator_key",)
         MEDIATOR_KEY_FIELD_NUMBER: _ClassVar[int]
         mediator_key: _crypto_pb2.SigningPublicKey
         def __init__(self, mediator_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ...) -> None: ...
     class Failure(_message.Message):
-        __slots__ = ["reason"]
+        __slots__ = ("reason",)
         REASON_FIELD_NUMBER: _ClassVar[int]
         reason: str
         def __init__(self, reason: _Optional[str] = ...) -> None: ...

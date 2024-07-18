@@ -9,11 +9,11 @@ from typing import ClassVar as _ClassVar
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SetPassive(_message.Message):
-    __slots__ = []  # type: ignore
+    __slots__ = ()
     class Request(_message.Message):
-        __slots__ = []  # type: ignore
+        __slots__ = ()
         def __init__(self) -> None: ...
     class Response(_message.Message):
-        __slots__ = []  # type: ignore
+        __slots__ = ()
         def __init__(self) -> None: ...
     def __init__(self) -> None: ...

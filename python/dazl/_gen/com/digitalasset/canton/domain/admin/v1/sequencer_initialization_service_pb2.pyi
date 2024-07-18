@@ -12,7 +12,7 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class InitRequest(_message.Message):
-    __slots__ = ["domain_id", "topology_snapshot", "domain_parameters", "snapshot"]
+    __slots__ = ("domain_id", "topology_snapshot", "domain_parameters", "snapshot")
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     TOPOLOGY_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
