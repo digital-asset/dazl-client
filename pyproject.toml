@@ -16,7 +16,7 @@ packages = [{ include = "dazl", from = "python" }, { include = "_dazl", from = "
 [tool.poetry.dependencies]
 python = "^3.8"
 googleapis_common_protos = "^1"
-grpcio = ">=1.65.0"
+grpcio = "1.67.1"
 protobuf = ">=5"
 pygments = { version = "*", optional = true }
 pyOpenSSL = { version = "*", optional = true }
@@ -33,7 +33,7 @@ dazl = 'dazl.cli:main'
 [tool.poetry.group.dev.dependencies]
 black = "*"
 grpc-stubs = "*"
-grpcio-tools = ">=1.65.0"
+grpcio-tools = "1.67.1"
 isort = "^5"
 jinja2 = "^3"
 mypy = "*"

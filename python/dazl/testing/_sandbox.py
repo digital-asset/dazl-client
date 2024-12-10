@@ -122,14 +122,21 @@ class SandboxLauncher:
 
         return self._certificate.public_cert
 
-    def sign_token(self, claims: "Mapping[str, Any]") -> str:
+    def sign_token(self, claims: "Mapping[str, Any]", allow_insecure: "bool" = False) -> str:
         """
         Sign a token using the private key that the sandbox was launched with.
-        """
-        if self._certificate is None:
-            raise RuntimeError("this sandbox was not started with auth")
 
+        :param allow_insecure:
+            When set to True, allows tokens to be minted for sandboxes started
+            without authentication.
+        """
         import jwt
+
+        if self._certificate is None:
+            if not allow_insecure:
+                raise RuntimeError("this sandbox was not started with auth")
+
+            return jwt.encode(cast(Dict[str, Any], claims), "secret", algorithm="HS256")
 
         return jwt.encode(
             # there is a bug in the jwt typing rules that falsely state the claims are

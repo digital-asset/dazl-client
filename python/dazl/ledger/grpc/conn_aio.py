@@ -123,7 +123,13 @@ class Connection(aio.Connection):
                 admin = False
                 read_as = []  # type: List[Party]
                 act_as = []  # type: List[Party]
-                for right in await self.list_user_rights():
+
+                # There are certain circumstances where user_id
+                # defaulting in this request, and the user must be
+                # explicitly specified. This is done by using the
+                # application ID (name), which is mandated to be
+                # subject of the token.
+                for right in await self.list_user_rights(self._config.access.application_name):
                     if right == Admin:
                         admin = True
                     elif isinstance(right, ReadAs):

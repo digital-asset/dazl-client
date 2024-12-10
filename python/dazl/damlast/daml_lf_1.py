@@ -484,31 +484,31 @@ class Type:
 
     @property
     def var(self) -> "Type.Var":
-        return self._Sum_value if self._Sum_name == "var" else None
+        return self._Sum_value if self._Sum_name == "var" else None  # type: ignore
 
     @property
     def con(self) -> "Type.Con":
-        return self._Sum_value if self._Sum_name == "con" else None
+        return self._Sum_value if self._Sum_name == "con" else None  # type: ignore
 
     @property
     def prim(self) -> "Type.Prim":
-        return self._Sum_value if self._Sum_name == "prim" else None
+        return self._Sum_value if self._Sum_name == "prim" else None  # type: ignore
 
     @property
     def forall(self) -> "Type.Forall":
-        return self._Sum_value if self._Sum_name == "forall" else None
+        return self._Sum_value if self._Sum_name == "forall" else None  # type: ignore
 
     @property
     def struct(self) -> "Type.Struct":
-        return self._Sum_value if self._Sum_name == "struct" else None
+        return self._Sum_value if self._Sum_name == "struct" else None  # type: ignore
 
     @property
     def nat(self) -> int:
-        return self._Sum_value if self._Sum_name == "nat" else None
+        return self._Sum_value if self._Sum_name == "nat" else None  # type: ignore
 
     @property
     def syn(self) -> "Type.Syn":
-        return self._Sum_value if self._Sum_name == "syn" else None
+        return self._Sum_value if self._Sum_name == "syn" else None  # type: ignore
 
     # noinspection PyPep8Naming
     def Sum_match(

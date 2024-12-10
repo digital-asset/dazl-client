@@ -160,7 +160,7 @@ class Context:
             The converted object, or ``None`` if the value of the object is ``None``.
         """
         return (
-            self.append_path("?", mapper=mapper).convert(element_type, element)
+            self.append_path("?", mapper=mapper).convert(element_type, element)  # type: ignore
             if element is not None
             else None
         )
