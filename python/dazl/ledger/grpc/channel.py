@@ -18,6 +18,7 @@ from grpc import (
 from grpc.aio import (
     Channel,
     ClientCallDetails,
+    ClientInterceptor,
     StreamStreamCall,
     StreamStreamClientInterceptor,
     StreamUnaryCall,
@@ -79,7 +80,23 @@ def create_channel(config: "Config") -> "Channel":
         # Python/C++ libraries refuse to allow "credentials" objects to be passed around on
         # non-TLS channels, but they don't check interceptors; use an interceptor to inject
         # an Authorization header instead
-        return insecure_channel(u.netloc, options, interceptors=[GrpcAuthInterceptor(config)])  # type: ignore
+        #
+        # There must be a distinct interceptor instance for each of
+        # the four Request/Response arities. There is a known issue in
+        # the underlying gRPC code that prevents reuse of a single
+        # multiply-inherited interceptor.
+        #
+        # https://github.com/grpc/grpc/issues/31442
+        return insecure_channel(
+            u.netloc,
+            options,
+            interceptors=[
+                cast(ClientInterceptor, GrpcAuthUnaryUnaryClientInterceptor(config)),
+                cast(ClientInterceptor, GrpcAuthUnaryStreamClientInterceptor(config)),
+                cast(ClientInterceptor, GrpcAuthStreamUnaryClientInterceptor(config)),
+                cast(ClientInterceptor, GrpcAuthStreamStreamClientInterceptor(config)),
+            ],
+        )  # type: ignore
 
     else:
         # no TLS, no tokens--simply create an insecure channel with no adornments
@@ -103,12 +120,7 @@ class GrpcAuth(AuthMetadataPlugin):
         callback(tuple(options), None)
 
 
-class GrpcAuthInterceptor(
-    UnaryUnaryClientInterceptor,
-    UnaryStreamClientInterceptor,
-    StreamUnaryClientInterceptor,
-    StreamStreamClientInterceptor,
-):
+class GrpcAuthInterceptor:
     """
     An interceptor that injects "Authorization" metadata into a request.
 
@@ -122,6 +134,18 @@ class GrpcAuthInterceptor(
     def __init__(self, config: "Config"):
         self._config = config
 
+    def _modify_client_call_details(self, client_call_details: ClientCallDetails):
+        if (
+            client_call_details.metadata is not None
+            and "authorization" not in client_call_details.metadata
+            and self._config.access.token_version is not None
+        ):
+            client_call_details.metadata.add("authorization", f"Bearer {self._config.access.token}")
+
+        return client_call_details
+
+
+class GrpcAuthUnaryUnaryClientInterceptor(GrpcAuthInterceptor, UnaryUnaryClientInterceptor):
     async def intercept_unary_unary(
         self,
         continuation: "Callable[[ClientCallDetails, RequestType], UnaryUnaryCall]",
@@ -130,6 +154,8 @@ class GrpcAuthInterceptor(
     ) -> "Union[UnaryUnaryCall, RequestType]":
         return await continuation(self._modify_client_call_details(client_call_details), request)
 
+
+class GrpcAuthUnaryStreamClientInterceptor(GrpcAuthInterceptor, UnaryStreamClientInterceptor):
     async def intercept_unary_stream(
         self,
         continuation: "Callable[[ClientCallDetails, RequestType], UnaryStreamCall]",
@@ -140,6 +166,8 @@ class GrpcAuthInterceptor(
             self._modify_client_call_details(client_call_details), request
         )
 
+
+class GrpcAuthStreamUnaryClientInterceptor(GrpcAuthInterceptor, StreamUnaryClientInterceptor):
     async def intercept_stream_unary(  # type: ignore
         self,
         continuation: "Callable[[ClientCallDetails, RequestType], StreamUnaryCall]",
@@ -150,6 +178,8 @@ class GrpcAuthInterceptor(
             self._modify_client_call_details(client_call_details), request_iterator  # type: ignore
         )
 
+
+class GrpcAuthStreamStreamClientInterceptor(GrpcAuthInterceptor, StreamStreamClientInterceptor):
     async def intercept_stream_stream(
         self,
         continuation: Callable[[ClientCallDetails, RequestType], StreamStreamCall],
@@ -159,13 +189,3 @@ class GrpcAuthInterceptor(
         return await continuation(  # type: ignore
             self._modify_client_call_details(client_call_details), request_iterator  # type: ignore
         )
-
-    def _modify_client_call_details(self, client_call_details: ClientCallDetails):
-        if (
-            client_call_details.metadata is not None
-            and "authorization" not in client_call_details.metadata
-            and self._config.access.token_version is not None
-        ):
-            client_call_details.metadata.add("authorization", f"Bearer {self._config.access.token}")
-
-        return client_call_details
