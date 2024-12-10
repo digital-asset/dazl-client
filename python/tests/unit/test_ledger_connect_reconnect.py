@@ -46,13 +46,13 @@ async def test_reconnect_party_allocation() -> None:
 
             logging.info("Stopping our sandbox...")
             sandbox.stop()
-
-            logging.info("Waiting a bit for things to really be gone.")
             await sleep(5)
 
             # this is expected to fail, since our ledger is now down
             try:
-                logging.info("Trying to intentionally fail to allocate a party...")
+                logging.info(
+                    "Trying to allocate a party in stopped sandbox (intentional failure)..."
+                )
                 await conn.allocate_party(timeout=ONE_MINUTE)
             except RpcError as ex:
                 assert ex.code() == StatusCode.UNAVAILABLE
@@ -60,20 +60,26 @@ async def test_reconnect_party_allocation() -> None:
 
             logging.info("Starting the sandbox up again...")
             sandbox.start()
+            await sleep(5)
 
-            # # a call using a brand new connection will definitely work...
+            # a call using a brand new connection will definitely work...
             # async with connect(url=sandbox.url, admin=True) as conn2:
+            #     logging.info("Allocating party on new connection to ledger...")
             #     party_info = await conn2.allocate_party()
 
             retry_count = 0
             while retry_count < 10:
                 try:
                     # ...but a call using the old connection should still work too
-                    logging.info("Allocating another party...")
+                    logging.info(
+                        f"Allocating another party on existing connection (attempt {retry_count + 1})..."
+                    )
                     await conn.allocate_party()
                     break
                 except RpcError as ex:
+                    logging.exception("Error allocating party")
                     if ex.code() in (StatusCode.DEADLINE_EXCEEDED, StatusCode.UNAVAILABLE):
+                        retry_count = retry_count + 1
                         # this is retryable
                         await sleep(1)
                     else:
