@@ -47,7 +47,7 @@ def canton_proto_files(zip_file_names: Collection[str]) -> Mapping[str, str]:
     return file_names
 
 
-def daml_proto_files(zip_file_names: Collection[str]) -> Mapping[str, str]:
+def daml_proto_files(zip_file_names: Collection[str], ledger_api_version: str) -> Mapping[str, str]:
     """
     Return paths to Daml protobuf/gRPC files that are interesting for code generation.
     The key is the "short" file path (starting with com/daml) and the value is
@@ -55,6 +55,9 @@ def daml_proto_files(zip_file_names: Collection[str]) -> Mapping[str, str]:
 
     :param zip_file_names:
         The names of files inside the Daml protobuf distribution.
+
+    :param ledger_api_version:
+        The Ledger API version.
     """
     file_names = {}
 
@@ -65,7 +68,9 @@ def daml_proto_files(zip_file_names: Collection[str]) -> Mapping[str, str]:
     for name in zip_file_names:
         short_name = "/".join(name.split("/")[1:])
 
-        if short_name.startswith("com/daml/ledger/api/v1/") and short_name.endswith(".proto"):
+        if short_name.startswith(
+            f"com/daml/ledger/api/{ledger_api_version}/"
+        ) and short_name.endswith(".proto"):
             # Ledger API protos
             file_names[short_name] = name
         elif short_name.startswith(daml_lf_dir) and short_name.endswith(".proto"):
@@ -93,20 +98,21 @@ def detect_daml_lf_dir(paths: Collection[str]) -> Optional[str]:
     ... ])
     'com/daml/daml_lf_1_10/'
     """
-    daml_lf_prefix = "com/daml/daml_lf_1_"
+    daml_lf_prefixes = ("com/daml/daml_lf_1_", "com/daml/daml_lf_2_")
 
-    minor_versions = set()  # type: Set[int]
-    for p in paths:
-        _, _, truncated_path = p.partition("/")
+    for daml_lf_prefix in daml_lf_prefixes:
+        minor_versions = set()  # type: Set[int]
+        for p in paths:
+            _, _, truncated_path = p.partition("/")
 
-        if truncated_path.startswith(daml_lf_prefix):
-            version_str, _, _ = truncated_path[len(daml_lf_prefix) :].partition("/")
-            try:
-                minor_versions.add(int(version_str))
-            except ValueError:
-                # skip over unrecognized directory names
-                pass
-    if minor_versions:
-        return f"{daml_lf_prefix}{max(minor_versions)}/"
+            if truncated_path.startswith(daml_lf_prefix):
+                version_str, _, _ = truncated_path[len(daml_lf_prefix) :].partition("/")
+                try:
+                    minor_versions.add(int(version_str))
+                except ValueError:
+                    # skip over unrecognized directory names
+                    pass
+        if minor_versions:
+            return f"{daml_lf_prefix}{max(minor_versions)}/"
     else:
         return None

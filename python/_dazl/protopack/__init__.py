@@ -26,11 +26,17 @@ class Rewriter(Protocol):
 
 
 def build(
-    *, canton_zip: Path, daml_protos_zip: Path, to: Path, cache_dir: Optional[Path] = None
+    *,
+    canton_2_zip: Path,
+    daml_2_protos_zip: Path,
+    daml_3_protos_zip: Path,
+    to: Path,
+    cache_dir: Optional[Path] = None,
 ) -> None:
     with ExitStack() as stack:
-        canton = stack.enter_context(ZipFile(canton_zip))
-        daml_proto = stack.enter_context(ZipFile(daml_protos_zip))
+        canton_2 = stack.enter_context(ZipFile(canton_2_zip))
+        daml_2_proto = stack.enter_context(ZipFile(daml_2_protos_zip))
+        daml_3_proto = stack.enter_context(ZipFile(daml_3_protos_zip))
 
         if cache_dir is not None:
             rmtree(cache_dir)
@@ -38,16 +44,23 @@ def build(
             cache_dir = Path(stack.enter_context(TemporaryDirectory()))
 
         _build_part(
-            archive=canton,
+            archive=canton_2,
             out_dir=cache_dir,
             renamer=rename.canton_proto_files,
             rewriter=rewrite.canton_proto_rewrite,
         )
 
         _build_part(
-            archive=daml_proto,
+            archive=daml_2_proto,
             out_dir=cache_dir,
-            renamer=rename.daml_proto_files,
+            renamer=lambda names: rename.daml_proto_files(names, "v1"),
+            rewriter=rewrite.daml_proto_rewrite,
+        )
+
+        _build_part(
+            archive=daml_3_proto,
+            out_dir=cache_dir,
+            renamer=lambda names: rename.daml_proto_files(names, "v2"),
             rewriter=rewrite.daml_proto_rewrite,
         )
 

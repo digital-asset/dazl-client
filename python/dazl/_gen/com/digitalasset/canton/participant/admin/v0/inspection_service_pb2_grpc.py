@@ -9,10 +9,8 @@ import warnings
 
 from . import inspection_service_pb2 as com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2
 
-GRPC_GENERATED_VERSION = '1.65.1'
+GRPC_GENERATED_VERSION = '1.67.1'
 GRPC_VERSION = grpc.__version__
-EXPECTED_ERROR_RELEASE = '1.66.0'
-SCHEDULED_RELEASE_DATE = 'August 6, 2024'
 _version_not_supported = False
 
 try:
@@ -22,15 +20,12 @@ except ImportError:
     _version_not_supported = True
 
 if _version_not_supported:
-    warnings.warn(
+    raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
         + f' but the generated code in com/digitalasset/canton/participant/admin/v0/inspection_service_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
-        + f' This warning will become an error in {EXPECTED_ERROR_RELEASE},'
-        + f' scheduled for release on {SCHEDULED_RELEASE_DATE}.',
-        RuntimeWarning
     )
 
 
@@ -63,6 +58,11 @@ class InspectionServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.LookupOffsetByIndex.Request.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.LookupOffsetByIndex.Response.FromString,
                 _registered_method=True)
+        self.CountInFlight = channel.unary_unary(
+                '/com.digitalasset.canton.participant.admin.v0.InspectionService/CountInFlight',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.CountInFlight.Request.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.CountInFlight.Response.FromString,
+                _registered_method=True)
 
 
 class InspectionServiceServicer(object):
@@ -92,6 +92,12 @@ class InspectionServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CountInFlight(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_InspectionServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -114,6 +120,11 @@ def add_InspectionServiceServicer_to_server(servicer, server):
                     servicer.LookupOffsetByIndex,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.LookupOffsetByIndex.Request.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.LookupOffsetByIndex.Response.SerializeToString,
+            ),
+            'CountInFlight': grpc.unary_unary_rpc_method_handler(
+                    servicer.CountInFlight,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.CountInFlight.Request.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.CountInFlight.Response.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -224,6 +235,33 @@ class InspectionService(object):
             '/com.digitalasset.canton.participant.admin.v0.InspectionService/LookupOffsetByIndex',
             com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.LookupOffsetByIndex.Request.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.LookupOffsetByIndex.Response.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CountInFlight(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.participant.admin.v0.InspectionService/CountInFlight',
+            com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.CountInFlight.Request.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_inspection__service__pb2.CountInFlight.Response.FromString,
             options,
             channel_credentials,
             insecure,
