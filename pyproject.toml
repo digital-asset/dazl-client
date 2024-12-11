@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "dazl"
-version = "8.0.0b4"
+version = "8.0.0b5"
 description = "high-level Ledger API client for Daml ledgers"
 license = "Apache-2.0"
 authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]
@@ -14,7 +14,7 @@ keywords = ["daml", "blockchain", "dlt", "distributed ledger", "digital asset"]
 packages = [{ include = "dazl", from = "python" }, { include = "_dazl", from = "python" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 googleapis_common_protos = "^1"
 grpcio = "1.67.1"
 protobuf = ">=5"
