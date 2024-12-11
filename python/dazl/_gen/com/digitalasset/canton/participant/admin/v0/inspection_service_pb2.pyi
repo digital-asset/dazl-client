@@ -72,3 +72,19 @@ class LookupOffsetByIndex(_message.Message):
         offset: str
         def __init__(self, offset: _Optional[str] = ...) -> None: ...
     def __init__(self) -> None: ...
+
+class CountInFlight(_message.Message):
+    __slots__ = ()
+    class Request(_message.Message):
+        __slots__ = ("domain_id",)
+        DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
+        domain_id: str
+        def __init__(self, domain_id: _Optional[str] = ...) -> None: ...
+    class Response(_message.Message):
+        __slots__ = ("pending_submissions", "pending_transactions")
+        PENDING_SUBMISSIONS_FIELD_NUMBER: _ClassVar[int]
+        PENDING_TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
+        pending_submissions: int
+        pending_transactions: int
+        def __init__(self, pending_submissions: _Optional[int] = ..., pending_transactions: _Optional[int] = ...) -> None: ...
+    def __init__(self) -> None: ...

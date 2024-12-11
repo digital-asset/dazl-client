@@ -7,7 +7,7 @@ from .domain_connectivity_pb2 import AcceptAgreementRequest, AcceptAgreementResp
 from .domain_connectivity_pb2_grpc import DomainConnectivityServiceStub
 from .enterprise_participant_replication_service_pb2 import SetPassive
 from .enterprise_participant_replication_service_pb2_grpc import EnterpriseParticipantReplicationServiceStub
-from .inspection_service_pb2 import LookupContractDomain, LookupOffsetByIndex, LookupOffsetByTime, LookupTransactionDomain
+from .inspection_service_pb2 import CountInFlight, LookupContractDomain, LookupOffsetByIndex, LookupOffsetByTime, LookupTransactionDomain
 from .inspection_service_pb2_grpc import InspectionServiceStub
 from .package_service_pb2 import DarDescription, GetDarRequest, GetDarResponse, ListDarContentsRequest, ListDarContentsResponse, ListDarsRequest, ListDarsResponse, ListPackageContentsRequest, ListPackageContentsResponse, ListPackagesRequest, ListPackagesResponse, ModuleDescription, PackageDescription, RemoveDarRequest, RemoveDarResponse, RemovePackageRequest, RemovePackageResponse, UnvetDarRequest, UnvetDarResponse, UploadDarRequest, UploadDarResponse, ValidateDarRequest, ValidateDarResponse, VetDarRequest, VetDarResponse
 from .package_service_pb2_grpc import PackageServiceStub
@@ -38,6 +38,7 @@ __all__ = [
     "Agreement",
     "ConnectDomainRequest",
     "ConnectDomainResponse",
+    "CountInFlight",
     "DarDescription",
     "DisconnectDomainRequest",
     "DisconnectDomainResponse",

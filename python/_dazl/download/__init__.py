@@ -7,7 +7,7 @@ import base64
 from dataclasses import dataclass
 from pathlib import Path
 import sys
-from typing import Optional, Sequence
+from typing import Optional
 from urllib import request
 
 from rich.console import Console
@@ -27,11 +27,7 @@ class Source:
     url: str
 
     @classmethod
-    def all(cls, version: str) -> Sequence[Self]:
-        return [cls.canton(version), cls.daml_protos(version)]
-
-    @classmethod
-    def canton(cls, version: str) -> Self:
+    def canton_2(cls, version: str) -> Self:
         file_name = f"canton-open-source-{version}.zip"
         url = f"https://github.com/digital-asset/canton/releases/download/v{version}/{file_name}"
         return cls(url=url, file_name=file_name)
@@ -39,7 +35,12 @@ class Source:
     @classmethod
     def daml_protos(cls, version: str) -> Self:
         file_name = f"protobufs-{version}.zip"
-        url = f"https://github.com/digital-asset/daml/releases/download/v{version}/{file_name}"
+        if "snapshot" in version:
+            # snapshot versions are unfortunately not discoverable by version number alone
+            # TODO: might be time to retire this machinery and start pulling down files a different way
+            url = "https://github.com/digital-asset/daml/releases/download/v3.2.0-snapshot.20241106.0/protobufs-3.2.0-snapshot.20241031.13398.0.vf95d2607.zip"
+        else:
+            url = f"https://github.com/digital-asset/daml/releases/download/v{version}/{file_name}"
         return cls(url=url, file_name=file_name)
 
     def existing_file_md5(self, to: Path) -> Optional[bytes]:
@@ -72,8 +73,9 @@ class Source:
 
 @dataclass(frozen=True)
 class DownloadPaths:
-    canton_zip: Path
-    daml_protos_zip: Path
+    canton_2_zip: Path
+    daml_2_protos_zip: Path
+    daml_3_protos_zip: Path
 
 
 class Downloader:
@@ -91,17 +93,23 @@ class Downloader:
                     progress.update(task, advance=len(chunk))
 
 
-def download_dependencies(sdk_version: str, to: Path) -> DownloadPaths:
-    canton = Source.canton(sdk_version)
-    daml_protos = Source.daml_protos(sdk_version)
+def download_dependencies(
+    daml_2_sdk_version: str, daml_3_sdk_version: str, to: Path
+) -> DownloadPaths:
+    canton_2 = Source.canton_2(daml_2_sdk_version)
+    daml_2_protos = Source.daml_protos(daml_2_sdk_version)
+    daml_3_protos = Source.daml_protos(daml_3_sdk_version)
 
     paths = DownloadPaths(
-        canton_zip=to / canton.file_name, daml_protos_zip=to / daml_protos.file_name
+        canton_2_zip=to / canton_2.file_name,
+        daml_2_protos_zip=to / daml_2_protos.file_name,
+        daml_3_protos_zip=to / daml_3_protos.file_name,
     )
 
     downloaders = [
-        Downloader(canton, paths.canton_zip),
-        Downloader(daml_protos, paths.daml_protos_zip),
+        Downloader(canton_2, paths.canton_2_zip),
+        Downloader(daml_2_protos, paths.daml_2_protos_zip),
+        Downloader(daml_3_protos, paths.daml_3_protos_zip),
     ]
 
     console = Console()

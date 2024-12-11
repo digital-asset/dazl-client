@@ -13,7 +13,8 @@ parser.add_argument("--log-level", default="info")
 subparsers = parser.add_subparsers()
 
 update_parser = subparsers.add_parser("update")
-update_parser.add_argument("daml_sdk_version")
+update_parser.add_argument("daml_2_sdk_version")
+update_parser.add_argument("daml_3_sdk_version")
 update_parser.add_argument(
     "-C", "--cache-dir", default=str(Path.home() / ".cache" / "dazlbuild" / "download")
 )
@@ -27,7 +28,8 @@ _logging.initialize(args.log_level)
 from . import update
 
 update.update(
-    daml_sdk_version=args.daml_sdk_version,
+    daml_2_sdk_version=args.daml_2_sdk_version,
+    daml_3_sdk_version=args.daml_3_sdk_version,
     cache_dir=Path(args.cache_dir),
     temp_dir=Path(args.temp_dir) if args.temp_dir is not None else None,
 )
