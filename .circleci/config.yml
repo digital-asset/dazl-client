@@ -123,11 +123,11 @@ workflows:
       - check-py:
           matrix:
             parameters:
-              python_version: ["3.8.19", "3.9.19", "3.10.14", "3.11.9"]
+              python_version: ["3.9.19", "3.10.14", "3.11.9"]
       - test-py:
           matrix:
             parameters:
-              python_version: ["3.8.19", "3.9.19", "3.10.14", "3.11.9"]
+              python_version: ["3.9.19", "3.10.14", "3.11.9"]
       - build:
           requires:
            - blackduck
