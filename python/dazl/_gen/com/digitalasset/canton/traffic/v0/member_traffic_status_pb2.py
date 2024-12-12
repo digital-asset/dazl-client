@@ -30,14 +30,14 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n>com/digitalasset/canton/traffic/v0/member_traffic_status.proto\x12\"com.digitalasset.canton.traffic.v0\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xf1\x03\n\x13MemberTrafficStatus\x12\x16\n\x06member\x18\x01 \x01(\tR\x06member\x12W\n\x19total_extra_traffic_limit\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.UInt64ValueR\x16totalExtraTrafficLimit\x12?\n\x1ctotal_extra_traffic_consumed\x18\x03 \x01(\x04R\x19totalExtraTrafficConsumed\x12\x66\n\rtop_up_events\x18\x04 \x03(\x0b\x32\x42.com.digitalasset.canton.traffic.v0.MemberTrafficStatus.TopUpEventR\x0btopUpEvents\x12*\n\x02ts\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x02ts\x1a\x93\x01\n\nTopUpEvent\x12=\n\x0c\x65\x66\x66\x65\x63tive_at\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0b\x65\x66\x66\x65\x63tiveAt\x12\x16\n\x06serial\x18\x02 \x01(\rR\x06serial\x12.\n\x13\x65xtra_traffic_limit\x18\x03 \x01(\x04R\x11\x65xtraTrafficLimitBSZQgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/traffic/v0b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n>com/digitalasset/canton/traffic/v0/member_traffic_status.proto\x12\"com.digitalasset.canton.traffic.v0\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xf1\x03\n\x13MemberTrafficStatus\x12\x16\n\x06member\x18\x01 \x01(\tR\x06member\x12W\n\x19total_extra_traffic_limit\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.UInt64ValueR\x16totalExtraTrafficLimit\x12?\n\x1ctotal_extra_traffic_consumed\x18\x03 \x01(\x04R\x19totalExtraTrafficConsumed\x12\x66\n\rtop_up_events\x18\x04 \x03(\x0b\x32\x42.com.digitalasset.canton.traffic.v0.MemberTrafficStatus.TopUpEventR\x0btopUpEvents\x12*\n\x02ts\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x02ts\x1a\x93\x01\n\nTopUpEvent\x12=\n\x0c\x65\x66\x66\x65\x63tive_at\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0b\x65\x66\x66\x65\x63tiveAt\x12\x16\n\x06serial\x18\x02 \x01(\rR\x06serial\x12.\n\x13\x65xtra_traffic_limit\x18\x03 \x01(\x04R\x11\x65xtraTrafficLimitBSZQgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/traffic/v0b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.traffic.v0.member_traffic_status_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
-  _globals['DESCRIPTOR']._serialized_options = b'ZQgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/traffic/v0'
+  _globals['DESCRIPTOR']._serialized_options = b'ZQgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/traffic/v0'
   _globals['_MEMBERTRAFFICSTATUS']._serialized_start=168
   _globals['_MEMBERTRAFFICSTATUS']._serialized_end=665
   _globals['_MEMBERTRAFFICSTATUS_TOPUPEVENT']._serialized_start=518

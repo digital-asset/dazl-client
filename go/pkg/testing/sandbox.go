@@ -15,7 +15,7 @@ import (
 
 	"github.com/blang/semver"
 
-	dazlclient "github.com/digital-asset/dazl-client/v7/go/pkg/client"
+	dazlclient "github.com/digital-asset/dazl-client/v8/go/pkg/client"
 )
 
 // SandboxOptions are launch options for starting a Sandbox.
