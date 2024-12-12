@@ -97,6 +97,7 @@ type BlindableNode struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to BlindedOrNot:
+	//
 	//	*BlindableNode_Unblinded
 	//	*BlindableNode_BlindedHash
 	BlindedOrNot isBlindableNode_BlindedOrNot `protobuf_oneof:"blinded_or_not"`

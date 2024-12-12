@@ -29,6 +29,7 @@ type TreeEvent struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Kind:
+	//
 	//	*TreeEvent_Created
 	//	*TreeEvent_Exercised
 	Kind isTreeEvent_Kind `protobuf_oneof:"kind"`

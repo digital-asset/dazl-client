@@ -30,6 +30,7 @@ type SubmissionTrackingData struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Tracking:
+	//
 	//	*SubmissionTrackingData_Transaction
 	Tracking isSubmissionTrackingData_Tracking `protobuf_oneof:"tracking"`
 }
@@ -155,6 +156,7 @@ type TransactionSubmissionTrackingData_RejectionCause struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Cause:
+	//
 	//	*TransactionSubmissionTrackingData_RejectionCause_Timeout
 	//	*TransactionSubmissionTrackingData_RejectionCause_RejectionReasonTemplate
 	Cause isTransactionSubmissionTrackingData_RejectionCause_Cause `protobuf_oneof:"cause"`

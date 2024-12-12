@@ -530,6 +530,7 @@ type PackageRef struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*PackageRef_Self
 	//	*PackageRef_PackageIdInternedStr
 	Sum isPackageRef_Sum `protobuf_oneof:"Sum"`
@@ -1085,6 +1086,7 @@ type Kind struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Kind_Star
 	//	*Kind_Arrow_
 	//	*Kind_Nat
@@ -1177,6 +1179,7 @@ type Type struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Type_Var_
 	//	*Type_Con_
 	//	*Type_Builtin_
@@ -1339,6 +1342,7 @@ type BuiltinLit struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*BuiltinLit_Int64
 	//	*BuiltinLit_Timestamp
 	//	*BuiltinLit_NumericInternedStr
@@ -1527,6 +1531,7 @@ type Expr struct {
 
 	Location *Location `protobuf:"bytes,1,opt,name=location,proto3" json:"location,omitempty"`
 	// Types that are assignable to Sum:
+	//
 	//	*Expr_VarInternedStr
 	//	*Expr_Val
 	//	*Expr_Builtin
@@ -2214,6 +2219,7 @@ type CaseAlt struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*CaseAlt_Default
 	//	*CaseAlt_Variant_
 	//	*CaseAlt_BuiltinCon
@@ -2543,6 +2549,7 @@ type Update struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Update_Pure
 	//	*Update_Block
 	//	*Update_Create_
@@ -2831,6 +2838,7 @@ type Scenario struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Scenario_Pure
 	//	*Scenario_Block
 	//	*Scenario_Commit_
@@ -3499,6 +3507,7 @@ type DefDataType struct {
 	Params            []*TypeVarWithKind `protobuf:"bytes,3,rep,name=params,proto3" json:"params,omitempty"`
 	Serializable      bool               `protobuf:"varint,4,opt,name=serializable,proto3" json:"serializable,omitempty"`
 	// Types that are assignable to DataCons:
+	//
 	//	*DefDataType_Record
 	//	*DefDataType_Variant
 	//	*DefDataType_Enum

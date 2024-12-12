@@ -91,6 +91,7 @@ type TopologyStateUpdate struct {
 	Operation v0.TopologyChangeOp `protobuf:"varint,1,opt,name=operation,proto3,enum=com.digitalasset.canton.protocol.v0.TopologyChangeOp" json:"operation,omitempty"`
 	Id        string              `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	// Types that are assignable to Mapping:
+	//
 	//	*TopologyStateUpdate_NamespaceDelegation
 	//	*TopologyStateUpdate_IdentifierDelegation
 	//	*TopologyStateUpdate_OwnerToKeyMapping
@@ -320,6 +321,7 @@ type DomainGovernanceTransaction struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Mapping:
+	//
 	//	*DomainGovernanceTransaction_DomainParametersChange
 	Mapping isDomainGovernanceTransaction_Mapping `protobuf_oneof:"mapping"`
 }
@@ -384,6 +386,7 @@ type TopologyTransaction struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Transaction:
+	//
 	//	*TopologyTransaction_StateUpdate
 	//	*TopologyTransaction_DomainGovernance
 	Transaction isTopologyTransaction_Transaction `protobuf_oneof:"transaction"`

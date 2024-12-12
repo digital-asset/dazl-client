@@ -82,6 +82,7 @@ type DomainGovernanceTransaction struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Mapping:
+	//
 	//	*DomainGovernanceTransaction_DomainParametersChange
 	Mapping isDomainGovernanceTransaction_Mapping `protobuf_oneof:"mapping"`
 }
@@ -146,6 +147,7 @@ type TopologyTransaction struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Transaction:
+	//
 	//	*TopologyTransaction_StateUpdate
 	//	*TopologyTransaction_DomainGovernance
 	Transaction isTopologyTransaction_Transaction `protobuf_oneof:"transaction"`

@@ -31,6 +31,7 @@ type Event struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Event:
+	//
 	//	*Event_Created
 	//	*Event_Archived
 	Event isEvent_Event `protobuf_oneof:"event"`

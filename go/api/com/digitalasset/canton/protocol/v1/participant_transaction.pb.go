@@ -31,6 +31,7 @@ type ActionDescription struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Description:
+	//
 	//	*ActionDescription_Create
 	//	*ActionDescription_Exercise
 	//	*ActionDescription_Fetch
@@ -870,6 +871,7 @@ type ResolvedKey struct {
 
 	Key *GlobalKey `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	// Types that are assignable to Resolution:
+	//
 	//	*ResolvedKey_ContractId
 	//	*ResolvedKey_Free
 	Resolution isResolvedKey_Resolution `protobuf_oneof:"resolution"`

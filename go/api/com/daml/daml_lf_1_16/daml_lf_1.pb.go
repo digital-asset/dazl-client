@@ -701,6 +701,7 @@ type PackageRef struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*PackageRef_Self
 	//	*PackageRef_PackageIdStr
 	//	*PackageRef_PackageIdInternedStr
@@ -839,6 +840,7 @@ type ModuleRef struct {
 
 	PackageRef *PackageRef `protobuf:"bytes,1,opt,name=package_ref,json=packageRef,proto3" json:"package_ref,omitempty"`
 	// Types that are assignable to ModuleName:
+	//
 	//	*ModuleRef_ModuleNameDname
 	//	*ModuleRef_ModuleNameInternedDname
 	ModuleName isModuleRef_ModuleName `protobuf_oneof:"module_name"`
@@ -925,6 +927,7 @@ type TypeConName struct {
 
 	Module *ModuleRef `protobuf:"bytes,1,opt,name=module,proto3" json:"module,omitempty"`
 	// Types that are assignable to Name:
+	//
 	//	*TypeConName_NameDname
 	//	*TypeConName_NameInternedDname
 	Name isTypeConName_Name `protobuf_oneof:"name"`
@@ -1011,6 +1014,7 @@ type TypeSynName struct {
 
 	Module *ModuleRef `protobuf:"bytes,1,opt,name=module,proto3" json:"module,omitempty"`
 	// Types that are assignable to Name:
+	//
 	//	*TypeSynName_NameDname
 	//	*TypeSynName_NameInternedDname
 	Name isTypeSynName_Name `protobuf_oneof:"name"`
@@ -1157,6 +1161,7 @@ type FieldWithType struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Field:
+	//
 	//	*FieldWithType_FieldStr
 	//	*FieldWithType_FieldInternedStr
 	Field isFieldWithType_Field `protobuf_oneof:"field"`
@@ -1243,6 +1248,7 @@ type VarWithType struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Var:
+	//
 	//	*VarWithType_VarStr
 	//	*VarWithType_VarInternedStr
 	Var  isVarWithType_Var `protobuf_oneof:"var"`
@@ -1329,6 +1335,7 @@ type TypeVarWithKind struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Var:
+	//
 	//	*TypeVarWithKind_VarStr
 	//	*TypeVarWithKind_VarInternedStr
 	Var  isTypeVarWithKind_Var `protobuf_oneof:"var"`
@@ -1415,6 +1422,7 @@ type FieldWithExpr struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Field:
+	//
 	//	*FieldWithExpr_FieldStr
 	//	*FieldWithExpr_FieldInternedStr
 	Field isFieldWithExpr_Field `protobuf_oneof:"field"`
@@ -1554,6 +1562,7 @@ type Kind struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Kind_Star
 	//	*Kind_Arrow_
 	//	*Kind_Nat
@@ -1646,6 +1655,7 @@ type Type struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Type_Var_
 	//	*Type_Con_
 	//	*Type_Prim_
@@ -1808,6 +1818,7 @@ type PrimLit struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*PrimLit_Int64
 	//	*PrimLit_DecimalStr
 	//	*PrimLit_NumericInternedStr
@@ -2052,6 +2063,7 @@ type Expr struct {
 
 	Location *Location `protobuf:"bytes,25,opt,name=location,proto3" json:"location,omitempty"`
 	// Types that are assignable to Sum:
+	//
 	//	*Expr_VarStr
 	//	*Expr_VarInternedStr
 	//	*Expr_Val
@@ -2753,6 +2765,7 @@ type CaseAlt struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*CaseAlt_Default
 	//	*CaseAlt_Variant_
 	//	*CaseAlt_PrimCon
@@ -3082,6 +3095,7 @@ type Update struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Update_Pure
 	//	*Update_Block
 	//	*Update_Create_
@@ -3370,6 +3384,7 @@ type Scenario struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Scenario_Pure
 	//	*Scenario_Block
 	//	*Scenario_Commit_
@@ -3532,6 +3547,7 @@ type TemplateChoice struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Name:
+	//
 	//	*TemplateChoice_NameStr
 	//	*TemplateChoice_NameInternedStr
 	Name        isTemplateChoice_Name `protobuf_oneof:"name"`
@@ -3543,6 +3559,7 @@ type TemplateChoice struct {
 	RetType     *Type                 `protobuf:"bytes,5,opt,name=ret_type,json=retType,proto3" json:"ret_type,omitempty"`
 	Update      *Expr                 `protobuf:"bytes,6,opt,name=update,proto3" json:"update,omitempty"`
 	// Types that are assignable to SelfBinder:
+	//
 	//	*TemplateChoice_SelfBinderStr
 	//	*TemplateChoice_SelfBinderInternedStr
 	SelfBinder isTemplateChoice_SelfBinder `protobuf_oneof:"self_binder"`
@@ -3715,6 +3732,7 @@ type KeyExpr struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*KeyExpr_Projections_
 	//	*KeyExpr_Record_
 	Sum isKeyExpr_Sum `protobuf_oneof:"Sum"`
@@ -3846,10 +3864,12 @@ type DefTemplate struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Tycon:
+	//
 	//	*DefTemplate_TyconDname
 	//	*DefTemplate_TyconInternedDname
 	Tycon isDefTemplate_Tycon `protobuf_oneof:"tycon"`
 	// Types that are assignable to Param:
+	//
 	//	*DefTemplate_ParamStr
 	//	*DefTemplate_ParamInternedStr
 	Param       isDefTemplate_Param       `protobuf_oneof:"param"`
@@ -4252,11 +4272,13 @@ type DefDataType struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Name:
+	//
 	//	*DefDataType_NameDname
 	//	*DefDataType_NameInternedDname
 	Name   isDefDataType_Name `protobuf_oneof:"name"`
 	Params []*TypeVarWithKind `protobuf:"bytes,2,rep,name=params,proto3" json:"params,omitempty"`
 	// Types that are assignable to DataCons:
+	//
 	//	*DefDataType_Record
 	//	*DefDataType_Variant
 	//	*DefDataType_Enum
@@ -4423,6 +4445,7 @@ type DefTypeSyn struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Name:
+	//
 	//	*DefTypeSyn_NameDname
 	//	*DefTypeSyn_NameInternedDname
 	Name     isDefTypeSyn_Name  `protobuf_oneof:"name"`
@@ -4663,6 +4686,7 @@ type Module struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Name:
+	//
 	//	*Module_NameDname
 	//	*Module_NameInternedDname
 	Name       isModule_Name   `protobuf_oneof:"name"`
@@ -5078,6 +5102,7 @@ type Type_Var struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Var:
+	//
 	//	*Type_Var_VarStr
 	//	*Type_Var_VarInternedStr
 	Var  isType_Var_Var `protobuf_oneof:"var"`
@@ -5544,6 +5569,7 @@ type Expr_RecProj struct {
 
 	Tycon *Type_Con `protobuf:"bytes,1,opt,name=tycon,proto3" json:"tycon,omitempty"`
 	// Types that are assignable to Field:
+	//
 	//	*Expr_RecProj_FieldStr
 	//	*Expr_RecProj_FieldInternedStr
 	Field  isExpr_RecProj_Field `protobuf_oneof:"field"`
@@ -5638,6 +5664,7 @@ type Expr_RecUpd struct {
 
 	Tycon *Type_Con `protobuf:"bytes,1,opt,name=tycon,proto3" json:"tycon,omitempty"`
 	// Types that are assignable to Field:
+	//
 	//	*Expr_RecUpd_FieldStr
 	//	*Expr_RecUpd_FieldInternedStr
 	Field  isExpr_RecUpd_Field `protobuf_oneof:"field"`
@@ -5740,6 +5767,7 @@ type Expr_VariantCon struct {
 
 	Tycon *Type_Con `protobuf:"bytes,1,opt,name=tycon,proto3" json:"tycon,omitempty"`
 	// Types that are assignable to VariantCon:
+	//
 	//	*Expr_VariantCon_VariantConStr
 	//	*Expr_VariantCon_VariantConInternedStr
 	VariantCon isExpr_VariantCon_VariantCon `protobuf_oneof:"variant_con"`
@@ -5834,6 +5862,7 @@ type Expr_EnumCon struct {
 
 	Tycon *TypeConName `protobuf:"bytes,1,opt,name=tycon,proto3" json:"tycon,omitempty"`
 	// Types that are assignable to EnumCon:
+	//
 	//	*Expr_EnumCon_EnumConStr
 	//	*Expr_EnumCon_EnumConInternedStr
 	EnumCon isExpr_EnumCon_EnumCon `protobuf_oneof:"enum_con"`
@@ -5964,6 +5993,7 @@ type Expr_StructProj struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Field:
+	//
 	//	*Expr_StructProj_FieldStr
 	//	*Expr_StructProj_FieldInternedStr
 	Field  isExpr_StructProj_Field `protobuf_oneof:"field"`
@@ -6050,6 +6080,7 @@ type Expr_StructUpd struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Field:
+	//
 	//	*Expr_StructUpd_FieldStr
 	//	*Expr_StructUpd_FieldInternedStr
 	Field  isExpr_StructUpd_Field `protobuf_oneof:"field"`
@@ -7680,10 +7711,12 @@ type CaseAlt_Variant struct {
 
 	Con *TypeConName `protobuf:"bytes,1,opt,name=con,proto3" json:"con,omitempty"`
 	// Types that are assignable to Variant:
+	//
 	//	*CaseAlt_Variant_VariantStr
 	//	*CaseAlt_Variant_VariantInternedStr
 	Variant isCaseAlt_Variant_Variant `protobuf_oneof:"variant"`
 	// Types that are assignable to Binder:
+	//
 	//	*CaseAlt_Variant_BinderStr
 	//	*CaseAlt_Variant_BinderInternedStr
 	Binder isCaseAlt_Variant_Binder `protobuf_oneof:"binder"`
@@ -7807,6 +7840,7 @@ type CaseAlt_Enum struct {
 
 	Con *TypeConName `protobuf:"bytes,1,opt,name=con,proto3" json:"con,omitempty"`
 	// Types that are assignable to Constructor:
+	//
 	//	*CaseAlt_Enum_ConstructorStr
 	//	*CaseAlt_Enum_ConstructorInternedStr
 	Constructor isCaseAlt_Enum_Constructor `protobuf_oneof:"constructor"`
@@ -7892,10 +7926,12 @@ type CaseAlt_Cons struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to VarHead:
+	//
 	//	*CaseAlt_Cons_VarHeadStr
 	//	*CaseAlt_Cons_VarHeadInternedStr
 	VarHead isCaseAlt_Cons_VarHead `protobuf_oneof:"var_head"`
 	// Types that are assignable to VarTail:
+	//
 	//	*CaseAlt_Cons_VarTailStr
 	//	*CaseAlt_Cons_VarTailInternedStr
 	VarTail isCaseAlt_Cons_VarTail `protobuf_oneof:"var_tail"`
@@ -8011,6 +8047,7 @@ type CaseAlt_OptionalSome struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to VarBody:
+	//
 	//	*CaseAlt_OptionalSome_VarBodyStr
 	//	*CaseAlt_OptionalSome_VarBodyInternedStr
 	VarBody isCaseAlt_OptionalSome_VarBody `protobuf_oneof:"var_body"`
@@ -8196,6 +8233,7 @@ type Update_Exercise struct {
 
 	Template *TypeConName `protobuf:"bytes,1,opt,name=template,proto3" json:"template,omitempty"`
 	// Types that are assignable to Choice:
+	//
 	//	*Update_Exercise_ChoiceStr
 	//	*Update_Exercise_ChoiceInternedStr
 	Choice isUpdate_Exercise_Choice `protobuf_oneof:"choice"`
@@ -8298,6 +8336,7 @@ type Update_SoftExercise struct {
 
 	Template *TypeConName `protobuf:"bytes,1,opt,name=template,proto3" json:"template,omitempty"`
 	// Types that are assignable to Choice:
+	//
 	//	*Update_SoftExercise_ChoiceStr
 	//	*Update_SoftExercise_ChoiceInternedStr
 	Choice isUpdate_SoftExercise_Choice `protobuf_oneof:"choice"`
@@ -9063,6 +9102,7 @@ type KeyExpr_Projection struct {
 
 	Tycon *Type_Con `protobuf:"bytes,1,opt,name=tycon,proto3" json:"tycon,omitempty"`
 	// Types that are assignable to Field:
+	//
 	//	*KeyExpr_Projection_FieldStr
 	//	*KeyExpr_Projection_FieldInternedStr
 	Field isKeyExpr_Projection_Field `protobuf_oneof:"field"`
@@ -9193,6 +9233,7 @@ type KeyExpr_RecordField struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Field:
+	//
 	//	*KeyExpr_RecordField_FieldStr
 	//	*KeyExpr_RecordField_FieldInternedStr
 	Field isKeyExpr_RecordField_Field `protobuf_oneof:"field"`
@@ -9386,6 +9427,7 @@ type DefTemplate_DefKey struct {
 
 	Type *Type `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
 	// Types that are assignable to KeyExpr:
+	//
 	//	*DefTemplate_DefKey_Key
 	//	*DefTemplate_DefKey_ComplexKey
 	KeyExpr     isDefTemplate_DefKey_KeyExpr `protobuf_oneof:"key_expr"`

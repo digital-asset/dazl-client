@@ -720,6 +720,7 @@ type DomainParametersChangeAuthorization struct {
 	Authorization *AuthorizationData `protobuf:"bytes,1,opt,name=authorization,proto3" json:"authorization,omitempty"`
 	Domain        string             `protobuf:"bytes,2,opt,name=domain,proto3" json:"domain,omitempty"`
 	// Types that are assignable to Parameters:
+	//
 	//	*DomainParametersChangeAuthorization_ParametersV0
 	//	*DomainParametersChangeAuthorization_ParametersV1
 	//	*DomainParametersChangeAuthorization_ParametersV2

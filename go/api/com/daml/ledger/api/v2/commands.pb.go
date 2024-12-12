@@ -30,6 +30,7 @@ type Command struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Command:
+	//
 	//	*Command_Create
 	//	*Command_Exercise
 	//	*Command_ExerciseByKey
@@ -469,6 +470,7 @@ type Commands struct {
 	CommandId     string     `protobuf:"bytes,3,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
 	Commands      []*Command `protobuf:"bytes,4,rep,name=commands,proto3" json:"commands,omitempty"`
 	// Types that are assignable to DeduplicationPeriod:
+	//
 	//	*Commands_DeduplicationDuration
 	//	*Commands_DeduplicationOffset
 	DeduplicationPeriod          isCommands_DeduplicationPeriod `protobuf_oneof:"deduplication_period"`

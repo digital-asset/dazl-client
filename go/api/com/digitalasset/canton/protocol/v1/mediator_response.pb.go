@@ -123,6 +123,7 @@ type LocalVerdict struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to SomeLocalVerdict:
+	//
 	//	*LocalVerdict_LocalApprove
 	//	*LocalVerdict_LocalReject
 	SomeLocalVerdict isLocalVerdict_SomeLocalVerdict `protobuf_oneof:"some_local_verdict"`

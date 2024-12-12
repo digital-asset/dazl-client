@@ -92,6 +92,7 @@ type NodeStatus struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Response:
+	//
 	//	*NodeStatus_NotInitialized_
 	//	*NodeStatus_Success
 	Response isNodeStatus_Response `protobuf_oneof:"response"`
@@ -924,6 +925,7 @@ type NodeStatus_ComponentStatus struct {
 
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Types that are assignable to Status:
+	//
 	//	*NodeStatus_ComponentStatus_Ok
 	//	*NodeStatus_ComponentStatus_Degraded
 	//	*NodeStatus_ComponentStatus_Failed

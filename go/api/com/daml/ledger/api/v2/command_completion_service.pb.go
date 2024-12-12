@@ -89,6 +89,7 @@ type CompletionStreamResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to CompletionResponse:
+	//
 	//	*CompletionStreamResponse_Completion
 	//	*CompletionStreamResponse_OffsetCheckpoint
 	CompletionResponse isCompletionStreamResponse_CompletionResponse `protobuf_oneof:"completion_response"`

@@ -28,6 +28,7 @@ type UntypedVersionedMessage struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Wrapper:
+	//
 	//	*UntypedVersionedMessage_Data
 	Wrapper isUntypedVersionedMessage_Wrapper `protobuf_oneof:"wrapper"`
 	Version int32                             `protobuf:"varint,2,opt,name=version,proto3" json:"version,omitempty"`

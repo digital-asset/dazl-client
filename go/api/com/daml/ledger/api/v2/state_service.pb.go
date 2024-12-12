@@ -142,6 +142,7 @@ type GetActiveContractsResponse struct {
 
 	WorkflowId string `protobuf:"bytes,2,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
 	// Types that are assignable to ContractEntry:
+	//
 	//	*GetActiveContractsResponse_ActiveContract
 	//	*GetActiveContractsResponse_IncompleteUnassigned
 	//	*GetActiveContractsResponse_IncompleteAssigned

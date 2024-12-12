@@ -74,6 +74,7 @@ type LedgerOffset struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
+	//
 	//	*LedgerOffset_Absolute
 	//	*LedgerOffset_Boundary
 	Value isLedgerOffset_Value `protobuf_oneof:"value"`

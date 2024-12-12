@@ -32,6 +32,7 @@ type ReassignmentCommand struct {
 	CommandId     string `protobuf:"bytes,3,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
 	Submitter     string `protobuf:"bytes,4,opt,name=submitter,proto3" json:"submitter,omitempty"`
 	// Types that are assignable to Command:
+	//
 	//	*ReassignmentCommand_UnassignCommand
 	//	*ReassignmentCommand_AssignCommand
 	Command      isReassignmentCommand_Command `protobuf_oneof:"command"`

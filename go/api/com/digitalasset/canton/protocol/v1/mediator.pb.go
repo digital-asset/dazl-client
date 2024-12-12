@@ -92,6 +92,7 @@ type Verdict struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to SomeVerdict:
+	//
 	//	*Verdict_Approve
 	//	*Verdict_ParticipantReject
 	//	*Verdict_MediatorReject
@@ -405,6 +406,7 @@ type TransferResult struct {
 
 	RequestId *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	// Types that are assignable to Domain:
+	//
 	//	*TransferResult_OriginDomain
 	//	*TransferResult_TargetDomain
 	Domain    isTransferResult_Domain `protobuf_oneof:"domain"`

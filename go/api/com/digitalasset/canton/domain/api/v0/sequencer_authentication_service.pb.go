@@ -155,6 +155,7 @@ type Challenge_Response struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
+	//
 	//	*Challenge_Response_Success
 	//	*Challenge_Response_Failure
 	Value isChallenge_Response_Value `protobuf_oneof:"value"`
@@ -408,6 +409,7 @@ type Authentication_Response struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
+	//
 	//	*Authentication_Response_Success
 	//	*Authentication_Response_Failure
 	Value isAuthentication_Response_Value `protobuf_oneof:"value"`

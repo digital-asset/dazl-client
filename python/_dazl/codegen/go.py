@@ -58,6 +58,8 @@ def corrected_name(name: str) -> str:
         return "com/digitalasset/canton/domain/admin/v0sequencerinitializationservice/sequencer_initialization_service_grpc.pb.go"
     elif name == "com/digitalasset/canton/time/v0/time_proof.pb.go":
         return "com/digitalasset/canton/protocol/v0/time_proof.pb.go"
+    elif name == "com/digitalasset/canton/time/v30/time_proof.pb.go":
+        return "com/digitalasset/canton/protocol/v30/time_proof.pb.go"
     else:
         return name
 

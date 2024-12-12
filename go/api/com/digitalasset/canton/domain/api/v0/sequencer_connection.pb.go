@@ -72,6 +72,7 @@ type SequencerConnection struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Type:
+	//
 	//	*SequencerConnection_Grpc_
 	Type  isSequencerConnection_Type `protobuf_oneof:"type"`
 	Alias string                     `protobuf:"bytes,3,opt,name=alias,proto3" json:"alias,omitempty"`

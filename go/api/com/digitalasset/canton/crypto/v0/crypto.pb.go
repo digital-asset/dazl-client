@@ -476,6 +476,7 @@ type Salt struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Algorithm:
+	//
 	//	*Salt_Hmac
 	Algorithm isSalt_Algorithm `protobuf_oneof:"algorithm"`
 	Salt      []byte           `protobuf:"bytes,2,opt,name=salt,proto3" json:"salt,omitempty"`
@@ -609,6 +610,7 @@ type PublicKey struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Key:
+	//
 	//	*PublicKey_SigningPublicKey
 	//	*PublicKey_EncryptionPublicKey
 	Key isPublicKey_Key `protobuf_oneof:"key"`
@@ -740,6 +742,7 @@ type PrivateKey struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Key:
+	//
 	//	*PrivateKey_SigningPrivateKey
 	//	*PrivateKey_EncryptionPrivateKey
 	Key isPrivateKey_Key `protobuf_oneof:"key"`
@@ -1200,6 +1203,7 @@ type CryptoKeyPair struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Pair:
+	//
 	//	*CryptoKeyPair_SigningKeyPair
 	//	*CryptoKeyPair_EncryptionKeyPair
 	Pair isCryptoKeyPair_Pair `protobuf_oneof:"pair"`

@@ -164,6 +164,7 @@ type GetSafePruningOffsetResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Response:
+	//
 	//	*GetSafePruningOffsetResponse_SafePruningOffset
 	//	*GetSafePruningOffsetResponse_NoSafePruningOffset_
 	Response isGetSafePruningOffsetResponse_Response `protobuf_oneof:"response"`

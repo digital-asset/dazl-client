@@ -29,6 +29,7 @@ type EnvelopeContent struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to SomeEnvelopeContent:
+	//
 	//	*EnvelopeContent_InformeeMessage
 	//	*EnvelopeContent_SignedMessage
 	//	*EnvelopeContent_EncryptedViewMessage

@@ -210,6 +210,7 @@ type PingResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Response:
+	//
 	//	*PingResponse_Success
 	//	*PingResponse_Failure
 	Response isPingResponse_Response `protobuf_oneof:"response"`

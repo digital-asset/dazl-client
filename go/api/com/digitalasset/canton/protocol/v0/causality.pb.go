@@ -163,6 +163,7 @@ type CausalityUpdate struct {
 	DomainId             string                 `protobuf:"bytes,3,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
 	RequestCounter       int64                  `protobuf:"varint,4,opt,name=request_counter,json=requestCounter,proto3" json:"request_counter,omitempty"`
 	// Types that are assignable to Tag:
+	//
 	//	*CausalityUpdate_TransactionUpdate
 	//	*CausalityUpdate_TransferOutUpdate
 	//	*CausalityUpdate_TransferInUpdate

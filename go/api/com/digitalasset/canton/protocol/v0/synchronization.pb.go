@@ -30,6 +30,7 @@ type SignedProtocolMessage struct {
 
 	Signature *v0.Signature `protobuf:"bytes,1,opt,name=signature,proto3" json:"signature,omitempty"`
 	// Types that are assignable to SomeSignedProtocolMessage:
+	//
 	//	*SignedProtocolMessage_MediatorResponse
 	//	*SignedProtocolMessage_TransactionResult
 	//	*SignedProtocolMessage_MalformedMediatorRequestResult
@@ -158,6 +159,7 @@ type EnvelopeContent struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to SomeEnvelopeContent:
+	//
 	//	*EnvelopeContent_InformeeMessage
 	//	*EnvelopeContent_SignedMessage
 	//	*EnvelopeContent_EncryptedViewMessage

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from contextlib import ExitStack
 import io
+import os
 from pathlib import Path
 from shutil import rmtree
 from tempfile import TemporaryDirectory
@@ -43,21 +44,29 @@ def build(
         else:
             cache_dir = Path(stack.enter_context(TemporaryDirectory()))
 
-        _build_part(
+        _build_zip_part(
             archive=canton_2,
             out_dir=cache_dir,
             renamer=rename.canton_proto_files,
             rewriter=rewrite.canton_proto_rewrite,
         )
 
-        _build_part(
+        if canton_3_dir := os.getenv("CN_ENTERPRISE_PATH"):
+            _build_dir_part(
+                input_dir=Path(canton_3_dir),
+                out_dir=cache_dir,
+                renamer=rename.canton_proto_files,
+                rewriter=rewrite.canton_proto_rewrite,
+            )
+
+        _build_zip_part(
             archive=daml_2_proto,
             out_dir=cache_dir,
             renamer=lambda names: rename.daml_proto_files(names, "v1"),
             rewriter=rewrite.daml_proto_rewrite,
         )
 
-        _build_part(
+        _build_zip_part(
             archive=daml_3_proto,
             out_dir=cache_dir,
             renamer=lambda names: rename.daml_proto_files(names, "v2"),
@@ -67,13 +76,31 @@ def build(
         protoc.generate_descriptors(cache_dir, to)
 
 
-def _build_part(archive: ZipFile, out_dir: Path, renamer: Renamer, rewriter: Rewriter) -> None:
+def _build_zip_part(archive: ZipFile, out_dir: Path, renamer: Renamer, rewriter: Rewriter) -> None:
     proto_files = renamer(archive.namelist())
 
     for target_name, zip_name in proto_files.items():
         with archive.open(zip_name) as r:
             with io.TextIOWrapper(r) as buf_in:
                 contents = rewriter(target_name, buf_in.read())
+
+        out_file = out_dir / target_name
+        out_file.parent.mkdir(parents=True, exist_ok=True)
+        out_file.write_text(contents)
+
+
+def _build_dir_part(input_dir: Path, out_dir: Path, renamer: Renamer, rewriter: Rewriter) -> None:
+    proto_files = renamer(
+        [
+            str(input_name.relative_to(input_dir.parent))
+            for input_name in input_dir.glob("**/*.proto")
+        ]
+    )
+
+    for target_name, original_name in proto_files.items():
+        input_name = input_dir.parent / original_name
+        with input_name.open() as buf_in:
+            contents = rewriter(target_name, buf_in.read())
 
         out_file = out_dir / target_name
         out_file.parent.mkdir(parents=True, exist_ok=True)

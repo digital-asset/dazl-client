@@ -80,7 +80,19 @@ def write_service(buf: TextIO, sd: ServiceDescriptorProto, ictx: ImportContext) 
         bbuf.write("# noinspection PyPep8Naming,DuplicatedCode\n")
         bbuf.write(f"class {bstub}({sd.name}Stub):\n")
 
-        for method in sd.method:
+        # mypy incorrectly "imports" function names into scope, which can cause problems when
+        # function names line up exactly with an imported symbol. There is only one instance
+        # of this in the current protos, so look for it specifically and "fix" it by simply
+        # reordering the methods
+        methods = list(sd.method)
+        if (
+            len(methods) == 3
+            and methods[1].name == "GetDomainParameters"
+            and methods[2].name == "GetDomainParametersVersioned"
+        ):
+            methods[1], methods[2] = methods[2], methods[1]
+
+        for method in methods:
             arg = ictx.py_type(
                 method.input_type, Usage.ARG_STREAM if method.client_streaming else Usage.ARG
             )

@@ -72,6 +72,7 @@ type ArchivePayload struct {
 
 	Minor string `protobuf:"bytes,3,opt,name=minor,proto3" json:"minor,omitempty"`
 	// Types that are assignable to Sum:
+	//
 	//	*ArchivePayload_DamlLf_2
 	Sum isArchivePayload_Sum `protobuf_oneof:"Sum"`
 }
