@@ -31,14 +31,14 @@ from ..v0 import sequencing_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_
 from . import common_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v2_dot_common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n>com/digitalasset/canton/protocol/v2/participant_transfer.proto\x12#com.digitalasset.canton.protocol.v2\x1a.com/digitalasset/canton/crypto/v0/crypto.proto\x1a\x34\x63om/digitalasset/canton/protocol/v0/sequencing.proto\x1a\x30\x63om/digitalasset/canton/protocol/v2/common.proto\"\xa1\x03\n\x0eTransferInView\x12;\n\x04salt\x18\x01 \x01(\x0b\x32\'.com.digitalasset.canton.crypto.v0.SaltR\x04salt\x12\x1c\n\tsubmitter\x18\x02 \x01(\tR\tsubmitter\x12U\n\x08\x63ontract\x18\x03 \x01(\x0b\x32\x39.com.digitalasset.canton.protocol.v2.SerializableContractR\x08\x63ontract\x12m\n\x19transfer_out_result_event\x18\x04 \x01(\x0b\x32\x32.com.digitalasset.canton.protocol.v0.SignedContentR\x16transferOutResultEvent\x12\x36\n\x17\x63reating_transaction_id\x18\x05 \x01(\x0cR\x15\x63reatingTransactionId\x12\x36\n\x17source_protocol_version\x18\x06 \x01(\x05R\x15sourceProtocolVersionBTZRgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/protocol/v2b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n>com/digitalasset/canton/protocol/v2/participant_transfer.proto\x12#com.digitalasset.canton.protocol.v2\x1a.com/digitalasset/canton/crypto/v0/crypto.proto\x1a\x34\x63om/digitalasset/canton/protocol/v0/sequencing.proto\x1a\x30\x63om/digitalasset/canton/protocol/v2/common.proto\"\xa1\x03\n\x0eTransferInView\x12;\n\x04salt\x18\x01 \x01(\x0b\x32\'.com.digitalasset.canton.crypto.v0.SaltR\x04salt\x12\x1c\n\tsubmitter\x18\x02 \x01(\tR\tsubmitter\x12U\n\x08\x63ontract\x18\x03 \x01(\x0b\x32\x39.com.digitalasset.canton.protocol.v2.SerializableContractR\x08\x63ontract\x12m\n\x19transfer_out_result_event\x18\x04 \x01(\x0b\x32\x32.com.digitalasset.canton.protocol.v0.SignedContentR\x16transferOutResultEvent\x12\x36\n\x17\x63reating_transaction_id\x18\x05 \x01(\x0cR\x15\x63reatingTransactionId\x12\x36\n\x17source_protocol_version\x18\x06 \x01(\x05R\x15sourceProtocolVersionBTZRgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v2b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.protocol.v2.participant_transfer_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
-  _globals['DESCRIPTOR']._serialized_options = b'ZRgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/protocol/v2'
+  _globals['DESCRIPTOR']._serialized_options = b'ZRgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v2'
   _globals['_TRANSFERINVIEW']._serialized_start=256
   _globals['_TRANSFERINVIEW']._serialized_end=673
 # @@protoc_insertion_point(module_scope)

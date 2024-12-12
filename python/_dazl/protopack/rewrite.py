@@ -6,6 +6,8 @@ from __future__ import annotations
 import io
 from typing import Optional
 
+from .. import dazl_go_module
+
 __all__ = ["canton_proto_rewrite", "daml_proto_rewrite"]
 
 
@@ -50,11 +52,9 @@ def rewrite_canton_proto_line(short_name: str, line: str, buf_out: io.StringIO) 
                 == "com/digitalasset/canton/domain/admin/v0/sequencer_initialization_service.proto"
             ):
                 # avoid import cycles
-                go_pkg = "github.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/domain/admin/v0/sequencerinitializationservice"
+                go_pkg = f"{dazl_go_module}/go/api/com/digitalasset/canton/domain/admin/v0/sequencerinitializationservice"
             else:
-                go_pkg = "github.com/digital-asset/dazl-client/v7/go/api/" + proto_pkg.replace(
-                    ".", "/"
-                )
+                go_pkg = f"{dazl_go_module}/go/api/" + proto_pkg.replace(".", "/")
 
             buf_out.write(f'option go_package = "{go_pkg}";\n')
 

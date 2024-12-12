@@ -9,7 +9,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/digital-asset/dazl-client/v7/go/api/com/daml/ledger/api/v1"
+	"github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v1"
 )
 
 type LedgerId string

@@ -28,14 +28,14 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n1com/digitalasset/canton/protocol/v0/storage.proto\x12#com.digitalasset.canton.protocol.v0\")\n\rStoredParties\x12\x18\n\x07parties\x18\x01 \x03(\tR\x07partiesBTZRgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/protocol/v0b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n1com/digitalasset/canton/protocol/v0/storage.proto\x12#com.digitalasset.canton.protocol.v0\")\n\rStoredParties\x12\x18\n\x07parties\x18\x01 \x03(\tR\x07partiesBTZRgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v0b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.protocol.v0.storage_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
-  _globals['DESCRIPTOR']._serialized_options = b'ZRgithub.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/protocol/v0'
+  _globals['DESCRIPTOR']._serialized_options = b'ZRgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v0'
   _globals['_STOREDPARTIES']._serialized_start=90
   _globals['_STOREDPARTIES']._serialized_end=131
 # @@protoc_insertion_point(module_scope)

@@ -7,7 +7,7 @@ from pathlib import Path
 import shutil
 from typing import Sequence, TextIO
 
-from .. import protoc
+from .. import dazl_go_module, protoc
 from .go_header import HEADER
 
 __all__ = ["go_files"]
@@ -22,8 +22,10 @@ def go_files(from_: Path, to: Path) -> None:
     if to.exists():
         shutil.rmtree(to)
 
+    go_modules = set[str]()
     for f in response.file:
         name = corrected_name(f.name)
+        go_modules.add(name.rpartition("/")[0])
 
         p = to / name
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -31,6 +33,18 @@ def go_files(from_: Path, to: Path) -> None:
         # unfortunately, more than a few files end up generating Go code that does not compile,
         # so they must be fixed afterwards
         write_corrected_content(p, f.content)
+
+    # now write an `import_test.go` that ensures that all generated code is valid and can be compiled
+
+    lines = ['package api_test\n\nimport (\n\t"testing"\n']
+    for go_module in sorted(go_modules):
+        lines.append(f'\t_ "{dazl_go_module}/go/api/{go_module}"')
+
+    lines.extend([")\n", "func Test(_ *testing.T) {}\n"])
+
+    contents = "\n".join(lines)
+    import_test_file = to / "import_test.go"
+    import_test_file.write_text(contents)
 
 
 def corrected_name(name: str) -> str:
@@ -68,29 +82,39 @@ def write_corrected_content(path: Path, content: str) -> None:
         elif path.name == "time_proof.pb.go":
             write_corrected_content_for_timeproof(buf, lines)
 
-        elif "/daml_lf_1_15/" in str(path):
-            write_corrected_content_for_damllf(buf, lines)
+        # TODO: maintaining this list is a bit silly--it should be derived from the contents
+        #  of the archive (as we are already doing that derivation logic)
+        elif "/daml_lf_1_16/" in str(path):
+            write_corrected_content_for_damllf(buf, lines, "1.16")
+
+        elif "/daml_lf_1_17/" in str(path):
+            write_corrected_content_for_damllf(buf, lines, "1.17")
+
+        elif "/daml_lf_2_1/" in str(path):
+            write_corrected_content_for_damllf(buf, lines, "2.1")
 
         else:
             write_content_unchanged(buf, lines)
 
 
-def write_corrected_content_for_damllf(buf: TextIO, lines: Sequence[str]) -> None:
+def write_corrected_content_for_damllf(
+    buf: TextIO, lines: Sequence[str], daml_sdk_version: str
+) -> None:
     # the Daml-LF protobufs unfortunately mix Protobuf package names in the same directory,
     # and that causes the Go Protobuf compiler to spit out nonsense. Fix the package names
     # so that they are consistent, drop a meaningless broken import, and drop an unnecessary
     # qualified reference
 
+    major_version = daml_sdk_version.partition(".")[0]
+    underscored_version = daml_sdk_version.replace(".", "_")
+
     for line in lines:
-        if line == "package daml_lf_15":
-            buf.write("package daml_lf_1_15\n")
-        elif (
-            line
-            == '\tdaml_lf_15 "github.com/digital-asset/dazl-client/v7/go/api/com/daml/daml_lf_15"'
-        ):
+        if line == f"package daml_lf_{major_version}":
+            buf.write(f"package daml_lf_{underscored_version}\n")
+        elif line == f'\tdaml_lf_{major_version} "{dazl_go_module}/go/api/daml_lf_{major_version}"':
             pass
-        elif "*daml_lf_15.Package" in line:
-            buf.write(line.replace("*daml_lf_15.Package", "*Package") + "\n")
+        elif f"*daml_lf_{major_version}.Package" in line:
+            buf.write(line.replace(f"*daml_lf_{major_version}.Package", "*Package") + "\n")
 
         else:
             # nothing unusual about this line, so just write it as is
@@ -99,10 +123,7 @@ def write_corrected_content_for_damllf(buf: TextIO, lines: Sequence[str]) -> Non
 
 def write_corrected_content_for_participant_transfer_v0(buf: TextIO, lines: Sequence[str]) -> None:
     for line in lines:
-        if (
-            line
-            == '\tv01 "github.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/time/v0"'
-        ):
+        if line == f'\tv01 "{dazl_go_module}/go/api/com/digitalasset/canton/time/v0"':
             pass
         elif "*v01.TimeProof" in line:
             buf.write(line.replace("*v01.TimeProof", "*TimeProof") + "\n")
@@ -112,12 +133,9 @@ def write_corrected_content_for_participant_transfer_v0(buf: TextIO, lines: Sequ
 
 def write_corrected_content_for_participant_transfer_vn(buf: TextIO, lines: Sequence[str]) -> None:
     for line in lines:
-        if (
-            line
-            == '\tv01 "github.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/time/v0"'
-        ):
+        if line == f'\tv01 "{dazl_go_module}/go/api/com/digitalasset/canton/time/v0"':
             buf.write(
-                '\tprotocolv0 "github.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/protocol/v0"\n'
+                f'\tprotocolv0 "{dazl_go_module}/go/api/com/digitalasset/canton/protocol/v0"\n'
             )
         elif "*v01.TimeProof" in line:
             buf.write(line.replace("*v01.TimeProof", "*protocolv0.TimeProof") + "\n")
@@ -129,10 +147,7 @@ def write_corrected_content_for_timeproof(buf: TextIO, lines: Sequence[str]) -> 
     for line in lines:
         # we move TimeProof into protocol/v0 to avoid circular references,
         # so it doesn't need a reference to its new home package any more
-        if (
-            line
-            == '\tv0 "github.com/digital-asset/dazl-client/v7/go/api/com/digitalasset/canton/protocol/v0"'
-        ):
+        if line == f'\tv0 "{dazl_go_module}/go/api/com/digitalasset/canton/protocol/v0"':
             pass
         elif "*v0." in line:
             # replace references to the v0 package to local package refs
