@@ -408,6 +408,7 @@ type ExecuteSubmissionRequest struct {
 	PartiesSignatures   *PartySignatures     `protobuf:"bytes,2,opt,name=parties_signatures,json=partiesSignatures,proto3" json:"parties_signatures,omitempty"`
 	WorkflowId          string               `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
 	// Types that are assignable to DeduplicationPeriod:
+	//
 	//	*ExecuteSubmissionRequest_DeduplicationDuration
 	//	*ExecuteSubmissionRequest_DeduplicationOffset
 	DeduplicationPeriod isExecuteSubmissionRequest_DeduplicationPeriod `protobuf_oneof:"deduplication_period"`

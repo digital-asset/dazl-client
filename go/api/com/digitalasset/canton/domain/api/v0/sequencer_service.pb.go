@@ -485,6 +485,7 @@ type SendAsyncResponse_Error struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Reason:
+	//
 	//	*SendAsyncResponse_Error_RequestInvalid
 	//	*SendAsyncResponse_Error_RequestRefused
 	//	*SendAsyncResponse_Error_Overloaded
@@ -633,6 +634,7 @@ type SendAsyncSignedResponse_Error struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Reason:
+	//
 	//	*SendAsyncSignedResponse_Error_RequestInvalid
 	//	*SendAsyncSignedResponse_Error_RequestRefused
 	//	*SendAsyncSignedResponse_Error_Overloaded

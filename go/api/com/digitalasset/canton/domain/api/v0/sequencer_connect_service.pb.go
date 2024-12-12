@@ -299,6 +299,7 @@ type SequencerConnect_GetDomainParameters_Response struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Parameters:
+	//
 	//	*SequencerConnect_GetDomainParameters_Response_ParametersV0
 	//	*SequencerConnect_GetDomainParameters_Response_ParametersV1
 	Parameters isSequencerConnect_GetDomainParameters_Response_Parameters `protobuf_oneof:"parameters"`
@@ -415,6 +416,7 @@ type SequencerConnect_VerifyActive_Response struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
+	//
 	//	*SequencerConnect_VerifyActive_Response_Success
 	//	*SequencerConnect_VerifyActive_Response_Failure
 	Value isSequencerConnect_VerifyActive_Response_Value `protobuf_oneof:"value"`

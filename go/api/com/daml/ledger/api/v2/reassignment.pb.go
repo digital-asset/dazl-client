@@ -33,6 +33,7 @@ type Reassignment struct {
 	WorkflowId string `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
 	Offset     int64  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
 	// Types that are assignable to Event:
+	//
 	//	*Reassignment_UnassignedEvent
 	//	*Reassignment_AssignedEvent
 	Event        isReassignment_Event   `protobuf_oneof:"event"`

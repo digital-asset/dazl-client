@@ -125,6 +125,7 @@ type ActionDescription struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Description:
+	//
 	//	*ActionDescription_Create
 	//	*ActionDescription_Exercise
 	//	*ActionDescription_Fetch

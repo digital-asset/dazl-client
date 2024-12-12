@@ -97,6 +97,7 @@ type GetUpdatesResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Update:
+	//
 	//	*GetUpdatesResponse_Transaction
 	//	*GetUpdatesResponse_Reassignment
 	//	*GetUpdatesResponse_OffsetCheckpoint
@@ -189,6 +190,7 @@ type GetUpdateTreesResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Update:
+	//
 	//	*GetUpdateTreesResponse_TransactionTree
 	//	*GetUpdateTreesResponse_Reassignment
 	//	*GetUpdateTreesResponse_OffsetCheckpoint

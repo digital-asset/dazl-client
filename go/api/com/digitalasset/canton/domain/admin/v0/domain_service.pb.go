@@ -219,6 +219,7 @@ type GetDomainParameters_Response struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Parameters:
+	//
 	//	*GetDomainParameters_Response_ParametersV0
 	//	*GetDomainParameters_Response_ParametersV1
 	Parameters isGetDomainParameters_Response_Parameters `protobuf_oneof:"parameters"`

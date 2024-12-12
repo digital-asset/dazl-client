@@ -106,6 +106,7 @@ type Right struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Kind:
+	//
 	//	*Right_ParticipantAdmin_
 	//	*Right_CanActAs_
 	//	*Right_CanReadAs_

@@ -53,6 +53,9 @@ def rewrite_canton_proto_line(short_name: str, line: str, buf_out: io.StringIO) 
             ):
                 # avoid import cycles
                 go_pkg = f"{dazl_go_module}/go/api/com/digitalasset/canton/domain/admin/v0/sequencerinitializationservice"
+            elif short_name == "com/digitalasset/canton/time/v30/time_proof.proto":
+                # avoid import cycles
+                go_pkg = f"{dazl_go_module}/go/api/com/digitalasset/canton/protocol/v30"
             else:
                 go_pkg = f"{dazl_go_module}/go/api/" + proto_pkg.replace(".", "/")
 

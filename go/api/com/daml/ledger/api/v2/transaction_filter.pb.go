@@ -73,6 +73,7 @@ type CumulativeFilter struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to IdentifierFilter:
+	//
 	//	*CumulativeFilter_WildcardFilter
 	//	*CumulativeFilter_InterfaceFilter
 	//	*CumulativeFilter_TemplateFilter

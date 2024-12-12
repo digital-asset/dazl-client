@@ -551,6 +551,7 @@ type DeliverErrorReason struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Reason:
+	//
 	//	*DeliverErrorReason_BatchInvalid
 	//	*DeliverErrorReason_BatchRefused
 	Reason isDeliverErrorReason_Reason `protobuf_oneof:"reason"`
@@ -1051,6 +1052,7 @@ type Handshake_Response struct {
 
 	ServerProtocolVersion string `protobuf:"bytes,1,opt,name=server_protocol_version,json=serverProtocolVersion,proto3" json:"server_protocol_version,omitempty"`
 	// Types that are assignable to Value:
+	//
 	//	*Handshake_Response_Success
 	//	*Handshake_Response_Failure
 	Value isHandshake_Response_Value `protobuf_oneof:"value"`

@@ -117,6 +117,7 @@ type InitializeMediatorResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
+	//
 	//	*InitializeMediatorResponse_Success_
 	//	*InitializeMediatorResponse_Failure_
 	Value isInitializeMediatorResponse_Value `protobuf_oneof:"value"`

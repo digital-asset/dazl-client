@@ -29,6 +29,7 @@ type Value struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Sum:
+	//
 	//	*Value_Unit
 	//	*Value_Bool
 	//	*Value_Int64

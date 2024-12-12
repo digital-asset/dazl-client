@@ -76,6 +76,7 @@ type LedgerIdentity struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Identifier:
+	//
 	//	*LedgerIdentity_EthereumAccount
 	Identifier isLedgerIdentity_Identifier `protobuf_oneof:"identifier"`
 }
@@ -302,6 +303,7 @@ type LedgerIdentity_AuthorizeResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
+	//
 	//	*LedgerIdentity_AuthorizeResponse_Success
 	//	*LedgerIdentity_AuthorizeResponse_Failure
 	Value isLedgerIdentity_AuthorizeResponse_Value `protobuf_oneof:"value"`
@@ -596,6 +598,7 @@ type Snapshot_Response struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
+	//
 	//	*Snapshot_Response_Success
 	//	*Snapshot_Response_Failure
 	//	*Snapshot_Response_VersionedSuccess

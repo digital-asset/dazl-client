@@ -285,6 +285,7 @@ type Node struct {
 	Version *string `protobuf:"bytes,1,opt,name=version,proto3,oneof" json:"version,omitempty"`
 	NodeId  string  `protobuf:"bytes,2,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
 	// Types that are assignable to NodeType:
+	//
 	//	*Node_Create
 	//	*Node_Fetch_
 	//	*Node_Exercise_

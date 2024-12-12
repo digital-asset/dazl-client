@@ -36,6 +36,7 @@ type Completion struct {
 	ActAs         []string       `protobuf:"bytes,5,rep,name=act_as,json=actAs,proto3" json:"act_as,omitempty"`
 	SubmissionId  string         `protobuf:"bytes,6,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
 	// Types that are assignable to DeduplicationPeriod:
+	//
 	//	*Completion_DeduplicationOffset
 	//	*Completion_DeduplicationDuration
 	DeduplicationPeriod isCompletion_DeduplicationPeriod `protobuf_oneof:"deduplication_period"`

@@ -81,6 +81,7 @@ type LedgerSyncEvent struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
+	//
 	//	*LedgerSyncEvent_ConfigurationChanged
 	//	*LedgerSyncEvent_ConfigurationChangeRejected
 	//	*LedgerSyncEvent_PartyAddedToParticipant

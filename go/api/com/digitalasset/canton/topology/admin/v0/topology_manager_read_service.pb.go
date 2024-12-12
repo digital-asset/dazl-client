@@ -235,6 +235,7 @@ type BaseQuery struct {
 	Operation       v0.TopologyChangeOp `protobuf:"varint,3,opt,name=operation,proto3,enum=com.digitalasset.canton.protocol.v0.TopologyChangeOp" json:"operation,omitempty"`
 	FilterOperation bool                `protobuf:"varint,4,opt,name=filter_operation,json=filterOperation,proto3" json:"filter_operation,omitempty"`
 	// Types that are assignable to TimeQuery:
+	//
 	//	*BaseQuery_Snapshot
 	//	*BaseQuery_HeadState
 	//	*BaseQuery_Range
@@ -1900,6 +1901,7 @@ type ListDomainParametersChangesResult_Result struct {
 
 	Context *BaseResult `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
 	// Types that are assignable to Parameters:
+	//
 	//	*ListDomainParametersChangesResult_Result_V0
 	//	*ListDomainParametersChangesResult_Result_V1
 	//	*ListDomainParametersChangesResult_Result_V2

@@ -254,6 +254,7 @@ type DeduplicationPeriod struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Period:
+	//
 	//	*DeduplicationPeriod_Duration
 	//	*DeduplicationPeriod_Offset
 	Period isDeduplicationPeriod_Period `protobuf_oneof:"period"`
@@ -746,6 +747,7 @@ type ActionDescription struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Description:
+	//
 	//	*ActionDescription_Create
 	//	*ActionDescription_Exercise
 	//	*ActionDescription_Fetch
@@ -1179,6 +1181,7 @@ type ViewParticipantData_ResolvedKey struct {
 
 	Key *GlobalKey `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	// Types that are assignable to Resolution:
+	//
 	//	*ViewParticipantData_ResolvedKey_ContractId
 	//	*ViewParticipantData_ResolvedKey_Free
 	Resolution isViewParticipantData_ResolvedKey_Resolution `protobuf_oneof:"resolution"`
