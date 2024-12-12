@@ -4,6 +4,7 @@
 *.hi
 *.hie
 .daml
+.direnv
 .venv
 .vscode
 .DS_Store

@@ -18,17 +18,8 @@ packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
 # general targets
 
 .PHONY: generate
-generate: .venv/poetry.lock .cache/bin/protoc-gen-go .cache/bin/protoc-gen-go-grpc
+generate: .venv/poetry.lock
 	$(python) -m _dazl update 2.9.5 protobufs-3.2.0-snapshot.20241106.0
-
-####################################################################################################
-# Go
-
-.cache/bin/protoc-gen-go:
-	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.35.2
-
-.cache/bin/protoc-gen-go-grpc:
-	GOBIN=$(shell pwd)/.cache/bin go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
 
 ####################################################################################################
 # Python

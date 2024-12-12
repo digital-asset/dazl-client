@@ -25,11 +25,10 @@ pip install --user dazl
 
 Requirements
 ------------
-* Python 3.7+
-* [Daml Connect](https://www.daml.com)
-    * Daml 1: 1.18.3
+* Python 3.9+
+* Go 1.22
+* [Daml SDK](https://www.daml.com)
     * Daml 2: 2.7 or later
-* Python gRPC libraries (1.32.0 or later) and Protobuf
 
 Examples
 --------
@@ -72,16 +71,14 @@ Building locally
 
 You will need additional dependencies to build locally:
 
-* GNU Make 4.3 or later
-* [Poetry](https://python-poetry.org/) for build/dependency management
+* Direnv (https://direnv.net/)
+* Nix (https://nixos.org/download/)
 
 Once you have these prerequisites in place:
 
 ```sh
 make build
 ```
-
-If you see errors about incompatible python versions, switch your environment to python3 using `poetry env use python3`, for instance.
 
 Tests
 -----
