@@ -32,10 +32,6 @@ def run(
         if f.name.startswith("com/daml") or f.name.startswith("com/digitalasset")
     ]
 
-    path = os.getenv("PATH")
-    path = f"{Path(__file__).parent.parent.parent.parent}/.cache/bin:{path}"
-    os.environ["PATH"] = path
-
     import site
 
     include_dirs = []
