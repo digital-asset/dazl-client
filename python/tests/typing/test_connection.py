@@ -23,7 +23,7 @@ def compare_sigs(_: Callable[P, R]) -> AssertSignature[P, Awaitable[R]]:
 
 
 def compare_stream_sigs(
-    _: Callable[P, blocking.QueryStream]
+    _: Callable[P, blocking.QueryStream],
 ) -> AssertSignature[P, aio.QueryStream]:
     return AssertSignature()
 
