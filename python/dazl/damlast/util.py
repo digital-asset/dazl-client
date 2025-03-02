@@ -24,7 +24,7 @@ from .daml_lf_1 import (
 
 
 # noinspection PyShadowingBuiltins
-def unpack_arrow_type(type: "Optional[Type]") -> "Sequence[Type]":
+def unpack_arrow_type(type: Optional[Type]) -> Sequence[Type]:
     """
     Unwind an arrow type the sequence of constituent types.
 
@@ -102,7 +102,7 @@ def def_value(name: Union[str, Sequence[str]], daml_type: Type, expr: Expr) -> D
     return DefValue(name_with_type, expr, True, False, None)
 
 
-def package_ref(obj: "Union[ModuleRef, _Name]") -> "PackageRef":
+def package_ref(obj: Union[ModuleRef, _Name]) -> PackageRef:
     """
     Return the package ID for a :class:`ModuleRef` or a DAML name.
     """
@@ -117,11 +117,10 @@ def package_ref(obj: "Union[ModuleRef, _Name]") -> "PackageRef":
         raise ValueError(f"Could not extract a package_ref from {obj!r}")
 
 
-def module_name(obj: "Union[ModuleRef, _Name]") -> "DottedName":
+def module_name(obj: Union[ModuleRef, _Name]) -> DottedName:
     """
     Return the module name of a :class:`ModuleRef` or a DAML name.
     """
-    # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     if isinstance(obj, ModuleRef):
         # noinspection PyProtectedMember
         return obj._module_name
@@ -132,11 +131,10 @@ def module_name(obj: "Union[ModuleRef, _Name]") -> "DottedName":
         raise ValueError(f"Could not extract a module_name from {obj!r}")
 
 
-def module_ref(obj: "_Name") -> "ModuleRef":
+def module_ref(obj: _Name) -> ModuleRef:
     """
     Return the :class:`ModuleRef` of a DAML name.
     """
-    # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     if isinstance(obj, _Name):
         # noinspection PyProtectedMember
         return obj._module
@@ -145,12 +143,11 @@ def module_ref(obj: "_Name") -> "ModuleRef":
 
 
 # noinspection PyProtectedMember
-def package_local_name(obj: "_Name") -> str:
+def package_local_name(obj: _Name) -> str:
     """
     Return the name of a DAML object, assuming that the referent exists in the same package as the
     target (i.e., _not_ scoped with a package ID).
     """
-    # TODO: Rewrite for dazl 7.0.0 when the internal structure of a ModuleRef is changed.
     if isinstance(obj, _Name):
         name_str = ".".join(obj._name)
         if obj._module._module_name:
@@ -161,12 +158,11 @@ def package_local_name(obj: "_Name") -> str:
         raise ValueError(f"Could not extract a package_local_name from {obj!r}")
 
 
-def module_local_name(obj: "_Name") -> str:
+def module_local_name(obj: _Name) -> str:
     """
     Return the name of a DAML object, assuming that the referent exists in the same module as the
     target (i.e., in the same package and in the same module).
     """
-    # TODO: Rewrite for dazl 7.0.0 when the internal structure of ModuleRefs and _Name are changed.
     if isinstance(obj, _Name):
         # noinspection PyProtectedMember
         return ".".join(obj._name)
@@ -189,7 +185,7 @@ def is_match(pattern: TypeConName, value: TypeConName) -> bool:
         return False
 
 
-def find_variant_type(dt: "DefDataType", variant: "DefDataType.Fields", constructor: str) -> "Type":
+def find_variant_type(dt: DefDataType, variant: DefDataType.Fields, constructor: str) -> Type:
     for fld_metadata in variant.fields:
         if fld_metadata.field == constructor:
             return fld_metadata.type

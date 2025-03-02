@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from collections import defaultdict
 from inspect import iscoroutine
-import sys
 from typing import Any, Callable, Protocol, TypeVar, Union, no_type_check, runtime_checkable
 import warnings
 
@@ -144,7 +143,7 @@ class QueryStreamBase(QueryStream):
         """
         return self.items()
 
-    async def _emit(self, name: str, obj: "Any"):
+    async def _emit(self, name: str, obj: Any):
         for cb in self._callbacks[name]:
             result = cb(obj)
             if result is not None and iscoroutine(result):
@@ -158,13 +157,13 @@ class QueryStreamBase(QueryStream):
                     CallbackReturnWarning,
                 )
 
-    async def _emit_create(self, event: "CreateEvent"):
+    async def _emit_create(self, event: CreateEvent):
         await self._emit(CREATE_EVENT, event)
 
-    async def _emit_archive(self, event: "ArchiveEvent"):
+    async def _emit_archive(self, event: ArchiveEvent):
         await self._emit(ARCHIVE_EVENT, event)
 
-    async def _emit_boundary(self, event: "Boundary"):
+    async def _emit_boundary(self, event: Boundary):
         await self._emit(BOUNDARY, event)
 
 

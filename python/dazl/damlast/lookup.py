@@ -20,13 +20,10 @@ from typing import (
     AbstractSet,
     Any,
     Collection,
-    Dict,
     Iterable,
-    List,
     NoReturn,
     Optional,
     Sequence,
-    Set,
     Tuple,
     Union,
 )
@@ -226,10 +223,10 @@ class PackageLookup(SymbolLookup):
     def __init__(self, archive: Archive):
         self.archive = archive
 
-        data_types = {}  # type: Dict[str, Tuple[TypeConName, DefDataType]]
-        values = {}  # type: Dict[str, Tuple[ValName, DefValue]]
-        templates = {}  # type: Dict[str, Tuple[TypeConName, DefTemplate]]
-        interfaces = {}  # type: Dict[str, Tuple[TypeConName, DefInterface]]
+        data_types = dict[str, Tuple[TypeConName, DefDataType]]()
+        values = dict[str, Tuple[ValName, DefValue]]()
+        templates = dict[str, Tuple[TypeConName, DefTemplate]]()
+        interfaces = dict[str, Tuple[TypeConName, DefInterface]]()
         for module in self.archive.package.modules:
             module_ref = ModuleRef(archive.hash, module.name)
 
@@ -480,7 +477,7 @@ class MultiPackageLookup(SymbolLookup):
 
     def __init__(self, archives: Optional[Collection[Archive]] = None):
         self._lock = threading.Lock()
-        self._cache = {}  # type: Dict[PackageRef, PackageLookup]
+        self._cache = dict[PackageRef, PackageLookup]()
         if archives is not None:
             self.add_archive(*archives)
 
@@ -550,7 +547,7 @@ class MultiPackageLookup(SymbolLookup):
         raise NameNotFoundError(ref)
 
     def template_names(self, ref: Any) -> Collection[TypeConName]:
-        names = []  # type: List[TypeConName]
+        names = list[TypeConName]()
 
         pkg, name = validate_template(ref)
         lookups = self._lookups(pkg)
@@ -584,7 +581,7 @@ class MultiPackageLookup(SymbolLookup):
         raise NameNotFoundError(ref)
 
     def interface_names(self, ref: Any) -> Collection[TypeConName]:
-        names = []  # type: List[TypeConName]
+        names = list[TypeConName]()
 
         pkg, name = validate_template(ref)
         lookups = self._lookups(pkg)
@@ -615,7 +612,7 @@ class MultiPackageLookup(SymbolLookup):
         raise NameNotFoundError(ref)
 
     def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
-        names = []  # type: List[TypeConName]
+        names = list[TypeConName]()
 
         pkg, name = validate_template(ref)
         lookups = self._lookups(pkg)
@@ -689,9 +686,9 @@ class PackageExceptionTracker:
     """
 
     def __init__(self) -> None:
-        self._seen_types = set()  # type: Set[str]
-        self._seen_packages = set()  # type: Set[PackageRef]
-        self._pkg_refs = list()  # type: List[PackageRef]
+        self._seen_types = set[str]()
+        self._seen_packages = set[PackageRef]()
+        self._pkg_refs = list[PackageRef]()
         self.done = False
 
     def __enter__(self):

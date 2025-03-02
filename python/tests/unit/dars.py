@@ -10,7 +10,7 @@ DAZL_ROOT = Path(__file__).absolute().parent.parent.parent.parent
 DAML_ROOT = DAZL_ROOT / "python" / "tests" / "resources"
 
 
-def load_dars() -> "Mapping[str, Path]":
+def load_dars() -> Mapping[str, Path]:
     """
     Ensure that the DARs in the test project are all pre-cooked.
     """

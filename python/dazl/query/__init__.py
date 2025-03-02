@@ -42,7 +42,7 @@ class Filter:
 EMPTY = Filter()
 
 
-def parse_query(*q: Queries, server_side_filters: bool) -> "Optional[Mapping[TypeConName, Filter]]":
+def parse_query(*q: Queries, server_side_filters: bool) -> Optional[Mapping[TypeConName, Filter]]:
     """
     Take a :class:`Queries` object and convert it to a mapping of template names to :class:`Filter`.
 

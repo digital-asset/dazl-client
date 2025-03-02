@@ -31,7 +31,7 @@ def main():
             print(f"Updated {py_file}")
 
 
-def get_all_files() -> "Sequence[Path]":
+def get_all_files() -> Sequence[Path]:
     python_files = [*ROOT.glob("**/*.py"), *ROOT.glob("**/*.yaml")]
     files = []
     for py_file in python_files:
@@ -44,7 +44,7 @@ def get_all_files() -> "Sequence[Path]":
     return files
 
 
-def modify_header(path: Path, header_string: "Sequence[str]") -> None:
+def modify_header(path: Path, header_string: Sequence[str]) -> None:
     """
     Modify the copyright header of the specified file.
     """
@@ -70,7 +70,7 @@ def modify_header(path: Path, header_string: "Sequence[str]") -> None:
         f.writelines(rewrite)
 
 
-def extract_copyright_notice() -> "Sequence[str]":
+def extract_copyright_notice() -> Sequence[str]:
     """
     Silly little method to extract the copyright header directly from this file.
     """

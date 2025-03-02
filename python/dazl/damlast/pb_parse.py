@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Sequence
+from typing import Optional, Sequence
 
 from . import daml_lf_1 as lf
 from .._gen.com.daml.daml_lf_1_16 import daml_lf_1_pb2 as pblf
@@ -16,9 +16,9 @@ class ProtobufParser:
     def __init__(self, current_package: lf.PackageRef) -> None:
         self.current_package = current_package
         self.current_module = None  # type: Optional[lf.ModuleRef]
-        self.interned_strings = []  # type: List[str]
-        self.interned_dotted_names = []  # type: List[Sequence[str]]
-        self.interned_types = []  # type: List[lf.Type]
+        self.interned_strings = list[str]()
+        self.interned_dotted_names = list[Sequence[str]]()
+        self.interned_types = list[lf.Type]()
 
     # noinspection PyUnusedLocal
     def parse_Unit(self, pb: pblf.Unit) -> lf.Unit:
@@ -1069,7 +1069,7 @@ class ProtobufParser:
             )
         )
 
-    def _copy(self) -> "ProtobufParser":
+    def _copy(self) -> ProtobufParser:
         p = ProtobufParser(self.current_package)
         p.current_module = self.current_module
         p.interned_strings = self.interned_strings

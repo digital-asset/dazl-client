@@ -8,15 +8,13 @@ Simple command-line handlers.
 from __future__ import annotations
 
 import logging
-from typing import List, Sequence
+from typing import Sequence
 
 from .._logging import configure as configure_logger
 from ._base import CliCommand
 from .version import VersionCommand
 
-COMMANDS = [
-    VersionCommand(),
-]  # type: List[CliCommand]
+COMMANDS = list[CliCommand]((VersionCommand(),))
 
 
 def main():

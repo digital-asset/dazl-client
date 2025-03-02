@@ -30,7 +30,7 @@ class PackageNotFoundError(DazlError):
     the original option retried.
     """
 
-    def __init__(self, ref: "daml_lf_1.PackageRef"):
+    def __init__(self, ref: daml_lf_1.PackageRef) -> None:
         super().__init__(ref)
         self.ref = ref
 
@@ -47,6 +47,6 @@ class NameNotFoundError(DazlError):
     package IDs are immutable, this error is not normally retryable.
     """
 
-    def __init__(self, ref: "Any"):
+    def __init__(self, ref: Any) -> None:
         super().__init__(ref)
         self.ref = ref

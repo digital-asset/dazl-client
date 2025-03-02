@@ -9,9 +9,7 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Collection,
-    Dict,
     Iterator,
-    List,
     Literal,
     Mapping,
     Optional,
@@ -92,7 +90,7 @@ class ACS:
 
     """
 
-    def __init__(self, conn: Connection, queries: Queries):
+    def __init__(self, conn: Connection, queries: Queries) -> None:
         self._conn = conn
         self._queries = queries
         self._snapshot = None  # type: Optional[Snapshot]
@@ -101,7 +99,7 @@ class ACS:
         self._state = NOT_STARTED  # type: State
         self._log = conn.config.logger
 
-    def read(self) -> "Awaitable[Snapshot]":
+    def read(self) -> Awaitable[Snapshot]:
         """
         Returns a snapshot of data.
 
@@ -116,7 +114,7 @@ class ACS:
             self._snapshot_fut = get_event_loop().create_future()
         return self._snapshot_fut
 
-    def read_immediately(self) -> "Optional[Snapshot]":
+    def read_immediately(self) -> Optional[Snapshot]:
         """
         Returns the most recent snapshot of data, or ``None`` if this ACS was never started.
 
@@ -211,7 +209,7 @@ class ACS:
                 self._snapshot_fut = get_event_loop().create_future()
             self._snapshot_fut.set_exception(ex)
 
-    async def __aenter__(self) -> "ACS":
+    async def __aenter__(self) -> ACS:
         """
         Allow :class:`ACS` to be used within ``async with`` blocks.
         """
@@ -230,7 +228,7 @@ class ACS:
 
 async def snapshots(
     conn: Connection, queries: Queries
-) -> "AsyncIterator[Tuple[State, Optional[Snapshot]]]":
+) -> AsyncIterator[Tuple[State, Optional[Snapshot]]]:
     """
     Coroutine that returns regular "state" and "snapshot" updates aggregated over events off an
     event stream.
@@ -241,7 +239,7 @@ async def snapshots(
 
     snapshot = None  # type: Optional[Snapshot]
     offset = None  # type: Optional[str]
-    recent_events = []  # type: List[Union[CreateEvent, ArchiveEvent]]
+    recent_events = list[Union[CreateEvent, ArchiveEvent]]()
     backoff_time = 1.0
     at_least_one_snapshot = False
 
@@ -300,7 +298,7 @@ class Snapshot:
     An immutable snapshot of contract data.
     """
 
-    def __init__(self, creates: Mapping[ContractId, CreateEvent], offset: Optional[str]):
+    def __init__(self, creates: Mapping[ContractId, CreateEvent], offset: Optional[str]) -> None:
         self._offset = offset
         self._creates = MappingProxyType(dict(creates))
         self._contracts = ContractDataView(self._creates)
@@ -430,7 +428,7 @@ def create_snapshot(
     """
     Produces a new snapshot with the data from an original snapshot and the supplied events.
     """
-    snapshot_data: Dict[ContractId, CreateEvent] = (
+    snapshot_data: dict[ContractId, CreateEvent] = (
         dict(base_snapshot.creates) if base_snapshot is not None else {}
     )
     for event in events:
@@ -449,7 +447,7 @@ class ContractDataView(MappingBase):
 
     __slots__ = ("__m",)
 
-    def __init__(self, m: Mapping[ContractId, CreateEvent]):
+    def __init__(self, m: Mapping[ContractId, CreateEvent]) -> None:
         self.__m = m
 
     def __getitem__(self, key: ContractId) -> ContractData:

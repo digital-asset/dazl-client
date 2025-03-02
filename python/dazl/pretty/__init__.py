@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 __all__ = ["DAMLLexer"]
 
 
-def _import_daml_lexer() -> "Optional[Type[_DAMLLexer_TYPE]]":
+def _import_daml_lexer() -> Optional[Type[_DAMLLexer_TYPE]]:
     # pygments isn't absolutely required, but if it's loaded, also provide our lexer
     try:
         from .pygments_daml_lexer import DAMLLexer

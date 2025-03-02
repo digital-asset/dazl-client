@@ -39,7 +39,7 @@ class PackageLoaderTest:
         # the lookup should always start out empty
         assert len(self.lookup.archives()) == 0
 
-    def some_fn(self) -> "TypeConName":
+    def some_fn(self) -> TypeConName:
         try:
             name = self.lookup.template_name(self.template_name)
             self.call_order.append("good call")
