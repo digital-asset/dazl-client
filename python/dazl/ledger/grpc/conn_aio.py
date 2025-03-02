@@ -606,7 +606,7 @@ class Connection(aio.Connection):
 
     def query(
         self,
-        template_id: Union[str, TypeConName] = "*",
+        template_or_interface_id: Union[str, TypeConName] = "*",
         query: Query = None,
         /,
         *,
@@ -622,8 +622,8 @@ class Connection(aio.Connection):
         set of templates, you may want to consider :class:`ACS` instead, which is a utility class
         that helps you maintain a "live" state of the ACS.
 
-        :param template_id:
-            The name of the template for which to fetch contracts.
+        :param template_or_interface_id:
+            The name of the template or interface for which to fetch contracts.
         :param query:
             A filter to apply to the set of returned contracts.
         :param begin_offset:
@@ -640,7 +640,7 @@ class Connection(aio.Connection):
         offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
         return QueryStream(
             self,
-            parse_query({template_id: query}, server_side_filters=False),
+            parse_query({template_or_interface_id: query}, server_side_filters=False),
             offset,
             self._read_as(read_as),
             self._retry_timeout(timeout),
@@ -685,7 +685,7 @@ class Connection(aio.Connection):
 
     def stream(
         self,
-        template_id: Union[str, TypeConName] = "*",
+        template_or_interface_id: Union[str, TypeConName] = "*",
         query: Query = None,
         /,
         *,
@@ -702,8 +702,8 @@ class Connection(aio.Connection):
         Otherwise, ``offset`` can be supplied to resume a stream from a prior point where a
         ``Boundary`` was returned from a previous stream.
 
-        :param template_id:
-            The name of the template for which to fetch contracts.
+        :param template_or_interface_id:
+            The name of the template or interface for which to fetch contracts.
         :param query:
             A filter to apply to the set of returned contracts. Note that this does not filter
             :class:`ArchiveEvent`; readers of the stream MUST be able to cope with "mismatched"
@@ -717,7 +717,7 @@ class Connection(aio.Connection):
         """
         return QueryStream(
             self,
-            parse_query({template_id: query}, server_side_filters=False),
+            parse_query({template_or_interface_id: query}, server_side_filters=False),
             from_offset_until_forever(offset),
             self._read_as(read_as),
             self._retry_timeout(timeout),

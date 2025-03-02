@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Mapping
+from typing import TYPE_CHECKING, Any, Mapping, Union
 
 if TYPE_CHECKING:
     from ..damlast.daml_lf_1 import TypeConName
@@ -45,6 +45,17 @@ class ContractId:
         Return the type of template that is pointed to by this :class:`ContractId`.
         """
         return self._value_type
+
+    def to_interface(self, interface_id: Union[str, TypeConName], /) -> ContractId:
+        """
+        Re-tag this ContractId as an ID for the specified interface.
+        """
+        from ..damlast.lookup import parse_type_con_name
+
+        iid: TypeConName = (
+            parse_type_con_name(interface_id) if isinstance(interface_id, str) else interface_id
+        )
+        return ContractId(iid, self.value)
 
     def __str__(self):
         """

@@ -30,7 +30,7 @@ from ...damlast.daml_lf_1 import (
 )
 from ...damlast.daml_types import ContractId as ContractIdType, con
 from ...damlast.lookup import MultiPackageLookup
-from ...damlast.protocols import SymbolLookup
+from ...damlast.protocols import SymbolLookup, TemplateOrInterface
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
 from ...prim import ContractData, ContractId, Party
@@ -49,6 +49,7 @@ from ..api_types import (
     ExerciseByKeyCommand,
     ExerciseCommand,
     ExerciseResponse,
+    InterfaceView,
     MeteringReport,
     MeteringReportApplication,
     MeteringReportRequest,
@@ -190,28 +191,46 @@ class Codec:
 
         return cmd_pb
 
-    async def encode_filters(self, template_ids: Sequence[TypeConName], /) -> lapipb.Filters:
-        # Search for a reference to the "wildcard" template; if any of the requested template_ids
-        # is "*", then return results for all templates. We do this first because resolving template
-        # IDs otherwise requires do_with_retry, which can be expensive.
-        if not template_ids or any(
-            package_ref(t) == "*" and package_local_name(t) == "*" for t in template_ids
+    async def encode_filters(
+        self, template_or_interface_ids: Sequence[TypeConName], /
+    ) -> lapipb.Filters:
+        # Search for a reference to the "wildcard" template; if any of the requested
+        # template_or_interface_ids is "*", then return results for all templates.
+        # We do this first because resolving template IDs otherwise requires do_with_retry,
+        # which can be expensive.
+        if not template_or_interface_ids or any(
+            package_ref(t) == "*" and package_local_name(t) == "*"
+            for t in template_or_interface_ids
         ):
             # if any of the keys references the "wildcard" template, (or no values were supplied)
             # then this means we need to fetch values for all templates
             return lapipb.Filters()
 
         # No wildcard template IDs, so inspect and resolve all template references to concrete
-        # template IDs
-        requested_types = set()  # type: Set[TypeConName]
-        for template_id in template_ids:
-            requested_types.update(
-                await self._loader.do_with_retry(lambda: self._lookup.template_names(template_id))
+        # template or interface IDs
+        requested_templates = set()  # type: Set[TypeConName]
+        requested_interfaces = set()  # type: Set[TypeConName]
+        for template_or_interface_id in template_or_interface_ids:
+            requested_templates.update(
+                await self._loader.do_with_retry(
+                    lambda: self._lookup.template_names(template_or_interface_id)
+                )
+            )
+            requested_interfaces.update(
+                await self._loader.do_with_retry(
+                    lambda: self._lookup.interface_names(template_or_interface_id)
+                )
             )
 
         return lapipb.Filters(
             inclusive=lapipb.InclusiveFilters(
-                template_ids=[self.encode_identifier(i) for i in sorted(requested_types)]
+                template_ids=[self.encode_identifier(i) for i in sorted(requested_templates)],
+                interface_filters=[
+                    lapipb.InterfaceFilter(
+                        interface_id=self.encode_identifier(i), include_interface_view=True
+                    )
+                    for i in sorted(requested_interfaces)
+                ],
             )
         )
 
@@ -291,6 +310,8 @@ class Codec:
             tuple(Party(p) for p in event.observers),
             event.agreement_text.value,
             key,
+            created_event_blob=event.created_event_blob or None,
+            interface_views=[await self.decode_interface_view(v) for v in event.interface_views],
         )
 
     async def decode_archived_event(self, event: lapipb.ArchivedEvent, /) -> ArchiveEvent:
@@ -319,10 +340,16 @@ class Codec:
                 if cid is None:
                     cid = self.decode_contract_id(event_pb.exercised)
 
-                    template = self._lookup.template(cid.value_type)
+                    template_or_interface: TemplateOrInterface
+                    if event_pb.exercised.interface_id.entity_name:
+                        template_or_interface = self._lookup.interface(
+                            Codec.decode_identifier(event_pb.exercised.interface_id)
+                        )
+                    else:
+                        template_or_interface = self._lookup.template(cid.value_type)
 
                     if found_choice is None:
-                        for choice in template.choices:
+                        for choice in template_or_interface.choices:
                             if choice.name == event_pb.exercised.choice:
                                 found_choice = choice
                                 break
@@ -364,6 +391,12 @@ class Codec:
             else:
                 LOG.warning("Received an unknown event type: %s", event_pb_type)
         return events
+
+    async def decode_interface_view(self, pb: lapipb.InterfaceView, /) -> InterfaceView:
+        vt = Codec.decode_identifier(pb.interface_id)
+        interface = self._lookup.interface(vt)
+        view_value = await self.decode_value(interface.view, pb.view_value)
+        return InterfaceView(vt, view_value)
 
     async def decode_value(self, item_type: Type, obj: Any, /) -> Optional[Any]:
         """

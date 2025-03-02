@@ -130,6 +130,17 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.template must be implemented")
 
+    def interface_names(self, ref: "Any") -> "Collection[TypeConName]":
+        """
+        Return all template names that are currently known that are a match for the query.
+        The :class:`PackageRef` can be `*`.
+
+        Unlike the other methods of this class, this function should return an empty list in the
+        case of a match failure; :class:`PackageNotFoundError` or :class:`NameNotFoundError` are
+        never thrown.
+        """
+        raise NotImplementedError("SymbolLookup.interface_names must be implemented")
+
     def interface_name(self, ref: "Any") -> "TypeConName":
         """
         Return the :class:`TypeConName` that refers to a :class:`DefInterface` that is known to
@@ -145,6 +156,18 @@ class SymbolLookup(Protocol):
         Return the :class:`DefInterface` for the specified name.
         """
         raise NotImplementedError("SymbolLookup.interface must be implemented")
+
+    def template_or_interface_names(self, ref: "Any") -> "Collection[TypeConName]":
+        """
+        Return all template or interface names that are currently known that are
+        a match for the query. Either :class:`PackageRef` or the template name
+        can be `*`. When using `*`, only templates are searched.
+
+        Unlike the other methods of this class, this function should return an
+        empty list in the case of a match failure; :class:`PackageNotFoundError`
+        or :class:`NameNotFoundError` are never thrown.
+        """
+        raise NotImplementedError("SymbolLookup.template_or_interface_names must be implemented")
 
     def template_or_interface_name(self, ref: "Any") -> "TypeConName":
         """

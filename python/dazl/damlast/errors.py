@@ -34,6 +34,9 @@ class PackageNotFoundError(DazlError):
         super().__init__(ref)
         self.ref = ref
 
+    def __repr__(self):
+        return f"PackageNotFoundError({self.ref})"
+
 
 class NameNotFoundError(DazlError):
     """

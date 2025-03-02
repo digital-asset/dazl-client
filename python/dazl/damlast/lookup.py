@@ -199,11 +199,17 @@ class EmptyLookup(SymbolLookup):
     def template(self, ref: Any) -> NoReturn:
         raise empty_lookup_impl(ref)
 
+    def interface_names(self, ref: Any) -> Collection[TypeConName]:
+        return frozenset()
+
     def interface_name(self, ref: Any) -> NoReturn:
         raise empty_lookup_impl(ref)
 
     def interface(self, ref: Any) -> NoReturn:
         raise empty_lookup_impl(ref)
+
+    def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
+        return frozenset()
 
     def template_or_interface_name(self, ref: Any) -> NoReturn:
         raise empty_lookup_impl(ref)
@@ -347,6 +353,14 @@ class PackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
+    def interface_names(self, ref: Any) -> Collection[TypeConName]:
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            if name in self._interfaces:
+                n, _ = self._interfaces[name]
+                return [n]
+        return []
+
     def interface_name(self, ref: Any) -> TypeConName:
         pkg, name = validate_template(ref)
         if pkg == self.archive.hash or pkg == STAR:
@@ -364,6 +378,19 @@ class PackageLookup(SymbolLookup):
                 return iface
 
         raise NameNotFoundError(ref)
+
+    def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            if name == "*":
+                return self.local_template_names()
+            elif name in self._templates:
+                n, _ = self._templates[name]
+                return [n]
+            elif name in self._interfaces:
+                n, _ = self._interfaces[name]
+                return [n]
+        return []
 
     def template_or_interface_name(self, ref: Any) -> TypeConName:
         pkg, name = validate_template(ref)
@@ -414,6 +441,9 @@ class PackageLookup(SymbolLookup):
         """
         r = self._templates.get(name)
         return r[1] if r is not None else None
+
+    def local_interface_names(self) -> Collection[TypeConName]:
+        return [n for n, _ in self._interfaces.values()]
 
     def local_interface_name(self, name: str) -> Optional[TypeConName]:
         r = self._interfaces.get(name)
@@ -553,6 +583,19 @@ class MultiPackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
+    def interface_names(self, ref: Any) -> Collection[TypeConName]:
+        names = []  # type: List[TypeConName]
+
+        pkg, name = validate_template(ref)
+        lookups = self._lookups(pkg)
+
+        for lookup in lookups:
+            n = lookup.local_interface_name(name)
+            if n is not None:
+                names.append(n)
+
+        return names
+
     def interface_name(self, ref: Any) -> TypeConName:
         pkg, name = validate_template(ref)
         for lookup in self._lookups(pkg):
@@ -570,6 +613,25 @@ class MultiPackageLookup(SymbolLookup):
                 return iface
 
         raise NameNotFoundError(ref)
+
+    def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
+        names = []  # type: List[TypeConName]
+
+        pkg, name = validate_template(ref)
+        lookups = self._lookups(pkg)
+
+        for lookup in lookups:
+            if name == "*":
+                names.extend(lookup.local_template_names())
+            else:
+                n = lookup.local_template_name(name)
+                if n is not None:
+                    names.append(n)
+                n = lookup.local_interface_name(name)
+                if n is not None:
+                    names.append(n)
+
+        return names
 
     def template_or_interface_name(self, ref: Any) -> TypeConName:
         pkg, name = validate_template(ref)

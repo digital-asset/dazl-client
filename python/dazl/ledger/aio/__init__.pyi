@@ -188,7 +188,7 @@ class Connection(_Connection, PackageService, Protocol):
     async def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = ...) -> str: ...
     def query(
         self,
-        template_id: Union[str, TypeConName] = "*",
+        template_or_interface_id: Union[str, TypeConName] = "*",
         query: Query = None,
         /,
         *,
@@ -203,7 +203,7 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> QueryStream: ...
     def stream(
         self,
-        template_id: Union[str, TypeConName] = "*",
+        template_or_interface_id: Union[str, TypeConName] = "*",
         query: Query = None,
         /,
         *,

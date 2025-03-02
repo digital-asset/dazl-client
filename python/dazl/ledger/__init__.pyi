@@ -242,7 +242,7 @@ class Connection(PackageService, Protocol):
     ) -> Union[ArchiveEvent, Awaitable[ArchiveEvent]]: ...
     def query(
         self,
-        template_id: Union[str, TypeConName] = "*",
+        template_or_interface_id: Union[str, TypeConName] = "*",
         query: Query = None,
         /,
         *,
@@ -257,7 +257,7 @@ class Connection(PackageService, Protocol):
     ) -> QueryStream: ...
     def stream(
         self,
-        template_id: Union[str, TypeConName] = "*",
+        template_or_interface_id: Union[str, TypeConName] = "*",
         query: Query = None,
         /,
         *,
