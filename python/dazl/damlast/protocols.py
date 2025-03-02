@@ -3,20 +3,23 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AbstractSet, Any, Collection, Protocol, runtime_checkable
+from typing import AbstractSet, Any, Collection, Protocol, Union, runtime_checkable
 
-if TYPE_CHECKING:
-    from .daml_lf_1 import (
-        Archive,
-        DefDataType,
-        DefTemplate,
-        DefValue,
-        Package,
-        PackageRef,
-        TypeConName,
-    )
+from .daml_lf_1 import (
+    Archive,
+    DefDataType,
+    DefInterface,
+    DefTemplate,
+    DefValue,
+    Package,
+    PackageRef,
+    TypeConName,
+)
 
-__all__ = ["PackageProvider", "SymbolLookup"]
+__all__ = ["PackageProvider", "SymbolLookup", "TemplateOrInterface"]
+
+
+TemplateOrInterface = Union[DefTemplate, DefInterface]
 
 
 @runtime_checkable
@@ -116,7 +119,7 @@ class SymbolLookup(Protocol):
         Return the :class:`TypeConName` that refers to a :class:`DefTemplate` that is known to
         exist in this lookup.
 
-        If this method succeeds, :meth:`data_type` with the returned :class:`TypeConName` as an
+        If this method succeeds, :meth:`template` with the returned :class:`TypeConName` as an
         argument should also always succeed.
         """
         raise NotImplementedError("SymbolLookup.template_name must be implemented")
@@ -124,5 +127,37 @@ class SymbolLookup(Protocol):
     def template(self, ref: "Any") -> "DefTemplate":
         """
         Return the :class:`DefTemplate` for the specified name.
+        """
+        raise NotImplementedError("SymbolLookup.template must be implemented")
+
+    def interface_name(self, ref: "Any") -> "TypeConName":
+        """
+        Return the :class:`TypeConName` that refers to a :class:`DefInterface` that is known to
+        exist in this lookup.
+
+        If this method succeeds, :meth:`interface` with the returned :class:`TypeConName` as an
+        argument should also always succeed.
+        """
+        raise NotImplementedError("SymbolLookup.interface_name must be implemented")
+
+    def interface(self, ref: "Any") -> "DefInterface":
+        """
+        Return the :class:`DefInterface` for the specified name.
+        """
+        raise NotImplementedError("SymbolLookup.interface must be implemented")
+
+    def template_or_interface_name(self, ref: "Any") -> "TypeConName":
+        """
+        Return the :class:`TypeConName` that refers to a :class:`DefTemplate` or
+        :class:`DefInterface` that is known to exist in this lookup.
+
+        If this method succeeds, :meth:`template_or_interface` with the returned
+        :class:`TypeConName` as an argument should also always succeed.
+        """
+        raise NotImplementedError("SymbolLookup.interface_name must be implemented")
+
+    def template_or_interface(self, ref: "Any") -> "TemplateOrInterface":
+        """
+        Return the :class:`DefTemplate` or :class:`DefInterface` for the specified name.
         """
         raise NotImplementedError("SymbolLookup.template must be implemented")

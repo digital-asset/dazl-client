@@ -39,6 +39,8 @@ else:
 
 
 __all__ = [
+    "is_command",
+    "to_commands",
     "ActAs",
     "Admin",
     "ArchiveEvent",

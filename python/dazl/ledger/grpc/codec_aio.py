@@ -33,7 +33,7 @@ from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
-from ...prim import ContractData, ContractId, Party, to_datetime
+from ...prim import ContractData, ContractId, Party
 from ...values import Context
 from ...values.protobuf import ProtobufDecoder, ProtobufEncoder, set_value
 from .._offsets import End
@@ -130,7 +130,7 @@ class Codec:
     async def encode_exercise_command(
         self, contract_id: ContractId, choice_name: str, argument: Optional[Any] = None, /
     ) -> lapipb.ExerciseCommand:
-        item_type, _, choice = await self._look_up_choice(contract_id.value_type, choice_name)
+        item_type, choice = await self._look_up_choice(contract_id.value_type, choice_name)
 
         cmd_pb = lapipb.ExerciseCommand(
             template_id=self.encode_identifier(item_type),
@@ -150,7 +150,7 @@ class Codec:
         argument: Optional[Any] = None,
         /,
     ) -> lapipb.CreateAndExerciseCommand:
-        item_type, _, choice = await self._look_up_choice(template_id, choice_name)
+        item_type, choice = await self._look_up_choice(template_id, choice_name)
 
         payload_field, payload_pb = await self.encode_value(con(item_type), payload)
         if payload_field != "record":
@@ -173,7 +173,7 @@ class Codec:
         argument: Optional[ContractData] = None,
         /,
     ) -> lapipb.ExerciseByKeyCommand:
-        item_type, template, choice = await self._look_up_choice(template_id, choice_name)
+        item_type, template, choice = await self._look_up_template_choice(template_id, choice_name)
         if template.key is None:
             raise ValueError(
                 f"cannot encode ExerciseByKeyCommand; template {template_id} does not have a contract key defined"
@@ -454,6 +454,18 @@ class Codec:
         )
 
     async def _look_up_choice(
+        self, template_or_interface_id: Any, choice_name: str, /
+    ) -> Tuple[TypeConName, TemplateChoice]:
+        template_type = await self._loader.do_with_retry(
+            lambda: self._lookup.template_or_interface_name(template_or_interface_id)
+        )
+        template_or_interface = self._lookup.template_or_interface(template_type)
+        for choice in template_or_interface.choices:
+            if choice.name == choice_name:
+                return template_type, choice
+        raise ValueError(f"template {template_or_interface.name} has no choice named {choice_name}")
+
+    async def _look_up_template_choice(
         self, template_id: Any, choice_name: str, /
     ) -> Tuple[TypeConName, DefTemplate, TemplateChoice]:
         template_type = await self._loader.do_with_retry(

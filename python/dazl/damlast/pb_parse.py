@@ -1003,11 +1003,30 @@ class ProtobufParser:
                 templates=tuple(
                     child_parser.parse_DefTemplate(template) for template in pb.templates
                 ),
+                interfaces=tuple(
+                    child_parser.parse_DefInterface(interface) for interface in pb.interfaces
+                ),
             )
         finally:
             self.current_module = None
 
         return module
+
+    def parse_InterfaceMethod(self, pb: pblf.InterfaceMethod) -> lf.InterfaceMethod:
+        return lf.InterfaceMethod(
+            method_name=self.interned_strings[pb.method_interned_name],
+            type=self.parse_Type(pb.type),
+        )
+
+    def parse_DefInterface(self, pb: pblf.DefInterface) -> lf.DefInterface:
+        return lf.DefInterface(
+            name=lf.DottedName(self.interned_dotted_names[pb.tycon_interned_dname]),
+            methods=tuple(self.parse_InterfaceMethod(method) for method in pb.methods),
+            param=self.interned_strings[pb.param_interned_str],
+            choices=tuple(self.parse_TemplateChoice(choice) for choice in pb.choices),
+            view=self.parse_Type(pb.view),
+            requires=tuple(self.parse_TypeConName(require) for require in pb.requires),
+        )
 
     def parse_Package(self, pb: pblf.Package) -> lf.Package:
         # TODO: this modifies state in a parser which is less than ideal; a better pattern would be

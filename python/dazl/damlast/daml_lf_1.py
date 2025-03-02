@@ -36,6 +36,7 @@ __all__ = [
     "Case",
     "CaseAlt",
     "DefDataType",
+    "DefInterface",
     "DefTemplate",
     "DefTypeSyn",
     "DefValue",
@@ -44,6 +45,7 @@ __all__ = [
     "FeatureFlags",
     "FieldWithExpr",
     "FieldWithType",
+    "InterfaceMethod",
     "KeyExpr",
     "Kind",
     "Location",
@@ -2529,6 +2531,10 @@ class DefTemplate:
     # The key definition for the template, if present
     key: "Optional[DefKey]"
 
+    @property
+    def name(self) -> DottedName:
+        return self.tycon
+
 
 class DefDataType:
     """
@@ -2729,6 +2735,24 @@ class Module:
     data_types: "Sequence[DefDataType]"
     values: "Sequence[DefValue]"
     templates: "Sequence[DefTemplate]"
+    interfaces: "Sequence[DefInterface]"
+
+
+@dataclass(frozen=True)
+class InterfaceMethod:
+    method_name: str
+    type: Type
+
+
+@dataclass(frozen=True)
+class DefInterface:
+    name: DottedName
+    methods: Sequence[InterfaceMethod]
+    param: str
+    choices: Sequence[TemplateChoice]
+    # co_implements: Sequence[DefInterface.CoImplements]
+    view: Type
+    requires: Sequence[TypeConName]
 
 
 @dataclass(frozen=True)

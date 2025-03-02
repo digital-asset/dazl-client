@@ -51,7 +51,6 @@ from ..api_types import (
     Admin,
     ArchiveEvent,
     Boundary,
-    Command,
     CommandMeta,
     Commands,
     CreateEvent,
@@ -62,7 +61,6 @@ from ..api_types import (
     Right,
     User,
     Version,
-    is_command,
     to_commands,
 )
 from ..config import Config
