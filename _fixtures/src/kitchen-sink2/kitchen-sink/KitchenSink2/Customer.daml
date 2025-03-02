@@ -1,10 +1,10 @@
 -- Copyright (c) 2017-2024, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 -- SPDX-License-Identifier: Apache-2.0
 
-module KitchenSink.Customer where
+module KitchenSink2.Customer where
 
-import KitchenSink.Retailer
-import KitchenSink.SKU
+import KitchenSink2.Retailer
+import KitchenSink2.SKU
 
 import DA.Map qualified as M
 

@@ -1,10 +1,9 @@
 -- Copyright (c) 2017-2024, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 -- SPDX-License-Identifier: Apache-2.0
 
-module KitchenSink.Warehouse where
+module KitchenSink1.Warehouse where
 
-import KitchenSink.Interfaces.HasLocation
-import KitchenSink.SKU
+import KitchenSink1.SKU
 
 template Warehouse
   with
@@ -14,7 +13,7 @@ template Warehouse
   where
     signatory warehouse
     observer suppliers
-
+    
     choice AddStock : ContractId WarehouseStock
       with
         sku : SKU
@@ -26,9 +25,6 @@ template Warehouse
             None -> abort $ "unknown supplier: " <> (show sku.supplier)
             Some cid -> addStock warehouse sku quantity
 
-    interface instance HasLocation for Warehouse where
-      view = HasLocationView with ..
-    
 
 template WarehouseStock
   with

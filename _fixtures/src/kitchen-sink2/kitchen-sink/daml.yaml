@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 sdk-version: 2.9.6
-name: kitchen-sink-sdk29-lf116
+name: kitchen-sink2
 version: 1.0.0
-source: KitchenSink
+source: KitchenSink2
 dependencies:
   - daml-prim
   - daml-stdlib
