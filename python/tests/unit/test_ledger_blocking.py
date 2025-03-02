@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import logging
 import threading
-from typing import List
 
 from dazl import Party, connect
 from dazl.ledger import CreateEvent
@@ -36,7 +35,7 @@ def test_blocking_api(sandbox: SandboxLauncher) -> None:
     # now connect as the party, and verify that they can see the created contract
     logging.info("Connecting as the primary party...")
     with connect(url=sandbox.url, blocking=True, read_as=party) as conn:
-        seen_contracts = []  # type: List[CreateEvent]
+        seen_contracts = list[CreateEvent]()
         logging.info("Looking for contracts...")
         with conn.query("Main:InviteAuthorRole") as stream:
             seen_contracts.extend(stream.creates())

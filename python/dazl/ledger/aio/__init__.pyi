@@ -12,7 +12,6 @@ from typing import (
     Awaitable,
     Callable,
     DefaultDict,
-    List,
     Optional,
     Protocol,
     Sequence,
@@ -301,7 +300,7 @@ class QueryStream(_QueryStream, Protocol):
 
 class QueryStreamBase(QueryStream, abc.ABC):
     @property
-    def _callbacks(self) -> DefaultDict[str, List[Callable]]: ...
+    def _callbacks(self) -> DefaultDict[str, list[Callable]]: ...
     @abc.abstractmethod
     def items(self): ...
     async def _emit(self, name: str, obj: Any, /) -> None: ...

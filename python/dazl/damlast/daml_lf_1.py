@@ -121,15 +121,11 @@ class DottedName:
 class ModuleRef:
     """
     A reference to a module.
-
-    In dazl v8.0.0, ModuleRef will become a `NewType(str)`, so making assumptions about the
-    structure of this type should be avoided, and accessor methods should be instead used for
-    callers that care about the structure of these names.
     """
 
     __slots__ = "_package_id", "_module_name"
 
-    def __init__(self, package_id: "PackageRef", module_name: "DottedName"):
+    def __init__(self, package_id: PackageRef, module_name: DottedName):
         from ..util.typing import safe_cast
 
         self._package_id = PackageRef(safe_cast(str, package_id))
@@ -188,7 +184,7 @@ class _Name:
 
     __slots__ = "_module", "_name"
 
-    def __init__(self, module: "ModuleRef", name: "Sequence[str]"):
+    def __init__(self, module: ModuleRef, name: Sequence[str]):
         from collections.abc import Collection
 
         from ..util.typing import safe_cast
@@ -274,19 +270,19 @@ class ValName(_Name):
 @dataclass(frozen=True)
 class FieldWithType:
     field: str
-    type: "Type"
+    type: Type
 
 
 @dataclass(frozen=True)
 class VarWithType:
     var: str
-    type: "Type"
+    type: Type
 
 
 @dataclass(frozen=True)
 class TypeVarWithKind:
     var: str
-    kind: "Kind"
+    kind: Kind
 
     def __str__(self):
         return f"{self.var} : {self.kind}"
@@ -298,7 +294,7 @@ class TypeVarWithKind:
 @dataclass(frozen=True)
 class FieldWithExpr:
     field: str
-    expr: "Expr"
+    expr: Expr
 
     def __repr__(self):
         return f"FieldWithExpr({self.field}={self.expr})"
@@ -306,8 +302,8 @@ class FieldWithExpr:
 
 @dataclass(frozen=True)
 class Binding:
-    binder: "VarWithType"
-    bound: "Expr"
+    binder: VarWithType
+    bound: Expr
 
 
 class Kind:
@@ -316,18 +312,18 @@ class Kind:
     _Sum_value: Any
 
     class Arrow:
-        params: "Sequence[Kind]"
-        result: "Kind"
+        params: Sequence[Kind]
+        result: Kind
 
-        def __init__(self, params: "Sequence[Kind]", result: "Kind"):
+        def __init__(self, params: Sequence[Kind], result: Kind):
             self.params = params
             self.result = result
 
     def __init__(
         self,
-        star: "Union[Unit, _Missing]" = MISSING,
-        arrow: "Union[Arrow, _Missing]" = MISSING,
-        nat: "Union[Unit, _Missing]" = MISSING,
+        star: Union[Unit, _Missing] = MISSING,
+        arrow: Union[Arrow, _Missing] = MISSING,
+        nat: Union[Unit, _Missing] = MISSING,
     ):
         if star is not MISSING:
             object.__setattr__(self, "_Sum_name", "star")
@@ -342,15 +338,15 @@ class Kind:
             raise ValueError("at least one must be specified")
 
     @property
-    def star(self) -> "Optional[Unit]":
+    def star(self) -> Optional[Unit]:
         return self._Sum_value if self._Sum_name == "star" else None
 
     @property
-    def arrow(self) -> "Optional[Arrow]":
+    def arrow(self) -> Optional[Arrow]:
         return self._Sum_value if self._Sum_name == "arrow" else None
 
     @property
-    def nat(self) -> "Optional[Unit]":
+    def nat(self) -> Optional[Unit]:
         return self._Sum_value if self._Sum_name == "nat" else None
 
     def __repr__(self):
@@ -393,14 +389,14 @@ class PrimType(_IntEnum):
 class Type:
     @dataclass(frozen=True)
     class Var:
-        var: "str"
-        args: "Sequence[Type]"
+        var: str
+        args: Sequence[Type]
 
     class Con:
-        tycon: "TypeConName"
-        args: "Sequence[Type]"
+        tycon: TypeConName
+        args: Sequence[Type]
 
-        def __init__(self, tycon: "TypeConName", args: "Sequence[Type]"):
+        def __init__(self, tycon: TypeConName, args: Sequence[Type]):
             self.tycon = tycon
             self.args = tuple(args)
 
@@ -409,14 +405,14 @@ class Type:
 
     @dataclass(frozen=True)
     class Syn:
-        tysyn: "TypeSynName"
-        args: "Sequence[Type]"
+        tysyn: TypeSynName
+        args: Sequence[Type]
 
     class Prim:
-        prim: "PrimType"
-        args: "Sequence[Type]"
+        prim: PrimType
+        args: Sequence[Type]
 
-        def __init__(self, prim: "PrimType", args: "Sequence[Type]"):
+        def __init__(self, prim: PrimType, args: Sequence[Type]):
             self.prim = prim
             self.args = tuple(args)
 
@@ -424,26 +420,26 @@ class Type:
             return f"Type.Prim(prim={self.prim!r}, args={self.args!r})"
 
     class Fun:
-        params: "Sequence[Type]"
-        result: "Type"
+        params: Sequence[Type]
+        result: Type
 
-        def __init__(self, params: "Sequence[Type]", result: "Type"):
+        def __init__(self, params: Sequence[Type], result: Type):
             self.params = params
             self.result = result
 
     class Forall:
-        vars: "Sequence[TypeVarWithKind]"
-        body: "Type"
+        vars: Sequence[TypeVarWithKind]
+        body: Type
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, vars: "Sequence[TypeVarWithKind]", body: "Type"):
+        def __init__(self, vars: Sequence[TypeVarWithKind], body: Type):
             self.vars = vars
             self.body = body
 
     class Struct:
-        fields: "Sequence[FieldWithType]"
+        fields: Sequence[FieldWithType]
 
-        def __init__(self, fields: "Sequence[FieldWithType]"):
+        def __init__(self, fields: Sequence[FieldWithType]):
             self.fields = tuple(fields)
 
     __slots__ = "_Sum_name", "_Sum_value"
@@ -452,13 +448,13 @@ class Type:
 
     def __init__(
         self,
-        var: "Union[Type.Var, _Missing]" = MISSING,
-        con: "Union[Type.Con, _Missing]" = MISSING,
-        prim: "Union[Type.Prim, _Missing]" = MISSING,
-        forall: "Union[Type.Forall, _Missing]" = MISSING,
-        struct: "Union[Type.Struct, _Missing]" = MISSING,
-        nat: "Union[int, _Missing]" = MISSING,
-        syn: "Union[Type.Syn, _Missing]" = MISSING,
+        var: Union[Type.Var, _Missing] = MISSING,
+        con: Union[Type.Con, _Missing] = MISSING,
+        prim: Union[Type.Prim, _Missing] = MISSING,
+        forall: Union[Type.Forall, _Missing] = MISSING,
+        struct: Union[Type.Struct, _Missing] = MISSING,
+        nat: Union[int, _Missing] = MISSING,
+        syn: Union[Type.Syn, _Missing] = MISSING,
     ):
         if var is not MISSING:
             object.__setattr__(self, "_Sum_name", "var")
@@ -485,23 +481,23 @@ class Type:
             raise ValueError("unknown sum type")
 
     @property
-    def var(self) -> "Type.Var":
+    def var(self) -> Type.Var:
         return self._Sum_value if self._Sum_name == "var" else None  # type: ignore
 
     @property
-    def con(self) -> "Type.Con":
+    def con(self) -> Type.Con:
         return self._Sum_value if self._Sum_name == "con" else None  # type: ignore
 
     @property
-    def prim(self) -> "Type.Prim":
+    def prim(self) -> Type.Prim:
         return self._Sum_value if self._Sum_name == "prim" else None  # type: ignore
 
     @property
-    def forall(self) -> "Type.Forall":
+    def forall(self) -> Type.Forall:
         return self._Sum_value if self._Sum_name == "forall" else None  # type: ignore
 
     @property
-    def struct(self) -> "Type.Struct":
+    def struct(self) -> Type.Struct:
         return self._Sum_value if self._Sum_name == "struct" else None  # type: ignore
 
     @property
@@ -509,20 +505,20 @@ class Type:
         return self._Sum_value if self._Sum_name == "nat" else None  # type: ignore
 
     @property
-    def syn(self) -> "Type.Syn":
+    def syn(self) -> Type.Syn:
         return self._Sum_value if self._Sum_name == "syn" else None  # type: ignore
 
     # noinspection PyPep8Naming
     def Sum_match(
         self,
-        var: "Callable[[Type.Var], T]",
-        con: "Callable[[Type.Con], T]",
-        prim: "Callable[[Type.Prim], T]",
-        forall: "Callable[[Type.Forall], T]",
-        struct: "Callable[[Type.Struct], T]",
-        nat: "Callable[[int], T]",
-        syn: "Callable[[Type.Syn], T]",
-    ) -> "T":
+        var: Callable[[Type.Var], T],
+        con: Callable[[Type.Con], T],
+        prim: Callable[[Type.Prim], T],
+        forall: Callable[[Type.Forall], T],
+        struct: Callable[[Type.Struct], T],
+        nat: Callable[[int], T],
+        syn: Callable[[Type.Syn], T],
+    ) -> T:
         if self._Sum_name == "var":
             return var(self._Sum_value)
         elif self._Sum_name == "con":
@@ -543,32 +539,6 @@ class Type:
     def __setattr__(self, key, value):
         raise Exception("Type is a read-only object")
 
-    def __str__(self):
-        """
-        Return a str representation of this :class:`Type`. This is intentionally made to look more
-        similar to DAML syntax.
-        """
-        # This import is done inside the function instead of outside to avoid circular references
-        from ..pretty import DAML_PRETTY_PRINTER
-
-        return DAML_PRETTY_PRINTER.visit_type(self)
-
-    def __repr__(self):
-        """
-        Return a str representation of this :class:`Type`. This is intentionally made to look more
-        similar to DAML syntax.
-        """
-        # This import is done inside the function instead of outside to avoid circular references
-        from ..pretty import DAML_PRETTY_PRINTER
-
-        # If rendering the type fails, print _something_; crashing in a repr(...) could be quite
-        # obnoxious for users of this library
-        # noinspection PyBroadException
-        try:
-            return f"Type({DAML_PRETTY_PRINTER.visit_type(self)})"
-        except:  # noqa
-            return "Type(...)"
-
 
 class PrimLit:
     __slots__ = "_Sum_name", "_Sum_value"
@@ -587,14 +557,14 @@ class PrimLit:
 
     def __init__(
         self,
-        int64: "Union[int, _Missing]" = MISSING,
-        decimal: "Union[str, _Missing]" = MISSING,
-        text: "Union[str, _Missing]" = MISSING,
-        timestamp: "Union[float, _Missing]" = MISSING,
-        party: "Union[str, _Missing]" = MISSING,
-        date: "Union[int, _Missing]" = MISSING,
-        numeric: "Union[str, _Missing]" = MISSING,
-        rounding_mode: "Union[RoundingMode, _Missing]" = MISSING,
+        int64: Union[int, _Missing] = MISSING,
+        decimal: Union[str, _Missing] = MISSING,
+        text: Union[str, _Missing] = MISSING,
+        timestamp: Union[float, _Missing] = MISSING,
+        party: Union[str, _Missing] = MISSING,
+        date: Union[int, _Missing] = MISSING,
+        numeric: Union[str, _Missing] = MISSING,
+        rounding_mode: Union[RoundingMode, _Missing] = MISSING,
     ):
         if int64 is not MISSING:
             object.__setattr__(self, "_Sum_name", "int64")
@@ -622,11 +592,11 @@ class PrimLit:
             object.__setattr__(self, "_Sum_value", rounding_mode)
 
     @property
-    def int64(self) -> "Optional[int]":
+    def int64(self) -> Optional[int]:
         return self._Sum_value if self._Sum_name == "int64" else None
 
     @property
-    def decimal(self) -> "Optional[str]":
+    def decimal(self) -> Optional[str]:
         """
         our decimal type would fit in an int128, but sadly Protobuf does not
         have one. so, string it is. note that we can't store the whole and
@@ -635,11 +605,11 @@ class PrimLit:
         return self._Sum_value if self._Sum_name == "decimal" else None
 
     @property
-    def text(self) -> "Optional[str]":
+    def text(self) -> Optional[str]:
         return self._Sum_value if self._Sum_name == "text" else None
 
     @property
-    def timestamp(self) -> "Optional[float]":
+    def timestamp(self) -> Optional[float]:
         """
         microseconds since the UNIX epoch. can go backwards. fixed
         since the vast majority of values will be greater than
@@ -651,11 +621,11 @@ class PrimLit:
         return self._Sum_value if self._Sum_name == "timestamp" else None
 
     @property
-    def party(self) -> "Optional[str]":
+    def party(self) -> Optional[str]:
         return self._Sum_value if self._Sum_name == "party" else None
 
     @property
-    def date(self) -> "Optional[int]":
+    def date(self) -> Optional[int]:
         """
         days since the unix epoch. can go backwards. limited from
         0001-01-01 to 9999-12-31, also to be compatible with
@@ -664,7 +634,7 @@ class PrimLit:
         return self._Sum_value if self._Sum_name == "date" else None
 
     @property
-    def numeric(self) -> "Optional[str]":
+    def numeric(self) -> Optional[str]:
         """
         Serialization of number with precision 38 and scale between 0 and 37
 
@@ -676,7 +646,7 @@ class PrimLit:
         return self._Sum_value if self._Sum_name == "numeric" else None
 
     @property
-    def rounding_mode(self) -> "Optional[RoundingMode]":
+    def rounding_mode(self) -> Optional[RoundingMode]:
         """
         Rounding mode for arithmetic operation
 
@@ -703,13 +673,13 @@ class Location:
         end_line: int
         end_col: int
 
-    module: "ModuleRef"
-    range: "Range"
+    module: ModuleRef
+    range: Range
 
     def __init__(
         self,
-        module: "Union[ModuleRef, _Missing]" = MISSING,
-        range: "Union[Range, _Missing]" = MISSING,
+        module: Union[ModuleRef, _Missing] = MISSING,
+        range: Union[Range, _Missing] = MISSING,
     ):
         object.__setattr__(self, "module", module)
         object.__setattr__(self, "range", range)
@@ -718,10 +688,10 @@ class Location:
 # noinspection PyShadowingBuiltins
 class Expr:
     class RecCon:
-        tycon: "Type.Con"
-        fields: "Sequence[FieldWithExpr]"
+        tycon: Type.Con
+        fields: Sequence[FieldWithExpr]
 
-        def __init__(self, tycon: "Type.Con", fields: "Sequence[FieldWithExpr]"):
+        def __init__(self, tycon: Type.Con, fields: Sequence[FieldWithExpr]):
             self.tycon = tycon
             self.fields = tuple(fields)
 
@@ -730,9 +700,9 @@ class Expr:
 
     @dataclass(frozen=True)
     class RecProj:
-        tycon: "Type.Con"  # Always fully applied string
+        tycon: Type.Con  # Always fully applied string
         field: str
-        record: "Expr"
+        record: Expr
 
         def __repr__(self):
             with StringIO() as buf:
@@ -751,52 +721,52 @@ class Expr:
     # Set `field` in `record` to `update`.
     @dataclass(frozen=True)
     class RecUpd:
-        tycon: "Type.Con"
+        tycon: Type.Con
         field: str
-        record: "Expr"
-        update: "Expr"
+        record: Expr
+        update: Expr
 
     class VariantCon:
-        tycon: "Type.Con"  # Always fully applied
+        tycon: Type.Con  # Always fully applied
         variant_con: str
-        variant_arg: "Expr"
+        variant_arg: Expr
 
-        def __init__(self, tycon: "Type.Con", variant_con: str, variant_arg: "Expr"):
+        def __init__(self, tycon: Type.Con, variant_con: str, variant_arg: Expr):
             self.tycon = tycon
             self.variant_con = variant_con
             self.variant_arg = variant_arg
 
     @dataclass(frozen=True)
     class EnumCon:
-        tycon: "TypeConName"  # Always fully applied
+        tycon: TypeConName  # Always fully applied
         enum_con: str
 
     @dataclass(frozen=True)
     class StructCon:
-        fields: "Sequence[FieldWithExpr]"  # length > 0
+        fields: Sequence[FieldWithExpr]  # length > 0
 
     @dataclass(frozen=True)
     class StructProj:
         field: str
-        struct: "Expr"
+        struct: Expr
 
     # Set `field` in `tuple` to `update`.
     @dataclass(frozen=True)
     class StructUpd:
         field: str
-        struct: "Expr"
-        update: "Expr"
+        struct: Expr
+        update: Expr
 
     @dataclass(frozen=True)
     class App:
-        fun: "Expr"
-        args: "Sequence[Expr]"  # length > 0
+        fun: Expr
+        args: Sequence[Expr]  # length > 0
 
     class TyApp:
-        expr: "Expr"
-        types: "Sequence[Type]"  # length > 0
+        expr: Expr
+        types: Sequence[Type]  # length > 0
 
-        def __init__(self, expr: "Expr", types: "Sequence[Type]"):
+        def __init__(self, expr: Expr, types: Sequence[Type]):
             from ..util.typing import safe_cast
 
             object.__setattr__(self, "expr", safe_cast(Expr, expr))
@@ -806,10 +776,10 @@ class Expr:
             return f"Expr.TyApp(types={self.types}, expr={self.expr})"
 
     class Abs:
-        param: "Sequence[VarWithType]"  # length > 0
-        body: "Expr"
+        param: Sequence[VarWithType]  # length > 0
+        body: Expr
 
-        def __init__(self, param: "Sequence[VarWithType]", body: "Expr"):
+        def __init__(self, param: Sequence[VarWithType], body: Expr):
             from ..util.typing import safe_cast
 
             object.__setattr__(self, "param", param)
@@ -826,17 +796,17 @@ class Expr:
 
     @dataclass(frozen=True)
     class TyAbs:
-        param: "Sequence[TypeVarWithKind]"
-        body: "Expr"
+        param: Sequence[TypeVarWithKind]
+        body: Expr
 
     @dataclass(frozen=True)
     class Nil:
-        type: "Type"
+        type: Type
 
         __slots__ = ("type",)
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type"):
+        def __init__(self, type: Type):
             object.__setattr__(self, "type", type)
 
         def __repr__(self):
@@ -844,9 +814,9 @@ class Expr:
 
     @dataclass(frozen=True)
     class Cons:
-        type: "Type"
-        front: "Sequence[Expr]"  # length > 0
-        tail: "Expr"
+        type: Type
+        front: Sequence[Expr]  # length > 0
+        tail: Expr
 
         def __repr__(self):
             with StringIO() as buf:
@@ -859,21 +829,21 @@ class Expr:
 
     # noinspection PyPep8Naming
     class OptionalNone:
-        type: "Type"
+        type: Type
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type"):
+        def __init__(self, type: Type):
             self.type = type
 
         def __repr__(self):
             return f"Expr.None(: {self.type})"
 
     class OptionalSome:
-        type: "Type"
-        body: "Expr"
+        type: Type
+        body: Expr
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type", body: "Expr"):
+        def __init__(self, type: Type, body: Expr):
             self.type = type
             self.body = body
 
@@ -881,131 +851,131 @@ class Expr:
             return f"Expr.Some({self.body!r} : {self.type})"
 
     class ToAny:
-        type: "Type"
-        expr: "Expr"
+        type: Type
+        expr: Expr
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type", expr: "Expr"):
+        def __init__(self, type: Type, expr: Expr):
             self.type = type
             self.expr = expr
 
     class FromAny:
-        type: "Type"
-        expr: "Expr"
+        type: Type
+        expr: Expr
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type", expr: "Expr"):
+        def __init__(self, type: Type, expr: Expr):
             self.type = type
             self.expr = expr
 
     class ToAnyException:
-        type: "Type"
-        expr: "Expr"
+        type: Type
+        expr: Expr
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type", expr: "Expr"):
+        def __init__(self, type: Type, expr: Expr):
             self.type = type
             self.expr = expr
 
     class FromAnyException:
-        type: "Type"
-        expr: "Expr"
+        type: Type
+        expr: Expr
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type", expr: "Expr"):
+        def __init__(self, type: Type, expr: Expr):
             self.type = type
             self.expr = expr
 
     class ToTextTemplateId:
-        type: "Type"
+        type: Type
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type"):
+        def __init__(self, type: Type):
             self.type = type
 
     class Throw:
-        return_type: "Type"
-        exception_type: "Type"
-        exception_expr: "Expr"
+        return_type: Type
+        exception_type: Type
+        exception_expr: Expr
 
-        def __init__(self, return_type: "Type", exception_type: "Type", exception_expr: "Expr"):
+        def __init__(self, return_type: Type, exception_type: Type, exception_expr: Expr):
             self.return_type = return_type
             self.exception_type = exception_type
             self.exception_expr = exception_expr
 
     class ToInterface:
-        interface_type: "TypeConName"
-        template_type: "TypeConName"
-        template_expr: "Expr"
+        interface_type: TypeConName
+        template_type: TypeConName
+        template_expr: Expr
 
         def __init__(
-            self, interface_type: "TypeConName", template_type: "TypeConName", template_expr: "Expr"
+            self, interface_type: TypeConName, template_type: TypeConName, template_expr: Expr
         ):
             self.interface_type = interface_type
             self.template_type = template_type
             self.template_expr = template_expr
 
     class FromInterface:
-        interface_type: "TypeConName"
-        template_type: "TypeConName"
-        interface_expr: "Expr"
+        interface_type: TypeConName
+        template_type: TypeConName
+        interface_expr: Expr
 
         def __init__(
             self,
-            interface_type: "TypeConName",
-            template_type: "TypeConName",
-            interface_expr: "Expr",
+            interface_type: TypeConName,
+            template_type: TypeConName,
+            interface_expr: Expr,
         ):
             self.interface_type = interface_type
             self.template_type = template_type
             self.interface_expr = interface_expr
 
     class CallInterface:
-        interface_type: "TypeConName"
+        interface_type: TypeConName
         method_name: str
-        interface_expr: "Expr"
+        interface_expr: Expr
 
-        def __init__(self, interface_type: "TypeConName", method_name: str, interface_expr: "Expr"):
+        def __init__(self, interface_type: TypeConName, method_name: str, interface_expr: Expr):
             self.interface_type = interface_type
             self.method_name = method_name
             self.interface_expr = interface_expr
 
     class ViewInterface:
-        interface: "TypeConName"
-        expr: "Expr"
+        interface: TypeConName
+        expr: Expr
 
-        def __init__(self, interface: "TypeConName", expr: "Expr"):
+        def __init__(self, interface: TypeConName, expr: Expr):
             self.interface = interface
             self.expr = expr
 
     class SignatoryInterface:
-        interface: "TypeConName"
-        expr: "Expr"
+        interface: TypeConName
+        expr: Expr
 
-        def __init__(self, interface: "TypeConName", expr: "Expr"):
+        def __init__(self, interface: TypeConName, expr: Expr):
             self.interface = interface
             self.expr = expr
 
     class ObserverInterface:
-        interface: "TypeConName"
-        expr: "Expr"
+        interface: TypeConName
+        expr: Expr
 
-        def __init__(self, interface: "TypeConName", expr: "Expr"):
+        def __init__(self, interface: TypeConName, expr: Expr):
             self.interface = interface
             self.expr = expr
 
     class UnsafeFromInterface:
-        interface_type: "TypeConName"
-        template_type: "TypeConName"
-        contract_id_expr: "Expr"
-        interface_expr: "Expr"
+        interface_type: TypeConName
+        template_type: TypeConName
+        contract_id_expr: Expr
+        interface_expr: Expr
 
         def __init__(
             self,
-            interface_type: "TypeConName",
-            template_type: "TypeConName",
-            contract_id_expr: "Expr",
-            interface_expr: "Expr",
+            interface_type: TypeConName,
+            template_type: TypeConName,
+            contract_id_expr: Expr,
+            interface_expr: Expr,
         ):
             self.interface_type = interface_type
             self.template_type = template_type
@@ -1013,55 +983,55 @@ class Expr:
             self.interface_expr = interface_expr
 
     class InterfaceTemplateTypeRep:
-        interface: "TypeConName"
-        expr: "Expr"
+        interface: TypeConName
+        expr: Expr
 
-        def __init__(self, interface: "TypeConName", expr: "Expr"):
+        def __init__(self, interface: TypeConName, expr: Expr):
             self.interface = interface
             self.expr = expr
 
     class ToRequiredInterface:
-        required_interface: "TypeConName"
-        requiring_interface: "TypeConName"
-        expr: "Expr"
+        required_interface: TypeConName
+        requiring_interface: TypeConName
+        expr: Expr
 
         def __init__(
             self,
-            required_interface: "TypeConName",
-            requiring_interface: "TypeConName",
-            expr: "Expr",
+            required_interface: TypeConName,
+            requiring_interface: TypeConName,
+            expr: Expr,
         ):
             self.required_interface = required_interface
             self.requiring_interface = requiring_interface
             self.expr = expr
 
     class FromRequiredInterface:
-        required_interface: "TypeConName"
-        requiring_interface: "TypeConName"
-        expr: "Expr"
+        required_interface: TypeConName
+        requiring_interface: TypeConName
+        expr: Expr
 
         def __init__(
             self,
-            required_interface: "TypeConName",
-            requiring_interface: "TypeConName",
-            expr: "Expr",
+            required_interface: TypeConName,
+            requiring_interface: TypeConName,
+            expr: Expr,
         ):
             self.required_interface = required_interface
             self.requiring_interface = requiring_interface
             self.expr = expr
 
     class UnsafeFromRequiredInterface:
-        required_interface: "TypeConName"
-        requiring_interface: "TypeConName"
-        contract_id_expr: "Expr"
-        interface_expr: "Expr"
+        required_interface: TypeConName
+        requiring_interface: TypeConName
+        contract_id_expr: Expr
+        interface_expr: Expr
 
         def __init__(
             self,
-            required_interface: "TypeConName",
-            requiring_interface: "TypeConName",
-            contract_id_expr: "Expr",
-            interface_expr: "Expr",
+            required_interface: TypeConName,
+            requiring_interface: TypeConName,
+            contract_id_expr: Expr,
+            interface_expr: Expr,
         ):
             self.required_interface = required_interface
             self.requiring_interface = requiring_interface
@@ -1070,10 +1040,10 @@ class Expr:
 
     class Experimental:
         name: str
-        type: "Type"
+        type: Type
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, name: str, type: "Type"):
+        def __init__(self, name: str, type: Type):
             self.name = name
             self.type = type
 
@@ -1113,52 +1083,52 @@ class Expr:
     def __init__(
         self,
         *,
-        var: "Union[str, _Missing]" = MISSING,
-        val: "Union[ValName, _Missing]" = MISSING,
-        builtin: "Union[BuiltinFunction, _Missing]" = MISSING,
-        prim_con: "Union[PrimCon, _Missing]" = MISSING,
-        prim_lit: "Union[PrimLit, _Missing]" = MISSING,
-        rec_con: "Union[RecCon, _Missing]" = MISSING,
-        rec_proj: "Union[RecProj, _Missing]" = MISSING,
-        rec_upd: "Union[RecUpd, _Missing]" = MISSING,
-        variant_con: "Union[VariantCon, _Missing]" = MISSING,
-        enum_con: "Union[EnumCon, _Missing]" = MISSING,
-        struct_con: "Union[StructCon, _Missing]" = MISSING,
-        struct_proj: "Union[StructProj, _Missing]" = MISSING,
-        struct_upd: "Union[StructUpd, _Missing]" = MISSING,
-        app: "Union[App, _Missing]" = MISSING,
-        ty_app: "Union[TyApp, _Missing]" = MISSING,
-        abs: "Union[Abs, _Missing]" = MISSING,
-        ty_abs: "Union[TyAbs, _Missing]" = MISSING,
-        case: "Union[Case, _Missing]" = MISSING,
-        let: "Union[Block, _Missing]" = MISSING,
-        nil: "Union[Nil, _Missing]" = MISSING,
-        cons: "Union[Cons, _Missing]" = MISSING,
-        update: "Union[Update, _Missing]" = MISSING,
-        scenario: "Union[Scenario, _Missing]" = MISSING,
-        optional_none: "Union[OptionalNone, _Missing]" = MISSING,
-        optional_some: "Union[OptionalSome, _Missing]" = MISSING,
-        to_any: "Union[ToAny, _Missing]" = MISSING,
-        from_any: "Union[FromAny, _Missing]" = MISSING,
-        type_rep: "Union[Type, _Missing]" = MISSING,
-        to_any_exception: "Union[Expr.ToAnyException, _Missing]" = MISSING,
-        from_any_exception: "Union[Expr.FromAnyException, _Missing]" = MISSING,
-        throw: "Union[Expr.Throw, _Missing]" = MISSING,
-        to_interface: "Union[Expr.ToInterface, _Missing]" = MISSING,
-        from_interface: "Union[Expr.FromInterface, _Missing]" = MISSING,
-        call_interface: "Union[Expr.CallInterface, _Missing]" = MISSING,
-        signatory_interface: "Union[Expr.SignatoryInterface, _Missing]" = MISSING,
-        observer_interface: "Union[Expr.ObserverInterface, _Missing]" = MISSING,
-        view_interface: "Union[Expr.ViewInterface, _Missing]" = MISSING,
-        unsafe_from_interface: "Union[Expr.UnsafeFromInterface, _Missing]" = MISSING,
-        interface_template_type_rep: "Union[Expr.InterfaceTemplateTypeRep, _Missing]" = MISSING,
-        to_required_interface: "Union[Expr.ToRequiredInterface, _Missing]" = MISSING,
-        from_required_interface: "Union[Expr.FromRequiredInterface, _Missing]" = MISSING,
-        unsafe_from_required_interface: "Union[Expr.UnsafeFromRequiredInterface, _Missing]" = MISSING,
-        experimental: "Union[Expr.Experimental, _Missing]" = MISSING,
-        choice_controller: "Union[Expr.ChoiceController, _Missing]" = MISSING,
-        choice_observer: "Union[Expr.ChoiceObserver, _Missing]" = MISSING,
-        location: "Optional[Location]" = None,
+        var: Union[str, _Missing] = MISSING,
+        val: Union[ValName, _Missing] = MISSING,
+        builtin: Union[BuiltinFunction, _Missing] = MISSING,
+        prim_con: Union[PrimCon, _Missing] = MISSING,
+        prim_lit: Union[PrimLit, _Missing] = MISSING,
+        rec_con: Union[RecCon, _Missing] = MISSING,
+        rec_proj: Union[RecProj, _Missing] = MISSING,
+        rec_upd: Union[RecUpd, _Missing] = MISSING,
+        variant_con: Union[VariantCon, _Missing] = MISSING,
+        enum_con: Union[EnumCon, _Missing] = MISSING,
+        struct_con: Union[StructCon, _Missing] = MISSING,
+        struct_proj: Union[StructProj, _Missing] = MISSING,
+        struct_upd: Union[StructUpd, _Missing] = MISSING,
+        app: Union[App, _Missing] = MISSING,
+        ty_app: Union[TyApp, _Missing] = MISSING,
+        abs: Union[Abs, _Missing] = MISSING,
+        ty_abs: Union[TyAbs, _Missing] = MISSING,
+        case: Union[Case, _Missing] = MISSING,
+        let: Union[Block, _Missing] = MISSING,
+        nil: Union[Nil, _Missing] = MISSING,
+        cons: Union[Cons, _Missing] = MISSING,
+        update: Union[Update, _Missing] = MISSING,
+        scenario: Union[Scenario, _Missing] = MISSING,
+        optional_none: Union[OptionalNone, _Missing] = MISSING,
+        optional_some: Union[OptionalSome, _Missing] = MISSING,
+        to_any: Union[ToAny, _Missing] = MISSING,
+        from_any: Union[FromAny, _Missing] = MISSING,
+        type_rep: Union[Type, _Missing] = MISSING,
+        to_any_exception: Union[Expr.ToAnyException, _Missing] = MISSING,
+        from_any_exception: Union[Expr.FromAnyException, _Missing] = MISSING,
+        throw: Union[Expr.Throw, _Missing] = MISSING,
+        to_interface: Union[Expr.ToInterface, _Missing] = MISSING,
+        from_interface: Union[Expr.FromInterface, _Missing] = MISSING,
+        call_interface: Union[Expr.CallInterface, _Missing] = MISSING,
+        signatory_interface: Union[Expr.SignatoryInterface, _Missing] = MISSING,
+        observer_interface: Union[Expr.ObserverInterface, _Missing] = MISSING,
+        view_interface: Union[Expr.ViewInterface, _Missing] = MISSING,
+        unsafe_from_interface: Union[Expr.UnsafeFromInterface, _Missing] = MISSING,
+        interface_template_type_rep: Union[Expr.InterfaceTemplateTypeRep, _Missing] = MISSING,
+        to_required_interface: Union[Expr.ToRequiredInterface, _Missing] = MISSING,
+        from_required_interface: Union[Expr.FromRequiredInterface, _Missing] = MISSING,
+        unsafe_from_required_interface: Union[Expr.UnsafeFromRequiredInterface, _Missing] = MISSING,
+        experimental: Union[Expr.Experimental, _Missing] = MISSING,
+        choice_controller: Union[Expr.ChoiceController, _Missing] = MISSING,
+        choice_observer: Union[Expr.ChoiceObserver, _Missing] = MISSING,
+        location: Optional[Location] = None,
     ):
         object.__setattr__(self, "location", location)
         if var is not MISSING:
@@ -1303,230 +1273,230 @@ class Expr:
         raise Exception("Expr is read-only")
 
     @property
-    def var(self) -> "Optional[str]":
+    def var(self) -> Optional[str]:
         return self._Sum_value if self._Sum_name == "var" else None
 
     @property
-    def val(self) -> "Optional[ValName]":
+    def val(self) -> Optional[ValName]:
         return self._Sum_value if self._Sum_name == "val" else None
 
     @property
-    def builtin(self) -> "Optional[BuiltinFunction]":
+    def builtin(self) -> Optional[BuiltinFunction]:
         return self._Sum_value if self._Sum_name == "builtin" else None
 
     @property
-    def prim_con(self) -> "Optional[PrimCon]":
+    def prim_con(self) -> Optional[PrimCon]:
         return self._Sum_value if self._Sum_name == "prim_con" else None
 
     @property
-    def prim_lit(self) -> "Optional[PrimLit]":
+    def prim_lit(self) -> Optional[PrimLit]:
         return self._Sum_value if self._Sum_name == "prim_lit" else None
 
     @property
-    def rec_con(self) -> "Optional[Expr.RecCon]":
+    def rec_con(self) -> Optional[Expr.RecCon]:
         return self._Sum_value if self._Sum_name == "rec_con" else None
 
     @property
-    def rec_proj(self) -> "Optional[RecProj]":
+    def rec_proj(self) -> Optional[RecProj]:
         return self._Sum_value if self._Sum_name == "rec_proj" else None
 
     @property
-    def variant_con(self) -> "Optional[VariantCon]":
+    def variant_con(self) -> Optional[VariantCon]:
         return self._Sum_value if self._Sum_name == "variant_con" else None
 
     @property
-    def enum_con(self) -> "Optional[EnumCon]":
+    def enum_con(self) -> Optional[EnumCon]:
         return self._Sum_value if self._Sum_name == "enum_con" else None
 
     @property
-    def struct_con(self) -> "Optional[StructCon]":
+    def struct_con(self) -> Optional[StructCon]:
         return self._Sum_value if self._Sum_name == "struct_con" else None
 
     @property
-    def struct_proj(self) -> "Optional[StructProj]":
+    def struct_proj(self) -> Optional[StructProj]:
         return self._Sum_value if self._Sum_name == "struct_proj" else None
 
     @property
-    def app(self) -> "Optional[App]":
+    def app(self) -> Optional[App]:
         return self._Sum_value if self._Sum_name == "app" else None
 
     @property
-    def ty_app(self) -> "Optional[Expr.TyApp]":
+    def ty_app(self) -> Optional[Expr.TyApp]:
         return self._Sum_value if self._Sum_name == "ty_app" else None
 
     @property
-    def abs(self) -> "Optional[Expr.Abs]":
+    def abs(self) -> Optional[Expr.Abs]:
         return self._Sum_value if self._Sum_name == "abs" else None
 
     @property
-    def ty_abs(self) -> "Optional[Expr.TyAbs]":
+    def ty_abs(self) -> Optional[Expr.TyAbs]:
         return self._Sum_value if self._Sum_name == "ty_abs" else None
 
     @property
-    def case(self) -> "Optional[Case]":
+    def case(self) -> Optional[Case]:
         return self._Sum_value if self._Sum_name == "case" else None
 
     @property
-    def let(self) -> "Optional[Block]":
+    def let(self) -> Optional[Block]:
         return self._Sum_value if self._Sum_name == "let" else None
 
     @property
-    def nil(self) -> "Optional[Expr.Nil]":
+    def nil(self) -> Optional[Expr.Nil]:
         return self._Sum_value if self._Sum_name == "nil" else None
 
     @property
-    def cons(self) -> "Optional[Expr.Cons]":
+    def cons(self) -> Optional[Expr.Cons]:
         return self._Sum_value if self._Sum_name == "cons" else None
 
     @property
-    def update(self) -> "Optional[Update]":
+    def update(self) -> Optional[Update]:
         return self._Sum_value if self._Sum_name == "update" else None
 
     @property
-    def scenario(self) -> "Optional[Scenario]":
+    def scenario(self) -> Optional[Scenario]:
         return self._Sum_value if self._Sum_name == "scenario" else None
 
     @property
-    def rec_upd(self) -> "Optional[RecUpd]":
+    def rec_upd(self) -> Optional[RecUpd]:
         return self._Sum_value if self._Sum_name == "rec_upd" else None
 
     @property
-    def struct_upd(self) -> "Optional[StructUpd]":
+    def struct_upd(self) -> Optional[StructUpd]:
         return self._Sum_value if self._Sum_name == "struct_upd" else None
 
     @property
-    def optional_none(self) -> "Optional[OptionalNone]":
+    def optional_none(self) -> Optional[OptionalNone]:
         return self._Sum_value if self._Sum_name == "optional_none" else None
 
     @property
-    def optional_some(self) -> "Optional[OptionalSome]":
+    def optional_some(self) -> Optional[OptionalSome]:
         return self._Sum_value if self._Sum_name == "optional_some" else None
 
     @property
-    def to_any(self) -> "Optional[ToAny]":
+    def to_any(self) -> Optional[ToAny]:
         return self._Sum_value if self._Sum_name == "to_any" else None
 
     @property
-    def from_any(self) -> "Optional[FromAny]":
+    def from_any(self) -> Optional[FromAny]:
         return self._Sum_value if self._Sum_name == "from_any" else None
 
     @property
-    def to_text_template_id(self) -> "Optional[ToTextTemplateId]":
+    def to_text_template_id(self) -> Optional[ToTextTemplateId]:
         return self._Sum_value if self._Sum_name == "to_text_template_id" else None
 
     @property
-    def type_rep(self) -> "Optional[Type]":
+    def type_rep(self) -> Optional[Type]:
         return self._Sum_value if self._Sum_name == "type_rep" else None
 
     @property
-    def throw(self) -> "Optional[Throw]":
+    def throw(self) -> Optional[Throw]:
         return self._Sum_value if self._Sum_name == "throw" else None
 
     @property
-    def to_interface(self) -> "Optional[ToInterface]":
+    def to_interface(self) -> Optional[ToInterface]:
         return self._Sum_value if self._Sum_name == "to_interface" else None
 
     @property
-    def from_interface(self) -> "Optional[FromInterface]":
+    def from_interface(self) -> Optional[FromInterface]:
         return self._Sum_value if self._Sum_name == "from_interface" else None
 
     @property
-    def call_interface(self) -> "Optional[CallInterface]":
+    def call_interface(self) -> Optional[CallInterface]:
         return self._Sum_value if self._Sum_name == "call_interface" else None
 
     @property
-    def signatory_interface(self) -> "Optional[SignatoryInterface]":
+    def signatory_interface(self) -> Optional[SignatoryInterface]:
         return self._Sum_value if self._Sum_name == "signatory_interface" else None
 
     @property
-    def observer_interface(self) -> "Optional[ObserverInterface]":
+    def observer_interface(self) -> Optional[ObserverInterface]:
         return self._Sum_value if self._Sum_name == "observer_interface" else None
 
     @property
-    def view_interface(self) -> "Optional[ViewInterface]":
+    def view_interface(self) -> Optional[ViewInterface]:
         return self._Sum_value if self._Sum_name == "view_interface" else None
 
     @property
-    def unsafe_from_interface(self) -> "Optional[UnsafeFromInterface]":
+    def unsafe_from_interface(self) -> Optional[UnsafeFromInterface]:
         return self._Sum_value if self._Sum_name == "unsafe_from_interface" else None
 
     @property
-    def interface_template_type_rep(self) -> "Optional[InterfaceTemplateTypeRep]":
+    def interface_template_type_rep(self) -> Optional[InterfaceTemplateTypeRep]:
         return self._Sum_value if self._Sum_name == "interface_template_type_rep" else None
 
     @property
-    def to_required_interface(self) -> "Optional[ToRequiredInterface]":
+    def to_required_interface(self) -> Optional[ToRequiredInterface]:
         return self._Sum_value if self._Sum_name == "to_required_interface" else None
 
     @property
-    def from_required_interface(self) -> "Optional[FromRequiredInterface]":
+    def from_required_interface(self) -> Optional[FromRequiredInterface]:
         return self._Sum_value if self._Sum_name == "from_required_interface" else None
 
     @property
-    def unsafe_from_required_interface(self) -> "Optional[UnsafeFromRequiredInterface]":
+    def unsafe_from_required_interface(self) -> Optional[UnsafeFromRequiredInterface]:
         return self._Sum_value if self._Sum_name == "unsafe_from_required_interface" else None
 
     @property
-    def experimental(self) -> "Optional[Experimental]":
+    def experimental(self) -> Optional[Experimental]:
         return self._Sum_value if self._Sum_name == "experimental" else None
 
     @property
-    def choice_controller(self) -> "Optional[ChoiceController]":
+    def choice_controller(self) -> Optional[ChoiceController]:
         return self._Sum_value if self._Sum_name == "choice_controller" else None
 
     @property
-    def choice_observer(self) -> "Optional[ChoiceObserver]":
+    def choice_observer(self) -> Optional[ChoiceObserver]:
         return self._Sum_value if self._Sum_name == "choice_observer" else None
 
     # noinspection PyPep8Naming
     def Sum_match(
         self,
-        var: "_typing.Callable[[str], _T]",
-        val: "_typing.Callable[[ValName], _T]",
-        builtin: "_typing.Callable[[BuiltinFunction], _T]",
-        prim_con: "_typing.Callable[[PrimCon], _T]",
-        prim_lit: "_typing.Callable[[PrimLit], _T]",
-        rec_con: "_typing.Callable[[Expr.RecCon], _T]",
-        rec_proj: "_typing.Callable[[Expr.RecProj], _T]",
-        rec_upd: "_typing.Callable[[Expr.RecUpd], _T]",
-        variant_con: "_typing.Callable[[Expr.VariantCon], _T]",
-        enum_con: "_typing.Callable[[Expr.EnumCon], _T]",
-        struct_con: "_typing.Callable[[Expr.StructCon], _T]",
-        struct_proj: "_typing.Callable[[Expr.StructProj], _T]",
-        struct_upd: "_typing.Callable[[Expr.StructUpd], _T]",
-        app: "_typing.Callable[[Expr.App], _T]",
-        ty_app: "_typing.Callable[[Expr.TyApp], _T]",
-        abs: "_typing.Callable[[Expr.Abs], _T]",
-        ty_abs: "_typing.Callable[[Expr.TyAbs], _T]",
-        case: "_typing.Callable[[Case], _T]",
-        let: "_typing.Callable[[Block], _T]",
-        nil: "_typing.Callable[[Expr.Nil], _T]",
-        cons: "_typing.Callable[[Expr.Cons], _T]",
-        update: "_typing.Callable[[Update], _T]",
-        scenario: "_typing.Callable[[Scenario], _T]",
-        optional_none: "_typing.Callable[[Expr.OptionalNone], _T]",
-        optional_some: "_typing.Callable[[Expr.OptionalSome], _T]",
-        to_any: "_typing.Callable[[Expr.ToAny], _T]",
-        from_any: "_typing.Callable[[Expr.FromAny], _T]",
-        type_rep: "_typing.Callable[[Type], _T]",
-        to_any_exception: "_typing.Callable[[Expr.ToAnyException], _T]",
-        from_any_exception: "_typing.Callable[[Expr.FromAnyException], _T]",
-        throw: "_typing.Callable[[Expr.Throw], _T]",
-        to_interface: "_typing.Callable[[ToInterface], _T]",
-        from_interface: "_typing.Callable[[FromInterface], _T]",
-        call_interface: "_typing.Callable[[CallInterface], _T]",
-        signatory_interface: "_typing.Callable[[SignatoryInterface], _T]",
-        observer_interface: "_typing.Callable[[ObserverInterface], _T]",
-        view_interface: "_typing.Callable[[ViewInterface], _T]",
-        unsafe_from_interface: "_typing.Callable[[UnsafeFromInterface], _T]",
-        interface_template_type_rep: "_typing.Callable[[InterfaceTemplateTypeRep], _T]",
-        to_required_interface: "_typing.Callable[[ToRequiredInterface], _T]",
-        from_required_interface: "_typing.Callable[[FromRequiredInterface], _T]",
-        unsafe_from_required_interface: "_typing.Callable[[UnsafeFromRequiredInterface], _T]",
-        experimental: "_typing.Callable[[Expr.Experimental], _T]",
-        choice_controller: "_typing.Callable[[Expr.ChoiceController], _T]",
-        choice_observer: "_typing.Callable[[Expr.ChoiceObserver], _T]",
-    ) -> "_T":
+        var: _typing.Callable[[str], _T],
+        val: _typing.Callable[[ValName], _T],
+        builtin: _typing.Callable[[BuiltinFunction], _T],
+        prim_con: _typing.Callable[[PrimCon], _T],
+        prim_lit: _typing.Callable[[PrimLit], _T],
+        rec_con: _typing.Callable[[Expr.RecCon], _T],
+        rec_proj: _typing.Callable[[Expr.RecProj], _T],
+        rec_upd: _typing.Callable[[Expr.RecUpd], _T],
+        variant_con: _typing.Callable[[Expr.VariantCon], _T],
+        enum_con: _typing.Callable[[Expr.EnumCon], _T],
+        struct_con: _typing.Callable[[Expr.StructCon], _T],
+        struct_proj: _typing.Callable[[Expr.StructProj], _T],
+        struct_upd: _typing.Callable[[Expr.StructUpd], _T],
+        app: _typing.Callable[[Expr.App], _T],
+        ty_app: _typing.Callable[[Expr.TyApp], _T],
+        abs: _typing.Callable[[Expr.Abs], _T],
+        ty_abs: _typing.Callable[[Expr.TyAbs], _T],
+        case: _typing.Callable[[Case], _T],
+        let: _typing.Callable[[Block], _T],
+        nil: _typing.Callable[[Expr.Nil], _T],
+        cons: _typing.Callable[[Expr.Cons], _T],
+        update: _typing.Callable[[Update], _T],
+        scenario: _typing.Callable[[Scenario], _T],
+        optional_none: _typing.Callable[[Expr.OptionalNone], _T],
+        optional_some: _typing.Callable[[Expr.OptionalSome], _T],
+        to_any: _typing.Callable[[Expr.ToAny], _T],
+        from_any: _typing.Callable[[Expr.FromAny], _T],
+        type_rep: _typing.Callable[[Type], _T],
+        to_any_exception: _typing.Callable[[Expr.ToAnyException], _T],
+        from_any_exception: _typing.Callable[[Expr.FromAnyException], _T],
+        throw: _typing.Callable[[Expr.Throw], _T],
+        to_interface: _typing.Callable[[ToInterface], _T],
+        from_interface: _typing.Callable[[FromInterface], _T],
+        call_interface: _typing.Callable[[CallInterface], _T],
+        signatory_interface: _typing.Callable[[SignatoryInterface], _T],
+        observer_interface: _typing.Callable[[ObserverInterface], _T],
+        view_interface: _typing.Callable[[ViewInterface], _T],
+        unsafe_from_interface: _typing.Callable[[UnsafeFromInterface], _T],
+        interface_template_type_rep: _typing.Callable[[InterfaceTemplateTypeRep], _T],
+        to_required_interface: _typing.Callable[[ToRequiredInterface], _T],
+        from_required_interface: _typing.Callable[[FromRequiredInterface], _T],
+        unsafe_from_required_interface: _typing.Callable[[UnsafeFromRequiredInterface], _T],
+        experimental: _typing.Callable[[Expr.Experimental], _T],
+        choice_controller: _typing.Callable[[Expr.ChoiceController], _T],
+        choice_observer: _typing.Callable[[Expr.ChoiceObserver], _T],
+    ) -> _T:
         if self._Sum_name == "var":
             return var(self.var)  # type: ignore
         elif self._Sum_name == "val":
@@ -1628,7 +1598,7 @@ class Expr:
 
 class CaseAlt:
     class Variant:
-        con: "TypeConName"
+        con: TypeConName
         variant: str
         binder: str
 
@@ -1652,21 +1622,21 @@ class CaseAlt:
         var_body: str
 
     __slots__ = "body", "_Sum_name", "_Sum_value"
-    body: "Expr"
+    body: Expr
     _Sum_name: str
     _Sum_value: Any
 
     def __init__(
         self,
-        default: "Union[Unit, _Missing]" = MISSING,
-        variant: "Union[Variant, _Missing]" = MISSING,
-        prim_con: "Union[PrimCon, _Missing]" = MISSING,
-        nil: "Union[Unit, _Missing]" = MISSING,
-        cons: "Union[Cons, _Missing]" = MISSING,
-        optional_none: "Union[Unit, _Missing]" = MISSING,
-        optional_some: "Union[OptionalSome, _Missing]" = MISSING,
-        body: "Union[Expr, _Missing]" = MISSING,
-        enum: "Union[Enum, _Missing]" = MISSING,
+        default: Union[Unit, _Missing] = MISSING,
+        variant: Union[Variant, _Missing] = MISSING,
+        prim_con: Union[PrimCon, _Missing] = MISSING,
+        nil: Union[Unit, _Missing] = MISSING,
+        cons: Union[Cons, _Missing] = MISSING,
+        optional_none: Union[Unit, _Missing] = MISSING,
+        optional_some: Union[OptionalSome, _Missing] = MISSING,
+        body: Union[Expr, _Missing] = MISSING,
+        enum: Union[Enum, _Missing] = MISSING,
     ):
         object.__setattr__(self, "body", body)
         if default is not MISSING:
@@ -1695,48 +1665,48 @@ class CaseAlt:
             object.__setattr__(self, "_Sum_value", enum)
 
     @property
-    def default(self) -> "Optional[Unit]":
+    def default(self) -> Optional[Unit]:
         return self._Sum_value if self._Sum_name == "default" else None
 
     @property
-    def variant(self) -> "Optional[Variant]":
+    def variant(self) -> Optional[Variant]:
         return self._Sum_value if self._Sum_name == "variant" else None
 
     @property
-    def prim_con(self) -> "Optional[PrimCon]":
+    def prim_con(self) -> Optional[PrimCon]:
         return self._Sum_value if self._Sum_name == "prim_con" else None
 
     @property
-    def nil(self) -> "Optional[Unit]":
+    def nil(self) -> Optional[Unit]:
         return self._Sum_value if self._Sum_name == "nil" else None
 
     @property
-    def cons(self) -> "Optional[Cons]":
+    def cons(self) -> Optional[Cons]:
         return self._Sum_value if self._Sum_name == "cons" else None
 
     @property
-    def optional_none(self) -> "Optional[Unit]":
+    def optional_none(self) -> Optional[Unit]:
         return self._Sum_value if self._Sum_name == "optional_none" else None
 
     @property
-    def optional_some(self) -> "Optional[OptionalSome]":
+    def optional_some(self) -> Optional[OptionalSome]:
         return self._Sum_value if self._Sum_name == "optional_some" else None
 
     @property
-    def enum(self) -> "Optional[Enum]":
+    def enum(self) -> Optional[Enum]:
         return self._Sum_value if self._Sum_name == "enum" else None
 
     # noinspection PyPep8Naming
     def Sum_match(
         self,
-        default: "Callable[[Unit], T]",
-        variant: "Callable[[Variant], T]",
-        prim_con: "Callable[[PrimCon], T]",
-        nil: "Callable[[Unit], T]",
-        cons: "Callable[[Cons], T]",
-        optional_none: "Callable[[Unit], T]",
-        optional_some: "Callable[[OptionalSome], T]",
-        enum: "Callable[[Enum], T]",
+        default: Callable[[Unit], T],
+        variant: Callable[[Variant], T],
+        prim_con: Callable[[PrimCon], T],
+        nil: Callable[[Unit], T],
+        cons: Callable[[Cons], T],
+        optional_none: Callable[[Unit], T],
+        optional_some: Callable[[OptionalSome], T],
+        enum: Callable[[Enum], T],
     ):
         if self._Sum_name == "default":
             return default(self.default)  # type: ignore
@@ -1761,87 +1731,87 @@ class CaseAlt:
 @dataclass(frozen=True)
 class Case:
     # noinspection SpellCheckingInspection
-    scrut: "Expr"
-    alts: "Sequence[CaseAlt]"  # length > 0
+    scrut: Expr
+    alts: Sequence[CaseAlt]  # length > 0
 
 
 @dataclass(frozen=True)
 class Block:
     # A block of bindings and an expression.
     # Encodes a sequence of binds in e.g. a let or update block.
-    bindings: "Sequence[Binding]"  # length > 0
-    body: "Expr"
+    bindings: Sequence[Binding]  # length > 0
+    body: Expr
 
 
 @dataclass(frozen=True)
 class Pure:
-    type: "Type"
-    expr: "Expr"
+    type: Type
+    expr: Expr
 
 
 class Update:
     class Create:
-        template: "TypeConName"
-        expr: "Expr"
+        template: TypeConName
+        expr: Expr
 
-        def __init__(self, template: "TypeConName", expr: "Expr"):
+        def __init__(self, template: TypeConName, expr: Expr):
             self.template = template
             self.expr = expr
 
     class Exercise:
-        template: "TypeConName"
+        template: TypeConName
         choice: str
-        cid: "Expr"
-        arg: "Expr"
+        cid: Expr
+        arg: Expr
 
-        def __init__(self, template: "TypeConName", choice: str, cid: "Expr", arg: "Expr"):
+        def __init__(self, template: TypeConName, choice: str, cid: Expr, arg: Expr):
             self.template = template
             self.choice = choice
             self.cid = cid
             self.arg = arg
 
     class ExerciseByKey:
-        template: "TypeConName"
+        template: TypeConName
         choice: str
-        key: "Expr"
-        arg: "Expr"
+        key: Expr
+        arg: Expr
 
-        def __init__(self, template: "TypeConName", choice: str, key: "Expr", arg: "Expr"):
+        def __init__(self, template: TypeConName, choice: str, key: Expr, arg: Expr):
             self.template = template
             self.choice = choice
             self.key = key
             self.arg = arg
 
     class Fetch:
-        template: "TypeConName"
-        cid: "Expr"
+        template: TypeConName
+        cid: Expr
 
         def __init__(self, template, cid):
             self.template = template
             self.cid = cid
 
     class SoftFetch:
-        template: "TypeConName"
-        cid: "Expr"
+        template: TypeConName
+        cid: Expr
 
         def __init__(self, template, cid):
             self.template = template
             self.cid = cid
 
     class EmbedExpr:
-        type: "Type"  # the expression should be of type `Scenario type`
-        body: "Expr"
+        type: Type  # the expression should be of type `Scenario type`
+        body: Expr
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type", body: "Expr"):
+        def __init__(self, type: Type, body: Expr):
             self.type = type
             self.body = body
 
     class RetrieveByKey:
-        template: "TypeConName"
-        key: "Expr"
+        template: TypeConName
+        key: Expr
 
-        def __init__(self, template: "TypeConName", key: "Expr"):
+        def __init__(self, template: TypeConName, key: Expr):
             self.template = template
             self.key = key
 
@@ -1915,23 +1885,23 @@ class Update:
 
     def __init__(
         self,
-        pure: "Union[Pure, _Missing]" = MISSING,
-        block: "Union[Block, _Missing]" = MISSING,
-        create: "Union[Update.Create, _Missing]" = MISSING,
-        exercise: "Union[Update.Exercise, _Missing]" = MISSING,
-        exercise_by_key: "Union[Update.ExerciseByKey, _Missing]" = MISSING,
-        fetch: "Union[Update.Fetch, _Missing]" = MISSING,
-        get_time: "Union[Unit, _Missing]" = MISSING,
-        lookup_by_key: "Union[Update.RetrieveByKey, _Missing]" = MISSING,
-        fetch_by_key: "Union[Update.RetrieveByKey, _Missing]" = MISSING,
-        embed_expr: "Union[Update.EmbedExpr, _Missing]" = MISSING,
-        try_catch: "Union[Update.TryCatch, _Missing]" = MISSING,
-        create_interface: "Union[Update.CreateInterface, _Missing]" = MISSING,
-        exercise_interface: "Union[Update.ExerciseInterface, _Missing]" = MISSING,
-        fetch_interface: "Union[Update.FetchInterface, _Missing]" = MISSING,
-        dynamic_exercise: "Union[Update.DynamicExercise, _Missing]" = MISSING,
-        soft_fetch: "Union[Update.SoftFetch, _Missing]" = MISSING,
-        soft_exercise: "Union[Update.SoftExercise, _Missing]" = MISSING,
+        pure: Union[Pure, _Missing] = MISSING,
+        block: Union[Block, _Missing] = MISSING,
+        create: Union[Update.Create, _Missing] = MISSING,
+        exercise: Union[Update.Exercise, _Missing] = MISSING,
+        exercise_by_key: Union[Update.ExerciseByKey, _Missing] = MISSING,
+        fetch: Union[Update.Fetch, _Missing] = MISSING,
+        get_time: Union[Unit, _Missing] = MISSING,
+        lookup_by_key: Union[Update.RetrieveByKey, _Missing] = MISSING,
+        fetch_by_key: Union[Update.RetrieveByKey, _Missing] = MISSING,
+        embed_expr: Union[Update.EmbedExpr, _Missing] = MISSING,
+        try_catch: Union[Update.TryCatch, _Missing] = MISSING,
+        create_interface: Union[Update.CreateInterface, _Missing] = MISSING,
+        exercise_interface: Union[Update.ExerciseInterface, _Missing] = MISSING,
+        fetch_interface: Union[Update.FetchInterface, _Missing] = MISSING,
+        dynamic_exercise: Union[Update.DynamicExercise, _Missing] = MISSING,
+        soft_fetch: Union[Update.SoftFetch, _Missing] = MISSING,
+        soft_exercise: Union[Update.SoftExercise, _Missing] = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -1986,85 +1956,85 @@ class Update:
             object.__setattr__(self, "_Sum_value", soft_exercise)
 
     @property
-    def pure(self) -> "Optional[Pure]":
+    def pure(self) -> Optional[Pure]:
         """this is purely for compact serialization -- specifically to
         reduce the AST depth. it adds no expressive power."""
         return self._Sum_value if self._Sum_name == "pure" else None  # type: ignore
 
     @property
-    def block(self) -> "Optional[Block]":
+    def block(self) -> Optional[Block]:
         return self._Sum_value if self._Sum_name == "block" else None  # type: ignore
 
     @property
-    def create(self) -> "Optional[Create]":
+    def create(self) -> Optional[Create]:
         return self._Sum_value if self._Sum_name == "create" else None  # type: ignore
 
     @property
-    def exercise(self) -> "Optional[Exercise]":
+    def exercise(self) -> Optional[Exercise]:
         return self._Sum_value if self._Sum_name == "exercise" else None  # type: ignore
 
     @property
-    def fetch(self) -> "Optional[Fetch]":
+    def fetch(self) -> Optional[Fetch]:
         return self._Sum_value if self._Sum_name == "fetch" else None  # type: ignore
 
     @property
-    def get_time(self) -> "Optional[Unit]":
+    def get_time(self) -> Optional[Unit]:
         return self._Sum_value if self._Sum_name == "get_time" else None  # type: ignore
 
     @property
-    def lookup_by_key(self) -> "Optional[RetrieveByKey]":
+    def lookup_by_key(self) -> Optional[RetrieveByKey]:
         return self._Sum_value if self._Sum_name == "lookup_by_key" else None  # type: ignore
 
     @property
-    def fetch_by_key(self) -> "Optional[RetrieveByKey]":
+    def fetch_by_key(self) -> Optional[RetrieveByKey]:
         return self._Sum_value if self._Sum_name == "fetch_by_key" else None  # type: ignore
 
     @property
-    def embed_expr(self) -> "Optional[EmbedExpr]":
+    def embed_expr(self) -> Optional[EmbedExpr]:
         """see similar constructor in `Scenario` on why this is useful."""
         return self._Sum_value if self._Sum_name == "embed_expr" else None  # type: ignore
 
     @property
-    def create_interface(self) -> "Optional[CreateInterface]":
+    def create_interface(self) -> Optional[CreateInterface]:
         return self._Sum_value if self._Sum_name == "create_interface" else None  # type: ignore
 
     @property
-    def exercise_interface(self) -> "Optional[ExerciseInterface]":
+    def exercise_interface(self) -> Optional[ExerciseInterface]:
         return self._Sum_value if self._Sum_name == "exercise_interface" else None  # type: ignore
 
     @property
-    def fetch_interface(self) -> "Optional[FetchInterface]":
+    def fetch_interface(self) -> Optional[FetchInterface]:
         return self._Sum_value if self._Sum_name == "fetch_interface" else None  # type: ignore
 
     @property
-    def dynamic_exercise(self) -> "Optional[DynamicExercise]":
+    def dynamic_exercise(self) -> Optional[DynamicExercise]:
         return self._Sum_value if self._Sum_name == "dynamic_exercise" else None  # type: ignore
 
     @property
-    def soft_fetch(self) -> "Optional[SoftFetch]":
+    def soft_fetch(self) -> Optional[SoftFetch]:
         return self._Sum_value if self._Sum_name == "soft_fetch" else None  # type: ignore
 
     @property
-    def soft_exercise(self) -> "Optional[SoftExercise]":
+    def soft_exercise(self) -> Optional[SoftExercise]:
         return self._Sum_value if self._Sum_name == "soft_exercise" else None  # type: ignore
 
     def Sum_match(
         self,
-        pure: "Callable[[Pure], T]",
-        block: "Callable[[Block], T]",
-        create: "Callable[[Create], T]",
-        exercise: "Callable[[Exercise], T]",
-        fetch: "Callable[[Fetch], T]",
-        get_time: "Callable[[Unit], T]",
-        lookup_by_key: "Callable[[RetrieveByKey], T]",
-        fetch_by_key: "Callable[[RetrieveByKey], T]",
-        embed_expr: "Callable[[EmbedExpr], T]",
-        create_interface: "Callable[[CreateInterface], T]",
-        exercise_interface: "Callable[[ExerciseInterface], T]",
-        fetch_interface: "Callable[[FetchInterface], T]",
-        dynamic_exercise: "Callable[[DynamicExercise], T]",
-        soft_fetch: "Callable[[SoftFetch], T]",
-        soft_exercise: "Callable[[SoftExercise], T]",
+        pure: Callable[[Pure], T],
+        block: Callable[[Block], T],
+        create: Callable[[Create], T],
+        exercise: Callable[[Exercise], T],
+        fetch: Callable[[Fetch], T],
+        get_time: Callable[[Unit], T],
+        lookup_by_key: Callable[[RetrieveByKey], T],
+        fetch_by_key: Callable[[RetrieveByKey], T],
+        embed_expr: Callable[[EmbedExpr], T],
+        create_interface: Callable[[CreateInterface], T],
+        exercise_interface: Callable[[ExerciseInterface], T],
+        fetch_interface: Callable[[FetchInterface], T],
+        dynamic_exercise: Callable[[DynamicExercise], T],
+        soft_fetch: Callable[[SoftFetch], T],
+        soft_exercise: Callable[[SoftExercise], T],
     ) -> T:
         if self._Sum_name == "pure":
             return pure(self._Sum_value)  # type: ignore
@@ -2102,21 +2072,21 @@ class Update:
 
 class Scenario:
     class Commit:
-        party: "Expr"
-        expr: "Expr"
-        ret_type: "Type"
+        party: Expr
+        expr: Expr
+        ret_type: Type
 
-        def __init__(self, party: "Expr", expr: "Expr", ret_type: "Type"):
+        def __init__(self, party: Expr, expr: Expr, ret_type: Type):
             self.party = party
             self.expr = expr
             self.ret_type = ret_type
 
     class EmbedExpr:
-        type: "Type"  # the expression should be of type `Scenario type`
-        body: "Expr"
+        type: Type  # the expression should be of type `Scenario type`
+        body: Expr
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, type: "Type", body: "Expr"):
+        def __init__(self, type: Type, body: Expr):
             self.type = type
             self.body = body
 
@@ -2126,14 +2096,14 @@ class Scenario:
 
     def __init__(
         self,
-        pure: "Union[Pure, _Missing]" = MISSING,
-        block: "Union[Block, _Missing]" = MISSING,
-        commit: "Union[Commit, _Missing]" = MISSING,
-        must_fail_at: "Union[Commit, _Missing]" = MISSING,
-        pass_: "Union[Expr, _Missing]" = MISSING,
-        get_time: "Union[Unit, _Missing]" = MISSING,
-        get_party: "Union[Expr, _Missing]" = MISSING,
-        embed_expr: "Union[EmbedExpr, _Missing]" = MISSING,
+        pure: Union[Pure, _Missing] = MISSING,
+        block: Union[Block, _Missing] = MISSING,
+        commit: Union[Commit, _Missing] = MISSING,
+        must_fail_at: Union[Commit, _Missing] = MISSING,
+        pass_: Union[Expr, _Missing] = MISSING,
+        get_time: Union[Unit, _Missing] = MISSING,
+        get_party: Union[Expr, _Missing] = MISSING,
+        embed_expr: Union[EmbedExpr, _Missing] = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -2161,38 +2131,38 @@ class Scenario:
             object.__setattr__(self, "_Sum_value", embed_expr)
 
     @property
-    def pure(self) -> "Optional[Pure]":
+    def pure(self) -> Optional[Pure]:
         """this is purely for compact serialization -- specifically to
         reduce the AST depth. it adds no expressive power."""
         return self._Sum_value if self._Sum_name == "pure" else None
 
     @property
-    def block(self) -> "Optional[Block]":
+    def block(self) -> Optional[Block]:
         return self._Sum_value if self._Sum_name == "block" else None
 
     @property
-    def commit(self) -> "Optional[Commit]":
+    def commit(self) -> Optional[Commit]:
         return self._Sum_value if self._Sum_name == "create" else None
 
     @property
-    def must_fail_at(self) -> "Optional[Commit]":
+    def must_fail_at(self) -> Optional[Commit]:
         return self._Sum_value if self._Sum_name == "mustFailAt" else None
 
     @property
-    def pass_(self) -> "Optional[Expr]":
+    def pass_(self) -> Optional[Expr]:
         return self._Sum_value if self._Sum_name == "pass" else None
 
     @property
-    def get_time(self) -> "Optional[Unit]":
+    def get_time(self) -> Optional[Unit]:
         """The expression is of type `Text`."""
         return self._Sum_value if self._Sum_name == "get_time" else None
 
     @property
-    def get_party(self) -> "Optional[Expr]":
+    def get_party(self) -> Optional[Expr]:
         return self._Sum_value if self._Sum_name == "get_party" else None
 
     @property
-    def embed_expr(self) -> "Optional[EmbedExpr]":
+    def embed_expr(self) -> Optional[EmbedExpr]:
         """
         Embed an expression of type Scenario. note that this construct is useful
         to explicitly mark the start of scenario execution, which is useful in
@@ -2209,14 +2179,14 @@ class Scenario:
 
     def Sum_match(
         self,
-        pure: "Callable[[Pure], T]",
-        block: "Callable[[Block], T]",
-        commit: "Callable[[Commit], T]",
-        must_fail_at: "Callable[[Commit], T]",
-        pass_: "Callable[[Expr], T]",
-        get_time: "Callable[[Unit], T]",
-        get_party: "Callable[[Expr], T]",
-        embed_expr: "Callable[[EmbedExpr], T]",
+        pure: Callable[[Pure], T],
+        block: Callable[[Block], T],
+        commit: Callable[[Commit], T],
+        must_fail_at: Callable[[Commit], T],
+        pass_: Callable[[Expr], T],
+        get_time: Callable[[Unit], T],
+        get_party: Callable[[Expr], T],
+        embed_expr: Callable[[EmbedExpr], T],
     ) -> T:
         if self._Sum_name == "pure":
             return pure(self._Sum_value)
@@ -2387,62 +2357,62 @@ class TemplateChoice:
     # template parameter in scope, but not the choice parameter. All of these
     # controllers need to authorize the exercising of this choice (aka
     # conjunctive choice controllers).
-    controllers: "Expr"
+    controllers: Expr
 
-    observers: "Optional[Expr]"
+    observers: Optional[Expr]
 
-    authorizers: "Optional[Expr]"
+    authorizers: Optional[Expr]
 
     # Name to which the choice argument is bound and its type.
-    arg_binder: "VarWithType"
+    arg_binder: VarWithType
 
     # Return type of the choice.
-    ret_type: "Type"
+    ret_type: Type
 
     # Follow-up update of the choice. It has type `Update <ret_type>` and both
     # the template parameter and the choice parameter in scope.
-    update: "Expr"
+    update: Expr
 
     # Name to bind the ContractId of the contract this choice is exercised on to.
     self_binder: str
 
-    location: "Location"
+    location: Location
 
 
 @dataclass(init=False, frozen=True)
 class KeyExpr:
     _Sum_name: str
-    _Sum_value: "Union[KeyExpr.Projections, KeyExpr.Record]"
+    _Sum_value: Union[KeyExpr.Projections, KeyExpr.Record]
 
     @dataclass(init=False, frozen=True)
     class Projections:
-        projections: "Sequence[KeyExpr.Projection]"
+        projections: Sequence[KeyExpr.Projection]
 
-        def __init__(self, projections: "Sequence[KeyExpr.Projection]"):
+        def __init__(self, projections: Sequence[KeyExpr.Projection]):
             object.__setattr__(self, "projections", tuple(projections))
 
     @dataclass(init=False, frozen=True)
     class Projection:
-        tycon: "Type.Con"
+        tycon: Type.Con
         field: str
 
-        def __init__(self, tycon: "Type.Con", field: str):
+        def __init__(self, tycon: Type.Con, field: str):
             object.__setattr__(self, "tycon", tycon)
             object.__setattr__(self, "field", field)
 
     @dataclass(init=False, frozen=True)
     class Record:
-        tycon: "Type.Con"
-        fields: "Sequence[KeyExpr.RecordField]"
+        tycon: Type.Con
+        fields: Sequence[KeyExpr.RecordField]
 
-        def __init__(self, tycon: "Type.Con", fields: "Sequence[KeyExpr.RecordField]"):
+        def __init__(self, tycon: Type.Con, fields: Sequence[KeyExpr.RecordField]):
             object.__setattr__(self, "tycon", tycon)
             object.__setattr__(self, "fields", tuple(fields))
 
     @dataclass(frozen=True)
     class RecordField:
         field: str
-        expr: "KeyExpr"
+        expr: KeyExpr
 
     def __init__(self, projections=MISSING, record=MISSING):
         if projections is not MISSING:
@@ -2455,11 +2425,11 @@ class KeyExpr:
             raise ValueError("one of projections or record must be set")
 
     @property
-    def projections(self) -> "Optional[KeyExpr.Projections]":
+    def projections(self) -> Optional[KeyExpr.Projections]:
         return self.projections if self._Sum_name == "projections" else None
 
     @property
-    def record(self) -> "Optional[KeyExpr.Record]":
+    def record(self) -> Optional[KeyExpr.Record]:
         return self.record if self._Sum_name == "record" else None
 
 
@@ -2469,10 +2439,10 @@ class DefTemplate:
 
     @dataclass(frozen=True)
     class DefKey:
-        type: "Type"
+        type: Type
         _key_expr_name: str
         _key_expr_value: Union[KeyExpr, Expr]
-        maintainers: "Expr"
+        maintainers: Expr
 
         def __init__(self, type=MISSING, key=MISSING, complex_key=MISSING, maintainers=MISSING):
             object.__setattr__(self, "type", type)
@@ -2487,14 +2457,14 @@ class DefTemplate:
             object.__setattr__(self, "maintainers", maintainers)
 
         @property
-        def key(self) -> "Optional[KeyExpr]":
+        def key(self) -> Optional[KeyExpr]:
             if self._key_expr_name == "key":
                 return self._key_expr_value  # type: ignore
             else:
                 return None
 
         @property
-        def complex_key(self) -> "Optional[Expr]":
+        def complex_key(self) -> Optional[Expr]:
             if self._key_expr_name == "complex_key":
                 return self._key_expr_value  # type: ignore
             else:
@@ -2502,34 +2472,34 @@ class DefTemplate:
 
     # The type constructor for the template, acting as both
     # the name of the template and the type of the template argument.
-    tycon: "DottedName"
+    tycon: DottedName
 
     # Name to which the template argument is bound.
     param: str
 
     # Optional pre-condition that the template argument must satisfy.
     # When present, it has type `Bool` and the template parameter in scope.
-    precond: "Expr"
+    precond: Expr
 
     # The signatories of the contract. They have type `List Party` and the
     # template parameter in scope.
-    signatories: "Expr"
+    signatories: Expr
 
     # The agreement text associated with the contract. It has type `Text` and
     # the template parameter in scope.
-    agreement: "Expr"
+    agreement: Expr
 
     # The choices available in the resulting contract.
-    choices: "Sequence[TemplateChoice]"
+    choices: Sequence[TemplateChoice]
 
     # The observers of the contract. They have type `List Party` and the
     # template parameter in scope.
-    observers: "Expr"
+    observers: Expr
 
-    location: "Location"
+    location: Location
 
     # The key definition for the template, if present
-    key: "Optional[DefKey]"
+    key: Optional[DefKey]
 
     @property
     def name(self) -> DottedName:
@@ -2542,35 +2512,35 @@ class DefDataType:
     """
 
     class Fields:
-        fields: "Sequence[FieldWithType]"
+        fields: Sequence[FieldWithType]
 
-        def __init__(self, fields: "Sequence[FieldWithType]"):
+        def __init__(self, fields: Sequence[FieldWithType]):
             self.fields = fields
 
     class EnumConstructors:
-        constructors: "Sequence[str]"
+        constructors: Sequence[str]
 
-        def __init__(self, constructors: "Sequence[str]"):
+        def __init__(self, constructors: Sequence[str]):
             self.constructors = constructors
 
     name: DottedName
-    params: "Sequence[TypeVarWithKind]"
+    params: Sequence[TypeVarWithKind]
     _DataCons_name: str
-    _DataCons_value: "Any"
+    _DataCons_value: Any
     serializable: bool
-    location: "Location"
+    location: Location
 
     def __init__(
         self,
-        name: "Union[DottedName, _Missing]" = MISSING,
-        params: "Union[Sequence[TypeVarWithKind], _Missing]" = MISSING,
-        record: "Union[DefDataType.Fields, _Missing]" = MISSING,
-        variant: "Union[DefDataType.Fields, _Missing]" = MISSING,
-        enum: "Union[DefDataType.EnumConstructors, _Missing]" = MISSING,
-        interface: "Union[Unit, _Missing]" = MISSING,
-        synonym: "Union[Type, _Missing]" = MISSING,
-        serializable: "Union[bool, _Missing]" = MISSING,
-        location: "Union[Location, _Missing]" = MISSING,
+        name: Union[DottedName, _Missing] = MISSING,
+        params: Union[Sequence[TypeVarWithKind], _Missing] = MISSING,
+        record: Union[DefDataType.Fields, _Missing] = MISSING,
+        variant: Union[DefDataType.Fields, _Missing] = MISSING,
+        enum: Union[DefDataType.EnumConstructors, _Missing] = MISSING,
+        interface: Union[Unit, _Missing] = MISSING,
+        synonym: Union[Type, _Missing] = MISSING,
+        serializable: Union[bool, _Missing] = MISSING,
+        location: Union[Location, _Missing] = MISSING,
     ):
         self.name = name  # type: ignore
         self.params = params  # type: ignore
@@ -2593,29 +2563,29 @@ class DefDataType:
         self.location = location  # type: ignore
 
     @property
-    def record(self) -> "Optional[DefDataType.Fields]":
+    def record(self) -> Optional[DefDataType.Fields]:
         return self._DataCons_value if self._DataCons_name == "record" else None
 
     @property
-    def variant(self) -> "Optional[DefDataType.Fields]":
+    def variant(self) -> Optional[DefDataType.Fields]:
         return self._DataCons_value if self._DataCons_name == "variant" else None
 
     @property
-    def enum(self) -> "Optional[DefDataType.EnumConstructors]":
+    def enum(self) -> Optional[DefDataType.EnumConstructors]:
         if self._DataCons_name == "enum":
             return self._DataCons_value  # type: ignore
         else:
             return None
 
     @property
-    def interface(self) -> "Optional[Unit]":
+    def interface(self) -> Optional[Unit]:
         if self._DataCons_name == "interface":
             return self._DataCons_value  # type: ignore
         else:
             return None
 
     @property
-    def synonym(self) -> "Optional[Type]":
+    def synonym(self) -> Optional[Type]:
         if self._DataCons_name == "synonym":
             return self._DataCons_value  # type: ignore
         else:
@@ -2624,10 +2594,10 @@ class DefDataType:
 
 @dataclass(frozen=True)
 class DefTypeSyn:
-    name: "DottedName"
-    params: "Sequence[TypeVarWithKind]"
-    type: "Type"
-    location: "Optional[Location]"
+    name: DottedName
+    params: Sequence[TypeVarWithKind]
+    type: Type
+    location: Optional[Location]
 
 
 class DefValue:
@@ -2640,19 +2610,19 @@ class DefValue:
         with it.
         """
 
-        name: "Sequence[str]"
-        type: "Type"
+        name: Sequence[str]
+        type: Type
 
         # noinspection PyShadowingBuiltins
-        def __init__(self, name: "Sequence[str]", type: "Type"):
+        def __init__(self, name: Sequence[str], type: Type):
             self.name = tuple(name)
             self.type = type
 
-    name_with_type: "DefValue.NameWithType"
+    name_with_type: DefValue.NameWithType
 
     _lazy_lock: threading.RLock
-    _expr: "Optional[Expr]"
-    _expr_fn: "Callable[[], Expr]"
+    _expr: Optional[Expr]
+    _expr_fn: Callable[[], Expr]
 
     # If true, the value must not contain any party literals and not reference
     # values which contain party literals.
@@ -2662,7 +2632,7 @@ class DefValue:
     # flag set to false.
     no_party_literals: bool
     is_test: bool
-    location: "Optional[Location]"
+    location: Optional[Location]
 
     __slots__ = (
         "name_with_type",
@@ -2676,11 +2646,11 @@ class DefValue:
 
     def __init__(
         self,
-        name_with_type: "DefValue.NameWithType",
-        expr: "Union[Expr, Callable[[], Expr]]",
+        name_with_type: DefValue.NameWithType,
+        expr: Union[Expr, Callable[[], Expr]],
         no_party_literals: bool,
         is_test: bool,
-        location: "Optional[Location]" = None,
+        location: Optional[Location] = None,
     ):
         object.__setattr__(self, "name_with_type", name_with_type)
         object.__setattr__(self, "_lazy_lock", threading.RLock())
@@ -2691,7 +2661,7 @@ class DefValue:
         object.__setattr__(self, "location", location)
 
     @property
-    def expr(self) -> "Expr":
+    def expr(self) -> Expr:
         expr = self._expr
         if expr is not None:
             return expr
@@ -2729,13 +2699,13 @@ class FeatureFlags:
 
 @dataclass(frozen=True)
 class Module:
-    name: "DottedName"
-    flags: "FeatureFlags"
-    synonyms: "Sequence[DefTypeSyn]"
-    data_types: "Sequence[DefDataType]"
-    values: "Sequence[DefValue]"
-    templates: "Sequence[DefTemplate]"
-    interfaces: "Sequence[DefInterface]"
+    name: DottedName
+    flags: FeatureFlags
+    synonyms: Sequence[DefTypeSyn]
+    data_types: Sequence[DefDataType]
+    values: Sequence[DefValue]
+    templates: Sequence[DefTemplate]
+    interfaces: Sequence[DefInterface]
 
 
 @dataclass(frozen=True)
@@ -2750,15 +2720,14 @@ class DefInterface:
     methods: Sequence[InterfaceMethod]
     param: str
     choices: Sequence[TemplateChoice]
-    # co_implements: Sequence[DefInterface.CoImplements]
     view: Type
     requires: Sequence[TypeConName]
 
 
 @dataclass(frozen=True)
 class Package:
-    modules: "Sequence[Module]"
-    metadata: "Optional[PackageMetadata]"
+    modules: Sequence[Module]
+    metadata: Optional[PackageMetadata]
 
 
 @dataclass(frozen=True)
@@ -2775,5 +2744,5 @@ class UpgradedPackageId:
 
 @dataclass(frozen=True)
 class Archive:
-    hash: "PackageRef"
-    package: "Package"
+    hash: PackageRef
+    package: Package

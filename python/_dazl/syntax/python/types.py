@@ -38,7 +38,7 @@ class PyType:
         package: Optional[str] = None,
         py_str: str,
         imports: Optional[Mapping[str, Collection[str]]] = None,
-    ):
+    ) -> None:
         self.py_str = py_str
         self._imports = merge(imports, {package: [py_str]} if package else None)
 
@@ -62,7 +62,7 @@ class PyType:
         return self.py_str == self.py_str.lower() or self.py_str.startswith("_typing.Literal[")
 
     @property
-    def imports(self) -> "Mapping[str, Collection[str]]":
+    def imports(self) -> Mapping[str, Collection[str]]:
         """
         The imports that are needed in order to have well-formed Python code that utilizes the
         string representation of the type as represented by this object.

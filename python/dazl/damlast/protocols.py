@@ -31,7 +31,7 @@ class PackageProvider(Protocol):
     functions of this protocol should never return ``None``.
     """
 
-    def package(self, ref: "PackageRef") -> "Package":
+    def package(self, ref: PackageRef) -> Package:
         """
         Return the :class:`Package` for the specified :class:`PackageRef`.
 
@@ -44,7 +44,7 @@ class PackageProvider(Protocol):
         """
         raise NotImplementedError("PackageProvider.package must be implemented")
 
-    def package_ids(self) -> "AbstractSet[PackageRef]":
+    def package_ids(self) -> AbstractSet[PackageRef]:
         """
         Return all package IDs that are known to this :class:`PackageProvider`.
 
@@ -69,19 +69,19 @@ class SymbolLookup(Protocol):
     if they do not currently exist, will NEVER exist).
     """
 
-    def archives(self) -> "Collection[Archive]":
+    def archives(self) -> Collection[Archive]:
         """
         Return the archives that are known to this lookup.
         """
         raise NotImplementedError("SymbolLookup.archives must be implemented")
 
-    def package_ids(self) -> "AbstractSet[PackageRef]":
+    def package_ids(self) -> AbstractSet[PackageRef]:
         """
         Return the package IDs that are known to this lookup.
         """
         raise NotImplementedError("SymbolLookup.package_ids must be implemented")
 
-    def data_type_name(self, ref: "Any") -> "TypeConName":
+    def data_type_name(self, ref: Any) -> TypeConName:
         """
         Return the :class:`TypeConName` that refers to a :class:`DefDataType` that is known to
         exist in this lookup.
@@ -91,19 +91,19 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.data_type_name must be implemented")
 
-    def data_type(self, ref: "Any") -> "DefDataType":
+    def data_type(self, ref: Any) -> DefDataType:
         """
         Return the :class:`DefDataType` for the specified name.
         """
         raise NotImplementedError("SymbolLookup.data_type must be implemented")
 
-    def value(self, ref: "Any") -> "DefValue":
+    def value(self, ref: Any) -> DefValue:
         """
         Return the :class:`DefValue` for the specified name.
         """
         raise NotImplementedError("SymbolLookup.value must be implemented")
 
-    def template_names(self, ref: "Any") -> "Collection[TypeConName]":
+    def template_names(self, ref: Any) -> Collection[TypeConName]:
         """
         Return all template names that are currently known that are a match for the query. Either
         :class:`PackageRef` or the template name can be `*`.
@@ -114,7 +114,7 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.template_names must be implemented")
 
-    def template_name(self, ref: "Any") -> "TypeConName":
+    def template_name(self, ref: Any) -> TypeConName:
         """
         Return the :class:`TypeConName` that refers to a :class:`DefTemplate` that is known to
         exist in this lookup.
@@ -124,13 +124,13 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.template_name must be implemented")
 
-    def template(self, ref: "Any") -> "DefTemplate":
+    def template(self, ref: Any) -> DefTemplate:
         """
         Return the :class:`DefTemplate` for the specified name.
         """
         raise NotImplementedError("SymbolLookup.template must be implemented")
 
-    def interface_names(self, ref: "Any") -> "Collection[TypeConName]":
+    def interface_names(self, ref: Any) -> Collection[TypeConName]:
         """
         Return all template names that are currently known that are a match for the query.
         The :class:`PackageRef` can be `*`.
@@ -141,7 +141,7 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.interface_names must be implemented")
 
-    def interface_name(self, ref: "Any") -> "TypeConName":
+    def interface_name(self, ref: Any) -> TypeConName:
         """
         Return the :class:`TypeConName` that refers to a :class:`DefInterface` that is known to
         exist in this lookup.
@@ -151,13 +151,13 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.interface_name must be implemented")
 
-    def interface(self, ref: "Any") -> "DefInterface":
+    def interface(self, ref: Any) -> DefInterface:
         """
         Return the :class:`DefInterface` for the specified name.
         """
         raise NotImplementedError("SymbolLookup.interface must be implemented")
 
-    def template_or_interface_names(self, ref: "Any") -> "Collection[TypeConName]":
+    def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
         """
         Return all template or interface names that are currently known that are
         a match for the query. Either :class:`PackageRef` or the template name
@@ -169,7 +169,7 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.template_or_interface_names must be implemented")
 
-    def template_or_interface_name(self, ref: "Any") -> "TypeConName":
+    def template_or_interface_name(self, ref: Any) -> TypeConName:
         """
         Return the :class:`TypeConName` that refers to a :class:`DefTemplate` or
         :class:`DefInterface` that is known to exist in this lookup.
@@ -179,7 +179,7 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.interface_name must be implemented")
 
-    def template_or_interface(self, ref: "Any") -> "TemplateOrInterface":
+    def template_or_interface(self, ref: Any) -> TemplateOrInterface:
         """
         Return the :class:`DefTemplate` or :class:`DefInterface` for the specified name.
         """

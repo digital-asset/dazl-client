@@ -14,8 +14,6 @@ from typing import (
     Any,
     AsyncIterable,
     Collection,
-    Dict,
-    List,
     Mapping,
     Optional,
     Sequence,
@@ -102,7 +100,7 @@ class Connection(aio.Connection):
     def is_closed(self) -> bool:
         return self._channel.get_state(try_to_connect=False) == ChannelConnectivity.SHUTDOWN
 
-    async def __aenter__(self) -> "Connection":
+    async def __aenter__(self) -> Connection:
         await self.open()
         return self
 
@@ -119,8 +117,8 @@ class Connection(aio.Connection):
             # required in order to resolve our current set of rights
             if hasattr(self._config.access, "_set"):
                 admin = False
-                read_as = []  # type: List[Party]
-                act_as = []  # type: List[Party]
+                read_as = list[Party]()
+                act_as = list[Party]()
 
                 # There are certain circumstances where user_id
                 # defaulting in this request, and the user must be
@@ -729,7 +727,7 @@ class Connection(aio.Connection):
         offset: Optional[str] = None,
         read_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = None,
-    ) -> "QueryStream":
+    ) -> QueryStream:
         """
         Stream create/archive events from more than one template ID in the same stream.
 
@@ -766,7 +764,7 @@ class Connection(aio.Connection):
 
     # endregion
 
-    async def get_version(self, *, timeout: Optional[TimeDeltaLike] = None) -> "Version":
+    async def get_version(self, *, timeout: Optional[TimeDeltaLike] = None) -> Version:
         retry_timeout = self._retry_timeout(timeout)
         stub = lapipb.VersionServiceStub(self.channel)
         request = lapipb.GetLedgerApiVersionRequest(ledger_id=self._config.access.ledger_id)
@@ -937,7 +935,7 @@ class Connection(aio.Connection):
         # This slightly awkward construction is due to Protobuf's Python type not escaping field
         # names that happen to match keywords. Unfortunately mypy can't follow what is going on
         # when we do this, so we must be careful!
-        kwargs = {"from": datetime_to_timestamp(from_)}  # type: Dict[str, Any]
+        kwargs = {"from": datetime_to_timestamp(from_)}  # type: dict[str, Any]
         if to is not None:
             kwargs["to"] = datetime_to_timestamp(to)
         if application_id is not None:
@@ -1092,7 +1090,7 @@ class QueryStream(aio.QueryStreamBase):
         self,
         filter_pb: lapipb.TransactionFilter,
         begin_offset: Optional[str],
-        end_offset: "Union[None, str, End]",
+        end_offset: Union[None, str, End],
     ) -> AsyncIterable[Union[CreateEvent, ArchiveEvent, Boundary]]:
         stub = lapipb.TransactionServiceStub(self.conn.channel)
 

@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Mapping, NoReturn, Optional, Sequence
+from typing import Any, Mapping, NoReturn, Optional, Sequence
 import warnings
 
 from ..damlast import IdentityTypeVisitor
@@ -116,7 +116,7 @@ class Context:
         element_type: Type,
         elements: Sequence[Any],
         mapper: Optional[ValueMapper] = None,
-    ) -> List[Any]:
+    ) -> list[Any]:
         """
         Convert a _list_ of elements, each of an assumed type.
 
@@ -140,7 +140,7 @@ class Context:
 
     def convert_optional(
         self, element_type: Type, element: Optional[Any], mapper: Optional[ValueMapper] = None
-    ) -> List[Any]:
+    ) -> list[Any]:
         """
         Convert a _list_ of elements, each of an assumed type.
 
@@ -170,7 +170,7 @@ class Context:
         element_type: Type,
         elements: Mapping[str, Any],
         mapper: Optional[ValueMapper] = None,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Convert a _map_ of elements, each of an assumed type.
 
@@ -198,7 +198,7 @@ class Context:
         value_type: Type,
         elements: Mapping[Any, Any],
         mapper: Optional[ValueMapper] = None,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Convert a _map_ of elements, each of an assumed type.
 

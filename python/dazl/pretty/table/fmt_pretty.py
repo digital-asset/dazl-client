@@ -95,8 +95,8 @@ def contract_count(c: int) -> str:
 
 
 def expand_record_field_names(
-    context: "Context", con: "Type.Con", path: "Sequence[str]" = ()
-) -> "Generator[str, None, None]":
+    context: Context, con: Type.Con, path: Sequence[str] = ()
+) -> Generator[str, None, None]:
     """
     From a starting :class:`Type.Con`, return a string list of field names, additionally expanding
     sub-record fields.
@@ -150,7 +150,7 @@ def _render_party_bool(value):
     return " "
 
 
-def group_by_name(entries: "Iterable[RowBuilder]") -> "Mapping[TypeConName, Sequence[RowBuilder]]":
+def group_by_name(entries: Iterable[RowBuilder]) -> Mapping[TypeConName, Sequence[RowBuilder]]:
     """
     Organize the entries by their template name. The returned mapping where the keys are in sorted
     order.

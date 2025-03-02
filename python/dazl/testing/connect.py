@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from asyncio import gather
 from os import PathLike
-from typing import Callable, Collection, List, Literal, Optional, Sequence, Union
+from typing import Callable, Collection, Literal, Optional, Sequence, Union
 
 from .. import connect
 from ..ledger import PartyInfo
@@ -118,7 +118,7 @@ class ConnectionWithParty:
         return 1
 
 
-def as_party_collection(p: Optional[Parties]) -> Collection[Party]:
+def as_party_collection(p: Union[None, str, Collection, Sequence[Party]]) -> Collection[Party]:
     if not p:
         return []
     elif isinstance(p, str):
@@ -162,7 +162,7 @@ class ConnectWithNewParty:
         self.party_count = party_count
         self.identifier_hint_fn = identifier_hint_fn
         self.display_name_fn = display_name_fn
-        self.connections = []  # type: List[Connection]
+        self.connections = list[Connection]()
 
     async def __aenter__(self) -> Sequence[ConnectionWithParty]:
         party_infos = await self._set_up_ledger()

@@ -36,7 +36,7 @@ INT_TYPES = frozenset(
 )
 
 
-def py_scalar_type(fd_type: "FieldDescriptorProto.Type.V", /) -> Optional[PyType]:
+def py_scalar_type(fd_type: FieldDescriptorProto.Type.V, /) -> Optional[PyType]:
     """
     Return an appropriate :class:`PyType` for the given field type, or ``None`` if the type is a
     complex type that cannot be represented by a simple Python type.
