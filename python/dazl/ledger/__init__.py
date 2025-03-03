@@ -430,7 +430,7 @@ class Connection(PackageService, Protocol):
         """
         raise NotImplementedError
 
-    def query(self, template_id="*", query=None, /, *, read_as=None):
+    def query(self, template_or_interface_id="*", query=None, /, *, read_as=None):
         """
         Return the create events from the active contract set service as a stream.
 
@@ -438,8 +438,8 @@ class Connection(PackageService, Protocol):
         set of templates, you may want to consider :class:`ACS` instead, which is a utility class
         that helps you maintain a "live" state of the ACS.
 
-        :param template_id:
-            The name of the template for which to fetch contracts.
+        :param template_or_interface_id:
+            The name of the template or interface for which to fetch contracts.
         :param query:
             A filter to apply to the set of returned contracts.
         :param read_as:

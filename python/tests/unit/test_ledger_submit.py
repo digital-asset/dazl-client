@@ -16,12 +16,12 @@ from tests.unit import dars
 async def test_command_submission_with_stdlib_values(sandbox: SandboxLauncher) -> None:
     async with dazl.connect(url=sandbox.url, admin=True) as conn:
         party_info, _ = await gather(
-            conn.allocate_party(), conn.upload_package(dars.KitchenSink1_18.read_bytes())
+            conn.allocate_party(), conn.upload_package(dars.KitchenSink1.read_bytes())
         )
 
         # remember the appropriate template ID, because we'll need it soon
         tmpl_id = await conn.codec._loader.do_with_retry(
-            lambda: conn.codec.lookup.template_name("KitchenSink.Retailer:Retailer")
+            lambda: conn.codec.lookup.template_name("KitchenSink1.Retailer:Retailer")
         )
 
     # override lookup intentionally to make sure this test is not polluted with cached state from other tests

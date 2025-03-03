@@ -1,12 +1,10 @@
 # Copyright (c) 2017-2024, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-sdk-version: 2.9.6
-name: kitchen-sink-interfaces
+sdk-version: 1.18.3
+name: kitchen-sink1
 version: 1.0.0
-source: KitchenSink
+source: KitchenSink1
 dependencies:
   - daml-prim
   - daml-stdlib
-build-options:
-  - --target=1.16

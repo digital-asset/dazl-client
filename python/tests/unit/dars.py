@@ -25,9 +25,8 @@ def load_dars() -> "Mapping[str, Path]":
     dars = {d.name: d / f".daml/dist/{d.name}-1.0.0.dar" for d in dar_dir.iterdir() if d.is_dir()}
 
     # this DAR is a little different
-    dars["kitchen-sink-sdk29"] = (
-        dar_dir
-        / "kitchen-sink-sdk29-lf-1-16/kitchen-sink/.daml/dist/kitchen-sink-sdk29-lf116-1.0.0.dar"
+    dars["kitchen-sink2"] = (
+        dar_dir / "kitchen-sink2/kitchen-sink/.daml/dist/kitchen-sink2-1.0.0.dar"
     )
 
     return dars
@@ -41,8 +40,8 @@ AllKindsOf = DARS["all-kinds-of"]
 AllParty = DARS["all-party"]
 Complicated = DARS["complicated"]
 DottedFields = DARS["dotted-fields"]
-KitchenSink1_18 = DARS["kitchen-sink-sdk118"]
-KitchenSink2_9 = DARS["kitchen-sink-sdk29"]
+KitchenSink1 = DARS["kitchen-sink1"]
+KitchenSink2 = DARS["kitchen-sink2"]
 MapSupport = DARS["map-support"]
 Pending = DARS["pending"]
 PostOffice = DARS["post-office"]

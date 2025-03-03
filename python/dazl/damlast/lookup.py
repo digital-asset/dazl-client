@@ -36,6 +36,7 @@ from .. import LOG
 from .daml_lf_1 import (
     Archive,
     DefDataType,
+    DefInterface,
     DefTemplate,
     DefValue,
     DottedName,
@@ -47,7 +48,7 @@ from .daml_lf_1 import (
     ValName,
 )
 from .errors import NameNotFoundError, PackageNotFoundError
-from .protocols import SymbolLookup
+from .protocols import SymbolLookup, TemplateOrInterface
 from .util import package_local_name, package_ref
 
 __all__ = [
@@ -198,6 +199,24 @@ class EmptyLookup(SymbolLookup):
     def template(self, ref: Any) -> NoReturn:
         raise empty_lookup_impl(ref)
 
+    def interface_names(self, ref: Any) -> Collection[TypeConName]:
+        return frozenset()
+
+    def interface_name(self, ref: Any) -> NoReturn:
+        raise empty_lookup_impl(ref)
+
+    def interface(self, ref: Any) -> NoReturn:
+        raise empty_lookup_impl(ref)
+
+    def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
+        return frozenset()
+
+    def template_or_interface_name(self, ref: Any) -> NoReturn:
+        raise empty_lookup_impl(ref)
+
+    def template_or_interface(self, ref: Any) -> NoReturn:
+        raise empty_lookup_impl(ref)
+
 
 class PackageLookup(SymbolLookup):
     """
@@ -210,6 +229,7 @@ class PackageLookup(SymbolLookup):
         data_types = {}  # type: Dict[str, Tuple[TypeConName, DefDataType]]
         values = {}  # type: Dict[str, Tuple[ValName, DefValue]]
         templates = {}  # type: Dict[str, Tuple[TypeConName, DefTemplate]]
+        interfaces = {}  # type: Dict[str, Tuple[TypeConName, DefInterface]]
         for module in self.archive.package.modules:
             module_ref = ModuleRef(archive.hash, module.name)
 
@@ -225,9 +245,14 @@ class PackageLookup(SymbolLookup):
                 tmpl_name = TypeConName(module_ref, tmpl.tycon.segments)
                 templates[f"{module.name}:{tmpl.tycon}"] = (tmpl_name, tmpl)
 
+            for iface in module.interfaces:
+                iface_name = TypeConName(module_ref, iface.name.segments)
+                interfaces[f"{module.name}:{iface.name}"] = (iface_name, iface)
+
         self._data_types = MappingProxyType(data_types)
         self._values = MappingProxyType(values)
         self._templates = MappingProxyType(templates)
+        self._interfaces = MappingProxyType(interfaces)
 
     def archives(self) -> Collection[Archive]:
         return [self.archive]
@@ -328,6 +353,71 @@ class PackageLookup(SymbolLookup):
 
         raise NameNotFoundError(ref)
 
+    def interface_names(self, ref: Any) -> Collection[TypeConName]:
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            if name in self._interfaces:
+                n, _ = self._interfaces[name]
+                return [n]
+        return []
+
+    def interface_name(self, ref: Any) -> TypeConName:
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            iface = self.local_interface_name(name)
+            if iface is not None:
+                return iface
+
+        raise NameNotFoundError(ref)
+
+    def interface(self, ref: Any) -> DefInterface:
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            iface = self.local_interface(name)
+            if iface is not None:
+                return iface
+
+        raise NameNotFoundError(ref)
+
+    def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            if name == "*":
+                return self.local_template_names()
+            elif name in self._templates:
+                n, _ = self._templates[name]
+                return [n]
+            elif name in self._interfaces:
+                n, _ = self._interfaces[name]
+                return [n]
+        return []
+
+    def template_or_interface_name(self, ref: Any) -> TypeConName:
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            tmpl = self.local_template_name(name)
+            if tmpl is not None:
+                return tmpl
+
+            iface = self.local_interface_name(name)
+            if iface is not None:
+                return iface
+
+        raise NameNotFoundError(ref)
+
+    def template_or_interface(self, ref: Any) -> TemplateOrInterface:
+        pkg, name = validate_template(ref)
+        if pkg == self.archive.hash or pkg == STAR:
+            tmpl = self.local_template(name)
+            if tmpl is not None:
+                return tmpl
+
+            iface = self.local_interface(name)
+            if iface is not None:
+                return iface
+
+        raise NameNotFoundError(ref)
+
     def local_template_names(self) -> Collection[TypeConName]:
         return [n for n, _ in self._templates.values()]
 
@@ -347,9 +437,33 @@ class PackageLookup(SymbolLookup):
             A name to search for. Must be of the form ``"ModuleName:EntityName"``, where both
             modules and entities are dot-delimited.
         :return:
-            Either a matching :class:`DefDataType`, or ``None`` if no match.
+            Either a matching :class:`DefTemplate`, or ``None`` if no match.
         """
         r = self._templates.get(name)
+        return r[1] if r is not None else None
+
+    def local_interface_names(self) -> Collection[TypeConName]:
+        return [n for n, _ in self._interfaces.values()]
+
+    def local_interface_name(self, name: str) -> Optional[TypeConName]:
+        r = self._interfaces.get(name)
+        return r[0] if r is not None else None
+
+    def local_interface(self, name: str) -> Optional[DefInterface]:
+        """
+        Variation of :meth:`data_type` that assumes the name is already scoped to this package.
+        Unlike :meth:`data_type`, this method returns ``None`` in the case of no match.
+
+        You should not normally use this method directly, and instead prefer to use the methods of
+        the :class:`SymbolLookup` protocol.
+
+        :param name:
+            A name to search for. Must be of the form ``"ModuleName:EntityName"``, where both
+            modules and entities are dot-delimited.
+        :return:
+            Either a matching :class:`DefInterface`, or ``None`` if no match.
+        """
+        r = self._interfaces.get(name)
         return r[1] if r is not None else None
 
 
@@ -466,6 +580,82 @@ class MultiPackageLookup(SymbolLookup):
             tmpl = lookup.local_template(name)
             if tmpl is not None:
                 return tmpl
+
+        raise NameNotFoundError(ref)
+
+    def interface_names(self, ref: Any) -> Collection[TypeConName]:
+        names = []  # type: List[TypeConName]
+
+        pkg, name = validate_template(ref)
+        lookups = self._lookups(pkg)
+
+        for lookup in lookups:
+            n = lookup.local_interface_name(name)
+            if n is not None:
+                names.append(n)
+
+        return names
+
+    def interface_name(self, ref: Any) -> TypeConName:
+        pkg, name = validate_template(ref)
+        for lookup in self._lookups(pkg):
+            n = lookup.local_interface_name(name)
+            if n is not None:
+                return n
+
+        raise NameNotFoundError(ref)
+
+    def interface(self, ref: Any) -> DefInterface:
+        pkg, name = validate_template(ref)
+        for lookup in self._lookups(pkg):
+            iface = lookup.local_interface(name)
+            if iface is not None:
+                return iface
+
+        raise NameNotFoundError(ref)
+
+    def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
+        names = []  # type: List[TypeConName]
+
+        pkg, name = validate_template(ref)
+        lookups = self._lookups(pkg)
+
+        for lookup in lookups:
+            if name == "*":
+                names.extend(lookup.local_template_names())
+            else:
+                n = lookup.local_template_name(name)
+                if n is not None:
+                    names.append(n)
+                n = lookup.local_interface_name(name)
+                if n is not None:
+                    names.append(n)
+
+        return names
+
+    def template_or_interface_name(self, ref: Any) -> TypeConName:
+        pkg, name = validate_template(ref)
+        for lookup in self._lookups(pkg):
+            n = lookup.local_template_name(name)
+            if n is not None:
+                return n
+
+            n = lookup.local_interface_name(name)
+            if n is not None:
+                return n
+
+        raise NameNotFoundError(ref)
+
+    def template_or_interface(self, ref: Any) -> TemplateOrInterface:
+        pkg, name = validate_template(ref)
+        for lookup in self._lookups(pkg):
+            tmpl = lookup.local_template(name)
+            if tmpl is not None:
+                return tmpl
+
+            iface = lookup.local_interface(name)
+            if iface is not None:
+                return iface
 
         raise NameNotFoundError(ref)
 

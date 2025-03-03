@@ -39,6 +39,8 @@ else:
 
 
 __all__ = [
+    "is_command",
+    "to_commands",
     "ActAs",
     "Admin",
     "ArchiveEvent",
@@ -414,6 +416,8 @@ class CreateEvent:
         "_observers",
         "_agreement_text",
         "_key",
+        "_created_event_blob",
+        "_interface_views",
     )
     if TYPE_CHECKING:
         _contract_id: ContractId
@@ -422,6 +426,8 @@ class CreateEvent:
         _observers: AbstractSet[Party]
         _agreement_text: Optional[str]
         _key: Optional[Any]
+        _created_event_blob: Optional[bytes]
+        _interface_views: Sequence[InterfaceView]
 
     def __init__(
         self,
@@ -431,6 +437,8 @@ class CreateEvent:
         observers: Collection[Party],
         agreement_text: Optional[str],
         key: Optional[Any],
+        created_event_blob: Optional[bytes] = None,
+        interface_views: Sequence[InterfaceView] = (),
     ):
         object.__setattr__(self, "_contract_id", contract_id)
         object.__setattr__(self, "_payload", payload)
@@ -438,6 +446,8 @@ class CreateEvent:
         object.__setattr__(self, "_observers", frozenset(observers))
         object.__setattr__(self, "_agreement_text", agreement_text)
         object.__setattr__(self, "_key", key)
+        object.__setattr__(self, "_created_event_blob", created_event_blob)
+        object.__setattr__(self, "_interface_views", tuple(interface_views))
 
     @property
     def contract_id(self) -> ContractId:
@@ -486,6 +496,24 @@ class CreateEvent:
         """
         return self._key
 
+    @property
+    def created_event_blob(self) -> Optional[bytes]:
+        """
+        Opaque representation of contract create event payload intended for
+        forwarding to an API server as a contract disclosed as part of a
+        command submission.
+        """
+        return self._created_event_blob
+
+    @property
+    def interface_views(self) -> Sequence[InterfaceView]:
+        """
+        Interface views specified in the transaction filter.
+        Includes an :class:`InterfaceView` for each interface for which there
+        is an interface filter.
+        """
+        return self._interface_views
+
     def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, CreateEvent)
@@ -495,6 +523,8 @@ class CreateEvent:
             and self.observers == other.observers
             and self.agreement_text == other.agreement_text
             and self.key == other.key
+            and self.created_event_blob == other.created_event_blob
+            and self.interface_views == other.interface_views
         )
 
 
@@ -589,6 +619,39 @@ class ExerciseResponse:
 
     def __repr__(self):
         return f"ExerciseResponse(result={self.result}, events={self.events})"
+
+
+class InterfaceView:
+    __slots__ = ("_interface_id", "_view_value")
+    if TYPE_CHECKING:
+        _interface_id: TypeConName
+        _view_value: Any
+
+    def __init__(self, interface_id: TypeConName, view_value: Any):
+        object.__setattr__(self, "_interface_id", interface_id)
+        object.__setattr__(self, "_view_value", view_value)
+
+    @property
+    def interface_id(self) -> TypeConName:
+        """
+        The interface implemented by the matched event.
+        """
+        return self._interface_id
+
+    @property
+    def view_value(self) -> Any:
+        """
+        The value of the interface's view method on this event. Set if it was requested in the
+        ``InterfaceFilter`` and it could be successfully computed.
+        """
+        return self._view_value
+
+    def __eq__(self, other: object, /) -> bool:
+        return (
+            isinstance(other, InterfaceView)
+            and self.interface_id == other.interface_id
+            and self.view_value == other.view_value
+        )
 
 
 SubmitResponse = Union[None, CreateEvent, ExerciseResponse]
