@@ -13,7 +13,7 @@ from __future__ import annotations
 # References:
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 from collections.abc import Mapping as _Mapping
-from typing import Any, List, Optional, Sequence, Set, Tuple, Union
+from typing import Any, Optional, Sequence, Tuple, Union
 
 from google.protobuf.json_format import MessageToDict
 
@@ -208,8 +208,8 @@ class Codec:
 
         # No wildcard template IDs, so inspect and resolve all template references to concrete
         # template or interface IDs
-        requested_templates = set()  # type: Set[TypeConName]
-        requested_interfaces = set()  # type: Set[TypeConName]
+        requested_templates = set[TypeConName]()
+        requested_interfaces = set[TypeConName]()
         for template_or_interface_id in template_or_interface_ids:
             requested_templates.update(
                 await self._loader.do_with_retry(
@@ -329,7 +329,7 @@ class Codec:
         result = None
         cid = None
 
-        events = []  # type: List[Union[CreateEvent, ArchiveEvent]]
+        events = list[Union[CreateEvent, ArchiveEvent]]()
         for event_id in tree.root_event_ids:
             event_pb = tree.events_by_id[event_id]
             event_pb_type = event_pb.WhichOneof("kind")
@@ -374,7 +374,7 @@ class Codec:
     ) -> Sequence[Union[CreateEvent, ArchiveEvent]]:
         from ... import LOG
 
-        events = []  # type: List[Union[CreateEvent, ArchiveEvent]]
+        events = list[Union[CreateEvent, ArchiveEvent]]()
         for event_id in event_ids:
             event_pb = tree.events_by_id[event_id]
             event_pb_type = event_pb.WhichOneof("kind")

@@ -25,7 +25,7 @@ from .pb_parse import ProtobufParser
 __all__ = ["parse_archive", "parse_archive_payload"]
 
 
-def parse_archive(package_id: "PackageRef", archive_bytes: bytes) -> "Archive":
+def parse_archive(package_id: PackageRef, archive_bytes: bytes) -> Archive:
     """
     Convert ``bytes`` into an :class:`Archive`.
     """
@@ -37,9 +37,7 @@ def parse_archive(package_id: "PackageRef", archive_bytes: bytes) -> "Archive":
     return Archive(package_id, package)
 
 
-def parse_archive_payload(
-    package_id: "Optional[PackageRef]", archive_bytes: bytes
-) -> "ArchivePayload":
+def parse_archive_payload(package_id: Optional[PackageRef], archive_bytes: bytes) -> ArchivePayload:
     """
     Convert ``bytes`` into a :class:`G.ArchivePayload`.
 

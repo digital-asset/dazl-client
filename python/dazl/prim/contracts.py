@@ -21,7 +21,7 @@ class ContractId:
         _value: str
         _value_type: TypeConName
 
-    def __init__(self, value_type: "TypeConName", value: str):
+    def __init__(self, value_type: TypeConName, value: str):
         from ..damlast.daml_lf_1 import TypeConName
 
         if not isinstance(value_type, TypeConName):
@@ -40,7 +40,7 @@ class ContractId:
         return self._value
 
     @property
-    def value_type(self) -> "TypeConName":
+    def value_type(self) -> TypeConName:
         """
         Return the type of template that is pointed to by this :class:`ContractId`.
         """

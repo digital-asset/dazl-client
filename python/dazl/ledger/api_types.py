@@ -12,7 +12,6 @@ from typing import (
     Any,
     Collection,
     Final,
-    List,
     Mapping,
     NoReturn,
     Optional,
@@ -56,6 +55,7 @@ __all__ = [
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExerciseResponse",
+    "InterfaceView",
     "MeteringReport",
     "MeteringReportApplication",
     "MeteringReportRequest",
@@ -84,7 +84,7 @@ def is_command(obj: Any, /) -> TypeGuard[Command]:
 
 
 def to_commands(*commands: Optional[Commands]) -> Sequence[Command]:
-    cmds = []  # type: List[Command]
+    cmds = list[Command]()
     if commands is not None:
         for c in commands:
             if c is not None:

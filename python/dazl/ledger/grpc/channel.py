@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import Any, AsyncIterable, Callable, Iterable, List, Tuple, TypeVar, Union, cast
+from typing import Any, AsyncIterable, Callable, Iterable, Tuple, TypeVar, Union, cast
 from urllib.parse import urlparse
 
 from grpc import (
@@ -40,7 +40,7 @@ RequestIterableType = Union[Iterable[Any], AsyncIterable[Any]]
 ResponseIterableType = AsyncIterable[Any]
 
 
-def create_channel(config: "Config") -> "Channel":
+def create_channel(config: Config) -> Channel:
     """
     Create a :class:`Channel` for the specified configuration.
     """
@@ -104,12 +104,12 @@ def create_channel(config: "Config") -> "Channel":
 
 
 class GrpcAuth(AuthMetadataPlugin):
-    def __init__(self, config: "Config"):
+    def __init__(self, config: Config):
         self._config = config
 
-    def __call__(self, context: "AuthMetadataContext", callback: "AuthMetadataPluginCallback"):
+    def __call__(self, context: AuthMetadataContext, callback: AuthMetadataPluginCallback):
         # This overly verbose type signature is here to satisfy mypy and grpc-stubs
-        options = []  # type: List[Tuple[str, Union[str, bytes]]]
+        options = list[Tuple[str, Union[str, bytes]]]()
 
         # TODO: Add support here for refresh tokens
         token = self._config.access.token
@@ -131,7 +131,7 @@ class GrpcAuthInterceptor:
     # NOTE: There are a number of typing errors in the grpc.aio classes, so we're ignoring a handful
     #  of lines until those problems are addressed.
 
-    def __init__(self, config: "Config"):
+    def __init__(self, config: Config):
         self._config = config
 
     def _modify_client_call_details(self, client_call_details: ClientCallDetails):
@@ -148,20 +148,20 @@ class GrpcAuthInterceptor:
 class GrpcAuthUnaryUnaryClientInterceptor(GrpcAuthInterceptor, UnaryUnaryClientInterceptor):
     async def intercept_unary_unary(
         self,
-        continuation: "Callable[[ClientCallDetails, RequestType], UnaryUnaryCall]",
+        continuation: Callable[[ClientCallDetails, RequestType], UnaryUnaryCall],
         client_call_details: ClientCallDetails,
         request: RequestType,
-    ) -> "Union[UnaryUnaryCall, RequestType]":
+    ) -> Union[UnaryUnaryCall, RequestType]:
         return await continuation(self._modify_client_call_details(client_call_details), request)
 
 
 class GrpcAuthUnaryStreamClientInterceptor(GrpcAuthInterceptor, UnaryStreamClientInterceptor):
     async def intercept_unary_stream(
         self,
-        continuation: "Callable[[ClientCallDetails, RequestType], UnaryStreamCall]",
+        continuation: Callable[[ClientCallDetails, RequestType], UnaryStreamCall],
         client_call_details: ClientCallDetails,
         request: RequestType,
-    ) -> "Union[ResponseIterableType, UnaryStreamCall]":
+    ) -> Union[ResponseIterableType, UnaryStreamCall]:
         return await continuation(  # type: ignore
             self._modify_client_call_details(client_call_details), request
         )
@@ -170,7 +170,7 @@ class GrpcAuthUnaryStreamClientInterceptor(GrpcAuthInterceptor, UnaryStreamClien
 class GrpcAuthStreamUnaryClientInterceptor(GrpcAuthInterceptor, StreamUnaryClientInterceptor):
     async def intercept_stream_unary(  # type: ignore
         self,
-        continuation: "Callable[[ClientCallDetails, RequestType], StreamUnaryCall]",
+        continuation: Callable[[ClientCallDetails, RequestType], StreamUnaryCall],
         client_call_details: ClientCallDetails,
         request_iterator: RequestIterableType,
     ) -> StreamUnaryCall:
@@ -185,7 +185,7 @@ class GrpcAuthStreamStreamClientInterceptor(GrpcAuthInterceptor, StreamStreamCli
         continuation: Callable[[ClientCallDetails, RequestType], StreamStreamCall],
         client_call_details: ClientCallDetails,
         request_iterator: RequestIterableType,
-    ) -> "Union[ResponseIterableType, StreamStreamCall]":
+    ) -> Union[ResponseIterableType, StreamStreamCall]:
         return await continuation(  # type: ignore
             self._modify_client_call_details(client_call_details), request_iterator  # type: ignore
         )

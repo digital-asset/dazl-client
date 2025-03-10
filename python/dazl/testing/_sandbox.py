@@ -122,7 +122,7 @@ class SandboxLauncher:
 
         return self._certificate.public_cert
 
-    def sign_token(self, claims: "Mapping[str, Any]", allow_insecure: "bool" = False) -> str:
+    def sign_token(self, claims: Mapping[str, Any], allow_insecure: bool = False) -> str:
         """
         Sign a token using the private key that the sandbox was launched with.
 

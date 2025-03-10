@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List, Tuple, Union
+from typing import Tuple, Union
 
 from google.protobuf.descriptor_pb2 import (
     DescriptorProto,
@@ -51,13 +51,13 @@ class SymbolTable:
         self._packages = {
             ".google.protobuf.Empty": "google.protobuf.empty_pb2",
             ".google.protobuf.Timestamp": "google.protobuf.timestamp_pb2",
-        }  # type: Dict[str, str]
+        }
         self._imports = {
             ".google.protobuf.Empty": "Empty",
             ".google.protobuf.Timestamp": "Timestamp",
-        }  # type: Dict[str, str]
-        self._map_types = {}  # type: Dict[str, Tuple[FieldDescriptorProto, FieldDescriptorProto]]
-        self._enums = {}  # type: Dict[str, Dict[str, int]]
+        }
+        self._map_types = dict[str, Tuple[FieldDescriptorProto, FieldDescriptorProto]]()
+        self._enums = dict[str, dict[str, int]]()
 
     def load_file(self, fd: FileDescriptorProto) -> None:
         """
@@ -178,7 +178,7 @@ class SymbolTable:
         if enum_definition is not None:
             # for enum definitions, the allowed constructors are literals over all the numeric AND
             # string representations for those types
-            literals = []  # type: List[Union[str, int]]
+            literals = list[Union[str, int]]()
             for key, value in enum_definition.items():
                 if usage == Usage.INIT:
                     # for __init__ parameters for messages, the string values of enum entries are

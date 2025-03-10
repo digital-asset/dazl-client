@@ -218,7 +218,7 @@ class AccessConfig(Protocol):
         raise NotImplementedError
 
     @property
-    def token_version(self) -> "Optional[Literal[1, 2]]":
+    def token_version(self) -> Optional[Literal[1, 2]]:
         """
         The version of the token supplied at configuration time, as provided by a signing authority
         that is trusted by the server.
@@ -241,7 +241,7 @@ class TokenBasedAccessConfig(AccessConfig):
 
     _token_version: Literal[1, 2]
 
-    def __init__(self, oauth_token: "Union[bytes, str]"):
+    def __init__(self, oauth_token: Union[bytes, str]) -> None:
         """
         Initialize a token-based access configuration.
 
@@ -289,7 +289,7 @@ class TokenBasedAccessConfig(AccessConfig):
             self._application_name = claims.get("sub")
             self._token_version = 2
 
-    def _set(self, *, read_as: Collection[Party], act_as: Collection[Party], admin: bool):
+    def _set(self, *, read_as: Collection[Party], act_as: Collection[Party], admin: bool) -> None:
         """
         Set the values of this :class:`TokenBasedAccessConfig`.
 
@@ -339,7 +339,7 @@ class TokenBasedAccessConfig(AccessConfig):
         return self._application_name
 
     @property
-    def token_version(self) -> "Literal[1, 2]":
+    def token_version(self) -> Literal[1, 2]:
         return self._token_version
 
     def __repr__(self):
@@ -415,7 +415,7 @@ class PropertyBasedAccessConfig(AccessConfig):
         ).decode("ascii")
 
     @property
-    def ledger_id(self) -> "Optional[str]":
+    def ledger_id(self) -> Optional[str]:
         """
         The ledger ID. When connecting to the gRPC Ledger API, this can be inferred and does not
         need to be supplied. When connecting to the HTTP JSON API, it must be supplied.
@@ -425,7 +425,7 @@ class PropertyBasedAccessConfig(AccessConfig):
         return self._ledger_id
 
     @ledger_id.setter
-    def ledger_id(self, value: "Optional[str]") -> None:
+    def ledger_id(self, value: Optional[str]) -> None:
         self._ledger_id = value
 
     @property
@@ -433,7 +433,7 @@ class PropertyBasedAccessConfig(AccessConfig):
         return self._application_name
 
     @property
-    def read_as(self) -> "AbstractSet[Party]":
+    def read_as(self) -> AbstractSet[Party]:
         """
         The set of parties for which read rights are granted. This collection is read-only. If you
         want to add a party with read-only access, add it to :meth:`read_only_as`; if you want to
@@ -447,7 +447,7 @@ class PropertyBasedAccessConfig(AccessConfig):
         return self._parties
 
     @property
-    def read_only_as(self) -> "MutableSet[Party]":
+    def read_only_as(self) -> MutableSet[Party]:
         """
         The set of parties for which read-as rights are granted, but act-as rights are NOT granted.
         This collection can be modified.
@@ -457,7 +457,7 @@ class PropertyBasedAccessConfig(AccessConfig):
         return self._parties.read_as
 
     @property
-    def act_as(self) -> "MutableSet[Party]":
+    def act_as(self) -> MutableSet[Party]:
         """
         The set of parties for which act-as rights are granted. This collection can be modified.
         Adding a party to this set _removes_ it from :meth:`read_only_as`.
@@ -508,7 +508,7 @@ def decode_token(token: str) -> Mapping[str, Any]:
     return claims_dict
 
 
-def decode_token_claims(token: str) -> "Mapping[str, Any]":
+def decode_token_claims(token: str) -> Mapping[str, Any]:
     """
     Decode the claims section from a JSON Web Token (JWT).
 
@@ -524,10 +524,10 @@ def decode_token_claims(token: str) -> "Mapping[str, Any]":
 
 
 def encode_unsigned_token(
-    read_as: "Optional[Collection[Party]]",
-    act_as: "Optional[Collection[Party]]",
-    ledger_id: "Optional[str]",
-    application_id: "Optional[str]",
+    read_as: Optional[Collection[Party]],
+    act_as: Optional[Collection[Party]],
+    ledger_id: Optional[str],
+    application_id: Optional[str],
     admin: bool = True,
 ) -> bytes:
     header = {
@@ -557,12 +557,12 @@ def encode_unsigned_token(
 class PartyRights(SetBase):
     __slots__ = ("_rights", "read_as", "act_as")
 
-    def __init__(self):
-        self._rights = dict()
+    def __init__(self) -> None:
+        self._rights = dict[Party, bool]()
         self.read_as = PartyRightsSet(self, False)
         self.act_as = PartyRightsSet(self, True)
 
-    def maybe_add(self, value: "Optional[Parties]", has_act_rights: bool) -> None:
+    def maybe_add(self, value: Optional[Parties], has_act_rights: bool) -> None:
         if value is None:
             return
 
@@ -573,16 +573,16 @@ class PartyRights(SetBase):
             for party in value:
                 self.add(party, has_act_rights)
 
-    def add(self, value: "Party", has_act_rights: bool) -> None:
+    def add(self, value: Party, has_act_rights: bool) -> None:
         """
         Add/replace a ``Party`` and its rights.
         """
         self._rights[value] = has_act_rights
 
-    def discard(self, value: "Party") -> None:
+    def discard(self, value: Party) -> None:
         self._rights.pop(value)
 
-    def get(self, value: "Party") -> "Optional[bool]":
+    def get(self, value: Party) -> Optional[bool]:
         return self._rights.get(value)
 
     def count(self, act_as: bool) -> int:
@@ -594,29 +594,29 @@ class PartyRights(SetBase):
     def __len__(self) -> int:
         return len(self._rights)
 
-    def __iter__(self) -> "Iterator[Party]":
+    def __iter__(self) -> Iterator[Party]:
         return iter(sorted(self._rights))
 
-    def iter(self, act_as: bool) -> "Iterator[Party]":
+    def iter(self, act_as: bool) -> Iterator[Party]:
         return iter(p for p, a in sorted(self._rights.items()) if a == act_as)
 
 
 class PartyRightsSet(MutableSetBase):
-    def __init__(self, rights: "PartyRights", act_as: bool):
+    def __init__(self, rights: PartyRights, act_as: bool) -> None:
         self._rights = rights
         self._act_as = act_as
 
-    def add(self, value: "Party") -> None:
+    def add(self, value: Party) -> None:
         self._rights.add(value, self._act_as)
 
-    def discard(self, value: "Party") -> None:
+    def discard(self, value: Party) -> None:
         self._rights.discard(value)
 
-    def __contains__(self, obj: "object") -> bool:
+    def __contains__(self, obj: object) -> bool:
         return isinstance(obj, str) and (self._rights.get(Party(obj)) == self._act_as)
 
     def __len__(self) -> int:
         return self._rights.count(self._act_as)
 
-    def __iter__(self) -> "Iterator[Party]":
+    def __iter__(self) -> Iterator[Party]:
         return self._rights.iter(self._act_as)
