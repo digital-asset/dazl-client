@@ -59,7 +59,7 @@ async def test_scu_create_and_query(sandbox: SandboxLauncher) -> None:
         )
 
         events_2 = list[CreateEvent]()
-        async with p.connection.query("#AssetModels.Assets:Asset") as stream:
+        async with p.connection.query("#AssetModels:Assets:Asset") as stream:
             async for event in stream.creates():
                 events_2.append(event)
                 logging.info("Found a contract after uploading 0.0.2: %s", event.payload)
