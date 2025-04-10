@@ -61,6 +61,7 @@ from ..api_types import (
     VersionFeatures,
     VersionUserManagementFeature,
 )
+from ..auth import TokenOrTokenProvider
 from ..pkgcache import SHARED_PACKAGE_DATABASE
 
 __all__ = ["Codec"]
@@ -91,54 +92,71 @@ class Codec:
     def lookup(self) -> SymbolLookup:
         return self._lookup
 
-    async def encode_command(self, cmd: Command, /) -> lapipb.Command:
+    async def encode_command(
+        self, cmd: Command, /, *, token: Optional[TokenOrTokenProvider] = None
+    ) -> lapipb.Command:
         if isinstance(cmd, CreateCommand):
             return lapipb.Command(
-                create=await self.encode_create_command(cmd.template_id, cmd.payload)
+                create=await self.encode_create_command(cmd.template_id, cmd.payload, token=token)
             )
         elif isinstance(cmd, ExerciseCommand):
             return lapipb.Command(
                 exercise=await self.encode_exercise_command(
-                    cmd.contract_id, cmd.choice, cmd.argument
+                    cmd.contract_id, cmd.choice, cmd.argument, token=token
                 )
             )
         elif isinstance(cmd, ExerciseByKeyCommand):
             return lapipb.Command(
                 exerciseByKey=await self.encode_exercise_by_key_command(
-                    cmd.template_id, cmd.choice, cmd.key, cmd.argument
+                    cmd.template_id, cmd.choice, cmd.key, cmd.argument, token=token
                 )
             )
         elif isinstance(cmd, CreateAndExerciseCommand):
             return lapipb.Command(
                 createAndExercise=await self.encode_create_and_exercise_command(
-                    cmd.template_id, cmd.payload, cmd.choice, cmd.argument
+                    cmd.template_id, cmd.payload, cmd.choice, cmd.argument, token=token
                 )
             )
         else:
             raise ValueError(f"unknown Command type: {cmd!r}")
 
     async def encode_create_command(
-        self, template_id: Union[str, Any], payload: ContractData, /
+        self,
+        template_id: Union[str, Any],
+        payload: ContractData,
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
     ) -> lapipb.CreateCommand:
         item_type = await self._loader.do_with_retry(
-            lambda: self._lookup.template_name(template_id)
+            lambda: self._lookup.template_name(template_id), token=token
         )
-        _, value = await self.encode_value(con(item_type), payload)
+        _, value = await self.encode_value(con(item_type), payload, token=token)
         return lapipb.CreateCommand(
             template_id=self.encode_identifier(item_type), create_arguments=value
         )
 
     async def encode_exercise_command(
-        self, contract_id: ContractId, choice_name: str, argument: Optional[Any] = None, /
+        self,
+        contract_id: ContractId,
+        choice_name: str,
+        argument: Optional[Any] = None,
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
     ) -> lapipb.ExerciseCommand:
-        item_type, choice = await self._look_up_choice(contract_id.value_type, choice_name)
+        item_type, choice = await self._look_up_choice(
+            contract_id.value_type, choice_name, token=token
+        )
 
         cmd_pb = lapipb.ExerciseCommand(
             template_id=self.encode_identifier(item_type),
             contract_id=contract_id.value,
             choice=choice_name,
         )
-        value_field, value_pb = await self.encode_value(choice.arg_binder.type, argument)
+        value_field, value_pb = await self.encode_value(
+            choice.arg_binder.type, argument, token=token
+        )
         set_value(cmd_pb.choice_argument, value_field, value_pb)
 
         return cmd_pb
@@ -150,13 +168,17 @@ class Codec:
         choice_name: str,
         argument: Optional[Any] = None,
         /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
     ) -> lapipb.CreateAndExerciseCommand:
-        item_type, choice = await self._look_up_choice(template_id, choice_name)
+        item_type, choice = await self._look_up_choice(template_id, choice_name, token=token)
 
-        payload_field, payload_pb = await self.encode_value(con(item_type), payload)
+        payload_field, payload_pb = await self.encode_value(con(item_type), payload, token=token)
         if payload_field != "record":
             raise ValueError("unexpected non-record type when constructing payload")
-        argument_field, argument_pb = await self.encode_value(choice.arg_binder.type, argument)
+        argument_field, argument_pb = await self.encode_value(
+            choice.arg_binder.type, argument, token=token
+        )
         cmd_pb = lapipb.CreateAndExerciseCommand(
             create_arguments=payload_pb,
             template_id=self.encode_identifier(item_type),
@@ -173,8 +195,12 @@ class Codec:
         key: Any,
         argument: Optional[ContractData] = None,
         /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
     ) -> lapipb.ExerciseByKeyCommand:
-        item_type, template, choice = await self._look_up_template_choice(template_id, choice_name)
+        item_type, template, choice = await self._look_up_template_choice(
+            template_id, choice_name, token=token
+        )
         if template.key is None:
             raise ValueError(
                 f"cannot encode ExerciseByKeyCommand; template {template_id} does not have a contract key defined"
@@ -184,15 +210,21 @@ class Codec:
             template_id=self.encode_identifier(item_type),
             choice=choice_name,
         )
-        key_field, key_pb = await self.encode_value(template.key.type, key)
-        value_field, value_pb = await self.encode_value(choice.arg_binder.type, argument)
+        key_field, key_pb = await self.encode_value(template.key.type, key, token=token)
+        value_field, value_pb = await self.encode_value(
+            choice.arg_binder.type, argument, token=token
+        )
         set_value(cmd_pb.contract_key, key_field, key_pb)
         set_value(cmd_pb.choice_argument, value_field, value_pb)
 
         return cmd_pb
 
     async def encode_filters(
-        self, template_or_interface_ids: Sequence[TypeConName], /
+        self,
+        template_or_interface_ids: Sequence[TypeConName],
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
     ) -> lapipb.Filters:
         # Search for a reference to the "wildcard" template; if any of the requested
         # template_or_interface_ids is "*", then return results for all templates.
@@ -213,12 +245,12 @@ class Codec:
         for template_or_interface_id in template_or_interface_ids:
             requested_templates.update(
                 await self._loader.do_with_retry(
-                    lambda: self._lookup.template_names(template_or_interface_id)
+                    lambda: self._lookup.template_names(template_or_interface_id), token=token
                 )
             )
             requested_interfaces.update(
                 await self._loader.do_with_retry(
-                    lambda: self._lookup.interface_names(template_or_interface_id)
+                    lambda: self._lookup.interface_names(template_or_interface_id), token=token
                 )
             )
 
@@ -234,12 +266,15 @@ class Codec:
             )
         )
 
-    async def encode_value(self, item_type: Type, obj: Any, /) -> Tuple[str, Optional[Any]]:
+    async def encode_value(
+        self, item_type: Type, obj: Any, /, *, token: Optional[TokenOrTokenProvider] = None
+    ) -> Tuple[str, Optional[Any]]:
         """
         Convert a dazl/Python value to its Protobuf equivalent.
         """
         return await self._loader.do_with_retry(
-            lambda: self._encode_context.convert(item_type, obj)
+            lambda: self._encode_context.convert(item_type, obj),
+            token=token,
         )
 
     @staticmethod
@@ -290,9 +325,11 @@ class Codec:
             # the offset is absolute
             return lapipb.LedgerOffset(absolute=offset)
 
-    async def decode_created_event(self, event: lapipb.CreatedEvent, /) -> CreateEvent:
+    async def decode_created_event(
+        self, event: lapipb.CreatedEvent, /, *, token: Optional[TokenOrTokenProvider] = None
+    ) -> CreateEvent:
         cid = self.decode_contract_id(event)
-        cdata = await self.decode_value(con(cid.value_type), event.create_arguments)
+        cdata = await self.decode_value(con(cid.value_type), event.create_arguments, token=token)
         if not isinstance(cdata, _Mapping):
             raise ValueError(
                 f"expected create_arguments to result in a dict, but got {cdata!r} instead"
@@ -301,7 +338,7 @@ class Codec:
         template = self._lookup.template(cid.value_type)
         key = None
         if template is not None and template.key is not None:
-            key = await self.decode_value(template.key.type, event.contract_key)
+            key = await self.decode_value(template.key.type, event.contract_key, token=token)
 
         return CreateEvent(
             cid,
@@ -311,14 +348,18 @@ class Codec:
             event.agreement_text.value,
             key,
             created_event_blob=event.created_event_blob or None,
-            interface_views=[await self.decode_interface_view(v) for v in event.interface_views],
+            interface_views=[
+                await self.decode_interface_view(v, token=token) for v in event.interface_views
+            ],
         )
 
     async def decode_archived_event(self, event: lapipb.ArchivedEvent, /) -> ArchiveEvent:
         cid = self.decode_contract_id(event)
         return ArchiveEvent(cid)
 
-    async def decode_exercise_response(self, tree: lapipb.TransactionTree, /) -> ExerciseResponse:
+    async def decode_exercise_response(
+        self, tree: lapipb.TransactionTree, /, *, token: Optional[TokenOrTokenProvider] = None
+    ) -> ExerciseResponse:
         """
         Convert a Protobuf TransactionTree response to an ExerciseResponse. The TransactionTree is
         expected to only contain a single exercise node at the root level.
@@ -334,7 +375,7 @@ class Codec:
             event_pb = tree.events_by_id[event_id]
             event_pb_type = event_pb.WhichOneof("kind")
             if event_pb_type == "created":
-                events.append(await self.decode_created_event(event_pb.created))
+                events.append(await self.decode_created_event(event_pb.created, token=token))
             elif event_pb_type == "exercised":
                 # Find the "first" exercised node and grab its result value
                 if cid is None:
@@ -357,20 +398,28 @@ class Codec:
                             result = await self.decode_value(
                                 found_choice.ret_type,
                                 event_pb.exercised.exercise_result,
+                                token=token,
                             )
                         else:
                             LOG.error(
                                 "Received an exercise node that referred to a choice that doesn't exist!"
                             )
 
-                events.extend(await self._decode_exercised_child_events(tree, [event_id]))
+                events.extend(
+                    await self._decode_exercised_child_events(tree, [event_id], token=token)
+                )
             else:
                 LOG.warning("Received an unknown event type: %s", event_pb_type)
 
         return ExerciseResponse(result, events)
 
     async def _decode_exercised_child_events(
-        self, tree: lapipb.TransactionTree, event_ids: Sequence[str]
+        self,
+        tree: lapipb.TransactionTree,
+        event_ids: Sequence[str],
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
     ) -> Sequence[Union[CreateEvent, ArchiveEvent]]:
         from ... import LOG
 
@@ -379,31 +428,35 @@ class Codec:
             event_pb = tree.events_by_id[event_id]
             event_pb_type = event_pb.WhichOneof("kind")
             if event_pb_type == "created":
-                events.append(await self.decode_created_event(event_pb.created))
+                events.append(await self.decode_created_event(event_pb.created, token=token))
             elif event_pb_type == "exercised":
                 if event_pb.exercised.consuming:
                     events.append(ArchiveEvent(self.decode_contract_id(event_pb.exercised)))
                 events.extend(
                     await self._decode_exercised_child_events(
-                        tree, event_pb.exercised.child_event_ids
+                        tree, event_pb.exercised.child_event_ids, token=token
                     )
                 )
             else:
                 LOG.warning("Received an unknown event type: %s", event_pb_type)
         return events
 
-    async def decode_interface_view(self, pb: lapipb.InterfaceView, /) -> InterfaceView:
+    async def decode_interface_view(
+        self, pb: lapipb.InterfaceView, /, *, token: Optional[TokenOrTokenProvider] = None
+    ) -> InterfaceView:
         vt = Codec.decode_identifier(pb.interface_id)
         interface = self._lookup.interface(vt)
-        view_value = await self.decode_value(interface.view, pb.view_value)
+        view_value = await self.decode_value(interface.view, pb.view_value, token=token)
         return InterfaceView(vt, view_value)
 
-    async def decode_value(self, item_type: Type, obj: Any, /) -> Optional[Any]:
+    async def decode_value(
+        self, item_type: Type, obj: Any, /, *, token: Optional[TokenOrTokenProvider] = None
+    ) -> Optional[Any]:
         """
         Convert a Protobuf Ledger API value to its dazl/Python equivalent.
         """
         return await self._loader.do_with_retry(
-            lambda: self._decode_context.convert(item_type, obj)
+            lambda: self._decode_context.convert(item_type, obj), token=token
         )
 
     def decode_contract_id(
@@ -487,10 +540,15 @@ class Codec:
         )
 
     async def _look_up_choice(
-        self, template_or_interface_id: Any, choice_name: str, /
+        self,
+        template_or_interface_id: Any,
+        choice_name: str,
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
     ) -> Tuple[TypeConName, TemplateChoice]:
         template_type = await self._loader.do_with_retry(
-            lambda: self._lookup.template_or_interface_name(template_or_interface_id)
+            lambda: self._lookup.template_or_interface_name(template_or_interface_id), token=token
         )
         template_or_interface = self._lookup.template_or_interface(template_type)
         for choice in template_or_interface.choices:
@@ -499,10 +557,10 @@ class Codec:
         raise ValueError(f"template {template_or_interface.name} has no choice named {choice_name}")
 
     async def _look_up_template_choice(
-        self, template_id: Any, choice_name: str, /
+        self, template_id: Any, choice_name: str, /, *, token: Optional[TokenOrTokenProvider] = None
     ) -> Tuple[TypeConName, DefTemplate, TemplateChoice]:
         template_type = await self._loader.do_with_retry(
-            lambda: self._lookup.template_name(template_id)
+            lambda: self._lookup.template_name(template_id), token=token
         )
         template = self._lookup.template(template_type)
         for choice in template.choices:

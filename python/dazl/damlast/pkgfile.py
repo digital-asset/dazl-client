@@ -6,11 +6,11 @@ from __future__ import annotations
 from io import BytesIO
 from os import PathLike
 from pathlib import Path
-import threading
 from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional, TypeVar, Union
 from zipfile import ZipFile
 
 from .._gen.com.daml.daml_lf_1_16 import daml_lf_pb2 as pb
+from ..ledger.auth import TokenOrTokenProvider
 from ..prim import TimeDeltaLike
 from .daml_lf_1 import Archive, Package, PackageRef
 from .errors import PackageNotFoundError
@@ -216,12 +216,27 @@ class DarFileAsyncPackageService:
     def __init__(self, dar_file: DarFile, /):
         self._dar_file = dar_file
 
+    # noinspection PyUnusedLocal
+    #   these parameters are present for compliance with the
+    #   PackageService protocol
     async def get_package(
-        self, package_id: PackageRef, timeout: Optional[TimeDeltaLike] = None
+        self,
+        package_id: PackageRef,
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> bytes:
         return self._dar_file.package_bytes(package_id)
 
+    # noinspection PyUnusedLocal
+    #   these parameters are present for compliance with the
+    #   PackageService protocol
     async def list_package_ids(
-        self, *, timeout: Optional[TimeDeltaLike] = None
+        self,
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> AbstractSet[PackageRef]:
         return self._dar_file.package_ids()

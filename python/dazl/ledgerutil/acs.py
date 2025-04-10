@@ -97,7 +97,6 @@ class ACS:
         self._snapshot_fut = None  # type: Optional[Future]
         self._task = None  # type: Optional[Future]
         self._state = NOT_STARTED  # type: State
-        self._log = conn.config.logger
 
     def read(self) -> Awaitable[Snapshot]:
         """

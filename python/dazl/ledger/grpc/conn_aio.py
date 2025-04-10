@@ -8,22 +8,26 @@ from __future__ import annotations
 
 import asyncio
 from asyncio import wait_for
+import contextlib
 from datetime import datetime, timedelta
+import sys
 from typing import (
     AbstractSet,
     Any,
     AsyncIterable,
     Collection,
+    ContextManager,
+    Iterator,
     Mapping,
     Optional,
     Sequence,
     Union,
-    cast,
+    overload,
 )
 import warnings
 
 from grpc import ChannelConnectivity
-from grpc.aio import Channel, UnaryStreamCall
+from grpc.aio import Channel, UnaryStreamCall, UsageError
 
 from .. import aio
 from ... import LOG
@@ -42,11 +46,17 @@ from ...prim import (
     to_timedelta,
 )
 from ...query import Filter, Queries, Query, parse_query
+from .._call import (
+    AnyCallParameters,
+    CachedParameters,
+    CallParameters,
+    ConnectionParameters,
+    ReadCallParameters,
+    WriteCallParameters,
+)
 from .._offsets import END, End, LedgerOffsetRange, from_offset_until_forever
 from .._retry import retry
 from ..api_types import (
-    ActAs,
-    Admin,
     ArchiveEvent,
     Boundary,
     CommandMeta,
@@ -55,17 +65,22 @@ from ..api_types import (
     ExerciseResponse,
     MeteringReport,
     PartyInfo,
-    ReadAs,
     Right,
     User,
     Version,
     to_commands,
 )
+from ..auth import TokenOrTokenProvider
 from ..config import Config
-from ..config.access import TokenBasedAccessConfig
 from ..errors import ProtocolWarning, _allow_cancel, _translate_exceptions
+from ._args_aio import CallContext
 from .channel import create_channel
 from .codec_aio import Codec
+
+if sys.version_info >= (3, 11):
+    from typing import Unpack
+else:
+    from typing_extensions import Unpack
 
 __all__ = ["Connection", "QueryStream"]
 
@@ -80,6 +95,7 @@ class Connection(aio.Connection):
         self._logger = config.logger
         self._channel = create_channel(config)
         self._codec = Codec(self, lookup=config.lookup)
+        self._cache: Optional[CachedParameters] = None
 
     @property
     def config(self) -> Config:
@@ -109,34 +125,8 @@ class Connection(aio.Connection):
 
     async def open(self) -> None:
         """
-        Does final validation of the token, including possibly fetching the ledger ID if it is not
-        yet known.
+        Does nothing, and is only supplied for symmetry with :meth:`close`.
         """
-        if self._config.access.token_version == 2:
-            # Daml 2.0 tokens do not contain party information, so an extra call to the server is
-            # required in order to resolve our current set of rights
-            if hasattr(self._config.access, "_set"):
-                admin = False
-                read_as = list[Party]()
-                act_as = list[Party]()
-
-                # There are certain circumstances where user_id
-                # defaulting in this request, and the user must be
-                # explicitly specified. This is done by using the
-                # application ID (name), which is mandated to be
-                # subject of the token.
-                for right in await self.list_user_rights(self._config.access.application_name):
-                    if right == Admin:
-                        admin = True
-                    elif isinstance(right, ReadAs):
-                        read_as.append(right.party)
-                    elif isinstance(right, ActAs):
-                        act_as.append(right.party)
-
-                # noinspection PyProtectedMember
-                cast(TokenBasedAccessConfig, self._config.access)._set(
-                    read_as=read_as, act_as=act_as, admin=admin
-                )
 
     async def close(self) -> None:
         """
@@ -151,6 +141,30 @@ class Connection(aio.Connection):
 
     # region Write API
 
+    @overload
+    def _call(self, **kwargs: Unpack[CallParameters]) -> ContextManager[CallContext]: ...
+
+    @overload
+    def _call(self, **kwargs: Unpack[ReadCallParameters]) -> ContextManager[CallContext]: ...
+
+    @overload
+    def _call(self, **kwargs: Unpack[WriteCallParameters]) -> ContextManager[CallContext]: ...
+
+    @contextlib.contextmanager
+    def _call(self, **call_kwargs: Unpack[AnyCallParameters]) -> Iterator[CallContext]:
+        connection_params = ConnectionParameters(
+            read_as=to_parties(self._config.access.read_as),
+            act_as=to_parties(self._config.access.act_as),
+            ledger_id=self._config.access.ledger_id,
+            user_id_or_application_name=self._config.access.application_name,
+            token=self._config.access.token,
+            timeout=self._config.url.retry_timeout,
+        )
+        call = CallContext.compute(call_kwargs, self._cache, connection_params)
+        call.channel = self.channel
+        yield call
+        self._cache = call.get_cache()
+
     async def submit(
         self,
         commands: Commands,
@@ -160,6 +174,9 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        application_name: Optional[str] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> None:
         """
@@ -175,27 +192,33 @@ class Connection(aio.Connection):
         into Daml so that only a single command is needed from the outside in order to satisfy your
         use case.
         """
-        commands = to_commands(commands)
-        if not commands:
-            return
+        with self._call(
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            application_name=application_name,
+            user_id=user_id,
+            token=token,
+            timeout=timeout,
+        ) as call:
+            commands = to_commands(commands)
+            if not commands:
+                return
 
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.CommandServiceStub(self.channel)
+            if len(commands) == 1:
+                command_seq = [await self._codec.encode_command(commands[0], token=token)]
+            else:
+                command_seq = await asyncio.gather(
+                    *(self._codec.encode_command(command, token=token) for command in commands)
+                )
 
-        meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
-        )
-
-        if len(commands) == 1:
-            command_seq = [await self._codec.encode_command(commands[0])]
-        else:
-            command_seq = await asyncio.gather(*map(self._codec.encode_command, commands))
-
-        request = self._submit_and_wait_request(command_seq, meta)
-        await retry(
-            lambda: stub.SubmitAndWait(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
+            stub = call.grpc_stub(lapipb.CommandServiceStub)
+            request = self._submit_and_wait_request(command_seq, await call.command_meta())
+            await retry(
+                lambda: stub.SubmitAndWait(request, **call.grpc_kwargs),
+                timeout=call.timeout,
+            )
 
     async def create(
         self,
@@ -207,6 +230,9 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        application_name: Optional[str] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> CreateEvent:
         """
@@ -220,36 +246,55 @@ class Connection(aio.Connection):
             An optional workflow ID.
         :param command_id:
             An optional command ID. If unspecified, a random one will be created.
+        :param token:
+            An optional authorization token. If unspecified, the one specified at connection
+            creation time is used.
         :param read_as:
             An optional set of read-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param application_name:
+            An optional application name to use instead of the one configured at connection
+            creation time. Cannot be specified with ``user_id``.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``. Cannot be specified with
+            ``application_name``.
         :param timeout:
             The length of time to wait before giving up on this submission. If unspecified, the
             configuration value of ``retry_timeout`` is used.
         :return:
             The :class:`CreateEvent` that represents the contract that was successfully created.
         """
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.CommandServiceStub(self.channel)
+        with self._call(
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            application_name=application_name,
+            user_id=user_id,
+            token=token,
+            timeout=timeout,
+        ) as call:
+            commands = [
+                lapipb.Command(
+                    create=await self._codec.encode_create_command(
+                        template_id, payload, token=token
+                    )
+                )
+            ]
 
-        meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
-        )
-        commands = [
-            lapipb.Command(create=await self._codec.encode_create_command(template_id, payload))
-        ]
-        request = self._submit_and_wait_request(commands, meta)
-
-        response = await retry(
-            lambda: stub.SubmitAndWaitForTransaction(
-                request, timeout=retry_timeout.total_seconds()
-            ),
-            timeout=retry_timeout,
-        )
-        return await self._codec.decode_created_event(response.transaction.events[0].created)
+            stub = call.grpc_stub(lapipb.CommandServiceStub)
+            request = self._submit_and_wait_request(commands, await call.command_meta())
+            response = await retry(
+                lambda: stub.SubmitAndWaitForTransaction(request, **call.grpc_kwargs),
+                timeout=call.timeout,
+            )
+            return await self._codec.decode_created_event(
+                response.transaction.events[0].created, token=token
+            )
 
     async def exercise(
         self,
@@ -262,6 +307,9 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        application_name: Optional[str] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ExerciseResponse:
         """
@@ -283,6 +331,16 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param application_name:
+            An optional application name to use instead of the one configured at connection
+            creation time. Cannot be specified with ``user_id``.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``. Cannot be specified with
+            ``application_name``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
         :param timeout:
             The length of time to wait before giving up on this submission. If unspecified, the
             configuration value of ``retry_timeout`` is used.
@@ -290,28 +348,33 @@ class Connection(aio.Connection):
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.CommandServiceStub(self.channel)
-
-        meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
-        )
-        commands = [
-            lapipb.Command(
-                exercise=await self._codec.encode_exercise_command(
-                    contract_id, choice_name, argument
+        with self._call(
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            application_name=application_name,
+            user_id=user_id,
+            token=token,
+            timeout=timeout,
+        ) as call:
+            commands = [
+                lapipb.Command(
+                    exercise=await self._codec.encode_exercise_command(
+                        contract_id, choice_name, argument, token=call.token
+                    )
                 )
-            )
-        ]
-        request = self._submit_and_wait_request(commands, meta)
+            ]
 
-        response = await retry(
-            lambda: stub.SubmitAndWaitForTransactionTree(
-                request, timeout=retry_timeout.total_seconds()
-            ),
-            timeout=retry_timeout,
-        )
-        return await self._codec.decode_exercise_response(response.transaction)
+            stub = call.grpc_stub(lapipb.CommandServiceStub)
+            request = self._submit_and_wait_request(commands, await call.command_meta())
+            response = await retry(
+                lambda: stub.SubmitAndWaitForTransactionTree(request, **call.grpc_kwargs),
+                timeout=call.timeout,
+            )
+            return await self._codec.decode_exercise_response(
+                response.transaction, token=call.token
+            )
 
     async def create_and_exercise(
         self,
@@ -325,6 +388,9 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        application_name: Optional[str] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ExerciseResponse:
         """
@@ -349,6 +415,16 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param application_name:
+            An optional application name to use instead of the one configured at connection
+            creation time. Cannot be specified with ``user_id``.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``. Cannot be specified with
+            ``application_name``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
         :param timeout:
             The length of time to wait before giving up on this submission. If unspecified, the
             configuration value of ``retry_timeout`` is used.
@@ -356,28 +432,33 @@ class Connection(aio.Connection):
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.CommandServiceStub(self.channel)
-
-        meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
-        )
-        commands = [
-            lapipb.Command(
-                createAndExercise=await self._codec.encode_create_and_exercise_command(
-                    template_id, payload, choice_name, argument
+        with self._call(
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            application_name=application_name,
+            user_id=user_id,
+            token=token,
+            timeout=timeout,
+        ) as call:
+            commands = [
+                lapipb.Command(
+                    createAndExercise=await self._codec.encode_create_and_exercise_command(
+                        template_id, payload, choice_name, argument, token=call.token
+                    )
                 )
-            )
-        ]
-        request = self._submit_and_wait_request(commands, meta)
+            ]
 
-        response = await retry(
-            lambda: stub.SubmitAndWaitForTransactionTree(
-                request, timeout=retry_timeout.total_seconds()
-            ),
-            timeout=retry_timeout,
-        )
-        return await self._codec.decode_exercise_response(response.transaction)
+            stub = call.grpc_stub(lapipb.CommandServiceStub)
+            request = self._submit_and_wait_request(commands, await call.command_meta())
+            response = await retry(
+                lambda: stub.SubmitAndWaitForTransactionTree(request, **call.grpc_kwargs),
+                timeout=call.timeout,
+            )
+            return await self._codec.decode_exercise_response(
+                response.transaction, token=call.token
+            )
 
     async def exercise_by_key(
         self,
@@ -391,6 +472,9 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        application_name: Optional[str] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ExerciseResponse:
         """
@@ -414,6 +498,16 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param application_name:
+            An optional application name to use instead of the one configured at connection
+            creation time. Cannot be specified with ``user_id``.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``. Cannot be specified with
+            ``application_name``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
         :param timeout:
             The length of time to wait before giving up on this submission. If unspecified, the
             configuration value of ``retry_timeout`` is used.
@@ -421,25 +515,31 @@ class Connection(aio.Connection):
             The return value of the choice, together with a list of events that occurred as a result
             of exercising the choice.
         """
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.CommandServiceStub(self.channel)
-
-        meta = self._command_meta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
-        )
-        commands = [
-            lapipb.Command(
-                exerciseByKey=await self._codec.encode_exercise_by_key_command(
-                    template_id, choice_name, key, argument
+        with self._call(
+            workflow_id=workflow_id,
+            command_id=command_id,
+            read_as=read_as,
+            act_as=act_as,
+            application_name=application_name,
+            user_id=user_id,
+            token=token,
+            timeout=timeout,
+        ) as call:
+            commands = [
+                lapipb.Command(
+                    exerciseByKey=await self._codec.encode_exercise_by_key_command(
+                        template_id, choice_name, key, argument, token=call.token
+                    )
                 )
-            )
-        ]
-        request = self._submit_and_wait_request(commands, meta)
-        response = await stub.SubmitAndWaitForTransactionTree(
-            request, timeout=retry_timeout.total_seconds()
-        )
+            ]
 
-        return await self._codec.decode_exercise_response(response.transaction)
+            stub = call.grpc_stub(lapipb.CommandServiceStub)
+            request = self._submit_and_wait_request(commands, await call.command_meta())
+            response = await stub.SubmitAndWaitForTransactionTree(request, **call.grpc_kwargs)
+
+            return await self._codec.decode_exercise_response(
+                response.transaction, token=call.token
+            )
 
     async def archive(
         self,
@@ -450,6 +550,9 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        application_name: Optional[str] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ArchiveEvent:
         """
@@ -467,12 +570,21 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
-        :return:
-            The return value of the choice, together with a list of events that occurred as a result
-            of exercising the choice.
+        :param application_name:
+            An optional application name to use instead of the one configured at connection
+            creation time. Cannot be specified with ``user_id``.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``. Cannot be specified with
+            ``application_name``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
         :param timeout:
             The length of time to wait before giving up on this submission. If unspecified, the
             configuration value of ``retry_timeout`` is used.
+        :return:
+            The :class:`ArchiveEvent` that indicates this contract was archived.
         """
         await self.exercise(
             contract_id,
@@ -481,6 +593,9 @@ class Connection(aio.Connection):
             command_id=command_id,
             read_as=read_as,
             act_as=act_as,
+            application_name=application_name,
+            user_id=user_id,
+            token=token,
             timeout=timeout,
         )
         return ArchiveEvent(contract_id)
@@ -495,6 +610,9 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        application_name: Optional[str] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> ArchiveEvent:
         """
@@ -515,12 +633,22 @@ class Connection(aio.Connection):
         :param act_as:
             An optional set of act-as parties to use to submit this command. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
-        :return:
-            The return value of the choice, together with a list of events that occurred as a result
-            of exercising the choice.
+        :param application_name:
+            An optional application name to use instead of the one configured at connection
+            creation time. Cannot be specified with ``user_id``.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``. Cannot be specified with
+            ``application_name``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
         :param timeout:
             The length of time to wait before giving up on this submission. If unspecified, the
             configuration value of ``retry_timeout`` is used.
+        :return:
+            The return value of the choice, together with a list of events that occurred as a result
+            of exercising the choice.
         """
         response = await self.exercise_by_key(
             template_id,
@@ -530,17 +658,24 @@ class Connection(aio.Connection):
             command_id=command_id,
             read_as=read_as,
             act_as=act_as,
+            application_name=application_name,
+            user_id=user_id,
+            token=token,
             timeout=timeout,
         )
         return next(iter(event for event in response.events if isinstance(event, ArchiveEvent)))
 
     def _submit_and_wait_request(
-        self, commands: Collection[lapipb.Command], meta: CommandMeta, /
+        self,
+        commands: Collection[lapipb.Command],
+        meta: CommandMeta,
+        /,
+        ledger_id: Optional[str] = None,
     ) -> lapipb.SubmitAndWaitRequest:
         return lapipb.SubmitAndWaitRequest(
             commands=lapipb.Commands(
-                ledger_id=self._config.access.ledger_id,
-                application_id=self._config.access.application_name,
+                ledger_id=ledger_id,
+                application_id=meta.application_name,
                 command_id=meta.command_id,
                 workflow_id=meta.workflow_id,
                 commands=commands,
@@ -549,39 +684,34 @@ class Connection(aio.Connection):
             )
         )
 
-    def _command_meta(
-        self,
-        *,
-        workflow_id: Optional[str] = None,
-        command_id: Optional[str] = None,
-        read_as: Optional[Parties] = None,
-        act_as: Optional[Parties] = None,
-    ):
-        read_as = self._read_as(read_as)
-        if act_as is None:
-            act_as = self._config.access.act_as
-
-        return CommandMeta(
-            workflow_id=workflow_id, command_id=command_id, read_as=read_as, act_as=act_as
-        )
-
     # endregion
 
     # region Read API
 
-    async def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = None) -> str:
+    async def get_ledger_end(
+        self,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
+    ) -> str:
         """
         Return the offset at the end of the ledger.
-        """
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.TransactionServiceStub(self.channel)
 
-        request = lapipb.GetLedgerEndRequest(ledger_id=self._config.access.ledger_id)
-        response = await retry(
-            lambda: stub.GetLedgerEnd(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return response.offset.absolute
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
+        :param timeout:
+            The length of time to wait before giving up on this submission. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
+        """
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapipb.TransactionServiceStub)
+            request = lapipb.GetLedgerEndRequest(ledger_id=call.ledger_id)
+            response = await retry(
+                lambda: stub.GetLedgerEnd(request, **call.grpc_kwargs),
+                timeout=call.timeout,
+            )
+            return response.offset.absolute
 
     def query(
         self,
@@ -592,6 +722,8 @@ class Connection(aio.Connection):
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
         read_as: Optional[Parties] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> QueryStream:
         """
@@ -615,15 +747,24 @@ class Connection(aio.Connection):
         :param read_as:
             An optional set of read-as parties to use to submit this query. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
+        :param timeout:
+            The length of time to wait before giving up on a query. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         """
-        offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
-        return QueryStream(
-            self,
-            parse_query({template_or_interface_id: query}, server_side_filters=False),
-            offset,
-            self._read_as(read_as),
-            self._retry_timeout(timeout),
-        )
+        with self._call(read_as=read_as, user_id=user_id, token=token, timeout=timeout) as call:
+            offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
+            return QueryStream(
+                self,
+                parse_query({template_or_interface_id: query}, server_side_filters=False),
+                offset,
+                call,
+            )
 
     def query_many(
         self,
@@ -631,6 +772,8 @@ class Connection(aio.Connection):
         begin_offset: Optional[str] = None,
         end_offset: Optional[str] = None,
         read_as: Optional[Parties] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> QueryStream:
         """
@@ -652,15 +795,25 @@ class Connection(aio.Connection):
         :param read_as:
             An optional set of read-as parties to use to submit this query. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
+        :param timeout:
+            The length of time to wait before giving up on a query. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         """
-        offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
-        return QueryStream(
-            self,
-            parse_query(*queries, server_side_filters=False),
-            offset,
-            self._read_as(read_as),
-            self._retry_timeout(timeout),
-        )
+        with self._call(read_as=read_as, user_id=user_id, token=token, timeout=timeout) as call:
+            offset = LedgerOffsetRange(begin_offset, end_offset if end_offset is not None else END)
+
+            return QueryStream(
+                self,
+                parse_query(*queries, server_side_filters=False),
+                offset,
+                call,
+            )
 
     def stream(
         self,
@@ -670,6 +823,8 @@ class Connection(aio.Connection):
         *,
         offset: Optional[str] = None,
         read_as: Optional[Parties] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> QueryStream:
         """
@@ -693,20 +848,31 @@ class Connection(aio.Connection):
         :param read_as:
             An optional set of read-as parties to use to submit this query. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
+        :param timeout:
+            The length of time to wait before giving up on a query. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         """
-        return QueryStream(
-            self,
-            parse_query({template_or_interface_id: query}, server_side_filters=False),
-            from_offset_until_forever(offset),
-            self._read_as(read_as),
-            self._retry_timeout(timeout),
-        )
+        with self._call(read_as=read_as, user_id=user_id, token=token, timeout=timeout) as call:
+            return QueryStream(
+                self,
+                parse_query({template_or_interface_id: query}, server_side_filters=False),
+                from_offset_until_forever(offset),
+                call,
+            )
 
     def stream_many(
         self,
         *queries: Queries,
         offset: Optional[str] = None,
         read_as: Optional[Parties] = None,
+        user_id: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> QueryStream:
         """
@@ -728,91 +894,105 @@ class Connection(aio.Connection):
         :param read_as:
             An optional set of read-as parties to use to submit this query. Note that for a
             ledger with authorization, these parties must be a subset of the parties in the token.
+        :param user_id:
+            An optional user ID to use instead of the one configured at connection creation time
+            or from the ``sub`` claim of the ``token``.
+        :param token:
+            An optional token string, or function/async function that returns a token. If provided,
+            this overrides the token passed in at connection construction time.
+        :param timeout:
+            The length of time to wait before giving up on a query. If unspecified, the
+            configuration value of ``retry_timeout`` is used.
         """
-        return QueryStream(
-            self,
-            parse_query(*queries, server_side_filters=False),
-            from_offset_until_forever(offset),
-            self._read_as(read_as),
-            self._retry_timeout(timeout),
-        )
-
-    def _read_as(self, read_as: Optional[Parties] = None) -> Collection[Party]:
-        if read_as is None:
-            return self.config.access.read_as
-        else:
-            return to_parties(read_as)
+        with self._call(read_as=read_as, user_id=user_id, token=token, timeout=timeout) as call:
+            return QueryStream(
+                self,
+                parse_query(*queries, server_side_filters=False),
+                from_offset_until_forever(offset),
+                call,
+            )
 
     # endregion
 
-    async def get_version(self, *, timeout: Optional[TimeDeltaLike] = None) -> Version:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.VersionServiceStub(self.channel)
-        request = lapipb.GetLedgerApiVersionRequest(ledger_id=self._config.access.ledger_id)
+    async def get_version(
+        self,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
+    ) -> Version:
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapipb.VersionServiceStub)
+            request = lapipb.GetLedgerApiVersionRequest(ledger_id=call.ledger_id)
 
-        response = await retry(
-            lambda: stub.GetLedgerApiVersion(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return Codec.decode_version(response)
+            response = await retry(
+                lambda: stub.GetLedgerApiVersion(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return Codec.decode_version(response)
 
     # region User Management calls
 
     async def get_user(
-        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = None
+        self,
+        user_id: Optional[str] = None,
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> User:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapiadminpb.UserManagementServiceStub(self.channel)
-        request = lapiadminpb.GetUserRequest(user_id=user_id)
-
-        response = await retry(
-            lambda: stub.GetUser(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return Codec.decode_user(response.user)
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.UserManagementServiceStub)
+            request = lapiadminpb.GetUserRequest(user_id=user_id)
+            response = await retry(
+                lambda: stub.GetUser(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return Codec.decode_user(response.user)
 
     async def create_user(
         self,
         user: User,
         rights: Optional[Sequence[Right]] = None,
         *,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> User:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapiadminpb.UserManagementServiceStub(self.channel)
-        request = lapiadminpb.CreateUserRequest(user=Codec.encode_user(user))
-        if rights is not None:
-            request.rights.extend(Codec.encode_right(right) for right in rights)
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.UserManagementServiceStub)
+            request = lapiadminpb.CreateUserRequest(user=Codec.encode_user(user))
+            if rights is not None:
+                request.rights.extend(Codec.encode_right(right) for right in rights)
+            response = await retry(
+                lambda: stub.CreateUser(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return Codec.decode_user(response.user)
 
-        response = await retry(
-            lambda: stub.CreateUser(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return Codec.decode_user(response.user)
-
-    async def list_users(self, *, timeout: Optional[TimeDeltaLike] = None) -> Sequence[User]:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapiadminpb.UserManagementServiceStub(self.channel)
-        request = lapiadminpb.ListUsersRequest()
-
-        response = await retry(
-            lambda: stub.ListUsers(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return [Codec.decode_user(user) for user in response.users]
+    async def list_users(
+        self,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
+    ) -> Sequence[User]:
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.UserManagementServiceStub)
+            request = lapiadminpb.ListUsersRequest()
+            response = await retry(
+                lambda: stub.ListUsers(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return [Codec.decode_user(user) for user in response.users]
 
     async def list_user_rights(
-        self, user_id: Optional[str] = None, *, timeout: Optional[TimeDeltaLike] = None
+        self,
+        user_id: Optional[str] = None,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> Sequence[Right]:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapiadminpb.UserManagementServiceStub(self.channel)
-        request = lapiadminpb.ListUserRightsRequest(user_id=user_id)
-
-        response = await retry(
-            lambda: stub.ListUserRights(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return [Codec.decode_right(user) for user in response.rights]
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.UserManagementServiceStub)
+            request = lapiadminpb.ListUserRightsRequest(user_id=user_id)
+            response = await retry(
+                lambda: stub.ListUserRights(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return [Codec.decode_right(user) for user in response.rights]
 
     # endregion
 
@@ -823,80 +1003,85 @@ class Connection(aio.Connection):
         *,
         identifier_hint: Optional[str] = None,
         display_name: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> PartyInfo:
         """
         Allocate a new party.
         """
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapiadminpb.PartyManagementServiceStub(self.channel)
-        request = lapiadminpb.AllocatePartyRequest(
-            party_id_hint=Party(identifier_hint) if identifier_hint else None,
-            display_name=display_name,
-        )
-
-        response = await retry(
-            lambda: stub.AllocateParty(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return Codec.decode_party_info(response.party_details)
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.PartyManagementServiceStub)
+            request = lapiadminpb.AllocatePartyRequest(
+                party_id_hint=Party(identifier_hint) if identifier_hint else None,
+                display_name=display_name,
+            )
+            response = await retry(
+                lambda: stub.AllocateParty(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return Codec.decode_party_info(response.party_details)
 
     async def list_known_parties(
-        self, *, timeout: Optional[TimeDeltaLike] = None
+        self,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> Sequence[PartyInfo]:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapiadminpb.PartyManagementServiceStub(self.channel)
-        request = lapiadminpb.ListKnownPartiesRequest()
-
-        response = await retry(
-            lambda: stub.ListKnownParties(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return [Codec.decode_party_info(pd) for pd in response.party_details]
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.PartyManagementServiceStub)
+            request = lapiadminpb.ListKnownPartiesRequest()
+            response = await retry(
+                lambda: stub.ListKnownParties(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return [Codec.decode_party_info(pd) for pd in response.party_details]
 
     # endregion
 
     # region Package Management calls
 
     async def get_package(
-        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = None
+        self,
+        package_id: PackageRef,
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> bytes:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.PackageServiceStub(self.channel)
-        request = lapipb.GetPackageRequest(
-            ledger_id=self._config.access.ledger_id, package_id=package_id
-        )
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapipb.PackageServiceStub)
+            request = lapipb.GetPackageRequest(ledger_id=call.ledger_id, package_id=package_id)
 
-        response = await retry(
-            lambda: stub.GetPackage(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return response.archive_payload
+            response = await retry(
+                lambda: stub.GetPackage(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return response.archive_payload
 
     async def list_package_ids(
-        self, *, timeout: Optional[TimeDeltaLike] = None
+        self,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> AbstractSet[PackageRef]:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapipb.PackageServiceStub(self.channel)
-        request = lapipb.ListPackagesRequest(ledger_id=self._config.access.ledger_id)
-
-        response = await retry(
-            lambda: stub.ListPackages(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return frozenset({PackageRef(pkg_id) for pkg_id in response.package_ids})
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapipb.PackageServiceStub)
+            request = lapipb.ListPackagesRequest(ledger_id=call.ledger_id)
+            response = await retry(
+                lambda: stub.ListPackages(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return frozenset({PackageRef(pkg_id) for pkg_id in response.package_ids})
 
     async def upload_package(
-        self, contents: bytes, *, timeout: Optional[TimeDeltaLike] = None
+        self,
+        contents: bytes,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
     ) -> None:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapiadminpb.PackageManagementServiceStub(self.channel)
-        request = lapiadminpb.UploadDarFileRequest(dar_file=contents)
-
-        await retry(
-            lambda: stub.UploadDarFile(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.PackageManagementServiceStub)
+            request = lapiadminpb.UploadDarFileRequest(dar_file=contents)
+            await retry(
+                lambda: stub.UploadDarFile(request, **call.grpc_kwargs), timeout=call.timeout
+            )
 
     # endregion
 
@@ -908,26 +1093,26 @@ class Connection(aio.Connection):
         to: Optional[datetime] = None,
         application_id: Optional[str] = None,
         *,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> MeteringReport:
-        retry_timeout = self._retry_timeout(timeout)
-        stub = lapiadminpb.MeteringReportServiceStub(self.channel)
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.MeteringReportServiceStub)
 
-        # This slightly awkward construction is due to Protobuf's Python type not escaping field
-        # names that happen to match keywords. Unfortunately mypy can't follow what is going on
-        # when we do this, so we must be careful!
-        kwargs = {"from": datetime_to_timestamp(from_)}  # type: dict[str, Any]
-        if to is not None:
-            kwargs["to"] = datetime_to_timestamp(to)
-        if application_id is not None:
-            kwargs["application_id"] = application_id
-        request = lapiadminpb.GetMeteringReportRequest(**kwargs)  # type: ignore
+            # This slightly awkward construction is due to Protobuf's Python type not escaping field
+            # names that happen to match keywords. Unfortunately mypy can't follow what is going on
+            # when we do this, so we must be careful!
+            kwargs = {"from": datetime_to_timestamp(from_)}  # type: dict[str, Any]
+            if to is not None:
+                kwargs["to"] = datetime_to_timestamp(to)
+            if application_id is not None:
+                kwargs["application_id"] = application_id
+            request = lapiadminpb.GetMeteringReportRequest(**kwargs)  # type: ignore
 
-        response = await retry(
-            lambda: stub.GetMeteringReport(request, timeout=retry_timeout.total_seconds()),
-            timeout=retry_timeout,
-        )
-        return Codec.decode_get_metering_report_response(response)
+            response = await retry(
+                lambda: stub.GetMeteringReport(request, **call.grpc_kwargs), timeout=call.timeout
+            )
+            return Codec.decode_get_metering_report_response(response)
 
     # endregion
 
@@ -938,14 +1123,12 @@ class QueryStream(aio.QueryStreamBase):
         conn: Connection,
         filters: Optional[Mapping[TypeConName, Filter]],
         offset_range: LedgerOffsetRange,
-        read_as: Collection[Party],
-        timeout: timedelta,
+        call: CallContext,
     ):
         self.conn = conn
         self._filters = filters
         self._offset_range = offset_range
-        self._read_as = read_as
-        self._timeout = timeout
+        self._call = call
         self._response_stream = None  # type: Optional[UnaryStreamCall]
         self._closed = False
 
@@ -958,7 +1141,11 @@ class QueryStream(aio.QueryStreamBase):
         # errors, because we're the one triggering the cancellation
         self._closed = True
         if self._response_stream is not None:
-            self._response_stream.cancel()
+            try:
+                self._response_stream.cancel()
+            except UsageError:
+                # doesn't matter if we're closed when...we're trying to close
+                pass
             self._response_stream = None
 
     async def items(self):
@@ -982,8 +1169,11 @@ class QueryStream(aio.QueryStreamBase):
         """
         log = self.conn.config.logger
         async with _translate_exceptions(self.conn), self, _allow_cancel(lambda: self._closed):
-            filters = await self.conn.codec.encode_filters(self._filters)
-            filters_by_party = {party: filters for party in self._read_as}
+            # the token may change over time, but fix the "read_as" parties at the start,
+            # even if those rights are changed over time
+            read_as = await self._call.get_read_as()
+            filters = await self.conn.codec.encode_filters(self._filters, token=self._call.token)
+            filters_by_party = {party: filters for party in read_as}
             tx_filter_pb = lapipb.TransactionFilter(filters_by_party=filters_by_party)
 
             offset = self._offset_range.begin
@@ -1031,12 +1221,12 @@ class QueryStream(aio.QueryStreamBase):
     async def _acs_events(
         self, filter_pb: lapipb.TransactionFilter
     ) -> AsyncIterable[Union[CreateEvent, Boundary]]:
-        stub = lapipb.ActiveContractsServiceStub(self.conn.channel)
-
-        request = lapipb.GetActiveContractsRequest(
-            ledger_id=self.conn.config.access.ledger_id, filter=filter_pb
+        stub = self._call.grpc_stub(lapipb.ActiveContractsServiceStub)
+        request = lapipb.GetActiveContractsRequest(ledger_id=self._call.ledger_id, filter=filter_pb)
+        self._response_stream = response_stream = stub.GetActiveContracts(
+            request,
+            **self._call.grpc_kwargs,
         )
-        self._response_stream = response_stream = stub.GetActiveContracts(request)
 
         offset = None
 
@@ -1049,7 +1239,7 @@ class QueryStream(aio.QueryStreamBase):
         i = response_stream.__aiter__()
         while True:
             try:
-                response = await wait_for(i.__anext__(), timeout=self._timeout.total_seconds())
+                response = await wait_for(i.__anext__(), timeout=self._call.timeout_seconds)
             except StopAsyncIteration:
                 break
 
@@ -1059,7 +1249,7 @@ class QueryStream(aio.QueryStreamBase):
                 len(response.active_contracts),
             )
             for event in response.active_contracts:
-                c_evt = await self.conn.codec.decode_created_event(event)
+                c_evt = await self.conn.codec.decode_created_event(event, token=self._call.token)
                 if self._is_match(c_evt):
                     yield c_evt
             # for ActiveContractSetResponse messages, only the last offset is actually relevant
@@ -1073,24 +1263,27 @@ class QueryStream(aio.QueryStreamBase):
         begin_offset: Optional[str],
         end_offset: Union[None, str, End],
     ) -> AsyncIterable[Union[CreateEvent, ArchiveEvent, Boundary]]:
-        stub = lapipb.TransactionServiceStub(self.conn.channel)
+        stub = self._call.grpc_stub(lapipb.TransactionServiceStub)
 
         last_offset = begin_offset
 
         while True:
             request = lapipb.GetTransactionsRequest(
-                ledger_id=self.conn.config.access.ledger_id,
+                ledger_id=self._call.ledger_id,
                 filter=filter_pb,
                 begin=self.conn.codec.encode_begin_offset(last_offset),
                 end=self.conn.codec.encode_end_offset(end_offset),
             )
 
-            self._response_stream = response_stream = stub.GetTransactions(request)
+            self._response_stream = response_stream = stub.GetTransactions(
+                request,
+                **self._call.grpc_kwargs,
+            )
             i = response_stream.__aiter__()
 
             while True:
                 try:
-                    response = await wait_for(i.__anext__(), timeout=self._timeout.total_seconds())
+                    response = await wait_for(i.__anext__(), timeout=self._call.timeout_seconds)
                 except StopAsyncIteration:
                     # a TransactionStream stopped with an EOF sent from the server. This means
                     # our work in reading this stream is done too.
@@ -1117,7 +1310,9 @@ class QueryStream(aio.QueryStreamBase):
                     # because we can't reliably distinguish between a condition where transactions
                     # aren't streaming because of no activity, or because of an unresponsive server.
                     # If this operation fails, let the exception bubble up the stack.
-                    await self.conn.get_ledger_end(timeout=self._timeout)
+                    await self.conn.get_ledger_end(
+                        token=self._call.token, timeout=self._call.timeout
+                    )
 
                     # abort the loop in which we read events from a stream, and start over again
                     # trying to establish a stream connection
@@ -1127,7 +1322,9 @@ class QueryStream(aio.QueryStreamBase):
                     for event in tx.events:
                         event_type = event.WhichOneof("event")
                         if event_type == "created":
-                            c_evt = await self.conn.codec.decode_created_event(event.created)
+                            c_evt = await self.conn.codec.decode_created_event(
+                                event.created, token=self._call.token
+                            )
                             if self._is_match(c_evt):
                                 yield c_evt
                         elif event_type == "archived":

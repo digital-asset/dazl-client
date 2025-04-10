@@ -16,6 +16,7 @@ from ...damlast.lookup import STAR, MultiPackageLookup, PackageExceptionTracker
 from ...damlast.parse import parse_archive
 from ...damlast.pkgfile import Dar
 from ...prim import DazlError
+from ..auth import TokenOrTokenProvider
 
 __all__ = ["PackageLoader", "DEFAULT_TIMEOUT"]
 
@@ -53,7 +54,9 @@ class PackageLoader:
     def set_connection(self, conn: Optional[PackageService]):
         self._conn = conn
 
-    async def do_with_retry(self, fn: Callable[[], T]) -> T:
+    async def do_with_retry(
+        self, fn: Callable[[], T], *, token: Optional[TokenOrTokenProvider] = None
+    ) -> T:
         """
         Perform a synchronous action that assumes the existence of one or more packages. In the
         event the function raises :class:`PackageNotFoundError` or a wildcarded
@@ -62,14 +65,18 @@ class PackageLoader:
         If, after a retry, an expected package or type could not be found, the exception is
         re-raised to the caller.
 
-        :param fn: A function to invoke.
-        :return: The result of that function.
+        :param fn:
+            A function to invoke.
+        :param token:
+            An optional token to use in place of a connection-level token when fetching packages.
+        :return:
+            The result of that function.
         """
         guard = PackageExceptionTracker()
         while True:
             pkg_ref = guard.pop_package()
             while pkg_ref is not None:
-                await self.load(pkg_ref)
+                await self.load(pkg_ref, token=token)
                 pkg_ref = guard.pop_package()
 
             with guard:
@@ -83,16 +90,22 @@ class PackageLoader:
             One or more DARs to load into a local package cache.
         """
 
-    async def load(self, ref: PackageRef) -> Optional[Package]:
+    async def load(
+        self, ref: PackageRef, *, token: Optional[TokenOrTokenProvider] = None
+    ) -> Optional[Package]:
         """
         Load a package ID from the remote server. If the package has additional dependencies, they
         are also loaded.
 
-        :param ref: One or more :class:`PackageRef`s.
-        :raises: PackageNotFoundError if the package could not be resolved
+        :param ref:
+            One or more :class:`PackageRef`s.
+        :param token:
+            An optional token to use in place of a connection-level token when fetching packages.
+        :raises:
+            PackageNotFoundError if the package could not be resolved
         """
         if ref == STAR:
-            await self.load_all()
+            await self.load_all(token=token)
             return None
 
         # If the package has already been loaded, then skip all the expensive I/O stuff
@@ -105,7 +118,7 @@ class PackageLoader:
         # do not try to schedule a new request
         fut = self._futures.get(ref)
         if fut is None:
-            fut = ensure_future(self._load(ref))
+            fut = ensure_future(self._load(ref, token=token))
             self._futures[ref] = fut
         package = await fut
 
@@ -113,7 +126,9 @@ class PackageLoader:
 
         return package
 
-    async def _load(self, package_id: PackageRef) -> Package:
+    async def _load(
+        self, package_id: PackageRef, *, token: Optional[TokenOrTokenProvider] = None
+    ) -> Package:
         LOG.info("Loading package: %s", package_id)
 
         loop = get_event_loop()
@@ -122,7 +137,8 @@ class PackageLoader:
             raise DazlError("a connection is not configured")
 
         archive_bytes = await wait_for(
-            self.__fetch_package_bytes(conn, package_id), timeout=self._timeout.total_seconds()
+            self.__fetch_package_bytes(conn, package_id, token=token),
+            timeout=self._timeout.total_seconds(),
         )
 
         LOG.info("Loaded for package: %s, %d bytes", package_id, len(archive_bytes))
@@ -134,13 +150,18 @@ class PackageLoader:
         return archive.package
 
     @staticmethod
-    async def __fetch_package_bytes(conn: PackageService, package_id: PackageRef) -> bytes:
+    async def __fetch_package_bytes(
+        conn: PackageService,
+        package_id: PackageRef,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+    ) -> bytes:
         sleep_interval = 1
 
         while True:
             # noinspection PyBroadException
             try:
-                return await conn.get_package(package_id)
+                return await conn.get_package(package_id, token=token)
             except Exception:
                 # We tried fetching the package but got an error. Retry, backing off to waiting as
                 # much as 30 seconds between each attempt.
@@ -148,7 +169,7 @@ class PackageLoader:
                 sleep_interval = min(sleep_interval * 2, 30)
                 LOG.exception("Failed to fetch package; this will be retried.")
 
-    async def load_all(self) -> None:
+    async def load_all(self, *, token: Optional[TokenOrTokenProvider] = None) -> None:
         """
         Load all packages from the remote server.
         """
@@ -156,9 +177,9 @@ class PackageLoader:
         if conn is None:
             raise DazlError("a connection is not configured")
 
-        package_ids = set(await conn.list_package_ids())
+        package_ids = set(await conn.list_package_ids(token=token))
         package_ids -= self._package_lookup.package_ids()
         if package_ids:
-            await gather(*(self.load(package_id) for package_id in package_ids))
+            await gather(*(self.load(package_id, token=token) for package_id in package_ids))
 
         return None
