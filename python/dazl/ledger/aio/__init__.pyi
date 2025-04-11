@@ -21,11 +21,6 @@ from typing import (
     runtime_checkable,
 )
 
-from .. import (
-    Connection as _Connection,
-    PackageService as _PackageService,
-    QueryStream as _QueryStream,
-)
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...prim import ContractData, ContractId, Parties, TimeDeltaLike
 from ...query import Queries, Query
@@ -42,6 +37,7 @@ from ..api_types import (
     User,
     Version,
 )
+from ..config import Config
 from .pkgloader import PackageLoader
 
 __all__ = ["PackageService", "Connection", "QueryStream", "QueryStreamBase", "PackageLoader"]
@@ -83,16 +79,24 @@ class ABoundaryDecorator(Protocol):
     @overload
     def __call__(self, fn: ABoundaryFn, /) -> ABoundaryFn: ...
 
-class PackageService(_PackageService, Protocol):
+class PackageService(Protocol):
     async def get_package(
-        self, package_id: PackageRef, /, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        package_id: PackageRef,
+        /,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> bytes: ...
     async def list_package_ids(
-        self, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> AbstractSet[PackageRef]: ...
 
 @runtime_checkable
-class Connection(_Connection, PackageService, Protocol):
+class Connection(PackageService, Protocol):
+    @property
+    def config(self) -> Config: ...
     async def __aenter__(self: ConnSelf) -> ConnSelf: ...
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None: ...
     async def open(self) -> None: ...
@@ -184,7 +188,11 @@ class Connection(_Connection, PackageService, Protocol):
         act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ArchiveEvent: ...
-    async def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = ...) -> str: ...
+    async def get_ledger_end(
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
+    ) -> str: ...
     def query(
         self,
         template_or_interface_id: Union[str, TypeConName] = "*",
@@ -218,7 +226,11 @@ class Connection(_Connection, PackageService, Protocol):
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     async def get_user(
-        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        user_id: Optional[str] = None,
+        /,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> User: ...
     async def create_user(
         self,
@@ -227,9 +239,17 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> User: ...
-    async def list_users(self, *, timeout: Optional[TimeDeltaLike] = ...) -> Sequence[User]: ...
+    async def list_users(
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
+    ) -> Sequence[User]: ...
     async def list_user_rights(
-        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        user_id: Optional[str] = None,
+        /,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> Sequence[Right]: ...
     async def allocate_party(
         self,
@@ -239,11 +259,21 @@ class Connection(_Connection, PackageService, Protocol):
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> PartyInfo: ...
     async def list_known_parties(
-        self, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> Sequence[PartyInfo]: ...
-    async def get_version(self, *, timeout: Optional[TimeDeltaLike] = ...) -> Version: ...
+    async def get_version(
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
+    ) -> Version: ...
     async def upload_package(
-        self, contents: bytes, /, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        contents: bytes,
+        /,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> None: ...
     async def get_metering_report(
         self,
@@ -253,12 +283,14 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> MeteringReport: ...
+    @property
+    def is_closed(self) -> bool: ...
 
 # PyCharm doesn't know what to make of these overloads with respect to the parent protocol,
 # but mypy understands that these type signatures do not conflict with the parent base class
 # noinspection PyProtocol,PyMethodOverriding
 @runtime_checkable
-class QueryStream(_QueryStream, Protocol):
+class QueryStream(Protocol):
     @overload
     def on_create(self) -> ACreateDecorator: ...
     @overload

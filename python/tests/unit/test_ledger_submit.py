@@ -7,6 +7,7 @@ from asyncio import gather
 
 import dazl
 from dazl.damlast.lookup import MultiPackageLookup
+from dazl.ledger.aio import PackageLoader
 from dazl.testing import SandboxLauncher
 import pytest
 from tests.unit import dars
@@ -20,8 +21,10 @@ async def test_command_submission_with_stdlib_values(sandbox: SandboxLauncher) -
         )
 
         # remember the appropriate template ID, because we'll need it soon
-        tmpl_id = await conn.codec._loader.do_with_retry(
-            lambda: conn.codec.lookup.template_name("KitchenSink1.Retailer:Retailer")
+        lookup = MultiPackageLookup()
+        loader = PackageLoader(lookup, conn)
+        tmpl_id = await loader.do_with_retry(
+            lambda: lookup.template_name("KitchenSink1.Retailer:Retailer")
         )
 
     # override lookup intentionally to make sure this test is not polluted with cached state from other tests
