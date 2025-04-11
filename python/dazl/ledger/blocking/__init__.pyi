@@ -36,9 +36,8 @@ from ..api_types import (
     User,
     Version,
 )
-from .pkgloader import PackageLoader
 
-__all__ = ["PackageService", "Connection", "QueryStream", "PackageLoader"]
+__all__ = ["PackageService", "Connection", "QueryStream"]
 
 Self = TypeVar("Self")
 

@@ -65,7 +65,3 @@ class QueryStream(_QueryStream, Protocol):
 
     def __iter__(self):
         raise NotImplementedError
-
-
-# Imports internal to this package are at the bottom of the file to avoid circular dependencies
-from .pkgloader import PackageLoader  # noqa
