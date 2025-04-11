@@ -151,16 +151,6 @@ class DarFile:
         """
         return DarFileAsyncPackageService(self)
 
-    def blocking_package_service(self) -> DarFileBlockingPackageService:
-        """
-        Return an implementation of :class:`dazl.ledger.blocking.PackageService` that is backed by
-        the contents of this :class:`DarFile`.
-
-        The returned service is thread-safe as long as this :class:`DarFile` is not accessed
-        concurrently by other processes.
-        """
-        return DarFileBlockingPackageService(self)
-
     def _dalf_names(self) -> Generator[PackageRef, None, None]:
         """
         Return a generator over the names of DALF files in this DarFile.
