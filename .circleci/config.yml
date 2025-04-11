@@ -152,13 +152,13 @@ workflows:
       - check-py:
           matrix:
             parameters:
-              python_version: ["3.9", "3.10", "3.11"]
+              python_version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
           requires:
             - nix-setup
       - test-py:
           matrix:
             parameters:
-              python_version: ["3.9", "3.10", "3.11"]
+              python_version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
           requires:
             - nix-setup
       - build:
