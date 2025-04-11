@@ -9,16 +9,12 @@ from dazl.ledger import ActAs, Admin, CreateEvent, User
 from dazl.ledger.config.access import DamlLedgerApiNamespace
 import pytest
 
-from .config import daml_sdk_versions, known_version_2
 from .dars import PostOffice
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("daml_sdk_version", daml_sdk_versions())
-async def test_v1_token_auth_sandbox(daml_sdk_version: str) -> None:
-    async with testing.sandbox(
-        version=daml_sdk_version, use_auth=True, ledger_id="sandbox"
-    ) as sandbox:
+async def test_v1_token_auth_sandbox() -> None:
+    async with testing.sandbox(use_auth=True, ledger_id="sandbox") as sandbox:
         token = sandbox.sign_token({DamlLedgerApiNamespace: {"admin": True, "ledgerId": "sandbox"}})
         async with connect(url=sandbox.url, oauth_token=token) as conn:
             # the result of this call is not particularly interesting;
@@ -28,9 +24,8 @@ async def test_v1_token_auth_sandbox(daml_sdk_version: str) -> None:
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("daml_sdk_version", daml_sdk_versions())
-async def test_v1_token_no_auth_sandbox(daml_sdk_version: str) -> None:
-    async with testing.sandbox(version=daml_sdk_version, ledger_id="sandbox") as sandbox:
+async def test_v1_token_no_auth_sandbox() -> None:
+    async with testing.sandbox(ledger_id="sandbox") as sandbox:
         token = sandbox.sign_token(
             {DamlLedgerApiNamespace: {"admin": True, "ledgerId": "sandbox"}}, allow_insecure=True
         )
@@ -43,9 +38,7 @@ async def test_v1_token_no_auth_sandbox(daml_sdk_version: str) -> None:
 
 @pytest.mark.asyncio
 async def test_v2_token_auth_sandbox() -> None:
-    async with testing.sandbox(
-        version=known_version_2, use_auth=True, ledger_id="sandbox"
-    ) as sandbox:
+    async with testing.sandbox(use_auth=True, ledger_id="sandbox") as sandbox:
         # use an anonymous admin Daml V1 token to bootstrap users, because that's unfortunately
         # the only way
         token = sandbox.sign_token({DamlLedgerApiNamespace: {"admin": True, "ledgerId": "sandbox"}})
@@ -74,7 +67,7 @@ async def test_v2_token_auth_sandbox() -> None:
 
 @pytest.mark.asyncio
 async def test_v2_no_auth_sandbox_cannot_sign_token_by_default() -> None:
-    async with testing.sandbox(version=known_version_2, ledger_id="sandbox") as sandbox:
+    async with testing.sandbox(ledger_id="sandbox") as sandbox:
         # use an anonymous admin Daml V1 token to bootstrap users, because that's unfortunately
         # the only way
         failure_message = None
@@ -92,7 +85,7 @@ async def test_v2_no_auth_sandbox_cannot_sign_token_by_default() -> None:
 
 @pytest.mark.asyncio
 async def test_v2_token_no_auth_sandbox() -> None:
-    async with testing.sandbox(version=known_version_2, ledger_id="sandbox") as sandbox:
+    async with testing.sandbox(ledger_id="sandbox") as sandbox:
         # use an anonymous admin Daml V1 token to bootstrap users, because that's unfortunately
         # the only way
         token = sandbox.sign_token(

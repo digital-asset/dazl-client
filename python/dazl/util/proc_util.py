@@ -79,9 +79,8 @@ def wait_for_process_port(
     ):
         alive = is_port_alive(port)
         if alive:
-            # testing configurations might always include a participant_admin_port, even if it's not used
-            # (for example, a Daml 1.x test); so additionally check for an active participant_admin_port
-            # and only do a status check if that port is open
+            # additionally check for an active participant_admin_port and only do a status check
+            # if that port is open
             if participant_admin_port is not None and is_port_alive(participant_admin_port):
                 logging.debug("Waiting for the participant to report itself as active...")
                 with ExitStack() as stack:

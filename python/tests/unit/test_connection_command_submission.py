@@ -48,8 +48,8 @@ async def test_exercise_by_key(sandbox: SandboxLauncher) -> None:
 
 
 @pytest.mark.asyncio
-async def test_exercise_interface(sandbox_v2: SandboxLauncher) -> None:
-    async with connect_with_new_party(url=sandbox_v2.url, dar=KitchenSink2) as p:
+async def test_exercise_interface(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=KitchenSink2) as p:
         await p.connection.create(
             "KitchenSink2.Warehouse:Warehouse",
             {

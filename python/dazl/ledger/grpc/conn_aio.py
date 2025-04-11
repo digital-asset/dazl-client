@@ -138,16 +138,6 @@ class Connection(aio.Connection):
                     read_as=read_as, act_as=act_as, admin=admin
                 )
 
-        elif not self._config.access.ledger_id:
-            # most calls to Daml 1.x ledgers require a ledger ID; if it wasn't supplied as part of
-            # our token or we were never given a token in the first place, fetch the ledger ID from
-            # the destination
-            stub = lapipb.LedgerIdentityServiceStub(self._channel)
-            response = await stub.GetLedgerIdentity(lapipb.GetLedgerIdentityRequest())
-
-            self._logger.info("Connected to gRPC Ledger API, ledger ID: %s", response.ledger_id)
-            self._config.access.ledger_id = response.ledger_id
-
     async def close(self) -> None:
         """
         Close the underlying channel. Once the channel is closed, future command submissions,
@@ -547,20 +537,12 @@ class Connection(aio.Connection):
     def _submit_and_wait_request(
         self, commands: Collection[lapipb.Command], meta: CommandMeta, /
     ) -> lapipb.SubmitAndWaitRequest:
-        # this is support for versions of Daml Connect prior to 1.9.0
-        act_as = meta.act_as
-        if act_as is not None:
-            act_as_party = act_as[0] if act_as else None
-        else:
-            raise ValueError("current access rights do not include any act-as parties")
-
         return lapipb.SubmitAndWaitRequest(
             commands=lapipb.Commands(
                 ledger_id=self._config.access.ledger_id,
                 application_id=self._config.access.application_name,
                 command_id=meta.command_id,
                 workflow_id=meta.workflow_id,
-                party=act_as_party,
                 commands=commands,
                 act_as=meta.act_as,
                 read_as=meta.read_as,
@@ -574,7 +556,6 @@ class Connection(aio.Connection):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
-        timeout: Optional[TimeDeltaLike] = None,
     ):
         read_as = self._read_as(read_as)
         if act_as is None:

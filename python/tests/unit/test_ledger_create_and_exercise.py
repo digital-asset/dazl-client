@@ -11,8 +11,8 @@ from .dars import PostOffice
 
 
 @pytest.mark.asyncio
-async def test_ledger_create_and_exercise(sandbox_v2: SandboxLauncher) -> None:
-    async with connect(url=sandbox_v2.url, admin=True) as conn:
+async def test_ledger_create_and_exercise(sandbox: SandboxLauncher) -> None:
+    async with connect(url=sandbox.url, admin=True) as conn:
         await conn.upload_package(PostOffice.read_bytes())
 
         party_info = await conn.allocate_party()

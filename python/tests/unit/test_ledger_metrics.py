@@ -7,16 +7,17 @@ from datetime import datetime
 from uuid import uuid4
 
 from dazl import connect
+from dazl.testing import SandboxLauncher
 import pytest
 
 from .dars import Simple
 
 
 @pytest.mark.asyncio
-async def test_ledger_metrics(sandbox_v2) -> None:
+async def test_ledger_metrics(sandbox: SandboxLauncher) -> None:
     app_name = uuid4().hex
 
-    async with connect(url=sandbox_v2.url, admin=True, application_name=app_name) as conn:
+    async with connect(url=sandbox.url, admin=True, application_name=app_name) as conn:
         report = await conn.get_metering_report(datetime.fromtimestamp(0), application_id=app_name)
         assert len(report.applications) == 0
 
