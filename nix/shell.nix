@@ -13,6 +13,7 @@ let
     python310
     python311
     python312
+    python313
     yamlfmt
 
   ] ++ (if ci then [
