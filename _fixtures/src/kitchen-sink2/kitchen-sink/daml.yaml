@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2025, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-sdk-version: 2.9.6
+sdk-version: 2.10.0
 name: kitchen-sink2
 version: 1.0.0
 source: KitchenSink2
@@ -11,4 +11,4 @@ dependencies:
 data-dependencies:
   - ../kitchen-sink-interfaces/.daml/dist/kitchen-sink-interfaces-1.0.0.dar
 build-options:
-  - --target=1.16
+  - --target=1.17

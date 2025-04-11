@@ -167,19 +167,6 @@ class SandboxLauncher:
         # variable be set to a different value
         if self._version is not None:
             env["DAML_SDK_VERSION"] = self._version
-            major_version_str, _, _ = self._version.partition(".")
-            major_version = int(major_version_str)
-        else:
-            # TODO: interrogate the local daml binary to figure out what version is defaulted;
-            #  assume 1 for now
-            major_version = 1
-
-        if self._use_auth or self._use_tls:
-            # We're supposed to launch with auth and/or TLS.
-            # Both of these flags moved around from Daml 1.x to Daml 2.x,
-            # so determine which set of flags to use.
-            if self._version is None:
-                raise RuntimeError("when tls/auth is on, a version must be specified")
 
         with self._lock:
             if self._process is not None:
@@ -206,7 +193,7 @@ class SandboxLauncher:
                 cert_file=self._crt_file,
                 key_file=self._key_file,
             )
-            cmdline = options.daml_cmdline(major_version)
+            cmdline = options.daml2_cmdline()
 
             self.log.info("Launching sandbox: %s", cmdline)
 
@@ -308,34 +295,7 @@ class SandboxOptions:
         object.__setattr__(self, "cert_file", cert_file)
         object.__setattr__(self, "key_file", key_file)
 
-    def daml_cmdline(self, __major_version: int) -> Sequence[str]:
-        if __major_version <= 1:
-            return self._daml1_cmdline()
-        elif __major_version == 2:
-            return self._daml2_cmdline()
-        else:
-            raise ValueError("unknown Daml version")
-
-    def _daml1_cmdline(self) -> Sequence[str]:
-        if self.project_root:
-            cmdline = ["daml", "start"]
-            cmdline.extend(["--start-navigator=no", "--open-browser=no"])
-            cmdline.append(f"--sandbox-port={self.port}")
-        else:
-            cmdline = ["daml", "sandbox", "--port", str(self.port)]
-
-        if self.ledger_id:
-            cmdline.extend(["--ledgerid", self.ledger_id])
-        if self.use_auth:
-            cmdline.extend(["--auth-jwt-rs256-crt", str(self.cert_file)])
-        if self.use_tls:
-            cmdline.extend(
-                ["--crt", str(self.cert_file), "--pem", str(self.key_file), "--client-auth", "none"]
-            )
-
-        return cmdline
-
-    def _daml2_cmdline(self) -> Sequence[str]:
+    def daml2_cmdline(self) -> Sequence[str]:
         if self.ledger_id and (self.ledger_id != "sandbox"):
             raise ValueError('for Daml 2.x ledgers, ledger ID must be unset, or set to "sandbox"')
 

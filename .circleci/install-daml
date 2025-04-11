@@ -9,7 +9,7 @@ function install {
         link
     fi
 
-    daml install 2.9.6
+    daml install 2.10.0
 }
 
 function link {
