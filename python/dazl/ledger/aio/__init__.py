@@ -11,7 +11,6 @@ from inspect import iscoroutine
 from typing import Any, Callable, Protocol, TypeVar, Union, no_type_check, runtime_checkable
 import warnings
 
-from .. import Connection as _Connection, QueryStream as _QueryStream
 from ...damlast.daml_lf_1 import TypeConName
 from ...damlast.lookup import matching_normalizations, normalize
 from ..api_types import ArchiveEvent, Boundary, CreateEvent, Event, ExerciseResponse
@@ -34,15 +33,15 @@ class PackageService(Protocol):
     protocol extends this interface.
     """
 
-    async def get_package(self, __package_id) -> bytes:
+    async def get_package(self, package_id, /, *, timeout=None) -> bytes:
         raise NotImplementedError
 
-    async def list_package_ids(self):
+    async def list_package_ids(self, *, timeout=None):
         raise NotImplementedError
 
 
 @runtime_checkable
-class Connection(_Connection, Protocol):
+class Connection(Protocol):
     async def __aenter__(self):
         raise NotImplementedError
 
@@ -51,7 +50,7 @@ class Connection(_Connection, Protocol):
 
 
 @runtime_checkable
-class QueryStream(_QueryStream, Protocol):
+class QueryStream(Protocol):
     async def __aenter__(self):
         raise NotImplementedError
 

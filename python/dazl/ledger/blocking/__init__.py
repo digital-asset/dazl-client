@@ -13,11 +13,12 @@ Thread-blocking protocols and base classes for connecting to a Daml ledger.
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
+from typing import Optional, Protocol, runtime_checkable
 
-from .. import Connection as _Connection, QueryStream as _QueryStream
+__all__ = ["PackageService", "Connection", "QueryStream"]
 
-__all__ = ["PackageService", "Connection", "QueryStream", "PackageLoader"]
+from ...damlast.daml_lf_1 import PackageRef
+from ...prim import TimeDeltaLike
 
 
 class PackageService(Protocol):
@@ -26,15 +27,25 @@ class PackageService(Protocol):
     protocol extends this interface.
     """
 
-    async def get_package(self, __package_id) -> bytes:
+    def get_package(
+        self,
+        package_id: PackageRef,
+        /,
+        *,
+        timeout: Optional[TimeDeltaLike] = None,
+    ) -> bytes:
         raise NotImplementedError
 
-    async def list_package_ids(self):
+    def list_package_ids(
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = None,
+    ):
         raise NotImplementedError
 
 
 @runtime_checkable
-class Connection(_Connection, Protocol):
+class Connection(Protocol):
     """
     Protocol that describes the interface for a blocking connection to a Daml ledger. The methods of
     an implementation should be thread-safe, with the exception of :meth:`open` and :meth:`close`.
@@ -52,7 +63,7 @@ class Connection(_Connection, Protocol):
 
 
 @runtime_checkable
-class QueryStream(_QueryStream, Protocol):
+class QueryStream(Protocol):
     """
     A blocking stream of offsets and events from a Daml ledger.
     """

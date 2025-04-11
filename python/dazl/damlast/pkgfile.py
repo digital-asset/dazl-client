@@ -225,21 +225,3 @@ class DarFileAsyncPackageService:
         self, *, timeout: Optional[TimeDeltaLike] = None
     ) -> AbstractSet[PackageRef]:
         return self._dar_file.package_ids()
-
-
-class DarFileBlockingPackageService:
-    def __init__(self, dar_file: DarFile, /):
-        self._dar_file = dar_file
-        self._lock = threading.RLock()
-
-    def get_package(
-        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = None
-    ) -> bytes:
-        with self._lock:
-            return self._dar_file.package_bytes(package_id)
-
-    def list_package_ids(
-        self, *, timeout: Optional[TimeDeltaLike] = None
-    ) -> AbstractSet[PackageRef]:
-        with self._lock:
-            return self._dar_file.package_ids()

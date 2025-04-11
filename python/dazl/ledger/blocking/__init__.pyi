@@ -16,11 +16,6 @@ from typing import (
     runtime_checkable,
 )
 
-from .. import (
-    Connection as _Connection,
-    PackageService as _PackageService,
-    QueryStream as _QueryStream,
-)
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...prim import ContractData, ContractId, Parties, TimeDeltaLike
 from ...query import Queries, Query
@@ -41,16 +36,21 @@ __all__ = ["PackageService", "Connection", "QueryStream"]
 
 Self = TypeVar("Self")
 
-class PackageService(_PackageService, Protocol):
+class PackageService(Protocol):
     def get_package(
-        self, package_id: PackageRef, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        package_id: PackageRef,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> bytes: ...
     def list_package_ids(
-        self, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> AbstractSet[PackageRef]: ...
 
 @runtime_checkable
-class Connection(_Connection, PackageService, Protocol):
+class Connection(PackageService, Protocol):
     def __enter__(self: Self) -> Self: ...
     def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
     def open(self) -> None: ...
@@ -142,7 +142,11 @@ class Connection(_Connection, PackageService, Protocol):
         act_as: Optional[Parties] = None,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ArchiveEvent: ...
-    def get_ledger_end(self, *, timeout: Optional[TimeDeltaLike] = ...) -> str: ...
+    def get_ledger_end(
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
+    ) -> str: ...
     def query(
         self,
         template_id: Union[str, TypeConName] = "*",
@@ -176,7 +180,11 @@ class Connection(_Connection, PackageService, Protocol):
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def get_user(
-        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        user_id: Optional[str] = None,
+        /,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> User: ...
     def create_user(
         self,
@@ -185,9 +193,17 @@ class Connection(_Connection, PackageService, Protocol):
         *,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> User: ...
-    def list_users(self, *, timeout: Optional[TimeDeltaLike] = ...) -> Sequence[User]: ...
+    def list_users(
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
+    ) -> Sequence[User]: ...
     def list_user_rights(
-        self, user_id: Optional[str] = None, /, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        user_id: Optional[str] = None,
+        /,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> Sequence[Right]: ...
     def allocate_party(
         self,
@@ -197,11 +213,21 @@ class Connection(_Connection, PackageService, Protocol):
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> PartyInfo: ...
     def list_known_parties(
-        self, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> Sequence[PartyInfo]: ...
-    def get_version(self, *, timeout: Optional[TimeDeltaLike] = ...) -> Version: ...
+    def get_version(
+        self,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
+    ) -> Version: ...
     def upload_package(
-        self, contents: bytes, /, *, timeout: Optional[TimeDeltaLike] = ...
+        self,
+        contents: bytes,
+        /,
+        *,
+        timeout: Optional[TimeDeltaLike] = ...,
     ) -> None: ...
     def get_metering_report(
         self,
@@ -213,7 +239,7 @@ class Connection(_Connection, PackageService, Protocol):
     ) -> MeteringReport: ...
 
 @runtime_checkable
-class QueryStream(_QueryStream, Protocol):
+class QueryStream(Protocol):
     def creates(self) -> Iterator[CreateEvent]: ...
     def events(self) -> Iterator[Union[CreateEvent, ArchiveEvent]]: ...
     def items(self) -> Iterator[Union[CreateEvent, ArchiveEvent, Boundary]]: ...
