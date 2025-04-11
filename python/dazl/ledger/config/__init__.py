@@ -30,28 +30,7 @@ Configuration options are broken up into three subobjects:
 Access configuration
 --------------------
 
-The :class:`AccessConfig` protocol specifies how ``dazl`` identifies itself to a ledger. There are
-two built-in mechanisms for this: **property-based access**, which is traditionally used with
-ledgers that do NOT require authorization/authentication (typical in a local development scenario,
-for example coding against a local sandbox), and **token-based access**, which is required for
-ledgers that DO require authorization/authentication (typical in a production scenario and/or hosted
-ledgers).
-
-In **property-based access** (:class:`PropertyBasedAccessConfig`), the behavior differs depending on
-whether you are connecting over the gRPC Ledger API or the HTTP JSON API:
-
-* For the *gRPC Ledger API*, ``read_as`` and ``act_as`` are used as-is. ``ledger_id`` is
-  defaulted to the value requested from the ledger (but only if not initially specified).
-  The ``admin`` property is ignored and unused.
-* For the *HTTP JSON API*, ``read_as``, ``act_as``, ``admin``, ``ledger_id``, and
-  ``application_name`` are all used to generate an unsigned JWT locally. ``ledger_id`` MUST be
-  supplied.
-
-In **token-based access** (:class:`TokenBasedAccessConfig`), the value of the token completely
-determines the parties that can be used, the ledger ID to connect to, and the name of the
-application. ``AccessConfig.token`` can be overwritten at any time, and that value will be used for
-all subsequent calls to the ledger. If your ledger requires authorization/authentication using
-tokens, you _must_ use token-based access.
+The :class:`AccessConfig` protocol specifies how ``dazl`` identifies itself to a ledger.
 
 Although ``dazl`` does not currently refresh tokens automatically, you can update the token yourself
 at any time:
@@ -82,12 +61,6 @@ Deeper support for token refreshing may be added in a future release.
     :members:
 
 .. autofunction:: create_access
-
-.. autoclass:: PropertyBasedAccessConfig()
-    :members:
-
-.. autoclass:: TokenBasedAccessConfig()
-    :members:
 
 .. _ssl-tls-configuration:
 

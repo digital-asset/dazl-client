@@ -4,17 +4,6 @@
 ``dazl.cli``
 ============
 
-Submodules
-----------
-
-dazl\.cli\.ls module
---------------------
-
-.. automodule:: dazl.cli.ls
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

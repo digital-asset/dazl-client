@@ -13,7 +13,6 @@ dazl package
     dazl.ledger.blocking
     dazl.ledger.config
     dazl.pretty
-    dazl.protocols
     dazl.testing
     dazl.util
 

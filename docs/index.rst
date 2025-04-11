@@ -23,7 +23,6 @@ Connect to the ledger and submit a single command:
    :language: python
    :pyobject: test_send_single_command
    :lines: 2-
-   :dedent: 4
 
 Connect to the ledger as a single party, print all contracts, and close:
 
@@ -31,7 +30,6 @@ Connect to the ledger as a single party, print all contracts, and close:
    :language: python
    :pyobject: test_read
    :lines: 2-
-   :dedent: 4
 
 Connect to the ledger using asynchronous callbacks:
 
@@ -39,8 +37,6 @@ Connect to the ledger using asynchronous callbacks:
    :language: python
    :pyobject: test_read_using_callback
    :lines: 2-
-   :dedent: 4
-
 
 Code
 ----
@@ -60,7 +56,5 @@ Table of Contents
    :caption: Contents:
 
    basics
-   testing
-   migrating
    dazl
    glossary
