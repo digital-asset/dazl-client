@@ -33,10 +33,10 @@ class PackageService(Protocol):
     protocol extends this interface.
     """
 
-    async def get_package(self, package_id, /, *, timeout=None) -> bytes:
+    async def get_package(self, package_id, /, *, token=None, timeout=None) -> bytes:
         raise NotImplementedError
 
-    async def list_package_ids(self, *, timeout=None):
+    async def list_package_ids(self, *, token=None, timeout=None):
         raise NotImplementedError
 
 

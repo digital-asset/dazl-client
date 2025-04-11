@@ -121,14 +121,7 @@ import sys
 from typing import Optional
 
 from ...damlast.lookup import MultiPackageLookup
-from .access import (
-    AccessConfig,
-    AccessConfigArgs,
-    PropertyBasedAccessConfig,
-    TokenBasedAccessConfig,
-    _AccessConfigArgs,
-    create_access,
-)
+from .access import AccessConfig, AccessConfigArgs, create_access
 from .argv import configure_parser
 from .log import LoggerArgs
 from .ssl import SSLConfig, SSLConfigArgs, _SSLConfigArgs
@@ -145,8 +138,6 @@ __all__ = [
     "AccessConfig",
     "SSLConfig",
     "URLConfig",
-    "TokenBasedAccessConfig",
-    "PropertyBasedAccessConfig",
     "create_access",
     "create_url",
     "configure_parser",
@@ -342,7 +333,7 @@ class Config:
 
         url_config = create_url(**url_config_args)
 
-        access_config_args = _AccessConfigArgs()
+        access_config_args = AccessConfigArgs()
         if "read_as" in kwargs:
             access_config_args["read_as"] = kwargs["read_as"]
         if "act_as" in kwargs:
@@ -357,8 +348,6 @@ class Config:
             access_config_args["oauth_token"] = kwargs["oauth_token"]
         if "oauth_token_file" in kwargs:
             access_config_args["oauth_token_file"] = kwargs["oauth_token_file"]
-        if logger is not None:
-            access_config_args["logger"] = logger
 
         access_config = create_access(**access_config_args)
 

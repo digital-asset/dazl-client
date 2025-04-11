@@ -4,12 +4,14 @@
 from __future__ import annotations
 
 from asyncio import Event, ensure_future, get_event_loop, sleep
-from typing import AbstractSet
+from typing import AbstractSet, Optional
 
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef
 from dazl.damlast.lookup import MultiPackageLookup
-from dazl.ledger.aio import PackageLoader
+from dazl.ledger.aio import PackageLoader, PackageService
+from dazl.ledger.auth import TokenOrTokenProvider
+from dazl.prim import TimeDeltaLike
 import pytest
 
 from .dars import AllKindsOf
@@ -19,11 +21,11 @@ ALL_KINDS_OF_PKG_REF = PackageRef(
 )
 
 
-def load_some_bytes():
+def load_some_bytes() -> tuple[PackageRef, bytes]:
     with DarFile(AllKindsOf) as dar:
         # noinspection PyProtectedMember
         for a in dar._pb_archives():
-            return a.hash, a.payload
+            return PackageRef(a.hash), a.payload
     raise Exception()
 
 
@@ -31,17 +33,29 @@ def load_some_bytes():
 async def test_pkg_loader_only_fetches_once(executor):
     pkg_ref, contents = load_some_bytes()
 
-    class MockPackageService:
+    class MockPackageService(PackageService):
         def __init__(self):
             self.call_count = 0
 
-        async def get_package(self, package_id: PackageRef) -> bytes:
+        async def get_package(
+            self,
+            package_id: PackageRef,
+            /,
+            *,
+            token: Optional[TokenOrTokenProvider] = None,
+            timeout: Optional[TimeDeltaLike] = None,
+        ) -> bytes:
             self.call_count += 1
             if package_id != pkg_ref:
                 raise Exception
             return contents
 
-        async def list_package_ids(self) -> AbstractSet[PackageRef]:
+        async def list_package_ids(
+            self,
+            *,
+            token: Optional[TokenOrTokenProvider] = None,
+            timeout: Optional[TimeDeltaLike] = None,
+        ) -> AbstractSet[PackageRef]:
             return frozenset([pkg_ref])
 
     conn = MockPackageService()
@@ -71,11 +85,18 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
     evt1 = Event()
     evt2 = Event()
 
-    class MockPackageService:
+    class MockPackageService(PackageService):
         def __init__(self):
             self.call_count = 0
 
-        async def get_package(self, package_id: PackageRef) -> bytes:
+        async def get_package(
+            self,
+            package_id: PackageRef,
+            /,
+            *,
+            token: Optional[TokenOrTokenProvider] = None,
+            timeout: Optional[TimeDeltaLike] = None,
+        ) -> bytes:
             self.call_count += 1
             if package_id != pkg_ref:
                 raise Exception
@@ -83,7 +104,12 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
             await evt2.wait()
             return contents
 
-        async def list_package_ids(self) -> AbstractSet[PackageRef]:
+        async def list_package_ids(
+            self,
+            *,
+            token: Optional[TokenOrTokenProvider] = None,
+            timeout: Optional[TimeDeltaLike] = None,
+        ) -> AbstractSet[PackageRef]:
             # we don't expect this method to be called in the test
             raise Exception
 

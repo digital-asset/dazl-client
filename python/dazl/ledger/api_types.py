@@ -351,12 +351,13 @@ class CommandMeta:
         ledger with authorization, these parties must be a subset of the parties in the token.
     """
 
-    __slots__ = "workflow_id", "command_id", "read_as", "act_as"
+    __slots__ = "workflow_id", "command_id", "read_as", "act_as", "user_id"
 
     workflow_id: Optional[str]
     command_id: Optional[str]
     read_as: Optional[Sequence[Party]]
     act_as: Optional[Sequence[Party]]
+    user_id: str
 
     def __init__(
         self,
@@ -364,6 +365,7 @@ class CommandMeta:
         command_id: Optional[str],
         read_as: Optional[Parties],
         act_as: Optional[Parties],
+        user_id: str,
     ):
         if workflow_id:
             if not LEDGER_STRING_REGEX.match(workflow_id):
@@ -381,6 +383,11 @@ class CommandMeta:
         object.__setattr__(self, "command_id", command_id)
         object.__setattr__(self, "read_as", to_parties(read_as))
         object.__setattr__(self, "act_as", to_parties(act_as))
+        object.__setattr__(self, "user_id", user_id)
+
+    @property
+    def application_name(self) -> str:
+        return self.user_id
 
     def __eq__(self, other: Any) -> bool:
         return (

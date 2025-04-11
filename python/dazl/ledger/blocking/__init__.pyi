@@ -31,6 +31,7 @@ from ..api_types import (
     User,
     Version,
 )
+from ..auth import TokenOrTokenProvider
 
 __all__ = ["PackageService", "Connection", "QueryStream"]
 
@@ -41,11 +42,13 @@ class PackageService(Protocol):
         self,
         package_id: PackageRef,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> bytes: ...
     def list_package_ids(
         self,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> AbstractSet[PackageRef]: ...
 
@@ -64,6 +67,7 @@ class Connection(PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> None: ...
     def create(
@@ -76,6 +80,7 @@ class Connection(PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> CreateEvent: ...
     def exercise(
@@ -89,6 +94,7 @@ class Connection(PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     def create_and_exercise(
@@ -103,6 +109,7 @@ class Connection(PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     def exercise_by_key(
@@ -117,6 +124,7 @@ class Connection(PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ExerciseResponse: ...
     def archive(
@@ -128,6 +136,7 @@ class Connection(PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ArchiveEvent: ...
     def archive_by_key(
@@ -140,11 +149,13 @@ class Connection(PackageService, Protocol):
         command_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> ArchiveEvent: ...
     def get_ledger_end(
         self,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> str: ...
     def query(
@@ -154,12 +165,14 @@ class Connection(PackageService, Protocol):
         /,
         *,
         read_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def query_many(
         self,
         *queries: Queries,
         read_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def stream(
@@ -170,6 +183,7 @@ class Connection(PackageService, Protocol):
         *,
         offset: Optional[str] = None,
         read_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def stream_many(
@@ -177,6 +191,7 @@ class Connection(PackageService, Protocol):
         *queries: Queries,
         offset: Optional[str] = None,
         read_as: Optional[Parties] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> QueryStream: ...
     def get_user(
@@ -184,6 +199,7 @@ class Connection(PackageService, Protocol):
         user_id: Optional[str] = None,
         /,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> User: ...
     def create_user(
@@ -191,11 +207,13 @@ class Connection(PackageService, Protocol):
         user: User,
         rights: Optional[Sequence[Right]] = ...,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> User: ...
     def list_users(
         self,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Sequence[User]: ...
     def list_user_rights(
@@ -203,6 +221,7 @@ class Connection(PackageService, Protocol):
         user_id: Optional[str] = None,
         /,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Sequence[Right]: ...
     def allocate_party(
@@ -210,16 +229,19 @@ class Connection(PackageService, Protocol):
         *,
         identifier_hint: Optional[str] = None,
         display_name: Optional[str] = None,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> PartyInfo: ...
     def list_known_parties(
         self,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Sequence[PartyInfo]: ...
     def get_version(
         self,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> Version: ...
     def upload_package(
@@ -227,6 +249,7 @@ class Connection(PackageService, Protocol):
         contents: bytes,
         /,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> None: ...
     def get_metering_report(
@@ -235,6 +258,7 @@ class Connection(PackageService, Protocol):
         to: Optional[datetime] = None,
         application_id: Optional[str] = None,
         *,
+        token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> MeteringReport: ...
 

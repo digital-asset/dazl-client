@@ -31,6 +31,7 @@ from grpc.aio import (
     secure_channel,
 )
 
+from ..auth import get_token
 from ..config import Config
 
 __all__ = ["create_channel"]
@@ -62,21 +63,21 @@ def create_channel(config: Config) -> Channel:
                 private_key=config.ssl.cert_key,
                 certificate_chain=config.ssl.cert,
             )
-        if config.access.token_version is not None:
-            # The grpc Credential objects do not actually define a formal interface, and are
-            # used interchangeably in the code.
-            #
-            # Additionally there are some incorrect rules in the grpc-stubs typing rules that force
-            # us to work around the type system.
-            credentials = cast(
-                ChannelCredentials,
-                composite_channel_credentials(
-                    credentials, metadata_call_credentials(GrpcAuth(config), name="auth gateway")
-                ),
-            )
+
+        # The grpc Credential objects do not actually define a formal interface, and are
+        # used interchangeably in the code.
+        #
+        # Additionally there are some incorrect rules in the grpc-stubs typing rules that force
+        # us to work around the type system.
+        credentials = cast(
+            ChannelCredentials,
+            composite_channel_credentials(
+                credentials, metadata_call_credentials(GrpcAuth(config), name="auth gateway")
+            ),
+        )
         return secure_channel(u.netloc, credentials, tuple(options))
 
-    elif config.access.token_version is not None:
+    else:
         # Python/C++ libraries refuse to allow "credentials" objects to be passed around on
         # non-TLS channels, but they don't check interceptors; use an interceptor to inject
         # an Authorization header instead
@@ -98,10 +99,6 @@ def create_channel(config: Config) -> Channel:
             ],
         )  # type: ignore
 
-    else:
-        # no TLS, no tokens--simply create an insecure channel with no adornments
-        return insecure_channel(u.netloc, options)
-
 
 class GrpcAuth(AuthMetadataPlugin):
     def __init__(self, config: Config):
@@ -111,11 +108,10 @@ class GrpcAuth(AuthMetadataPlugin):
         # This overly verbose type signature is here to satisfy mypy and grpc-stubs
         options = list[Tuple[str, Union[str, bytes]]]()
 
-        # TODO: Add support here for refresh tokens
-        token = self._config.access.token
+        token = get_token(self._config.access.token)
         if token:
             # note: gRPC headers MUST be lowercased
-            options.append(("authorization", "Bearer " + self._config.access.token))
+            options.append(("authorization", "Bearer " + token))
 
         callback(tuple(options), None)
 
@@ -138,9 +134,10 @@ class GrpcAuthInterceptor:
         if (
             client_call_details.metadata is not None
             and "authorization" not in client_call_details.metadata
-            and self._config.access.token_version is not None
         ):
-            client_call_details.metadata.add("authorization", f"Bearer {self._config.access.token}")
+            token = get_token(self._config.access.token)
+            if token is not None:
+                client_call_details.metadata.add("authorization", f"Bearer {token}")
 
         return client_call_details
 

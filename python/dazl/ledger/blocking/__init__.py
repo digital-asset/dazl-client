@@ -19,6 +19,7 @@ __all__ = ["PackageService", "Connection", "QueryStream"]
 
 from ...damlast.daml_lf_1 import PackageRef
 from ...prim import TimeDeltaLike
+from ..auth import TokenOrTokenProvider
 
 
 class PackageService(Protocol):
@@ -32,6 +33,7 @@ class PackageService(Protocol):
         package_id: PackageRef,
         /,
         *,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ) -> bytes:
         raise NotImplementedError
@@ -39,6 +41,7 @@ class PackageService(Protocol):
     def list_package_ids(
         self,
         *,
+        token: Optional[TokenOrTokenProvider] = None,
         timeout: Optional[TimeDeltaLike] = None,
     ):
         raise NotImplementedError
