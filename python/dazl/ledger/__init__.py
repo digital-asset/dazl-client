@@ -8,7 +8,7 @@ Daml `gRPC Ledger API <https://docs.daml.com/app-dev/ledger-api.html>`_ or
 from __future__ import annotations
 
 import sys
-from typing import Callable, Literal, Protocol, TypeAlias, TypeVar, Union, overload
+from typing import Callable, Literal, Protocol, TypeVar, Union, overload
 
 from . import aio, blocking
 from .api_types import (
@@ -35,10 +35,14 @@ from .api_types import (
 )
 from .config import ConfigArgs
 
-if sys.version_info >= (3, 12):
-    from typing import Unpack
-else:
+if sys.version_info >= (3, 11):
+    from typing import TypeAlias, Unpack
+elif sys.version_info >= (3, 10):
+    from typing import TypeAlias
+
     from typing_extensions import Unpack
+else:
+    from typing_extensions import TypeAlias, Unpack
 
 __all__ = [
     "aio",

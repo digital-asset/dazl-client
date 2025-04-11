@@ -66,12 +66,15 @@ jobs:
       python_version:
         type: string
     docker:
-      - image: cimg/python:<<parameters.python_version>>
+      - image: cimg/base:stable
     resource_class: medium
     steps:
       - checkout
       - restore_dazl_cache:
           python_version: <<parameters.python_version>>
+      - run:
+          name: Set up venv
+          command: poetry env use python<<parameters.python_version>>
       - run:
           name: Python format checks
           command: make python-format-test
@@ -85,12 +88,15 @@ jobs:
       python_version:
         type: string
     docker:
-      - image: cimg/python:<<parameters.python_version>>
+      - image: cimg/base:stable
     resource_class: large
     steps:
       - checkout
       - restore_dazl_cache:
           python_version: <<parameters.python_version>>
+      - run:
+          name: Set up venv
+          command: poetry env use python<<parameters.python_version>>
       - run:
           name: Python unit tests
           command: make python-unit-test
@@ -146,13 +152,13 @@ workflows:
       - check-py:
           matrix:
             parameters:
-              python_version: ["3.9.19", "3.10.14", "3.11.9"]
+              python_version: ["3.9", "3.10", "3.11"]
           requires:
             - nix-setup
       - test-py:
           matrix:
             parameters:
-              python_version: ["3.9.19", "3.10.14", "3.11.9"]
+              python_version: ["3.9", "3.10", "3.11"]
           requires:
             - nix-setup
       - build:
