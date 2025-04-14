@@ -7,8 +7,9 @@ This module contains the Python API for interacting with the Ledger API.
 from __future__ import annotations
 
 __all__ = [
-    "Command",
     "connect",
+    "Command",
+    "Connection",
     "ContractData",
     "ContractId",
     "CreateAndExerciseCommand",
@@ -25,6 +26,7 @@ __all__ = [
 from ._logging import LOG
 from .ledger import (
     Command,
+    Connection,
     CreateAndExerciseCommand,
     CreateCommand,
     ExerciseByKeyCommand,
