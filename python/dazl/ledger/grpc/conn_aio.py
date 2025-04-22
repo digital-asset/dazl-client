@@ -1083,6 +1083,9 @@ class Connection(aio.Connection):
                 lambda: stub.UploadDarFile(request, **call.grpc_kwargs), timeout=call.timeout
             )
 
+            # assuming the package has been uploaded, go ahead and load that locally too
+            await self._codec.preload(contents)
+
     # endregion
 
     # region Metering Report calls

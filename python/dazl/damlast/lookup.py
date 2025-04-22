@@ -14,6 +14,7 @@ from __future__ import annotations
 # potentially lead to performance degradations, particularly at application startup where type and
 # template lookups by name are very frequent. Please be conscious of the runtime costs of
 # modifications in this file!
+from collections import defaultdict
 import threading
 from types import MappingProxyType
 from typing import (
@@ -477,7 +478,8 @@ class MultiPackageLookup(SymbolLookup):
 
     def __init__(self, archives: Optional[Collection[Archive]] = None):
         self._lock = threading.Lock()
-        self._cache = dict[PackageRef, PackageLookup]()
+        self._cache_by_pkg_id = dict[PackageRef, PackageLookup]()
+        self._cache_by_name = dict[PackageRef, PackageLookup]()
         if archives is not None:
             self.add_archive(*archives)
 
@@ -485,7 +487,7 @@ class MultiPackageLookup(SymbolLookup):
         """
         Return the list of known archives.
         """
-        return [lookup.archive for lookup in self._cache.values()]
+        return [lookup.archive for lookup in self._cache_by_pkg_id.values()]
 
     def add_archive(self, *a: Archive) -> None:
         """
@@ -496,13 +498,32 @@ class MultiPackageLookup(SymbolLookup):
 
         :param a: One or more :class:`Archive` instances to add.
         """
-        new_lookups = {ar.hash: PackageLookup(ar) for ar in a}
+        new_lookups_by_id = {ar.hash: PackageLookup(ar) for ar in a}
         with self._lock:
             # replace the old cache with a new one, incorporating values from both the existing
             # cache and the new lookups that came in. When there is a key conflict between the two
             # APIs, always prefer the existing cache to provide stability to callers.
-            self._cache = {**new_lookups, **self._cache}
-            LOG.debug("Updated package cache; now contains %d packages.", len(self._cache))
+            cache_by_id = {**new_lookups_by_id, **self._cache_by_pkg_id}
+
+            # (re)build the by-name package cache for smart contract upgrade (SCU) support;
+            # we also allow template lookups by package name, and will prefer the most recent
+            # version
+            lookups_by_name = defaultdict[PackageRef, list[PackageLookup]](list)
+            for package_lookup in cache_by_id.values():
+                if package_lookup.archive.package.metadata is not None:
+                    scu_name = PackageRef(f"#{package_lookup.archive.package.metadata.name}")
+                    lookups_by_name[scu_name].append(package_lookup)
+
+            cache_by_name = {
+                scu_pkg_ref: max(package_lookups, key=get_version_tuple)
+                for scu_pkg_ref, package_lookups in lookups_by_name.items()
+            }
+
+            self._cache_by_pkg_id = cache_by_id
+            self._cache_by_name = cache_by_name
+            LOG.debug(
+                "Updated package cache; now contains %d packages.", len(self._cache_by_pkg_id)
+            )
 
     def package_ids(self) -> AbstractSet[PackageRef]:
         """
@@ -510,13 +531,14 @@ class MultiPackageLookup(SymbolLookup):
 
         Because the data is local and in memory, the timeout parameter is ignored.
         """
-        return set(self._cache)
+        return set(self._cache_by_pkg_id)
 
     def package(self, ref: PackageRef) -> Package:
-        lookup = self._cache.get(ref)
-        if lookup is not None:
-            return lookup.archive.package
+        lookups = list(self._lookups(ref))
+        if len(lookups) == 1:
+            return lookups[0].archive.package
 
+        # TODO: More descriptive error message here
         raise PackageNotFoundError(ref)
 
     def data_type_name(self, ref: Any) -> TypeConName:
@@ -553,7 +575,7 @@ class MultiPackageLookup(SymbolLookup):
         lookups = self._lookups(pkg)
 
         for lookup in lookups:
-            if name == "*":
+            if name == STAR:
                 names.extend(lookup.local_template_names())
             else:
                 n = lookup.local_template_name(name)
@@ -618,7 +640,7 @@ class MultiPackageLookup(SymbolLookup):
         lookups = self._lookups(pkg)
 
         for lookup in lookups:
-            if name == "*":
+            if name == STAR:
                 names.extend(lookup.local_template_names())
             else:
                 n = lookup.local_template_name(name)
@@ -669,12 +691,20 @@ class MultiPackageLookup(SymbolLookup):
         :raises PackageNotFoundError:
             if the :class:`PackageRef` points to a package that is not present in this lookup.
         """
-        if ref == "*":
-            return self._cache.values()
+        if ref == STAR:
+            # unspecified package ID, so return all possible package lookups
+            return self._cache_by_pkg_id.values()
 
-        lookup = self._cache.get(ref)
-        if lookup is not None:
-            return (lookup,)
+        elif ref.startswith("#"):
+            # SCU-style template reference; find the most up-to-date package for this package name
+            lookup = self._cache_by_name.get(ref)
+            if lookup is not None:
+                return (lookup,)
+
+        else:
+            lookup = self._cache_by_pkg_id.get(ref)
+            if lookup is not None:
+                return (lookup,)
 
         raise PackageNotFoundError(ref)
 
@@ -760,3 +790,11 @@ def find_choice(template: DefTemplate, name: str) -> TemplateChoice:
             return choice
 
     raise NameNotFoundError(f"choice {name}")
+
+
+def get_version_tuple(lookup: PackageLookup) -> tuple[int, ...]:
+    md = lookup.archive.package.metadata
+    if md is not None:
+        return tuple([int(s) for s in md.version.split(".")])
+    else:
+        return ()

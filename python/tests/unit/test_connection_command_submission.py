@@ -5,9 +5,10 @@ from __future__ import annotations
 
 import logging
 
+from dazl.ledger import CreateEvent
 from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
-from tests.unit.dars import KitchenSink
+from tests.unit.dars import KitchenSink, SCUModels1, SCUModels2
 
 
 @pytest.mark.asyncio
@@ -22,6 +23,49 @@ async def test_create(sandbox: SandboxLauncher) -> None:
                 "location": "Somewhere",
             },
         )
+
+
+@pytest.mark.asyncio
+async def test_scu_create_and_query(sandbox: SandboxLauncher) -> None:
+    async with connect_with_new_party(url=sandbox.url, dar=SCUModels1, admin=True) as p:
+        issuer_party_info = await p.connection.allocate_party()
+        await p.connection.create(
+            "#AssetModels:Assets:Asset",
+            {
+                "issuer": issuer_party_info.party,
+                "owner": p.party,
+                "name": "Someone",
+            },
+            act_as=[issuer_party_info.party, p.party],
+        )
+
+        events_1 = list[CreateEvent]()
+        async with p.connection.query("#AssetModels:Assets:Asset") as stream:
+            async for event in stream.creates():
+                events_1.append(event)
+                logging.info("Found a contract after uploading 0.0.1: %s", event.payload)
+
+        await p.connection.upload_package(SCUModels2.read_bytes())
+
+        await p.connection.create(
+            "#AssetModels:Assets:Asset",
+            {
+                "issuer": issuer_party_info.party,
+                "owner": p.party,
+                "name": "Someone Else",
+                "desc": "A description",
+            },
+            act_as=[issuer_party_info.party, p.party],
+        )
+
+        events_2 = list[CreateEvent]()
+        async with p.connection.query("#AssetModels.Assets:Asset") as stream:
+            async for event in stream.creates():
+                events_2.append(event)
+                logging.info("Found a contract after uploading 0.0.2: %s", event.payload)
+
+        # we should now have two contracts
+        assert len(events_2) == 2
 
 
 @pytest.mark.asyncio
