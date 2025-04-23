@@ -2,9 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 sdk-version: 2.10.0
-name: upload-test
+name: kitchen-sink
 version: 1.0.0
 source: daml
 dependencies:
-- daml-prim
-- daml-stdlib
+  - daml-prim
+  - daml-stdlib
+data-dependencies:
+  - ../kitchen-sink-interfaces/.daml/dist/kitchen-sink-interfaces-1.0.0.dar
+build-options:
+  - --target=1.17

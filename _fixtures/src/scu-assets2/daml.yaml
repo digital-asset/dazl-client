@@ -1,0 +1,16 @@
+# Copyright (c) 2017-2025, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+sdk-version: 2.10.0
+name: AssetModels
+source: daml
+init-script: Assets:setup
+version: 0.0.2
+dependencies:
+  - daml-prim
+  - daml-stdlib
+  - daml-script-lts
+build-options:
+  - --target=1.17
+typecheck-upgrades: true
+upgrades: ../scu-assets1/.daml/dist/AssetModels-0.0.1.dar

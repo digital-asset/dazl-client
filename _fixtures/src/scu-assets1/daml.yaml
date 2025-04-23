@@ -2,9 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 sdk-version: 2.10.0
-name: upload-test
-version: 1.0.0
+name: AssetModels
 source: daml
+init-script: Assets:setup
+version: 0.0.1
 dependencies:
-- daml-prim
-- daml-stdlib
+  - daml-prim
+  - daml-stdlib
+  - daml-script-lts
+build-options:
+  - --target=1.17

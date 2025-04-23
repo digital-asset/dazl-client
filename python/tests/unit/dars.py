@@ -6,6 +6,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Mapping
 
+import yaml
+
 DAZL_ROOT = Path(__file__).absolute().parent.parent.parent.parent
 DAML_ROOT = DAZL_ROOT / "python" / "tests" / "resources"
 
@@ -22,12 +24,14 @@ def load_dars() -> Mapping[str, Path]:
     if code.returncode != 0:
         raise RuntimeError("Could not build test dars!")
 
-    dars = {d.name: d / f".daml/dist/{d.name}-1.0.0.dar" for d in dar_dir.iterdir() if d.is_dir()}
-
-    # this DAR is a little different
-    dars["kitchen-sink2"] = (
-        dar_dir / "kitchen-sink2/kitchen-sink/.daml/dist/kitchen-sink2-1.0.0.dar"
-    )
+    dars = dict[str, Path]()
+    for d in dar_dir.iterdir():
+        if d.is_dir():
+            with (d / "daml.yaml").open() as f:
+                daml_yaml = yaml.safe_load(f)
+            dars[daml_yaml["name"]] = (
+                d / f".daml/dist/{daml_yaml['name']}-{daml_yaml['version']}.dar"
+            )
 
     return dars
 
@@ -40,8 +44,7 @@ AllKindsOf = DARS["all-kinds-of"]
 AllParty = DARS["all-party"]
 Complicated = DARS["complicated"]
 DottedFields = DARS["dotted-fields"]
-KitchenSink1 = DARS["kitchen-sink1"]
-KitchenSink2 = DARS["kitchen-sink2"]
+KitchenSink = DARS["kitchen-sink"]
 MapSupport = DARS["map-support"]
 Pending = DARS["pending"]
 PostOffice = DARS["post-office"]

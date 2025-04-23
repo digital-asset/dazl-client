@@ -1,0 +1,17 @@
+packages:
+- all-kinds-of
+- all-party
+- complicated
+- dotted-fields
+- kitchen-sink
+- kitchen-sink-interfaces
+- map-support
+- pending
+- post-office
+- same-name-a
+- same-name-b
+- scu-assets1
+- scu-assets2
+- simple
+- test-server
+- upload-test
