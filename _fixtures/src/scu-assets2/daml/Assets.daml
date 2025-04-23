@@ -1,0 +1,89 @@
+module Assets where
+
+import Daml.Script
+import Helpers
+import DA.Foldable (forA_)
+import DA.Action (void)
+
+type AssetId = ContractId Asset
+
+template Asset
+  with
+    issuer : Party
+    owner  : Party
+    name   : Text
+    desc   : Optional Text
+  where
+    ensure name /= ""
+    signatory issuer
+    observer owner
+    
+    choice Give : AssetId
+      with
+        newOwner : Party
+      controller owner
+      do create this with
+           owner = newOwner
+
+    choice SetDescription : AssetId
+      with desc : Text
+      controller issuer
+      do create this with desc = Some desc
+
+    choice ReturnIt : AssetId
+      controller owner
+      do create this with
+           owner = issuer
+
+    nonconsuming choice GetSummary : Text
+      controller issuer
+      do pure $ name
+          <> ", " <> show desc
+          <> ", " <> show owner
+
+debugAssets : Party -> Script ()
+debugAssets party = do 
+  assets <- query @Asset party
+  debugRaw $ show (length assets) <> " assets"
+  forA_ assets (\(cid, a) ->
+      debugRaw $ a.name
+            <> ", " <> show a.desc
+            <> ", " <> show a.owner
+    )
+
+setup : Script ()
+setup = script do
+  (alice, _aliceId) <- findOrAllocateUser "alice"
+  (charlie, _charlieId) <- findOrAllocateUser "charlie"
+
+  aliceConsole <- submit alice do
+    createCmd Asset with
+      issuer = alice
+      owner = charlie
+      name = "game console"
+      desc = Some "xBox One"
+  
+  debugRaw $ "Asset created."
+  debugAssets alice  
+
+getSummaries : Script ()
+getSummaries = script do
+  (alice, _aliceId) <- findOrAllocateUser "alice"
+  assets <- query @Asset alice
+  forA_ assets (\(cid, a) -> do
+      summary <- submit alice $ exerciseCmd cid GetSummary
+      debugRaw $ "Non-consuming result: " <> summary
+    )
+
+returnAll : Script ()
+returnAll = script do
+  (alice, _aliceId) <- findOrAllocateUser "alice"
+  assets <- query @Asset alice
+  forA_ assets (\(cid, a) ->
+      if a.owner /= a.issuer
+      then void $ submit a.owner $ exerciseCmd cid ReturnIt
+      else pure ()
+    )
+
+  debugRaw $ "Assets returned."
+  debugAssets alice

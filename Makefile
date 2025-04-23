@@ -66,16 +66,9 @@ $(py_sdist) $(py_bdist) &: $(py_src)
 ####################################################################################################
 # DAR test fixtures
 
-_fixture_dars := $(shell scripts/make/dars -o)
-
-.cache/make/dars.mk: scripts/make/dars $(shell scripts/make/dars -d)
-	@mkdir -p $(@D)
-	@$< -M > $@
-
 .PHONY: dars
-dars: $(_fixture_dars)
-
-include .cache/make/dars.mk
+dars:
+	cd _fixtures/src && daml build --all
 
 ####################################################################################################
 

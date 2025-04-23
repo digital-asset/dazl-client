@@ -50,6 +50,8 @@ types-pyOpenSSL = "*"
 types-requests = "*"
 types-setuptools = "*"
 watchdog = "*"
+types-pyyaml = "^6.0.12.20250402"
+pyyaml = "^6.0.2"
 
 [tool.black]
 line-length = 100

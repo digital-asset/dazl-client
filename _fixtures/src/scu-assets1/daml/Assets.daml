@@ -1,0 +1,44 @@
+module Assets where
+
+import Daml.Script
+import Helpers
+import DA.Foldable (mapA_)
+
+type AssetId = ContractId Asset
+
+template Asset
+  with
+    issuer : Party
+    owner  : Party
+    name   : Text
+  where
+    ensure name /= ""
+    signatory issuer
+    observer owner
+
+    choice Give : AssetId
+      with
+        newOwner : Party
+      controller owner
+      do create this with
+           owner = newOwner
+
+debugAssets : Party -> Script ()
+debugAssets party = do 
+  assets <- query @Asset party
+  debugRaw $ show (length assets) <> " assets"
+  mapA_ (\(_, a) -> debugRaw $ a.name) assets
+
+setup : Script ()
+setup = script do
+  (alice, _aliceId) <- findOrAllocateUser "alice"
+  (bob, _bobId) <- findOrAllocateUser "bob"
+
+  aliceTV <- submit alice do
+    createCmd Asset with
+      issuer = alice
+      owner = bob
+      name = "TV"
+  
+  debugRaw $ "Asset created."
+  debugAssets alice  

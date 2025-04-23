@@ -1,0 +1,53 @@
+module Helpers (findOrAllocateParty, findOrAllocateUser) where
+
+import Daml.Script
+import DA.Optional (mapOptional)
+
+data FindPartyResult 
+  = Found Party
+  | NotFound
+  | MultipleFound
+
+findPartyInDetails : Text -> [PartyDetails] -> FindPartyResult
+findPartyInDetails displayName partyDetails = do
+  let rolePartyOptional partyDetails =
+        if partyDetails.displayName == Some (displayName)
+        then Some partyDetails.party
+        else None
+  case mapOptional rolePartyOptional partyDetails of
+    [p] -> Found p
+    [] -> NotFound 
+    _ -> MultipleFound
+
+findParty : Text -> Script FindPartyResult
+findParty displayName =
+  findPartyInDetails displayName <$> listKnownParties
+
+findOrAllocateParty : Text -> Script Party
+findOrAllocateParty displayName = do
+  result <- findParty displayName
+  case result of
+    Found party -> do
+      debugRaw $ "Found party " <> displayName
+      pure party
+    MultipleFound -> error $ "Multiple " <> displayName <> " parties found"
+    NotFound -> do
+      debugRaw $ "Allocating party " <> displayName
+      allocatePartyWithHint displayName (PartyIdHint displayName)
+
+findOrAllocateUser : Text -> Script (Party, UserId)
+findOrAllocateUser displayName =
+  do
+    party <- findOrAllocateParty displayName
+    users <- listAllUsers 
+    let isMatch u = u.primaryParty == Some party
+        user = find isMatch users
+    case user of
+      Some u -> do
+        debugRaw $ "Found user " <> show u.userId
+        pure (party, u.userId)
+      None -> do
+        userId <- validateUserId displayName
+        debugRaw $ "Creating user " <> show userId
+        createUser (User userId (Some party)) [CanActAs party]
+        pure (party, userId)
