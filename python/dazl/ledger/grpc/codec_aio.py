@@ -29,7 +29,7 @@ from ...damlast.daml_lf_1 import (
     TypeConName,
 )
 from ...damlast.daml_types import ContractId as ContractIdType, con
-from ...damlast.lookup import MultiPackageLookup
+from ...damlast.lookup import MultiPackageLookup, validate_template
 from ...damlast.protocols import SymbolLookup, TemplateOrInterface
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
@@ -91,6 +91,9 @@ class Codec:
     @property
     def lookup(self) -> SymbolLookup:
         return self._lookup
+
+    async def preload(self, contents) -> None:
+        await self._loader.preload(contents)
 
     async def encode_command(
         self, cmd: Command, /, *, token: Optional[TokenOrTokenProvider] = None
@@ -243,16 +246,21 @@ class Codec:
         requested_templates = set[TypeConName]()
         requested_interfaces = set[TypeConName]()
         for template_or_interface_id in template_or_interface_ids:
-            requested_templates.update(
-                await self._loader.do_with_retry(
-                    lambda: self._lookup.template_names(template_or_interface_id), token=token
-                )
+            resolved_template_ids = await self._loader.do_with_retry(
+                lambda: self._lookup.template_names(template_or_interface_id), token=token
             )
-            requested_interfaces.update(
-                await self._loader.do_with_retry(
-                    lambda: self._lookup.interface_names(template_or_interface_id), token=token
-                )
+            if package_ref(template_or_interface_id) == "*":
+                requested_templates.update(resolved_template_ids)
+            elif resolved_template_ids:
+                requested_templates.add(template_or_interface_id)
+
+            resolved_interface_ids = await self._loader.do_with_retry(
+                lambda: self._lookup.interface_names(template_or_interface_id), token=token
             )
+            if package_ref(template_or_interface_id) == "*":
+                requested_interfaces.update(resolved_interface_ids)
+            elif resolved_interface_ids:
+                requested_interfaces.add(template_or_interface_id)
 
         return lapipb.Filters(
             inclusive=lapipb.InclusiveFilters(

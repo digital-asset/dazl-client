@@ -14,7 +14,7 @@ from ...damlast.daml_lf_1 import Package, PackageRef
 from ...damlast.errors import PackageNotFoundError
 from ...damlast.lookup import STAR, MultiPackageLookup, PackageExceptionTracker
 from ...damlast.parse import parse_archive
-from ...damlast.pkgfile import Dar
+from ...damlast.pkgfile import Dar, DarFile
 from ...prim import DazlError
 from ..auth import TokenOrTokenProvider
 
@@ -82,13 +82,15 @@ class PackageLoader:
             with guard:
                 return fn()
 
-    async def preload(self, *contents: Dar) -> None:
+    async def preload(self, contents: bytes) -> None:
         """
-        Populate a :class:`PackageCache` with types from DARs.
+        Populate a :class:`PackageCache` with types from a DAR.
 
         :param contents:
-            One or more DARs to load into a local package cache.
+            A DAR to load in a local cache.
         """
+        with DarFile(contents) as dar_file:
+            self._package_lookup.add_archive(*dar_file.archives())
 
     async def load(
         self, ref: PackageRef, *, token: Optional[TokenOrTokenProvider] = None
@@ -104,9 +106,15 @@ class PackageLoader:
         :raises:
             PackageNotFoundError if the package could not be resolved
         """
-        if ref == STAR:
+        # With Daml 2, the best we can do when presented with a '*' or SCU-style template reference
+        # is to load _all_ packages, and give ourselves the best chance for finding the package we
+        # want. In Daml 3, newer services allow us to subscribe to package ID changes which will
+        # allow us to keep a local cache of packages more cheaply without the intermediate unnecessary
+        # fetching
+        if ref == STAR or ref.startswith("#"):
             await self.load_all(token=token)
-            return None
+            if ref == STAR:
+                return None
 
         # If the package has already been loaded, then skip all the expensive I/O stuff
         try:

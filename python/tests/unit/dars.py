@@ -29,9 +29,7 @@ def load_dars() -> Mapping[str, Path]:
         if d.is_dir():
             with (d / "daml.yaml").open() as f:
                 daml_yaml = yaml.safe_load(f)
-            dars[daml_yaml["name"]] = (
-                d / f".daml/dist/{daml_yaml['name']}-{daml_yaml['version']}.dar"
-            )
+            dars[d.name] = d / f".daml/dist/{daml_yaml['name']}-{daml_yaml['version']}.dar"
 
     return dars
 
@@ -48,6 +46,8 @@ KitchenSink = DARS["kitchen-sink"]
 MapSupport = DARS["map-support"]
 Pending = DARS["pending"]
 PostOffice = DARS["post-office"]
+SCUModels1 = DARS["scu-assets1"]
+SCUModels2 = DARS["scu-assets2"]
 Simple = DARS["simple"]
 TestServer = DARS["test-server"]
 UploadTest = DARS["upload-test"]
