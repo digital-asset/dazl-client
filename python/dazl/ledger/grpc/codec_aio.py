@@ -13,7 +13,7 @@ from __future__ import annotations
 # References:
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 from collections.abc import Mapping as _Mapping
-from typing import Any, Optional, Sequence, Tuple, Union
+from typing import Any, Collection, Optional, Sequence, Tuple, Union
 
 from google.protobuf.json_format import MessageToDict
 
@@ -29,7 +29,8 @@ from ...damlast.daml_lf_1 import (
     TypeConName,
 )
 from ...damlast.daml_types import ContractId as ContractIdType, con
-from ...damlast.lookup import MultiPackageLookup, validate_template
+from ...damlast.errors import NameNotFoundError
+from ...damlast.lookup import STAR, MultiPackageLookup
 from ...damlast.protocols import SymbolLookup, TemplateOrInterface
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
@@ -243,36 +244,95 @@ class Codec:
 
         # No wildcard template IDs, so inspect and resolve all template references to concrete
         # template or interface IDs
-        requested_templates = set[TypeConName]()
-        requested_interfaces = set[TypeConName]()
-        for template_or_interface_id in template_or_interface_ids:
-            resolved_template_ids = await self._loader.do_with_retry(
-                lambda: self._lookup.template_names(template_or_interface_id), token=token
-            )
-            if package_ref(template_or_interface_id) == "*":
-                requested_templates.update(resolved_template_ids)
-            elif resolved_template_ids:
-                requested_templates.add(template_or_interface_id)
-
-            resolved_interface_ids = await self._loader.do_with_retry(
-                lambda: self._lookup.interface_names(template_or_interface_id), token=token
-            )
-            if package_ref(template_or_interface_id) == "*":
-                requested_interfaces.update(resolved_interface_ids)
-            elif resolved_interface_ids:
-                requested_interfaces.add(template_or_interface_id)
+        requested_templates, requested_interfaces = await self._resolve(
+            template_or_interface_ids, token=token
+        )
 
         return lapipb.Filters(
             inclusive=lapipb.InclusiveFilters(
-                template_ids=[self.encode_identifier(i) for i in sorted(requested_templates)],
+                template_ids=[self.encode_identifier(i) for i in requested_templates],
                 interface_filters=[
                     lapipb.InterfaceFilter(
                         interface_id=self.encode_identifier(i), include_interface_view=True
                     )
-                    for i in sorted(requested_interfaces)
+                    for i in requested_interfaces
                 ],
             )
         )
+
+    async def _resolve(
+        self,
+        template_or_interface_ids: Sequence[TypeConName],
+        /,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+    ) -> tuple[Sequence[TypeConName], Sequence[TypeConName]]:
+        """
+        Resolve a set of template or interface IDs to TypeConNames that can be sent to the
+        Ledger API for querying.
+
+        Concretely, this means disambiguating between templates and interfaces, handling
+        templates/interfaces with missing package IDs, and handling Smart Contract Upgrade
+        template references (those that start with ``'#'``).
+
+        :param template_or_interface_ids:
+            The set of template and/or interface IDs to fully resolve.
+        :param token:
+            An optional token to use when fetching template or interface IDs.
+        :return:
+            A set of template IDs and interface IDs that can be sent to the ledger.
+        :raises NameNotFoundError:
+            If a template or interface is missing a package ID, and we couldn't determine
+            what that package ID should be.
+        """
+        requested_templates = set[TypeConName]()
+        requested_interfaces = set[TypeConName]()
+
+        for template_or_interface_id in template_or_interface_ids:
+            resolved_template_ids = Codec._resolve_single_name(
+                template_or_interface_id,
+                await self._loader.do_with_retry(
+                    lambda: self._lookup.template_names(template_or_interface_id), token=token
+                ),
+            )
+
+            resolved_interface_ids = Codec._resolve_single_name(
+                template_or_interface_id,
+                await self._loader.do_with_retry(
+                    lambda: self._lookup.interface_names(template_or_interface_id), token=token
+                ),
+            )
+
+            if resolved_template_ids:
+                requested_templates.update(resolved_template_ids)
+            elif resolved_interface_ids:
+                requested_interfaces.update(resolved_interface_ids)
+            elif package_ref(template_or_interface_id) == STAR:
+                # in the event that we can't resolve this to a template ID or interface ID on the
+                # client, there's a pretty good chance this template doesn't exist on the server
+                #
+                # being able to specify a template reference without a package ID or package
+                # name at all is strictly something dazl does on the client side to be nice;
+                # there is no way for this operation to succeed on the server
+                raise NameNotFoundError(template_or_interface_id)
+            else:
+                # just pass the user's string in exactly, and let the server return a
+                # template-not-found error as expected
+                requested_templates.add(template_or_interface_id)
+
+        return sorted(requested_templates), sorted(requested_interfaces)
+
+    @staticmethod
+    def _resolve_single_name(
+        original_name: TypeConName, resolved_names: Collection[TypeConName], /
+    ) -> Collection[TypeConName]:
+        original_package_ref = package_ref(original_name)
+        if original_package_ref == STAR:
+            # if the caller originally requested a name without a package reference,
+            # then use the ones that we have resolved
+            return resolved_names
+        else:
+            return [original_name]
 
     async def encode_value(
         self, item_type: Type, obj: Any, /, *, token: Optional[TokenOrTokenProvider] = None
