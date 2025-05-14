@@ -12,6 +12,8 @@ let
     python39
     python310
     python311
+    python311Packages.pip
+    python311Packages.setuptools
     python312
     python313
     yamlfmt
