@@ -50,6 +50,7 @@ from ..api_types import (
     ExerciseByKeyCommand,
     ExerciseCommand,
     ExerciseResponse,
+    IdentityProviderAdmin,
     InterfaceView,
     MeteringReport,
     MeteringReportApplication,
@@ -367,6 +368,10 @@ class Codec:
     def encode_right(right: Right, /) -> lapiadminpb.Right:
         if right == Admin:
             return lapiadminpb.Right(participant_admin=lapiadminpb.Right.ParticipantAdmin())
+        elif right == IdentityProviderAdmin:
+            return lapiadminpb.Right(
+                identity_provider_admin=lapiadminpb.Right.IdentityProviderAdmin()
+            )
         elif isinstance(right, ReadAs):
             return lapiadminpb.Right(can_read_as=lapiadminpb.Right.CanReadAs(party=right.party))
         elif isinstance(right, ActAs):
@@ -556,6 +561,8 @@ class Codec:
         kind = right.WhichOneof("kind")
         if kind == "participant_admin":
             return Admin
+        elif kind == "identity_provider_admin":
+            return IdentityProviderAdmin
         elif kind == "can_read_as":
             return ReadAs(Party(right.can_read_as.party))
         elif kind == "can_act_as":
