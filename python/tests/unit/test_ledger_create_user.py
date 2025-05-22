@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from dazl import connect
-from dazl.ledger import ActAs, Admin, ReadAs, User
+from dazl.ledger import ActAs, Admin, IdentityProviderAdmin, ReadAs, User
 from dazl.testing import SandboxLauncher
 import pytest
 
@@ -22,7 +22,7 @@ async def test_ledger_create_user_with_rights(sandbox: SandboxLauncher) -> None:
         party_info = await conn.allocate_party()
         await conn.create_user(
             User("testuser2", party_info.party),
-            [ActAs(party_info.party), ReadAs(party_info.party), Admin],
+            [ActAs(party_info.party), ReadAs(party_info.party), Admin, IdentityProviderAdmin],
         )
 
 

@@ -55,6 +55,7 @@ __all__ = [
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExerciseResponse",
+    "IdentityProviderAdmin",
     "InterfaceView",
     "MeteringReport",
     "MeteringReportApplication",
@@ -738,6 +739,18 @@ class _Admin(Right):
 
 
 Admin = _Admin()
+
+
+@final
+class _IdentityProviderAdmin(Right):
+    __slots__: Final = ()
+    __match_args__: Final = ()
+
+    def __repr__(self) -> str:
+        return "IdentityProviderAdmin"
+
+
+IdentityProviderAdmin = _IdentityProviderAdmin()
 
 
 class PartyInfo:
