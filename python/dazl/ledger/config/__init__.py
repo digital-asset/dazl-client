@@ -307,6 +307,8 @@ class Config:
         url_config = create_url(**url_config_args)
 
         access_config_args = AccessConfigArgs()
+        if "user_id" in kwargs:
+            access_config_args["user_id"] = kwargs["user_id"]
         if "read_as" in kwargs:
             access_config_args["read_as"] = kwargs["read_as"]
         if "act_as" in kwargs:

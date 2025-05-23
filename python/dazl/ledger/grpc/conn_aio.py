@@ -156,7 +156,8 @@ class Connection(aio.Connection):
             read_as=to_parties(self._config.access.read_as),
             act_as=to_parties(self._config.access.act_as),
             ledger_id=self._config.access.ledger_id,
-            user_id_or_application_name=self._config.access.application_name,
+            user_id_or_application_name=self._config.access.user_id
+            or self._config.access.application_name,
             token=self._config.access.token,
             timeout=self._config.url.retry_timeout,
         )

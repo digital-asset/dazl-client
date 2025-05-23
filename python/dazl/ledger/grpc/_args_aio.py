@@ -69,29 +69,44 @@ class CallContext(CallContextBase):
         Return an overall :class:`CommandMeta` for the effective values of this call.
         """
         if self.read_as is None and self.act_as is None:
-            if self.token is None:
-                if self.user_id_or_application_name is None:
-                    # if absolutely no identifying information at all has been supplied, there
-                    # simply isn't anything more that can be done
-                    raise ValueError(
-                        "either read_as/act_as, application_name, user_id, or a token must be specified"
+            if self.token:
+                parsed_token = parse_token(self.token)
+                if parsed_token.token_version == 1:
+                    self.read_as = parsed_token.read_as
+                    self.act_as = parsed_token.act_as
+                    if parsed_token.ledger_id is not None:
+                        self.ledger_id = parsed_token.ledger_id
+                    if self.user_id_or_application_name is not None:
+                        self.user_id_or_application_name = parsed_token.application_name
+
+                elif parsed_token.token_version == 2:
+                    if self.user_id_or_application_name is None:
+                        self.user_id_or_application_name = parsed_token.user_id
+                    elif self.user_id_or_application_name != parsed_token.user_id:
+                        raise ValueError("")
+
+                    stub = self.grpc_stub(lapiadminpb.UserManagementServiceStub)
+                    request = lapiadminpb.ListUserRightsRequest(
+                        user_id=self.user_id_or_application_name
                     )
+                    response = await stub.ListUserRights(request, **self.grpc_kwargs)
 
-            parsed_token = parse_token(self.token)
-            if parsed_token.token_version == 1:
-                self.read_as = parsed_token.read_as
-                self.act_as = parsed_token.act_as
-                if parsed_token.ledger_id is not None:
-                    self.ledger_id = parsed_token.ledger_id
-                if self.user_id_or_application_name is not None:
-                    self.user_id_or_application_name = parsed_token.application_name
+                    read_as = set()
+                    act_as = set()
+                    for pb in response.rights:
+                        right = Codec.decode_right(pb)
+                        if isinstance(right, ActAs):
+                            act_as.add(right.party)
+                        elif isinstance(right, ReadAs):
+                            read_as.add(right.party)
+                    self.read_as = sorted(read_as)
+                    self.act_as = sorted(act_as)
+                else:
+                    assert_never(parsed_token.token_version)
 
-            elif parsed_token.token_version == 2:
-                if self.user_id_or_application_name is None:
-                    self.user_id_or_application_name = parsed_token.user_id
-                elif self.user_id_or_application_name != parsed_token.user_id:
-                    raise ValueError("")
-
+            elif self.user_id_or_application_name:
+                # no token; this could be because the ledger is unauthed, or
+                # perhaps there is an authenticating proxy between us and the ledger
                 stub = self.grpc_stub(lapiadminpb.UserManagementServiceStub)
                 request = lapiadminpb.ListUserRightsRequest(
                     user_id=self.user_id_or_application_name
@@ -108,8 +123,13 @@ class CallContext(CallContextBase):
                         read_as.add(right.party)
                 self.read_as = sorted(read_as)
                 self.act_as = sorted(act_as)
+
             else:
-                assert_never(parsed_token.token_version)
+                # if absolutely no identifying information at all has been supplied, there
+                # simply isn't anything more that can be done
+                raise ValueError(
+                    "either read_as/act_as, application_name, user_id, or a token must be specified"
+                )
 
         if self.user_id_or_application_name is None:
             # TODO: avoid double-parsing the token if we can
