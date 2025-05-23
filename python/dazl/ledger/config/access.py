@@ -43,6 +43,7 @@ def parties_from_env(*env_vars: str) -> Optional[AbstractSet[Party]]:
 
 
 class AccessConfigArgs(TypedDict, total=False):
+    user_id: Optional[str]
     read_as: Optional[Parties]
     act_as: Optional[Parties]
     admin: Optional[bool]
@@ -59,6 +60,7 @@ def create_access(**kwargs: Unpack[AccessConfigArgs]) -> AccessConfig:
 
     See :meth:`Config.create` for a more detailed description of these parameters.
     """
+    user_id = kwargs.get("user_id", os.getenv("DAML_USER_ID", ""))
     read_as = kwargs.get("read_as", parties_from_env("DAML_LEDGER_READ_AS", "DABL_PUBLIC_PARTY"))
     act_as = kwargs.get("act_as", parties_from_env("DAML_LEDGER_ACT_AS", "DAML_LEDGER_PARTY"))
     admin = kwargs.get("admin", None)
@@ -78,6 +80,7 @@ def create_access(**kwargs: Unpack[AccessConfigArgs]) -> AccessConfig:
                 token = lambda: Path(oauth_token_file).read_text().strip()
 
     return AccessConfig(
+        user_id=user_id,
         read_as=read_as,
         act_as=act_as,
         admin=admin,
@@ -101,6 +104,7 @@ class AccessConfig:
     Configuration parameters for providing access to a ledger.
     """
 
+    user_id: Optional[str]
     read_as: Optional[Parties]
     act_as: Optional[Parties]
     admin: Optional[bool]
@@ -111,6 +115,7 @@ class AccessConfig:
     def __init__(
         self,
         *,
+        user_id: Optional[str] = None,
         read_as: Optional[Parties] = None,
         act_as: Optional[Parties] = None,
         admin: Optional[bool] = None,
@@ -118,6 +123,7 @@ class AccessConfig:
         application_name: Optional[str] = None,
         token: Optional[TokenOrTokenProvider] = None,
     ) -> None:
+        self.user_id = user_id
         self.read_as = read_as
         self.act_as = act_as
         self.admin = admin
