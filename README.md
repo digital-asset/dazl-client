@@ -25,10 +25,10 @@ pip install --user dazl
 
 Requirements
 ------------
-* Python 3.9+
-* Go 1.22
+* Python 3.10+
+* Go 1.23
 * [Daml SDK](https://www.daml.com)
-    * Daml 2: 2.7 or later
+    * Daml 2: 2.10 or later
 
 Examples
 --------

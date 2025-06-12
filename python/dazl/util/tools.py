@@ -7,7 +7,7 @@ This module contains miscellaneous utility methods that don't really fit anywher
 
 from __future__ import annotations
 
-from typing import Generator, Iterable, Tuple, TypeVar
+from typing import Generator, Iterable, TypeVar
 
 T = TypeVar("T")
 K = TypeVar("K")
@@ -17,7 +17,7 @@ V = TypeVar("V")
 __all__ = ["boundary_iter", "flatten"]
 
 
-def boundary_iter(obj: Iterable[T], /) -> Generator[Tuple[bool, T], None, None]:
+def boundary_iter(obj: Iterable[T], /) -> Generator[tuple[bool, T], None, None]:
     """
     Iterates over an iterable, returning a boolean and the underlying values indicating
     whether the iterator has reached its last item.

@@ -14,28 +14,6 @@ from .types import BOOL, BYTES, FLOAT, INT, STRING, PyType
 __all__ = ["py_message_package", "py_service_package", "py_scalar_type"]
 
 
-FLOAT_TYPES = frozenset(
-    [
-        FieldDescriptorProto.TYPE_DOUBLE,
-        FieldDescriptorProto.TYPE_FIXED32,
-        FieldDescriptorProto.TYPE_FIXED64,
-        FieldDescriptorProto.TYPE_FLOAT,
-        FieldDescriptorProto.TYPE_SFIXED32,
-        FieldDescriptorProto.TYPE_SFIXED64,
-    ]
-)
-INT_TYPES = frozenset(
-    [
-        FieldDescriptorProto.TYPE_INT32,
-        FieldDescriptorProto.TYPE_INT64,
-        FieldDescriptorProto.TYPE_SINT32,
-        FieldDescriptorProto.TYPE_SINT64,
-        FieldDescriptorProto.TYPE_UINT32,
-        FieldDescriptorProto.TYPE_UINT64,
-    ]
-)
-
-
 def py_scalar_type(fd_type: FieldDescriptorProto.Type.V, /) -> Optional[PyType]:
     """
     Return an appropriate :class:`PyType` for the given field type, or ``None`` if the type is a
@@ -44,17 +22,33 @@ def py_scalar_type(fd_type: FieldDescriptorProto.Type.V, /) -> Optional[PyType]:
     :param fd_type: The type descriptor.
     :return: A representative :class:`PyType`.
     """
-    if fd_type in FLOAT_TYPES:
-        return FLOAT
-    elif fd_type in INT_TYPES:
-        return INT
-    elif fd_type == FieldDescriptorProto.TYPE_BOOL:
-        return BOOL
-    elif fd_type == FieldDescriptorProto.TYPE_STRING:
-        return STRING
-    elif fd_type == FieldDescriptorProto.TYPE_BYTES:
-        return BYTES
-    return None
+    match fd_type:
+        case (
+            FieldDescriptorProto.TYPE_DOUBLE
+            | FieldDescriptorProto.TYPE_FIXED32
+            | FieldDescriptorProto.TYPE_FIXED64
+            | FieldDescriptorProto.TYPE_FLOAT
+            | FieldDescriptorProto.TYPE_SFIXED32
+            | FieldDescriptorProto.TYPE_SFIXED64
+        ):
+            return FLOAT
+        case (
+            FieldDescriptorProto.TYPE_INT32
+            | FieldDescriptorProto.TYPE_INT64
+            | FieldDescriptorProto.TYPE_SINT32
+            | FieldDescriptorProto.TYPE_SINT64
+            | FieldDescriptorProto.TYPE_UINT32
+            | FieldDescriptorProto.TYPE_UINT64
+        ):
+            return INT
+        case FieldDescriptorProto.TYPE_BOOL:
+            return BOOL
+        case FieldDescriptorProto.TYPE_STRING:
+            return STRING
+        case FieldDescriptorProto.TYPE_BYTES:
+            return BYTES
+        case _:
+            return None
 
 
 def py_message_package(file_name: str, /) -> str:

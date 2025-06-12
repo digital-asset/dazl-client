@@ -11,9 +11,9 @@ from ..prim import Parties, Party, TimeDeltaLike, to_timedelta
 from .auth import TokenOrTokenProvider, get_token, parse_token
 
 if sys.version_info >= (3, 11):
-    from typing import Self
+    from typing import Self, assert_never
 else:
-    from typing_extensions import Self
+    from typing_extensions import Self, assert_never
 
 __all__ = [
     "CallParameters",
@@ -178,10 +178,13 @@ class CallContext:
         if user_id_or_application_name is None and parsed_token is not None:
             # as a last resort, if we can't find a user_id/application_id at any level,
             # try to extract it from the token
-            if parsed_token.token_version == 1:
-                user_id_or_application_name = parsed_token.application_name
-            elif parsed_token.token_version == 2:
-                user_id_or_application_name = parsed_token.user_id
+            match parsed_token.token_version:
+                case 1:
+                    user_id_or_application_name = parsed_token.application_name
+                case 2:
+                    user_id_or_application_name = parsed_token.user_id
+                case _:
+                    assert_never(parsed_token.token_version)
 
         # compute the effective timeout for this call
         call_timeout = call.get("timeout")

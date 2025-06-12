@@ -5,23 +5,20 @@ from __future__ import annotations
 
 from collections.abc import Sequence as Seq
 from os import PathLike
-from typing import (
-    AsyncContextManager,
-    BinaryIO,
-    Callable,
-    Literal,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-    overload,
-)
+import sys
+from typing import AsyncContextManager, BinaryIO, Callable, Literal, Optional, Sequence, overload
 
 from ..ledger.aio import Connection
 from ..prim import Parties, Party
 
+if sys.version_info >= (3, 11):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
+
 __all__ = ["connect_with_new_party"]
-NameGenFn = Callable[[int], Optional[str]]
+
+NameGenFn: TypeAlias = Callable[[int], Optional[str]]
 
 @overload
 def connect_with_new_party(
@@ -32,9 +29,9 @@ def connect_with_new_party(
     act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
-    identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None,
+    dar: Optional[str | bytes | PathLike | BinaryIO] = None,
+    identifier_hint: Optional[str | NameGenFn] = None,
+    display_name: Optional[str | NameGenFn] = None,
 ) -> AsyncContextManager[ConnectionWithParty]: ...
 @overload
 def connect_with_new_party(
@@ -45,10 +42,10 @@ def connect_with_new_party(
     act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
-    identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None,
-) -> AsyncContextManager[Tuple[ConnectionWithParty, ConnectionWithParty]]: ...
+    dar: Optional[str | bytes | PathLike | BinaryIO] = None,
+    identifier_hint: Optional[str | NameGenFn] = None,
+    display_name: Optional[str | NameGenFn] = None,
+) -> AsyncContextManager[tuple[ConnectionWithParty, ConnectionWithParty]]: ...
 @overload
 def connect_with_new_party(
     *,
@@ -58,10 +55,10 @@ def connect_with_new_party(
     act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
-    identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None,
-) -> AsyncContextManager[Tuple[ConnectionWithParty, ConnectionWithParty, ConnectionWithParty]]: ...
+    dar: Optional[str | bytes | PathLike | BinaryIO] = None,
+    identifier_hint: Optional[str | NameGenFn] = None,
+    display_name: Optional[str | NameGenFn] = None,
+) -> AsyncContextManager[tuple[ConnectionWithParty, ConnectionWithParty, ConnectionWithParty]]: ...
 @overload
 def connect_with_new_party(
     *,
@@ -71,11 +68,11 @@ def connect_with_new_party(
     act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
-    identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None,
+    dar: Optional[str | bytes | PathLike | BinaryIO] = None,
+    identifier_hint: Optional[str | NameGenFn] = None,
+    display_name: Optional[str | NameGenFn] = None,
 ) -> AsyncContextManager[
-    Tuple[ConnectionWithParty, ConnectionWithParty, ConnectionWithParty, ConnectionWithParty]
+    tuple[ConnectionWithParty, ConnectionWithParty, ConnectionWithParty, ConnectionWithParty]
 ]: ...
 @overload
 def connect_with_new_party(
@@ -86,9 +83,9 @@ def connect_with_new_party(
     act_as: Optional[Parties] = None,
     admin: Optional[bool] = False,
     ledger_id: Optional[str] = None,
-    dar: Union[None, str, bytes, PathLike, BinaryIO] = None,
-    identifier_hint: Union[None, str, NameGenFn] = None,
-    display_name: Union[None, str, NameGenFn] = None,
+    dar: Optional[str | bytes | PathLike | BinaryIO] = None,
+    identifier_hint: Optional[str | NameGenFn] = None,
+    display_name: Optional[str | NameGenFn] = None,
 ) -> AsyncContextManager[Sequence[ConnectionWithParty]]: ...
 
 class ConnectionWithParty(Seq["ConnectionWithParty"]):

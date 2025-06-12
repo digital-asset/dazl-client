@@ -12,7 +12,6 @@ from typing import (
     Protocol,
     Sequence,
     TypeVar,
-    Union,
     runtime_checkable,
 )
 
@@ -72,7 +71,7 @@ class Connection(PackageService, Protocol):
     ) -> None: ...
     def create(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         payload: ContractData,
         /,
         *,
@@ -99,7 +98,7 @@ class Connection(PackageService, Protocol):
     ) -> ExerciseResponse: ...
     def create_and_exercise(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         payload: ContractData,
         choice_name: str,
         argument: Optional[ContractData] = None,
@@ -114,7 +113,7 @@ class Connection(PackageService, Protocol):
     ) -> ExerciseResponse: ...
     def exercise_by_key(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         choice_name: str,
         key: Any,
         argument: Optional[ContractData] = None,
@@ -160,7 +159,7 @@ class Connection(PackageService, Protocol):
     ) -> str: ...
     def query(
         self,
-        template_id: Union[str, TypeConName] = "*",
+        template_id: str | TypeConName = "*",
         query: Query = None,
         /,
         *,
@@ -177,7 +176,7 @@ class Connection(PackageService, Protocol):
     ) -> QueryStream: ...
     def stream(
         self,
-        template_id: Union[str, TypeConName] = "*",
+        template_id: str | TypeConName = "*",
         query: Query = None,
         /,
         *,
@@ -265,9 +264,9 @@ class Connection(PackageService, Protocol):
 @runtime_checkable
 class QueryStream(Protocol):
     def creates(self) -> Iterator[CreateEvent]: ...
-    def events(self) -> Iterator[Union[CreateEvent, ArchiveEvent]]: ...
-    def items(self) -> Iterator[Union[CreateEvent, ArchiveEvent, Boundary]]: ...
-    def __iter__(self) -> Iterator[Union[CreateEvent, ArchiveEvent, Boundary]]: ...
+    def events(self) -> Iterator[CreateEvent | ArchiveEvent]: ...
+    def items(self) -> Iterator[CreateEvent | ArchiveEvent | Boundary]: ...
+    def __iter__(self) -> Iterator[CreateEvent | ArchiveEvent | Boundary]: ...
     def run(self) -> None: ...
     def close(self) -> None: ...
     def __enter__(self: Self) -> Self: ...

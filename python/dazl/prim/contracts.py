@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Mapping, Union
+from typing import TYPE_CHECKING, Any, Mapping
 
 if TYPE_CHECKING:
     from ..damlast.daml_lf_1 import TypeConName
@@ -46,7 +46,7 @@ class ContractId:
         """
         return self._value_type
 
-    def to_interface(self, interface_id: Union[str, TypeConName], /) -> ContractId:
+    def to_interface(self, interface_id: str | TypeConName, /) -> ContractId:
         """
         Re-tag this ContractId as an ID for the specified interface.
         """

@@ -8,12 +8,12 @@ This module contains helper methods for detecting terminal capabilities.
 from __future__ import annotations
 
 from subprocess import DEVNULL, PIPE, Popen
-from typing import Optional, Tuple
+from typing import Optional
 
 __all__ = ["termsize", "print_termcap"]
 
 
-def termsize() -> Tuple[Optional[int], Optional[int]]:
+def termsize() -> tuple[Optional[int], Optional[int]]:
     """
     Return the current size of the terminal. If the current terminal is not a tty, then
     ``(None, None)`` is returned.
