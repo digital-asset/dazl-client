@@ -6,7 +6,8 @@ from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -67,10 +68,12 @@ class VetDarResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class UnvetDarRequest(_message.Message):
-    __slots__ = ("dar_hash",)
+    __slots__ = ("dar_hash", "synchronize")
     DAR_HASH_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZE_FIELD_NUMBER: _ClassVar[int]
     dar_hash: str
-    def __init__(self, dar_hash: _Optional[str] = ...) -> None: ...
+    synchronize: bool
+    def __init__(self, dar_hash: _Optional[str] = ..., synchronize: bool = ...) -> None: ...
 
 class UnvetDarResponse(_message.Message):
     __slots__ = ()

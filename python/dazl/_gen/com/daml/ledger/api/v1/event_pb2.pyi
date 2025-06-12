@@ -9,7 +9,8 @@ from google.rpc import status_pb2 as _status_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -62,19 +63,21 @@ class InterfaceView(_message.Message):
     def __init__(self, interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., view_status: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., view_value: _Optional[_Union[_value_pb2.Record, _Mapping]] = ...) -> None: ...
 
 class ArchivedEvent(_message.Message):
-    __slots__ = ("event_id", "contract_id", "template_id", "witness_parties")
+    __slots__ = ("event_id", "contract_id", "template_id", "witness_parties", "package_name")
     EVENT_ID_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
     TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     WITNESS_PARTIES_FIELD_NUMBER: _ClassVar[int]
+    PACKAGE_NAME_FIELD_NUMBER: _ClassVar[int]
     event_id: str
     contract_id: str
     template_id: _value_pb2.Identifier
     witness_parties: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., witness_parties: _Optional[_Iterable[str]] = ...) -> None: ...
+    package_name: _wrappers_pb2.StringValue
+    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., witness_parties: _Optional[_Iterable[str]] = ..., package_name: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class ExercisedEvent(_message.Message):
-    __slots__ = ("event_id", "contract_id", "template_id", "package_name", "interface_id", "choice", "choice_argument", "acting_parties", "consuming", "witness_parties", "child_event_ids", "exercise_result")
+    __slots__ = ("event_id", "contract_id", "template_id", "package_name", "interface_id", "choice", "choice_argument", "acting_parties", "consuming", "witness_parties", "child_event_ids", "exercise_result", "choice_package_id")
     EVENT_ID_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
     TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
@@ -87,6 +90,7 @@ class ExercisedEvent(_message.Message):
     WITNESS_PARTIES_FIELD_NUMBER: _ClassVar[int]
     CHILD_EVENT_IDS_FIELD_NUMBER: _ClassVar[int]
     EXERCISE_RESULT_FIELD_NUMBER: _ClassVar[int]
+    CHOICE_PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
     event_id: str
     contract_id: str
     template_id: _value_pb2.Identifier
@@ -99,4 +103,5 @@ class ExercisedEvent(_message.Message):
     witness_parties: _containers.RepeatedScalarFieldContainer[str]
     child_event_ids: _containers.RepeatedScalarFieldContainer[str]
     exercise_result: _value_pb2.Value
-    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., package_name: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice: _Optional[str] = ..., choice_argument: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., consuming: bool = ..., witness_parties: _Optional[_Iterable[str]] = ..., child_event_ids: _Optional[_Iterable[str]] = ..., exercise_result: _Optional[_Union[_value_pb2.Value, _Mapping]] = ...) -> None: ...
+    choice_package_id: _wrappers_pb2.StringValue
+    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., package_name: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice: _Optional[str] = ..., choice_argument: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., consuming: bool = ..., witness_parties: _Optional[_Iterable[str]] = ..., child_event_ids: _Optional[_Iterable[str]] = ..., exercise_result: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., choice_package_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...

@@ -10,7 +10,7 @@ from .mediator_response_pb2 import MediatorResponse, MerkleSeqIndex, ViewPositio
 from .participant_transaction_pb2 import ActionDescription, CreatedContract, EncryptedViewMessage, InputContract, SessionKeyLookup, ViewCommonData, ViewParticipantData
 from .participant_transfer_pb2 import TransferInView
 from .synchronization_pb2 import EnvelopeContent
-from .topology_pb2 import DomainGovernanceTransaction, DomainParametersChange, TopologyTransaction
+from .topology_pb2 import DomainGovernanceTransaction, DomainParametersChange, TopologyStateUpdate, TopologyTransaction
 
 __all__ = [
     "ActionDescription",
@@ -30,6 +30,7 @@ __all__ = [
     "RejectionReason",
     "SerializableContract",
     "SessionKeyLookup",
+    "TopologyStateUpdate",
     "TopologyTransaction",
     "TransactionResultMessage",
     "TransferInView",

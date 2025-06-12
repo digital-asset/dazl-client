@@ -6,10 +6,12 @@
 from .mediator_pb2 import TransactionResultMessage, TransferResult, Verdict
 from .participant_transaction_pb2 import ActionDescription, ViewParticipantData
 from .synchronization_pb2 import EnvelopeContent
+from .topology_pb2 import TopologyTransaction
 
 __all__ = [
     "ActionDescription",
     "EnvelopeContent",
+    "TopologyTransaction",
     "TransactionResultMessage",
     "TransferResult",
     "Verdict",

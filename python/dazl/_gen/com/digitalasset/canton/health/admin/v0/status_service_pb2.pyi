@@ -8,7 +8,8 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -113,16 +114,18 @@ class ParticipantStatusInfo(_message.Message):
     def __init__(self, connected_domains: _Optional[_Iterable[_Union[ParticipantStatusInfo.ConnectedDomain, _Mapping]]] = ..., active: bool = ...) -> None: ...
 
 class SequencerNodeStatus(_message.Message):
-    __slots__ = ("connected_participants", "sequencer", "domain_id", "admin")
+    __slots__ = ("connected_participants", "connected_mediators", "sequencer", "domain_id", "admin")
     CONNECTED_PARTICIPANTS_FIELD_NUMBER: _ClassVar[int]
+    CONNECTED_MEDIATORS_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     ADMIN_FIELD_NUMBER: _ClassVar[int]
     connected_participants: _containers.RepeatedScalarFieldContainer[str]
+    connected_mediators: _containers.RepeatedScalarFieldContainer[str]
     sequencer: SequencerHealthStatus
     domain_id: str
     admin: SequencerAdminStatus
-    def __init__(self, connected_participants: _Optional[_Iterable[str]] = ..., sequencer: _Optional[_Union[SequencerHealthStatus, _Mapping]] = ..., domain_id: _Optional[str] = ..., admin: _Optional[_Union[SequencerAdminStatus, _Mapping]] = ...) -> None: ...
+    def __init__(self, connected_participants: _Optional[_Iterable[str]] = ..., connected_mediators: _Optional[_Iterable[str]] = ..., sequencer: _Optional[_Union[SequencerHealthStatus, _Mapping]] = ..., domain_id: _Optional[str] = ..., admin: _Optional[_Union[SequencerAdminStatus, _Mapping]] = ...) -> None: ...
 
 class SequencerHealthStatus(_message.Message):
     __slots__ = ("active", "details")

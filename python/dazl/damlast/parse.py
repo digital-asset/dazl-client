@@ -18,7 +18,7 @@ import sys
 import time
 from typing import Optional
 
-from .._gen.com.daml.daml_lf_1_16.daml_lf_pb2 import ArchivePayload
+from .._gen.com.daml.daml_lf_1_17.daml_lf_pb2 import ArchivePayload
 from .daml_lf_1 import Archive, PackageRef
 from .pb_parse import ProtobufParser
 

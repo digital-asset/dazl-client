@@ -9,7 +9,7 @@ import warnings
 
 from . import topology_manager_read_service_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2
 
-GRPC_GENERATED_VERSION = '1.67.1'
+GRPC_GENERATED_VERSION = '1.72.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -83,6 +83,11 @@ class TopologyManagerReadServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListVettedPackagesRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListVettedPackagesResult.FromString,
                 _registered_method=True)
+        self.ListCheckOnlyPackages = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v0.TopologyManagerReadService/ListCheckOnlyPackages',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListCheckOnlyPackagesRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListCheckOnlyPackagesResult.FromString,
+                _registered_method=True)
         self.ListDomainParametersChanges = channel.unary_unary(
                 '/com.digitalasset.canton.topology.admin.v0.TopologyManagerReadService/ListDomainParametersChanges',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListDomainParametersChangesRequest.SerializeToString,
@@ -152,6 +157,12 @@ class TopologyManagerReadServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListCheckOnlyPackages(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def ListDomainParametersChanges(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -211,6 +222,11 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
                     servicer.ListVettedPackages,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListVettedPackagesRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListVettedPackagesResult.SerializeToString,
+            ),
+            'ListCheckOnlyPackages': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListCheckOnlyPackages,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListCheckOnlyPackagesRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListCheckOnlyPackagesResult.SerializeToString,
             ),
             'ListDomainParametersChanges': grpc.unary_unary_rpc_method_handler(
                     servicer.ListDomainParametersChanges,
@@ -466,6 +482,33 @@ class TopologyManagerReadService(object):
             '/com.digitalasset.canton.topology.admin.v0.TopologyManagerReadService/ListVettedPackages',
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListVettedPackagesRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListVettedPackagesResult.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListCheckOnlyPackages(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v0.TopologyManagerReadService/ListCheckOnlyPackages',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListCheckOnlyPackagesRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2.ListCheckOnlyPackagesResult.FromString,
             options,
             channel_credentials,
             insecure,

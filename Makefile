@@ -19,7 +19,7 @@ packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
 
 .PHONY: generate
 generate: .venv/poetry.lock
-	$(python) -m _dazl update 2.9.5 protobufs-3.2.0-snapshot.20241106.0
+	$(python) -m _dazl update 2.10.1 protobufs-3.3.0-snapshot.20250502.0
 
 ####################################################################################################
 # Python

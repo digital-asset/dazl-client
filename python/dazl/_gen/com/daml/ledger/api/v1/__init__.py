@@ -8,7 +8,7 @@ from .event_pb2 import ArchivedEvent, CreatedEvent, Event, ExercisedEvent, Inter
 from .transaction_filter_pb2 import Filters, InclusiveFilters, InterfaceFilter, TemplateFilter, TransactionFilter
 from .active_contracts_service_pb2 import GetActiveContractsRequest, GetActiveContractsResponse
 from .active_contracts_service_pb2_grpc import ActiveContractsServiceStub
-from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, DisclosedContract, ExerciseByKeyCommand, ExerciseCommand
+from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, DisclosedContract, ExerciseByKeyCommand, ExerciseCommand, PrefetchContractKey
 from .trace_context_pb2 import TraceContext
 from .completion_pb2 import Completion
 from .ledger_offset_pb2 import LedgerOffset
@@ -119,6 +119,7 @@ __all__ = [
     "PackageServiceStub",
     "PackageStatus",
     "PartyManagementFeature",
+    "PrefetchContractKey",
     "Record",
     "RecordField",
     "StreamingPrunedOffsets",

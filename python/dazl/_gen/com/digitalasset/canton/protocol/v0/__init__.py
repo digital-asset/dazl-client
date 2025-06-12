@@ -13,7 +13,7 @@ from .acs_commitments_pb2 import AcsCommitment
 from .causality_pb2 import CausalityMessage, CausalityUpdate, TransactionUpdate, TransferInUpdate, TransferOutUpdate, VectorClock
 from .mediator_response_pb2 import LocalReject, LocalVerdict, MediatorResponse
 from .mediator_pb2 import InformeeTree, MalformedMediatorRequestResult, MediatorRejection, RejectionReason, RejectionReasons, TransactionResultMessage, TransferResult, Verdict
-from .topology_pb2 import DomainGovernanceTransaction, DomainParametersChange, DomainTopologyTransactionMessage, IdentifierDelegation, LegalIdentityClaim, MediatorDomainState, NamespaceDelegation, OwnerToKeyMapping, ParticipantPermission, ParticipantState, PartyToParticipant, RegisterTopologyTransactionRequest, RegisterTopologyTransactionResponse, RequestSide, SignedLegalIdentityClaim, SignedTopologyTransaction, TopologyChangeOp, TopologyStateUpdate, TopologyTransaction, TrustLevel, VettedPackages
+from .topology_pb2 import CheckOnlyPackages, DomainGovernanceTransaction, DomainParametersChange, DomainTopologyTransactionMessage, IdentifierDelegation, LegalIdentityClaim, MediatorDomainState, NamespaceDelegation, OwnerToKeyMapping, ParticipantPermission, ParticipantState, PartyToParticipant, RegisterTopologyTransactionRequest, RegisterTopologyTransactionResponse, RequestSide, SignedLegalIdentityClaim, SignedTopologyTransaction, TopologyChangeOp, TopologyStateUpdate, TopologyTransaction, TrustLevel, VettedPackages
 from .quorum_pb2 import PartyIndexAndWeight, Quorum, TrustParty
 from .storage_pb2 import StoredParties
 from .synchronization_pb2 import EnvelopeContent, SignedProtocolMessage
@@ -26,6 +26,7 @@ __all__ = [
     "BlindableNode",
     "CausalityMessage",
     "CausalityUpdate",
+    "CheckOnlyPackages",
     "CommonMetadata",
     "CompressedBatch",
     "DeduplicationPeriod",

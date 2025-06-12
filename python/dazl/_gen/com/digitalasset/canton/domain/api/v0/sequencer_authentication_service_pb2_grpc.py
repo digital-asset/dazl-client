@@ -9,7 +9,7 @@ import warnings
 
 from . import sequencer_authentication_service_pb2 as com_dot_digitalasset_dot_canton_dot_domain_dot_api_dot_v0_dot_sequencer__authentication__service__pb2
 
-GRPC_GENERATED_VERSION = '1.67.1'
+GRPC_GENERATED_VERSION = '1.72.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 

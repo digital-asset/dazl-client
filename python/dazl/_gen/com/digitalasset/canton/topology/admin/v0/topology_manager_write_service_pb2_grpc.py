@@ -9,7 +9,7 @@ import warnings
 
 from . import topology_manager_write_service_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2
 
-GRPC_GENERATED_VERSION = '1.67.1'
+GRPC_GENERATED_VERSION = '1.72.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -61,6 +61,11 @@ class TopologyManagerWriteServiceStub(object):
         self.AuthorizeVettedPackages = channel.unary_unary(
                 '/com.digitalasset.canton.topology.admin.v0.TopologyManagerWriteService/AuthorizeVettedPackages',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.VettedPackagesAuthorization.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.AuthorizationSuccess.FromString,
+                _registered_method=True)
+        self.AuthorizeCheckOnlyPackages = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v0.TopologyManagerWriteService/AuthorizeCheckOnlyPackages',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.CheckOnlyPackagesAuthorization.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.AuthorizationSuccess.FromString,
                 _registered_method=True)
         self.AuthorizeDomainParametersChange = channel.unary_unary(
@@ -118,6 +123,12 @@ class TopologyManagerWriteServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def AuthorizeCheckOnlyPackages(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def AuthorizeDomainParametersChange(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -168,6 +179,11 @@ def add_TopologyManagerWriteServiceServicer_to_server(servicer, server):
             'AuthorizeVettedPackages': grpc.unary_unary_rpc_method_handler(
                     servicer.AuthorizeVettedPackages,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.VettedPackagesAuthorization.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.AuthorizationSuccess.SerializeToString,
+            ),
+            'AuthorizeCheckOnlyPackages': grpc.unary_unary_rpc_method_handler(
+                    servicer.AuthorizeCheckOnlyPackages,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.CheckOnlyPackagesAuthorization.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.AuthorizationSuccess.SerializeToString,
             ),
             'AuthorizeDomainParametersChange': grpc.unary_unary_rpc_method_handler(
@@ -325,6 +341,33 @@ class TopologyManagerWriteService(object):
             target,
             '/com.digitalasset.canton.topology.admin.v0.TopologyManagerWriteService/AuthorizeVettedPackages',
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.VettedPackagesAuthorization.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.AuthorizationSuccess.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AuthorizeCheckOnlyPackages(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v0.TopologyManagerWriteService/AuthorizeCheckOnlyPackages',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.CheckOnlyPackagesAuthorization.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__write__service__pb2.AuthorizationSuccess.FromString,
             options,
             channel_credentials,

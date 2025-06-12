@@ -4,7 +4,7 @@
 # isort: skip_file
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar
+from typing import ClassVar as _ClassVar, Optional as _Optional
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -14,6 +14,8 @@ class SetPassive(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
     class Response(_message.Message):
-        __slots__ = ()
-        def __init__(self) -> None: ...
+        __slots__ = ("became_passive",)
+        BECAME_PASSIVE_FIELD_NUMBER: _ClassVar[int]
+        became_passive: bool
+        def __init__(self, became_passive: bool = ...) -> None: ...
     def __init__(self) -> None: ...

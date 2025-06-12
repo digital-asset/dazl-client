@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional, TypeVar, Union
 from zipfile import ZipFile
 
-from .._gen.com.daml.daml_lf_1_16 import daml_lf_pb2 as pb
+from .._gen.com.daml.daml_lf_1_17 import daml_lf_pb2 as pb
 from ..ledger.auth import TokenOrTokenProvider
 from ..prim import TimeDeltaLike
 from .daml_lf_1 import Archive, Package, PackageRef
