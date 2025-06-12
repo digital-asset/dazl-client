@@ -14,7 +14,8 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -220,6 +221,27 @@ class ListVettedPackagesResult(_message.Message):
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListVettedPackagesResult.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListVettedPackagesResult.Result, _Mapping]]] = ...) -> None: ...
+
+class ListCheckOnlyPackagesRequest(_message.Message):
+    __slots__ = ("base_query", "filter_participant")
+    BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
+    FILTER_PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
+    base_query: BaseQuery
+    filter_participant: str
+    def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., filter_participant: _Optional[str] = ...) -> None: ...
+
+class ListCheckOnlyPackagesResult(_message.Message):
+    __slots__ = ("results",)
+    class Result(_message.Message):
+        __slots__ = ("context", "item")
+        CONTEXT_FIELD_NUMBER: _ClassVar[int]
+        ITEM_FIELD_NUMBER: _ClassVar[int]
+        context: BaseResult
+        item: _topology_pb2.CheckOnlyPackages
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.CheckOnlyPackages, _Mapping]] = ...) -> None: ...
+    RESULTS_FIELD_NUMBER: _ClassVar[int]
+    results: _containers.RepeatedCompositeFieldContainer[ListCheckOnlyPackagesResult.Result]
+    def __init__(self, results: _Optional[_Iterable[_Union[ListCheckOnlyPackagesResult.Result, _Mapping]]] = ...) -> None: ...
 
 class ListDomainParametersChangesRequest(_message.Message):
     __slots__ = ("base_query",)

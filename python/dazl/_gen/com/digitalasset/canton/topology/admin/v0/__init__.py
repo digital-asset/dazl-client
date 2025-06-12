@@ -7,9 +7,9 @@ from .initialization_service_pb2 import GetIdResponse, InitIdRequest, InitIdResp
 from .initialization_service_pb2_grpc import InitializationServiceStub
 from .topology_aggregation_service_pb2 import ListKeyOwnersRequest, ListKeyOwnersResponse, ListPartiesRequest, ListPartiesResponse
 from .topology_aggregation_service_pb2_grpc import TopologyAggregationServiceStub
-from .topology_manager_read_service_pb2 import BaseQuery, BaseResult, ListAllRequest, ListAllResponse, ListAvailableStoresRequest, ListAvailableStoresResult, ListDomainParametersChangesRequest, ListDomainParametersChangesResult, ListIdentifierDelegationRequest, ListIdentifierDelegationResult, ListMediatorDomainStateRequest, ListMediatorDomainStateResult, ListNamespaceDelegationRequest, ListNamespaceDelegationResult, ListOwnerToKeyMappingRequest, ListOwnerToKeyMappingResult, ListParticipantDomainStateRequest, ListParticipantDomainStateResult, ListPartyToParticipantRequest, ListPartyToParticipantResult, ListSignedLegalIdentityClaimRequest, ListSignedLegalIdentityClaimResult, ListVettedPackagesRequest, ListVettedPackagesResult
+from .topology_manager_read_service_pb2 import BaseQuery, BaseResult, ListAllRequest, ListAllResponse, ListAvailableStoresRequest, ListAvailableStoresResult, ListCheckOnlyPackagesRequest, ListCheckOnlyPackagesResult, ListDomainParametersChangesRequest, ListDomainParametersChangesResult, ListIdentifierDelegationRequest, ListIdentifierDelegationResult, ListMediatorDomainStateRequest, ListMediatorDomainStateResult, ListNamespaceDelegationRequest, ListNamespaceDelegationResult, ListOwnerToKeyMappingRequest, ListOwnerToKeyMappingResult, ListParticipantDomainStateRequest, ListParticipantDomainStateResult, ListPartyToParticipantRequest, ListPartyToParticipantResult, ListSignedLegalIdentityClaimRequest, ListSignedLegalIdentityClaimResult, ListVettedPackagesRequest, ListVettedPackagesResult
 from .topology_manager_read_service_pb2_grpc import TopologyManagerReadServiceStub
-from .topology_manager_write_service_pb2 import AdditionSuccess, AuthorizationData, AuthorizationSuccess, DomainParametersChangeAuthorization, IdentifierDelegationAuthorization, MediatorDomainStateAuthorization, NamespaceDelegationAuthorization, OwnerToKeyMappingAuthorization, ParticipantDomainStateAuthorization, PartyToParticipantAuthorization, SignedTopologyTransactionAddition, VettedPackagesAuthorization
+from .topology_manager_write_service_pb2 import AdditionSuccess, AuthorizationData, AuthorizationSuccess, CheckOnlyPackagesAuthorization, DomainParametersChangeAuthorization, IdentifierDelegationAuthorization, MediatorDomainStateAuthorization, NamespaceDelegationAuthorization, OwnerToKeyMappingAuthorization, ParticipantDomainStateAuthorization, PartyToParticipantAuthorization, SignedTopologyTransactionAddition, VettedPackagesAuthorization
 from .topology_manager_write_service_pb2_grpc import TopologyManagerWriteServiceStub
 
 __all__ = [
@@ -18,6 +18,7 @@ __all__ = [
     "AuthorizationSuccess",
     "BaseQuery",
     "BaseResult",
+    "CheckOnlyPackagesAuthorization",
     "DomainParametersChangeAuthorization",
     "GetIdResponse",
     "IdentifierDelegationAuthorization",
@@ -28,6 +29,8 @@ __all__ = [
     "ListAllResponse",
     "ListAvailableStoresRequest",
     "ListAvailableStoresResult",
+    "ListCheckOnlyPackagesRequest",
+    "ListCheckOnlyPackagesResult",
     "ListDomainParametersChangesRequest",
     "ListDomainParametersChangesResult",
     "ListIdentifierDelegationRequest",

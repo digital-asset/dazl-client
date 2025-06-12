@@ -3,8 +3,9 @@
 # fmt: off
 # isort: skip_file
 
-from .participant_transaction_pb2 import ViewParticipantData
+from .participant_transaction_pb2 import ActionDescription, ViewParticipantData
 
 __all__ = [
+    "ActionDescription",
     "ViewParticipantData",
 ]

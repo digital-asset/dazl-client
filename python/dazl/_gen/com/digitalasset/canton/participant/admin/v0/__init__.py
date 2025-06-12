@@ -13,6 +13,8 @@ from .package_service_pb2 import DarDescription, GetDarRequest, GetDarResponse, 
 from .package_service_pb2_grpc import PackageServiceStub
 from .participant_repair_service_pb2 import AcsSnapshotChunk, ActiveContract, DownloadRequest, ExportAcsRequest, ExportAcsResponse, IgnoreEventsRequest, IgnoreEventsResponse, ImportAcsRequest, ImportAcsResponse, MigrateDomainRequest, MigrateDomainResponse, PurgeContractsRequest, PurgeContractsResponse, PurgeDeactivatedDomainRequest, PurgeDeactivatedDomainResponse, UnignoreEventsRequest, UnignoreEventsResponse, UploadRequest, UploadResponse
 from .participant_repair_service_pb2_grpc import ParticipantRepairServiceStub
+from .participant_status_service_pb2 import ConnectedDomain, ParticipantStatusRequest, ParticipantStatusResponse
+from .participant_status_service_pb2_grpc import ParticipantStatusServiceStub
 from .party_name_management_pb2 import SetPartyDisplayNameRequest, SetPartyDisplayNameResponse
 from .party_name_management_pb2_grpc import PartyNameManagementServiceStub
 from .ping_pong_service_pb2 import PingFailure, PingRequest, PingResponse, PingSuccess
@@ -38,6 +40,7 @@ __all__ = [
     "Agreement",
     "ConnectDomainRequest",
     "ConnectDomainResponse",
+    "ConnectedDomain",
     "CountInFlight",
     "DarDescription",
     "DisconnectDomainRequest",
@@ -85,6 +88,9 @@ __all__ = [
     "PackageDescription",
     "PackageServiceStub",
     "ParticipantRepairServiceStub",
+    "ParticipantStatusRequest",
+    "ParticipantStatusResponse",
+    "ParticipantStatusServiceStub",
     "PartyNameManagementServiceStub",
     "PingFailure",
     "PingRequest",

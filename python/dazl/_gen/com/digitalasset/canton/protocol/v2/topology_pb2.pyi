@@ -2,13 +2,41 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
-from ..v1 import topology_pb2 as _topology_pb2
+from ..v0 import topology_pb2 as _topology_pb2
+from ..v1 import topology_pb2 as _topology_pb2_1
 from . import domain_params_pb2 as _domain_params_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from collections.abc import Mapping as _Mapping
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
+
+class TopologyStateUpdate(_message.Message):
+    __slots__ = ("operation", "id", "namespace_delegation", "identifier_delegation", "owner_to_key_mapping", "party_to_participant", "signed_legal_identity_claim", "participant_state", "vetted_packages", "check_only_packages", "mediator_domain_state")
+    OPERATION_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NAMESPACE_DELEGATION_FIELD_NUMBER: _ClassVar[int]
+    IDENTIFIER_DELEGATION_FIELD_NUMBER: _ClassVar[int]
+    OWNER_TO_KEY_MAPPING_FIELD_NUMBER: _ClassVar[int]
+    PARTY_TO_PARTICIPANT_FIELD_NUMBER: _ClassVar[int]
+    SIGNED_LEGAL_IDENTITY_CLAIM_FIELD_NUMBER: _ClassVar[int]
+    PARTICIPANT_STATE_FIELD_NUMBER: _ClassVar[int]
+    VETTED_PACKAGES_FIELD_NUMBER: _ClassVar[int]
+    CHECK_ONLY_PACKAGES_FIELD_NUMBER: _ClassVar[int]
+    MEDIATOR_DOMAIN_STATE_FIELD_NUMBER: _ClassVar[int]
+    operation: _topology_pb2.TopologyChangeOp
+    id: str
+    namespace_delegation: _topology_pb2.NamespaceDelegation
+    identifier_delegation: _topology_pb2.IdentifierDelegation
+    owner_to_key_mapping: _topology_pb2.OwnerToKeyMapping
+    party_to_participant: _topology_pb2.PartyToParticipant
+    signed_legal_identity_claim: _topology_pb2.SignedLegalIdentityClaim
+    participant_state: _topology_pb2.ParticipantState
+    vetted_packages: _topology_pb2.VettedPackages
+    check_only_packages: _topology_pb2.CheckOnlyPackages
+    mediator_domain_state: _topology_pb2.MediatorDomainState
+    def __init__(self, operation: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., id: _Optional[str] = ..., namespace_delegation: _Optional[_Union[_topology_pb2.NamespaceDelegation, _Mapping]] = ..., identifier_delegation: _Optional[_Union[_topology_pb2.IdentifierDelegation, _Mapping]] = ..., owner_to_key_mapping: _Optional[_Union[_topology_pb2.OwnerToKeyMapping, _Mapping]] = ..., party_to_participant: _Optional[_Union[_topology_pb2.PartyToParticipant, _Mapping]] = ..., signed_legal_identity_claim: _Optional[_Union[_topology_pb2.SignedLegalIdentityClaim, _Mapping]] = ..., participant_state: _Optional[_Union[_topology_pb2.ParticipantState, _Mapping]] = ..., vetted_packages: _Optional[_Union[_topology_pb2.VettedPackages, _Mapping]] = ..., check_only_packages: _Optional[_Union[_topology_pb2.CheckOnlyPackages, _Mapping]] = ..., mediator_domain_state: _Optional[_Union[_topology_pb2.MediatorDomainState, _Mapping]] = ...) -> None: ...
 
 class DomainParametersChange(_message.Message):
     __slots__ = ("domain", "domain_parameters")
@@ -28,6 +56,6 @@ class TopologyTransaction(_message.Message):
     __slots__ = ("state_update", "domain_governance")
     STATE_UPDATE_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_GOVERNANCE_FIELD_NUMBER: _ClassVar[int]
-    state_update: _topology_pb2.TopologyStateUpdate
+    state_update: _topology_pb2_1.TopologyStateUpdate
     domain_governance: DomainGovernanceTransaction
-    def __init__(self, state_update: _Optional[_Union[_topology_pb2.TopologyStateUpdate, _Mapping]] = ..., domain_governance: _Optional[_Union[DomainGovernanceTransaction, _Mapping]] = ...) -> None: ...
+    def __init__(self, state_update: _Optional[_Union[_topology_pb2_1.TopologyStateUpdate, _Mapping]] = ..., domain_governance: _Optional[_Union[DomainGovernanceTransaction, _Mapping]] = ...) -> None: ...

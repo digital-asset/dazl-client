@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Optional, Sequence
 
 from . import daml_lf_1 as lf
-from .._gen.com.daml.daml_lf_1_16 import daml_lf_1_pb2 as pblf
+from .._gen.com.daml.daml_lf_1_17 import daml_lf_1_pb2 as pblf
 
 __all__ = ["ProtobufParser"]
 

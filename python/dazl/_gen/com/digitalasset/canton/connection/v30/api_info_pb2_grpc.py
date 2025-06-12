@@ -9,7 +9,7 @@ import warnings
 
 from . import api_info_pb2 as com_dot_digitalasset_dot_canton_dot_connection_dot_v30_dot_api__info__pb2
 
-GRPC_GENERATED_VERSION = '1.67.1'
+GRPC_GENERATED_VERSION = '1.72.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 

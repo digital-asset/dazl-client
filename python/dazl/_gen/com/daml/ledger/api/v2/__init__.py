@@ -8,7 +8,6 @@ from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCom
 from .offset_checkpoint_pb2 import DomainTime, OffsetCheckpoint
 from .trace_context_pb2 import TraceContext
 from .completion_pb2 import Completion
-from .checkpoint_pb2 import Checkpoint
 from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse
 from .command_completion_service_pb2_grpc import CommandCompletionServiceStub
 from .event_pb2 import ArchivedEvent, CreatedEvent, Event, ExercisedEvent, InterfaceView
@@ -26,7 +25,6 @@ from .interactive_submission_service_pb2 import ExecuteSubmissionRequest, Execut
 from .interactive_submission_service_pb2_grpc import InteractiveSubmissionServiceStub
 from .package_service_pb2 import GetPackageRequest, GetPackageResponse, GetPackageStatusRequest, GetPackageStatusResponse, HashFunction, ListPackagesRequest, ListPackagesResponse, PackageStatus
 from .package_service_pb2_grpc import PackageServiceStub
-from .participant_offset_pb2 import ParticipantOffset
 from .reassignment_pb2 import AssignedEvent, Reassignment, UnassignedEvent
 from .transaction_filter_pb2 import CumulativeFilter, Filters, InterfaceFilter, TemplateFilter, TransactionFilter, WildcardFilter
 from .state_service_pb2 import ActiveContract, GetActiveContractsRequest, GetActiveContractsResponse, GetConnectedDomainsRequest, GetConnectedDomainsResponse, GetLatestPrunedOffsetsRequest, GetLatestPrunedOffsetsResponse, GetLedgerEndRequest, GetLedgerEndResponse, IncompleteAssigned, IncompleteUnassigned, ParticipantPermission
@@ -42,7 +40,6 @@ __all__ = [
     "ArchivedEvent",
     "AssignCommand",
     "AssignedEvent",
-    "Checkpoint",
     "Command",
     "CommandCompletionServiceStub",
     "CommandServiceStub",
@@ -117,7 +114,6 @@ __all__ = [
     "Optional",
     "PackageServiceStub",
     "PackageStatus",
-    "ParticipantOffset",
     "ParticipantPermission",
     "PartyManagementFeature",
     "PartySignatures",

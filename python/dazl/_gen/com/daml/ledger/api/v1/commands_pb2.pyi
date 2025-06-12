@@ -8,12 +8,13 @@ from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Commands(_message.Message):
-    __slots__ = ("ledger_id", "workflow_id", "application_id", "command_id", "party", "commands", "deduplication_time", "deduplication_duration", "deduplication_offset", "min_ledger_time_abs", "min_ledger_time_rel", "act_as", "read_as", "submission_id", "disclosed_contracts", "package_id_selection_preference")
+    __slots__ = ("ledger_id", "workflow_id", "application_id", "command_id", "party", "commands", "deduplication_time", "deduplication_duration", "deduplication_offset", "min_ledger_time_abs", "min_ledger_time_rel", "act_as", "read_as", "submission_id", "disclosed_contracts", "package_id_selection_preference", "prefetch_contract_keys")
     LEDGER_ID_FIELD_NUMBER: _ClassVar[int]
     WORKFLOW_ID_FIELD_NUMBER: _ClassVar[int]
     APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
@@ -30,6 +31,7 @@ class Commands(_message.Message):
     SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
     DISCLOSED_CONTRACTS_FIELD_NUMBER: _ClassVar[int]
     PACKAGE_ID_SELECTION_PREFERENCE_FIELD_NUMBER: _ClassVar[int]
+    PREFETCH_CONTRACT_KEYS_FIELD_NUMBER: _ClassVar[int]
     ledger_id: str
     workflow_id: str
     application_id: str
@@ -46,7 +48,8 @@ class Commands(_message.Message):
     submission_id: str
     disclosed_contracts: _containers.RepeatedCompositeFieldContainer[DisclosedContract]
     package_id_selection_preference: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, ledger_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., application_id: _Optional[str] = ..., command_id: _Optional[str] = ..., party: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[Command, _Mapping]]] = ..., deduplication_time: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., deduplication_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., deduplication_offset: _Optional[str] = ..., min_ledger_time_abs: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., min_ledger_time_rel: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., disclosed_contracts: _Optional[_Iterable[_Union[DisclosedContract, _Mapping]]] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ...) -> None: ...
+    prefetch_contract_keys: _containers.RepeatedCompositeFieldContainer[PrefetchContractKey]
+    def __init__(self, ledger_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., application_id: _Optional[str] = ..., command_id: _Optional[str] = ..., party: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[Command, _Mapping]]] = ..., deduplication_time: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., deduplication_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., deduplication_offset: _Optional[str] = ..., min_ledger_time_abs: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., min_ledger_time_rel: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., disclosed_contracts: _Optional[_Iterable[_Union[DisclosedContract, _Mapping]]] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ..., prefetch_contract_keys: _Optional[_Iterable[_Union[PrefetchContractKey, _Mapping]]] = ...) -> None: ...
 
 class Command(_message.Message):
     __slots__ = ("create", "exercise", "exerciseByKey", "createAndExercise")
@@ -113,3 +116,11 @@ class DisclosedContract(_message.Message):
     contract_id: str
     created_event_blob: bytes
     def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., contract_id: _Optional[str] = ..., created_event_blob: _Optional[bytes] = ...) -> None: ...
+
+class PrefetchContractKey(_message.Message):
+    __slots__ = ("template_id", "contract_key")
+    TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_KEY_FIELD_NUMBER: _ClassVar[int]
+    template_id: _value_pb2.Identifier
+    contract_key: _value_pb2.Value
+    def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., contract_key: _Optional[_Union[_value_pb2.Value, _Mapping]] = ...) -> None: ...
