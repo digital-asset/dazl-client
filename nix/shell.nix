@@ -9,7 +9,6 @@ let
     poetry
     protoc-gen-go
     protoc-gen-go-grpc
-    python39
     python310
     python311
     python312
