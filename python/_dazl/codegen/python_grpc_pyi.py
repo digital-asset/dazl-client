@@ -112,12 +112,12 @@ def write_service(buf: TextIO, sd: ServiceDescriptorProto, ictx: ImportContext) 
             stub_buf.write(f"    def {method.name}(self, __1: {arg.py_str}, *, ")
             stub_buf.write(timeout_param)
             stub_buf.write(
-                ", metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ...,"
+                ", metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ...,"
             )
             stub_buf.write(
                 f" {credentials_param}, {wait_for_ready_param}, {compression_param}) -> "
             )
-            stub_buf.write(f"_typing.Union[{b_ret.py_str}, {a_ret.py_str}]: ...\n")
+            stub_buf.write(f"{b_ret.py_str} | {a_ret.py_str}: ...\n")
 
             # when using AsyncIO-flavored channels, the optional parameters are explicitly
             # keyword-only
@@ -130,7 +130,7 @@ def write_service(buf: TextIO, sd: ServiceDescriptorProto, ictx: ImportContext) 
 
             bbuf.write(
                 f"    def {method.name}(self, __1: {arg.py_str}, {timeout_param}, "
-                + "metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..."
+                + "metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..."
                 + f", {credentials_param}, {wait_for_ready_param}, {compression_param}) -> "
                 + b_ret.py_str
                 + ": ...\n"

@@ -13,7 +13,8 @@ from __future__ import annotations
 # References:
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 from collections.abc import Mapping as _Mapping
-from typing import Any, Collection, Optional, Sequence, Tuple, Union
+import sys
+from typing import Any, Collection, Optional, Sequence
 
 from google.protobuf.json_format import MessageToDict
 
@@ -62,9 +63,16 @@ from ..api_types import (
     Version,
     VersionFeatures,
     VersionUserManagementFeature,
+    _Admin,
+    _IdentityProviderAdmin,
 )
 from ..auth import TokenOrTokenProvider
 from ..pkgcache import SHARED_PACKAGE_DATABASE
+
+if sys.version_info >= (3, 11):
+    from typing import assert_never
+else:
+    from typing_extensions import assert_never
 
 __all__ = ["Codec"]
 
@@ -100,34 +108,35 @@ class Codec:
     async def encode_command(
         self, cmd: Command, /, *, token: Optional[TokenOrTokenProvider] = None
     ) -> lapipb.Command:
-        if isinstance(cmd, CreateCommand):
-            return lapipb.Command(
-                create=await self.encode_create_command(cmd.template_id, cmd.payload, token=token)
-            )
-        elif isinstance(cmd, ExerciseCommand):
-            return lapipb.Command(
-                exercise=await self.encode_exercise_command(
-                    cmd.contract_id, cmd.choice, cmd.argument, token=token
+        match (cmd):
+            case CreateCommand(template_id, payload):
+                return lapipb.Command(
+                    create=await self.encode_create_command(template_id, payload, token=token)
                 )
-            )
-        elif isinstance(cmd, ExerciseByKeyCommand):
-            return lapipb.Command(
-                exerciseByKey=await self.encode_exercise_by_key_command(
-                    cmd.template_id, cmd.choice, cmd.key, cmd.argument, token=token
+            case ExerciseCommand(contract_id, choice, argument):
+                return lapipb.Command(
+                    exercise=await self.encode_exercise_command(
+                        contract_id, choice, argument, token=token
+                    )
                 )
-            )
-        elif isinstance(cmd, CreateAndExerciseCommand):
-            return lapipb.Command(
-                createAndExercise=await self.encode_create_and_exercise_command(
-                    cmd.template_id, cmd.payload, cmd.choice, cmd.argument, token=token
+            case ExerciseByKeyCommand(template_id, key, choice, argument):
+                return lapipb.Command(
+                    exerciseByKey=await self.encode_exercise_by_key_command(
+                        template_id, choice, key, argument, token=token
+                    )
                 )
-            )
-        else:
-            raise ValueError(f"unknown Command type: {cmd!r}")
+            case CreateAndExerciseCommand(template_id, payload, choice, argument):
+                return lapipb.Command(
+                    createAndExercise=await self.encode_create_and_exercise_command(
+                        template_id, payload, choice, argument, token=token
+                    )
+                )
+            case _:
+                assert_never(cmd)
 
     async def encode_create_command(
         self,
-        template_id: Union[str, Any],
+        template_id: str | Any,
         payload: ContractData,
         /,
         *,
@@ -168,7 +177,7 @@ class Codec:
 
     async def encode_create_and_exercise_command(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         payload: ContractData,
         choice_name: str,
         argument: Optional[Any] = None,
@@ -195,7 +204,7 @@ class Codec:
 
     async def encode_exercise_by_key_command(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         choice_name: str,
         key: Any,
         argument: Optional[ContractData] = None,
@@ -337,7 +346,7 @@ class Codec:
 
     async def encode_value(
         self, item_type: Type, obj: Any, /, *, token: Optional[TokenOrTokenProvider] = None
-    ) -> Tuple[str, Optional[Any]]:
+    ) -> tuple[str, Optional[Any]]:
         """
         Convert a dazl/Python value to its Protobuf equivalent.
         """
@@ -366,18 +375,19 @@ class Codec:
 
     @staticmethod
     def encode_right(right: Right, /) -> lapiadminpb.Right:
-        if right == Admin:
-            return lapiadminpb.Right(participant_admin=lapiadminpb.Right.ParticipantAdmin())
-        elif right == IdentityProviderAdmin:
-            return lapiadminpb.Right(
-                identity_provider_admin=lapiadminpb.Right.IdentityProviderAdmin()
-            )
-        elif isinstance(right, ReadAs):
-            return lapiadminpb.Right(can_read_as=lapiadminpb.Right.CanReadAs(party=right.party))
-        elif isinstance(right, ActAs):
-            return lapiadminpb.Right(can_act_as=lapiadminpb.Right.CanActAs(party=right.party))
-        else:
-            raise ValueError(f"unknown kind of right: {right!r}")
+        match right:
+            case _Admin():
+                return lapiadminpb.Right(participant_admin=lapiadminpb.Right.ParticipantAdmin())
+            case _IdentityProviderAdmin():
+                return lapiadminpb.Right(
+                    identity_provider_admin=lapiadminpb.Right.IdentityProviderAdmin()
+                )
+            case ReadAs(party):
+                return lapiadminpb.Right(can_read_as=lapiadminpb.Right.CanReadAs(party=party))
+            case ActAs(party):
+                return lapiadminpb.Right(can_act_as=lapiadminpb.Right.CanActAs(party=party))
+            case _:
+                assert_never(right)
 
     @staticmethod
     def encode_begin_offset(offset: Optional[str], /) -> lapipb.LedgerOffset:
@@ -387,7 +397,7 @@ class Codec:
             return lapipb.LedgerOffset(absolute=offset)
 
     @staticmethod
-    def encode_end_offset(offset: Union[str, None, End], /) -> Optional[lapipb.LedgerOffset]:
+    def encode_end_offset(offset: Optional[str | End], /) -> Optional[lapipb.LedgerOffset]:
         if offset is None:
             # there is no ending offset (the stream will never naturally terminate)
             return None
@@ -443,46 +453,48 @@ class Codec:
         result = None
         cid = None
 
-        events = list[Union[CreateEvent, ArchiveEvent]]()
+        events = list[CreateEvent | ArchiveEvent]()
         for event_id in tree.root_event_ids:
             event_pb = tree.events_by_id[event_id]
             event_pb_type = event_pb.WhichOneof("kind")
-            if event_pb_type == "created":
-                events.append(await self.decode_created_event(event_pb.created, token=token))
-            elif event_pb_type == "exercised":
-                # Find the "first" exercised node and grab its result value
-                if cid is None:
-                    cid = self.decode_contract_id(event_pb.exercised)
 
-                    template_or_interface: TemplateOrInterface
-                    if event_pb.exercised.interface_id.entity_name:
-                        template_or_interface = self._lookup.interface(
-                            Codec.decode_identifier(event_pb.exercised.interface_id)
-                        )
-                    else:
-                        template_or_interface = self._lookup.template(cid.value_type)
+            match event_pb_type:
+                case "created":
+                    events.append(await self.decode_created_event(event_pb.created, token=token))
+                case "exercised":
+                    # Find the "first" exercised node and grab its result value
+                    if cid is None:
+                        cid = self.decode_contract_id(event_pb.exercised)
 
-                    if found_choice is None:
-                        for choice in template_or_interface.choices:
-                            if choice.name == event_pb.exercised.choice:
-                                found_choice = choice
-                                break
-                        if found_choice is not None:
-                            result = await self.decode_value(
-                                found_choice.ret_type,
-                                event_pb.exercised.exercise_result,
-                                token=token,
+                        template_or_interface: TemplateOrInterface
+                        if event_pb.exercised.interface_id.entity_name:
+                            template_or_interface = self._lookup.interface(
+                                Codec.decode_identifier(event_pb.exercised.interface_id)
                             )
                         else:
-                            LOG.error(
-                                "Received an exercise node that referred to a choice that doesn't exist!"
-                            )
+                            template_or_interface = self._lookup.template(cid.value_type)
 
-                events.extend(
-                    await self._decode_exercised_child_events(tree, [event_id], token=token)
-                )
-            else:
-                LOG.warning("Received an unknown event type: %s", event_pb_type)
+                        if found_choice is None:
+                            for choice in template_or_interface.choices:
+                                if choice.name == event_pb.exercised.choice:
+                                    found_choice = choice
+                                    break
+                            if found_choice is not None:
+                                result = await self.decode_value(
+                                    found_choice.ret_type,
+                                    event_pb.exercised.exercise_result,
+                                    token=token,
+                                )
+                            else:
+                                LOG.error(
+                                    "Received an exercise node that referred to a choice that doesn't exist!"
+                                )
+
+                    events.extend(
+                        await self._decode_exercised_child_events(tree, [event_id], token=token)
+                    )
+                case _:
+                    LOG.warning("Received an unknown event type: %s", event_pb_type)
 
         return ExerciseResponse(result, events)
 
@@ -493,10 +505,10 @@ class Codec:
         /,
         *,
         token: Optional[TokenOrTokenProvider] = None,
-    ) -> Sequence[Union[CreateEvent, ArchiveEvent]]:
+    ) -> Sequence[CreateEvent | ArchiveEvent]:
         from ... import LOG
 
-        events = list[Union[CreateEvent, ArchiveEvent]]()
+        events = list[CreateEvent | ArchiveEvent]()
         for event_id in event_ids:
             event_pb = tree.events_by_id[event_id]
             event_pb_type = event_pb.WhichOneof("kind")
@@ -533,7 +545,7 @@ class Codec:
         )
 
     def decode_contract_id(
-        self, event: Union[lapipb.CreatedEvent, lapipb.ExercisedEvent, lapipb.ArchivedEvent], /
+        self, event: lapipb.CreatedEvent | lapipb.ExercisedEvent | lapipb.ArchivedEvent, /
     ) -> ContractId:
         vt = Codec.decode_identifier(event.template_id)
         return self._decode_context.convert(ContractIdType(con(vt)), event.contract_id)
@@ -559,16 +571,17 @@ class Codec:
     @staticmethod
     def decode_right(right: lapiadminpb.Right, /) -> Right:
         kind = right.WhichOneof("kind")
-        if kind == "participant_admin":
-            return Admin
-        elif kind == "identity_provider_admin":
-            return IdentityProviderAdmin
-        elif kind == "can_read_as":
-            return ReadAs(Party(right.can_read_as.party))
-        elif kind == "can_act_as":
-            return ActAs(Party(right.can_act_as.party))
-        else:
-            raise ValueError(f"unexpected kind of right: {kind}")
+        match kind:
+            case "participant_admin":
+                return Admin
+            case "identity_provider_admin":
+                return IdentityProviderAdmin
+            case "can_read_as":
+                return ReadAs(Party(right.can_read_as.party))
+            case "can_act_as":
+                return ActAs(Party(right.can_act_as.party))
+            case _:
+                raise ValueError(f"unexpected kind of right: {kind}")
 
     @staticmethod
     def decode_party_info(party_details: lapiadminpb.PartyDetails, /) -> PartyInfo:
@@ -621,7 +634,7 @@ class Codec:
         /,
         *,
         token: Optional[TokenOrTokenProvider] = None,
-    ) -> Tuple[TypeConName, TemplateChoice]:
+    ) -> tuple[TypeConName, TemplateChoice]:
         template_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_or_interface_name(template_or_interface_id), token=token
         )
@@ -633,7 +646,7 @@ class Codec:
 
     async def _look_up_template_choice(
         self, template_id: Any, choice_name: str, /, *, token: Optional[TokenOrTokenProvider] = None
-    ) -> Tuple[TypeConName, DefTemplate, TemplateChoice]:
+    ) -> tuple[TypeConName, DefTemplate, TemplateChoice]:
         template_type = await self._loader.do_with_retry(
             lambda: self._lookup.template_name(template_id), token=token
         )

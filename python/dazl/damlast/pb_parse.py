@@ -30,17 +30,18 @@ class ProtobufParser:
             return None
 
         module_name = self._resolve_dotted_name(pb.module_name_dname, pb.module_name_interned_dname)
-        if sum_name == "self":
-            return lf.ModuleRef(self.current_package, module_name)
-        elif sum_name == "package_id_str":
-            return lf.ModuleRef(lf.PackageRef(pb.package_ref.package_id_str), module_name)
-        elif sum_name == "package_id_interned_str":
-            return lf.ModuleRef(
-                lf.PackageRef(self.interned_strings[pb.package_ref.package_id_interned_str]),
-                module_name,
-            )
-        else:
-            raise ValueError(f"unknown sum type value: {sum_name!r}")
+        match sum_name:
+            case "self":
+                return lf.ModuleRef(self.current_package, module_name)
+            case "package_id_str":
+                return lf.ModuleRef(lf.PackageRef(pb.package_ref.package_id_str), module_name)
+            case "package_id_interned_str":
+                return lf.ModuleRef(
+                    lf.PackageRef(self.interned_strings[pb.package_ref.package_id_interned_str]),
+                    module_name,
+                )
+            case _:
+                raise ValueError(f"unknown sum type value: {sum_name!r}")
 
     def parse_TypeConName(self, pb: pblf.TypeConName) -> lf.TypeConName:
         module_ref = self.parse_ModuleRef(pb.module)
@@ -99,14 +100,15 @@ class ProtobufParser:
 
     def parse_Kind(self, pb: pblf.Kind) -> lf.Kind:
         sum_name = pb.WhichOneof("Sum")
-        if sum_name == "star":
-            return lf.Kind(star=self.parse_Unit(pb.star))
-        elif sum_name == "arrow":
-            return lf.Kind(arrow=self.parse_Kind_Arrow(pb.arrow))
-        elif sum_name == "nat":
-            return lf.Kind(nat=self.parse_Unit(pb.nat))
-        else:
-            raise ValueError(f"unknown sum type value: {sum_name!r}")
+        match sum_name:
+            case "star":
+                return lf.Kind(star=self.parse_Unit(pb.star))
+            case "arrow":
+                return lf.Kind(arrow=self.parse_Kind_Arrow(pb.arrow))
+            case "nat":
+                return lf.Kind(nat=self.parse_Unit(pb.nat))
+            case _:
+                raise ValueError(f"unknown sum type value: {sum_name!r}")
 
     def parse_Kind_Arrow(self, pb: pblf.Kind.Arrow) -> lf.Kind.Arrow:
         return lf.Kind.Arrow(
@@ -118,24 +120,25 @@ class ProtobufParser:
 
     def parse_Type(self, pb: pblf.Type) -> lf.Type:
         sum_name = pb.WhichOneof("Sum")
-        if sum_name == "var":
-            return self.parse_Type_Var(pb.var)
-        elif sum_name == "con":
-            return self.parse_Type_Con(pb.con)
-        elif sum_name == "prim":
-            return lf.Type(prim=self.parse_Type_Prim(pb.prim))
-        elif sum_name == "forall":
-            return lf.Type(forall=self.parse_Type_Forall(pb.forall))
-        elif sum_name == "struct":
-            return lf.Type(struct=self.parse_Type_Struct(pb.struct))
-        elif sum_name == "nat":
-            return lf.Type(nat=pb.nat)
-        elif sum_name == "syn":
-            return lf.Type(syn=self.parse_Type_Syn(pb.syn))
-        elif sum_name == "interned":
-            return self.interned_types[pb.interned]
-        else:
-            raise ValueError(f"unknown sum type value: {sum_name!r}")
+        match sum_name:
+            case "var":
+                return self.parse_Type_Var(pb.var)
+            case "con":
+                return self.parse_Type_Con(pb.con)
+            case "prim":
+                return lf.Type(prim=self.parse_Type_Prim(pb.prim))
+            case "forall":
+                return lf.Type(forall=self.parse_Type_Forall(pb.forall))
+            case "struct":
+                return lf.Type(struct=self.parse_Type_Struct(pb.struct))
+            case "nat":
+                return lf.Type(nat=pb.nat)
+            case "syn":
+                return lf.Type(syn=self.parse_Type_Syn(pb.syn))
+            case "interned":
+                return self.interned_types[pb.interned]
+            case _:
+                raise ValueError(f"unknown sum type value: {sum_name!r}")
 
     def parse_Type_Var(self, pb: pblf.Type.Var) -> lf.Type:
         return lf.Type(
@@ -174,42 +177,44 @@ class ProtobufParser:
         )
 
     def parse_PrimCon(self, pb: pblf.PrimCon) -> lf.PrimCon:
-        if pb == 0:
-            return lf.PrimCon.CON_UNIT
-        elif pb == 1:
-            return lf.PrimCon.CON_FALSE
-        elif pb == 2:
-            return lf.PrimCon.CON_TRUE
-        else:
-            raise ValueError(f"unknown enum value: {pb!r}")
+        match pb:
+            case pblf.PrimCon.CON_UNIT:
+                return lf.PrimCon.CON_UNIT
+            case pblf.PrimCon.CON_FALSE:
+                return lf.PrimCon.CON_FALSE
+            case pblf.PrimCon.CON_TRUE:
+                return lf.PrimCon.CON_TRUE
+            case _:
+                raise ValueError(f"unknown enum value: {pb!r}")
 
     def parse_BuiltinFunction(self, pb: pblf.BuiltinFunction) -> lf.BuiltinFunction:
         return lf.BuiltinFunction(pb)
 
     def parse_PrimLit(self, pb: pblf.PrimLit) -> lf.PrimLit:
         sum_name = pb.WhichOneof("Sum")
-        if sum_name == "int64":
-            return lf.PrimLit(int64=pb.int64)
-        elif sum_name == "decimal_str":
-            return lf.PrimLit(decimal=pb.decimal_str)
-        elif sum_name == "numeric_interned_str":
-            return lf.PrimLit(numeric=self.interned_strings[pb.numeric_interned_str])
-        elif sum_name == "text_str":
-            return lf.PrimLit(text=pb.text_str)
-        elif sum_name == "text_interned_str":
-            return lf.PrimLit(text=self.interned_strings[pb.text_interned_str])
-        elif sum_name == "timestamp":
-            return lf.PrimLit(timestamp=pb.timestamp)
-        elif sum_name == "party_str":
-            return lf.PrimLit(party=pb.party_str)
-        elif sum_name == "party_interned_str":
-            return lf.PrimLit(party=self.interned_strings[pb.party_interned_str])
-        elif sum_name == "date":
-            return lf.PrimLit(date=pb.date)
-        elif sum_name == "rounding_mode":
-            return lf.PrimLit(rounding_mode=self.parse_PrimLit_RoundingMode(pb.rounding_mode))
-        else:
-            raise ValueError(f"unknown Sum value: {pb!r}")
+        match sum_name:
+            case "int64":
+                return lf.PrimLit(int64=pb.int64)
+            case "decimal_str":
+                return lf.PrimLit(decimal=pb.decimal_str)
+            case "numeric_interned_str":
+                return lf.PrimLit(numeric=self.interned_strings[pb.numeric_interned_str])
+            case "text_str":
+                return lf.PrimLit(text=pb.text_str)
+            case "text_interned_str":
+                return lf.PrimLit(text=self.interned_strings[pb.text_interned_str])
+            case "timestamp":
+                return lf.PrimLit(timestamp=pb.timestamp)
+            case "party_str":
+                return lf.PrimLit(party=pb.party_str)
+            case "party_interned_str":
+                return lf.PrimLit(party=self.interned_strings[pb.party_interned_str])
+            case "date":
+                return lf.PrimLit(date=pb.date)
+            case "rounding_mode":
+                return lf.PrimLit(rounding_mode=self.parse_PrimLit_RoundingMode(pb.rounding_mode))
+            case _:
+                raise ValueError(f"unknown Sum value: {pb!r}")
 
     def parse_PrimLit_RoundingMode(self, pb: pblf.PrimLit.RoundingMode) -> lf.PrimLit.RoundingMode:
         return lf.PrimLit.RoundingMode(pb)
@@ -218,157 +223,169 @@ class ProtobufParser:
         location = self.parse_Location(pb.location) if pb.HasField("location") else None
 
         sum_name = pb.WhichOneof("Sum")
-        if sum_name == "var_str":
-            return lf.Expr(var=pb.var_str, location=location)
-        elif sum_name == "var_interned_str":
-            return lf.Expr(var=self.interned_strings[pb.var_interned_str], location=location)
-        elif sum_name == "val":
-            return lf.Expr(val=self.parse_ValName(pb.val), location=location)
-        elif sum_name == "builtin":
-            return lf.Expr(builtin=self.parse_BuiltinFunction(pb.builtin), location=location)
-        elif sum_name == "prim_con":
-            return lf.Expr(prim_con=self.parse_PrimCon(pb.prim_con), location=location)
-        elif sum_name == "prim_lit":
-            return lf.Expr(prim_lit=self.parse_PrimLit(pb.prim_lit), location=location)
-        elif sum_name == "rec_con":
-            return lf.Expr(rec_con=self.parse_Expr_RecCon(pb.rec_con), location=location)
-        elif sum_name == "rec_proj":
-            return lf.Expr(rec_proj=self.parse_Expr_RecProj(pb.rec_proj), location=location)
-        elif sum_name == "rec_upd":
-            return lf.Expr(rec_upd=self.parse_Expr_RecUpd(pb.rec_upd), location=location)
-        elif sum_name == "variant_con":
-            return lf.Expr(
-                variant_con=self.parse_Expr_VariantCon(pb.variant_con), location=location
-            )
-        elif sum_name == "enum_con":
-            return lf.Expr(enum_con=self.parse_Expr_EnumCon(pb.enum_con), location=location)
-        elif sum_name == "struct_con":
-            return lf.Expr(struct_con=self.parse_Expr_StructCon(pb.struct_con), location=location)
-        elif sum_name == "struct_proj":
-            return lf.Expr(
-                struct_proj=self.parse_Expr_StructProj(pb.struct_proj), location=location
-            )
-        elif sum_name == "struct_upd":
-            return lf.Expr(struct_upd=self.parse_Expr_StructUpd(pb.struct_upd), location=location)
-        elif sum_name == "app":
-            return lf.Expr(app=self.parse_Expr_App(pb.app), location=location)
-        elif sum_name == "ty_app":
-            return lf.Expr(ty_app=self.parse_Expr_TyApp(pb.ty_app), location=location)
-        elif sum_name == "abs":
-            return lf.Expr(abs=self.parse_Expr_Abs(pb.abs), location=location)
-        elif sum_name == "ty_abs":
-            return lf.Expr(ty_abs=self.parse_Expr_TyAbs(pb.ty_abs), location=location)
-        elif sum_name == "case":
-            return lf.Expr(case=self.parse_Case(pb.case), location=location)
-        elif sum_name == "let":
-            return lf.Expr(let=self.parse_Block(pb.let), location=location)
-        elif sum_name == "nil":
-            return lf.Expr(nil=self.parse_Expr_Nil(pb.nil), location=location)
-        elif sum_name == "cons":
-            return lf.Expr(cons=self.parse_Expr_Cons(pb.cons), location=location)
-        elif sum_name == "update":
-            return lf.Expr(update=self.parse_Update(pb.update), location=location)
-        elif sum_name == "scenario":
-            return lf.Expr(scenario=self.parse_Scenario(pb.scenario), location=location)
-        elif sum_name == "optional_none":
-            return lf.Expr(
-                optional_none=self.parse_Expr_OptionalNone(pb.optional_none), location=location
-            )
-        elif sum_name == "optional_some":
-            return lf.Expr(
-                optional_some=self.parse_Expr_OptionalSome(pb.optional_some), location=location
-            )
-        elif sum_name == "to_any":
-            return lf.Expr(to_any=self.parse_Expr_ToAny(pb.to_any), location=location)
-        elif sum_name == "from_any":
-            return lf.Expr(from_any=self.parse_Expr_FromAny(pb.from_any), location=location)
-        elif sum_name == "type_rep":
-            return lf.Expr(type_rep=self.parse_Type(pb.type_rep), location=location)
-        elif sum_name == "to_any_exception":
-            return lf.Expr(
-                to_any_exception=self.parse_Expr_ToAnyException(pb.to_any_exception),
-                location=location,
-            )
-        elif sum_name == "from_any_exception":
-            return lf.Expr(
-                from_any_exception=self.parse_Expr_FromAnyException(pb.from_any_exception),
-                location=location,
-            )
-        elif sum_name == "throw":
-            return lf.Expr(throw=self.parse_Expr_Throw(pb.throw), location=location)
-        elif sum_name == "to_interface":
-            return lf.Expr(
-                to_interface=self.parse_Expr_ToInterface(pb.to_interface), location=location
-            )
-        elif sum_name == "from_interface":
-            return lf.Expr(
-                from_interface=self.parse_Expr_FromInterface(pb.from_interface), location=location
-            )
-        elif sum_name == "call_interface":
-            return lf.Expr(
-                call_interface=self.parse_Expr_CallInterface(pb.call_interface), location=location
-            )
-        elif sum_name == "signatory_interface":
-            return lf.Expr(
-                signatory_interface=self.parse_Expr_SignatoryInterface(pb.signatory_interface),
-                location=location,
-            )
-        elif sum_name == "observer_interface":
-            return lf.Expr(
-                observer_interface=self.parse_Expr_ObserverInterface(pb.observer_interface),
-                location=location,
-            )
-        elif sum_name == "view_interface":
-            return lf.Expr(
-                view_interface=self.parse_Expr_ViewInterface(pb.view_interface), location=location
-            )
-        elif sum_name == "unsafe_from_interface":
-            return lf.Expr(
-                unsafe_from_interface=self.parse_Expr_UnsafeFromInterface(pb.unsafe_from_interface),
-                location=location,
-            )
-        elif sum_name == "interface_template_type_rep":
-            return lf.Expr(
-                interface_template_type_rep=self.parse_Expr_InterfaceTemplateTypeRep(
-                    pb.interface_template_type_rep
-                ),
-                location=location,
-            )
-        elif sum_name == "to_required_interface":
-            return lf.Expr(
-                to_required_interface=self.parse_Expr_ToRequiredInterface(pb.to_required_interface),
-                location=location,
-            )
-        elif sum_name == "from_required_interface":
-            return lf.Expr(
-                from_required_interface=self.parse_Expr_FromRequiredInterface(
-                    pb.from_required_interface
-                ),
-                location=location,
-            )
-        elif sum_name == "unsafe_from_required_interface":
-            return lf.Expr(
-                unsafe_from_required_interface=self.parse_Expr_UnsafeFromRequiredInterface(
-                    pb.unsafe_from_required_interface
-                ),
-                location=location,
-            )
-        elif sum_name == "experimental":
-            return lf.Expr(
-                experimental=self.parse_Expr_Experimental(pb.experimental), location=location
-            )
-        elif sum_name == "choice_controller":
-            return lf.Expr(
-                choice_controller=self.parse_Expr_ChoiceController(pb.choice_controller),
-                location=location,
-            )
-        elif sum_name == "choice_observer":
-            return lf.Expr(
-                choice_observer=self.parse_Expr_ChoiceObserver(pb.choice_observer),
-                location=location,
-            )
-        else:
-            raise ValueError(f"Unknown type of Expr: {sum_name!r}")
+        match sum_name:
+            case "var_str":
+                return lf.Expr(var=pb.var_str, location=location)
+            case "var_interned_str":
+                return lf.Expr(var=self.interned_strings[pb.var_interned_str], location=location)
+            case "val":
+                return lf.Expr(val=self.parse_ValName(pb.val), location=location)
+            case "builtin":
+                return lf.Expr(builtin=self.parse_BuiltinFunction(pb.builtin), location=location)
+            case "prim_con":
+                return lf.Expr(prim_con=self.parse_PrimCon(pb.prim_con), location=location)
+            case "prim_lit":
+                return lf.Expr(prim_lit=self.parse_PrimLit(pb.prim_lit), location=location)
+            case "rec_con":
+                return lf.Expr(rec_con=self.parse_Expr_RecCon(pb.rec_con), location=location)
+            case "rec_proj":
+                return lf.Expr(rec_proj=self.parse_Expr_RecProj(pb.rec_proj), location=location)
+            case "rec_upd":
+                return lf.Expr(rec_upd=self.parse_Expr_RecUpd(pb.rec_upd), location=location)
+            case "variant_con":
+                return lf.Expr(
+                    variant_con=self.parse_Expr_VariantCon(pb.variant_con), location=location
+                )
+            case "enum_con":
+                return lf.Expr(enum_con=self.parse_Expr_EnumCon(pb.enum_con), location=location)
+            case "struct_con":
+                return lf.Expr(
+                    struct_con=self.parse_Expr_StructCon(pb.struct_con), location=location
+                )
+            case "struct_proj":
+                return lf.Expr(
+                    struct_proj=self.parse_Expr_StructProj(pb.struct_proj), location=location
+                )
+            case "struct_upd":
+                return lf.Expr(
+                    struct_upd=self.parse_Expr_StructUpd(pb.struct_upd), location=location
+                )
+            case "app":
+                return lf.Expr(app=self.parse_Expr_App(pb.app), location=location)
+            case "ty_app":
+                return lf.Expr(ty_app=self.parse_Expr_TyApp(pb.ty_app), location=location)
+            case "abs":
+                return lf.Expr(abs=self.parse_Expr_Abs(pb.abs), location=location)
+            case "ty_abs":
+                return lf.Expr(ty_abs=self.parse_Expr_TyAbs(pb.ty_abs), location=location)
+            case "case":
+                return lf.Expr(case=self.parse_Case(pb.case), location=location)
+            case "let":
+                return lf.Expr(let=self.parse_Block(pb.let), location=location)
+            case "nil":
+                return lf.Expr(nil=self.parse_Expr_Nil(pb.nil), location=location)
+            case "cons":
+                return lf.Expr(cons=self.parse_Expr_Cons(pb.cons), location=location)
+            case "update":
+                return lf.Expr(update=self.parse_Update(pb.update), location=location)
+            case "scenario":
+                return lf.Expr(scenario=self.parse_Scenario(pb.scenario), location=location)
+            case "optional_none":
+                return lf.Expr(
+                    optional_none=self.parse_Expr_OptionalNone(pb.optional_none), location=location
+                )
+            case "optional_some":
+                return lf.Expr(
+                    optional_some=self.parse_Expr_OptionalSome(pb.optional_some), location=location
+                )
+            case "to_any":
+                return lf.Expr(to_any=self.parse_Expr_ToAny(pb.to_any), location=location)
+            case "from_any":
+                return lf.Expr(from_any=self.parse_Expr_FromAny(pb.from_any), location=location)
+            case "type_rep":
+                return lf.Expr(type_rep=self.parse_Type(pb.type_rep), location=location)
+            case "to_any_exception":
+                return lf.Expr(
+                    to_any_exception=self.parse_Expr_ToAnyException(pb.to_any_exception),
+                    location=location,
+                )
+            case "from_any_exception":
+                return lf.Expr(
+                    from_any_exception=self.parse_Expr_FromAnyException(pb.from_any_exception),
+                    location=location,
+                )
+            case "throw":
+                return lf.Expr(throw=self.parse_Expr_Throw(pb.throw), location=location)
+            case "to_interface":
+                return lf.Expr(
+                    to_interface=self.parse_Expr_ToInterface(pb.to_interface), location=location
+                )
+            case "from_interface":
+                return lf.Expr(
+                    from_interface=self.parse_Expr_FromInterface(pb.from_interface),
+                    location=location,
+                )
+            case "call_interface":
+                return lf.Expr(
+                    call_interface=self.parse_Expr_CallInterface(pb.call_interface),
+                    location=location,
+                )
+            case "signatory_interface":
+                return lf.Expr(
+                    signatory_interface=self.parse_Expr_SignatoryInterface(pb.signatory_interface),
+                    location=location,
+                )
+            case "observer_interface":
+                return lf.Expr(
+                    observer_interface=self.parse_Expr_ObserverInterface(pb.observer_interface),
+                    location=location,
+                )
+            case "view_interface":
+                return lf.Expr(
+                    view_interface=self.parse_Expr_ViewInterface(pb.view_interface),
+                    location=location,
+                )
+            case "unsafe_from_interface":
+                return lf.Expr(
+                    unsafe_from_interface=self.parse_Expr_UnsafeFromInterface(
+                        pb.unsafe_from_interface
+                    ),
+                    location=location,
+                )
+            case "interface_template_type_rep":
+                return lf.Expr(
+                    interface_template_type_rep=self.parse_Expr_InterfaceTemplateTypeRep(
+                        pb.interface_template_type_rep
+                    ),
+                    location=location,
+                )
+            case "to_required_interface":
+                return lf.Expr(
+                    to_required_interface=self.parse_Expr_ToRequiredInterface(
+                        pb.to_required_interface
+                    ),
+                    location=location,
+                )
+            case "from_required_interface":
+                return lf.Expr(
+                    from_required_interface=self.parse_Expr_FromRequiredInterface(
+                        pb.from_required_interface
+                    ),
+                    location=location,
+                )
+            case "unsafe_from_required_interface":
+                return lf.Expr(
+                    unsafe_from_required_interface=self.parse_Expr_UnsafeFromRequiredInterface(
+                        pb.unsafe_from_required_interface
+                    ),
+                    location=location,
+                )
+            case "experimental":
+                return lf.Expr(
+                    experimental=self.parse_Expr_Experimental(pb.experimental), location=location
+                )
+            case "choice_controller":
+                return lf.Expr(
+                    choice_controller=self.parse_Expr_ChoiceController(pb.choice_controller),
+                    location=location,
+                )
+            case "choice_observer":
+                return lf.Expr(
+                    choice_observer=self.parse_Expr_ChoiceObserver(pb.choice_observer),
+                    location=location,
+                )
+            case _:
+                raise ValueError(f"Unknown type of Expr: {sum_name!r}")
 
     def parse_Expr_RecCon(self, pb: pblf.Expr.RecCon) -> lf.Expr.RecCon:
         return lf.Expr.RecCon(
@@ -595,26 +612,27 @@ class ProtobufParser:
     def parse_CaseAlt(self, pb: pblf.CaseAlt) -> lf.CaseAlt:
         body = self.parse_Expr(pb.body)
         sum_name = pb.WhichOneof("Sum")
-        if sum_name == "default":
-            return lf.CaseAlt(default=self.parse_Unit(pb.default), body=body)
-        elif sum_name == "variant":
-            return lf.CaseAlt(variant=self.parse_CaseAlt_Variant(pb.variant), body=body)
-        elif sum_name == "prim_con":
-            return lf.CaseAlt(prim_con=self.parse_PrimCon(pb.prim_con), body=body)
-        elif sum_name == "nil":
-            return lf.CaseAlt(nil=self.parse_Unit(pb.nil), body=body)
-        elif sum_name == "cons":
-            return lf.CaseAlt(cons=self.parse_CaseAlt_Cons(pb.cons), body=body)
-        elif sum_name == "optional_none":
-            return lf.CaseAlt(optional_none=self.parse_Unit(pb.optional_none), body=body)
-        elif sum_name == "optional_some":
-            return lf.CaseAlt(
-                optional_some=self.parse_CaseAlt_OptionalSome(pb.optional_some), body=body
-            )
-        elif sum_name == "enum":
-            return lf.CaseAlt(enum=self.parse_CaseAlt_Enum(pb.enum), body=body)
-        else:
-            raise ValueError(f"unknown Sum value: {sum_name!r}")
+        match sum_name:
+            case "default":
+                return lf.CaseAlt(default=self.parse_Unit(pb.default), body=body)
+            case "variant":
+                return lf.CaseAlt(variant=self.parse_CaseAlt_Variant(pb.variant), body=body)
+            case "prim_con":
+                return lf.CaseAlt(prim_con=self.parse_PrimCon(pb.prim_con), body=body)
+            case "nil":
+                return lf.CaseAlt(nil=self.parse_Unit(pb.nil), body=body)
+            case "cons":
+                return lf.CaseAlt(cons=self.parse_CaseAlt_Cons(pb.cons), body=body)
+            case "optional_none":
+                return lf.CaseAlt(optional_none=self.parse_Unit(pb.optional_none), body=body)
+            case "optional_some":
+                return lf.CaseAlt(
+                    optional_some=self.parse_CaseAlt_OptionalSome(pb.optional_some), body=body
+                )
+            case "enum":
+                return lf.CaseAlt(enum=self.parse_CaseAlt_Enum(pb.enum), body=body)
+            case _:
+                raise ValueError(f"unknown Sum value: {sum_name!r}")
 
     def parse_CaseAlt_Variant(self, pb: pblf.CaseAlt.Variant) -> lf.CaseAlt.Variant:
         return lf.CaseAlt.Variant(
@@ -653,48 +671,53 @@ class ProtobufParser:
 
     def parse_Update(self, pb: pblf.Update) -> lf.Update:
         sum_name = pb.WhichOneof("Sum")
-        if sum_name == "pure":
-            return lf.Update(pure=self.parse_Pure(pb.pure))
-        elif sum_name == "block":
-            return lf.Update(block=self.parse_Block(pb.block))
-        elif sum_name == "create":
-            return lf.Update(create=self.parse_Update_Create(pb.create))
-        elif sum_name == "exercise":
-            return lf.Update(exercise=self.parse_Update_Exercise(pb.exercise))
-        elif sum_name == "exercise_by_key":
-            return lf.Update(exercise_by_key=self.parse_Update_ExerciseByKey(pb.exercise_by_key))
-        elif sum_name == "fetch":
-            return lf.Update(fetch=self.parse_Update_Fetch(pb.fetch))
-        elif sum_name == "get_time":
-            return lf.Update(get_time=self.parse_Unit(pb.get_time))
-        elif sum_name == "lookup_by_key":
-            return lf.Update(lookup_by_key=self.parse_Update_RetrieveByKey(pb.lookup_by_key))
-        elif sum_name == "fetch_by_key":
-            return lf.Update(fetch_by_key=self.parse_Update_RetrieveByKey(pb.fetch_by_key))
-        elif sum_name == "embed_expr":
-            return lf.Update(embed_expr=self.parse_Update_EmbedExpr(pb.embed_expr))
-        elif sum_name == "try_catch":
-            return lf.Update(try_catch=self.parse_Update_TryCatch(pb.try_catch))
-        elif sum_name == "create_interface":
-            return lf.Update(
-                create_interface=self.parse_Update_CreateInterface(pb.create_interface)
-            )
-        elif sum_name == "exercise_interface":
-            return lf.Update(
-                exercise_interface=self.parse_Update_ExerciseInterface(pb.exercise_interface)
-            )
-        elif sum_name == "fetch_interface":
-            return lf.Update(fetch_interface=self.parse_Update_FetchInterface(pb.fetch_interface))
-        elif sum_name == "dynamic_exercise":
-            return lf.Update(
-                dynamic_exercise=self.parse_Update_DynamicExercise(pb.dynamic_exercise)
-            )
-        elif sum_name == "soft_fetch":
-            return lf.Update(soft_fetch=self.parse_Update_SoftFetch(pb.soft_fetch))
-        elif sum_name == "soft_exercise":
-            return lf.Update(soft_exercise=self.parse_Update_SoftExercise(pb.soft_exercise))
-        else:
-            raise ValueError(f"unknown Sum value: {sum_name!r}")
+        match sum_name:
+            case "pure":
+                return lf.Update(pure=self.parse_Pure(pb.pure))
+            case "block":
+                return lf.Update(block=self.parse_Block(pb.block))
+            case "create":
+                return lf.Update(create=self.parse_Update_Create(pb.create))
+            case "exercise":
+                return lf.Update(exercise=self.parse_Update_Exercise(pb.exercise))
+            case "exercise_by_key":
+                return lf.Update(
+                    exercise_by_key=self.parse_Update_ExerciseByKey(pb.exercise_by_key)
+                )
+            case "fetch":
+                return lf.Update(fetch=self.parse_Update_Fetch(pb.fetch))
+            case "get_time":
+                return lf.Update(get_time=self.parse_Unit(pb.get_time))
+            case "lookup_by_key":
+                return lf.Update(lookup_by_key=self.parse_Update_RetrieveByKey(pb.lookup_by_key))
+            case "fetch_by_key":
+                return lf.Update(fetch_by_key=self.parse_Update_RetrieveByKey(pb.fetch_by_key))
+            case "embed_expr":
+                return lf.Update(embed_expr=self.parse_Update_EmbedExpr(pb.embed_expr))
+            case "try_catch":
+                return lf.Update(try_catch=self.parse_Update_TryCatch(pb.try_catch))
+            case "create_interface":
+                return lf.Update(
+                    create_interface=self.parse_Update_CreateInterface(pb.create_interface)
+                )
+            case "exercise_interface":
+                return lf.Update(
+                    exercise_interface=self.parse_Update_ExerciseInterface(pb.exercise_interface)
+                )
+            case "fetch_interface":
+                return lf.Update(
+                    fetch_interface=self.parse_Update_FetchInterface(pb.fetch_interface)
+                )
+            case "dynamic_exercise":
+                return lf.Update(
+                    dynamic_exercise=self.parse_Update_DynamicExercise(pb.dynamic_exercise)
+                )
+            case "soft_fetch":
+                return lf.Update(soft_fetch=self.parse_Update_SoftFetch(pb.soft_fetch))
+            case "soft_exercise":
+                return lf.Update(soft_exercise=self.parse_Update_SoftExercise(pb.soft_exercise))
+            case _:
+                raise ValueError(f"unknown Sum value: {sum_name!r}")
 
     def parse_Update_Create(self, pb: pblf.Update.Create) -> lf.Update.Create:
         return lf.Update.Create(
@@ -789,24 +812,25 @@ class ProtobufParser:
 
     def parse_Scenario(self, pb: pblf.Scenario) -> lf.Scenario:
         sum_name = pb.WhichOneof("Sum")
-        if sum_name == "pure":
-            return lf.Scenario(pure=self.parse_Pure(pb.pure))
-        elif sum_name == "block":
-            return lf.Scenario(block=self.parse_Block(pb.block))
-        elif sum_name == "commit":
-            return lf.Scenario(commit=self.parse_Scenario_Commit(pb.commit))
-        elif sum_name == "mustFailAt":
-            return lf.Scenario(must_fail_at=self.parse_Scenario_Commit(pb.mustFailAt))
-        elif sum_name == "pass":
-            return lf.Scenario(pass_=self.parse_Expr(getattr(pb, "pass")))
-        elif sum_name == "get_time":
-            return lf.Scenario(get_time=self.parse_Unit(pb.get_time))
-        elif sum_name == "get_party":
-            return lf.Scenario(get_party=self.parse_Expr(pb.get_party))
-        elif sum_name == "embed_expr":
-            return lf.Scenario(embed_expr=self.parse_Scenario_EmbedExpr(pb.embed_expr))
-        else:
-            raise ValueError("unknown Sum value")
+        match sum_name:
+            case "pure":
+                return lf.Scenario(pure=self.parse_Pure(pb.pure))
+            case "block":
+                return lf.Scenario(block=self.parse_Block(pb.block))
+            case "commit":
+                return lf.Scenario(commit=self.parse_Scenario_Commit(pb.commit))
+            case "mustFailAt":
+                return lf.Scenario(must_fail_at=self.parse_Scenario_Commit(pb.mustFailAt))
+            case "pass":
+                return lf.Scenario(pass_=self.parse_Expr(getattr(pb, "pass")))
+            case "get_time":
+                return lf.Scenario(get_time=self.parse_Unit(pb.get_time))
+            case "get_party":
+                return lf.Scenario(get_party=self.parse_Expr(pb.get_party))
+            case "embed_expr":
+                return lf.Scenario(embed_expr=self.parse_Scenario_EmbedExpr(pb.embed_expr))
+            case _:
+                raise ValueError("unknown Sum value")
 
     def parse_Scenario_Commit(self, pb: pblf.Scenario.Commit) -> lf.Scenario.Commit:
         return lf.Scenario.Commit(
@@ -895,10 +919,11 @@ class ProtobufParser:
     def parse_DefTemplate_DefKey(self, pb: pblf.DefTemplate.DefKey) -> lf.DefTemplate.DefKey:
         kwargs = dict(type=self.parse_Type(pb.type), maintainers=self.parse_Expr(pb.maintainers))
         key_expr_name = pb.WhichOneof("key_expr")
-        if key_expr_name == "key":
-            kwargs["key"] = self.parse_KeyExpr(pb.key)
-        elif key_expr_name == "complex_key":
-            kwargs["complex_key"] = self.parse_Expr(pb.complex_key)
+        match key_expr_name:
+            case "key":
+                kwargs["key"] = self.parse_KeyExpr(pb.key)
+            case "complex_key":
+                kwargs["complex_key"] = self.parse_Expr(pb.complex_key)
         return lf.DefTemplate.DefKey(**kwargs)
 
     def parse_DefDataType(self, pb: pblf.DefDataType) -> lf.DefDataType:
@@ -908,40 +933,41 @@ class ProtobufParser:
         location = self.parse_Location(pb.location)
 
         DataCons_name = pb.WhichOneof("DataCons")
-        if DataCons_name == "record":
-            return lf.DefDataType(
-                name=name,
-                params=params,
-                serializable=serializable,
-                location=location,
-                record=self.parse_DefDataType_Fields(pb.record),
-            )
-        elif DataCons_name == "variant":
-            return lf.DefDataType(
-                name=name,
-                params=params,
-                serializable=serializable,
-                location=location,
-                variant=self.parse_DefDataType_Fields(pb.variant),
-            )
-        elif DataCons_name == "enum":
-            return lf.DefDataType(
-                name=name,
-                params=params,
-                serializable=serializable,
-                location=location,
-                enum=self.parse_DefDataType_EnumConstructors(pb.enum),
-            )
-        elif DataCons_name == "interface":
-            return lf.DefDataType(
-                name=name,
-                params=params,
-                serializable=serializable,
-                location=location,
-                interface=lf.UNIT,
-            )
-        else:
-            raise ValueError(f"unknown DataCons value: {DataCons_name!r}")
+        match DataCons_name:
+            case "record":
+                return lf.DefDataType(
+                    name=name,
+                    params=params,
+                    serializable=serializable,
+                    location=location,
+                    record=self.parse_DefDataType_Fields(pb.record),
+                )
+            case "variant":
+                return lf.DefDataType(
+                    name=name,
+                    params=params,
+                    serializable=serializable,
+                    location=location,
+                    variant=self.parse_DefDataType_Fields(pb.variant),
+                )
+            case "enum":
+                return lf.DefDataType(
+                    name=name,
+                    params=params,
+                    serializable=serializable,
+                    location=location,
+                    enum=self.parse_DefDataType_EnumConstructors(pb.enum),
+                )
+            case "interface":
+                return lf.DefDataType(
+                    name=name,
+                    params=params,
+                    serializable=serializable,
+                    location=location,
+                    interface=lf.UNIT,
+                )
+            case _:
+                raise ValueError(f"unknown DataCons value: {DataCons_name!r}")
 
     def parse_DefDataType_Fields(self, pb: pblf.DefDataType.Fields) -> lf.DefDataType.Fields:
         return lf.DefDataType.Fields(

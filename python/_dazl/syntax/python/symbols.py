@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Tuple, Union
 
 from google.protobuf.descriptor_pb2 import (
     DescriptorProto,
@@ -56,7 +55,7 @@ class SymbolTable:
             ".google.protobuf.Empty": "Empty",
             ".google.protobuf.Timestamp": "Timestamp",
         }
-        self._map_types = dict[str, Tuple[FieldDescriptorProto, FieldDescriptorProto]]()
+        self._map_types = dict[str, tuple[FieldDescriptorProto, FieldDescriptorProto]]()
         self._enums = dict[str, dict[str, int]]()
 
     def load_file(self, fd: FileDescriptorProto) -> None:
@@ -122,48 +121,51 @@ class SymbolTable:
         if map_type is not None:
             key_type = self._base_py_type(map_type[0], Usage.GETTER)
             value_type = self._base_py_type(map_type[1], Usage.GETTER)
-            if usage == Usage.GETTER:
-                if value_type.settable:
-                    return SCALAR_MAP_CONTAINER.apply(key_type, value_type)
-                else:
-                    return MESSAGE_MAP_CONTAINER.apply(key_type, value_type)
-            elif usage == Usage.INIT:
-                return OPTIONAL.apply(MAPPING.apply(key_type, value_type))
-            elif usage == Usage.ARG or usage == Usage.RET:
-                return MAPPING.apply(key_type, value_type)
-            else:
-                raise ValueError("unexpected map type in a stream context")
+
+            match usage:
+                case Usage.GETTER:
+                    if value_type.settable:
+                        return SCALAR_MAP_CONTAINER.apply(key_type, value_type)
+                    else:
+                        return MESSAGE_MAP_CONTAINER.apply(key_type, value_type)
+                case Usage.INIT:
+                    return OPTIONAL.apply(MAPPING.apply(key_type, value_type))
+                case Usage.ARG | Usage.RET:
+                    return MAPPING.apply(key_type, value_type)
+                case _:
+                    raise ValueError("unexpected map type in a stream context")
 
         py_type = self._base_py_type(fd, usage)
-        if usage == Usage.GETTER:
-            if fd.label == FieldDescriptorProto.LABEL_REPEATED:
-                if py_type.settable:
-                    return SCALAR_CONTAINER.apply(py_type)
+        match usage:
+            case Usage.GETTER:
+                if fd.label == FieldDescriptorProto.LABEL_REPEATED:
+                    if py_type.settable:
+                        return SCALAR_CONTAINER.apply(py_type)
+                    else:
+                        return COMPOSITE_CONTAINER.apply(py_type)
                 else:
-                    return COMPOSITE_CONTAINER.apply(py_type)
-            else:
+                    return py_type
+            case Usage.INIT:
+                if fd.label == FieldDescriptorProto.LABEL_REPEATED:
+                    return OPTIONAL.apply(ITERABLE.apply(py_type))
+                elif fd.HasField("oneof_index"):
+                    return py_type
+                else:
+                    return OPTIONAL.apply(py_type)
+            case Usage.ARG:
                 return py_type
-        elif usage == Usage.INIT:
-            if fd.label == FieldDescriptorProto.LABEL_REPEATED:
-                return OPTIONAL.apply(ITERABLE.apply(py_type))
-            elif fd.HasField("oneof_index"):
+            case Usage.ARG_STREAM:
+                return ITERABLE.apply(py_type)
+            case Usage.RET:
                 return py_type
-            else:
-                return OPTIONAL.apply(py_type)
-        elif usage == Usage.ARG:
-            return py_type
-        elif usage == Usage.ARG_STREAM:
-            return ITERABLE.apply(py_type)
-        elif usage == Usage.RET:
-            return py_type
-        elif usage == Usage.RET_STREAM:
-            return PyType(py_str="_grpc.CallIterator").apply(py_type)
-        elif usage == Usage.RET_ASYNC:
-            return PyType(py_str="_grpc_aio.UnaryUnaryCall").apply(ANY, py_type)
-        elif usage == Usage.RET_STREAM_ASYNC:
-            return PyType(py_str="_grpc_aio.UnaryStreamCall").apply(ANY, py_type)
-        else:
-            raise ValueError
+            case Usage.RET_STREAM:
+                return PyType(py_str="_grpc.CallIterator").apply(py_type)
+            case Usage.RET_ASYNC:
+                return PyType(py_str="_grpc_aio.UnaryUnaryCall").apply(ANY, py_type)
+            case Usage.RET_STREAM_ASYNC:
+                return PyType(py_str="_grpc_aio.UnaryStreamCall").apply(ANY, py_type)
+            case _:
+                raise ValueError
 
     def _base_py_type(self, fd: FieldDescriptorProto, usage: Usage) -> PyType:
         """
@@ -178,7 +180,7 @@ class SymbolTable:
         if enum_definition is not None:
             # for enum definitions, the allowed constructors are literals over all the numeric AND
             # string representations for those types
-            literals = list[Union[str, int]]()
+            literals = list[str | int]()
             for key, value in enum_definition.items():
                 if usage == Usage.INIT:
                     # for __init__ parameters for messages, the string values of enum entries are

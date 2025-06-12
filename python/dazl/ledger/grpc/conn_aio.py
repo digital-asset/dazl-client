@@ -21,7 +21,6 @@ from typing import (
     Mapping,
     Optional,
     Sequence,
-    Union,
     overload,
 )
 import warnings
@@ -223,7 +222,7 @@ class Connection(aio.Connection):
 
     async def create(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         payload: ContractData,
         /,
         *,
@@ -379,7 +378,7 @@ class Connection(aio.Connection):
 
     async def create_and_exercise(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         payload: ContractData,
         choice_name: str,
         argument: Optional[ContractData] = None,
@@ -463,7 +462,7 @@ class Connection(aio.Connection):
 
     async def exercise_by_key(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         choice_name: str,
         key: Any,
         argument: Optional[ContractData] = None,
@@ -716,7 +715,7 @@ class Connection(aio.Connection):
 
     def query(
         self,
-        template_or_interface_id: Union[str, TypeConName] = "*",
+        template_or_interface_id: str | TypeConName = "*",
         query: Query = None,
         /,
         *,
@@ -818,7 +817,7 @@ class Connection(aio.Connection):
 
     def stream(
         self,
-        template_or_interface_id: Union[str, TypeConName] = "*",
+        template_or_interface_id: str | TypeConName = "*",
         query: Query = None,
         /,
         *,
@@ -1189,13 +1188,13 @@ class QueryStream(aio.QueryStreamBase):
                 # ourselves
                 log.debug("Reading from the ACS...")
                 async for event in self._acs_events(tx_filter_pb):
-                    if isinstance(event, CreateEvent):
-                        await self._emit_create(event)
-                    elif isinstance(event, Boundary):
-                        offset = event.offset
-                        await self._emit_boundary(event)
-                    else:
-                        warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
+                    match event:
+                        case CreateEvent():
+                            await self._emit_create(event)
+                        case Boundary():
+                            await self._emit_boundary(event)
+                        case _:
+                            warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
                     yield event
 
                 # when reading from the Active Contract Set service, if we're supposed to stop
@@ -1212,19 +1211,20 @@ class QueryStream(aio.QueryStreamBase):
             log.debug("Reading a transaction stream: %s", self._offset_range)
             async for event in self._tx_events(tx_filter_pb, offset, self._offset_range.end):
                 log.debug("Received an event: %s", event)
-                if isinstance(event, CreateEvent):
-                    await self._emit_create(event)
-                elif isinstance(event, ArchiveEvent):
-                    await self._emit_archive(event)
-                elif isinstance(event, Boundary):
-                    await self._emit_boundary(event)
-                else:
-                    warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
+                match event:
+                    case CreateEvent():
+                        await self._emit_create(event)
+                    case ArchiveEvent():
+                        await self._emit_archive(event)
+                    case Boundary():
+                        await self._emit_boundary(event)
+                    case _:
+                        warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
                 yield event
 
     async def _acs_events(
         self, filter_pb: lapipb.TransactionFilter
-    ) -> AsyncIterable[Union[CreateEvent, Boundary]]:
+    ) -> AsyncIterable[CreateEvent | Boundary]:
         stub = self._call.grpc_stub(lapipb.ActiveContractsServiceStub)
         request = lapipb.GetActiveContractsRequest(ledger_id=self._call.ledger_id, filter=filter_pb)
         self._response_stream = response_stream = stub.GetActiveContracts(
@@ -1265,8 +1265,8 @@ class QueryStream(aio.QueryStreamBase):
         self,
         filter_pb: lapipb.TransactionFilter,
         begin_offset: Optional[str],
-        end_offset: Union[None, str, End],
-    ) -> AsyncIterable[Union[CreateEvent, ArchiveEvent, Boundary]]:
+        end_offset: Optional[str | End],
+    ) -> AsyncIterable[CreateEvent | ArchiveEvent | Boundary]:
         stub = self._call.grpc_stub(lapipb.TransactionServiceStub)
 
         last_offset = begin_offset

@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, Union
+from typing import Optional
 
 from ..damlast import TypeConName
 from ..ledger import CreateEvent
@@ -12,7 +12,7 @@ from ..query import Query
 
 
 async def fetch_first(
-    conn: Connection, template_id: Union[str, TypeConName], query: Query = None, /
+    conn: Connection, template_id: str | TypeConName, query: Query = None, /
 ) -> Optional[CreateEvent]:
     """
     Return the first (earliest) :class:`CreateEvent` from the Active Contract Set (ACS), or ``None``
@@ -33,7 +33,7 @@ async def fetch_first(
 
 
 async def fetch_last(
-    conn: Connection, template_id: Union[str, TypeConName], query: Query = None, /
+    conn: Connection, template_id: str | TypeConName, query: Query = None, /
 ) -> Optional[CreateEvent]:
     """
     Return the last (most recent) :class:`CreateEvent` from the Active Contract Set (ACS), or

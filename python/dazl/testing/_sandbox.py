@@ -13,7 +13,7 @@ import subprocess
 import sys
 import tempfile
 import threading
-from typing import Any, Dict, Mapping, Optional, Sequence, Union, cast
+from typing import Any, Mapping, Optional, Sequence, cast
 
 from ..util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
 from ._cert import Certificate, cert_gen
@@ -45,7 +45,7 @@ class LocalURLSource:
         return str(self)
 
 
-URLSource: TypeAlias = Union[LocalURLSource, ExternalURLSource]
+URLSource: TypeAlias = LocalURLSource | ExternalURLSource
 
 
 class SandboxLauncher:
@@ -58,7 +58,7 @@ class SandboxLauncher:
     def __init__(
         self,
         *,
-        project_root: Union[None, str, os.PathLike] = None,
+        project_root: Optional[str | os.PathLike] = None,
         version: Optional[str] = None,
         protocol_version: Optional[int] = None,
         timeout: Optional[timedelta] = DEFAULT_TIMEOUT,
@@ -136,12 +136,12 @@ class SandboxLauncher:
             if not allow_insecure:
                 raise RuntimeError("this sandbox was not started with auth")
 
-            return jwt.encode(cast(Dict[str, Any], claims), "secret", algorithm="HS256")
+            return jwt.encode(cast(dict[str, Any], claims), "secret", algorithm="HS256")
 
         return jwt.encode(
             # there is a bug in the jwt typing rules that falsely state the claims are
-            # Dict[str, Any] when Mapping[str, Any] would actually work
-            cast(Dict[str, Any], claims),
+            # dict[str, Any] when Mapping[str, Any] would actually work
+            cast(dict[str, Any], claims),
             self._certificate.private_key.decode("utf-8"),
             algorithm="RS256",
         )

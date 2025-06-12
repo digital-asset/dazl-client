@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from inspect import iscoroutine
-from typing import Any, Callable, Protocol, TypeVar, Union, no_type_check, runtime_checkable
+from typing import Any, Callable, Optional, Protocol, TypeVar, no_type_check, runtime_checkable
 import warnings
 
 from ...damlast.daml_lf_1 import TypeConName
@@ -19,7 +19,7 @@ from ..errors import CallbackReturnWarning
 __all__ = ["PackageService", "Connection", "QueryStream", "QueryStreamBase", "PackageLoader"]
 
 Self = TypeVar("Self")
-Ret = Union[None, CreateEvent, ExerciseResponse]
+Ret = Optional[CreateEvent | ExerciseResponse]
 E = TypeVar("E", bound=Event)
 
 CREATE_EVENT = "create"
@@ -186,7 +186,7 @@ def register(q: QueryStreamBase, name: str, *args):
 def _register(
     q: QueryStreamBase,
     name: str,
-    template_id: Union[None, str, TypeConName],
+    template_id: Optional[str | TypeConName],
     fn: Callable[[E], None],
 ) -> Callable[[E], None]:
     template_search = normalize(template_id)
@@ -200,7 +200,7 @@ def _register(
     return fn
 
 
-def _register_decorator(q: QueryStreamBase, name: str, template_id: Union[None, str, TypeConName]):
+def _register_decorator(q: QueryStreamBase, name: str, template_id: Optional[str | TypeConName]):
     def decorator(fn):
         _register(q, name, template_id, fn)
         return fn

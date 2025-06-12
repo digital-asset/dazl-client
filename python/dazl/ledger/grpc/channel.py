@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import Any, AsyncIterable, Callable, Iterable, Tuple, TypeVar, Union, cast
+from typing import Any, AsyncIterable, Callable, Iterable, TypeVar, cast
 from urllib.parse import urlparse
 
 from grpc import (
@@ -37,7 +37,7 @@ from ..config import Config
 __all__ = ["create_channel"]
 
 RequestType = TypeVar("RequestType")
-RequestIterableType = Union[Iterable[Any], AsyncIterable[Any]]
+RequestIterableType = Iterable[Any] | AsyncIterable[Any]
 ResponseIterableType = AsyncIterable[Any]
 
 
@@ -106,7 +106,7 @@ class GrpcAuth(AuthMetadataPlugin):
 
     def __call__(self, context: AuthMetadataContext, callback: AuthMetadataPluginCallback):
         # This overly verbose type signature is here to satisfy mypy and grpc-stubs
-        options = list[Tuple[str, Union[str, bytes]]]()
+        options = list[tuple[str, str | bytes]]()
 
         token = get_token(self._config.access.token)
         if token:
@@ -148,7 +148,7 @@ class GrpcAuthUnaryUnaryClientInterceptor(GrpcAuthInterceptor, UnaryUnaryClientI
         continuation: Callable[[ClientCallDetails, RequestType], UnaryUnaryCall],
         client_call_details: ClientCallDetails,
         request: RequestType,
-    ) -> Union[UnaryUnaryCall, RequestType]:
+    ) -> UnaryUnaryCall | RequestType:
         return await continuation(self._modify_client_call_details(client_call_details), request)
 
 
@@ -158,7 +158,7 @@ class GrpcAuthUnaryStreamClientInterceptor(GrpcAuthInterceptor, UnaryStreamClien
         continuation: Callable[[ClientCallDetails, RequestType], UnaryStreamCall],
         client_call_details: ClientCallDetails,
         request: RequestType,
-    ) -> Union[ResponseIterableType, UnaryStreamCall]:
+    ) -> ResponseIterableType | UnaryStreamCall:
         return await continuation(  # type: ignore
             self._modify_client_call_details(client_call_details), request
         )
@@ -182,7 +182,7 @@ class GrpcAuthStreamStreamClientInterceptor(GrpcAuthInterceptor, StreamStreamCli
         continuation: Callable[[ClientCallDetails, RequestType], StreamStreamCall],
         client_call_details: ClientCallDetails,
         request_iterator: RequestIterableType,
-    ) -> Union[ResponseIterableType, StreamStreamCall]:
+    ) -> ResponseIterableType | StreamStreamCall:
         return await continuation(  # type: ignore
             self._modify_client_call_details(client_call_details), request_iterator  # type: ignore
         )

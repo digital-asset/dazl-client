@@ -8,7 +8,7 @@ Daml `gRPC Ledger API <https://docs.daml.com/app-dev/ledger-api.html>`_ or
 from __future__ import annotations
 
 import sys
-from typing import Callable, Literal, Protocol, TypeVar, Union, overload
+from typing import Callable, Literal, Protocol, TypeAlias, TypeVar, overload
 
 from . import aio, blocking
 from .api_types import (
@@ -37,13 +37,9 @@ from .api_types import (
 from .config import ConfigArgs
 
 if sys.version_info >= (3, 11):
-    from typing import TypeAlias, Unpack
-elif sys.version_info >= (3, 10):
-    from typing import TypeAlias
-
-    from typing_extensions import Unpack
+    from typing import Unpack
 else:
-    from typing_extensions import TypeAlias, Unpack
+    from typing_extensions import Unpack
 
 __all__ = [
     "aio",
@@ -68,6 +64,7 @@ __all__ = [
     "PartyInfo",
     "PackageService",
     "ReadAs",
+    "Right",
     "Connection",
     "QueryStream",
     "User",
@@ -186,5 +183,5 @@ class PackageService(Protocol):
         raise NotImplementedError
 
 
-Connection: TypeAlias = Union[aio.Connection, blocking.Connection]
-QueryStream: TypeAlias = Union[aio.QueryStream, blocking.QueryStream]
+Connection: TypeAlias = aio.Connection | blocking.Connection
+QueryStream: TypeAlias = aio.QueryStream | blocking.QueryStream

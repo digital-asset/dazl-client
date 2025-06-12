@@ -17,17 +17,7 @@ from __future__ import annotations
 from collections import defaultdict
 import threading
 from types import MappingProxyType
-from typing import (
-    AbstractSet,
-    Any,
-    Collection,
-    Iterable,
-    NoReturn,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import AbstractSet, Any, Collection, Iterable, NoReturn, Optional, Sequence
 import warnings
 
 from .. import LOG
@@ -87,7 +77,7 @@ def empty_lookup_impl(ref: Any, /) -> NoReturn:
         raise NameNotFoundError(ref)
 
 
-def validate_template(template: Any, /) -> Tuple[PackageRef, str]:
+def validate_template(template: Any, /) -> tuple[PackageRef, str]:
     """
     Return a module and type name component from something that can be interpreted as a template.
 
@@ -131,7 +121,7 @@ def validate_template(template: Any, /) -> Tuple[PackageRef, str]:
         raise ValueError(f"Don't know how to convert {template!r} into a template")
 
 
-def normalize(name: Union[None, str, TypeConName], /) -> str:
+def normalize(name: Optional[str | TypeConName], /) -> str:
     """
     Return the canonical form for a string that represents a template ID or partial match of a
     template ID.
@@ -149,7 +139,7 @@ def normalize(name: Union[None, str, TypeConName], /) -> str:
     return f"{p}:{m}"
 
 
-def matching_normalizations(name: Union[str, TypeConName], /) -> Sequence[str]:
+def matching_normalizations(name: str | TypeConName, /) -> Sequence[str]:
     """
     Return strings that are possible matches for the given template ID.
     """
@@ -224,10 +214,10 @@ class PackageLookup(SymbolLookup):
     def __init__(self, archive: Archive):
         self.archive = archive
 
-        data_types = dict[str, Tuple[TypeConName, DefDataType]]()
-        values = dict[str, Tuple[ValName, DefValue]]()
-        templates = dict[str, Tuple[TypeConName, DefTemplate]]()
-        interfaces = dict[str, Tuple[TypeConName, DefInterface]]()
+        data_types = dict[str, tuple[TypeConName, DefDataType]]()
+        values = dict[str, tuple[ValName, DefValue]]()
+        templates = dict[str, tuple[TypeConName, DefTemplate]]()
+        interfaces = dict[str, tuple[TypeConName, DefInterface]]()
         for module in self.archive.package.modules:
             module_ref = ModuleRef(archive.hash, module.name)
 

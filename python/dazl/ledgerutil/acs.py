@@ -14,9 +14,7 @@ from typing import (
     Mapping,
     Optional,
     Sequence,
-    Tuple,
     TypeVar,
-    Union,
 )
 import warnings
 
@@ -227,7 +225,7 @@ class ACS:
 
 async def snapshots(
     conn: Connection, queries: Queries
-) -> AsyncIterator[Tuple[State, Optional[Snapshot]]]:
+) -> AsyncIterator[tuple[State, Optional[Snapshot]]]:
     """
     Coroutine that returns regular "state" and "snapshot" updates aggregated over events off an
     event stream.
@@ -238,7 +236,7 @@ async def snapshots(
 
     snapshot = None  # type: Optional[Snapshot]
     offset = None  # type: Optional[str]
-    recent_events = list[Union[CreateEvent, ArchiveEvent]]()
+    recent_events = list[CreateEvent | ArchiveEvent]()
     backoff_time = 1.0
     at_least_one_snapshot = False
 
@@ -316,7 +314,7 @@ class Snapshot:
         return self._offset
 
     def earliest_contract(
-        self, template_id: Union[str, TypeConName], match: Optional[ContractMatch] = None
+        self, template_id: str | TypeConName, match: Optional[ContractMatch] = None
     ) -> Optional[ContractData]:
         """
         Return the earliest contract in the Active Contract Set (in other words, _still_ active)
@@ -327,13 +325,13 @@ class Snapshot:
         return ev.payload if ev is not None else None
 
     def matching_contracts(
-        self, template_id: Union[str, TypeConName], match: Optional[ContractMatch] = None
+        self, template_id: str | TypeConName, match: Optional[ContractMatch] = None
     ) -> Mapping[ContractId, ContractData]:
         """"""
         return ContractDataView(self.matching_creates(template_id, match))
 
     def latest_contract(
-        self, template_id: Union[str, TypeConName], match: Optional[ContractMatch] = None
+        self, template_id: str | TypeConName, match: Optional[ContractMatch] = None
     ) -> Optional[ContractData]:
         """
         Return the contract that was created last in the transaction stream that matches the
@@ -343,7 +341,7 @@ class Snapshot:
         return ev.payload if ev is not None else None
 
     def earliest_create(
-        self, template_id: Union[str, TypeConName], match: Optional[ContractMatch] = None
+        self, template_id: str | TypeConName, match: Optional[ContractMatch] = None
     ) -> Optional[CreateEvent]:
         """
         Return the earliest :class:`CreateEvent` in the Active Contract Set (in other words, the
@@ -353,14 +351,13 @@ class Snapshot:
         """
         wanted_template_ids = self._matching_template_ids(template_id)
 
-        # in Python 3.9, dict values can be `reversed`; sadly we're not there yet
         for cev in reversed(list(self._creates.values())):
             if cev.contract_id.value_type in wanted_template_ids and is_match(match, cev.payload):
                 return cev
         return None
 
     def matching_creates(
-        self, template_id: Union[str, TypeConName], match: Optional[ContractMatch] = None
+        self, template_id: str | TypeConName, match: Optional[ContractMatch] = None
     ) -> Mapping[ContractId, CreateEvent]:
         """
         Return the :class:`CreateEvent`s (indexed by :class:`ContractId`) whose contracts match the
@@ -374,7 +371,7 @@ class Snapshot:
         return MappingProxyType(matches)
 
     def latest_create(
-        self, template_id: Union[str, TypeConName], match: Optional[ContractMatch] = None
+        self, template_id: str | TypeConName, match: Optional[ContractMatch] = None
     ) -> Optional[CreateEvent]:
         """
         Return the contract that was created last in the transaction stream that matches the
@@ -386,9 +383,7 @@ class Snapshot:
                 return cev
         return None
 
-    def _matching_template_ids(
-        self, template_id: Union[str, TypeConName]
-    ) -> Collection[TypeConName]:
+    def _matching_template_ids(self, template_id: str | TypeConName) -> Collection[TypeConName]:
         t = normalize(template_id)
         return {tid for tid, matches in self._template_ids.items() if t in matches}
 
@@ -421,7 +416,7 @@ class Snapshot:
 
 def create_snapshot(
     base_snapshot: Optional[Snapshot],
-    events: Sequence[Union[CreateEvent, ArchiveEvent]],
+    events: Sequence[CreateEvent | ArchiveEvent],
     offset: Optional[str],
 ) -> Snapshot:
     """
