@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Mapping, Tuple
+from typing import Any, Mapping
 
 from ..damlast.daml_lf_1 import DefDataType, Type
 from ..prim import (
@@ -142,7 +142,7 @@ class CanonicalMapper(ValueMapper):
     # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def _variant_to_ctor_value(
         self, context: Context, dt: DefDataType, record: DefDataType.Fields, obj: Any
-    ) -> Tuple[str, Any]:
+    ) -> tuple[str, Any]:
         """
         Convert a variant object to a constructor and a value. Should be overridden by subclasses to
         convert a variant that is not formatted in a recognized way.

@@ -6,7 +6,6 @@ from __future__ import annotations
 from collections import defaultdict
 from os.path import basename, dirname
 from pathlib import Path
-from typing import DefaultDict, Set
 
 from google.protobuf.descriptor_pb2 import FileDescriptorSet
 
@@ -38,7 +37,7 @@ def write_init_files(fds: FileDescriptorSet, to: Path) -> None:
             _ = plan["/".join(components[:i])]
 
     for directory, files in plan.items():
-        import_map = defaultdict(set)  # type: DefaultDict[str, Set[str]]
+        import_map = defaultdict[str, set[str]](set)
         for file in files:
             current_module_base = basename(get_root_name(file.name)[0])
 
@@ -58,7 +57,7 @@ def write_init_files(fds: FileDescriptorSet, to: Path) -> None:
             buf.write(HEADER)
             buf.write("\n")
 
-            all_symbols = set()  # type: Set[str]
+            all_symbols = set[str]()
             for f, imports in import_map.items():
                 buf.write(f"from {f} import {', '.join(sorted(imports))}\n")
                 all_symbols.update(imports)

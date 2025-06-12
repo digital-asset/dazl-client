@@ -3,7 +3,8 @@
 
 from __future__ import annotations
 
-from typing import AbstractSet, Any, Collection, Protocol, Union, runtime_checkable
+import sys
+from typing import AbstractSet, Any, Collection, Protocol, runtime_checkable
 
 from .daml_lf_1 import (
     Archive,
@@ -16,10 +17,15 @@ from .daml_lf_1 import (
     TypeConName,
 )
 
+if sys.version_info >= (3, 11):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
+
 __all__ = ["PackageProvider", "SymbolLookup", "TemplateOrInterface"]
 
 
-TemplateOrInterface = Union[DefTemplate, DefInterface]
+TemplateOrInterface = DefTemplate | DefInterface
 
 
 @runtime_checkable

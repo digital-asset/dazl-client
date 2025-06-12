@@ -8,7 +8,7 @@ This API is _not_ public!
 
 from __future__ import annotations
 
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 __all__ = [
     "LedgerOffsetRange",
@@ -45,7 +45,7 @@ class LedgerOffsetRange:
     so this class actually represents the commonality between these two interfaces.
     """
 
-    def __init__(self, begin: Union[None, str], end: Union[None, str, End], /):
+    def __init__(self, begin: Optional[str], end: Optional[str | End], /):
         """
         Initialize a :class:`LedgerOffsetRange`.
 

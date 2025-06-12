@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from asyncio import gather
 from os import PathLike
-from typing import Callable, Collection, Literal, Optional, Sequence, Union
+from typing import Callable, Collection, Literal, Optional, Sequence
 
 from .. import connect
 from ..ledger import PartyInfo
@@ -118,7 +118,7 @@ class ConnectionWithParty:
         return 1
 
 
-def as_party_collection(p: Union[None, str, Collection, Sequence[Party]]) -> Collection[Party]:
+def as_party_collection(p: Optional[str | Collection | Sequence[Party]]) -> Collection[Party]:
     if not p:
         return []
     elif isinstance(p, str):
@@ -127,7 +127,7 @@ def as_party_collection(p: Union[None, str, Collection, Sequence[Party]]) -> Col
         return p
 
 
-def convert_to_fn(party_or_fn: Union[None, str, NameGenFn], *, party_count: int = 1) -> NameGenFn:
+def convert_to_fn(party_or_fn: Optional[str | NameGenFn], *, party_count: int = 1) -> NameGenFn:
     if party_or_fn is None:
         return lambda _: None
     if isinstance(party_or_fn, str):
@@ -144,7 +144,7 @@ class ConnectWithNewParty:
         self,
         *,
         url: Optional[str],
-        read_as: Union[Party, Collection[Party]],
+        read_as: Party | Collection[Party],
         act_as: Collection[Party],
         admin: Optional[bool],
         ledger_id: str,

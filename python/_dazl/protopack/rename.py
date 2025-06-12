@@ -7,7 +7,7 @@ This module contains the logic for how Protobuf files are renamed.
 
 from __future__ import annotations
 
-from typing import Collection, Mapping, Optional, Set
+from typing import Collection, Mapping, Optional
 
 
 def canton_proto_files(zip_file_names: Collection[str]) -> Mapping[str, str]:
@@ -101,7 +101,7 @@ def detect_daml_lf_dir(paths: Collection[str]) -> Optional[str]:
     daml_lf_prefixes = ("com/daml/daml_lf_1_", "com/daml/daml_lf_2_")
 
     for daml_lf_prefix in daml_lf_prefixes:
-        minor_versions = set()  # type: Set[int]
+        minor_versions = set[int]()
         for p in paths:
             _, _, truncated_path = p.partition("/")
 

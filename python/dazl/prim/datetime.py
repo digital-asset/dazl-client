@@ -6,11 +6,16 @@ from __future__ import annotations
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from functools import partial
-from typing import Any, Callable, Sequence, Union
+import sys
+from typing import Any, Callable, Final, Sequence
 
 from google.protobuf.duration_pb2 import Duration
 from google.protobuf.timestamp_pb2 import Timestamp
 
+if sys.version_info >= (3, 11):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
 __all__ = [
     "DATETIME_ISO8601_Z_FORMAT",
     "DATE_FORMATS",
@@ -31,12 +36,12 @@ __all__ = [
     "_parse_nano_format",
 ]
 
-TimeDeltaLike = Union[int, float, Decimal, str, timedelta]
+TimeDeltaLike: TypeAlias = int | float | Decimal | str | timedelta
 
-DATETIME_ISO8601_Z_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
+DATETIME_ISO8601_Z_FORMAT: Final = "%Y-%m-%dT%H:%M:%S.%fZ"
 
-_NANOS_PER_MICROSECOND = 1000
-_SECONDS_PER_DAY = 24 * 3600
+_NANOS_PER_MICROSECOND: Final = 1000
+_SECONDS_PER_DAY: Final = 24 * 3600
 
 
 def _parse(fmt: str, value: str) -> datetime:

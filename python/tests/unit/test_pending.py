@@ -3,8 +3,6 @@
 
 from __future__ import annotations
 
-from typing import Tuple
-
 from dazl import connect
 from dazl.ledger import CreateCommand, ExerciseCommand
 from dazl.ledger.aio import Connection
@@ -62,7 +60,7 @@ async def test_select_template_retrieves_contracts(sandbox: SandboxLauncher) -> 
     assert len(data) == number_of_contracts
 
 
-async def get_counter(conn: Connection) -> Tuple[ContractId, ContractData]:
+async def get_counter(conn: Connection) -> tuple[ContractId, ContractData]:
     async with conn.query(Counter) as stream:
         async for create in stream.creates():
             return create.contract_id, create.payload

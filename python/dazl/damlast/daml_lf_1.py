@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from enum import IntEnum as _IntEnum
 from io import StringIO
 import threading
-from typing import Any, Callable, NewType, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, NewType, Optional, Sequence
 import typing as _typing
 
 from ._base import MISSING, T, _Missing
@@ -190,10 +190,10 @@ class _Name:
         from ..util.typing import safe_cast
 
         if not isinstance(name, Collection):
-            raise TypeError(f"Tuple of strings required here (got {name!r} instead)")
+            raise TypeError(f"tuple of strings required here (got {name!r} instead)")
 
         self._module = safe_cast(ModuleRef, module)
-        self._name = tuple(name)  # type: Tuple[str, ...]
+        self._name = tuple[str, ...](name)
 
     def __eq__(self, other):
         return (
@@ -321,9 +321,9 @@ class Kind:
 
     def __init__(
         self,
-        star: Union[Unit, _Missing] = MISSING,
-        arrow: Union[Arrow, _Missing] = MISSING,
-        nat: Union[Unit, _Missing] = MISSING,
+        star: Unit | _Missing = MISSING,
+        arrow: Arrow | _Missing = MISSING,
+        nat: Unit | _Missing = MISSING,
     ):
         if star is not MISSING:
             object.__setattr__(self, "_Sum_name", "star")
@@ -448,13 +448,13 @@ class Type:
 
     def __init__(
         self,
-        var: Union[Type.Var, _Missing] = MISSING,
-        con: Union[Type.Con, _Missing] = MISSING,
-        prim: Union[Type.Prim, _Missing] = MISSING,
-        forall: Union[Type.Forall, _Missing] = MISSING,
-        struct: Union[Type.Struct, _Missing] = MISSING,
-        nat: Union[int, _Missing] = MISSING,
-        syn: Union[Type.Syn, _Missing] = MISSING,
+        var: Type.Var | _Missing = MISSING,
+        con: Type.Con | _Missing = MISSING,
+        prim: Type.Prim | _Missing = MISSING,
+        forall: Type.Forall | _Missing = MISSING,
+        struct: Type.Struct | _Missing = MISSING,
+        nat: int | _Missing = MISSING,
+        syn: Type.Syn | _Missing = MISSING,
     ):
         if var is not MISSING:
             object.__setattr__(self, "_Sum_name", "var")
@@ -519,22 +519,23 @@ class Type:
         nat: Callable[[int], T],
         syn: Callable[[Type.Syn], T],
     ) -> T:
-        if self._Sum_name == "var":
-            return var(self._Sum_value)
-        elif self._Sum_name == "con":
-            return con(self._Sum_value)
-        elif self._Sum_name == "prim":
-            return prim(self._Sum_value)
-        elif self._Sum_name == "forall":
-            return forall(self._Sum_value)
-        elif self._Sum_name == "struct":
-            return struct(self._Sum_value)
-        elif self._Sum_name == "nat":
-            return nat(self._Sum_value)
-        elif self._Sum_name == "syn":
-            return syn(self._Sum_value)
-        else:
-            raise Exception(f"invalid _Sum_name value: {self._Sum_name}")
+        match self._Sum_name:
+            case "var":
+                return var(self._Sum_value)
+            case "con":
+                return con(self._Sum_value)
+            case "prim":
+                return prim(self._Sum_value)
+            case "forall":
+                return forall(self._Sum_value)
+            case "struct":
+                return struct(self._Sum_value)
+            case "nat":
+                return nat(self._Sum_value)
+            case "syn":
+                return syn(self._Sum_value)
+            case _:
+                raise Exception(f"invalid _Sum_name value: {self._Sum_name}")
 
     def __setattr__(self, key, value):
         raise Exception("Type is a read-only object")
@@ -557,14 +558,14 @@ class PrimLit:
 
     def __init__(
         self,
-        int64: Union[int, _Missing] = MISSING,
-        decimal: Union[str, _Missing] = MISSING,
-        text: Union[str, _Missing] = MISSING,
-        timestamp: Union[float, _Missing] = MISSING,
-        party: Union[str, _Missing] = MISSING,
-        date: Union[int, _Missing] = MISSING,
-        numeric: Union[str, _Missing] = MISSING,
-        rounding_mode: Union[RoundingMode, _Missing] = MISSING,
+        int64: int | _Missing = MISSING,
+        decimal: str | _Missing = MISSING,
+        text: str | _Missing = MISSING,
+        timestamp: float | _Missing = MISSING,
+        party: str | _Missing = MISSING,
+        date: int | _Missing = MISSING,
+        numeric: str | _Missing = MISSING,
+        rounding_mode: RoundingMode | _Missing = MISSING,
     ):
         if int64 is not MISSING:
             object.__setattr__(self, "_Sum_name", "int64")
@@ -678,8 +679,8 @@ class Location:
 
     def __init__(
         self,
-        module: Union[ModuleRef, _Missing] = MISSING,
-        range: Union[Range, _Missing] = MISSING,
+        module: ModuleRef | _Missing = MISSING,
+        range: Range | _Missing = MISSING,
     ):
         object.__setattr__(self, "module", module)
         object.__setattr__(self, "range", range)
@@ -1083,51 +1084,51 @@ class Expr:
     def __init__(
         self,
         *,
-        var: Union[str, _Missing] = MISSING,
-        val: Union[ValName, _Missing] = MISSING,
-        builtin: Union[BuiltinFunction, _Missing] = MISSING,
-        prim_con: Union[PrimCon, _Missing] = MISSING,
-        prim_lit: Union[PrimLit, _Missing] = MISSING,
-        rec_con: Union[RecCon, _Missing] = MISSING,
-        rec_proj: Union[RecProj, _Missing] = MISSING,
-        rec_upd: Union[RecUpd, _Missing] = MISSING,
-        variant_con: Union[VariantCon, _Missing] = MISSING,
-        enum_con: Union[EnumCon, _Missing] = MISSING,
-        struct_con: Union[StructCon, _Missing] = MISSING,
-        struct_proj: Union[StructProj, _Missing] = MISSING,
-        struct_upd: Union[StructUpd, _Missing] = MISSING,
-        app: Union[App, _Missing] = MISSING,
-        ty_app: Union[TyApp, _Missing] = MISSING,
-        abs: Union[Abs, _Missing] = MISSING,
-        ty_abs: Union[TyAbs, _Missing] = MISSING,
-        case: Union[Case, _Missing] = MISSING,
-        let: Union[Block, _Missing] = MISSING,
-        nil: Union[Nil, _Missing] = MISSING,
-        cons: Union[Cons, _Missing] = MISSING,
-        update: Union[Update, _Missing] = MISSING,
-        scenario: Union[Scenario, _Missing] = MISSING,
-        optional_none: Union[OptionalNone, _Missing] = MISSING,
-        optional_some: Union[OptionalSome, _Missing] = MISSING,
-        to_any: Union[ToAny, _Missing] = MISSING,
-        from_any: Union[FromAny, _Missing] = MISSING,
-        type_rep: Union[Type, _Missing] = MISSING,
-        to_any_exception: Union[Expr.ToAnyException, _Missing] = MISSING,
-        from_any_exception: Union[Expr.FromAnyException, _Missing] = MISSING,
-        throw: Union[Expr.Throw, _Missing] = MISSING,
-        to_interface: Union[Expr.ToInterface, _Missing] = MISSING,
-        from_interface: Union[Expr.FromInterface, _Missing] = MISSING,
-        call_interface: Union[Expr.CallInterface, _Missing] = MISSING,
-        signatory_interface: Union[Expr.SignatoryInterface, _Missing] = MISSING,
-        observer_interface: Union[Expr.ObserverInterface, _Missing] = MISSING,
-        view_interface: Union[Expr.ViewInterface, _Missing] = MISSING,
-        unsafe_from_interface: Union[Expr.UnsafeFromInterface, _Missing] = MISSING,
-        interface_template_type_rep: Union[Expr.InterfaceTemplateTypeRep, _Missing] = MISSING,
-        to_required_interface: Union[Expr.ToRequiredInterface, _Missing] = MISSING,
-        from_required_interface: Union[Expr.FromRequiredInterface, _Missing] = MISSING,
-        unsafe_from_required_interface: Union[Expr.UnsafeFromRequiredInterface, _Missing] = MISSING,
-        experimental: Union[Expr.Experimental, _Missing] = MISSING,
-        choice_controller: Union[Expr.ChoiceController, _Missing] = MISSING,
-        choice_observer: Union[Expr.ChoiceObserver, _Missing] = MISSING,
+        var: str | _Missing = MISSING,
+        val: ValName | _Missing = MISSING,
+        builtin: BuiltinFunction | _Missing = MISSING,
+        prim_con: PrimCon | _Missing = MISSING,
+        prim_lit: PrimLit | _Missing = MISSING,
+        rec_con: RecCon | _Missing = MISSING,
+        rec_proj: RecProj | _Missing = MISSING,
+        rec_upd: RecUpd | _Missing = MISSING,
+        variant_con: VariantCon | _Missing = MISSING,
+        enum_con: EnumCon | _Missing = MISSING,
+        struct_con: StructCon | _Missing = MISSING,
+        struct_proj: StructProj | _Missing = MISSING,
+        struct_upd: StructUpd | _Missing = MISSING,
+        app: App | _Missing = MISSING,
+        ty_app: TyApp | _Missing = MISSING,
+        abs: Abs | _Missing = MISSING,
+        ty_abs: TyAbs | _Missing = MISSING,
+        case: Case | _Missing = MISSING,
+        let: Block | _Missing = MISSING,
+        nil: Nil | _Missing = MISSING,
+        cons: Cons | _Missing = MISSING,
+        update: Update | _Missing = MISSING,
+        scenario: Scenario | _Missing = MISSING,
+        optional_none: OptionalNone | _Missing = MISSING,
+        optional_some: OptionalSome | _Missing = MISSING,
+        to_any: ToAny | _Missing = MISSING,
+        from_any: FromAny | _Missing = MISSING,
+        type_rep: Type | _Missing = MISSING,
+        to_any_exception: Expr.ToAnyException | _Missing = MISSING,
+        from_any_exception: Expr.FromAnyException | _Missing = MISSING,
+        throw: Expr.Throw | _Missing = MISSING,
+        to_interface: Expr.ToInterface | _Missing = MISSING,
+        from_interface: Expr.FromInterface | _Missing = MISSING,
+        call_interface: Expr.CallInterface | _Missing = MISSING,
+        signatory_interface: Expr.SignatoryInterface | _Missing = MISSING,
+        observer_interface: Expr.ObserverInterface | _Missing = MISSING,
+        view_interface: Expr.ViewInterface | _Missing = MISSING,
+        unsafe_from_interface: Expr.UnsafeFromInterface | _Missing = MISSING,
+        interface_template_type_rep: Expr.InterfaceTemplateTypeRep | _Missing = MISSING,
+        to_required_interface: Expr.ToRequiredInterface | _Missing = MISSING,
+        from_required_interface: Expr.FromRequiredInterface | _Missing = MISSING,
+        unsafe_from_required_interface: Expr.UnsafeFromRequiredInterface | _Missing = MISSING,
+        experimental: Expr.Experimental | _Missing = MISSING,
+        choice_controller: Expr.ChoiceController | _Missing = MISSING,
+        choice_observer: Expr.ChoiceObserver | _Missing = MISSING,
         location: Optional[Location] = None,
     ):
         object.__setattr__(self, "location", location)
@@ -1497,100 +1498,101 @@ class Expr:
         choice_controller: _typing.Callable[[Expr.ChoiceController], _T],
         choice_observer: _typing.Callable[[Expr.ChoiceObserver], _T],
     ) -> _T:
-        if self._Sum_name == "var":
-            return var(self.var)  # type: ignore
-        elif self._Sum_name == "val":
-            return val(self.val)  # type: ignore
-        elif self._Sum_name == "builtin":
-            return builtin(self.builtin)  # type: ignore
-        elif self._Sum_name == "prim_con":
-            return prim_con(self.prim_con)  # type: ignore
-        elif self._Sum_name == "prim_lit":
-            return prim_lit(self.prim_lit)  # type: ignore
-        elif self._Sum_name == "rec_con":
-            return rec_con(self.rec_con)  # type: ignore
-        elif self._Sum_name == "rec_proj":
-            return rec_proj(self.rec_proj)  # type: ignore
-        elif self._Sum_name == "variant_con":
-            return variant_con(self.variant_con)  # type: ignore
-        elif self._Sum_name == "enum_con":
-            return enum_con(self.enum_con)  # type: ignore
-        elif self._Sum_name == "struct_con":
-            return struct_con(self.struct_con)  # type: ignore
-        elif self._Sum_name == "struct_proj":
-            return struct_proj(self.struct_proj)  # type: ignore
-        elif self._Sum_name == "app":
-            return app(self.app)  # type: ignore
-        elif self._Sum_name == "ty_app":
-            return ty_app(self.ty_app)  # type: ignore
-        elif self._Sum_name == "abs":
-            return abs(self.abs)  # type: ignore
-        elif self._Sum_name == "ty_abs":
-            return ty_abs(self.ty_abs)  # type: ignore
-        elif self._Sum_name == "case":
-            return case(self.case)  # type: ignore
-        elif self._Sum_name == "let":
-            return let(self.let)  # type: ignore
-        elif self._Sum_name == "nil":
-            return nil(self.nil)  # type: ignore
-        elif self._Sum_name == "cons":
-            return cons(self.cons)  # type: ignore
-        elif self._Sum_name == "update":
-            return update(self.update)  # type: ignore
-        elif self._Sum_name == "scenario":
-            return scenario(self.scenario)  # type: ignore
-        elif self._Sum_name == "rec_upd":
-            return rec_upd(self.rec_upd)  # type: ignore
-        elif self._Sum_name == "struct_upd":
-            return struct_upd(self.struct_upd)  # type: ignore
-        elif self._Sum_name == "optional_none":
-            return optional_none(self.optional_none)  # type: ignore
-        elif self._Sum_name == "optional_some":
-            return optional_some(self.optional_some)  # type: ignore
-        elif self._Sum_name == "to_any":
-            return to_any(self.to_any)  # type: ignore
-        elif self._Sum_name == "from_any":
-            return from_any(self.from_any)  # type: ignore
-        elif self._Sum_name == "to_any_exception":
-            return to_any_exception(self.to_any_exception)  # type: ignore
-        elif self._Sum_name == "from_any_exception":
-            return from_any_exception(self.from_any_exception)  # type: ignore
-        elif self._Sum_name == "to_text_template_id":
-            return to_text_template_id(self.to_text_template_id)  # type: ignore
-        elif self._Sum_name == "type_rep":
-            return type_rep(self.type_rep)  # type: ignore
-        elif self._Sum_name == "throw":
-            return throw(self.throw)  # type: ignore
-        elif self._Sum_name == "to_interface":
-            return to_interface(self.to_interface)  # type: ignore
-        elif self._Sum_name == "from_interface":
-            return from_interface(self.from_interface)  # type: ignore
-        elif self._Sum_name == "call_interface":
-            return call_interface(self.call_interface)  # type: ignore
-        elif self._Sum_name == "signatory_interface":
-            return signatory_interface(self.signatory_interface)  # type: ignore
-        elif self._Sum_name == "observer_interface":
-            return observer_interface(self.observer_interface)  # type: ignore
-        elif self._Sum_name == "view_interface":
-            return view_interface(self.view_interface)  # type: ignore
-        elif self._Sum_name == "unsafe_from_interface":
-            return unsafe_from_interface(self.unsafe_from_interface)  # type: ignore
-        elif self._Sum_name == "interface_template_type_rep":
-            return interface_template_type_rep(self.interface_template_type_rep)  # type: ignore
-        elif self._Sum_name == "to_required_interface":
-            return to_required_interface(self.to_required_interface)  # type: ignore
-        elif self._Sum_name == "from_required_interface":
-            return from_required_interface(self.from_required_interface)  # type: ignore
-        elif self._Sum_name == "unsafe_from_required_interface":
-            return unsafe_from_required_interface(self.unsafe_from_required_interface)  # type: ignore
-        elif self._Sum_name == "experimental":
-            return experimental(self.experimental)  # type: ignore
-        elif self._Sum_name == "choice_controller":
-            return choice_controller(self.choice_controller)  # type: ignore
-        elif self._Sum_name == "experimental":
-            return choice_observer(self.choice_observer)  # type: ignore
-        else:
-            raise Exception
+        match self._Sum_name:
+            case "var":
+                return var(self.var)  # type: ignore
+            case "val":
+                return val(self.val)  # type: ignore
+            case "builtin":
+                return builtin(self.builtin)  # type: ignore
+            case "prim_con":
+                return prim_con(self.prim_con)  # type: ignore
+            case "prim_lit":
+                return prim_lit(self.prim_lit)  # type: ignore
+            case "rec_con":
+                return rec_con(self.rec_con)  # type: ignore
+            case "rec_proj":
+                return rec_proj(self.rec_proj)  # type: ignore
+            case "variant_con":
+                return variant_con(self.variant_con)  # type: ignore
+            case "enum_con":
+                return enum_con(self.enum_con)  # type: ignore
+            case "struct_con":
+                return struct_con(self.struct_con)  # type: ignore
+            case "struct_proj":
+                return struct_proj(self.struct_proj)  # type: ignore
+            case "app":
+                return app(self.app)  # type: ignore
+            case "ty_app":
+                return ty_app(self.ty_app)  # type: ignore
+            case "abs":
+                return abs(self.abs)  # type: ignore
+            case "ty_abs":
+                return ty_abs(self.ty_abs)  # type: ignore
+            case "case":
+                return case(self.case)  # type: ignore
+            case "let":
+                return let(self.let)  # type: ignore
+            case "nil":
+                return nil(self.nil)  # type: ignore
+            case "cons":
+                return cons(self.cons)  # type: ignore
+            case "update":
+                return update(self.update)  # type: ignore
+            case "scenario":
+                return scenario(self.scenario)  # type: ignore
+            case "rec_upd":
+                return rec_upd(self.rec_upd)  # type: ignore
+            case "struct_upd":
+                return struct_upd(self.struct_upd)  # type: ignore
+            case "optional_none":
+                return optional_none(self.optional_none)  # type: ignore
+            case "optional_some":
+                return optional_some(self.optional_some)  # type: ignore
+            case "to_any":
+                return to_any(self.to_any)  # type: ignore
+            case "from_any":
+                return from_any(self.from_any)  # type: ignore
+            case "to_any_exception":
+                return to_any_exception(self.to_any_exception)  # type: ignore
+            case "from_any_exception":
+                return from_any_exception(self.from_any_exception)  # type: ignore
+            case "to_text_template_id":
+                return to_text_template_id(self.to_text_template_id)  # type: ignore
+            case "type_rep":
+                return type_rep(self.type_rep)  # type: ignore
+            case "throw":
+                return throw(self.throw)  # type: ignore
+            case "to_interface":
+                return to_interface(self.to_interface)  # type: ignore
+            case "from_interface":
+                return from_interface(self.from_interface)  # type: ignore
+            case "call_interface":
+                return call_interface(self.call_interface)  # type: ignore
+            case "signatory_interface":
+                return signatory_interface(self.signatory_interface)  # type: ignore
+            case "observer_interface":
+                return observer_interface(self.observer_interface)  # type: ignore
+            case "view_interface":
+                return view_interface(self.view_interface)  # type: ignore
+            case "unsafe_from_interface":
+                return unsafe_from_interface(self.unsafe_from_interface)  # type: ignore
+            case "interface_template_type_rep":
+                return interface_template_type_rep(self.interface_template_type_rep)  # type: ignore
+            case "to_required_interface":
+                return to_required_interface(self.to_required_interface)  # type: ignore
+            case "from_required_interface":
+                return from_required_interface(self.from_required_interface)  # type: ignore
+            case "unsafe_from_required_interface":
+                return unsafe_from_required_interface(self.unsafe_from_required_interface)  # type: ignore
+            case "experimental":
+                return experimental(self.experimental)  # type: ignore
+            case "choice_controller":
+                return choice_controller(self.choice_controller)  # type: ignore
+            case "experimental":
+                return choice_observer(self.choice_observer)  # type: ignore
+            case _:
+                raise Exception
 
     def __repr__(self):
         return f"Expr({self._Sum_name}={self._Sum_value!r})"
@@ -1628,15 +1630,15 @@ class CaseAlt:
 
     def __init__(
         self,
-        default: Union[Unit, _Missing] = MISSING,
-        variant: Union[Variant, _Missing] = MISSING,
-        prim_con: Union[PrimCon, _Missing] = MISSING,
-        nil: Union[Unit, _Missing] = MISSING,
-        cons: Union[Cons, _Missing] = MISSING,
-        optional_none: Union[Unit, _Missing] = MISSING,
-        optional_some: Union[OptionalSome, _Missing] = MISSING,
-        body: Union[Expr, _Missing] = MISSING,
-        enum: Union[Enum, _Missing] = MISSING,
+        default: Unit | _Missing = MISSING,
+        variant: Variant | _Missing = MISSING,
+        prim_con: PrimCon | _Missing = MISSING,
+        nil: Unit | _Missing = MISSING,
+        cons: Cons | _Missing = MISSING,
+        optional_none: Unit | _Missing = MISSING,
+        optional_some: OptionalSome | _Missing = MISSING,
+        body: Expr | _Missing = MISSING,
+        enum: Enum | _Missing = MISSING,
     ):
         object.__setattr__(self, "body", body)
         if default is not MISSING:
@@ -1885,23 +1887,23 @@ class Update:
 
     def __init__(
         self,
-        pure: Union[Pure, _Missing] = MISSING,
-        block: Union[Block, _Missing] = MISSING,
-        create: Union[Update.Create, _Missing] = MISSING,
-        exercise: Union[Update.Exercise, _Missing] = MISSING,
-        exercise_by_key: Union[Update.ExerciseByKey, _Missing] = MISSING,
-        fetch: Union[Update.Fetch, _Missing] = MISSING,
-        get_time: Union[Unit, _Missing] = MISSING,
-        lookup_by_key: Union[Update.RetrieveByKey, _Missing] = MISSING,
-        fetch_by_key: Union[Update.RetrieveByKey, _Missing] = MISSING,
-        embed_expr: Union[Update.EmbedExpr, _Missing] = MISSING,
-        try_catch: Union[Update.TryCatch, _Missing] = MISSING,
-        create_interface: Union[Update.CreateInterface, _Missing] = MISSING,
-        exercise_interface: Union[Update.ExerciseInterface, _Missing] = MISSING,
-        fetch_interface: Union[Update.FetchInterface, _Missing] = MISSING,
-        dynamic_exercise: Union[Update.DynamicExercise, _Missing] = MISSING,
-        soft_fetch: Union[Update.SoftFetch, _Missing] = MISSING,
-        soft_exercise: Union[Update.SoftExercise, _Missing] = MISSING,
+        pure: Pure | _Missing = MISSING,
+        block: Block | _Missing = MISSING,
+        create: Update.Create | _Missing = MISSING,
+        exercise: Update.Exercise | _Missing = MISSING,
+        exercise_by_key: Update.ExerciseByKey | _Missing = MISSING,
+        fetch: Update.Fetch | _Missing = MISSING,
+        get_time: Unit | _Missing = MISSING,
+        lookup_by_key: Update.RetrieveByKey | _Missing = MISSING,
+        fetch_by_key: Update.RetrieveByKey | _Missing = MISSING,
+        embed_expr: Update.EmbedExpr | _Missing = MISSING,
+        try_catch: Update.TryCatch | _Missing = MISSING,
+        create_interface: Update.CreateInterface | _Missing = MISSING,
+        exercise_interface: Update.ExerciseInterface | _Missing = MISSING,
+        fetch_interface: Update.FetchInterface | _Missing = MISSING,
+        dynamic_exercise: Update.DynamicExercise | _Missing = MISSING,
+        soft_fetch: Update.SoftFetch | _Missing = MISSING,
+        soft_exercise: Update.SoftExercise | _Missing = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -2096,14 +2098,14 @@ class Scenario:
 
     def __init__(
         self,
-        pure: Union[Pure, _Missing] = MISSING,
-        block: Union[Block, _Missing] = MISSING,
-        commit: Union[Commit, _Missing] = MISSING,
-        must_fail_at: Union[Commit, _Missing] = MISSING,
-        pass_: Union[Expr, _Missing] = MISSING,
-        get_time: Union[Unit, _Missing] = MISSING,
-        get_party: Union[Expr, _Missing] = MISSING,
-        embed_expr: Union[EmbedExpr, _Missing] = MISSING,
+        pure: Pure | _Missing = MISSING,
+        block: Block | _Missing = MISSING,
+        commit: Commit | _Missing = MISSING,
+        must_fail_at: Commit | _Missing = MISSING,
+        pass_: Expr | _Missing = MISSING,
+        get_time: Unit | _Missing = MISSING,
+        get_party: Expr | _Missing = MISSING,
+        embed_expr: EmbedExpr | _Missing = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -2382,7 +2384,7 @@ class TemplateChoice:
 @dataclass(init=False, frozen=True)
 class KeyExpr:
     _Sum_name: str
-    _Sum_value: Union[KeyExpr.Projections, KeyExpr.Record]
+    _Sum_value: KeyExpr.Projections | KeyExpr.Record
 
     @dataclass(init=False, frozen=True)
     class Projections:
@@ -2441,7 +2443,7 @@ class DefTemplate:
     class DefKey:
         type: Type
         _key_expr_name: str
-        _key_expr_value: Union[KeyExpr, Expr]
+        _key_expr_value: KeyExpr | Expr
         maintainers: Expr
 
         def __init__(self, type=MISSING, key=MISSING, complex_key=MISSING, maintainers=MISSING):
@@ -2532,15 +2534,15 @@ class DefDataType:
 
     def __init__(
         self,
-        name: Union[DottedName, _Missing] = MISSING,
-        params: Union[Sequence[TypeVarWithKind], _Missing] = MISSING,
-        record: Union[DefDataType.Fields, _Missing] = MISSING,
-        variant: Union[DefDataType.Fields, _Missing] = MISSING,
-        enum: Union[DefDataType.EnumConstructors, _Missing] = MISSING,
-        interface: Union[Unit, _Missing] = MISSING,
-        synonym: Union[Type, _Missing] = MISSING,
-        serializable: Union[bool, _Missing] = MISSING,
-        location: Union[Location, _Missing] = MISSING,
+        name: DottedName | _Missing = MISSING,
+        params: Sequence[TypeVarWithKind] | _Missing = MISSING,
+        record: DefDataType.Fields | _Missing = MISSING,
+        variant: DefDataType.Fields | _Missing = MISSING,
+        enum: DefDataType.EnumConstructors | _Missing = MISSING,
+        interface: Unit | _Missing = MISSING,
+        synonym: Type | _Missing = MISSING,
+        serializable: bool | _Missing = MISSING,
+        location: Location | _Missing = MISSING,
     ):
         self.name = name  # type: ignore
         self.params = params  # type: ignore
@@ -2647,7 +2649,7 @@ class DefValue:
     def __init__(
         self,
         name_with_type: DefValue.NameWithType,
-        expr: Union[Expr, Callable[[], Expr]],
+        expr: Expr | Callable[[], Expr],
         no_party_literals: bool,
         is_test: bool,
         location: Optional[Location] = None,

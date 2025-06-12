@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from types import MappingProxyType
-from typing import Any, Collection, DefaultDict, Mapping, Optional, Protocol, Set, TypeVar
+from typing import Any, Collection, Mapping, Optional, Protocol, TypeVar
 
 __all__ = ["merge"]
 
@@ -22,7 +22,7 @@ def merge(*m: Optional[Mapping[K, Collection[V]]]) -> Mapping[K, Collection[V]]:
     """
     Combine multiple key-values mappings into a single key-values mapping.
     """
-    ret = defaultdict(set)  # type: DefaultDict[K, Set[V]]
+    ret = defaultdict[K, set[V]](set)
     for mapping in m:
         if mapping:
             for k, v in mapping.items():

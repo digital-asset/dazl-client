@@ -16,10 +16,11 @@ from typing import (
     NoReturn,
     Optional,
     Sequence,
-    Union,
+    TypeGuard,
     final,
 )
 import uuid
+import warnings
 
 from .. import _repr
 from ..damlast.daml_lf_1 import TypeConName
@@ -28,13 +29,9 @@ from ..prim import LEDGER_STRING_REGEX, ContractData, ContractId, Parties, Party
 from ..util.typing import safe_cast
 
 if sys.version_info >= (3, 12):
-    from typing import TypeAlias, TypeGuard
-elif sys.version_info >= (3, 10):
-    from typing import TypeGuard
-
-    from typing_extensions import TypeAlias
+    from typing import TypeAlias
 else:
-    from typing_extensions import TypeAlias, TypeGuard
+    from typing_extensions import TypeAlias
 
 
 __all__ = [
@@ -75,12 +72,12 @@ def is_command(obj: Any, /) -> TypeGuard[Command]:
     """
     Determine whether an object is a :class:`Command`.
 
-    This function is equivalent to calling ``isinstance(obj, Command)``. If you are using
-    Python 3.10 or later, ``isinstance(obj, Command)`` should be preferred, but on Python 3.8 and 3.9,
-    ``isinstance(obj, Command)`` will fail to typecheck due to ``Union`` not being understood as a
-    valid argument. If your code must be compatible with Python 3.8 and 3.9 _and_ you wish to use a
-    typechecker, use this convenience function instead.
+    This function is equivalent to calling ``isinstance(obj, Command)``, and only existed
+    to support Python 3.8 and Python 3.9-based code.
     """
+    warnings.warn(
+        "is_command is deprecated; use isinstance(obj, Command) instead.", DeprecationWarning
+    )
     return isinstance(obj, _Command)
 
 
@@ -125,7 +122,7 @@ class CreateCommand(_Command):
     template_id: Final[TypeConName]  # type: ignore
     payload: Final[ContractData]  # type: ignore
 
-    def __init__(self, template_id: Union[str, TypeConName], payload: ContractData):
+    def __init__(self, template_id: str | TypeConName, payload: ContractData):
         """
         Initialize a :class:`CreateCommand`.
 
@@ -173,7 +170,7 @@ class CreateAndExerciseCommand(_Command):
 
     def __init__(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         payload: ContractData,
         choice: str,
         argument: Optional[Any] = None,
@@ -270,7 +267,7 @@ class ExerciseByKeyCommand(_Command):
 
     def __init__(
         self,
-        template_id: Union[str, TypeConName],
+        template_id: str | TypeConName,
         key: Any,
         choice: str,
         argument: Optional[Any] = None,
@@ -305,24 +302,12 @@ class ExerciseByKeyCommand(_Command):
         return f"ExerciseByKeyCommand({self.template_id}, {self.key}, {self.choice!r}, {self.argument})"
 
 
-if TYPE_CHECKING:
-    # export Command as a union type so that exhaustive type checking can be performed
-    # in Python 3.8 and Python 3.9, Union types are not allowed to be used for isinstance checks,
-    # so the is_command convenience function should be used instead.
-    if sys.version_info >= (3, 10):
-        Command: TypeAlias = (
-            CreateCommand | ExerciseCommand | CreateAndExerciseCommand | ExerciseByKeyCommand
-        )
-    else:
-        Command: TypeAlias = Union[
-            CreateCommand, ExerciseCommand, CreateAndExerciseCommand, ExerciseByKeyCommand
-        ]
-else:
-    # export Command as an actual type so that isinstance checks can be performed
-    Command = _Command
+Command: TypeAlias = (
+    CreateCommand | ExerciseCommand | CreateAndExerciseCommand | ExerciseByKeyCommand
+)
 
 
-Commands: TypeAlias = Union[Command, Sequence[Command]]
+Commands: TypeAlias = Command | Sequence[Command]
 
 
 class CommandMeta:
@@ -417,6 +402,16 @@ class CreateEvent:
     An event that indicates a newly-created contract.
     """
 
+    __match_args__ = (
+        "contract_id",
+        "payload",
+        "signatories",
+        "observers",
+        "agreement_text",
+        "key",
+        "created_event_blob",
+        "interface_views",
+    )
     __slots__ = (
         "_contract_id",
         "_payload",
@@ -556,7 +551,7 @@ class ArchiveEvent:
         return self._contract_id
 
 
-Event = Union[CreateEvent, ArchiveEvent]
+Event = CreateEvent | ArchiveEvent
 
 
 class Boundary:
@@ -565,6 +560,7 @@ class Boundary:
     """
 
     __slots__ = ("_offset",)
+    __match_args__ = ("offset",)
     if TYPE_CHECKING:
         _offset: Optional[str]
 
@@ -591,7 +587,7 @@ class Boundary:
         return f"Boundary({self._offset!r})"
 
 
-EventOrBoundary = Union[Event, Boundary]
+EventOrBoundary = Event | Boundary
 
 
 class ExerciseResponse:
@@ -601,11 +597,12 @@ class ExerciseResponse:
     """
 
     __slots__ = ("_result", "_events")
+    __match_args__ = ("result", "events")
     if TYPE_CHECKING:
         _result: Optional[Any]
-        _events: Sequence[Union[CreateEvent, ArchiveEvent]]
+        _events: Sequence[CreateEvent | ArchiveEvent]
 
-    def __init__(self, result: Optional[Any], events: Sequence[Union[CreateEvent, ArchiveEvent]]):
+    def __init__(self, result: Optional[Any], events: Sequence[CreateEvent | ArchiveEvent]):
         object.__setattr__(self, "_result", result)
         object.__setattr__(self, "_events", tuple(events))
 
@@ -617,7 +614,7 @@ class ExerciseResponse:
         return self._result
 
     @property
-    def events(self) -> Sequence[Union[CreateEvent, ArchiveEvent]]:
+    def events(self) -> Sequence[CreateEvent | ArchiveEvent]:
         """
         All of the events that occurred as a result of exercising the choice, including the archive
         event for the contract if the choice is consuming (or otherwise archives it as part of its
@@ -631,6 +628,7 @@ class ExerciseResponse:
 
 class InterfaceView:
     __slots__ = ("_interface_id", "_view_value")
+    __match_args__ = ("interface_id", "view_value")
     if TYPE_CHECKING:
         _interface_id: TypeConName
         _view_value: Any
@@ -662,7 +660,7 @@ class InterfaceView:
         )
 
 
-SubmitResponse = Union[None, CreateEvent, ExerciseResponse]
+SubmitResponse: TypeAlias = Optional[CreateEvent | ExerciseResponse]
 
 
 class User:
@@ -671,6 +669,8 @@ class User:
     """
 
     __slots__ = ("id", "primary_party", "resource_version", "annotations")
+    __match_args__ = ("id", "primary_party", "resource_version", "annotations")
+
     id: str
     primary_party: Party
     resource_version: Optional[str]
@@ -689,7 +689,7 @@ class User:
         self.annotations = annotations
 
 
-class Right(abc.ABC):
+class _Right(abc.ABC):
     """
     Information about an individual right for a :class:`User`.
     """
@@ -702,8 +702,8 @@ class Right(abc.ABC):
 
 
 @final
-class ReadAs(Right):
-    _slots__: Final = ("party",)
+class ReadAs(_Right):
+    __slots__: Final = ("party",)
     __match_args__: Final = ("party",)
 
     party: Party
@@ -716,7 +716,7 @@ class ReadAs(Right):
 
 
 @final
-class ActAs(Right):
+class ActAs(_Right):
     __slots__: Final = ("party",)
     __match_args__: Final = ("party",)
 
@@ -730,7 +730,7 @@ class ActAs(Right):
 
 
 @final
-class _Admin(Right):
+class _Admin(_Right):
     __slots__: Final = ()
     __match_args__: Final = ()
 
@@ -742,7 +742,7 @@ Admin = _Admin()
 
 
 @final
-class _IdentityProviderAdmin(Right):
+class _IdentityProviderAdmin(_Right):
     __slots__: Final = ()
     __match_args__: Final = ()
 
@@ -751,6 +751,9 @@ class _IdentityProviderAdmin(Right):
 
 
 IdentityProviderAdmin = _IdentityProviderAdmin()
+
+
+Right: TypeAlias = _Admin | _IdentityProviderAdmin | ReadAs | ActAs
 
 
 class PartyInfo:
@@ -868,7 +871,7 @@ class MeteringReportApplication:
         object.__setattr__(self, "events", events)
 
 
-def validate_template_id(value: Union[str, TypeConName]) -> TypeConName:
+def validate_template_id(value: str | TypeConName) -> TypeConName:
     if isinstance(value, TypeConName):
         return value
     else:

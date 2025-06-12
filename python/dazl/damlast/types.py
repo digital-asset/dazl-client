@@ -35,47 +35,48 @@ def match_prim_type(
     on_gen_map: Callable[[Type, Type], T],
     on_any_exception: Callable[[], T],
 ) -> T:
-    if prim_type.prim == PrimType.UNIT:
-        return on_unit()
-    elif prim_type.prim == PrimType.BOOL:
-        return on_bool()
-    elif prim_type.prim == PrimType.INT64:
-        return on_int()
-    elif prim_type.prim == PrimType.DECIMAL:
-        return on_decimal()
-    elif prim_type.prim == PrimType.TEXT or prim_type.prim == PrimType.CHAR:
-        return on_text()
-    elif prim_type.prim == PrimType.TIMESTAMP:
-        return on_datetime()
-    elif prim_type.prim == PrimType.RELTIME:
-        return on_timedelta()
-    elif prim_type.prim == PrimType.PARTY:
-        return on_party()
-    elif prim_type.prim == PrimType.LIST:
-        return on_list(prim_type.args[0])
-    elif prim_type.prim == PrimType.UPDATE:
-        return on_update(prim_type.args[0])
-    elif prim_type.prim == PrimType.SCENARIO:
-        return on_scenario(prim_type.args[0])
-    elif prim_type.prim == PrimType.DATE:
-        return on_date()
-    elif prim_type.prim == PrimType.CONTRACT_ID:
-        return on_contract_id(prim_type.args[0])
-    elif prim_type.prim == PrimType.OPTIONAL:
-        return on_optional(prim_type.args[0])
-    elif prim_type.prim == PrimType.ARROW:
-        return on_arrow(prim_type.args[0], prim_type.args[1])
-    elif prim_type.prim == PrimType.TEXTMAP:
-        return on_text_map(prim_type.args[0])
-    elif prim_type.prim == PrimType.NUMERIC:
-        return on_numeric(prim_type.args[0].nat)
-    elif prim_type.prim == PrimType.ANY:
-        return on_any()
-    elif prim_type.prim == PrimType.TYPE_REP:
-        return on_type_rep()
-    elif prim_type.prim == PrimType.GENMAP:
-        return on_gen_map(prim_type.args[0], prim_type.args[1])
-    elif prim_type.prim == PrimType.ANY_EXCEPTION:
-        return on_any_exception()
-    else:
-        raise ValueError(f"undefined PrimType: {prim_type}")
+    match prim_type.prim:
+        case PrimType.UNIT:
+            return on_unit()
+        case PrimType.BOOL:
+            return on_bool()
+        case PrimType.INT64:
+            return on_int()
+        case PrimType.DECIMAL:
+            return on_decimal()
+        case PrimType.TEXT | PrimType.CHAR:
+            return on_text()
+        case PrimType.TIMESTAMP:
+            return on_datetime()
+        case PrimType.RELTIME:
+            return on_timedelta()
+        case PrimType.PARTY:
+            return on_party()
+        case PrimType.LIST:
+            return on_list(prim_type.args[0])
+        case PrimType.UPDATE:
+            return on_update(prim_type.args[0])
+        case PrimType.SCENARIO:
+            return on_scenario(prim_type.args[0])
+        case PrimType.DATE:
+            return on_date()
+        case PrimType.CONTRACT_ID:
+            return on_contract_id(prim_type.args[0])
+        case PrimType.OPTIONAL:
+            return on_optional(prim_type.args[0])
+        case PrimType.ARROW:
+            return on_arrow(prim_type.args[0], prim_type.args[1])
+        case PrimType.TEXTMAP:
+            return on_text_map(prim_type.args[0])
+        case PrimType.NUMERIC:
+            return on_numeric(prim_type.args[0].nat)
+        case PrimType.ANY:
+            return on_any()
+        case PrimType.TYPE_REP:
+            return on_type_rep()
+        case PrimType.GENMAP:
+            return on_gen_map(prim_type.args[0], prim_type.args[1])
+        case PrimType.ANY_EXCEPTION:
+            return on_any_exception()
+        case _:
+            raise ValueError(f"undefined PrimType: {prim_type}")

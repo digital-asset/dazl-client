@@ -6,7 +6,8 @@ from __future__ import annotations
 from io import BytesIO
 from os import PathLike
 from pathlib import Path
-from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional, TypeVar, Union
+import sys
+from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional
 from zipfile import ZipFile
 
 from .._gen.com.daml.daml_lf_1_17 import daml_lf_pb2 as pb
@@ -16,12 +17,15 @@ from .daml_lf_1 import Archive, Package, PackageRef
 from .errors import PackageNotFoundError
 from .parse import parse_archive
 
-# Wherever the API expects a DAR, we can take a file path, `bytes`, or a byte buffer.
-Dar = Union[bytes, str, Path, BinaryIO]
+if sys.version_info >= (3, 11):
+    from typing import Self, TypeAlias
+else:
+    from typing_extensions import Self, TypeAlias
 
 __all__ = ["Dar", "DarFile", "CachedDarFile", "get_dar_package_ids"]
 
-Self = TypeVar("Self")
+# Wherever the API expects a DAR, we can take a file path, `bytes`, or a byte buffer.
+Dar: TypeAlias = bytes | str | Path | BinaryIO
 
 
 class DarFile:
