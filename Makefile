@@ -12,7 +12,6 @@ docs_html_dir := dist/dazl-docs-$(version)-html
 docs_html_tgz := $(docs_html_dir).tar.gz
 docs_markdown_dir := dist/dazl-docs-$(version)-markdown
 docs_markdown_tgz := $(docs_markdown_dir).tar.gz
-packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
 
 ####################################################################################################
 # general targets
@@ -31,6 +30,9 @@ py_src_core := $(shell find python/dazl -path $(py_src_gen_root) -prune -false -
 py_src = $(py_src_core) $(proto_gen_python_src)
 py_bdist := dist/dazl-$(version)-py3-none-any.whl
 py_sdist := dist/dazl-$(version).tar.gz
+
+####################################################################################################
+packages := $(py_bdist) $(py_sdist) $(docs_html_tgz) $(docs_markdown_tgz)
 
 .PHONY: python-deps
 python-deps: .venv/poetry.lock
