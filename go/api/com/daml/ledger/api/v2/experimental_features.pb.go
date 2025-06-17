@@ -24,12 +24,11 @@ const (
 )
 
 type ExperimentalFeatures struct {
-	state                        protoimpl.MessageState                    `protogen:"open.v1"`
-	StaticTime                   *ExperimentalStaticTime                   `protobuf:"bytes,1,opt,name=static_time,json=staticTime,proto3" json:"static_time,omitempty"`
-	CommandInspectionService     *ExperimentalCommandInspectionService     `protobuf:"bytes,2,opt,name=command_inspection_service,json=commandInspectionService,proto3" json:"command_inspection_service,omitempty"`
-	InteractiveSubmissionService *ExperimentalInteractiveSubmissionService `protobuf:"bytes,3,opt,name=interactive_submission_service,json=interactiveSubmissionService,proto3" json:"interactive_submission_service,omitempty"`
-	unknownFields                protoimpl.UnknownFields
-	sizeCache                    protoimpl.SizeCache
+	state                    protoimpl.MessageState                `protogen:"open.v1"`
+	StaticTime               *ExperimentalStaticTime               `protobuf:"bytes,1,opt,name=static_time,json=staticTime,proto3" json:"static_time,omitempty"`
+	CommandInspectionService *ExperimentalCommandInspectionService `protobuf:"bytes,2,opt,name=command_inspection_service,json=commandInspectionService,proto3" json:"command_inspection_service,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *ExperimentalFeatures) Reset() {
@@ -72,13 +71,6 @@ func (x *ExperimentalFeatures) GetStaticTime() *ExperimentalStaticTime {
 func (x *ExperimentalFeatures) GetCommandInspectionService() *ExperimentalCommandInspectionService {
 	if x != nil {
 		return x.CommandInspectionService
-	}
-	return nil
-}
-
-func (x *ExperimentalFeatures) GetInteractiveSubmissionService() *ExperimentalInteractiveSubmissionService {
-	if x != nil {
-		return x.InteractiveSubmissionService
 	}
 	return nil
 }
@@ -171,27 +163,27 @@ func (x *ExperimentalCommandInspectionService) GetSupported() bool {
 	return false
 }
 
-type ExperimentalInteractiveSubmissionService struct {
+type ExperimentalPartyTopologyEvents struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Supported     bool                   `protobuf:"varint,1,opt,name=supported,proto3" json:"supported,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExperimentalInteractiveSubmissionService) Reset() {
-	*x = ExperimentalInteractiveSubmissionService{}
+func (x *ExperimentalPartyTopologyEvents) Reset() {
+	*x = ExperimentalPartyTopologyEvents{}
 	mi := &file_com_daml_ledger_api_v2_experimental_features_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExperimentalInteractiveSubmissionService) String() string {
+func (x *ExperimentalPartyTopologyEvents) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExperimentalInteractiveSubmissionService) ProtoMessage() {}
+func (*ExperimentalPartyTopologyEvents) ProtoMessage() {}
 
-func (x *ExperimentalInteractiveSubmissionService) ProtoReflect() protoreflect.Message {
+func (x *ExperimentalPartyTopologyEvents) ProtoReflect() protoreflect.Message {
 	mi := &file_com_daml_ledger_api_v2_experimental_features_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -203,12 +195,12 @@ func (x *ExperimentalInteractiveSubmissionService) ProtoReflect() protoreflect.M
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExperimentalInteractiveSubmissionService.ProtoReflect.Descriptor instead.
-func (*ExperimentalInteractiveSubmissionService) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExperimentalPartyTopologyEvents.ProtoReflect.Descriptor instead.
+func (*ExperimentalPartyTopologyEvents) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_experimental_features_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ExperimentalInteractiveSubmissionService) GetSupported() bool {
+func (x *ExperimentalPartyTopologyEvents) GetSupported() bool {
 	if x != nil {
 		return x.Supported
 	}
@@ -219,17 +211,16 @@ var File_com_daml_ledger_api_v2_experimental_features_proto protoreflect.FileDes
 
 const file_com_daml_ledger_api_v2_experimental_features_proto_rawDesc = "" +
 	"\n" +
-	"2com/daml/ledger/api/v2/experimental_features.proto\x12\x16com.daml.ledger.api.v2\"\xec\x02\n" +
+	"2com/daml/ledger/api/v2/experimental_features.proto\x12\x16com.daml.ledger.api.v2\"\xe3\x01\n" +
 	"\x14ExperimentalFeatures\x12O\n" +
 	"\vstatic_time\x18\x01 \x01(\v2..com.daml.ledger.api.v2.ExperimentalStaticTimeR\n" +
 	"staticTime\x12z\n" +
-	"\x1acommand_inspection_service\x18\x02 \x01(\v2<.com.daml.ledger.api.v2.ExperimentalCommandInspectionServiceR\x18commandInspectionService\x12\x86\x01\n" +
-	"\x1einteractive_submission_service\x18\x03 \x01(\v2@.com.daml.ledger.api.v2.ExperimentalInteractiveSubmissionServiceR\x1cinteractiveSubmissionService\"6\n" +
+	"\x1acommand_inspection_service\x18\x02 \x01(\v2<.com.daml.ledger.api.v2.ExperimentalCommandInspectionServiceR\x18commandInspectionService\"6\n" +
 	"\x16ExperimentalStaticTime\x12\x1c\n" +
 	"\tsupported\x18\x01 \x01(\bR\tsupported\"D\n" +
 	"$ExperimentalCommandInspectionService\x12\x1c\n" +
-	"\tsupported\x18\x01 \x01(\bR\tsupported\"H\n" +
-	"(ExperimentalInteractiveSubmissionService\x12\x1c\n" +
+	"\tsupported\x18\x01 \x01(\bR\tsupported\"?\n" +
+	"\x1fExperimentalPartyTopologyEvents\x12\x1c\n" +
 	"\tsupported\x18\x01 \x01(\bR\tsupportedB\x98\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x1eExperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
@@ -247,20 +238,19 @@ func file_com_daml_ledger_api_v2_experimental_features_proto_rawDescGZIP() []byt
 
 var file_com_daml_ledger_api_v2_experimental_features_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_com_daml_ledger_api_v2_experimental_features_proto_goTypes = []any{
-	(*ExperimentalFeatures)(nil),                     // 0: com.daml.ledger.api.v2.ExperimentalFeatures
-	(*ExperimentalStaticTime)(nil),                   // 1: com.daml.ledger.api.v2.ExperimentalStaticTime
-	(*ExperimentalCommandInspectionService)(nil),     // 2: com.daml.ledger.api.v2.ExperimentalCommandInspectionService
-	(*ExperimentalInteractiveSubmissionService)(nil), // 3: com.daml.ledger.api.v2.ExperimentalInteractiveSubmissionService
+	(*ExperimentalFeatures)(nil),                 // 0: com.daml.ledger.api.v2.ExperimentalFeatures
+	(*ExperimentalStaticTime)(nil),               // 1: com.daml.ledger.api.v2.ExperimentalStaticTime
+	(*ExperimentalCommandInspectionService)(nil), // 2: com.daml.ledger.api.v2.ExperimentalCommandInspectionService
+	(*ExperimentalPartyTopologyEvents)(nil),      // 3: com.daml.ledger.api.v2.ExperimentalPartyTopologyEvents
 }
 var file_com_daml_ledger_api_v2_experimental_features_proto_depIdxs = []int32{
 	1, // 0: com.daml.ledger.api.v2.ExperimentalFeatures.static_time:type_name -> com.daml.ledger.api.v2.ExperimentalStaticTime
 	2, // 1: com.daml.ledger.api.v2.ExperimentalFeatures.command_inspection_service:type_name -> com.daml.ledger.api.v2.ExperimentalCommandInspectionService
-	3, // 2: com.daml.ledger.api.v2.ExperimentalFeatures.interactive_submission_service:type_name -> com.daml.ledger.api.v2.ExperimentalInteractiveSubmissionService
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_experimental_features_proto_init() }

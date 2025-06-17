@@ -105,13 +105,14 @@ func (x *ListKnownPackagesResponse) GetPackageDetails() []*PackageDetails {
 }
 
 type PackageDetails struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	PackageId         string                 `protobuf:"bytes,1,opt,name=package_id,json=packageId,proto3" json:"package_id,omitempty"`
-	PackageSize       uint64                 `protobuf:"varint,2,opt,name=package_size,json=packageSize,proto3" json:"package_size,omitempty"`
-	KnownSince        *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=known_since,json=knownSince,proto3" json:"known_since,omitempty"`
-	SourceDescription string                 `protobuf:"bytes,4,opt,name=source_description,json=sourceDescription,proto3" json:"source_description,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PackageId     string                 `protobuf:"bytes,1,opt,name=package_id,json=packageId,proto3" json:"package_id,omitempty"`
+	PackageSize   uint64                 `protobuf:"varint,2,opt,name=package_size,json=packageSize,proto3" json:"package_size,omitempty"`
+	KnownSince    *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=known_since,json=knownSince,proto3" json:"known_since,omitempty"`
+	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Version       string                 `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PackageDetails) Reset() {
@@ -165,9 +166,16 @@ func (x *PackageDetails) GetKnownSince() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *PackageDetails) GetSourceDescription() string {
+func (x *PackageDetails) GetName() string {
 	if x != nil {
-		return x.SourceDescription
+		return x.Name
+	}
+	return ""
+}
+
+func (x *PackageDetails) GetVersion() string {
+	if x != nil {
+		return x.Version
 	}
 	return ""
 }
@@ -355,14 +363,15 @@ const file_com_daml_ledger_api_v2_admin_package_management_service_proto_rawDesc
 	"=com/daml/ledger/api/v2/admin/package_management_service.proto\x12\x1ccom.daml.ledger.api.v2.admin\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1a\n" +
 	"\x18ListKnownPackagesRequest\"r\n" +
 	"\x19ListKnownPackagesResponse\x12U\n" +
-	"\x0fpackage_details\x18\x01 \x03(\v2,.com.daml.ledger.api.v2.admin.PackageDetailsR\x0epackageDetails\"\xbe\x01\n" +
+	"\x0fpackage_details\x18\x01 \x03(\v2,.com.daml.ledger.api.v2.admin.PackageDetailsR\x0epackageDetails\"\xbd\x01\n" +
 	"\x0ePackageDetails\x12\x1d\n" +
 	"\n" +
 	"package_id\x18\x01 \x01(\tR\tpackageId\x12!\n" +
 	"\fpackage_size\x18\x02 \x01(\x04R\vpackageSize\x12;\n" +
 	"\vknown_since\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"knownSince\x12-\n" +
-	"\x12source_description\x18\x04 \x01(\tR\x11sourceDescription\"V\n" +
+	"knownSince\x12\x12\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\x12\x18\n" +
+	"\aversion\x18\x05 \x01(\tR\aversion\"V\n" +
 	"\x14UploadDarFileRequest\x12\x19\n" +
 	"\bdar_file\x18\x01 \x01(\fR\adarFile\x12#\n" +
 	"\rsubmission_id\x18\x02 \x01(\tR\fsubmissionId\"\x17\n" +

@@ -12,17 +12,17 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class OffsetCheckpoint(_message.Message):
-    __slots__ = ("offset", "domain_times")
+    __slots__ = ("offset", "synchronizer_times")
     OFFSET_FIELD_NUMBER: _ClassVar[int]
-    DOMAIN_TIMES_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_TIMES_FIELD_NUMBER: _ClassVar[int]
     offset: int
-    domain_times: _containers.RepeatedCompositeFieldContainer[DomainTime]
-    def __init__(self, offset: _Optional[int] = ..., domain_times: _Optional[_Iterable[_Union[DomainTime, _Mapping]]] = ...) -> None: ...
+    synchronizer_times: _containers.RepeatedCompositeFieldContainer[SynchronizerTime]
+    def __init__(self, offset: _Optional[int] = ..., synchronizer_times: _Optional[_Iterable[_Union[SynchronizerTime, _Mapping]]] = ...) -> None: ...
 
-class DomainTime(_message.Message):
-    __slots__ = ("domain_id", "record_time")
-    DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
+class SynchronizerTime(_message.Message):
+    __slots__ = ("synchronizer_id", "record_time")
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
-    domain_id: str
+    synchronizer_id: str
     record_time: _timestamp_pb2.Timestamp
-    def __init__(self, domain_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, synchronizer_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

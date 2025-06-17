@@ -31,7 +31,7 @@ from . import reassignment_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_rea
 from . import transaction_filter_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_transaction__filter__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n*com/daml/ledger/api/v2/state_service.proto\x12\x16\x63om.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\xa2\x01\n\x19GetActiveContractsRequest\x12\x41\n\x06\x66ilter\x18\x01 \x01(\x0b\x32).com.daml.ledger.api.v2.TransactionFilterR\x06\x66ilter\x12\x18\n\x07verbose\x18\x02 \x01(\x08R\x07verbose\x12(\n\x10\x61\x63tive_at_offset\x18\x03 \x01(\x03R\x0e\x61\x63tiveAtOffset\"\xe6\x02\n\x1aGetActiveContractsResponse\x12\x1f\n\x0bworkflow_id\x18\x02 \x01(\tR\nworkflowId\x12Q\n\x0f\x61\x63tive_contract\x18\x03 \x01(\x0b\x32&.com.daml.ledger.api.v2.ActiveContractH\x00R\x0e\x61\x63tiveContract\x12\x63\n\x15incomplete_unassigned\x18\x04 \x01(\x0b\x32,.com.daml.ledger.api.v2.IncompleteUnassignedH\x00R\x14incompleteUnassigned\x12]\n\x13incomplete_assigned\x18\x05 \x01(\x0b\x32*.com.daml.ledger.api.v2.IncompleteAssignedH\x00R\x12incompleteAssignedB\x10\n\x0e\x63ontract_entry\"\xab\x01\n\x0e\x41\x63tiveContract\x12I\n\rcreated_event\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v2.CreatedEventR\x0c\x63reatedEvent\x12\x1b\n\tdomain_id\x18\x02 \x01(\tR\x08\x64omainId\x12\x31\n\x14reassignment_counter\x18\x03 \x01(\x04R\x13reassignmentCounter\"\xb5\x01\n\x14IncompleteUnassigned\x12I\n\rcreated_event\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v2.CreatedEventR\x0c\x63reatedEvent\x12R\n\x10unassigned_event\x18\x02 \x01(\x0b\x32\'.com.daml.ledger.api.v2.UnassignedEventR\x0funassignedEvent\"b\n\x12IncompleteAssigned\x12L\n\x0e\x61ssigned_event\x18\x01 \x01(\x0b\x32%.com.daml.ledger.api.v2.AssignedEventR\rassignedEvent\"Y\n\x1aGetConnectedDomainsRequest\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x12%\n\x0eparticipant_id\x18\x02 \x01(\tR\rparticipantId\"\xb2\x02\n\x1bGetConnectedDomainsResponse\x12p\n\x11\x63onnected_domains\x18\x01 \x03(\x0b\x32\x43.com.daml.ledger.api.v2.GetConnectedDomainsResponse.ConnectedDomainR\x10\x63onnectedDomains\x1a\xa0\x01\n\x0f\x43onnectedDomain\x12!\n\x0c\x64omain_alias\x18\x01 \x01(\tR\x0b\x64omainAlias\x12\x1b\n\tdomain_id\x18\x02 \x01(\tR\x08\x64omainId\x12M\n\npermission\x18\x03 \x01(\x0e\x32-.com.daml.ledger.api.v2.ParticipantPermissionR\npermission\"\x15\n\x13GetLedgerEndRequest\".\n\x14GetLedgerEndResponse\x12\x16\n\x06offset\x18\x01 \x01(\x03R\x06offset\"\x1f\n\x1dGetLatestPrunedOffsetsRequest\"\xcc\x01\n\x1eGetLatestPrunedOffsetsResponse\x12J\n\"participant_pruned_up_to_inclusive\x18\x01 \x01(\x03R\x1eparticipantPrunedUpToInclusive\x12^\n-all_divulged_contracts_pruned_up_to_inclusive\x18\x02 \x01(\x03R\'allDivulgedContractsPrunedUpToInclusive*\xb7\x01\n\x15ParticipantPermission\x12&\n\"PARTICIPANT_PERMISSION_UNSPECIFIED\x10\x00\x12%\n!PARTICIPANT_PERMISSION_SUBMISSION\x10\x01\x12\'\n#PARTICIPANT_PERMISSION_CONFIRMATION\x10\x02\x12&\n\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x03\x32\x82\x04\n\x0cStateService\x12}\n\x12GetActiveContracts\x12\x31.com.daml.ledger.api.v2.GetActiveContractsRequest\x1a\x32.com.daml.ledger.api.v2.GetActiveContractsResponse0\x01\x12~\n\x13GetConnectedDomains\x12\x32.com.daml.ledger.api.v2.GetConnectedDomainsRequest\x1a\x33.com.daml.ledger.api.v2.GetConnectedDomainsResponse\x12i\n\x0cGetLedgerEnd\x12+.com.daml.ledger.api.v2.GetLedgerEndRequest\x1a,.com.daml.ledger.api.v2.GetLedgerEndResponse\x12\x87\x01\n\x16GetLatestPrunedOffsets\x12\x35.com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest\x1a\x36.com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponseB\x90\x01\n\x16\x63om.daml.ledger.api.v2B\x16StateServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16\x43om.Daml.Ledger.Api.V2b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n*com/daml/ledger/api/v2/state_service.proto\x12\x16\x63om.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\xea\x01\n\x19GetActiveContractsRequest\x12\x41\n\x06\x66ilter\x18\x01 \x01(\x0b\x32).com.daml.ledger.api.v2.TransactionFilterR\x06\x66ilter\x12\x18\n\x07verbose\x18\x02 \x01(\x08R\x07verbose\x12(\n\x10\x61\x63tive_at_offset\x18\x03 \x01(\x03R\x0e\x61\x63tiveAtOffset\x12\x46\n\x0c\x65vent_format\x18\x04 \x01(\x0b\x32#.com.daml.ledger.api.v2.EventFormatR\x0b\x65ventFormat\"\xe6\x02\n\x1aGetActiveContractsResponse\x12\x1f\n\x0bworkflow_id\x18\x01 \x01(\tR\nworkflowId\x12Q\n\x0f\x61\x63tive_contract\x18\x02 \x01(\x0b\x32&.com.daml.ledger.api.v2.ActiveContractH\x00R\x0e\x61\x63tiveContract\x12\x63\n\x15incomplete_unassigned\x18\x03 \x01(\x0b\x32,.com.daml.ledger.api.v2.IncompleteUnassignedH\x00R\x14incompleteUnassigned\x12]\n\x13incomplete_assigned\x18\x04 \x01(\x0b\x32*.com.daml.ledger.api.v2.IncompleteAssignedH\x00R\x12incompleteAssignedB\x10\n\x0e\x63ontract_entry\"\xb7\x01\n\x0e\x41\x63tiveContract\x12I\n\rcreated_event\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v2.CreatedEventR\x0c\x63reatedEvent\x12\'\n\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x12\x31\n\x14reassignment_counter\x18\x03 \x01(\x04R\x13reassignmentCounter\"\xb5\x01\n\x14IncompleteUnassigned\x12I\n\rcreated_event\x18\x01 \x01(\x0b\x32$.com.daml.ledger.api.v2.CreatedEventR\x0c\x63reatedEvent\x12R\n\x10unassigned_event\x18\x02 \x01(\x0b\x32\'.com.daml.ledger.api.v2.UnassignedEventR\x0funassignedEvent\"b\n\x12IncompleteAssigned\x12L\n\x0e\x61ssigned_event\x18\x01 \x01(\x0b\x32%.com.daml.ledger.api.v2.AssignedEventR\rassignedEvent\"_\n GetConnectedSynchronizersRequest\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x12%\n\x0eparticipant_id\x18\x02 \x01(\tR\rparticipantId\"\xef\x02\n!GetConnectedSynchronizersResponse\x12\x88\x01\n\x17\x63onnected_synchronizers\x18\x01 \x03(\x0b\x32O.com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizerR\x16\x63onnectedSynchronizers\x1a\xbe\x01\n\x15\x43onnectedSynchronizer\x12-\n\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\x12\'\n\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x12M\n\npermission\x18\x03 \x01(\x0e\x32-.com.daml.ledger.api.v2.ParticipantPermissionR\npermission\"\x15\n\x13GetLedgerEndRequest\".\n\x14GetLedgerEndResponse\x12\x16\n\x06offset\x18\x01 \x01(\x03R\x06offset\"\x1f\n\x1dGetLatestPrunedOffsetsRequest\"\xcc\x01\n\x1eGetLatestPrunedOffsetsResponse\x12J\n\"participant_pruned_up_to_inclusive\x18\x01 \x01(\x03R\x1eparticipantPrunedUpToInclusive\x12^\n-all_divulged_contracts_pruned_up_to_inclusive\x18\x02 \x01(\x03R\'allDivulgedContractsPrunedUpToInclusive*\xb7\x01\n\x15ParticipantPermission\x12&\n\"PARTICIPANT_PERMISSION_UNSPECIFIED\x10\x00\x12%\n!PARTICIPANT_PERMISSION_SUBMISSION\x10\x01\x12\'\n#PARTICIPANT_PERMISSION_CONFIRMATION\x10\x02\x12&\n\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x03\x32\x95\x04\n\x0cStateService\x12}\n\x12GetActiveContracts\x12\x31.com.daml.ledger.api.v2.GetActiveContractsRequest\x1a\x32.com.daml.ledger.api.v2.GetActiveContractsResponse0\x01\x12\x90\x01\n\x19GetConnectedSynchronizers\x12\x38.com.daml.ledger.api.v2.GetConnectedSynchronizersRequest\x1a\x39.com.daml.ledger.api.v2.GetConnectedSynchronizersResponse\x12i\n\x0cGetLedgerEnd\x12+.com.daml.ledger.api.v2.GetLedgerEndRequest\x1a,.com.daml.ledger.api.v2.GetLedgerEndResponse\x12\x87\x01\n\x16GetLatestPrunedOffsets\x12\x35.com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest\x1a\x36.com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponseB\x90\x01\n\x16\x63om.daml.ledger.api.v2B\x16StateServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16\x43om.Daml.Ledger.Api.V2b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,32 +39,32 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.daml.ledger.api.v2.stat
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\026com.daml.ledger.api.v2B\026StateServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\252\002\026Com.Daml.Ledger.Api.V2'
-  _globals['_PARTICIPANTPERMISSION']._serialized_start=1894
-  _globals['_PARTICIPANTPERMISSION']._serialized_end=2077
+  _globals['_PARTICIPANTPERMISSION']._serialized_start=2045
+  _globals['_PARTICIPANTPERMISSION']._serialized_end=2228
   _globals['_GETACTIVECONTRACTSREQUEST']._serialized_start=199
-  _globals['_GETACTIVECONTRACTSREQUEST']._serialized_end=361
-  _globals['_GETACTIVECONTRACTSRESPONSE']._serialized_start=364
-  _globals['_GETACTIVECONTRACTSRESPONSE']._serialized_end=722
-  _globals['_ACTIVECONTRACT']._serialized_start=725
-  _globals['_ACTIVECONTRACT']._serialized_end=896
-  _globals['_INCOMPLETEUNASSIGNED']._serialized_start=899
-  _globals['_INCOMPLETEUNASSIGNED']._serialized_end=1080
-  _globals['_INCOMPLETEASSIGNED']._serialized_start=1082
-  _globals['_INCOMPLETEASSIGNED']._serialized_end=1180
-  _globals['_GETCONNECTEDDOMAINSREQUEST']._serialized_start=1182
-  _globals['_GETCONNECTEDDOMAINSREQUEST']._serialized_end=1271
-  _globals['_GETCONNECTEDDOMAINSRESPONSE']._serialized_start=1274
-  _globals['_GETCONNECTEDDOMAINSRESPONSE']._serialized_end=1580
-  _globals['_GETCONNECTEDDOMAINSRESPONSE_CONNECTEDDOMAIN']._serialized_start=1420
-  _globals['_GETCONNECTEDDOMAINSRESPONSE_CONNECTEDDOMAIN']._serialized_end=1580
-  _globals['_GETLEDGERENDREQUEST']._serialized_start=1582
-  _globals['_GETLEDGERENDREQUEST']._serialized_end=1603
-  _globals['_GETLEDGERENDRESPONSE']._serialized_start=1605
-  _globals['_GETLEDGERENDRESPONSE']._serialized_end=1651
-  _globals['_GETLATESTPRUNEDOFFSETSREQUEST']._serialized_start=1653
-  _globals['_GETLATESTPRUNEDOFFSETSREQUEST']._serialized_end=1684
-  _globals['_GETLATESTPRUNEDOFFSETSRESPONSE']._serialized_start=1687
-  _globals['_GETLATESTPRUNEDOFFSETSRESPONSE']._serialized_end=1891
-  _globals['_STATESERVICE']._serialized_start=2080
-  _globals['_STATESERVICE']._serialized_end=2594
+  _globals['_GETACTIVECONTRACTSREQUEST']._serialized_end=433
+  _globals['_GETACTIVECONTRACTSRESPONSE']._serialized_start=436
+  _globals['_GETACTIVECONTRACTSRESPONSE']._serialized_end=794
+  _globals['_ACTIVECONTRACT']._serialized_start=797
+  _globals['_ACTIVECONTRACT']._serialized_end=980
+  _globals['_INCOMPLETEUNASSIGNED']._serialized_start=983
+  _globals['_INCOMPLETEUNASSIGNED']._serialized_end=1164
+  _globals['_INCOMPLETEASSIGNED']._serialized_start=1166
+  _globals['_INCOMPLETEASSIGNED']._serialized_end=1264
+  _globals['_GETCONNECTEDSYNCHRONIZERSREQUEST']._serialized_start=1266
+  _globals['_GETCONNECTEDSYNCHRONIZERSREQUEST']._serialized_end=1361
+  _globals['_GETCONNECTEDSYNCHRONIZERSRESPONSE']._serialized_start=1364
+  _globals['_GETCONNECTEDSYNCHRONIZERSRESPONSE']._serialized_end=1731
+  _globals['_GETCONNECTEDSYNCHRONIZERSRESPONSE_CONNECTEDSYNCHRONIZER']._serialized_start=1541
+  _globals['_GETCONNECTEDSYNCHRONIZERSRESPONSE_CONNECTEDSYNCHRONIZER']._serialized_end=1731
+  _globals['_GETLEDGERENDREQUEST']._serialized_start=1733
+  _globals['_GETLEDGERENDREQUEST']._serialized_end=1754
+  _globals['_GETLEDGERENDRESPONSE']._serialized_start=1756
+  _globals['_GETLEDGERENDRESPONSE']._serialized_end=1802
+  _globals['_GETLATESTPRUNEDOFFSETSREQUEST']._serialized_start=1804
+  _globals['_GETLATESTPRUNEDOFFSETSREQUEST']._serialized_end=1835
+  _globals['_GETLATESTPRUNEDOFFSETSRESPONSE']._serialized_start=1838
+  _globals['_GETLATESTPRUNEDOFFSETSRESPONSE']._serialized_end=2042
+  _globals['_STATESERVICE']._serialized_start=2231
+  _globals['_STATESERVICE']._serialized_end=2764
 # @@protoc_insertion_point(module_scope)

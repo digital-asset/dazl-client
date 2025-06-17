@@ -43,10 +43,10 @@ class StateServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetActiveContractsRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetActiveContractsResponse.FromString,
                 _registered_method=True)
-        self.GetConnectedDomains = channel.unary_unary(
-                '/com.daml.ledger.api.v2.StateService/GetConnectedDomains',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedDomainsRequest.SerializeToString,
-                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedDomainsResponse.FromString,
+        self.GetConnectedSynchronizers = channel.unary_unary(
+                '/com.daml.ledger.api.v2.StateService/GetConnectedSynchronizers',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedSynchronizersRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedSynchronizersResponse.FromString,
                 _registered_method=True)
         self.GetLedgerEnd = channel.unary_unary(
                 '/com.daml.ledger.api.v2.StateService/GetLedgerEnd',
@@ -69,7 +69,7 @@ class StateServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetConnectedDomains(self, request, context):
+    def GetConnectedSynchronizers(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -95,10 +95,10 @@ def add_StateServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetActiveContractsRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetActiveContractsResponse.SerializeToString,
             ),
-            'GetConnectedDomains': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetConnectedDomains,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedDomainsRequest.FromString,
-                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedDomainsResponse.SerializeToString,
+            'GetConnectedSynchronizers': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetConnectedSynchronizers,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedSynchronizersRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedSynchronizersResponse.SerializeToString,
             ),
             'GetLedgerEnd': grpc.unary_unary_rpc_method_handler(
                     servicer.GetLedgerEnd,
@@ -149,7 +149,7 @@ class StateService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetConnectedDomains(request,
+    def GetConnectedSynchronizers(request,
             target,
             options=(),
             channel_credentials=None,
@@ -162,9 +162,9 @@ class StateService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.daml.ledger.api.v2.StateService/GetConnectedDomains',
-            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedDomainsRequest.SerializeToString,
-            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedDomainsResponse.FromString,
+            '/com.daml.ledger.api.v2.StateService/GetConnectedSynchronizers',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedSynchronizersRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetConnectedSynchronizersResponse.FromString,
             options,
             channel_credentials,
             insecure,

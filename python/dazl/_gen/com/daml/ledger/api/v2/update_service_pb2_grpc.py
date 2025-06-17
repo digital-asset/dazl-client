@@ -48,9 +48,9 @@ class UpdateServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdatesRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateTreesResponse.FromString,
                 _registered_method=True)
-        self.GetTransactionTreeByEventId = channel.unary_unary(
-                '/com.daml.ledger.api.v2.UpdateService/GetTransactionTreeByEventId',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByEventIdRequest.SerializeToString,
+        self.GetTransactionTreeByOffset = channel.unary_unary(
+                '/com.daml.ledger.api.v2.UpdateService/GetTransactionTreeByOffset',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByOffsetRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionTreeResponse.FromString,
                 _registered_method=True)
         self.GetTransactionTreeById = channel.unary_unary(
@@ -58,15 +58,25 @@ class UpdateServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByIdRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionTreeResponse.FromString,
                 _registered_method=True)
-        self.GetTransactionByEventId = channel.unary_unary(
-                '/com.daml.ledger.api.v2.UpdateService/GetTransactionByEventId',
-                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByEventIdRequest.SerializeToString,
+        self.GetTransactionByOffset = channel.unary_unary(
+                '/com.daml.ledger.api.v2.UpdateService/GetTransactionByOffset',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByOffsetRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionResponse.FromString,
                 _registered_method=True)
         self.GetTransactionById = channel.unary_unary(
                 '/com.daml.ledger.api.v2.UpdateService/GetTransactionById',
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByIdRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionResponse.FromString,
+                _registered_method=True)
+        self.GetUpdateByOffset = channel.unary_unary(
+                '/com.daml.ledger.api.v2.UpdateService/GetUpdateByOffset',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByOffsetRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.FromString,
+                _registered_method=True)
+        self.GetUpdateById = channel.unary_unary(
+                '/com.daml.ledger.api.v2.UpdateService/GetUpdateById',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByIdRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.FromString,
                 _registered_method=True)
 
 
@@ -85,7 +95,7 @@ class UpdateServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetTransactionTreeByEventId(self, request, context):
+    def GetTransactionTreeByOffset(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -97,13 +107,25 @@ class UpdateServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetTransactionByEventId(self, request, context):
+    def GetTransactionByOffset(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetTransactionById(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetUpdateByOffset(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetUpdateById(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -122,9 +144,9 @@ def add_UpdateServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdatesRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateTreesResponse.SerializeToString,
             ),
-            'GetTransactionTreeByEventId': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTransactionTreeByEventId,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByEventIdRequest.FromString,
+            'GetTransactionTreeByOffset': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTransactionTreeByOffset,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByOffsetRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionTreeResponse.SerializeToString,
             ),
             'GetTransactionTreeById': grpc.unary_unary_rpc_method_handler(
@@ -132,15 +154,25 @@ def add_UpdateServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByIdRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionTreeResponse.SerializeToString,
             ),
-            'GetTransactionByEventId': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTransactionByEventId,
-                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByEventIdRequest.FromString,
+            'GetTransactionByOffset': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTransactionByOffset,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByOffsetRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionResponse.SerializeToString,
             ),
             'GetTransactionById': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTransactionById,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByIdRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionResponse.SerializeToString,
+            ),
+            'GetUpdateByOffset': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUpdateByOffset,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByOffsetRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.SerializeToString,
+            ),
+            'GetUpdateById': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUpdateById,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByIdRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -208,7 +240,7 @@ class UpdateService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetTransactionTreeByEventId(request,
+    def GetTransactionTreeByOffset(request,
             target,
             options=(),
             channel_credentials=None,
@@ -221,8 +253,8 @@ class UpdateService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.daml.ledger.api.v2.UpdateService/GetTransactionTreeByEventId',
-            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByEventIdRequest.SerializeToString,
+            '/com.daml.ledger.api.v2.UpdateService/GetTransactionTreeByOffset',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByOffsetRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionTreeResponse.FromString,
             options,
             channel_credentials,
@@ -262,7 +294,7 @@ class UpdateService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetTransactionByEventId(request,
+    def GetTransactionByOffset(request,
             target,
             options=(),
             channel_credentials=None,
@@ -275,8 +307,8 @@ class UpdateService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.daml.ledger.api.v2.UpdateService/GetTransactionByEventId',
-            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByEventIdRequest.SerializeToString,
+            '/com.daml.ledger.api.v2.UpdateService/GetTransactionByOffset',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByOffsetRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionResponse.FromString,
             options,
             channel_credentials,
@@ -305,6 +337,60 @@ class UpdateService(object):
             '/com.daml.ledger.api.v2.UpdateService/GetTransactionById',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionByIdRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetTransactionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetUpdateByOffset(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.UpdateService/GetUpdateByOffset',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByOffsetRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetUpdateById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.UpdateService/GetUpdateById',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByIdRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.FromString,
             options,
             channel_credentials,
             insecure,

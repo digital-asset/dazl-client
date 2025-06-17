@@ -29,6 +29,7 @@ type GetUpdatesRequest struct {
 	EndInclusive   *int64                 `protobuf:"varint,2,opt,name=end_inclusive,json=endInclusive,proto3,oneof" json:"end_inclusive,omitempty"`
 	Filter         *TransactionFilter     `protobuf:"bytes,3,opt,name=filter,proto3" json:"filter,omitempty"`
 	Verbose        bool                   `protobuf:"varint,4,opt,name=verbose,proto3" json:"verbose,omitempty"`
+	UpdateFormat   *UpdateFormat          `protobuf:"bytes,5,opt,name=update_format,json=updateFormat,proto3" json:"update_format,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -91,6 +92,13 @@ func (x *GetUpdatesRequest) GetVerbose() bool {
 	return false
 }
 
+func (x *GetUpdatesRequest) GetUpdateFormat() *UpdateFormat {
+	if x != nil {
+		return x.UpdateFormat
+	}
+	return nil
+}
+
 type GetUpdatesResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Update:
@@ -98,6 +106,7 @@ type GetUpdatesResponse struct {
 	//	*GetUpdatesResponse_Transaction
 	//	*GetUpdatesResponse_Reassignment
 	//	*GetUpdatesResponse_OffsetCheckpoint
+	//	*GetUpdatesResponse_TopologyTransaction
 	Update        isGetUpdatesResponse_Update `protobuf_oneof:"update"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -167,6 +176,15 @@ func (x *GetUpdatesResponse) GetOffsetCheckpoint() *OffsetCheckpoint {
 	return nil
 }
 
+func (x *GetUpdatesResponse) GetTopologyTransaction() *TopologyTransaction {
+	if x != nil {
+		if x, ok := x.Update.(*GetUpdatesResponse_TopologyTransaction); ok {
+			return x.TopologyTransaction
+		}
+	}
+	return nil
+}
+
 type isGetUpdatesResponse_Update interface {
 	isGetUpdatesResponse_Update()
 }
@@ -183,11 +201,17 @@ type GetUpdatesResponse_OffsetCheckpoint struct {
 	OffsetCheckpoint *OffsetCheckpoint `protobuf:"bytes,3,opt,name=offset_checkpoint,json=offsetCheckpoint,proto3,oneof"`
 }
 
+type GetUpdatesResponse_TopologyTransaction struct {
+	TopologyTransaction *TopologyTransaction `protobuf:"bytes,4,opt,name=topology_transaction,json=topologyTransaction,proto3,oneof"`
+}
+
 func (*GetUpdatesResponse_Transaction) isGetUpdatesResponse_Update() {}
 
 func (*GetUpdatesResponse_Reassignment) isGetUpdatesResponse_Update() {}
 
 func (*GetUpdatesResponse_OffsetCheckpoint) isGetUpdatesResponse_Update() {}
+
+func (*GetUpdatesResponse_TopologyTransaction) isGetUpdatesResponse_Update() {}
 
 type GetUpdateTreesResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -287,28 +311,29 @@ func (*GetUpdateTreesResponse_Reassignment) isGetUpdateTreesResponse_Update() {}
 
 func (*GetUpdateTreesResponse_OffsetCheckpoint) isGetUpdateTreesResponse_Update() {}
 
-type GetTransactionByEventIdRequest struct {
+type GetTransactionByOffsetRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	EventId           string                 `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	Offset            int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
 	RequestingParties []string               `protobuf:"bytes,2,rep,name=requesting_parties,json=requestingParties,proto3" json:"requesting_parties,omitempty"`
+	TransactionFormat *TransactionFormat     `protobuf:"bytes,3,opt,name=transaction_format,json=transactionFormat,proto3" json:"transaction_format,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *GetTransactionByEventIdRequest) Reset() {
-	*x = GetTransactionByEventIdRequest{}
+func (x *GetTransactionByOffsetRequest) Reset() {
+	*x = GetTransactionByOffsetRequest{}
 	mi := &file_com_daml_ledger_api_v2_update_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetTransactionByEventIdRequest) String() string {
+func (x *GetTransactionByOffsetRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetTransactionByEventIdRequest) ProtoMessage() {}
+func (*GetTransactionByOffsetRequest) ProtoMessage() {}
 
-func (x *GetTransactionByEventIdRequest) ProtoReflect() protoreflect.Message {
+func (x *GetTransactionByOffsetRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_com_daml_ledger_api_v2_update_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -320,21 +345,28 @@ func (x *GetTransactionByEventIdRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetTransactionByEventIdRequest.ProtoReflect.Descriptor instead.
-func (*GetTransactionByEventIdRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetTransactionByOffsetRequest.ProtoReflect.Descriptor instead.
+func (*GetTransactionByOffsetRequest) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_update_service_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetTransactionByEventIdRequest) GetEventId() string {
+func (x *GetTransactionByOffsetRequest) GetOffset() int64 {
 	if x != nil {
-		return x.EventId
+		return x.Offset
 	}
-	return ""
+	return 0
 }
 
-func (x *GetTransactionByEventIdRequest) GetRequestingParties() []string {
+func (x *GetTransactionByOffsetRequest) GetRequestingParties() []string {
 	if x != nil {
 		return x.RequestingParties
+	}
+	return nil
+}
+
+func (x *GetTransactionByOffsetRequest) GetTransactionFormat() *TransactionFormat {
+	if x != nil {
+		return x.TransactionFormat
 	}
 	return nil
 }
@@ -343,6 +375,7 @@ type GetTransactionByIdRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	UpdateId          string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
 	RequestingParties []string               `protobuf:"bytes,2,rep,name=requesting_parties,json=requestingParties,proto3" json:"requesting_parties,omitempty"`
+	TransactionFormat *TransactionFormat     `protobuf:"bytes,3,opt,name=transaction_format,json=transactionFormat,proto3" json:"transaction_format,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -387,6 +420,13 @@ func (x *GetTransactionByIdRequest) GetUpdateId() string {
 func (x *GetTransactionByIdRequest) GetRequestingParties() []string {
 	if x != nil {
 		return x.RequestingParties
+	}
+	return nil
+}
+
+func (x *GetTransactionByIdRequest) GetTransactionFormat() *TransactionFormat {
+	if x != nil {
+		return x.TransactionFormat
 	}
 	return nil
 }
@@ -479,45 +519,264 @@ func (x *GetTransactionResponse) GetTransaction() *Transaction {
 	return nil
 }
 
+type GetUpdateByOffsetRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Offset        int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	UpdateFormat  *UpdateFormat          `protobuf:"bytes,2,opt,name=update_format,json=updateFormat,proto3" json:"update_format,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUpdateByOffsetRequest) Reset() {
+	*x = GetUpdateByOffsetRequest{}
+	mi := &file_com_daml_ledger_api_v2_update_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUpdateByOffsetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUpdateByOffsetRequest) ProtoMessage() {}
+
+func (x *GetUpdateByOffsetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_update_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUpdateByOffsetRequest.ProtoReflect.Descriptor instead.
+func (*GetUpdateByOffsetRequest) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_update_service_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetUpdateByOffsetRequest) GetOffset() int64 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
+func (x *GetUpdateByOffsetRequest) GetUpdateFormat() *UpdateFormat {
+	if x != nil {
+		return x.UpdateFormat
+	}
+	return nil
+}
+
+type GetUpdateByIdRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UpdateId      string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
+	UpdateFormat  *UpdateFormat          `protobuf:"bytes,2,opt,name=update_format,json=updateFormat,proto3" json:"update_format,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUpdateByIdRequest) Reset() {
+	*x = GetUpdateByIdRequest{}
+	mi := &file_com_daml_ledger_api_v2_update_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUpdateByIdRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUpdateByIdRequest) ProtoMessage() {}
+
+func (x *GetUpdateByIdRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_update_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUpdateByIdRequest.ProtoReflect.Descriptor instead.
+func (*GetUpdateByIdRequest) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_update_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetUpdateByIdRequest) GetUpdateId() string {
+	if x != nil {
+		return x.UpdateId
+	}
+	return ""
+}
+
+func (x *GetUpdateByIdRequest) GetUpdateFormat() *UpdateFormat {
+	if x != nil {
+		return x.UpdateFormat
+	}
+	return nil
+}
+
+type GetUpdateResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Update:
+	//
+	//	*GetUpdateResponse_Transaction
+	//	*GetUpdateResponse_Reassignment
+	//	*GetUpdateResponse_TopologyTransaction
+	Update        isGetUpdateResponse_Update `protobuf_oneof:"update"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUpdateResponse) Reset() {
+	*x = GetUpdateResponse{}
+	mi := &file_com_daml_ledger_api_v2_update_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUpdateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUpdateResponse) ProtoMessage() {}
+
+func (x *GetUpdateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_update_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUpdateResponse.ProtoReflect.Descriptor instead.
+func (*GetUpdateResponse) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_update_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetUpdateResponse) GetUpdate() isGetUpdateResponse_Update {
+	if x != nil {
+		return x.Update
+	}
+	return nil
+}
+
+func (x *GetUpdateResponse) GetTransaction() *Transaction {
+	if x != nil {
+		if x, ok := x.Update.(*GetUpdateResponse_Transaction); ok {
+			return x.Transaction
+		}
+	}
+	return nil
+}
+
+func (x *GetUpdateResponse) GetReassignment() *Reassignment {
+	if x != nil {
+		if x, ok := x.Update.(*GetUpdateResponse_Reassignment); ok {
+			return x.Reassignment
+		}
+	}
+	return nil
+}
+
+func (x *GetUpdateResponse) GetTopologyTransaction() *TopologyTransaction {
+	if x != nil {
+		if x, ok := x.Update.(*GetUpdateResponse_TopologyTransaction); ok {
+			return x.TopologyTransaction
+		}
+	}
+	return nil
+}
+
+type isGetUpdateResponse_Update interface {
+	isGetUpdateResponse_Update()
+}
+
+type GetUpdateResponse_Transaction struct {
+	Transaction *Transaction `protobuf:"bytes,1,opt,name=transaction,proto3,oneof"`
+}
+
+type GetUpdateResponse_Reassignment struct {
+	Reassignment *Reassignment `protobuf:"bytes,2,opt,name=reassignment,proto3,oneof"`
+}
+
+type GetUpdateResponse_TopologyTransaction struct {
+	TopologyTransaction *TopologyTransaction `protobuf:"bytes,3,opt,name=topology_transaction,json=topologyTransaction,proto3,oneof"`
+}
+
+func (*GetUpdateResponse_Transaction) isGetUpdateResponse_Update() {}
+
+func (*GetUpdateResponse_Reassignment) isGetUpdateResponse_Update() {}
+
+func (*GetUpdateResponse_TopologyTransaction) isGetUpdateResponse_Update() {}
+
 var File_com_daml_ledger_api_v2_update_service_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_update_service_proto_rawDesc = "" +
 	"\n" +
-	"+com/daml/ledger/api/v2/update_service.proto\x12\x16com.daml.ledger.api.v2\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a(com/daml/ledger/api/v2/transaction.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\xd5\x01\n" +
+	"+com/daml/ledger/api/v2/update_service.proto\x12\x16com.daml.ledger.api.v2\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a1com/daml/ledger/api/v2/topology_transaction.proto\x1a(com/daml/ledger/api/v2/transaction.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\xa0\x02\n" +
 	"\x11GetUpdatesRequest\x12'\n" +
 	"\x0fbegin_exclusive\x18\x01 \x01(\x03R\x0ebeginExclusive\x12(\n" +
 	"\rend_inclusive\x18\x02 \x01(\x03H\x00R\fendInclusive\x88\x01\x01\x12A\n" +
 	"\x06filter\x18\x03 \x01(\v2).com.daml.ledger.api.v2.TransactionFilterR\x06filter\x12\x18\n" +
-	"\averbose\x18\x04 \x01(\bR\averboseB\x10\n" +
-	"\x0e_end_inclusive\"\x8c\x02\n" +
+	"\averbose\x18\x04 \x01(\bR\averbose\x12I\n" +
+	"\rupdate_format\x18\x05 \x01(\v2$.com.daml.ledger.api.v2.UpdateFormatR\fupdateFormatB\x10\n" +
+	"\x0e_end_inclusive\"\xee\x02\n" +
 	"\x12GetUpdatesResponse\x12G\n" +
 	"\vtransaction\x18\x01 \x01(\v2#.com.daml.ledger.api.v2.TransactionH\x00R\vtransaction\x12J\n" +
 	"\freassignment\x18\x02 \x01(\v2$.com.daml.ledger.api.v2.ReassignmentH\x00R\freassignment\x12W\n" +
-	"\x11offset_checkpoint\x18\x03 \x01(\v2(.com.daml.ledger.api.v2.OffsetCheckpointH\x00R\x10offsetCheckpointB\b\n" +
+	"\x11offset_checkpoint\x18\x03 \x01(\v2(.com.daml.ledger.api.v2.OffsetCheckpointH\x00R\x10offsetCheckpoint\x12`\n" +
+	"\x14topology_transaction\x18\x04 \x01(\v2+.com.daml.ledger.api.v2.TopologyTransactionH\x00R\x13topologyTransactionB\b\n" +
 	"\x06update\"\x9d\x02\n" +
 	"\x16GetUpdateTreesResponse\x12T\n" +
 	"\x10transaction_tree\x18\x01 \x01(\v2'.com.daml.ledger.api.v2.TransactionTreeH\x00R\x0ftransactionTree\x12J\n" +
 	"\freassignment\x18\x02 \x01(\v2$.com.daml.ledger.api.v2.ReassignmentH\x00R\freassignment\x12W\n" +
 	"\x11offset_checkpoint\x18\x03 \x01(\v2(.com.daml.ledger.api.v2.OffsetCheckpointH\x00R\x10offsetCheckpointB\b\n" +
-	"\x06update\"j\n" +
-	"\x1eGetTransactionByEventIdRequest\x12\x19\n" +
-	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12-\n" +
-	"\x12requesting_parties\x18\x02 \x03(\tR\x11requestingParties\"g\n" +
+	"\x06update\"\xc0\x01\n" +
+	"\x1dGetTransactionByOffsetRequest\x12\x16\n" +
+	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12-\n" +
+	"\x12requesting_parties\x18\x02 \x03(\tR\x11requestingParties\x12X\n" +
+	"\x12transaction_format\x18\x03 \x01(\v2).com.daml.ledger.api.v2.TransactionFormatR\x11transactionFormat\"\xc1\x01\n" +
 	"\x19GetTransactionByIdRequest\x12\x1b\n" +
 	"\tupdate_id\x18\x01 \x01(\tR\bupdateId\x12-\n" +
-	"\x12requesting_parties\x18\x02 \x03(\tR\x11requestingParties\"g\n" +
+	"\x12requesting_parties\x18\x02 \x03(\tR\x11requestingParties\x12X\n" +
+	"\x12transaction_format\x18\x03 \x01(\v2).com.daml.ledger.api.v2.TransactionFormatR\x11transactionFormat\"g\n" +
 	"\x1aGetTransactionTreeResponse\x12I\n" +
 	"\vtransaction\x18\x01 \x01(\v2'.com.daml.ledger.api.v2.TransactionTreeR\vtransaction\"_\n" +
 	"\x16GetTransactionResponse\x12E\n" +
-	"\vtransaction\x18\x01 \x01(\v2#.com.daml.ledger.api.v2.TransactionR\vtransaction2\xef\x05\n" +
+	"\vtransaction\x18\x01 \x01(\v2#.com.daml.ledger.api.v2.TransactionR\vtransaction\"}\n" +
+	"\x18GetUpdateByOffsetRequest\x12\x16\n" +
+	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12I\n" +
+	"\rupdate_format\x18\x02 \x01(\v2$.com.daml.ledger.api.v2.UpdateFormatR\fupdateFormat\"~\n" +
+	"\x14GetUpdateByIdRequest\x12\x1b\n" +
+	"\tupdate_id\x18\x01 \x01(\tR\bupdateId\x12I\n" +
+	"\rupdate_format\x18\x02 \x01(\v2$.com.daml.ledger.api.v2.UpdateFormatR\fupdateFormat\"\x94\x02\n" +
+	"\x11GetUpdateResponse\x12G\n" +
+	"\vtransaction\x18\x01 \x01(\v2#.com.daml.ledger.api.v2.TransactionH\x00R\vtransaction\x12J\n" +
+	"\freassignment\x18\x02 \x01(\v2$.com.daml.ledger.api.v2.ReassignmentH\x00R\freassignment\x12`\n" +
+	"\x14topology_transaction\x18\x03 \x01(\v2+.com.daml.ledger.api.v2.TopologyTransactionH\x00R\x13topologyTransactionB\b\n" +
+	"\x06update2\xc6\a\n" +
 	"\rUpdateService\x12e\n" +
 	"\n" +
 	"GetUpdates\x12).com.daml.ledger.api.v2.GetUpdatesRequest\x1a*.com.daml.ledger.api.v2.GetUpdatesResponse0\x01\x12m\n" +
-	"\x0eGetUpdateTrees\x12).com.daml.ledger.api.v2.GetUpdatesRequest\x1a..com.daml.ledger.api.v2.GetUpdateTreesResponse0\x01\x12\x89\x01\n" +
-	"\x1bGetTransactionTreeByEventId\x126.com.daml.ledger.api.v2.GetTransactionByEventIdRequest\x1a2.com.daml.ledger.api.v2.GetTransactionTreeResponse\x12\x7f\n" +
-	"\x16GetTransactionTreeById\x121.com.daml.ledger.api.v2.GetTransactionByIdRequest\x1a2.com.daml.ledger.api.v2.GetTransactionTreeResponse\x12\x81\x01\n" +
-	"\x17GetTransactionByEventId\x126.com.daml.ledger.api.v2.GetTransactionByEventIdRequest\x1a..com.daml.ledger.api.v2.GetTransactionResponse\x12w\n" +
-	"\x12GetTransactionById\x121.com.daml.ledger.api.v2.GetTransactionByIdRequest\x1a..com.daml.ledger.api.v2.GetTransactionResponseB\x91\x01\n" +
+	"\x0eGetUpdateTrees\x12).com.daml.ledger.api.v2.GetUpdatesRequest\x1a..com.daml.ledger.api.v2.GetUpdateTreesResponse0\x01\x12\x87\x01\n" +
+	"\x1aGetTransactionTreeByOffset\x125.com.daml.ledger.api.v2.GetTransactionByOffsetRequest\x1a2.com.daml.ledger.api.v2.GetTransactionTreeResponse\x12\x7f\n" +
+	"\x16GetTransactionTreeById\x121.com.daml.ledger.api.v2.GetTransactionByIdRequest\x1a2.com.daml.ledger.api.v2.GetTransactionTreeResponse\x12\x7f\n" +
+	"\x16GetTransactionByOffset\x125.com.daml.ledger.api.v2.GetTransactionByOffsetRequest\x1a..com.daml.ledger.api.v2.GetTransactionResponse\x12w\n" +
+	"\x12GetTransactionById\x121.com.daml.ledger.api.v2.GetTransactionByIdRequest\x1a..com.daml.ledger.api.v2.GetTransactionResponse\x12p\n" +
+	"\x11GetUpdateByOffset\x120.com.daml.ledger.api.v2.GetUpdateByOffsetRequest\x1a).com.daml.ledger.api.v2.GetUpdateResponse\x12h\n" +
+	"\rGetUpdateById\x12,.com.daml.ledger.api.v2.GetUpdateByIdRequest\x1a).com.daml.ledger.api.v2.GetUpdateResponseB\x91\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x17UpdateServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (
@@ -532,48 +791,67 @@ func file_com_daml_ledger_api_v2_update_service_proto_rawDescGZIP() []byte {
 	return file_com_daml_ledger_api_v2_update_service_proto_rawDescData
 }
 
-var file_com_daml_ledger_api_v2_update_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_com_daml_ledger_api_v2_update_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_com_daml_ledger_api_v2_update_service_proto_goTypes = []any{
-	(*GetUpdatesRequest)(nil),              // 0: com.daml.ledger.api.v2.GetUpdatesRequest
-	(*GetUpdatesResponse)(nil),             // 1: com.daml.ledger.api.v2.GetUpdatesResponse
-	(*GetUpdateTreesResponse)(nil),         // 2: com.daml.ledger.api.v2.GetUpdateTreesResponse
-	(*GetTransactionByEventIdRequest)(nil), // 3: com.daml.ledger.api.v2.GetTransactionByEventIdRequest
-	(*GetTransactionByIdRequest)(nil),      // 4: com.daml.ledger.api.v2.GetTransactionByIdRequest
-	(*GetTransactionTreeResponse)(nil),     // 5: com.daml.ledger.api.v2.GetTransactionTreeResponse
-	(*GetTransactionResponse)(nil),         // 6: com.daml.ledger.api.v2.GetTransactionResponse
-	(*TransactionFilter)(nil),              // 7: com.daml.ledger.api.v2.TransactionFilter
-	(*Transaction)(nil),                    // 8: com.daml.ledger.api.v2.Transaction
-	(*Reassignment)(nil),                   // 9: com.daml.ledger.api.v2.Reassignment
-	(*OffsetCheckpoint)(nil),               // 10: com.daml.ledger.api.v2.OffsetCheckpoint
-	(*TransactionTree)(nil),                // 11: com.daml.ledger.api.v2.TransactionTree
+	(*GetUpdatesRequest)(nil),             // 0: com.daml.ledger.api.v2.GetUpdatesRequest
+	(*GetUpdatesResponse)(nil),            // 1: com.daml.ledger.api.v2.GetUpdatesResponse
+	(*GetUpdateTreesResponse)(nil),        // 2: com.daml.ledger.api.v2.GetUpdateTreesResponse
+	(*GetTransactionByOffsetRequest)(nil), // 3: com.daml.ledger.api.v2.GetTransactionByOffsetRequest
+	(*GetTransactionByIdRequest)(nil),     // 4: com.daml.ledger.api.v2.GetTransactionByIdRequest
+	(*GetTransactionTreeResponse)(nil),    // 5: com.daml.ledger.api.v2.GetTransactionTreeResponse
+	(*GetTransactionResponse)(nil),        // 6: com.daml.ledger.api.v2.GetTransactionResponse
+	(*GetUpdateByOffsetRequest)(nil),      // 7: com.daml.ledger.api.v2.GetUpdateByOffsetRequest
+	(*GetUpdateByIdRequest)(nil),          // 8: com.daml.ledger.api.v2.GetUpdateByIdRequest
+	(*GetUpdateResponse)(nil),             // 9: com.daml.ledger.api.v2.GetUpdateResponse
+	(*TransactionFilter)(nil),             // 10: com.daml.ledger.api.v2.TransactionFilter
+	(*UpdateFormat)(nil),                  // 11: com.daml.ledger.api.v2.UpdateFormat
+	(*Transaction)(nil),                   // 12: com.daml.ledger.api.v2.Transaction
+	(*Reassignment)(nil),                  // 13: com.daml.ledger.api.v2.Reassignment
+	(*OffsetCheckpoint)(nil),              // 14: com.daml.ledger.api.v2.OffsetCheckpoint
+	(*TopologyTransaction)(nil),           // 15: com.daml.ledger.api.v2.TopologyTransaction
+	(*TransactionTree)(nil),               // 16: com.daml.ledger.api.v2.TransactionTree
+	(*TransactionFormat)(nil),             // 17: com.daml.ledger.api.v2.TransactionFormat
 }
 var file_com_daml_ledger_api_v2_update_service_proto_depIdxs = []int32{
-	7,  // 0: com.daml.ledger.api.v2.GetUpdatesRequest.filter:type_name -> com.daml.ledger.api.v2.TransactionFilter
-	8,  // 1: com.daml.ledger.api.v2.GetUpdatesResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
-	9,  // 2: com.daml.ledger.api.v2.GetUpdatesResponse.reassignment:type_name -> com.daml.ledger.api.v2.Reassignment
-	10, // 3: com.daml.ledger.api.v2.GetUpdatesResponse.offset_checkpoint:type_name -> com.daml.ledger.api.v2.OffsetCheckpoint
-	11, // 4: com.daml.ledger.api.v2.GetUpdateTreesResponse.transaction_tree:type_name -> com.daml.ledger.api.v2.TransactionTree
-	9,  // 5: com.daml.ledger.api.v2.GetUpdateTreesResponse.reassignment:type_name -> com.daml.ledger.api.v2.Reassignment
-	10, // 6: com.daml.ledger.api.v2.GetUpdateTreesResponse.offset_checkpoint:type_name -> com.daml.ledger.api.v2.OffsetCheckpoint
-	11, // 7: com.daml.ledger.api.v2.GetTransactionTreeResponse.transaction:type_name -> com.daml.ledger.api.v2.TransactionTree
-	8,  // 8: com.daml.ledger.api.v2.GetTransactionResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
-	0,  // 9: com.daml.ledger.api.v2.UpdateService.GetUpdates:input_type -> com.daml.ledger.api.v2.GetUpdatesRequest
-	0,  // 10: com.daml.ledger.api.v2.UpdateService.GetUpdateTrees:input_type -> com.daml.ledger.api.v2.GetUpdatesRequest
-	3,  // 11: com.daml.ledger.api.v2.UpdateService.GetTransactionTreeByEventId:input_type -> com.daml.ledger.api.v2.GetTransactionByEventIdRequest
-	4,  // 12: com.daml.ledger.api.v2.UpdateService.GetTransactionTreeById:input_type -> com.daml.ledger.api.v2.GetTransactionByIdRequest
-	3,  // 13: com.daml.ledger.api.v2.UpdateService.GetTransactionByEventId:input_type -> com.daml.ledger.api.v2.GetTransactionByEventIdRequest
-	4,  // 14: com.daml.ledger.api.v2.UpdateService.GetTransactionById:input_type -> com.daml.ledger.api.v2.GetTransactionByIdRequest
-	1,  // 15: com.daml.ledger.api.v2.UpdateService.GetUpdates:output_type -> com.daml.ledger.api.v2.GetUpdatesResponse
-	2,  // 16: com.daml.ledger.api.v2.UpdateService.GetUpdateTrees:output_type -> com.daml.ledger.api.v2.GetUpdateTreesResponse
-	5,  // 17: com.daml.ledger.api.v2.UpdateService.GetTransactionTreeByEventId:output_type -> com.daml.ledger.api.v2.GetTransactionTreeResponse
-	5,  // 18: com.daml.ledger.api.v2.UpdateService.GetTransactionTreeById:output_type -> com.daml.ledger.api.v2.GetTransactionTreeResponse
-	6,  // 19: com.daml.ledger.api.v2.UpdateService.GetTransactionByEventId:output_type -> com.daml.ledger.api.v2.GetTransactionResponse
-	6,  // 20: com.daml.ledger.api.v2.UpdateService.GetTransactionById:output_type -> com.daml.ledger.api.v2.GetTransactionResponse
-	15, // [15:21] is the sub-list for method output_type
-	9,  // [9:15] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	10, // 0: com.daml.ledger.api.v2.GetUpdatesRequest.filter:type_name -> com.daml.ledger.api.v2.TransactionFilter
+	11, // 1: com.daml.ledger.api.v2.GetUpdatesRequest.update_format:type_name -> com.daml.ledger.api.v2.UpdateFormat
+	12, // 2: com.daml.ledger.api.v2.GetUpdatesResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
+	13, // 3: com.daml.ledger.api.v2.GetUpdatesResponse.reassignment:type_name -> com.daml.ledger.api.v2.Reassignment
+	14, // 4: com.daml.ledger.api.v2.GetUpdatesResponse.offset_checkpoint:type_name -> com.daml.ledger.api.v2.OffsetCheckpoint
+	15, // 5: com.daml.ledger.api.v2.GetUpdatesResponse.topology_transaction:type_name -> com.daml.ledger.api.v2.TopologyTransaction
+	16, // 6: com.daml.ledger.api.v2.GetUpdateTreesResponse.transaction_tree:type_name -> com.daml.ledger.api.v2.TransactionTree
+	13, // 7: com.daml.ledger.api.v2.GetUpdateTreesResponse.reassignment:type_name -> com.daml.ledger.api.v2.Reassignment
+	14, // 8: com.daml.ledger.api.v2.GetUpdateTreesResponse.offset_checkpoint:type_name -> com.daml.ledger.api.v2.OffsetCheckpoint
+	17, // 9: com.daml.ledger.api.v2.GetTransactionByOffsetRequest.transaction_format:type_name -> com.daml.ledger.api.v2.TransactionFormat
+	17, // 10: com.daml.ledger.api.v2.GetTransactionByIdRequest.transaction_format:type_name -> com.daml.ledger.api.v2.TransactionFormat
+	16, // 11: com.daml.ledger.api.v2.GetTransactionTreeResponse.transaction:type_name -> com.daml.ledger.api.v2.TransactionTree
+	12, // 12: com.daml.ledger.api.v2.GetTransactionResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
+	11, // 13: com.daml.ledger.api.v2.GetUpdateByOffsetRequest.update_format:type_name -> com.daml.ledger.api.v2.UpdateFormat
+	11, // 14: com.daml.ledger.api.v2.GetUpdateByIdRequest.update_format:type_name -> com.daml.ledger.api.v2.UpdateFormat
+	12, // 15: com.daml.ledger.api.v2.GetUpdateResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
+	13, // 16: com.daml.ledger.api.v2.GetUpdateResponse.reassignment:type_name -> com.daml.ledger.api.v2.Reassignment
+	15, // 17: com.daml.ledger.api.v2.GetUpdateResponse.topology_transaction:type_name -> com.daml.ledger.api.v2.TopologyTransaction
+	0,  // 18: com.daml.ledger.api.v2.UpdateService.GetUpdates:input_type -> com.daml.ledger.api.v2.GetUpdatesRequest
+	0,  // 19: com.daml.ledger.api.v2.UpdateService.GetUpdateTrees:input_type -> com.daml.ledger.api.v2.GetUpdatesRequest
+	3,  // 20: com.daml.ledger.api.v2.UpdateService.GetTransactionTreeByOffset:input_type -> com.daml.ledger.api.v2.GetTransactionByOffsetRequest
+	4,  // 21: com.daml.ledger.api.v2.UpdateService.GetTransactionTreeById:input_type -> com.daml.ledger.api.v2.GetTransactionByIdRequest
+	3,  // 22: com.daml.ledger.api.v2.UpdateService.GetTransactionByOffset:input_type -> com.daml.ledger.api.v2.GetTransactionByOffsetRequest
+	4,  // 23: com.daml.ledger.api.v2.UpdateService.GetTransactionById:input_type -> com.daml.ledger.api.v2.GetTransactionByIdRequest
+	7,  // 24: com.daml.ledger.api.v2.UpdateService.GetUpdateByOffset:input_type -> com.daml.ledger.api.v2.GetUpdateByOffsetRequest
+	8,  // 25: com.daml.ledger.api.v2.UpdateService.GetUpdateById:input_type -> com.daml.ledger.api.v2.GetUpdateByIdRequest
+	1,  // 26: com.daml.ledger.api.v2.UpdateService.GetUpdates:output_type -> com.daml.ledger.api.v2.GetUpdatesResponse
+	2,  // 27: com.daml.ledger.api.v2.UpdateService.GetUpdateTrees:output_type -> com.daml.ledger.api.v2.GetUpdateTreesResponse
+	5,  // 28: com.daml.ledger.api.v2.UpdateService.GetTransactionTreeByOffset:output_type -> com.daml.ledger.api.v2.GetTransactionTreeResponse
+	5,  // 29: com.daml.ledger.api.v2.UpdateService.GetTransactionTreeById:output_type -> com.daml.ledger.api.v2.GetTransactionTreeResponse
+	6,  // 30: com.daml.ledger.api.v2.UpdateService.GetTransactionByOffset:output_type -> com.daml.ledger.api.v2.GetTransactionResponse
+	6,  // 31: com.daml.ledger.api.v2.UpdateService.GetTransactionById:output_type -> com.daml.ledger.api.v2.GetTransactionResponse
+	9,  // 32: com.daml.ledger.api.v2.UpdateService.GetUpdateByOffset:output_type -> com.daml.ledger.api.v2.GetUpdateResponse
+	9,  // 33: com.daml.ledger.api.v2.UpdateService.GetUpdateById:output_type -> com.daml.ledger.api.v2.GetUpdateResponse
+	26, // [26:34] is the sub-list for method output_type
+	18, // [18:26] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_update_service_proto_init() }
@@ -583,6 +861,7 @@ func file_com_daml_ledger_api_v2_update_service_proto_init() {
 	}
 	file_com_daml_ledger_api_v2_offset_checkpoint_proto_init()
 	file_com_daml_ledger_api_v2_reassignment_proto_init()
+	file_com_daml_ledger_api_v2_topology_transaction_proto_init()
 	file_com_daml_ledger_api_v2_transaction_proto_init()
 	file_com_daml_ledger_api_v2_transaction_filter_proto_init()
 	file_com_daml_ledger_api_v2_update_service_proto_msgTypes[0].OneofWrappers = []any{}
@@ -590,11 +869,17 @@ func file_com_daml_ledger_api_v2_update_service_proto_init() {
 		(*GetUpdatesResponse_Transaction)(nil),
 		(*GetUpdatesResponse_Reassignment)(nil),
 		(*GetUpdatesResponse_OffsetCheckpoint)(nil),
+		(*GetUpdatesResponse_TopologyTransaction)(nil),
 	}
 	file_com_daml_ledger_api_v2_update_service_proto_msgTypes[2].OneofWrappers = []any{
 		(*GetUpdateTreesResponse_TransactionTree)(nil),
 		(*GetUpdateTreesResponse_Reassignment)(nil),
 		(*GetUpdateTreesResponse_OffsetCheckpoint)(nil),
+	}
+	file_com_daml_ledger_api_v2_update_service_proto_msgTypes[9].OneofWrappers = []any{
+		(*GetUpdateResponse_Transaction)(nil),
+		(*GetUpdateResponse_Reassignment)(nil),
+		(*GetUpdateResponse_TopologyTransaction)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -602,7 +887,7 @@ func file_com_daml_ledger_api_v2_update_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_update_service_proto_rawDesc), len(file_com_daml_ledger_api_v2_update_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

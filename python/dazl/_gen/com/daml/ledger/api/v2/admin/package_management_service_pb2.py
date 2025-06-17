@@ -29,7 +29,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n=com/daml/ledger/api/v2/admin/package_management_service.proto\x12\x1c\x63om.daml.ledger.api.v2.admin\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1a\n\x18ListKnownPackagesRequest\"r\n\x19ListKnownPackagesResponse\x12U\n\x0fpackage_details\x18\x01 \x03(\x0b\x32,.com.daml.ledger.api.v2.admin.PackageDetailsR\x0epackageDetails\"\xbe\x01\n\x0ePackageDetails\x12\x1d\n\npackage_id\x18\x01 \x01(\tR\tpackageId\x12!\n\x0cpackage_size\x18\x02 \x01(\x04R\x0bpackageSize\x12;\n\x0bknown_since\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\nknownSince\x12-\n\x12source_description\x18\x04 \x01(\tR\x11sourceDescription\"V\n\x14UploadDarFileRequest\x12\x19\n\x08\x64\x61r_file\x18\x01 \x01(\x0cR\x07\x64\x61rFile\x12#\n\rsubmission_id\x18\x02 \x01(\tR\x0csubmissionId\"\x17\n\x15UploadDarFileResponse\"X\n\x16ValidateDarFileRequest\x12\x19\n\x08\x64\x61r_file\x18\x01 \x01(\x0cR\x07\x64\x61rFile\x12#\n\rsubmission_id\x18\x02 \x01(\tR\x0csubmissionId\"\x19\n\x17ValidateDarFileResponse2\x9b\x03\n\x18PackageManagementService\x12\x84\x01\n\x11ListKnownPackages\x12\x36.com.daml.ledger.api.v2.admin.ListKnownPackagesRequest\x1a\x37.com.daml.ledger.api.v2.admin.ListKnownPackagesResponse\x12x\n\rUploadDarFile\x12\x32.com.daml.ledger.api.v2.admin.UploadDarFileRequest\x1a\x33.com.daml.ledger.api.v2.admin.UploadDarFileResponse\x12~\n\x0fValidateDarFile\x12\x34.com.daml.ledger.api.v2.admin.ValidateDarFileRequest\x1a\x35.com.daml.ledger.api.v2.admin.ValidateDarFileResponseB\xae\x01\n\x1c\x63om.daml.ledger.api.v2.adminB\"PackageManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V2.Adminb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n=com/daml/ledger/api/v2/admin/package_management_service.proto\x12\x1c\x63om.daml.ledger.api.v2.admin\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1a\n\x18ListKnownPackagesRequest\"r\n\x19ListKnownPackagesResponse\x12U\n\x0fpackage_details\x18\x01 \x03(\x0b\x32,.com.daml.ledger.api.v2.admin.PackageDetailsR\x0epackageDetails\"\xbd\x01\n\x0ePackageDetails\x12\x1d\n\npackage_id\x18\x01 \x01(\tR\tpackageId\x12!\n\x0cpackage_size\x18\x02 \x01(\x04R\x0bpackageSize\x12;\n\x0bknown_since\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\nknownSince\x12\x12\n\x04name\x18\x04 \x01(\tR\x04name\x12\x18\n\x07version\x18\x05 \x01(\tR\x07version\"V\n\x14UploadDarFileRequest\x12\x19\n\x08\x64\x61r_file\x18\x01 \x01(\x0cR\x07\x64\x61rFile\x12#\n\rsubmission_id\x18\x02 \x01(\tR\x0csubmissionId\"\x17\n\x15UploadDarFileResponse\"X\n\x16ValidateDarFileRequest\x12\x19\n\x08\x64\x61r_file\x18\x01 \x01(\x0cR\x07\x64\x61rFile\x12#\n\rsubmission_id\x18\x02 \x01(\tR\x0csubmissionId\"\x19\n\x17ValidateDarFileResponse2\x9b\x03\n\x18PackageManagementService\x12\x84\x01\n\x11ListKnownPackages\x12\x36.com.daml.ledger.api.v2.admin.ListKnownPackagesRequest\x1a\x37.com.daml.ledger.api.v2.admin.ListKnownPackagesResponse\x12x\n\rUploadDarFile\x12\x32.com.daml.ledger.api.v2.admin.UploadDarFileRequest\x1a\x33.com.daml.ledger.api.v2.admin.UploadDarFileResponse\x12~\n\x0fValidateDarFile\x12\x34.com.daml.ledger.api.v2.admin.ValidateDarFileRequest\x1a\x35.com.daml.ledger.api.v2.admin.ValidateDarFileResponseB\xae\x01\n\x1c\x63om.daml.ledger.api.v2.adminB\"PackageManagementServiceOuterClassZKgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/admin\xaa\x02\x1c\x43om.Daml.Ledger.Api.V2.Adminb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -42,15 +42,15 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_LISTKNOWNPACKAGESRESPONSE']._serialized_start=156
   _globals['_LISTKNOWNPACKAGESRESPONSE']._serialized_end=270
   _globals['_PACKAGEDETAILS']._serialized_start=273
-  _globals['_PACKAGEDETAILS']._serialized_end=463
-  _globals['_UPLOADDARFILEREQUEST']._serialized_start=465
-  _globals['_UPLOADDARFILEREQUEST']._serialized_end=551
-  _globals['_UPLOADDARFILERESPONSE']._serialized_start=553
-  _globals['_UPLOADDARFILERESPONSE']._serialized_end=576
-  _globals['_VALIDATEDARFILEREQUEST']._serialized_start=578
-  _globals['_VALIDATEDARFILEREQUEST']._serialized_end=666
-  _globals['_VALIDATEDARFILERESPONSE']._serialized_start=668
-  _globals['_VALIDATEDARFILERESPONSE']._serialized_end=693
-  _globals['_PACKAGEMANAGEMENTSERVICE']._serialized_start=696
-  _globals['_PACKAGEMANAGEMENTSERVICE']._serialized_end=1107
+  _globals['_PACKAGEDETAILS']._serialized_end=462
+  _globals['_UPLOADDARFILEREQUEST']._serialized_start=464
+  _globals['_UPLOADDARFILEREQUEST']._serialized_end=550
+  _globals['_UPLOADDARFILERESPONSE']._serialized_start=552
+  _globals['_UPLOADDARFILERESPONSE']._serialized_end=575
+  _globals['_VALIDATEDARFILEREQUEST']._serialized_start=577
+  _globals['_VALIDATEDARFILEREQUEST']._serialized_end=665
+  _globals['_VALIDATEDARFILERESPONSE']._serialized_start=667
+  _globals['_VALIDATEDARFILERESPONSE']._serialized_end=692
+  _globals['_PACKAGEMANAGEMENTSERVICE']._serialized_start=695
+  _globals['_PACKAGEMANAGEMENTSERVICE']._serialized_end=1106
 # @@protoc_insertion_point(module_scope)

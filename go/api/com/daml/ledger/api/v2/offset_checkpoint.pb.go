@@ -25,11 +25,11 @@ const (
 )
 
 type OffsetCheckpoint struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Offset        int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
-	DomainTimes   []*DomainTime          `protobuf:"bytes,2,rep,name=domain_times,json=domainTimes,proto3" json:"domain_times,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Offset            int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	SynchronizerTimes []*SynchronizerTime    `protobuf:"bytes,2,rep,name=synchronizer_times,json=synchronizerTimes,proto3" json:"synchronizer_times,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *OffsetCheckpoint) Reset() {
@@ -69,35 +69,35 @@ func (x *OffsetCheckpoint) GetOffset() int64 {
 	return 0
 }
 
-func (x *OffsetCheckpoint) GetDomainTimes() []*DomainTime {
+func (x *OffsetCheckpoint) GetSynchronizerTimes() []*SynchronizerTime {
 	if x != nil {
-		return x.DomainTimes
+		return x.SynchronizerTimes
 	}
 	return nil
 }
 
-type DomainTime struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	DomainId      string                 `protobuf:"bytes,1,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
-	RecordTime    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type SynchronizerTime struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	SynchronizerId string                 `protobuf:"bytes,1,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	RecordTime     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
-func (x *DomainTime) Reset() {
-	*x = DomainTime{}
+func (x *SynchronizerTime) Reset() {
+	*x = SynchronizerTime{}
 	mi := &file_com_daml_ledger_api_v2_offset_checkpoint_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DomainTime) String() string {
+func (x *SynchronizerTime) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DomainTime) ProtoMessage() {}
+func (*SynchronizerTime) ProtoMessage() {}
 
-func (x *DomainTime) ProtoReflect() protoreflect.Message {
+func (x *SynchronizerTime) ProtoReflect() protoreflect.Message {
 	mi := &file_com_daml_ledger_api_v2_offset_checkpoint_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -109,19 +109,19 @@ func (x *DomainTime) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DomainTime.ProtoReflect.Descriptor instead.
-func (*DomainTime) Descriptor() ([]byte, []int) {
+// Deprecated: Use SynchronizerTime.ProtoReflect.Descriptor instead.
+func (*SynchronizerTime) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_offset_checkpoint_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *DomainTime) GetDomainId() string {
+func (x *SynchronizerTime) GetSynchronizerId() string {
 	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
 
-func (x *DomainTime) GetRecordTime() *timestamppb.Timestamp {
+func (x *SynchronizerTime) GetRecordTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.RecordTime
 	}
@@ -132,13 +132,12 @@ var File_com_daml_ledger_api_v2_offset_checkpoint_proto protoreflect.FileDescrip
 
 const file_com_daml_ledger_api_v2_offset_checkpoint_proto_rawDesc = "" +
 	"\n" +
-	".com/daml/ledger/api/v2/offset_checkpoint.proto\x12\x16com.daml.ledger.api.v2\x1a\x1fgoogle/protobuf/timestamp.proto\"q\n" +
+	".com/daml/ledger/api/v2/offset_checkpoint.proto\x12\x16com.daml.ledger.api.v2\x1a\x1fgoogle/protobuf/timestamp.proto\"\x83\x01\n" +
 	"\x10OffsetCheckpoint\x12\x16\n" +
-	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12E\n" +
-	"\fdomain_times\x18\x02 \x03(\v2\".com.daml.ledger.api.v2.DomainTimeR\vdomainTimes\"f\n" +
-	"\n" +
-	"DomainTime\x12\x1b\n" +
-	"\tdomain_id\x18\x01 \x01(\tR\bdomainId\x12;\n" +
+	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12W\n" +
+	"\x12synchronizer_times\x18\x02 \x03(\v2(.com.daml.ledger.api.v2.SynchronizerTimeR\x11synchronizerTimes\"x\n" +
+	"\x10SynchronizerTime\x12'\n" +
+	"\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12;\n" +
 	"\vrecord_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"recordTimeB\x94\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x1aOffsetCheckpointOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
@@ -158,12 +157,12 @@ func file_com_daml_ledger_api_v2_offset_checkpoint_proto_rawDescGZIP() []byte {
 var file_com_daml_ledger_api_v2_offset_checkpoint_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_com_daml_ledger_api_v2_offset_checkpoint_proto_goTypes = []any{
 	(*OffsetCheckpoint)(nil),      // 0: com.daml.ledger.api.v2.OffsetCheckpoint
-	(*DomainTime)(nil),            // 1: com.daml.ledger.api.v2.DomainTime
+	(*SynchronizerTime)(nil),      // 1: com.daml.ledger.api.v2.SynchronizerTime
 	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
 }
 var file_com_daml_ledger_api_v2_offset_checkpoint_proto_depIdxs = []int32{
-	1, // 0: com.daml.ledger.api.v2.OffsetCheckpoint.domain_times:type_name -> com.daml.ledger.api.v2.DomainTime
-	2, // 1: com.daml.ledger.api.v2.DomainTime.record_time:type_name -> google.protobuf.Timestamp
+	1, // 0: com.daml.ledger.api.v2.OffsetCheckpoint.synchronizer_times:type_name -> com.daml.ledger.api.v2.SynchronizerTime
+	2, // 1: com.daml.ledger.api.v2.SynchronizerTime.record_time:type_name -> google.protobuf.Timestamp
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

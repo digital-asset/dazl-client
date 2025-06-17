@@ -3,36 +3,35 @@
 # fmt: off
 # isort: skip_file
 
-from .value_pb2 import Enum, GenMap, Identifier, List, Optional, Record, RecordField, TextMap, Value, Variant
-from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, DisclosedContract, ExerciseByKeyCommand, ExerciseCommand
-from .offset_checkpoint_pb2 import DomainTime, OffsetCheckpoint
 from .trace_context_pb2 import TraceContext
-from .completion_pb2 import Completion
-from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse
-from .command_completion_service_pb2_grpc import CommandCompletionServiceStub
+from .value_pb2 import Enum, GenMap, Identifier, List, Optional, Record, RecordField, TextMap, Value, Variant
 from .event_pb2 import ArchivedEvent, CreatedEvent, Event, ExercisedEvent, InterfaceView
-from .transaction_pb2 import Transaction, TransactionTree, TreeEvent
-from .command_service_pb2 import SubmitAndWaitForTransactionResponse, SubmitAndWaitForTransactionTreeResponse, SubmitAndWaitRequest, SubmitAndWaitResponse
-from .command_service_pb2_grpc import CommandServiceStub
-from .reassignment_command_pb2 import AssignCommand, ReassignmentCommand, UnassignCommand
-from .command_submission_service_pb2 import SubmitReassignmentRequest, SubmitReassignmentResponse, SubmitRequest, SubmitResponse
-from .command_submission_service_pb2_grpc import CommandSubmissionServiceStub
+from .transaction_filter_pb2 import CumulativeFilter, EventFormat, Filters, InterfaceFilter, ParticipantAuthorizationTopologyFormat, TemplateFilter, TopologyFormat, TransactionFilter, TransactionFormat, TransactionShape, UpdateFormat, WildcardFilter
 from .event_query_service_pb2 import Archived, Created, GetEventsByContractIdRequest, GetEventsByContractIdResponse
 from .event_query_service_pb2_grpc import EventQueryServiceStub
-from .experimental_features_pb2 import ExperimentalCommandInspectionService, ExperimentalFeatures, ExperimentalInteractiveSubmissionService, ExperimentalStaticTime
-from .interactive_submission_data_pb2 import Create, DamlTransaction, GlobalKey, GlobalKeyWithMaintainers, Metadata, Node, PreparedTransaction
-from .interactive_submission_service_pb2 import ExecuteSubmissionRequest, ExecuteSubmissionResponse, PartySignatures, PrepareSubmissionRequest, PrepareSubmissionResponse, Signature, SignatureFormat, SinglePartySignatures
-from .interactive_submission_service_pb2_grpc import InteractiveSubmissionServiceStub
 from .package_service_pb2 import GetPackageRequest, GetPackageResponse, GetPackageStatusRequest, GetPackageStatusResponse, HashFunction, ListPackagesRequest, ListPackagesResponse, PackageStatus
 from .package_service_pb2_grpc import PackageServiceStub
-from .reassignment_pb2 import AssignedEvent, Reassignment, UnassignedEvent
-from .transaction_filter_pb2 import CumulativeFilter, Filters, InterfaceFilter, TemplateFilter, TransactionFilter, WildcardFilter
-from .state_service_pb2 import ActiveContract, GetActiveContractsRequest, GetActiveContractsResponse, GetConnectedDomainsRequest, GetConnectedDomainsResponse, GetLatestPrunedOffsetsRequest, GetLatestPrunedOffsetsResponse, GetLedgerEndRequest, GetLedgerEndResponse, IncompleteAssigned, IncompleteUnassigned, ParticipantPermission
+from .reassignment_pb2 import AssignedEvent, Reassignment, ReassignmentEvent, UnassignedEvent
+from .state_service_pb2 import ActiveContract, GetActiveContractsRequest, GetActiveContractsResponse, GetConnectedSynchronizersRequest, GetConnectedSynchronizersResponse, GetLatestPrunedOffsetsRequest, GetLatestPrunedOffsetsResponse, GetLedgerEndRequest, GetLedgerEndResponse, IncompleteAssigned, IncompleteUnassigned, ParticipantPermission
 from .state_service_pb2_grpc import StateServiceStub
-from .update_service_pb2 import GetTransactionByEventIdRequest, GetTransactionByIdRequest, GetTransactionResponse, GetTransactionTreeResponse, GetUpdateTreesResponse, GetUpdatesRequest, GetUpdatesResponse
-from .update_service_pb2_grpc import UpdateServiceStub
+from .topology_transaction_pb2 import ParticipantAuthorizationAdded, ParticipantAuthorizationChanged, ParticipantAuthorizationRevoked, TopologyEvent, TopologyTransaction
+from .transaction_pb2 import Transaction, TransactionTree, TreeEvent
+from .experimental_features_pb2 import ExperimentalCommandInspectionService, ExperimentalFeatures, ExperimentalPartyTopologyEvents, ExperimentalStaticTime
+from .offset_checkpoint_pb2 import OffsetCheckpoint, SynchronizerTime
+from .completion_pb2 import Completion
+from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, DisclosedContract, ExerciseByKeyCommand, ExerciseCommand, PrefetchContractKey
 from .version_service_pb2 import FeaturesDescriptor, GetLedgerApiVersionRequest, GetLedgerApiVersionResponse, OffsetCheckpointFeature, PartyManagementFeature, UserManagementFeature
 from .version_service_pb2_grpc import VersionServiceStub
+from .package_reference_pb2 import PackageReference
+from .reassignment_commands_pb2 import AssignCommand, ReassignmentCommand, ReassignmentCommands, UnassignCommand
+from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse
+from .command_completion_service_pb2_grpc import CommandCompletionServiceStub
+from .command_service_pb2 import SubmitAndWaitForReassignmentRequest, SubmitAndWaitForReassignmentResponse, SubmitAndWaitForTransactionRequest, SubmitAndWaitForTransactionResponse, SubmitAndWaitForTransactionTreeResponse, SubmitAndWaitRequest, SubmitAndWaitResponse
+from .command_service_pb2_grpc import CommandServiceStub
+from .update_service_pb2 import GetTransactionByIdRequest, GetTransactionByOffsetRequest, GetTransactionResponse, GetTransactionTreeResponse, GetUpdateByIdRequest, GetUpdateByOffsetRequest, GetUpdateResponse, GetUpdateTreesResponse, GetUpdatesRequest, GetUpdatesResponse
+from .update_service_pb2_grpc import UpdateServiceStub
+from .command_submission_service_pb2 import SubmitReassignmentRequest, SubmitReassignmentResponse, SubmitRequest, SubmitResponse
+from .command_submission_service_pb2_grpc import CommandSubmissionServiceStub
 
 __all__ = [
     "ActiveContract",
@@ -48,34 +47,30 @@ __all__ = [
     "Completion",
     "CompletionStreamRequest",
     "CompletionStreamResponse",
-    "Create",
     "CreateAndExerciseCommand",
     "CreateCommand",
     "Created",
     "CreatedEvent",
     "CumulativeFilter",
-    "DamlTransaction",
     "DisclosedContract",
-    "DomainTime",
     "Enum",
     "Event",
+    "EventFormat",
     "EventQueryServiceStub",
-    "ExecuteSubmissionRequest",
-    "ExecuteSubmissionResponse",
     "ExerciseByKeyCommand",
     "ExerciseCommand",
     "ExercisedEvent",
     "ExperimentalCommandInspectionService",
     "ExperimentalFeatures",
-    "ExperimentalInteractiveSubmissionService",
+    "ExperimentalPartyTopologyEvents",
     "ExperimentalStaticTime",
     "FeaturesDescriptor",
     "Filters",
     "GenMap",
     "GetActiveContractsRequest",
     "GetActiveContractsResponse",
-    "GetConnectedDomainsRequest",
-    "GetConnectedDomainsResponse",
+    "GetConnectedSynchronizersRequest",
+    "GetConnectedSynchronizersResponse",
     "GetEventsByContractIdRequest",
     "GetEventsByContractIdResponse",
     "GetLatestPrunedOffsetsRequest",
@@ -88,46 +83,48 @@ __all__ = [
     "GetPackageResponse",
     "GetPackageStatusRequest",
     "GetPackageStatusResponse",
-    "GetTransactionByEventIdRequest",
     "GetTransactionByIdRequest",
+    "GetTransactionByOffsetRequest",
     "GetTransactionResponse",
     "GetTransactionTreeResponse",
+    "GetUpdateByIdRequest",
+    "GetUpdateByOffsetRequest",
+    "GetUpdateResponse",
     "GetUpdateTreesResponse",
     "GetUpdatesRequest",
     "GetUpdatesResponse",
-    "GlobalKey",
-    "GlobalKeyWithMaintainers",
     "HashFunction",
     "Identifier",
     "IncompleteAssigned",
     "IncompleteUnassigned",
-    "InteractiveSubmissionServiceStub",
     "InterfaceFilter",
     "InterfaceView",
     "List",
     "ListPackagesRequest",
     "ListPackagesResponse",
-    "Metadata",
-    "Node",
     "OffsetCheckpoint",
     "OffsetCheckpointFeature",
     "Optional",
+    "PackageReference",
     "PackageServiceStub",
     "PackageStatus",
+    "ParticipantAuthorizationAdded",
+    "ParticipantAuthorizationChanged",
+    "ParticipantAuthorizationRevoked",
+    "ParticipantAuthorizationTopologyFormat",
     "ParticipantPermission",
     "PartyManagementFeature",
-    "PartySignatures",
-    "PrepareSubmissionRequest",
-    "PrepareSubmissionResponse",
-    "PreparedTransaction",
+    "PrefetchContractKey",
     "Reassignment",
     "ReassignmentCommand",
+    "ReassignmentCommands",
+    "ReassignmentEvent",
     "Record",
     "RecordField",
-    "Signature",
-    "SignatureFormat",
-    "SinglePartySignatures",
     "StateServiceStub",
+    "SubmitAndWaitForReassignmentRequest",
+    "SubmitAndWaitForReassignmentResponse",
+    "SubmitAndWaitForTransactionRequest",
     "SubmitAndWaitForTransactionResponse",
     "SubmitAndWaitForTransactionTreeResponse",
     "SubmitAndWaitRequest",
@@ -136,15 +133,22 @@ __all__ = [
     "SubmitReassignmentResponse",
     "SubmitRequest",
     "SubmitResponse",
+    "SynchronizerTime",
     "TemplateFilter",
     "TextMap",
+    "TopologyEvent",
+    "TopologyFormat",
+    "TopologyTransaction",
     "TraceContext",
     "Transaction",
     "TransactionFilter",
+    "TransactionFormat",
+    "TransactionShape",
     "TransactionTree",
     "TreeEvent",
     "UnassignCommand",
     "UnassignedEvent",
+    "UpdateFormat",
     "UpdateServiceStub",
     "UserManagementFeature",
     "Value",

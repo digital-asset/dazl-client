@@ -26,14 +26,16 @@ PARTICIPANT_PERMISSION_CONFIRMATION: ParticipantPermission
 PARTICIPANT_PERMISSION_OBSERVATION: ParticipantPermission
 
 class GetActiveContractsRequest(_message.Message):
-    __slots__ = ("filter", "verbose", "active_at_offset")
+    __slots__ = ("filter", "verbose", "active_at_offset", "event_format")
     FILTER_FIELD_NUMBER: _ClassVar[int]
     VERBOSE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
     filter: _transaction_filter_pb2.TransactionFilter
     verbose: bool
     active_at_offset: int
-    def __init__(self, filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: bool = ..., active_at_offset: _Optional[int] = ...) -> None: ...
+    event_format: _transaction_filter_pb2.EventFormat
+    def __init__(self, filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: bool = ..., active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ...) -> None: ...
 
 class GetActiveContractsResponse(_message.Message):
     __slots__ = ("workflow_id", "active_contract", "incomplete_unassigned", "incomplete_assigned")
@@ -48,14 +50,14 @@ class GetActiveContractsResponse(_message.Message):
     def __init__(self, workflow_id: _Optional[str] = ..., active_contract: _Optional[_Union[ActiveContract, _Mapping]] = ..., incomplete_unassigned: _Optional[_Union[IncompleteUnassigned, _Mapping]] = ..., incomplete_assigned: _Optional[_Union[IncompleteAssigned, _Mapping]] = ...) -> None: ...
 
 class ActiveContract(_message.Message):
-    __slots__ = ("created_event", "domain_id", "reassignment_counter")
+    __slots__ = ("created_event", "synchronizer_id", "reassignment_counter")
     CREATED_EVENT_FIELD_NUMBER: _ClassVar[int]
-    DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     REASSIGNMENT_COUNTER_FIELD_NUMBER: _ClassVar[int]
     created_event: _event_pb2.CreatedEvent
-    domain_id: str
+    synchronizer_id: str
     reassignment_counter: int
-    def __init__(self, created_event: _Optional[_Union[_event_pb2.CreatedEvent, _Mapping]] = ..., domain_id: _Optional[str] = ..., reassignment_counter: _Optional[int] = ...) -> None: ...
+    def __init__(self, created_event: _Optional[_Union[_event_pb2.CreatedEvent, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., reassignment_counter: _Optional[int] = ...) -> None: ...
 
 class IncompleteUnassigned(_message.Message):
     __slots__ = ("created_event", "unassigned_event")
@@ -71,7 +73,7 @@ class IncompleteAssigned(_message.Message):
     assigned_event: _reassignment_pb2.AssignedEvent
     def __init__(self, assigned_event: _Optional[_Union[_reassignment_pb2.AssignedEvent, _Mapping]] = ...) -> None: ...
 
-class GetConnectedDomainsRequest(_message.Message):
+class GetConnectedSynchronizersRequest(_message.Message):
     __slots__ = ("party", "participant_id")
     PARTY_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -79,20 +81,20 @@ class GetConnectedDomainsRequest(_message.Message):
     participant_id: str
     def __init__(self, party: _Optional[str] = ..., participant_id: _Optional[str] = ...) -> None: ...
 
-class GetConnectedDomainsResponse(_message.Message):
-    __slots__ = ("connected_domains",)
-    class ConnectedDomain(_message.Message):
-        __slots__ = ("domain_alias", "domain_id", "permission")
-        DOMAIN_ALIAS_FIELD_NUMBER: _ClassVar[int]
-        DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
+class GetConnectedSynchronizersResponse(_message.Message):
+    __slots__ = ("connected_synchronizers",)
+    class ConnectedSynchronizer(_message.Message):
+        __slots__ = ("synchronizer_alias", "synchronizer_id", "permission")
+        SYNCHRONIZER_ALIAS_FIELD_NUMBER: _ClassVar[int]
+        SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         PERMISSION_FIELD_NUMBER: _ClassVar[int]
-        domain_alias: str
-        domain_id: str
+        synchronizer_alias: str
+        synchronizer_id: str
         permission: ParticipantPermission
-        def __init__(self, domain_alias: _Optional[str] = ..., domain_id: _Optional[str] = ..., permission: _Optional[_Union[ParticipantPermission, str]] = ...) -> None: ...
-    CONNECTED_DOMAINS_FIELD_NUMBER: _ClassVar[int]
-    connected_domains: _containers.RepeatedCompositeFieldContainer[GetConnectedDomainsResponse.ConnectedDomain]
-    def __init__(self, connected_domains: _Optional[_Iterable[_Union[GetConnectedDomainsResponse.ConnectedDomain, _Mapping]]] = ...) -> None: ...
+        def __init__(self, synchronizer_alias: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., permission: _Optional[_Union[ParticipantPermission, str]] = ...) -> None: ...
+    CONNECTED_SYNCHRONIZERS_FIELD_NUMBER: _ClassVar[int]
+    connected_synchronizers: _containers.RepeatedCompositeFieldContainer[GetConnectedSynchronizersResponse.ConnectedSynchronizer]
+    def __init__(self, connected_synchronizers: _Optional[_Iterable[_Union[GetConnectedSynchronizersResponse.ConnectedSynchronizer, _Mapping]]] = ...) -> None: ...
 
 class GetLedgerEndRequest(_message.Message):
     __slots__ = ()

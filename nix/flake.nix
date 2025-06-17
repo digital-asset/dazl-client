@@ -8,7 +8,7 @@
     flake-utils.lib.eachDefaultSystem
       (system:
         let
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = import nixpkgs { inherit system; overlays = import ./overlays.nix; };
         in
         {
           devShells.default = import ./shell.nix { inherit pkgs ; ci = false; };

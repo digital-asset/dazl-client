@@ -55,16 +55,14 @@ class ListKnownPartiesResponse(_message.Message):
     def __init__(self, party_details: _Optional[_Iterable[_Union[PartyDetails, _Mapping]]] = ..., next_page_token: _Optional[str] = ...) -> None: ...
 
 class AllocatePartyRequest(_message.Message):
-    __slots__ = ("party_id_hint", "display_name", "local_metadata", "identity_provider_id")
+    __slots__ = ("party_id_hint", "local_metadata", "identity_provider_id")
     PARTY_ID_HINT_FIELD_NUMBER: _ClassVar[int]
-    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
     LOCAL_METADATA_FIELD_NUMBER: _ClassVar[int]
     IDENTITY_PROVIDER_ID_FIELD_NUMBER: _ClassVar[int]
     party_id_hint: str
-    display_name: str
     local_metadata: _object_meta_pb2.ObjectMeta
     identity_provider_id: str
-    def __init__(self, party_id_hint: _Optional[str] = ..., display_name: _Optional[str] = ..., local_metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, party_id_hint: _Optional[str] = ..., local_metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
 
 class AllocatePartyResponse(_message.Message):
     __slots__ = ("party_details",)
@@ -87,18 +85,16 @@ class UpdatePartyDetailsResponse(_message.Message):
     def __init__(self, party_details: _Optional[_Union[PartyDetails, _Mapping]] = ...) -> None: ...
 
 class PartyDetails(_message.Message):
-    __slots__ = ("party", "display_name", "is_local", "local_metadata", "identity_provider_id")
+    __slots__ = ("party", "is_local", "local_metadata", "identity_provider_id")
     PARTY_FIELD_NUMBER: _ClassVar[int]
-    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
     IS_LOCAL_FIELD_NUMBER: _ClassVar[int]
     LOCAL_METADATA_FIELD_NUMBER: _ClassVar[int]
     IDENTITY_PROVIDER_ID_FIELD_NUMBER: _ClassVar[int]
     party: str
-    display_name: str
     is_local: bool
     local_metadata: _object_meta_pb2.ObjectMeta
     identity_provider_id: str
-    def __init__(self, party: _Optional[str] = ..., display_name: _Optional[str] = ..., is_local: bool = ..., local_metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, party: _Optional[str] = ..., is_local: bool = ..., local_metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
 
 class UpdatePartyIdentityProviderIdRequest(_message.Message):
     __slots__ = ("party", "source_identity_provider_id", "target_identity_provider_id")

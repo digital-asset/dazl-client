@@ -67,6 +67,58 @@ func (x *SubmitAndWaitRequest) GetCommands() *Commands {
 	return nil
 }
 
+type SubmitAndWaitForTransactionRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Commands          *Commands              `protobuf:"bytes,1,opt,name=commands,proto3" json:"commands,omitempty"`
+	TransactionFormat *TransactionFormat     `protobuf:"bytes,2,opt,name=transaction_format,json=transactionFormat,proto3" json:"transaction_format,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *SubmitAndWaitForTransactionRequest) Reset() {
+	*x = SubmitAndWaitForTransactionRequest{}
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubmitAndWaitForTransactionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubmitAndWaitForTransactionRequest) ProtoMessage() {}
+
+func (x *SubmitAndWaitForTransactionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubmitAndWaitForTransactionRequest.ProtoReflect.Descriptor instead.
+func (*SubmitAndWaitForTransactionRequest) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *SubmitAndWaitForTransactionRequest) GetCommands() *Commands {
+	if x != nil {
+		return x.Commands
+	}
+	return nil
+}
+
+func (x *SubmitAndWaitForTransactionRequest) GetTransactionFormat() *TransactionFormat {
+	if x != nil {
+		return x.TransactionFormat
+	}
+	return nil
+}
+
 type SubmitAndWaitResponse struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	UpdateId         string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
@@ -77,7 +129,7 @@ type SubmitAndWaitResponse struct {
 
 func (x *SubmitAndWaitResponse) Reset() {
 	*x = SubmitAndWaitResponse{}
-	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[1]
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -89,7 +141,7 @@ func (x *SubmitAndWaitResponse) String() string {
 func (*SubmitAndWaitResponse) ProtoMessage() {}
 
 func (x *SubmitAndWaitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[1]
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -102,7 +154,7 @@ func (x *SubmitAndWaitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitAndWaitResponse.ProtoReflect.Descriptor instead.
 func (*SubmitAndWaitResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{1}
+	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SubmitAndWaitResponse) GetUpdateId() string {
@@ -128,7 +180,7 @@ type SubmitAndWaitForTransactionResponse struct {
 
 func (x *SubmitAndWaitForTransactionResponse) Reset() {
 	*x = SubmitAndWaitForTransactionResponse{}
-	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -140,7 +192,7 @@ func (x *SubmitAndWaitForTransactionResponse) String() string {
 func (*SubmitAndWaitForTransactionResponse) ProtoMessage() {}
 
 func (x *SubmitAndWaitForTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -153,7 +205,7 @@ func (x *SubmitAndWaitForTransactionResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use SubmitAndWaitForTransactionResponse.ProtoReflect.Descriptor instead.
 func (*SubmitAndWaitForTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{2}
+	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *SubmitAndWaitForTransactionResponse) GetTransaction() *Transaction {
@@ -172,7 +224,7 @@ type SubmitAndWaitForTransactionTreeResponse struct {
 
 func (x *SubmitAndWaitForTransactionTreeResponse) Reset() {
 	*x = SubmitAndWaitForTransactionTreeResponse{}
-	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[3]
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -184,7 +236,7 @@ func (x *SubmitAndWaitForTransactionTreeResponse) String() string {
 func (*SubmitAndWaitForTransactionTreeResponse) ProtoMessage() {}
 
 func (x *SubmitAndWaitForTransactionTreeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[3]
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -197,7 +249,7 @@ func (x *SubmitAndWaitForTransactionTreeResponse) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use SubmitAndWaitForTransactionTreeResponse.ProtoReflect.Descriptor instead.
 func (*SubmitAndWaitForTransactionTreeResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{3}
+	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *SubmitAndWaitForTransactionTreeResponse) GetTransaction() *TransactionTree {
@@ -207,24 +259,129 @@ func (x *SubmitAndWaitForTransactionTreeResponse) GetTransaction() *TransactionT
 	return nil
 }
 
+type SubmitAndWaitForReassignmentRequest struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	ReassignmentCommands *ReassignmentCommands  `protobuf:"bytes,1,opt,name=reassignment_commands,json=reassignmentCommands,proto3" json:"reassignment_commands,omitempty"`
+	EventFormat          *EventFormat           `protobuf:"bytes,2,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *SubmitAndWaitForReassignmentRequest) Reset() {
+	*x = SubmitAndWaitForReassignmentRequest{}
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubmitAndWaitForReassignmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubmitAndWaitForReassignmentRequest) ProtoMessage() {}
+
+func (x *SubmitAndWaitForReassignmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubmitAndWaitForReassignmentRequest.ProtoReflect.Descriptor instead.
+func (*SubmitAndWaitForReassignmentRequest) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SubmitAndWaitForReassignmentRequest) GetReassignmentCommands() *ReassignmentCommands {
+	if x != nil {
+		return x.ReassignmentCommands
+	}
+	return nil
+}
+
+func (x *SubmitAndWaitForReassignmentRequest) GetEventFormat() *EventFormat {
+	if x != nil {
+		return x.EventFormat
+	}
+	return nil
+}
+
+type SubmitAndWaitForReassignmentResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Reassignment  *Reassignment          `protobuf:"bytes,1,opt,name=reassignment,proto3" json:"reassignment,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubmitAndWaitForReassignmentResponse) Reset() {
+	*x = SubmitAndWaitForReassignmentResponse{}
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubmitAndWaitForReassignmentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubmitAndWaitForReassignmentResponse) ProtoMessage() {}
+
+func (x *SubmitAndWaitForReassignmentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_command_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubmitAndWaitForReassignmentResponse.ProtoReflect.Descriptor instead.
+func (*SubmitAndWaitForReassignmentResponse) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SubmitAndWaitForReassignmentResponse) GetReassignment() *Reassignment {
+	if x != nil {
+		return x.Reassignment
+	}
+	return nil
+}
+
 var File_com_daml_ledger_api_v2_command_service_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_command_service_proto_rawDesc = "" +
 	"\n" +
-	",com/daml/ledger/api/v2/command_service.proto\x12\x16com.daml.ledger.api.v2\x1a%com/daml/ledger/api/v2/commands.proto\x1a(com/daml/ledger/api/v2/transaction.proto\"T\n" +
+	",com/daml/ledger/api/v2/command_service.proto\x12\x16com.daml.ledger.api.v2\x1a%com/daml/ledger/api/v2/commands.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a2com/daml/ledger/api/v2/reassignment_commands.proto\x1a(com/daml/ledger/api/v2/transaction.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"T\n" +
 	"\x14SubmitAndWaitRequest\x12<\n" +
-	"\bcommands\x18\x01 \x01(\v2 .com.daml.ledger.api.v2.CommandsR\bcommands\"a\n" +
+	"\bcommands\x18\x01 \x01(\v2 .com.daml.ledger.api.v2.CommandsR\bcommands\"\xbc\x01\n" +
+	"\"SubmitAndWaitForTransactionRequest\x12<\n" +
+	"\bcommands\x18\x01 \x01(\v2 .com.daml.ledger.api.v2.CommandsR\bcommands\x12X\n" +
+	"\x12transaction_format\x18\x02 \x01(\v2).com.daml.ledger.api.v2.TransactionFormatR\x11transactionFormat\"a\n" +
 	"\x15SubmitAndWaitResponse\x12\x1b\n" +
 	"\tupdate_id\x18\x01 \x01(\tR\bupdateId\x12+\n" +
 	"\x11completion_offset\x18\x02 \x01(\x03R\x10completionOffset\"l\n" +
 	"#SubmitAndWaitForTransactionResponse\x12E\n" +
 	"\vtransaction\x18\x01 \x01(\v2#.com.daml.ledger.api.v2.TransactionR\vtransaction\"t\n" +
 	"'SubmitAndWaitForTransactionTreeResponse\x12I\n" +
-	"\vtransaction\x18\x01 \x01(\v2'.com.daml.ledger.api.v2.TransactionTreeR\vtransaction2\x9c\x03\n" +
+	"\vtransaction\x18\x01 \x01(\v2'.com.daml.ledger.api.v2.TransactionTreeR\vtransaction\"\xd0\x01\n" +
+	"#SubmitAndWaitForReassignmentRequest\x12a\n" +
+	"\x15reassignment_commands\x18\x01 \x01(\v2,.com.daml.ledger.api.v2.ReassignmentCommandsR\x14reassignmentCommands\x12F\n" +
+	"\fevent_format\x18\x02 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\"p\n" +
+	"$SubmitAndWaitForReassignmentResponse\x12H\n" +
+	"\freassignment\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.ReassignmentR\freassignment2\xc6\x04\n" +
 	"\x0eCommandService\x12l\n" +
-	"\rSubmitAndWait\x12,.com.daml.ledger.api.v2.SubmitAndWaitRequest\x1a-.com.daml.ledger.api.v2.SubmitAndWaitResponse\x12\x88\x01\n" +
-	"\x1bSubmitAndWaitForTransaction\x12,.com.daml.ledger.api.v2.SubmitAndWaitRequest\x1a;.com.daml.ledger.api.v2.SubmitAndWaitForTransactionResponse\x12\x90\x01\n" +
-	"\x1fSubmitAndWaitForTransactionTree\x12,.com.daml.ledger.api.v2.SubmitAndWaitRequest\x1a?.com.daml.ledger.api.v2.SubmitAndWaitForTransactionTreeResponseB\x92\x01\n" +
+	"\rSubmitAndWait\x12,.com.daml.ledger.api.v2.SubmitAndWaitRequest\x1a-.com.daml.ledger.api.v2.SubmitAndWaitResponse\x12\x96\x01\n" +
+	"\x1bSubmitAndWaitForTransaction\x12:.com.daml.ledger.api.v2.SubmitAndWaitForTransactionRequest\x1a;.com.daml.ledger.api.v2.SubmitAndWaitForTransactionResponse\x12\x90\x01\n" +
+	"\x1fSubmitAndWaitForTransactionTree\x12,.com.daml.ledger.api.v2.SubmitAndWaitRequest\x1a?.com.daml.ledger.api.v2.SubmitAndWaitForTransactionTreeResponse\x12\x99\x01\n" +
+	"\x1cSubmitAndWaitForReassignment\x12;.com.daml.ledger.api.v2.SubmitAndWaitForReassignmentRequest\x1a<.com.daml.ledger.api.v2.SubmitAndWaitForReassignmentResponseB\x92\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x18CommandServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (
@@ -239,31 +396,45 @@ func file_com_daml_ledger_api_v2_command_service_proto_rawDescGZIP() []byte {
 	return file_com_daml_ledger_api_v2_command_service_proto_rawDescData
 }
 
-var file_com_daml_ledger_api_v2_command_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_com_daml_ledger_api_v2_command_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_com_daml_ledger_api_v2_command_service_proto_goTypes = []any{
 	(*SubmitAndWaitRequest)(nil),                    // 0: com.daml.ledger.api.v2.SubmitAndWaitRequest
-	(*SubmitAndWaitResponse)(nil),                   // 1: com.daml.ledger.api.v2.SubmitAndWaitResponse
-	(*SubmitAndWaitForTransactionResponse)(nil),     // 2: com.daml.ledger.api.v2.SubmitAndWaitForTransactionResponse
-	(*SubmitAndWaitForTransactionTreeResponse)(nil), // 3: com.daml.ledger.api.v2.SubmitAndWaitForTransactionTreeResponse
-	(*Commands)(nil),                                // 4: com.daml.ledger.api.v2.Commands
-	(*Transaction)(nil),                             // 5: com.daml.ledger.api.v2.Transaction
-	(*TransactionTree)(nil),                         // 6: com.daml.ledger.api.v2.TransactionTree
+	(*SubmitAndWaitForTransactionRequest)(nil),      // 1: com.daml.ledger.api.v2.SubmitAndWaitForTransactionRequest
+	(*SubmitAndWaitResponse)(nil),                   // 2: com.daml.ledger.api.v2.SubmitAndWaitResponse
+	(*SubmitAndWaitForTransactionResponse)(nil),     // 3: com.daml.ledger.api.v2.SubmitAndWaitForTransactionResponse
+	(*SubmitAndWaitForTransactionTreeResponse)(nil), // 4: com.daml.ledger.api.v2.SubmitAndWaitForTransactionTreeResponse
+	(*SubmitAndWaitForReassignmentRequest)(nil),     // 5: com.daml.ledger.api.v2.SubmitAndWaitForReassignmentRequest
+	(*SubmitAndWaitForReassignmentResponse)(nil),    // 6: com.daml.ledger.api.v2.SubmitAndWaitForReassignmentResponse
+	(*Commands)(nil),                                // 7: com.daml.ledger.api.v2.Commands
+	(*TransactionFormat)(nil),                       // 8: com.daml.ledger.api.v2.TransactionFormat
+	(*Transaction)(nil),                             // 9: com.daml.ledger.api.v2.Transaction
+	(*TransactionTree)(nil),                         // 10: com.daml.ledger.api.v2.TransactionTree
+	(*ReassignmentCommands)(nil),                    // 11: com.daml.ledger.api.v2.ReassignmentCommands
+	(*EventFormat)(nil),                             // 12: com.daml.ledger.api.v2.EventFormat
+	(*Reassignment)(nil),                            // 13: com.daml.ledger.api.v2.Reassignment
 }
 var file_com_daml_ledger_api_v2_command_service_proto_depIdxs = []int32{
-	4, // 0: com.daml.ledger.api.v2.SubmitAndWaitRequest.commands:type_name -> com.daml.ledger.api.v2.Commands
-	5, // 1: com.daml.ledger.api.v2.SubmitAndWaitForTransactionResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
-	6, // 2: com.daml.ledger.api.v2.SubmitAndWaitForTransactionTreeResponse.transaction:type_name -> com.daml.ledger.api.v2.TransactionTree
-	0, // 3: com.daml.ledger.api.v2.CommandService.SubmitAndWait:input_type -> com.daml.ledger.api.v2.SubmitAndWaitRequest
-	0, // 4: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForTransaction:input_type -> com.daml.ledger.api.v2.SubmitAndWaitRequest
-	0, // 5: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForTransactionTree:input_type -> com.daml.ledger.api.v2.SubmitAndWaitRequest
-	1, // 6: com.daml.ledger.api.v2.CommandService.SubmitAndWait:output_type -> com.daml.ledger.api.v2.SubmitAndWaitResponse
-	2, // 7: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForTransaction:output_type -> com.daml.ledger.api.v2.SubmitAndWaitForTransactionResponse
-	3, // 8: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForTransactionTree:output_type -> com.daml.ledger.api.v2.SubmitAndWaitForTransactionTreeResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	7,  // 0: com.daml.ledger.api.v2.SubmitAndWaitRequest.commands:type_name -> com.daml.ledger.api.v2.Commands
+	7,  // 1: com.daml.ledger.api.v2.SubmitAndWaitForTransactionRequest.commands:type_name -> com.daml.ledger.api.v2.Commands
+	8,  // 2: com.daml.ledger.api.v2.SubmitAndWaitForTransactionRequest.transaction_format:type_name -> com.daml.ledger.api.v2.TransactionFormat
+	9,  // 3: com.daml.ledger.api.v2.SubmitAndWaitForTransactionResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
+	10, // 4: com.daml.ledger.api.v2.SubmitAndWaitForTransactionTreeResponse.transaction:type_name -> com.daml.ledger.api.v2.TransactionTree
+	11, // 5: com.daml.ledger.api.v2.SubmitAndWaitForReassignmentRequest.reassignment_commands:type_name -> com.daml.ledger.api.v2.ReassignmentCommands
+	12, // 6: com.daml.ledger.api.v2.SubmitAndWaitForReassignmentRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
+	13, // 7: com.daml.ledger.api.v2.SubmitAndWaitForReassignmentResponse.reassignment:type_name -> com.daml.ledger.api.v2.Reassignment
+	0,  // 8: com.daml.ledger.api.v2.CommandService.SubmitAndWait:input_type -> com.daml.ledger.api.v2.SubmitAndWaitRequest
+	1,  // 9: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForTransaction:input_type -> com.daml.ledger.api.v2.SubmitAndWaitForTransactionRequest
+	0,  // 10: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForTransactionTree:input_type -> com.daml.ledger.api.v2.SubmitAndWaitRequest
+	5,  // 11: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForReassignment:input_type -> com.daml.ledger.api.v2.SubmitAndWaitForReassignmentRequest
+	2,  // 12: com.daml.ledger.api.v2.CommandService.SubmitAndWait:output_type -> com.daml.ledger.api.v2.SubmitAndWaitResponse
+	3,  // 13: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForTransaction:output_type -> com.daml.ledger.api.v2.SubmitAndWaitForTransactionResponse
+	4,  // 14: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForTransactionTree:output_type -> com.daml.ledger.api.v2.SubmitAndWaitForTransactionTreeResponse
+	6,  // 15: com.daml.ledger.api.v2.CommandService.SubmitAndWaitForReassignment:output_type -> com.daml.ledger.api.v2.SubmitAndWaitForReassignmentResponse
+	12, // [12:16] is the sub-list for method output_type
+	8,  // [8:12] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_command_service_proto_init() }
@@ -272,14 +443,17 @@ func file_com_daml_ledger_api_v2_command_service_proto_init() {
 		return
 	}
 	file_com_daml_ledger_api_v2_commands_proto_init()
+	file_com_daml_ledger_api_v2_reassignment_proto_init()
+	file_com_daml_ledger_api_v2_reassignment_commands_proto_init()
 	file_com_daml_ledger_api_v2_transaction_proto_init()
+	file_com_daml_ledger_api_v2_transaction_filter_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_command_service_proto_rawDesc), len(file_com_daml_ledger_api_v2_command_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

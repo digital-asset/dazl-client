@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2025, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-sdk-version: 2.10.0
+sdk-version: 2.10.1
 name: map-support
 version: 1.0.0
 source: daml

@@ -6,7 +6,7 @@
 // 	protoc        v6.30.0
 // source: com/daml/daml_lf_1_17/daml_lf.proto
 
-package daml_lf_1_16
+package daml_lf_1_17
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -158,7 +158,7 @@ func (*ArchivePayload_DamlLf_2) isArchivePayload_Sum() {}
 
 type Archive struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	HashFunction  HashFunction           `protobuf:"varint,1,opt,name=hash_function,json=hashFunction,proto3,enum=daml_lf_1_16.HashFunction" json:"hash_function,omitempty"`
+	HashFunction  HashFunction           `protobuf:"varint,1,opt,name=hash_function,json=hashFunction,proto3,enum=daml_lf_1_17.HashFunction" json:"hash_function,omitempty"`
 	Payload       []byte                 `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
 	Hash          string                 `protobuf:"bytes,4,opt,name=hash,proto3" json:"hash,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -220,20 +220,20 @@ var File_com_daml_daml_lf_1_17_daml_lf_proto protoreflect.FileDescriptor
 
 const file_com_daml_daml_lf_1_17_daml_lf_proto_rawDesc = "" +
 	"\n" +
-	"#com/daml/daml_lf_1_17/daml_lf.proto\x12\fdaml_lf_1_16\x1a%com/daml/daml_lf_1_17/daml_lf_1.proto\"\x8b\x01\n" +
+	"#com/daml/daml_lf_1_17/daml_lf.proto\x12\fdaml_lf_1_17\x1a%com/daml/daml_lf_1_17/daml_lf_1.proto\"\x8e\x01\n" +
 	"\x0eArchivePayload\x12\x14\n" +
-	"\x05minor\x18\x03 \x01(\tR\x05minor\x120\n" +
-	"\tdaml_lf_1\x18\x02 \x01(\v2\x12.daml_lf_1.PackageH\x00R\adamlLf1\x12\x1c\n" +
+	"\x05minor\x18\x03 \x01(\tR\x05minor\x123\n" +
+	"\tdaml_lf_1\x18\x02 \x01(\v2\x15.daml_lf_1_17.PackageH\x00R\adamlLf1\x12\x1c\n" +
 	"\tdaml_lf_2\x18\x04 \x01(\fH\x00R\adamlLf2B\x05\n" +
 	"\x03SumJ\x06\b\x8fN\x10\x90NJ\x04\b\x01\x10\x02\"x\n" +
 	"\aArchive\x12?\n" +
-	"\rhash_function\x18\x01 \x01(\x0e2\x1a.daml_lf_1_16.HashFunctionR\fhashFunction\x12\x18\n" +
+	"\rhash_function\x18\x01 \x01(\x0e2\x1a.daml_lf_1_17.HashFunctionR\fhashFunction\x12\x18\n" +
 	"\apayload\x18\x03 \x01(\fR\apayload\x12\x12\n" +
 	"\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n" +
 	"\fHashFunction\x12\n" +
 	"\n" +
-	"\x06SHA256\x10\x00Bs\n" +
-	"\x15com.daml.daml_lf_1_17Z;github.com/digital-asset/dazl-client/v8/go/api/daml_lf_1_16\xaa\x02\x1cCom.Daml.Daml_Lf_1_17.DamlLfb\x06proto3"
+	"\x06SHA256\x10\x00B|\n" +
+	"\x15com.daml.daml_lf_1_17ZDgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_1_17\xaa\x02\x1cCom.Daml.Daml_Lf_1_17.DamlLfb\x06proto3"
 
 var (
 	file_com_daml_daml_lf_1_17_daml_lf_proto_rawDescOnce sync.Once
@@ -250,14 +250,14 @@ func file_com_daml_daml_lf_1_17_daml_lf_proto_rawDescGZIP() []byte {
 var file_com_daml_daml_lf_1_17_daml_lf_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_com_daml_daml_lf_1_17_daml_lf_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_com_daml_daml_lf_1_17_daml_lf_proto_goTypes = []any{
-	(HashFunction)(0),         // 0: daml_lf_1_16.HashFunction
-	(*ArchivePayload)(nil),    // 1: daml_lf_1_16.ArchivePayload
-	(*Archive)(nil),           // 2: daml_lf_1_16.Archive
-	(*Package)(nil), // 3: daml_lf_1.Package
+	(HashFunction)(0),      // 0: daml_lf_1_17.HashFunction
+	(*ArchivePayload)(nil), // 1: daml_lf_1_17.ArchivePayload
+	(*Archive)(nil),        // 2: daml_lf_1_17.Archive
+	(*Package)(nil),        // 3: daml_lf_1_17.Package
 }
 var file_com_daml_daml_lf_1_17_daml_lf_proto_depIdxs = []int32{
-	3, // 0: daml_lf_1_16.ArchivePayload.daml_lf_1:type_name -> daml_lf_1.Package
-	0, // 1: daml_lf_1_16.Archive.hash_function:type_name -> daml_lf_1_16.HashFunction
+	3, // 0: daml_lf_1_17.ArchivePayload.daml_lf_1:type_name -> daml_lf_1_17.Package
+	0, // 1: daml_lf_1_17.Archive.hash_function:type_name -> daml_lf_1_17.HashFunction
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -270,6 +270,7 @@ func file_com_daml_daml_lf_1_17_daml_lf_proto_init() {
 	if File_com_daml_daml_lf_1_17_daml_lf_proto != nil {
 		return
 	}
+	file_com_daml_daml_lf_1_17_daml_lf_1_proto_init()
 	file_com_daml_daml_lf_1_17_daml_lf_proto_msgTypes[0].OneofWrappers = []any{
 		(*ArchivePayload_DamlLf_1)(nil),
 		(*ArchivePayload_DamlLf_2)(nil),

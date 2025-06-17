@@ -29,7 +29,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n.com/daml/ledger/api/v2/offset_checkpoint.proto\x12\x16\x63om.daml.ledger.api.v2\x1a\x1fgoogle/protobuf/timestamp.proto\"q\n\x10OffsetCheckpoint\x12\x16\n\x06offset\x18\x01 \x01(\x03R\x06offset\x12\x45\n\x0c\x64omain_times\x18\x02 \x03(\x0b\x32\".com.daml.ledger.api.v2.DomainTimeR\x0b\x64omainTimes\"f\n\nDomainTime\x12\x1b\n\tdomain_id\x18\x01 \x01(\tR\x08\x64omainId\x12;\n\x0brecord_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\nrecordTimeB\x94\x01\n\x16\x63om.daml.ledger.api.v2B\x1aOffsetCheckpointOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16\x43om.Daml.Ledger.Api.V2b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n.com/daml/ledger/api/v2/offset_checkpoint.proto\x12\x16\x63om.daml.ledger.api.v2\x1a\x1fgoogle/protobuf/timestamp.proto\"\x83\x01\n\x10OffsetCheckpoint\x12\x16\n\x06offset\x18\x01 \x01(\x03R\x06offset\x12W\n\x12synchronizer_times\x18\x02 \x03(\x0b\x32(.com.daml.ledger.api.v2.SynchronizerTimeR\x11synchronizerTimes\"x\n\x10SynchronizerTime\x12\'\n\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12;\n\x0brecord_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\nrecordTimeB\x94\x01\n\x16\x63om.daml.ledger.api.v2B\x1aOffsetCheckpointOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16\x43om.Daml.Ledger.Api.V2b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,8 +37,8 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.daml.ledger.api.v2.offs
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\026com.daml.ledger.api.v2B\032OffsetCheckpointOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\252\002\026Com.Daml.Ledger.Api.V2'
-  _globals['_OFFSETCHECKPOINT']._serialized_start=107
-  _globals['_OFFSETCHECKPOINT']._serialized_end=220
-  _globals['_DOMAINTIME']._serialized_start=222
-  _globals['_DOMAINTIME']._serialized_end=324
+  _globals['_OFFSETCHECKPOINT']._serialized_start=108
+  _globals['_OFFSETCHECKPOINT']._serialized_end=239
+  _globals['_SYNCHRONIZERTIME']._serialized_start=241
+  _globals['_SYNCHRONIZERTIME']._serialized_end=361
 # @@protoc_insertion_point(module_scope)

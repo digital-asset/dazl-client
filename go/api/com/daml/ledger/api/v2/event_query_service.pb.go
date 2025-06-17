@@ -27,6 +27,7 @@ type GetEventsByContractIdRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	ContractId        string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
 	RequestingParties []string               `protobuf:"bytes,2,rep,name=requesting_parties,json=requestingParties,proto3" json:"requesting_parties,omitempty"`
+	EventFormat       *EventFormat           `protobuf:"bytes,3,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -71,6 +72,13 @@ func (x *GetEventsByContractIdRequest) GetContractId() string {
 func (x *GetEventsByContractIdRequest) GetRequestingParties() []string {
 	if x != nil {
 		return x.RequestingParties
+	}
+	return nil
+}
+
+func (x *GetEventsByContractIdRequest) GetEventFormat() *EventFormat {
+	if x != nil {
+		return x.EventFormat
 	}
 	return nil
 }
@@ -128,11 +136,11 @@ func (x *GetEventsByContractIdResponse) GetArchived() *Archived {
 }
 
 type Created struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CreatedEvent  *CreatedEvent          `protobuf:"bytes,1,opt,name=created_event,json=createdEvent,proto3" json:"created_event,omitempty"`
-	DomainId      string                 `protobuf:"bytes,2,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	CreatedEvent   *CreatedEvent          `protobuf:"bytes,1,opt,name=created_event,json=createdEvent,proto3" json:"created_event,omitempty"`
+	SynchronizerId string                 `protobuf:"bytes,2,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Created) Reset() {
@@ -172,19 +180,19 @@ func (x *Created) GetCreatedEvent() *CreatedEvent {
 	return nil
 }
 
-func (x *Created) GetDomainId() string {
+func (x *Created) GetSynchronizerId() string {
 	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
 
 type Archived struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ArchivedEvent *ArchivedEvent         `protobuf:"bytes,1,opt,name=archived_event,json=archivedEvent,proto3" json:"archived_event,omitempty"`
-	DomainId      string                 `protobuf:"bytes,2,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ArchivedEvent  *ArchivedEvent         `protobuf:"bytes,1,opt,name=archived_event,json=archivedEvent,proto3" json:"archived_event,omitempty"`
+	SynchronizerId string                 `protobuf:"bytes,2,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Archived) Reset() {
@@ -224,9 +232,9 @@ func (x *Archived) GetArchivedEvent() *ArchivedEvent {
 	return nil
 }
 
-func (x *Archived) GetDomainId() string {
+func (x *Archived) GetSynchronizerId() string {
 	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
@@ -235,20 +243,21 @@ var File_com_daml_ledger_api_v2_event_query_service_proto protoreflect.FileDescr
 
 const file_com_daml_ledger_api_v2_event_query_service_proto_rawDesc = "" +
 	"\n" +
-	"0com/daml/ledger/api/v2/event_query_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\"n\n" +
+	"0com/daml/ledger/api/v2/event_query_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\xb6\x01\n" +
 	"\x1cGetEventsByContractIdRequest\x12\x1f\n" +
 	"\vcontract_id\x18\x01 \x01(\tR\n" +
 	"contractId\x12-\n" +
-	"\x12requesting_parties\x18\x02 \x03(\tR\x11requestingParties\"\x98\x01\n" +
+	"\x12requesting_parties\x18\x02 \x03(\tR\x11requestingParties\x12F\n" +
+	"\fevent_format\x18\x03 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\"\x98\x01\n" +
 	"\x1dGetEventsByContractIdResponse\x129\n" +
 	"\acreated\x18\x01 \x01(\v2\x1f.com.daml.ledger.api.v2.CreatedR\acreated\x12<\n" +
-	"\barchived\x18\x02 \x01(\v2 .com.daml.ledger.api.v2.ArchivedR\barchived\"q\n" +
+	"\barchived\x18\x02 \x01(\v2 .com.daml.ledger.api.v2.ArchivedR\barchived\"}\n" +
 	"\aCreated\x12I\n" +
-	"\rcreated_event\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventR\fcreatedEvent\x12\x1b\n" +
-	"\tdomain_id\x18\x02 \x01(\tR\bdomainId\"u\n" +
+	"\rcreated_event\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventR\fcreatedEvent\x12'\n" +
+	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\"\x81\x01\n" +
 	"\bArchived\x12L\n" +
-	"\x0earchived_event\x18\x01 \x01(\v2%.com.daml.ledger.api.v2.ArchivedEventR\rarchivedEvent\x12\x1b\n" +
-	"\tdomain_id\x18\x02 \x01(\tR\bdomainId2\x9a\x01\n" +
+	"\x0earchived_event\x18\x01 \x01(\v2%.com.daml.ledger.api.v2.ArchivedEventR\rarchivedEvent\x12'\n" +
+	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId2\x9a\x01\n" +
 	"\x11EventQueryService\x12\x84\x01\n" +
 	"\x15GetEventsByContractId\x124.com.daml.ledger.api.v2.GetEventsByContractIdRequest\x1a5.com.daml.ledger.api.v2.GetEventsByContractIdResponseB\x95\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x1bEventQueryServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
@@ -271,21 +280,23 @@ var file_com_daml_ledger_api_v2_event_query_service_proto_goTypes = []any{
 	(*GetEventsByContractIdResponse)(nil), // 1: com.daml.ledger.api.v2.GetEventsByContractIdResponse
 	(*Created)(nil),                       // 2: com.daml.ledger.api.v2.Created
 	(*Archived)(nil),                      // 3: com.daml.ledger.api.v2.Archived
-	(*CreatedEvent)(nil),                  // 4: com.daml.ledger.api.v2.CreatedEvent
-	(*ArchivedEvent)(nil),                 // 5: com.daml.ledger.api.v2.ArchivedEvent
+	(*EventFormat)(nil),                   // 4: com.daml.ledger.api.v2.EventFormat
+	(*CreatedEvent)(nil),                  // 5: com.daml.ledger.api.v2.CreatedEvent
+	(*ArchivedEvent)(nil),                 // 6: com.daml.ledger.api.v2.ArchivedEvent
 }
 var file_com_daml_ledger_api_v2_event_query_service_proto_depIdxs = []int32{
-	2, // 0: com.daml.ledger.api.v2.GetEventsByContractIdResponse.created:type_name -> com.daml.ledger.api.v2.Created
-	3, // 1: com.daml.ledger.api.v2.GetEventsByContractIdResponse.archived:type_name -> com.daml.ledger.api.v2.Archived
-	4, // 2: com.daml.ledger.api.v2.Created.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
-	5, // 3: com.daml.ledger.api.v2.Archived.archived_event:type_name -> com.daml.ledger.api.v2.ArchivedEvent
-	0, // 4: com.daml.ledger.api.v2.EventQueryService.GetEventsByContractId:input_type -> com.daml.ledger.api.v2.GetEventsByContractIdRequest
-	1, // 5: com.daml.ledger.api.v2.EventQueryService.GetEventsByContractId:output_type -> com.daml.ledger.api.v2.GetEventsByContractIdResponse
-	5, // [5:6] is the sub-list for method output_type
-	4, // [4:5] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	4, // 0: com.daml.ledger.api.v2.GetEventsByContractIdRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
+	2, // 1: com.daml.ledger.api.v2.GetEventsByContractIdResponse.created:type_name -> com.daml.ledger.api.v2.Created
+	3, // 2: com.daml.ledger.api.v2.GetEventsByContractIdResponse.archived:type_name -> com.daml.ledger.api.v2.Archived
+	5, // 3: com.daml.ledger.api.v2.Created.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
+	6, // 4: com.daml.ledger.api.v2.Archived.archived_event:type_name -> com.daml.ledger.api.v2.ArchivedEvent
+	0, // 5: com.daml.ledger.api.v2.EventQueryService.GetEventsByContractId:input_type -> com.daml.ledger.api.v2.GetEventsByContractIdRequest
+	1, // 6: com.daml.ledger.api.v2.EventQueryService.GetEventsByContractId:output_type -> com.daml.ledger.api.v2.GetEventsByContractIdResponse
+	6, // [6:7] is the sub-list for method output_type
+	5, // [5:6] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_event_query_service_proto_init() }
@@ -294,6 +305,7 @@ func file_com_daml_ledger_api_v2_event_query_service_proto_init() {
 		return
 	}
 	file_com_daml_ledger_api_v2_event_proto_init()
+	file_com_daml_ledger_api_v2_transaction_filter_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
