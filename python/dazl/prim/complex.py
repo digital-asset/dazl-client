@@ -8,7 +8,7 @@ Ledger API.
 
 from __future__ import annotations
 
-from typing import Any, Dict, Mapping, Tuple
+from typing import Any, Mapping
 
 __all__ = ["to_record", "to_variant"]
 
@@ -25,7 +25,7 @@ def to_record(obj: Any, /) -> Mapping[str, Any]:
         raise ValueError("a mapping is required")
 
     # pull out any specialized dotted-field mappings
-    reformatted = dict()  # type: Dict[str, Any]
+    reformatted = dict[str, Any]()
     for key, value in obj.items():
         k1, d, k2 = key.partition(".")
         if d:
@@ -40,7 +40,7 @@ def to_record(obj: Any, /) -> Mapping[str, Any]:
     return reformatted
 
 
-def to_variant(obj: Any, /) -> Tuple[str, Any]:
+def to_variant(obj: Any, /) -> tuple[str, Any]:
     """
     Return the constructor and value that is represented by the given object.
     """

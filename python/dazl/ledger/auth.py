@@ -6,7 +6,7 @@ from __future__ import annotations
 import base64
 import json
 import sys
-from typing import Callable, Literal, Optional, Union, final
+from typing import Callable, Literal, Optional, final
 
 from ..prim import Parties
 
@@ -25,7 +25,7 @@ __all__ = [
     "ParsedV2Token",
 ]
 
-TokenOrTokenProvider: TypeAlias = Union[str, Callable[[], Union[Optional[str]]]]
+TokenOrTokenProvider: TypeAlias = str | Callable[[], Optional[str]]
 
 
 V1TokenNamespace = "https://daml.com/ledger-api"
@@ -83,7 +83,7 @@ class ParsedV2Token:
         self.user_id = user_id
 
 
-ParsedToken = Union[ParsedV1Token, ParsedV2Token]
+ParsedToken: TypeAlias = ParsedV1Token | ParsedV2Token
 
 
 def get_token(t: Optional[TokenOrTokenProvider], /) -> Optional[str]:

@@ -6,7 +6,7 @@ from __future__ import annotations
 from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
-from typing import Awaitable, Callable, Dict, Optional, TypeVar
+from typing import Awaitable, Callable, Optional, TypeVar
 
 from . import PackageService
 from ... import LOG
@@ -48,7 +48,7 @@ class PackageLoader:
         self._package_lookup = package_lookup
         self._conn = conn
         self._timeout = timeout or DEFAULT_TIMEOUT
-        self._futures = dict()  # type: Dict[PackageRef, Awaitable[Package]]
+        self._futures = dict[PackageRef, Awaitable[Package]]()
         self._executor = executor or ThreadPoolExecutor(3)
 
     def set_connection(self, conn: Optional[PackageService]):

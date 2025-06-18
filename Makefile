@@ -52,7 +52,7 @@ python-format-test: .venv/poetry.lock
 # python: run mypy
 .PHONY: python-typecheck
 python-typecheck: .venv/poetry.lock
-	poetry run python3 -m mypy python $(protos) --exclude='.*_py3_10\.py$$'
+	poetry run python3 -m mypy python $(protos)
 
 # python: build BOTH $(py_bdist) and $(py_sdist)
 $(py_sdist) $(py_bdist) &: $(py_src)

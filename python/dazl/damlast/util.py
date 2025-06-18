@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, Sequence, Union
+from typing import Optional, Sequence
 import warnings
 
 from .daml_lf_1 import (
@@ -95,18 +95,18 @@ def type_var_with_kind(var: str, type: Kind = Kind(star=UNIT)):
     return TypeVarWithKind(var, type)
 
 
-def def_value(name: Union[str, Sequence[str]], daml_type: Type, expr: Expr) -> DefValue:
+def def_value(name: str | Sequence[str], daml_type: Type, expr: Expr) -> DefValue:
     if isinstance(name, str):
         name = (name,)
     name_with_type = DefValue.NameWithType(name=name, type=daml_type)
     return DefValue(name_with_type, expr, True, False, None)
 
 
-def package_ref(obj: Union[ModuleRef, _Name]) -> PackageRef:
+def package_ref(obj: ModuleRef | _Name) -> PackageRef:
     """
     Return the package ID for a :class:`ModuleRef` or a DAML name.
     """
-    # TODO: Rewrite for dazl 7.0.0 when the internal structure of a ModuleRef is changed.
+    # TODO: Rewrite for dazl 9.0.0 when the internal structure of a ModuleRef is changed.
     if isinstance(obj, ModuleRef):
         # noinspection PyProtectedMember
         return obj._package_id
@@ -117,7 +117,7 @@ def package_ref(obj: Union[ModuleRef, _Name]) -> PackageRef:
         raise ValueError(f"Could not extract a package_ref from {obj!r}")
 
 
-def module_name(obj: Union[ModuleRef, _Name]) -> DottedName:
+def module_name(obj: ModuleRef | _Name) -> DottedName:
     """
     Return the module name of a :class:`ModuleRef` or a DAML name.
     """

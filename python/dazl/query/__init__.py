@@ -4,19 +4,27 @@
 from __future__ import annotations
 
 from collections.abc import Mapping as MappingABC
-from typing import Any, Callable, Collection, Dict, Mapping, Optional, Union
+import sys
+from typing import Any, Callable, Collection, Mapping, Optional
 
 from ..damlast.daml_lf_1 import TypeConName
 from ..damlast.lookup import parse_type_con_name
 from ..prim import ContractData
 
+if sys.version_info >= (3, 11):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
+
 __all__ = ["ContractMatch", "is_match", "Query", "Queries", "parse_query", "Filter", "EMPTY"]
 
-ContractMatch = Union[None, Callable[[ContractData], bool], ContractData]
+ContractMatch: TypeAlias = Optional[Callable[[ContractData], bool] | ContractData]
 
-TemplateName = Union[str, "TypeConName"]
-Query = Union[None, ContractData, Callable[[ContractData], bool]]
-Queries = Union[None, TemplateName, Collection[TemplateName], Mapping[TemplateName, Query]]
+TemplateName: TypeAlias = str | TypeConName
+Query: TypeAlias = Optional[ContractData | Callable[[ContractData], bool]]
+Queries: TypeAlias = Optional[
+    TemplateName | Collection[TemplateName] | Mapping[TemplateName, Query]
+]
 
 
 class Filter:
@@ -62,13 +70,13 @@ def parse_query(*q: Queries, server_side_filters: bool) -> Optional[Mapping[Type
         ``None`` if _all_ templates are to be matched; otherwise a mapping of :class:`TypeConName`
         to :class:`Filter` objects.
     """
-    tq = None  # type: Optional[Dict[TypeConName, Filter]]
+    tq = None  # type: Optional[dict[TypeConName, Filter]]
     for query in q:
         if query is not None and query != "*" and query != "*:*":
             if tq is None:
                 tq = {}
 
-            tn = {}  # type: Dict[TypeConName, Filter]
+            tn = dict[TypeConName, Filter]()
             if isinstance(query, str):
                 tn = {parse_type_con_name(query): EMPTY}
             elif isinstance(query, TypeConName):

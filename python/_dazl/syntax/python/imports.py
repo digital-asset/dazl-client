@@ -7,7 +7,7 @@ from collections import defaultdict
 from io import StringIO
 from os.path import commonprefix
 import re
-from typing import Collection, DefaultDict, Dict, Iterable, Mapping, Sequence, Set, Union
+from typing import Collection, Iterable, Mapping, Sequence
 
 from google.protobuf.descriptor_pb2 import FieldDescriptorProto
 
@@ -22,8 +22,8 @@ FROM = re.compile(r"from ([\w.]+) import (\w+) as (\w+)")
 
 class ImportContext:
     def __init__(self, parent: SymbolTable):
-        self._imports = defaultdict(set)  # type: DefaultDict[str, Set[str]]
-        self._system_imports = defaultdict(set)  # type: DefaultDict[str, Set[str]]
+        self._imports = defaultdict[str, set[str]](set)
+        self._system_imports = defaultdict[str, set[str]](set)
         self._parent = parent
 
     def add_system_import(self, from_: str, import_: str, /) -> None:
@@ -40,7 +40,7 @@ class ImportContext:
         """
         self._imports[from_].add(import_)
 
-    def py_type(self, fd: Union[FieldDescriptorProto, str], usage: Usage) -> PyType:
+    def py_type(self, fd: FieldDescriptorProto | str, usage: Usage) -> PyType:
         if isinstance(fd, str):
             fd = FieldDescriptorProto(type=FieldDescriptorProto.TYPE_MESSAGE, type_name=fd)
 
@@ -53,8 +53,8 @@ class ImportContext:
         return {from_: sorted(import_) for from_, import_ in self._imports.items()}
 
     def py_import_block(self, relative_to: str) -> str:
-        absolute_imports = {}  # type: Dict[str, Collection[str]]
-        relative_imports = {}  # type: Dict[str, Collection[str]]
+        absolute_imports = dict[str, Collection[str]]()
+        relative_imports = dict[str, Collection[str]]()
 
         for from_, imports_ in sorted(self.required_imports().items()):
             if from_ == relative_to:
