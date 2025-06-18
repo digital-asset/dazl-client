@@ -104,10 +104,10 @@ func (*SubmitResponse) Descriptor() ([]byte, []int) {
 }
 
 type SubmitReassignmentRequest struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	ReassignmentCommand *ReassignmentCommand   `protobuf:"bytes,1,opt,name=reassignment_command,json=reassignmentCommand,proto3" json:"reassignment_command,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	ReassignmentCommands *ReassignmentCommands  `protobuf:"bytes,1,opt,name=reassignment_commands,json=reassignmentCommands,proto3" json:"reassignment_commands,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *SubmitReassignmentRequest) Reset() {
@@ -140,9 +140,9 @@ func (*SubmitReassignmentRequest) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_command_submission_service_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *SubmitReassignmentRequest) GetReassignmentCommand() *ReassignmentCommand {
+func (x *SubmitReassignmentRequest) GetReassignmentCommands() *ReassignmentCommands {
 	if x != nil {
-		return x.ReassignmentCommand
+		return x.ReassignmentCommands
 	}
 	return nil
 }
@@ -187,12 +187,12 @@ var File_com_daml_ledger_api_v2_command_submission_service_proto protoreflect.Fi
 
 const file_com_daml_ledger_api_v2_command_submission_service_proto_rawDesc = "" +
 	"\n" +
-	"7com/daml/ledger/api/v2/command_submission_service.proto\x12\x16com.daml.ledger.api.v2\x1a%com/daml/ledger/api/v2/commands.proto\x1a1com/daml/ledger/api/v2/reassignment_command.proto\"M\n" +
+	"7com/daml/ledger/api/v2/command_submission_service.proto\x12\x16com.daml.ledger.api.v2\x1a%com/daml/ledger/api/v2/commands.proto\x1a2com/daml/ledger/api/v2/reassignment_commands.proto\"M\n" +
 	"\rSubmitRequest\x12<\n" +
 	"\bcommands\x18\x01 \x01(\v2 .com.daml.ledger.api.v2.CommandsR\bcommands\"\x10\n" +
-	"\x0eSubmitResponse\"{\n" +
-	"\x19SubmitReassignmentRequest\x12^\n" +
-	"\x14reassignment_command\x18\x01 \x01(\v2+.com.daml.ledger.api.v2.ReassignmentCommandR\x13reassignmentCommand\"\x1c\n" +
+	"\x0eSubmitResponse\"~\n" +
+	"\x19SubmitReassignmentRequest\x12a\n" +
+	"\x15reassignment_commands\x18\x01 \x01(\v2,.com.daml.ledger.api.v2.ReassignmentCommandsR\x14reassignmentCommands\"\x1c\n" +
 	"\x1aSubmitReassignmentResponse2\xf0\x01\n" +
 	"\x18CommandSubmissionService\x12W\n" +
 	"\x06Submit\x12%.com.daml.ledger.api.v2.SubmitRequest\x1a&.com.daml.ledger.api.v2.SubmitResponse\x12{\n" +
@@ -218,11 +218,11 @@ var file_com_daml_ledger_api_v2_command_submission_service_proto_goTypes = []any
 	(*SubmitReassignmentRequest)(nil),  // 2: com.daml.ledger.api.v2.SubmitReassignmentRequest
 	(*SubmitReassignmentResponse)(nil), // 3: com.daml.ledger.api.v2.SubmitReassignmentResponse
 	(*Commands)(nil),                   // 4: com.daml.ledger.api.v2.Commands
-	(*ReassignmentCommand)(nil),        // 5: com.daml.ledger.api.v2.ReassignmentCommand
+	(*ReassignmentCommands)(nil),       // 5: com.daml.ledger.api.v2.ReassignmentCommands
 }
 var file_com_daml_ledger_api_v2_command_submission_service_proto_depIdxs = []int32{
 	4, // 0: com.daml.ledger.api.v2.SubmitRequest.commands:type_name -> com.daml.ledger.api.v2.Commands
-	5, // 1: com.daml.ledger.api.v2.SubmitReassignmentRequest.reassignment_command:type_name -> com.daml.ledger.api.v2.ReassignmentCommand
+	5, // 1: com.daml.ledger.api.v2.SubmitReassignmentRequest.reassignment_commands:type_name -> com.daml.ledger.api.v2.ReassignmentCommands
 	0, // 2: com.daml.ledger.api.v2.CommandSubmissionService.Submit:input_type -> com.daml.ledger.api.v2.SubmitRequest
 	2, // 3: com.daml.ledger.api.v2.CommandSubmissionService.SubmitReassignment:input_type -> com.daml.ledger.api.v2.SubmitReassignmentRequest
 	1, // 4: com.daml.ledger.api.v2.CommandSubmissionService.Submit:output_type -> com.daml.ledger.api.v2.SubmitResponse
@@ -240,7 +240,7 @@ func file_com_daml_ledger_api_v2_command_submission_service_proto_init() {
 		return
 	}
 	file_com_daml_ledger_api_v2_commands_proto_init()
-	file_com_daml_ledger_api_v2_reassignment_command_proto_init()
+	file_com_daml_ledger_api_v2_reassignment_commands_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

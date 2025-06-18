@@ -204,10 +204,10 @@ var File_com_daml_daml_lf_2_1_daml_lf_proto protoreflect.FileDescriptor
 
 const file_com_daml_daml_lf_2_1_daml_lf_proto_rawDesc = "" +
 	"\n" +
-	"\"com/daml/daml_lf_2_1/daml_lf.proto\x12\vdaml_lf_2_1\x1a#com/daml/daml_lf_2_1/daml_lf2.proto\"m\n" +
+	"\"com/daml/daml_lf_2_1/daml_lf.proto\x12\vdaml_lf_2_1\x1a#com/daml/daml_lf_2_1/daml_lf2.proto\"o\n" +
 	"\x0eArchivePayload\x12\x14\n" +
-	"\x05minor\x18\x03 \x01(\tR\x05minor\x120\n" +
-	"\tdaml_lf_2\x18\x04 \x01(\v2\x12.daml_lf_2.PackageH\x00R\adamlLf2B\x05\n" +
+	"\x05minor\x18\x03 \x01(\tR\x05minor\x122\n" +
+	"\tdaml_lf_2\x18\x04 \x01(\v2\x14.daml_lf_2_1.PackageH\x00R\adamlLf2B\x05\n" +
 	"\x03SumJ\x06\b\x8fN\x10\x90NJ\x04\b\x01\x10\x02\"w\n" +
 	"\aArchive\x12>\n" +
 	"\rhash_function\x18\x01 \x01(\x0e2\x19.daml_lf_2_1.HashFunctionR\fhashFunction\x12\x18\n" +
@@ -215,8 +215,8 @@ const file_com_daml_daml_lf_2_1_daml_lf_proto_rawDesc = "" +
 	"\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n" +
 	"\fHashFunction\x12\n" +
 	"\n" +
-	"\x06SHA256\x10\x00Bp\n" +
-	"\x14com.daml.daml_lf_2_1Z:github.com/digital-asset/dazl-client/v8/go/api/daml_lf_2_1\xaa\x02\x1bCom.Daml.Daml_Lf_2_1.DamlLfb\x06proto3"
+	"\x06SHA256\x10\x00By\n" +
+	"\x14com.daml.daml_lf_2_1ZCgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\xaa\x02\x1bCom.Daml.Daml_Lf_2_1.DamlLfb\x06proto3"
 
 var (
 	file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescOnce sync.Once
@@ -233,13 +233,13 @@ func file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescGZIP() []byte {
 var file_com_daml_daml_lf_2_1_daml_lf_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_com_daml_daml_lf_2_1_daml_lf_proto_goTypes = []any{
-	(HashFunction)(0),         // 0: daml_lf_2_1.HashFunction
-	(*ArchivePayload)(nil),    // 1: daml_lf_2_1.ArchivePayload
-	(*Archive)(nil),           // 2: daml_lf_2_1.Archive
-	(*Package)(nil), // 3: daml_lf_2.Package
+	(HashFunction)(0),      // 0: daml_lf_2_1.HashFunction
+	(*ArchivePayload)(nil), // 1: daml_lf_2_1.ArchivePayload
+	(*Archive)(nil),        // 2: daml_lf_2_1.Archive
+	(*Package)(nil),        // 3: daml_lf_2_1.Package
 }
 var file_com_daml_daml_lf_2_1_daml_lf_proto_depIdxs = []int32{
-	3, // 0: daml_lf_2_1.ArchivePayload.daml_lf_2:type_name -> daml_lf_2.Package
+	3, // 0: daml_lf_2_1.ArchivePayload.daml_lf_2:type_name -> daml_lf_2_1.Package
 	0, // 1: daml_lf_2_1.Archive.hash_function:type_name -> daml_lf_2_1.HashFunction
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
@@ -253,6 +253,7 @@ func file_com_daml_daml_lf_2_1_daml_lf_proto_init() {
 	if File_com_daml_daml_lf_2_1_daml_lf_proto != nil {
 		return
 	}
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_init()
 	file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes[0].OneofWrappers = []any{
 		(*ArchivePayload_DamlLf_2)(nil),
 	}

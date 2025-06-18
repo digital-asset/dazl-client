@@ -13,14 +13,14 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class CompletionStreamRequest(_message.Message):
-    __slots__ = ("application_id", "parties", "begin_exclusive")
-    APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("user_id", "parties", "begin_exclusive")
+    USER_ID_FIELD_NUMBER: _ClassVar[int]
     PARTIES_FIELD_NUMBER: _ClassVar[int]
     BEGIN_EXCLUSIVE_FIELD_NUMBER: _ClassVar[int]
-    application_id: str
+    user_id: str
     parties: _containers.RepeatedScalarFieldContainer[str]
     begin_exclusive: int
-    def __init__(self, application_id: _Optional[str] = ..., parties: _Optional[_Iterable[str]] = ..., begin_exclusive: _Optional[int] = ...) -> None: ...
+    def __init__(self, user_id: _Optional[str] = ..., parties: _Optional[_Iterable[str]] = ..., begin_exclusive: _Optional[int] = ...) -> None: ...
 
 class CompletionStreamResponse(_message.Message):
     __slots__ = ("completion", "offset_checkpoint")

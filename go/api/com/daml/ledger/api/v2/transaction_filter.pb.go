@@ -23,6 +23,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type TransactionShape int32
+
+const (
+	TransactionShape_TRANSACTION_SHAPE_UNSPECIFIED    TransactionShape = 0
+	TransactionShape_TRANSACTION_SHAPE_ACS_DELTA      TransactionShape = 1
+	TransactionShape_TRANSACTION_SHAPE_LEDGER_EFFECTS TransactionShape = 2
+)
+
+// Enum value maps for TransactionShape.
+var (
+	TransactionShape_name = map[int32]string{
+		0: "TRANSACTION_SHAPE_UNSPECIFIED",
+		1: "TRANSACTION_SHAPE_ACS_DELTA",
+		2: "TRANSACTION_SHAPE_LEDGER_EFFECTS",
+	}
+	TransactionShape_value = map[string]int32{
+		"TRANSACTION_SHAPE_UNSPECIFIED":    0,
+		"TRANSACTION_SHAPE_ACS_DELTA":      1,
+		"TRANSACTION_SHAPE_LEDGER_EFFECTS": 2,
+	}
+)
+
+func (x TransactionShape) Enum() *TransactionShape {
+	p := new(TransactionShape)
+	*p = x
+	return p
+}
+
+func (x TransactionShape) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TransactionShape) Descriptor() protoreflect.EnumDescriptor {
+	return file_com_daml_ledger_api_v2_transaction_filter_proto_enumTypes[0].Descriptor()
+}
+
+func (TransactionShape) Type() protoreflect.EnumType {
+	return &file_com_daml_ledger_api_v2_transaction_filter_proto_enumTypes[0]
+}
+
+func (x TransactionShape) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TransactionShape.Descriptor instead.
+func (TransactionShape) EnumDescriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_transaction_filter_proto_rawDescGZIP(), []int{0}
+}
+
 type Filters struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Cumulative    []*CumulativeFilter    `protobuf:"bytes,1,rep,name=cumulative,proto3" json:"cumulative,omitempty"`
@@ -373,6 +422,266 @@ func (x *TransactionFilter) GetFiltersForAnyParty() *Filters {
 	return nil
 }
 
+type EventFormat struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	FiltersByParty     map[string]*Filters    `protobuf:"bytes,1,rep,name=filters_by_party,json=filtersByParty,proto3" json:"filters_by_party,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	FiltersForAnyParty *Filters               `protobuf:"bytes,2,opt,name=filters_for_any_party,json=filtersForAnyParty,proto3" json:"filters_for_any_party,omitempty"`
+	Verbose            bool                   `protobuf:"varint,3,opt,name=verbose,proto3" json:"verbose,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *EventFormat) Reset() {
+	*x = EventFormat{}
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EventFormat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EventFormat) ProtoMessage() {}
+
+func (x *EventFormat) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EventFormat.ProtoReflect.Descriptor instead.
+func (*EventFormat) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_transaction_filter_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *EventFormat) GetFiltersByParty() map[string]*Filters {
+	if x != nil {
+		return x.FiltersByParty
+	}
+	return nil
+}
+
+func (x *EventFormat) GetFiltersForAnyParty() *Filters {
+	if x != nil {
+		return x.FiltersForAnyParty
+	}
+	return nil
+}
+
+func (x *EventFormat) GetVerbose() bool {
+	if x != nil {
+		return x.Verbose
+	}
+	return false
+}
+
+type TransactionFormat struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EventFormat      *EventFormat           `protobuf:"bytes,1,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
+	TransactionShape TransactionShape       `protobuf:"varint,2,opt,name=transaction_shape,json=transactionShape,proto3,enum=com.daml.ledger.api.v2.TransactionShape" json:"transaction_shape,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *TransactionFormat) Reset() {
+	*x = TransactionFormat{}
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TransactionFormat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TransactionFormat) ProtoMessage() {}
+
+func (x *TransactionFormat) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TransactionFormat.ProtoReflect.Descriptor instead.
+func (*TransactionFormat) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_transaction_filter_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *TransactionFormat) GetEventFormat() *EventFormat {
+	if x != nil {
+		return x.EventFormat
+	}
+	return nil
+}
+
+func (x *TransactionFormat) GetTransactionShape() TransactionShape {
+	if x != nil {
+		return x.TransactionShape
+	}
+	return TransactionShape_TRANSACTION_SHAPE_UNSPECIFIED
+}
+
+type TopologyFormat struct {
+	state                                 protoimpl.MessageState                  `protogen:"open.v1"`
+	IncludeParticipantAuthorizationEvents *ParticipantAuthorizationTopologyFormat `protobuf:"bytes,1,opt,name=include_participant_authorization_events,json=includeParticipantAuthorizationEvents,proto3" json:"include_participant_authorization_events,omitempty"`
+	unknownFields                         protoimpl.UnknownFields
+	sizeCache                             protoimpl.SizeCache
+}
+
+func (x *TopologyFormat) Reset() {
+	*x = TopologyFormat{}
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TopologyFormat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TopologyFormat) ProtoMessage() {}
+
+func (x *TopologyFormat) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TopologyFormat.ProtoReflect.Descriptor instead.
+func (*TopologyFormat) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_transaction_filter_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *TopologyFormat) GetIncludeParticipantAuthorizationEvents() *ParticipantAuthorizationTopologyFormat {
+	if x != nil {
+		return x.IncludeParticipantAuthorizationEvents
+	}
+	return nil
+}
+
+type ParticipantAuthorizationTopologyFormat struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Parties       []string               `protobuf:"bytes,1,rep,name=parties,proto3" json:"parties,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ParticipantAuthorizationTopologyFormat) Reset() {
+	*x = ParticipantAuthorizationTopologyFormat{}
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ParticipantAuthorizationTopologyFormat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ParticipantAuthorizationTopologyFormat) ProtoMessage() {}
+
+func (x *ParticipantAuthorizationTopologyFormat) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ParticipantAuthorizationTopologyFormat.ProtoReflect.Descriptor instead.
+func (*ParticipantAuthorizationTopologyFormat) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_transaction_filter_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ParticipantAuthorizationTopologyFormat) GetParties() []string {
+	if x != nil {
+		return x.Parties
+	}
+	return nil
+}
+
+type UpdateFormat struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	IncludeTransactions   *TransactionFormat     `protobuf:"bytes,1,opt,name=include_transactions,json=includeTransactions,proto3" json:"include_transactions,omitempty"`
+	IncludeReassignments  *EventFormat           `protobuf:"bytes,2,opt,name=include_reassignments,json=includeReassignments,proto3" json:"include_reassignments,omitempty"`
+	IncludeTopologyEvents *TopologyFormat        `protobuf:"bytes,3,opt,name=include_topology_events,json=includeTopologyEvents,proto3" json:"include_topology_events,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *UpdateFormat) Reset() {
+	*x = UpdateFormat{}
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateFormat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateFormat) ProtoMessage() {}
+
+func (x *UpdateFormat) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateFormat.ProtoReflect.Descriptor instead.
+func (*UpdateFormat) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_transaction_filter_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *UpdateFormat) GetIncludeTransactions() *TransactionFormat {
+	if x != nil {
+		return x.IncludeTransactions
+	}
+	return nil
+}
+
+func (x *UpdateFormat) GetIncludeReassignments() *EventFormat {
+	if x != nil {
+		return x.IncludeReassignments
+	}
+	return nil
+}
+
+func (x *UpdateFormat) GetIncludeTopologyEvents() *TopologyFormat {
+	if x != nil {
+		return x.IncludeTopologyEvents
+	}
+	return nil
+}
+
 var File_com_daml_ledger_api_v2_transaction_filter_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_transaction_filter_proto_rawDesc = "" +
@@ -402,7 +711,29 @@ const file_com_daml_ledger_api_v2_transaction_filter_proto_rawDesc = "" +
 	"\x15filters_for_any_party\x18\x02 \x01(\v2\x1f.com.daml.ledger.api.v2.FiltersR\x12filtersForAnyParty\x1ab\n" +
 	"\x13FiltersByPartyEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x125\n" +
-	"\x05value\x18\x02 \x01(\v2\x1f.com.daml.ledger.api.v2.FiltersR\x05value:\x028\x01B\x95\x01\n" +
+	"\x05value\x18\x02 \x01(\v2\x1f.com.daml.ledger.api.v2.FiltersR\x05value:\x028\x01\"\xc2\x02\n" +
+	"\vEventFormat\x12a\n" +
+	"\x10filters_by_party\x18\x01 \x03(\v27.com.daml.ledger.api.v2.EventFormat.FiltersByPartyEntryR\x0efiltersByParty\x12R\n" +
+	"\x15filters_for_any_party\x18\x02 \x01(\v2\x1f.com.daml.ledger.api.v2.FiltersR\x12filtersForAnyParty\x12\x18\n" +
+	"\averbose\x18\x03 \x01(\bR\averbose\x1ab\n" +
+	"\x13FiltersByPartyEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x125\n" +
+	"\x05value\x18\x02 \x01(\v2\x1f.com.daml.ledger.api.v2.FiltersR\x05value:\x028\x01\"\xb2\x01\n" +
+	"\x11TransactionFormat\x12F\n" +
+	"\fevent_format\x18\x01 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\x12U\n" +
+	"\x11transaction_shape\x18\x02 \x01(\x0e2(.com.daml.ledger.api.v2.TransactionShapeR\x10transactionShape\"\xaa\x01\n" +
+	"\x0eTopologyFormat\x12\x97\x01\n" +
+	"(include_participant_authorization_events\x18\x01 \x01(\v2>.com.daml.ledger.api.v2.ParticipantAuthorizationTopologyFormatR%includeParticipantAuthorizationEvents\"B\n" +
+	"&ParticipantAuthorizationTopologyFormat\x12\x18\n" +
+	"\aparties\x18\x01 \x03(\tR\aparties\"\xa6\x02\n" +
+	"\fUpdateFormat\x12\\\n" +
+	"\x14include_transactions\x18\x01 \x01(\v2).com.daml.ledger.api.v2.TransactionFormatR\x13includeTransactions\x12X\n" +
+	"\x15include_reassignments\x18\x02 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\x14includeReassignments\x12^\n" +
+	"\x17include_topology_events\x18\x03 \x01(\v2&.com.daml.ledger.api.v2.TopologyFormatR\x15includeTopologyEvents*|\n" +
+	"\x10TransactionShape\x12!\n" +
+	"\x1dTRANSACTION_SHAPE_UNSPECIFIED\x10\x00\x12\x1f\n" +
+	"\x1bTRANSACTION_SHAPE_ACS_DELTA\x10\x01\x12$\n" +
+	" TRANSACTION_SHAPE_LEDGER_EFFECTS\x10\x02B\x95\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x1bTransactionFilterOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (
@@ -417,32 +748,49 @@ func file_com_daml_ledger_api_v2_transaction_filter_proto_rawDescGZIP() []byte {
 	return file_com_daml_ledger_api_v2_transaction_filter_proto_rawDescData
 }
 
-var file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_com_daml_ledger_api_v2_transaction_filter_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_com_daml_ledger_api_v2_transaction_filter_proto_goTypes = []any{
-	(*Filters)(nil),           // 0: com.daml.ledger.api.v2.Filters
-	(*CumulativeFilter)(nil),  // 1: com.daml.ledger.api.v2.CumulativeFilter
-	(*WildcardFilter)(nil),    // 2: com.daml.ledger.api.v2.WildcardFilter
-	(*InterfaceFilter)(nil),   // 3: com.daml.ledger.api.v2.InterfaceFilter
-	(*TemplateFilter)(nil),    // 4: com.daml.ledger.api.v2.TemplateFilter
-	(*TransactionFilter)(nil), // 5: com.daml.ledger.api.v2.TransactionFilter
-	nil,                       // 6: com.daml.ledger.api.v2.TransactionFilter.FiltersByPartyEntry
-	(*Identifier)(nil),        // 7: com.daml.ledger.api.v2.Identifier
+	(TransactionShape)(0),                          // 0: com.daml.ledger.api.v2.TransactionShape
+	(*Filters)(nil),                                // 1: com.daml.ledger.api.v2.Filters
+	(*CumulativeFilter)(nil),                       // 2: com.daml.ledger.api.v2.CumulativeFilter
+	(*WildcardFilter)(nil),                         // 3: com.daml.ledger.api.v2.WildcardFilter
+	(*InterfaceFilter)(nil),                        // 4: com.daml.ledger.api.v2.InterfaceFilter
+	(*TemplateFilter)(nil),                         // 5: com.daml.ledger.api.v2.TemplateFilter
+	(*TransactionFilter)(nil),                      // 6: com.daml.ledger.api.v2.TransactionFilter
+	(*EventFormat)(nil),                            // 7: com.daml.ledger.api.v2.EventFormat
+	(*TransactionFormat)(nil),                      // 8: com.daml.ledger.api.v2.TransactionFormat
+	(*TopologyFormat)(nil),                         // 9: com.daml.ledger.api.v2.TopologyFormat
+	(*ParticipantAuthorizationTopologyFormat)(nil), // 10: com.daml.ledger.api.v2.ParticipantAuthorizationTopologyFormat
+	(*UpdateFormat)(nil),                           // 11: com.daml.ledger.api.v2.UpdateFormat
+	nil,                                            // 12: com.daml.ledger.api.v2.TransactionFilter.FiltersByPartyEntry
+	nil,                                            // 13: com.daml.ledger.api.v2.EventFormat.FiltersByPartyEntry
+	(*Identifier)(nil),                             // 14: com.daml.ledger.api.v2.Identifier
 }
 var file_com_daml_ledger_api_v2_transaction_filter_proto_depIdxs = []int32{
-	1, // 0: com.daml.ledger.api.v2.Filters.cumulative:type_name -> com.daml.ledger.api.v2.CumulativeFilter
-	2, // 1: com.daml.ledger.api.v2.CumulativeFilter.wildcard_filter:type_name -> com.daml.ledger.api.v2.WildcardFilter
-	3, // 2: com.daml.ledger.api.v2.CumulativeFilter.interface_filter:type_name -> com.daml.ledger.api.v2.InterfaceFilter
-	4, // 3: com.daml.ledger.api.v2.CumulativeFilter.template_filter:type_name -> com.daml.ledger.api.v2.TemplateFilter
-	7, // 4: com.daml.ledger.api.v2.InterfaceFilter.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
-	7, // 5: com.daml.ledger.api.v2.TemplateFilter.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	6, // 6: com.daml.ledger.api.v2.TransactionFilter.filters_by_party:type_name -> com.daml.ledger.api.v2.TransactionFilter.FiltersByPartyEntry
-	0, // 7: com.daml.ledger.api.v2.TransactionFilter.filters_for_any_party:type_name -> com.daml.ledger.api.v2.Filters
-	0, // 8: com.daml.ledger.api.v2.TransactionFilter.FiltersByPartyEntry.value:type_name -> com.daml.ledger.api.v2.Filters
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	2,  // 0: com.daml.ledger.api.v2.Filters.cumulative:type_name -> com.daml.ledger.api.v2.CumulativeFilter
+	3,  // 1: com.daml.ledger.api.v2.CumulativeFilter.wildcard_filter:type_name -> com.daml.ledger.api.v2.WildcardFilter
+	4,  // 2: com.daml.ledger.api.v2.CumulativeFilter.interface_filter:type_name -> com.daml.ledger.api.v2.InterfaceFilter
+	5,  // 3: com.daml.ledger.api.v2.CumulativeFilter.template_filter:type_name -> com.daml.ledger.api.v2.TemplateFilter
+	14, // 4: com.daml.ledger.api.v2.InterfaceFilter.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
+	14, // 5: com.daml.ledger.api.v2.TemplateFilter.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	12, // 6: com.daml.ledger.api.v2.TransactionFilter.filters_by_party:type_name -> com.daml.ledger.api.v2.TransactionFilter.FiltersByPartyEntry
+	1,  // 7: com.daml.ledger.api.v2.TransactionFilter.filters_for_any_party:type_name -> com.daml.ledger.api.v2.Filters
+	13, // 8: com.daml.ledger.api.v2.EventFormat.filters_by_party:type_name -> com.daml.ledger.api.v2.EventFormat.FiltersByPartyEntry
+	1,  // 9: com.daml.ledger.api.v2.EventFormat.filters_for_any_party:type_name -> com.daml.ledger.api.v2.Filters
+	7,  // 10: com.daml.ledger.api.v2.TransactionFormat.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
+	0,  // 11: com.daml.ledger.api.v2.TransactionFormat.transaction_shape:type_name -> com.daml.ledger.api.v2.TransactionShape
+	10, // 12: com.daml.ledger.api.v2.TopologyFormat.include_participant_authorization_events:type_name -> com.daml.ledger.api.v2.ParticipantAuthorizationTopologyFormat
+	8,  // 13: com.daml.ledger.api.v2.UpdateFormat.include_transactions:type_name -> com.daml.ledger.api.v2.TransactionFormat
+	7,  // 14: com.daml.ledger.api.v2.UpdateFormat.include_reassignments:type_name -> com.daml.ledger.api.v2.EventFormat
+	9,  // 15: com.daml.ledger.api.v2.UpdateFormat.include_topology_events:type_name -> com.daml.ledger.api.v2.TopologyFormat
+	1,  // 16: com.daml.ledger.api.v2.TransactionFilter.FiltersByPartyEntry.value:type_name -> com.daml.ledger.api.v2.Filters
+	1,  // 17: com.daml.ledger.api.v2.EventFormat.FiltersByPartyEntry.value:type_name -> com.daml.ledger.api.v2.Filters
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_transaction_filter_proto_init() }
@@ -461,13 +809,14 @@ func file_com_daml_ledger_api_v2_transaction_filter_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_transaction_filter_proto_rawDesc), len(file_com_daml_ledger_api_v2_transaction_filter_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   7,
+			NumEnums:      1,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_com_daml_ledger_api_v2_transaction_filter_proto_goTypes,
 		DependencyIndexes: file_com_daml_ledger_api_v2_transaction_filter_proto_depIdxs,
+		EnumInfos:         file_com_daml_ledger_api_v2_transaction_filter_proto_enumTypes,
 		MessageInfos:      file_com_daml_ledger_api_v2_transaction_filter_proto_msgTypes,
 	}.Build()
 	File_com_daml_ledger_api_v2_transaction_filter_proto = out.File

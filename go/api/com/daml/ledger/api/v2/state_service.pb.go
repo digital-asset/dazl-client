@@ -80,6 +80,7 @@ type GetActiveContractsRequest struct {
 	Filter         *TransactionFilter     `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	Verbose        bool                   `protobuf:"varint,2,opt,name=verbose,proto3" json:"verbose,omitempty"`
 	ActiveAtOffset int64                  `protobuf:"varint,3,opt,name=active_at_offset,json=activeAtOffset,proto3" json:"active_at_offset,omitempty"`
+	EventFormat    *EventFormat           `protobuf:"bytes,4,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -135,9 +136,16 @@ func (x *GetActiveContractsRequest) GetActiveAtOffset() int64 {
 	return 0
 }
 
+func (x *GetActiveContractsRequest) GetEventFormat() *EventFormat {
+	if x != nil {
+		return x.EventFormat
+	}
+	return nil
+}
+
 type GetActiveContractsResponse struct {
 	state      protoimpl.MessageState `protogen:"open.v1"`
-	WorkflowId string                 `protobuf:"bytes,2,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
+	WorkflowId string                 `protobuf:"bytes,1,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
 	// Types that are valid to be assigned to ContractEntry:
 	//
 	//	*GetActiveContractsResponse_ActiveContract
@@ -224,15 +232,15 @@ type isGetActiveContractsResponse_ContractEntry interface {
 }
 
 type GetActiveContractsResponse_ActiveContract struct {
-	ActiveContract *ActiveContract `protobuf:"bytes,3,opt,name=active_contract,json=activeContract,proto3,oneof"`
+	ActiveContract *ActiveContract `protobuf:"bytes,2,opt,name=active_contract,json=activeContract,proto3,oneof"`
 }
 
 type GetActiveContractsResponse_IncompleteUnassigned struct {
-	IncompleteUnassigned *IncompleteUnassigned `protobuf:"bytes,4,opt,name=incomplete_unassigned,json=incompleteUnassigned,proto3,oneof"`
+	IncompleteUnassigned *IncompleteUnassigned `protobuf:"bytes,3,opt,name=incomplete_unassigned,json=incompleteUnassigned,proto3,oneof"`
 }
 
 type GetActiveContractsResponse_IncompleteAssigned struct {
-	IncompleteAssigned *IncompleteAssigned `protobuf:"bytes,5,opt,name=incomplete_assigned,json=incompleteAssigned,proto3,oneof"`
+	IncompleteAssigned *IncompleteAssigned `protobuf:"bytes,4,opt,name=incomplete_assigned,json=incompleteAssigned,proto3,oneof"`
 }
 
 func (*GetActiveContractsResponse_ActiveContract) isGetActiveContractsResponse_ContractEntry() {}
@@ -245,7 +253,7 @@ func (*GetActiveContractsResponse_IncompleteAssigned) isGetActiveContractsRespon
 type ActiveContract struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	CreatedEvent        *CreatedEvent          `protobuf:"bytes,1,opt,name=created_event,json=createdEvent,proto3" json:"created_event,omitempty"`
-	DomainId            string                 `protobuf:"bytes,2,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
+	SynchronizerId      string                 `protobuf:"bytes,2,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
 	ReassignmentCounter uint64                 `protobuf:"varint,3,opt,name=reassignment_counter,json=reassignmentCounter,proto3" json:"reassignment_counter,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
@@ -288,9 +296,9 @@ func (x *ActiveContract) GetCreatedEvent() *CreatedEvent {
 	return nil
 }
 
-func (x *ActiveContract) GetDomainId() string {
+func (x *ActiveContract) GetSynchronizerId() string {
 	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
@@ -398,7 +406,7 @@ func (x *IncompleteAssigned) GetAssignedEvent() *AssignedEvent {
 	return nil
 }
 
-type GetConnectedDomainsRequest struct {
+type GetConnectedSynchronizersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Party         string                 `protobuf:"bytes,1,opt,name=party,proto3" json:"party,omitempty"`
 	ParticipantId string                 `protobuf:"bytes,2,opt,name=participant_id,json=participantId,proto3" json:"participant_id,omitempty"`
@@ -406,20 +414,20 @@ type GetConnectedDomainsRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetConnectedDomainsRequest) Reset() {
-	*x = GetConnectedDomainsRequest{}
+func (x *GetConnectedSynchronizersRequest) Reset() {
+	*x = GetConnectedSynchronizersRequest{}
 	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetConnectedDomainsRequest) String() string {
+func (x *GetConnectedSynchronizersRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetConnectedDomainsRequest) ProtoMessage() {}
+func (*GetConnectedSynchronizersRequest) ProtoMessage() {}
 
-func (x *GetConnectedDomainsRequest) ProtoReflect() protoreflect.Message {
+func (x *GetConnectedSynchronizersRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -431,46 +439,46 @@ func (x *GetConnectedDomainsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetConnectedDomainsRequest.ProtoReflect.Descriptor instead.
-func (*GetConnectedDomainsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetConnectedSynchronizersRequest.ProtoReflect.Descriptor instead.
+func (*GetConnectedSynchronizersRequest) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetConnectedDomainsRequest) GetParty() string {
+func (x *GetConnectedSynchronizersRequest) GetParty() string {
 	if x != nil {
 		return x.Party
 	}
 	return ""
 }
 
-func (x *GetConnectedDomainsRequest) GetParticipantId() string {
+func (x *GetConnectedSynchronizersRequest) GetParticipantId() string {
 	if x != nil {
 		return x.ParticipantId
 	}
 	return ""
 }
 
-type GetConnectedDomainsResponse struct {
-	state            protoimpl.MessageState                         `protogen:"open.v1"`
-	ConnectedDomains []*GetConnectedDomainsResponse_ConnectedDomain `protobuf:"bytes,1,rep,name=connected_domains,json=connectedDomains,proto3" json:"connected_domains,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+type GetConnectedSynchronizersResponse struct {
+	state                  protoimpl.MessageState                                     `protogen:"open.v1"`
+	ConnectedSynchronizers []*GetConnectedSynchronizersResponse_ConnectedSynchronizer `protobuf:"bytes,1,rep,name=connected_synchronizers,json=connectedSynchronizers,proto3" json:"connected_synchronizers,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
-func (x *GetConnectedDomainsResponse) Reset() {
-	*x = GetConnectedDomainsResponse{}
+func (x *GetConnectedSynchronizersResponse) Reset() {
+	*x = GetConnectedSynchronizersResponse{}
 	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetConnectedDomainsResponse) String() string {
+func (x *GetConnectedSynchronizersResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetConnectedDomainsResponse) ProtoMessage() {}
+func (*GetConnectedSynchronizersResponse) ProtoMessage() {}
 
-func (x *GetConnectedDomainsResponse) ProtoReflect() protoreflect.Message {
+func (x *GetConnectedSynchronizersResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -482,14 +490,14 @@ func (x *GetConnectedDomainsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetConnectedDomainsResponse.ProtoReflect.Descriptor instead.
-func (*GetConnectedDomainsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetConnectedSynchronizersResponse.ProtoReflect.Descriptor instead.
+func (*GetConnectedSynchronizersResponse) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetConnectedDomainsResponse) GetConnectedDomains() []*GetConnectedDomainsResponse_ConnectedDomain {
+func (x *GetConnectedSynchronizersResponse) GetConnectedSynchronizers() []*GetConnectedSynchronizersResponse_ConnectedSynchronizer {
 	if x != nil {
-		return x.ConnectedDomains
+		return x.ConnectedSynchronizers
 	}
 	return nil
 }
@@ -662,29 +670,29 @@ func (x *GetLatestPrunedOffsetsResponse) GetAllDivulgedContractsPrunedUpToInclus
 	return 0
 }
 
-type GetConnectedDomainsResponse_ConnectedDomain struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	DomainAlias   string                 `protobuf:"bytes,1,opt,name=domain_alias,json=domainAlias,proto3" json:"domain_alias,omitempty"`
-	DomainId      string                 `protobuf:"bytes,2,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
-	Permission    ParticipantPermission  `protobuf:"varint,3,opt,name=permission,proto3,enum=com.daml.ledger.api.v2.ParticipantPermission" json:"permission,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type GetConnectedSynchronizersResponse_ConnectedSynchronizer struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	SynchronizerAlias string                 `protobuf:"bytes,1,opt,name=synchronizer_alias,json=synchronizerAlias,proto3" json:"synchronizer_alias,omitempty"`
+	SynchronizerId    string                 `protobuf:"bytes,2,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	Permission        ParticipantPermission  `protobuf:"varint,3,opt,name=permission,proto3,enum=com.daml.ledger.api.v2.ParticipantPermission" json:"permission,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
-func (x *GetConnectedDomainsResponse_ConnectedDomain) Reset() {
-	*x = GetConnectedDomainsResponse_ConnectedDomain{}
+func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) Reset() {
+	*x = GetConnectedSynchronizersResponse_ConnectedSynchronizer{}
 	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetConnectedDomainsResponse_ConnectedDomain) String() string {
+func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetConnectedDomainsResponse_ConnectedDomain) ProtoMessage() {}
+func (*GetConnectedSynchronizersResponse_ConnectedSynchronizer) ProtoMessage() {}
 
-func (x *GetConnectedDomainsResponse_ConnectedDomain) ProtoReflect() protoreflect.Message {
+func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) ProtoReflect() protoreflect.Message {
 	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -696,26 +704,26 @@ func (x *GetConnectedDomainsResponse_ConnectedDomain) ProtoReflect() protoreflec
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetConnectedDomainsResponse_ConnectedDomain.ProtoReflect.Descriptor instead.
-func (*GetConnectedDomainsResponse_ConnectedDomain) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetConnectedSynchronizersResponse_ConnectedSynchronizer.ProtoReflect.Descriptor instead.
+func (*GetConnectedSynchronizersResponse_ConnectedSynchronizer) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{6, 0}
 }
 
-func (x *GetConnectedDomainsResponse_ConnectedDomain) GetDomainAlias() string {
+func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) GetSynchronizerAlias() string {
 	if x != nil {
-		return x.DomainAlias
+		return x.SynchronizerAlias
 	}
 	return ""
 }
 
-func (x *GetConnectedDomainsResponse_ConnectedDomain) GetDomainId() string {
+func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) GetSynchronizerId() string {
 	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
 
-func (x *GetConnectedDomainsResponse_ConnectedDomain) GetPermission() ParticipantPermission {
+func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) GetPermission() ParticipantPermission {
 	if x != nil {
 		return x.Permission
 	}
@@ -726,35 +734,36 @@ var File_com_daml_ledger_api_v2_state_service_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_state_service_proto_rawDesc = "" +
 	"\n" +
-	"*com/daml/ledger/api/v2/state_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\xa2\x01\n" +
+	"*com/daml/ledger/api/v2/state_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\xea\x01\n" +
 	"\x19GetActiveContractsRequest\x12A\n" +
 	"\x06filter\x18\x01 \x01(\v2).com.daml.ledger.api.v2.TransactionFilterR\x06filter\x12\x18\n" +
 	"\averbose\x18\x02 \x01(\bR\averbose\x12(\n" +
-	"\x10active_at_offset\x18\x03 \x01(\x03R\x0eactiveAtOffset\"\xe6\x02\n" +
+	"\x10active_at_offset\x18\x03 \x01(\x03R\x0eactiveAtOffset\x12F\n" +
+	"\fevent_format\x18\x04 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\"\xe6\x02\n" +
 	"\x1aGetActiveContractsResponse\x12\x1f\n" +
-	"\vworkflow_id\x18\x02 \x01(\tR\n" +
+	"\vworkflow_id\x18\x01 \x01(\tR\n" +
 	"workflowId\x12Q\n" +
-	"\x0factive_contract\x18\x03 \x01(\v2&.com.daml.ledger.api.v2.ActiveContractH\x00R\x0eactiveContract\x12c\n" +
-	"\x15incomplete_unassigned\x18\x04 \x01(\v2,.com.daml.ledger.api.v2.IncompleteUnassignedH\x00R\x14incompleteUnassigned\x12]\n" +
-	"\x13incomplete_assigned\x18\x05 \x01(\v2*.com.daml.ledger.api.v2.IncompleteAssignedH\x00R\x12incompleteAssignedB\x10\n" +
-	"\x0econtract_entry\"\xab\x01\n" +
+	"\x0factive_contract\x18\x02 \x01(\v2&.com.daml.ledger.api.v2.ActiveContractH\x00R\x0eactiveContract\x12c\n" +
+	"\x15incomplete_unassigned\x18\x03 \x01(\v2,.com.daml.ledger.api.v2.IncompleteUnassignedH\x00R\x14incompleteUnassigned\x12]\n" +
+	"\x13incomplete_assigned\x18\x04 \x01(\v2*.com.daml.ledger.api.v2.IncompleteAssignedH\x00R\x12incompleteAssignedB\x10\n" +
+	"\x0econtract_entry\"\xb7\x01\n" +
 	"\x0eActiveContract\x12I\n" +
-	"\rcreated_event\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventR\fcreatedEvent\x12\x1b\n" +
-	"\tdomain_id\x18\x02 \x01(\tR\bdomainId\x121\n" +
+	"\rcreated_event\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventR\fcreatedEvent\x12'\n" +
+	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x121\n" +
 	"\x14reassignment_counter\x18\x03 \x01(\x04R\x13reassignmentCounter\"\xb5\x01\n" +
 	"\x14IncompleteUnassigned\x12I\n" +
 	"\rcreated_event\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventR\fcreatedEvent\x12R\n" +
 	"\x10unassigned_event\x18\x02 \x01(\v2'.com.daml.ledger.api.v2.UnassignedEventR\x0funassignedEvent\"b\n" +
 	"\x12IncompleteAssigned\x12L\n" +
-	"\x0eassigned_event\x18\x01 \x01(\v2%.com.daml.ledger.api.v2.AssignedEventR\rassignedEvent\"Y\n" +
-	"\x1aGetConnectedDomainsRequest\x12\x14\n" +
+	"\x0eassigned_event\x18\x01 \x01(\v2%.com.daml.ledger.api.v2.AssignedEventR\rassignedEvent\"_\n" +
+	" GetConnectedSynchronizersRequest\x12\x14\n" +
 	"\x05party\x18\x01 \x01(\tR\x05party\x12%\n" +
-	"\x0eparticipant_id\x18\x02 \x01(\tR\rparticipantId\"\xb2\x02\n" +
-	"\x1bGetConnectedDomainsResponse\x12p\n" +
-	"\x11connected_domains\x18\x01 \x03(\v2C.com.daml.ledger.api.v2.GetConnectedDomainsResponse.ConnectedDomainR\x10connectedDomains\x1a\xa0\x01\n" +
-	"\x0fConnectedDomain\x12!\n" +
-	"\fdomain_alias\x18\x01 \x01(\tR\vdomainAlias\x12\x1b\n" +
-	"\tdomain_id\x18\x02 \x01(\tR\bdomainId\x12M\n" +
+	"\x0eparticipant_id\x18\x02 \x01(\tR\rparticipantId\"\xef\x02\n" +
+	"!GetConnectedSynchronizersResponse\x12\x88\x01\n" +
+	"\x17connected_synchronizers\x18\x01 \x03(\v2O.com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizerR\x16connectedSynchronizers\x1a\xbe\x01\n" +
+	"\x15ConnectedSynchronizer\x12-\n" +
+	"\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\x12'\n" +
+	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x12M\n" +
 	"\n" +
 	"permission\x18\x03 \x01(\x0e2-.com.daml.ledger.api.v2.ParticipantPermissionR\n" +
 	"permission\"\x15\n" +
@@ -769,10 +778,10 @@ const file_com_daml_ledger_api_v2_state_service_proto_rawDesc = "" +
 	"\"PARTICIPANT_PERMISSION_UNSPECIFIED\x10\x00\x12%\n" +
 	"!PARTICIPANT_PERMISSION_SUBMISSION\x10\x01\x12'\n" +
 	"#PARTICIPANT_PERMISSION_CONFIRMATION\x10\x02\x12&\n" +
-	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x032\x82\x04\n" +
+	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x032\x95\x04\n" +
 	"\fStateService\x12}\n" +
-	"\x12GetActiveContracts\x121.com.daml.ledger.api.v2.GetActiveContractsRequest\x1a2.com.daml.ledger.api.v2.GetActiveContractsResponse0\x01\x12~\n" +
-	"\x13GetConnectedDomains\x122.com.daml.ledger.api.v2.GetConnectedDomainsRequest\x1a3.com.daml.ledger.api.v2.GetConnectedDomainsResponse\x12i\n" +
+	"\x12GetActiveContracts\x121.com.daml.ledger.api.v2.GetActiveContractsRequest\x1a2.com.daml.ledger.api.v2.GetActiveContractsResponse0\x01\x12\x90\x01\n" +
+	"\x19GetConnectedSynchronizers\x128.com.daml.ledger.api.v2.GetConnectedSynchronizersRequest\x1a9.com.daml.ledger.api.v2.GetConnectedSynchronizersResponse\x12i\n" +
 	"\fGetLedgerEnd\x12+.com.daml.ledger.api.v2.GetLedgerEndRequest\x1a,.com.daml.ledger.api.v2.GetLedgerEndResponse\x12\x87\x01\n" +
 	"\x16GetLatestPrunedOffsets\x125.com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest\x1a6.com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponseB\x90\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x16StateServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
@@ -792,48 +801,50 @@ func file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP() []byte {
 var file_com_daml_ledger_api_v2_state_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_com_daml_ledger_api_v2_state_service_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_com_daml_ledger_api_v2_state_service_proto_goTypes = []any{
-	(ParticipantPermission)(0),                          // 0: com.daml.ledger.api.v2.ParticipantPermission
-	(*GetActiveContractsRequest)(nil),                   // 1: com.daml.ledger.api.v2.GetActiveContractsRequest
-	(*GetActiveContractsResponse)(nil),                  // 2: com.daml.ledger.api.v2.GetActiveContractsResponse
-	(*ActiveContract)(nil),                              // 3: com.daml.ledger.api.v2.ActiveContract
-	(*IncompleteUnassigned)(nil),                        // 4: com.daml.ledger.api.v2.IncompleteUnassigned
-	(*IncompleteAssigned)(nil),                          // 5: com.daml.ledger.api.v2.IncompleteAssigned
-	(*GetConnectedDomainsRequest)(nil),                  // 6: com.daml.ledger.api.v2.GetConnectedDomainsRequest
-	(*GetConnectedDomainsResponse)(nil),                 // 7: com.daml.ledger.api.v2.GetConnectedDomainsResponse
-	(*GetLedgerEndRequest)(nil),                         // 8: com.daml.ledger.api.v2.GetLedgerEndRequest
-	(*GetLedgerEndResponse)(nil),                        // 9: com.daml.ledger.api.v2.GetLedgerEndResponse
-	(*GetLatestPrunedOffsetsRequest)(nil),               // 10: com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
-	(*GetLatestPrunedOffsetsResponse)(nil),              // 11: com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
-	(*GetConnectedDomainsResponse_ConnectedDomain)(nil), // 12: com.daml.ledger.api.v2.GetConnectedDomainsResponse.ConnectedDomain
-	(*TransactionFilter)(nil),                           // 13: com.daml.ledger.api.v2.TransactionFilter
-	(*CreatedEvent)(nil),                                // 14: com.daml.ledger.api.v2.CreatedEvent
-	(*UnassignedEvent)(nil),                             // 15: com.daml.ledger.api.v2.UnassignedEvent
-	(*AssignedEvent)(nil),                               // 16: com.daml.ledger.api.v2.AssignedEvent
+	(ParticipantPermission)(0),                                      // 0: com.daml.ledger.api.v2.ParticipantPermission
+	(*GetActiveContractsRequest)(nil),                               // 1: com.daml.ledger.api.v2.GetActiveContractsRequest
+	(*GetActiveContractsResponse)(nil),                              // 2: com.daml.ledger.api.v2.GetActiveContractsResponse
+	(*ActiveContract)(nil),                                          // 3: com.daml.ledger.api.v2.ActiveContract
+	(*IncompleteUnassigned)(nil),                                    // 4: com.daml.ledger.api.v2.IncompleteUnassigned
+	(*IncompleteAssigned)(nil),                                      // 5: com.daml.ledger.api.v2.IncompleteAssigned
+	(*GetConnectedSynchronizersRequest)(nil),                        // 6: com.daml.ledger.api.v2.GetConnectedSynchronizersRequest
+	(*GetConnectedSynchronizersResponse)(nil),                       // 7: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse
+	(*GetLedgerEndRequest)(nil),                                     // 8: com.daml.ledger.api.v2.GetLedgerEndRequest
+	(*GetLedgerEndResponse)(nil),                                    // 9: com.daml.ledger.api.v2.GetLedgerEndResponse
+	(*GetLatestPrunedOffsetsRequest)(nil),                           // 10: com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
+	(*GetLatestPrunedOffsetsResponse)(nil),                          // 11: com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
+	(*GetConnectedSynchronizersResponse_ConnectedSynchronizer)(nil), // 12: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
+	(*TransactionFilter)(nil),                                       // 13: com.daml.ledger.api.v2.TransactionFilter
+	(*EventFormat)(nil),                                             // 14: com.daml.ledger.api.v2.EventFormat
+	(*CreatedEvent)(nil),                                            // 15: com.daml.ledger.api.v2.CreatedEvent
+	(*UnassignedEvent)(nil),                                         // 16: com.daml.ledger.api.v2.UnassignedEvent
+	(*AssignedEvent)(nil),                                           // 17: com.daml.ledger.api.v2.AssignedEvent
 }
 var file_com_daml_ledger_api_v2_state_service_proto_depIdxs = []int32{
 	13, // 0: com.daml.ledger.api.v2.GetActiveContractsRequest.filter:type_name -> com.daml.ledger.api.v2.TransactionFilter
-	3,  // 1: com.daml.ledger.api.v2.GetActiveContractsResponse.active_contract:type_name -> com.daml.ledger.api.v2.ActiveContract
-	4,  // 2: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_unassigned:type_name -> com.daml.ledger.api.v2.IncompleteUnassigned
-	5,  // 3: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_assigned:type_name -> com.daml.ledger.api.v2.IncompleteAssigned
-	14, // 4: com.daml.ledger.api.v2.ActiveContract.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
-	14, // 5: com.daml.ledger.api.v2.IncompleteUnassigned.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
-	15, // 6: com.daml.ledger.api.v2.IncompleteUnassigned.unassigned_event:type_name -> com.daml.ledger.api.v2.UnassignedEvent
-	16, // 7: com.daml.ledger.api.v2.IncompleteAssigned.assigned_event:type_name -> com.daml.ledger.api.v2.AssignedEvent
-	12, // 8: com.daml.ledger.api.v2.GetConnectedDomainsResponse.connected_domains:type_name -> com.daml.ledger.api.v2.GetConnectedDomainsResponse.ConnectedDomain
-	0,  // 9: com.daml.ledger.api.v2.GetConnectedDomainsResponse.ConnectedDomain.permission:type_name -> com.daml.ledger.api.v2.ParticipantPermission
-	1,  // 10: com.daml.ledger.api.v2.StateService.GetActiveContracts:input_type -> com.daml.ledger.api.v2.GetActiveContractsRequest
-	6,  // 11: com.daml.ledger.api.v2.StateService.GetConnectedDomains:input_type -> com.daml.ledger.api.v2.GetConnectedDomainsRequest
-	8,  // 12: com.daml.ledger.api.v2.StateService.GetLedgerEnd:input_type -> com.daml.ledger.api.v2.GetLedgerEndRequest
-	10, // 13: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:input_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
-	2,  // 14: com.daml.ledger.api.v2.StateService.GetActiveContracts:output_type -> com.daml.ledger.api.v2.GetActiveContractsResponse
-	7,  // 15: com.daml.ledger.api.v2.StateService.GetConnectedDomains:output_type -> com.daml.ledger.api.v2.GetConnectedDomainsResponse
-	9,  // 16: com.daml.ledger.api.v2.StateService.GetLedgerEnd:output_type -> com.daml.ledger.api.v2.GetLedgerEndResponse
-	11, // 17: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:output_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
-	14, // [14:18] is the sub-list for method output_type
-	10, // [10:14] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	14, // 1: com.daml.ledger.api.v2.GetActiveContractsRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
+	3,  // 2: com.daml.ledger.api.v2.GetActiveContractsResponse.active_contract:type_name -> com.daml.ledger.api.v2.ActiveContract
+	4,  // 3: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_unassigned:type_name -> com.daml.ledger.api.v2.IncompleteUnassigned
+	5,  // 4: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_assigned:type_name -> com.daml.ledger.api.v2.IncompleteAssigned
+	15, // 5: com.daml.ledger.api.v2.ActiveContract.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
+	15, // 6: com.daml.ledger.api.v2.IncompleteUnassigned.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
+	16, // 7: com.daml.ledger.api.v2.IncompleteUnassigned.unassigned_event:type_name -> com.daml.ledger.api.v2.UnassignedEvent
+	17, // 8: com.daml.ledger.api.v2.IncompleteAssigned.assigned_event:type_name -> com.daml.ledger.api.v2.AssignedEvent
+	12, // 9: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.connected_synchronizers:type_name -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
+	0,  // 10: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer.permission:type_name -> com.daml.ledger.api.v2.ParticipantPermission
+	1,  // 11: com.daml.ledger.api.v2.StateService.GetActiveContracts:input_type -> com.daml.ledger.api.v2.GetActiveContractsRequest
+	6,  // 12: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:input_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersRequest
+	8,  // 13: com.daml.ledger.api.v2.StateService.GetLedgerEnd:input_type -> com.daml.ledger.api.v2.GetLedgerEndRequest
+	10, // 14: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:input_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
+	2,  // 15: com.daml.ledger.api.v2.StateService.GetActiveContracts:output_type -> com.daml.ledger.api.v2.GetActiveContractsResponse
+	7,  // 16: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:output_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse
+	9,  // 17: com.daml.ledger.api.v2.StateService.GetLedgerEnd:output_type -> com.daml.ledger.api.v2.GetLedgerEndResponse
+	11, // 18: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:output_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
+	15, // [15:19] is the sub-list for method output_type
+	11, // [11:15] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_state_service_proto_init() }

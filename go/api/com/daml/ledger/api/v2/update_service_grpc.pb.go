@@ -21,12 +21,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UpdateService_GetUpdates_FullMethodName                  = "/com.daml.ledger.api.v2.UpdateService/GetUpdates"
-	UpdateService_GetUpdateTrees_FullMethodName              = "/com.daml.ledger.api.v2.UpdateService/GetUpdateTrees"
-	UpdateService_GetTransactionTreeByEventId_FullMethodName = "/com.daml.ledger.api.v2.UpdateService/GetTransactionTreeByEventId"
-	UpdateService_GetTransactionTreeById_FullMethodName      = "/com.daml.ledger.api.v2.UpdateService/GetTransactionTreeById"
-	UpdateService_GetTransactionByEventId_FullMethodName     = "/com.daml.ledger.api.v2.UpdateService/GetTransactionByEventId"
-	UpdateService_GetTransactionById_FullMethodName          = "/com.daml.ledger.api.v2.UpdateService/GetTransactionById"
+	UpdateService_GetUpdates_FullMethodName                 = "/com.daml.ledger.api.v2.UpdateService/GetUpdates"
+	UpdateService_GetUpdateTrees_FullMethodName             = "/com.daml.ledger.api.v2.UpdateService/GetUpdateTrees"
+	UpdateService_GetTransactionTreeByOffset_FullMethodName = "/com.daml.ledger.api.v2.UpdateService/GetTransactionTreeByOffset"
+	UpdateService_GetTransactionTreeById_FullMethodName     = "/com.daml.ledger.api.v2.UpdateService/GetTransactionTreeById"
+	UpdateService_GetTransactionByOffset_FullMethodName     = "/com.daml.ledger.api.v2.UpdateService/GetTransactionByOffset"
+	UpdateService_GetTransactionById_FullMethodName         = "/com.daml.ledger.api.v2.UpdateService/GetTransactionById"
+	UpdateService_GetUpdateByOffset_FullMethodName          = "/com.daml.ledger.api.v2.UpdateService/GetUpdateByOffset"
+	UpdateService_GetUpdateById_FullMethodName              = "/com.daml.ledger.api.v2.UpdateService/GetUpdateById"
 )
 
 // UpdateServiceClient is the client API for UpdateService service.
@@ -35,10 +37,12 @@ const (
 type UpdateServiceClient interface {
 	GetUpdates(ctx context.Context, in *GetUpdatesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetUpdatesResponse], error)
 	GetUpdateTrees(ctx context.Context, in *GetUpdatesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetUpdateTreesResponse], error)
-	GetTransactionTreeByEventId(ctx context.Context, in *GetTransactionByEventIdRequest, opts ...grpc.CallOption) (*GetTransactionTreeResponse, error)
+	GetTransactionTreeByOffset(ctx context.Context, in *GetTransactionByOffsetRequest, opts ...grpc.CallOption) (*GetTransactionTreeResponse, error)
 	GetTransactionTreeById(ctx context.Context, in *GetTransactionByIdRequest, opts ...grpc.CallOption) (*GetTransactionTreeResponse, error)
-	GetTransactionByEventId(ctx context.Context, in *GetTransactionByEventIdRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error)
+	GetTransactionByOffset(ctx context.Context, in *GetTransactionByOffsetRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error)
 	GetTransactionById(ctx context.Context, in *GetTransactionByIdRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error)
+	GetUpdateByOffset(ctx context.Context, in *GetUpdateByOffsetRequest, opts ...grpc.CallOption) (*GetUpdateResponse, error)
+	GetUpdateById(ctx context.Context, in *GetUpdateByIdRequest, opts ...grpc.CallOption) (*GetUpdateResponse, error)
 }
 
 type updateServiceClient struct {
@@ -87,10 +91,10 @@ func (c *updateServiceClient) GetUpdateTrees(ctx context.Context, in *GetUpdates
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type UpdateService_GetUpdateTreesClient = grpc.ServerStreamingClient[GetUpdateTreesResponse]
 
-func (c *updateServiceClient) GetTransactionTreeByEventId(ctx context.Context, in *GetTransactionByEventIdRequest, opts ...grpc.CallOption) (*GetTransactionTreeResponse, error) {
+func (c *updateServiceClient) GetTransactionTreeByOffset(ctx context.Context, in *GetTransactionByOffsetRequest, opts ...grpc.CallOption) (*GetTransactionTreeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetTransactionTreeResponse)
-	err := c.cc.Invoke(ctx, UpdateService_GetTransactionTreeByEventId_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UpdateService_GetTransactionTreeByOffset_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -107,10 +111,10 @@ func (c *updateServiceClient) GetTransactionTreeById(ctx context.Context, in *Ge
 	return out, nil
 }
 
-func (c *updateServiceClient) GetTransactionByEventId(ctx context.Context, in *GetTransactionByEventIdRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error) {
+func (c *updateServiceClient) GetTransactionByOffset(ctx context.Context, in *GetTransactionByOffsetRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetTransactionResponse)
-	err := c.cc.Invoke(ctx, UpdateService_GetTransactionByEventId_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UpdateService_GetTransactionByOffset_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -127,16 +131,38 @@ func (c *updateServiceClient) GetTransactionById(ctx context.Context, in *GetTra
 	return out, nil
 }
 
+func (c *updateServiceClient) GetUpdateByOffset(ctx context.Context, in *GetUpdateByOffsetRequest, opts ...grpc.CallOption) (*GetUpdateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUpdateResponse)
+	err := c.cc.Invoke(ctx, UpdateService_GetUpdateByOffset_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *updateServiceClient) GetUpdateById(ctx context.Context, in *GetUpdateByIdRequest, opts ...grpc.CallOption) (*GetUpdateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUpdateResponse)
+	err := c.cc.Invoke(ctx, UpdateService_GetUpdateById_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UpdateServiceServer is the server API for UpdateService service.
 // All implementations must embed UnimplementedUpdateServiceServer
 // for forward compatibility.
 type UpdateServiceServer interface {
 	GetUpdates(*GetUpdatesRequest, grpc.ServerStreamingServer[GetUpdatesResponse]) error
 	GetUpdateTrees(*GetUpdatesRequest, grpc.ServerStreamingServer[GetUpdateTreesResponse]) error
-	GetTransactionTreeByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionTreeResponse, error)
+	GetTransactionTreeByOffset(context.Context, *GetTransactionByOffsetRequest) (*GetTransactionTreeResponse, error)
 	GetTransactionTreeById(context.Context, *GetTransactionByIdRequest) (*GetTransactionTreeResponse, error)
-	GetTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionResponse, error)
+	GetTransactionByOffset(context.Context, *GetTransactionByOffsetRequest) (*GetTransactionResponse, error)
 	GetTransactionById(context.Context, *GetTransactionByIdRequest) (*GetTransactionResponse, error)
+	GetUpdateByOffset(context.Context, *GetUpdateByOffsetRequest) (*GetUpdateResponse, error)
+	GetUpdateById(context.Context, *GetUpdateByIdRequest) (*GetUpdateResponse, error)
 	mustEmbedUnimplementedUpdateServiceServer()
 }
 
@@ -153,17 +179,23 @@ func (UnimplementedUpdateServiceServer) GetUpdates(*GetUpdatesRequest, grpc.Serv
 func (UnimplementedUpdateServiceServer) GetUpdateTrees(*GetUpdatesRequest, grpc.ServerStreamingServer[GetUpdateTreesResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method GetUpdateTrees not implemented")
 }
-func (UnimplementedUpdateServiceServer) GetTransactionTreeByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionTreeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionTreeByEventId not implemented")
+func (UnimplementedUpdateServiceServer) GetTransactionTreeByOffset(context.Context, *GetTransactionByOffsetRequest) (*GetTransactionTreeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionTreeByOffset not implemented")
 }
 func (UnimplementedUpdateServiceServer) GetTransactionTreeById(context.Context, *GetTransactionByIdRequest) (*GetTransactionTreeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionTreeById not implemented")
 }
-func (UnimplementedUpdateServiceServer) GetTransactionByEventId(context.Context, *GetTransactionByEventIdRequest) (*GetTransactionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionByEventId not implemented")
+func (UnimplementedUpdateServiceServer) GetTransactionByOffset(context.Context, *GetTransactionByOffsetRequest) (*GetTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionByOffset not implemented")
 }
 func (UnimplementedUpdateServiceServer) GetTransactionById(context.Context, *GetTransactionByIdRequest) (*GetTransactionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionById not implemented")
+}
+func (UnimplementedUpdateServiceServer) GetUpdateByOffset(context.Context, *GetUpdateByOffsetRequest) (*GetUpdateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUpdateByOffset not implemented")
+}
+func (UnimplementedUpdateServiceServer) GetUpdateById(context.Context, *GetUpdateByIdRequest) (*GetUpdateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUpdateById not implemented")
 }
 func (UnimplementedUpdateServiceServer) mustEmbedUnimplementedUpdateServiceServer() {}
 func (UnimplementedUpdateServiceServer) testEmbeddedByValue()                       {}
@@ -208,20 +240,20 @@ func _UpdateService_GetUpdateTrees_Handler(srv interface{}, stream grpc.ServerSt
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type UpdateService_GetUpdateTreesServer = grpc.ServerStreamingServer[GetUpdateTreesResponse]
 
-func _UpdateService_GetTransactionTreeByEventId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTransactionByEventIdRequest)
+func _UpdateService_GetTransactionTreeByOffset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionByOffsetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UpdateServiceServer).GetTransactionTreeByEventId(ctx, in)
+		return srv.(UpdateServiceServer).GetTransactionTreeByOffset(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UpdateService_GetTransactionTreeByEventId_FullMethodName,
+		FullMethod: UpdateService_GetTransactionTreeByOffset_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UpdateServiceServer).GetTransactionTreeByEventId(ctx, req.(*GetTransactionByEventIdRequest))
+		return srv.(UpdateServiceServer).GetTransactionTreeByOffset(ctx, req.(*GetTransactionByOffsetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -244,20 +276,20 @@ func _UpdateService_GetTransactionTreeById_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UpdateService_GetTransactionByEventId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTransactionByEventIdRequest)
+func _UpdateService_GetTransactionByOffset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionByOffsetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UpdateServiceServer).GetTransactionByEventId(ctx, in)
+		return srv.(UpdateServiceServer).GetTransactionByOffset(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UpdateService_GetTransactionByEventId_FullMethodName,
+		FullMethod: UpdateService_GetTransactionByOffset_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UpdateServiceServer).GetTransactionByEventId(ctx, req.(*GetTransactionByEventIdRequest))
+		return srv.(UpdateServiceServer).GetTransactionByOffset(ctx, req.(*GetTransactionByOffsetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -280,6 +312,42 @@ func _UpdateService_GetTransactionById_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UpdateService_GetUpdateByOffset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUpdateByOffsetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UpdateServiceServer).GetUpdateByOffset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UpdateService_GetUpdateByOffset_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UpdateServiceServer).GetUpdateByOffset(ctx, req.(*GetUpdateByOffsetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UpdateService_GetUpdateById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUpdateByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UpdateServiceServer).GetUpdateById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UpdateService_GetUpdateById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UpdateServiceServer).GetUpdateById(ctx, req.(*GetUpdateByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UpdateService_ServiceDesc is the grpc.ServiceDesc for UpdateService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -288,20 +356,28 @@ var UpdateService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UpdateServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetTransactionTreeByEventId",
-			Handler:    _UpdateService_GetTransactionTreeByEventId_Handler,
+			MethodName: "GetTransactionTreeByOffset",
+			Handler:    _UpdateService_GetTransactionTreeByOffset_Handler,
 		},
 		{
 			MethodName: "GetTransactionTreeById",
 			Handler:    _UpdateService_GetTransactionTreeById_Handler,
 		},
 		{
-			MethodName: "GetTransactionByEventId",
-			Handler:    _UpdateService_GetTransactionByEventId_Handler,
+			MethodName: "GetTransactionByOffset",
+			Handler:    _UpdateService_GetTransactionByOffset_Handler,
 		},
 		{
 			MethodName: "GetTransactionById",
 			Handler:    _UpdateService_GetTransactionById_Handler,
+		},
+		{
+			MethodName: "GetUpdateByOffset",
+			Handler:    _UpdateService_GetUpdateByOffset_Handler,
+		},
+		{
+			MethodName: "GetUpdateById",
+			Handler:    _UpdateService_GetUpdateById_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

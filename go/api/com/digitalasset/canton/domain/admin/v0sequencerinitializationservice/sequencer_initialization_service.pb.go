@@ -6,11 +6,11 @@
 // 	protoc        v6.30.0
 // source: com/digitalasset/canton/domain/admin/v0/sequencer_initialization_service.proto
 
-package sequencerinitializationservice
+package v0
 
 import (
-	v02 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/crypto/v0"
-	v01 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/domain/admin/v0"
+	v01 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/crypto/v0"
+	v0snapshot "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/domain/admin/v0"
 	v1 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/domain/admin/v1"
 	v0 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v0"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -33,7 +33,7 @@ type InitRequest struct {
 	DomainId         string                     `protobuf:"bytes,1,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
 	TopologySnapshot *v0.TopologyTransactions   `protobuf:"bytes,2,opt,name=topology_snapshot,json=topologySnapshot,proto3" json:"topology_snapshot,omitempty"`
 	DomainParameters *v0.StaticDomainParameters `protobuf:"bytes,4,opt,name=domain_parameters,json=domainParameters,proto3" json:"domain_parameters,omitempty"`
-	Snapshot         *v01.SequencerSnapshot     `protobuf:"bytes,3,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
+	Snapshot         *v0snapshot.SequencerSnapshot         `protobuf:"bytes,3,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -89,7 +89,7 @@ func (x *InitRequest) GetDomainParameters() *v0.StaticDomainParameters {
 	return nil
 }
 
-func (x *InitRequest) GetSnapshot() *v01.SequencerSnapshot {
+func (x *InitRequest) GetSnapshot() *v0snapshot.SequencerSnapshot {
 	if x != nil {
 		return x.Snapshot
 	}
@@ -99,7 +99,7 @@ func (x *InitRequest) GetSnapshot() *v01.SequencerSnapshot {
 type InitResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	KeyId         string                 `protobuf:"bytes,1,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
-	PublicKey     *v02.SigningPublicKey  `protobuf:"bytes,2,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	PublicKey     *v01.SigningPublicKey  `protobuf:"bytes,2,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
 	Replicated    bool                   `protobuf:"varint,3,opt,name=replicated,proto3" json:"replicated,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -142,7 +142,7 @@ func (x *InitResponse) GetKeyId() string {
 	return ""
 }
 
-func (x *InitResponse) GetPublicKey() *v02.SigningPublicKey {
+func (x *InitResponse) GetPublicKey() *v01.SigningPublicKey {
 	if x != nil {
 		return x.PublicKey
 	}
@@ -223,7 +223,7 @@ const file_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_serv
 	"\x04Init\x124.com.digitalasset.canton.domain.admin.v0.InitRequest\x1a5.com.digitalasset.canton.domain.admin.v0.InitResponse\x12u\n" +
 	"\x06InitV1\x124.com.digitalasset.canton.domain.admin.v1.InitRequest\x1a5.com.digitalasset.canton.domain.admin.v0.InitResponse2\x82\x01\n" +
 	"\x18TopologyBootstrapService\x12f\n" +
-	"\tBootstrap\x12A.com.digitalasset.canton.domain.admin.v0.TopologyBootstrapRequest\x1a\x16.google.protobuf.EmptyBwZugithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/domain/admin/v0/sequencerinitializationserviceb\x06proto3"
+	"\tBootstrap\x12A.com.digitalasset.canton.domain.admin.v0.TopologyBootstrapRequest\x1a\x16.google.protobuf.EmptyBXZVgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/domain/admin/v0b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_service_proto_rawDescOnce sync.Once
@@ -244,8 +244,8 @@ var file_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_servic
 	(*TopologyBootstrapRequest)(nil),  // 2: com.digitalasset.canton.domain.admin.v0.TopologyBootstrapRequest
 	(*v0.TopologyTransactions)(nil),   // 3: com.digitalasset.canton.protocol.v0.TopologyTransactions
 	(*v0.StaticDomainParameters)(nil), // 4: com.digitalasset.canton.protocol.v0.StaticDomainParameters
-	(*v01.SequencerSnapshot)(nil),     // 5: com.digitalasset.canton.domain.admin.v0.SequencerSnapshot
-	(*v02.SigningPublicKey)(nil),      // 6: com.digitalasset.canton.crypto.v0.SigningPublicKey
+	(*v0snapshot.SequencerSnapshot)(nil),         // 5: com.digitalasset.canton.domain.admin.v0.SequencerSnapshot
+	(*v01.SigningPublicKey)(nil),      // 6: com.digitalasset.canton.crypto.v0.SigningPublicKey
 	(*v1.InitRequest)(nil),            // 7: com.digitalasset.canton.domain.admin.v1.InitRequest
 	(*emptypb.Empty)(nil),             // 8: google.protobuf.Empty
 }
@@ -275,6 +275,7 @@ func file_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_servi
 	if File_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_service_proto != nil {
 		return
 	}
+	//file_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_snapshot_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

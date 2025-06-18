@@ -107,19 +107,18 @@ func (*TreeEvent_Created) isTreeEvent_Kind() {}
 func (*TreeEvent_Exercised) isTreeEvent_Kind() {}
 
 type TransactionTree struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UpdateId      string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
-	CommandId     string                 `protobuf:"bytes,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
-	WorkflowId    string                 `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
-	EffectiveAt   *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=effective_at,json=effectiveAt,proto3" json:"effective_at,omitempty"`
-	Offset        int64                  `protobuf:"varint,5,opt,name=offset,proto3" json:"offset,omitempty"`
-	EventsById    map[string]*TreeEvent  `protobuf:"bytes,6,rep,name=events_by_id,json=eventsById,proto3" json:"events_by_id,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	RootEventIds  []string               `protobuf:"bytes,7,rep,name=root_event_ids,json=rootEventIds,proto3" json:"root_event_ids,omitempty"`
-	DomainId      string                 `protobuf:"bytes,8,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
-	TraceContext  *TraceContext          `protobuf:"bytes,9,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
-	RecordTime    *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	UpdateId       string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
+	CommandId      string                 `protobuf:"bytes,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
+	WorkflowId     string                 `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
+	EffectiveAt    *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=effective_at,json=effectiveAt,proto3" json:"effective_at,omitempty"`
+	Offset         int64                  `protobuf:"varint,5,opt,name=offset,proto3" json:"offset,omitempty"`
+	EventsById     map[int32]*TreeEvent   `protobuf:"bytes,6,rep,name=events_by_id,json=eventsById,proto3" json:"events_by_id,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	SynchronizerId string                 `protobuf:"bytes,7,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	TraceContext   *TraceContext          `protobuf:"bytes,8,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
+	RecordTime     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *TransactionTree) Reset() {
@@ -187,23 +186,16 @@ func (x *TransactionTree) GetOffset() int64 {
 	return 0
 }
 
-func (x *TransactionTree) GetEventsById() map[string]*TreeEvent {
+func (x *TransactionTree) GetEventsById() map[int32]*TreeEvent {
 	if x != nil {
 		return x.EventsById
 	}
 	return nil
 }
 
-func (x *TransactionTree) GetRootEventIds() []string {
+func (x *TransactionTree) GetSynchronizerId() string {
 	if x != nil {
-		return x.RootEventIds
-	}
-	return nil
-}
-
-func (x *TransactionTree) GetDomainId() string {
-	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
@@ -223,18 +215,18 @@ func (x *TransactionTree) GetRecordTime() *timestamppb.Timestamp {
 }
 
 type Transaction struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UpdateId      string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
-	CommandId     string                 `protobuf:"bytes,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
-	WorkflowId    string                 `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
-	EffectiveAt   *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=effective_at,json=effectiveAt,proto3" json:"effective_at,omitempty"`
-	Events        []*Event               `protobuf:"bytes,5,rep,name=events,proto3" json:"events,omitempty"`
-	Offset        int64                  `protobuf:"varint,6,opt,name=offset,proto3" json:"offset,omitempty"`
-	DomainId      string                 `protobuf:"bytes,7,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
-	TraceContext  *TraceContext          `protobuf:"bytes,8,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
-	RecordTime    *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	UpdateId       string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
+	CommandId      string                 `protobuf:"bytes,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
+	WorkflowId     string                 `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
+	EffectiveAt    *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=effective_at,json=effectiveAt,proto3" json:"effective_at,omitempty"`
+	Events         []*Event               `protobuf:"bytes,5,rep,name=events,proto3" json:"events,omitempty"`
+	Offset         int64                  `protobuf:"varint,6,opt,name=offset,proto3" json:"offset,omitempty"`
+	SynchronizerId string                 `protobuf:"bytes,7,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	TraceContext   *TraceContext          `protobuf:"bytes,8,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
+	RecordTime     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Transaction) Reset() {
@@ -309,9 +301,9 @@ func (x *Transaction) GetOffset() int64 {
 	return 0
 }
 
-func (x *Transaction) GetDomainId() string {
+func (x *Transaction) GetSynchronizerId() string {
 	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
@@ -338,7 +330,7 @@ const file_com_daml_ledger_api_v2_transaction_proto_rawDesc = "" +
 	"\tTreeEvent\x12@\n" +
 	"\acreated\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventH\x00R\acreated\x12F\n" +
 	"\texercised\x18\x02 \x01(\v2&.com.daml.ledger.api.v2.ExercisedEventH\x00R\texercisedB\x06\n" +
-	"\x04kind\"\xcd\x04\n" +
+	"\x04kind\"\xb3\x04\n" +
 	"\x0fTransactionTree\x12\x1b\n" +
 	"\tupdate_id\x18\x01 \x01(\tR\bupdateId\x12\x1d\n" +
 	"\n" +
@@ -348,16 +340,14 @@ const file_com_daml_ledger_api_v2_transaction_proto_rawDesc = "" +
 	"\feffective_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\veffectiveAt\x12\x16\n" +
 	"\x06offset\x18\x05 \x01(\x03R\x06offset\x12Y\n" +
 	"\fevents_by_id\x18\x06 \x03(\v27.com.daml.ledger.api.v2.TransactionTree.EventsByIdEntryR\n" +
-	"eventsById\x12$\n" +
-	"\x0eroot_event_ids\x18\a \x03(\tR\frootEventIds\x12\x1b\n" +
-	"\tdomain_id\x18\b \x01(\tR\bdomainId\x12I\n" +
-	"\rtrace_context\x18\t \x01(\v2$.com.daml.ledger.api.v2.TraceContextR\ftraceContext\x12;\n" +
-	"\vrecord_time\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"eventsById\x12'\n" +
+	"\x0fsynchronizer_id\x18\a \x01(\tR\x0esynchronizerId\x12I\n" +
+	"\rtrace_context\x18\b \x01(\v2$.com.daml.ledger.api.v2.TraceContextR\ftraceContext\x12;\n" +
+	"\vrecord_time\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"recordTime\x1a`\n" +
 	"\x0fEventsByIdEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x127\n" +
-	"\x05value\x18\x02 \x01(\v2!.com.daml.ledger.api.v2.TreeEventR\x05value:\x028\x01\"\x9d\x03\n" +
+	"\x03key\x18\x01 \x01(\x05R\x03key\x127\n" +
+	"\x05value\x18\x02 \x01(\v2!.com.daml.ledger.api.v2.TreeEventR\x05value:\x028\x01\"\xa9\x03\n" +
 	"\vTransaction\x12\x1b\n" +
 	"\tupdate_id\x18\x01 \x01(\tR\bupdateId\x12\x1d\n" +
 	"\n" +
@@ -366,8 +356,8 @@ const file_com_daml_ledger_api_v2_transaction_proto_rawDesc = "" +
 	"workflowId\x12=\n" +
 	"\feffective_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\veffectiveAt\x125\n" +
 	"\x06events\x18\x05 \x03(\v2\x1d.com.daml.ledger.api.v2.EventR\x06events\x12\x16\n" +
-	"\x06offset\x18\x06 \x01(\x03R\x06offset\x12\x1b\n" +
-	"\tdomain_id\x18\a \x01(\tR\bdomainId\x12I\n" +
+	"\x06offset\x18\x06 \x01(\x03R\x06offset\x12'\n" +
+	"\x0fsynchronizer_id\x18\a \x01(\tR\x0esynchronizerId\x12I\n" +
 	"\rtrace_context\x18\b \x01(\v2$.com.daml.ledger.api.v2.TraceContextR\ftraceContext\x12;\n" +
 	"\vrecord_time\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"recordTimeB\x8f\x01\n" +

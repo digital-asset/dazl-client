@@ -10,14 +10,12 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ExperimentalFeatures(_message.Message):
-    __slots__ = ("static_time", "command_inspection_service", "interactive_submission_service")
+    __slots__ = ("static_time", "command_inspection_service")
     STATIC_TIME_FIELD_NUMBER: _ClassVar[int]
     COMMAND_INSPECTION_SERVICE_FIELD_NUMBER: _ClassVar[int]
-    INTERACTIVE_SUBMISSION_SERVICE_FIELD_NUMBER: _ClassVar[int]
     static_time: ExperimentalStaticTime
     command_inspection_service: ExperimentalCommandInspectionService
-    interactive_submission_service: ExperimentalInteractiveSubmissionService
-    def __init__(self, static_time: _Optional[_Union[ExperimentalStaticTime, _Mapping]] = ..., command_inspection_service: _Optional[_Union[ExperimentalCommandInspectionService, _Mapping]] = ..., interactive_submission_service: _Optional[_Union[ExperimentalInteractiveSubmissionService, _Mapping]] = ...) -> None: ...
+    def __init__(self, static_time: _Optional[_Union[ExperimentalStaticTime, _Mapping]] = ..., command_inspection_service: _Optional[_Union[ExperimentalCommandInspectionService, _Mapping]] = ...) -> None: ...
 
 class ExperimentalStaticTime(_message.Message):
     __slots__ = ("supported",)
@@ -31,7 +29,7 @@ class ExperimentalCommandInspectionService(_message.Message):
     supported: bool
     def __init__(self, supported: bool = ...) -> None: ...
 
-class ExperimentalInteractiveSubmissionService(_message.Message):
+class ExperimentalPartyTopologyEvents(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool

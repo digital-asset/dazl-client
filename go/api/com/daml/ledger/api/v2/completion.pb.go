@@ -26,13 +26,13 @@ const (
 )
 
 type Completion struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CommandId     string                 `protobuf:"bytes,1,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
-	Status        *status.Status         `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
-	UpdateId      string                 `protobuf:"bytes,3,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
-	ApplicationId string                 `protobuf:"bytes,4,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`
-	ActAs         []string               `protobuf:"bytes,5,rep,name=act_as,json=actAs,proto3" json:"act_as,omitempty"`
-	SubmissionId  string                 `protobuf:"bytes,6,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	CommandId    string                 `protobuf:"bytes,1,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
+	Status       *status.Status         `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	UpdateId     string                 `protobuf:"bytes,3,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
+	UserId       string                 `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	ActAs        []string               `protobuf:"bytes,5,rep,name=act_as,json=actAs,proto3" json:"act_as,omitempty"`
+	SubmissionId string                 `protobuf:"bytes,6,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
 	// Types that are valid to be assigned to DeduplicationPeriod:
 	//
 	//	*Completion_DeduplicationOffset
@@ -40,7 +40,7 @@ type Completion struct {
 	DeduplicationPeriod isCompletion_DeduplicationPeriod `protobuf_oneof:"deduplication_period"`
 	TraceContext        *TraceContext                    `protobuf:"bytes,9,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
 	Offset              int64                            `protobuf:"varint,10,opt,name=offset,proto3" json:"offset,omitempty"`
-	DomainTime          *DomainTime                      `protobuf:"bytes,11,opt,name=domain_time,json=domainTime,proto3" json:"domain_time,omitempty"`
+	SynchronizerTime    *SynchronizerTime                `protobuf:"bytes,11,opt,name=synchronizer_time,json=synchronizerTime,proto3" json:"synchronizer_time,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -96,9 +96,9 @@ func (x *Completion) GetUpdateId() string {
 	return ""
 }
 
-func (x *Completion) GetApplicationId() string {
+func (x *Completion) GetUserId() string {
 	if x != nil {
-		return x.ApplicationId
+		return x.UserId
 	}
 	return ""
 }
@@ -156,9 +156,9 @@ func (x *Completion) GetOffset() int64 {
 	return 0
 }
 
-func (x *Completion) GetDomainTime() *DomainTime {
+func (x *Completion) GetSynchronizerTime() *SynchronizerTime {
 	if x != nil {
-		return x.DomainTime
+		return x.SynchronizerTime
 	}
 	return nil
 }
@@ -183,23 +183,22 @@ var File_com_daml_ledger_api_v2_completion_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_completion_proto_rawDesc = "" +
 	"\n" +
-	"'com/daml/ledger/api/v2/completion.proto\x12\x16com.daml.ledger.api.v2\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x17google/rpc/status.proto\"\xa0\x04\n" +
+	"'com/daml/ledger/api/v2/completion.proto\x12\x16com.daml.ledger.api.v2\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x17google/rpc/status.proto\"\xa4\x04\n" +
 	"\n" +
 	"Completion\x12\x1d\n" +
 	"\n" +
 	"command_id\x18\x01 \x01(\tR\tcommandId\x12*\n" +
 	"\x06status\x18\x02 \x01(\v2\x12.google.rpc.StatusR\x06status\x12\x1b\n" +
-	"\tupdate_id\x18\x03 \x01(\tR\bupdateId\x12%\n" +
-	"\x0eapplication_id\x18\x04 \x01(\tR\rapplicationId\x12\x15\n" +
+	"\tupdate_id\x18\x03 \x01(\tR\bupdateId\x12\x17\n" +
+	"\auser_id\x18\x04 \x01(\tR\x06userId\x12\x15\n" +
 	"\x06act_as\x18\x05 \x03(\tR\x05actAs\x12#\n" +
 	"\rsubmission_id\x18\x06 \x01(\tR\fsubmissionId\x123\n" +
 	"\x14deduplication_offset\x18\a \x01(\x03H\x00R\x13deduplicationOffset\x12R\n" +
 	"\x16deduplication_duration\x18\b \x01(\v2\x19.google.protobuf.DurationH\x00R\x15deduplicationDuration\x12I\n" +
 	"\rtrace_context\x18\t \x01(\v2$.com.daml.ledger.api.v2.TraceContextR\ftraceContext\x12\x16\n" +
 	"\x06offset\x18\n" +
-	" \x01(\x03R\x06offset\x12C\n" +
-	"\vdomain_time\x18\v \x01(\v2\".com.daml.ledger.api.v2.DomainTimeR\n" +
-	"domainTimeB\x16\n" +
+	" \x01(\x03R\x06offset\x12U\n" +
+	"\x11synchronizer_time\x18\v \x01(\v2(.com.daml.ledger.api.v2.SynchronizerTimeR\x10synchronizerTimeB\x16\n" +
 	"\x14deduplication_periodB\x8e\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x14CompletionOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
@@ -221,13 +220,13 @@ var file_com_daml_ledger_api_v2_completion_proto_goTypes = []any{
 	(*status.Status)(nil),       // 1: google.rpc.Status
 	(*durationpb.Duration)(nil), // 2: google.protobuf.Duration
 	(*TraceContext)(nil),        // 3: com.daml.ledger.api.v2.TraceContext
-	(*DomainTime)(nil),          // 4: com.daml.ledger.api.v2.DomainTime
+	(*SynchronizerTime)(nil),    // 4: com.daml.ledger.api.v2.SynchronizerTime
 }
 var file_com_daml_ledger_api_v2_completion_proto_depIdxs = []int32{
 	1, // 0: com.daml.ledger.api.v2.Completion.status:type_name -> google.rpc.Status
 	2, // 1: com.daml.ledger.api.v2.Completion.deduplication_duration:type_name -> google.protobuf.Duration
 	3, // 2: com.daml.ledger.api.v2.Completion.trace_context:type_name -> com.daml.ledger.api.v2.TraceContext
-	4, // 3: com.daml.ledger.api.v2.Completion.domain_time:type_name -> com.daml.ledger.api.v2.DomainTime
+	4, // 3: com.daml.ledger.api.v2.Completion.synchronizer_time:type_name -> com.daml.ledger.api.v2.SynchronizerTime
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

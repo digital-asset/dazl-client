@@ -315,7 +315,6 @@ func (x *ListKnownPartiesResponse) GetNextPageToken() string {
 type AllocatePartyRequest struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	PartyIdHint        string                 `protobuf:"bytes,1,opt,name=party_id_hint,json=partyIdHint,proto3" json:"party_id_hint,omitempty"`
-	DisplayName        string                 `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	LocalMetadata      *ObjectMeta            `protobuf:"bytes,3,opt,name=local_metadata,json=localMetadata,proto3" json:"local_metadata,omitempty"`
 	IdentityProviderId string                 `protobuf:"bytes,4,opt,name=identity_provider_id,json=identityProviderId,proto3" json:"identity_provider_id,omitempty"`
 	unknownFields      protoimpl.UnknownFields
@@ -355,13 +354,6 @@ func (*AllocatePartyRequest) Descriptor() ([]byte, []int) {
 func (x *AllocatePartyRequest) GetPartyIdHint() string {
 	if x != nil {
 		return x.PartyIdHint
-	}
-	return ""
-}
-
-func (x *AllocatePartyRequest) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
 	}
 	return ""
 }
@@ -523,7 +515,6 @@ func (x *UpdatePartyDetailsResponse) GetPartyDetails() *PartyDetails {
 type PartyDetails struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Party              string                 `protobuf:"bytes,1,opt,name=party,proto3" json:"party,omitempty"`
-	DisplayName        string                 `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	IsLocal            bool                   `protobuf:"varint,3,opt,name=is_local,json=isLocal,proto3" json:"is_local,omitempty"`
 	LocalMetadata      *ObjectMeta            `protobuf:"bytes,4,opt,name=local_metadata,json=localMetadata,proto3" json:"local_metadata,omitempty"`
 	IdentityProviderId string                 `protobuf:"bytes,5,opt,name=identity_provider_id,json=identityProviderId,proto3" json:"identity_provider_id,omitempty"`
@@ -564,13 +555,6 @@ func (*PartyDetails) Descriptor() ([]byte, []int) {
 func (x *PartyDetails) GetParty() string {
 	if x != nil {
 		return x.Party
-	}
-	return ""
-}
-
-func (x *PartyDetails) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
 	}
 	return ""
 }
@@ -712,12 +696,11 @@ const file_com_daml_ledger_api_v2_admin_party_management_service_proto_rawDesc =
 	"\x14identity_provider_id\x18\x01 \x01(\tR\x12identityProviderId\"\x93\x01\n" +
 	"\x18ListKnownPartiesResponse\x12O\n" +
 	"\rparty_details\x18\x01 \x03(\v2*.com.daml.ledger.api.v2.admin.PartyDetailsR\fpartyDetails\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xe0\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xc3\x01\n" +
 	"\x14AllocatePartyRequest\x12\"\n" +
-	"\rparty_id_hint\x18\x01 \x01(\tR\vpartyIdHint\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12O\n" +
+	"\rparty_id_hint\x18\x01 \x01(\tR\vpartyIdHint\x12O\n" +
 	"\x0elocal_metadata\x18\x03 \x01(\v2(.com.daml.ledger.api.v2.admin.ObjectMetaR\rlocalMetadata\x120\n" +
-	"\x14identity_provider_id\x18\x04 \x01(\tR\x12identityProviderId\"h\n" +
+	"\x14identity_provider_id\x18\x04 \x01(\tR\x12identityProviderIdJ\x04\b\x02\x10\x03\"h\n" +
 	"\x15AllocatePartyResponse\x12O\n" +
 	"\rparty_details\x18\x01 \x01(\v2*.com.daml.ledger.api.v2.admin.PartyDetailsR\fpartyDetails\"\xa9\x01\n" +
 	"\x19UpdatePartyDetailsRequest\x12O\n" +
@@ -725,10 +708,9 @@ const file_com_daml_ledger_api_v2_admin_party_management_service_proto_rawDesc =
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
 	"updateMask\"m\n" +
 	"\x1aUpdatePartyDetailsResponse\x12O\n" +
-	"\rparty_details\x18\x01 \x01(\v2*.com.daml.ledger.api.v2.admin.PartyDetailsR\fpartyDetails\"\xe5\x01\n" +
+	"\rparty_details\x18\x01 \x01(\v2*.com.daml.ledger.api.v2.admin.PartyDetailsR\fpartyDetails\"\xc2\x01\n" +
 	"\fPartyDetails\x12\x14\n" +
-	"\x05party\x18\x01 \x01(\tR\x05party\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x19\n" +
+	"\x05party\x18\x01 \x01(\tR\x05party\x12\x19\n" +
 	"\bis_local\x18\x03 \x01(\bR\aisLocal\x12O\n" +
 	"\x0elocal_metadata\x18\x04 \x01(\v2(.com.daml.ledger.api.v2.admin.ObjectMetaR\rlocalMetadata\x120\n" +
 	"\x14identity_provider_id\x18\x05 \x01(\tR\x12identityProviderId\"\xba\x01\n" +

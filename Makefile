@@ -18,7 +18,7 @@ docs_markdown_tgz := $(docs_markdown_dir).tar.gz
 
 .PHONY: generate
 generate: .venv/poetry.lock
-	$(python) -m _dazl update 2.10.1 protobufs-3.3.0-snapshot.20250502.0
+	$(python) -m _dazl update "${PROTOPACK_DIR}/protos.pb"
 
 ####################################################################################################
 # Python

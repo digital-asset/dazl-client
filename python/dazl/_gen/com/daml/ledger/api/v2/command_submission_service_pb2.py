@@ -27,10 +27,10 @@ _sym_db = _symbol_database.Default()
 
 
 from . import commands_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_commands__pb2
-from . import reassignment_command_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_reassignment__command__pb2
+from . import reassignment_commands_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_reassignment__commands__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n7com/daml/ledger/api/v2/command_submission_service.proto\x12\x16\x63om.daml.ledger.api.v2\x1a%com/daml/ledger/api/v2/commands.proto\x1a\x31\x63om/daml/ledger/api/v2/reassignment_command.proto\"M\n\rSubmitRequest\x12<\n\x08\x63ommands\x18\x01 \x01(\x0b\x32 .com.daml.ledger.api.v2.CommandsR\x08\x63ommands\"\x10\n\x0eSubmitResponse\"{\n\x19SubmitReassignmentRequest\x12^\n\x14reassignment_command\x18\x01 \x01(\x0b\x32+.com.daml.ledger.api.v2.ReassignmentCommandR\x13reassignmentCommand\"\x1c\n\x1aSubmitReassignmentResponse2\xf0\x01\n\x18\x43ommandSubmissionService\x12W\n\x06Submit\x12%.com.daml.ledger.api.v2.SubmitRequest\x1a&.com.daml.ledger.api.v2.SubmitResponse\x12{\n\x12SubmitReassignment\x12\x31.com.daml.ledger.api.v2.SubmitReassignmentRequest\x1a\x32.com.daml.ledger.api.v2.SubmitReassignmentResponseB\x9c\x01\n\x16\x63om.daml.ledger.api.v2B\"CommandSubmissionServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16\x43om.Daml.Ledger.Api.V2b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n7com/daml/ledger/api/v2/command_submission_service.proto\x12\x16\x63om.daml.ledger.api.v2\x1a%com/daml/ledger/api/v2/commands.proto\x1a\x32\x63om/daml/ledger/api/v2/reassignment_commands.proto\"M\n\rSubmitRequest\x12<\n\x08\x63ommands\x18\x01 \x01(\x0b\x32 .com.daml.ledger.api.v2.CommandsR\x08\x63ommands\"\x10\n\x0eSubmitResponse\"~\n\x19SubmitReassignmentRequest\x12\x61\n\x15reassignment_commands\x18\x01 \x01(\x0b\x32,.com.daml.ledger.api.v2.ReassignmentCommandsR\x14reassignmentCommands\"\x1c\n\x1aSubmitReassignmentResponse2\xf0\x01\n\x18\x43ommandSubmissionService\x12W\n\x06Submit\x12%.com.daml.ledger.api.v2.SubmitRequest\x1a&.com.daml.ledger.api.v2.SubmitResponse\x12{\n\x12SubmitReassignment\x12\x31.com.daml.ledger.api.v2.SubmitReassignmentRequest\x1a\x32.com.daml.ledger.api.v2.SubmitReassignmentResponseB\x9c\x01\n\x16\x63om.daml.ledger.api.v2B\"CommandSubmissionServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16\x43om.Daml.Ledger.Api.V2b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,14 +38,14 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.daml.ledger.api.v2.comm
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\026com.daml.ledger.api.v2B\"CommandSubmissionServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\252\002\026Com.Daml.Ledger.Api.V2'
-  _globals['_SUBMITREQUEST']._serialized_start=173
-  _globals['_SUBMITREQUEST']._serialized_end=250
-  _globals['_SUBMITRESPONSE']._serialized_start=252
-  _globals['_SUBMITRESPONSE']._serialized_end=268
-  _globals['_SUBMITREASSIGNMENTREQUEST']._serialized_start=270
-  _globals['_SUBMITREASSIGNMENTREQUEST']._serialized_end=393
-  _globals['_SUBMITREASSIGNMENTRESPONSE']._serialized_start=395
-  _globals['_SUBMITREASSIGNMENTRESPONSE']._serialized_end=423
-  _globals['_COMMANDSUBMISSIONSERVICE']._serialized_start=426
-  _globals['_COMMANDSUBMISSIONSERVICE']._serialized_end=666
+  _globals['_SUBMITREQUEST']._serialized_start=174
+  _globals['_SUBMITREQUEST']._serialized_end=251
+  _globals['_SUBMITRESPONSE']._serialized_start=253
+  _globals['_SUBMITRESPONSE']._serialized_end=269
+  _globals['_SUBMITREASSIGNMENTREQUEST']._serialized_start=271
+  _globals['_SUBMITREASSIGNMENTREQUEST']._serialized_end=397
+  _globals['_SUBMITREASSIGNMENTRESPONSE']._serialized_start=399
+  _globals['_SUBMITREASSIGNMENTRESPONSE']._serialized_end=427
+  _globals['_COMMANDSUBMISSIONSERVICE']._serialized_start=430
+  _globals['_COMMANDSUBMISSIONSERVICE']._serialized_end=670
 # @@protoc_insertion_point(module_scope)

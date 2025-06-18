@@ -21,10 +21,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	StateService_GetActiveContracts_FullMethodName     = "/com.daml.ledger.api.v2.StateService/GetActiveContracts"
-	StateService_GetConnectedDomains_FullMethodName    = "/com.daml.ledger.api.v2.StateService/GetConnectedDomains"
-	StateService_GetLedgerEnd_FullMethodName           = "/com.daml.ledger.api.v2.StateService/GetLedgerEnd"
-	StateService_GetLatestPrunedOffsets_FullMethodName = "/com.daml.ledger.api.v2.StateService/GetLatestPrunedOffsets"
+	StateService_GetActiveContracts_FullMethodName        = "/com.daml.ledger.api.v2.StateService/GetActiveContracts"
+	StateService_GetConnectedSynchronizers_FullMethodName = "/com.daml.ledger.api.v2.StateService/GetConnectedSynchronizers"
+	StateService_GetLedgerEnd_FullMethodName              = "/com.daml.ledger.api.v2.StateService/GetLedgerEnd"
+	StateService_GetLatestPrunedOffsets_FullMethodName    = "/com.daml.ledger.api.v2.StateService/GetLatestPrunedOffsets"
 )
 
 // StateServiceClient is the client API for StateService service.
@@ -32,7 +32,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StateServiceClient interface {
 	GetActiveContracts(ctx context.Context, in *GetActiveContractsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetActiveContractsResponse], error)
-	GetConnectedDomains(ctx context.Context, in *GetConnectedDomainsRequest, opts ...grpc.CallOption) (*GetConnectedDomainsResponse, error)
+	GetConnectedSynchronizers(ctx context.Context, in *GetConnectedSynchronizersRequest, opts ...grpc.CallOption) (*GetConnectedSynchronizersResponse, error)
 	GetLedgerEnd(ctx context.Context, in *GetLedgerEndRequest, opts ...grpc.CallOption) (*GetLedgerEndResponse, error)
 	GetLatestPrunedOffsets(ctx context.Context, in *GetLatestPrunedOffsetsRequest, opts ...grpc.CallOption) (*GetLatestPrunedOffsetsResponse, error)
 }
@@ -64,10 +64,10 @@ func (c *stateServiceClient) GetActiveContracts(ctx context.Context, in *GetActi
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type StateService_GetActiveContractsClient = grpc.ServerStreamingClient[GetActiveContractsResponse]
 
-func (c *stateServiceClient) GetConnectedDomains(ctx context.Context, in *GetConnectedDomainsRequest, opts ...grpc.CallOption) (*GetConnectedDomainsResponse, error) {
+func (c *stateServiceClient) GetConnectedSynchronizers(ctx context.Context, in *GetConnectedSynchronizersRequest, opts ...grpc.CallOption) (*GetConnectedSynchronizersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetConnectedDomainsResponse)
-	err := c.cc.Invoke(ctx, StateService_GetConnectedDomains_FullMethodName, in, out, cOpts...)
+	out := new(GetConnectedSynchronizersResponse)
+	err := c.cc.Invoke(ctx, StateService_GetConnectedSynchronizers_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (c *stateServiceClient) GetLatestPrunedOffsets(ctx context.Context, in *Get
 // for forward compatibility.
 type StateServiceServer interface {
 	GetActiveContracts(*GetActiveContractsRequest, grpc.ServerStreamingServer[GetActiveContractsResponse]) error
-	GetConnectedDomains(context.Context, *GetConnectedDomainsRequest) (*GetConnectedDomainsResponse, error)
+	GetConnectedSynchronizers(context.Context, *GetConnectedSynchronizersRequest) (*GetConnectedSynchronizersResponse, error)
 	GetLedgerEnd(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error)
 	GetLatestPrunedOffsets(context.Context, *GetLatestPrunedOffsetsRequest) (*GetLatestPrunedOffsetsResponse, error)
 	mustEmbedUnimplementedStateServiceServer()
@@ -115,8 +115,8 @@ type UnimplementedStateServiceServer struct{}
 func (UnimplementedStateServiceServer) GetActiveContracts(*GetActiveContractsRequest, grpc.ServerStreamingServer[GetActiveContractsResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method GetActiveContracts not implemented")
 }
-func (UnimplementedStateServiceServer) GetConnectedDomains(context.Context, *GetConnectedDomainsRequest) (*GetConnectedDomainsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetConnectedDomains not implemented")
+func (UnimplementedStateServiceServer) GetConnectedSynchronizers(context.Context, *GetConnectedSynchronizersRequest) (*GetConnectedSynchronizersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConnectedSynchronizers not implemented")
 }
 func (UnimplementedStateServiceServer) GetLedgerEnd(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLedgerEnd not implemented")
@@ -156,20 +156,20 @@ func _StateService_GetActiveContracts_Handler(srv interface{}, stream grpc.Serve
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type StateService_GetActiveContractsServer = grpc.ServerStreamingServer[GetActiveContractsResponse]
 
-func _StateService_GetConnectedDomains_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetConnectedDomainsRequest)
+func _StateService_GetConnectedSynchronizers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetConnectedSynchronizersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StateServiceServer).GetConnectedDomains(ctx, in)
+		return srv.(StateServiceServer).GetConnectedSynchronizers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StateService_GetConnectedDomains_FullMethodName,
+		FullMethod: StateService_GetConnectedSynchronizers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StateServiceServer).GetConnectedDomains(ctx, req.(*GetConnectedDomainsRequest))
+		return srv.(StateServiceServer).GetConnectedSynchronizers(ctx, req.(*GetConnectedSynchronizersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -218,8 +218,8 @@ var StateService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*StateServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetConnectedDomains",
-			Handler:    _StateService_GetConnectedDomains_Handler,
+			MethodName: "GetConnectedSynchronizers",
+			Handler:    _StateService_GetConnectedSynchronizers_Handler,
 		},
 		{
 			MethodName: "GetLedgerEnd",

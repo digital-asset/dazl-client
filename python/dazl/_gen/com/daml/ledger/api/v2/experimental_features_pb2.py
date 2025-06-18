@@ -28,7 +28,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n2com/daml/ledger/api/v2/experimental_features.proto\x12\x16\x63om.daml.ledger.api.v2\"\xec\x02\n\x14\x45xperimentalFeatures\x12O\n\x0bstatic_time\x18\x01 \x01(\x0b\x32..com.daml.ledger.api.v2.ExperimentalStaticTimeR\nstaticTime\x12z\n\x1a\x63ommand_inspection_service\x18\x02 \x01(\x0b\x32<.com.daml.ledger.api.v2.ExperimentalCommandInspectionServiceR\x18\x63ommandInspectionService\x12\x86\x01\n\x1einteractive_submission_service\x18\x03 \x01(\x0b\x32@.com.daml.ledger.api.v2.ExperimentalInteractiveSubmissionServiceR\x1cinteractiveSubmissionService\"6\n\x16\x45xperimentalStaticTime\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\"D\n$ExperimentalCommandInspectionService\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\"H\n(ExperimentalInteractiveSubmissionService\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupportedB\x98\x01\n\x16\x63om.daml.ledger.api.v2B\x1e\x45xperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16\x43om.Daml.Ledger.Api.V2b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n2com/daml/ledger/api/v2/experimental_features.proto\x12\x16\x63om.daml.ledger.api.v2\"\xe3\x01\n\x14\x45xperimentalFeatures\x12O\n\x0bstatic_time\x18\x01 \x01(\x0b\x32..com.daml.ledger.api.v2.ExperimentalStaticTimeR\nstaticTime\x12z\n\x1a\x63ommand_inspection_service\x18\x02 \x01(\x0b\x32<.com.daml.ledger.api.v2.ExperimentalCommandInspectionServiceR\x18\x63ommandInspectionService\"6\n\x16\x45xperimentalStaticTime\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\"D\n$ExperimentalCommandInspectionService\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupported\"?\n\x1f\x45xperimentalPartyTopologyEvents\x12\x1c\n\tsupported\x18\x01 \x01(\x08R\tsupportedB\x98\x01\n\x16\x63om.daml.ledger.api.v2B\x1e\x45xperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16\x43om.Daml.Ledger.Api.V2b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,11 +37,11 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\026com.daml.ledger.api.v2B\036ExperimentalFeaturesOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\252\002\026Com.Daml.Ledger.Api.V2'
   _globals['_EXPERIMENTALFEATURES']._serialized_start=79
-  _globals['_EXPERIMENTALFEATURES']._serialized_end=443
-  _globals['_EXPERIMENTALSTATICTIME']._serialized_start=445
-  _globals['_EXPERIMENTALSTATICTIME']._serialized_end=499
-  _globals['_EXPERIMENTALCOMMANDINSPECTIONSERVICE']._serialized_start=501
-  _globals['_EXPERIMENTALCOMMANDINSPECTIONSERVICE']._serialized_end=569
-  _globals['_EXPERIMENTALINTERACTIVESUBMISSIONSERVICE']._serialized_start=571
-  _globals['_EXPERIMENTALINTERACTIVESUBMISSIONSERVICE']._serialized_end=643
+  _globals['_EXPERIMENTALFEATURES']._serialized_end=306
+  _globals['_EXPERIMENTALSTATICTIME']._serialized_start=308
+  _globals['_EXPERIMENTALSTATICTIME']._serialized_end=362
+  _globals['_EXPERIMENTALCOMMANDINSPECTIONSERVICE']._serialized_start=364
+  _globals['_EXPERIMENTALCOMMANDINSPECTIONSERVICE']._serialized_end=432
+  _globals['_EXPERIMENTALPARTYTOPOLOGYEVENTS']._serialized_start=434
+  _globals['_EXPERIMENTALPARTYTOPOLOGYEVENTS']._serialized_end=497
 # @@protoc_insertion_point(module_scope)

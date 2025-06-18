@@ -25,7 +25,7 @@ const (
 
 type CompletionStreamRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	ApplicationId  string                 `protobuf:"bytes,1,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`
+	UserId         string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Parties        []string               `protobuf:"bytes,2,rep,name=parties,proto3" json:"parties,omitempty"`
 	BeginExclusive int64                  `protobuf:"varint,3,opt,name=begin_exclusive,json=beginExclusive,proto3" json:"begin_exclusive,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -62,9 +62,9 @@ func (*CompletionStreamRequest) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_command_completion_service_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CompletionStreamRequest) GetApplicationId() string {
+func (x *CompletionStreamRequest) GetUserId() string {
 	if x != nil {
-		return x.ApplicationId
+		return x.UserId
 	}
 	return ""
 }
@@ -169,9 +169,9 @@ var File_com_daml_ledger_api_v2_command_completion_service_proto protoreflect.Fi
 
 const file_com_daml_ledger_api_v2_command_completion_service_proto_rawDesc = "" +
 	"\n" +
-	"7com/daml/ledger/api/v2/command_completion_service.proto\x12\x16com.daml.ledger.api.v2\x1a'com/daml/ledger/api/v2/completion.proto\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\"\x83\x01\n" +
-	"\x17CompletionStreamRequest\x12%\n" +
-	"\x0eapplication_id\x18\x01 \x01(\tR\rapplicationId\x12\x18\n" +
+	"7com/daml/ledger/api/v2/command_completion_service.proto\x12\x16com.daml.ledger.api.v2\x1a'com/daml/ledger/api/v2/completion.proto\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\"u\n" +
+	"\x17CompletionStreamRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x18\n" +
 	"\aparties\x18\x02 \x03(\tR\aparties\x12'\n" +
 	"\x0fbegin_exclusive\x18\x03 \x01(\x03R\x0ebeginExclusive\"\xd0\x01\n" +
 	"\x18CompletionStreamResponse\x12D\n" +

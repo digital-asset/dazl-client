@@ -3,7 +3,7 @@
 # fmt: off
 # isort: skip_file
 from . import commands_pb2 as _commands_pb2
-from . import reassignment_command_pb2 as _reassignment_command_pb2
+from . import reassignment_commands_pb2 as _reassignment_commands_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Mapping as _Mapping
@@ -22,10 +22,10 @@ class SubmitResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class SubmitReassignmentRequest(_message.Message):
-    __slots__ = ("reassignment_command",)
-    REASSIGNMENT_COMMAND_FIELD_NUMBER: _ClassVar[int]
-    reassignment_command: _reassignment_command_pb2.ReassignmentCommand
-    def __init__(self, reassignment_command: _Optional[_Union[_reassignment_command_pb2.ReassignmentCommand, _Mapping]] = ...) -> None: ...
+    __slots__ = ("reassignment_commands",)
+    REASSIGNMENT_COMMANDS_FIELD_NUMBER: _ClassVar[int]
+    reassignment_commands: _reassignment_commands_pb2.ReassignmentCommands
+    def __init__(self, reassignment_commands: _Optional[_Union[_reassignment_commands_pb2.ReassignmentCommands, _Mapping]] = ...) -> None: ...
 
 class SubmitReassignmentResponse(_message.Message):
     __slots__ = ()

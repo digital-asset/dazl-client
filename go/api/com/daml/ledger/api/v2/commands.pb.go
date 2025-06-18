@@ -400,7 +400,7 @@ type DisclosedContract struct {
 	TemplateId       *Identifier            `protobuf:"bytes,1,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
 	ContractId       string                 `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
 	CreatedEventBlob []byte                 `protobuf:"bytes,3,opt,name=created_event_blob,json=createdEventBlob,proto3" json:"created_event_blob,omitempty"`
-	DomainId         string                 `protobuf:"bytes,4,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
+	SynchronizerId   string                 `protobuf:"bytes,4,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -456,19 +456,19 @@ func (x *DisclosedContract) GetCreatedEventBlob() []byte {
 	return nil
 }
 
-func (x *DisclosedContract) GetDomainId() string {
+func (x *DisclosedContract) GetSynchronizerId() string {
 	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
 
 type Commands struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	WorkflowId    string                 `protobuf:"bytes,1,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
-	ApplicationId string                 `protobuf:"bytes,2,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`
-	CommandId     string                 `protobuf:"bytes,3,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
-	Commands      []*Command             `protobuf:"bytes,4,rep,name=commands,proto3" json:"commands,omitempty"`
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	WorkflowId string                 `protobuf:"bytes,1,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
+	UserId     string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	CommandId  string                 `protobuf:"bytes,3,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
+	Commands   []*Command             `protobuf:"bytes,4,rep,name=commands,proto3" json:"commands,omitempty"`
 	// Types that are valid to be assigned to DeduplicationPeriod:
 	//
 	//	*Commands_DeduplicationDuration
@@ -480,8 +480,9 @@ type Commands struct {
 	ReadAs                       []string                       `protobuf:"bytes,10,rep,name=read_as,json=readAs,proto3" json:"read_as,omitempty"`
 	SubmissionId                 string                         `protobuf:"bytes,11,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
 	DisclosedContracts           []*DisclosedContract           `protobuf:"bytes,12,rep,name=disclosed_contracts,json=disclosedContracts,proto3" json:"disclosed_contracts,omitempty"`
-	DomainId                     string                         `protobuf:"bytes,13,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
+	SynchronizerId               string                         `protobuf:"bytes,13,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
 	PackageIdSelectionPreference []string                       `protobuf:"bytes,14,rep,name=package_id_selection_preference,json=packageIdSelectionPreference,proto3" json:"package_id_selection_preference,omitempty"`
+	PrefetchContractKeys         []*PrefetchContractKey         `protobuf:"bytes,15,rep,name=prefetch_contract_keys,json=prefetchContractKeys,proto3" json:"prefetch_contract_keys,omitempty"`
 	unknownFields                protoimpl.UnknownFields
 	sizeCache                    protoimpl.SizeCache
 }
@@ -523,9 +524,9 @@ func (x *Commands) GetWorkflowId() string {
 	return ""
 }
 
-func (x *Commands) GetApplicationId() string {
+func (x *Commands) GetUserId() string {
 	if x != nil {
-		return x.ApplicationId
+		return x.UserId
 	}
 	return ""
 }
@@ -611,9 +612,9 @@ func (x *Commands) GetDisclosedContracts() []*DisclosedContract {
 	return nil
 }
 
-func (x *Commands) GetDomainId() string {
+func (x *Commands) GetSynchronizerId() string {
 	if x != nil {
-		return x.DomainId
+		return x.SynchronizerId
 	}
 	return ""
 }
@@ -621,6 +622,13 @@ func (x *Commands) GetDomainId() string {
 func (x *Commands) GetPackageIdSelectionPreference() []string {
 	if x != nil {
 		return x.PackageIdSelectionPreference
+	}
+	return nil
+}
+
+func (x *Commands) GetPrefetchContractKeys() []*PrefetchContractKey {
+	if x != nil {
+		return x.PrefetchContractKeys
 	}
 	return nil
 }
@@ -640,6 +648,58 @@ type Commands_DeduplicationOffset struct {
 func (*Commands_DeduplicationDuration) isCommands_DeduplicationPeriod() {}
 
 func (*Commands_DeduplicationOffset) isCommands_DeduplicationPeriod() {}
+
+type PrefetchContractKey struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TemplateId    *Identifier            `protobuf:"bytes,1,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	ContractKey   *Value                 `protobuf:"bytes,2,opt,name=contract_key,json=contractKey,proto3" json:"contract_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PrefetchContractKey) Reset() {
+	*x = PrefetchContractKey{}
+	mi := &file_com_daml_ledger_api_v2_commands_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PrefetchContractKey) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrefetchContractKey) ProtoMessage() {}
+
+func (x *PrefetchContractKey) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_commands_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PrefetchContractKey.ProtoReflect.Descriptor instead.
+func (*PrefetchContractKey) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_commands_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *PrefetchContractKey) GetTemplateId() *Identifier {
+	if x != nil {
+		return x.TemplateId
+	}
+	return nil
+}
+
+func (x *PrefetchContractKey) GetContractKey() *Value {
+	if x != nil {
+		return x.ContractKey
+	}
+	return nil
+}
 
 var File_com_daml_ledger_api_v2_commands_proto protoreflect.FileDescriptor
 
@@ -674,18 +734,18 @@ const file_com_daml_ledger_api_v2_commands_proto_rawDesc = "" +
 	"templateId\x12I\n" +
 	"\x10create_arguments\x18\x02 \x01(\v2\x1e.com.daml.ledger.api.v2.RecordR\x0fcreateArguments\x12\x16\n" +
 	"\x06choice\x18\x03 \x01(\tR\x06choice\x12F\n" +
-	"\x0fchoice_argument\x18\x04 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\x0echoiceArgument\"\xc4\x01\n" +
+	"\x0fchoice_argument\x18\x04 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\x0echoiceArgument\"\xd0\x01\n" +
 	"\x11DisclosedContract\x12C\n" +
 	"\vtemplate_id\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
 	"templateId\x12\x1f\n" +
 	"\vcontract_id\x18\x02 \x01(\tR\n" +
 	"contractId\x12,\n" +
-	"\x12created_event_blob\x18\x03 \x01(\fR\x10createdEventBlob\x12\x1b\n" +
-	"\tdomain_id\x18\x04 \x01(\tR\bdomainId\"\xf9\x05\n" +
+	"\x12created_event_blob\x18\x03 \x01(\fR\x10createdEventBlob\x12'\n" +
+	"\x0fsynchronizer_id\x18\x04 \x01(\tR\x0esynchronizerId\"\xda\x06\n" +
 	"\bCommands\x12\x1f\n" +
 	"\vworkflow_id\x18\x01 \x01(\tR\n" +
-	"workflowId\x12%\n" +
-	"\x0eapplication_id\x18\x02 \x01(\tR\rapplicationId\x12\x1d\n" +
+	"workflowId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1d\n" +
 	"\n" +
 	"command_id\x18\x03 \x01(\tR\tcommandId\x12;\n" +
 	"\bcommands\x18\x04 \x03(\v2\x1f.com.daml.ledger.api.v2.CommandR\bcommands\x12R\n" +
@@ -697,10 +757,15 @@ const file_com_daml_ledger_api_v2_commands_proto_rawDesc = "" +
 	"\aread_as\x18\n" +
 	" \x03(\tR\x06readAs\x12#\n" +
 	"\rsubmission_id\x18\v \x01(\tR\fsubmissionId\x12Z\n" +
-	"\x13disclosed_contracts\x18\f \x03(\v2).com.daml.ledger.api.v2.DisclosedContractR\x12disclosedContracts\x12\x1b\n" +
-	"\tdomain_id\x18\r \x01(\tR\bdomainId\x12E\n" +
-	"\x1fpackage_id_selection_preference\x18\x0e \x03(\tR\x1cpackageIdSelectionPreferenceB\x16\n" +
-	"\x14deduplication_periodB\x8c\x01\n" +
+	"\x13disclosed_contracts\x18\f \x03(\v2).com.daml.ledger.api.v2.DisclosedContractR\x12disclosedContracts\x12'\n" +
+	"\x0fsynchronizer_id\x18\r \x01(\tR\x0esynchronizerId\x12E\n" +
+	"\x1fpackage_id_selection_preference\x18\x0e \x03(\tR\x1cpackageIdSelectionPreference\x12a\n" +
+	"\x16prefetch_contract_keys\x18\x0f \x03(\v2+.com.daml.ledger.api.v2.PrefetchContractKeyR\x14prefetchContractKeysB\x16\n" +
+	"\x14deduplication_period\"\x9c\x01\n" +
+	"\x13PrefetchContractKey\x12C\n" +
+	"\vtemplate_id\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
+	"templateId\x12@\n" +
+	"\fcontract_key\x18\x02 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\vcontractKeyB\x8c\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x12CommandsOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (
@@ -715,7 +780,7 @@ func file_com_daml_ledger_api_v2_commands_proto_rawDescGZIP() []byte {
 	return file_com_daml_ledger_api_v2_commands_proto_rawDescData
 }
 
-var file_com_daml_ledger_api_v2_commands_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_com_daml_ledger_api_v2_commands_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_com_daml_ledger_api_v2_commands_proto_goTypes = []any{
 	(*Command)(nil),                  // 0: com.daml.ledger.api.v2.Command
 	(*CreateCommand)(nil),            // 1: com.daml.ledger.api.v2.CreateCommand
@@ -724,38 +789,42 @@ var file_com_daml_ledger_api_v2_commands_proto_goTypes = []any{
 	(*CreateAndExerciseCommand)(nil), // 4: com.daml.ledger.api.v2.CreateAndExerciseCommand
 	(*DisclosedContract)(nil),        // 5: com.daml.ledger.api.v2.DisclosedContract
 	(*Commands)(nil),                 // 6: com.daml.ledger.api.v2.Commands
-	(*Identifier)(nil),               // 7: com.daml.ledger.api.v2.Identifier
-	(*Record)(nil),                   // 8: com.daml.ledger.api.v2.Record
-	(*Value)(nil),                    // 9: com.daml.ledger.api.v2.Value
-	(*durationpb.Duration)(nil),      // 10: google.protobuf.Duration
-	(*timestamppb.Timestamp)(nil),    // 11: google.protobuf.Timestamp
+	(*PrefetchContractKey)(nil),      // 7: com.daml.ledger.api.v2.PrefetchContractKey
+	(*Identifier)(nil),               // 8: com.daml.ledger.api.v2.Identifier
+	(*Record)(nil),                   // 9: com.daml.ledger.api.v2.Record
+	(*Value)(nil),                    // 10: com.daml.ledger.api.v2.Value
+	(*durationpb.Duration)(nil),      // 11: google.protobuf.Duration
+	(*timestamppb.Timestamp)(nil),    // 12: google.protobuf.Timestamp
 }
 var file_com_daml_ledger_api_v2_commands_proto_depIdxs = []int32{
 	1,  // 0: com.daml.ledger.api.v2.Command.create:type_name -> com.daml.ledger.api.v2.CreateCommand
 	2,  // 1: com.daml.ledger.api.v2.Command.exercise:type_name -> com.daml.ledger.api.v2.ExerciseCommand
 	3,  // 2: com.daml.ledger.api.v2.Command.exercise_by_key:type_name -> com.daml.ledger.api.v2.ExerciseByKeyCommand
 	4,  // 3: com.daml.ledger.api.v2.Command.create_and_exercise:type_name -> com.daml.ledger.api.v2.CreateAndExerciseCommand
-	7,  // 4: com.daml.ledger.api.v2.CreateCommand.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	8,  // 5: com.daml.ledger.api.v2.CreateCommand.create_arguments:type_name -> com.daml.ledger.api.v2.Record
-	7,  // 6: com.daml.ledger.api.v2.ExerciseCommand.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	9,  // 7: com.daml.ledger.api.v2.ExerciseCommand.choice_argument:type_name -> com.daml.ledger.api.v2.Value
-	7,  // 8: com.daml.ledger.api.v2.ExerciseByKeyCommand.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	9,  // 9: com.daml.ledger.api.v2.ExerciseByKeyCommand.contract_key:type_name -> com.daml.ledger.api.v2.Value
-	9,  // 10: com.daml.ledger.api.v2.ExerciseByKeyCommand.choice_argument:type_name -> com.daml.ledger.api.v2.Value
-	7,  // 11: com.daml.ledger.api.v2.CreateAndExerciseCommand.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	8,  // 12: com.daml.ledger.api.v2.CreateAndExerciseCommand.create_arguments:type_name -> com.daml.ledger.api.v2.Record
-	9,  // 13: com.daml.ledger.api.v2.CreateAndExerciseCommand.choice_argument:type_name -> com.daml.ledger.api.v2.Value
-	7,  // 14: com.daml.ledger.api.v2.DisclosedContract.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	8,  // 4: com.daml.ledger.api.v2.CreateCommand.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	9,  // 5: com.daml.ledger.api.v2.CreateCommand.create_arguments:type_name -> com.daml.ledger.api.v2.Record
+	8,  // 6: com.daml.ledger.api.v2.ExerciseCommand.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	10, // 7: com.daml.ledger.api.v2.ExerciseCommand.choice_argument:type_name -> com.daml.ledger.api.v2.Value
+	8,  // 8: com.daml.ledger.api.v2.ExerciseByKeyCommand.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	10, // 9: com.daml.ledger.api.v2.ExerciseByKeyCommand.contract_key:type_name -> com.daml.ledger.api.v2.Value
+	10, // 10: com.daml.ledger.api.v2.ExerciseByKeyCommand.choice_argument:type_name -> com.daml.ledger.api.v2.Value
+	8,  // 11: com.daml.ledger.api.v2.CreateAndExerciseCommand.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	9,  // 12: com.daml.ledger.api.v2.CreateAndExerciseCommand.create_arguments:type_name -> com.daml.ledger.api.v2.Record
+	10, // 13: com.daml.ledger.api.v2.CreateAndExerciseCommand.choice_argument:type_name -> com.daml.ledger.api.v2.Value
+	8,  // 14: com.daml.ledger.api.v2.DisclosedContract.template_id:type_name -> com.daml.ledger.api.v2.Identifier
 	0,  // 15: com.daml.ledger.api.v2.Commands.commands:type_name -> com.daml.ledger.api.v2.Command
-	10, // 16: com.daml.ledger.api.v2.Commands.deduplication_duration:type_name -> google.protobuf.Duration
-	11, // 17: com.daml.ledger.api.v2.Commands.min_ledger_time_abs:type_name -> google.protobuf.Timestamp
-	10, // 18: com.daml.ledger.api.v2.Commands.min_ledger_time_rel:type_name -> google.protobuf.Duration
+	11, // 16: com.daml.ledger.api.v2.Commands.deduplication_duration:type_name -> google.protobuf.Duration
+	12, // 17: com.daml.ledger.api.v2.Commands.min_ledger_time_abs:type_name -> google.protobuf.Timestamp
+	11, // 18: com.daml.ledger.api.v2.Commands.min_ledger_time_rel:type_name -> google.protobuf.Duration
 	5,  // 19: com.daml.ledger.api.v2.Commands.disclosed_contracts:type_name -> com.daml.ledger.api.v2.DisclosedContract
-	20, // [20:20] is the sub-list for method output_type
-	20, // [20:20] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	7,  // 20: com.daml.ledger.api.v2.Commands.prefetch_contract_keys:type_name -> com.daml.ledger.api.v2.PrefetchContractKey
+	8,  // 21: com.daml.ledger.api.v2.PrefetchContractKey.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	10, // 22: com.daml.ledger.api.v2.PrefetchContractKey.contract_key:type_name -> com.daml.ledger.api.v2.Value
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_commands_proto_init() }
@@ -780,7 +849,7 @@ func file_com_daml_ledger_api_v2_commands_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_commands_proto_rawDesc), len(file_com_daml_ledger_api_v2_commands_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

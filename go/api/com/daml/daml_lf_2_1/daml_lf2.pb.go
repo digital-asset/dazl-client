@@ -1482,7 +1482,7 @@ type BuiltinLit_Date struct {
 }
 
 type BuiltinLit_RoundingMode_ struct {
-	RoundingMode BuiltinLit_RoundingMode `protobuf:"varint,1001,opt,name=rounding_mode,json=roundingMode,proto3,enum=daml_lf_2.BuiltinLit_RoundingMode,oneof"`
+	RoundingMode BuiltinLit_RoundingMode `protobuf:"varint,1001,opt,name=rounding_mode,json=roundingMode,proto3,enum=daml_lf_2_1.BuiltinLit_RoundingMode,oneof"`
 }
 
 func (*BuiltinLit_Int64) isBuiltinLit_Sum() {}
@@ -2066,11 +2066,11 @@ type Expr_Val struct {
 }
 
 type Expr_Builtin struct {
-	Builtin BuiltinFunction `protobuf:"varint,4,opt,name=builtin,proto3,enum=daml_lf_2.BuiltinFunction,oneof"`
+	Builtin BuiltinFunction `protobuf:"varint,4,opt,name=builtin,proto3,enum=daml_lf_2_1.BuiltinFunction,oneof"`
 }
 
 type Expr_BuiltinCon struct {
-	BuiltinCon BuiltinCon `protobuf:"varint,5,opt,name=builtin_con,json=builtinCon,proto3,enum=daml_lf_2.BuiltinCon,oneof"`
+	BuiltinCon BuiltinCon `protobuf:"varint,5,opt,name=builtin_con,json=builtinCon,proto3,enum=daml_lf_2_1.BuiltinCon,oneof"`
 }
 
 type Expr_BuiltinLit struct {
@@ -2474,7 +2474,7 @@ type CaseAlt_Variant_ struct {
 }
 
 type CaseAlt_BuiltinCon struct {
-	BuiltinCon BuiltinCon `protobuf:"varint,4,opt,name=builtin_con,json=builtinCon,proto3,enum=daml_lf_2.BuiltinCon,oneof"`
+	BuiltinCon BuiltinCon `protobuf:"varint,4,opt,name=builtin_con,json=builtinCon,proto3,enum=daml_lf_2_1.BuiltinCon,oneof"`
 }
 
 type CaseAlt_Nil struct {
@@ -4541,7 +4541,7 @@ func (x *Type_Syn) GetArgs() []*Type {
 
 type Type_Builtin struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Builtin       BuiltinType            `protobuf:"varint,1,opt,name=builtin,proto3,enum=daml_lf_2.BuiltinType" json:"builtin,omitempty"`
+	Builtin       BuiltinType            `protobuf:"varint,1,opt,name=builtin,proto3,enum=daml_lf_2_1.BuiltinType" json:"builtin,omitempty"`
 	Args          []*Type                `protobuf:"bytes,2,rep,name=args,proto3" json:"args,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -8127,84 +8127,84 @@ var File_com_daml_daml_lf_2_1_daml_lf2_proto protoreflect.FileDescriptor
 
 const file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDesc = "" +
 	"\n" +
-	"#com/daml/daml_lf_2_1/daml_lf2.proto\x12\tdaml_lf_2\"\x06\n" +
-	"\x04Unit\"s\n" +
+	"#com/daml/daml_lf_2_1/daml_lf2.proto\x12\vdaml_lf_2_1\"\x06\n" +
+	"\x04Unit\"u\n" +
 	"\n" +
-	"PackageRef\x12%\n" +
-	"\x04self\x18\x01 \x01(\v2\x0f.daml_lf_2.UnitH\x00R\x04self\x127\n" +
+	"PackageRef\x12'\n" +
+	"\x04self\x18\x01 \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\x04self\x127\n" +
 	"\x17package_id_interned_str\x18\x03 \x01(\x05H\x00R\x14packageIdInternedStrB\x05\n" +
-	"\x03Sum\"\x80\x01\n" +
-	"\tModuleRef\x126\n" +
-	"\vpackage_ref\x18\x01 \x01(\v2\x15.daml_lf_2.PackageRefR\n" +
+	"\x03Sum\"\x82\x01\n" +
+	"\tModuleRef\x128\n" +
+	"\vpackage_ref\x18\x01 \x01(\v2\x17.daml_lf_2_1.PackageRefR\n" +
 	"packageRef\x12;\n" +
-	"\x1amodule_name_interned_dname\x18\x02 \x01(\x05R\x17moduleNameInternedDname\"k\n" +
-	"\vTypeConName\x12,\n" +
-	"\x06module\x18\x01 \x01(\v2\x14.daml_lf_2.ModuleRefR\x06module\x12.\n" +
-	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\"k\n" +
-	"\vTypeSynName\x12,\n" +
-	"\x06module\x18\x01 \x01(\v2\x14.daml_lf_2.ModuleRefR\x06module\x12.\n" +
-	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\"g\n" +
-	"\aValName\x12,\n" +
-	"\x06module\x18\x01 \x01(\v2\x14.daml_lf_2.ModuleRefR\x06module\x12.\n" +
-	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\"b\n" +
+	"\x1amodule_name_interned_dname\x18\x02 \x01(\x05R\x17moduleNameInternedDname\"m\n" +
+	"\vTypeConName\x12.\n" +
+	"\x06module\x18\x01 \x01(\v2\x16.daml_lf_2_1.ModuleRefR\x06module\x12.\n" +
+	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\"m\n" +
+	"\vTypeSynName\x12.\n" +
+	"\x06module\x18\x01 \x01(\v2\x16.daml_lf_2_1.ModuleRefR\x06module\x12.\n" +
+	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\"i\n" +
+	"\aValName\x12.\n" +
+	"\x06module\x18\x01 \x01(\v2\x16.daml_lf_2_1.ModuleRefR\x06module\x12.\n" +
+	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\"d\n" +
 	"\rFieldWithType\x12,\n" +
-	"\x12field_interned_str\x18\x03 \x01(\x05R\x10fieldInternedStr\x12#\n" +
-	"\x04type\x18\x02 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\"\\\n" +
+	"\x12field_interned_str\x18\x03 \x01(\x05R\x10fieldInternedStr\x12%\n" +
+	"\x04type\x18\x02 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\"^\n" +
 	"\vVarWithType\x12(\n" +
-	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x12#\n" +
-	"\x04type\x18\x02 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\"`\n" +
+	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x12%\n" +
+	"\x04type\x18\x02 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\"b\n" +
 	"\x0fTypeVarWithKind\x12(\n" +
-	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x12#\n" +
-	"\x04kind\x18\x02 \x01(\v2\x0f.daml_lf_2.KindR\x04kind\"b\n" +
+	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x12%\n" +
+	"\x04kind\x18\x02 \x01(\v2\x11.daml_lf_2_1.KindR\x04kind\"d\n" +
 	"\rFieldWithExpr\x12,\n" +
-	"\x12field_interned_str\x18\x03 \x01(\x05R\x10fieldInternedStr\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\"`\n" +
-	"\aBinding\x12.\n" +
-	"\x06binder\x18\x01 \x01(\v2\x16.daml_lf_2.VarWithTypeR\x06binder\x12%\n" +
-	"\x05bound\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x05bound\"\xe3\x01\n" +
-	"\x04Kind\x12%\n" +
-	"\x04star\x18\x01 \x01(\v2\x0f.daml_lf_2.UnitH\x00R\x04star\x12-\n" +
-	"\x05arrow\x18\x02 \x01(\v2\x15.daml_lf_2.Kind.ArrowH\x00R\x05arrow\x12#\n" +
-	"\x03nat\x18\x03 \x01(\v2\x0f.daml_lf_2.UnitH\x00R\x03nat\x1aY\n" +
-	"\x05Arrow\x12'\n" +
-	"\x06params\x18\x01 \x03(\v2\x0f.daml_lf_2.KindR\x06params\x12'\n" +
-	"\x06result\x18\x02 \x01(\v2\x0f.daml_lf_2.KindR\x06resultB\x05\n" +
-	"\x03Sum\"\xda\x06\n" +
-	"\x04Type\x12'\n" +
-	"\x03var\x18\x01 \x01(\v2\x13.daml_lf_2.Type.VarH\x00R\x03var\x12'\n" +
-	"\x03con\x18\x02 \x01(\v2\x13.daml_lf_2.Type.ConH\x00R\x03con\x123\n" +
-	"\abuiltin\x18\x03 \x01(\v2\x17.daml_lf_2.Type.BuiltinH\x00R\abuiltin\x120\n" +
-	"\x06forall\x18\x04 \x01(\v2\x16.daml_lf_2.Type.ForallH\x00R\x06forall\x120\n" +
-	"\x06struct\x18\x05 \x01(\v2\x16.daml_lf_2.Type.StructH\x00R\x06struct\x12\x12\n" +
-	"\x03nat\x18\x06 \x01(\x12H\x00R\x03nat\x12'\n" +
-	"\x03syn\x18\a \x01(\v2\x13.daml_lf_2.Type.SynH\x00R\x03syn\x12\x1c\n" +
-	"\binterned\x18\b \x01(\x05H\x00R\binterned\x1aT\n" +
+	"\x12field_interned_str\x18\x03 \x01(\x05R\x10fieldInternedStr\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\"d\n" +
+	"\aBinding\x120\n" +
+	"\x06binder\x18\x01 \x01(\v2\x18.daml_lf_2_1.VarWithTypeR\x06binder\x12'\n" +
+	"\x05bound\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x05bound\"\xed\x01\n" +
+	"\x04Kind\x12'\n" +
+	"\x04star\x18\x01 \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\x04star\x12/\n" +
+	"\x05arrow\x18\x02 \x01(\v2\x17.daml_lf_2_1.Kind.ArrowH\x00R\x05arrow\x12%\n" +
+	"\x03nat\x18\x03 \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\x03nat\x1a]\n" +
+	"\x05Arrow\x12)\n" +
+	"\x06params\x18\x01 \x03(\v2\x11.daml_lf_2_1.KindR\x06params\x12)\n" +
+	"\x06result\x18\x02 \x01(\v2\x11.daml_lf_2_1.KindR\x06resultB\x05\n" +
+	"\x03Sum\"\xfa\x06\n" +
+	"\x04Type\x12)\n" +
+	"\x03var\x18\x01 \x01(\v2\x15.daml_lf_2_1.Type.VarH\x00R\x03var\x12)\n" +
+	"\x03con\x18\x02 \x01(\v2\x15.daml_lf_2_1.Type.ConH\x00R\x03con\x125\n" +
+	"\abuiltin\x18\x03 \x01(\v2\x19.daml_lf_2_1.Type.BuiltinH\x00R\abuiltin\x122\n" +
+	"\x06forall\x18\x04 \x01(\v2\x18.daml_lf_2_1.Type.ForallH\x00R\x06forall\x122\n" +
+	"\x06struct\x18\x05 \x01(\v2\x18.daml_lf_2_1.Type.StructH\x00R\x06struct\x12\x12\n" +
+	"\x03nat\x18\x06 \x01(\x12H\x00R\x03nat\x12)\n" +
+	"\x03syn\x18\a \x01(\v2\x15.daml_lf_2_1.Type.SynH\x00R\x03syn\x12\x1c\n" +
+	"\binterned\x18\b \x01(\x05H\x00R\binterned\x1aV\n" +
 	"\x03Var\x12(\n" +
-	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x12#\n" +
-	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_2.TypeR\x04args\x1aX\n" +
-	"\x03Con\x12,\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\x05tycon\x12#\n" +
-	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_2.TypeR\x04args\x1aX\n" +
-	"\x03Syn\x12,\n" +
-	"\x05tysyn\x18\x01 \x01(\v2\x16.daml_lf_2.TypeSynNameR\x05tysyn\x12#\n" +
-	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_2.TypeR\x04args\x1a`\n" +
-	"\aBuiltin\x120\n" +
-	"\abuiltin\x18\x01 \x01(\x0e2\x16.daml_lf_2.BuiltinTypeR\abuiltin\x12#\n" +
-	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_2.TypeR\x04args\x1a]\n" +
-	"\x06Forall\x12.\n" +
-	"\x04vars\x18\x01 \x03(\v2\x1a.daml_lf_2.TypeVarWithKindR\x04vars\x12#\n" +
-	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_2.TypeR\x04body\x1a:\n" +
-	"\x06Struct\x120\n" +
-	"\x06fields\x18\x01 \x03(\v2\x18.daml_lf_2.FieldWithTypeR\x06fieldsB\x05\n" +
-	"\x03Sum\"\x85\x03\n" +
+	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x12%\n" +
+	"\x04args\x18\x02 \x03(\v2\x11.daml_lf_2_1.TypeR\x04args\x1a\\\n" +
+	"\x03Con\x12.\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x05tycon\x12%\n" +
+	"\x04args\x18\x02 \x03(\v2\x11.daml_lf_2_1.TypeR\x04args\x1a\\\n" +
+	"\x03Syn\x12.\n" +
+	"\x05tysyn\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeSynNameR\x05tysyn\x12%\n" +
+	"\x04args\x18\x02 \x03(\v2\x11.daml_lf_2_1.TypeR\x04args\x1ad\n" +
+	"\aBuiltin\x122\n" +
+	"\abuiltin\x18\x01 \x01(\x0e2\x18.daml_lf_2_1.BuiltinTypeR\abuiltin\x12%\n" +
+	"\x04args\x18\x02 \x03(\v2\x11.daml_lf_2_1.TypeR\x04args\x1aa\n" +
+	"\x06Forall\x120\n" +
+	"\x04vars\x18\x01 \x03(\v2\x1c.daml_lf_2_1.TypeVarWithKindR\x04vars\x12%\n" +
+	"\x04body\x18\x02 \x01(\v2\x11.daml_lf_2_1.TypeR\x04body\x1a<\n" +
+	"\x06Struct\x122\n" +
+	"\x06fields\x18\x01 \x03(\v2\x1a.daml_lf_2_1.FieldWithTypeR\x06fieldsB\x05\n" +
+	"\x03Sum\"\x87\x03\n" +
 	"\n" +
 	"BuiltinLit\x12\x16\n" +
 	"\x05int64\x18\x01 \x01(\x12H\x00R\x05int64\x12\x1e\n" +
 	"\ttimestamp\x18\x02 \x01(\x10H\x00R\ttimestamp\x122\n" +
 	"\x14numeric_interned_str\x18\x03 \x01(\x05H\x00R\x12numericInternedStr\x12,\n" +
 	"\x11text_interned_str\x18\x04 \x01(\x05H\x00R\x0ftextInternedStr\x12\x14\n" +
-	"\x04date\x18\x05 \x01(\x05H\x00R\x04date\x12J\n" +
-	"\rrounding_mode\x18\xe9\a \x01(\x0e2\".daml_lf_2.BuiltinLit.RoundingModeH\x00R\froundingMode\"t\n" +
+	"\x04date\x18\x05 \x01(\x05H\x00R\x04date\x12L\n" +
+	"\rrounding_mode\x18\xe9\a \x01(\x0e2$.daml_lf_2_1.BuiltinLit.RoundingModeH\x00R\froundingMode\"t\n" +
 	"\fRoundingMode\x12\x06\n" +
 	"\x02UP\x10\x00\x12\b\n" +
 	"\x04DOWN\x10\x01\x12\v\n" +
@@ -8214,446 +8214,446 @@ const file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDesc = "" +
 	"\tHALF_DOWN\x10\x05\x12\r\n" +
 	"\tHALF_EVEN\x10\x06\x12\x0f\n" +
 	"\vUNNECESSARY\x10\aB\x05\n" +
-	"\x03Sum\"\xe2\x01\n" +
-	"\bLocation\x12,\n" +
-	"\x06module\x18\x01 \x01(\v2\x14.daml_lf_2.ModuleRefR\x06module\x12/\n" +
-	"\x05range\x18\x02 \x01(\v2\x19.daml_lf_2.Location.RangeR\x05range\x1aw\n" +
+	"\x03Sum\"\xe6\x01\n" +
+	"\bLocation\x12.\n" +
+	"\x06module\x18\x01 \x01(\v2\x16.daml_lf_2_1.ModuleRefR\x06module\x121\n" +
+	"\x05range\x18\x02 \x01(\v2\x1b.daml_lf_2_1.Location.RangeR\x05range\x1aw\n" +
 	"\x05Range\x12\x1d\n" +
 	"\n" +
 	"start_line\x18\x01 \x01(\x05R\tstartLine\x12\x1b\n" +
 	"\tstart_col\x18\x02 \x01(\x05R\bstartCol\x12\x19\n" +
 	"\bend_line\x18\x03 \x01(\x05R\aendLine\x12\x17\n" +
-	"\aend_col\x18\x04 \x01(\x05R\x06endCol\"\xb8;\n" +
-	"\x04Expr\x12/\n" +
-	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_2.LocationR\blocation\x12*\n" +
-	"\x10var_interned_str\x18\x02 \x01(\x05H\x00R\x0evarInternedStr\x12&\n" +
-	"\x03val\x18\x03 \x01(\v2\x12.daml_lf_2.ValNameH\x00R\x03val\x126\n" +
-	"\abuiltin\x18\x04 \x01(\x0e2\x1a.daml_lf_2.BuiltinFunctionH\x00R\abuiltin\x128\n" +
-	"\vbuiltin_con\x18\x05 \x01(\x0e2\x15.daml_lf_2.BuiltinConH\x00R\n" +
-	"builtinCon\x128\n" +
-	"\vbuiltin_lit\x18\x06 \x01(\v2\x15.daml_lf_2.BuiltinLitH\x00R\n" +
-	"builtinLit\x121\n" +
-	"\arec_con\x18\a \x01(\v2\x16.daml_lf_2.Expr.RecConH\x00R\x06recCon\x124\n" +
-	"\brec_proj\x18\b \x01(\v2\x17.daml_lf_2.Expr.RecProjH\x00R\arecProj\x121\n" +
-	"\arec_upd\x18\t \x01(\v2\x16.daml_lf_2.Expr.RecUpdH\x00R\x06recUpd\x12=\n" +
+	"\aend_col\x18\x04 \x01(\x05R\x06endCol\"\xac=\n" +
+	"\x04Expr\x121\n" +
+	"\blocation\x18\x01 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x12*\n" +
+	"\x10var_interned_str\x18\x02 \x01(\x05H\x00R\x0evarInternedStr\x12(\n" +
+	"\x03val\x18\x03 \x01(\v2\x14.daml_lf_2_1.ValNameH\x00R\x03val\x128\n" +
+	"\abuiltin\x18\x04 \x01(\x0e2\x1c.daml_lf_2_1.BuiltinFunctionH\x00R\abuiltin\x12:\n" +
+	"\vbuiltin_con\x18\x05 \x01(\x0e2\x17.daml_lf_2_1.BuiltinConH\x00R\n" +
+	"builtinCon\x12:\n" +
+	"\vbuiltin_lit\x18\x06 \x01(\v2\x17.daml_lf_2_1.BuiltinLitH\x00R\n" +
+	"builtinLit\x123\n" +
+	"\arec_con\x18\a \x01(\v2\x18.daml_lf_2_1.Expr.RecConH\x00R\x06recCon\x126\n" +
+	"\brec_proj\x18\b \x01(\v2\x19.daml_lf_2_1.Expr.RecProjH\x00R\arecProj\x123\n" +
+	"\arec_upd\x18\t \x01(\v2\x18.daml_lf_2_1.Expr.RecUpdH\x00R\x06recUpd\x12?\n" +
 	"\vvariant_con\x18\n" +
-	" \x01(\v2\x1a.daml_lf_2.Expr.VariantConH\x00R\n" +
-	"variantCon\x124\n" +
-	"\benum_con\x18\v \x01(\v2\x17.daml_lf_2.Expr.EnumConH\x00R\aenumCon\x12:\n" +
+	" \x01(\v2\x1c.daml_lf_2_1.Expr.VariantConH\x00R\n" +
+	"variantCon\x126\n" +
+	"\benum_con\x18\v \x01(\v2\x19.daml_lf_2_1.Expr.EnumConH\x00R\aenumCon\x12<\n" +
 	"\n" +
-	"struct_con\x18\f \x01(\v2\x19.daml_lf_2.Expr.StructConH\x00R\tstructCon\x12=\n" +
-	"\vstruct_proj\x18\r \x01(\v2\x1a.daml_lf_2.Expr.StructProjH\x00R\n" +
-	"structProj\x12:\n" +
+	"struct_con\x18\f \x01(\v2\x1b.daml_lf_2_1.Expr.StructConH\x00R\tstructCon\x12?\n" +
+	"\vstruct_proj\x18\r \x01(\v2\x1c.daml_lf_2_1.Expr.StructProjH\x00R\n" +
+	"structProj\x12<\n" +
 	"\n" +
-	"struct_upd\x18\x0e \x01(\v2\x19.daml_lf_2.Expr.StructUpdH\x00R\tstructUpd\x12'\n" +
-	"\x03app\x18\x0f \x01(\v2\x13.daml_lf_2.Expr.AppH\x00R\x03app\x12.\n" +
-	"\x06ty_app\x18\x10 \x01(\v2\x15.daml_lf_2.Expr.TyAppH\x00R\x05tyApp\x12'\n" +
-	"\x03abs\x18\x11 \x01(\v2\x13.daml_lf_2.Expr.AbsH\x00R\x03abs\x12.\n" +
-	"\x06ty_abs\x18\x12 \x01(\v2\x15.daml_lf_2.Expr.TyAbsH\x00R\x05tyAbs\x12%\n" +
-	"\x04case\x18\x13 \x01(\v2\x0f.daml_lf_2.CaseH\x00R\x04case\x12$\n" +
-	"\x03let\x18\x14 \x01(\v2\x10.daml_lf_2.BlockH\x00R\x03let\x12'\n" +
-	"\x03nil\x18\x15 \x01(\v2\x13.daml_lf_2.Expr.NilH\x00R\x03nil\x12*\n" +
-	"\x04cons\x18\x16 \x01(\v2\x14.daml_lf_2.Expr.ConsH\x00R\x04cons\x12+\n" +
-	"\x06update\x18\x17 \x01(\v2\x11.daml_lf_2.UpdateH\x00R\x06update\x12C\n" +
-	"\roptional_none\x18\x19 \x01(\v2\x1c.daml_lf_2.Expr.OptionalNoneH\x00R\foptionalNone\x12C\n" +
-	"\roptional_some\x18\x1a \x01(\v2\x1c.daml_lf_2.Expr.OptionalSomeH\x00R\foptionalSome\x12.\n" +
-	"\x06to_any\x18\x1b \x01(\v2\x15.daml_lf_2.Expr.ToAnyH\x00R\x05toAny\x124\n" +
-	"\bfrom_any\x18\x1c \x01(\v2\x17.daml_lf_2.Expr.FromAnyH\x00R\afromAny\x12,\n" +
-	"\btype_rep\x18\x1d \x01(\v2\x0f.daml_lf_2.TypeH\x00R\atypeRep\x12J\n" +
-	"\x10to_any_exception\x18\x1e \x01(\v2\x1e.daml_lf_2.Expr.ToAnyExceptionH\x00R\x0etoAnyException\x12P\n" +
-	"\x12from_any_exception\x18\x1f \x01(\v2 .daml_lf_2.Expr.FromAnyExceptionH\x00R\x10fromAnyException\x12-\n" +
-	"\x05throw\x18  \x01(\v2\x15.daml_lf_2.Expr.ThrowH\x00R\x05throw\x12@\n" +
-	"\fto_interface\x18! \x01(\v2\x1b.daml_lf_2.Expr.ToInterfaceH\x00R\vtoInterface\x12F\n" +
-	"\x0efrom_interface\x18\" \x01(\v2\x1d.daml_lf_2.Expr.FromInterfaceH\x00R\rfromInterface\x12F\n" +
-	"\x0ecall_interface\x18# \x01(\v2\x1d.daml_lf_2.Expr.CallInterfaceH\x00R\rcallInterface\x12U\n" +
-	"\x13signatory_interface\x18$ \x01(\v2\".daml_lf_2.Expr.SignatoryInterfaceH\x00R\x12signatoryInterface\x12R\n" +
-	"\x12observer_interface\x18% \x01(\v2!.daml_lf_2.Expr.ObserverInterfaceH\x00R\x11observerInterface\x12F\n" +
-	"\x0eview_interface\x18& \x01(\v2\x1d.daml_lf_2.Expr.ViewInterfaceH\x00R\rviewInterface\x12Y\n" +
-	"\x15unsafe_from_interface\x18' \x01(\v2#.daml_lf_2.Expr.UnsafeFromInterfaceH\x00R\x13unsafeFromInterface\x12i\n" +
-	"\x1binterface_template_type_rep\x18( \x01(\v2(.daml_lf_2.Expr.InterfaceTemplateTypeRepH\x00R\x18interfaceTemplateTypeRep\x12Y\n" +
-	"\x15to_required_interface\x18) \x01(\v2#.daml_lf_2.Expr.ToRequiredInterfaceH\x00R\x13toRequiredInterface\x12_\n" +
-	"\x17from_required_interface\x18* \x01(\v2%.daml_lf_2.Expr.FromRequiredInterfaceH\x00R\x15fromRequiredInterface\x12r\n" +
-	"\x1eunsafe_from_required_interface\x18+ \x01(\v2+.daml_lf_2.Expr.UnsafeFromRequiredInterfaceH\x00R\x1bunsafeFromRequiredInterface\x12P\n" +
-	"\x11choice_controller\x18\xe9\a \x01(\v2 .daml_lf_2.Expr.ChoiceControllerH\x00R\x10choiceController\x12J\n" +
-	"\x0fchoice_observer\x18\xea\a \x01(\v2\x1e.daml_lf_2.Expr.ChoiceObserverH\x00R\x0echoiceObserver\x122\n" +
-	"\bscenario\x18\xeb\a \x01(\v2\x13.daml_lf_2.ScenarioH\x00R\bscenario\x12C\n" +
-	"\fexperimental\x18\x8fN \x01(\v2\x1c.daml_lf_2.Expr.ExperimentalH\x00R\fexperimental\x1ae\n" +
-	"\x06RecCon\x12)\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_2.Type.ConR\x05tycon\x120\n" +
-	"\x06fields\x18\x02 \x03(\v2\x18.daml_lf_2.FieldWithExprR\x06fields\x1a\x8b\x01\n" +
-	"\aRecProj\x12)\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_2.Type.ConR\x05tycon\x12,\n" +
-	"\x12field_interned_str\x18\x04 \x01(\x05R\x10fieldInternedStr\x12'\n" +
-	"\x06record\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x06record\x1a\xb3\x01\n" +
-	"\x06RecUpd\x12)\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_2.Type.ConR\x05tycon\x12,\n" +
-	"\x12field_interned_str\x18\x02 \x01(\x05R\x10fieldInternedStr\x12'\n" +
-	"\x06record\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x06record\x12'\n" +
-	"\x06update\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\x06update\x1a\xa2\x01\n" +
+	"struct_upd\x18\x0e \x01(\v2\x1b.daml_lf_2_1.Expr.StructUpdH\x00R\tstructUpd\x12)\n" +
+	"\x03app\x18\x0f \x01(\v2\x15.daml_lf_2_1.Expr.AppH\x00R\x03app\x120\n" +
+	"\x06ty_app\x18\x10 \x01(\v2\x17.daml_lf_2_1.Expr.TyAppH\x00R\x05tyApp\x12)\n" +
+	"\x03abs\x18\x11 \x01(\v2\x15.daml_lf_2_1.Expr.AbsH\x00R\x03abs\x120\n" +
+	"\x06ty_abs\x18\x12 \x01(\v2\x17.daml_lf_2_1.Expr.TyAbsH\x00R\x05tyAbs\x12'\n" +
+	"\x04case\x18\x13 \x01(\v2\x11.daml_lf_2_1.CaseH\x00R\x04case\x12&\n" +
+	"\x03let\x18\x14 \x01(\v2\x12.daml_lf_2_1.BlockH\x00R\x03let\x12)\n" +
+	"\x03nil\x18\x15 \x01(\v2\x15.daml_lf_2_1.Expr.NilH\x00R\x03nil\x12,\n" +
+	"\x04cons\x18\x16 \x01(\v2\x16.daml_lf_2_1.Expr.ConsH\x00R\x04cons\x12-\n" +
+	"\x06update\x18\x17 \x01(\v2\x13.daml_lf_2_1.UpdateH\x00R\x06update\x12E\n" +
+	"\roptional_none\x18\x19 \x01(\v2\x1e.daml_lf_2_1.Expr.OptionalNoneH\x00R\foptionalNone\x12E\n" +
+	"\roptional_some\x18\x1a \x01(\v2\x1e.daml_lf_2_1.Expr.OptionalSomeH\x00R\foptionalSome\x120\n" +
+	"\x06to_any\x18\x1b \x01(\v2\x17.daml_lf_2_1.Expr.ToAnyH\x00R\x05toAny\x126\n" +
+	"\bfrom_any\x18\x1c \x01(\v2\x19.daml_lf_2_1.Expr.FromAnyH\x00R\afromAny\x12.\n" +
+	"\btype_rep\x18\x1d \x01(\v2\x11.daml_lf_2_1.TypeH\x00R\atypeRep\x12L\n" +
+	"\x10to_any_exception\x18\x1e \x01(\v2 .daml_lf_2_1.Expr.ToAnyExceptionH\x00R\x0etoAnyException\x12R\n" +
+	"\x12from_any_exception\x18\x1f \x01(\v2\".daml_lf_2_1.Expr.FromAnyExceptionH\x00R\x10fromAnyException\x12/\n" +
+	"\x05throw\x18  \x01(\v2\x17.daml_lf_2_1.Expr.ThrowH\x00R\x05throw\x12B\n" +
+	"\fto_interface\x18! \x01(\v2\x1d.daml_lf_2_1.Expr.ToInterfaceH\x00R\vtoInterface\x12H\n" +
+	"\x0efrom_interface\x18\" \x01(\v2\x1f.daml_lf_2_1.Expr.FromInterfaceH\x00R\rfromInterface\x12H\n" +
+	"\x0ecall_interface\x18# \x01(\v2\x1f.daml_lf_2_1.Expr.CallInterfaceH\x00R\rcallInterface\x12W\n" +
+	"\x13signatory_interface\x18$ \x01(\v2$.daml_lf_2_1.Expr.SignatoryInterfaceH\x00R\x12signatoryInterface\x12T\n" +
+	"\x12observer_interface\x18% \x01(\v2#.daml_lf_2_1.Expr.ObserverInterfaceH\x00R\x11observerInterface\x12H\n" +
+	"\x0eview_interface\x18& \x01(\v2\x1f.daml_lf_2_1.Expr.ViewInterfaceH\x00R\rviewInterface\x12[\n" +
+	"\x15unsafe_from_interface\x18' \x01(\v2%.daml_lf_2_1.Expr.UnsafeFromInterfaceH\x00R\x13unsafeFromInterface\x12k\n" +
+	"\x1binterface_template_type_rep\x18( \x01(\v2*.daml_lf_2_1.Expr.InterfaceTemplateTypeRepH\x00R\x18interfaceTemplateTypeRep\x12[\n" +
+	"\x15to_required_interface\x18) \x01(\v2%.daml_lf_2_1.Expr.ToRequiredInterfaceH\x00R\x13toRequiredInterface\x12a\n" +
+	"\x17from_required_interface\x18* \x01(\v2'.daml_lf_2_1.Expr.FromRequiredInterfaceH\x00R\x15fromRequiredInterface\x12t\n" +
+	"\x1eunsafe_from_required_interface\x18+ \x01(\v2-.daml_lf_2_1.Expr.UnsafeFromRequiredInterfaceH\x00R\x1bunsafeFromRequiredInterface\x12R\n" +
+	"\x11choice_controller\x18\xe9\a \x01(\v2\".daml_lf_2_1.Expr.ChoiceControllerH\x00R\x10choiceController\x12L\n" +
+	"\x0fchoice_observer\x18\xea\a \x01(\v2 .daml_lf_2_1.Expr.ChoiceObserverH\x00R\x0echoiceObserver\x124\n" +
+	"\bscenario\x18\xeb\a \x01(\v2\x15.daml_lf_2_1.ScenarioH\x00R\bscenario\x12E\n" +
+	"\fexperimental\x18\x8fN \x01(\v2\x1e.daml_lf_2_1.Expr.ExperimentalH\x00R\fexperimental\x1ai\n" +
+	"\x06RecCon\x12+\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x15.daml_lf_2_1.Type.ConR\x05tycon\x122\n" +
+	"\x06fields\x18\x02 \x03(\v2\x1a.daml_lf_2_1.FieldWithExprR\x06fields\x1a\x8f\x01\n" +
+	"\aRecProj\x12+\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x15.daml_lf_2_1.Type.ConR\x05tycon\x12,\n" +
+	"\x12field_interned_str\x18\x04 \x01(\x05R\x10fieldInternedStr\x12)\n" +
+	"\x06record\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x06record\x1a\xb9\x01\n" +
+	"\x06RecUpd\x12+\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x15.daml_lf_2_1.Type.ConR\x05tycon\x12,\n" +
+	"\x12field_interned_str\x18\x02 \x01(\x05R\x10fieldInternedStr\x12)\n" +
+	"\x06record\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x06record\x12)\n" +
+	"\x06update\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\x06update\x1a\xa6\x01\n" +
 	"\n" +
-	"VariantCon\x12)\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_2.Type.ConR\x05tycon\x127\n" +
-	"\x18variant_con_interned_str\x18\x02 \x01(\x05R\x15variantConInternedStr\x120\n" +
-	"\vvariant_arg\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\n" +
-	"variantArg\x1aj\n" +
-	"\aEnumCon\x12,\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\x05tycon\x121\n" +
-	"\x15enum_con_interned_str\x18\x02 \x01(\x05R\x12enumConInternedStr\x1a=\n" +
-	"\tStructCon\x120\n" +
-	"\x06fields\x18\x01 \x03(\v2\x18.daml_lf_2.FieldWithExprR\x06fields\x1ac\n" +
+	"VariantCon\x12+\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x15.daml_lf_2_1.Type.ConR\x05tycon\x127\n" +
+	"\x18variant_con_interned_str\x18\x02 \x01(\x05R\x15variantConInternedStr\x122\n" +
+	"\vvariant_arg\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\n" +
+	"variantArg\x1al\n" +
+	"\aEnumCon\x12.\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x05tycon\x121\n" +
+	"\x15enum_con_interned_str\x18\x02 \x01(\x05R\x12enumConInternedStr\x1a?\n" +
+	"\tStructCon\x122\n" +
+	"\x06fields\x18\x01 \x03(\v2\x1a.daml_lf_2_1.FieldWithExprR\x06fields\x1ae\n" +
 	"\n" +
 	"StructProj\x12,\n" +
-	"\x12field_interned_str\x18\x01 \x01(\x05R\x10fieldInternedStr\x12'\n" +
-	"\x06struct\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x06struct\x1a\x8b\x01\n" +
+	"\x12field_interned_str\x18\x01 \x01(\x05R\x10fieldInternedStr\x12)\n" +
+	"\x06struct\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x06struct\x1a\x8f\x01\n" +
 	"\tStructUpd\x12,\n" +
-	"\x12field_interned_str\x18\x01 \x01(\x05R\x10fieldInternedStr\x12'\n" +
-	"\x06struct\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x06struct\x12'\n" +
-	"\x06update\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x06update\x1aM\n" +
-	"\x03App\x12!\n" +
-	"\x03fun\x18\x01 \x01(\v2\x0f.daml_lf_2.ExprR\x03fun\x12#\n" +
-	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_2.ExprR\x04args\x1aS\n" +
-	"\x05TyApp\x12#\n" +
-	"\x04expr\x18\x01 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x12%\n" +
-	"\x05types\x18\x02 \x03(\v2\x0f.daml_lf_2.TypeR\x05types\x1aX\n" +
-	"\x03Abs\x12,\n" +
-	"\x05param\x18\x01 \x03(\v2\x16.daml_lf_2.VarWithTypeR\x05param\x12#\n" +
-	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04body\x1a^\n" +
-	"\x05TyAbs\x120\n" +
-	"\x05param\x18\x01 \x03(\v2\x1a.daml_lf_2.TypeVarWithKindR\x05param\x12#\n" +
-	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04body\x1a*\n" +
-	"\x03Nil\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x1aw\n" +
-	"\x04Cons\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12%\n" +
-	"\x05front\x18\x02 \x03(\v2\x0f.daml_lf_2.ExprR\x05front\x12#\n" +
-	"\x04tail\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x04tail\x1a3\n" +
-	"\fOptionalNone\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x1aZ\n" +
-	"\fOptionalSome\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12%\n" +
-	"\x05value\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x05value\x1aQ\n" +
-	"\x05ToAny\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1aS\n" +
-	"\aFromAny\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1aZ\n" +
-	"\x0eToAnyException\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1a\\\n" +
-	"\x10FromAnyException\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1a\xa9\x01\n" +
-	"\x05Throw\x120\n" +
-	"\vreturn_type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\n" +
-	"returnType\x126\n" +
-	"\x0eexception_type\x18\x02 \x01(\v2\x0f.daml_lf_2.TypeR\rexceptionType\x126\n" +
-	"\x0eexception_expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\rexceptionExpr\x1a\xbf\x01\n" +
-	"\vToInterface\x12=\n" +
-	"\x0einterface_type\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\rinterfaceType\x12;\n" +
-	"\rtemplate_type\x18\x02 \x01(\v2\x16.daml_lf_2.TypeConNameR\ftemplateType\x124\n" +
-	"\rtemplate_expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\ftemplateExpr\x1a\xc3\x01\n" +
-	"\rFromInterface\x12=\n" +
-	"\x0einterface_type\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\rinterfaceType\x12;\n" +
-	"\rtemplate_type\x18\x02 \x01(\v2\x16.daml_lf_2.TypeConNameR\ftemplateType\x126\n" +
-	"\x0einterface_expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\rinterfaceExpr\x1a\xb8\x01\n" +
-	"\rCallInterface\x12=\n" +
-	"\x0einterface_type\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\rinterfaceType\x120\n" +
-	"\x14method_interned_name\x18\x02 \x01(\x05R\x12methodInternedName\x126\n" +
-	"\x0einterface_expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\rinterfaceExpr\x1aj\n" +
-	"\rViewInterface\x124\n" +
-	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\tinterface\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1ao\n" +
-	"\x12SignatoryInterface\x124\n" +
-	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\tinterface\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1an\n" +
-	"\x11ObserverInterface\x124\n" +
-	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\tinterface\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1a\x84\x02\n" +
-	"\x13UnsafeFromInterface\x12=\n" +
-	"\x0einterface_type\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\rinterfaceType\x12;\n" +
-	"\rtemplate_type\x18\x02 \x01(\v2\x16.daml_lf_2.TypeConNameR\ftemplateType\x129\n" +
-	"\x10contract_id_expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x0econtractIdExpr\x126\n" +
-	"\x0einterface_expr\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\rinterfaceExpr\x1a\xca\x01\n" +
-	"\x13ToRequiredInterface\x12E\n" +
-	"\x12required_interface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\x11requiredInterface\x12G\n" +
-	"\x13requiring_interface\x18\x02 \x01(\v2\x16.daml_lf_2.TypeConNameR\x12requiringInterface\x12#\n" +
-	"\x04expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1a\xcc\x01\n" +
-	"\x15FromRequiredInterface\x12E\n" +
-	"\x12required_interface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\x11requiredInterface\x12G\n" +
-	"\x13requiring_interface\x18\x02 \x01(\v2\x16.daml_lf_2.TypeConNameR\x12requiringInterface\x12#\n" +
-	"\x04expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1a\xa0\x02\n" +
-	"\x1bUnsafeFromRequiredInterface\x12E\n" +
-	"\x12required_interface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\x11requiredInterface\x12G\n" +
-	"\x13requiring_interface\x18\x02 \x01(\v2\x16.daml_lf_2.TypeConNameR\x12requiringInterface\x129\n" +
-	"\x10contract_id_expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x0econtractIdExpr\x126\n" +
-	"\x0einterface_expr\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\rinterfaceExpr\x1au\n" +
-	"\x18InterfaceTemplateTypeRep\x124\n" +
-	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\tinterface\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1a\xe5\x01\n" +
-	"\x10ChoiceController\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x124\n" +
-	"\rcontract_expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\fcontractExpr\x127\n" +
-	"\x0fchoice_arg_expr\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\rchoiceArgExpr\x1a\xe3\x01\n" +
-	"\x0eChoiceObserver\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x124\n" +
-	"\rcontract_expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\fcontractExpr\x127\n" +
-	"\x0fchoice_arg_expr\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\rchoiceArgExpr\x1aG\n" +
+	"\x12field_interned_str\x18\x01 \x01(\x05R\x10fieldInternedStr\x12)\n" +
+	"\x06struct\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x06struct\x12)\n" +
+	"\x06update\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x06update\x1aQ\n" +
+	"\x03App\x12#\n" +
+	"\x03fun\x18\x01 \x01(\v2\x11.daml_lf_2_1.ExprR\x03fun\x12%\n" +
+	"\x04args\x18\x02 \x03(\v2\x11.daml_lf_2_1.ExprR\x04args\x1aW\n" +
+	"\x05TyApp\x12%\n" +
+	"\x04expr\x18\x01 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x12'\n" +
+	"\x05types\x18\x02 \x03(\v2\x11.daml_lf_2_1.TypeR\x05types\x1a\\\n" +
+	"\x03Abs\x12.\n" +
+	"\x05param\x18\x01 \x03(\v2\x18.daml_lf_2_1.VarWithTypeR\x05param\x12%\n" +
+	"\x04body\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04body\x1ab\n" +
+	"\x05TyAbs\x122\n" +
+	"\x05param\x18\x01 \x03(\v2\x1c.daml_lf_2_1.TypeVarWithKindR\x05param\x12%\n" +
+	"\x04body\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04body\x1a,\n" +
+	"\x03Nil\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x1a}\n" +
+	"\x04Cons\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12'\n" +
+	"\x05front\x18\x02 \x03(\v2\x11.daml_lf_2_1.ExprR\x05front\x12%\n" +
+	"\x04tail\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x04tail\x1a5\n" +
+	"\fOptionalNone\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x1a^\n" +
+	"\fOptionalSome\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12'\n" +
+	"\x05value\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x05value\x1aU\n" +
+	"\x05ToAny\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1aW\n" +
+	"\aFromAny\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1a^\n" +
+	"\x0eToAnyException\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1a`\n" +
+	"\x10FromAnyException\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1a\xaf\x01\n" +
+	"\x05Throw\x122\n" +
+	"\vreturn_type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\n" +
+	"returnType\x128\n" +
+	"\x0eexception_type\x18\x02 \x01(\v2\x11.daml_lf_2_1.TypeR\rexceptionType\x128\n" +
+	"\x0eexception_expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\rexceptionExpr\x1a\xc5\x01\n" +
+	"\vToInterface\x12?\n" +
+	"\x0einterface_type\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\rinterfaceType\x12=\n" +
+	"\rtemplate_type\x18\x02 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\ftemplateType\x126\n" +
+	"\rtemplate_expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\ftemplateExpr\x1a\xc9\x01\n" +
+	"\rFromInterface\x12?\n" +
+	"\x0einterface_type\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\rinterfaceType\x12=\n" +
+	"\rtemplate_type\x18\x02 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\ftemplateType\x128\n" +
+	"\x0einterface_expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\rinterfaceExpr\x1a\xbc\x01\n" +
+	"\rCallInterface\x12?\n" +
+	"\x0einterface_type\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\rinterfaceType\x120\n" +
+	"\x14method_interned_name\x18\x02 \x01(\x05R\x12methodInternedName\x128\n" +
+	"\x0einterface_expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\rinterfaceExpr\x1an\n" +
+	"\rViewInterface\x126\n" +
+	"\tinterface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\tinterface\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1as\n" +
+	"\x12SignatoryInterface\x126\n" +
+	"\tinterface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\tinterface\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1ar\n" +
+	"\x11ObserverInterface\x126\n" +
+	"\tinterface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\tinterface\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1a\x8c\x02\n" +
+	"\x13UnsafeFromInterface\x12?\n" +
+	"\x0einterface_type\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\rinterfaceType\x12=\n" +
+	"\rtemplate_type\x18\x02 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\ftemplateType\x12;\n" +
+	"\x10contract_id_expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x0econtractIdExpr\x128\n" +
+	"\x0einterface_expr\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\rinterfaceExpr\x1a\xd0\x01\n" +
+	"\x13ToRequiredInterface\x12G\n" +
+	"\x12required_interface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x11requiredInterface\x12I\n" +
+	"\x13requiring_interface\x18\x02 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x12requiringInterface\x12%\n" +
+	"\x04expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1a\xd2\x01\n" +
+	"\x15FromRequiredInterface\x12G\n" +
+	"\x12required_interface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x11requiredInterface\x12I\n" +
+	"\x13requiring_interface\x18\x02 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x12requiringInterface\x12%\n" +
+	"\x04expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1a\xa8\x02\n" +
+	"\x1bUnsafeFromRequiredInterface\x12G\n" +
+	"\x12required_interface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x11requiredInterface\x12I\n" +
+	"\x13requiring_interface\x18\x02 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x12requiringInterface\x12;\n" +
+	"\x10contract_id_expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x0econtractIdExpr\x128\n" +
+	"\x0einterface_expr\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\rinterfaceExpr\x1ay\n" +
+	"\x18InterfaceTemplateTypeRep\x126\n" +
+	"\tinterface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\tinterface\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1a\xeb\x01\n" +
+	"\x10ChoiceController\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x126\n" +
+	"\rcontract_expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\fcontractExpr\x129\n" +
+	"\x0fchoice_arg_expr\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\rchoiceArgExpr\x1a\xe9\x01\n" +
+	"\x0eChoiceObserver\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x126\n" +
+	"\rcontract_expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\fcontractExpr\x129\n" +
+	"\x0fchoice_arg_expr\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\rchoiceArgExpr\x1aI\n" +
 	"\fExperimental\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12#\n" +
-	"\x04type\x18\x02 \x01(\v2\x0f.daml_lf_2.TypeR\x04typeB\x05\n" +
-	"\x03Sum\"\x8c\a\n" +
-	"\aCaseAlt\x12+\n" +
-	"\adefault\x18\x02 \x01(\v2\x0f.daml_lf_2.UnitH\x00R\adefault\x126\n" +
-	"\avariant\x18\x03 \x01(\v2\x1a.daml_lf_2.CaseAlt.VariantH\x00R\avariant\x128\n" +
-	"\vbuiltin_con\x18\x04 \x01(\x0e2\x15.daml_lf_2.BuiltinConH\x00R\n" +
-	"builtinCon\x12#\n" +
-	"\x03nil\x18\x05 \x01(\v2\x0f.daml_lf_2.UnitH\x00R\x03nil\x12-\n" +
-	"\x04cons\x18\x06 \x01(\v2\x17.daml_lf_2.CaseAlt.ConsH\x00R\x04cons\x126\n" +
-	"\roptional_none\x18\a \x01(\v2\x0f.daml_lf_2.UnitH\x00R\foptionalNone\x12F\n" +
-	"\roptional_some\x18\b \x01(\v2\x1f.daml_lf_2.CaseAlt.OptionalSomeH\x00R\foptionalSome\x12-\n" +
-	"\x04enum\x18\t \x01(\v2\x17.daml_lf_2.CaseAlt.EnumH\x00R\x04enum\x12#\n" +
-	"\x04body\x18\x01 \x01(\v2\x0f.daml_lf_2.ExprR\x04body\x1a\x95\x01\n" +
-	"\aVariant\x12(\n" +
-	"\x03con\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\x03con\x120\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
+	"\x04type\x18\x02 \x01(\v2\x11.daml_lf_2_1.TypeR\x04typeB\x05\n" +
+	"\x03Sum\"\xa2\a\n" +
+	"\aCaseAlt\x12-\n" +
+	"\adefault\x18\x02 \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\adefault\x128\n" +
+	"\avariant\x18\x03 \x01(\v2\x1c.daml_lf_2_1.CaseAlt.VariantH\x00R\avariant\x12:\n" +
+	"\vbuiltin_con\x18\x04 \x01(\x0e2\x17.daml_lf_2_1.BuiltinConH\x00R\n" +
+	"builtinCon\x12%\n" +
+	"\x03nil\x18\x05 \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\x03nil\x12/\n" +
+	"\x04cons\x18\x06 \x01(\v2\x19.daml_lf_2_1.CaseAlt.ConsH\x00R\x04cons\x128\n" +
+	"\roptional_none\x18\a \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\foptionalNone\x12H\n" +
+	"\roptional_some\x18\b \x01(\v2!.daml_lf_2_1.CaseAlt.OptionalSomeH\x00R\foptionalSome\x12/\n" +
+	"\x04enum\x18\t \x01(\v2\x19.daml_lf_2_1.CaseAlt.EnumH\x00R\x04enum\x12%\n" +
+	"\x04body\x18\x01 \x01(\v2\x11.daml_lf_2_1.ExprR\x04body\x1a\x97\x01\n" +
+	"\aVariant\x12*\n" +
+	"\x03con\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x03con\x120\n" +
 	"\x14variant_interned_str\x18\x02 \x01(\x05R\x12variantInternedStr\x12.\n" +
-	"\x13binder_interned_str\x18\x03 \x01(\x05R\x11binderInternedStr\x1aj\n" +
-	"\x04Enum\x12(\n" +
-	"\x03con\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\x03con\x128\n" +
+	"\x13binder_interned_str\x18\x03 \x01(\x05R\x11binderInternedStr\x1al\n" +
+	"\x04Enum\x12*\n" +
+	"\x03con\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\x03con\x128\n" +
 	"\x18constructor_interned_str\x18\x02 \x01(\x05R\x16constructorInternedStr\x1al\n" +
 	"\x04Cons\x121\n" +
 	"\x15var_head_interned_str\x18\x01 \x01(\x05R\x12varHeadInternedStr\x121\n" +
 	"\x15var_tail_interned_str\x18\x02 \x01(\x05R\x12varTailInternedStr\x1aA\n" +
 	"\fOptionalSome\x121\n" +
 	"\x15var_body_interned_str\x18\x01 \x01(\x05R\x12varBodyInternedStrB\x05\n" +
-	"\x03Sum\"U\n" +
-	"\x04Case\x12%\n" +
-	"\x05scrut\x18\x01 \x01(\v2\x0f.daml_lf_2.ExprR\x05scrut\x12&\n" +
-	"\x04alts\x18\x02 \x03(\v2\x12.daml_lf_2.CaseAltR\x04alts\"\\\n" +
-	"\x05Block\x12.\n" +
-	"\bbindings\x18\x01 \x03(\v2\x12.daml_lf_2.BindingR\bbindings\x12#\n" +
-	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04body\"P\n" +
-	"\x04Pure\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\"\xa7\x17\n" +
-	"\x06Update\x12%\n" +
-	"\x04pure\x18\x01 \x01(\v2\x0f.daml_lf_2.PureH\x00R\x04pure\x12(\n" +
-	"\x05block\x18\x02 \x01(\v2\x10.daml_lf_2.BlockH\x00R\x05block\x122\n" +
-	"\x06create\x18\x03 \x01(\v2\x18.daml_lf_2.Update.CreateH\x00R\x06create\x128\n" +
-	"\bexercise\x18\x04 \x01(\v2\x1a.daml_lf_2.Update.ExerciseH\x00R\bexercise\x12I\n" +
+	"\x03Sum\"Y\n" +
+	"\x04Case\x12'\n" +
+	"\x05scrut\x18\x01 \x01(\v2\x11.daml_lf_2_1.ExprR\x05scrut\x12(\n" +
+	"\x04alts\x18\x02 \x03(\v2\x14.daml_lf_2_1.CaseAltR\x04alts\"`\n" +
+	"\x05Block\x120\n" +
+	"\bbindings\x18\x01 \x03(\v2\x14.daml_lf_2_1.BindingR\bbindings\x12%\n" +
+	"\x04body\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04body\"T\n" +
+	"\x04Pure\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\"\x8b\x18\n" +
+	"\x06Update\x12'\n" +
+	"\x04pure\x18\x01 \x01(\v2\x11.daml_lf_2_1.PureH\x00R\x04pure\x12*\n" +
+	"\x05block\x18\x02 \x01(\v2\x12.daml_lf_2_1.BlockH\x00R\x05block\x124\n" +
+	"\x06create\x18\x03 \x01(\v2\x1a.daml_lf_2_1.Update.CreateH\x00R\x06create\x12:\n" +
+	"\bexercise\x18\x04 \x01(\v2\x1c.daml_lf_2_1.Update.ExerciseH\x00R\bexercise\x12K\n" +
 	"\x0fexercise_by_key\x18\n" +
-	" \x01(\v2\x1f.daml_lf_2.Update.ExerciseByKeyH\x00R\rexerciseByKey\x12/\n" +
-	"\x05fetch\x18\x05 \x01(\v2\x17.daml_lf_2.Update.FetchH\x00R\x05fetch\x12,\n" +
-	"\bget_time\x18\x06 \x01(\v2\x0f.daml_lf_2.UnitH\x00R\agetTime\x12E\n" +
-	"\rlookup_by_key\x18\b \x01(\v2\x1f.daml_lf_2.Update.RetrieveByKeyH\x00R\vlookupByKey\x12C\n" +
-	"\ffetch_by_key\x18\t \x01(\v2\x1f.daml_lf_2.Update.RetrieveByKeyH\x00R\n" +
-	"fetchByKey\x12<\n" +
+	" \x01(\v2!.daml_lf_2_1.Update.ExerciseByKeyH\x00R\rexerciseByKey\x121\n" +
+	"\x05fetch\x18\x05 \x01(\v2\x19.daml_lf_2_1.Update.FetchH\x00R\x05fetch\x12.\n" +
+	"\bget_time\x18\x06 \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\agetTime\x12G\n" +
+	"\rlookup_by_key\x18\b \x01(\v2!.daml_lf_2_1.Update.RetrieveByKeyH\x00R\vlookupByKey\x12E\n" +
+	"\ffetch_by_key\x18\t \x01(\v2!.daml_lf_2_1.Update.RetrieveByKeyH\x00R\n" +
+	"fetchByKey\x12>\n" +
 	"\n" +
-	"embed_expr\x18\a \x01(\v2\x1b.daml_lf_2.Update.EmbedExprH\x00R\tembedExpr\x129\n" +
-	"\ttry_catch\x18\v \x01(\v2\x1a.daml_lf_2.Update.TryCatchH\x00R\btryCatch\x12N\n" +
-	"\x10create_interface\x18\f \x01(\v2!.daml_lf_2.Update.CreateInterfaceH\x00R\x0fcreateInterface\x12T\n" +
-	"\x12exercise_interface\x18\r \x01(\v2#.daml_lf_2.Update.ExerciseInterfaceH\x00R\x11exerciseInterface\x12K\n" +
-	"\x0ffetch_interface\x18\x0e \x01(\v2 .daml_lf_2.Update.FetchInterfaceH\x00R\x0efetchInterface\x12O\n" +
-	"\x10dynamic_exercise\x18\xe9\a \x01(\v2!.daml_lf_2.Update.DynamicExerciseH\x00R\x0fdynamicExercise\x12=\n" +
+	"embed_expr\x18\a \x01(\v2\x1d.daml_lf_2_1.Update.EmbedExprH\x00R\tembedExpr\x12;\n" +
+	"\ttry_catch\x18\v \x01(\v2\x1c.daml_lf_2_1.Update.TryCatchH\x00R\btryCatch\x12P\n" +
+	"\x10create_interface\x18\f \x01(\v2#.daml_lf_2_1.Update.CreateInterfaceH\x00R\x0fcreateInterface\x12V\n" +
+	"\x12exercise_interface\x18\r \x01(\v2%.daml_lf_2_1.Update.ExerciseInterfaceH\x00R\x11exerciseInterface\x12M\n" +
+	"\x0ffetch_interface\x18\x0e \x01(\v2\".daml_lf_2_1.Update.FetchInterfaceH\x00R\x0efetchInterface\x12Q\n" +
+	"\x10dynamic_exercise\x18\xe9\a \x01(\v2#.daml_lf_2_1.Update.DynamicExerciseH\x00R\x0fdynamicExercise\x12?\n" +
 	"\n" +
-	"soft_fetch\x18\xea\a \x01(\v2\x1b.daml_lf_2.Update.SoftFetchH\x00R\tsoftFetch\x12F\n" +
-	"\rsoft_exercise\x18\xeb\a \x01(\v2\x1e.daml_lf_2.Update.SoftExerciseH\x00R\fsoftExercise\x1aa\n" +
-	"\x06Create\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1al\n" +
-	"\x0fCreateInterface\x124\n" +
-	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\tinterface\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x1a\xba\x01\n" +
-	"\bExercise\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x06 \x01(\x05R\x11choiceInternedStr\x12!\n" +
-	"\x03cid\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x03cid\x12!\n" +
-	"\x03arg\x18\x05 \x01(\v2\x0f.daml_lf_2.ExprR\x03argJ\x04\b\x04\x10\x05\x1a\xb8\x01\n" +
-	"\fSoftExercise\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12!\n" +
-	"\x03cid\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x03cid\x12!\n" +
-	"\x03arg\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\x03arg\x1a\xbb\x01\n" +
-	"\x0fDynamicExercise\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12!\n" +
-	"\x03cid\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x03cid\x12!\n" +
-	"\x03arg\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\x03arg\x1a\xe6\x01\n" +
-	"\x11ExerciseInterface\x124\n" +
-	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\tinterface\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12!\n" +
-	"\x03cid\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x03cid\x12!\n" +
-	"\x03arg\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\x03arg\x12%\n" +
-	"\x05guard\x18\x05 \x01(\v2\x0f.daml_lf_2.ExprR\x05guard\x1a\xb9\x01\n" +
-	"\rExerciseByKey\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12!\n" +
-	"\x03key\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x03key\x12!\n" +
-	"\x03arg\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\x03arg\x1a^\n" +
-	"\x05Fetch\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12!\n" +
-	"\x03cid\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x03cid\x1ab\n" +
-	"\tSoftFetch\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12!\n" +
-	"\x03cid\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x03cid\x1ai\n" +
-	"\x0eFetchInterface\x124\n" +
-	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\tinterface\x12!\n" +
-	"\x03cid\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x03cid\x1aU\n" +
-	"\tEmbedExpr\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12#\n" +
-	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04body\x1af\n" +
-	"\rRetrieveByKey\x122\n" +
-	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\btemplate\x12!\n" +
-	"\x03key\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x03key\x1a\xc2\x01\n" +
-	"\bTryCatch\x120\n" +
-	"\vreturn_type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\n" +
-	"returnType\x12*\n" +
-	"\btry_expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\atryExpr\x12(\n" +
-	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x12.\n" +
+	"soft_fetch\x18\xea\a \x01(\v2\x1d.daml_lf_2_1.Update.SoftFetchH\x00R\tsoftFetch\x12H\n" +
+	"\rsoft_exercise\x18\xeb\a \x01(\v2 .daml_lf_2_1.Update.SoftExerciseH\x00R\fsoftExercise\x1ae\n" +
+	"\x06Create\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1ap\n" +
+	"\x0fCreateInterface\x126\n" +
+	"\tinterface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\tinterface\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x1a\xc0\x01\n" +
+	"\bExercise\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x06 \x01(\x05R\x11choiceInternedStr\x12#\n" +
+	"\x03cid\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x03cid\x12#\n" +
+	"\x03arg\x18\x05 \x01(\v2\x11.daml_lf_2_1.ExprR\x03argJ\x04\b\x04\x10\x05\x1a\xbe\x01\n" +
+	"\fSoftExercise\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12#\n" +
+	"\x03cid\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x03cid\x12#\n" +
+	"\x03arg\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\x03arg\x1a\xc1\x01\n" +
+	"\x0fDynamicExercise\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12#\n" +
+	"\x03cid\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x03cid\x12#\n" +
+	"\x03arg\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\x03arg\x1a\xee\x01\n" +
+	"\x11ExerciseInterface\x126\n" +
+	"\tinterface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\tinterface\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12#\n" +
+	"\x03cid\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x03cid\x12#\n" +
+	"\x03arg\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\x03arg\x12'\n" +
+	"\x05guard\x18\x05 \x01(\v2\x11.daml_lf_2_1.ExprR\x05guard\x1a\xbf\x01\n" +
+	"\rExerciseByKey\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12#\n" +
+	"\x03key\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x03key\x12#\n" +
+	"\x03arg\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\x03arg\x1ab\n" +
+	"\x05Fetch\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12#\n" +
+	"\x03cid\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x03cid\x1af\n" +
+	"\tSoftFetch\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12#\n" +
+	"\x03cid\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x03cid\x1am\n" +
+	"\x0eFetchInterface\x126\n" +
+	"\tinterface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\tinterface\x12#\n" +
+	"\x03cid\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x03cid\x1aY\n" +
+	"\tEmbedExpr\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12%\n" +
+	"\x04body\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04body\x1aj\n" +
+	"\rRetrieveByKey\x124\n" +
+	"\btemplate\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\btemplate\x12#\n" +
+	"\x03key\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x03key\x1a\xc8\x01\n" +
+	"\bTryCatch\x122\n" +
+	"\vreturn_type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\n" +
+	"returnType\x12,\n" +
+	"\btry_expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\atryExpr\x12(\n" +
+	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x120\n" +
 	"\n" +
-	"catch_expr\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\tcatchExprB\x05\n" +
-	"\x03Sum\"\xf5\x04\n" +
-	"\bScenario\x12%\n" +
-	"\x04pure\x18\x01 \x01(\v2\x0f.daml_lf_2.PureH\x00R\x04pure\x12(\n" +
-	"\x05block\x18\x02 \x01(\v2\x10.daml_lf_2.BlockH\x00R\x05block\x124\n" +
-	"\x06commit\x18\x03 \x01(\v2\x1a.daml_lf_2.Scenario.CommitH\x00R\x06commit\x12<\n" +
+	"catch_expr\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\tcatchExprB\x05\n" +
+	"\x03Sum\"\x8f\x05\n" +
+	"\bScenario\x12'\n" +
+	"\x04pure\x18\x01 \x01(\v2\x11.daml_lf_2_1.PureH\x00R\x04pure\x12*\n" +
+	"\x05block\x18\x02 \x01(\v2\x12.daml_lf_2_1.BlockH\x00R\x05block\x126\n" +
+	"\x06commit\x18\x03 \x01(\v2\x1c.daml_lf_2_1.Scenario.CommitH\x00R\x06commit\x12>\n" +
 	"\n" +
-	"mustFailAt\x18\x04 \x01(\v2\x1a.daml_lf_2.Scenario.CommitH\x00R\n" +
-	"mustFailAt\x12%\n" +
-	"\x04pass\x18\x05 \x01(\v2\x0f.daml_lf_2.ExprH\x00R\x04pass\x12,\n" +
-	"\bget_time\x18\x06 \x01(\v2\x0f.daml_lf_2.UnitH\x00R\agetTime\x12.\n" +
-	"\tget_party\x18\a \x01(\v2\x0f.daml_lf_2.ExprH\x00R\bgetParty\x12>\n" +
+	"mustFailAt\x18\x04 \x01(\v2\x1c.daml_lf_2_1.Scenario.CommitH\x00R\n" +
+	"mustFailAt\x12'\n" +
+	"\x04pass\x18\x05 \x01(\v2\x11.daml_lf_2_1.ExprH\x00R\x04pass\x12.\n" +
+	"\bget_time\x18\x06 \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\agetTime\x120\n" +
+	"\tget_party\x18\a \x01(\v2\x11.daml_lf_2_1.ExprH\x00R\bgetParty\x12@\n" +
 	"\n" +
-	"embed_expr\x18\b \x01(\v2\x1d.daml_lf_2.Scenario.EmbedExprH\x00R\tembedExpr\x1a\x80\x01\n" +
-	"\x06Commit\x12%\n" +
-	"\x05party\x18\x01 \x01(\v2\x0f.daml_lf_2.ExprR\x05party\x12#\n" +
-	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x12*\n" +
-	"\bret_type\x18\x03 \x01(\v2\x0f.daml_lf_2.TypeR\aretType\x1aU\n" +
-	"\tEmbedExpr\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12#\n" +
-	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04bodyB\x05\n" +
-	"\x03Sum\"\xe6\x03\n" +
-	"\x0eTemplateChoice\x12/\n" +
-	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_2.LocationR\blocation\x12*\n" +
+	"embed_expr\x18\b \x01(\v2\x1f.daml_lf_2_1.Scenario.EmbedExprH\x00R\tembedExpr\x1a\x86\x01\n" +
+	"\x06Commit\x12'\n" +
+	"\x05party\x18\x01 \x01(\v2\x11.daml_lf_2_1.ExprR\x05party\x12%\n" +
+	"\x04expr\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x12,\n" +
+	"\bret_type\x18\x03 \x01(\v2\x11.daml_lf_2_1.TypeR\aretType\x1aY\n" +
+	"\tEmbedExpr\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12%\n" +
+	"\x04body\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04bodyB\x05\n" +
+	"\x03Sum\"\xf4\x03\n" +
+	"\x0eTemplateChoice\x121\n" +
+	"\blocation\x18\x01 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x12*\n" +
 	"\x11name_interned_str\x18\x02 \x01(\x05R\x0fnameInternedStr\x12\x1c\n" +
-	"\tconsuming\x18\x03 \x01(\bR\tconsuming\x121\n" +
-	"\vcontrollers\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\vcontrollers\x12-\n" +
-	"\tobservers\x18\x05 \x01(\v2\x0f.daml_lf_2.ExprR\tobservers\x125\n" +
+	"\tconsuming\x18\x03 \x01(\bR\tconsuming\x123\n" +
+	"\vcontrollers\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\vcontrollers\x12/\n" +
+	"\tobservers\x18\x05 \x01(\v2\x11.daml_lf_2_1.ExprR\tobservers\x127\n" +
 	"\n" +
-	"arg_binder\x18\x06 \x01(\v2\x16.daml_lf_2.VarWithTypeR\targBinder\x12*\n" +
-	"\bret_type\x18\b \x01(\v2\x0f.daml_lf_2.TypeR\aretType\x12'\n" +
-	"\x06update\x18\t \x01(\v2\x0f.daml_lf_2.ExprR\x06update\x127\n" +
+	"arg_binder\x18\x06 \x01(\v2\x18.daml_lf_2_1.VarWithTypeR\targBinder\x12,\n" +
+	"\bret_type\x18\b \x01(\v2\x11.daml_lf_2_1.TypeR\aretType\x12)\n" +
+	"\x06update\x18\t \x01(\v2\x11.daml_lf_2_1.ExprR\x06update\x127\n" +
 	"\x18self_binder_interned_str\x18\n" +
-	" \x01(\x05R\x15selfBinderInternedStr\x122\n" +
-	"\vauthorizers\x18\xe9\a \x01(\v2\x0f.daml_lf_2.ExprR\vauthorizers\"\x84\x02\n" +
-	"\x15InterfaceInstanceBody\x12R\n" +
-	"\amethods\x18\x01 \x03(\v28.daml_lf_2.InterfaceInstanceBody.InterfaceInstanceMethodR\amethods\x12#\n" +
-	"\x04view\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x04view\x1ar\n" +
+	" \x01(\x05R\x15selfBinderInternedStr\x124\n" +
+	"\vauthorizers\x18\xe9\a \x01(\v2\x11.daml_lf_2_1.ExprR\vauthorizers\"\x8a\x02\n" +
+	"\x15InterfaceInstanceBody\x12T\n" +
+	"\amethods\x18\x01 \x03(\v2:.daml_lf_2_1.InterfaceInstanceBody.InterfaceInstanceMethodR\amethods\x12%\n" +
+	"\x04view\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x04view\x1at\n" +
 	"\x17InterfaceInstanceMethod\x120\n" +
-	"\x14method_interned_name\x18\x01 \x01(\x05R\x12methodInternedName\x12%\n" +
-	"\x05value\x18\x02 \x01(\v2\x0f.daml_lf_2.ExprR\x05value\"\xbe\x06\n" +
+	"\x14method_interned_name\x18\x01 \x01(\x05R\x12methodInternedName\x12'\n" +
+	"\x05value\x18\x02 \x01(\v2\x11.daml_lf_2_1.ExprR\x05value\"\xda\x06\n" +
 	"\vDefTemplate\x120\n" +
 	"\x14tycon_interned_dname\x18\x01 \x01(\x05R\x12tyconInternedDname\x12,\n" +
-	"\x12param_interned_str\x18\x02 \x01(\x05R\x10paramInternedStr\x12)\n" +
-	"\aprecond\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\aprecond\x121\n" +
-	"\vsignatories\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\vsignatories\x12-\n" +
-	"\tagreement\x18\x05 \x01(\v2\x0f.daml_lf_2.ExprR\tagreement\x123\n" +
-	"\achoices\x18\x06 \x03(\v2\x19.daml_lf_2.TemplateChoiceR\achoices\x12-\n" +
-	"\tobservers\x18\a \x01(\v2\x0f.daml_lf_2.ExprR\tobservers\x12/\n" +
-	"\blocation\x18\b \x01(\v2\x13.daml_lf_2.LocationR\blocation\x12/\n" +
-	"\x03key\x18\t \x01(\v2\x1d.daml_lf_2.DefTemplate.DefKeyR\x03key\x12A\n" +
+	"\x12param_interned_str\x18\x02 \x01(\x05R\x10paramInternedStr\x12+\n" +
+	"\aprecond\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\aprecond\x123\n" +
+	"\vsignatories\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\vsignatories\x12/\n" +
+	"\tagreement\x18\x05 \x01(\v2\x11.daml_lf_2_1.ExprR\tagreement\x125\n" +
+	"\achoices\x18\x06 \x03(\v2\x1b.daml_lf_2_1.TemplateChoiceR\achoices\x12/\n" +
+	"\tobservers\x18\a \x01(\v2\x11.daml_lf_2_1.ExprR\tobservers\x121\n" +
+	"\blocation\x18\b \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x121\n" +
+	"\x03key\x18\t \x01(\v2\x1f.daml_lf_2_1.DefTemplate.DefKeyR\x03key\x12C\n" +
 	"\n" +
 	"implements\x18\n" +
-	" \x03(\v2!.daml_lf_2.DefTemplate.ImplementsR\n" +
-	"implements\x1a\x8c\x01\n" +
-	"\x06DefKey\x12#\n" +
-	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\x12*\n" +
-	"\bkey_expr\x18\x04 \x01(\v2\x0f.daml_lf_2.ExprR\akeyExpr\x121\n" +
-	"\vmaintainers\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\vmaintainers\x1a\xa9\x01\n" +
+	" \x03(\v2#.daml_lf_2_1.DefTemplate.ImplementsR\n" +
+	"implements\x1a\x92\x01\n" +
+	"\x06DefKey\x12%\n" +
+	"\x04type\x18\x01 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\x12,\n" +
+	"\bkey_expr\x18\x04 \x01(\v2\x11.daml_lf_2_1.ExprR\akeyExpr\x123\n" +
+	"\vmaintainers\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\vmaintainers\x1a\xaf\x01\n" +
 	"\n" +
-	"Implements\x124\n" +
-	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_2.TypeConNameR\tinterface\x124\n" +
-	"\x04body\x18\x02 \x01(\v2 .daml_lf_2.InterfaceInstanceBodyR\x04body\x12/\n" +
-	"\blocation\x18\x03 \x01(\v2\x13.daml_lf_2.LocationR\blocation\"\x99\x01\n" +
-	"\x0fInterfaceMethod\x12/\n" +
-	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_2.LocationR\blocation\x120\n" +
-	"\x14method_interned_name\x18\x02 \x01(\x05R\x12methodInternedName\x12#\n" +
-	"\x04type\x18\x03 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\"\xe3\x02\n" +
-	"\fDefInterface\x12/\n" +
-	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_2.LocationR\blocation\x120\n" +
-	"\x14tycon_interned_dname\x18\x02 \x01(\x05R\x12tyconInternedDname\x124\n" +
-	"\amethods\x18\x03 \x03(\v2\x1a.daml_lf_2.InterfaceMethodR\amethods\x12,\n" +
-	"\x12param_interned_str\x18\x04 \x01(\x05R\x10paramInternedStr\x123\n" +
-	"\achoices\x18\x05 \x03(\v2\x19.daml_lf_2.TemplateChoiceR\achoices\x12#\n" +
-	"\x04view\x18\x06 \x01(\v2\x0f.daml_lf_2.TypeR\x04view\x122\n" +
-	"\brequires\x18\a \x03(\v2\x16.daml_lf_2.TypeConNameR\brequires\"\x9a\x01\n" +
+	"Implements\x126\n" +
+	"\tinterface\x18\x01 \x01(\v2\x18.daml_lf_2_1.TypeConNameR\tinterface\x126\n" +
+	"\x04body\x18\x02 \x01(\v2\".daml_lf_2_1.InterfaceInstanceBodyR\x04body\x121\n" +
+	"\blocation\x18\x03 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\"\x9d\x01\n" +
+	"\x0fInterfaceMethod\x121\n" +
+	"\blocation\x18\x01 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x120\n" +
+	"\x14method_interned_name\x18\x02 \x01(\x05R\x12methodInternedName\x12%\n" +
+	"\x04type\x18\x03 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\"\xed\x02\n" +
+	"\fDefInterface\x121\n" +
+	"\blocation\x18\x01 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x120\n" +
+	"\x14tycon_interned_dname\x18\x02 \x01(\x05R\x12tyconInternedDname\x126\n" +
+	"\amethods\x18\x03 \x03(\v2\x1c.daml_lf_2_1.InterfaceMethodR\amethods\x12,\n" +
+	"\x12param_interned_str\x18\x04 \x01(\x05R\x10paramInternedStr\x125\n" +
+	"\achoices\x18\x05 \x03(\v2\x1b.daml_lf_2_1.TemplateChoiceR\achoices\x12%\n" +
+	"\x04view\x18\x06 \x01(\v2\x11.daml_lf_2_1.TypeR\x04view\x124\n" +
+	"\brequires\x18\a \x03(\v2\x18.daml_lf_2_1.TypeConNameR\brequires\"\x9e\x01\n" +
 	"\fDefException\x12.\n" +
-	"\x13name_interned_dname\x18\x01 \x01(\x05R\x11nameInternedDname\x12/\n" +
-	"\blocation\x18\x02 \x01(\v2\x13.daml_lf_2.LocationR\blocation\x12)\n" +
-	"\amessage\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\amessage\"\xc2\x04\n" +
-	"\vDefDataType\x12/\n" +
-	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_2.LocationR\blocation\x12.\n" +
-	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\x122\n" +
-	"\x06params\x18\x03 \x03(\v2\x1a.daml_lf_2.TypeVarWithKindR\x06params\x12\"\n" +
-	"\fserializable\x18\x04 \x01(\bR\fserializable\x127\n" +
-	"\x06record\x18\x05 \x01(\v2\x1d.daml_lf_2.DefDataType.FieldsH\x00R\x06record\x129\n" +
-	"\avariant\x18\x06 \x01(\v2\x1d.daml_lf_2.DefDataType.FieldsH\x00R\avariant\x12=\n" +
-	"\x04enum\x18\a \x01(\v2'.daml_lf_2.DefDataType.EnumConstructorsH\x00R\x04enum\x12/\n" +
-	"\tinterface\x18\b \x01(\v2\x0f.daml_lf_2.UnitH\x00R\tinterface\x1a:\n" +
-	"\x06Fields\x120\n" +
-	"\x06fields\x18\x01 \x03(\v2\x18.daml_lf_2.FieldWithTypeR\x06fields\x1aN\n" +
+	"\x13name_interned_dname\x18\x01 \x01(\x05R\x11nameInternedDname\x121\n" +
+	"\blocation\x18\x02 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x12+\n" +
+	"\amessage\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\amessage\"\xd0\x04\n" +
+	"\vDefDataType\x121\n" +
+	"\blocation\x18\x01 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x12.\n" +
+	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\x124\n" +
+	"\x06params\x18\x03 \x03(\v2\x1c.daml_lf_2_1.TypeVarWithKindR\x06params\x12\"\n" +
+	"\fserializable\x18\x04 \x01(\bR\fserializable\x129\n" +
+	"\x06record\x18\x05 \x01(\v2\x1f.daml_lf_2_1.DefDataType.FieldsH\x00R\x06record\x12;\n" +
+	"\avariant\x18\x06 \x01(\v2\x1f.daml_lf_2_1.DefDataType.FieldsH\x00R\avariant\x12?\n" +
+	"\x04enum\x18\a \x01(\v2).daml_lf_2_1.DefDataType.EnumConstructorsH\x00R\x04enum\x121\n" +
+	"\tinterface\x18\b \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\tinterface\x1a<\n" +
+	"\x06Fields\x122\n" +
+	"\x06fields\x18\x01 \x03(\v2\x1a.daml_lf_2_1.FieldWithTypeR\x06fields\x1aN\n" +
 	"\x10EnumConstructors\x12:\n" +
 	"\x19constructors_interned_str\x18\x02 \x03(\x05R\x17constructorsInternedStrB\n" +
 	"\n" +
-	"\bDataCons\"\xc6\x01\n" +
+	"\bDataCons\"\xcc\x01\n" +
 	"\n" +
-	"DefTypeSyn\x12/\n" +
-	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_2.LocationR\blocation\x12.\n" +
-	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\x122\n" +
-	"\x06params\x18\x03 \x03(\v2\x1a.daml_lf_2.TypeVarWithKindR\x06params\x12#\n" +
-	"\x04type\x18\x04 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\"\xa7\x02\n" +
-	"\bDefValue\x12/\n" +
-	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_2.LocationR\blocation\x12F\n" +
-	"\x0ename_with_type\x18\x02 \x01(\v2 .daml_lf_2.DefValue.NameWithTypeR\fnameWithType\x12#\n" +
-	"\x04expr\x18\x03 \x01(\v2\x0f.daml_lf_2.ExprR\x04expr\x12\x18\n" +
-	"\ais_test\x18\xe8\a \x01(\bR\x06isTest\x1ac\n" +
+	"DefTypeSyn\x121\n" +
+	"\blocation\x18\x01 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x12.\n" +
+	"\x13name_interned_dname\x18\x02 \x01(\x05R\x11nameInternedDname\x124\n" +
+	"\x06params\x18\x03 \x03(\v2\x1c.daml_lf_2_1.TypeVarWithKindR\x06params\x12%\n" +
+	"\x04type\x18\x04 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\"\xaf\x02\n" +
+	"\bDefValue\x121\n" +
+	"\blocation\x18\x01 \x01(\v2\x15.daml_lf_2_1.LocationR\blocation\x12H\n" +
+	"\x0ename_with_type\x18\x02 \x01(\v2\".daml_lf_2_1.DefValue.NameWithTypeR\fnameWithType\x12%\n" +
+	"\x04expr\x18\x03 \x01(\v2\x11.daml_lf_2_1.ExprR\x04expr\x12\x18\n" +
+	"\ais_test\x18\xe8\a \x01(\bR\x06isTest\x1ae\n" +
 	"\fNameWithType\x12.\n" +
-	"\x13name_interned_dname\x18\x01 \x01(\x05R\x11nameInternedDname\x12#\n" +
-	"\x04type\x18\x02 \x01(\v2\x0f.daml_lf_2.TypeR\x04type\"\xfa\x01\n" +
+	"\x13name_interned_dname\x18\x01 \x01(\x05R\x11nameInternedDname\x12%\n" +
+	"\x04type\x18\x02 \x01(\v2\x11.daml_lf_2_1.TypeR\x04type\"\xfa\x01\n" +
 	"\fFeatureFlags\x120\n" +
 	"\x13forbidPartyLiterals\x18\x01 \x01(\bR\x13forbidPartyLiterals\x12X\n" +
 	"'dontDivulgeContractIdsInCreateArguments\x18\x02 \x01(\bR'dontDivulgeContractIdsInCreateArguments\x12^\n" +
-	"*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\bR*dontDiscloseNonConsumingChoicesToObservers\"\xa6\x03\n" +
+	"*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\bR*dontDiscloseNonConsumingChoicesToObservers\"\xb4\x03\n" +
 	"\x06Module\x12.\n" +
-	"\x13name_interned_dname\x18\x01 \x01(\x05R\x11nameInternedDname\x12-\n" +
-	"\x05flags\x18\x02 \x01(\v2\x17.daml_lf_2.FeatureFlagsR\x05flags\x121\n" +
-	"\bsynonyms\x18\x03 \x03(\v2\x15.daml_lf_2.DefTypeSynR\bsynonyms\x125\n" +
+	"\x13name_interned_dname\x18\x01 \x01(\x05R\x11nameInternedDname\x12/\n" +
+	"\x05flags\x18\x02 \x01(\v2\x19.daml_lf_2_1.FeatureFlagsR\x05flags\x123\n" +
+	"\bsynonyms\x18\x03 \x03(\v2\x17.daml_lf_2_1.DefTypeSynR\bsynonyms\x127\n" +
 	"\n" +
-	"data_types\x18\x04 \x03(\v2\x16.daml_lf_2.DefDataTypeR\tdataTypes\x12+\n" +
-	"\x06values\x18\x05 \x03(\v2\x13.daml_lf_2.DefValueR\x06values\x124\n" +
-	"\ttemplates\x18\x06 \x03(\v2\x16.daml_lf_2.DefTemplateR\ttemplates\x127\n" +
+	"data_types\x18\x04 \x03(\v2\x18.daml_lf_2_1.DefDataTypeR\tdataTypes\x12-\n" +
+	"\x06values\x18\x05 \x03(\v2\x15.daml_lf_2_1.DefValueR\x06values\x126\n" +
+	"\ttemplates\x18\x06 \x03(\v2\x18.daml_lf_2_1.DefTemplateR\ttemplates\x129\n" +
 	"\n" +
-	"exceptions\x18\a \x03(\v2\x17.daml_lf_2.DefExceptionR\n" +
-	"exceptions\x127\n" +
+	"exceptions\x18\a \x03(\v2\x19.daml_lf_2_1.DefExceptionR\n" +
+	"exceptions\x129\n" +
 	"\n" +
-	"interfaces\x18\b \x03(\v2\x17.daml_lf_2.DefInterfaceR\n" +
+	"interfaces\x18\b \x03(\v2\x19.daml_lf_2_1.DefInterfaceR\n" +
 	"interfaces\"H\n" +
 	"\x12InternedDottedName\x122\n" +
 	"\x15segments_interned_str\x18\x01 \x03(\x05R\x13segmentsInternedStr\"[\n" +
 	"\x11UpgradedPackageId\x12F\n" +
-	" upgraded_package_id_interned_str\x18\x01 \x01(\x05R\x1cupgradedPackageIdInternedStr\"\xbd\x01\n" +
+	" upgraded_package_id_interned_str\x18\x01 \x01(\x05R\x1cupgradedPackageIdInternedStr\"\xbf\x01\n" +
 	"\x0fPackageMetadata\x12*\n" +
 	"\x11name_interned_str\x18\x01 \x01(\x05R\x0fnameInternedStr\x120\n" +
-	"\x14version_interned_str\x18\x02 \x01(\x05R\x12versionInternedStr\x12L\n" +
-	"\x13upgraded_package_id\x18\x03 \x01(\v2\x1c.daml_lf_2.UpgradedPackageIdR\x11upgradedPackageId\"\xa4\x02\n" +
-	"\aPackage\x12+\n" +
-	"\amodules\x18\x01 \x03(\v2\x11.daml_lf_2.ModuleR\amodules\x12)\n" +
-	"\x10interned_strings\x18\x02 \x03(\tR\x0finternedStrings\x12Q\n" +
-	"\x15interned_dotted_names\x18\x03 \x03(\v2\x1d.daml_lf_2.InternedDottedNameR\x13internedDottedNames\x126\n" +
-	"\bmetadata\x18\x04 \x01(\v2\x1a.daml_lf_2.PackageMetadataR\bmetadata\x126\n" +
-	"\x0einterned_types\x18\x05 \x03(\v2\x0f.daml_lf_2.TypeR\rinternedTypes*\x9f\x02\n" +
+	"\x14version_interned_str\x18\x02 \x01(\x05R\x12versionInternedStr\x12N\n" +
+	"\x13upgraded_package_id\x18\x03 \x01(\v2\x1e.daml_lf_2_1.UpgradedPackageIdR\x11upgradedPackageId\"\xac\x02\n" +
+	"\aPackage\x12-\n" +
+	"\amodules\x18\x01 \x03(\v2\x13.daml_lf_2_1.ModuleR\amodules\x12)\n" +
+	"\x10interned_strings\x18\x02 \x03(\tR\x0finternedStrings\x12S\n" +
+	"\x15interned_dotted_names\x18\x03 \x03(\v2\x1f.daml_lf_2_1.InternedDottedNameR\x13internedDottedNames\x128\n" +
+	"\bmetadata\x18\x04 \x01(\v2\x1c.daml_lf_2_1.PackageMetadataR\bmetadata\x128\n" +
+	"\x0einterned_types\x18\x05 \x03(\v2\x11.daml_lf_2_1.TypeR\rinternedTypes*\x9f\x02\n" +
 	"\vBuiltinType\x12\b\n" +
 	"\x04UNIT\x10\x00\x12\b\n" +
 	"\x04BOOL\x10\x01\x12\t\n" +
@@ -8759,8 +8759,8 @@ const file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDesc = "" +
 	"\x15BIGNUMERIC_TO_NUMERIC\x10\xd8\x0f\x12\x1a\n" +
 	"\x15NUMERIC_TO_BIGNUMERIC\x10\xd9\x0f\x12\x17\n" +
 	"\x12BIGNUMERIC_TO_TEXT\x10\xda\x0f\x12\x18\n" +
-	"\x13TYPE_REP_TYCON_NAME\x10\xc3\x17Bo\n" +
-	"\x14com.daml.daml_lf_2_1Z8github.com/digital-asset/dazl-client/v8/go/api/daml_lf_2\xaa\x02\x1cCom.Daml.Daml_Lf_2_1.DamlLf2b\x06proto3"
+	"\x13TYPE_REP_TYCON_NAME\x10\xc3\x17Bz\n" +
+	"\x14com.daml.daml_lf_2_1ZCgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\xaa\x02\x1cCom.Daml.Daml_Lf_2_1.DamlLf2b\x06proto3"
 
 var (
 	file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescOnce sync.Once
@@ -8777,413 +8777,413 @@ func file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP() []byte {
 var file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes = make([]protoimpl.MessageInfo, 105)
 var file_com_daml_daml_lf_2_1_daml_lf2_proto_goTypes = []any{
-	(BuiltinType)(0),                         // 0: daml_lf_2.BuiltinType
-	(BuiltinCon)(0),                          // 1: daml_lf_2.BuiltinCon
-	(BuiltinFunction)(0),                     // 2: daml_lf_2.BuiltinFunction
-	(BuiltinLit_RoundingMode)(0),             // 3: daml_lf_2.BuiltinLit.RoundingMode
-	(*Unit)(nil),                             // 4: daml_lf_2.Unit
-	(*PackageRef)(nil),                       // 5: daml_lf_2.PackageRef
-	(*ModuleRef)(nil),                        // 6: daml_lf_2.ModuleRef
-	(*TypeConName)(nil),                      // 7: daml_lf_2.TypeConName
-	(*TypeSynName)(nil),                      // 8: daml_lf_2.TypeSynName
-	(*ValName)(nil),                          // 9: daml_lf_2.ValName
-	(*FieldWithType)(nil),                    // 10: daml_lf_2.FieldWithType
-	(*VarWithType)(nil),                      // 11: daml_lf_2.VarWithType
-	(*TypeVarWithKind)(nil),                  // 12: daml_lf_2.TypeVarWithKind
-	(*FieldWithExpr)(nil),                    // 13: daml_lf_2.FieldWithExpr
-	(*Binding)(nil),                          // 14: daml_lf_2.Binding
-	(*Kind)(nil),                             // 15: daml_lf_2.Kind
-	(*Type)(nil),                             // 16: daml_lf_2.Type
-	(*BuiltinLit)(nil),                       // 17: daml_lf_2.BuiltinLit
-	(*Location)(nil),                         // 18: daml_lf_2.Location
-	(*Expr)(nil),                             // 19: daml_lf_2.Expr
-	(*CaseAlt)(nil),                          // 20: daml_lf_2.CaseAlt
-	(*Case)(nil),                             // 21: daml_lf_2.Case
-	(*Block)(nil),                            // 22: daml_lf_2.Block
-	(*Pure)(nil),                             // 23: daml_lf_2.Pure
-	(*Update)(nil),                           // 24: daml_lf_2.Update
-	(*Scenario)(nil),                         // 25: daml_lf_2.Scenario
-	(*TemplateChoice)(nil),                   // 26: daml_lf_2.TemplateChoice
-	(*InterfaceInstanceBody)(nil),            // 27: daml_lf_2.InterfaceInstanceBody
-	(*DefTemplate)(nil),                      // 28: daml_lf_2.DefTemplate
-	(*InterfaceMethod)(nil),                  // 29: daml_lf_2.InterfaceMethod
-	(*DefInterface)(nil),                     // 30: daml_lf_2.DefInterface
-	(*DefException)(nil),                     // 31: daml_lf_2.DefException
-	(*DefDataType)(nil),                      // 32: daml_lf_2.DefDataType
-	(*DefTypeSyn)(nil),                       // 33: daml_lf_2.DefTypeSyn
-	(*DefValue)(nil),                         // 34: daml_lf_2.DefValue
-	(*FeatureFlags)(nil),                     // 35: daml_lf_2.FeatureFlags
-	(*Module)(nil),                           // 36: daml_lf_2.Module
-	(*InternedDottedName)(nil),               // 37: daml_lf_2.InternedDottedName
-	(*UpgradedPackageId)(nil),                // 38: daml_lf_2.UpgradedPackageId
-	(*PackageMetadata)(nil),                  // 39: daml_lf_2.PackageMetadata
-	(*Package)(nil),                          // 40: daml_lf_2.Package
-	(*Kind_Arrow)(nil),                       // 41: daml_lf_2.Kind.Arrow
-	(*Type_Var)(nil),                         // 42: daml_lf_2.Type.Var
-	(*Type_Con)(nil),                         // 43: daml_lf_2.Type.Con
-	(*Type_Syn)(nil),                         // 44: daml_lf_2.Type.Syn
-	(*Type_Builtin)(nil),                     // 45: daml_lf_2.Type.Builtin
-	(*Type_Forall)(nil),                      // 46: daml_lf_2.Type.Forall
-	(*Type_Struct)(nil),                      // 47: daml_lf_2.Type.Struct
-	(*Location_Range)(nil),                   // 48: daml_lf_2.Location.Range
-	(*Expr_RecCon)(nil),                      // 49: daml_lf_2.Expr.RecCon
-	(*Expr_RecProj)(nil),                     // 50: daml_lf_2.Expr.RecProj
-	(*Expr_RecUpd)(nil),                      // 51: daml_lf_2.Expr.RecUpd
-	(*Expr_VariantCon)(nil),                  // 52: daml_lf_2.Expr.VariantCon
-	(*Expr_EnumCon)(nil),                     // 53: daml_lf_2.Expr.EnumCon
-	(*Expr_StructCon)(nil),                   // 54: daml_lf_2.Expr.StructCon
-	(*Expr_StructProj)(nil),                  // 55: daml_lf_2.Expr.StructProj
-	(*Expr_StructUpd)(nil),                   // 56: daml_lf_2.Expr.StructUpd
-	(*Expr_App)(nil),                         // 57: daml_lf_2.Expr.App
-	(*Expr_TyApp)(nil),                       // 58: daml_lf_2.Expr.TyApp
-	(*Expr_Abs)(nil),                         // 59: daml_lf_2.Expr.Abs
-	(*Expr_TyAbs)(nil),                       // 60: daml_lf_2.Expr.TyAbs
-	(*Expr_Nil)(nil),                         // 61: daml_lf_2.Expr.Nil
-	(*Expr_Cons)(nil),                        // 62: daml_lf_2.Expr.Cons
-	(*Expr_OptionalNone)(nil),                // 63: daml_lf_2.Expr.OptionalNone
-	(*Expr_OptionalSome)(nil),                // 64: daml_lf_2.Expr.OptionalSome
-	(*Expr_ToAny)(nil),                       // 65: daml_lf_2.Expr.ToAny
-	(*Expr_FromAny)(nil),                     // 66: daml_lf_2.Expr.FromAny
-	(*Expr_ToAnyException)(nil),              // 67: daml_lf_2.Expr.ToAnyException
-	(*Expr_FromAnyException)(nil),            // 68: daml_lf_2.Expr.FromAnyException
-	(*Expr_Throw)(nil),                       // 69: daml_lf_2.Expr.Throw
-	(*Expr_ToInterface)(nil),                 // 70: daml_lf_2.Expr.ToInterface
-	(*Expr_FromInterface)(nil),               // 71: daml_lf_2.Expr.FromInterface
-	(*Expr_CallInterface)(nil),               // 72: daml_lf_2.Expr.CallInterface
-	(*Expr_ViewInterface)(nil),               // 73: daml_lf_2.Expr.ViewInterface
-	(*Expr_SignatoryInterface)(nil),          // 74: daml_lf_2.Expr.SignatoryInterface
-	(*Expr_ObserverInterface)(nil),           // 75: daml_lf_2.Expr.ObserverInterface
-	(*Expr_UnsafeFromInterface)(nil),         // 76: daml_lf_2.Expr.UnsafeFromInterface
-	(*Expr_ToRequiredInterface)(nil),         // 77: daml_lf_2.Expr.ToRequiredInterface
-	(*Expr_FromRequiredInterface)(nil),       // 78: daml_lf_2.Expr.FromRequiredInterface
-	(*Expr_UnsafeFromRequiredInterface)(nil), // 79: daml_lf_2.Expr.UnsafeFromRequiredInterface
-	(*Expr_InterfaceTemplateTypeRep)(nil),    // 80: daml_lf_2.Expr.InterfaceTemplateTypeRep
-	(*Expr_ChoiceController)(nil),            // 81: daml_lf_2.Expr.ChoiceController
-	(*Expr_ChoiceObserver)(nil),              // 82: daml_lf_2.Expr.ChoiceObserver
-	(*Expr_Experimental)(nil),                // 83: daml_lf_2.Expr.Experimental
-	(*CaseAlt_Variant)(nil),                  // 84: daml_lf_2.CaseAlt.Variant
-	(*CaseAlt_Enum)(nil),                     // 85: daml_lf_2.CaseAlt.Enum
-	(*CaseAlt_Cons)(nil),                     // 86: daml_lf_2.CaseAlt.Cons
-	(*CaseAlt_OptionalSome)(nil),             // 87: daml_lf_2.CaseAlt.OptionalSome
-	(*Update_Create)(nil),                    // 88: daml_lf_2.Update.Create
-	(*Update_CreateInterface)(nil),           // 89: daml_lf_2.Update.CreateInterface
-	(*Update_Exercise)(nil),                  // 90: daml_lf_2.Update.Exercise
-	(*Update_SoftExercise)(nil),              // 91: daml_lf_2.Update.SoftExercise
-	(*Update_DynamicExercise)(nil),           // 92: daml_lf_2.Update.DynamicExercise
-	(*Update_ExerciseInterface)(nil),         // 93: daml_lf_2.Update.ExerciseInterface
-	(*Update_ExerciseByKey)(nil),             // 94: daml_lf_2.Update.ExerciseByKey
-	(*Update_Fetch)(nil),                     // 95: daml_lf_2.Update.Fetch
-	(*Update_SoftFetch)(nil),                 // 96: daml_lf_2.Update.SoftFetch
-	(*Update_FetchInterface)(nil),            // 97: daml_lf_2.Update.FetchInterface
-	(*Update_EmbedExpr)(nil),                 // 98: daml_lf_2.Update.EmbedExpr
-	(*Update_RetrieveByKey)(nil),             // 99: daml_lf_2.Update.RetrieveByKey
-	(*Update_TryCatch)(nil),                  // 100: daml_lf_2.Update.TryCatch
-	(*Scenario_Commit)(nil),                  // 101: daml_lf_2.Scenario.Commit
-	(*Scenario_EmbedExpr)(nil),               // 102: daml_lf_2.Scenario.EmbedExpr
-	(*InterfaceInstanceBody_InterfaceInstanceMethod)(nil), // 103: daml_lf_2.InterfaceInstanceBody.InterfaceInstanceMethod
-	(*DefTemplate_DefKey)(nil),                            // 104: daml_lf_2.DefTemplate.DefKey
-	(*DefTemplate_Implements)(nil),                        // 105: daml_lf_2.DefTemplate.Implements
-	(*DefDataType_Fields)(nil),                            // 106: daml_lf_2.DefDataType.Fields
-	(*DefDataType_EnumConstructors)(nil),                  // 107: daml_lf_2.DefDataType.EnumConstructors
-	(*DefValue_NameWithType)(nil),                         // 108: daml_lf_2.DefValue.NameWithType
+	(BuiltinType)(0),                         // 0: daml_lf_2_1.BuiltinType
+	(BuiltinCon)(0),                          // 1: daml_lf_2_1.BuiltinCon
+	(BuiltinFunction)(0),                     // 2: daml_lf_2_1.BuiltinFunction
+	(BuiltinLit_RoundingMode)(0),             // 3: daml_lf_2_1.BuiltinLit.RoundingMode
+	(*Unit)(nil),                             // 4: daml_lf_2_1.Unit
+	(*PackageRef)(nil),                       // 5: daml_lf_2_1.PackageRef
+	(*ModuleRef)(nil),                        // 6: daml_lf_2_1.ModuleRef
+	(*TypeConName)(nil),                      // 7: daml_lf_2_1.TypeConName
+	(*TypeSynName)(nil),                      // 8: daml_lf_2_1.TypeSynName
+	(*ValName)(nil),                          // 9: daml_lf_2_1.ValName
+	(*FieldWithType)(nil),                    // 10: daml_lf_2_1.FieldWithType
+	(*VarWithType)(nil),                      // 11: daml_lf_2_1.VarWithType
+	(*TypeVarWithKind)(nil),                  // 12: daml_lf_2_1.TypeVarWithKind
+	(*FieldWithExpr)(nil),                    // 13: daml_lf_2_1.FieldWithExpr
+	(*Binding)(nil),                          // 14: daml_lf_2_1.Binding
+	(*Kind)(nil),                             // 15: daml_lf_2_1.Kind
+	(*Type)(nil),                             // 16: daml_lf_2_1.Type
+	(*BuiltinLit)(nil),                       // 17: daml_lf_2_1.BuiltinLit
+	(*Location)(nil),                         // 18: daml_lf_2_1.Location
+	(*Expr)(nil),                             // 19: daml_lf_2_1.Expr
+	(*CaseAlt)(nil),                          // 20: daml_lf_2_1.CaseAlt
+	(*Case)(nil),                             // 21: daml_lf_2_1.Case
+	(*Block)(nil),                            // 22: daml_lf_2_1.Block
+	(*Pure)(nil),                             // 23: daml_lf_2_1.Pure
+	(*Update)(nil),                           // 24: daml_lf_2_1.Update
+	(*Scenario)(nil),                         // 25: daml_lf_2_1.Scenario
+	(*TemplateChoice)(nil),                   // 26: daml_lf_2_1.TemplateChoice
+	(*InterfaceInstanceBody)(nil),            // 27: daml_lf_2_1.InterfaceInstanceBody
+	(*DefTemplate)(nil),                      // 28: daml_lf_2_1.DefTemplate
+	(*InterfaceMethod)(nil),                  // 29: daml_lf_2_1.InterfaceMethod
+	(*DefInterface)(nil),                     // 30: daml_lf_2_1.DefInterface
+	(*DefException)(nil),                     // 31: daml_lf_2_1.DefException
+	(*DefDataType)(nil),                      // 32: daml_lf_2_1.DefDataType
+	(*DefTypeSyn)(nil),                       // 33: daml_lf_2_1.DefTypeSyn
+	(*DefValue)(nil),                         // 34: daml_lf_2_1.DefValue
+	(*FeatureFlags)(nil),                     // 35: daml_lf_2_1.FeatureFlags
+	(*Module)(nil),                           // 36: daml_lf_2_1.Module
+	(*InternedDottedName)(nil),               // 37: daml_lf_2_1.InternedDottedName
+	(*UpgradedPackageId)(nil),                // 38: daml_lf_2_1.UpgradedPackageId
+	(*PackageMetadata)(nil),                  // 39: daml_lf_2_1.PackageMetadata
+	(*Package)(nil),                          // 40: daml_lf_2_1.Package
+	(*Kind_Arrow)(nil),                       // 41: daml_lf_2_1.Kind.Arrow
+	(*Type_Var)(nil),                         // 42: daml_lf_2_1.Type.Var
+	(*Type_Con)(nil),                         // 43: daml_lf_2_1.Type.Con
+	(*Type_Syn)(nil),                         // 44: daml_lf_2_1.Type.Syn
+	(*Type_Builtin)(nil),                     // 45: daml_lf_2_1.Type.Builtin
+	(*Type_Forall)(nil),                      // 46: daml_lf_2_1.Type.Forall
+	(*Type_Struct)(nil),                      // 47: daml_lf_2_1.Type.Struct
+	(*Location_Range)(nil),                   // 48: daml_lf_2_1.Location.Range
+	(*Expr_RecCon)(nil),                      // 49: daml_lf_2_1.Expr.RecCon
+	(*Expr_RecProj)(nil),                     // 50: daml_lf_2_1.Expr.RecProj
+	(*Expr_RecUpd)(nil),                      // 51: daml_lf_2_1.Expr.RecUpd
+	(*Expr_VariantCon)(nil),                  // 52: daml_lf_2_1.Expr.VariantCon
+	(*Expr_EnumCon)(nil),                     // 53: daml_lf_2_1.Expr.EnumCon
+	(*Expr_StructCon)(nil),                   // 54: daml_lf_2_1.Expr.StructCon
+	(*Expr_StructProj)(nil),                  // 55: daml_lf_2_1.Expr.StructProj
+	(*Expr_StructUpd)(nil),                   // 56: daml_lf_2_1.Expr.StructUpd
+	(*Expr_App)(nil),                         // 57: daml_lf_2_1.Expr.App
+	(*Expr_TyApp)(nil),                       // 58: daml_lf_2_1.Expr.TyApp
+	(*Expr_Abs)(nil),                         // 59: daml_lf_2_1.Expr.Abs
+	(*Expr_TyAbs)(nil),                       // 60: daml_lf_2_1.Expr.TyAbs
+	(*Expr_Nil)(nil),                         // 61: daml_lf_2_1.Expr.Nil
+	(*Expr_Cons)(nil),                        // 62: daml_lf_2_1.Expr.Cons
+	(*Expr_OptionalNone)(nil),                // 63: daml_lf_2_1.Expr.OptionalNone
+	(*Expr_OptionalSome)(nil),                // 64: daml_lf_2_1.Expr.OptionalSome
+	(*Expr_ToAny)(nil),                       // 65: daml_lf_2_1.Expr.ToAny
+	(*Expr_FromAny)(nil),                     // 66: daml_lf_2_1.Expr.FromAny
+	(*Expr_ToAnyException)(nil),              // 67: daml_lf_2_1.Expr.ToAnyException
+	(*Expr_FromAnyException)(nil),            // 68: daml_lf_2_1.Expr.FromAnyException
+	(*Expr_Throw)(nil),                       // 69: daml_lf_2_1.Expr.Throw
+	(*Expr_ToInterface)(nil),                 // 70: daml_lf_2_1.Expr.ToInterface
+	(*Expr_FromInterface)(nil),               // 71: daml_lf_2_1.Expr.FromInterface
+	(*Expr_CallInterface)(nil),               // 72: daml_lf_2_1.Expr.CallInterface
+	(*Expr_ViewInterface)(nil),               // 73: daml_lf_2_1.Expr.ViewInterface
+	(*Expr_SignatoryInterface)(nil),          // 74: daml_lf_2_1.Expr.SignatoryInterface
+	(*Expr_ObserverInterface)(nil),           // 75: daml_lf_2_1.Expr.ObserverInterface
+	(*Expr_UnsafeFromInterface)(nil),         // 76: daml_lf_2_1.Expr.UnsafeFromInterface
+	(*Expr_ToRequiredInterface)(nil),         // 77: daml_lf_2_1.Expr.ToRequiredInterface
+	(*Expr_FromRequiredInterface)(nil),       // 78: daml_lf_2_1.Expr.FromRequiredInterface
+	(*Expr_UnsafeFromRequiredInterface)(nil), // 79: daml_lf_2_1.Expr.UnsafeFromRequiredInterface
+	(*Expr_InterfaceTemplateTypeRep)(nil),    // 80: daml_lf_2_1.Expr.InterfaceTemplateTypeRep
+	(*Expr_ChoiceController)(nil),            // 81: daml_lf_2_1.Expr.ChoiceController
+	(*Expr_ChoiceObserver)(nil),              // 82: daml_lf_2_1.Expr.ChoiceObserver
+	(*Expr_Experimental)(nil),                // 83: daml_lf_2_1.Expr.Experimental
+	(*CaseAlt_Variant)(nil),                  // 84: daml_lf_2_1.CaseAlt.Variant
+	(*CaseAlt_Enum)(nil),                     // 85: daml_lf_2_1.CaseAlt.Enum
+	(*CaseAlt_Cons)(nil),                     // 86: daml_lf_2_1.CaseAlt.Cons
+	(*CaseAlt_OptionalSome)(nil),             // 87: daml_lf_2_1.CaseAlt.OptionalSome
+	(*Update_Create)(nil),                    // 88: daml_lf_2_1.Update.Create
+	(*Update_CreateInterface)(nil),           // 89: daml_lf_2_1.Update.CreateInterface
+	(*Update_Exercise)(nil),                  // 90: daml_lf_2_1.Update.Exercise
+	(*Update_SoftExercise)(nil),              // 91: daml_lf_2_1.Update.SoftExercise
+	(*Update_DynamicExercise)(nil),           // 92: daml_lf_2_1.Update.DynamicExercise
+	(*Update_ExerciseInterface)(nil),         // 93: daml_lf_2_1.Update.ExerciseInterface
+	(*Update_ExerciseByKey)(nil),             // 94: daml_lf_2_1.Update.ExerciseByKey
+	(*Update_Fetch)(nil),                     // 95: daml_lf_2_1.Update.Fetch
+	(*Update_SoftFetch)(nil),                 // 96: daml_lf_2_1.Update.SoftFetch
+	(*Update_FetchInterface)(nil),            // 97: daml_lf_2_1.Update.FetchInterface
+	(*Update_EmbedExpr)(nil),                 // 98: daml_lf_2_1.Update.EmbedExpr
+	(*Update_RetrieveByKey)(nil),             // 99: daml_lf_2_1.Update.RetrieveByKey
+	(*Update_TryCatch)(nil),                  // 100: daml_lf_2_1.Update.TryCatch
+	(*Scenario_Commit)(nil),                  // 101: daml_lf_2_1.Scenario.Commit
+	(*Scenario_EmbedExpr)(nil),               // 102: daml_lf_2_1.Scenario.EmbedExpr
+	(*InterfaceInstanceBody_InterfaceInstanceMethod)(nil), // 103: daml_lf_2_1.InterfaceInstanceBody.InterfaceInstanceMethod
+	(*DefTemplate_DefKey)(nil),                            // 104: daml_lf_2_1.DefTemplate.DefKey
+	(*DefTemplate_Implements)(nil),                        // 105: daml_lf_2_1.DefTemplate.Implements
+	(*DefDataType_Fields)(nil),                            // 106: daml_lf_2_1.DefDataType.Fields
+	(*DefDataType_EnumConstructors)(nil),                  // 107: daml_lf_2_1.DefDataType.EnumConstructors
+	(*DefValue_NameWithType)(nil),                         // 108: daml_lf_2_1.DefValue.NameWithType
 }
 var file_com_daml_daml_lf_2_1_daml_lf2_proto_depIdxs = []int32{
-	4,   // 0: daml_lf_2.PackageRef.self:type_name -> daml_lf_2.Unit
-	5,   // 1: daml_lf_2.ModuleRef.package_ref:type_name -> daml_lf_2.PackageRef
-	6,   // 2: daml_lf_2.TypeConName.module:type_name -> daml_lf_2.ModuleRef
-	6,   // 3: daml_lf_2.TypeSynName.module:type_name -> daml_lf_2.ModuleRef
-	6,   // 4: daml_lf_2.ValName.module:type_name -> daml_lf_2.ModuleRef
-	16,  // 5: daml_lf_2.FieldWithType.type:type_name -> daml_lf_2.Type
-	16,  // 6: daml_lf_2.VarWithType.type:type_name -> daml_lf_2.Type
-	15,  // 7: daml_lf_2.TypeVarWithKind.kind:type_name -> daml_lf_2.Kind
-	19,  // 8: daml_lf_2.FieldWithExpr.expr:type_name -> daml_lf_2.Expr
-	11,  // 9: daml_lf_2.Binding.binder:type_name -> daml_lf_2.VarWithType
-	19,  // 10: daml_lf_2.Binding.bound:type_name -> daml_lf_2.Expr
-	4,   // 11: daml_lf_2.Kind.star:type_name -> daml_lf_2.Unit
-	41,  // 12: daml_lf_2.Kind.arrow:type_name -> daml_lf_2.Kind.Arrow
-	4,   // 13: daml_lf_2.Kind.nat:type_name -> daml_lf_2.Unit
-	42,  // 14: daml_lf_2.Type.var:type_name -> daml_lf_2.Type.Var
-	43,  // 15: daml_lf_2.Type.con:type_name -> daml_lf_2.Type.Con
-	45,  // 16: daml_lf_2.Type.builtin:type_name -> daml_lf_2.Type.Builtin
-	46,  // 17: daml_lf_2.Type.forall:type_name -> daml_lf_2.Type.Forall
-	47,  // 18: daml_lf_2.Type.struct:type_name -> daml_lf_2.Type.Struct
-	44,  // 19: daml_lf_2.Type.syn:type_name -> daml_lf_2.Type.Syn
-	3,   // 20: daml_lf_2.BuiltinLit.rounding_mode:type_name -> daml_lf_2.BuiltinLit.RoundingMode
-	6,   // 21: daml_lf_2.Location.module:type_name -> daml_lf_2.ModuleRef
-	48,  // 22: daml_lf_2.Location.range:type_name -> daml_lf_2.Location.Range
-	18,  // 23: daml_lf_2.Expr.location:type_name -> daml_lf_2.Location
-	9,   // 24: daml_lf_2.Expr.val:type_name -> daml_lf_2.ValName
-	2,   // 25: daml_lf_2.Expr.builtin:type_name -> daml_lf_2.BuiltinFunction
-	1,   // 26: daml_lf_2.Expr.builtin_con:type_name -> daml_lf_2.BuiltinCon
-	17,  // 27: daml_lf_2.Expr.builtin_lit:type_name -> daml_lf_2.BuiltinLit
-	49,  // 28: daml_lf_2.Expr.rec_con:type_name -> daml_lf_2.Expr.RecCon
-	50,  // 29: daml_lf_2.Expr.rec_proj:type_name -> daml_lf_2.Expr.RecProj
-	51,  // 30: daml_lf_2.Expr.rec_upd:type_name -> daml_lf_2.Expr.RecUpd
-	52,  // 31: daml_lf_2.Expr.variant_con:type_name -> daml_lf_2.Expr.VariantCon
-	53,  // 32: daml_lf_2.Expr.enum_con:type_name -> daml_lf_2.Expr.EnumCon
-	54,  // 33: daml_lf_2.Expr.struct_con:type_name -> daml_lf_2.Expr.StructCon
-	55,  // 34: daml_lf_2.Expr.struct_proj:type_name -> daml_lf_2.Expr.StructProj
-	56,  // 35: daml_lf_2.Expr.struct_upd:type_name -> daml_lf_2.Expr.StructUpd
-	57,  // 36: daml_lf_2.Expr.app:type_name -> daml_lf_2.Expr.App
-	58,  // 37: daml_lf_2.Expr.ty_app:type_name -> daml_lf_2.Expr.TyApp
-	59,  // 38: daml_lf_2.Expr.abs:type_name -> daml_lf_2.Expr.Abs
-	60,  // 39: daml_lf_2.Expr.ty_abs:type_name -> daml_lf_2.Expr.TyAbs
-	21,  // 40: daml_lf_2.Expr.case:type_name -> daml_lf_2.Case
-	22,  // 41: daml_lf_2.Expr.let:type_name -> daml_lf_2.Block
-	61,  // 42: daml_lf_2.Expr.nil:type_name -> daml_lf_2.Expr.Nil
-	62,  // 43: daml_lf_2.Expr.cons:type_name -> daml_lf_2.Expr.Cons
-	24,  // 44: daml_lf_2.Expr.update:type_name -> daml_lf_2.Update
-	63,  // 45: daml_lf_2.Expr.optional_none:type_name -> daml_lf_2.Expr.OptionalNone
-	64,  // 46: daml_lf_2.Expr.optional_some:type_name -> daml_lf_2.Expr.OptionalSome
-	65,  // 47: daml_lf_2.Expr.to_any:type_name -> daml_lf_2.Expr.ToAny
-	66,  // 48: daml_lf_2.Expr.from_any:type_name -> daml_lf_2.Expr.FromAny
-	16,  // 49: daml_lf_2.Expr.type_rep:type_name -> daml_lf_2.Type
-	67,  // 50: daml_lf_2.Expr.to_any_exception:type_name -> daml_lf_2.Expr.ToAnyException
-	68,  // 51: daml_lf_2.Expr.from_any_exception:type_name -> daml_lf_2.Expr.FromAnyException
-	69,  // 52: daml_lf_2.Expr.throw:type_name -> daml_lf_2.Expr.Throw
-	70,  // 53: daml_lf_2.Expr.to_interface:type_name -> daml_lf_2.Expr.ToInterface
-	71,  // 54: daml_lf_2.Expr.from_interface:type_name -> daml_lf_2.Expr.FromInterface
-	72,  // 55: daml_lf_2.Expr.call_interface:type_name -> daml_lf_2.Expr.CallInterface
-	74,  // 56: daml_lf_2.Expr.signatory_interface:type_name -> daml_lf_2.Expr.SignatoryInterface
-	75,  // 57: daml_lf_2.Expr.observer_interface:type_name -> daml_lf_2.Expr.ObserverInterface
-	73,  // 58: daml_lf_2.Expr.view_interface:type_name -> daml_lf_2.Expr.ViewInterface
-	76,  // 59: daml_lf_2.Expr.unsafe_from_interface:type_name -> daml_lf_2.Expr.UnsafeFromInterface
-	80,  // 60: daml_lf_2.Expr.interface_template_type_rep:type_name -> daml_lf_2.Expr.InterfaceTemplateTypeRep
-	77,  // 61: daml_lf_2.Expr.to_required_interface:type_name -> daml_lf_2.Expr.ToRequiredInterface
-	78,  // 62: daml_lf_2.Expr.from_required_interface:type_name -> daml_lf_2.Expr.FromRequiredInterface
-	79,  // 63: daml_lf_2.Expr.unsafe_from_required_interface:type_name -> daml_lf_2.Expr.UnsafeFromRequiredInterface
-	81,  // 64: daml_lf_2.Expr.choice_controller:type_name -> daml_lf_2.Expr.ChoiceController
-	82,  // 65: daml_lf_2.Expr.choice_observer:type_name -> daml_lf_2.Expr.ChoiceObserver
-	25,  // 66: daml_lf_2.Expr.scenario:type_name -> daml_lf_2.Scenario
-	83,  // 67: daml_lf_2.Expr.experimental:type_name -> daml_lf_2.Expr.Experimental
-	4,   // 68: daml_lf_2.CaseAlt.default:type_name -> daml_lf_2.Unit
-	84,  // 69: daml_lf_2.CaseAlt.variant:type_name -> daml_lf_2.CaseAlt.Variant
-	1,   // 70: daml_lf_2.CaseAlt.builtin_con:type_name -> daml_lf_2.BuiltinCon
-	4,   // 71: daml_lf_2.CaseAlt.nil:type_name -> daml_lf_2.Unit
-	86,  // 72: daml_lf_2.CaseAlt.cons:type_name -> daml_lf_2.CaseAlt.Cons
-	4,   // 73: daml_lf_2.CaseAlt.optional_none:type_name -> daml_lf_2.Unit
-	87,  // 74: daml_lf_2.CaseAlt.optional_some:type_name -> daml_lf_2.CaseAlt.OptionalSome
-	85,  // 75: daml_lf_2.CaseAlt.enum:type_name -> daml_lf_2.CaseAlt.Enum
-	19,  // 76: daml_lf_2.CaseAlt.body:type_name -> daml_lf_2.Expr
-	19,  // 77: daml_lf_2.Case.scrut:type_name -> daml_lf_2.Expr
-	20,  // 78: daml_lf_2.Case.alts:type_name -> daml_lf_2.CaseAlt
-	14,  // 79: daml_lf_2.Block.bindings:type_name -> daml_lf_2.Binding
-	19,  // 80: daml_lf_2.Block.body:type_name -> daml_lf_2.Expr
-	16,  // 81: daml_lf_2.Pure.type:type_name -> daml_lf_2.Type
-	19,  // 82: daml_lf_2.Pure.expr:type_name -> daml_lf_2.Expr
-	23,  // 83: daml_lf_2.Update.pure:type_name -> daml_lf_2.Pure
-	22,  // 84: daml_lf_2.Update.block:type_name -> daml_lf_2.Block
-	88,  // 85: daml_lf_2.Update.create:type_name -> daml_lf_2.Update.Create
-	90,  // 86: daml_lf_2.Update.exercise:type_name -> daml_lf_2.Update.Exercise
-	94,  // 87: daml_lf_2.Update.exercise_by_key:type_name -> daml_lf_2.Update.ExerciseByKey
-	95,  // 88: daml_lf_2.Update.fetch:type_name -> daml_lf_2.Update.Fetch
-	4,   // 89: daml_lf_2.Update.get_time:type_name -> daml_lf_2.Unit
-	99,  // 90: daml_lf_2.Update.lookup_by_key:type_name -> daml_lf_2.Update.RetrieveByKey
-	99,  // 91: daml_lf_2.Update.fetch_by_key:type_name -> daml_lf_2.Update.RetrieveByKey
-	98,  // 92: daml_lf_2.Update.embed_expr:type_name -> daml_lf_2.Update.EmbedExpr
-	100, // 93: daml_lf_2.Update.try_catch:type_name -> daml_lf_2.Update.TryCatch
-	89,  // 94: daml_lf_2.Update.create_interface:type_name -> daml_lf_2.Update.CreateInterface
-	93,  // 95: daml_lf_2.Update.exercise_interface:type_name -> daml_lf_2.Update.ExerciseInterface
-	97,  // 96: daml_lf_2.Update.fetch_interface:type_name -> daml_lf_2.Update.FetchInterface
-	92,  // 97: daml_lf_2.Update.dynamic_exercise:type_name -> daml_lf_2.Update.DynamicExercise
-	96,  // 98: daml_lf_2.Update.soft_fetch:type_name -> daml_lf_2.Update.SoftFetch
-	91,  // 99: daml_lf_2.Update.soft_exercise:type_name -> daml_lf_2.Update.SoftExercise
-	23,  // 100: daml_lf_2.Scenario.pure:type_name -> daml_lf_2.Pure
-	22,  // 101: daml_lf_2.Scenario.block:type_name -> daml_lf_2.Block
-	101, // 102: daml_lf_2.Scenario.commit:type_name -> daml_lf_2.Scenario.Commit
-	101, // 103: daml_lf_2.Scenario.mustFailAt:type_name -> daml_lf_2.Scenario.Commit
-	19,  // 104: daml_lf_2.Scenario.pass:type_name -> daml_lf_2.Expr
-	4,   // 105: daml_lf_2.Scenario.get_time:type_name -> daml_lf_2.Unit
-	19,  // 106: daml_lf_2.Scenario.get_party:type_name -> daml_lf_2.Expr
-	102, // 107: daml_lf_2.Scenario.embed_expr:type_name -> daml_lf_2.Scenario.EmbedExpr
-	18,  // 108: daml_lf_2.TemplateChoice.location:type_name -> daml_lf_2.Location
-	19,  // 109: daml_lf_2.TemplateChoice.controllers:type_name -> daml_lf_2.Expr
-	19,  // 110: daml_lf_2.TemplateChoice.observers:type_name -> daml_lf_2.Expr
-	11,  // 111: daml_lf_2.TemplateChoice.arg_binder:type_name -> daml_lf_2.VarWithType
-	16,  // 112: daml_lf_2.TemplateChoice.ret_type:type_name -> daml_lf_2.Type
-	19,  // 113: daml_lf_2.TemplateChoice.update:type_name -> daml_lf_2.Expr
-	19,  // 114: daml_lf_2.TemplateChoice.authorizers:type_name -> daml_lf_2.Expr
-	103, // 115: daml_lf_2.InterfaceInstanceBody.methods:type_name -> daml_lf_2.InterfaceInstanceBody.InterfaceInstanceMethod
-	19,  // 116: daml_lf_2.InterfaceInstanceBody.view:type_name -> daml_lf_2.Expr
-	19,  // 117: daml_lf_2.DefTemplate.precond:type_name -> daml_lf_2.Expr
-	19,  // 118: daml_lf_2.DefTemplate.signatories:type_name -> daml_lf_2.Expr
-	19,  // 119: daml_lf_2.DefTemplate.agreement:type_name -> daml_lf_2.Expr
-	26,  // 120: daml_lf_2.DefTemplate.choices:type_name -> daml_lf_2.TemplateChoice
-	19,  // 121: daml_lf_2.DefTemplate.observers:type_name -> daml_lf_2.Expr
-	18,  // 122: daml_lf_2.DefTemplate.location:type_name -> daml_lf_2.Location
-	104, // 123: daml_lf_2.DefTemplate.key:type_name -> daml_lf_2.DefTemplate.DefKey
-	105, // 124: daml_lf_2.DefTemplate.implements:type_name -> daml_lf_2.DefTemplate.Implements
-	18,  // 125: daml_lf_2.InterfaceMethod.location:type_name -> daml_lf_2.Location
-	16,  // 126: daml_lf_2.InterfaceMethod.type:type_name -> daml_lf_2.Type
-	18,  // 127: daml_lf_2.DefInterface.location:type_name -> daml_lf_2.Location
-	29,  // 128: daml_lf_2.DefInterface.methods:type_name -> daml_lf_2.InterfaceMethod
-	26,  // 129: daml_lf_2.DefInterface.choices:type_name -> daml_lf_2.TemplateChoice
-	16,  // 130: daml_lf_2.DefInterface.view:type_name -> daml_lf_2.Type
-	7,   // 131: daml_lf_2.DefInterface.requires:type_name -> daml_lf_2.TypeConName
-	18,  // 132: daml_lf_2.DefException.location:type_name -> daml_lf_2.Location
-	19,  // 133: daml_lf_2.DefException.message:type_name -> daml_lf_2.Expr
-	18,  // 134: daml_lf_2.DefDataType.location:type_name -> daml_lf_2.Location
-	12,  // 135: daml_lf_2.DefDataType.params:type_name -> daml_lf_2.TypeVarWithKind
-	106, // 136: daml_lf_2.DefDataType.record:type_name -> daml_lf_2.DefDataType.Fields
-	106, // 137: daml_lf_2.DefDataType.variant:type_name -> daml_lf_2.DefDataType.Fields
-	107, // 138: daml_lf_2.DefDataType.enum:type_name -> daml_lf_2.DefDataType.EnumConstructors
-	4,   // 139: daml_lf_2.DefDataType.interface:type_name -> daml_lf_2.Unit
-	18,  // 140: daml_lf_2.DefTypeSyn.location:type_name -> daml_lf_2.Location
-	12,  // 141: daml_lf_2.DefTypeSyn.params:type_name -> daml_lf_2.TypeVarWithKind
-	16,  // 142: daml_lf_2.DefTypeSyn.type:type_name -> daml_lf_2.Type
-	18,  // 143: daml_lf_2.DefValue.location:type_name -> daml_lf_2.Location
-	108, // 144: daml_lf_2.DefValue.name_with_type:type_name -> daml_lf_2.DefValue.NameWithType
-	19,  // 145: daml_lf_2.DefValue.expr:type_name -> daml_lf_2.Expr
-	35,  // 146: daml_lf_2.Module.flags:type_name -> daml_lf_2.FeatureFlags
-	33,  // 147: daml_lf_2.Module.synonyms:type_name -> daml_lf_2.DefTypeSyn
-	32,  // 148: daml_lf_2.Module.data_types:type_name -> daml_lf_2.DefDataType
-	34,  // 149: daml_lf_2.Module.values:type_name -> daml_lf_2.DefValue
-	28,  // 150: daml_lf_2.Module.templates:type_name -> daml_lf_2.DefTemplate
-	31,  // 151: daml_lf_2.Module.exceptions:type_name -> daml_lf_2.DefException
-	30,  // 152: daml_lf_2.Module.interfaces:type_name -> daml_lf_2.DefInterface
-	38,  // 153: daml_lf_2.PackageMetadata.upgraded_package_id:type_name -> daml_lf_2.UpgradedPackageId
-	36,  // 154: daml_lf_2.Package.modules:type_name -> daml_lf_2.Module
-	37,  // 155: daml_lf_2.Package.interned_dotted_names:type_name -> daml_lf_2.InternedDottedName
-	39,  // 156: daml_lf_2.Package.metadata:type_name -> daml_lf_2.PackageMetadata
-	16,  // 157: daml_lf_2.Package.interned_types:type_name -> daml_lf_2.Type
-	15,  // 158: daml_lf_2.Kind.Arrow.params:type_name -> daml_lf_2.Kind
-	15,  // 159: daml_lf_2.Kind.Arrow.result:type_name -> daml_lf_2.Kind
-	16,  // 160: daml_lf_2.Type.Var.args:type_name -> daml_lf_2.Type
-	7,   // 161: daml_lf_2.Type.Con.tycon:type_name -> daml_lf_2.TypeConName
-	16,  // 162: daml_lf_2.Type.Con.args:type_name -> daml_lf_2.Type
-	8,   // 163: daml_lf_2.Type.Syn.tysyn:type_name -> daml_lf_2.TypeSynName
-	16,  // 164: daml_lf_2.Type.Syn.args:type_name -> daml_lf_2.Type
-	0,   // 165: daml_lf_2.Type.Builtin.builtin:type_name -> daml_lf_2.BuiltinType
-	16,  // 166: daml_lf_2.Type.Builtin.args:type_name -> daml_lf_2.Type
-	12,  // 167: daml_lf_2.Type.Forall.vars:type_name -> daml_lf_2.TypeVarWithKind
-	16,  // 168: daml_lf_2.Type.Forall.body:type_name -> daml_lf_2.Type
-	10,  // 169: daml_lf_2.Type.Struct.fields:type_name -> daml_lf_2.FieldWithType
-	43,  // 170: daml_lf_2.Expr.RecCon.tycon:type_name -> daml_lf_2.Type.Con
-	13,  // 171: daml_lf_2.Expr.RecCon.fields:type_name -> daml_lf_2.FieldWithExpr
-	43,  // 172: daml_lf_2.Expr.RecProj.tycon:type_name -> daml_lf_2.Type.Con
-	19,  // 173: daml_lf_2.Expr.RecProj.record:type_name -> daml_lf_2.Expr
-	43,  // 174: daml_lf_2.Expr.RecUpd.tycon:type_name -> daml_lf_2.Type.Con
-	19,  // 175: daml_lf_2.Expr.RecUpd.record:type_name -> daml_lf_2.Expr
-	19,  // 176: daml_lf_2.Expr.RecUpd.update:type_name -> daml_lf_2.Expr
-	43,  // 177: daml_lf_2.Expr.VariantCon.tycon:type_name -> daml_lf_2.Type.Con
-	19,  // 178: daml_lf_2.Expr.VariantCon.variant_arg:type_name -> daml_lf_2.Expr
-	7,   // 179: daml_lf_2.Expr.EnumCon.tycon:type_name -> daml_lf_2.TypeConName
-	13,  // 180: daml_lf_2.Expr.StructCon.fields:type_name -> daml_lf_2.FieldWithExpr
-	19,  // 181: daml_lf_2.Expr.StructProj.struct:type_name -> daml_lf_2.Expr
-	19,  // 182: daml_lf_2.Expr.StructUpd.struct:type_name -> daml_lf_2.Expr
-	19,  // 183: daml_lf_2.Expr.StructUpd.update:type_name -> daml_lf_2.Expr
-	19,  // 184: daml_lf_2.Expr.App.fun:type_name -> daml_lf_2.Expr
-	19,  // 185: daml_lf_2.Expr.App.args:type_name -> daml_lf_2.Expr
-	19,  // 186: daml_lf_2.Expr.TyApp.expr:type_name -> daml_lf_2.Expr
-	16,  // 187: daml_lf_2.Expr.TyApp.types:type_name -> daml_lf_2.Type
-	11,  // 188: daml_lf_2.Expr.Abs.param:type_name -> daml_lf_2.VarWithType
-	19,  // 189: daml_lf_2.Expr.Abs.body:type_name -> daml_lf_2.Expr
-	12,  // 190: daml_lf_2.Expr.TyAbs.param:type_name -> daml_lf_2.TypeVarWithKind
-	19,  // 191: daml_lf_2.Expr.TyAbs.body:type_name -> daml_lf_2.Expr
-	16,  // 192: daml_lf_2.Expr.Nil.type:type_name -> daml_lf_2.Type
-	16,  // 193: daml_lf_2.Expr.Cons.type:type_name -> daml_lf_2.Type
-	19,  // 194: daml_lf_2.Expr.Cons.front:type_name -> daml_lf_2.Expr
-	19,  // 195: daml_lf_2.Expr.Cons.tail:type_name -> daml_lf_2.Expr
-	16,  // 196: daml_lf_2.Expr.OptionalNone.type:type_name -> daml_lf_2.Type
-	16,  // 197: daml_lf_2.Expr.OptionalSome.type:type_name -> daml_lf_2.Type
-	19,  // 198: daml_lf_2.Expr.OptionalSome.value:type_name -> daml_lf_2.Expr
-	16,  // 199: daml_lf_2.Expr.ToAny.type:type_name -> daml_lf_2.Type
-	19,  // 200: daml_lf_2.Expr.ToAny.expr:type_name -> daml_lf_2.Expr
-	16,  // 201: daml_lf_2.Expr.FromAny.type:type_name -> daml_lf_2.Type
-	19,  // 202: daml_lf_2.Expr.FromAny.expr:type_name -> daml_lf_2.Expr
-	16,  // 203: daml_lf_2.Expr.ToAnyException.type:type_name -> daml_lf_2.Type
-	19,  // 204: daml_lf_2.Expr.ToAnyException.expr:type_name -> daml_lf_2.Expr
-	16,  // 205: daml_lf_2.Expr.FromAnyException.type:type_name -> daml_lf_2.Type
-	19,  // 206: daml_lf_2.Expr.FromAnyException.expr:type_name -> daml_lf_2.Expr
-	16,  // 207: daml_lf_2.Expr.Throw.return_type:type_name -> daml_lf_2.Type
-	16,  // 208: daml_lf_2.Expr.Throw.exception_type:type_name -> daml_lf_2.Type
-	19,  // 209: daml_lf_2.Expr.Throw.exception_expr:type_name -> daml_lf_2.Expr
-	7,   // 210: daml_lf_2.Expr.ToInterface.interface_type:type_name -> daml_lf_2.TypeConName
-	7,   // 211: daml_lf_2.Expr.ToInterface.template_type:type_name -> daml_lf_2.TypeConName
-	19,  // 212: daml_lf_2.Expr.ToInterface.template_expr:type_name -> daml_lf_2.Expr
-	7,   // 213: daml_lf_2.Expr.FromInterface.interface_type:type_name -> daml_lf_2.TypeConName
-	7,   // 214: daml_lf_2.Expr.FromInterface.template_type:type_name -> daml_lf_2.TypeConName
-	19,  // 215: daml_lf_2.Expr.FromInterface.interface_expr:type_name -> daml_lf_2.Expr
-	7,   // 216: daml_lf_2.Expr.CallInterface.interface_type:type_name -> daml_lf_2.TypeConName
-	19,  // 217: daml_lf_2.Expr.CallInterface.interface_expr:type_name -> daml_lf_2.Expr
-	7,   // 218: daml_lf_2.Expr.ViewInterface.interface:type_name -> daml_lf_2.TypeConName
-	19,  // 219: daml_lf_2.Expr.ViewInterface.expr:type_name -> daml_lf_2.Expr
-	7,   // 220: daml_lf_2.Expr.SignatoryInterface.interface:type_name -> daml_lf_2.TypeConName
-	19,  // 221: daml_lf_2.Expr.SignatoryInterface.expr:type_name -> daml_lf_2.Expr
-	7,   // 222: daml_lf_2.Expr.ObserverInterface.interface:type_name -> daml_lf_2.TypeConName
-	19,  // 223: daml_lf_2.Expr.ObserverInterface.expr:type_name -> daml_lf_2.Expr
-	7,   // 224: daml_lf_2.Expr.UnsafeFromInterface.interface_type:type_name -> daml_lf_2.TypeConName
-	7,   // 225: daml_lf_2.Expr.UnsafeFromInterface.template_type:type_name -> daml_lf_2.TypeConName
-	19,  // 226: daml_lf_2.Expr.UnsafeFromInterface.contract_id_expr:type_name -> daml_lf_2.Expr
-	19,  // 227: daml_lf_2.Expr.UnsafeFromInterface.interface_expr:type_name -> daml_lf_2.Expr
-	7,   // 228: daml_lf_2.Expr.ToRequiredInterface.required_interface:type_name -> daml_lf_2.TypeConName
-	7,   // 229: daml_lf_2.Expr.ToRequiredInterface.requiring_interface:type_name -> daml_lf_2.TypeConName
-	19,  // 230: daml_lf_2.Expr.ToRequiredInterface.expr:type_name -> daml_lf_2.Expr
-	7,   // 231: daml_lf_2.Expr.FromRequiredInterface.required_interface:type_name -> daml_lf_2.TypeConName
-	7,   // 232: daml_lf_2.Expr.FromRequiredInterface.requiring_interface:type_name -> daml_lf_2.TypeConName
-	19,  // 233: daml_lf_2.Expr.FromRequiredInterface.expr:type_name -> daml_lf_2.Expr
-	7,   // 234: daml_lf_2.Expr.UnsafeFromRequiredInterface.required_interface:type_name -> daml_lf_2.TypeConName
-	7,   // 235: daml_lf_2.Expr.UnsafeFromRequiredInterface.requiring_interface:type_name -> daml_lf_2.TypeConName
-	19,  // 236: daml_lf_2.Expr.UnsafeFromRequiredInterface.contract_id_expr:type_name -> daml_lf_2.Expr
-	19,  // 237: daml_lf_2.Expr.UnsafeFromRequiredInterface.interface_expr:type_name -> daml_lf_2.Expr
-	7,   // 238: daml_lf_2.Expr.InterfaceTemplateTypeRep.interface:type_name -> daml_lf_2.TypeConName
-	19,  // 239: daml_lf_2.Expr.InterfaceTemplateTypeRep.expr:type_name -> daml_lf_2.Expr
-	7,   // 240: daml_lf_2.Expr.ChoiceController.template:type_name -> daml_lf_2.TypeConName
-	19,  // 241: daml_lf_2.Expr.ChoiceController.contract_expr:type_name -> daml_lf_2.Expr
-	19,  // 242: daml_lf_2.Expr.ChoiceController.choice_arg_expr:type_name -> daml_lf_2.Expr
-	7,   // 243: daml_lf_2.Expr.ChoiceObserver.template:type_name -> daml_lf_2.TypeConName
-	19,  // 244: daml_lf_2.Expr.ChoiceObserver.contract_expr:type_name -> daml_lf_2.Expr
-	19,  // 245: daml_lf_2.Expr.ChoiceObserver.choice_arg_expr:type_name -> daml_lf_2.Expr
-	16,  // 246: daml_lf_2.Expr.Experimental.type:type_name -> daml_lf_2.Type
-	7,   // 247: daml_lf_2.CaseAlt.Variant.con:type_name -> daml_lf_2.TypeConName
-	7,   // 248: daml_lf_2.CaseAlt.Enum.con:type_name -> daml_lf_2.TypeConName
-	7,   // 249: daml_lf_2.Update.Create.template:type_name -> daml_lf_2.TypeConName
-	19,  // 250: daml_lf_2.Update.Create.expr:type_name -> daml_lf_2.Expr
-	7,   // 251: daml_lf_2.Update.CreateInterface.interface:type_name -> daml_lf_2.TypeConName
-	19,  // 252: daml_lf_2.Update.CreateInterface.expr:type_name -> daml_lf_2.Expr
-	7,   // 253: daml_lf_2.Update.Exercise.template:type_name -> daml_lf_2.TypeConName
-	19,  // 254: daml_lf_2.Update.Exercise.cid:type_name -> daml_lf_2.Expr
-	19,  // 255: daml_lf_2.Update.Exercise.arg:type_name -> daml_lf_2.Expr
-	7,   // 256: daml_lf_2.Update.SoftExercise.template:type_name -> daml_lf_2.TypeConName
-	19,  // 257: daml_lf_2.Update.SoftExercise.cid:type_name -> daml_lf_2.Expr
-	19,  // 258: daml_lf_2.Update.SoftExercise.arg:type_name -> daml_lf_2.Expr
-	7,   // 259: daml_lf_2.Update.DynamicExercise.template:type_name -> daml_lf_2.TypeConName
-	19,  // 260: daml_lf_2.Update.DynamicExercise.cid:type_name -> daml_lf_2.Expr
-	19,  // 261: daml_lf_2.Update.DynamicExercise.arg:type_name -> daml_lf_2.Expr
-	7,   // 262: daml_lf_2.Update.ExerciseInterface.interface:type_name -> daml_lf_2.TypeConName
-	19,  // 263: daml_lf_2.Update.ExerciseInterface.cid:type_name -> daml_lf_2.Expr
-	19,  // 264: daml_lf_2.Update.ExerciseInterface.arg:type_name -> daml_lf_2.Expr
-	19,  // 265: daml_lf_2.Update.ExerciseInterface.guard:type_name -> daml_lf_2.Expr
-	7,   // 266: daml_lf_2.Update.ExerciseByKey.template:type_name -> daml_lf_2.TypeConName
-	19,  // 267: daml_lf_2.Update.ExerciseByKey.key:type_name -> daml_lf_2.Expr
-	19,  // 268: daml_lf_2.Update.ExerciseByKey.arg:type_name -> daml_lf_2.Expr
-	7,   // 269: daml_lf_2.Update.Fetch.template:type_name -> daml_lf_2.TypeConName
-	19,  // 270: daml_lf_2.Update.Fetch.cid:type_name -> daml_lf_2.Expr
-	7,   // 271: daml_lf_2.Update.SoftFetch.template:type_name -> daml_lf_2.TypeConName
-	19,  // 272: daml_lf_2.Update.SoftFetch.cid:type_name -> daml_lf_2.Expr
-	7,   // 273: daml_lf_2.Update.FetchInterface.interface:type_name -> daml_lf_2.TypeConName
-	19,  // 274: daml_lf_2.Update.FetchInterface.cid:type_name -> daml_lf_2.Expr
-	16,  // 275: daml_lf_2.Update.EmbedExpr.type:type_name -> daml_lf_2.Type
-	19,  // 276: daml_lf_2.Update.EmbedExpr.body:type_name -> daml_lf_2.Expr
-	7,   // 277: daml_lf_2.Update.RetrieveByKey.template:type_name -> daml_lf_2.TypeConName
-	19,  // 278: daml_lf_2.Update.RetrieveByKey.key:type_name -> daml_lf_2.Expr
-	16,  // 279: daml_lf_2.Update.TryCatch.return_type:type_name -> daml_lf_2.Type
-	19,  // 280: daml_lf_2.Update.TryCatch.try_expr:type_name -> daml_lf_2.Expr
-	19,  // 281: daml_lf_2.Update.TryCatch.catch_expr:type_name -> daml_lf_2.Expr
-	19,  // 282: daml_lf_2.Scenario.Commit.party:type_name -> daml_lf_2.Expr
-	19,  // 283: daml_lf_2.Scenario.Commit.expr:type_name -> daml_lf_2.Expr
-	16,  // 284: daml_lf_2.Scenario.Commit.ret_type:type_name -> daml_lf_2.Type
-	16,  // 285: daml_lf_2.Scenario.EmbedExpr.type:type_name -> daml_lf_2.Type
-	19,  // 286: daml_lf_2.Scenario.EmbedExpr.body:type_name -> daml_lf_2.Expr
-	19,  // 287: daml_lf_2.InterfaceInstanceBody.InterfaceInstanceMethod.value:type_name -> daml_lf_2.Expr
-	16,  // 288: daml_lf_2.DefTemplate.DefKey.type:type_name -> daml_lf_2.Type
-	19,  // 289: daml_lf_2.DefTemplate.DefKey.key_expr:type_name -> daml_lf_2.Expr
-	19,  // 290: daml_lf_2.DefTemplate.DefKey.maintainers:type_name -> daml_lf_2.Expr
-	7,   // 291: daml_lf_2.DefTemplate.Implements.interface:type_name -> daml_lf_2.TypeConName
-	27,  // 292: daml_lf_2.DefTemplate.Implements.body:type_name -> daml_lf_2.InterfaceInstanceBody
-	18,  // 293: daml_lf_2.DefTemplate.Implements.location:type_name -> daml_lf_2.Location
-	10,  // 294: daml_lf_2.DefDataType.Fields.fields:type_name -> daml_lf_2.FieldWithType
-	16,  // 295: daml_lf_2.DefValue.NameWithType.type:type_name -> daml_lf_2.Type
+	4,   // 0: daml_lf_2_1.PackageRef.self:type_name -> daml_lf_2_1.Unit
+	5,   // 1: daml_lf_2_1.ModuleRef.package_ref:type_name -> daml_lf_2_1.PackageRef
+	6,   // 2: daml_lf_2_1.TypeConName.module:type_name -> daml_lf_2_1.ModuleRef
+	6,   // 3: daml_lf_2_1.TypeSynName.module:type_name -> daml_lf_2_1.ModuleRef
+	6,   // 4: daml_lf_2_1.ValName.module:type_name -> daml_lf_2_1.ModuleRef
+	16,  // 5: daml_lf_2_1.FieldWithType.type:type_name -> daml_lf_2_1.Type
+	16,  // 6: daml_lf_2_1.VarWithType.type:type_name -> daml_lf_2_1.Type
+	15,  // 7: daml_lf_2_1.TypeVarWithKind.kind:type_name -> daml_lf_2_1.Kind
+	19,  // 8: daml_lf_2_1.FieldWithExpr.expr:type_name -> daml_lf_2_1.Expr
+	11,  // 9: daml_lf_2_1.Binding.binder:type_name -> daml_lf_2_1.VarWithType
+	19,  // 10: daml_lf_2_1.Binding.bound:type_name -> daml_lf_2_1.Expr
+	4,   // 11: daml_lf_2_1.Kind.star:type_name -> daml_lf_2_1.Unit
+	41,  // 12: daml_lf_2_1.Kind.arrow:type_name -> daml_lf_2_1.Kind.Arrow
+	4,   // 13: daml_lf_2_1.Kind.nat:type_name -> daml_lf_2_1.Unit
+	42,  // 14: daml_lf_2_1.Type.var:type_name -> daml_lf_2_1.Type.Var
+	43,  // 15: daml_lf_2_1.Type.con:type_name -> daml_lf_2_1.Type.Con
+	45,  // 16: daml_lf_2_1.Type.builtin:type_name -> daml_lf_2_1.Type.Builtin
+	46,  // 17: daml_lf_2_1.Type.forall:type_name -> daml_lf_2_1.Type.Forall
+	47,  // 18: daml_lf_2_1.Type.struct:type_name -> daml_lf_2_1.Type.Struct
+	44,  // 19: daml_lf_2_1.Type.syn:type_name -> daml_lf_2_1.Type.Syn
+	3,   // 20: daml_lf_2_1.BuiltinLit.rounding_mode:type_name -> daml_lf_2_1.BuiltinLit.RoundingMode
+	6,   // 21: daml_lf_2_1.Location.module:type_name -> daml_lf_2_1.ModuleRef
+	48,  // 22: daml_lf_2_1.Location.range:type_name -> daml_lf_2_1.Location.Range
+	18,  // 23: daml_lf_2_1.Expr.location:type_name -> daml_lf_2_1.Location
+	9,   // 24: daml_lf_2_1.Expr.val:type_name -> daml_lf_2_1.ValName
+	2,   // 25: daml_lf_2_1.Expr.builtin:type_name -> daml_lf_2_1.BuiltinFunction
+	1,   // 26: daml_lf_2_1.Expr.builtin_con:type_name -> daml_lf_2_1.BuiltinCon
+	17,  // 27: daml_lf_2_1.Expr.builtin_lit:type_name -> daml_lf_2_1.BuiltinLit
+	49,  // 28: daml_lf_2_1.Expr.rec_con:type_name -> daml_lf_2_1.Expr.RecCon
+	50,  // 29: daml_lf_2_1.Expr.rec_proj:type_name -> daml_lf_2_1.Expr.RecProj
+	51,  // 30: daml_lf_2_1.Expr.rec_upd:type_name -> daml_lf_2_1.Expr.RecUpd
+	52,  // 31: daml_lf_2_1.Expr.variant_con:type_name -> daml_lf_2_1.Expr.VariantCon
+	53,  // 32: daml_lf_2_1.Expr.enum_con:type_name -> daml_lf_2_1.Expr.EnumCon
+	54,  // 33: daml_lf_2_1.Expr.struct_con:type_name -> daml_lf_2_1.Expr.StructCon
+	55,  // 34: daml_lf_2_1.Expr.struct_proj:type_name -> daml_lf_2_1.Expr.StructProj
+	56,  // 35: daml_lf_2_1.Expr.struct_upd:type_name -> daml_lf_2_1.Expr.StructUpd
+	57,  // 36: daml_lf_2_1.Expr.app:type_name -> daml_lf_2_1.Expr.App
+	58,  // 37: daml_lf_2_1.Expr.ty_app:type_name -> daml_lf_2_1.Expr.TyApp
+	59,  // 38: daml_lf_2_1.Expr.abs:type_name -> daml_lf_2_1.Expr.Abs
+	60,  // 39: daml_lf_2_1.Expr.ty_abs:type_name -> daml_lf_2_1.Expr.TyAbs
+	21,  // 40: daml_lf_2_1.Expr.case:type_name -> daml_lf_2_1.Case
+	22,  // 41: daml_lf_2_1.Expr.let:type_name -> daml_lf_2_1.Block
+	61,  // 42: daml_lf_2_1.Expr.nil:type_name -> daml_lf_2_1.Expr.Nil
+	62,  // 43: daml_lf_2_1.Expr.cons:type_name -> daml_lf_2_1.Expr.Cons
+	24,  // 44: daml_lf_2_1.Expr.update:type_name -> daml_lf_2_1.Update
+	63,  // 45: daml_lf_2_1.Expr.optional_none:type_name -> daml_lf_2_1.Expr.OptionalNone
+	64,  // 46: daml_lf_2_1.Expr.optional_some:type_name -> daml_lf_2_1.Expr.OptionalSome
+	65,  // 47: daml_lf_2_1.Expr.to_any:type_name -> daml_lf_2_1.Expr.ToAny
+	66,  // 48: daml_lf_2_1.Expr.from_any:type_name -> daml_lf_2_1.Expr.FromAny
+	16,  // 49: daml_lf_2_1.Expr.type_rep:type_name -> daml_lf_2_1.Type
+	67,  // 50: daml_lf_2_1.Expr.to_any_exception:type_name -> daml_lf_2_1.Expr.ToAnyException
+	68,  // 51: daml_lf_2_1.Expr.from_any_exception:type_name -> daml_lf_2_1.Expr.FromAnyException
+	69,  // 52: daml_lf_2_1.Expr.throw:type_name -> daml_lf_2_1.Expr.Throw
+	70,  // 53: daml_lf_2_1.Expr.to_interface:type_name -> daml_lf_2_1.Expr.ToInterface
+	71,  // 54: daml_lf_2_1.Expr.from_interface:type_name -> daml_lf_2_1.Expr.FromInterface
+	72,  // 55: daml_lf_2_1.Expr.call_interface:type_name -> daml_lf_2_1.Expr.CallInterface
+	74,  // 56: daml_lf_2_1.Expr.signatory_interface:type_name -> daml_lf_2_1.Expr.SignatoryInterface
+	75,  // 57: daml_lf_2_1.Expr.observer_interface:type_name -> daml_lf_2_1.Expr.ObserverInterface
+	73,  // 58: daml_lf_2_1.Expr.view_interface:type_name -> daml_lf_2_1.Expr.ViewInterface
+	76,  // 59: daml_lf_2_1.Expr.unsafe_from_interface:type_name -> daml_lf_2_1.Expr.UnsafeFromInterface
+	80,  // 60: daml_lf_2_1.Expr.interface_template_type_rep:type_name -> daml_lf_2_1.Expr.InterfaceTemplateTypeRep
+	77,  // 61: daml_lf_2_1.Expr.to_required_interface:type_name -> daml_lf_2_1.Expr.ToRequiredInterface
+	78,  // 62: daml_lf_2_1.Expr.from_required_interface:type_name -> daml_lf_2_1.Expr.FromRequiredInterface
+	79,  // 63: daml_lf_2_1.Expr.unsafe_from_required_interface:type_name -> daml_lf_2_1.Expr.UnsafeFromRequiredInterface
+	81,  // 64: daml_lf_2_1.Expr.choice_controller:type_name -> daml_lf_2_1.Expr.ChoiceController
+	82,  // 65: daml_lf_2_1.Expr.choice_observer:type_name -> daml_lf_2_1.Expr.ChoiceObserver
+	25,  // 66: daml_lf_2_1.Expr.scenario:type_name -> daml_lf_2_1.Scenario
+	83,  // 67: daml_lf_2_1.Expr.experimental:type_name -> daml_lf_2_1.Expr.Experimental
+	4,   // 68: daml_lf_2_1.CaseAlt.default:type_name -> daml_lf_2_1.Unit
+	84,  // 69: daml_lf_2_1.CaseAlt.variant:type_name -> daml_lf_2_1.CaseAlt.Variant
+	1,   // 70: daml_lf_2_1.CaseAlt.builtin_con:type_name -> daml_lf_2_1.BuiltinCon
+	4,   // 71: daml_lf_2_1.CaseAlt.nil:type_name -> daml_lf_2_1.Unit
+	86,  // 72: daml_lf_2_1.CaseAlt.cons:type_name -> daml_lf_2_1.CaseAlt.Cons
+	4,   // 73: daml_lf_2_1.CaseAlt.optional_none:type_name -> daml_lf_2_1.Unit
+	87,  // 74: daml_lf_2_1.CaseAlt.optional_some:type_name -> daml_lf_2_1.CaseAlt.OptionalSome
+	85,  // 75: daml_lf_2_1.CaseAlt.enum:type_name -> daml_lf_2_1.CaseAlt.Enum
+	19,  // 76: daml_lf_2_1.CaseAlt.body:type_name -> daml_lf_2_1.Expr
+	19,  // 77: daml_lf_2_1.Case.scrut:type_name -> daml_lf_2_1.Expr
+	20,  // 78: daml_lf_2_1.Case.alts:type_name -> daml_lf_2_1.CaseAlt
+	14,  // 79: daml_lf_2_1.Block.bindings:type_name -> daml_lf_2_1.Binding
+	19,  // 80: daml_lf_2_1.Block.body:type_name -> daml_lf_2_1.Expr
+	16,  // 81: daml_lf_2_1.Pure.type:type_name -> daml_lf_2_1.Type
+	19,  // 82: daml_lf_2_1.Pure.expr:type_name -> daml_lf_2_1.Expr
+	23,  // 83: daml_lf_2_1.Update.pure:type_name -> daml_lf_2_1.Pure
+	22,  // 84: daml_lf_2_1.Update.block:type_name -> daml_lf_2_1.Block
+	88,  // 85: daml_lf_2_1.Update.create:type_name -> daml_lf_2_1.Update.Create
+	90,  // 86: daml_lf_2_1.Update.exercise:type_name -> daml_lf_2_1.Update.Exercise
+	94,  // 87: daml_lf_2_1.Update.exercise_by_key:type_name -> daml_lf_2_1.Update.ExerciseByKey
+	95,  // 88: daml_lf_2_1.Update.fetch:type_name -> daml_lf_2_1.Update.Fetch
+	4,   // 89: daml_lf_2_1.Update.get_time:type_name -> daml_lf_2_1.Unit
+	99,  // 90: daml_lf_2_1.Update.lookup_by_key:type_name -> daml_lf_2_1.Update.RetrieveByKey
+	99,  // 91: daml_lf_2_1.Update.fetch_by_key:type_name -> daml_lf_2_1.Update.RetrieveByKey
+	98,  // 92: daml_lf_2_1.Update.embed_expr:type_name -> daml_lf_2_1.Update.EmbedExpr
+	100, // 93: daml_lf_2_1.Update.try_catch:type_name -> daml_lf_2_1.Update.TryCatch
+	89,  // 94: daml_lf_2_1.Update.create_interface:type_name -> daml_lf_2_1.Update.CreateInterface
+	93,  // 95: daml_lf_2_1.Update.exercise_interface:type_name -> daml_lf_2_1.Update.ExerciseInterface
+	97,  // 96: daml_lf_2_1.Update.fetch_interface:type_name -> daml_lf_2_1.Update.FetchInterface
+	92,  // 97: daml_lf_2_1.Update.dynamic_exercise:type_name -> daml_lf_2_1.Update.DynamicExercise
+	96,  // 98: daml_lf_2_1.Update.soft_fetch:type_name -> daml_lf_2_1.Update.SoftFetch
+	91,  // 99: daml_lf_2_1.Update.soft_exercise:type_name -> daml_lf_2_1.Update.SoftExercise
+	23,  // 100: daml_lf_2_1.Scenario.pure:type_name -> daml_lf_2_1.Pure
+	22,  // 101: daml_lf_2_1.Scenario.block:type_name -> daml_lf_2_1.Block
+	101, // 102: daml_lf_2_1.Scenario.commit:type_name -> daml_lf_2_1.Scenario.Commit
+	101, // 103: daml_lf_2_1.Scenario.mustFailAt:type_name -> daml_lf_2_1.Scenario.Commit
+	19,  // 104: daml_lf_2_1.Scenario.pass:type_name -> daml_lf_2_1.Expr
+	4,   // 105: daml_lf_2_1.Scenario.get_time:type_name -> daml_lf_2_1.Unit
+	19,  // 106: daml_lf_2_1.Scenario.get_party:type_name -> daml_lf_2_1.Expr
+	102, // 107: daml_lf_2_1.Scenario.embed_expr:type_name -> daml_lf_2_1.Scenario.EmbedExpr
+	18,  // 108: daml_lf_2_1.TemplateChoice.location:type_name -> daml_lf_2_1.Location
+	19,  // 109: daml_lf_2_1.TemplateChoice.controllers:type_name -> daml_lf_2_1.Expr
+	19,  // 110: daml_lf_2_1.TemplateChoice.observers:type_name -> daml_lf_2_1.Expr
+	11,  // 111: daml_lf_2_1.TemplateChoice.arg_binder:type_name -> daml_lf_2_1.VarWithType
+	16,  // 112: daml_lf_2_1.TemplateChoice.ret_type:type_name -> daml_lf_2_1.Type
+	19,  // 113: daml_lf_2_1.TemplateChoice.update:type_name -> daml_lf_2_1.Expr
+	19,  // 114: daml_lf_2_1.TemplateChoice.authorizers:type_name -> daml_lf_2_1.Expr
+	103, // 115: daml_lf_2_1.InterfaceInstanceBody.methods:type_name -> daml_lf_2_1.InterfaceInstanceBody.InterfaceInstanceMethod
+	19,  // 116: daml_lf_2_1.InterfaceInstanceBody.view:type_name -> daml_lf_2_1.Expr
+	19,  // 117: daml_lf_2_1.DefTemplate.precond:type_name -> daml_lf_2_1.Expr
+	19,  // 118: daml_lf_2_1.DefTemplate.signatories:type_name -> daml_lf_2_1.Expr
+	19,  // 119: daml_lf_2_1.DefTemplate.agreement:type_name -> daml_lf_2_1.Expr
+	26,  // 120: daml_lf_2_1.DefTemplate.choices:type_name -> daml_lf_2_1.TemplateChoice
+	19,  // 121: daml_lf_2_1.DefTemplate.observers:type_name -> daml_lf_2_1.Expr
+	18,  // 122: daml_lf_2_1.DefTemplate.location:type_name -> daml_lf_2_1.Location
+	104, // 123: daml_lf_2_1.DefTemplate.key:type_name -> daml_lf_2_1.DefTemplate.DefKey
+	105, // 124: daml_lf_2_1.DefTemplate.implements:type_name -> daml_lf_2_1.DefTemplate.Implements
+	18,  // 125: daml_lf_2_1.InterfaceMethod.location:type_name -> daml_lf_2_1.Location
+	16,  // 126: daml_lf_2_1.InterfaceMethod.type:type_name -> daml_lf_2_1.Type
+	18,  // 127: daml_lf_2_1.DefInterface.location:type_name -> daml_lf_2_1.Location
+	29,  // 128: daml_lf_2_1.DefInterface.methods:type_name -> daml_lf_2_1.InterfaceMethod
+	26,  // 129: daml_lf_2_1.DefInterface.choices:type_name -> daml_lf_2_1.TemplateChoice
+	16,  // 130: daml_lf_2_1.DefInterface.view:type_name -> daml_lf_2_1.Type
+	7,   // 131: daml_lf_2_1.DefInterface.requires:type_name -> daml_lf_2_1.TypeConName
+	18,  // 132: daml_lf_2_1.DefException.location:type_name -> daml_lf_2_1.Location
+	19,  // 133: daml_lf_2_1.DefException.message:type_name -> daml_lf_2_1.Expr
+	18,  // 134: daml_lf_2_1.DefDataType.location:type_name -> daml_lf_2_1.Location
+	12,  // 135: daml_lf_2_1.DefDataType.params:type_name -> daml_lf_2_1.TypeVarWithKind
+	106, // 136: daml_lf_2_1.DefDataType.record:type_name -> daml_lf_2_1.DefDataType.Fields
+	106, // 137: daml_lf_2_1.DefDataType.variant:type_name -> daml_lf_2_1.DefDataType.Fields
+	107, // 138: daml_lf_2_1.DefDataType.enum:type_name -> daml_lf_2_1.DefDataType.EnumConstructors
+	4,   // 139: daml_lf_2_1.DefDataType.interface:type_name -> daml_lf_2_1.Unit
+	18,  // 140: daml_lf_2_1.DefTypeSyn.location:type_name -> daml_lf_2_1.Location
+	12,  // 141: daml_lf_2_1.DefTypeSyn.params:type_name -> daml_lf_2_1.TypeVarWithKind
+	16,  // 142: daml_lf_2_1.DefTypeSyn.type:type_name -> daml_lf_2_1.Type
+	18,  // 143: daml_lf_2_1.DefValue.location:type_name -> daml_lf_2_1.Location
+	108, // 144: daml_lf_2_1.DefValue.name_with_type:type_name -> daml_lf_2_1.DefValue.NameWithType
+	19,  // 145: daml_lf_2_1.DefValue.expr:type_name -> daml_lf_2_1.Expr
+	35,  // 146: daml_lf_2_1.Module.flags:type_name -> daml_lf_2_1.FeatureFlags
+	33,  // 147: daml_lf_2_1.Module.synonyms:type_name -> daml_lf_2_1.DefTypeSyn
+	32,  // 148: daml_lf_2_1.Module.data_types:type_name -> daml_lf_2_1.DefDataType
+	34,  // 149: daml_lf_2_1.Module.values:type_name -> daml_lf_2_1.DefValue
+	28,  // 150: daml_lf_2_1.Module.templates:type_name -> daml_lf_2_1.DefTemplate
+	31,  // 151: daml_lf_2_1.Module.exceptions:type_name -> daml_lf_2_1.DefException
+	30,  // 152: daml_lf_2_1.Module.interfaces:type_name -> daml_lf_2_1.DefInterface
+	38,  // 153: daml_lf_2_1.PackageMetadata.upgraded_package_id:type_name -> daml_lf_2_1.UpgradedPackageId
+	36,  // 154: daml_lf_2_1.Package.modules:type_name -> daml_lf_2_1.Module
+	37,  // 155: daml_lf_2_1.Package.interned_dotted_names:type_name -> daml_lf_2_1.InternedDottedName
+	39,  // 156: daml_lf_2_1.Package.metadata:type_name -> daml_lf_2_1.PackageMetadata
+	16,  // 157: daml_lf_2_1.Package.interned_types:type_name -> daml_lf_2_1.Type
+	15,  // 158: daml_lf_2_1.Kind.Arrow.params:type_name -> daml_lf_2_1.Kind
+	15,  // 159: daml_lf_2_1.Kind.Arrow.result:type_name -> daml_lf_2_1.Kind
+	16,  // 160: daml_lf_2_1.Type.Var.args:type_name -> daml_lf_2_1.Type
+	7,   // 161: daml_lf_2_1.Type.Con.tycon:type_name -> daml_lf_2_1.TypeConName
+	16,  // 162: daml_lf_2_1.Type.Con.args:type_name -> daml_lf_2_1.Type
+	8,   // 163: daml_lf_2_1.Type.Syn.tysyn:type_name -> daml_lf_2_1.TypeSynName
+	16,  // 164: daml_lf_2_1.Type.Syn.args:type_name -> daml_lf_2_1.Type
+	0,   // 165: daml_lf_2_1.Type.Builtin.builtin:type_name -> daml_lf_2_1.BuiltinType
+	16,  // 166: daml_lf_2_1.Type.Builtin.args:type_name -> daml_lf_2_1.Type
+	12,  // 167: daml_lf_2_1.Type.Forall.vars:type_name -> daml_lf_2_1.TypeVarWithKind
+	16,  // 168: daml_lf_2_1.Type.Forall.body:type_name -> daml_lf_2_1.Type
+	10,  // 169: daml_lf_2_1.Type.Struct.fields:type_name -> daml_lf_2_1.FieldWithType
+	43,  // 170: daml_lf_2_1.Expr.RecCon.tycon:type_name -> daml_lf_2_1.Type.Con
+	13,  // 171: daml_lf_2_1.Expr.RecCon.fields:type_name -> daml_lf_2_1.FieldWithExpr
+	43,  // 172: daml_lf_2_1.Expr.RecProj.tycon:type_name -> daml_lf_2_1.Type.Con
+	19,  // 173: daml_lf_2_1.Expr.RecProj.record:type_name -> daml_lf_2_1.Expr
+	43,  // 174: daml_lf_2_1.Expr.RecUpd.tycon:type_name -> daml_lf_2_1.Type.Con
+	19,  // 175: daml_lf_2_1.Expr.RecUpd.record:type_name -> daml_lf_2_1.Expr
+	19,  // 176: daml_lf_2_1.Expr.RecUpd.update:type_name -> daml_lf_2_1.Expr
+	43,  // 177: daml_lf_2_1.Expr.VariantCon.tycon:type_name -> daml_lf_2_1.Type.Con
+	19,  // 178: daml_lf_2_1.Expr.VariantCon.variant_arg:type_name -> daml_lf_2_1.Expr
+	7,   // 179: daml_lf_2_1.Expr.EnumCon.tycon:type_name -> daml_lf_2_1.TypeConName
+	13,  // 180: daml_lf_2_1.Expr.StructCon.fields:type_name -> daml_lf_2_1.FieldWithExpr
+	19,  // 181: daml_lf_2_1.Expr.StructProj.struct:type_name -> daml_lf_2_1.Expr
+	19,  // 182: daml_lf_2_1.Expr.StructUpd.struct:type_name -> daml_lf_2_1.Expr
+	19,  // 183: daml_lf_2_1.Expr.StructUpd.update:type_name -> daml_lf_2_1.Expr
+	19,  // 184: daml_lf_2_1.Expr.App.fun:type_name -> daml_lf_2_1.Expr
+	19,  // 185: daml_lf_2_1.Expr.App.args:type_name -> daml_lf_2_1.Expr
+	19,  // 186: daml_lf_2_1.Expr.TyApp.expr:type_name -> daml_lf_2_1.Expr
+	16,  // 187: daml_lf_2_1.Expr.TyApp.types:type_name -> daml_lf_2_1.Type
+	11,  // 188: daml_lf_2_1.Expr.Abs.param:type_name -> daml_lf_2_1.VarWithType
+	19,  // 189: daml_lf_2_1.Expr.Abs.body:type_name -> daml_lf_2_1.Expr
+	12,  // 190: daml_lf_2_1.Expr.TyAbs.param:type_name -> daml_lf_2_1.TypeVarWithKind
+	19,  // 191: daml_lf_2_1.Expr.TyAbs.body:type_name -> daml_lf_2_1.Expr
+	16,  // 192: daml_lf_2_1.Expr.Nil.type:type_name -> daml_lf_2_1.Type
+	16,  // 193: daml_lf_2_1.Expr.Cons.type:type_name -> daml_lf_2_1.Type
+	19,  // 194: daml_lf_2_1.Expr.Cons.front:type_name -> daml_lf_2_1.Expr
+	19,  // 195: daml_lf_2_1.Expr.Cons.tail:type_name -> daml_lf_2_1.Expr
+	16,  // 196: daml_lf_2_1.Expr.OptionalNone.type:type_name -> daml_lf_2_1.Type
+	16,  // 197: daml_lf_2_1.Expr.OptionalSome.type:type_name -> daml_lf_2_1.Type
+	19,  // 198: daml_lf_2_1.Expr.OptionalSome.value:type_name -> daml_lf_2_1.Expr
+	16,  // 199: daml_lf_2_1.Expr.ToAny.type:type_name -> daml_lf_2_1.Type
+	19,  // 200: daml_lf_2_1.Expr.ToAny.expr:type_name -> daml_lf_2_1.Expr
+	16,  // 201: daml_lf_2_1.Expr.FromAny.type:type_name -> daml_lf_2_1.Type
+	19,  // 202: daml_lf_2_1.Expr.FromAny.expr:type_name -> daml_lf_2_1.Expr
+	16,  // 203: daml_lf_2_1.Expr.ToAnyException.type:type_name -> daml_lf_2_1.Type
+	19,  // 204: daml_lf_2_1.Expr.ToAnyException.expr:type_name -> daml_lf_2_1.Expr
+	16,  // 205: daml_lf_2_1.Expr.FromAnyException.type:type_name -> daml_lf_2_1.Type
+	19,  // 206: daml_lf_2_1.Expr.FromAnyException.expr:type_name -> daml_lf_2_1.Expr
+	16,  // 207: daml_lf_2_1.Expr.Throw.return_type:type_name -> daml_lf_2_1.Type
+	16,  // 208: daml_lf_2_1.Expr.Throw.exception_type:type_name -> daml_lf_2_1.Type
+	19,  // 209: daml_lf_2_1.Expr.Throw.exception_expr:type_name -> daml_lf_2_1.Expr
+	7,   // 210: daml_lf_2_1.Expr.ToInterface.interface_type:type_name -> daml_lf_2_1.TypeConName
+	7,   // 211: daml_lf_2_1.Expr.ToInterface.template_type:type_name -> daml_lf_2_1.TypeConName
+	19,  // 212: daml_lf_2_1.Expr.ToInterface.template_expr:type_name -> daml_lf_2_1.Expr
+	7,   // 213: daml_lf_2_1.Expr.FromInterface.interface_type:type_name -> daml_lf_2_1.TypeConName
+	7,   // 214: daml_lf_2_1.Expr.FromInterface.template_type:type_name -> daml_lf_2_1.TypeConName
+	19,  // 215: daml_lf_2_1.Expr.FromInterface.interface_expr:type_name -> daml_lf_2_1.Expr
+	7,   // 216: daml_lf_2_1.Expr.CallInterface.interface_type:type_name -> daml_lf_2_1.TypeConName
+	19,  // 217: daml_lf_2_1.Expr.CallInterface.interface_expr:type_name -> daml_lf_2_1.Expr
+	7,   // 218: daml_lf_2_1.Expr.ViewInterface.interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 219: daml_lf_2_1.Expr.ViewInterface.expr:type_name -> daml_lf_2_1.Expr
+	7,   // 220: daml_lf_2_1.Expr.SignatoryInterface.interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 221: daml_lf_2_1.Expr.SignatoryInterface.expr:type_name -> daml_lf_2_1.Expr
+	7,   // 222: daml_lf_2_1.Expr.ObserverInterface.interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 223: daml_lf_2_1.Expr.ObserverInterface.expr:type_name -> daml_lf_2_1.Expr
+	7,   // 224: daml_lf_2_1.Expr.UnsafeFromInterface.interface_type:type_name -> daml_lf_2_1.TypeConName
+	7,   // 225: daml_lf_2_1.Expr.UnsafeFromInterface.template_type:type_name -> daml_lf_2_1.TypeConName
+	19,  // 226: daml_lf_2_1.Expr.UnsafeFromInterface.contract_id_expr:type_name -> daml_lf_2_1.Expr
+	19,  // 227: daml_lf_2_1.Expr.UnsafeFromInterface.interface_expr:type_name -> daml_lf_2_1.Expr
+	7,   // 228: daml_lf_2_1.Expr.ToRequiredInterface.required_interface:type_name -> daml_lf_2_1.TypeConName
+	7,   // 229: daml_lf_2_1.Expr.ToRequiredInterface.requiring_interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 230: daml_lf_2_1.Expr.ToRequiredInterface.expr:type_name -> daml_lf_2_1.Expr
+	7,   // 231: daml_lf_2_1.Expr.FromRequiredInterface.required_interface:type_name -> daml_lf_2_1.TypeConName
+	7,   // 232: daml_lf_2_1.Expr.FromRequiredInterface.requiring_interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 233: daml_lf_2_1.Expr.FromRequiredInterface.expr:type_name -> daml_lf_2_1.Expr
+	7,   // 234: daml_lf_2_1.Expr.UnsafeFromRequiredInterface.required_interface:type_name -> daml_lf_2_1.TypeConName
+	7,   // 235: daml_lf_2_1.Expr.UnsafeFromRequiredInterface.requiring_interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 236: daml_lf_2_1.Expr.UnsafeFromRequiredInterface.contract_id_expr:type_name -> daml_lf_2_1.Expr
+	19,  // 237: daml_lf_2_1.Expr.UnsafeFromRequiredInterface.interface_expr:type_name -> daml_lf_2_1.Expr
+	7,   // 238: daml_lf_2_1.Expr.InterfaceTemplateTypeRep.interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 239: daml_lf_2_1.Expr.InterfaceTemplateTypeRep.expr:type_name -> daml_lf_2_1.Expr
+	7,   // 240: daml_lf_2_1.Expr.ChoiceController.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 241: daml_lf_2_1.Expr.ChoiceController.contract_expr:type_name -> daml_lf_2_1.Expr
+	19,  // 242: daml_lf_2_1.Expr.ChoiceController.choice_arg_expr:type_name -> daml_lf_2_1.Expr
+	7,   // 243: daml_lf_2_1.Expr.ChoiceObserver.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 244: daml_lf_2_1.Expr.ChoiceObserver.contract_expr:type_name -> daml_lf_2_1.Expr
+	19,  // 245: daml_lf_2_1.Expr.ChoiceObserver.choice_arg_expr:type_name -> daml_lf_2_1.Expr
+	16,  // 246: daml_lf_2_1.Expr.Experimental.type:type_name -> daml_lf_2_1.Type
+	7,   // 247: daml_lf_2_1.CaseAlt.Variant.con:type_name -> daml_lf_2_1.TypeConName
+	7,   // 248: daml_lf_2_1.CaseAlt.Enum.con:type_name -> daml_lf_2_1.TypeConName
+	7,   // 249: daml_lf_2_1.Update.Create.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 250: daml_lf_2_1.Update.Create.expr:type_name -> daml_lf_2_1.Expr
+	7,   // 251: daml_lf_2_1.Update.CreateInterface.interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 252: daml_lf_2_1.Update.CreateInterface.expr:type_name -> daml_lf_2_1.Expr
+	7,   // 253: daml_lf_2_1.Update.Exercise.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 254: daml_lf_2_1.Update.Exercise.cid:type_name -> daml_lf_2_1.Expr
+	19,  // 255: daml_lf_2_1.Update.Exercise.arg:type_name -> daml_lf_2_1.Expr
+	7,   // 256: daml_lf_2_1.Update.SoftExercise.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 257: daml_lf_2_1.Update.SoftExercise.cid:type_name -> daml_lf_2_1.Expr
+	19,  // 258: daml_lf_2_1.Update.SoftExercise.arg:type_name -> daml_lf_2_1.Expr
+	7,   // 259: daml_lf_2_1.Update.DynamicExercise.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 260: daml_lf_2_1.Update.DynamicExercise.cid:type_name -> daml_lf_2_1.Expr
+	19,  // 261: daml_lf_2_1.Update.DynamicExercise.arg:type_name -> daml_lf_2_1.Expr
+	7,   // 262: daml_lf_2_1.Update.ExerciseInterface.interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 263: daml_lf_2_1.Update.ExerciseInterface.cid:type_name -> daml_lf_2_1.Expr
+	19,  // 264: daml_lf_2_1.Update.ExerciseInterface.arg:type_name -> daml_lf_2_1.Expr
+	19,  // 265: daml_lf_2_1.Update.ExerciseInterface.guard:type_name -> daml_lf_2_1.Expr
+	7,   // 266: daml_lf_2_1.Update.ExerciseByKey.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 267: daml_lf_2_1.Update.ExerciseByKey.key:type_name -> daml_lf_2_1.Expr
+	19,  // 268: daml_lf_2_1.Update.ExerciseByKey.arg:type_name -> daml_lf_2_1.Expr
+	7,   // 269: daml_lf_2_1.Update.Fetch.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 270: daml_lf_2_1.Update.Fetch.cid:type_name -> daml_lf_2_1.Expr
+	7,   // 271: daml_lf_2_1.Update.SoftFetch.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 272: daml_lf_2_1.Update.SoftFetch.cid:type_name -> daml_lf_2_1.Expr
+	7,   // 273: daml_lf_2_1.Update.FetchInterface.interface:type_name -> daml_lf_2_1.TypeConName
+	19,  // 274: daml_lf_2_1.Update.FetchInterface.cid:type_name -> daml_lf_2_1.Expr
+	16,  // 275: daml_lf_2_1.Update.EmbedExpr.type:type_name -> daml_lf_2_1.Type
+	19,  // 276: daml_lf_2_1.Update.EmbedExpr.body:type_name -> daml_lf_2_1.Expr
+	7,   // 277: daml_lf_2_1.Update.RetrieveByKey.template:type_name -> daml_lf_2_1.TypeConName
+	19,  // 278: daml_lf_2_1.Update.RetrieveByKey.key:type_name -> daml_lf_2_1.Expr
+	16,  // 279: daml_lf_2_1.Update.TryCatch.return_type:type_name -> daml_lf_2_1.Type
+	19,  // 280: daml_lf_2_1.Update.TryCatch.try_expr:type_name -> daml_lf_2_1.Expr
+	19,  // 281: daml_lf_2_1.Update.TryCatch.catch_expr:type_name -> daml_lf_2_1.Expr
+	19,  // 282: daml_lf_2_1.Scenario.Commit.party:type_name -> daml_lf_2_1.Expr
+	19,  // 283: daml_lf_2_1.Scenario.Commit.expr:type_name -> daml_lf_2_1.Expr
+	16,  // 284: daml_lf_2_1.Scenario.Commit.ret_type:type_name -> daml_lf_2_1.Type
+	16,  // 285: daml_lf_2_1.Scenario.EmbedExpr.type:type_name -> daml_lf_2_1.Type
+	19,  // 286: daml_lf_2_1.Scenario.EmbedExpr.body:type_name -> daml_lf_2_1.Expr
+	19,  // 287: daml_lf_2_1.InterfaceInstanceBody.InterfaceInstanceMethod.value:type_name -> daml_lf_2_1.Expr
+	16,  // 288: daml_lf_2_1.DefTemplate.DefKey.type:type_name -> daml_lf_2_1.Type
+	19,  // 289: daml_lf_2_1.DefTemplate.DefKey.key_expr:type_name -> daml_lf_2_1.Expr
+	19,  // 290: daml_lf_2_1.DefTemplate.DefKey.maintainers:type_name -> daml_lf_2_1.Expr
+	7,   // 291: daml_lf_2_1.DefTemplate.Implements.interface:type_name -> daml_lf_2_1.TypeConName
+	27,  // 292: daml_lf_2_1.DefTemplate.Implements.body:type_name -> daml_lf_2_1.InterfaceInstanceBody
+	18,  // 293: daml_lf_2_1.DefTemplate.Implements.location:type_name -> daml_lf_2_1.Location
+	10,  // 294: daml_lf_2_1.DefDataType.Fields.fields:type_name -> daml_lf_2_1.FieldWithType
+	16,  // 295: daml_lf_2_1.DefValue.NameWithType.type:type_name -> daml_lf_2_1.Type
 	296, // [296:296] is the sub-list for method output_type
 	296, // [296:296] is the sub-list for method input_type
 	296, // [296:296] is the sub-list for extension type_name

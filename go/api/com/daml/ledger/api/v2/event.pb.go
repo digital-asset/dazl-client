@@ -31,6 +31,7 @@ type Event struct {
 	//
 	//	*Event_Created
 	//	*Event_Archived
+	//	*Event_Exercised
 	Event         isEvent_Event `protobuf_oneof:"event"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -91,6 +92,15 @@ func (x *Event) GetArchived() *ArchivedEvent {
 	return nil
 }
 
+func (x *Event) GetExercised() *ExercisedEvent {
+	if x != nil {
+		if x, ok := x.Event.(*Event_Exercised); ok {
+			return x.Exercised
+		}
+	}
+	return nil
+}
+
 type isEvent_Event interface {
 	isEvent_Event()
 }
@@ -103,24 +113,31 @@ type Event_Archived struct {
 	Archived *ArchivedEvent `protobuf:"bytes,2,opt,name=archived,proto3,oneof"`
 }
 
+type Event_Exercised struct {
+	Exercised *ExercisedEvent `protobuf:"bytes,3,opt,name=exercised,proto3,oneof"`
+}
+
 func (*Event_Created) isEvent_Event() {}
 
 func (*Event_Archived) isEvent_Event() {}
 
+func (*Event_Exercised) isEvent_Event() {}
+
 type CreatedEvent struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	EventId          string                 `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
-	ContractId       string                 `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	TemplateId       *Identifier            `protobuf:"bytes,3,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	ContractKey      *Value                 `protobuf:"bytes,4,opt,name=contract_key,json=contractKey,proto3" json:"contract_key,omitempty"`
-	CreateArguments  *Record                `protobuf:"bytes,5,opt,name=create_arguments,json=createArguments,proto3" json:"create_arguments,omitempty"`
-	CreatedEventBlob []byte                 `protobuf:"bytes,6,opt,name=created_event_blob,json=createdEventBlob,proto3" json:"created_event_blob,omitempty"`
-	InterfaceViews   []*InterfaceView       `protobuf:"bytes,7,rep,name=interface_views,json=interfaceViews,proto3" json:"interface_views,omitempty"`
-	WitnessParties   []string               `protobuf:"bytes,8,rep,name=witness_parties,json=witnessParties,proto3" json:"witness_parties,omitempty"`
-	Signatories      []string               `protobuf:"bytes,9,rep,name=signatories,proto3" json:"signatories,omitempty"`
-	Observers        []string               `protobuf:"bytes,10,rep,name=observers,proto3" json:"observers,omitempty"`
-	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	PackageName      string                 `protobuf:"bytes,12,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	Offset           int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	NodeId           int32                  `protobuf:"varint,2,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+	ContractId       string                 `protobuf:"bytes,3,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	TemplateId       *Identifier            `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	ContractKey      *Value                 `protobuf:"bytes,5,opt,name=contract_key,json=contractKey,proto3" json:"contract_key,omitempty"`
+	CreateArguments  *Record                `protobuf:"bytes,6,opt,name=create_arguments,json=createArguments,proto3" json:"create_arguments,omitempty"`
+	CreatedEventBlob []byte                 `protobuf:"bytes,7,opt,name=created_event_blob,json=createdEventBlob,proto3" json:"created_event_blob,omitempty"`
+	InterfaceViews   []*InterfaceView       `protobuf:"bytes,8,rep,name=interface_views,json=interfaceViews,proto3" json:"interface_views,omitempty"`
+	WitnessParties   []string               `protobuf:"bytes,9,rep,name=witness_parties,json=witnessParties,proto3" json:"witness_parties,omitempty"`
+	Signatories      []string               `protobuf:"bytes,10,rep,name=signatories,proto3" json:"signatories,omitempty"`
+	Observers        []string               `protobuf:"bytes,11,rep,name=observers,proto3" json:"observers,omitempty"`
+	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	PackageName      string                 `protobuf:"bytes,13,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -155,11 +172,18 @@ func (*CreatedEvent) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_event_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreatedEvent) GetEventId() string {
+func (x *CreatedEvent) GetOffset() int64 {
 	if x != nil {
-		return x.EventId
+		return x.Offset
 	}
-	return ""
+	return 0
+}
+
+func (x *CreatedEvent) GetNodeId() int32 {
+	if x != nil {
+		return x.NodeId
+	}
+	return 0
 }
 
 func (x *CreatedEvent) GetContractId() string {
@@ -300,14 +324,16 @@ func (x *InterfaceView) GetViewValue() *Record {
 }
 
 type ArchivedEvent struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	EventId        string                 `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
-	ContractId     string                 `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	TemplateId     *Identifier            `protobuf:"bytes,3,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	WitnessParties []string               `protobuf:"bytes,4,rep,name=witness_parties,json=witnessParties,proto3" json:"witness_parties,omitempty"`
-	PackageName    string                 `protobuf:"bytes,5,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	Offset                int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	NodeId                int32                  `protobuf:"varint,2,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+	ContractId            string                 `protobuf:"bytes,3,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	TemplateId            *Identifier            `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	WitnessParties        []string               `protobuf:"bytes,5,rep,name=witness_parties,json=witnessParties,proto3" json:"witness_parties,omitempty"`
+	PackageName           string                 `protobuf:"bytes,6,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	ImplementedInterfaces []*Identifier          `protobuf:"bytes,7,rep,name=implemented_interfaces,json=implementedInterfaces,proto3" json:"implemented_interfaces,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *ArchivedEvent) Reset() {
@@ -340,11 +366,18 @@ func (*ArchivedEvent) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_event_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ArchivedEvent) GetEventId() string {
+func (x *ArchivedEvent) GetOffset() int64 {
 	if x != nil {
-		return x.EventId
+		return x.Offset
 	}
-	return ""
+	return 0
+}
+
+func (x *ArchivedEvent) GetNodeId() int32 {
+	if x != nil {
+		return x.NodeId
+	}
+	return 0
 }
 
 func (x *ArchivedEvent) GetContractId() string {
@@ -375,22 +408,31 @@ func (x *ArchivedEvent) GetPackageName() string {
 	return ""
 }
 
+func (x *ArchivedEvent) GetImplementedInterfaces() []*Identifier {
+	if x != nil {
+		return x.ImplementedInterfaces
+	}
+	return nil
+}
+
 type ExercisedEvent struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	EventId        string                 `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
-	ContractId     string                 `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	TemplateId     *Identifier            `protobuf:"bytes,3,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	InterfaceId    *Identifier            `protobuf:"bytes,4,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
-	Choice         string                 `protobuf:"bytes,5,opt,name=choice,proto3" json:"choice,omitempty"`
-	ChoiceArgument *Value                 `protobuf:"bytes,6,opt,name=choice_argument,json=choiceArgument,proto3" json:"choice_argument,omitempty"`
-	ActingParties  []string               `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
-	Consuming      bool                   `protobuf:"varint,8,opt,name=consuming,proto3" json:"consuming,omitempty"`
-	WitnessParties []string               `protobuf:"bytes,9,rep,name=witness_parties,json=witnessParties,proto3" json:"witness_parties,omitempty"`
-	ChildEventIds  []string               `protobuf:"bytes,10,rep,name=child_event_ids,json=childEventIds,proto3" json:"child_event_ids,omitempty"`
-	ExerciseResult *Value                 `protobuf:"bytes,11,opt,name=exercise_result,json=exerciseResult,proto3" json:"exercise_result,omitempty"`
-	PackageName    string                 `protobuf:"bytes,12,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	Offset                int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	NodeId                int32                  `protobuf:"varint,2,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+	ContractId            string                 `protobuf:"bytes,3,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	TemplateId            *Identifier            `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	InterfaceId           *Identifier            `protobuf:"bytes,5,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	Choice                string                 `protobuf:"bytes,6,opt,name=choice,proto3" json:"choice,omitempty"`
+	ChoiceArgument        *Value                 `protobuf:"bytes,7,opt,name=choice_argument,json=choiceArgument,proto3" json:"choice_argument,omitempty"`
+	ActingParties         []string               `protobuf:"bytes,8,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
+	Consuming             bool                   `protobuf:"varint,9,opt,name=consuming,proto3" json:"consuming,omitempty"`
+	WitnessParties        []string               `protobuf:"bytes,10,rep,name=witness_parties,json=witnessParties,proto3" json:"witness_parties,omitempty"`
+	LastDescendantNodeId  int32                  `protobuf:"varint,11,opt,name=last_descendant_node_id,json=lastDescendantNodeId,proto3" json:"last_descendant_node_id,omitempty"`
+	ExerciseResult        *Value                 `protobuf:"bytes,12,opt,name=exercise_result,json=exerciseResult,proto3" json:"exercise_result,omitempty"`
+	PackageName           string                 `protobuf:"bytes,13,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	ImplementedInterfaces []*Identifier          `protobuf:"bytes,14,rep,name=implemented_interfaces,json=implementedInterfaces,proto3" json:"implemented_interfaces,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *ExercisedEvent) Reset() {
@@ -423,11 +465,18 @@ func (*ExercisedEvent) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_event_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ExercisedEvent) GetEventId() string {
+func (x *ExercisedEvent) GetOffset() int64 {
 	if x != nil {
-		return x.EventId
+		return x.Offset
 	}
-	return ""
+	return 0
+}
+
+func (x *ExercisedEvent) GetNodeId() int32 {
+	if x != nil {
+		return x.NodeId
+	}
+	return 0
 }
 
 func (x *ExercisedEvent) GetContractId() string {
@@ -486,11 +535,11 @@ func (x *ExercisedEvent) GetWitnessParties() []string {
 	return nil
 }
 
-func (x *ExercisedEvent) GetChildEventIds() []string {
+func (x *ExercisedEvent) GetLastDescendantNodeId() int32 {
 	if x != nil {
-		return x.ChildEventIds
+		return x.LastDescendantNodeId
 	}
-	return nil
+	return 0
 }
 
 func (x *ExercisedEvent) GetExerciseResult() *Value {
@@ -507,62 +556,75 @@ func (x *ExercisedEvent) GetPackageName() string {
 	return ""
 }
 
+func (x *ExercisedEvent) GetImplementedInterfaces() []*Identifier {
+	if x != nil {
+		return x.ImplementedInterfaces
+	}
+	return nil
+}
+
 var File_com_daml_ledger_api_v2_event_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_event_proto_rawDesc = "" +
 	"\n" +
-	"\"com/daml/ledger/api/v2/event.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\x97\x01\n" +
+	"\"com/daml/ledger/api/v2/event.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xdf\x01\n" +
 	"\x05Event\x12@\n" +
 	"\acreated\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventH\x00R\acreated\x12C\n" +
-	"\barchived\x18\x02 \x01(\v2%.com.daml.ledger.api.v2.ArchivedEventH\x00R\barchivedB\a\n" +
-	"\x05event\"\xe1\x04\n" +
-	"\fCreatedEvent\x12\x19\n" +
-	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x1f\n" +
-	"\vcontract_id\x18\x02 \x01(\tR\n" +
+	"\barchived\x18\x02 \x01(\v2%.com.daml.ledger.api.v2.ArchivedEventH\x00R\barchived\x12F\n" +
+	"\texercised\x18\x03 \x01(\v2&.com.daml.ledger.api.v2.ExercisedEventH\x00R\texercisedB\a\n" +
+	"\x05event\"\xf7\x04\n" +
+	"\fCreatedEvent\x12\x16\n" +
+	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12\x17\n" +
+	"\anode_id\x18\x02 \x01(\x05R\x06nodeId\x12\x1f\n" +
+	"\vcontract_id\x18\x03 \x01(\tR\n" +
 	"contractId\x12C\n" +
-	"\vtemplate_id\x18\x03 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
+	"\vtemplate_id\x18\x04 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
 	"templateId\x12@\n" +
-	"\fcontract_key\x18\x04 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\vcontractKey\x12I\n" +
-	"\x10create_arguments\x18\x05 \x01(\v2\x1e.com.daml.ledger.api.v2.RecordR\x0fcreateArguments\x12,\n" +
-	"\x12created_event_blob\x18\x06 \x01(\fR\x10createdEventBlob\x12N\n" +
-	"\x0finterface_views\x18\a \x03(\v2%.com.daml.ledger.api.v2.InterfaceViewR\x0einterfaceViews\x12'\n" +
-	"\x0fwitness_parties\x18\b \x03(\tR\x0ewitnessParties\x12 \n" +
-	"\vsignatories\x18\t \x03(\tR\vsignatories\x12\x1c\n" +
-	"\tobservers\x18\n" +
-	" \x03(\tR\tobservers\x129\n" +
+	"\fcontract_key\x18\x05 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\vcontractKey\x12I\n" +
+	"\x10create_arguments\x18\x06 \x01(\v2\x1e.com.daml.ledger.api.v2.RecordR\x0fcreateArguments\x12,\n" +
+	"\x12created_event_blob\x18\a \x01(\fR\x10createdEventBlob\x12N\n" +
+	"\x0finterface_views\x18\b \x03(\v2%.com.daml.ledger.api.v2.InterfaceViewR\x0einterfaceViews\x12'\n" +
+	"\x0fwitness_parties\x18\t \x03(\tR\x0ewitnessParties\x12 \n" +
+	"\vsignatories\x18\n" +
+	" \x03(\tR\vsignatories\x12\x1c\n" +
+	"\tobservers\x18\v \x03(\tR\tobservers\x129\n" +
 	"\n" +
-	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12!\n" +
-	"\fpackage_name\x18\f \x01(\tR\vpackageName\"\xca\x01\n" +
+	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12!\n" +
+	"\fpackage_name\x18\r \x01(\tR\vpackageName\"\xca\x01\n" +
 	"\rInterfaceView\x12E\n" +
 	"\finterface_id\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\vinterfaceId\x123\n" +
 	"\vview_status\x18\x02 \x01(\v2\x12.google.rpc.StatusR\n" +
 	"viewStatus\x12=\n" +
 	"\n" +
-	"view_value\x18\x03 \x01(\v2\x1e.com.daml.ledger.api.v2.RecordR\tviewValue\"\xdc\x01\n" +
-	"\rArchivedEvent\x12\x19\n" +
-	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x1f\n" +
-	"\vcontract_id\x18\x02 \x01(\tR\n" +
+	"view_value\x18\x03 \x01(\v2\x1e.com.daml.ledger.api.v2.RecordR\tviewValue\"\xcd\x02\n" +
+	"\rArchivedEvent\x12\x16\n" +
+	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12\x17\n" +
+	"\anode_id\x18\x02 \x01(\x05R\x06nodeId\x12\x1f\n" +
+	"\vcontract_id\x18\x03 \x01(\tR\n" +
 	"contractId\x12C\n" +
-	"\vtemplate_id\x18\x03 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
+	"\vtemplate_id\x18\x04 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
 	"templateId\x12'\n" +
-	"\x0fwitness_parties\x18\x04 \x03(\tR\x0ewitnessParties\x12!\n" +
-	"\fpackage_name\x18\x05 \x01(\tR\vpackageName\"\xb9\x04\n" +
-	"\x0eExercisedEvent\x12\x19\n" +
-	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x1f\n" +
-	"\vcontract_id\x18\x02 \x01(\tR\n" +
+	"\x0fwitness_parties\x18\x05 \x03(\tR\x0ewitnessParties\x12!\n" +
+	"\fpackage_name\x18\x06 \x01(\tR\vpackageName\x12Y\n" +
+	"\x16implemented_interfaces\x18\a \x03(\v2\".com.daml.ledger.api.v2.IdentifierR\x15implementedInterfaces\"\xb9\x05\n" +
+	"\x0eExercisedEvent\x12\x16\n" +
+	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12\x17\n" +
+	"\anode_id\x18\x02 \x01(\x05R\x06nodeId\x12\x1f\n" +
+	"\vcontract_id\x18\x03 \x01(\tR\n" +
 	"contractId\x12C\n" +
-	"\vtemplate_id\x18\x03 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
+	"\vtemplate_id\x18\x04 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
 	"templateId\x12E\n" +
-	"\finterface_id\x18\x04 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\vinterfaceId\x12\x16\n" +
-	"\x06choice\x18\x05 \x01(\tR\x06choice\x12F\n" +
-	"\x0fchoice_argument\x18\x06 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\x0echoiceArgument\x12%\n" +
-	"\x0eacting_parties\x18\a \x03(\tR\ractingParties\x12\x1c\n" +
-	"\tconsuming\x18\b \x01(\bR\tconsuming\x12'\n" +
-	"\x0fwitness_parties\x18\t \x03(\tR\x0ewitnessParties\x12&\n" +
-	"\x0fchild_event_ids\x18\n" +
-	" \x03(\tR\rchildEventIds\x12F\n" +
-	"\x0fexercise_result\x18\v \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\x0eexerciseResult\x12!\n" +
-	"\fpackage_name\x18\f \x01(\tR\vpackageNameB\x89\x01\n" +
+	"\finterface_id\x18\x05 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\vinterfaceId\x12\x16\n" +
+	"\x06choice\x18\x06 \x01(\tR\x06choice\x12F\n" +
+	"\x0fchoice_argument\x18\a \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\x0echoiceArgument\x12%\n" +
+	"\x0eacting_parties\x18\b \x03(\tR\ractingParties\x12\x1c\n" +
+	"\tconsuming\x18\t \x01(\bR\tconsuming\x12'\n" +
+	"\x0fwitness_parties\x18\n" +
+	" \x03(\tR\x0ewitnessParties\x125\n" +
+	"\x17last_descendant_node_id\x18\v \x01(\x05R\x14lastDescendantNodeId\x12F\n" +
+	"\x0fexercise_result\x18\f \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\x0eexerciseResult\x12!\n" +
+	"\fpackage_name\x18\r \x01(\tR\vpackageName\x12Y\n" +
+	"\x16implemented_interfaces\x18\x0e \x03(\v2\".com.daml.ledger.api.v2.IdentifierR\x15implementedInterfacesB\x89\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x0fEventOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (
@@ -593,24 +655,27 @@ var file_com_daml_ledger_api_v2_event_proto_goTypes = []any{
 var file_com_daml_ledger_api_v2_event_proto_depIdxs = []int32{
 	1,  // 0: com.daml.ledger.api.v2.Event.created:type_name -> com.daml.ledger.api.v2.CreatedEvent
 	3,  // 1: com.daml.ledger.api.v2.Event.archived:type_name -> com.daml.ledger.api.v2.ArchivedEvent
-	5,  // 2: com.daml.ledger.api.v2.CreatedEvent.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	6,  // 3: com.daml.ledger.api.v2.CreatedEvent.contract_key:type_name -> com.daml.ledger.api.v2.Value
-	7,  // 4: com.daml.ledger.api.v2.CreatedEvent.create_arguments:type_name -> com.daml.ledger.api.v2.Record
-	2,  // 5: com.daml.ledger.api.v2.CreatedEvent.interface_views:type_name -> com.daml.ledger.api.v2.InterfaceView
-	8,  // 6: com.daml.ledger.api.v2.CreatedEvent.created_at:type_name -> google.protobuf.Timestamp
-	5,  // 7: com.daml.ledger.api.v2.InterfaceView.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
-	9,  // 8: com.daml.ledger.api.v2.InterfaceView.view_status:type_name -> google.rpc.Status
-	7,  // 9: com.daml.ledger.api.v2.InterfaceView.view_value:type_name -> com.daml.ledger.api.v2.Record
-	5,  // 10: com.daml.ledger.api.v2.ArchivedEvent.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	5,  // 11: com.daml.ledger.api.v2.ExercisedEvent.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	5,  // 12: com.daml.ledger.api.v2.ExercisedEvent.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
-	6,  // 13: com.daml.ledger.api.v2.ExercisedEvent.choice_argument:type_name -> com.daml.ledger.api.v2.Value
-	6,  // 14: com.daml.ledger.api.v2.ExercisedEvent.exercise_result:type_name -> com.daml.ledger.api.v2.Value
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	4,  // 2: com.daml.ledger.api.v2.Event.exercised:type_name -> com.daml.ledger.api.v2.ExercisedEvent
+	5,  // 3: com.daml.ledger.api.v2.CreatedEvent.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	6,  // 4: com.daml.ledger.api.v2.CreatedEvent.contract_key:type_name -> com.daml.ledger.api.v2.Value
+	7,  // 5: com.daml.ledger.api.v2.CreatedEvent.create_arguments:type_name -> com.daml.ledger.api.v2.Record
+	2,  // 6: com.daml.ledger.api.v2.CreatedEvent.interface_views:type_name -> com.daml.ledger.api.v2.InterfaceView
+	8,  // 7: com.daml.ledger.api.v2.CreatedEvent.created_at:type_name -> google.protobuf.Timestamp
+	5,  // 8: com.daml.ledger.api.v2.InterfaceView.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
+	9,  // 9: com.daml.ledger.api.v2.InterfaceView.view_status:type_name -> google.rpc.Status
+	7,  // 10: com.daml.ledger.api.v2.InterfaceView.view_value:type_name -> com.daml.ledger.api.v2.Record
+	5,  // 11: com.daml.ledger.api.v2.ArchivedEvent.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	5,  // 12: com.daml.ledger.api.v2.ArchivedEvent.implemented_interfaces:type_name -> com.daml.ledger.api.v2.Identifier
+	5,  // 13: com.daml.ledger.api.v2.ExercisedEvent.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	5,  // 14: com.daml.ledger.api.v2.ExercisedEvent.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
+	6,  // 15: com.daml.ledger.api.v2.ExercisedEvent.choice_argument:type_name -> com.daml.ledger.api.v2.Value
+	6,  // 16: com.daml.ledger.api.v2.ExercisedEvent.exercise_result:type_name -> com.daml.ledger.api.v2.Value
+	5,  // 17: com.daml.ledger.api.v2.ExercisedEvent.implemented_interfaces:type_name -> com.daml.ledger.api.v2.Identifier
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_event_proto_init() }
@@ -622,6 +687,7 @@ func file_com_daml_ledger_api_v2_event_proto_init() {
 	file_com_daml_ledger_api_v2_event_proto_msgTypes[0].OneofWrappers = []any{
 		(*Event_Created)(nil),
 		(*Event_Archived)(nil),
+		(*Event_Exercised)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

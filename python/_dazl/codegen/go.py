@@ -84,43 +84,8 @@ def write_corrected_content(path: Path, content: str) -> None:
         elif path.name == "time_proof.pb.go":
             write_corrected_content_for_timeproof(buf, lines)
 
-        # TODO: maintaining this list is a bit silly--it should be derived from the contents
-        #  of the archive (as we are already doing that derivation logic)
-        elif "/daml_lf_1_16/" in str(path):
-            write_corrected_content_for_damllf(buf, lines, "1.16")
-
-        elif "/daml_lf_1_17/" in str(path):
-            write_corrected_content_for_damllf(buf, lines, "1.17")
-
-        elif "/daml_lf_2_1/" in str(path):
-            write_corrected_content_for_damllf(buf, lines, "2.1")
-
         else:
             write_content_unchanged(buf, lines)
-
-
-def write_corrected_content_for_damllf(
-    buf: TextIO, lines: Sequence[str], daml_sdk_version: str
-) -> None:
-    # the Daml-LF protobufs unfortunately mix Protobuf package names in the same directory,
-    # and that causes the Go Protobuf compiler to spit out nonsense. Fix the package names
-    # so that they are consistent, drop a meaningless broken import, and drop an unnecessary
-    # qualified reference
-
-    major_version = daml_sdk_version.partition(".")[0]
-    underscored_version = daml_sdk_version.replace(".", "_")
-
-    for line in lines:
-        if line == f"package daml_lf_{major_version}":
-            buf.write(f"package daml_lf_{underscored_version}\n")
-        elif line == f'\tdaml_lf_{major_version} "{dazl_go_module}/go/api/daml_lf_{major_version}"':
-            pass
-        elif f"*daml_lf_{major_version}.Package" in line:
-            buf.write(line.replace(f"*daml_lf_{major_version}.Package", "*Package") + "\n")
-
-        else:
-            # nothing unusual about this line, so just write it as is
-            buf.write(line + "\n")
 
 
 def write_corrected_content_for_participant_transfer_v0(buf: TextIO, lines: Sequence[str]) -> None:

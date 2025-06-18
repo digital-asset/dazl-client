@@ -31,19 +31,19 @@ const (
 type CompressedBatch_CompressionAlgorithm int32
 
 const (
-	CompressedBatch_None_ CompressedBatch_CompressionAlgorithm = 0
-	CompressedBatch_Gzip  CompressedBatch_CompressionAlgorithm = 1
+	CompressedBatch_None CompressedBatch_CompressionAlgorithm = 0
+	CompressedBatch_Gzip CompressedBatch_CompressionAlgorithm = 1
 )
 
 // Enum value maps for CompressedBatch_CompressionAlgorithm.
 var (
 	CompressedBatch_CompressionAlgorithm_name = map[int32]string{
-		0: "None_",
+		0: "None",
 		1: "Gzip",
 	}
 	CompressedBatch_CompressionAlgorithm_value = map[string]int32{
-		"None_": 0,
-		"Gzip":  1,
+		"None": 0,
+		"Gzip": 1,
 	}
 )
 
@@ -424,7 +424,7 @@ func (x *CompressedBatch) GetAlgorithm() CompressedBatch_CompressionAlgorithm {
 	if x != nil {
 		return x.Algorithm
 	}
-	return CompressedBatch_None_
+	return CompressedBatch_None
 }
 
 func (x *CompressedBatch) GetCompressedBatch() []byte {
@@ -1240,12 +1240,12 @@ const file_com_digitalasset_canton_protocol_v0_sequencing_proto_rawDesc = "" +
 	"\acontent\x18\x01 \x01(\fR\acontent\x12O\n" +
 	"\n" +
 	"recipients\x18\x02 \x01(\v2/.com.digitalasset.canton.protocol.v0.RecipientsR\n" +
-	"recipients\"\xd2\x01\n" +
+	"recipients\"\xd1\x01\n" +
 	"\x0fCompressedBatch\x12g\n" +
 	"\talgorithm\x18\x01 \x01(\x0e2I.com.digitalasset.canton.protocol.v0.CompressedBatch.CompressionAlgorithmR\talgorithm\x12)\n" +
-	"\x10compressed_batch\x18\x02 \x01(\fR\x0fcompressedBatch\"+\n" +
-	"\x14CompressionAlgorithm\x12\t\n" +
-	"\x05None_\x10\x00\x12\b\n" +
+	"\x10compressed_batch\x18\x02 \x01(\fR\x0fcompressedBatch\"*\n" +
+	"\x14CompressionAlgorithm\x12\b\n" +
+	"\x04None\x10\x00\x12\b\n" +
 	"\x04Gzip\x10\x01\"T\n" +
 	"\x05Batch\x12K\n" +
 	"\tenvelopes\x18\x01 \x03(\v2-.com.digitalasset.canton.protocol.v0.EnvelopeR\tenvelopes\"\xe9\x01\n" +

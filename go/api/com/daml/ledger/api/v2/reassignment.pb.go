@@ -25,18 +25,14 @@ const (
 )
 
 type Reassignment struct {
-	state      protoimpl.MessageState `protogen:"open.v1"`
-	UpdateId   string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
-	CommandId  string                 `protobuf:"bytes,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
-	WorkflowId string                 `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
-	Offset     int64                  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
-	// Types that are valid to be assigned to Event:
-	//
-	//	*Reassignment_UnassignedEvent
-	//	*Reassignment_AssignedEvent
-	Event         isReassignment_Event   `protobuf_oneof:"event"`
-	TraceContext  *TraceContext          `protobuf:"bytes,7,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
-	RecordTime    *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UpdateId      string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
+	CommandId     string                 `protobuf:"bytes,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
+	WorkflowId    string                 `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
+	Offset        int64                  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
+	Events        []*ReassignmentEvent   `protobuf:"bytes,5,rep,name=events,proto3" json:"events,omitempty"`
+	TraceContext  *TraceContext          `protobuf:"bytes,6,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
+	RecordTime    *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -99,27 +95,9 @@ func (x *Reassignment) GetOffset() int64 {
 	return 0
 }
 
-func (x *Reassignment) GetEvent() isReassignment_Event {
+func (x *Reassignment) GetEvents() []*ReassignmentEvent {
 	if x != nil {
-		return x.Event
-	}
-	return nil
-}
-
-func (x *Reassignment) GetUnassignedEvent() *UnassignedEvent {
-	if x != nil {
-		if x, ok := x.Event.(*Reassignment_UnassignedEvent); ok {
-			return x.UnassignedEvent
-		}
-	}
-	return nil
-}
-
-func (x *Reassignment) GetAssignedEvent() *AssignedEvent {
-	if x != nil {
-		if x, ok := x.Event.(*Reassignment_AssignedEvent); ok {
-			return x.AssignedEvent
-		}
+		return x.Events
 	}
 	return nil
 }
@@ -138,21 +116,87 @@ func (x *Reassignment) GetRecordTime() *timestamppb.Timestamp {
 	return nil
 }
 
-type isReassignment_Event interface {
-	isReassignment_Event()
+type ReassignmentEvent struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Event:
+	//
+	//	*ReassignmentEvent_Unassigned
+	//	*ReassignmentEvent_Assigned
+	Event         isReassignmentEvent_Event `protobuf_oneof:"event"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-type Reassignment_UnassignedEvent struct {
-	UnassignedEvent *UnassignedEvent `protobuf:"bytes,5,opt,name=unassigned_event,json=unassignedEvent,proto3,oneof"`
+func (x *ReassignmentEvent) Reset() {
+	*x = ReassignmentEvent{}
+	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
 }
 
-type Reassignment_AssignedEvent struct {
-	AssignedEvent *AssignedEvent `protobuf:"bytes,6,opt,name=assigned_event,json=assignedEvent,proto3,oneof"`
+func (x *ReassignmentEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Reassignment_UnassignedEvent) isReassignment_Event() {}
+func (*ReassignmentEvent) ProtoMessage() {}
 
-func (*Reassignment_AssignedEvent) isReassignment_Event() {}
+func (x *ReassignmentEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReassignmentEvent.ProtoReflect.Descriptor instead.
+func (*ReassignmentEvent) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_reassignment_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ReassignmentEvent) GetEvent() isReassignmentEvent_Event {
+	if x != nil {
+		return x.Event
+	}
+	return nil
+}
+
+func (x *ReassignmentEvent) GetUnassigned() *UnassignedEvent {
+	if x != nil {
+		if x, ok := x.Event.(*ReassignmentEvent_Unassigned); ok {
+			return x.Unassigned
+		}
+	}
+	return nil
+}
+
+func (x *ReassignmentEvent) GetAssigned() *AssignedEvent {
+	if x != nil {
+		if x, ok := x.Event.(*ReassignmentEvent_Assigned); ok {
+			return x.Assigned
+		}
+	}
+	return nil
+}
+
+type isReassignmentEvent_Event interface {
+	isReassignmentEvent_Event()
+}
+
+type ReassignmentEvent_Unassigned struct {
+	Unassigned *UnassignedEvent `protobuf:"bytes,1,opt,name=unassigned,proto3,oneof"`
+}
+
+type ReassignmentEvent_Assigned struct {
+	Assigned *AssignedEvent `protobuf:"bytes,2,opt,name=assigned,proto3,oneof"`
+}
+
+func (*ReassignmentEvent_Unassigned) isReassignmentEvent_Event() {}
+
+func (*ReassignmentEvent_Assigned) isReassignmentEvent_Event() {}
 
 type UnassignedEvent struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
@@ -166,13 +210,15 @@ type UnassignedEvent struct {
 	AssignmentExclusivity *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=assignment_exclusivity,json=assignmentExclusivity,proto3" json:"assignment_exclusivity,omitempty"`
 	WitnessParties        []string               `protobuf:"bytes,9,rep,name=witness_parties,json=witnessParties,proto3" json:"witness_parties,omitempty"`
 	PackageName           string                 `protobuf:"bytes,10,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	Offset                int64                  `protobuf:"varint,11,opt,name=offset,proto3" json:"offset,omitempty"`
+	NodeId                int32                  `protobuf:"varint,12,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
 
 func (x *UnassignedEvent) Reset() {
 	*x = UnassignedEvent{}
-	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[1]
+	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -184,7 +230,7 @@ func (x *UnassignedEvent) String() string {
 func (*UnassignedEvent) ProtoMessage() {}
 
 func (x *UnassignedEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[1]
+	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -197,7 +243,7 @@ func (x *UnassignedEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnassignedEvent.ProtoReflect.Descriptor instead.
 func (*UnassignedEvent) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_reassignment_proto_rawDescGZIP(), []int{1}
+	return file_com_daml_ledger_api_v2_reassignment_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UnassignedEvent) GetUnassignId() string {
@@ -270,6 +316,20 @@ func (x *UnassignedEvent) GetPackageName() string {
 	return ""
 }
 
+func (x *UnassignedEvent) GetOffset() int64 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
+func (x *UnassignedEvent) GetNodeId() int32 {
+	if x != nil {
+		return x.NodeId
+	}
+	return 0
+}
+
 type AssignedEvent struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Source              string                 `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`
@@ -284,7 +344,7 @@ type AssignedEvent struct {
 
 func (x *AssignedEvent) Reset() {
 	*x = AssignedEvent{}
-	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -296,7 +356,7 @@ func (x *AssignedEvent) String() string {
 func (*AssignedEvent) ProtoMessage() {}
 
 func (x *AssignedEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -309,7 +369,7 @@ func (x *AssignedEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignedEvent.ProtoReflect.Descriptor instead.
 func (*AssignedEvent) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_reassignment_proto_rawDescGZIP(), []int{2}
+	return file_com_daml_ledger_api_v2_reassignment_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AssignedEvent) GetSource() string {
@@ -358,20 +418,24 @@ var File_com_daml_ledger_api_v2_reassignment_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_reassignment_proto_rawDesc = "" +
 	"\n" +
-	")com/daml/ledger/api/v2/reassignment.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\"com/daml/ledger/api/v2/value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xba\x03\n" +
+	")com/daml/ledger/api/v2/reassignment.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\"com/daml/ledger/api/v2/value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xce\x02\n" +
 	"\fReassignment\x12\x1b\n" +
 	"\tupdate_id\x18\x01 \x01(\tR\bupdateId\x12\x1d\n" +
 	"\n" +
 	"command_id\x18\x02 \x01(\tR\tcommandId\x12\x1f\n" +
 	"\vworkflow_id\x18\x03 \x01(\tR\n" +
 	"workflowId\x12\x16\n" +
-	"\x06offset\x18\x04 \x01(\x03R\x06offset\x12T\n" +
-	"\x10unassigned_event\x18\x05 \x01(\v2'.com.daml.ledger.api.v2.UnassignedEventH\x00R\x0funassignedEvent\x12N\n" +
-	"\x0eassigned_event\x18\x06 \x01(\v2%.com.daml.ledger.api.v2.AssignedEventH\x00R\rassignedEvent\x12I\n" +
-	"\rtrace_context\x18\a \x01(\v2$.com.daml.ledger.api.v2.TraceContextR\ftraceContext\x12;\n" +
-	"\vrecord_time\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"recordTimeB\a\n" +
-	"\x05event\"\xb8\x03\n" +
+	"\x06offset\x18\x04 \x01(\x03R\x06offset\x12A\n" +
+	"\x06events\x18\x05 \x03(\v2).com.daml.ledger.api.v2.ReassignmentEventR\x06events\x12I\n" +
+	"\rtrace_context\x18\x06 \x01(\v2$.com.daml.ledger.api.v2.TraceContextR\ftraceContext\x12;\n" +
+	"\vrecord_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"recordTime\"\xac\x01\n" +
+	"\x11ReassignmentEvent\x12I\n" +
+	"\n" +
+	"unassigned\x18\x01 \x01(\v2'.com.daml.ledger.api.v2.UnassignedEventH\x00R\n" +
+	"unassigned\x12C\n" +
+	"\bassigned\x18\x02 \x01(\v2%.com.daml.ledger.api.v2.AssignedEventH\x00R\bassignedB\a\n" +
+	"\x05event\"\xe9\x03\n" +
 	"\x0fUnassignedEvent\x12\x1f\n" +
 	"\vunassign_id\x18\x01 \x01(\tR\n" +
 	"unassignId\x12\x1f\n" +
@@ -386,7 +450,9 @@ const file_com_daml_ledger_api_v2_reassignment_proto_rawDesc = "" +
 	"\x16assignment_exclusivity\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\x15assignmentExclusivity\x12'\n" +
 	"\x0fwitness_parties\x18\t \x03(\tR\x0ewitnessParties\x12!\n" +
 	"\fpackage_name\x18\n" +
-	" \x01(\tR\vpackageName\"\xfc\x01\n" +
+	" \x01(\tR\vpackageName\x12\x16\n" +
+	"\x06offset\x18\v \x01(\x03R\x06offset\x12\x17\n" +
+	"\anode_id\x18\f \x01(\x05R\x06nodeId\"\xfc\x01\n" +
 	"\rAssignedEvent\x12\x16\n" +
 	"\x06source\x18\x01 \x01(\tR\x06source\x12\x16\n" +
 	"\x06target\x18\x02 \x01(\tR\x06target\x12\x1f\n" +
@@ -409,29 +475,31 @@ func file_com_daml_ledger_api_v2_reassignment_proto_rawDescGZIP() []byte {
 	return file_com_daml_ledger_api_v2_reassignment_proto_rawDescData
 }
 
-var file_com_daml_ledger_api_v2_reassignment_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_com_daml_ledger_api_v2_reassignment_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_com_daml_ledger_api_v2_reassignment_proto_goTypes = []any{
 	(*Reassignment)(nil),          // 0: com.daml.ledger.api.v2.Reassignment
-	(*UnassignedEvent)(nil),       // 1: com.daml.ledger.api.v2.UnassignedEvent
-	(*AssignedEvent)(nil),         // 2: com.daml.ledger.api.v2.AssignedEvent
-	(*TraceContext)(nil),          // 3: com.daml.ledger.api.v2.TraceContext
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
-	(*Identifier)(nil),            // 5: com.daml.ledger.api.v2.Identifier
-	(*CreatedEvent)(nil),          // 6: com.daml.ledger.api.v2.CreatedEvent
+	(*ReassignmentEvent)(nil),     // 1: com.daml.ledger.api.v2.ReassignmentEvent
+	(*UnassignedEvent)(nil),       // 2: com.daml.ledger.api.v2.UnassignedEvent
+	(*AssignedEvent)(nil),         // 3: com.daml.ledger.api.v2.AssignedEvent
+	(*TraceContext)(nil),          // 4: com.daml.ledger.api.v2.TraceContext
+	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*Identifier)(nil),            // 6: com.daml.ledger.api.v2.Identifier
+	(*CreatedEvent)(nil),          // 7: com.daml.ledger.api.v2.CreatedEvent
 }
 var file_com_daml_ledger_api_v2_reassignment_proto_depIdxs = []int32{
-	1, // 0: com.daml.ledger.api.v2.Reassignment.unassigned_event:type_name -> com.daml.ledger.api.v2.UnassignedEvent
-	2, // 1: com.daml.ledger.api.v2.Reassignment.assigned_event:type_name -> com.daml.ledger.api.v2.AssignedEvent
-	3, // 2: com.daml.ledger.api.v2.Reassignment.trace_context:type_name -> com.daml.ledger.api.v2.TraceContext
-	4, // 3: com.daml.ledger.api.v2.Reassignment.record_time:type_name -> google.protobuf.Timestamp
-	5, // 4: com.daml.ledger.api.v2.UnassignedEvent.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	4, // 5: com.daml.ledger.api.v2.UnassignedEvent.assignment_exclusivity:type_name -> google.protobuf.Timestamp
-	6, // 6: com.daml.ledger.api.v2.AssignedEvent.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	1, // 0: com.daml.ledger.api.v2.Reassignment.events:type_name -> com.daml.ledger.api.v2.ReassignmentEvent
+	4, // 1: com.daml.ledger.api.v2.Reassignment.trace_context:type_name -> com.daml.ledger.api.v2.TraceContext
+	5, // 2: com.daml.ledger.api.v2.Reassignment.record_time:type_name -> google.protobuf.Timestamp
+	2, // 3: com.daml.ledger.api.v2.ReassignmentEvent.unassigned:type_name -> com.daml.ledger.api.v2.UnassignedEvent
+	3, // 4: com.daml.ledger.api.v2.ReassignmentEvent.assigned:type_name -> com.daml.ledger.api.v2.AssignedEvent
+	6, // 5: com.daml.ledger.api.v2.UnassignedEvent.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	5, // 6: com.daml.ledger.api.v2.UnassignedEvent.assignment_exclusivity:type_name -> google.protobuf.Timestamp
+	7, // 7: com.daml.ledger.api.v2.AssignedEvent.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_reassignment_proto_init() }
@@ -442,9 +510,9 @@ func file_com_daml_ledger_api_v2_reassignment_proto_init() {
 	file_com_daml_ledger_api_v2_event_proto_init()
 	file_com_daml_ledger_api_v2_trace_context_proto_init()
 	file_com_daml_ledger_api_v2_value_proto_init()
-	file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[0].OneofWrappers = []any{
-		(*Reassignment_UnassignedEvent)(nil),
-		(*Reassignment_AssignedEvent)(nil),
+	file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[1].OneofWrappers = []any{
+		(*ReassignmentEvent_Unassigned)(nil),
+		(*ReassignmentEvent_Assigned)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -452,7 +520,7 @@ func file_com_daml_ledger_api_v2_reassignment_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_reassignment_proto_rawDesc), len(file_com_daml_ledger_api_v2_reassignment_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

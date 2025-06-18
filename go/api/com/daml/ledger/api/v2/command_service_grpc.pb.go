@@ -24,6 +24,7 @@ const (
 	CommandService_SubmitAndWait_FullMethodName                   = "/com.daml.ledger.api.v2.CommandService/SubmitAndWait"
 	CommandService_SubmitAndWaitForTransaction_FullMethodName     = "/com.daml.ledger.api.v2.CommandService/SubmitAndWaitForTransaction"
 	CommandService_SubmitAndWaitForTransactionTree_FullMethodName = "/com.daml.ledger.api.v2.CommandService/SubmitAndWaitForTransactionTree"
+	CommandService_SubmitAndWaitForReassignment_FullMethodName    = "/com.daml.ledger.api.v2.CommandService/SubmitAndWaitForReassignment"
 )
 
 // CommandServiceClient is the client API for CommandService service.
@@ -31,8 +32,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommandServiceClient interface {
 	SubmitAndWait(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitResponse, error)
-	SubmitAndWaitForTransaction(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionResponse, error)
+	SubmitAndWaitForTransaction(ctx context.Context, in *SubmitAndWaitForTransactionRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionResponse, error)
 	SubmitAndWaitForTransactionTree(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionTreeResponse, error)
+	SubmitAndWaitForReassignment(ctx context.Context, in *SubmitAndWaitForReassignmentRequest, opts ...grpc.CallOption) (*SubmitAndWaitForReassignmentResponse, error)
 }
 
 type commandServiceClient struct {
@@ -53,7 +55,7 @@ func (c *commandServiceClient) SubmitAndWait(ctx context.Context, in *SubmitAndW
 	return out, nil
 }
 
-func (c *commandServiceClient) SubmitAndWaitForTransaction(ctx context.Context, in *SubmitAndWaitRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionResponse, error) {
+func (c *commandServiceClient) SubmitAndWaitForTransaction(ctx context.Context, in *SubmitAndWaitForTransactionRequest, opts ...grpc.CallOption) (*SubmitAndWaitForTransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SubmitAndWaitForTransactionResponse)
 	err := c.cc.Invoke(ctx, CommandService_SubmitAndWaitForTransaction_FullMethodName, in, out, cOpts...)
@@ -73,13 +75,24 @@ func (c *commandServiceClient) SubmitAndWaitForTransactionTree(ctx context.Conte
 	return out, nil
 }
 
+func (c *commandServiceClient) SubmitAndWaitForReassignment(ctx context.Context, in *SubmitAndWaitForReassignmentRequest, opts ...grpc.CallOption) (*SubmitAndWaitForReassignmentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SubmitAndWaitForReassignmentResponse)
+	err := c.cc.Invoke(ctx, CommandService_SubmitAndWaitForReassignment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommandServiceServer is the server API for CommandService service.
 // All implementations must embed UnimplementedCommandServiceServer
 // for forward compatibility.
 type CommandServiceServer interface {
 	SubmitAndWait(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitResponse, error)
-	SubmitAndWaitForTransaction(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionResponse, error)
+	SubmitAndWaitForTransaction(context.Context, *SubmitAndWaitForTransactionRequest) (*SubmitAndWaitForTransactionResponse, error)
 	SubmitAndWaitForTransactionTree(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionTreeResponse, error)
+	SubmitAndWaitForReassignment(context.Context, *SubmitAndWaitForReassignmentRequest) (*SubmitAndWaitForReassignmentResponse, error)
 	mustEmbedUnimplementedCommandServiceServer()
 }
 
@@ -93,11 +106,14 @@ type UnimplementedCommandServiceServer struct{}
 func (UnimplementedCommandServiceServer) SubmitAndWait(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWait not implemented")
 }
-func (UnimplementedCommandServiceServer) SubmitAndWaitForTransaction(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionResponse, error) {
+func (UnimplementedCommandServiceServer) SubmitAndWaitForTransaction(context.Context, *SubmitAndWaitForTransactionRequest) (*SubmitAndWaitForTransactionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForTransaction not implemented")
 }
 func (UnimplementedCommandServiceServer) SubmitAndWaitForTransactionTree(context.Context, *SubmitAndWaitRequest) (*SubmitAndWaitForTransactionTreeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForTransactionTree not implemented")
+}
+func (UnimplementedCommandServiceServer) SubmitAndWaitForReassignment(context.Context, *SubmitAndWaitForReassignmentRequest) (*SubmitAndWaitForReassignmentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitAndWaitForReassignment not implemented")
 }
 func (UnimplementedCommandServiceServer) mustEmbedUnimplementedCommandServiceServer() {}
 func (UnimplementedCommandServiceServer) testEmbeddedByValue()                        {}
@@ -139,7 +155,7 @@ func _CommandService_SubmitAndWait_Handler(srv interface{}, ctx context.Context,
 }
 
 func _CommandService_SubmitAndWaitForTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubmitAndWaitRequest)
+	in := new(SubmitAndWaitForTransactionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -151,7 +167,7 @@ func _CommandService_SubmitAndWaitForTransaction_Handler(srv interface{}, ctx co
 		FullMethod: CommandService_SubmitAndWaitForTransaction_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CommandServiceServer).SubmitAndWaitForTransaction(ctx, req.(*SubmitAndWaitRequest))
+		return srv.(CommandServiceServer).SubmitAndWaitForTransaction(ctx, req.(*SubmitAndWaitForTransactionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -174,6 +190,24 @@ func _CommandService_SubmitAndWaitForTransactionTree_Handler(srv interface{}, ct
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CommandService_SubmitAndWaitForReassignment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubmitAndWaitForReassignmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommandServiceServer).SubmitAndWaitForReassignment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CommandService_SubmitAndWaitForReassignment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommandServiceServer).SubmitAndWaitForReassignment(ctx, req.(*SubmitAndWaitForReassignmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CommandService_ServiceDesc is the grpc.ServiceDesc for CommandService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -192,6 +226,10 @@ var CommandService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitAndWaitForTransactionTree",
 			Handler:    _CommandService_SubmitAndWaitForTransactionTree_Handler,
+		},
+		{
+			MethodName: "SubmitAndWaitForReassignment",
+			Handler:    _CommandService_SubmitAndWaitForReassignment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
