@@ -1119,6 +1119,29 @@ class Connection(aio.Connection):
 
     # endregion
 
+    # region Miscellaneous admin calls
+
+    async def prune(
+        self,
+        up_to: str,
+        submission_id: Optional[str] = None,
+        prune_all_divulged_contracts=False,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        timeout: Optional[TimeDeltaLike] = None,
+    ) -> None:
+        with self._call(token=token, timeout=timeout) as call:
+            stub = call.grpc_stub(lapiadminpb.ParticipantPruningServiceStub)
+
+            request = lapiadminpb.PruneRequest(
+                prune_up_to=up_to,
+                submission_id=submission_id,
+                prune_all_divulged_contracts=prune_all_divulged_contracts,
+            )
+            await retry(lambda: stub.Prune(request, **call.grpc_kwargs), timeout=call.timeout)
+
+    # endregion
+
 
 class QueryStream(aio.QueryStreamBase):
     def __init__(
@@ -1193,6 +1216,7 @@ class QueryStream(aio.QueryStreamBase):
                             await self._emit_create(event)
                         case Boundary():
                             await self._emit_boundary(event)
+                            offset = event.offset
                         case _:
                             warnings.warn(f"Received an unknown event: {event}", ProtocolWarning)
                     yield event
@@ -1208,7 +1232,7 @@ class QueryStream(aio.QueryStreamBase):
             # now start returning events as they come off the transaction stream; note this
             # stream will never naturally close, so it's on the caller to call close() or to
             # otherwise exit our current context
-            log.debug("Reading a transaction stream: %s", self._offset_range)
+            log.debug("Reading a transaction stream: %s to %s", offset, self._offset_range.end)
             async for event in self._tx_events(tx_filter_pb, offset, self._offset_range.end):
                 log.debug("Received an event: %s", event)
                 match event:
