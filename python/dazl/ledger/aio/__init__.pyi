@@ -306,6 +306,15 @@ class Connection(PackageService, Protocol):
         token: Optional[TokenOrTokenProvider] = ...,
         timeout: Optional[TimeDeltaLike] = ...,
     ) -> MeteringReport: ...
+    async def prune(
+        self,
+        up_to: str,
+        submission_id: Optional[str] = ...,
+        prune_all_divulged_contracts=...,
+        *,
+        token: Optional[TokenOrTokenProvider] = ...,
+        timeout: Optional[TimeDeltaLike] = ...,
+    ) -> None: ...
     @property
     def is_closed(self) -> bool: ...
 
