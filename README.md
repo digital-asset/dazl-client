@@ -10,7 +10,7 @@ Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. 
 SPDX-License-Identifier: Apache-2.0
 
 
-Rich Python bindings for accessing Ledger API-based applications.
+Rich Python bindings for accessing Canton 2.x Ledger API-based applications.  It is not intended for use with Canton 3.x.
 
 Documentation
 -------------
