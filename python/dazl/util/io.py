@@ -15,7 +15,7 @@ __all__ = ["find_free_port", "is_port_alive"]
 def find_free_port() -> int:
     sock = socket.socket()
     try:
-        sock.bind(("", 0))
+        sock.bind(("127.0.0.1", 0))
         return sock.getsockname()[1]
     finally:
         sock.close()
