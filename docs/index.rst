@@ -9,12 +9,12 @@ Version |release|
 Dependencies
 ------------
 
-You will need Python 3.6 or later and a Daml Ledger.
+You will need Python 3.10 or later and a Canton 2.x Ledger. `dazl` is not intended for use with Canton 3.x.
 
 Getting Started
 ---------------
 
-This section assumes that you already have a running ledger with the standard `daml new` model
+This section assumes that you already have a running Canton 2.x ledger with the standard `daml new` model
 loaded, and have imported `dazl`.
 
 Connect to the ledger and submit a single command:
