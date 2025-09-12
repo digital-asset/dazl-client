@@ -57,4 +57,4 @@ except ImportError:
     pass
 
 
-__version__ = "8.4.2"
+__version__ = "8.4.3"
