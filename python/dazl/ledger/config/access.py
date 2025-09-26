@@ -60,11 +60,13 @@ def create_access(**kwargs: Unpack[AccessConfigArgs]) -> AccessConfig:
 
     See :meth:`Config.create` for a more detailed description of these parameters.
     """
-    user_id = kwargs.get("user_id", os.getenv("DAML_USER_ID", ""))
+    # BUG: mypy 1.18 is unhappy with kwargs.get(SOME_STR, os.getenv(OTHER_STR, "")),
+    #  so rewrite this in a way that it has less problems with
+    user_id: str = kwargs.get("user_id") or os.getenv("DAML_USER_ID") or ""
     read_as = kwargs.get("read_as", parties_from_env("DAML_LEDGER_READ_AS", "DABL_PUBLIC_PARTY"))
     act_as = kwargs.get("act_as", parties_from_env("DAML_LEDGER_ACT_AS", "DAML_LEDGER_PARTY"))
     admin = kwargs.get("admin", None)
-    ledger_id = kwargs.get("ledger_id", os.getenv("DAML_LEDGER_ID", ""))
+    ledger_id: str = kwargs.get("ledger_id") or os.getenv("DAML_LEDGER_ID") or ""
     application_name = kwargs.get("application_name", os.getenv("DAML_LEDGER_APPLICATION_NAME"))
 
     token = kwargs.get("token", None)
