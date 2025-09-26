@@ -6,13 +6,15 @@ from __future__ import annotations
 from asyncio import ensure_future, gather, get_event_loop, sleep, wait_for
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
-from typing import Awaitable, Callable, Optional, TypeVar
+from typing import Any, Awaitable, Callable, Optional, TypeVar
+
+from dazl.damlast.lookup import validate_template
 
 from . import PackageService
 from ... import LOG
 from ...damlast.daml_lf_1 import Package, PackageRef
 from ...damlast.errors import PackageNotFoundError
-from ...damlast.lookup import STAR, MultiPackageLookup, PackageExceptionTracker
+from ...damlast.lookup import STAR, LookupResult, MultiPackageLookup, PackageExceptionTracker
 from ...damlast.parse import parse_archive
 from ...damlast.pkgfile import Dar, DarFile
 from ...prim import DazlError
@@ -53,6 +55,28 @@ class PackageLoader:
 
     def set_connection(self, conn: Optional[PackageService]):
         self._conn = conn
+
+    async def search(self, ref: Any, /, *, token: Optional[TokenOrTokenProvider]) -> LookupResult:
+        """
+
+
+        :param ref:
+            A symbol name to search for.
+        :param token:
+            An optional token to use in place of a connection-level token when fetching packages.
+        :return:
+            The
+        """
+        result = self._package_lookup.search(ref, throw_if_missing=False)
+        if result:
+            return result
+
+        pkg_ref, _ = validate_template(ref)
+        if pkg_ref == STAR or pkg_ref.startswith("#"):
+            await self.load_all(token=token)
+        else:
+            await self.load(pkg_ref, token=token)
+        return self._package_lookup.search(ref)
 
     async def do_with_retry(
         self, fn: Callable[[], T], *, token: Optional[TokenOrTokenProvider] = None

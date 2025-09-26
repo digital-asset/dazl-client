@@ -4,7 +4,8 @@
 from __future__ import annotations
 
 import sys
-from typing import AbstractSet, Any, Collection, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, AbstractSet, Any, Collection, Protocol, runtime_checkable
+import warnings
 
 from .daml_lf_1 import (
     Archive,
@@ -21,6 +22,9 @@ if sys.version_info >= (3, 11):
     from typing import TypeAlias
 else:
     from typing_extensions import TypeAlias
+
+if TYPE_CHECKING:
+    from .lookup import LookupResult
 
 __all__ = ["PackageProvider", "SymbolLookup", "TemplateOrInterface"]
 
@@ -87,106 +91,19 @@ class SymbolLookup(Protocol):
         """
         raise NotImplementedError("SymbolLookup.package_ids must be implemented")
 
-    def data_type_name(self, ref: Any) -> TypeConName:
+    def search(self, ref: str | TypeConName, /, *, throw_if_missing: bool = True) -> LookupResult:
         """
-        Return the :class:`TypeConName` that refers to a :class:`DefDataType` that is known to
-        exist in this lookup.
+        Search for matching templates or interfaces. Throws
+        :class:`PackageNotFoundError` or :class:`NameNotFoundError` if nothing
+        has been found.
 
-        If this method succeeds, :meth:`data_type` with the returned :class:`TypeConName` as an
-        argument should also always succeed.
+        :param ref:
+            The string or :class:`TypeConName` to search for.
+        :param throw_if_missing:
+            Throw a :class:`NameNotFoundError` if no objects are returned; otherwise,
+            return an empty object. The default behavior is to throw.
+        :return:
+            A :class:`LookupResult` that contains the results of the search. It
+            will always contain at least one match.
         """
-        raise NotImplementedError("SymbolLookup.data_type_name must be implemented")
-
-    def data_type(self, ref: Any) -> DefDataType:
-        """
-        Return the :class:`DefDataType` for the specified name.
-        """
-        raise NotImplementedError("SymbolLookup.data_type must be implemented")
-
-    def value(self, ref: Any) -> DefValue:
-        """
-        Return the :class:`DefValue` for the specified name.
-        """
-        raise NotImplementedError("SymbolLookup.value must be implemented")
-
-    def template_names(self, ref: Any) -> Collection[TypeConName]:
-        """
-        Return all template names that are currently known that are a match for the query. Either
-        :class:`PackageRef` or the template name can be `*`.
-
-        Unlike the other methods of this class, this function should return an empty list in the
-        case of a match failure; :class:`PackageNotFoundError` or :class:`NameNotFoundError` are
-        never thrown.
-        """
-        raise NotImplementedError("SymbolLookup.template_names must be implemented")
-
-    def template_name(self, ref: Any) -> TypeConName:
-        """
-        Return the :class:`TypeConName` that refers to a :class:`DefTemplate` that is known to
-        exist in this lookup.
-
-        If this method succeeds, :meth:`template` with the returned :class:`TypeConName` as an
-        argument should also always succeed.
-        """
-        raise NotImplementedError("SymbolLookup.template_name must be implemented")
-
-    def template(self, ref: Any) -> DefTemplate:
-        """
-        Return the :class:`DefTemplate` for the specified name.
-        """
-        raise NotImplementedError("SymbolLookup.template must be implemented")
-
-    def interface_names(self, ref: Any) -> Collection[TypeConName]:
-        """
-        Return all template names that are currently known that are a match for the query.
-        The :class:`PackageRef` can be `*`.
-
-        Unlike the other methods of this class, this function should return an empty list in the
-        case of a match failure; :class:`PackageNotFoundError` or :class:`NameNotFoundError` are
-        never thrown.
-        """
-        raise NotImplementedError("SymbolLookup.interface_names must be implemented")
-
-    def interface_name(self, ref: Any) -> TypeConName:
-        """
-        Return the :class:`TypeConName` that refers to a :class:`DefInterface` that is known to
-        exist in this lookup.
-
-        If this method succeeds, :meth:`interface` with the returned :class:`TypeConName` as an
-        argument should also always succeed.
-        """
-        raise NotImplementedError("SymbolLookup.interface_name must be implemented")
-
-    def interface(self, ref: Any) -> DefInterface:
-        """
-        Return the :class:`DefInterface` for the specified name.
-        """
-        raise NotImplementedError("SymbolLookup.interface must be implemented")
-
-    def template_or_interface_names(self, ref: Any) -> Collection[TypeConName]:
-        """
-        Return all template or interface names that are currently known that are
-        a match for the query. Either :class:`PackageRef` or the template name
-        can be `*`. When using `*`, only templates are searched.
-
-        Unlike the other methods of this class, this function should return an
-        empty list in the case of a match failure; :class:`PackageNotFoundError`
-        or :class:`NameNotFoundError` are never thrown.
-        """
-        raise NotImplementedError("SymbolLookup.template_or_interface_names must be implemented")
-
-    def template_or_interface_name(self, ref: Any) -> TypeConName:
-        """
-        Return the :class:`TypeConName` that refers to a :class:`DefTemplate` or
-        :class:`DefInterface` that is known to exist in this lookup.
-
-        If this method succeeds, :meth:`template_or_interface` with the returned
-        :class:`TypeConName` as an argument should also always succeed.
-        """
-        raise NotImplementedError("SymbolLookup.interface_name must be implemented")
-
-    def template_or_interface(self, ref: Any) -> TemplateOrInterface:
-        """
-        Return the :class:`DefTemplate` or :class:`DefInterface` for the specified name.
-        """
-        raise NotImplementedError("SymbolLookup.template must be implemented")
+        raise NotImplementedError("SymbolLookup.search must be implemented")

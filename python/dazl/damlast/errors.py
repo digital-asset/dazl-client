@@ -18,7 +18,7 @@ from ..prim import DazlError
 if TYPE_CHECKING:
     from . import daml_lf_1
 
-__all__ = ["PackageNotFoundError", "NameNotFoundError"]
+__all__ = ["PackageNotFoundError", "NameNotFoundError", "AmbiguousMatchError"]
 
 
 class PackageNotFoundError(DazlError):
@@ -40,8 +40,7 @@ class PackageNotFoundError(DazlError):
 
 class NameNotFoundError(DazlError):
     """
-    Raised when a :class:`daml_lf_1.DefDataType`, :class:`daml_lf_1.DefValue`, or
-    :class:`daml_lf_1.DefTemplate` of a specific name was expected, but could not be found.
+    Raised when a :class:`daml_lf_1.DefDataType`, :class:`daml_lf_1.DefValue`, :class:`daml_lf_1.DefTemplate`, or :class:`daml_lf_1.DefInterface` of a specific name was expected, but could not be found.
 
     Typically this error is raised when the *package ID* is valid, but the name is not. Because
     package IDs are immutable, this error is not normally retryable.
@@ -50,3 +49,9 @@ class NameNotFoundError(DazlError):
     def __init__(self, ref: Any) -> None:
         super().__init__(ref)
         self.ref = ref
+
+
+class AmbiguousMatchError(DazlError):
+    """
+    Raised when a _single_ :class:`daml_lf_1.DefDataType`, :class:`daml_lf_1.DefValue`, :class:`daml_lf_1.DefTemplate`, or :class:`daml_lf_1.DefInterface` of a specific name was expected, but multiple matches were found.
+    """

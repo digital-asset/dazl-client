@@ -29,7 +29,9 @@ class DarFixture:
     lookup: MultiPackageLookup
 
     def get_identifier(self, identifier: str) -> lapipb.Identifier:
-        return Codec.encode_identifier(self.lookup.data_type_name(identifier))
+        symbols = self.lookup.search(identifier)
+        dt = symbols.data_types.single().package_id_ref
+        return Codec.encode_identifier(dt)
 
 
 @pytest.fixture(scope="module")
@@ -60,7 +62,8 @@ async def test_serialize_create(dar_fixture: DarFixture) -> None:
 async def test_serialize_exercise(dar_fixture: DarFixture) -> None:
     sut = Codec(lookup=dar_fixture.lookup)
 
-    tref = dar_fixture.lookup.data_type_name("Pending:AccountRequest")
+    symbols = dar_fixture.lookup.search("Pending:AccountRequest")
+    tref = symbols.data_types.single().package_id_ref
     cid = ContractId(tref, "#1:0")
     command = ExerciseCommand(cid, "CreateAccount", dict(accountId=42))
 

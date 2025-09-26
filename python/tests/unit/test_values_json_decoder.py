@@ -24,7 +24,8 @@ def test_json_all_kinds_of() -> None:
     Serialize a JSON payload of all kinds of fields.
     """
     lookup = MultiPackageLookup(CachedDarFile(dars.AllKindsOf).archives())
-    tt = con(lookup.data_type_name("AllKindsOf:OneOfEverything"))
+    symbols = lookup.search("AllKindsOf:OneOfEverything")
+    tt = con(symbols.data_types.single().package_id_ref)
     ctx = Context(JsonEncoder(), lookup)
 
     expected = {
