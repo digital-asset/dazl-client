@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from asyncio import Event, ensure_future, get_event_loop, sleep
-from typing import AbstractSet, Optional
+from typing import AbstractSet, Any, Optional
 
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef
@@ -30,11 +30,11 @@ def load_some_bytes() -> tuple[PackageRef, bytes]:
 
 
 @pytest.mark.asyncio
-async def test_pkg_loader_only_fetches_once(executor):
+async def test_pkg_loader_only_fetches_once() -> None:
     pkg_ref, contents = load_some_bytes()
 
     class MockPackageService(PackageService):
-        def __init__(self):
+        def __init__(self) -> None:
             self.call_count = 0
 
         async def get_package(
@@ -78,7 +78,7 @@ async def test_pkg_loader_only_fetches_once(executor):
 
 
 @pytest.mark.asyncio
-async def test_pkg_loader_consolidates_concurrent_fetch(executor):
+async def test_pkg_loader_consolidates_concurrent_fetch() -> None:
     loop = get_event_loop()
     pkg_ref, contents = load_some_bytes()
 
@@ -86,7 +86,7 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
     evt2 = Event()
 
     class MockPackageService(PackageService):
-        def __init__(self):
+        def __init__(self) -> None:
             self.call_count = 0
 
         async def get_package(
@@ -122,7 +122,7 @@ async def test_pkg_loader_consolidates_concurrent_fetch(executor):
 
     # wait until we are definitely in the MockPackageService.package_bytes call in one of
     # PackageLoader's background threads
-    await loop.run_in_executor(executor, lambda: evt1.wait())
+    await evt1.wait()
 
     # now schedule a _second_ PackageLoader.load coroutine; because the first one is still in
     # progress, this should NOT result in a second call to

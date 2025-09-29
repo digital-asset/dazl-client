@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+from types import TracebackType
 from typing import Any, Mapping, Optional, Sequence, cast
 
 from ..util import ProcessLogger, find_free_port, kill_process_tree, wait_for_process_port
@@ -237,7 +238,12 @@ class SandboxLauncher:
         self.start()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
         """
         Stop the sandbox.
         """

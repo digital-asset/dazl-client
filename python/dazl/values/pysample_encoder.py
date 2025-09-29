@@ -11,10 +11,10 @@ from .mapper import ValueMapper
 
 
 class PythonSampleEncoder(ValueMapper):
-    def __init__(self, max_depth: int = 6):
+    def __init__(self, max_depth: int = 6) -> None:
         self.max_depth = max_depth
 
-    def _recurse(self, context: Context, key, item_type):
+    def _recurse(self, context: Context, key: str, item_type: DamlType) -> Any:
         if context.depth <= self.max_depth:
             return "..."
         else:
@@ -24,7 +24,6 @@ class PythonSampleEncoder(ValueMapper):
         self, context: Context, dt: DefDataType, record: DefDataType.Fields, obj: Any
     ) -> Any:
         return {fld.field: self._recurse(context, fld.field, fld.type) for fld in record.fields}
-        pass
 
     def data_variant(
         self, context: Context, dt: DefDataType, variant: DefDataType.Fields, obj: Any

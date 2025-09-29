@@ -17,37 +17,39 @@ ARBITRARY_DATETIME_TIMESTAMP = 615691800000000
 
 
 @pytest.fixture(scope="package")
-def lookup():
+def lookup() -> MultiPackageLookup:
     return MultiPackageLookup(CachedDarFile(dars.AllKindsOf).archives())
 
 
 @pytest.fixture(scope="package")
-def encode_context(lookup):
+def encode_context(lookup: MultiPackageLookup) -> Context:
     return Context(ProtobufEncoder(), lookup)
 
 
 @pytest.fixture(scope="package")
-def decode_context(lookup):
+def decode_context(lookup: MultiPackageLookup) -> Context:
     return Context(ProtobufDecoder(), lookup)
 
 
-def test_values_protobuf_encode_bool_true(encode_context):
+def test_values_protobuf_encode_bool_true(encode_context: Context) -> None:
     actual = encode_context.convert(daml.Bool, True)
     assert actual == ("bool", True)
 
 
-def test_values_protobuf_encode_bool_false(encode_context):
+def test_values_protobuf_encode_bool_false(encode_context: Context) -> None:
     actual = encode_context.convert(daml.Bool, False)
     assert actual == ("bool", False)
 
 
-def test_values_protobuf_encode_enum(encode_context, lookup):
+def test_values_protobuf_encode_enum(encode_context: Context, lookup: MultiPackageLookup) -> None:
     color_enum_type = daml.con(lookup.data_type_name("*:AllKindsOf:Color"))
     actual = encode_context.convert(color_enum_type, "Red")
     assert actual == ("enum", lapipb.Enum(constructor="Red"))
 
 
-def test_values_protobuf_encode_enum_invalid(encode_context, lookup):
+def test_values_protobuf_encode_enum_invalid(
+    encode_context: Context, lookup: MultiPackageLookup
+) -> None:
     color_enum_type = daml.con(lookup.data_type_name("*:AllKindsOf:Color"))
     try:
         encode_context.convert(color_enum_type, "imagination")
@@ -56,32 +58,32 @@ def test_values_protobuf_encode_enum_invalid(encode_context, lookup):
         pass
 
 
-def test_values_protobuf_encode_numeric(encode_context):
+def test_values_protobuf_encode_numeric(encode_context: Context) -> None:
     actual = encode_context.convert(daml.Decimal, "1E+20")
     assert actual == ("numeric", "100000000000000000000")
 
 
-def test_values_protobuf_encode_numeric_zero(encode_context):
+def test_values_protobuf_encode_numeric_zero(encode_context: Context) -> None:
     actual = encode_context.convert(daml.Numeric(0), "1E+20")
     assert actual == ("numeric", "100000000000000000000")
 
 
-def test_values_protobuf_encode_date(encode_context):
+def test_values_protobuf_encode_date(encode_context: Context) -> None:
     actual = encode_context.convert(daml.Date, "2020-01-01")
     assert actual == ("date", 18262)
 
 
-def test_values_protobuf_encode_date_far_in_the_past(encode_context):
+def test_values_protobuf_encode_date_far_in_the_past(encode_context: Context) -> None:
     actual = encode_context.convert(daml.Date, "1969-12-31")
     assert actual == ("date", -1)
 
 
-def test_values_protobuf_encode_datetime(encode_context):
+def test_values_protobuf_encode_datetime(encode_context: Context) -> None:
     actual = encode_context.convert(daml.Time, ARBITRARY_DATETIME)
     assert actual == ("timestamp", ARBITRARY_DATETIME_TIMESTAMP)
 
 
-def test_values_protobuf_decode_date(decode_context):
+def test_values_protobuf_decode_date(decode_context: Context) -> None:
     value = lapipb.Value()
     value.date = 18262
 
@@ -89,7 +91,7 @@ def test_values_protobuf_decode_date(decode_context):
     assert actual == date(2020, 1, 1)
 
 
-def test_values_protobuf_decode_date_far_in_the_past(decode_context):
+def test_values_protobuf_decode_date_far_in_the_past(decode_context: Context) -> None:
     value = lapipb.Value()
     value.date = -1
 
@@ -97,7 +99,7 @@ def test_values_protobuf_decode_date_far_in_the_past(decode_context):
     assert actual == date(1969, 12, 31)
 
 
-def test_values_protobuf_decode_datetime(decode_context):
+def test_values_protobuf_decode_datetime(decode_context: Context) -> None:
     value = lapipb.Value()
     value.timestamp = ARBITRARY_DATETIME_TIMESTAMP
 

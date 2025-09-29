@@ -8,7 +8,7 @@ from dazl.damlast import DarFile
 from .dars import Pending
 
 
-def test_get_sdk_version():
+def test_get_sdk_version() -> None:
     with DarFile(Pending) as dar:
         print(dar.manifest())
         assert "2.10.1" == dar.sdk_version()

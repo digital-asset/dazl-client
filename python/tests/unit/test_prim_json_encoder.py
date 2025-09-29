@@ -9,7 +9,7 @@ from dazl.damlast.lookup import parse_type_con_name
 from dazl.prim import ContractId, JSONEncoder
 
 
-def test_contract_id():
+def test_contract_id() -> None:
     name = parse_type_con_name("0000deadbeef0000:MyMod:MyName")
     cid = ContractId(name, "#4:8")
 

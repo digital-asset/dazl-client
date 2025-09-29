@@ -6,11 +6,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Generator
 
-from dazl._gen.com.daml.ledger.api.v1 import (
-    Command as G_Command,
-    RecordField as G_RecordField,
-    Value as G_Value,
-)
+from dazl._gen.com.daml.ledger.api import v1 as lapipb
 from dazl.damlast import DarFile
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.protocols import SymbolLookup
@@ -30,9 +26,9 @@ from .dars import Pending
 @dataclass(frozen=True)
 class DarFixture:
     dar: DarFile
-    lookup: SymbolLookup
+    lookup: MultiPackageLookup
 
-    def get_identifier(self, identifier: str):
+    def get_identifier(self, identifier: str) -> lapipb.Identifier:
         return Codec.encode_identifier(self.lookup.data_type_name(identifier))
 
 
@@ -45,15 +41,15 @@ def dar_fixture() -> Generator[DarFixture, None, None]:
 
 
 @pytest.mark.asyncio
-async def test_serialize_create(dar_fixture):
+async def test_serialize_create(dar_fixture: DarFixture) -> None:
     sut = Codec(lookup=dar_fixture.lookup)
 
     command = CreateCommand("Pending:AccountRequest", dict(owner="SomeParty"))
 
-    expected = G_Command()
+    expected = lapipb.Command()
     expected.create.template_id.MergeFrom(dar_fixture.get_identifier("Pending:AccountRequest"))
     expected.create.create_arguments.fields.append(
-        G_RecordField(label="owner", value=G_Value(party=Party("SomeParty")))
+        lapipb.RecordField(label="owner", value=lapipb.Value(party=Party("SomeParty")))
     )
     actual = await sut.encode_command(command)
 
@@ -61,19 +57,19 @@ async def test_serialize_create(dar_fixture):
 
 
 @pytest.mark.asyncio
-async def test_serialize_exercise(dar_fixture):
+async def test_serialize_exercise(dar_fixture: DarFixture) -> None:
     sut = Codec(lookup=dar_fixture.lookup)
 
     tref = dar_fixture.lookup.data_type_name("Pending:AccountRequest")
     cid = ContractId(tref, "#1:0")
     command = ExerciseCommand(cid, "CreateAccount", dict(accountId=42))
 
-    expected = G_Command()
+    expected = lapipb.Command()
     expected.exercise.contract_id = "#1:0"
     expected.exercise.template_id.MergeFrom(dar_fixture.get_identifier("Pending:AccountRequest"))
     expected.exercise.choice = "CreateAccount"
     expected.exercise.choice_argument.record.fields.append(
-        G_RecordField(label="accountId", value=G_Value(int64=42))
+        lapipb.RecordField(label="accountId", value=lapipb.Value(int64=42))
     )
     actual = await sut.encode_command(command)
 
@@ -81,12 +77,12 @@ async def test_serialize_exercise(dar_fixture):
 
 
 @pytest.mark.asyncio
-async def test_serialize_exercise_by_key(dar_fixture):
+async def test_serialize_exercise_by_key(dar_fixture: DarFixture) -> None:
     sut = Codec(lookup=dar_fixture.lookup)
 
     command = ExerciseByKeyCommand("Pending:Counter", "SomeParty", "Increment", {})
 
-    expected = G_Command()
+    expected = lapipb.Command()
     expected.exerciseByKey.template_id.MergeFrom(dar_fixture.get_identifier("Pending:Counter"))
     expected.exerciseByKey.contract_key.party = "SomeParty"
     expected.exerciseByKey.choice = "Increment"
@@ -97,23 +93,23 @@ async def test_serialize_exercise_by_key(dar_fixture):
 
 
 @pytest.mark.asyncio
-async def test_serialize_create_and_exercise(dar_fixture):
+async def test_serialize_create_and_exercise(dar_fixture: DarFixture) -> None:
     sut = Codec(lookup=dar_fixture.lookup)
 
     command = CreateAndExerciseCommand(
         "Pending:AccountRequest", dict(owner="SomeParty"), "CreateAccount", dict(accountId=42)
     )
 
-    expected = G_Command()
+    expected = lapipb.Command()
     expected.createAndExercise.template_id.MergeFrom(
         dar_fixture.get_identifier("Pending:AccountRequest")
     )
     expected.createAndExercise.create_arguments.fields.append(
-        G_RecordField(label="owner", value=G_Value(party=Party("SomeParty")))
+        lapipb.RecordField(label="owner", value=lapipb.Value(party=Party("SomeParty")))
     )
     expected.createAndExercise.choice = "CreateAccount"
     expected.createAndExercise.choice_argument.record.fields.append(
-        G_RecordField(label="accountId", value=G_Value(int64=42))
+        lapipb.RecordField(label="accountId", value=lapipb.Value(int64=42))
     )
     actual = await sut.encode_command(command)
 

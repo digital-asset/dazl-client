@@ -10,7 +10,7 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_tls():
+async def test_tls() -> None:
     with testing.sandbox(use_tls=True) as sandbox:
         async with connect(url=sandbox.url, admin=True, cert=sandbox.public_cert) as conn:
             # the result of this call is not particularly interesting;

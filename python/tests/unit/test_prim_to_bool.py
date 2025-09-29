@@ -6,37 +6,37 @@ from __future__ import annotations
 from dazl.prim import to_bool
 
 
-def test_true_lowercase_bool():
+def test_true_lowercase_bool() -> None:
     actual = to_bool("true")
 
     assert actual
 
 
-def test_true_titlecase_bool():
+def test_true_titlecase_bool() -> None:
     actual = to_bool("True")
 
     assert actual
 
 
-def test_true_lowercase_whitespace_bool():
+def test_true_lowercase_whitespace_bool() -> None:
     actual = to_bool("  true ")
 
     assert actual
 
 
-def test_false_lowercase_bool():
+def test_false_lowercase_bool() -> None:
     actual = to_bool("false")
 
     assert not actual
 
 
-def test_false_titlecase_bool():
+def test_false_titlecase_bool() -> None:
     actual = to_bool("False")
 
     assert not actual
 
 
-def test_false_lowercase_whitespace_bool():
+def test_false_lowercase_whitespace_bool() -> None:
     actual = to_bool("  false ")
 
     assert not actual

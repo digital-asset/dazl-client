@@ -12,7 +12,7 @@ python_dir = Path(dazl.__file__).absolute().parent.parent
 root_dir = python_dir.parent
 
 
-def test_structure():
+def test_structure() -> None:
     """
     Some basic structure and style checks that are not covered by black and isort.
     """

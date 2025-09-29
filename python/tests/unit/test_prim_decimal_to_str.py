@@ -8,35 +8,35 @@ from decimal import Decimal
 from dazl.prim import decimal_to_str
 
 
-def test_one():
+def test_one() -> None:
     assert decimal_to_str(Decimal("1")) == "1"
 
 
-def test_ten():
+def test_ten() -> None:
     assert decimal_to_str(Decimal("10")) == "10"
 
 
-def test_one_tenth():
+def test_one_tenth() -> None:
     assert decimal_to_str(Decimal("0.1")) == "0.1"
 
 
-def test_one_trillionth():
+def test_one_trillionth() -> None:
     assert decimal_to_str(Decimal("0.000000000001")) == "0.000000000001"
 
 
-def test_one_trillion():
+def test_one_trillion() -> None:
     assert decimal_to_str(Decimal("1000000000000")) == "1000000000000"
 
 
-def test_one_trillionth_and_a_bit():
+def test_one_trillionth_and_a_bit() -> None:
     assert decimal_to_str(Decimal("0.0000000000011")) == "0.0000000000011"
 
 
-def test_quarter_quadrillion():
+def test_quarter_quadrillion() -> None:
     assert decimal_to_str(Decimal("250000000000000")) == "250000000000000"
 
 
-def test_quarter_quadrillion_and_a_bit():
+def test_quarter_quadrillion_and_a_bit() -> None:
     assert (
         decimal_to_str(Decimal("250000000000000.0000000000011")) == "250000000000000.0000000000011"
     )

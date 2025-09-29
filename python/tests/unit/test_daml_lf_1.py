@@ -6,7 +6,7 @@ from __future__ import annotations
 from dazl.damlast.daml_lf_1 import DottedName, ModuleRef, PackageRef, TypeConName
 
 
-def test_type_con_name():
+def test_type_con_name() -> None:
     a = PackageRef("deadbeef00000000000000000000000000000000000000000000000000000000")
     con1 = TypeConName(module=ModuleRef(a, DottedName(["Some", "Module"])), name=["Iou"])
     con2 = TypeConName(module=ModuleRef(a, DottedName(["Some", "Module"])), name=["Iou"])

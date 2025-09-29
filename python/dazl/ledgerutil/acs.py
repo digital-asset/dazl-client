@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from asyncio import CancelledError, Future, InvalidStateError, ensure_future, get_event_loop, sleep
 from collections.abc import Mapping as MappingBase
-from types import MappingProxyType
+from types import MappingProxyType, TracebackType
 from typing import (
     AsyncIterator,
     Awaitable,
@@ -213,7 +213,12 @@ class ACS:
         await self.start()
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType,
+    ) -> None:
         """
         Allow :class:`ACS` to be used within ``async with`` blocks.
         """

@@ -51,8 +51,8 @@ def boundary_iter(obj: Iterable[T], /) -> Generator[tuple[bool, T], None, None]:
             break
 
 
-def flatten(obj, /):
-    ret = []
+def flatten(obj: Iterable[Iterable[T]], /) -> list[T]:
+    ret = list[T]()
     for sublist in obj:
         ret.extend(sublist)
     return ret

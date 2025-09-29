@@ -42,7 +42,7 @@ async def test_read_using_callback() -> None:
         async with conn.query("Main:Asset") as stream:
 
             @stream.on_create
-            def _(event):
+            def _(event: dazl.ledger.CreateEvent) -> None:
                 contracts[event.contract_id] = event.payload
 
             await stream.run()

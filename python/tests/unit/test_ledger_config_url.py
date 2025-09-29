@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from typing import Any
 from urllib.parse import urlparse
 
 from dazl.ledger.config import create_url
@@ -25,12 +26,12 @@ testdata = [
 
 
 @pytest.mark.parametrize("kwargs,expected_url", testdata)
-def test_ledger_config_url_all_defaults(kwargs, expected_url):
+def test_ledger_config_url_all_defaults(kwargs: Any, expected_url: str) -> None:
     actual = urlparse(create_url(**kwargs).url)
     expected = urlparse(expected_url)
     assert expected == actual
 
 
-def test_ledger_config_rejects_overspecified_values():
+def test_ledger_config_rejects_overspecified_values() -> None:
     with pytest.raises(ValueError):
         create_url(url="localhost:6865", host="localhost", port=6865)

@@ -13,13 +13,13 @@ from dazl.values import Context, JsonDecoder, JsonEncoder
 from tests.unit import dars
 
 
-def test_basic_json_text():
+def test_basic_json_text() -> None:
     ctx = Context(JsonDecoder())
     actual = ctx.convert(daml.Text, "some-text")
     assert actual == "some-text"
 
 
-def test_json_all_kinds_of():
+def test_json_all_kinds_of() -> None:
     """
     Serialize a JSON payload of all kinds of fields.
     """

@@ -20,7 +20,7 @@ ALL_KINDS_OF_PKG_REF = PackageRef(
 )
 
 
-def test_pkg_ref_up_to_date():
+def test_pkg_ref_up_to_date() -> None:
     from .dars import AllKindsOf
 
     with DarFile(AllKindsOf) as dar:
@@ -29,10 +29,10 @@ def test_pkg_ref_up_to_date():
 
 
 class PackageLoaderTest:
-    def __init__(self, template_name):
+    def __init__(self, template_name: str) -> None:
         self.lookup = MultiPackageLookup()
         self.loader = PackageLoader(self.lookup, DarFile(AllKindsOf).async_package_service())
-        self.call_order = []
+        self.call_order = list[str]()
         self.template_name = template_name
 
         # the lookup should always start out empty
@@ -49,7 +49,7 @@ class PackageLoaderTest:
 
 
 @pytest.mark.asyncio
-async def test_pkg_loader_do_with_retry_unspecified_package_async():
+async def test_pkg_loader_do_with_retry_unspecified_package_async() -> None:
     test = PackageLoaderTest(f"{ALL_KINDS_OF_PKG_REF}:AllKindsOf:OneOfEverything")
 
     # call a function with a loader wrapper
@@ -63,7 +63,7 @@ async def test_pkg_loader_do_with_retry_unspecified_package_async():
 
 
 @pytest.mark.asyncio
-async def test_pkg_loader_do_with_retry_specified_package_async():
+async def test_pkg_loader_do_with_retry_specified_package_async() -> None:
     test = PackageLoaderTest("*:AllKindsOf:OneOfEverything")
 
     # call a function with a loader wrapper
@@ -77,7 +77,7 @@ async def test_pkg_loader_do_with_retry_specified_package_async():
 
 
 @pytest.mark.asyncio
-async def test_pkg_loader_do_with_retry_will_fail_on_unknown_templates_async():
+async def test_pkg_loader_do_with_retry_will_fail_on_unknown_templates_async() -> None:
     test = PackageLoaderTest("*:Nonsense:Nonsense")
 
     # call a function with a loader wrapper

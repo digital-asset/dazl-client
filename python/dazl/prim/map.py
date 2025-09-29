@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+from typing import Any, NoReturn
+
 __all__ = ["FrozenDict", "to_hashable"]
 
 
@@ -12,33 +14,33 @@ class FrozenDict(dict):
     used as keys in a Python dictionary.
     """
 
-    def __hash__(self):
+    def __hash__(self) -> int:  # type: ignore
         return 0
 
-    def __delitem__(self, *args, **kwargs):
+    def __delitem__(self, *args, **kwargs) -> NoReturn:
         raise RuntimeError("frozendicts are immutable")
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value) -> NoReturn:
         raise RuntimeError("frozendicts are immutable")
 
-    def pop(self, *args, **kwargs):
+    def pop(self, *args, **kwargs) -> NoReturn:
         raise RuntimeError("frozendicts are immutable")
 
-    def popitem(self, *args, **kwargs):
+    def popitem(self, *args, **kwargs) -> NoReturn:
         raise RuntimeError("frozendicts are immutable")
 
-    def setdefault(self, *args, **kwargs):
+    def setdefault(self, *args, **kwargs) -> NoReturn:
         raise RuntimeError("frozendicts are immutable")
 
-    def update(self, *args, **kwargs):
+    def update(self, *args, **kwargs) -> NoReturn:
         raise RuntimeError("frozendicts are immutable")
 
-    def clear(self, *args, **kwargs):
+    def clear(self, *args, **kwargs) -> NoReturn:
         raise RuntimeError("frozendicts are immutable")
 
 
-def to_hashable(obj):
-    from collections import Collection, Mapping
+def to_hashable(obj: Any) -> Any:
+    from collections.abc import Collection, Mapping
 
     if isinstance(obj, Mapping):
         return FrozenDict(obj)

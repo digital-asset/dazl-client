@@ -12,7 +12,7 @@ from subprocess import Popen, TimeoutExpired
 import sys
 from threading import Event, Thread
 import time
-from typing import Optional
+from typing import Optional, TextIO
 
 from google.protobuf.empty_pb2 import Empty
 from grpc import insecure_channel, secure_channel, ssl_channel_credentials
@@ -23,7 +23,7 @@ from ..prim import DazlError, TimeDeltaLike, to_timedelta
 __all__ = ["kill_process_tree", "wait_for_process_port", "ProcessLogger", "ProcessDiedException"]
 
 
-def kill_process_tree(process: Popen):
+def kill_process_tree(process: Popen) -> None:
     """
     Kill a process and its children.
     """
@@ -114,12 +114,12 @@ class ProcessLogger:
     Pipe stdout and stderr from a process to the logger.
     """
 
-    def __init__(self, process: Popen, logger: logging.Logger):
+    def __init__(self, process: Popen, logger: logging.Logger) -> None:
         self.process = process
         self.logger = logger
         self._evt = Event()
 
-    def start(self):
+    def start(self) -> None:
         stdout = sys.stdout
         stderr = sys.stderr
         stdout_log_thread = Thread(target=self._stdout_monitor, args=[stdout])
@@ -127,30 +127,34 @@ class ProcessLogger:
         stderr_log_thread = Thread(target=self._stderr_monitor, args=[stderr])
         stderr_log_thread.start()
 
-    def stop(self):
+    def stop(self) -> None:
         self._evt.set()
 
-    def _stdout_monitor(self, stdout):
+    def _stdout_monitor(self, stdout: TextIO) -> None:
         sys.stdout = stdout
         # noinspection PyBroadException
         try:
-            for line in self.process.stdout:
-                if self._evt.is_set():
-                    return
+            proc_stdout = self.process.stdout
+            if proc_stdout is not None:
+                for line in proc_stdout:
+                    if self._evt.is_set():
+                        return
 
-                self.logger.info(line.rstrip("\n"))
+                    self.logger.info(line.rstrip("\n"))
         except:  # noqa
             pass
 
-    def _stderr_monitor(self, stderr):
+    def _stderr_monitor(self, stderr: TextIO) -> None:
         sys.stderr = stderr
         # noinspection PyBroadException
         try:
-            for line in self.process.stderr:
-                if self._evt.is_set():
-                    return
+            proc_stderr = self.process.stderr
+            if proc_stderr is not None:
+                for line in proc_stderr:
+                    if self._evt.is_set():
+                        return
 
-                self.logger.info(line.rstrip("\n"))
+                    self.logger.info(line.rstrip("\n"))
         except:  # noqa
             pass
 

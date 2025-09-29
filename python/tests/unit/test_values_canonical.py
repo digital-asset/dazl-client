@@ -10,19 +10,19 @@ from dazl.prim import Party
 from dazl.values import CanonicalMapper, Context
 
 
-def test_values_canonical_bool():
+def test_values_canonical_bool() -> None:
     ctx = Context(CanonicalMapper())
     actual = ctx.convert(daml.Bool, False)
     assert not actual
 
 
-def test_values_canonical_bool_false_string():
+def test_values_canonical_bool_false_string() -> None:
     ctx = Context(CanonicalMapper())
     actual = ctx.convert(daml.Bool, "false")
     assert not actual
 
 
-def test_values_canonical_bool_random_string():
+def test_values_canonical_bool_random_string() -> None:
     ctx = Context(CanonicalMapper())
     try:
         ctx.convert(daml.Bool, "blahblahblah")
@@ -31,37 +31,37 @@ def test_values_canonical_bool_random_string():
         pass
 
 
-def test_values_canonical_date():
+def test_values_canonical_date() -> None:
     ctx = Context(CanonicalMapper())
     actual = ctx.convert(daml.Date, date(2020, 1, 1))
     assert date(2020, 1, 1) == actual
 
 
-def test_values_canonical_date_str():
+def test_values_canonical_date_str() -> None:
     ctx = Context(CanonicalMapper())
     actual = ctx.convert(daml.Date, "2020-01-01")
     assert date(2020, 1, 1) == actual
 
 
-def test_values_canonical_str_that_looks_like_a_date():
+def test_values_canonical_str_that_looks_like_a_date() -> None:
     ctx = Context(CanonicalMapper())
     actual = ctx.convert(daml.Text, "2020-01-01")
     assert "2020-01-01" == actual
 
 
-def test_values_optional_some_empty_string():
+def test_values_optional_some_empty_string() -> None:
     ctx = Context(CanonicalMapper())
     actual = ctx.convert(daml.Optional(daml.Text), "")
     assert "" == actual
 
 
-def test_values_optional_none():
+def test_values_optional_none() -> None:
     ctx = Context(CanonicalMapper())
     actual = ctx.convert(daml.Optional(daml.Text), None)
     assert None is actual
 
 
-def test_values_party():
+def test_values_party() -> None:
     ctx = Context(CanonicalMapper())
     actual = ctx.convert(daml.Party, "some-party")
     assert actual == Party("some-party")

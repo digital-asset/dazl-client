@@ -10,31 +10,31 @@ from __future__ import annotations
 from dazl.query import is_match
 
 
-def test_match_of_partial_keys():
+def test_match_of_partial_keys() -> None:
     match = {"a": 2, "b": 3}
     value = {"c": 4, "a": 2, "b": 3}
     assert is_match(match, value)
 
 
-def test_match_of_partial_top_level_keys():
+def test_match_of_partial_top_level_keys() -> None:
     match = {"d": 3}
     value = {"a": {"b": 1, "c": 2}, "d": 3}
     assert is_match(match, value)
 
 
-def test_match_of_partial_deep_nested_keys():
+def test_match_of_partial_deep_nested_keys() -> None:
     match = {"a": {"b": 1}}
     value = {"a": {"b": 1, "c": 2}, "d": 3}
     assert is_match(match, value)
 
 
-def test_non_match_of_partial_deep_nested_keys():
+def test_non_match_of_partial_deep_nested_keys() -> None:
     match = {"a": {"b": 1}}
     value = {"a": {"b": 2, "c": 2}, "d": 3}
     assert not is_match(match, value)
 
 
-def test_non_match_of_disjoint_keys():
+def test_non_match_of_disjoint_keys() -> None:
     match = {"x": 1}
     value = {"a": {"b": 2, "c": 2}, "d": 3}
     assert not is_match(match, value)
