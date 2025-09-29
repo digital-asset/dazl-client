@@ -136,7 +136,7 @@ class CanonicalMapper(ValueMapper):
     # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def _dict_to_record(
         self, context: Context, dt: DefDataType, record: DefDataType.Fields, obj: Any
-    ):
+    ) -> Any:
         return obj
 
     # noinspection PyMethodMayBeStatic,PyUnusedLocal

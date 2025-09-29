@@ -4,11 +4,19 @@
 from __future__ import annotations
 
 from asyncio import new_event_loop, run_coroutine_threadsafe, set_event_loop, sleep
+from concurrent.futures import Future
 from queue import Queue
+import sys
 from threading import Thread
+from types import TracebackType
 from typing import Callable, Optional
 
 from ..aio import Connection, QueryStream
+
+if sys.version_info >= (3, 11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 
 __all__ = ["ConnectionThunk", "QueryStreamThunk"]
 
@@ -18,7 +26,7 @@ class ConnectionThunk:
     A blocking Connection wrapper around an asynchronous connection.
     """
 
-    def __init__(self, conn_fn: Callable[[], Connection], *, name: Optional[str] = None):
+    def __init__(self, conn_fn: Callable[[], Connection], *, name: Optional[str] = None) -> None:
         self._conn_fn = conn_fn
         self._conn = None
         self._thread = Thread(target=self._main, name=name, daemon=True)
@@ -32,7 +40,7 @@ class ConnectionThunk:
         set_event_loop(self._loop)
         self._loop.run_until_complete(self._fut)
 
-    def open(self):
+    def open(self) -> None:
         # start the main thread
         self._thread.start()
 
@@ -44,12 +52,14 @@ class ConnectionThunk:
         self._conn = self._conn_fn()
         await self._conn.open()
 
-    def close(self):
-        run_coroutine_threadsafe(self._conn.close(), self._loop).result()
+    def close(self) -> None:
+        conn = self._conn
+        if conn is not None:
+            run_coroutine_threadsafe(conn.close(), self._loop).result()
         self._loop.call_soon_threadsafe(self._fut.set_result, None)
         self._thread.join()
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         self.open()
         return self
 
@@ -142,12 +152,17 @@ class QueryStreamThunk:
         self._loop = loop
         self._stream = stream
         self._q = Queue()  # type: ignore
-        self._fut = None
+        self._fut: Future[None] | None = None
 
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType,
+    ) -> None:
         # try to abort an existing iteration if one is running
         if self._fut is not None:
             try:
@@ -165,10 +180,10 @@ class QueryStreamThunk:
     def on_boundary(self, *args):
         return self._stream.on_boundary(*args)
 
-    def close(self):
+    def close(self) -> None:
         self._q.put_nowait(None)
 
-    def run(self):
+    def run(self) -> None:
         self._fut = run_coroutine_threadsafe(self._stream.run(), self._loop)
         self._fut.result()
 

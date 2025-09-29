@@ -34,7 +34,7 @@ def blocking_setup(url: str, dar: Path) -> Party:
 
 
 class Setup:
-    def __init__(self, url: str, dar: Path):
+    def __init__(self, url: str, dar: Path) -> None:
         self.url = url
         self.dar = dar
         self.party = None  # type: Optional[Party]
@@ -49,7 +49,7 @@ class Setup:
             raise RuntimeError("party failed to be allocated!")
         return self.party
 
-    def _main(self):
+    def _main(self) -> None:
         # create a private event loop just for us
         loop = new_event_loop()
         set_event_loop(loop)

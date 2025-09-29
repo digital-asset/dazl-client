@@ -7,6 +7,7 @@ from io import BytesIO
 from os import PathLike
 from pathlib import Path
 import sys
+from types import TracebackType
 from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional
 from zipfile import ZipFile
 
@@ -73,10 +74,15 @@ class DarFile:
     def __enter__(self: Self) -> Self:
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType,
+    ) -> None:
         self.close()
 
-    def close(self):
+    def close(self) -> None:
         self._zip.close()
         if self._buf is not None:
             self._buf.close()

@@ -6,7 +6,7 @@ from __future__ import annotations
 from dazl.damlast.lookup import validate_template
 
 
-def test_scu_name():
+def test_scu_name() -> None:
     pkg_ref, name = validate_template("#name:Module.SubModule:Template")
     assert pkg_ref == "#name"
     assert name == "Module.SubModule:Template"

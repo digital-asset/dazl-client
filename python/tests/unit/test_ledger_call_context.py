@@ -22,7 +22,7 @@ DEFAULT_V1_CONNECTION_PARAMETERS = ConnectionParameters(
 )
 
 
-def test_v1_token_disallows_user_id():
+def test_v1_token_disallows_user_id() -> None:
     token = encode_unsigned_token(ledger_id="fooledger")
     with pytest.raises(ValueError):
         CallContext.compute(

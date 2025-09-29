@@ -19,7 +19,7 @@ dars = list(ARCHIVES.glob("**/*.dar"))
 
 
 @pytest.mark.parametrize("dar", dars)
-def test_dar_version_compatibility(dar):
+def test_dar_version_compatibility(dar: Path) -> None:
     short_dar = dar.relative_to(ARCHIVES)
     start_time = time.time()
     dar_file = DarFile(dar)
@@ -33,7 +33,7 @@ def test_dar_version_compatibility(dar):
     )
 
 
-def test_dar_kitchen_sink():
+def test_dar_kitchen_sink() -> None:
     start_time = time.time()
     dar_file = DarFile(KitchenSink)
     archives = dar_file.archives()

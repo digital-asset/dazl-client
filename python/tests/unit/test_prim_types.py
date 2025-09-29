@@ -11,7 +11,7 @@ from dazl.prim import ContractId, to_datetime
 DUMMY_TEMPLATE_ID = parse_type_con_name("00:DummyModule:DummyTemplate")
 
 
-def test_contract_id_as_dict_key():
+def test_contract_id_as_dict_key() -> None:
     cid_a = ContractId(DUMMY_TEMPLATE_ID, "1")
     cid_b = ContractId(DUMMY_TEMPLATE_ID, "1")
     test_dict = dict()
@@ -20,13 +20,13 @@ def test_contract_id_as_dict_key():
     assert test_dict[cid_b] == "hello world"
 
 
-def test_simple_date_parse():
+def test_simple_date_parse() -> None:
     expected = datetime(2018, 8, 7, 23, 17, 31, 143080, tzinfo=timezone.utc)
     actual = to_datetime("2018-08-07T23:17:31.143080Z")
     assert expected == actual
 
 
-def test_simple_date_parse_with_nanos():
+def test_simple_date_parse_with_nanos() -> None:
     expected = datetime(2018, 8, 7, 23, 17, 31, 143080, tzinfo=timezone.utc)
     actual = to_datetime("2018-08-07T23:17:31.143080698Z")
     assert expected == actual

@@ -10,7 +10,7 @@ __all__ = ["DEFAULT_FORMATTER_NAME", "get_formatter"]
 DEFAULT_FORMATTER_NAME = "pretty"
 
 
-def get_formatter(fmt) -> Formatter:
+def get_formatter(fmt: str | None = None) -> Formatter:
     """
     Return a formatter of the specified name.
     """

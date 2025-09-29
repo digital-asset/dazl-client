@@ -19,7 +19,7 @@ from dazl import __version__ as library_version
 ROOT_DIR = Path(__file__).parent.parent.parent.parent
 
 
-def test_versions_are_consistent():
+def test_versions_are_consistent() -> None:
     file_version = (ROOT_DIR / "VERSION").read_text().strip()
 
     config = ConfigParser()

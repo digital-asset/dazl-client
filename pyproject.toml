@@ -68,6 +68,7 @@ multi_line_output = 3
 
 [tool.mypy]
 cache_dir = '.cache/mypy'
+#disallow_untyped_defs = true
 namespace_packages = true
 
 [[tool.mypy.overrides]]

@@ -8,7 +8,7 @@ Simple command-line handlers.
 from __future__ import annotations
 
 import logging
-from typing import Sequence
+from typing import NoReturn, Sequence
 
 from .._logging import configure as configure_logger
 from ._base import CliCommand
@@ -17,7 +17,7 @@ from .version import VersionCommand
 COMMANDS = list[CliCommand]((VersionCommand(),))
 
 
-def main():
+def main() -> NoReturn:
     """
     Executes one of the known commands.
     """
@@ -53,7 +53,7 @@ def run(cmd, args) -> int:
     return cmd.execute(parsed_args)
 
 
-def print_cmd_help():
+def print_cmd_help() -> None:
     print("Valid commands:")
     for cmd in COMMANDS:
         if not cmd.hidden:

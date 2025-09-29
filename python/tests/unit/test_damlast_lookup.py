@@ -9,7 +9,7 @@ from dazl.damlast.lookup import MultiPackageLookup
 from .dars import AllKindsOf
 
 
-def test_wildcard_template_names():
+def test_wildcard_template_names() -> None:
     with DarFile(AllKindsOf) as dar:
         lookup = MultiPackageLookup(dar.archives())
 
