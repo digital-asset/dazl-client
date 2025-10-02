@@ -23,9 +23,8 @@ async def test_command_submission_with_stdlib_values(sandbox: SandboxLauncher) -
         # remember the appropriate template ID, because we'll need it soon
         lookup = MultiPackageLookup()
         loader = PackageLoader(lookup, conn)
-        tmpl_id = await loader.do_with_retry(
-            lambda: lookup.template_name("KitchenSink.Retailer:Retailer")
-        )
+        result = await loader.do_with_retry(lambda: lookup.search("KitchenSink.Retailer:Retailer"))
+        tmpl_id = next(iter(result.templates))
 
     # override lookup intentionally to make sure this test is not polluted with cached state from other tests
     async with dazl.connect(

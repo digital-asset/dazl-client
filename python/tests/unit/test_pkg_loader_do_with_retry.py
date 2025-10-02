@@ -40,7 +40,8 @@ class PackageLoaderTest:
 
     def some_fn(self) -> TypeConName:
         try:
-            name = self.lookup.template_name(self.template_name)
+            symbols = self.lookup.search(self.template_name)
+            name = symbols.templates.single().package_id_ref
             self.call_order.append("good call")
             return name
         except:

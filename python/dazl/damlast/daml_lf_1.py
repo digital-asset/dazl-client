@@ -177,7 +177,7 @@ class _Name:
 
     This implementation powers all of a TypeConName, TypeSynName, and ValName.
 
-    In dazl 7.0.0, these will become `NewType(str)`, so making assumptions about the structure of
+    In dazl 9.0.0, these will become `NewType(str)`, so making assumptions about the structure of
     this type should be avoided, and accessor methods should be instead used for callers that care
     about the structure of these names.
     """

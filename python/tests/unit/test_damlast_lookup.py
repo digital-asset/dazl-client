@@ -15,5 +15,5 @@ def test_wildcard_template_names() -> None:
 
     # make sure that looking for templates, wildcarded by package ref, actually work and return
     # things
-    names = [name for ref in lookup.package_ids() for name in lookup.template_names(f"{ref}:*")]
+    names = [name for ref in lookup.package_ids() for name in lookup.search(f"{ref}:*").templates]
     assert len(names) == 2

@@ -42,7 +42,8 @@ def test_values_protobuf_encode_bool_false(encode_context: Context) -> None:
 
 
 def test_values_protobuf_encode_enum(encode_context: Context, lookup: MultiPackageLookup) -> None:
-    color_enum_type = daml.con(lookup.data_type_name("*:AllKindsOf:Color"))
+    symbols = lookup.search("*:AllKindsOf:Color")
+    color_enum_type = daml.con(symbols.data_types.single().package_id_ref)
     actual = encode_context.convert(color_enum_type, "Red")
     assert actual == ("enum", lapipb.Enum(constructor="Red"))
 
@@ -50,7 +51,8 @@ def test_values_protobuf_encode_enum(encode_context: Context, lookup: MultiPacka
 def test_values_protobuf_encode_enum_invalid(
     encode_context: Context, lookup: MultiPackageLookup
 ) -> None:
-    color_enum_type = daml.con(lookup.data_type_name("*:AllKindsOf:Color"))
+    symbols = lookup.search("*:AllKindsOf:Color")
+    color_enum_type = daml.con(symbols.data_types.single().package_id_ref)
     try:
         encode_context.convert(color_enum_type, "imagination")
         assert False, "we were supported to fail!"

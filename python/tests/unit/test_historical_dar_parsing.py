@@ -45,5 +45,6 @@ def test_dar_kitchen_sink() -> None:
     )
 
     lookup = MultiPackageLookup(dar_file.archives())
-    iface = lookup.interface("KitchenSink.Interfaces.HasLocation:HasLocation")
-    assert iface is not None
+    symbols = lookup.search("KitchenSink.Interfaces.HasLocation:HasLocation")
+    match = symbols.interfaces.single()
+    assert match is not None

@@ -8,6 +8,7 @@ import warnings
 
 from ..damlast import IdentityTypeVisitor
 from ..damlast.daml_lf_1 import DefDataType, FieldWithType, PrimType, Type
+from ..damlast.errors import NameNotFoundError
 from ..damlast.lookup import EmptyLookup
 from ..damlast.protocols import SymbolLookup
 from ..prim import ContractId, DazlError, to_str, to_variant
@@ -242,7 +243,11 @@ class Context:
         In order to support recursive types and type variables, only the variables that are fields
         of the resolved :class:`DefDataType` are replaced.
         """
-        dt = self.lookup.data_type(con.tycon)
+        result = self.lookup.search(con.tycon)
+        dt = next(iter(result.data_types.values()), None)
+        if dt is None:
+            raise NameNotFoundError(con.tycon)
+
         if len(dt.params) != len(con.args):
             # every time we encounter DefDataType, we expect to be given its type arguments in the
             # same place; there are no other constructs in DAML-LF that express type application,

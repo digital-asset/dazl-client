@@ -31,7 +31,7 @@ from ...damlast.daml_lf_1 import (
 )
 from ...damlast.daml_types import ContractId as ContractIdType, con
 from ...damlast.errors import NameNotFoundError
-from ...damlast.lookup import STAR, MultiPackageLookup
+from ...damlast.lookup import STAR, LookupResult, MultiPackageLookup
 from ...damlast.protocols import SymbolLookup, TemplateOrInterface
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
@@ -136,15 +136,22 @@ class Codec:
 
     async def encode_create_command(
         self,
-        template_id: str | Any,
+        template_id: str | TypeConName,
         payload: ContractData,
         /,
         *,
         token: Optional[TokenOrTokenProvider] = None,
     ) -> lapipb.CreateCommand:
-        item_type = await self._loader.do_with_retry(
-            lambda: self._lookup.template_name(template_id), token=token
-        )
+        symbols = await self._loader.search(template_id, token=token)
+        if str(template_id).startswith("#"):
+            item_type = symbols.templates.single().package_name_ref
+            if item_type is None:
+                raise ValueError(
+                    "passed in a smart-contract-upgrade compatible name, but did not find a corresponding package name"
+                )
+        else:
+            item_type = symbols.templates.single().package_id_ref
+
         _, value = await self.encode_value(con(item_type), payload, token=token)
         return lapipb.CreateCommand(
             template_id=self.encode_identifier(item_type), create_arguments=value
@@ -254,95 +261,33 @@ class Codec:
 
         # No wildcard template IDs, so inspect and resolve all template references to concrete
         # template or interface IDs
-        requested_templates, requested_interfaces = await self._resolve(
-            template_or_interface_ids, token=token
-        )
+        templates = list[TypeConName]()
+        interfaces = list[TypeConName]()
+        for template_or_interface_id in template_or_interface_ids:
+            pkg_ref = package_ref(template_or_interface_id)
+            local_name = package_local_name(template_or_interface_id)
+
+            matches = await self._loader.search(template_or_interface_id, token=token)
+            if pkg_ref.startswith("#"):
+                # if the user asked for SCU names, continue to use that in the constructed query
+                templates.extend(matches.templates.package_name_refs())
+                interfaces.extend(matches.interfaces.package_name_refs())
+            else:
+                # for everything else, use explicit package ID references
+                templates.extend(matches.templates.package_id_refs())
+                interfaces.extend(matches.interfaces.package_id_refs())
 
         return lapipb.Filters(
             inclusive=lapipb.InclusiveFilters(
-                template_ids=[self.encode_identifier(i) for i in requested_templates],
+                template_ids=[self.encode_identifier(i) for i in templates],
                 interface_filters=[
                     lapipb.InterfaceFilter(
                         interface_id=self.encode_identifier(i), include_interface_view=True
                     )
-                    for i in requested_interfaces
+                    for i in interfaces
                 ],
             )
         )
-
-    async def _resolve(
-        self,
-        template_or_interface_ids: Sequence[TypeConName],
-        /,
-        *,
-        token: Optional[TokenOrTokenProvider] = None,
-    ) -> tuple[Sequence[TypeConName], Sequence[TypeConName]]:
-        """
-        Resolve a set of template or interface IDs to TypeConNames that can be sent to the
-        Ledger API for querying.
-
-        Concretely, this means disambiguating between templates and interfaces, handling
-        templates/interfaces with missing package IDs, and handling Smart Contract Upgrade
-        template references (those that start with ``'#'``).
-
-        :param template_or_interface_ids:
-            The set of template and/or interface IDs to fully resolve.
-        :param token:
-            An optional token to use when fetching template or interface IDs.
-        :return:
-            A set of template IDs and interface IDs that can be sent to the ledger.
-        :raises NameNotFoundError:
-            If a template or interface is missing a package ID, and we couldn't determine
-            what that package ID should be.
-        """
-        requested_templates = set[TypeConName]()
-        requested_interfaces = set[TypeConName]()
-
-        for template_or_interface_id in template_or_interface_ids:
-            resolved_template_ids = Codec._resolve_single_name(
-                template_or_interface_id,
-                await self._loader.do_with_retry(
-                    lambda: self._lookup.template_names(template_or_interface_id), token=token
-                ),
-            )
-
-            resolved_interface_ids = Codec._resolve_single_name(
-                template_or_interface_id,
-                await self._loader.do_with_retry(
-                    lambda: self._lookup.interface_names(template_or_interface_id), token=token
-                ),
-            )
-
-            if resolved_template_ids:
-                requested_templates.update(resolved_template_ids)
-            elif resolved_interface_ids:
-                requested_interfaces.update(resolved_interface_ids)
-            elif package_ref(template_or_interface_id) == STAR:
-                # in the event that we can't resolve this to a template ID or interface ID on the
-                # client, there's a pretty good chance this template doesn't exist on the server
-                #
-                # being able to specify a template reference without a package ID or package
-                # name at all is strictly something dazl does on the client side to be nice;
-                # there is no way for this operation to succeed on the server
-                raise NameNotFoundError(template_or_interface_id)
-            else:
-                # just pass the user's string in exactly, and let the server return a
-                # template-not-found error as expected
-                requested_templates.add(template_or_interface_id)
-
-        return sorted(requested_templates), sorted(requested_interfaces)
-
-    @staticmethod
-    def _resolve_single_name(
-        original_name: TypeConName, resolved_names: Collection[TypeConName], /
-    ) -> Collection[TypeConName]:
-        original_package_ref = package_ref(original_name)
-        if original_package_ref == STAR:
-            # if the caller originally requested a name without a package reference,
-            # then use the ones that we have resolved
-            return resolved_names
-        else:
-            return [original_name]
 
     async def encode_value(
         self, item_type: Type, obj: Any, /, *, token: Optional[TokenOrTokenProvider] = None
@@ -418,7 +363,8 @@ class Codec:
                 f"expected create_arguments to result in a dict, but got {cdata!r} instead"
             )
 
-        template = self._lookup.template(cid.value_type)
+        lookup = self._lookup.search(cid.value_type)
+        template = next(iter(lookup.templates.values()))
         key = None
         if template is not None and template.key is not None:
             key = await self.decode_value(template.key.type, event.contract_key, token=token)
@@ -468,11 +414,13 @@ class Codec:
 
                         template_or_interface: TemplateOrInterface
                         if event_pb.exercised.interface_id.entity_name:
-                            template_or_interface = self._lookup.interface(
+                            symbols = self._lookup.search(
                                 Codec.decode_identifier(event_pb.exercised.interface_id)
                             )
+                            template_or_interface = symbols.interfaces.single().object
                         else:
-                            template_or_interface = self._lookup.template(cid.value_type)
+                            symbols = self._lookup.search(cid.value_type)
+                            template_or_interface = symbols.templates.single().object
 
                         if found_choice is None:
                             for choice in template_or_interface.choices:
@@ -530,7 +478,9 @@ class Codec:
         self, pb: lapipb.InterfaceView, /, *, token: Optional[TokenOrTokenProvider] = None
     ) -> InterfaceView:
         vt = Codec.decode_identifier(pb.interface_id)
-        interface = self._lookup.interface(vt)
+
+        symbols = self._lookup.search(vt)
+        interface = symbols.interfaces.single().object
         view_value = await self.decode_value(interface.view, pb.view_value, token=token)
         return InterfaceView(vt, view_value)
 
@@ -635,23 +585,30 @@ class Codec:
         *,
         token: Optional[TokenOrTokenProvider] = None,
     ) -> tuple[TypeConName, TemplateChoice]:
-        template_type = await self._loader.do_with_retry(
-            lambda: self._lookup.template_or_interface_name(template_or_interface_id), token=token
+        result = await self._loader.search(template_or_interface_id, token=token)
+
+        for template_id, template in result.templates.items():
+            for choice in template.choices:
+                if choice.name == choice_name:
+                    return template_id, choice
+
+        for interface_id, interface in result.interfaces.items():
+            for choice in interface.choices:
+                if choice.name == choice_name:
+                    return interface_id, choice
+
+        raise ValueError(
+            f"template/interface {template_or_interface_id} has no choice named {choice_name}"
         )
-        template_or_interface = self._lookup.template_or_interface(template_type)
-        for choice in template_or_interface.choices:
-            if choice.name == choice_name:
-                return template_type, choice
-        raise ValueError(f"template {template_or_interface.name} has no choice named {choice_name}")
 
     async def _look_up_template_choice(
         self, template_id: Any, choice_name: str, /, *, token: Optional[TokenOrTokenProvider] = None
     ) -> tuple[TypeConName, DefTemplate, TemplateChoice]:
-        template_type = await self._loader.do_with_retry(
-            lambda: self._lookup.template_name(template_id), token=token
-        )
-        template = self._lookup.template(template_type)
-        for choice in template.choices:
-            if choice.name == choice_name:
-                return template_type, template, choice
-        raise ValueError(f"template {template.tycon} has no choice named {choice_name}")
+        result = await self._loader.search(template_id, token=token)
+
+        for template_id, template in result.templates.items():
+            for choice in template.choices:
+                if choice.name == choice_name:
+                    return template_id, template, choice
+
+        raise ValueError(f"template {template_id} has no choice named {choice_name}")
