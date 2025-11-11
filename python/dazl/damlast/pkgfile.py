@@ -116,7 +116,10 @@ class DarFile:
         :class:`CachedDarFile` is a better choice than `DarFile` if this method is frequently called
         on the same :class:`DarFile`, as package parsing is an expensive operation.
         """
-        return [parse_archive(PackageRef(a.hash), a.payload) for a in self._pb_archives()]
+        return [
+            parse_archive(PackageRef(a.hash), a.payload, self.sdk_version())
+            for a in self._pb_archives()
+        ]
 
     def package(self, package_id: PackageRef) -> Package:
         """
@@ -128,7 +131,7 @@ class DarFile:
         packages by package ID are needed.
         """
         payload = self.package_bytes(package_id)
-        return parse_archive(package_id, payload).package
+        return parse_archive(package_id, payload, self.sdk_version()).package
 
     def package_bytes(self, package_id: PackageRef) -> bytes:
         """

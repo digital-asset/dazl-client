@@ -2215,6 +2215,8 @@ class BuiltinFunction(_IntEnum):
     SUB_DECIMAL = 1
     MUL_DECIMAL = 2
     DIV_DECIMAL = 3
+    MOD_DECIMAL = 4
+    EXP_DECIMAL = 5
     ROUND_DECIMAL = 6
     ADD_NUMERIC = 107
     SUB_NUMERIC = 108
@@ -2481,22 +2483,22 @@ class DefTemplate:
 
     # Optional pre-condition that the template argument must satisfy.
     # When present, it has type `Bool` and the template parameter in scope.
-    precond: Expr
+    precond: Optional[Expr]
 
     # The signatories of the contract. They have type `List Party` and the
     # template parameter in scope.
-    signatories: Expr
+    signatories: Optional[Expr]
 
     # The agreement text associated with the contract. It has type `Text` and
     # the template parameter in scope.
-    agreement: Expr
+    agreement: Optional[Expr]
 
     # The choices available in the resulting contract.
     choices: Sequence[TemplateChoice]
 
     # The observers of the contract. They have type `List Party` and the
     # template parameter in scope.
-    observers: Expr
+    observers: Optional[Expr]
 
     location: Location
 
