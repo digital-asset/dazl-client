@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from dazl._gen_api import AuthenticatedClient
@@ -19,6 +20,10 @@ async def test_list_users_via_api(sandbox_v3: Any) -> None:
         base_url=sandbox_v3.url, token="test-token", timeout=timeout
     ) as client:
         response = await get_v2_users.asyncio(client=client)
+
+        for user in response.users:
+            assert user.id is not None
+            logging.info(f"User: {user.id} Party: {user.primary_party}")
 
         assert isinstance(response, ListUsersResponse)
         assert response.users is not None
