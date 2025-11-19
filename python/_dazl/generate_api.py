@@ -4,10 +4,10 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 import shutil
 import subprocess
 import sys
-from pathlib import Path
 
 logger = logging.getLogger("_dazl.generate_api")
 

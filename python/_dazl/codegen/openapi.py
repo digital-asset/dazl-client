@@ -86,9 +86,7 @@ def generate_operation_method(operation: Operation, schemas: Dict[str, Schema]) 
 
     params.append("timeout: Optional[float] = None")
 
-    success_response = next(
-        (r for r in operation.responses if r.status_code.startswith("2")), None
-    )
+    success_response = next((r for r in operation.responses if r.status_code.startswith("2")), None)
     return_type = "Any"
     if success_response and success_response.schema:
         return_type = python_type_from_schema(success_response.schema, schemas)

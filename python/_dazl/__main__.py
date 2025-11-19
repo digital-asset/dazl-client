@@ -26,9 +26,11 @@ _logging.initialize(args.log_level)
 
 if args.command == "update":
     from . import update
+
     update.update(Path(args.protopack))
 elif args.command == "generate-api":
     from . import generate_api
+
     generate_api.generate_api_clients(
         Path(args.openapi_dir),
         Path(__file__).parent.parent / "dazl" / "_gen_api",
