@@ -26,7 +26,7 @@ else:
 
 __all__ = ["DEFAULT_TIMEOUT", "SandboxLauncher"]
 
-DEFAULT_TIMEOUT = timedelta(seconds=30)
+DEFAULT_TIMEOUT = timedelta(seconds=90)
 
 
 class ExternalURLSource:
