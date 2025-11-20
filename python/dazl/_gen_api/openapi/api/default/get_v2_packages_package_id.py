@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from http import HTTPStatus
 from io import BytesIO
 from typing import Any

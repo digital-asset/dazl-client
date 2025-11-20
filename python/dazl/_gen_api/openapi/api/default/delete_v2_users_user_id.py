@@ -1,12 +1,12 @@
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.delete_v2_users_user_id_response_200 import (
-    DeleteV2UsersUserIdResponse200,
-)
+from ...models.delete_v2_users_user_id_response_200 import DeleteV2UsersUserIdResponse200
 from ...models.js_canton_error import JsCantonError
 from ...types import Response
 

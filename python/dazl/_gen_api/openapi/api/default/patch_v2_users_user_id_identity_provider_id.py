@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -5,12 +7,8 @@ import httpx
 
 from ...client import AuthenticatedClient, Client
 from ...models.js_canton_error import JsCantonError
-from ...models.update_user_identity_provider_id_request import (
-    UpdateUserIdentityProviderIdRequest,
-)
-from ...models.update_user_identity_provider_id_response import (
-    UpdateUserIdentityProviderIdResponse,
-)
+from ...models.update_user_identity_provider_id_request import UpdateUserIdentityProviderIdRequest
+from ...models.update_user_identity_provider_id_response import UpdateUserIdentityProviderIdResponse
 from ...types import Response
 
 

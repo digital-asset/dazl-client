@@ -3,8 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -127,9 +126,7 @@ class JsReassignment:
         synchronizer_id = d.pop("synchronizerId")
 
         _events = d.pop("events", UNSET)
-        events: list[JsReassignmentEventType0 | JsReassignmentEventType1] | Unset = (
-            UNSET
-        )
+        events: list[JsReassignmentEventType0 | JsReassignmentEventType1] | Unset = UNSET
         if _events is not UNSET:
             events = []
             for events_item_data in _events:

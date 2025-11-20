@@ -3,8 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar, cast
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -224,9 +223,7 @@ class CreatedEvent:
         if _interface_views is not UNSET:
             interface_views = []
             for interface_views_item_data in _interface_views:
-                interface_views_item = JsInterfaceView.from_dict(
-                    interface_views_item_data
-                )
+                interface_views_item = JsInterfaceView.from_dict(interface_views_item_data)
 
                 interface_views.append(interface_views_item)
 

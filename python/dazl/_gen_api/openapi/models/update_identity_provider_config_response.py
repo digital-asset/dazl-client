@@ -3,8 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -48,9 +47,7 @@ class UpdateIdentityProviderConfigResponse:
         if isinstance(_identity_provider_config, Unset):
             identity_provider_config = UNSET
         else:
-            identity_provider_config = IdentityProviderConfig.from_dict(
-                _identity_provider_config
-            )
+            identity_provider_config = IdentityProviderConfig.from_dict(_identity_provider_config)
 
         update_identity_provider_config_response = cls(
             identity_provider_config=identity_provider_config,

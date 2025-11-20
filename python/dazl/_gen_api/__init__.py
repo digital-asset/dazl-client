@@ -6,4 +6,3 @@ from __future__ import annotations
 from .openapi.client import AuthenticatedClient, Client
 
 __all__ = ["Client", "AuthenticatedClient"]
-

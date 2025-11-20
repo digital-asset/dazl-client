@@ -3,8 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.deduplication_duration import DeduplicationDuration
@@ -41,9 +40,7 @@ class DeduplicationPeriodType0:
         from ..models.deduplication_duration import DeduplicationDuration
 
         d = dict(src_dict)
-        deduplication_duration = DeduplicationDuration.from_dict(
-            d.pop("DeduplicationDuration")
-        )
+        deduplication_duration = DeduplicationDuration.from_dict(d.pop("DeduplicationDuration"))
 
         deduplication_period_type_0 = cls(
             deduplication_duration=deduplication_duration,

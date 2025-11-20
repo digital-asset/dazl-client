@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import datetime
 from http import HTTPStatus
 from typing import Any
@@ -5,9 +7,7 @@ from typing import Any
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.get_preferred_package_version_response import (
-    GetPreferredPackageVersionResponse,
-)
+from ...models.get_preferred_package_version_response import GetPreferredPackageVersionResponse
 from ...models.js_canton_error import JsCantonError
 from ...types import UNSET, Response, Unset
 

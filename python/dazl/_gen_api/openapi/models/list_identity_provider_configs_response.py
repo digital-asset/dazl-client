@@ -3,8 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -30,9 +29,7 @@ class ListIdentityProviderConfigsResponse:
         if not isinstance(self.identity_provider_configs, Unset):
             identity_provider_configs = []
             for identity_provider_configs_item_data in self.identity_provider_configs:
-                identity_provider_configs_item = (
-                    identity_provider_configs_item_data.to_dict()
-                )
+                identity_provider_configs_item = identity_provider_configs_item_data.to_dict()
                 identity_provider_configs.append(identity_provider_configs_item)
 
         field_dict: dict[str, Any] = {}

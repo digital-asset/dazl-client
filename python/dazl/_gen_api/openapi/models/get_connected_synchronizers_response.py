@@ -3,8 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -30,9 +29,7 @@ class GetConnectedSynchronizersResponse:
         if not isinstance(self.connected_synchronizers, Unset):
             connected_synchronizers = []
             for connected_synchronizers_item_data in self.connected_synchronizers:
-                connected_synchronizers_item = (
-                    connected_synchronizers_item_data.to_dict()
-                )
+                connected_synchronizers_item = connected_synchronizers_item_data.to_dict()
                 connected_synchronizers.append(connected_synchronizers_item)
 
         field_dict: dict[str, Any] = {}

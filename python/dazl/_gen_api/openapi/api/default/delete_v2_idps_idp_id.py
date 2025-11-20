@@ -1,12 +1,12 @@
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.delete_identity_provider_config_response import (
-    DeleteIdentityProviderConfigResponse,
-)
+from ...models.delete_identity_provider_config_response import DeleteIdentityProviderConfigResponse
 from ...models.js_canton_error import JsCantonError
 from ...types import Response
 

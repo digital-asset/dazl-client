@@ -3,8 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -47,12 +46,8 @@ class GetPreferredPackagesRequest:
         package_vetting_requirements: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.package_vetting_requirements, Unset):
             package_vetting_requirements = []
-            for (
-                package_vetting_requirements_item_data
-            ) in self.package_vetting_requirements:
-                package_vetting_requirements_item = (
-                    package_vetting_requirements_item_data.to_dict()
-                )
+            for package_vetting_requirements_item_data in self.package_vetting_requirements:
+                package_vetting_requirements_item = package_vetting_requirements_item_data.to_dict()
                 package_vetting_requirements.append(package_vetting_requirements_item)
 
         vetting_valid_at = self.vetting_valid_at

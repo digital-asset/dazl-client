@@ -3,8 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.exercise_by_key_command import ExerciseByKeyCommand
@@ -41,9 +40,7 @@ class CommandType2:
         from ..models.exercise_by_key_command import ExerciseByKeyCommand
 
         d = dict(src_dict)
-        exercise_by_key_command = ExerciseByKeyCommand.from_dict(
-            d.pop("ExerciseByKeyCommand")
-        )
+        exercise_by_key_command = ExerciseByKeyCommand.from_dict(d.pop("ExerciseByKeyCommand"))
 
         command_type_2 = cls(
             exercise_by_key_command=exercise_by_key_command,
