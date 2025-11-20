@@ -52,7 +52,8 @@ class ProtobufParserFactory:
 
         version = SdkVersion.parse(sdk_version)
         if version is None:
-            raise UnsupportedVersionError(f"Unsupported DAML-LF version: {sdk_version}")
+            # Default to DAML-LF 1.17 (SDK 2.10) for Canton 2.x compatibility
+            return ProtobufParser117(package_id)
 
         if version.major == 1 or version.major == 0 or version.major == 2:
             return ProtobufParser117(package_id)
