@@ -54,16 +54,18 @@ class TestProtobufParserFactory:
         assert "21" in parser.__class__.__name__
 
     def test_unsupported_version_invalid(self):
-        """Factory raises error for invalid version string."""
-        with pytest.raises(UnsupportedVersionError) as exc_info:
-            ProtobufParserFactory.create_parser(PackageRef("test-pkg"), "invalid")
+        """Factory returns default parser (117) for invalid version string."""
+        parser = ProtobufParserFactory.create_parser(PackageRef("test-pkg"), "invalid")
 
-        assert "Unsupported DAML-LF version" in str(exc_info.value)
+        assert isinstance(parser, ProtobufParserBase)
+        assert "117" in parser.__class__.__name__
 
     def test_unsupported_version_none(self):
-        """Factory raises error for None version."""
-        with pytest.raises(UnsupportedVersionError):
-            ProtobufParserFactory.create_parser(PackageRef("test-pkg"), None)
+        """Factory returns default parser (117) for None version."""
+        parser = ProtobufParserFactory.create_parser(PackageRef("test-pkg"), None)
+
+        assert isinstance(parser, ProtobufParserBase)
+        assert "117" in parser.__class__.__name__
 
     def test_parser_initialization(self):
         """Created parsers are properly initialized."""
