@@ -9,9 +9,47 @@ import shutil
 import subprocess
 import sys
 
+from .codegen.python_header import HEADER
+
 logger = logging.getLogger("_dazl.generate_api")
 
 __all__ = ["generate_api_clients"]
+
+
+def _add_copyright_headers(directory: Path) -> None:
+    for py_file in directory.rglob("*.py"):
+        content = py_file.read_text()
+        if not content.startswith("# Copyright"):
+            py_file.write_text(HEADER + content)
+            logger.debug(f"Added copyright header to {py_file}")
+
+
+def _format_generated_code(directory: Path) -> None:
+    venv_bin = Path(sys.executable).parent
+    isort_exe = venv_bin / "isort"
+    black_exe = venv_bin / "black"
+
+    try:
+        subprocess.run(
+            [str(isort_exe), str(directory)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        logger.debug("Successfully ran isort")
+    except subprocess.CalledProcessError as e:
+        logger.warning(f"isort failed: {e.stderr}")
+
+    try:
+        subprocess.run(
+            [str(black_exe), str(directory)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        logger.debug("Successfully ran black")
+    except subprocess.CalledProcessError as e:
+        logger.warning(f"black failed: {e.stderr}")
 
 
 def generate_api_clients(openapi_specs_dir: Path, output_dir: Path) -> None:
@@ -52,6 +90,12 @@ def generate_api_clients(openapi_specs_dir: Path, output_dir: Path) -> None:
             text=True,
         )
         logger.info("Successfully generated Ledger API client")
+
+        _add_copyright_headers(client_output_dir)
+        logger.info("Added copyright headers to generated files")
+
+        _format_generated_code(output_dir)
+        logger.info("Formatted generated files")
     except subprocess.CalledProcessError as e:
         logger.error(f"Failed to generate client: {e.stderr}")
         return
