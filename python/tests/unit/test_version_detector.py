@@ -33,7 +33,7 @@ class TestSdkVersion:
         assert version.major == 3
         assert version.minor == 4
         assert version.patch == 5
-    
+
     def test_parse_version_three_parts_with_dash(self):
         """Parses three-part version correctly."""
         version = SdkVersion.parse("3.4.2-dev.jjdks93.dd")

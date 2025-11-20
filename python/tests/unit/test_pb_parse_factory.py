@@ -35,10 +35,12 @@ class TestProtobufParserFactory:
         assert parser.current_package == "test-pkg"
         # Check it's the 21 parser by class name
         assert "21" in parser.__class__.__name__
-    
+
     def test_create_parser_version_3_x_dev(self):
         """Factory creates Parser21 for version 3.x.-dev.7773282.33"""
-        parser = ProtobufParserFactory.create_parser(PackageRef("test-pkg"), "3.4.0-dev.3332dfds21.dd")
+        parser = ProtobufParserFactory.create_parser(
+            PackageRef("test-pkg"), "3.4.0-dev.3332dfds21.dd"
+        )
 
         assert isinstance(parser, ProtobufParserBase)
         assert parser.current_package == "test-pkg"
