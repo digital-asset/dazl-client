@@ -14,13 +14,9 @@ from dazl._gen_api.openapi.api.default import (
     post_v2_commands_submit_and_wait,
     post_v2_commands_submit_and_wait_for_transaction_tree,
 )
-from dazl._gen_api.openapi.models.completion_stream_request import (
-    CompletionStreamRequest,
-)
+from dazl._gen_api.openapi.models.completion_stream_request import CompletionStreamRequest
 from dazl._gen_api.openapi.models.js_commands import JsCommands
-from dazl._gen_api.openapi.models.list_known_parties_response import (
-    ListKnownPartiesResponse,
-)
+from dazl._gen_api.openapi.models.list_known_parties_response import ListKnownPartiesResponse
 import httpx
 import pytest
 
@@ -76,9 +72,7 @@ async def test_submit_command_async_via_api(sandbox_v3: Any) -> None:
                     commands=[],
                 )
 
-                response = await post_v2_commands_async_submit.asyncio(
-                    client=client, body=commands
-                )
+                response = await post_v2_commands_async_submit.asyncio(client=client, body=commands)
 
                 logging.info(f"Async submit response received")
             else:

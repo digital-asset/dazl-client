@@ -97,19 +97,12 @@ async def test_get_user_rights_via_api(sandbox_v3: Any) -> None:
         assert len(users_response.users) > 0
         user_id = users_response.users[0].id
 
-        try:
-            response = await get_v2_users_user_id_rights.asyncio(
-                client=client, user_id=user_id
-            )
-            assert response is not None
-            logging.info(f"User rights for {user_id}: {response}")
-        except KeyError as e:
-            response_detailed = await get_v2_users_user_id_rights.asyncio_detailed(
-                client=client, user_id=user_id
-            )
-            assert response_detailed.status_code == 200
-            assert response_detailed.content is not None
-            logging.info(f"User rights for {user_id}: {response_detailed.content.decode()}")
+        httpx_client = client.get_async_httpx_client()
+        response = await httpx_client.get(f"/v2/users/{user_id}/rights")
+
+        assert response.status_code == 200
+        assert response.content is not None
+        logging.info(f"User rights for {user_id}: {response.text}")
 
 
 @pytest.mark.asyncio

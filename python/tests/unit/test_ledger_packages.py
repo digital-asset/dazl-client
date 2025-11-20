@@ -19,13 +19,9 @@ from dazl._gen_api.openapi.api.default import (
 from dazl._gen_api.openapi.models.get_preferred_package_version_response import (
     GetPreferredPackageVersionResponse,
 )
-from dazl._gen_api.openapi.models.get_preferred_packages_request import (
-    GetPreferredPackagesRequest,
-)
+from dazl._gen_api.openapi.models.get_preferred_packages_request import GetPreferredPackagesRequest
 from dazl._gen_api.openapi.models.list_packages_response import ListPackagesResponse
-from dazl._gen_api.openapi.models.list_vetted_packages_request import (
-    ListVettedPackagesRequest,
-)
+from dazl._gen_api.openapi.models.list_vetted_packages_request import ListVettedPackagesRequest
 import httpx
 import pytest
 
