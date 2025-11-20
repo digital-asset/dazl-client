@@ -159,7 +159,11 @@ class PackageLoader:
         return package
 
     async def _load(
-        self, package_id: PackageRef, *, token: Optional[TokenOrTokenProvider] = None
+        self,
+        package_id: PackageRef,
+        *,
+        token: Optional[TokenOrTokenProvider] = None,
+        sdk_version: Optional[str] = None,
     ) -> Package:
         LOG.info("Loading package: %s", package_id)
 
@@ -176,7 +180,7 @@ class PackageLoader:
         LOG.info("Loaded for package: %s, %d bytes", package_id, len(archive_bytes))
 
         archive = await loop.run_in_executor(
-            self._executor, lambda: parse_archive(package_id, archive_bytes)
+            self._executor, lambda: parse_archive(package_id, archive_bytes, sdk_version)
         )
         self._package_lookup.add_archive(archive)
         return archive.package

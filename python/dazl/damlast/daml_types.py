@@ -38,6 +38,7 @@ __all__ = [
     "Any",
     "TypeRep",
     "Map",
+    "BigNumeric",
     # Type.Struct
     "struct",
     # Type.ForAll (intentionally omitted)
@@ -207,6 +208,10 @@ def Map(k: Type, v: Type) -> Type:
     Construct a DAML :class:`Type` that is equivalent to ``Map k v``.
     """
     return _prim_type(PrimType.GENMAP, k, v)
+
+
+# DAML's arbitrary-precision numeric type (``BigNumeric``).
+BigNumeric = _prim_type(PrimType.BIGNUMERIC)
 
 
 # endregion

@@ -83,24 +83,30 @@ def wait_for_process_port(
             # if that port is open
             if participant_admin_port is not None and is_port_alive(participant_admin_port):
                 logging.debug("Waiting for the participant to report itself as active...")
-                with ExitStack() as stack:
-                    if participant_admin_cert_file is not None:
-                        credentials = ssl_channel_credentials(
-                            root_certificates=Path(participant_admin_cert_file).read_bytes()
-                        )
-                        channel = stack.enter_context(
-                            secure_channel(f"localhost:{participant_admin_port}", credentials)
-                        )
-                    else:
-                        channel = stack.enter_context(
-                            insecure_channel(f"localhost:{participant_admin_port}")
-                        )
-                    status_service = StatusServiceStub(channel)
-                    response = status_service.Status(Empty())
-                    alive = response.success.active
+                try:
+                    with ExitStack() as stack:
+                        if participant_admin_cert_file is not None:
+                            credentials = ssl_channel_credentials(
+                                root_certificates=Path(participant_admin_cert_file).read_bytes()
+                            )
+                            channel = stack.enter_context(
+                                secure_channel(f"localhost:{participant_admin_port}", credentials)
+                            )
+                        else:
+                            channel = stack.enter_context(
+                                insecure_channel(f"localhost:{participant_admin_port}")
+                            )
+                        status_service = StatusServiceStub(channel)
+                        response = status_service.Status(Empty(), timeout=5.0)
+                        alive = response.success.active
+                except Exception as ex:
+                    logging.debug("Participant not yet active: %s", ex)
+                    alive = False
 
                 if not alive:
                     time.sleep(0.5)
+        else:
+            time.sleep(0.5)
 
     if not alive:
         return_code = process.returncode

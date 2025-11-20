@@ -26,3 +26,5 @@ sandbox.log
 target
 *#
 *~
+.qoder
+log/*
