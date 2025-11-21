@@ -1,9 +1,14 @@
+# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# fmt: off
+# isort: skip_file
 from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define, field as _attrs_field
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -113,14 +118,18 @@ class ListVettedPackagesRequest:
         if isinstance(_package_metadata_filter, Unset):
             package_metadata_filter = UNSET
         else:
-            package_metadata_filter = PackageMetadataFilter.from_dict(_package_metadata_filter)
+            package_metadata_filter = PackageMetadataFilter.from_dict(
+                _package_metadata_filter
+            )
 
         _topology_state_filter = d.pop("topologyStateFilter", UNSET)
         topology_state_filter: TopologyStateFilter | Unset
         if isinstance(_topology_state_filter, Unset):
             topology_state_filter = UNSET
         else:
-            topology_state_filter = TopologyStateFilter.from_dict(_topology_state_filter)
+            topology_state_filter = TopologyStateFilter.from_dict(
+                _topology_state_filter
+            )
 
         list_vetted_packages_request = cls(
             page_token=page_token,

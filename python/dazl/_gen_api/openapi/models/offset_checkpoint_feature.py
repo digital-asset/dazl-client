@@ -1,9 +1,14 @@
+# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# fmt: off
+# isort: skip_file
 from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define, field as _attrs_field
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -35,7 +40,9 @@ class OffsetCheckpointFeature:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if max_offset_checkpoint_emission_delay is not UNSET:
-            field_dict["maxOffsetCheckpointEmissionDelay"] = max_offset_checkpoint_emission_delay
+            field_dict["maxOffsetCheckpointEmissionDelay"] = (
+                max_offset_checkpoint_emission_delay
+            )
 
         return field_dict
 
@@ -44,7 +51,9 @@ class OffsetCheckpointFeature:
         from ..models.duration import Duration
 
         d = dict(src_dict)
-        _max_offset_checkpoint_emission_delay = d.pop("maxOffsetCheckpointEmissionDelay", UNSET)
+        _max_offset_checkpoint_emission_delay = d.pop(
+            "maxOffsetCheckpointEmissionDelay", UNSET
+        )
         max_offset_checkpoint_emission_delay: Duration | Unset
         if isinstance(_max_offset_checkpoint_emission_delay, Unset):
             max_offset_checkpoint_emission_delay = UNSET

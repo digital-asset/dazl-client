@@ -1,9 +1,14 @@
+# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# fmt: off
+# isort: skip_file
 from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define, field as _attrs_field
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -60,7 +65,9 @@ class AllocateExternalPartyRequest:
         if not isinstance(self.onboarding_transactions, Unset):
             onboarding_transactions = []
             for onboarding_transactions_item_data in self.onboarding_transactions:
-                onboarding_transactions_item = onboarding_transactions_item_data.to_dict()
+                onboarding_transactions_item = (
+                    onboarding_transactions_item_data.to_dict()
+                )
                 onboarding_transactions.append(onboarding_transactions_item)
 
         multi_hash_signatures: list[dict[str, Any]] | Unset = UNSET
@@ -111,7 +118,9 @@ class AllocateExternalPartyRequest:
         if _multi_hash_signatures is not UNSET:
             multi_hash_signatures = []
             for multi_hash_signatures_item_data in _multi_hash_signatures:
-                multi_hash_signatures_item = Signature.from_dict(multi_hash_signatures_item_data)
+                multi_hash_signatures_item = Signature.from_dict(
+                    multi_hash_signatures_item_data
+                )
 
                 multi_hash_signatures.append(multi_hash_signatures_item)
 

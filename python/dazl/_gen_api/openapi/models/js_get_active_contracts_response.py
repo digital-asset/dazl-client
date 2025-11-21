@@ -1,9 +1,14 @@
+# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# fmt: off
+# isort: skip_file
 from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define, field as _attrs_field
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.js_contract_entry_type_0 import JsContractEntryType0
@@ -35,7 +40,10 @@ class JsGetActiveContractsResponse:
 
     workflow_id: str
     contract_entry: (
-        JsContractEntryType0 | JsContractEntryType1 | JsContractEntryType2 | JsContractEntryType3
+        JsContractEntryType0
+        | JsContractEntryType1
+        | JsContractEntryType2
+        | JsContractEntryType3
     )
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -88,7 +96,9 @@ class JsGetActiveContractsResponse:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_js_contract_entry_type_0 = JsContractEntryType0.from_dict(data)
+                componentsschemas_js_contract_entry_type_0 = (
+                    JsContractEntryType0.from_dict(data)
+                )
 
                 return componentsschemas_js_contract_entry_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
@@ -96,7 +106,9 @@ class JsGetActiveContractsResponse:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_js_contract_entry_type_1 = JsContractEntryType1.from_dict(data)
+                componentsschemas_js_contract_entry_type_1 = (
+                    JsContractEntryType1.from_dict(data)
+                )
 
                 return componentsschemas_js_contract_entry_type_1
             except (TypeError, ValueError, AttributeError, KeyError):
@@ -104,14 +116,18 @@ class JsGetActiveContractsResponse:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_js_contract_entry_type_2 = JsContractEntryType2.from_dict(data)
+                componentsschemas_js_contract_entry_type_2 = (
+                    JsContractEntryType2.from_dict(data)
+                )
 
                 return componentsschemas_js_contract_entry_type_2
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
-            componentsschemas_js_contract_entry_type_3 = JsContractEntryType3.from_dict(data)
+            componentsschemas_js_contract_entry_type_3 = JsContractEntryType3.from_dict(
+                data
+            )
 
             return componentsschemas_js_contract_entry_type_3
 

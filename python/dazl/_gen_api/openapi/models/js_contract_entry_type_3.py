@@ -1,9 +1,14 @@
+# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# fmt: off
+# isort: skip_file
 from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define, field as _attrs_field
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.js_incomplete_unassigned import JsIncompleteUnassigned
@@ -40,7 +45,9 @@ class JsContractEntryType3:
         from ..models.js_incomplete_unassigned import JsIncompleteUnassigned
 
         d = dict(src_dict)
-        js_incomplete_unassigned = JsIncompleteUnassigned.from_dict(d.pop("JsIncompleteUnassigned"))
+        js_incomplete_unassigned = JsIncompleteUnassigned.from_dict(
+            d.pop("JsIncompleteUnassigned")
+        )
 
         js_contract_entry_type_3 = cls(
             js_incomplete_unassigned=js_incomplete_unassigned,

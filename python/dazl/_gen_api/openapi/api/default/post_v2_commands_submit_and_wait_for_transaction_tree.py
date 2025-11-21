@@ -1,5 +1,7 @@
-from __future__ import annotations
-
+# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# fmt: off
+# isort: skip_file
 from http import HTTPStatus
 from typing import Any
 
@@ -37,7 +39,9 @@ def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> JsCantonError | JsSubmitAndWaitForTransactionTreeResponse | str:
     if response.status_code == 200:
-        response_200 = JsSubmitAndWaitForTransactionTreeResponse.from_dict(response.json())
+        response_200 = JsSubmitAndWaitForTransactionTreeResponse.from_dict(
+            response.json()
+        )
 
         return response_200
 

@@ -1,9 +1,14 @@
+# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# fmt: off
+# isort: skip_file
 from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar, cast
 
-from attrs import define as _attrs_define, field as _attrs_field
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -75,7 +80,9 @@ class GenerateExternalPartyTopologyRequest:
         if public_key is not UNSET:
             field_dict["publicKey"] = public_key
         if other_confirming_participant_uids is not UNSET:
-            field_dict["otherConfirmingParticipantUids"] = other_confirming_participant_uids
+            field_dict["otherConfirmingParticipantUids"] = (
+                other_confirming_participant_uids
+            )
         if observing_participant_uids is not UNSET:
             field_dict["observingParticipantUids"] = observing_participant_uids
 
@@ -105,7 +112,9 @@ class GenerateExternalPartyTopologyRequest:
             list[str], d.pop("otherConfirmingParticipantUids", UNSET)
         )
 
-        observing_participant_uids = cast(list[str], d.pop("observingParticipantUids", UNSET))
+        observing_participant_uids = cast(
+            list[str], d.pop("observingParticipantUids", UNSET)
+        )
 
         generate_external_party_topology_request = cls(
             synchronizer=synchronizer,

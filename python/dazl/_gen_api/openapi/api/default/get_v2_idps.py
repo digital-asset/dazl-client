@@ -1,5 +1,7 @@
-from __future__ import annotations
-
+# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# fmt: off
+# isort: skip_file
 from http import HTTPStatus
 from typing import Any
 
@@ -7,7 +9,9 @@ import httpx
 
 from ...client import AuthenticatedClient, Client
 from ...models.js_canton_error import JsCantonError
-from ...models.list_identity_provider_configs_response import ListIdentityProviderConfigsResponse
+from ...models.list_identity_provider_configs_response import (
+    ListIdentityProviderConfigsResponse,
+)
 from ...types import Response
 
 
