@@ -19,20 +19,32 @@ import time
 from typing import Optional
 
 from .._gen.com.daml.daml_lf_1_17.daml_lf_pb2 import ArchivePayload
+from .._gen.com.daml.daml_lf_2_1 import daml_lf2_pb2
 from .daml_lf_1 import Archive, PackageRef
-from .pb_parse import ProtobufParser
+from .pb_parse import ProtobufParserFactory
 
 __all__ = ["parse_archive", "parse_archive_payload"]
 
 
-def parse_archive(package_id: PackageRef, archive_bytes: bytes) -> Archive:
+def parse_archive(
+    package_id: PackageRef, archive_bytes: bytes, sdk_version: Optional[str]
+) -> Archive:
     """
     Convert ``bytes`` into an :class:`Archive`.
     """
+
+    parser = ProtobufParserFactory.create_parser(package_id, sdk_version=sdk_version)
+
     archive_pb = parse_archive_payload(package_id, archive_bytes)
 
-    parser = ProtobufParser(package_id)
-    package = parser.parse_Package(archive_pb.daml_lf_1)
+    if archive_pb.HasField("daml_lf_1"):
+        package = parser.parse_Package(archive_pb.daml_lf_1)
+    elif archive_pb.HasField("daml_lf_2"):
+        package_pb = daml_lf2_pb2.Package()
+        package_pb.ParseFromString(archive_pb.daml_lf_2)
+        package = parser.parse_Package(package_pb)
+    else:
+        raise ValueError("Archive payload does not contain daml_lf_1 or daml_lf_2")
 
     return Archive(package_id, package)
 
