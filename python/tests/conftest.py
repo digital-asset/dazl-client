@@ -45,6 +45,18 @@ def get_installed_daml_versions() -> list[str]:
 INSTALLED_VERSIONS = get_installed_daml_versions()
 
 
+class SandboxV3Wrapper:
+    def __init__(self, sandbox: testing.SandboxLauncher):
+        self._sandbox = sandbox
+
+    @property
+    def url(self) -> str:
+        return self._sandbox.json_api_url or self._sandbox.url
+
+    def __getattr__(self, name: str):
+        return getattr(self._sandbox, name)
+
+
 @pytest.fixture(scope="session")
 def sandbox() -> Generator[testing.SandboxLauncher, None, None]:
     version = "2.10.2" if "2.10.2" in INSTALLED_VERSIONS else INSTALLED_VERSIONS[0]
@@ -62,13 +74,13 @@ def sandbox_v2_10() -> Generator[testing.SandboxLauncher, None, None]:
 
 
 @pytest.fixture(scope="session")
-def sandbox_v3() -> Generator[testing.SandboxLauncher, None, None]:
+def sandbox_v3() -> Generator[SandboxV3Wrapper, None, None]:
     v3_versions = [v for v in INSTALLED_VERSIONS if v.startswith("3.")]
     if not v3_versions:
         pytest.skip("Daml 3.x not installed")
     version = os.environ.get("DAML_V3_VERSION", v3_versions[0])
     with testing.sandbox(version=version) as sb:
-        yield sb
+        yield SandboxV3Wrapper(sb)
 
 
 @pytest.fixture(scope="session", params=["2.10", "3.x"])

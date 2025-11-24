@@ -79,6 +79,10 @@ class SandboxLauncher:
         self.log = logging.getLogger("sandbox")
         self._lock = threading.RLock()
         self._project_root = project_root
+
+        if version is None:
+            version = self._detect_daml_version()
+
         self._version = version
         self._protocol_version = protocol_version
         self._timeout = timeout
@@ -112,6 +116,25 @@ class SandboxLauncher:
             self._url_source = ExternalURLSource(url)
         else:
             self._url_source = LocalURLSource(find_free_port())
+
+    def _detect_daml_version(self) -> Optional[str]:
+        try:
+            result = subprocess.run(
+                ["daml", "version"],
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+            if result.returncode == 0:
+                for line in result.stdout.split("\n"):
+                    stripped = line.strip()
+                    if stripped and stripped[0].isdigit():
+                        version = stripped.split()[0]
+                        if "(default" in stripped:
+                            return version
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            pass
+        return None
 
     @property
     def public_cert(self) -> bytes:
@@ -152,16 +175,19 @@ class SandboxLauncher:
     def url(self) -> str:
         """
         Return a URL that can be used to connect to this running Sandbox.
-        For v3+, returns the JSON API URL; for v2, returns the gRPC URL.
+        This always returns the gRPC URL for compatibility with admin API calls.
+        For Canton 3.x JSON API, use json_api_url property instead.
         """
-        is_v3_or_later = self._version and (
-            self._version.startswith("3.") or self._version.startswith("4.")
-        )
-
-        if is_v3_or_later and hasattr(self, "_json_api_port") and self._json_api_port:
-            return f"http://localhost:{self._json_api_port}"
-
         return self._url_source.url
+
+    @property
+    def json_api_url(self) -> Optional[str]:
+        """
+        Return the JSON API URL for Canton 3.x+, or None for Canton 2.x.
+        """
+        if hasattr(self, "_json_api_port") and self._json_api_port:
+            return f"http://localhost:{self._json_api_port}"
+        return None
 
     def start(self) -> None:
         """
@@ -222,30 +248,19 @@ class SandboxLauncher:
             self._json_api_port = options.json_api_port
 
             self.log.info("Launching sandbox: %s", cmdline)
-            self.log.info("DAML_SDK_VERSION: %s", env.get("DAML_SDK_VERSION", "NOT SET"))
-            self.log.info("JAVA_HOME: %s", env.get("JAVA_HOME", "NOT SET"))
-            self.log.info("PATH: %s", env.get("PATH", "NOT SET")[:200])
-            self.log.info("CWD: %s", self._project_root)
 
             is_v3_or_later = self._version and (
                 self._version.startswith("3.") or self._version.startswith("4.")
             )
 
             if is_v3_or_later:
-                import tempfile
-
-                self._v3_stderr_log = tempfile.NamedTemporaryFile(
-                    mode="w", delete=False, suffix=".log"
-                )
-                self.log.info(f"Canton 3.x stderr: {self._v3_stderr_log.name}")
                 self._process = subprocess.Popen(
                     cmdline,
                     env=env,
                     cwd=self._project_root,
                     stdout=subprocess.DEVNULL,
-                    stderr=self._v3_stderr_log,
+                    stderr=subprocess.DEVNULL,
                 )
-                self.log.info("Sandbox process started with PID: %s", self._process.pid)
             else:
                 self._process = subprocess.Popen(
                     cmdline,

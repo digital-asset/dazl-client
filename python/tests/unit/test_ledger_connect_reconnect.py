@@ -38,7 +38,7 @@ async def test_deadline_does_not_abort_query_stream(sandbox: SandboxLauncher) ->
 
 @pytest.mark.asyncio
 async def test_reconnect_party_allocation() -> None:
-    sandbox = SandboxLauncher()
+    sandbox = SandboxLauncher(version="2.10.2")
     try:
         sandbox.start()
         async with connect(url=sandbox.url, admin=True) as conn:
@@ -46,21 +46,21 @@ async def test_reconnect_party_allocation() -> None:
 
             logging.info("Stopping our sandbox...")
             sandbox.stop()
-            await sleep(5)
+            await sleep(2)
 
             # this is expected to fail, since our ledger is now down
             try:
                 logging.info(
                     "Trying to allocate a party in stopped sandbox (intentional failure)..."
                 )
-                await conn.allocate_party(timeout=ONE_MINUTE)
+                await conn.allocate_party(timeout=timedelta(seconds=5))
             except RpcError as ex:
                 assert ex.code() == StatusCode.UNAVAILABLE
                 logging.info("Got the expected error.")
 
             logging.info("Starting the sandbox up again...")
             sandbox.start()
-            await sleep(5)
+            await sleep(2)
 
             # a call using a brand new connection will definitely work...
             # async with connect(url=sandbox.url, admin=True) as conn2:
@@ -93,20 +93,22 @@ async def test_reconnect_party_allocation() -> None:
 
 @pytest.mark.asyncio
 async def test_reconnect_query_stream() -> None:
-    sandbox = SandboxLauncher()
+    sandbox = SandboxLauncher(version="2.10.2")
     try:
         sandbox.start()
         async with connect(url=sandbox.url, admin=True) as conn:
             party_info = await conn.allocate_party()
 
-            async with conn.stream_many(read_as=party_info.party, timeout=ONE_MINUTE) as stream:
+            async with conn.stream_many(
+                read_as=party_info.party, timeout=timedelta(seconds=10)
+            ) as stream:
                 task = create_task(stream.run())
 
             logging.info("Stopping our sandbox...")
             sandbox.stop()
 
             logging.info("Waiting a bit for things to really be gone.")
-            await sleep(5)
+            await sleep(2)
 
             did_die = False
             try:

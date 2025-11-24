@@ -16,20 +16,31 @@ def load_dars() -> Mapping[str, Path]:
     """
     Ensure that the DARs in the test project are all pre-cooked.
     """
-    dar_dir = DAZL_ROOT / "_fixtures/src"  # type: Path
-
+    import os
     import subprocess
 
-    code = subprocess.run(["make", "dars"], cwd=str(DAZL_ROOT))
-    if code.returncode != 0:
-        raise RuntimeError("Could not build test dars!")
+    dar_dir = DAZL_ROOT / "_fixtures/src"  # type: Path
 
     dars = dict[str, Path]()
     for d in dar_dir.iterdir():
         if d.is_dir():
-            with (d / "daml.yaml").open() as f:
+            daml_yaml_path = d / "daml.yaml"
+            if not daml_yaml_path.exists():
+                continue
+            with daml_yaml_path.open() as f:
                 daml_yaml = yaml.safe_load(f)
-            dars[d.name] = d / f".daml/dist/{daml_yaml['name']}-{daml_yaml['version']}.dar"
+            dar_path = d / f".daml/dist/{daml_yaml['name']}-{daml_yaml['version']}.dar"
+            dars[d.name] = dar_path
+
+    if any(not dar_path.exists() for dar_path in dars.values()):
+        env = os.environ.copy()
+        daml_bin = os.path.expanduser("~/.daml/bin")
+        if daml_bin not in env.get("PATH", ""):
+            env["PATH"] = f"{daml_bin}:{env.get('PATH', '')}"
+
+        code = subprocess.run(["make", "dars"], cwd=str(DAZL_ROOT), env=env)
+        if code.returncode != 0:
+            raise RuntimeError("Could not build test dars!")
 
     return dars
 
