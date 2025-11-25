@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from .go import go_files
-from .openapi import openapi_files
 from .python import python_files
 
-__all__ = ["python_files", "go_files", "openapi_files"]
+__all__ = ["python_files", "go_files"]
