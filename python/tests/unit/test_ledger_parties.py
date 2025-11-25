@@ -6,8 +6,16 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from dazl._gen_api import AuthenticatedClient
-from dazl._gen_api.openapi.api.default import (
+from dazl.api import (
+    AllocateExternalPartyRequest,
+    AllocateExternalPartyResponse,
+    AllocatePartyRequest,
+    AllocatePartyResponse,
+    AuthenticatedClient,
+    GenerateExternalPartyTopologyRequest,
+    ListKnownPartiesResponse,
+    PartyDetails,
+    UpdatePartyDetailsRequest,
     get_v2_parties,
     get_v2_parties_participant_id,
     get_v2_parties_party,
@@ -16,19 +24,6 @@ from dazl._gen_api.openapi.api.default import (
     post_v2_parties_external_allocate,
     post_v2_parties_external_generate_topology,
 )
-from dazl._gen_api.openapi.models.allocate_external_party_request import (
-    AllocateExternalPartyRequest,
-)
-from dazl._gen_api.openapi.models.allocate_external_party_response import (
-    AllocateExternalPartyResponse,
-)
-from dazl._gen_api.openapi.models.allocate_party_request import AllocatePartyRequest
-from dazl._gen_api.openapi.models.allocate_party_response import AllocatePartyResponse
-from dazl._gen_api.openapi.models.generate_external_party_topology_request import (
-    GenerateExternalPartyTopologyRequest,
-)
-from dazl._gen_api.openapi.models.list_known_parties_response import ListKnownPartiesResponse
-from dazl._gen_api.openapi.models.update_party_details_request import UpdatePartyDetailsRequest
 import httpx
 import pytest
 

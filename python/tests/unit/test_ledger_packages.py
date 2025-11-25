@@ -6,8 +6,12 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from dazl._gen_api import AuthenticatedClient
-from dazl._gen_api.openapi.api.default import (
+from dazl.api import (
+    AuthenticatedClient,
+    GetPreferredPackagesRequest,
+    GetPreferredPackageVersionResponse,
+    ListPackagesResponse,
+    ListVettedPackagesRequest,
     get_v2_interactive_submission_preferred_package_version,
     get_v2_package_vetting,
     get_v2_packages,
@@ -16,12 +20,6 @@ from dazl._gen_api.openapi.api.default import (
     post_v2_interactive_submission_preferred_packages,
     post_v2_packages,
 )
-from dazl._gen_api.openapi.models.get_preferred_package_version_response import (
-    GetPreferredPackageVersionResponse,
-)
-from dazl._gen_api.openapi.models.get_preferred_packages_request import GetPreferredPackagesRequest
-from dazl._gen_api.openapi.models.list_packages_response import ListPackagesResponse
-from dazl._gen_api.openapi.models.list_vetted_packages_request import ListVettedPackagesRequest
 import httpx
 import pytest
 

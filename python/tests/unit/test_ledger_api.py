@@ -6,8 +6,13 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from dazl._gen_api import AuthenticatedClient
-from dazl._gen_api.openapi.api.default import (
+from dazl.api import (
+    AuthenticatedClient,
+    GetUserResponse,
+    ListUsersResponse,
+    UpdateUserIdentityProviderIdRequest,
+    UpdateUserRequest,
+    User,
     delete_v2_users_user_id,
     get_v2_authenticated_user,
     get_v2_users,
@@ -16,13 +21,6 @@ from dazl._gen_api.openapi.api.default import (
     patch_v2_users_user_id,
     patch_v2_users_user_id_identity_provider_id,
 )
-from dazl._gen_api.openapi.models.get_user_response import GetUserResponse
-from dazl._gen_api.openapi.models.list_users_response import ListUsersResponse
-from dazl._gen_api.openapi.models.update_user_identity_provider_id_request import (
-    UpdateUserIdentityProviderIdRequest,
-)
-from dazl._gen_api.openapi.models.update_user_request import UpdateUserRequest
-from dazl._gen_api.openapi.models.user import User
 import httpx
 import pytest
 

@@ -6,17 +6,17 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from dazl._gen_api import AuthenticatedClient
-from dazl._gen_api.openapi.api.default import (
+from dazl.api import (
+    AuthenticatedClient,
+    CompletionStreamRequest,
+    JsCommands,
+    ListKnownPartiesResponse,
     get_v2_parties,
     post_v2_commands_async_submit,
     post_v2_commands_completions,
     post_v2_commands_submit_and_wait,
     post_v2_commands_submit_and_wait_for_transaction_tree,
 )
-from dazl._gen_api.openapi.models.completion_stream_request import CompletionStreamRequest
-from dazl._gen_api.openapi.models.js_commands import JsCommands
-from dazl._gen_api.openapi.models.list_known_parties_response import ListKnownPartiesResponse
 import httpx
 import pytest
 

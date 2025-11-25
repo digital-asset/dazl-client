@@ -6,8 +6,8 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from dazl._gen_api import AuthenticatedClient
-from dazl._gen_api.openapi.api.default import (
+from dazl.api import (
+    AuthenticatedClient,
     get_v2_state_connected_synchronizers,
     get_v2_state_latest_pruned_offsets,
     get_v2_state_ledger_end,
