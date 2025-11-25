@@ -24,6 +24,146 @@ def _add_copyright_headers(directory: Path) -> None:
             logger.debug(f"Added copyright header to {py_file}")
 
 
+def _fix_missing_response_models(directory: Path) -> None:
+    openapi_dir = directory / "openapi"
+    models_dir = openapi_dir / "models"
+    api_dir = openapi_dir / "api" / "default"
+
+    response_file = models_dir / "list_vetted_packages_response.py"
+    response_content = (
+        HEADER
+        + '''from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar
+
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+
+if TYPE_CHECKING:
+    from ..models.vetted_package import VettedPackage
+
+
+T = TypeVar("T", bound="ListVettedPackagesResponse")
+
+
+@_attrs_define
+class ListVettedPackagesResponse:
+    """
+    Attributes:
+        next_page_token (str): Pagination token to fetch the next page.
+        vetted_packages (list[VettedPackage]): List of vetted packages.
+    """
+
+    next_page_token: str
+    vetted_packages: list[VettedPackage]
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        next_page_token = self.next_page_token
+
+        vetted_packages = []
+        for vetted_packages_item_data in self.vetted_packages:
+            vetted_packages_item = vetted_packages_item_data.to_dict()
+            vetted_packages.append(vetted_packages_item)
+
+        field_dict: dict[str, Any] = {}
+        field_dict.update(self.additional_properties)
+        field_dict.update(
+            {
+                "nextPageToken": next_page_token,
+                "vettedPackages": vetted_packages,
+            }
+        )
+
+        return field_dict
+
+    @classmethod
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.vetted_package import VettedPackage
+
+        d = dict(src_dict)
+        next_page_token = d.pop("nextPageToken", "")
+
+        vetted_packages = []
+        _vetted_packages = d.pop("vettedPackages", [])
+        for vetted_packages_item_data in _vetted_packages:
+            vetted_packages_item = VettedPackage.from_dict(vetted_packages_item_data)
+            vetted_packages.append(vetted_packages_item)
+
+        list_vetted_packages_response = cls(
+            next_page_token=next_page_token,
+            vetted_packages=vetted_packages,
+        )
+
+        list_vetted_packages_response.additional_properties = d
+        return list_vetted_packages_response
+
+    @property
+    def additional_keys(self) -> list[str]:
+        return list(self.additional_properties.keys())
+
+    def __getitem__(self, key: str) -> Any:
+        return self.additional_properties[key]
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        self.additional_properties[key] = value
+
+    def __delitem__(self, key: str) -> None:
+        del self.additional_properties[key]
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.additional_properties
+'''
+    )
+    response_file.write_text(response_content)
+    logger.debug(f"Created {response_file}")
+
+    api_file = api_dir / "get_v2_package_vetting.py"
+    if api_file.exists():
+        content = api_file.read_text()
+
+        content = content.replace(
+            "from ...models.list_vetted_packages_request import ListVettedPackagesRequest\nfrom ...types import Response",
+            "from ...models.list_vetted_packages_request import ListVettedPackagesRequest\nfrom ...models.list_vetted_packages_response import ListVettedPackagesResponse\nfrom ...types import Response",
+        )
+
+        content = content.replace(
+            "def _parse_response(\n    *, client: AuthenticatedClient | Client, response: httpx.Response\n) -> JsCantonError | str:\n    if response.status_code == 400:\n        response_400 = response.text\n        return response_400\n\n    response_default = JsCantonError.from_dict(response.json())\n\n    return response_default",
+            "def _parse_response(\n    *, client: AuthenticatedClient | Client, response: httpx.Response\n) -> ListVettedPackagesResponse | JsCantonError | str:\n    if response.status_code == 200:\n        response_200 = ListVettedPackagesResponse.from_dict(response.json())\n        return response_200\n\n    if response.status_code == 400:\n        response_400 = response.text\n        return response_400\n\n    response_default = JsCantonError.from_dict(response.json())\n\n    return response_default",
+        )
+
+        content = content.replace(
+            "Response[JsCantonError | str]",
+            "Response[ListVettedPackagesResponse | JsCantonError | str]",
+        )
+
+        content = content.replace(
+            ") -> JsCantonError | str | None:",
+            ") -> ListVettedPackagesResponse | JsCantonError | str | None:",
+        )
+
+        api_file.write_text(content)
+        logger.debug(f"Fixed {api_file}")
+
+    init_file = models_dir / "__init__.py"
+    if init_file.exists():
+        content = init_file.read_text()
+
+        content = content.replace(
+            "from .list_vetted_packages_request import ListVettedPackagesRequest\nfrom .map_int_field import MapIntField",
+            "from .list_vetted_packages_request import ListVettedPackagesRequest\nfrom .list_vetted_packages_response import ListVettedPackagesResponse\nfrom .map_int_field import MapIntField",
+        )
+
+        content = content.replace(
+            '    "ListVettedPackagesRequest",\n    "MapIntField",',
+            '    "ListVettedPackagesRequest",\n    "ListVettedPackagesResponse",\n    "MapIntField",',
+        )
+
+        init_file.write_text(content)
+        logger.debug(f"Updated {init_file}")
+
+
 def _format_generated_code(directory: Path) -> None:
     venv_bin = Path(sys.executable).parent
     isort_exe = venv_bin / "isort"
@@ -93,6 +233,9 @@ def generate_api_clients(openapi_specs_dir: Path, output_dir: Path) -> None:
 
         _add_copyright_headers(client_output_dir)
         logger.info("Added copyright headers to generated files")
+
+        _fix_missing_response_models(output_dir)
+        logger.info("Fixed missing response models")
 
         _format_generated_code(output_dir)
         logger.info("Formatted generated files")

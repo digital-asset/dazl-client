@@ -124,6 +124,7 @@ from .list_known_parties_response import ListKnownPartiesResponse
 from .list_packages_response import ListPackagesResponse
 from .list_users_response import ListUsersResponse
 from .list_vetted_packages_request import ListVettedPackagesRequest
+from .list_vetted_packages_response import ListVettedPackagesResponse
 from .map_int_field import MapIntField
 from .map_int_tree_event import MapIntTreeEvent
 from .map_string import MapString
@@ -284,6 +285,7 @@ __all__ = (
     "ListPackagesResponse",
     "ListUsersResponse",
     "ListVettedPackagesRequest",
+    "ListVettedPackagesResponse",
     "MapIntField",
     "MapIntTreeEvent",
     "MapString",

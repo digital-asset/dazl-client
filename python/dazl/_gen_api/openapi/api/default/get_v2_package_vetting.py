@@ -10,6 +10,7 @@ import httpx
 from ...client import AuthenticatedClient, Client
 from ...models.js_canton_error import JsCantonError
 from ...models.list_vetted_packages_request import ListVettedPackagesRequest
+from ...models.list_vetted_packages_response import ListVettedPackagesResponse
 from ...types import Response
 
 
@@ -34,7 +35,11 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> JsCantonError | str:
+) -> ListVettedPackagesResponse | JsCantonError | str:
+    if response.status_code == 200:
+        response_200 = ListVettedPackagesResponse.from_dict(response.json())
+        return response_200
+
     if response.status_code == 400:
         response_400 = response.text
         return response_400
@@ -46,7 +51,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[JsCantonError | str]:
+) -> Response[ListVettedPackagesResponse | JsCantonError | str]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -59,7 +64,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
-) -> Response[JsCantonError | str]:
+) -> Response[ListVettedPackagesResponse | JsCantonError | str]:
     """List vetted packages
 
     Args:
@@ -70,7 +75,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[JsCantonError | str]
+        Response[ListVettedPackagesResponse | JsCantonError | str]
     """
 
     kwargs = _get_kwargs(
@@ -88,7 +93,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
-) -> JsCantonError | str | None:
+) -> ListVettedPackagesResponse | JsCantonError | str | None:
     """List vetted packages
 
     Args:
@@ -99,7 +104,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        JsCantonError | str
+        ListVettedPackagesResponse | JsCantonError | str
     """
 
     return sync_detailed(
@@ -112,7 +117,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
-) -> Response[JsCantonError | str]:
+) -> Response[ListVettedPackagesResponse | JsCantonError | str]:
     """List vetted packages
 
     Args:
@@ -123,7 +128,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[JsCantonError | str]
+        Response[ListVettedPackagesResponse | JsCantonError | str]
     """
 
     kwargs = _get_kwargs(
@@ -139,7 +144,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
-) -> JsCantonError | str | None:
+) -> ListVettedPackagesResponse | JsCantonError | str | None:
     """List vetted packages
 
     Args:
@@ -150,7 +155,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        JsCantonError | str
+        ListVettedPackagesResponse | JsCantonError | str
     """
 
     return (
