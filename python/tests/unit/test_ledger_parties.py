@@ -81,6 +81,9 @@ async def test_get_parties_by_participant_id_via_api(sandbox_v3: Any) -> None:
 
 @pytest.mark.asyncio
 async def test_allocate_party_via_api(sandbox_v3: Any) -> None:
+    if not sandbox_v3.synchronizer_id:
+        pytest.skip("No connected synchronizers available")
+
     timeout = httpx.Timeout(10.0, connect=5.0)
     async with AuthenticatedClient(
         base_url=sandbox_v3.url, token="test-token", timeout=timeout
@@ -88,7 +91,7 @@ async def test_allocate_party_via_api(sandbox_v3: Any) -> None:
         allocate_request = AllocatePartyRequest(
             party_id_hint="test-party",
             identity_provider_id="",
-            synchronizer_id="",
+            synchronizer_id=sandbox_v3.synchronizer_id,
             user_id="",
         )
 

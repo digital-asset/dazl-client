@@ -3,9 +3,10 @@
 
 from __future__ import annotations
 
-from dazl import connect
 from dazl.testing import SandboxLauncher
 import pytest
+
+from dazl import connect
 
 from .dars import PostOffice
 

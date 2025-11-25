@@ -6,7 +6,6 @@ from __future__ import annotations
 from pathlib import Path
 import time
 
-from dazl import LOG
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef
 from dazl.damlast.lookup import MultiPackageLookup
@@ -14,6 +13,8 @@ from dazl.damlast.parse_factory.pb_parse_base import ProtobufParserBase
 from dazl.damlast.parse_factory.pb_v2 import ProtobufParser21
 from dazl.damlast.pb_parse import ProtobufParserFactory
 import pytest
+
+from dazl import LOG
 
 ARCHIVES = Path(__file__).absolute().parent.parent.parent.parent / "_fixtures" / "archives"
 ALL_KINDS_OF_V3_DAR = ARCHIVES / "3.3.0/all-kinds-of-1.0.0_lf.dar"

@@ -6,11 +6,12 @@ from __future__ import annotations
 from asyncio import gather
 from pathlib import Path
 
-import dazl
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.testing import SandboxLauncher
 import pytest
 from tests.unit import dars
+
+import dazl
 
 
 @pytest.mark.asyncio

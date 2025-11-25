@@ -6,9 +6,10 @@ from __future__ import annotations
 import logging
 import threading
 
-from dazl import Party, connect
 from dazl.ledger import CreateEvent
 from dazl.testing import SandboxLauncher
+
+from dazl import Party, connect
 
 from .dars import PostOffice
 

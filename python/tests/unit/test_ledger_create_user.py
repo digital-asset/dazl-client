@@ -3,10 +3,11 @@
 
 from __future__ import annotations
 
-from dazl import connect
 from dazl.ledger import ActAs, Admin, IdentityProviderAdmin, ReadAs, User
 from dazl.testing import SandboxLauncher
 import pytest
+
+from dazl import connect
 
 
 @pytest.mark.asyncio

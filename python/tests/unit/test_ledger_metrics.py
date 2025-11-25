@@ -6,9 +6,10 @@ from __future__ import annotations
 from datetime import datetime
 from uuid import uuid4
 
-from dazl import connect
 from dazl.testing import SandboxLauncher
 import pytest
+
+from dazl import connect
 
 from .dars import Simple
 

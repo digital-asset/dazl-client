@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from asyncio import sleep
 
-from dazl import connect, testing
 from dazl.ledger import ActAs, Admin, CreateEvent, User
 from dazl.ledger.auth import V1TokenNamespace
 from mypyc.irbuild.prepare import add_property_methods_for_attribute_if_needed
 import pytest
+
+from dazl import connect, testing
 
 from .dars import PostOffice
 
