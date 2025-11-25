@@ -223,10 +223,18 @@ class SandboxLauncher:
                 # multiple sandbox processes could be very confusing
                 raise RuntimeError("we somehow have a process without a URL")
 
+            temp_dir = None
+            is_v3_or_later = self._version and (
+                self._version.startswith("3.") or self._version.startswith("4.")
+            )
+
+            if self._use_auth or self._use_tls or is_v3_or_later:
+                temp_dir = Path(self._exit_stack.enter_context(tempfile.TemporaryDirectory()))
+
             if self._use_auth or self._use_tls:
+                assert temp_dir is not None
                 self._certificate = cert_gen(subject_alternative_name=["127.0.0.1", "localhost"])
 
-                temp_dir = Path(self._exit_stack.enter_context(tempfile.TemporaryDirectory()))
                 self._crt_file = temp_dir / "tmp.crt"
                 self._key_file = temp_dir / "tmp.key"
 
@@ -258,9 +266,11 @@ class SandboxLauncher:
                     cmdline,
                     env=env,
                     cwd=self._project_root,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    universal_newlines=True,
                 )
+                ProcessLogger(self._process, self.log).start()
             else:
                 self._process = subprocess.Popen(
                     cmdline,
@@ -415,8 +425,16 @@ class SandboxOptions:
             if not self.json_api_port:
                 object.__setattr__(self, "json_api_port", find_free_port())
 
+            sequencer_public_port = find_free_port()
+            sequencer_admin_port = find_free_port()
+            mediator_admin_port = find_free_port()
+
             cmdline.extend(["--admin-api-port", str(self.participant_admin_port)])
             cmdline.extend(["--json-api-port", str(self.json_api_port)])
+            cmdline.extend(["--sequencer-public-port", str(sequencer_public_port)])
+            cmdline.extend(["--sequencer-admin-port", str(sequencer_admin_port)])
+            cmdline.extend(["--mediator-admin-port", str(mediator_admin_port)])
+
             return cmdline
 
         domain_api_port = find_free_port()

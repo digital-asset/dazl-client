@@ -3,13 +3,17 @@
 
 from __future__ import annotations
 
+import asyncio
 from concurrent.futures.thread import ThreadPoolExecutor
+import logging
 import os
 import subprocess
 from typing import Any, Generator
 
-from dazl import testing
+import httpx
 import pytest
+
+from dazl import testing
 
 
 def get_installed_daml_versions() -> list[str]:
@@ -48,10 +52,56 @@ INSTALLED_VERSIONS = get_installed_daml_versions()
 class SandboxV3Wrapper:
     def __init__(self, sandbox: testing.SandboxLauncher):
         self._sandbox = sandbox
+        self._synchronizer_id: str | None = None
+        self._wait_for_synchronizers()
 
     @property
     def url(self) -> str:
         return self._sandbox.json_api_url or self._sandbox.url
+
+    @property
+    def synchronizer_id(self) -> str | None:
+        return self._synchronizer_id
+
+    def _wait_for_synchronizers(self) -> None:
+        async def _async_wait() -> str | None:
+            from dazl.api import AuthenticatedClient, get_v2_state_connected_synchronizers
+
+            timeout = httpx.Timeout(10.0, connect=5.0)
+            async with AuthenticatedClient(
+                base_url=self.url, token="test-token", timeout=timeout
+            ) as client:
+                max_retries = 30
+                for attempt in range(max_retries):
+                    try:
+                        sync_response = await get_v2_state_connected_synchronizers.asyncio(
+                            client=client
+                        )
+                        if sync_response and hasattr(sync_response, "connected_synchronizers"):
+                            from dazl._gen_api.openapi.types import UNSET
+
+                            if (
+                                sync_response.connected_synchronizers is not UNSET
+                                and sync_response.connected_synchronizers
+                            ):
+                                synchronizer_id = sync_response.connected_synchronizers[
+                                    0
+                                ].synchronizer_id
+                                logging.info(f"Found synchronizer: {synchronizer_id}")
+                                return synchronizer_id
+                    except Exception as e:
+                        logging.debug(
+                            f"Attempt {attempt + 1}/{max_retries} to get synchronizers failed: {e}"
+                        )
+                    if attempt < max_retries - 1:
+                        await asyncio.sleep(1)
+                return None
+
+        try:
+            self._synchronizer_id = asyncio.run(_async_wait())
+        except Exception as e:
+            logging.warning(f"Failed to wait for synchronizers: {e}")
+            self._synchronizer_id = None
 
     def __getattr__(self, name: str):
         return getattr(self._sandbox, name)
