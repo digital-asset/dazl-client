@@ -169,6 +169,31 @@ class ListVettedPackagesResponse:
         logger.debug(f"Updated {init_file}")
 
 
+def _fix_post_packages_multipart(directory: Path) -> None:
+    openapi_dir = directory / "openapi"
+    api_dir = openapi_dir / "api" / "default"
+    api_file = api_dir / "post_v2_packages.py"
+
+    if not api_file.exists():
+        logger.warning(f"File {api_file} not found, skipping multipart fix")
+        return
+
+    content = api_file.read_text()
+
+    old_get_kwargs = '''    _kwargs["content"] = body.payload
+
+    headers["Content-Type"] = "application/octet-stream"'''
+
+    new_get_kwargs = """    _kwargs["files"] = {"darFile": (body.file_name or "package.dar", body.payload, body.mime_type or "application/octet-stream")}"""
+
+    if old_get_kwargs in content:
+        content = content.replace(old_get_kwargs, new_get_kwargs)
+        api_file.write_text(content)
+        logger.debug(f"Fixed {api_file} to use multipart/form-data")
+    else:
+        logger.warning(f"Could not find expected content in {api_file}, multipart fix not applied")
+
+
 def _format_generated_code(directory: Path) -> None:
     venv_bin = Path(sys.executable).parent
     isort_exe = venv_bin / "isort"
@@ -241,6 +266,9 @@ def generate_api_clients(openapi_specs_dir: Path, output_dir: Path) -> None:
 
         _fix_missing_response_models(output_dir)
         logger.info("Fixed missing response models")
+
+        _fix_post_packages_multipart(output_dir)
+        logger.info("Fixed POST /v2/packages to use multipart/form-data")
 
         _format_generated_code(output_dir)
         logger.info("Formatted generated files")

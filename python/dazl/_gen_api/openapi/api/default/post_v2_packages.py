@@ -35,9 +35,7 @@ def _get_kwargs(
         "params": params,
     }
 
-    _kwargs["content"] = body.payload
-
-    headers["Content-Type"] = "application/octet-stream"
+    _kwargs["files"] = {"darFile": (body.file_name or "package.dar", body.payload, body.mime_type or "application/octet-stream")}
 
     _kwargs["headers"] = headers
     return _kwargs

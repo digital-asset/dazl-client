@@ -8,8 +8,7 @@ from typing import Any
 
 from dazl.api import (
     AuthenticatedClient,
-    GetPreferredPackagesRequest,
-    GetPreferredPackageVersionResponse,
+    File,
     ListPackagesResponse,
     ListVettedPackagesRequest,
     get_v2_interactive_submission_preferred_package_version,
@@ -17,7 +16,6 @@ from dazl.api import (
     get_v2_packages,
     get_v2_packages_package_id,
     get_v2_packages_package_id_status,
-    post_v2_interactive_submission_preferred_packages,
     post_v2_packages,
 )
 import httpx
@@ -122,6 +120,7 @@ async def test_get_preferred_package_version_via_api(sandbox_v3: Any) -> None:
             response = await get_v2_interactive_submission_preferred_package_version.asyncio(
                 client=client, package_name=package_name
             )
+            assert response is not None
 
             logging.info(f"Preferred package version response received")
         else:
@@ -130,14 +129,20 @@ async def test_get_preferred_package_version_via_api(sandbox_v3: Any) -> None:
 
 @pytest.mark.asyncio
 async def test_upload_dar_package_via_api(sandbox_v3: Any) -> None:
+    from io import BytesIO
+
     timeout = httpx.Timeout(10.0, connect=5.0)
     async with AuthenticatedClient(
         base_url=sandbox_v3.url, token="test-token", timeout=timeout
     ) as client:
-        httpx_client = client.get_async_httpx_client()
-        response = await httpx_client.post(
-            "/v2/packages",
-            files={"darFile": ("test.dar", b"fake-dar-content", "application/octet-stream")},
+        dar_content = BytesIO(b"fake-dar-content")
+        dar_file = File(
+            payload=dar_content,
+            file_name="test.dar",
+            mime_type="application/octet-stream",
         )
 
-        logging.info(f"Upload DAR response: {response.status_code} - {response.text}")
+        response = await post_v2_packages.asyncio(client=client, body=dar_file)
+        assert response is not None
+
+        logging.info(f"Upload DAR response: {response}")

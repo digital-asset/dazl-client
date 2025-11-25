@@ -59,10 +59,12 @@ from .._gen_api.openapi.models import (
     UpdateUserRequest,
     User,
 )
+from .._gen_api.openapi.types import File
 
 __all__ = [
     "AuthenticatedClient",
     "Client",
+    "File",
     "delete_v2_users_user_id",
     "get_v2_authenticated_user",
     "get_v2_interactive_submission_preferred_package_version",
