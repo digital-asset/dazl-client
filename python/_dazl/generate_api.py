@@ -143,6 +143,11 @@ class ListVettedPackagesResponse:
             ") -> ListVettedPackagesResponse | JsCantonError | str | None:",
         )
 
+        content = content.replace(
+            "    Returns:\n        JsCantonError | str",
+            "    Returns:\n        ListVettedPackagesResponse | JsCantonError | str",
+        )
+
         api_file.write_text(content)
         logger.debug(f"Fixed {api_file}")
 
