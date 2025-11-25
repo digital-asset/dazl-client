@@ -14,7 +14,7 @@ from __future__ import annotations
 #  * https://github.com/digital-asset/daml/blob/main/ledger-service/http-json/src/main/scala/com/digitalasset/http/CommandService.scala
 from collections.abc import Mapping as _Mapping
 import sys
-from typing import Any, Collection, Optional, Sequence
+from typing import Any, Optional, Sequence
 
 from google.protobuf.json_format import MessageToDict
 
@@ -30,8 +30,7 @@ from ...damlast.daml_lf_1 import (
     TypeConName,
 )
 from ...damlast.daml_types import ContractId as ContractIdType, con
-from ...damlast.errors import NameNotFoundError
-from ...damlast.lookup import STAR, LookupResult, MultiPackageLookup
+from ...damlast.lookup import MultiPackageLookup
 from ...damlast.protocols import SymbolLookup, TemplateOrInterface
 from ...damlast.util import module_local_name, module_name, package_local_name, package_ref
 from ...ledger.aio import PackageService
@@ -113,10 +112,14 @@ class Codec:
                 return lapipb.Command(
                     create=await self.encode_create_command(template_id, payload, token=token)
                 )
-            case ExerciseCommand(contract_id, choice, argument):
+            case ExerciseCommand(contract_id, choice, argument, choice_interface_id):
                 return lapipb.Command(
                     exercise=await self.encode_exercise_command(
-                        contract_id, choice, argument, token=token
+                        contract_id,
+                        choice,
+                        argument,
+                        choice_interface_id=choice_interface_id,
+                        token=token,
                     )
                 )
             case ExerciseByKeyCommand(template_id, key, choice, argument):
@@ -164,13 +167,19 @@ class Codec:
         argument: Optional[Any] = None,
         /,
         *,
+        choice_interface_id: None | str | TypeConName = None,
         token: Optional[TokenOrTokenProvider] = None,
     ) -> lapipb.ExerciseCommand:
+        if choice_interface_id is not None:
+            contract_id = contract_id.to_interface(choice_interface_id)
+
         item_type, choice = await self._look_up_choice(
             contract_id.value_type, choice_name, token=token
         )
 
         cmd_pb = lapipb.ExerciseCommand(
+            # template_id here actually means either template_id or interface_id
+            # (see https://github.com/digital-asset/daml/issues/14747)
             template_id=self.encode_identifier(item_type),
             contract_id=contract_id.value,
             choice=choice_name,

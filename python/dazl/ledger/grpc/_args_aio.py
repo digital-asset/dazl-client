@@ -149,6 +149,8 @@ class CallContext(CallContextBase):
             read_as=self.read_as,
             act_as=self.act_as,
             user_id=self.user_id_or_application_name,
+            deduplication_duration=self.deduplication_duration,
+            deduplication_offset=self.deduplication_offset,
         )
 
     def grpc_stub(self, grpc_service: Callable[[aio.Channel], T], /) -> T:
