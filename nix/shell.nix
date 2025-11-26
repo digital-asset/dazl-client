@@ -36,7 +36,6 @@ pkgs.mkShell {
   GOPATH = "";
 
   PROTOPACK_DIR = "${pkgs.protopack.out}";
-  SPLICE_OPENAPI_DIR = "${pkgs.splice-openapi.out}";
 
   # required to get grpclib working for Python
   LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
