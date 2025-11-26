@@ -41,6 +41,8 @@ class WriteCallParameters(ReadCallParameters):
     command_id: Optional[str]
     act_as: Optional[Parties]
     application_name: Optional[str]
+    deduplication_duration: Optional[TimeDeltaLike]
+    deduplication_offset: Optional[str]
 
 
 class AnyCallParameters(TypedDict, total=False):
@@ -60,6 +62,8 @@ class AnyCallParameters(TypedDict, total=False):
     command_id: Optional[str]
     act_as: Optional[Parties]
     application_name: Optional[str]
+    deduplication_duration: Optional[TimeDeltaLike]
+    deduplication_offset: Optional[str]
 
 
 class CachedParameters(TypedDict):
@@ -204,6 +208,8 @@ class CallContext:
             act_as=act_as,
             ledger_id=ledger_id,
             user_id_or_application_name=user_id_or_application_name,
+            deduplication_duration=call.get("deduplication_duration"),
+            deduplication_offset=call.get("deduplication_offset"),
             token=token,
             timeout=timeout,
         )
@@ -216,6 +222,8 @@ class CallContext:
         act_as,
         ledger_id,
         user_id_or_application_name,
+        deduplication_duration: Optional[TimeDeltaLike],
+        deduplication_offset: Optional[str],
         token,
         timeout,
     ) -> None:
@@ -225,6 +233,8 @@ class CallContext:
         self.act_as = act_as
         self.ledger_id = ledger_id
         self.user_id_or_application_name = user_id_or_application_name
+        self.deduplication_duration = deduplication_duration
+        self.deduplication_offset = deduplication_offset
         self.token = token
         self.timeout = timeout
 
