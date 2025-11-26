@@ -88,6 +88,9 @@ class ExceptionTranslator:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        if isinstance(exc_val, GeneratorExit):
+            return None
+
         if exc_val is not None and self.conn.is_closed:
             raise ConnectionClosedError() from exc_val
 
@@ -95,6 +98,9 @@ class ExceptionTranslator:
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if isinstance(exc_val, GeneratorExit):
+            return None
+
         if exc_val is not None and self.conn.is_closed:
             raise ConnectionClosedError() from exc_val
 
