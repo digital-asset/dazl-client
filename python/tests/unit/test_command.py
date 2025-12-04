@@ -3,9 +3,8 @@
 
 from __future__ import annotations
 
-from dazl.damlast.lookup import parse_type_con_name
-
 from dazl import Command, ContractId, CreateCommand
+from dazl.damlast.lookup import parse_type_con_name
 
 template_id_str = "deadbeef:DeadBeef:DeadBeef"
 template_id = parse_type_con_name(template_id_str)

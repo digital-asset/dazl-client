@@ -3,13 +3,12 @@
 
 from __future__ import annotations
 
+from dazl import connect
 from dazl.ledger import CreateCommand, ExerciseCommand
 from dazl.ledger.aio import Connection
 from dazl.prim import ContractData, ContractId
 from dazl.testing import SandboxLauncher
 import pytest
-
-from dazl import connect
 
 from .dars import Pending
 

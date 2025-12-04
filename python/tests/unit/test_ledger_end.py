@@ -3,10 +3,9 @@
 
 from __future__ import annotations
 
+import dazl
 from dazl.testing import SandboxLauncher
 import pytest
-
-import dazl
 
 
 @pytest.mark.asyncio

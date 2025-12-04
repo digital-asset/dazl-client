@@ -6,11 +6,10 @@ from __future__ import annotations
 from pathlib import Path
 import time
 
+from dazl import LOG
 from dazl.damlast import DarFile
 from dazl.damlast.lookup import MultiPackageLookup
 import pytest
-
-from dazl import LOG
 
 from .dars import KitchenSink
 

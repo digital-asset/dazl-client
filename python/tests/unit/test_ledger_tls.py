@@ -5,9 +5,8 @@ from __future__ import annotations
 
 from asyncio import sleep
 
-import pytest
-
 from dazl import connect, testing
+import pytest
 
 
 @pytest.mark.asyncio

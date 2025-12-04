@@ -7,11 +7,10 @@ from asyncio import create_task, sleep
 from datetime import timedelta
 import logging
 
+from dazl import connect
 from dazl.testing import SandboxLauncher
 from grpc import RpcError, StatusCode
 import pytest
-
-from dazl import connect
 
 ONE_MINUTE = timedelta(minutes=1)
 

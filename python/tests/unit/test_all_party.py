@@ -6,12 +6,11 @@ from __future__ import annotations
 import logging
 from typing import Sequence
 
+from dazl import connect
 from dazl.ledger.aio import Connection
 from dazl.prim import ContractId
 from dazl.testing import SandboxLauncher
 import pytest
-
-from dazl import connect
 
 from .dars import AllParty as AllPartyDar
 

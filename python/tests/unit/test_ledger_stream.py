@@ -6,14 +6,13 @@ from __future__ import annotations
 from asyncio import ensure_future, gather, sleep
 from typing import Sequence
 
+import dazl
 from dazl.ledger import CreateEvent
 from dazl.ledger.aio import Connection
 from dazl.prim import ContractData, Party
 from dazl.testing import SandboxLauncher
 import pytest
 from tests.unit import dars
-
-import dazl
 
 TEMPLATE = "Simple:OperatorNotification"
 

@@ -5,10 +5,9 @@ from __future__ import annotations
 
 import logging
 
+from dazl import connect
 from dazl.testing import SandboxLauncher
 import pytest
-
-from dazl import connect
 
 
 @pytest.mark.asyncio

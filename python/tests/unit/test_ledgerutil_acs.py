@@ -6,12 +6,11 @@ from __future__ import annotations
 from asyncio import gather
 import logging
 
+from dazl import connect
 from dazl.ledgerutil import ACS
 from dazl.prim import Party
 from dazl.testing import SandboxLauncher, connect_with_new_party
 import pytest
-
-from dazl import connect
 
 from .dars import PostOffice
 

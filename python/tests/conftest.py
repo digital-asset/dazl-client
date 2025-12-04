@@ -10,10 +10,9 @@ import os
 import subprocess
 from typing import Any, Generator
 
+from dazl import testing
 import httpx
 import pytest
-
-from dazl import testing
 
 
 def get_installed_daml_versions() -> list[str]:

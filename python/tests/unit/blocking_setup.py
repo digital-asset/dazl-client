@@ -8,9 +8,8 @@ from pathlib import Path
 from threading import Thread
 from typing import Optional
 
-from dazl.prim import Party
-
 from dazl import connect
+from dazl.prim import Party
 
 __all__ = ["blocking_setup"]
 

@@ -6,6 +6,7 @@ from __future__ import annotations
 from asyncio import gather, wait_for
 import logging
 
+import dazl
 from dazl.ledger import Boundary, CreateEvent
 from dazl.ledger.aio import Connection
 from dazl.ledger.grpc import Connection as GrpcConnection
@@ -13,8 +14,6 @@ from dazl.prim import ContractData, Party
 from dazl.testing import SandboxLauncher
 import pytest
 from tests.unit import dars
-
-import dazl
 
 TEMPLATE = "Simple:OperatorNotification"
 
