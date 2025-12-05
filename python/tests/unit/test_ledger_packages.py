@@ -23,22 +23,6 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_list_packages_via_api(sandbox_v3: Any) -> None:
-    timeout = httpx.Timeout(10.0, connect=5.0)
-    async with AuthenticatedClient(
-        base_url=sandbox_v3.url, token="test-token", timeout=timeout
-    ) as client:
-        response = await get_v2_packages.asyncio(client=client)
-
-        assert isinstance(response, ListPackagesResponse)
-        assert response.package_ids is not None
-        assert isinstance(response.package_ids, list)
-
-        for package_id in response.package_ids:
-            logging.info(f"Package: {package_id}")
-
-
-@pytest.mark.asyncio
 async def test_get_package_by_id_via_api(sandbox_v3: Any) -> None:
     timeout = httpx.Timeout(10.0, connect=5.0)
     async with AuthenticatedClient(

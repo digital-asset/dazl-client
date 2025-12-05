@@ -73,11 +73,11 @@ class VettedPackage:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        package_id = d.pop("packageId")
+        package_id = d.pop("packageId", "")
 
-        package_name = d.pop("packageName")
+        package_name = d.pop("packageName", "")
 
-        package_version = d.pop("packageVersion")
+        package_version = d.pop("packageVersion", "")
 
         valid_from_inclusive = d.pop("validFromInclusive", UNSET)
 
