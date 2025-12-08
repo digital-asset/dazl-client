@@ -28,4 +28,5 @@ target
 *#
 *~
 .qoder
+_fixtures/archives/*
 log/*

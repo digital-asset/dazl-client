@@ -15,11 +15,14 @@ packages = [{ include = "dazl", from = "python" }, { include = "_dazl", from = "
 
 [tool.poetry.dependencies]
 python = "^3.10.0"
+attrs = ">=22.2.0"
 googleapis_common_protos = "^1"
 grpcio = "^1.72.0"
+httpx = "^0.27.0"
 protobuf = ">=6"
 pygments = { version = "*", optional = true }
 pyOpenSSL = { version = "*", optional = true }
+python-dateutil = ">=2.8.1"
 semver = "*"
 typing_extensions = { version = "*" }
 
@@ -37,6 +40,7 @@ grpcio-tools = "^1.72.0"
 isort = "^5"
 jinja2 = "^3"
 mypy = "*"
+openapi-python-client = "*"
 pyjwt = "*"
 pytest = "*"
 pytest-asyncio = "*"

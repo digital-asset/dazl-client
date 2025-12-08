@@ -39,8 +39,7 @@ def kill_process_tree(process: Popen) -> None:
 
     process.terminate()
     try:
-        # give the process a few seconds to die
-        process.communicate(timeout=5)
+        process.communicate(timeout=15)
 
     except TimeoutExpired:
         logging.error("Had trouble killing a sandbox process normally; it will be forcibly killed.")

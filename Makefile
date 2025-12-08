@@ -4,7 +4,13 @@
 cache_dir=.cache
 
 proto_dir := $(cache_dir)/protos
+openapi_dir := $(cache_dir)/openapi
+splice_version := 0.5.1
+splice_tarball := $(cache_dir)/splice-$(splice_version).tar.gz
 python := poetry run python3
+
+# Use Nix-provided path if available, otherwise use local cache
+SPLICE_OPENAPI_DIR ?= $(openapi_dir)
 
 version := $(strip $(shell cat VERSION))
 docs_src := $(shell find docs -name '*.rst') $(py_src)
@@ -16,9 +22,45 @@ docs_markdown_tgz := $(docs_markdown_dir).tar.gz
 ####################################################################################################
 # general targets
 
+# Generate Python bindings from protobuf definitions
+# PROTOPACK_DIR is set by nix/shell.nix from the protopack derivation
 .PHONY: generate
 generate: .venv/poetry.lock
 	$(python) -m _dazl update "${PROTOPACK_DIR}/protos.pb"
+
+# Download and extract Ledger API OpenAPI specification from Splice GitHub repository
+# This creates a local cache at .cache/openapi/ledger-api/ with the spec
+.PHONY: download-openapi
+download-openapi: $(openapi_dir)/.downloaded  ## Download Ledger API OpenAPI spec from Splice GitHub repo
+
+$(openapi_dir)/.downloaded: $(splice_tarball)
+	@echo "Extracting Ledger API OpenAPI specification from Splice repository..."
+	@mkdir -p $(openapi_dir)/ledger-api
+	@tar -xzf $(splice_tarball) -C $(cache_dir)
+	@# Extract Ledger API spec only
+	@if [ -f $(cache_dir)/splice-$(splice_version)/canton/community/ledger/ledger-json-api/src/test/resources/json-api-docs/openapi.yaml ]; then \
+		cp $(cache_dir)/splice-$(splice_version)/canton/community/ledger/ledger-json-api/src/test/resources/json-api-docs/openapi.yaml $(openapi_dir)/ledger-api/; \
+		echo "✓ Extracted Ledger API spec"; \
+	else \
+		echo "⚠ Warning: Ledger API OpenAPI spec not found"; \
+	fi
+	@rm -rf $(cache_dir)/splice-$(splice_version)
+	@touch $(openapi_dir)/.downloaded
+	@echo "✓ Ledger API OpenAPI specification ready at $(openapi_dir)/ledger-api/"
+
+$(splice_tarball):
+	@echo "Downloading Splice repository v$(splice_version) from GitHub..."
+	@mkdir -p $(cache_dir)
+	@curl -L -o $(splice_tarball) https://github.com/hyperledger-labs/splice/archive/$(splice_version).tar.gz
+	@echo "✓ Downloaded Splice repository"
+
+# Generate Ledger API client from OpenAPI specification
+# SPLICE_OPENAPI_DIR is set by nix/shell.nix from the splice-openapi derivation,
+# or uses local cache at .cache/openapi/ if downloaded via make download-openapi
+# Expected structure: ${SPLICE_OPENAPI_DIR}/ledger-api/openapi.yaml
+.PHONY: generate-api
+generate-api: .venv/poetry.lock download-openapi  ## Generate Python Ledger API client from OpenAPI spec
+	@export SPLICE_OPENAPI_DIR=$(SPLICE_OPENAPI_DIR) && $(python) -m _dazl generate-api "$(SPLICE_OPENAPI_DIR)"
 
 ####################################################################################################
 # Python
@@ -83,6 +125,11 @@ help:	## Show list of available make targets
 .PHONY: clean
 clean:  ## Clean everything.
 	rm -fr .cache dist target .venv $(shell find python -name '__pycache__' -type d)
+	rm -fr $(openapi_dir) $(splice_tarball)
+
+.PHONY: clean-openapi
+clean-openapi:  ## Clean downloaded OpenAPI specs
+	rm -fr $(openapi_dir) $(splice_tarball)
 
 
 .PHONY: deps
