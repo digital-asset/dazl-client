@@ -6,10 +6,9 @@
 // 	protoc        v6.31.1
 // source: com/digitalasset/daml/lf/archive/daml_lf.proto
 
-package daml_lf
+package daml_lf_2_1
 
 import (
-	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -167,7 +166,7 @@ func (*ArchivePayload_DamlLf_2) isArchivePayload_Sum() {}
 
 type Archive struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	HashFunction  HashFunction           `protobuf:"varint,1,opt,name=hash_function,json=hashFunction,proto3,enum=daml_lf.HashFunction" json:"hash_function,omitempty"`
+	HashFunction  HashFunction           `protobuf:"varint,1,opt,name=hash_function,json=hashFunction,proto3,enum=daml_lf_2_1.HashFunction" json:"hash_function,omitempty"`
 	Payload       []byte                 `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
 	Hash          string                 `protobuf:"bytes,4,opt,name=hash,proto3" json:"hash,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -229,21 +228,21 @@ var File_com_digitalasset_daml_lf_archive_daml_lf_proto protoreflect.FileDescrip
 
 const file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDesc = "" +
 	"\n" +
-	".com/digitalasset/daml/lf/archive/daml_lf.proto\x12\adaml_lf\x1a/com/digitalasset/daml/lf/archive/daml_lf2.proto\"\x8d\x01\n" +
+	".com/digitalasset/daml/lf/archive/daml_lf.proto\x12\vdaml_lf_2_1\x1a/com/digitalasset/daml/lf/archive/daml_lf2.proto\"\x8d\x01\n" +
 	"\x0eArchivePayload\x12\x14\n" +
 	"\x05minor\x18\x03 \x01(\tR\x05minor\x12\x14\n" +
 	"\x05patch\x18\x05 \x01(\x05R\x05patch\x12\x1c\n" +
 	"\tdaml_lf_1\x18\x02 \x01(\fH\x00R\adamlLf1\x12\x1c\n" +
 	"\tdaml_lf_2\x18\x04 \x01(\fH\x00R\adamlLf2B\x05\n" +
-	"\x03SumJ\x06\b\x8fN\x10\x90NJ\x04\b\x01\x10\x02\"s\n" +
-	"\aArchive\x12:\n" +
-	"\rhash_function\x18\x01 \x01(\x0e2\x15.daml_lf.HashFunctionR\fhashFunction\x12\x18\n" +
+	"\x03SumJ\x06\b\x8fN\x10\x90NJ\x04\b\x01\x10\x02\"w\n" +
+	"\aArchive\x12>\n" +
+	"\rhash_function\x18\x01 \x01(\x0e2\x19.daml_lf_2_1.HashFunctionR\fhashFunction\x12\x18\n" +
 	"\apayload\x18\x03 \x01(\fR\apayload\x12\x12\n" +
 	"\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n" +
 	"\fHashFunction\x12\n" +
 	"\n" +
-	"\x06SHA256\x10\x00B\x84\x01\n" +
-	" com.digitalasset.daml.lf.archiveZ6github.com/digital-asset/dazl-client/v8/go/api/daml_lf\xaa\x02'Com.DigitalAsset.Daml.Lf.Archive.DamlLfb\x06proto3"
+	"\x06SHA256\x10\x00B\x91\x01\n" +
+	" com.digitalasset.daml.lf.archiveZCgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\xaa\x02'Com.DigitalAsset.Daml.Lf.Archive.DamlLfb\x06proto3"
 
 var (
 	file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescOnce sync.Once
@@ -260,12 +259,12 @@ func file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescGZIP() []byte {
 var file_com_digitalasset_daml_lf_archive_daml_lf_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_com_digitalasset_daml_lf_archive_daml_lf_proto_goTypes = []any{
-	(HashFunction)(0),      // 0: daml_lf.HashFunction
-	(*ArchivePayload)(nil), // 1: daml_lf.ArchivePayload
-	(*Archive)(nil),        // 2: daml_lf.Archive
+	(HashFunction)(0),      // 0: daml_lf_2_1.HashFunction
+	(*ArchivePayload)(nil), // 1: daml_lf_2_1.ArchivePayload
+	(*Archive)(nil),        // 2: daml_lf_2_1.Archive
 }
 var file_com_digitalasset_daml_lf_archive_daml_lf_proto_depIdxs = []int32{
-	0, // 0: daml_lf.Archive.hash_function:type_name -> daml_lf.HashFunction
+	0, // 0: daml_lf_2_1.Archive.hash_function:type_name -> daml_lf_2_1.HashFunction
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -278,6 +277,7 @@ func file_com_digitalasset_daml_lf_archive_daml_lf_proto_init() {
 	if File_com_digitalasset_daml_lf_archive_daml_lf_proto != nil {
 		return
 	}
+	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init()
 	file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes[0].OneofWrappers = []any{
 		(*ArchivePayload_DamlLf_1)(nil),
 		(*ArchivePayload_DamlLf_2)(nil),

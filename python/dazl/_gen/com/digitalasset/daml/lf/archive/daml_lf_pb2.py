@@ -29,18 +29,18 @@ _sym_db = _symbol_database.Default()
 from . import daml_lf2_pb2 as com_dot_digitalasset_dot_daml_dot_lf_dot_archive_dot_daml__lf2__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n.com/digitalasset/daml/lf/archive/daml_lf.proto\x12\x07\x64\x61ml_lf\x1a/com/digitalasset/daml/lf/archive/daml_lf2.proto\"\x8d\x01\n\x0e\x41rchivePayload\x12\x14\n\x05minor\x18\x03 \x01(\tR\x05minor\x12\x14\n\x05patch\x18\x05 \x01(\x05R\x05patch\x12\x1c\n\tdaml_lf_1\x18\x02 \x01(\x0cH\x00R\x07\x64\x61mlLf1\x12\x1c\n\tdaml_lf_2\x18\x04 \x01(\x0cH\x00R\x07\x64\x61mlLf2B\x05\n\x03SumJ\x06\x08\x8fN\x10\x90NJ\x04\x08\x01\x10\x02\"s\n\x07\x41rchive\x12:\n\rhash_function\x18\x01 \x01(\x0e\x32\x15.daml_lf.HashFunctionR\x0chashFunction\x12\x18\n\x07payload\x18\x03 \x01(\x0cR\x07payload\x12\x12\n\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42\x84\x01\n com.digitalasset.daml.lf.archiveZ6github.com/digital-asset/dazl-client/v8/go/api/daml_lf\xaa\x02\'Com.DigitalAsset.Daml.Lf.Archive.DamlLfb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n.com/digitalasset/daml/lf/archive/daml_lf.proto\x12\x0b\x64\x61ml_lf_2_1\x1a/com/digitalasset/daml/lf/archive/daml_lf2.proto\"\x8d\x01\n\x0e\x41rchivePayload\x12\x14\n\x05minor\x18\x03 \x01(\tR\x05minor\x12\x14\n\x05patch\x18\x05 \x01(\x05R\x05patch\x12\x1c\n\tdaml_lf_1\x18\x02 \x01(\x0cH\x00R\x07\x64\x61mlLf1\x12\x1c\n\tdaml_lf_2\x18\x04 \x01(\x0cH\x00R\x07\x64\x61mlLf2B\x05\n\x03SumJ\x06\x08\x8fN\x10\x90NJ\x04\x08\x01\x10\x02\"w\n\x07\x41rchive\x12>\n\rhash_function\x18\x01 \x01(\x0e\x32\x19.daml_lf_2_1.HashFunctionR\x0chashFunction\x12\x18\n\x07payload\x18\x03 \x01(\x0cR\x07payload\x12\x12\n\x04hash\x18\x04 \x01(\tR\x04hash*\x1a\n\x0cHashFunction\x12\n\n\x06SHA256\x10\x00\x42\x91\x01\n com.digitalasset.daml.lf.archiveZCgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\xaa\x02\'Com.DigitalAsset.Daml.Lf.Archive.DamlLfb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.daml.lf.archive.daml_lf_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
-  _globals['DESCRIPTOR']._serialized_options = b'\n com.digitalasset.daml.lf.archiveZ6github.com/digital-asset/dazl-client/v8/go/api/daml_lf\252\002\'Com.DigitalAsset.Daml.Lf.Archive.DamlLf'
-  _globals['_HASHFUNCTION']._serialized_start=369
-  _globals['_HASHFUNCTION']._serialized_end=395
-  _globals['_ARCHIVEPAYLOAD']._serialized_start=109
-  _globals['_ARCHIVEPAYLOAD']._serialized_end=250
-  _globals['_ARCHIVE']._serialized_start=252
-  _globals['_ARCHIVE']._serialized_end=367
+  _globals['DESCRIPTOR']._serialized_options = b'\n com.digitalasset.daml.lf.archiveZCgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\252\002\'Com.DigitalAsset.Daml.Lf.Archive.DamlLf'
+  _globals['_HASHFUNCTION']._serialized_start=377
+  _globals['_HASHFUNCTION']._serialized_end=403
+  _globals['_ARCHIVEPAYLOAD']._serialized_start=113
+  _globals['_ARCHIVEPAYLOAD']._serialized_end=254
+  _globals['_ARCHIVE']._serialized_start=256
+  _globals['_ARCHIVE']._serialized_end=375
 # @@protoc_insertion_point(module_scope)

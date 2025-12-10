@@ -60,6 +60,12 @@ def corrected_name(name: str) -> str:
         return "com/digitalasset/canton/protocol/v0/time_proof.pb.go"
     elif name == "com/digitalasset/canton/time/v30/time_proof.pb.go":
         return "com/digitalasset/canton/protocol/v30/time_proof.pb.go"
+    # Daml-LF protos in 3.4.9+ are at com/digitalasset/daml/lf/archive/
+    # but we keep backward compatible path at com/daml/daml_lf_2_1/
+    elif name == "com/digitalasset/daml/lf/archive/daml_lf.pb.go":
+        return "com/daml/daml_lf_2_1/daml_lf.pb.go"
+    elif name == "com/digitalasset/daml/lf/archive/daml_lf2.pb.go":
+        return "com/daml/daml_lf_2_1/daml_lf2.pb.go"
     else:
         return name
 
