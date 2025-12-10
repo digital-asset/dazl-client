@@ -9,7 +9,7 @@ import warnings
 
 from . import topology_manager_read_service_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -98,10 +98,15 @@ class TopologyManagerReadServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerSynchronizerStateRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerSynchronizerStateResponse.FromString,
                 _registered_method=True)
-        self.ListPurgeTopologyTransaction = channel.unary_unary(
-                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPurgeTopologyTransaction',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListPurgeTopologyTransactionRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListPurgeTopologyTransactionResponse.FromString,
+        self.ListSynchronizerUpgradeAnnouncement = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerUpgradeAnnouncement',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementResponse.FromString,
+                _registered_method=True)
+        self.ListSequencerConnectionSuccessor = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerConnectionSuccessor',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorResponse.FromString,
                 _registered_method=True)
         self.ListAvailableStores = channel.unary_unary(
                 '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAvailableStores',
@@ -118,10 +123,25 @@ class TopologyManagerReadServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotResponse.FromString,
                 _registered_method=True)
+        self.ExportTopologySnapshotV2 = channel.unary_stream(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshotV2',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotV2Request.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotV2Response.FromString,
+                _registered_method=True)
         self.GenesisState = channel.unary_stream(
                 '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisState',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateResponse.FromString,
+                _registered_method=True)
+        self.GenesisStateV2 = channel.unary_stream(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisStateV2',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Request.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Response.FromString,
+                _registered_method=True)
+        self.LogicalUpgradeState = channel.unary_stream(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/LogicalUpgradeState',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateResponse.FromString,
                 _registered_method=True)
 
 
@@ -200,7 +220,13 @@ class TopologyManagerReadServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListPurgeTopologyTransaction(self, request, context):
+    def ListSynchronizerUpgradeAnnouncement(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListSequencerConnectionSuccessor(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -224,7 +250,25 @@ class TopologyManagerReadServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ExportTopologySnapshotV2(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GenesisState(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GenesisStateV2(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def LogicalUpgradeState(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -293,10 +337,15 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerSynchronizerStateRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerSynchronizerStateResponse.SerializeToString,
             ),
-            'ListPurgeTopologyTransaction': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListPurgeTopologyTransaction,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListPurgeTopologyTransactionRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListPurgeTopologyTransactionResponse.SerializeToString,
+            'ListSynchronizerUpgradeAnnouncement': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListSynchronizerUpgradeAnnouncement,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementResponse.SerializeToString,
+            ),
+            'ListSequencerConnectionSuccessor': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListSequencerConnectionSuccessor,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorResponse.SerializeToString,
             ),
             'ListAvailableStores': grpc.unary_unary_rpc_method_handler(
                     servicer.ListAvailableStores,
@@ -313,10 +362,25 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotResponse.SerializeToString,
             ),
+            'ExportTopologySnapshotV2': grpc.unary_stream_rpc_method_handler(
+                    servicer.ExportTopologySnapshotV2,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotV2Request.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotV2Response.SerializeToString,
+            ),
             'GenesisState': grpc.unary_stream_rpc_method_handler(
                     servicer.GenesisState,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateResponse.SerializeToString,
+            ),
+            'GenesisStateV2': grpc.unary_stream_rpc_method_handler(
+                    servicer.GenesisStateV2,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Request.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Response.SerializeToString,
+            ),
+            'LogicalUpgradeState': grpc.unary_stream_rpc_method_handler(
+                    servicer.LogicalUpgradeState,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -654,7 +718,7 @@ class TopologyManagerReadService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListPurgeTopologyTransaction(request,
+    def ListSynchronizerUpgradeAnnouncement(request,
             target,
             options=(),
             channel_credentials=None,
@@ -667,9 +731,36 @@ class TopologyManagerReadService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPurgeTopologyTransaction',
-            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListPurgeTopologyTransactionRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListPurgeTopologyTransactionResponse.FromString,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerUpgradeAnnouncement',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListSequencerConnectionSuccessor(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerConnectionSuccessor',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -762,6 +853,33 @@ class TopologyManagerReadService(object):
             _registered_method=True)
 
     @staticmethod
+    def ExportTopologySnapshotV2(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshotV2',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotV2Request.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotV2Response.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def GenesisState(request,
             target,
             options=(),
@@ -778,6 +896,60 @@ class TopologyManagerReadService(object):
             '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisState',
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GenesisStateV2(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisStateV2',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Request.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Response.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def LogicalUpgradeState(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/LogicalUpgradeState',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateResponse.FromString,
             options,
             channel_credentials,
             insecure,

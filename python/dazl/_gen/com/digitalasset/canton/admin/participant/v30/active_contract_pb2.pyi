@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
-from ...crypto.v30 import crypto_pb2 as _crypto_pb2
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -23,7 +24,7 @@ class ActiveContractOld(_message.Message):
     def __init__(self, synchronizer_id: _Optional[str] = ..., contract: _Optional[_Union[Contract, _Mapping]] = ..., reassignment_counter: _Optional[int] = ...) -> None: ...
 
 class Contract(_message.Message):
-    __slots__ = ("contract_id", "raw_contract_instance", "metadata", "ledger_create_time", "contract_salt")
+    __slots__ = ("contract_id", "raw_contract_instance", "metadata", "ledger_create_time", "authentication_data")
     class Metadata(_message.Message):
         __slots__ = ("non_maintainer_signatories", "non_signatory_stakeholders", "key", "maintainers")
         NON_MAINTAINER_SIGNATORIES_FIELD_NUMBER: _ClassVar[int]
@@ -48,13 +49,13 @@ class Contract(_message.Message):
     RAW_CONTRACT_INSTANCE_FIELD_NUMBER: _ClassVar[int]
     METADATA_FIELD_NUMBER: _ClassVar[int]
     LEDGER_CREATE_TIME_FIELD_NUMBER: _ClassVar[int]
-    CONTRACT_SALT_FIELD_NUMBER: _ClassVar[int]
+    AUTHENTICATION_DATA_FIELD_NUMBER: _ClassVar[int]
     contract_id: str
     raw_contract_instance: bytes
     metadata: Contract.Metadata
     ledger_create_time: _timestamp_pb2.Timestamp
-    contract_salt: _crypto_pb2.Salt
-    def __init__(self, contract_id: _Optional[str] = ..., raw_contract_instance: _Optional[bytes] = ..., metadata: _Optional[_Union[Contract.Metadata, _Mapping]] = ..., ledger_create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contract_salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ...) -> None: ...
+    authentication_data: bytes
+    def __init__(self, contract_id: _Optional[str] = ..., raw_contract_instance: _Optional[bytes] = ..., metadata: _Optional[_Union[Contract.Metadata, _Mapping]] = ..., ledger_create_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., authentication_data: _Optional[bytes] = ...) -> None: ...
 
 class ActiveContract(_message.Message):
     __slots__ = ("active_contract",)

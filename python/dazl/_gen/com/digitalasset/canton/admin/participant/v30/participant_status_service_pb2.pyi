@@ -17,7 +17,7 @@ class ParticipantStatusRequest(_message.Message):
     def __init__(self) -> None: ...
 
 class ConnectedSynchronizer(_message.Message):
-    __slots__ = ("synchronizer_id", "health")
+    __slots__ = ("physical_synchronizer_id", "health")
     class Health(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         HEALTH_UNSPECIFIED: _ClassVar[ConnectedSynchronizer.Health]
@@ -26,11 +26,11 @@ class ConnectedSynchronizer(_message.Message):
     HEALTH_UNSPECIFIED: ConnectedSynchronizer.Health
     HEALTH_HEALTHY: ConnectedSynchronizer.Health
     HEALTH_UNHEALTHY: ConnectedSynchronizer.Health
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     HEALTH_FIELD_NUMBER: _ClassVar[int]
-    synchronizer_id: str
+    physical_synchronizer_id: str
     health: ConnectedSynchronizer.Health
-    def __init__(self, synchronizer_id: _Optional[str] = ..., health: _Optional[_Union[ConnectedSynchronizer.Health, str]] = ...) -> None: ...
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., health: _Optional[_Union[ConnectedSynchronizer.Health, str]] = ...) -> None: ...
 
 class ParticipantStatusResponse(_message.Message):
     __slots__ = ("status", "not_initialized")

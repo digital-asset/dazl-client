@@ -3,19 +3,19 @@
 # fmt: off
 # isort: skip_file
 
-from .pruning_pb2 import ClearScheduleRequest, ClearScheduleResponse, GetNoWaitCommitmentsFromRequest, GetNoWaitCommitmentsFromResponse, GetParticipantScheduleRequest, GetParticipantScheduleResponse, GetScheduleRequest, GetScheduleResponse, LocatePruningTimestampRequest, LocatePruningTimestampResponse, ParticipantPruningSchedule, PruningSchedule, ResetNoWaitCommitmentsFromRequest, ResetNoWaitCommitmentsFromResponse, SetCronRequest, SetCronResponse, SetMaxDurationRequest, SetMaxDurationResponse, SetNoWaitCommitmentsFromRequest, SetNoWaitCommitmentsFromResponse, SetParticipantScheduleRequest, SetParticipantScheduleResponse, SetRetentionRequest, SetRetentionResponse, SetScheduleRequest, SetScheduleResponse, Synchronizers, WaitCommitmentsSetup
+from .pruning_pb2 import ClearScheduleRequest, ClearScheduleResponse, FindPruningTimestampRequest, FindPruningTimestampResponse, GetNoWaitCommitmentsFromRequest, GetNoWaitCommitmentsFromResponse, GetParticipantScheduleRequest, GetParticipantScheduleResponse, GetScheduleRequest, GetScheduleResponse, ParticipantPruningSchedule, PruningSchedule, ResetNoWaitCommitmentsFromRequest, ResetNoWaitCommitmentsFromResponse, SetCronRequest, SetCronResponse, SetMaxDurationRequest, SetMaxDurationResponse, SetNoWaitCommitmentsFromRequest, SetNoWaitCommitmentsFromResponse, SetParticipantScheduleRequest, SetParticipantScheduleResponse, SetRetentionRequest, SetRetentionResponse, SetScheduleRequest, SetScheduleResponse, Synchronizers, WaitCommitmentsSetup
 
 __all__ = [
     "ClearScheduleRequest",
     "ClearScheduleResponse",
+    "FindPruningTimestampRequest",
+    "FindPruningTimestampResponse",
     "GetNoWaitCommitmentsFromRequest",
     "GetNoWaitCommitmentsFromResponse",
     "GetParticipantScheduleRequest",
     "GetParticipantScheduleResponse",
     "GetScheduleRequest",
     "GetScheduleResponse",
-    "LocatePruningTimestampRequest",
-    "LocatePruningTimestampResponse",
     "ParticipantPruningSchedule",
     "PruningSchedule",
     "ResetNoWaitCommitmentsFromRequest",

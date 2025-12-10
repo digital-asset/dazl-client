@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v0 import crypto_pb2 as _crypto_pb2
 from ..v0 import common_pb2 as _common_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -25,7 +27,7 @@ class SerializableContract(_message.Message):
     metadata: _common_pb2.SerializableContract.Metadata
     ledger_create_time: _timestamp_pb2.Timestamp
     contract_salt: _crypto_pb2.Salt
-    def __init__(self, contract_id: _Optional[str] = ..., raw_contract_instance: _Optional[bytes] = ..., metadata: _Optional[_Union[_common_pb2.SerializableContract.Metadata, _Mapping]] = ..., ledger_create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contract_salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ...) -> None: ...
+    def __init__(self, contract_id: _Optional[str] = ..., raw_contract_instance: _Optional[bytes] = ..., metadata: _Optional[_Union[_common_pb2.SerializableContract.Metadata, _Mapping]] = ..., ledger_create_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contract_salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ...) -> None: ...
 
 class GlobalKey(_message.Message):
     __slots__ = ("template_id", "key", "package_name")

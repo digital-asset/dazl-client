@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ..v0 import common_pb2 as _common_pb2
 from ..v0 import mediator_pb2 as _mediator_pb2
 from . import merkle_pb2 as _merkle_pb2
@@ -23,7 +25,7 @@ class TransactionResultMessage(_message.Message):
     request_id: _timestamp_pb2.Timestamp
     verdict: Verdict
     notification_tree: InformeeTree
-    def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ..., notification_tree: _Optional[_Union[InformeeTree, _Mapping]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ..., notification_tree: _Optional[_Union[InformeeTree, _Mapping]] = ...) -> None: ...
 
 class Verdict(_message.Message):
     __slots__ = ("approve", "participant_reject", "mediator_reject")
@@ -67,7 +69,7 @@ class MalformedMediatorRequestResult(_message.Message):
     domain_id: str
     view_type: _common_pb2.ViewType
     rejection: MediatorReject
-    def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., domain_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ..., rejection: _Optional[_Union[MediatorReject, _Mapping]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., domain_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ..., rejection: _Optional[_Union[MediatorReject, _Mapping]] = ...) -> None: ...
 
 class TransferResult(_message.Message):
     __slots__ = ("request_id", "origin_domain", "target_domain", "informees", "verdict")
@@ -81,4 +83,4 @@ class TransferResult(_message.Message):
     target_domain: str
     informees: _containers.RepeatedScalarFieldContainer[str]
     verdict: Verdict
-    def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., origin_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., informees: _Optional[_Iterable[str]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., origin_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., informees: _Optional[_Iterable[str]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ...) -> None: ...

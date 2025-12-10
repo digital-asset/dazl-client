@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....protocol.v0 import sequencing_pb2 as _sequencing_pb2
 from ....v0 import trace_context_pb2 as _trace_context_pb2
 from google.protobuf import empty_pb2 as _empty_pb2
@@ -107,7 +109,7 @@ class AcknowledgeRequest(_message.Message):
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     member: str
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, member: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, member: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SequencedEventTrafficState(_message.Message):
     __slots__ = ("extra_traffic_remainder", "extra_traffic_consumed")

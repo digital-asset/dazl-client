@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import offset_checkpoint_pb2 as _offset_checkpoint_pb2
 from . import trace_context_pb2 as _trace_context_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
@@ -38,4 +40,4 @@ class Completion(_message.Message):
     trace_context: _trace_context_pb2.TraceContext
     offset: int
     synchronizer_time: _offset_checkpoint_pb2.SynchronizerTime
-    def __init__(self, command_id: _Optional[str] = ..., status: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., update_id: _Optional[str] = ..., user_id: _Optional[str] = ..., act_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., deduplication_offset: _Optional[int] = ..., deduplication_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., offset: _Optional[int] = ..., synchronizer_time: _Optional[_Union[_offset_checkpoint_pb2.SynchronizerTime, _Mapping]] = ...) -> None: ...
+    def __init__(self, command_id: _Optional[str] = ..., status: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., update_id: _Optional[str] = ..., user_id: _Optional[str] = ..., act_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., deduplication_offset: _Optional[int] = ..., deduplication_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., offset: _Optional[int] = ..., synchronizer_time: _Optional[_Union[_offset_checkpoint_pb2.SynchronizerTime, _Mapping]] = ...) -> None: ...

@@ -23,11 +23,11 @@ class MediatorInitializationServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _MediatorInitializationServiceAsyncStub: ...  # type: ignore
-    def InitializeMediator(self, __1: InitializeMediatorRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[InitializeMediatorResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, InitializeMediatorResponse]]: ...
+    def InitializeMediator(self, __1: InitializeMediatorRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitializeMediatorResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, InitializeMediatorResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _MediatorInitializationServiceBlockingStub(MediatorInitializationServiceStub):
-    def InitializeMediator(self, __1: InitializeMediatorRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitializeMediatorResponse: ...
+    def InitializeMediator(self, __1: InitializeMediatorRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitializeMediatorResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _MediatorInitializationServiceAsyncStub(MediatorInitializationServiceStub):

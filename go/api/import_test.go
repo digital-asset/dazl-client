@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_1_17"
-	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v1/admin"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v1/testing"
@@ -32,7 +31,6 @@ import (
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/health/admin/v0"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/health/admin/v1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/mediator/admin/v30"
-	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/admin/party/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/admin/v0"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/protocol/v0"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/protocol/v30"
@@ -41,13 +39,16 @@ import (
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v2"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v3"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v4"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v5"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/pruning/admin/v0"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/admin/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/api/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/protocol/v30"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/standalone/v1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/v30"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/time/admin/v0"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/time/admin/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v0"
@@ -57,6 +58,7 @@ import (
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/version"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/version/v1"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/archive"
 )
 
 func Test(_ *testing.T) {}

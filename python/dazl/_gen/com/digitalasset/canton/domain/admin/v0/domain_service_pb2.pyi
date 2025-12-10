@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....crypto.v0 import crypto_pb2 as _crypto_pb2
 from ....protocol.v0 import sequencing_pb2 as _sequencing_pb2
 from ....protocol.v1 import sequencing_pb2 as _sequencing_pb2_1
@@ -45,4 +47,4 @@ class ServiceAgreementAcceptance(_message.Message):
     participant_id: str
     signature: _crypto_pb2.Signature
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, agreement_id: _Optional[str] = ..., participant_id: _Optional[str] = ..., signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, agreement_id: _Optional[str] = ..., participant_id: _Optional[str] = ..., signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

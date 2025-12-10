@@ -23,11 +23,11 @@ class ParticipantPruningServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _ParticipantPruningServiceAsyncStub: ...  # type: ignore
-    def Prune(self, __1: PruneRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[PruneResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, PruneResponse]]: ...
+    def Prune(self, __1: PruneRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> PruneResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, PruneResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _ParticipantPruningServiceBlockingStub(ParticipantPruningServiceStub):
-    def Prune(self, __1: PruneRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> PruneResponse: ...
+    def Prune(self, __1: PruneRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> PruneResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _ParticipantPruningServiceAsyncStub(ParticipantPruningServiceStub):

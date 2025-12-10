@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....domain.api.v0 import sequencer_connection_pb2 as _sequencer_connection_pb2
 from ....time.admin.v0 import time_tracker_config_pb2 as _time_tracker_config_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
@@ -33,7 +35,7 @@ class DomainConnectionConfig(_message.Message):
     maxRetryDelay: _duration_pb2.Duration
     timeTracker: _time_tracker_config_pb2.DomainTimeTrackerConfig
     sequencerTrustThreshold: int
-    def __init__(self, domain_alias: _Optional[str] = ..., sequencerConnections: _Optional[_Iterable[_Union[_sequencer_connection_pb2.SequencerConnection, _Mapping]]] = ..., manual_connect: bool = ..., domain_id: _Optional[str] = ..., priority: _Optional[int] = ..., initialRetryDelay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., maxRetryDelay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., timeTracker: _Optional[_Union[_time_tracker_config_pb2.DomainTimeTrackerConfig, _Mapping]] = ..., sequencerTrustThreshold: _Optional[int] = ...) -> None: ...
+    def __init__(self, domain_alias: _Optional[str] = ..., sequencerConnections: _Optional[_Iterable[_Union[_sequencer_connection_pb2.SequencerConnection, _Mapping]]] = ..., manual_connect: bool = ..., domain_id: _Optional[str] = ..., priority: _Optional[int] = ..., initialRetryDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., maxRetryDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., timeTracker: _Optional[_Union[_time_tracker_config_pb2.DomainTimeTrackerConfig, _Mapping]] = ..., sequencerTrustThreshold: _Optional[int] = ...) -> None: ...
 
 class ReconnectDomainsRequest(_message.Message):
     __slots__ = ("ignore_failures",)

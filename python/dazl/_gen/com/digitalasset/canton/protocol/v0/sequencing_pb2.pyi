@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v0 import crypto_pb2 as _crypto_pb2
 from ...v0 import trace_context_pb2 as _trace_context_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
@@ -30,7 +32,7 @@ class SequencedEvent(_message.Message):
     message_id: _wrappers_pb2.StringValue
     batch: CompressedBatch
     deliver_error_reason: DeliverErrorReason
-    def __init__(self, counter: _Optional[int] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., domain_id: _Optional[str] = ..., message_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., deliver_error_reason: _Optional[_Union[DeliverErrorReason, _Mapping]] = ...) -> None: ...
+    def __init__(self, counter: _Optional[int] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., domain_id: _Optional[str] = ..., message_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., deliver_error_reason: _Optional[_Union[DeliverErrorReason, _Mapping]] = ...) -> None: ...
 
 class PossiblyIgnoredSequencedEvent(_message.Message):
     __slots__ = ("counter", "timestamp", "trace_context", "is_ignored", "underlying")
@@ -44,7 +46,7 @@ class PossiblyIgnoredSequencedEvent(_message.Message):
     trace_context: _trace_context_pb2.TraceContext
     is_ignored: bool
     underlying: SignedContent
-    def __init__(self, counter: _Optional[int] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., is_ignored: bool = ..., underlying: _Optional[_Union[SignedContent, _Mapping]] = ...) -> None: ...
+    def __init__(self, counter: _Optional[int] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., is_ignored: bool = ..., underlying: _Optional[_Union[SignedContent, _Mapping]] = ...) -> None: ...
 
 class RecipientsTree(_message.Message):
     __slots__ = ("recipients", "children")
@@ -96,7 +98,7 @@ class SignedContent(_message.Message):
     content: _wrappers_pb2.BytesValue
     signatures: _crypto_pb2.Signature
     timestamp_of_signing_key: _timestamp_pb2.Timestamp
-    def __init__(self, content: _Optional[_Union[_wrappers_pb2.BytesValue, _Mapping]] = ..., signatures: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., timestamp_of_signing_key: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, content: _Optional[_Union[_wrappers_pb2.BytesValue, _Mapping]] = ..., signatures: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., timestamp_of_signing_key: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class DeliverErrorReason(_message.Message):
     __slots__ = ("batch_invalid", "batch_refused")
@@ -136,7 +138,7 @@ class StaticDomainParameters(_message.Message):
     required_hash_algorithms: _containers.RepeatedScalarFieldContainer[_crypto_pb2.HashAlgorithm]
     required_crypto_key_formats: _containers.RepeatedScalarFieldContainer[_crypto_pb2.CryptoKeyFormat]
     protocol_version: str
-    def __init__(self, reconciliation_interval: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., max_rate_per_participant: _Optional[int] = ..., max_inbound_message_size: _Optional[int] = ..., unique_contract_keys: bool = ..., required_signing_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyScheme, str]]] = ..., required_encryption_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.EncryptionKeyScheme, str]]] = ..., required_symmetric_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SymmetricKeyScheme, str]]] = ..., required_hash_algorithms: _Optional[_Iterable[_Union[_crypto_pb2.HashAlgorithm, str]]] = ..., required_crypto_key_formats: _Optional[_Iterable[_Union[_crypto_pb2.CryptoKeyFormat, str]]] = ..., protocol_version: _Optional[str] = ...) -> None: ...
+    def __init__(self, reconciliation_interval: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_rate_per_participant: _Optional[int] = ..., max_inbound_message_size: _Optional[int] = ..., unique_contract_keys: bool = ..., required_signing_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyScheme, str]]] = ..., required_encryption_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.EncryptionKeyScheme, str]]] = ..., required_symmetric_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SymmetricKeyScheme, str]]] = ..., required_hash_algorithms: _Optional[_Iterable[_Union[_crypto_pb2.HashAlgorithm, str]]] = ..., required_crypto_key_formats: _Optional[_Iterable[_Union[_crypto_pb2.CryptoKeyFormat, str]]] = ..., protocol_version: _Optional[str] = ...) -> None: ...
 
 class DynamicDomainParameters(_message.Message):
     __slots__ = ("participant_response_timeout", "mediator_reaction_timeout", "transfer_exclusivity_timeout", "topology_change_delay", "ledger_time_record_time_tolerance")
@@ -150,7 +152,7 @@ class DynamicDomainParameters(_message.Message):
     transfer_exclusivity_timeout: _duration_pb2.Duration
     topology_change_delay: _duration_pb2.Duration
     ledger_time_record_time_tolerance: _duration_pb2.Duration
-    def __init__(self, participant_response_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., mediator_reaction_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., transfer_exclusivity_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., topology_change_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., ledger_time_record_time_tolerance: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, participant_response_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., mediator_reaction_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., transfer_exclusivity_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., topology_change_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ledger_time_record_time_tolerance: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class Handshake(_message.Message):
     __slots__ = ()
@@ -194,4 +196,4 @@ class SubmissionRequest(_message.Message):
     batch: CompressedBatch
     max_sequencing_time: _timestamp_pb2.Timestamp
     timestamp_of_signing_key: _timestamp_pb2.Timestamp
-    def __init__(self, sender: _Optional[str] = ..., message_id: _Optional[str] = ..., is_request: bool = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., max_sequencing_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., timestamp_of_signing_key: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, sender: _Optional[str] = ..., message_id: _Optional[str] = ..., is_request: bool = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., max_sequencing_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., timestamp_of_signing_key: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

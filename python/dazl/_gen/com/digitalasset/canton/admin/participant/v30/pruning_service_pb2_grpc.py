@@ -10,7 +10,7 @@ import warnings
 from . import pruning_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_pruning__service__pb2
 from ...pruning.v30 import pruning_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 

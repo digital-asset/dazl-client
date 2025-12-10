@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v0 import crypto_pb2 as _crypto_pb2
 from ..v0 import common_pb2 as _common_pb2
 from ..v0 import participant_transaction_pb2 as _participant_transaction_pb2
@@ -186,7 +188,7 @@ class SubmitterMetadata(_message.Message):
     submission_id: str
     dedup_period: _participant_transaction_pb2.DeduplicationPeriod
     max_sequencing_time: _timestamp_pb2.Timestamp
-    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., application_id: _Optional[str] = ..., command_id: _Optional[str] = ..., submitter_participant: _Optional[str] = ..., submission_id: _Optional[str] = ..., dedup_period: _Optional[_Union[_participant_transaction_pb2.DeduplicationPeriod, _Mapping]] = ..., max_sequencing_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., application_id: _Optional[str] = ..., command_id: _Optional[str] = ..., submitter_participant: _Optional[str] = ..., submission_id: _Optional[str] = ..., dedup_period: _Optional[_Union[_participant_transaction_pb2.DeduplicationPeriod, _Mapping]] = ..., max_sequencing_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class ResolvedKey(_message.Message):
     __slots__ = ("key", "contract_id", "free")

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....protocol.v0 import participant_transfer_pb2 as _participant_transfer_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -72,7 +74,7 @@ class AdminTransferSearchQuery(_message.Message):
     filter_timestamp: _timestamp_pb2.Timestamp
     filter_submitting_party: str
     limit: int
-    def __init__(self, search_domain: _Optional[str] = ..., filter_origin_domain: _Optional[str] = ..., filter_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., filter_submitting_party: _Optional[str] = ..., limit: _Optional[int] = ...) -> None: ...
+    def __init__(self, search_domain: _Optional[str] = ..., filter_origin_domain: _Optional[str] = ..., filter_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., filter_submitting_party: _Optional[str] = ..., limit: _Optional[int] = ...) -> None: ...
 
 class AdminTransferSearchResponse(_message.Message):
     __slots__ = ("results",)
@@ -92,7 +94,7 @@ class AdminTransferSearchResponse(_message.Message):
         submitting_party: str
         ready_for_transfer_in: bool
         target_time_proof: _timestamp_pb2.Timestamp
-        def __init__(self, contract_id: _Optional[str] = ..., transfer_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ..., origin_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., submitting_party: _Optional[str] = ..., ready_for_transfer_in: bool = ..., target_time_proof: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+        def __init__(self, contract_id: _Optional[str] = ..., transfer_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ..., origin_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., submitting_party: _Optional[str] = ..., ready_for_transfer_in: bool = ..., target_time_proof: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[AdminTransferSearchResponse.TransferSearchResult]
     def __init__(self, results: _Optional[_Iterable[_Union[AdminTransferSearchResponse.TransferSearchResult, _Mapping]]] = ...) -> None: ...

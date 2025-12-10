@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v30 import crypto_pb2 as _crypto_pb2
 from . import common_pb2 as _common_pb2
 from . import common_stable_pb2 as _common_stable_pb2
@@ -23,7 +25,7 @@ class DeduplicationPeriod(_message.Message):
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     duration: _duration_pb2.Duration
     offset: int
-    def __init__(self, duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., offset: _Optional[int] = ...) -> None: ...
+    def __init__(self, duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., offset: _Optional[int] = ...) -> None: ...
 
 class ParticipantMetadata(_message.Message):
     __slots__ = ("salt", "ledger_time", "preparation_time", "workflow_id")
@@ -38,18 +40,18 @@ class ParticipantMetadata(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., ledger_time: _Optional[int] = ..., preparation_time: _Optional[int] = ..., workflow_id: _Optional[str] = ...) -> None: ...
 
 class RootHashMessage(_message.Message):
-    __slots__ = ("root_hash", "synchronizer_id", "view_type", "submission_topology_time", "payload")
+    __slots__ = ("root_hash", "physical_synchronizer_id", "view_type", "submission_topology_time", "payload")
     ROOT_HASH_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     VIEW_TYPE_FIELD_NUMBER: _ClassVar[int]
     SUBMISSION_TOPOLOGY_TIME_FIELD_NUMBER: _ClassVar[int]
     PAYLOAD_FIELD_NUMBER: _ClassVar[int]
     root_hash: bytes
-    synchronizer_id: str
+    physical_synchronizer_id: str
     view_type: _common_pb2.ViewType
     submission_topology_time: int
     payload: bytes
-    def __init__(self, root_hash: _Optional[bytes] = ..., synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ..., submission_topology_time: _Optional[int] = ..., payload: _Optional[bytes] = ...) -> None: ...
+    def __init__(self, root_hash: _Optional[bytes] = ..., physical_synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ..., submission_topology_time: _Optional[int] = ..., payload: _Optional[bytes] = ...) -> None: ...
 
 class ViewNode(_message.Message):
     __slots__ = ("view_common_data", "view_participant_data", "subviews")
@@ -118,30 +120,30 @@ class CreatedContract(_message.Message):
     CONTRACT_FIELD_NUMBER: _ClassVar[int]
     CONSUMED_IN_CORE_FIELD_NUMBER: _ClassVar[int]
     ROLLED_BACK_FIELD_NUMBER: _ClassVar[int]
-    contract: _common_stable_pb2.SerializableContract
+    contract: bytes
     consumed_in_core: bool
     rolled_back: bool
-    def __init__(self, contract: _Optional[_Union[_common_stable_pb2.SerializableContract, _Mapping]] = ..., consumed_in_core: bool = ..., rolled_back: bool = ...) -> None: ...
+    def __init__(self, contract: _Optional[bytes] = ..., consumed_in_core: bool = ..., rolled_back: bool = ...) -> None: ...
 
 class InputContract(_message.Message):
     __slots__ = ("contract", "consumed")
     CONTRACT_FIELD_NUMBER: _ClassVar[int]
     CONSUMED_FIELD_NUMBER: _ClassVar[int]
-    contract: _common_stable_pb2.SerializableContract
+    contract: bytes
     consumed: bool
-    def __init__(self, contract: _Optional[_Union[_common_stable_pb2.SerializableContract, _Mapping]] = ..., consumed: bool = ...) -> None: ...
+    def __init__(self, contract: _Optional[bytes] = ..., consumed: bool = ...) -> None: ...
 
 class CommonMetadata(_message.Message):
-    __slots__ = ("salt", "synchronizer_id", "uuid", "mediator_group")
+    __slots__ = ("salt", "physical_synchronizer_id", "uuid", "mediator_group")
     SALT_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     UUID_FIELD_NUMBER: _ClassVar[int]
     MEDIATOR_GROUP_FIELD_NUMBER: _ClassVar[int]
     salt: _crypto_pb2.Salt
-    synchronizer_id: str
+    physical_synchronizer_id: str
     uuid: str
     mediator_group: int
-    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., uuid: _Optional[str] = ..., mediator_group: _Optional[int] = ...) -> None: ...
+    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., physical_synchronizer_id: _Optional[str] = ..., uuid: _Optional[str] = ..., mediator_group: _Optional[int] = ...) -> None: ...
 
 class SubmitterMetadata(_message.Message):
     __slots__ = ("salt", "act_as", "user_id", "command_id", "submitting_participant_uid", "submission_id", "dedup_period", "max_sequencing_time", "external_authorization")
@@ -166,22 +168,22 @@ class SubmitterMetadata(_message.Message):
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., submitting_participant_uid: _Optional[str] = ..., submission_id: _Optional[str] = ..., dedup_period: _Optional[_Union[DeduplicationPeriod, _Mapping]] = ..., max_sequencing_time: _Optional[int] = ..., external_authorization: _Optional[_Union[ExternalAuthorization, _Mapping]] = ...) -> None: ...
 
 class EncryptedViewMessage(_message.Message):
-    __slots__ = ("view_tree", "encryption_scheme", "submitting_participant_signature", "view_hash", "session_key_lookup", "synchronizer_id", "view_type")
+    __slots__ = ("view_tree", "encryption_scheme", "submitting_participant_signature", "view_hash", "session_key_lookup", "physical_synchronizer_id", "view_type")
     VIEW_TREE_FIELD_NUMBER: _ClassVar[int]
     ENCRYPTION_SCHEME_FIELD_NUMBER: _ClassVar[int]
     SUBMITTING_PARTICIPANT_SIGNATURE_FIELD_NUMBER: _ClassVar[int]
     VIEW_HASH_FIELD_NUMBER: _ClassVar[int]
     SESSION_KEY_LOOKUP_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     VIEW_TYPE_FIELD_NUMBER: _ClassVar[int]
     view_tree: bytes
     encryption_scheme: _crypto_pb2.SymmetricKeyScheme
     submitting_participant_signature: _crypto_pb2.Signature
     view_hash: bytes
     session_key_lookup: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.AsymmetricEncrypted]
-    synchronizer_id: str
+    physical_synchronizer_id: str
     view_type: _common_pb2.ViewType
-    def __init__(self, view_tree: _Optional[bytes] = ..., encryption_scheme: _Optional[_Union[_crypto_pb2.SymmetricKeyScheme, str]] = ..., submitting_participant_signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., view_hash: _Optional[bytes] = ..., session_key_lookup: _Optional[_Iterable[_Union[_crypto_pb2.AsymmetricEncrypted, _Mapping]]] = ..., synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ...) -> None: ...
+    def __init__(self, view_tree: _Optional[bytes] = ..., encryption_scheme: _Optional[_Union[_crypto_pb2.SymmetricKeyScheme, str]] = ..., submitting_participant_signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., view_hash: _Optional[bytes] = ..., session_key_lookup: _Optional[_Iterable[_Union[_crypto_pb2.AsymmetricEncrypted, _Mapping]]] = ..., physical_synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ...) -> None: ...
 
 class ActionDescription(_message.Message):
     __slots__ = ("create", "exercise", "fetch", "lookup_by_key")

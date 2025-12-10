@@ -9,7 +9,7 @@ import warnings
 
 from . import interactive_submission_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -48,10 +48,25 @@ class InteractiveSubmissionServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionResponse.FromString,
                 _registered_method=True)
+        self.ExecuteSubmissionAndWait = channel.unary_unary(
+                '/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/ExecuteSubmissionAndWait',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitResponse.FromString,
+                _registered_method=True)
+        self.ExecuteSubmissionAndWaitForTransaction = channel.unary_unary(
+                '/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/ExecuteSubmissionAndWaitForTransaction',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitForTransactionRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitForTransactionResponse.FromString,
+                _registered_method=True)
         self.GetPreferredPackageVersion = channel.unary_unary(
                 '/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/GetPreferredPackageVersion',
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackageVersionRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackageVersionResponse.FromString,
+                _registered_method=True)
+        self.GetPreferredPackages = channel.unary_unary(
+                '/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/GetPreferredPackages',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackagesRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackagesResponse.FromString,
                 _registered_method=True)
 
 
@@ -70,7 +85,25 @@ class InteractiveSubmissionServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ExecuteSubmissionAndWait(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ExecuteSubmissionAndWaitForTransaction(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetPreferredPackageVersion(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPreferredPackages(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -89,10 +122,25 @@ def add_InteractiveSubmissionServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionResponse.SerializeToString,
             ),
+            'ExecuteSubmissionAndWait': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExecuteSubmissionAndWait,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitResponse.SerializeToString,
+            ),
+            'ExecuteSubmissionAndWaitForTransaction': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExecuteSubmissionAndWaitForTransaction,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitForTransactionRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitForTransactionResponse.SerializeToString,
+            ),
             'GetPreferredPackageVersion': grpc.unary_unary_rpc_method_handler(
                     servicer.GetPreferredPackageVersion,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackageVersionRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackageVersionResponse.SerializeToString,
+            ),
+            'GetPreferredPackages': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPreferredPackages,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackagesRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackagesResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -160,6 +208,60 @@ class InteractiveSubmissionService(object):
             _registered_method=True)
 
     @staticmethod
+    def ExecuteSubmissionAndWait(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/ExecuteSubmissionAndWait',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ExecuteSubmissionAndWaitForTransaction(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/ExecuteSubmissionAndWaitForTransaction',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitForTransactionRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.ExecuteSubmissionAndWaitForTransactionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def GetPreferredPackageVersion(request,
             target,
             options=(),
@@ -176,6 +278,33 @@ class InteractiveSubmissionService(object):
             '/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/GetPreferredPackageVersion',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackageVersionRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackageVersionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetPreferredPackages(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/GetPreferredPackages',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackagesRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_interactive_dot_interactive__submission__service__pb2.GetPreferredPackagesResponse.FromString,
             options,
             channel_credentials,
             insecure,

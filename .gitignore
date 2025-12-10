@@ -30,3 +30,5 @@ target
 .qoder
 _fixtures/archives/*
 log/*
+.devcontainer.json
+.pre-commit-config.yaml

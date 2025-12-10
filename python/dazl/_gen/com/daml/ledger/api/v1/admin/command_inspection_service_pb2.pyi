@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from .. import value_pb2 as _value_pb2
 from .. import commands_pb2 as _commands_pb2
 from .. import completion_pb2 as _completion_pb2
@@ -85,7 +87,7 @@ class GetCommandStatusResponse(_message.Message):
         commands: _containers.RepeatedCompositeFieldContainer[_commands_pb2.Command]
         request_statistics: GetCommandStatusResponse.CommandStatus.RequestStatistics
         updates: GetCommandStatusResponse.CommandStatus.CommandUpdates
-        def __init__(self, started: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., completed: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., completion: _Optional[_Union[_completion_pb2.Completion, _Mapping]] = ..., state: _Optional[_Union[CommandState, str]] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., request_statistics: _Optional[_Union[GetCommandStatusResponse.CommandStatus.RequestStatistics, _Mapping]] = ..., updates: _Optional[_Union[GetCommandStatusResponse.CommandStatus.CommandUpdates, _Mapping]] = ...) -> None: ...
+        def __init__(self, started: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completion: _Optional[_Union[_completion_pb2.Completion, _Mapping]] = ..., state: _Optional[_Union[CommandState, str]] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., request_statistics: _Optional[_Union[GetCommandStatusResponse.CommandStatus.RequestStatistics, _Mapping]] = ..., updates: _Optional[_Union[GetCommandStatusResponse.CommandStatus.CommandUpdates, _Mapping]] = ...) -> None: ...
     COMMAND_STATUS_FIELD_NUMBER: _ClassVar[int]
     command_status: _containers.RepeatedCompositeFieldContainer[GetCommandStatusResponse.CommandStatus]
     def __init__(self, command_status: _Optional[_Iterable[_Union[GetCommandStatusResponse.CommandStatus, _Mapping]]] = ...) -> None: ...

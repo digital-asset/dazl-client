@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import traffic_control_parameters_pb2 as _traffic_control_parameters_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
@@ -40,11 +42,10 @@ class ParticipantSynchronizerLimits(_message.Message):
     def __init__(self, confirmation_requests_max_rate: _Optional[int] = ...) -> None: ...
 
 class DynamicSynchronizerParameters(_message.Message):
-    __slots__ = ("confirmation_response_timeout", "mediator_reaction_timeout", "assignment_exclusivity_timeout", "topology_change_delay", "ledger_time_record_time_tolerance", "reconciliation_interval", "mediator_deduplication_timeout", "max_request_size", "onboarding_restriction", "participant_synchronizer_limits", "sequencer_aggregate_submission_timeout", "traffic_control", "acs_commitments_catchup", "preparation_time_record_time_tolerance")
+    __slots__ = ("confirmation_response_timeout", "mediator_reaction_timeout", "assignment_exclusivity_timeout", "ledger_time_record_time_tolerance", "reconciliation_interval", "mediator_deduplication_timeout", "max_request_size", "onboarding_restriction", "participant_synchronizer_limits", "sequencer_aggregate_submission_timeout", "traffic_control", "acs_commitments_catchup", "preparation_time_record_time_tolerance")
     CONFIRMATION_RESPONSE_TIMEOUT_FIELD_NUMBER: _ClassVar[int]
     MEDIATOR_REACTION_TIMEOUT_FIELD_NUMBER: _ClassVar[int]
     ASSIGNMENT_EXCLUSIVITY_TIMEOUT_FIELD_NUMBER: _ClassVar[int]
-    TOPOLOGY_CHANGE_DELAY_FIELD_NUMBER: _ClassVar[int]
     LEDGER_TIME_RECORD_TIME_TOLERANCE_FIELD_NUMBER: _ClassVar[int]
     RECONCILIATION_INTERVAL_FIELD_NUMBER: _ClassVar[int]
     MEDIATOR_DEDUPLICATION_TIMEOUT_FIELD_NUMBER: _ClassVar[int]
@@ -58,7 +59,6 @@ class DynamicSynchronizerParameters(_message.Message):
     confirmation_response_timeout: _duration_pb2.Duration
     mediator_reaction_timeout: _duration_pb2.Duration
     assignment_exclusivity_timeout: _duration_pb2.Duration
-    topology_change_delay: _duration_pb2.Duration
     ledger_time_record_time_tolerance: _duration_pb2.Duration
     reconciliation_interval: _duration_pb2.Duration
     mediator_deduplication_timeout: _duration_pb2.Duration
@@ -69,4 +69,4 @@ class DynamicSynchronizerParameters(_message.Message):
     traffic_control: _traffic_control_parameters_pb2.TrafficControlParameters
     acs_commitments_catchup: AcsCommitmentsCatchUpConfig
     preparation_time_record_time_tolerance: _duration_pb2.Duration
-    def __init__(self, confirmation_response_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., mediator_reaction_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., assignment_exclusivity_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., topology_change_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., ledger_time_record_time_tolerance: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., reconciliation_interval: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., mediator_deduplication_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., max_request_size: _Optional[int] = ..., onboarding_restriction: _Optional[_Union[OnboardingRestriction, str]] = ..., participant_synchronizer_limits: _Optional[_Union[ParticipantSynchronizerLimits, _Mapping]] = ..., sequencer_aggregate_submission_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., traffic_control: _Optional[_Union[_traffic_control_parameters_pb2.TrafficControlParameters, _Mapping]] = ..., acs_commitments_catchup: _Optional[_Union[AcsCommitmentsCatchUpConfig, _Mapping]] = ..., preparation_time_record_time_tolerance: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, confirmation_response_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., mediator_reaction_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., assignment_exclusivity_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ledger_time_record_time_tolerance: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., reconciliation_interval: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., mediator_deduplication_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_request_size: _Optional[int] = ..., onboarding_restriction: _Optional[_Union[OnboardingRestriction, str]] = ..., participant_synchronizer_limits: _Optional[_Union[ParticipantSynchronizerLimits, _Mapping]] = ..., sequencer_aggregate_submission_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., traffic_control: _Optional[_Union[_traffic_control_parameters_pb2.TrafficControlParameters, _Mapping]] = ..., acs_commitments_catchup: _Optional[_Union[AcsCommitmentsCatchUpConfig, _Mapping]] = ..., preparation_time_record_time_tolerance: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...

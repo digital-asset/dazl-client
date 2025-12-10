@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v0 import crypto_pb2 as _crypto_pb2
 from ..v0 import topology_pb2 as _topology_pb2
 from . import sequencing_pb2 as _sequencing_pb2
@@ -106,4 +108,4 @@ class DomainTopologyTransactionMessage(_message.Message):
     domain_id: str
     not_sequenced_after: _timestamp_pb2.Timestamp
     transactions: _containers.RepeatedScalarFieldContainer[bytes]
-    def __init__(self, signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., domain_id: _Optional[str] = ..., not_sequenced_after: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., transactions: _Optional[_Iterable[bytes]] = ...) -> None: ...
+    def __init__(self, signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., domain_id: _Optional[str] = ..., not_sequenced_after: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., transactions: _Optional[_Iterable[bytes]] = ...) -> None: ...

@@ -23,11 +23,11 @@ class VersionServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _VersionServiceAsyncStub: ...  # type: ignore
-    def GetLedgerApiVersion(self, __1: GetLedgerApiVersionRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[GetLedgerApiVersionResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, GetLedgerApiVersionResponse]]: ...
+    def GetLedgerApiVersion(self, __1: GetLedgerApiVersionRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> GetLedgerApiVersionResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, GetLedgerApiVersionResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _VersionServiceBlockingStub(VersionServiceStub):
-    def GetLedgerApiVersion(self, __1: GetLedgerApiVersionRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> GetLedgerApiVersionResponse: ...
+    def GetLedgerApiVersion(self, __1: GetLedgerApiVersionRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> GetLedgerApiVersionResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _VersionServiceAsyncStub(VersionServiceStub):

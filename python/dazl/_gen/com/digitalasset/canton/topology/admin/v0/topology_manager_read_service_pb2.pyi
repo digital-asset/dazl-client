@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....crypto.v0 import crypto_pb2 as _crypto_pb2
 from ....protocol.v0 import sequencing_pb2 as _sequencing_pb2
 from ....protocol.v0 import topology_pb2 as _topology_pb2
@@ -72,7 +74,7 @@ class BaseQuery(_message.Message):
         FROM_FIELD_NUMBER: _ClassVar[int]
         UNTIL_FIELD_NUMBER: _ClassVar[int]
         until: _timestamp_pb2.Timestamp
-        def __init__(self, until: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., **kwargs) -> None: ...
+        def __init__(self, until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., **kwargs) -> None: ...
     FILTER_STORE_FIELD_NUMBER: _ClassVar[int]
     USE_STATE_STORE_FIELD_NUMBER: _ClassVar[int]
     OPERATION_FIELD_NUMBER: _ClassVar[int]
@@ -91,7 +93,7 @@ class BaseQuery(_message.Message):
     range: BaseQuery.TimeRange
     filter_signed_key: str
     protocol_version: _wrappers_pb2.StringValue
-    def __init__(self, filter_store: _Optional[str] = ..., use_state_store: bool = ..., operation: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., filter_operation: bool = ..., snapshot: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
+    def __init__(self, filter_store: _Optional[str] = ..., use_state_store: bool = ..., operation: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., filter_operation: bool = ..., snapshot: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class BaseResult(_message.Message):
     __slots__ = ("store", "sequenced", "valid_from", "valid_until", "operation", "serialized", "signed_by_fingerprint")
@@ -109,7 +111,7 @@ class BaseResult(_message.Message):
     operation: _topology_pb2.TopologyChangeOp
     serialized: bytes
     signed_by_fingerprint: str
-    def __init__(self, store: _Optional[str] = ..., sequenced: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_from: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., operation: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., serialized: _Optional[bytes] = ..., signed_by_fingerprint: _Optional[str] = ...) -> None: ...
+    def __init__(self, store: _Optional[str] = ..., sequenced: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., operation: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., serialized: _Optional[bytes] = ..., signed_by_fingerprint: _Optional[str] = ...) -> None: ...
 
 class ListPartyToParticipantResult(_message.Message):
     __slots__ = ("results",)

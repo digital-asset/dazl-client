@@ -5,20 +5,20 @@
 
 stdenv.mkDerivation rec {
   pname = "daml-protos";
-  version = "3.3";
+  version = "3.4.9";
   buildInputs = [ unzip ];
   src = builtins.fetchurl {
-    url = "https://github.com/digital-asset/daml/releases/download/v3.3.0-snapshot.20250603.0/protobufs-3.3.0-snapshot.20250528.13806.0.v3cd439fb.zip";
-    sha256 = "1rln4v128f4444fng31361yx280b2sx2y20ic7sncdp9hvn01i1c";
+    url = "https://github.com/digital-asset/daml/releases/download/v${version}/protobufs-${version}.zip";
+    sha256 = "1mky05mrd0pm6z0zk1vq3pwbn5p5sj53nzij7i4910zrn2m0wfzh";
   };
   dontUnpack = true;
   buildPhase = ''
     unzip $src
   '';
 
-  # the only protobufs from the Daml 3.x package that we care about are the latest Daml-LF
+  # Copy all Daml protos from 3.4.9, including Daml-LF and Ledger API
   installPhase = ''
-    mkdir -p "$out/com/daml/ledger/api"
-    cp -R "protos-3.3.0-snapshot.20250528.13806.0.v3cd439fb/com/daml/daml_lf_2_1" "$out/com/daml/"
+    mkdir -p "$out"
+    cp -R "protos-${version}/com" "$out/"
   '';
 }
