@@ -177,6 +177,16 @@ class CallContext(CallContextBase):
             kwargs["metadata"] = aio.Metadata(("authorization", f"Bearer {self.token}"))
         return kwargs
 
+    @property
+    def grpc_kwargs_infinite_timeout(self) -> GrpcKwargs:
+        """
+        Generate keyword arguments that should accompany a gRPC Ledger API call.
+        """
+        kwargs = GrpcKwargs()
+        if self.token:
+            kwargs["metadata"] = aio.Metadata(("authorization", f"Bearer {self.token}"))
+        return kwargs
+
 
 class Cache:
     pass
