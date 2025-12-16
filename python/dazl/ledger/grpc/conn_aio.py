@@ -1293,12 +1293,6 @@ class QueryStream(aio.QueryStreamBase):
     ) -> AsyncIterable[CreateEvent | Boundary]:
         stub = self._call.grpc_stub(lapipb.ActiveContractsServiceStub)
         request = lapipb.GetActiveContractsRequest(ledger_id=self._call.ledger_id, filter=filter_pb)
-        self._response_stream = response_stream = stub.GetActiveContracts(
-            request,
-            **self._call.grpc_kwargs,
-        )
-
-        offset = None
 
         # Unidirectional gRPC streams cannot sensibly have a deadline because the stream may be
         # open indefinitely. However, if fetching an individual message from the stream takes a
@@ -1306,6 +1300,13 @@ class QueryStream(aio.QueryStreamBase):
         # Contract Set messages are really supposed to be sent as quickly as the server can send
         # them. In other words, a long timeout pause in the middle of pulling down ACS messages
         # would be highly unusual, so we treat them as fatal
+        self._response_stream = response_stream = stub.GetActiveContracts(
+            request,
+            **self._call.grpc_kwargs_infinite_timeout,
+        )
+
+        offset = None
+
         i = response_stream.__aiter__()
         while True:
             try:
@@ -1347,7 +1348,7 @@ class QueryStream(aio.QueryStreamBase):
 
             self._response_stream = response_stream = stub.GetTransactions(
                 request,
-                **self._call.grpc_kwargs,
+                **self._call.grpc_kwargs_infinite_timeout,
             )
             i = response_stream.__aiter__()
 
