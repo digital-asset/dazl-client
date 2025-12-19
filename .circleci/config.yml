@@ -26,6 +26,14 @@ commands:
           paths:
             - /home/circleci/.daml
       - restore_cache:
+          key: daml-{{ checksum ".circleci/install-dpm" }}
+      - run:
+          command: .circleci/install-dpm
+      - save_cache:
+          key: daml-{{ checksum ".circleci/install-dpm" }}
+          paths:
+            - /home/circleci/.dpm
+      - restore_cache:
           key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>
       - run:
           command: poetry config virtualenvs.in-project true && make python-deps
