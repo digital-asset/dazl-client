@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import sequencer_administration_service_pb2 as _sequencer_administration_service_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -29,7 +31,7 @@ class SequencerSnapshot(_message.Message):
     head_member_counters: _containers.ScalarMap[str, int]
     status: _sequencer_administration_service_pb2.SequencerPruningStatus
     additional: ImplementationSpecificInfo
-    def __init__(self, latest_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., head_member_counters: _Optional[_Mapping[str, int]] = ..., status: _Optional[_Union[_sequencer_administration_service_pb2.SequencerPruningStatus, _Mapping]] = ..., additional: _Optional[_Union[ImplementationSpecificInfo, _Mapping]] = ...) -> None: ...
+    def __init__(self, latest_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_member_counters: _Optional[_Mapping[str, int]] = ..., status: _Optional[_Union[_sequencer_administration_service_pb2.SequencerPruningStatus, _Mapping]] = ..., additional: _Optional[_Union[ImplementationSpecificInfo, _Mapping]] = ...) -> None: ...
 
 class ImplementationSpecificInfo(_message.Message):
     __slots__ = ("implementation_name", "info")

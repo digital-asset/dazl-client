@@ -9,7 +9,7 @@ import warnings
 
 from . import package_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -53,6 +53,11 @@ class PackageServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.GetPackageStatusRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.GetPackageStatusResponse.FromString,
                 _registered_method=True)
+        self.ListVettedPackages = channel.unary_unary(
+                '/com.daml.ledger.api.v2.PackageService/ListVettedPackages',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.ListVettedPackagesRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.ListVettedPackagesResponse.FromString,
+                _registered_method=True)
 
 
 class PackageServiceServicer(object):
@@ -76,6 +81,12 @@ class PackageServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListVettedPackages(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_PackageServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -93,6 +104,11 @@ def add_PackageServiceServicer_to_server(servicer, server):
                     servicer.GetPackageStatus,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.GetPackageStatusRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.GetPackageStatusResponse.SerializeToString,
+            ),
+            'ListVettedPackages': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListVettedPackages,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.ListVettedPackagesRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.ListVettedPackagesResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -176,6 +192,33 @@ class PackageService(object):
             '/com.daml.ledger.api.v2.PackageService/GetPackageStatus',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.GetPackageStatusRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.GetPackageStatusResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListVettedPackages(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.PackageService/ListVettedPackages',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.ListVettedPackagesRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_package__service__pb2.ListVettedPackagesResponse.FromString,
             options,
             channel_credentials,
             insecure,

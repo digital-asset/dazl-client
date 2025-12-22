@@ -23,11 +23,11 @@ class ParticipantStatusServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _ParticipantStatusServiceAsyncStub: ...  # type: ignore
-    def ParticipantStatus(self, __1: ParticipantStatusRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[ParticipantStatusResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, ParticipantStatusResponse]]: ...
+    def ParticipantStatus(self, __1: ParticipantStatusRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> ParticipantStatusResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, ParticipantStatusResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _ParticipantStatusServiceBlockingStub(ParticipantStatusServiceStub):
-    def ParticipantStatus(self, __1: ParticipantStatusRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> ParticipantStatusResponse: ...
+    def ParticipantStatus(self, __1: ParticipantStatusRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> ParticipantStatusResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _ParticipantStatusServiceAsyncStub(ParticipantStatusServiceStub):

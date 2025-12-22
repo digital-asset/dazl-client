@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -52,7 +54,7 @@ class LookupOffsetByTime(_message.Message):
         __slots__ = ("timestamp",)
         TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
         timestamp: _timestamp_pb2.Timestamp
-        def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+        def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     class Response(_message.Message):
         __slots__ = ("offset",)
         OFFSET_FIELD_NUMBER: _ClassVar[int]

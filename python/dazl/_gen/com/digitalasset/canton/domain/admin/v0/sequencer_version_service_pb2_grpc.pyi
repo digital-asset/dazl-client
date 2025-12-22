@@ -23,11 +23,11 @@ class SequencerVersionServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _SequencerVersionServiceAsyncStub: ...  # type: ignore
-    def Handshake(self, __1: Handshake.Request, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[Handshake.Response, _grpc_aio.UnaryUnaryCall[_typing.Any, Handshake.Response]]: ...
+    def Handshake(self, __1: Handshake.Request, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> Handshake.Response | _grpc_aio.UnaryUnaryCall[_typing.Any, Handshake.Response]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _SequencerVersionServiceBlockingStub(SequencerVersionServiceStub):
-    def Handshake(self, __1: Handshake.Request, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> Handshake.Response: ...
+    def Handshake(self, __1: Handshake.Request, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> Handshake.Response: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _SequencerVersionServiceAsyncStub(SequencerVersionServiceStub):

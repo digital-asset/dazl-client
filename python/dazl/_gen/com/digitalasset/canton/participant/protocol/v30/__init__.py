@@ -4,10 +4,13 @@
 # isort: skip_file
 
 from .submission_tracking_pb2 import CommandRejected, CompletionInfo, SubmissionTrackingData, TransactionSubmissionTrackingData
+from .party_replication_pb2 import PartyReplicationSourceParticipantMessage, PartyReplicationTargetParticipantMessage
 
 __all__ = [
     "CommandRejected",
     "CompletionInfo",
+    "PartyReplicationSourceParticipantMessage",
+    "PartyReplicationTargetParticipantMessage",
     "SubmissionTrackingData",
     "TransactionSubmissionTrackingData",
 ]

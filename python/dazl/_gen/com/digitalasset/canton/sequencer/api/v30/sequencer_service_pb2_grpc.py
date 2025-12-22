@@ -9,7 +9,7 @@ import warnings
 
 from . import sequencer_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -43,9 +43,9 @@ class SequencerServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SendAsyncRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SendAsyncResponse.FromString,
                 _registered_method=True)
-        self.SubscribeV2 = channel.unary_stream(
-                '/com.digitalasset.canton.sequencer.api.v30.SequencerService/SubscribeV2',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionRequestV2.SerializeToString,
+        self.Subscribe = channel.unary_stream(
+                '/com.digitalasset.canton.sequencer.api.v30.SequencerService/Subscribe',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionResponse.FromString,
                 _registered_method=True)
         self.AcknowledgeSigned = channel.unary_unary(
@@ -58,10 +58,20 @@ class SequencerServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitResponse.FromString,
                 _registered_method=True)
+        self.DownloadTopologyStateForInitHash = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.api.v30.SequencerService/DownloadTopologyStateForInitHash',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitHashRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitHashResponse.FromString,
+                _registered_method=True)
         self.GetTrafficStateForMember = channel.unary_unary(
                 '/com.digitalasset.canton.sequencer.api.v30.SequencerService/GetTrafficStateForMember',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTrafficStateForMemberRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTrafficStateForMemberResponse.FromString,
+                _registered_method=True)
+        self.GetTime = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.api.v30.SequencerService/GetTime',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTimeRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTimeResponse.FromString,
                 _registered_method=True)
 
 
@@ -74,7 +84,7 @@ class SequencerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SubscribeV2(self, request, context):
+    def Subscribe(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -92,7 +102,19 @@ class SequencerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DownloadTopologyStateForInitHash(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetTrafficStateForMember(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTime(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -106,9 +128,9 @@ def add_SequencerServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SendAsyncRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SendAsyncResponse.SerializeToString,
             ),
-            'SubscribeV2': grpc.unary_stream_rpc_method_handler(
-                    servicer.SubscribeV2,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionRequestV2.FromString,
+            'Subscribe': grpc.unary_stream_rpc_method_handler(
+                    servicer.Subscribe,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionResponse.SerializeToString,
             ),
             'AcknowledgeSigned': grpc.unary_unary_rpc_method_handler(
@@ -121,10 +143,20 @@ def add_SequencerServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitResponse.SerializeToString,
             ),
+            'DownloadTopologyStateForInitHash': grpc.unary_unary_rpc_method_handler(
+                    servicer.DownloadTopologyStateForInitHash,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitHashRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitHashResponse.SerializeToString,
+            ),
             'GetTrafficStateForMember': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTrafficStateForMember,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTrafficStateForMemberRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTrafficStateForMemberResponse.SerializeToString,
+            ),
+            'GetTime': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTime,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTimeRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTimeResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -165,7 +197,7 @@ class SequencerService(object):
             _registered_method=True)
 
     @staticmethod
-    def SubscribeV2(request,
+    def Subscribe(request,
             target,
             options=(),
             channel_credentials=None,
@@ -178,8 +210,8 @@ class SequencerService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/com.digitalasset.canton.sequencer.api.v30.SequencerService/SubscribeV2',
-            com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionRequestV2.SerializeToString,
+            '/com.digitalasset.canton.sequencer.api.v30.SequencerService/Subscribe',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.SubscriptionResponse.FromString,
             options,
             channel_credentials,
@@ -246,6 +278,33 @@ class SequencerService(object):
             _registered_method=True)
 
     @staticmethod
+    def DownloadTopologyStateForInitHash(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.api.v30.SequencerService/DownloadTopologyStateForInitHash',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitHashRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.DownloadTopologyStateForInitHashResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def GetTrafficStateForMember(request,
             target,
             options=(),
@@ -262,6 +321,33 @@ class SequencerService(object):
             '/com.digitalasset.canton.sequencer.api.v30.SequencerService/GetTrafficStateForMember',
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTrafficStateForMemberRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTrafficStateForMemberResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetTime(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.api.v30.SequencerService/GetTime',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTimeRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2.GetTimeResponse.FromString,
             options,
             channel_credentials,
             insecure,

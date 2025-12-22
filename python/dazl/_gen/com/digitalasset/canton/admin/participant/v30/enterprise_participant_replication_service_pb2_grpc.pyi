@@ -23,11 +23,11 @@ class EnterpriseParticipantReplicationServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _EnterpriseParticipantReplicationServiceAsyncStub: ...  # type: ignore
-    def SetPassive(self, __1: SetPassiveRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[SetPassiveResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, SetPassiveResponse]]: ...
+    def SetPassive(self, __1: SetPassiveRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SetPassiveResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, SetPassiveResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _EnterpriseParticipantReplicationServiceBlockingStub(EnterpriseParticipantReplicationServiceStub):
-    def SetPassive(self, __1: SetPassiveRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SetPassiveResponse: ...
+    def SetPassive(self, __1: SetPassiveRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SetPassiveResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _EnterpriseParticipantReplicationServiceAsyncStub(EnterpriseParticipantReplicationServiceStub):

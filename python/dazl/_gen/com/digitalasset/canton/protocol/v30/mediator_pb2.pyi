@@ -28,12 +28,14 @@ class ParticipantReject(_message.Message):
     def __init__(self, reasons: _Optional[_Iterable[_Union[RejectionReason, _Mapping]]] = ...) -> None: ...
 
 class RejectionReason(_message.Message):
-    __slots__ = ("parties", "reject")
+    __slots__ = ("parties", "reject", "participant_id")
     PARTIES_FIELD_NUMBER: _ClassVar[int]
     REJECT_FIELD_NUMBER: _ClassVar[int]
+    PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
     parties: _containers.RepeatedScalarFieldContainer[str]
     reject: _confirmation_response_pb2.LocalVerdict
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., reject: _Optional[_Union[_confirmation_response_pb2.LocalVerdict, _Mapping]] = ...) -> None: ...
+    participant_id: str
+    def __init__(self, parties: _Optional[_Iterable[str]] = ..., reject: _Optional[_Union[_confirmation_response_pb2.LocalVerdict, _Mapping]] = ..., participant_id: _Optional[str] = ...) -> None: ...
 
 class MediatorReject(_message.Message):
     __slots__ = ("reason", "is_malformed")
@@ -54,15 +56,15 @@ class Verdict(_message.Message):
     def __init__(self, approve: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., participant_reject: _Optional[_Union[ParticipantReject, _Mapping]] = ..., mediator_reject: _Optional[_Union[MediatorReject, _Mapping]] = ...) -> None: ...
 
 class ConfirmationResultMessage(_message.Message):
-    __slots__ = ("synchronizer_id", "view_type", "request_id", "root_hash", "verdict")
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("physical_synchronizer_id", "view_type", "request_id", "root_hash", "verdict")
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     VIEW_TYPE_FIELD_NUMBER: _ClassVar[int]
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     ROOT_HASH_FIELD_NUMBER: _ClassVar[int]
     VERDICT_FIELD_NUMBER: _ClassVar[int]
-    synchronizer_id: str
+    physical_synchronizer_id: str
     view_type: _common_pb2.ViewType
     request_id: int
     root_hash: bytes
     verdict: Verdict
-    def __init__(self, synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ..., request_id: _Optional[int] = ..., root_hash: _Optional[bytes] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ...) -> None: ...
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ..., request_id: _Optional[int] = ..., root_hash: _Optional[bytes] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ...) -> None: ...

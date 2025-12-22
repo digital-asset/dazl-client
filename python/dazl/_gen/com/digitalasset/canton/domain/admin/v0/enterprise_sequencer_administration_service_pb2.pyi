@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import sequencer_initialization_snapshot_pb2 as _sequencer_initialization_snapshot_pb2
 from ....pruning.admin.v0 import pruning_pb2 as _pruning_pb2
 from google.protobuf import empty_pb2 as _empty_pb2
@@ -51,7 +53,7 @@ class Pruning(_message.Message):
         __slots__ = ("timestamp",)
         TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
         timestamp: _timestamp_pb2.Timestamp
-        def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+        def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     class Response(_message.Message):
         __slots__ = ("details",)
         DETAILS_FIELD_NUMBER: _ClassVar[int]
@@ -65,7 +67,7 @@ class Snapshot(_message.Message):
         __slots__ = ("timestamp",)
         TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
         timestamp: _timestamp_pb2.Timestamp
-        def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+        def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     class Response(_message.Message):
         __slots__ = ("success", "failure", "versionedSuccess")
         SUCCESS_FIELD_NUMBER: _ClassVar[int]

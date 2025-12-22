@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -29,7 +31,7 @@ class MediatorResponse(_message.Message):
     root_hash: bytes
     confirming_parties: _containers.RepeatedScalarFieldContainer[str]
     domain_id: str
-    def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., sender: _Optional[str] = ..., view_hash: _Optional[bytes] = ..., local_verdict: _Optional[_Union[LocalVerdict, _Mapping]] = ..., root_hash: _Optional[bytes] = ..., confirming_parties: _Optional[_Iterable[str]] = ..., domain_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., sender: _Optional[str] = ..., view_hash: _Optional[bytes] = ..., local_verdict: _Optional[_Union[LocalVerdict, _Mapping]] = ..., root_hash: _Optional[bytes] = ..., confirming_parties: _Optional[_Iterable[str]] = ..., domain_id: _Optional[str] = ...) -> None: ...
 
 class LocalVerdict(_message.Message):
     __slots__ = ("local_approve", "local_reject")

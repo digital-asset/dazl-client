@@ -3,15 +3,15 @@
 # fmt: off
 # isort: skip_file
 
-from .sequencing_pb2 import DynamicDomainParameters, StaticDomainParameters
-from .merkle_pb2 import BlindableNode, GenTransactionTree, MerkleSeq, MerkleSeqElement
-from .mediator_pb2 import InformeeTree, MalformedMediatorRequestResult, MediatorReject, ParticipantReject, TransactionResultMessage, TransferResult, Verdict
-from .topology_pb2 import DomainGovernanceTransaction, DomainParametersChange, DomainTopologyTransactionMessage, RegisterTopologyTransactionResponse, TopologyStateUpdate, TopologyTransaction
 from .common_pb2 import GlobalKey, Metadata, SerializableContract
-from .participant_transfer_pb2 import TransferInCommonData, TransferInMediatorMessage, TransferInView, TransferOutCommonData, TransferOutMediatorMessage, TransferOutView, TransferViewTree
+from .merkle_pb2 import BlindableNode, GenTransactionTree, MerkleSeq, MerkleSeqElement
 from .participant_transaction_pb2 import ActionDescription, CreatedContract, EncryptedViewMessage, FullInformeeTree, Informee, InformeeMessage, InputContract, LightTransactionViewTree, ParticipantRandomnessLookup, ResolvedKey, SubmitterMetadata, ViewCommonData, ViewNode, ViewParticipantMessage
-from .synchronization_pb2 import EnvelopeContent
+from .participant_transfer_pb2 import TransferInCommonData, TransferInMediatorMessage, TransferInView, TransferOutCommonData, TransferOutMediatorMessage, TransferOutView, TransferViewTree
+from .sequencing_pb2 import DynamicDomainParameters, StaticDomainParameters
+from .topology_pb2 import DomainGovernanceTransaction, DomainParametersChange, DomainTopologyTransactionMessage, RegisterTopologyTransactionResponse, TopologyStateUpdate, TopologyTransaction
+from .mediator_pb2 import InformeeTree, MalformedMediatorRequestResult, MediatorReject, ParticipantReject, TransactionResultMessage, TransferResult, Verdict
 from .mediator_response_pb2 import LocalReject, LocalVerdict, MediatorResponse
+from .synchronization_pb2 import EnvelopeContent
 
 __all__ = [
     "ActionDescription",

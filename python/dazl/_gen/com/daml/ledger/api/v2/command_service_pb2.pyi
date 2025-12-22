@@ -42,12 +42,6 @@ class SubmitAndWaitForTransactionResponse(_message.Message):
     transaction: _transaction_pb2.Transaction
     def __init__(self, transaction: _Optional[_Union[_transaction_pb2.Transaction, _Mapping]] = ...) -> None: ...
 
-class SubmitAndWaitForTransactionTreeResponse(_message.Message):
-    __slots__ = ("transaction",)
-    TRANSACTION_FIELD_NUMBER: _ClassVar[int]
-    transaction: _transaction_pb2.TransactionTree
-    def __init__(self, transaction: _Optional[_Union[_transaction_pb2.TransactionTree, _Mapping]] = ...) -> None: ...
-
 class SubmitAndWaitForReassignmentRequest(_message.Message):
     __slots__ = ("reassignment_commands", "event_format")
     REASSIGNMENT_COMMANDS_FIELD_NUMBER: _ClassVar[int]

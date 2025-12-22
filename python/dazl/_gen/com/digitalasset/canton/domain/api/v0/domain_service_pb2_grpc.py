@@ -9,7 +9,7 @@ import warnings
 
 from . import service_agreement_pb2 as com_dot_digitalasset_dot_canton_dot_domain_dot_api_dot_v0_dot_service__agreement__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 

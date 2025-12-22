@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v0 import crypto_pb2 as _crypto_pb2
 from . import common_pb2 as _common_pb2
 from . import merkle_pb2 as _merkle_pb2
@@ -22,7 +24,7 @@ class TransferId(_message.Message):
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     origin_domain: str
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, origin_domain: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, origin_domain: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class TransferOutMediatorMessage(_message.Message):
     __slots__ = ("tree",)

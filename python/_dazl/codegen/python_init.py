@@ -27,7 +27,8 @@ def write_init_files(fds: FileDescriptorSet, to: Path) -> None:
         if (
             fd.name.startswith("com/daml") or fd.name.startswith("com/digitalasset")
         ) and not fd.name.endswith(".pyi"):
-            plan[dirname(fd.name)].append(fd)
+            directory = dirname(fd.name)
+            plan[directory].append(fd)
 
     # for each directory we identified, make sure there is an entry for all of their parent
     # directories too; we may also want to generate empty __init__ files

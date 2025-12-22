@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....protocol.v30 import synchronizer_parameters_pb2 as _synchronizer_parameters_pb2
 from ....protocol.v30 import topology_pb2 as _topology_pb2
 from . import common_pb2 as _common_pb2
@@ -22,7 +24,7 @@ class BaseQuery(_message.Message):
         FROM_FIELD_NUMBER: _ClassVar[int]
         UNTIL_FIELD_NUMBER: _ClassVar[int]
         until: _timestamp_pb2.Timestamp
-        def __init__(self, until: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., **kwargs) -> None: ...
+        def __init__(self, until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., **kwargs) -> None: ...
     STORE_FIELD_NUMBER: _ClassVar[int]
     PROPOSALS_FIELD_NUMBER: _ClassVar[int]
     OPERATION_FIELD_NUMBER: _ClassVar[int]
@@ -39,7 +41,7 @@ class BaseQuery(_message.Message):
     range: BaseQuery.TimeRange
     filter_signed_key: str
     protocol_version: int
-    def __init__(self, store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., proposals: bool = ..., operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., snapshot: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[int] = ...) -> None: ...
+    def __init__(self, store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., proposals: bool = ..., operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., snapshot: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[int] = ...) -> None: ...
 
 class BaseResult(_message.Message):
     __slots__ = ("store", "sequenced", "valid_from", "valid_until", "operation", "transaction_hash", "serial", "signed_by_fingerprints")
@@ -59,7 +61,7 @@ class BaseResult(_message.Message):
     transaction_hash: bytes
     serial: int
     signed_by_fingerprints: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., sequenced: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_from: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., transaction_hash: _Optional[bytes] = ..., serial: _Optional[int] = ..., signed_by_fingerprints: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., sequenced: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., transaction_hash: _Optional[bytes] = ..., serial: _Optional[int] = ..., signed_by_fingerprints: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class ListNamespaceDelegationRequest(_message.Message):
     __slots__ = ("base_query", "filter_namespace", "filter_target_key_fingerprint")
@@ -319,7 +321,7 @@ class ListSequencerSynchronizerStateResponse(_message.Message):
     results: _containers.RepeatedCompositeFieldContainer[ListSequencerSynchronizerStateResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListSequencerSynchronizerStateResponse.Result, _Mapping]]] = ...) -> None: ...
 
-class ListPurgeTopologyTransactionRequest(_message.Message):
+class ListSynchronizerUpgradeAnnouncementRequest(_message.Message):
     __slots__ = ("base_query", "filter_synchronizer_id")
     BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
     FILTER_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -327,18 +329,39 @@ class ListPurgeTopologyTransactionRequest(_message.Message):
     filter_synchronizer_id: str
     def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., filter_synchronizer_id: _Optional[str] = ...) -> None: ...
 
-class ListPurgeTopologyTransactionResponse(_message.Message):
+class ListSynchronizerUpgradeAnnouncementResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
         __slots__ = ("context", "item")
         CONTEXT_FIELD_NUMBER: _ClassVar[int]
         ITEM_FIELD_NUMBER: _ClassVar[int]
         context: BaseResult
-        item: _topology_pb2.PurgeTopologyTransaction
-        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.PurgeTopologyTransaction, _Mapping]] = ...) -> None: ...
+        item: _topology_pb2.SynchronizerUpgradeAnnouncement
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.SynchronizerUpgradeAnnouncement, _Mapping]] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
-    results: _containers.RepeatedCompositeFieldContainer[ListPurgeTopologyTransactionResponse.Result]
-    def __init__(self, results: _Optional[_Iterable[_Union[ListPurgeTopologyTransactionResponse.Result, _Mapping]]] = ...) -> None: ...
+    results: _containers.RepeatedCompositeFieldContainer[ListSynchronizerUpgradeAnnouncementResponse.Result]
+    def __init__(self, results: _Optional[_Iterable[_Union[ListSynchronizerUpgradeAnnouncementResponse.Result, _Mapping]]] = ...) -> None: ...
+
+class ListSequencerConnectionSuccessorRequest(_message.Message):
+    __slots__ = ("base_query", "filter_sequencer_id")
+    BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
+    FILTER_SEQUENCER_ID_FIELD_NUMBER: _ClassVar[int]
+    base_query: BaseQuery
+    filter_sequencer_id: str
+    def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., filter_sequencer_id: _Optional[str] = ...) -> None: ...
+
+class ListSequencerConnectionSuccessorResponse(_message.Message):
+    __slots__ = ("results",)
+    class Result(_message.Message):
+        __slots__ = ("context", "item")
+        CONTEXT_FIELD_NUMBER: _ClassVar[int]
+        ITEM_FIELD_NUMBER: _ClassVar[int]
+        context: BaseResult
+        item: _topology_pb2.SequencerConnectionSuccessor
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.SequencerConnectionSuccessor, _Mapping]] = ...) -> None: ...
+    RESULTS_FIELD_NUMBER: _ClassVar[int]
+    results: _containers.RepeatedCompositeFieldContainer[ListSequencerConnectionSuccessorResponse.Result]
+    def __init__(self, results: _Optional[_Iterable[_Union[ListSequencerConnectionSuccessorResponse.Result, _Mapping]]] = ...) -> None: ...
 
 class ListAvailableStoresRequest(_message.Message):
     __slots__ = ()
@@ -360,6 +383,12 @@ class ListAllRequest(_message.Message):
     filter_namespace: str
     def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., exclude_mappings: _Optional[_Iterable[str]] = ..., filter_namespace: _Optional[str] = ...) -> None: ...
 
+class ListAllResponse(_message.Message):
+    __slots__ = ("result",)
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    result: _common_pb2.TopologyTransactions
+    def __init__(self, result: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ...) -> None: ...
+
 class ExportTopologySnapshotRequest(_message.Message):
     __slots__ = ("base_query", "exclude_mappings", "filter_namespace")
     BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
@@ -370,13 +399,23 @@ class ExportTopologySnapshotRequest(_message.Message):
     filter_namespace: str
     def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., exclude_mappings: _Optional[_Iterable[str]] = ..., filter_namespace: _Optional[str] = ...) -> None: ...
 
-class ListAllResponse(_message.Message):
-    __slots__ = ("result",)
-    RESULT_FIELD_NUMBER: _ClassVar[int]
-    result: _common_pb2.TopologyTransactions
-    def __init__(self, result: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ...) -> None: ...
-
 class ExportTopologySnapshotResponse(_message.Message):
+    __slots__ = ("chunk",)
+    CHUNK_FIELD_NUMBER: _ClassVar[int]
+    chunk: bytes
+    def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
+
+class ExportTopologySnapshotV2Request(_message.Message):
+    __slots__ = ("base_query", "exclude_mappings", "filter_namespace")
+    BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
+    EXCLUDE_MAPPINGS_FIELD_NUMBER: _ClassVar[int]
+    FILTER_NAMESPACE_FIELD_NUMBER: _ClassVar[int]
+    base_query: BaseQuery
+    exclude_mappings: _containers.RepeatedScalarFieldContainer[str]
+    filter_namespace: str
+    def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., exclude_mappings: _Optional[_Iterable[str]] = ..., filter_namespace: _Optional[str] = ...) -> None: ...
+
+class ExportTopologySnapshotV2Response(_message.Message):
     __slots__ = ("chunk",)
     CHUNK_FIELD_NUMBER: _ClassVar[int]
     chunk: bytes
@@ -388,9 +427,33 @@ class GenesisStateRequest(_message.Message):
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     synchronizer_store: _common_pb2.StoreId
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, synchronizer_store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, synchronizer_store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class GenesisStateResponse(_message.Message):
+    __slots__ = ("chunk",)
+    CHUNK_FIELD_NUMBER: _ClassVar[int]
+    chunk: bytes
+    def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
+
+class GenesisStateV2Request(_message.Message):
+    __slots__ = ("synchronizer_store", "timestamp")
+    SYNCHRONIZER_STORE_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_store: _common_pb2.StoreId
+    timestamp: _timestamp_pb2.Timestamp
+    def __init__(self, synchronizer_store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class GenesisStateV2Response(_message.Message):
+    __slots__ = ("chunk",)
+    CHUNK_FIELD_NUMBER: _ClassVar[int]
+    chunk: bytes
+    def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
+
+class LogicalUpgradeStateRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class LogicalUpgradeStateResponse(_message.Message):
     __slots__ = ("chunk",)
     CHUNK_FIELD_NUMBER: _ClassVar[int]
     chunk: bytes

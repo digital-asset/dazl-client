@@ -23,11 +23,11 @@ class CommandCompletionServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _CommandCompletionServiceAsyncStub: ...  # type: ignore
-    def CompletionStream(self, __1: CompletionStreamRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[_grpc.CallIterator[CompletionStreamResponse], _grpc_aio.UnaryStreamCall[_typing.Any, CompletionStreamResponse]]: ...
+    def CompletionStream(self, __1: CompletionStreamRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc.CallIterator[CompletionStreamResponse] | _grpc_aio.UnaryStreamCall[_typing.Any, CompletionStreamResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _CommandCompletionServiceBlockingStub(CommandCompletionServiceStub):
-    def CompletionStream(self, __1: CompletionStreamRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc.CallIterator[CompletionStreamResponse]: ...
+    def CompletionStream(self, __1: CompletionStreamRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc.CallIterator[CompletionStreamResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _CommandCompletionServiceAsyncStub(CommandCompletionServiceStub):

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import participant_transfer_pb2 as _participant_transfer_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -30,7 +32,7 @@ class VectorClock(_message.Message):
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
         value: _timestamp_pb2.Timestamp
-        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     ORIGIN_DOMAIN_ID_FIELD_NUMBER: _ClassVar[int]
     LOCAL_TS_FIELD_NUMBER: _ClassVar[int]
     PARTY_ID_FIELD_NUMBER: _ClassVar[int]
@@ -39,7 +41,7 @@ class VectorClock(_message.Message):
     local_ts: _timestamp_pb2.Timestamp
     party_id: str
     clock: _containers.MessageMap[str, _timestamp_pb2.Timestamp]
-    def __init__(self, origin_domain_id: _Optional[str] = ..., local_ts: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., party_id: _Optional[str] = ..., clock: _Optional[_Mapping[str, _timestamp_pb2.Timestamp]] = ...) -> None: ...
+    def __init__(self, origin_domain_id: _Optional[str] = ..., local_ts: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., party_id: _Optional[str] = ..., clock: _Optional[_Mapping[str, _timestamp_pb2.Timestamp]] = ...) -> None: ...
 
 class CausalityUpdate(_message.Message):
     __slots__ = ("informeeStakeholders", "ts", "domain_id", "request_counter", "transactionUpdate", "transferOutUpdate", "transferInUpdate")
@@ -57,7 +59,7 @@ class CausalityUpdate(_message.Message):
     transactionUpdate: TransactionUpdate
     transferOutUpdate: TransferOutUpdate
     transferInUpdate: TransferInUpdate
-    def __init__(self, informeeStakeholders: _Optional[_Iterable[str]] = ..., ts: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., domain_id: _Optional[str] = ..., request_counter: _Optional[int] = ..., transactionUpdate: _Optional[_Union[TransactionUpdate, _Mapping]] = ..., transferOutUpdate: _Optional[_Union[TransferOutUpdate, _Mapping]] = ..., transferInUpdate: _Optional[_Union[TransferInUpdate, _Mapping]] = ...) -> None: ...
+    def __init__(self, informeeStakeholders: _Optional[_Iterable[str]] = ..., ts: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., domain_id: _Optional[str] = ..., request_counter: _Optional[int] = ..., transactionUpdate: _Optional[_Union[TransactionUpdate, _Mapping]] = ..., transferOutUpdate: _Optional[_Union[TransferOutUpdate, _Mapping]] = ..., transferInUpdate: _Optional[_Union[TransferInUpdate, _Mapping]] = ...) -> None: ...
 
 class TransactionUpdate(_message.Message):
     __slots__ = ()

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import trace_context_pb2 as _trace_context_pb2
 from . import event_pb2 as _event_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -38,7 +40,7 @@ class TransactionTree(_message.Message):
     events_by_id: _containers.MessageMap[str, TreeEvent]
     root_event_ids: _containers.RepeatedScalarFieldContainer[str]
     trace_context: _trace_context_pb2.TraceContext
-    def __init__(self, transaction_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., effective_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., offset: _Optional[str] = ..., events_by_id: _Optional[_Mapping[str, TreeEvent]] = ..., root_event_ids: _Optional[_Iterable[str]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ...) -> None: ...
+    def __init__(self, transaction_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., effective_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., offset: _Optional[str] = ..., events_by_id: _Optional[_Mapping[str, TreeEvent]] = ..., root_event_ids: _Optional[_Iterable[str]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ...) -> None: ...
 
 class TreeEvent(_message.Message):
     __slots__ = ("created", "exercised")
@@ -64,4 +66,4 @@ class Transaction(_message.Message):
     events: _containers.RepeatedCompositeFieldContainer[_event_pb2.Event]
     offset: str
     trace_context: _trace_context_pb2.TraceContext
-    def __init__(self, transaction_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., effective_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., events: _Optional[_Iterable[_Union[_event_pb2.Event, _Mapping]]] = ..., offset: _Optional[str] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ...) -> None: ...
+    def __init__(self, transaction_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., effective_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., events: _Optional[_Iterable[_Union[_event_pb2.Event, _Mapping]]] = ..., offset: _Optional[str] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ...) -> None: ...

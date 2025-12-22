@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import descriptor as _descriptor
@@ -33,7 +35,7 @@ class SetTimeModelRequest(_message.Message):
     maximum_record_time: _timestamp_pb2.Timestamp
     configuration_generation: int
     new_time_model: TimeModel
-    def __init__(self, submission_id: _Optional[str] = ..., maximum_record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., configuration_generation: _Optional[int] = ..., new_time_model: _Optional[_Union[TimeModel, _Mapping]] = ...) -> None: ...
+    def __init__(self, submission_id: _Optional[str] = ..., maximum_record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., configuration_generation: _Optional[int] = ..., new_time_model: _Optional[_Union[TimeModel, _Mapping]] = ...) -> None: ...
 
 class SetTimeModelResponse(_message.Message):
     __slots__ = ("configuration_generation",)
@@ -49,4 +51,4 @@ class TimeModel(_message.Message):
     avg_transaction_latency: _duration_pb2.Duration
     min_skew: _duration_pb2.Duration
     max_skew: _duration_pb2.Duration
-    def __init__(self, avg_transaction_latency: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., min_skew: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., max_skew: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, avg_transaction_latency: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., min_skew: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_skew: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...

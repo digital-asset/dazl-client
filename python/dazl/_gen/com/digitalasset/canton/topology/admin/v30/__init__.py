@@ -3,15 +3,15 @@
 # fmt: off
 # isort: skip_file
 
-from .common_pb2 import StoreId, TopologyTransactions
+from .common_pb2 import StoreId, Synchronizer, TopologyTransactions
+from .topology_manager_read_service_pb2 import BaseQuery, BaseResult, ExportTopologySnapshotRequest, ExportTopologySnapshotResponse, ExportTopologySnapshotV2Request, ExportTopologySnapshotV2Response, GenesisStateRequest, GenesisStateResponse, GenesisStateV2Request, GenesisStateV2Response, ListAllRequest, ListAllResponse, ListAvailableStoresRequest, ListAvailableStoresResponse, ListDecentralizedNamespaceDefinitionRequest, ListDecentralizedNamespaceDefinitionResponse, ListMediatorSynchronizerStateRequest, ListMediatorSynchronizerStateResponse, ListNamespaceDelegationRequest, ListNamespaceDelegationResponse, ListOwnerToKeyMappingRequest, ListOwnerToKeyMappingResponse, ListParticipantSynchronizerPermissionRequest, ListParticipantSynchronizerPermissionResponse, ListPartyHostingLimitsRequest, ListPartyHostingLimitsResponse, ListPartyToKeyMappingRequest, ListPartyToKeyMappingResponse, ListPartyToParticipantRequest, ListPartyToParticipantResponse, ListSequencerConnectionSuccessorRequest, ListSequencerConnectionSuccessorResponse, ListSequencerSynchronizerStateRequest, ListSequencerSynchronizerStateResponse, ListSynchronizerParametersStateRequest, ListSynchronizerParametersStateResponse, ListSynchronizerTrustCertificateRequest, ListSynchronizerTrustCertificateResponse, ListSynchronizerUpgradeAnnouncementRequest, ListSynchronizerUpgradeAnnouncementResponse, ListVettedPackagesRequest, ListVettedPackagesResponse, LogicalUpgradeStateRequest, LogicalUpgradeStateResponse
+from .topology_manager_read_service_pb2_grpc import TopologyManagerReadServiceStub
 from .initialization_service_pb2 import CurrentTimeRequest, CurrentTimeResponse, GetIdRequest, GetIdResponse, GetOnboardingTransactionsRequest, GetOnboardingTransactionsResponse, InitIdRequest, InitIdResponse
 from .initialization_service_pb2_grpc import IdentityInitializationServiceStub
-from .topology_manager_write_service_pb2 import AddTransactionsRequest, AddTransactionsResponse, AuthorizeRequest, AuthorizeResponse, CreateTemporaryTopologyStoreRequest, CreateTemporaryTopologyStoreResponse, DropTemporaryTopologyStoreRequest, DropTemporaryTopologyStoreResponse, ForceFlag, GenerateTransactionsRequest, GenerateTransactionsResponse, ImportTopologySnapshotRequest, ImportTopologySnapshotResponse, SignTransactionsRequest, SignTransactionsResponse
-from .topology_manager_write_service_pb2_grpc import TopologyManagerWriteServiceStub
-from .topology_manager_read_service_pb2 import BaseQuery, BaseResult, ExportTopologySnapshotRequest, ExportTopologySnapshotResponse, GenesisStateRequest, GenesisStateResponse, ListAllRequest, ListAllResponse, ListAvailableStoresRequest, ListAvailableStoresResponse, ListDecentralizedNamespaceDefinitionRequest, ListDecentralizedNamespaceDefinitionResponse, ListMediatorSynchronizerStateRequest, ListMediatorSynchronizerStateResponse, ListNamespaceDelegationRequest, ListNamespaceDelegationResponse, ListOwnerToKeyMappingRequest, ListOwnerToKeyMappingResponse, ListParticipantSynchronizerPermissionRequest, ListParticipantSynchronizerPermissionResponse, ListPartyHostingLimitsRequest, ListPartyHostingLimitsResponse, ListPartyToKeyMappingRequest, ListPartyToKeyMappingResponse, ListPartyToParticipantRequest, ListPartyToParticipantResponse, ListPurgeTopologyTransactionRequest, ListPurgeTopologyTransactionResponse, ListSequencerSynchronizerStateRequest, ListSequencerSynchronizerStateResponse, ListSynchronizerParametersStateRequest, ListSynchronizerParametersStateResponse, ListSynchronizerTrustCertificateRequest, ListSynchronizerTrustCertificateResponse, ListVettedPackagesRequest, ListVettedPackagesResponse
-from .topology_manager_read_service_pb2_grpc import TopologyManagerReadServiceStub
 from .topology_aggregation_service_pb2 import ListKeyOwnersRequest, ListKeyOwnersResponse, ListPartiesRequest, ListPartiesResponse
 from .topology_aggregation_service_pb2_grpc import TopologyAggregationServiceStub
+from .topology_manager_write_service_pb2 import AddTransactionsRequest, AddTransactionsResponse, AuthorizeRequest, AuthorizeResponse, CreateTemporaryTopologyStoreRequest, CreateTemporaryTopologyStoreResponse, DropTemporaryTopologyStoreRequest, DropTemporaryTopologyStoreResponse, ForceFlag, GenerateTransactionsRequest, GenerateTransactionsResponse, ImportTopologySnapshotRequest, ImportTopologySnapshotResponse, ImportTopologySnapshotV2Request, ImportTopologySnapshotV2Response, SignTransactionsRequest, SignTransactionsResponse
+from .topology_manager_write_service_pb2_grpc import TopologyManagerWriteServiceStub
 
 __all__ = [
     "AddTransactionsRequest",
@@ -28,11 +28,15 @@ __all__ = [
     "DropTemporaryTopologyStoreResponse",
     "ExportTopologySnapshotRequest",
     "ExportTopologySnapshotResponse",
+    "ExportTopologySnapshotV2Request",
+    "ExportTopologySnapshotV2Response",
     "ForceFlag",
     "GenerateTransactionsRequest",
     "GenerateTransactionsResponse",
     "GenesisStateRequest",
     "GenesisStateResponse",
+    "GenesisStateV2Request",
+    "GenesisStateV2Response",
     "GetIdRequest",
     "GetIdResponse",
     "GetOnboardingTransactionsRequest",
@@ -40,6 +44,8 @@ __all__ = [
     "IdentityInitializationServiceStub",
     "ImportTopologySnapshotRequest",
     "ImportTopologySnapshotResponse",
+    "ImportTopologySnapshotV2Request",
+    "ImportTopologySnapshotV2Response",
     "InitIdRequest",
     "InitIdResponse",
     "ListAllRequest",
@@ -66,19 +72,24 @@ __all__ = [
     "ListPartyToKeyMappingResponse",
     "ListPartyToParticipantRequest",
     "ListPartyToParticipantResponse",
-    "ListPurgeTopologyTransactionRequest",
-    "ListPurgeTopologyTransactionResponse",
+    "ListSequencerConnectionSuccessorRequest",
+    "ListSequencerConnectionSuccessorResponse",
     "ListSequencerSynchronizerStateRequest",
     "ListSequencerSynchronizerStateResponse",
     "ListSynchronizerParametersStateRequest",
     "ListSynchronizerParametersStateResponse",
     "ListSynchronizerTrustCertificateRequest",
     "ListSynchronizerTrustCertificateResponse",
+    "ListSynchronizerUpgradeAnnouncementRequest",
+    "ListSynchronizerUpgradeAnnouncementResponse",
     "ListVettedPackagesRequest",
     "ListVettedPackagesResponse",
+    "LogicalUpgradeStateRequest",
+    "LogicalUpgradeStateResponse",
     "SignTransactionsRequest",
     "SignTransactionsResponse",
     "StoreId",
+    "Synchronizer",
     "TopologyAggregationServiceStub",
     "TopologyManagerReadServiceStub",
     "TopologyManagerWriteServiceStub",

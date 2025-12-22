@@ -9,7 +9,7 @@ import warnings
 
 from . import topology_manager_write_service_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -53,6 +53,11 @@ class TopologyManagerWriteServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotResponse.FromString,
                 _registered_method=True)
+        self.ImportTopologySnapshotV2 = channel.stream_unary(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService/ImportTopologySnapshotV2',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotV2Request.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotV2Response.FromString,
+                _registered_method=True)
         self.SignTransactions = channel.unary_unary(
                 '/com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService/SignTransactions',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.SignTransactionsRequest.SerializeToString,
@@ -91,6 +96,12 @@ class TopologyManagerWriteServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ImportTopologySnapshot(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ImportTopologySnapshotV2(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -137,6 +148,11 @@ def add_TopologyManagerWriteServiceServicer_to_server(servicer, server):
                     servicer.ImportTopologySnapshot,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotResponse.SerializeToString,
+            ),
+            'ImportTopologySnapshotV2': grpc.stream_unary_rpc_method_handler(
+                    servicer.ImportTopologySnapshotV2,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotV2Request.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotV2Response.SerializeToString,
             ),
             'SignTransactions': grpc.unary_unary_rpc_method_handler(
                     servicer.SignTransactions,
@@ -240,6 +256,33 @@ class TopologyManagerWriteService(object):
             '/com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService/ImportTopologySnapshot',
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ImportTopologySnapshotV2(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_unary(
+            request_iterator,
+            target,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService/ImportTopologySnapshotV2',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotV2Request.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2.ImportTopologySnapshotV2Response.FromString,
             options,
             channel_credentials,
             insecure,

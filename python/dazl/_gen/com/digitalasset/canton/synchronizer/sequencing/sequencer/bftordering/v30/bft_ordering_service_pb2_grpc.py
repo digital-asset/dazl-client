@@ -9,7 +9,7 @@ import warnings
 
 from . import bft_ordering_service_pb2 as com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -38,26 +38,15 @@ class BftOrderingServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Ping = channel.unary_unary(
-                '/com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.BftOrderingService/Ping',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.PingRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.PingResponse.FromString,
-                _registered_method=True)
         self.Receive = channel.stream_stream(
                 '/com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.BftOrderingService/Receive',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingServiceReceiveRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingServiceReceiveResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingMessage.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingMessage.FromString,
                 _registered_method=True)
 
 
 class BftOrderingServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
-
-    def Ping(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
     def Receive(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
@@ -68,15 +57,10 @@ class BftOrderingServiceServicer(object):
 
 def add_BftOrderingServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Ping': grpc.unary_unary_rpc_method_handler(
-                    servicer.Ping,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.PingRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.PingResponse.SerializeToString,
-            ),
             'Receive': grpc.stream_stream_rpc_method_handler(
                     servicer.Receive,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingServiceReceiveRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingServiceReceiveResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingMessage.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingMessage.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -88,33 +72,6 @@ def add_BftOrderingServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class BftOrderingService(object):
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def Ping(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.BftOrderingService/Ping',
-            com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.PingRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.PingResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
 
     @staticmethod
     def Receive(request_iterator,
@@ -131,8 +88,8 @@ class BftOrderingService(object):
             request_iterator,
             target,
             '/com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.BftOrderingService/Receive',
-            com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingServiceReceiveRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingServiceReceiveResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingMessage.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2.BftOrderingMessage.FromString,
             options,
             channel_credentials,
             insecure,

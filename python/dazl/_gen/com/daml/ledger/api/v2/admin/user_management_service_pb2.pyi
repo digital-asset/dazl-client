@@ -27,7 +27,7 @@ class User(_message.Message):
     def __init__(self, id: _Optional[str] = ..., primary_party: _Optional[str] = ..., is_deactivated: bool = ..., metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
 
 class Right(_message.Message):
-    __slots__ = ("participant_admin", "can_act_as", "can_read_as", "identity_provider_admin", "can_read_as_any_party")
+    __slots__ = ("participant_admin", "can_act_as", "can_read_as", "identity_provider_admin", "can_read_as_any_party", "can_execute_as", "can_execute_as_any_party")
     class ParticipantAdmin(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
@@ -41,10 +41,18 @@ class Right(_message.Message):
         PARTY_FIELD_NUMBER: _ClassVar[int]
         party: str
         def __init__(self, party: _Optional[str] = ...) -> None: ...
+    class CanExecuteAs(_message.Message):
+        __slots__ = ("party",)
+        PARTY_FIELD_NUMBER: _ClassVar[int]
+        party: str
+        def __init__(self, party: _Optional[str] = ...) -> None: ...
     class IdentityProviderAdmin(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
     class CanReadAsAnyParty(_message.Message):
+        __slots__ = ()
+        def __init__(self) -> None: ...
+    class CanExecuteAsAnyParty(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
     PARTICIPANT_ADMIN_FIELD_NUMBER: _ClassVar[int]
@@ -52,12 +60,16 @@ class Right(_message.Message):
     CAN_READ_AS_FIELD_NUMBER: _ClassVar[int]
     IDENTITY_PROVIDER_ADMIN_FIELD_NUMBER: _ClassVar[int]
     CAN_READ_AS_ANY_PARTY_FIELD_NUMBER: _ClassVar[int]
+    CAN_EXECUTE_AS_FIELD_NUMBER: _ClassVar[int]
+    CAN_EXECUTE_AS_ANY_PARTY_FIELD_NUMBER: _ClassVar[int]
     participant_admin: Right.ParticipantAdmin
     can_act_as: Right.CanActAs
     can_read_as: Right.CanReadAs
     identity_provider_admin: Right.IdentityProviderAdmin
     can_read_as_any_party: Right.CanReadAsAnyParty
-    def __init__(self, participant_admin: _Optional[_Union[Right.ParticipantAdmin, _Mapping]] = ..., can_act_as: _Optional[_Union[Right.CanActAs, _Mapping]] = ..., can_read_as: _Optional[_Union[Right.CanReadAs, _Mapping]] = ..., identity_provider_admin: _Optional[_Union[Right.IdentityProviderAdmin, _Mapping]] = ..., can_read_as_any_party: _Optional[_Union[Right.CanReadAsAnyParty, _Mapping]] = ...) -> None: ...
+    can_execute_as: Right.CanExecuteAs
+    can_execute_as_any_party: Right.CanExecuteAsAnyParty
+    def __init__(self, participant_admin: _Optional[_Union[Right.ParticipantAdmin, _Mapping]] = ..., can_act_as: _Optional[_Union[Right.CanActAs, _Mapping]] = ..., can_read_as: _Optional[_Union[Right.CanReadAs, _Mapping]] = ..., identity_provider_admin: _Optional[_Union[Right.IdentityProviderAdmin, _Mapping]] = ..., can_read_as_any_party: _Optional[_Union[Right.CanReadAsAnyParty, _Mapping]] = ..., can_execute_as: _Optional[_Union[Right.CanExecuteAs, _Mapping]] = ..., can_execute_as_any_party: _Optional[_Union[Right.CanExecuteAsAnyParty, _Mapping]] = ...) -> None: ...
 
 class CreateUserRequest(_message.Message):
     __slots__ = ("user", "rights")

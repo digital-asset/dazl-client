@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -24,7 +26,7 @@ class TrafficControlParameters(_message.Message):
     set_balance_request_submission_window_size: _duration_pb2.Duration
     enforce_rate_limiting: bool
     base_event_cost: int
-    def __init__(self, max_base_traffic_amount: _Optional[int] = ..., max_base_traffic_accumulation_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., read_vs_write_scaling_factor: _Optional[int] = ..., set_balance_request_submission_window_size: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., enforce_rate_limiting: bool = ..., base_event_cost: _Optional[int] = ...) -> None: ...
+    def __init__(self, max_base_traffic_amount: _Optional[int] = ..., max_base_traffic_accumulation_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., read_vs_write_scaling_factor: _Optional[int] = ..., set_balance_request_submission_window_size: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., enforce_rate_limiting: bool = ..., base_event_cost: _Optional[int] = ...) -> None: ...
 
 class TrafficReceipt(_message.Message):
     __slots__ = ("consumed_cost", "extra_traffic_consumed", "base_traffic_remainder")
@@ -79,13 +81,13 @@ class TrafficState(_message.Message):
     def __init__(self, extra_traffic_purchased: _Optional[int] = ..., extra_traffic_consumed: _Optional[int] = ..., base_traffic_remainder: _Optional[int] = ..., last_consumed_cost: _Optional[int] = ..., timestamp: _Optional[int] = ..., serial: _Optional[int] = ...) -> None: ...
 
 class SetTrafficPurchasedMessage(_message.Message):
-    __slots__ = ("member", "serial", "total_traffic_purchased", "synchronizer_id")
+    __slots__ = ("member", "serial", "total_traffic_purchased", "physical_synchronizer_id")
     MEMBER_FIELD_NUMBER: _ClassVar[int]
     SERIAL_FIELD_NUMBER: _ClassVar[int]
     TOTAL_TRAFFIC_PURCHASED_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     member: str
     serial: int
     total_traffic_purchased: int
-    synchronizer_id: str
-    def __init__(self, member: _Optional[str] = ..., serial: _Optional[int] = ..., total_traffic_purchased: _Optional[int] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+    physical_synchronizer_id: str
+    def __init__(self, member: _Optional[str] = ..., serial: _Optional[int] = ..., total_traffic_purchased: _Optional[int] = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...

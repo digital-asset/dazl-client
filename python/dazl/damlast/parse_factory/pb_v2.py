@@ -25,45 +25,53 @@ class ProtobufParser21(ProtobufParserBase):
     def parse_Unit(self, pb: pblf.Unit) -> lf.Unit:
         return lf.UNIT
 
-    def parse_ModuleRef(self, pb: pblf.ModuleRef) -> Optional[lf.ModuleRef]:
-        sum_name = pb.package_ref.WhichOneof("Sum")
+    def parse_ModuleId(self, pb: pblf.ModuleId) -> Optional[lf.ModuleRef]:
+        sum_name = pb.package_id.WhichOneof("Sum")
         if sum_name is None:
             return None
 
         module_name = lf.DottedName(self.interned_dotted_names[pb.module_name_interned_dname])
         match sum_name:
-            case "self":
+            case "self_package_id":
                 return lf.ModuleRef(self.current_package, module_name)
-            case "package_id_interned_str":
+            case "imported_package_id_interned_str":
                 return lf.ModuleRef(
-                    lf.PackageRef(self.interned_strings[pb.package_ref.package_id_interned_str]),
+                    lf.PackageRef(
+                        self.interned_strings[pb.package_id.imported_package_id_interned_str]
+                    ),
+                    module_name,
+                )
+            case "package_import_id":
+                # Handle package_import_id case - use interned string lookup
+                return lf.ModuleRef(
+                    lf.PackageRef(self.interned_strings[pb.package_id.package_import_id]),
                     module_name,
                 )
             case _:
                 raise ValueError(f"unknown sum type value: {sum_name!r}")
 
-    def parse_TypeConName(self, pb: pblf.TypeConName) -> lf.TypeConName:
-        module_ref = self.parse_ModuleRef(pb.module)
+    def parse_TypeConId(self, pb: pblf.TypeConId) -> lf.TypeConName:
+        module_ref = self.parse_ModuleId(pb.module)
         if module_ref is None:
-            raise ValueError("missing a valid ModuleRef in a TypeConName definition")
+            raise ValueError("missing a valid ModuleId in a TypeConId definition")
         return lf.TypeConName(
             module_ref,
             self.interned_dotted_names[pb.name_interned_dname],
         )
 
-    def parse_TypeSynName(self, pb: pblf.TypeSynName) -> lf.TypeSynName:
-        module_ref = self.parse_ModuleRef(pb.module)
+    def parse_TypeSynId(self, pb: pblf.TypeSynId) -> lf.TypeSynName:
+        module_ref = self.parse_ModuleId(pb.module)
         if module_ref is None:
-            raise ValueError("missing a valid ModuleRef in a TypeSynName definition")
+            raise ValueError("missing a valid ModuleId in a TypeSynId definition")
         return lf.TypeSynName(
             module_ref,
             self.interned_dotted_names[pb.name_interned_dname],
         )
 
-    def parse_ValName(self, pb: pblf.ValName) -> lf.ValName:
-        module_ref = self.parse_ModuleRef(pb.module)
+    def parse_ValueId(self, pb: pblf.ValueId) -> lf.ValName:
+        module_ref = self.parse_ModuleId(pb.module)
         if module_ref is None:
-            raise ValueError("missing a valid ModuleRef in a ValName definition")
+            raise ValueError("missing a valid ModuleId in a ValueId definition")
         return lf.ValName(
             module_ref,
             self.interned_dotted_names[pb.name_interned_dname],
@@ -129,8 +137,8 @@ class ProtobufParser21(ProtobufParserBase):
                 return lf.Type(nat=pb.nat)
             case "syn":
                 return lf.Type(syn=self.parse_Type_Syn(pb.syn))
-            case "interned":
-                return self.interned_types[pb.interned]
+            case "interned_type":
+                return self.interned_types[pb.interned_type]
             case _:
                 raise ValueError(f"unknown sum type value: {sum_name!r}")
 
@@ -147,7 +155,7 @@ class ProtobufParser21(ProtobufParserBase):
         Create a :class:`Type` instance (but may produce something slightly different than the AST
         due to ``Map``/``Optional`` type rewriting).
         """
-        tycon = self.parse_TypeConName(pb.tycon)
+        tycon = self.parse_TypeConId(pb.tycon)
         args = tuple(self.parse_Type(arg) for arg in pb.args)
         return lf.Type(con=lf.Type.Con(tycon, args))
 
@@ -166,7 +174,7 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_Type_Syn(self, pb: pblf.Type.Syn) -> lf.Type.Syn:
         return lf.Type.Syn(
-            tysyn=self.parse_TypeSynName(pb.tysyn),
+            tysyn=self.parse_TypeSynId(pb.tysyn),
             args=tuple(self.parse_Type(arg) for arg in pb.args),
         )
 
@@ -217,7 +225,7 @@ class ProtobufParser21(ProtobufParserBase):
             case "var_interned_str":
                 return lf.Expr(var=self.interned_strings[pb.var_interned_str], location=location)
             case "val":
-                return lf.Expr(val=self.parse_ValName(pb.val), location=location)
+                return lf.Expr(val=self.parse_ValueId(pb.val), location=location)
             case "builtin":
                 return lf.Expr(builtin=self.parse_BuiltinFunction(pb.builtin), location=location)
             case "builtin_con":
@@ -266,8 +274,6 @@ class ProtobufParser21(ProtobufParserBase):
                 return lf.Expr(cons=self.parse_Expr_Cons(pb.cons), location=location)
             case "update":
                 return lf.Expr(update=self.parse_Update(pb.update), location=location)
-            case "scenario":
-                return lf.Expr(scenario=self.parse_Scenario(pb.scenario), location=location)
             case "optional_none":
                 return lf.Expr(
                     optional_none=self.parse_Expr_OptionalNone(pb.optional_none), location=location
@@ -411,7 +417,7 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_Expr_EnumCon(self, pb: pblf.Expr.EnumCon) -> lf.Expr.EnumCon:
         return lf.Expr.EnumCon(
-            self.parse_TypeConName(pb.tycon),
+            self.parse_TypeConId(pb.tycon),
             self.interned_strings[pb.enum_con_interned_str],
         )
 
@@ -489,21 +495,21 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_Expr_ToInterface(self, pb: pblf.Expr.ToInterface) -> lf.Expr.ToInterface:
         return lf.Expr.ToInterface(
-            interface_type=self.parse_TypeConName(pb.interface_type),
-            template_type=self.parse_TypeConName(pb.template_type),
+            interface_type=self.parse_TypeConId(pb.interface_type),
+            template_type=self.parse_TypeConId(pb.template_type),
             template_expr=self.parse_Expr(pb.template_expr),
         )
 
     def parse_Expr_FromInterface(self, pb: pblf.Expr.FromInterface) -> lf.Expr.FromInterface:
         return lf.Expr.FromInterface(
-            interface_type=self.parse_TypeConName(pb.interface_type),
-            template_type=self.parse_TypeConName(pb.template_type),
+            interface_type=self.parse_TypeConId(pb.interface_type),
+            template_type=self.parse_TypeConId(pb.template_type),
             interface_expr=self.parse_Expr(pb.interface_expr),
         )
 
     def parse_Expr_CallInterface(self, pb: pblf.Expr.CallInterface) -> lf.Expr.CallInterface:
         return lf.Expr.CallInterface(
-            interface_type=self.parse_TypeConName(pb.interface_type),
+            interface_type=self.parse_TypeConId(pb.interface_type),
             method_name=self.interned_strings[pb.method_interned_name],
             interface_expr=self.parse_Expr(pb.interface_expr),
         )
@@ -512,7 +518,7 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Expr.SignatoryInterface
     ) -> lf.Expr.SignatoryInterface:
         return lf.Expr.SignatoryInterface(
-            interface=self.parse_TypeConName(pb.interface),
+            interface=self.parse_TypeConId(pb.interface),
             expr=self.parse_Expr(pb.expr),
         )
 
@@ -520,13 +526,13 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Expr.ObserverInterface
     ) -> lf.Expr.ObserverInterface:
         return lf.Expr.ObserverInterface(
-            interface=self.parse_TypeConName(pb.interface),
+            interface=self.parse_TypeConId(pb.interface),
             expr=self.parse_Expr(pb.expr),
         )
 
     def parse_Expr_ViewInterface(self, pb: pblf.Expr.ViewInterface) -> lf.Expr.ViewInterface:
         return lf.Expr.ViewInterface(
-            interface=self.parse_TypeConName(pb.interface),
+            interface=self.parse_TypeConId(pb.interface),
             expr=self.parse_Expr(pb.expr),
         )
 
@@ -534,8 +540,8 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Expr.UnsafeFromInterface
     ) -> lf.Expr.UnsafeFromInterface:
         return lf.Expr.UnsafeFromInterface(
-            interface_type=self.parse_TypeConName(pb.interface_type),
-            template_type=self.parse_TypeConName(pb.template_type),
+            interface_type=self.parse_TypeConId(pb.interface_type),
+            template_type=self.parse_TypeConId(pb.template_type),
             contract_id_expr=self.parse_Expr(pb.contract_id_expr),
             interface_expr=self.parse_Expr(pb.interface_expr),
         )
@@ -544,7 +550,7 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Expr.InterfaceTemplateTypeRep
     ) -> lf.Expr.InterfaceTemplateTypeRep:
         return lf.Expr.InterfaceTemplateTypeRep(
-            interface=self.parse_TypeConName(pb.interface),
+            interface=self.parse_TypeConId(pb.interface),
             expr=self.parse_Expr(pb.expr),
         )
 
@@ -552,8 +558,8 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Expr.ToRequiredInterface
     ) -> lf.Expr.ToRequiredInterface:
         return lf.Expr.ToRequiredInterface(
-            required_interface=self.parse_TypeConName(pb.required_interface),
-            requiring_interface=self.parse_TypeConName(pb.requiring_interface),
+            required_interface=self.parse_TypeConId(pb.required_interface),
+            requiring_interface=self.parse_TypeConId(pb.requiring_interface),
             expr=self.parse_Expr(pb.expr),
         )
 
@@ -561,8 +567,8 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Expr.FromRequiredInterface
     ) -> lf.Expr.FromRequiredInterface:
         return lf.Expr.FromRequiredInterface(
-            required_interface=self.parse_TypeConName(pb.required_interface),
-            requiring_interface=self.parse_TypeConName(pb.requiring_interface),
+            required_interface=self.parse_TypeConId(pb.required_interface),
+            requiring_interface=self.parse_TypeConId(pb.requiring_interface),
             expr=self.parse_Expr(pb.expr),
         )
 
@@ -570,8 +576,8 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Expr.UnsafeFromRequiredInterface
     ) -> lf.Expr.UnsafeFromRequiredInterface:
         return lf.Expr.UnsafeFromRequiredInterface(
-            required_interface=self.parse_TypeConName(pb.required_interface),
-            requiring_interface=self.parse_TypeConName(pb.requiring_interface),
+            required_interface=self.parse_TypeConId(pb.required_interface),
+            requiring_interface=self.parse_TypeConId(pb.requiring_interface),
             contract_id_expr=self.parse_Expr(pb.contract_id_expr),
             interface_expr=self.parse_Expr(pb.interface_expr),
         )
@@ -583,7 +589,7 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Expr.ChoiceController
     ) -> lf.Expr.ChoiceController:
         return lf.Expr.ChoiceController(
-            template=self.parse_TypeConName(pb.template),
+            template=self.parse_TypeConId(pb.template),
             choice=self.interned_strings[pb.choice_interned_str],
             contract_expr=self.parse_Expr(pb.contract_expr),
             choice_arg_expr=self.parse_Expr(pb.choice_arg_expr),
@@ -591,7 +597,7 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_Expr_ChoiceObserver(self, pb: pblf.Expr.ChoiceObserver) -> lf.Expr.ChoiceObserver:
         return lf.Expr.ChoiceObserver(
-            template=self.parse_TypeConName(pb.template),
+            template=self.parse_TypeConId(pb.template),
             choice=self.interned_strings[pb.choice_interned_str],
             contract_expr=self.parse_Expr(pb.contract_expr),
             choice_arg_expr=self.parse_Expr(pb.choice_arg_expr),
@@ -624,14 +630,14 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_CaseAlt_Variant(self, pb: pblf.CaseAlt.Variant) -> lf.CaseAlt.Variant:
         return lf.CaseAlt.Variant(
-            self.parse_TypeConName(pb.con),
+            self.parse_TypeConId(pb.con),
             self.interned_strings[pb.variant_interned_str],
             self.interned_strings[pb.binder_interned_str],
         )
 
     def parse_CaseAlt_Enum(self, pb: pblf.CaseAlt.Enum) -> lf.CaseAlt.Enum:
         return lf.CaseAlt.Enum(
-            self.parse_TypeConName(pb.con),
+            self.parse_TypeConId(pb.con),
             self.interned_strings[pb.constructor_interned_str],
         )
 
@@ -694,25 +700,17 @@ class ProtobufParser21(ProtobufParserBase):
                 return lf.Update(
                     fetch_interface=self.parse_Update_FetchInterface(pb.fetch_interface)
                 )
-            case "dynamic_exercise":
-                return lf.Update(
-                    dynamic_exercise=self.parse_Update_DynamicExercise(pb.dynamic_exercise)
-                )
-            case "soft_fetch":
-                return lf.Update(soft_fetch=self.parse_Update_SoftFetch(pb.soft_fetch))
-            case "soft_exercise":
-                return lf.Update(soft_exercise=self.parse_Update_SoftExercise(pb.soft_exercise))
             case _:
                 raise ValueError(f"unknown Sum value: {sum_name!r}")
 
     def parse_Update_Create(self, pb: pblf.Update.Create) -> lf.Update.Create:
         return lf.Update.Create(
-            template=self.parse_TypeConName(pb.template), expr=self.parse_Expr(pb.expr)
+            template=self.parse_TypeConId(pb.template), expr=self.parse_Expr(pb.expr)
         )
 
     def parse_Update_Exercise(self, pb: pblf.Update.Exercise) -> lf.Update.Exercise:
         return lf.Update.Exercise(
-            template=self.parse_TypeConName(pb.template),
+            template=self.parse_TypeConId(pb.template),
             choice=self.interned_strings[pb.choice_interned_str],
             cid=self.parse_Expr(pb.cid),
             arg=self.parse_Expr(pb.arg),
@@ -720,7 +718,7 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_Update_ExerciseByKey(self, pb: pblf.Update.ExerciseByKey) -> lf.Update.ExerciseByKey:
         return lf.Update.ExerciseByKey(
-            template=self.parse_TypeConName(pb.template),
+            template=self.parse_TypeConId(pb.template),
             choice=self.interned_strings[pb.choice_interned_str],
             key=self.parse_Expr(pb.key),
             arg=self.parse_Expr(pb.arg),
@@ -728,15 +726,18 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_Update_Fetch(self, pb: pblf.Update.Fetch) -> lf.Update.Fetch:
         return lf.Update.Fetch(
-            template=self.parse_TypeConName(pb.template), cid=self.parse_Expr(pb.cid)
+            template=self.parse_TypeConId(pb.template), cid=self.parse_Expr(pb.cid)
         )
 
     def parse_Update_EmbedExpr(self, pb: pblf.Update.EmbedExpr) -> lf.Update.EmbedExpr:
         return lf.Update.EmbedExpr(type=self.parse_Type(pb.type), body=self.parse_Expr(pb.body))
 
     def parse_Update_RetrieveByKey(self, pb: pblf.Update.RetrieveByKey) -> lf.Update.RetrieveByKey:
+        # Note: key field was removed in Daml-LF 2.x (3.4.9+)
+        # Create a placeholder expression for compatibility
         return lf.Update.RetrieveByKey(
-            template=self.parse_TypeConName(pb.template), key=self.parse_Expr(pb.key)
+            template=self.parse_TypeConId(pb.template),
+            key=lf.Expr(prim_con=lf.PrimCon.CON_UNIT),  # Placeholder - key is no longer in proto
         )
 
     def parse_Update_TryCatch(self, pb: pblf.Update.TryCatch) -> lf.Update.TryCatch:
@@ -751,7 +752,7 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Update.CreateInterface
     ) -> lf.Update.CreateInterface:
         return lf.Update.CreateInterface(
-            interface=self.parse_TypeConName(pb.interface),
+            interface=self.parse_TypeConId(pb.interface),
             expr=self.parse_Expr(pb.expr),
         )
 
@@ -759,7 +760,7 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Update.ExerciseInterface
     ) -> lf.Update.ExerciseInterface:
         return lf.Update.ExerciseInterface(
-            interface=self.parse_TypeConName(pb.interface),
+            interface=self.parse_TypeConId(pb.interface),
             cid=self.parse_Expr(pb.cid),
             arg=self.parse_Expr(pb.arg),
             guard=self.parse_Expr(pb.guard) if pb.HasField("guard") else None,
@@ -769,67 +770,16 @@ class ProtobufParser21(ProtobufParserBase):
         self, pb: pblf.Update.FetchInterface
     ) -> lf.Update.FetchInterface:
         return lf.Update.FetchInterface(
-            interface=self.parse_TypeConName(pb.interface),
+            interface=self.parse_TypeConId(pb.interface),
             cid=self.parse_Expr(pb.cid),
         )
 
-    def parse_Update_DynamicExercise(
-        self, pb: pblf.Update.DynamicExercise
-    ) -> lf.Update.DynamicExercise:
-        return lf.Update.DynamicExercise(
-            template=self.parse_TypeConName(pb.template),
-            choice=self.interned_strings[pb.choice_interned_str],
-            cid=self.parse_Expr(pb.cid),
-            arg=self.parse_Expr(pb.arg),
-        )
-
-    def parse_Update_SoftFetch(self, pb: pblf.Update.SoftFetch) -> lf.Update.SoftFetch:
-        return lf.Update.SoftFetch(
-            template=self.parse_TypeConName(pb.template), cid=self.parse_Expr(pb.cid)
-        )
-
-    def parse_Update_SoftExercise(self, pb: pblf.Update.SoftExercise) -> lf.Update.SoftExercise:
-        return lf.Update.SoftExercise(
-            template=self.parse_TypeConName(pb.template),
-            choice=self.interned_strings[pb.choice_interned_str],
-            cid=self.parse_Expr(pb.cid),
-            arg=self.parse_Expr(pb.arg),
-        )
-
-    def parse_Scenario(self, pb: pblf.Scenario) -> lf.Scenario:
-        sum_name = pb.WhichOneof("Sum")
-        match sum_name:
-            case "pure":
-                return lf.Scenario(pure=self.parse_Pure(pb.pure))
-            case "block":
-                return lf.Scenario(block=self.parse_Block(pb.block))
-            case "commit":
-                return lf.Scenario(commit=self.parse_Scenario_Commit(pb.commit))
-            case "mustFailAt":
-                return lf.Scenario(must_fail_at=self.parse_Scenario_Commit(pb.mustFailAt))
-            case "pass":
-                return lf.Scenario(pass_=self.parse_Expr(getattr(pb, "pass")))
-            case "get_time":
-                return lf.Scenario(get_time=self.parse_Unit(pb.get_time))
-            case "get_party":
-                return lf.Scenario(get_party=self.parse_Expr(pb.get_party))
-            case "embed_expr":
-                return lf.Scenario(embed_expr=self.parse_Scenario_EmbedExpr(pb.embed_expr))
-            case _:
-                raise ValueError("unknown Sum value")
-
-    def parse_Scenario_Commit(self, pb: pblf.Scenario.Commit) -> lf.Scenario.Commit:
-        return lf.Scenario.Commit(
-            party=self.parse_Expr(pb.party),
-            expr=self.parse_Expr(pb.expr),
-            ret_type=self.parse_Type(pb.ret_type),
-        )
-
-    def parse_Scenario_EmbedExpr(self, pb: pblf.Scenario.EmbedExpr) -> lf.Scenario.EmbedExpr:
-        return lf.Scenario.EmbedExpr(type=self.parse_Type(pb.type), body=self.parse_Expr(pb.body))
+    def parse_Scenario(self, pb: object) -> lf.Scenario:
+        # Scenarios are not supported in Daml-LF 2.x (3.4.9+)
+        raise NotImplementedError("Scenarios are not supported in Daml-LF 2.x")
 
     def parse_Location(self, pb: pblf.Location) -> lf.Location:
-        module_ref = self.parse_ModuleRef(pb.module)
+        module_ref = self.parse_ModuleId(pb.module)
         if module_ref is None:
             module_ref = self.current_module
         if module_ref is None:
@@ -864,7 +814,7 @@ class ProtobufParser21(ProtobufParserBase):
             param=self.interned_strings[pb.param_interned_str],
             precond=self.parse_Expr(pb.precond) if pb.HasField("precond") else None,
             signatories=self.parse_Expr(pb.signatories) if pb.HasField("signatories") else None,
-            agreement=self.parse_Expr(pb.agreement) if pb.HasField("agreement") else None,
+            agreement=None,  # agreement field removed in Daml-LF 2.x (3.4.9+)
             choices=tuple(self.parse_TemplateChoice(choice) for choice in pb.choices),
             observers=self.parse_Expr(pb.observers) if pb.HasField("observers") else None,
             location=self.parse_Location(pb.location),
@@ -945,7 +895,7 @@ class ProtobufParser21(ProtobufParserBase):
             name_with_type=self.parse_DefValue_NameWithType(pb.name_with_type),
             expr=lambda: self.parse_Expr(pb.expr),
             no_party_literals=False,
-            is_test=pb.is_test,
+            is_test=False,  # is_test field removed in Daml-LF 2.x (3.4.9+)
             location=self.parse_Location(pb.location),
         )
 
@@ -1002,7 +952,7 @@ class ProtobufParser21(ProtobufParserBase):
             param=self.interned_strings[pb.param_interned_str],
             choices=tuple(self.parse_TemplateChoice(choice) for choice in pb.choices),
             view=self.parse_Type(pb.view),
-            requires=tuple(self.parse_TypeConName(require) for require in pb.requires),
+            requires=tuple(self.parse_TypeConId(require) for require in pb.requires),
         )
 
     def parse_Package(self, pb: pblf.Package) -> lf.Package:

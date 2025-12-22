@@ -9,7 +9,7 @@ import warnings
 
 from . import package_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -53,6 +53,11 @@ class PackageManagementServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.ValidateDarFileRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.ValidateDarFileResponse.FromString,
                 _registered_method=True)
+        self.UpdateVettedPackages = channel.unary_unary(
+                '/com.daml.ledger.api.v2.admin.PackageManagementService/UpdateVettedPackages',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.UpdateVettedPackagesRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.UpdateVettedPackagesResponse.FromString,
+                _registered_method=True)
 
 
 class PackageManagementServiceServicer(object):
@@ -76,6 +81,12 @@ class PackageManagementServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateVettedPackages(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_PackageManagementServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -93,6 +104,11 @@ def add_PackageManagementServiceServicer_to_server(servicer, server):
                     servicer.ValidateDarFile,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.ValidateDarFileRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.ValidateDarFileResponse.SerializeToString,
+            ),
+            'UpdateVettedPackages': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateVettedPackages,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.UpdateVettedPackagesRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.UpdateVettedPackagesResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -176,6 +192,33 @@ class PackageManagementService(object):
             '/com.daml.ledger.api.v2.admin.PackageManagementService/ValidateDarFile',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.ValidateDarFileRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.ValidateDarFileResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateVettedPackages(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.admin.PackageManagementService/UpdateVettedPackages',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.UpdateVettedPackagesRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2.UpdateVettedPackagesResponse.FromString,
             options,
             channel_credentials,
             insecure,

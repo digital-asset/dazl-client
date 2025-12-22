@@ -9,7 +9,7 @@ import warnings
 
 from . import participant_repair_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -47,6 +47,11 @@ class ParticipantRepairServiceStub(object):
                 '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcsOld',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldResponse.FromString,
+                _registered_method=True)
+        self.ExportAcs = channel.unary_stream(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcs',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsResponse.FromString,
                 _registered_method=True)
         self.ImportAcs = channel.stream_unary(
                 '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcs',
@@ -88,6 +93,11 @@ class ParticipantRepairServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RollbackUnassignmentRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RollbackUnassignmentResponse.FromString,
                 _registered_method=True)
+        self.RepairCommitmentsUsingAcs = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RepairCommitmentsUsingAcs',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsResponse.FromString,
+                _registered_method=True)
 
 
 class ParticipantRepairServiceServicer(object):
@@ -100,6 +110,12 @@ class ParticipantRepairServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ImportAcsOld(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ExportAcs(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -153,6 +169,12 @@ class ParticipantRepairServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RepairCommitmentsUsingAcs(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ParticipantRepairServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -165,6 +187,11 @@ def add_ParticipantRepairServiceServicer_to_server(servicer, server):
                     servicer.ImportAcsOld,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldResponse.SerializeToString,
+            ),
+            'ExportAcs': grpc.unary_stream_rpc_method_handler(
+                    servicer.ExportAcs,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsResponse.SerializeToString,
             ),
             'ImportAcs': grpc.stream_unary_rpc_method_handler(
                     servicer.ImportAcs,
@@ -205,6 +232,11 @@ def add_ParticipantRepairServiceServicer_to_server(servicer, server):
                     servicer.RollbackUnassignment,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RollbackUnassignmentRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RollbackUnassignmentResponse.SerializeToString,
+            ),
+            'RepairCommitmentsUsingAcs': grpc.unary_unary_rpc_method_handler(
+                    servicer.RepairCommitmentsUsingAcs,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -261,6 +293,33 @@ class ParticipantRepairService(object):
             '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcsOld',
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ExportAcs(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcs',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -477,6 +536,33 @@ class ParticipantRepairService(object):
             '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RollbackUnassignment',
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RollbackUnassignmentRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RollbackUnassignmentResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RepairCommitmentsUsingAcs(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RepairCommitmentsUsingAcs',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsResponse.FromString,
             options,
             channel_credentials,
             insecure,

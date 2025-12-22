@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....crypto.v0 import crypto_pb2 as _crypto_pb2
 from ....protocol.v0 import topology_pb2 as _topology_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -25,7 +27,7 @@ class ListPartiesRequest(_message.Message):
     filter_domain: str
     filter_party: str
     filter_participant: str
-    def __init__(self, as_of: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., limit: _Optional[int] = ..., filter_domain: _Optional[str] = ..., filter_party: _Optional[str] = ..., filter_participant: _Optional[str] = ...) -> None: ...
+    def __init__(self, as_of: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., limit: _Optional[int] = ..., filter_domain: _Optional[str] = ..., filter_party: _Optional[str] = ..., filter_participant: _Optional[str] = ...) -> None: ...
 
 class ListPartiesResponse(_message.Message):
     __slots__ = ("results",)
@@ -66,7 +68,7 @@ class ListKeyOwnersRequest(_message.Message):
     filter_domain: str
     filter_key_owner_type: str
     filter_key_owner_uid: str
-    def __init__(self, as_of: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., limit: _Optional[int] = ..., filter_domain: _Optional[str] = ..., filter_key_owner_type: _Optional[str] = ..., filter_key_owner_uid: _Optional[str] = ...) -> None: ...
+    def __init__(self, as_of: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., limit: _Optional[int] = ..., filter_domain: _Optional[str] = ..., filter_key_owner_type: _Optional[str] = ..., filter_key_owner_uid: _Optional[str] = ...) -> None: ...
 
 class ListKeyOwnersResponse(_message.Message):
     __slots__ = ("results",)
