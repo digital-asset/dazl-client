@@ -115,10 +115,10 @@ class UploadDarRequest(_message.Message):
         BYTES_FIELD_NUMBER: _ClassVar[int]
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
         EXPECTED_MAIN_PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
-        bytes: bytes
+        bytes: bytes  # type: ignore
         description: str
         expected_main_package_id: str
-        def __init__(self, bytes: _Optional[bytes] = ..., description: _Optional[str] = ..., expected_main_package_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, bytes: _Optional[bytes] = ..., description: _Optional[str] = ..., expected_main_package_id: _Optional[str] = ...) -> None: ...  # type: ignore
     DARS_FIELD_NUMBER: _ClassVar[int]
     VET_ALL_PACKAGES_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZE_VETTING_FIELD_NUMBER: _ClassVar[int]

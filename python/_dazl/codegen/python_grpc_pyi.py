@@ -33,8 +33,25 @@ def write_grpc_pyi_files(fds: FileDescriptorSet, to: Path) -> None:
         if f.service:
             root_name, _ = get_root_name(f.name)
             content = typing_file(f, ImportContext(symbol_table))
+            content = fix_duplicate_imports(root_name, content)
             p = to / (root_name + "_pb2_grpc.pyi")
             p.write_text(content)
+
+
+def fix_duplicate_imports(root_name: str, content: str) -> str:
+    """Fix duplicate imports that cause mypy errors."""
+    # sequencer_initialization_service imports InitRequest from both v0 and v1
+    if root_name == "com/digitalasset/canton/domain/admin/v0/sequencer_initialization_service":
+        content = content.replace(
+            "from ..v1.sequencer_initialization_service_pb2 import InitRequest\n",
+            "from ..v1.sequencer_initialization_service_pb2 import InitRequest as InitRequestV1\n",
+        )
+        # Also update method signatures to use the aliased type for v1 methods
+        content = content.replace(
+            "def InitV1(self, __1: InitRequest,",
+            "def InitV1(self, __1: InitRequestV1,",
+        )
+    return content
 
 
 def typing_file(fd: FileDescriptorProto, ictx: ImportContext) -> str:

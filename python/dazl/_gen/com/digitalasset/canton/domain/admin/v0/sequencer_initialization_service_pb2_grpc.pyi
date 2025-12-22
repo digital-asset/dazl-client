@@ -10,7 +10,7 @@ from google.protobuf.empty_pb2 import Empty
 from grpc import aio as _grpc_aio
 
 from .sequencer_initialization_service_pb2 import InitRequest, InitResponse, TopologyBootstrapRequest
-from ..v1.sequencer_initialization_service_pb2 import InitRequest
+from ..v1.sequencer_initialization_service_pb2 import InitRequest as InitRequestV1
 
 __all__ = [
     "SequencerInitializationServiceStub",
@@ -27,17 +27,17 @@ class SequencerInitializationServiceStub:
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _SequencerInitializationServiceAsyncStub: ...  # type: ignore
     def Init(self, __1: InitRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, InitResponse]: ...
-    def InitV1(self, __1: InitRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, InitResponse]: ...
+    def InitV1(self, __1: InitRequestV1, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, InitResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _SequencerInitializationServiceBlockingStub(SequencerInitializationServiceStub):
     def Init(self, __1: InitRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitResponse: ...
-    def InitV1(self, __1: InitRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitResponse: ...
+    def InitV1(self, __1: InitRequestV1, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> InitResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _SequencerInitializationServiceAsyncStub(SequencerInitializationServiceStub):
     def Init(self, __1: InitRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, InitResponse]: ...  # type: ignore
-    def InitV1(self, __1: InitRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, InitResponse]: ...  # type: ignore
+    def InitV1(self, __1: InitRequestV1, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, InitResponse]: ...  # type: ignore
 
 # noinspection PyPep8Naming,DuplicatedCode
 class TopologyBootstrapServiceStub:

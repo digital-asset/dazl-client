@@ -4,7 +4,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v6.31.1
-// source: com/digitalasset/daml/lf/archive/daml_lf2.proto
+// source: com/daml/daml_lf_2_1/daml_lf2.proto
 
 package daml_lf_2_1
 
@@ -110,11 +110,11 @@ func (x BuiltinType) String() string {
 }
 
 func (BuiltinType) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[0].Descriptor()
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[0].Descriptor()
 }
 
 func (BuiltinType) Type() protoreflect.EnumType {
-	return &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[0]
+	return &file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[0]
 }
 
 func (x BuiltinType) Number() protoreflect.EnumNumber {
@@ -123,7 +123,7 @@ func (x BuiltinType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use BuiltinType.Descriptor instead.
 func (BuiltinType) EnumDescriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{0}
 }
 
 type BuiltinCon int32
@@ -159,11 +159,11 @@ func (x BuiltinCon) String() string {
 }
 
 func (BuiltinCon) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[1].Descriptor()
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[1].Descriptor()
 }
 
 func (BuiltinCon) Type() protoreflect.EnumType {
-	return &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[1]
+	return &file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[1]
 }
 
 func (x BuiltinCon) Number() protoreflect.EnumNumber {
@@ -172,7 +172,7 @@ func (x BuiltinCon) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use BuiltinCon.Descriptor instead.
 func (BuiltinCon) EnumDescriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{1}
 }
 
 type BuiltinFunction int32
@@ -433,11 +433,11 @@ func (x BuiltinFunction) String() string {
 }
 
 func (BuiltinFunction) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[2].Descriptor()
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[2].Descriptor()
 }
 
 func (BuiltinFunction) Type() protoreflect.EnumType {
-	return &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[2]
+	return &file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[2]
 }
 
 func (x BuiltinFunction) Number() protoreflect.EnumNumber {
@@ -446,7 +446,7 @@ func (x BuiltinFunction) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use BuiltinFunction.Descriptor instead.
 func (BuiltinFunction) EnumDescriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{2}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{2}
 }
 
 type BuiltinLit_RoundingMode int32
@@ -497,11 +497,11 @@ func (x BuiltinLit_RoundingMode) String() string {
 }
 
 func (BuiltinLit_RoundingMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[3].Descriptor()
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[3].Descriptor()
 }
 
 func (BuiltinLit_RoundingMode) Type() protoreflect.EnumType {
-	return &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[3]
+	return &file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[3]
 }
 
 func (x BuiltinLit_RoundingMode) Number() protoreflect.EnumNumber {
@@ -510,7 +510,7 @@ func (x BuiltinLit_RoundingMode) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use BuiltinLit_RoundingMode.Descriptor instead.
 func (BuiltinLit_RoundingMode) EnumDescriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{13, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{13, 0}
 }
 
 type BuiltinLit_FailureCategory int32
@@ -543,11 +543,11 @@ func (x BuiltinLit_FailureCategory) String() string {
 }
 
 func (BuiltinLit_FailureCategory) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[4].Descriptor()
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[4].Descriptor()
 }
 
 func (BuiltinLit_FailureCategory) Type() protoreflect.EnumType {
-	return &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes[4]
+	return &file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes[4]
 }
 
 func (x BuiltinLit_FailureCategory) Number() protoreflect.EnumNumber {
@@ -556,7 +556,7 @@ func (x BuiltinLit_FailureCategory) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use BuiltinLit_FailureCategory.Descriptor instead.
 func (BuiltinLit_FailureCategory) EnumDescriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{13, 1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{13, 1}
 }
 
 type Unit struct {
@@ -567,7 +567,7 @@ type Unit struct {
 
 func (x *Unit) Reset() {
 	*x = Unit{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[0]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -579,7 +579,7 @@ func (x *Unit) String() string {
 func (*Unit) ProtoMessage() {}
 
 func (x *Unit) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[0]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -592,7 +592,7 @@ func (x *Unit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Unit.ProtoReflect.Descriptor instead.
 func (*Unit) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{0}
 }
 
 type SelfOrImportedPackageId struct {
@@ -609,7 +609,7 @@ type SelfOrImportedPackageId struct {
 
 func (x *SelfOrImportedPackageId) Reset() {
 	*x = SelfOrImportedPackageId{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[1]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -621,7 +621,7 @@ func (x *SelfOrImportedPackageId) String() string {
 func (*SelfOrImportedPackageId) ProtoMessage() {}
 
 func (x *SelfOrImportedPackageId) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[1]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -634,7 +634,7 @@ func (x *SelfOrImportedPackageId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SelfOrImportedPackageId.ProtoReflect.Descriptor instead.
 func (*SelfOrImportedPackageId) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *SelfOrImportedPackageId) GetSum() isSelfOrImportedPackageId_Sum {
@@ -703,7 +703,7 @@ type ModuleId struct {
 
 func (x *ModuleId) Reset() {
 	*x = ModuleId{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[2]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -715,7 +715,7 @@ func (x *ModuleId) String() string {
 func (*ModuleId) ProtoMessage() {}
 
 func (x *ModuleId) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[2]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -728,7 +728,7 @@ func (x *ModuleId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ModuleId.ProtoReflect.Descriptor instead.
 func (*ModuleId) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{2}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ModuleId) GetPackageId() *SelfOrImportedPackageId {
@@ -755,7 +755,7 @@ type TypeConId struct {
 
 func (x *TypeConId) Reset() {
 	*x = TypeConId{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[3]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -767,7 +767,7 @@ func (x *TypeConId) String() string {
 func (*TypeConId) ProtoMessage() {}
 
 func (x *TypeConId) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[3]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -780,7 +780,7 @@ func (x *TypeConId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypeConId.ProtoReflect.Descriptor instead.
 func (*TypeConId) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{3}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *TypeConId) GetModule() *ModuleId {
@@ -807,7 +807,7 @@ type TypeSynId struct {
 
 func (x *TypeSynId) Reset() {
 	*x = TypeSynId{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[4]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -819,7 +819,7 @@ func (x *TypeSynId) String() string {
 func (*TypeSynId) ProtoMessage() {}
 
 func (x *TypeSynId) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[4]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -832,7 +832,7 @@ func (x *TypeSynId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypeSynId.ProtoReflect.Descriptor instead.
 func (*TypeSynId) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{4}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TypeSynId) GetModule() *ModuleId {
@@ -859,7 +859,7 @@ type ValueId struct {
 
 func (x *ValueId) Reset() {
 	*x = ValueId{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[5]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -871,7 +871,7 @@ func (x *ValueId) String() string {
 func (*ValueId) ProtoMessage() {}
 
 func (x *ValueId) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[5]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -884,7 +884,7 @@ func (x *ValueId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValueId.ProtoReflect.Descriptor instead.
 func (*ValueId) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{5}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ValueId) GetModule() *ModuleId {
@@ -911,7 +911,7 @@ type FieldWithType struct {
 
 func (x *FieldWithType) Reset() {
 	*x = FieldWithType{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[6]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -923,7 +923,7 @@ func (x *FieldWithType) String() string {
 func (*FieldWithType) ProtoMessage() {}
 
 func (x *FieldWithType) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[6]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -936,7 +936,7 @@ func (x *FieldWithType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FieldWithType.ProtoReflect.Descriptor instead.
 func (*FieldWithType) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{6}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *FieldWithType) GetFieldInternedStr() int32 {
@@ -963,7 +963,7 @@ type VarWithType struct {
 
 func (x *VarWithType) Reset() {
 	*x = VarWithType{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[7]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -975,7 +975,7 @@ func (x *VarWithType) String() string {
 func (*VarWithType) ProtoMessage() {}
 
 func (x *VarWithType) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[7]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -988,7 +988,7 @@ func (x *VarWithType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VarWithType.ProtoReflect.Descriptor instead.
 func (*VarWithType) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{7}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *VarWithType) GetVarInternedStr() int32 {
@@ -1015,7 +1015,7 @@ type TypeVarWithKind struct {
 
 func (x *TypeVarWithKind) Reset() {
 	*x = TypeVarWithKind{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[8]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1027,7 +1027,7 @@ func (x *TypeVarWithKind) String() string {
 func (*TypeVarWithKind) ProtoMessage() {}
 
 func (x *TypeVarWithKind) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[8]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1040,7 +1040,7 @@ func (x *TypeVarWithKind) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypeVarWithKind.ProtoReflect.Descriptor instead.
 func (*TypeVarWithKind) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{8}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TypeVarWithKind) GetVarInternedStr() int32 {
@@ -1067,7 +1067,7 @@ type FieldWithExpr struct {
 
 func (x *FieldWithExpr) Reset() {
 	*x = FieldWithExpr{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[9]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1079,7 +1079,7 @@ func (x *FieldWithExpr) String() string {
 func (*FieldWithExpr) ProtoMessage() {}
 
 func (x *FieldWithExpr) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[9]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1092,7 +1092,7 @@ func (x *FieldWithExpr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FieldWithExpr.ProtoReflect.Descriptor instead.
 func (*FieldWithExpr) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{9}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *FieldWithExpr) GetFieldInternedStr() int32 {
@@ -1119,7 +1119,7 @@ type Binding struct {
 
 func (x *Binding) Reset() {
 	*x = Binding{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[10]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1131,7 +1131,7 @@ func (x *Binding) String() string {
 func (*Binding) ProtoMessage() {}
 
 func (x *Binding) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[10]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1144,7 +1144,7 @@ func (x *Binding) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Binding.ProtoReflect.Descriptor instead.
 func (*Binding) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{10}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Binding) GetBinder() *VarWithType {
@@ -1176,7 +1176,7 @@ type Kind struct {
 
 func (x *Kind) Reset() {
 	*x = Kind{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[11]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1188,7 +1188,7 @@ func (x *Kind) String() string {
 func (*Kind) ProtoMessage() {}
 
 func (x *Kind) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[11]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1201,7 +1201,7 @@ func (x *Kind) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Kind.ProtoReflect.Descriptor instead.
 func (*Kind) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{11}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Kind) GetSum() isKind_Sum {
@@ -1295,7 +1295,7 @@ type Type struct {
 
 func (x *Type) Reset() {
 	*x = Type{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[12]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1307,7 +1307,7 @@ func (x *Type) String() string {
 func (*Type) ProtoMessage() {}
 
 func (x *Type) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[12]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1320,7 +1320,7 @@ func (x *Type) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type.ProtoReflect.Descriptor instead.
 func (*Type) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{12}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Type) GetSum() isType_Sum {
@@ -1487,7 +1487,7 @@ type BuiltinLit struct {
 
 func (x *BuiltinLit) Reset() {
 	*x = BuiltinLit{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[13]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1499,7 +1499,7 @@ func (x *BuiltinLit) String() string {
 func (*BuiltinLit) ProtoMessage() {}
 
 func (x *BuiltinLit) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[13]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1512,7 +1512,7 @@ func (x *BuiltinLit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuiltinLit.ProtoReflect.Descriptor instead.
 func (*BuiltinLit) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{13}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *BuiltinLit) GetSum() isBuiltinLit_Sum {
@@ -1641,7 +1641,7 @@ type Location struct {
 
 func (x *Location) Reset() {
 	*x = Location{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[14]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1653,7 +1653,7 @@ func (x *Location) String() string {
 func (*Location) ProtoMessage() {}
 
 func (x *Location) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[14]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1666,7 +1666,7 @@ func (x *Location) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Location.ProtoReflect.Descriptor instead.
 func (*Location) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{14}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *Location) GetModule() *ModuleId {
@@ -1740,7 +1740,7 @@ type Expr struct {
 
 func (x *Expr) Reset() {
 	*x = Expr{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[15]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1752,7 +1752,7 @@ func (x *Expr) String() string {
 func (*Expr) ProtoMessage() {}
 
 func (x *Expr) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[15]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1765,7 +1765,7 @@ func (x *Expr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr.ProtoReflect.Descriptor instead.
 func (*Expr) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Expr) GetLocation() *Location {
@@ -2481,7 +2481,7 @@ type CaseAlt struct {
 
 func (x *CaseAlt) Reset() {
 	*x = CaseAlt{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[16]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2493,7 +2493,7 @@ func (x *CaseAlt) String() string {
 func (*CaseAlt) ProtoMessage() {}
 
 func (x *CaseAlt) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[16]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2506,7 +2506,7 @@ func (x *CaseAlt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt.ProtoReflect.Descriptor instead.
 func (*CaseAlt) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{16}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *CaseAlt) GetSum() isCaseAlt_Sum {
@@ -2657,7 +2657,7 @@ type Case struct {
 
 func (x *Case) Reset() {
 	*x = Case{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[17]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2669,7 +2669,7 @@ func (x *Case) String() string {
 func (*Case) ProtoMessage() {}
 
 func (x *Case) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[17]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2682,7 +2682,7 @@ func (x *Case) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Case.ProtoReflect.Descriptor instead.
 func (*Case) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{17}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *Case) GetScrut() *Expr {
@@ -2709,7 +2709,7 @@ type Block struct {
 
 func (x *Block) Reset() {
 	*x = Block{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[18]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2721,7 +2721,7 @@ func (x *Block) String() string {
 func (*Block) ProtoMessage() {}
 
 func (x *Block) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[18]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2734,7 +2734,7 @@ func (x *Block) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Block.ProtoReflect.Descriptor instead.
 func (*Block) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{18}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *Block) GetBindings() []*Binding {
@@ -2761,7 +2761,7 @@ type Pure struct {
 
 func (x *Pure) Reset() {
 	*x = Pure{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[19]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2773,7 +2773,7 @@ func (x *Pure) String() string {
 func (*Pure) ProtoMessage() {}
 
 func (x *Pure) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[19]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2786,7 +2786,7 @@ func (x *Pure) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pure.ProtoReflect.Descriptor instead.
 func (*Pure) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{19}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *Pure) GetType() *Type {
@@ -2829,7 +2829,7 @@ type Update struct {
 
 func (x *Update) Reset() {
 	*x = Update{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[20]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2841,7 +2841,7 @@ func (x *Update) String() string {
 func (*Update) ProtoMessage() {}
 
 func (x *Update) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[20]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2854,7 +2854,7 @@ func (x *Update) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update.ProtoReflect.Descriptor instead.
 func (*Update) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *Update) GetSum() isUpdate_Sum {
@@ -3111,7 +3111,7 @@ type TemplateChoice struct {
 
 func (x *TemplateChoice) Reset() {
 	*x = TemplateChoice{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[21]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3123,7 +3123,7 @@ func (x *TemplateChoice) String() string {
 func (*TemplateChoice) ProtoMessage() {}
 
 func (x *TemplateChoice) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[21]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3136,7 +3136,7 @@ func (x *TemplateChoice) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TemplateChoice.ProtoReflect.Descriptor instead.
 func (*TemplateChoice) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{21}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *TemplateChoice) GetLocation() *Location {
@@ -3219,7 +3219,7 @@ type InterfaceInstanceBody struct {
 
 func (x *InterfaceInstanceBody) Reset() {
 	*x = InterfaceInstanceBody{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[22]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3231,7 +3231,7 @@ func (x *InterfaceInstanceBody) String() string {
 func (*InterfaceInstanceBody) ProtoMessage() {}
 
 func (x *InterfaceInstanceBody) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[22]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3244,7 +3244,7 @@ func (x *InterfaceInstanceBody) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InterfaceInstanceBody.ProtoReflect.Descriptor instead.
 func (*InterfaceInstanceBody) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{22}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *InterfaceInstanceBody) GetMethods() []*InterfaceInstanceBody_InterfaceInstanceMethod {
@@ -3278,7 +3278,7 @@ type DefTemplate struct {
 
 func (x *DefTemplate) Reset() {
 	*x = DefTemplate{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[23]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3290,7 +3290,7 @@ func (x *DefTemplate) String() string {
 func (*DefTemplate) ProtoMessage() {}
 
 func (x *DefTemplate) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[23]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3303,7 +3303,7 @@ func (x *DefTemplate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefTemplate.ProtoReflect.Descriptor instead.
 func (*DefTemplate) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{23}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *DefTemplate) GetTyconInternedDname() int32 {
@@ -3380,7 +3380,7 @@ type InterfaceMethod struct {
 
 func (x *InterfaceMethod) Reset() {
 	*x = InterfaceMethod{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[24]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3392,7 +3392,7 @@ func (x *InterfaceMethod) String() string {
 func (*InterfaceMethod) ProtoMessage() {}
 
 func (x *InterfaceMethod) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[24]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3405,7 +3405,7 @@ func (x *InterfaceMethod) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InterfaceMethod.ProtoReflect.Descriptor instead.
 func (*InterfaceMethod) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{24}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *InterfaceMethod) GetLocation() *Location {
@@ -3444,7 +3444,7 @@ type DefInterface struct {
 
 func (x *DefInterface) Reset() {
 	*x = DefInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[25]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3456,7 +3456,7 @@ func (x *DefInterface) String() string {
 func (*DefInterface) ProtoMessage() {}
 
 func (x *DefInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[25]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3469,7 +3469,7 @@ func (x *DefInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefInterface.ProtoReflect.Descriptor instead.
 func (*DefInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{25}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *DefInterface) GetLocation() *Location {
@@ -3532,7 +3532,7 @@ type DefException struct {
 
 func (x *DefException) Reset() {
 	*x = DefException{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[26]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3544,7 +3544,7 @@ func (x *DefException) String() string {
 func (*DefException) ProtoMessage() {}
 
 func (x *DefException) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[26]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3557,7 +3557,7 @@ func (x *DefException) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefException.ProtoReflect.Descriptor instead.
 func (*DefException) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{26}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *DefException) GetNameInternedDname() int32 {
@@ -3600,7 +3600,7 @@ type DefDataType struct {
 
 func (x *DefDataType) Reset() {
 	*x = DefDataType{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[27]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3612,7 +3612,7 @@ func (x *DefDataType) String() string {
 func (*DefDataType) ProtoMessage() {}
 
 func (x *DefDataType) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[27]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3625,7 +3625,7 @@ func (x *DefDataType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefDataType.ProtoReflect.Descriptor instead.
 func (*DefDataType) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{27}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *DefDataType) GetLocation() *Location {
@@ -3739,7 +3739,7 @@ type DefTypeSyn struct {
 
 func (x *DefTypeSyn) Reset() {
 	*x = DefTypeSyn{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[28]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3751,7 +3751,7 @@ func (x *DefTypeSyn) String() string {
 func (*DefTypeSyn) ProtoMessage() {}
 
 func (x *DefTypeSyn) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[28]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3764,7 +3764,7 @@ func (x *DefTypeSyn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefTypeSyn.ProtoReflect.Descriptor instead.
 func (*DefTypeSyn) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{28}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *DefTypeSyn) GetLocation() *Location {
@@ -3806,7 +3806,7 @@ type DefValue struct {
 
 func (x *DefValue) Reset() {
 	*x = DefValue{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[29]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3818,7 +3818,7 @@ func (x *DefValue) String() string {
 func (*DefValue) ProtoMessage() {}
 
 func (x *DefValue) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[29]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3831,7 +3831,7 @@ func (x *DefValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefValue.ProtoReflect.Descriptor instead.
 func (*DefValue) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{29}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *DefValue) GetLocation() *Location {
@@ -3866,7 +3866,7 @@ type FeatureFlags struct {
 
 func (x *FeatureFlags) Reset() {
 	*x = FeatureFlags{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[30]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3878,7 +3878,7 @@ func (x *FeatureFlags) String() string {
 func (*FeatureFlags) ProtoMessage() {}
 
 func (x *FeatureFlags) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[30]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3891,7 +3891,7 @@ func (x *FeatureFlags) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FeatureFlags.ProtoReflect.Descriptor instead.
 func (*FeatureFlags) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{30}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *FeatureFlags) GetForbidPartyLiterals() bool {
@@ -3931,7 +3931,7 @@ type Module struct {
 
 func (x *Module) Reset() {
 	*x = Module{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[31]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3943,7 +3943,7 @@ func (x *Module) String() string {
 func (*Module) ProtoMessage() {}
 
 func (x *Module) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[31]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3956,7 +3956,7 @@ func (x *Module) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Module.ProtoReflect.Descriptor instead.
 func (*Module) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{31}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *Module) GetNameInternedDname() int32 {
@@ -4024,7 +4024,7 @@ type InternedDottedName struct {
 
 func (x *InternedDottedName) Reset() {
 	*x = InternedDottedName{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[32]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4036,7 +4036,7 @@ func (x *InternedDottedName) String() string {
 func (*InternedDottedName) ProtoMessage() {}
 
 func (x *InternedDottedName) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[32]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4049,7 +4049,7 @@ func (x *InternedDottedName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InternedDottedName.ProtoReflect.Descriptor instead.
 func (*InternedDottedName) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{32}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *InternedDottedName) GetSegmentsInternedStr() []int32 {
@@ -4068,7 +4068,7 @@ type UpgradedPackageId struct {
 
 func (x *UpgradedPackageId) Reset() {
 	*x = UpgradedPackageId{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[33]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4080,7 +4080,7 @@ func (x *UpgradedPackageId) String() string {
 func (*UpgradedPackageId) ProtoMessage() {}
 
 func (x *UpgradedPackageId) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[33]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4093,7 +4093,7 @@ func (x *UpgradedPackageId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpgradedPackageId.ProtoReflect.Descriptor instead.
 func (*UpgradedPackageId) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{33}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *UpgradedPackageId) GetUpgradedPackageIdInternedStr() int32 {
@@ -4114,7 +4114,7 @@ type PackageMetadata struct {
 
 func (x *PackageMetadata) Reset() {
 	*x = PackageMetadata{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[34]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4126,7 +4126,7 @@ func (x *PackageMetadata) String() string {
 func (*PackageMetadata) ProtoMessage() {}
 
 func (x *PackageMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[34]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4139,7 +4139,7 @@ func (x *PackageMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PackageMetadata.ProtoReflect.Descriptor instead.
 func (*PackageMetadata) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{34}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *PackageMetadata) GetNameInternedStr() int32 {
@@ -4172,7 +4172,7 @@ type PackageImports struct {
 
 func (x *PackageImports) Reset() {
 	*x = PackageImports{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[35]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4184,7 +4184,7 @@ func (x *PackageImports) String() string {
 func (*PackageImports) ProtoMessage() {}
 
 func (x *PackageImports) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[35]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4197,7 +4197,7 @@ func (x *PackageImports) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PackageImports.ProtoReflect.Descriptor instead.
 func (*PackageImports) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{35}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *PackageImports) GetImportedPackages() []string {
@@ -4227,7 +4227,7 @@ type Package struct {
 
 func (x *Package) Reset() {
 	*x = Package{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[36]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4239,7 +4239,7 @@ func (x *Package) String() string {
 func (*Package) ProtoMessage() {}
 
 func (x *Package) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[36]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4252,7 +4252,7 @@ func (x *Package) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Package.ProtoReflect.Descriptor instead.
 func (*Package) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{36}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *Package) GetModules() []*Module {
@@ -4355,7 +4355,7 @@ type Kind_Arrow struct {
 
 func (x *Kind_Arrow) Reset() {
 	*x = Kind_Arrow{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[37]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4367,7 +4367,7 @@ func (x *Kind_Arrow) String() string {
 func (*Kind_Arrow) ProtoMessage() {}
 
 func (x *Kind_Arrow) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[37]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4380,7 +4380,7 @@ func (x *Kind_Arrow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Kind_Arrow.ProtoReflect.Descriptor instead.
 func (*Kind_Arrow) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{11, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{11, 0}
 }
 
 func (x *Kind_Arrow) GetParams() []*Kind {
@@ -4407,7 +4407,7 @@ type Type_Var struct {
 
 func (x *Type_Var) Reset() {
 	*x = Type_Var{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[38]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4419,7 +4419,7 @@ func (x *Type_Var) String() string {
 func (*Type_Var) ProtoMessage() {}
 
 func (x *Type_Var) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[38]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4432,7 +4432,7 @@ func (x *Type_Var) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Var.ProtoReflect.Descriptor instead.
 func (*Type_Var) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{12, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{12, 0}
 }
 
 func (x *Type_Var) GetVarInternedStr() int32 {
@@ -4459,7 +4459,7 @@ type Type_Con struct {
 
 func (x *Type_Con) Reset() {
 	*x = Type_Con{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[39]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4471,7 +4471,7 @@ func (x *Type_Con) String() string {
 func (*Type_Con) ProtoMessage() {}
 
 func (x *Type_Con) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[39]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4484,7 +4484,7 @@ func (x *Type_Con) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Con.ProtoReflect.Descriptor instead.
 func (*Type_Con) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{12, 1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{12, 1}
 }
 
 func (x *Type_Con) GetTycon() *TypeConId {
@@ -4511,7 +4511,7 @@ type Type_Syn struct {
 
 func (x *Type_Syn) Reset() {
 	*x = Type_Syn{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[40]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4523,7 +4523,7 @@ func (x *Type_Syn) String() string {
 func (*Type_Syn) ProtoMessage() {}
 
 func (x *Type_Syn) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[40]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4536,7 +4536,7 @@ func (x *Type_Syn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Syn.ProtoReflect.Descriptor instead.
 func (*Type_Syn) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{12, 2}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{12, 2}
 }
 
 func (x *Type_Syn) GetTysyn() *TypeSynId {
@@ -4563,7 +4563,7 @@ type Type_Builtin struct {
 
 func (x *Type_Builtin) Reset() {
 	*x = Type_Builtin{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[41]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4575,7 +4575,7 @@ func (x *Type_Builtin) String() string {
 func (*Type_Builtin) ProtoMessage() {}
 
 func (x *Type_Builtin) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[41]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4588,7 +4588,7 @@ func (x *Type_Builtin) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Builtin.ProtoReflect.Descriptor instead.
 func (*Type_Builtin) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{12, 3}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{12, 3}
 }
 
 func (x *Type_Builtin) GetBuiltin() BuiltinType {
@@ -4615,7 +4615,7 @@ type Type_Forall struct {
 
 func (x *Type_Forall) Reset() {
 	*x = Type_Forall{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[42]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4627,7 +4627,7 @@ func (x *Type_Forall) String() string {
 func (*Type_Forall) ProtoMessage() {}
 
 func (x *Type_Forall) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[42]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4640,7 +4640,7 @@ func (x *Type_Forall) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Forall.ProtoReflect.Descriptor instead.
 func (*Type_Forall) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{12, 4}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{12, 4}
 }
 
 func (x *Type_Forall) GetVars() []*TypeVarWithKind {
@@ -4666,7 +4666,7 @@ type Type_Struct struct {
 
 func (x *Type_Struct) Reset() {
 	*x = Type_Struct{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[43]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4678,7 +4678,7 @@ func (x *Type_Struct) String() string {
 func (*Type_Struct) ProtoMessage() {}
 
 func (x *Type_Struct) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[43]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4691,7 +4691,7 @@ func (x *Type_Struct) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Struct.ProtoReflect.Descriptor instead.
 func (*Type_Struct) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{12, 5}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{12, 5}
 }
 
 func (x *Type_Struct) GetFields() []*FieldWithType {
@@ -4711,7 +4711,7 @@ type Type_TApp struct {
 
 func (x *Type_TApp) Reset() {
 	*x = Type_TApp{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[44]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4723,7 +4723,7 @@ func (x *Type_TApp) String() string {
 func (*Type_TApp) ProtoMessage() {}
 
 func (x *Type_TApp) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[44]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4736,7 +4736,7 @@ func (x *Type_TApp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_TApp.ProtoReflect.Descriptor instead.
 func (*Type_TApp) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{12, 6}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{12, 6}
 }
 
 func (x *Type_TApp) GetLhs() *Type {
@@ -4765,7 +4765,7 @@ type Location_Range struct {
 
 func (x *Location_Range) Reset() {
 	*x = Location_Range{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[45]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4777,7 +4777,7 @@ func (x *Location_Range) String() string {
 func (*Location_Range) ProtoMessage() {}
 
 func (x *Location_Range) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[45]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4790,7 +4790,7 @@ func (x *Location_Range) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Location_Range.ProtoReflect.Descriptor instead.
 func (*Location_Range) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{14, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{14, 0}
 }
 
 func (x *Location_Range) GetStartLine() int32 {
@@ -4831,7 +4831,7 @@ type Expr_RecCon struct {
 
 func (x *Expr_RecCon) Reset() {
 	*x = Expr_RecCon{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[46]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4843,7 +4843,7 @@ func (x *Expr_RecCon) String() string {
 func (*Expr_RecCon) ProtoMessage() {}
 
 func (x *Expr_RecCon) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[46]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4856,7 +4856,7 @@ func (x *Expr_RecCon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_RecCon.ProtoReflect.Descriptor instead.
 func (*Expr_RecCon) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 0}
 }
 
 func (x *Expr_RecCon) GetTycon() *Type_Con {
@@ -4884,7 +4884,7 @@ type Expr_RecProj struct {
 
 func (x *Expr_RecProj) Reset() {
 	*x = Expr_RecProj{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[47]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4896,7 +4896,7 @@ func (x *Expr_RecProj) String() string {
 func (*Expr_RecProj) ProtoMessage() {}
 
 func (x *Expr_RecProj) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[47]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4909,7 +4909,7 @@ func (x *Expr_RecProj) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_RecProj.ProtoReflect.Descriptor instead.
 func (*Expr_RecProj) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 1}
 }
 
 func (x *Expr_RecProj) GetTycon() *Type_Con {
@@ -4945,7 +4945,7 @@ type Expr_RecUpd struct {
 
 func (x *Expr_RecUpd) Reset() {
 	*x = Expr_RecUpd{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[48]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4957,7 +4957,7 @@ func (x *Expr_RecUpd) String() string {
 func (*Expr_RecUpd) ProtoMessage() {}
 
 func (x *Expr_RecUpd) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[48]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4970,7 +4970,7 @@ func (x *Expr_RecUpd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_RecUpd.ProtoReflect.Descriptor instead.
 func (*Expr_RecUpd) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 2}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 2}
 }
 
 func (x *Expr_RecUpd) GetTycon() *Type_Con {
@@ -5012,7 +5012,7 @@ type Expr_VariantCon struct {
 
 func (x *Expr_VariantCon) Reset() {
 	*x = Expr_VariantCon{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[49]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5024,7 +5024,7 @@ func (x *Expr_VariantCon) String() string {
 func (*Expr_VariantCon) ProtoMessage() {}
 
 func (x *Expr_VariantCon) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[49]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5037,7 +5037,7 @@ func (x *Expr_VariantCon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_VariantCon.ProtoReflect.Descriptor instead.
 func (*Expr_VariantCon) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 3}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 3}
 }
 
 func (x *Expr_VariantCon) GetTycon() *Type_Con {
@@ -5071,7 +5071,7 @@ type Expr_EnumCon struct {
 
 func (x *Expr_EnumCon) Reset() {
 	*x = Expr_EnumCon{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[50]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5083,7 +5083,7 @@ func (x *Expr_EnumCon) String() string {
 func (*Expr_EnumCon) ProtoMessage() {}
 
 func (x *Expr_EnumCon) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[50]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5096,7 +5096,7 @@ func (x *Expr_EnumCon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_EnumCon.ProtoReflect.Descriptor instead.
 func (*Expr_EnumCon) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 4}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 4}
 }
 
 func (x *Expr_EnumCon) GetTycon() *TypeConId {
@@ -5122,7 +5122,7 @@ type Expr_StructCon struct {
 
 func (x *Expr_StructCon) Reset() {
 	*x = Expr_StructCon{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[51]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5134,7 +5134,7 @@ func (x *Expr_StructCon) String() string {
 func (*Expr_StructCon) ProtoMessage() {}
 
 func (x *Expr_StructCon) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[51]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5147,7 +5147,7 @@ func (x *Expr_StructCon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_StructCon.ProtoReflect.Descriptor instead.
 func (*Expr_StructCon) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 5}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 5}
 }
 
 func (x *Expr_StructCon) GetFields() []*FieldWithExpr {
@@ -5167,7 +5167,7 @@ type Expr_StructProj struct {
 
 func (x *Expr_StructProj) Reset() {
 	*x = Expr_StructProj{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[52]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5179,7 +5179,7 @@ func (x *Expr_StructProj) String() string {
 func (*Expr_StructProj) ProtoMessage() {}
 
 func (x *Expr_StructProj) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[52]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5192,7 +5192,7 @@ func (x *Expr_StructProj) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_StructProj.ProtoReflect.Descriptor instead.
 func (*Expr_StructProj) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 6}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 6}
 }
 
 func (x *Expr_StructProj) GetFieldInternedStr() int32 {
@@ -5220,7 +5220,7 @@ type Expr_StructUpd struct {
 
 func (x *Expr_StructUpd) Reset() {
 	*x = Expr_StructUpd{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[53]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5232,7 +5232,7 @@ func (x *Expr_StructUpd) String() string {
 func (*Expr_StructUpd) ProtoMessage() {}
 
 func (x *Expr_StructUpd) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[53]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5245,7 +5245,7 @@ func (x *Expr_StructUpd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_StructUpd.ProtoReflect.Descriptor instead.
 func (*Expr_StructUpd) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 7}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 7}
 }
 
 func (x *Expr_StructUpd) GetFieldInternedStr() int32 {
@@ -5279,7 +5279,7 @@ type Expr_App struct {
 
 func (x *Expr_App) Reset() {
 	*x = Expr_App{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[54]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5291,7 +5291,7 @@ func (x *Expr_App) String() string {
 func (*Expr_App) ProtoMessage() {}
 
 func (x *Expr_App) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[54]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5304,7 +5304,7 @@ func (x *Expr_App) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_App.ProtoReflect.Descriptor instead.
 func (*Expr_App) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 8}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 8}
 }
 
 func (x *Expr_App) GetFun() *Expr {
@@ -5331,7 +5331,7 @@ type Expr_TyApp struct {
 
 func (x *Expr_TyApp) Reset() {
 	*x = Expr_TyApp{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[55]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5343,7 +5343,7 @@ func (x *Expr_TyApp) String() string {
 func (*Expr_TyApp) ProtoMessage() {}
 
 func (x *Expr_TyApp) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[55]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5356,7 +5356,7 @@ func (x *Expr_TyApp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_TyApp.ProtoReflect.Descriptor instead.
 func (*Expr_TyApp) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 9}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 9}
 }
 
 func (x *Expr_TyApp) GetExpr() *Expr {
@@ -5383,7 +5383,7 @@ type Expr_Abs struct {
 
 func (x *Expr_Abs) Reset() {
 	*x = Expr_Abs{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[56]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5395,7 +5395,7 @@ func (x *Expr_Abs) String() string {
 func (*Expr_Abs) ProtoMessage() {}
 
 func (x *Expr_Abs) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[56]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5408,7 +5408,7 @@ func (x *Expr_Abs) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Abs.ProtoReflect.Descriptor instead.
 func (*Expr_Abs) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 10}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 10}
 }
 
 func (x *Expr_Abs) GetParam() []*VarWithType {
@@ -5435,7 +5435,7 @@ type Expr_TyAbs struct {
 
 func (x *Expr_TyAbs) Reset() {
 	*x = Expr_TyAbs{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[57]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5447,7 +5447,7 @@ func (x *Expr_TyAbs) String() string {
 func (*Expr_TyAbs) ProtoMessage() {}
 
 func (x *Expr_TyAbs) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[57]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5460,7 +5460,7 @@ func (x *Expr_TyAbs) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_TyAbs.ProtoReflect.Descriptor instead.
 func (*Expr_TyAbs) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 11}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 11}
 }
 
 func (x *Expr_TyAbs) GetParam() []*TypeVarWithKind {
@@ -5486,7 +5486,7 @@ type Expr_Nil struct {
 
 func (x *Expr_Nil) Reset() {
 	*x = Expr_Nil{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[58]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5498,7 +5498,7 @@ func (x *Expr_Nil) String() string {
 func (*Expr_Nil) ProtoMessage() {}
 
 func (x *Expr_Nil) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[58]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5511,7 +5511,7 @@ func (x *Expr_Nil) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Nil.ProtoReflect.Descriptor instead.
 func (*Expr_Nil) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 12}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 12}
 }
 
 func (x *Expr_Nil) GetType() *Type {
@@ -5532,7 +5532,7 @@ type Expr_Cons struct {
 
 func (x *Expr_Cons) Reset() {
 	*x = Expr_Cons{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[59]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5544,7 +5544,7 @@ func (x *Expr_Cons) String() string {
 func (*Expr_Cons) ProtoMessage() {}
 
 func (x *Expr_Cons) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[59]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5557,7 +5557,7 @@ func (x *Expr_Cons) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Cons.ProtoReflect.Descriptor instead.
 func (*Expr_Cons) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 13}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 13}
 }
 
 func (x *Expr_Cons) GetType() *Type {
@@ -5590,7 +5590,7 @@ type Expr_OptionalNone struct {
 
 func (x *Expr_OptionalNone) Reset() {
 	*x = Expr_OptionalNone{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[60]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5602,7 +5602,7 @@ func (x *Expr_OptionalNone) String() string {
 func (*Expr_OptionalNone) ProtoMessage() {}
 
 func (x *Expr_OptionalNone) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[60]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5615,7 +5615,7 @@ func (x *Expr_OptionalNone) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_OptionalNone.ProtoReflect.Descriptor instead.
 func (*Expr_OptionalNone) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 14}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 14}
 }
 
 func (x *Expr_OptionalNone) GetType() *Type {
@@ -5635,7 +5635,7 @@ type Expr_OptionalSome struct {
 
 func (x *Expr_OptionalSome) Reset() {
 	*x = Expr_OptionalSome{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[61]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5647,7 +5647,7 @@ func (x *Expr_OptionalSome) String() string {
 func (*Expr_OptionalSome) ProtoMessage() {}
 
 func (x *Expr_OptionalSome) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[61]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5660,7 +5660,7 @@ func (x *Expr_OptionalSome) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_OptionalSome.ProtoReflect.Descriptor instead.
 func (*Expr_OptionalSome) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 15}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 15}
 }
 
 func (x *Expr_OptionalSome) GetType() *Type {
@@ -5687,7 +5687,7 @@ type Expr_ToAny struct {
 
 func (x *Expr_ToAny) Reset() {
 	*x = Expr_ToAny{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[62]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5699,7 +5699,7 @@ func (x *Expr_ToAny) String() string {
 func (*Expr_ToAny) ProtoMessage() {}
 
 func (x *Expr_ToAny) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[62]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5712,7 +5712,7 @@ func (x *Expr_ToAny) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ToAny.ProtoReflect.Descriptor instead.
 func (*Expr_ToAny) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 16}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 16}
 }
 
 func (x *Expr_ToAny) GetType() *Type {
@@ -5739,7 +5739,7 @@ type Expr_FromAny struct {
 
 func (x *Expr_FromAny) Reset() {
 	*x = Expr_FromAny{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[63]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5751,7 +5751,7 @@ func (x *Expr_FromAny) String() string {
 func (*Expr_FromAny) ProtoMessage() {}
 
 func (x *Expr_FromAny) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[63]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5764,7 +5764,7 @@ func (x *Expr_FromAny) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_FromAny.ProtoReflect.Descriptor instead.
 func (*Expr_FromAny) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 17}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 17}
 }
 
 func (x *Expr_FromAny) GetType() *Type {
@@ -5791,7 +5791,7 @@ type Expr_ToAnyException struct {
 
 func (x *Expr_ToAnyException) Reset() {
 	*x = Expr_ToAnyException{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[64]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5803,7 +5803,7 @@ func (x *Expr_ToAnyException) String() string {
 func (*Expr_ToAnyException) ProtoMessage() {}
 
 func (x *Expr_ToAnyException) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[64]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5816,7 +5816,7 @@ func (x *Expr_ToAnyException) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ToAnyException.ProtoReflect.Descriptor instead.
 func (*Expr_ToAnyException) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 18}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 18}
 }
 
 func (x *Expr_ToAnyException) GetType() *Type {
@@ -5843,7 +5843,7 @@ type Expr_FromAnyException struct {
 
 func (x *Expr_FromAnyException) Reset() {
 	*x = Expr_FromAnyException{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[65]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5855,7 +5855,7 @@ func (x *Expr_FromAnyException) String() string {
 func (*Expr_FromAnyException) ProtoMessage() {}
 
 func (x *Expr_FromAnyException) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[65]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5868,7 +5868,7 @@ func (x *Expr_FromAnyException) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_FromAnyException.ProtoReflect.Descriptor instead.
 func (*Expr_FromAnyException) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 19}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 19}
 }
 
 func (x *Expr_FromAnyException) GetType() *Type {
@@ -5896,7 +5896,7 @@ type Expr_Throw struct {
 
 func (x *Expr_Throw) Reset() {
 	*x = Expr_Throw{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[66]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5908,7 +5908,7 @@ func (x *Expr_Throw) String() string {
 func (*Expr_Throw) ProtoMessage() {}
 
 func (x *Expr_Throw) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[66]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5921,7 +5921,7 @@ func (x *Expr_Throw) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Throw.ProtoReflect.Descriptor instead.
 func (*Expr_Throw) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 20}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 20}
 }
 
 func (x *Expr_Throw) GetReturnType() *Type {
@@ -5956,7 +5956,7 @@ type Expr_ToInterface struct {
 
 func (x *Expr_ToInterface) Reset() {
 	*x = Expr_ToInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[67]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5968,7 +5968,7 @@ func (x *Expr_ToInterface) String() string {
 func (*Expr_ToInterface) ProtoMessage() {}
 
 func (x *Expr_ToInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[67]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5981,7 +5981,7 @@ func (x *Expr_ToInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ToInterface.ProtoReflect.Descriptor instead.
 func (*Expr_ToInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 21}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 21}
 }
 
 func (x *Expr_ToInterface) GetInterfaceType() *TypeConId {
@@ -6016,7 +6016,7 @@ type Expr_FromInterface struct {
 
 func (x *Expr_FromInterface) Reset() {
 	*x = Expr_FromInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[68]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6028,7 +6028,7 @@ func (x *Expr_FromInterface) String() string {
 func (*Expr_FromInterface) ProtoMessage() {}
 
 func (x *Expr_FromInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[68]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6041,7 +6041,7 @@ func (x *Expr_FromInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_FromInterface.ProtoReflect.Descriptor instead.
 func (*Expr_FromInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 22}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 22}
 }
 
 func (x *Expr_FromInterface) GetInterfaceType() *TypeConId {
@@ -6076,7 +6076,7 @@ type Expr_CallInterface struct {
 
 func (x *Expr_CallInterface) Reset() {
 	*x = Expr_CallInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[69]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6088,7 +6088,7 @@ func (x *Expr_CallInterface) String() string {
 func (*Expr_CallInterface) ProtoMessage() {}
 
 func (x *Expr_CallInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[69]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6101,7 +6101,7 @@ func (x *Expr_CallInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_CallInterface.ProtoReflect.Descriptor instead.
 func (*Expr_CallInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 23}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 23}
 }
 
 func (x *Expr_CallInterface) GetInterfaceType() *TypeConId {
@@ -6135,7 +6135,7 @@ type Expr_ViewInterface struct {
 
 func (x *Expr_ViewInterface) Reset() {
 	*x = Expr_ViewInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[70]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6147,7 +6147,7 @@ func (x *Expr_ViewInterface) String() string {
 func (*Expr_ViewInterface) ProtoMessage() {}
 
 func (x *Expr_ViewInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[70]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6160,7 +6160,7 @@ func (x *Expr_ViewInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ViewInterface.ProtoReflect.Descriptor instead.
 func (*Expr_ViewInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 24}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 24}
 }
 
 func (x *Expr_ViewInterface) GetInterface() *TypeConId {
@@ -6187,7 +6187,7 @@ type Expr_SignatoryInterface struct {
 
 func (x *Expr_SignatoryInterface) Reset() {
 	*x = Expr_SignatoryInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[71]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6199,7 +6199,7 @@ func (x *Expr_SignatoryInterface) String() string {
 func (*Expr_SignatoryInterface) ProtoMessage() {}
 
 func (x *Expr_SignatoryInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[71]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6212,7 +6212,7 @@ func (x *Expr_SignatoryInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_SignatoryInterface.ProtoReflect.Descriptor instead.
 func (*Expr_SignatoryInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 25}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 25}
 }
 
 func (x *Expr_SignatoryInterface) GetInterface() *TypeConId {
@@ -6239,7 +6239,7 @@ type Expr_ObserverInterface struct {
 
 func (x *Expr_ObserverInterface) Reset() {
 	*x = Expr_ObserverInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[72]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6251,7 +6251,7 @@ func (x *Expr_ObserverInterface) String() string {
 func (*Expr_ObserverInterface) ProtoMessage() {}
 
 func (x *Expr_ObserverInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[72]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6264,7 +6264,7 @@ func (x *Expr_ObserverInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ObserverInterface.ProtoReflect.Descriptor instead.
 func (*Expr_ObserverInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 26}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 26}
 }
 
 func (x *Expr_ObserverInterface) GetInterface() *TypeConId {
@@ -6293,7 +6293,7 @@ type Expr_UnsafeFromInterface struct {
 
 func (x *Expr_UnsafeFromInterface) Reset() {
 	*x = Expr_UnsafeFromInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[73]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6305,7 +6305,7 @@ func (x *Expr_UnsafeFromInterface) String() string {
 func (*Expr_UnsafeFromInterface) ProtoMessage() {}
 
 func (x *Expr_UnsafeFromInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[73]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6318,7 +6318,7 @@ func (x *Expr_UnsafeFromInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_UnsafeFromInterface.ProtoReflect.Descriptor instead.
 func (*Expr_UnsafeFromInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 27}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 27}
 }
 
 func (x *Expr_UnsafeFromInterface) GetInterfaceType() *TypeConId {
@@ -6360,7 +6360,7 @@ type Expr_ToRequiredInterface struct {
 
 func (x *Expr_ToRequiredInterface) Reset() {
 	*x = Expr_ToRequiredInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[74]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6372,7 +6372,7 @@ func (x *Expr_ToRequiredInterface) String() string {
 func (*Expr_ToRequiredInterface) ProtoMessage() {}
 
 func (x *Expr_ToRequiredInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[74]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6385,7 +6385,7 @@ func (x *Expr_ToRequiredInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ToRequiredInterface.ProtoReflect.Descriptor instead.
 func (*Expr_ToRequiredInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 28}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 28}
 }
 
 func (x *Expr_ToRequiredInterface) GetRequiredInterface() *TypeConId {
@@ -6420,7 +6420,7 @@ type Expr_FromRequiredInterface struct {
 
 func (x *Expr_FromRequiredInterface) Reset() {
 	*x = Expr_FromRequiredInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[75]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6432,7 +6432,7 @@ func (x *Expr_FromRequiredInterface) String() string {
 func (*Expr_FromRequiredInterface) ProtoMessage() {}
 
 func (x *Expr_FromRequiredInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[75]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6445,7 +6445,7 @@ func (x *Expr_FromRequiredInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_FromRequiredInterface.ProtoReflect.Descriptor instead.
 func (*Expr_FromRequiredInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 29}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 29}
 }
 
 func (x *Expr_FromRequiredInterface) GetRequiredInterface() *TypeConId {
@@ -6481,7 +6481,7 @@ type Expr_UnsafeFromRequiredInterface struct {
 
 func (x *Expr_UnsafeFromRequiredInterface) Reset() {
 	*x = Expr_UnsafeFromRequiredInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[76]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6493,7 +6493,7 @@ func (x *Expr_UnsafeFromRequiredInterface) String() string {
 func (*Expr_UnsafeFromRequiredInterface) ProtoMessage() {}
 
 func (x *Expr_UnsafeFromRequiredInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[76]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6506,7 +6506,7 @@ func (x *Expr_UnsafeFromRequiredInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_UnsafeFromRequiredInterface.ProtoReflect.Descriptor instead.
 func (*Expr_UnsafeFromRequiredInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 30}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 30}
 }
 
 func (x *Expr_UnsafeFromRequiredInterface) GetRequiredInterface() *TypeConId {
@@ -6547,7 +6547,7 @@ type Expr_InterfaceTemplateTypeRep struct {
 
 func (x *Expr_InterfaceTemplateTypeRep) Reset() {
 	*x = Expr_InterfaceTemplateTypeRep{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[77]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6559,7 +6559,7 @@ func (x *Expr_InterfaceTemplateTypeRep) String() string {
 func (*Expr_InterfaceTemplateTypeRep) ProtoMessage() {}
 
 func (x *Expr_InterfaceTemplateTypeRep) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[77]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6572,7 +6572,7 @@ func (x *Expr_InterfaceTemplateTypeRep) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_InterfaceTemplateTypeRep.ProtoReflect.Descriptor instead.
 func (*Expr_InterfaceTemplateTypeRep) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 31}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 31}
 }
 
 func (x *Expr_InterfaceTemplateTypeRep) GetInterface() *TypeConId {
@@ -6601,7 +6601,7 @@ type Expr_ChoiceController struct {
 
 func (x *Expr_ChoiceController) Reset() {
 	*x = Expr_ChoiceController{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[78]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6613,7 +6613,7 @@ func (x *Expr_ChoiceController) String() string {
 func (*Expr_ChoiceController) ProtoMessage() {}
 
 func (x *Expr_ChoiceController) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[78]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6626,7 +6626,7 @@ func (x *Expr_ChoiceController) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ChoiceController.ProtoReflect.Descriptor instead.
 func (*Expr_ChoiceController) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 32}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 32}
 }
 
 func (x *Expr_ChoiceController) GetTemplate() *TypeConId {
@@ -6669,7 +6669,7 @@ type Expr_ChoiceObserver struct {
 
 func (x *Expr_ChoiceObserver) Reset() {
 	*x = Expr_ChoiceObserver{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[79]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6681,7 +6681,7 @@ func (x *Expr_ChoiceObserver) String() string {
 func (*Expr_ChoiceObserver) ProtoMessage() {}
 
 func (x *Expr_ChoiceObserver) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[79]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6694,7 +6694,7 @@ func (x *Expr_ChoiceObserver) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ChoiceObserver.ProtoReflect.Descriptor instead.
 func (*Expr_ChoiceObserver) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 33}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 33}
 }
 
 func (x *Expr_ChoiceObserver) GetTemplate() *TypeConId {
@@ -6735,7 +6735,7 @@ type Expr_Experimental struct {
 
 func (x *Expr_Experimental) Reset() {
 	*x = Expr_Experimental{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[80]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6747,7 +6747,7 @@ func (x *Expr_Experimental) String() string {
 func (*Expr_Experimental) ProtoMessage() {}
 
 func (x *Expr_Experimental) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[80]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6760,7 +6760,7 @@ func (x *Expr_Experimental) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Experimental.ProtoReflect.Descriptor instead.
 func (*Expr_Experimental) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{15, 34}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{15, 34}
 }
 
 func (x *Expr_Experimental) GetName() string {
@@ -6788,7 +6788,7 @@ type CaseAlt_Variant struct {
 
 func (x *CaseAlt_Variant) Reset() {
 	*x = CaseAlt_Variant{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[81]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6800,7 +6800,7 @@ func (x *CaseAlt_Variant) String() string {
 func (*CaseAlt_Variant) ProtoMessage() {}
 
 func (x *CaseAlt_Variant) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[81]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6813,7 +6813,7 @@ func (x *CaseAlt_Variant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt_Variant.ProtoReflect.Descriptor instead.
 func (*CaseAlt_Variant) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{16, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{16, 0}
 }
 
 func (x *CaseAlt_Variant) GetCon() *TypeConId {
@@ -6847,7 +6847,7 @@ type CaseAlt_Enum struct {
 
 func (x *CaseAlt_Enum) Reset() {
 	*x = CaseAlt_Enum{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[82]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6859,7 +6859,7 @@ func (x *CaseAlt_Enum) String() string {
 func (*CaseAlt_Enum) ProtoMessage() {}
 
 func (x *CaseAlt_Enum) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[82]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6872,7 +6872,7 @@ func (x *CaseAlt_Enum) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt_Enum.ProtoReflect.Descriptor instead.
 func (*CaseAlt_Enum) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{16, 1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{16, 1}
 }
 
 func (x *CaseAlt_Enum) GetCon() *TypeConId {
@@ -6899,7 +6899,7 @@ type CaseAlt_Cons struct {
 
 func (x *CaseAlt_Cons) Reset() {
 	*x = CaseAlt_Cons{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[83]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6911,7 +6911,7 @@ func (x *CaseAlt_Cons) String() string {
 func (*CaseAlt_Cons) ProtoMessage() {}
 
 func (x *CaseAlt_Cons) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[83]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6924,7 +6924,7 @@ func (x *CaseAlt_Cons) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt_Cons.ProtoReflect.Descriptor instead.
 func (*CaseAlt_Cons) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{16, 2}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{16, 2}
 }
 
 func (x *CaseAlt_Cons) GetVarHeadInternedStr() int32 {
@@ -6950,7 +6950,7 @@ type CaseAlt_OptionalSome struct {
 
 func (x *CaseAlt_OptionalSome) Reset() {
 	*x = CaseAlt_OptionalSome{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[84]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6962,7 +6962,7 @@ func (x *CaseAlt_OptionalSome) String() string {
 func (*CaseAlt_OptionalSome) ProtoMessage() {}
 
 func (x *CaseAlt_OptionalSome) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[84]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6975,7 +6975,7 @@ func (x *CaseAlt_OptionalSome) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt_OptionalSome.ProtoReflect.Descriptor instead.
 func (*CaseAlt_OptionalSome) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{16, 3}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{16, 3}
 }
 
 func (x *CaseAlt_OptionalSome) GetVarBodyInternedStr() int32 {
@@ -6995,7 +6995,7 @@ type Update_Create struct {
 
 func (x *Update_Create) Reset() {
 	*x = Update_Create{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[85]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7007,7 +7007,7 @@ func (x *Update_Create) String() string {
 func (*Update_Create) ProtoMessage() {}
 
 func (x *Update_Create) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[85]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7020,7 +7020,7 @@ func (x *Update_Create) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_Create.ProtoReflect.Descriptor instead.
 func (*Update_Create) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 0}
 }
 
 func (x *Update_Create) GetTemplate() *TypeConId {
@@ -7047,7 +7047,7 @@ type Update_CreateInterface struct {
 
 func (x *Update_CreateInterface) Reset() {
 	*x = Update_CreateInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[86]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7059,7 +7059,7 @@ func (x *Update_CreateInterface) String() string {
 func (*Update_CreateInterface) ProtoMessage() {}
 
 func (x *Update_CreateInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[86]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7072,7 +7072,7 @@ func (x *Update_CreateInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_CreateInterface.ProtoReflect.Descriptor instead.
 func (*Update_CreateInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 1}
 }
 
 func (x *Update_CreateInterface) GetInterface() *TypeConId {
@@ -7101,7 +7101,7 @@ type Update_Exercise struct {
 
 func (x *Update_Exercise) Reset() {
 	*x = Update_Exercise{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[87]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7113,7 +7113,7 @@ func (x *Update_Exercise) String() string {
 func (*Update_Exercise) ProtoMessage() {}
 
 func (x *Update_Exercise) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[87]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7126,7 +7126,7 @@ func (x *Update_Exercise) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_Exercise.ProtoReflect.Descriptor instead.
 func (*Update_Exercise) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 2}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 2}
 }
 
 func (x *Update_Exercise) GetTemplate() *TypeConId {
@@ -7170,7 +7170,7 @@ type Update_ExerciseInterface struct {
 
 func (x *Update_ExerciseInterface) Reset() {
 	*x = Update_ExerciseInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[88]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7182,7 +7182,7 @@ func (x *Update_ExerciseInterface) String() string {
 func (*Update_ExerciseInterface) ProtoMessage() {}
 
 func (x *Update_ExerciseInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[88]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7195,7 +7195,7 @@ func (x *Update_ExerciseInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_ExerciseInterface.ProtoReflect.Descriptor instead.
 func (*Update_ExerciseInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 3}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 3}
 }
 
 func (x *Update_ExerciseInterface) GetInterface() *TypeConId {
@@ -7245,7 +7245,7 @@ type Update_ExerciseByKey struct {
 
 func (x *Update_ExerciseByKey) Reset() {
 	*x = Update_ExerciseByKey{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[89]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7257,7 +7257,7 @@ func (x *Update_ExerciseByKey) String() string {
 func (*Update_ExerciseByKey) ProtoMessage() {}
 
 func (x *Update_ExerciseByKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[89]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7270,7 +7270,7 @@ func (x *Update_ExerciseByKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_ExerciseByKey.ProtoReflect.Descriptor instead.
 func (*Update_ExerciseByKey) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 4}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 4}
 }
 
 func (x *Update_ExerciseByKey) GetTemplate() *TypeConId {
@@ -7311,7 +7311,7 @@ type Update_Fetch struct {
 
 func (x *Update_Fetch) Reset() {
 	*x = Update_Fetch{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[90]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7323,7 +7323,7 @@ func (x *Update_Fetch) String() string {
 func (*Update_Fetch) ProtoMessage() {}
 
 func (x *Update_Fetch) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[90]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7336,7 +7336,7 @@ func (x *Update_Fetch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_Fetch.ProtoReflect.Descriptor instead.
 func (*Update_Fetch) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 5}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 5}
 }
 
 func (x *Update_Fetch) GetTemplate() *TypeConId {
@@ -7363,7 +7363,7 @@ type Update_FetchInterface struct {
 
 func (x *Update_FetchInterface) Reset() {
 	*x = Update_FetchInterface{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[91]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7375,7 +7375,7 @@ func (x *Update_FetchInterface) String() string {
 func (*Update_FetchInterface) ProtoMessage() {}
 
 func (x *Update_FetchInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[91]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7388,7 +7388,7 @@ func (x *Update_FetchInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_FetchInterface.ProtoReflect.Descriptor instead.
 func (*Update_FetchInterface) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 6}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 6}
 }
 
 func (x *Update_FetchInterface) GetInterface() *TypeConId {
@@ -7415,7 +7415,7 @@ type Update_EmbedExpr struct {
 
 func (x *Update_EmbedExpr) Reset() {
 	*x = Update_EmbedExpr{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[92]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7427,7 +7427,7 @@ func (x *Update_EmbedExpr) String() string {
 func (*Update_EmbedExpr) ProtoMessage() {}
 
 func (x *Update_EmbedExpr) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[92]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7440,7 +7440,7 @@ func (x *Update_EmbedExpr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_EmbedExpr.ProtoReflect.Descriptor instead.
 func (*Update_EmbedExpr) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 7}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 7}
 }
 
 func (x *Update_EmbedExpr) GetType() *Type {
@@ -7466,7 +7466,7 @@ type Update_RetrieveByKey struct {
 
 func (x *Update_RetrieveByKey) Reset() {
 	*x = Update_RetrieveByKey{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[93]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7478,7 +7478,7 @@ func (x *Update_RetrieveByKey) String() string {
 func (*Update_RetrieveByKey) ProtoMessage() {}
 
 func (x *Update_RetrieveByKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[93]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7491,7 +7491,7 @@ func (x *Update_RetrieveByKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_RetrieveByKey.ProtoReflect.Descriptor instead.
 func (*Update_RetrieveByKey) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 8}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 8}
 }
 
 func (x *Update_RetrieveByKey) GetTemplate() *TypeConId {
@@ -7513,7 +7513,7 @@ type Update_TryCatch struct {
 
 func (x *Update_TryCatch) Reset() {
 	*x = Update_TryCatch{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[94]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7525,7 +7525,7 @@ func (x *Update_TryCatch) String() string {
 func (*Update_TryCatch) ProtoMessage() {}
 
 func (x *Update_TryCatch) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[94]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7538,7 +7538,7 @@ func (x *Update_TryCatch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_TryCatch.ProtoReflect.Descriptor instead.
 func (*Update_TryCatch) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{20, 9}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{20, 9}
 }
 
 func (x *Update_TryCatch) GetReturnType() *Type {
@@ -7579,7 +7579,7 @@ type InterfaceInstanceBody_InterfaceInstanceMethod struct {
 
 func (x *InterfaceInstanceBody_InterfaceInstanceMethod) Reset() {
 	*x = InterfaceInstanceBody_InterfaceInstanceMethod{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[95]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7591,7 +7591,7 @@ func (x *InterfaceInstanceBody_InterfaceInstanceMethod) String() string {
 func (*InterfaceInstanceBody_InterfaceInstanceMethod) ProtoMessage() {}
 
 func (x *InterfaceInstanceBody_InterfaceInstanceMethod) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[95]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7604,7 +7604,7 @@ func (x *InterfaceInstanceBody_InterfaceInstanceMethod) ProtoReflect() protorefl
 
 // Deprecated: Use InterfaceInstanceBody_InterfaceInstanceMethod.ProtoReflect.Descriptor instead.
 func (*InterfaceInstanceBody_InterfaceInstanceMethod) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{22, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{22, 0}
 }
 
 func (x *InterfaceInstanceBody_InterfaceInstanceMethod) GetMethodInternedName() int32 {
@@ -7632,7 +7632,7 @@ type DefTemplate_DefKey struct {
 
 func (x *DefTemplate_DefKey) Reset() {
 	*x = DefTemplate_DefKey{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[96]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7644,7 +7644,7 @@ func (x *DefTemplate_DefKey) String() string {
 func (*DefTemplate_DefKey) ProtoMessage() {}
 
 func (x *DefTemplate_DefKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[96]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7657,7 +7657,7 @@ func (x *DefTemplate_DefKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefTemplate_DefKey.ProtoReflect.Descriptor instead.
 func (*DefTemplate_DefKey) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{23, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{23, 0}
 }
 
 func (x *DefTemplate_DefKey) GetType() *Type {
@@ -7692,7 +7692,7 @@ type DefTemplate_Implements struct {
 
 func (x *DefTemplate_Implements) Reset() {
 	*x = DefTemplate_Implements{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[97]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7704,7 +7704,7 @@ func (x *DefTemplate_Implements) String() string {
 func (*DefTemplate_Implements) ProtoMessage() {}
 
 func (x *DefTemplate_Implements) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[97]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7717,7 +7717,7 @@ func (x *DefTemplate_Implements) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefTemplate_Implements.ProtoReflect.Descriptor instead.
 func (*DefTemplate_Implements) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{23, 1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{23, 1}
 }
 
 func (x *DefTemplate_Implements) GetInterface() *TypeConId {
@@ -7750,7 +7750,7 @@ type DefDataType_Fields struct {
 
 func (x *DefDataType_Fields) Reset() {
 	*x = DefDataType_Fields{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[98]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7762,7 +7762,7 @@ func (x *DefDataType_Fields) String() string {
 func (*DefDataType_Fields) ProtoMessage() {}
 
 func (x *DefDataType_Fields) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[98]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7775,7 +7775,7 @@ func (x *DefDataType_Fields) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefDataType_Fields.ProtoReflect.Descriptor instead.
 func (*DefDataType_Fields) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{27, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{27, 0}
 }
 
 func (x *DefDataType_Fields) GetFields() []*FieldWithType {
@@ -7794,7 +7794,7 @@ type DefDataType_EnumConstructors struct {
 
 func (x *DefDataType_EnumConstructors) Reset() {
 	*x = DefDataType_EnumConstructors{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[99]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7806,7 +7806,7 @@ func (x *DefDataType_EnumConstructors) String() string {
 func (*DefDataType_EnumConstructors) ProtoMessage() {}
 
 func (x *DefDataType_EnumConstructors) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[99]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7819,7 +7819,7 @@ func (x *DefDataType_EnumConstructors) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefDataType_EnumConstructors.ProtoReflect.Descriptor instead.
 func (*DefDataType_EnumConstructors) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{27, 1}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{27, 1}
 }
 
 func (x *DefDataType_EnumConstructors) GetConstructorsInternedStr() []int32 {
@@ -7839,7 +7839,7 @@ type DefValue_NameWithType struct {
 
 func (x *DefValue_NameWithType) Reset() {
 	*x = DefValue_NameWithType{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[100]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7851,7 +7851,7 @@ func (x *DefValue_NameWithType) String() string {
 func (*DefValue_NameWithType) ProtoMessage() {}
 
 func (x *DefValue_NameWithType) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[100]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7864,7 +7864,7 @@ func (x *DefValue_NameWithType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefValue_NameWithType.ProtoReflect.Descriptor instead.
 func (*DefValue_NameWithType) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP(), []int{29, 0}
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP(), []int{29, 0}
 }
 
 func (x *DefValue_NameWithType) GetNameInternedDname() int32 {
@@ -7881,11 +7881,11 @@ func (x *DefValue_NameWithType) GetType() *Type {
 	return nil
 }
 
-var File_com_digitalasset_daml_lf_archive_daml_lf2_proto protoreflect.FileDescriptor
+var File_com_daml_daml_lf_2_1_daml_lf2_proto protoreflect.FileDescriptor
 
-const file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDesc = "" +
+const file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDesc = "" +
 	"\n" +
-	"/com/digitalasset/daml/lf/archive/daml_lf2.proto\x12\vdaml_lf_2_1\"\x06\n" +
+	"#com/daml/daml_lf_2_1/daml_lf2.proto\x12\vdaml_lf_2_1\"\x06\n" +
 	"\x04Unit\"\xd5\x01\n" +
 	"\x17SelfOrImportedPackageId\x12;\n" +
 	"\x0fself_package_id\x18\x01 \x01(\v2\x11.daml_lf_2_1.UnitH\x00R\rselfPackageId\x12H\n" +
@@ -8507,20 +8507,20 @@ const file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDesc = "" +
 	" com.digitalasset.daml.lf.archiveZCgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\xaa\x02(Com.DigitalAsset.Daml.Lf.Archive.DamlLf2b\x06proto3"
 
 var (
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescOnce sync.Once
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescData []byte
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescOnce sync.Once
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescData []byte
 )
 
-func file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescGZIP() []byte {
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescOnce.Do(func() {
-		file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDesc), len(file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDesc)))
+func file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescGZIP() []byte {
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescOnce.Do(func() {
+		file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDesc), len(file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDesc)))
 	})
-	return file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDescData
+	return file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDescData
 }
 
-var file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes = make([]protoimpl.MessageInfo, 101)
-var file_com_digitalasset_daml_lf_archive_daml_lf2_proto_goTypes = []any{
+var file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes = make([]protoimpl.MessageInfo, 101)
+var file_com_daml_daml_lf_2_1_daml_lf2_proto_goTypes = []any{
 	(BuiltinType)(0),                         // 0: daml_lf_2_1.BuiltinType
 	(BuiltinCon)(0),                          // 1: daml_lf_2_1.BuiltinCon
 	(BuiltinFunction)(0),                     // 2: daml_lf_2_1.BuiltinFunction
@@ -8628,7 +8628,7 @@ var file_com_digitalasset_daml_lf_archive_daml_lf2_proto_goTypes = []any{
 	(*DefDataType_EnumConstructors)(nil),                  // 104: daml_lf_2_1.DefDataType.EnumConstructors
 	(*DefValue_NameWithType)(nil),                         // 105: daml_lf_2_1.DefValue.NameWithType
 }
-var file_com_digitalasset_daml_lf_archive_daml_lf2_proto_depIdxs = []int32{
+var file_com_daml_daml_lf_2_1_daml_lf2_proto_depIdxs = []int32{
 	5,   // 0: daml_lf_2_1.SelfOrImportedPackageId.self_package_id:type_name -> daml_lf_2_1.Unit
 	6,   // 1: daml_lf_2_1.ModuleId.package_id:type_name -> daml_lf_2_1.SelfOrImportedPackageId
 	7,   // 2: daml_lf_2_1.TypeConId.module:type_name -> daml_lf_2_1.ModuleId
@@ -8913,23 +8913,23 @@ var file_com_digitalasset_daml_lf_archive_daml_lf2_proto_depIdxs = []int32{
 	0,   // [0:277] is the sub-list for field type_name
 }
 
-func init() { file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init() }
-func file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init() {
-	if File_com_digitalasset_daml_lf_archive_daml_lf2_proto != nil {
+func init() { file_com_daml_daml_lf_2_1_daml_lf2_proto_init() }
+func file_com_daml_daml_lf_2_1_daml_lf2_proto_init() {
+	if File_com_daml_daml_lf_2_1_daml_lf2_proto != nil {
 		return
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[1].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[1].OneofWrappers = []any{
 		(*SelfOrImportedPackageId_SelfPackageId)(nil),
 		(*SelfOrImportedPackageId_ImportedPackageIdInternedStr)(nil),
 		(*SelfOrImportedPackageId_PackageImportId)(nil),
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[11].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[11].OneofWrappers = []any{
 		(*Kind_Star)(nil),
 		(*Kind_Arrow_)(nil),
 		(*Kind_Nat)(nil),
 		(*Kind_InternedKind)(nil),
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[12].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[12].OneofWrappers = []any{
 		(*Type_Var_)(nil),
 		(*Type_Con_)(nil),
 		(*Type_Builtin_)(nil),
@@ -8940,7 +8940,7 @@ func file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init() {
 		(*Type_InternedType)(nil),
 		(*Type_Tapp)(nil),
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[13].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[13].OneofWrappers = []any{
 		(*BuiltinLit_Int64)(nil),
 		(*BuiltinLit_Timestamp)(nil),
 		(*BuiltinLit_NumericInternedStr)(nil),
@@ -8949,7 +8949,7 @@ func file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init() {
 		(*BuiltinLit_FailureCategory_)(nil),
 		(*BuiltinLit_RoundingMode_)(nil),
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[15].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[15].OneofWrappers = []any{
 		(*Expr_VarInternedStr)(nil),
 		(*Expr_Val)(nil),
 		(*Expr_Builtin)(nil),
@@ -8996,7 +8996,7 @@ func file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init() {
 		(*Expr_ChoiceObserver_)(nil),
 		(*Expr_Experimental_)(nil),
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[16].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[16].OneofWrappers = []any{
 		(*CaseAlt_Default)(nil),
 		(*CaseAlt_Variant_)(nil),
 		(*CaseAlt_BuiltinCon)(nil),
@@ -9006,7 +9006,7 @@ func file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init() {
 		(*CaseAlt_OptionalSome_)(nil),
 		(*CaseAlt_Enum_)(nil),
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[20].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[20].OneofWrappers = []any{
 		(*Update_Pure)(nil),
 		(*Update_Block)(nil),
 		(*Update_Create_)(nil),
@@ -9023,13 +9023,13 @@ func file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init() {
 		(*Update_FetchInterface_)(nil),
 		(*Update_LedgerTimeLt)(nil),
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[27].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[27].OneofWrappers = []any{
 		(*DefDataType_Record)(nil),
 		(*DefDataType_Variant)(nil),
 		(*DefDataType_Enum)(nil),
 		(*DefDataType_Interface)(nil),
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes[36].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes[36].OneofWrappers = []any{
 		(*Package_NoImportedPackagesReason)(nil),
 		(*Package_PackageImports)(nil),
 	}
@@ -9037,18 +9037,18 @@ func file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDesc), len(file_com_digitalasset_daml_lf_archive_daml_lf2_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDesc), len(file_com_daml_daml_lf_2_1_daml_lf2_proto_rawDesc)),
 			NumEnums:      5,
 			NumMessages:   101,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_com_digitalasset_daml_lf_archive_daml_lf2_proto_goTypes,
-		DependencyIndexes: file_com_digitalasset_daml_lf_archive_daml_lf2_proto_depIdxs,
-		EnumInfos:         file_com_digitalasset_daml_lf_archive_daml_lf2_proto_enumTypes,
-		MessageInfos:      file_com_digitalasset_daml_lf_archive_daml_lf2_proto_msgTypes,
+		GoTypes:           file_com_daml_daml_lf_2_1_daml_lf2_proto_goTypes,
+		DependencyIndexes: file_com_daml_daml_lf_2_1_daml_lf2_proto_depIdxs,
+		EnumInfos:         file_com_daml_daml_lf_2_1_daml_lf2_proto_enumTypes,
+		MessageInfos:      file_com_daml_daml_lf_2_1_daml_lf2_proto_msgTypes,
 	}.Build()
-	File_com_digitalasset_daml_lf_archive_daml_lf2_proto = out.File
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_goTypes = nil
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_depIdxs = nil
+	File_com_daml_daml_lf_2_1_daml_lf2_proto = out.File
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_goTypes = nil
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_depIdxs = nil
 }

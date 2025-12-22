@@ -4,7 +4,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v6.31.1
-// source: com/digitalasset/daml/lf/archive/daml_lf.proto
+// source: com/daml/daml_lf_2_1/daml_lf.proto
 
 package daml_lf_2_1
 
@@ -50,11 +50,11 @@ func (x HashFunction) String() string {
 }
 
 func (HashFunction) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_digitalasset_daml_lf_archive_daml_lf_proto_enumTypes[0].Descriptor()
+	return file_com_daml_daml_lf_2_1_daml_lf_proto_enumTypes[0].Descriptor()
 }
 
 func (HashFunction) Type() protoreflect.EnumType {
-	return &file_com_digitalasset_daml_lf_archive_daml_lf_proto_enumTypes[0]
+	return &file_com_daml_daml_lf_2_1_daml_lf_proto_enumTypes[0]
 }
 
 func (x HashFunction) Number() protoreflect.EnumNumber {
@@ -63,7 +63,7 @@ func (x HashFunction) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use HashFunction.Descriptor instead.
 func (HashFunction) EnumDescriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescGZIP(), []int{0}
+	return file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescGZIP(), []int{0}
 }
 
 type ArchivePayload struct {
@@ -81,7 +81,7 @@ type ArchivePayload struct {
 
 func (x *ArchivePayload) Reset() {
 	*x = ArchivePayload{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes[0]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -93,7 +93,7 @@ func (x *ArchivePayload) String() string {
 func (*ArchivePayload) ProtoMessage() {}
 
 func (x *ArchivePayload) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes[0]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -106,7 +106,7 @@ func (x *ArchivePayload) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ArchivePayload.ProtoReflect.Descriptor instead.
 func (*ArchivePayload) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescGZIP(), []int{0}
+	return file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ArchivePayload) GetMinor() string {
@@ -175,7 +175,7 @@ type Archive struct {
 
 func (x *Archive) Reset() {
 	*x = Archive{}
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes[1]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -187,7 +187,7 @@ func (x *Archive) String() string {
 func (*Archive) ProtoMessage() {}
 
 func (x *Archive) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes[1]
+	mi := &file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -200,7 +200,7 @@ func (x *Archive) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Archive.ProtoReflect.Descriptor instead.
 func (*Archive) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescGZIP(), []int{1}
+	return file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Archive) GetHashFunction() HashFunction {
@@ -224,11 +224,11 @@ func (x *Archive) GetHash() string {
 	return ""
 }
 
-var File_com_digitalasset_daml_lf_archive_daml_lf_proto protoreflect.FileDescriptor
+var File_com_daml_daml_lf_2_1_daml_lf_proto protoreflect.FileDescriptor
 
-const file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDesc = "" +
+const file_com_daml_daml_lf_2_1_daml_lf_proto_rawDesc = "" +
 	"\n" +
-	".com/digitalasset/daml/lf/archive/daml_lf.proto\x12\vdaml_lf_2_1\x1a/com/digitalasset/daml/lf/archive/daml_lf2.proto\"\x8d\x01\n" +
+	"\"com/daml/daml_lf_2_1/daml_lf.proto\x12\vdaml_lf_2_1\x1a#com/daml/daml_lf_2_1/daml_lf2.proto\"\x8d\x01\n" +
 	"\x0eArchivePayload\x12\x14\n" +
 	"\x05minor\x18\x03 \x01(\tR\x05minor\x12\x14\n" +
 	"\x05patch\x18\x05 \x01(\x05R\x05patch\x12\x1c\n" +
@@ -245,25 +245,25 @@ const file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDesc = "" +
 	" com.digitalasset.daml.lf.archiveZCgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\xaa\x02'Com.DigitalAsset.Daml.Lf.Archive.DamlLfb\x06proto3"
 
 var (
-	file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescOnce sync.Once
-	file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescData []byte
+	file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescOnce sync.Once
+	file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescData []byte
 )
 
-func file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescGZIP() []byte {
-	file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescOnce.Do(func() {
-		file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDesc), len(file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDesc)))
+func file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescGZIP() []byte {
+	file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescOnce.Do(func() {
+		file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_com_daml_daml_lf_2_1_daml_lf_proto_rawDesc), len(file_com_daml_daml_lf_2_1_daml_lf_proto_rawDesc)))
 	})
-	return file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDescData
+	return file_com_daml_daml_lf_2_1_daml_lf_proto_rawDescData
 }
 
-var file_com_digitalasset_daml_lf_archive_daml_lf_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_com_digitalasset_daml_lf_archive_daml_lf_proto_goTypes = []any{
+var file_com_daml_daml_lf_2_1_daml_lf_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_com_daml_daml_lf_2_1_daml_lf_proto_goTypes = []any{
 	(HashFunction)(0),      // 0: daml_lf_2_1.HashFunction
 	(*ArchivePayload)(nil), // 1: daml_lf_2_1.ArchivePayload
 	(*Archive)(nil),        // 2: daml_lf_2_1.Archive
 }
-var file_com_digitalasset_daml_lf_archive_daml_lf_proto_depIdxs = []int32{
+var file_com_daml_daml_lf_2_1_daml_lf_proto_depIdxs = []int32{
 	0, // 0: daml_lf_2_1.Archive.hash_function:type_name -> daml_lf_2_1.HashFunction
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
@@ -272,13 +272,13 @@ var file_com_digitalasset_daml_lf_archive_daml_lf_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_com_digitalasset_daml_lf_archive_daml_lf_proto_init() }
-func file_com_digitalasset_daml_lf_archive_daml_lf_proto_init() {
-	if File_com_digitalasset_daml_lf_archive_daml_lf_proto != nil {
+func init() { file_com_daml_daml_lf_2_1_daml_lf_proto_init() }
+func file_com_daml_daml_lf_2_1_daml_lf_proto_init() {
+	if File_com_daml_daml_lf_2_1_daml_lf_proto != nil {
 		return
 	}
-	file_com_digitalasset_daml_lf_archive_daml_lf2_proto_init()
-	file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes[0].OneofWrappers = []any{
+	file_com_daml_daml_lf_2_1_daml_lf2_proto_init()
+	file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes[0].OneofWrappers = []any{
 		(*ArchivePayload_DamlLf_1)(nil),
 		(*ArchivePayload_DamlLf_2)(nil),
 	}
@@ -286,18 +286,18 @@ func file_com_digitalasset_daml_lf_archive_daml_lf_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDesc), len(file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_daml_lf_2_1_daml_lf_proto_rawDesc), len(file_com_daml_daml_lf_2_1_daml_lf_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_com_digitalasset_daml_lf_archive_daml_lf_proto_goTypes,
-		DependencyIndexes: file_com_digitalasset_daml_lf_archive_daml_lf_proto_depIdxs,
-		EnumInfos:         file_com_digitalasset_daml_lf_archive_daml_lf_proto_enumTypes,
-		MessageInfos:      file_com_digitalasset_daml_lf_archive_daml_lf_proto_msgTypes,
+		GoTypes:           file_com_daml_daml_lf_2_1_daml_lf_proto_goTypes,
+		DependencyIndexes: file_com_daml_daml_lf_2_1_daml_lf_proto_depIdxs,
+		EnumInfos:         file_com_daml_daml_lf_2_1_daml_lf_proto_enumTypes,
+		MessageInfos:      file_com_daml_daml_lf_2_1_daml_lf_proto_msgTypes,
 	}.Build()
-	File_com_digitalasset_daml_lf_archive_daml_lf_proto = out.File
-	file_com_digitalasset_daml_lf_archive_daml_lf_proto_goTypes = nil
-	file_com_digitalasset_daml_lf_archive_daml_lf_proto_depIdxs = nil
+	File_com_daml_daml_lf_2_1_daml_lf_proto = out.File
+	file_com_daml_daml_lf_2_1_daml_lf_proto_goTypes = nil
+	file_com_daml_daml_lf_2_1_daml_lf_proto_depIdxs = nil
 }

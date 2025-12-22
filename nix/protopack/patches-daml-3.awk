@@ -37,6 +37,11 @@
     sub(/daml_lf_2\./, "")
     print
 
+  } else if ($0 ~ /import "com\/digitalasset\/daml\/lf\/archive\/daml_lf/) {
+    # fix import paths for moved daml_lf protos
+    sub(/com\/digitalasset\/daml\/lf\/archive\//, "com/daml/daml_lf_2_1/")
+    print
+
   } else {
     print
   }

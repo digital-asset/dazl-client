@@ -151,6 +151,11 @@ def should_ignore_for_mypy(line: str) -> bool:
         # mypy gets annoyed with the generated code because `bool` is seen
         # as a type as well as a variable, even though it's legal Python
         "bool: bool" in line
+        or
+        # similarly, bytes field name shadows the builtin bytes type in
+        # both field declarations and __init__ methods that use bytes type
+        "bytes: bytes" in line
+        or ("def __init__" in line and "bytes: _Optional[bytes]" in line)
     )
 
 
