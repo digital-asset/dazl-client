@@ -26,6 +26,14 @@ commands:
           paths:
             - /home/circleci/.daml
       - restore_cache:
+          key: daml-{{ checksum ".circleci/install-dpm" }}
+      - run:
+          command: .circleci/install-dpm
+      - save_cache:
+          key: daml-{{ checksum ".circleci/install-dpm" }}
+          paths:
+            - /home/circleci/.dpm
+      - restore_cache:
           key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>
       - run:
           command: poetry config virtualenvs.in-project true && make python-deps
@@ -128,6 +136,7 @@ jobs:
             ci-build ${CIRCLE_PROJECT_USERNAME}_${CIRCLE_PROJECT_REPONAME} ${CIRCLE_BRANCH} \
             --detect.included.detector.types=POETRY \
             --detect.excluded.detector.types=GO_MOD \
+            --detect.tools=DETECTOR \
             --logging.level.com.synopsys.integration=DEBUG \
             --detect.blackduck.scan.mode="${SCAN_MODE}" \
             --detect.policy.check.fail.on.severities=MAJOR,CRITICAL,BLOCKER \
