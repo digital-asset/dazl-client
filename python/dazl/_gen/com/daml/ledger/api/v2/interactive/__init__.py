@@ -4,27 +4,33 @@
 # isort: skip_file
 
 from .interactive_submission_common_data_pb2 import GlobalKey
-from .interactive_submission_service_pb2 import DamlTransaction, ExecuteSubmissionRequest, ExecuteSubmissionResponse, GetPreferredPackageVersionRequest, GetPreferredPackageVersionResponse, HashingSchemeVersion, Metadata, MinLedgerTime, PackagePreference, PartySignatures, PrepareSubmissionRequest, PrepareSubmissionResponse, PreparedTransaction, Signature, SignatureFormat, SigningAlgorithmSpec, SinglePartySignatures
+from .interactive_submission_service_pb2 import CostEstimation, CostEstimationHints, DamlTransaction, ExecuteSubmissionAndWaitForTransactionRequest, ExecuteSubmissionAndWaitForTransactionResponse, ExecuteSubmissionAndWaitRequest, ExecuteSubmissionAndWaitResponse, ExecuteSubmissionRequest, ExecuteSubmissionResponse, GetPreferredPackageVersionRequest, GetPreferredPackageVersionResponse, GetPreferredPackagesRequest, GetPreferredPackagesResponse, HashingSchemeVersion, Metadata, MinLedgerTime, PackagePreference, PackageVettingRequirement, PartySignatures, PrepareSubmissionRequest, PrepareSubmissionResponse, PreparedTransaction, SinglePartySignatures
 from .interactive_submission_service_pb2_grpc import InteractiveSubmissionServiceStub
 
 __all__ = [
+    "CostEstimation",
+    "CostEstimationHints",
     "DamlTransaction",
+    "ExecuteSubmissionAndWaitForTransactionRequest",
+    "ExecuteSubmissionAndWaitForTransactionResponse",
+    "ExecuteSubmissionAndWaitRequest",
+    "ExecuteSubmissionAndWaitResponse",
     "ExecuteSubmissionRequest",
     "ExecuteSubmissionResponse",
     "GetPreferredPackageVersionRequest",
     "GetPreferredPackageVersionResponse",
+    "GetPreferredPackagesRequest",
+    "GetPreferredPackagesResponse",
     "GlobalKey",
     "HashingSchemeVersion",
     "InteractiveSubmissionServiceStub",
     "Metadata",
     "MinLedgerTime",
     "PackagePreference",
+    "PackageVettingRequirement",
     "PartySignatures",
     "PrepareSubmissionRequest",
     "PrepareSubmissionResponse",
     "PreparedTransaction",
-    "Signature",
-    "SignatureFormat",
-    "SigningAlgorithmSpec",
     "SinglePartySignatures",
 ]

@@ -9,7 +9,7 @@ import warnings
 
 from . import party_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -58,6 +58,11 @@ class PartyManagementServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocatePartyRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocatePartyResponse.FromString,
                 _registered_method=True)
+        self.AllocateExternalParty = channel.unary_unary(
+                '/com.daml.ledger.api.v2.admin.PartyManagementService/AllocateExternalParty',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocateExternalPartyRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocateExternalPartyResponse.FromString,
+                _registered_method=True)
         self.UpdatePartyDetails = channel.unary_unary(
                 '/com.daml.ledger.api.v2.admin.PartyManagementService/UpdatePartyDetails',
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsRequest.SerializeToString,
@@ -67,6 +72,11 @@ class PartyManagementServiceStub(object):
                 '/com.daml.ledger.api.v2.admin.PartyManagementService/UpdatePartyIdentityProviderId',
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderIdRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderIdResponse.FromString,
+                _registered_method=True)
+        self.GenerateExternalPartyTopology = channel.unary_unary(
+                '/com.daml.ledger.api.v2.admin.PartyManagementService/GenerateExternalPartyTopology',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.GenerateExternalPartyTopologyRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.GenerateExternalPartyTopologyResponse.FromString,
                 _registered_method=True)
 
 
@@ -97,6 +107,12 @@ class PartyManagementServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def AllocateExternalParty(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def UpdatePartyDetails(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -104,6 +120,12 @@ class PartyManagementServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def UpdatePartyIdentityProviderId(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GenerateExternalPartyTopology(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -132,6 +154,11 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocatePartyRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocatePartyResponse.SerializeToString,
             ),
+            'AllocateExternalParty': grpc.unary_unary_rpc_method_handler(
+                    servicer.AllocateExternalParty,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocateExternalPartyRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocateExternalPartyResponse.SerializeToString,
+            ),
             'UpdatePartyDetails': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdatePartyDetails,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.UpdatePartyDetailsRequest.FromString,
@@ -141,6 +168,11 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
                     servicer.UpdatePartyIdentityProviderId,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderIdRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderIdResponse.SerializeToString,
+            ),
+            'GenerateExternalPartyTopology': grpc.unary_unary_rpc_method_handler(
+                    servicer.GenerateExternalPartyTopology,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.GenerateExternalPartyTopologyRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.GenerateExternalPartyTopologyResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -262,6 +294,33 @@ class PartyManagementService(object):
             _registered_method=True)
 
     @staticmethod
+    def AllocateExternalParty(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.admin.PartyManagementService/AllocateExternalParty',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocateExternalPartyRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.AllocateExternalPartyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def UpdatePartyDetails(request,
             target,
             options=(),
@@ -305,6 +364,33 @@ class PartyManagementService(object):
             '/com.daml.ledger.api.v2.admin.PartyManagementService/UpdatePartyIdentityProviderId',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderIdRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.UpdatePartyIdentityProviderIdResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GenerateExternalPartyTopology(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.admin.PartyManagementService/GenerateExternalPartyTopology',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.GenerateExternalPartyTopologyRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_party__management__service__pb2.GenerateExternalPartyTopologyResponse.FromString,
             options,
             channel_credentials,
             insecure,

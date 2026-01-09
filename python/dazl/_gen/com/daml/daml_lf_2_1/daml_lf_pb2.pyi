@@ -6,7 +6,6 @@ from . import daml_lf2_pb2 as _daml_lf2_pb2
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -17,12 +16,16 @@ class HashFunction(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
 SHA256: HashFunction
 
 class ArchivePayload(_message.Message):
-    __slots__ = ("minor", "daml_lf_2")
+    __slots__ = ("minor", "patch", "daml_lf_1", "daml_lf_2")
     MINOR_FIELD_NUMBER: _ClassVar[int]
+    PATCH_FIELD_NUMBER: _ClassVar[int]
+    DAML_LF_1_FIELD_NUMBER: _ClassVar[int]
     DAML_LF_2_FIELD_NUMBER: _ClassVar[int]
     minor: str
-    daml_lf_2: _daml_lf2_pb2.Package
-    def __init__(self, minor: _Optional[str] = ..., daml_lf_2: _Optional[_Union[_daml_lf2_pb2.Package, _Mapping]] = ...) -> None: ...
+    patch: int
+    daml_lf_1: bytes
+    daml_lf_2: bytes
+    def __init__(self, minor: _Optional[str] = ..., patch: _Optional[int] = ..., daml_lf_1: _Optional[bytes] = ..., daml_lf_2: _Optional[bytes] = ...) -> None: ...
 
 class Archive(_message.Message):
     __slots__ = ("hash_function", "payload", "hash")

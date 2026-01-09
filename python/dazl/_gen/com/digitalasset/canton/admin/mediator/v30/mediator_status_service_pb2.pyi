@@ -17,14 +17,14 @@ class MediatorStatusRequest(_message.Message):
 class MediatorStatusResponse(_message.Message):
     __slots__ = ("status", "not_initialized")
     class MediatorStatusResponseStatus(_message.Message):
-        __slots__ = ("common_status", "synchronizer_id", "protocol_version")
+        __slots__ = ("common_status", "physical_synchronizer_id", "protocol_version")
         COMMON_STATUS_FIELD_NUMBER: _ClassVar[int]
-        SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+        PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
         common_status: _status_service_pb2.Status
-        synchronizer_id: str
+        physical_synchronizer_id: str
         protocol_version: int
-        def __init__(self, common_status: _Optional[_Union[_status_service_pb2.Status, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., protocol_version: _Optional[int] = ...) -> None: ...
+        def __init__(self, common_status: _Optional[_Union[_status_service_pb2.Status, _Mapping]] = ..., physical_synchronizer_id: _Optional[str] = ..., protocol_version: _Optional[int] = ...) -> None: ...
     STATUS_FIELD_NUMBER: _ClassVar[int]
     NOT_INITIALIZED_FIELD_NUMBER: _ClassVar[int]
     status: MediatorStatusResponse.MediatorStatusResponseStatus

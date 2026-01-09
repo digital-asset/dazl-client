@@ -9,7 +9,7 @@ import warnings
 
 from . import sequencer_administration_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -63,6 +63,11 @@ class SequencerAdministrationServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateResponse.FromString,
                 _registered_method=True)
+        self.OnboardingStateV2 = channel.unary_stream(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingStateV2',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateV2Request.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateV2Response.FromString,
+                _registered_method=True)
         self.DisableMember = channel.unary_unary(
                 '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/DisableMember',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.DisableMemberRequest.SerializeToString,
@@ -103,6 +108,12 @@ class SequencerAdministrationServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def OnboardingStateV2(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def DisableMember(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -136,6 +147,11 @@ def add_SequencerAdministrationServiceServicer_to_server(servicer, server):
                     servicer.OnboardingState,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateResponse.SerializeToString,
+            ),
+            'OnboardingStateV2': grpc.unary_stream_rpc_method_handler(
+                    servicer.OnboardingStateV2,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateV2Request.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateV2Response.SerializeToString,
             ),
             'DisableMember': grpc.unary_unary_rpc_method_handler(
                     servicer.DisableMember,
@@ -278,6 +294,33 @@ class SequencerAdministrationService(object):
             '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingState',
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def OnboardingStateV2(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingStateV2',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateV2Request.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.OnboardingStateV2Response.FromString,
             options,
             channel_credentials,
             insecure,

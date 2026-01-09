@@ -3,7 +3,7 @@
 # fmt: off
 # isort: skip_file
 
-from .daml_lf2_pb2 import Binding, Block, BuiltinCon, BuiltinFunction, BuiltinLit, BuiltinType, Case, CaseAlt, DefDataType, DefException, DefInterface, DefTemplate, DefTypeSyn, DefValue, Expr, FeatureFlags, FieldWithExpr, FieldWithType, InterfaceInstanceBody, InterfaceMethod, InternedDottedName, Kind, Location, Module, ModuleRef, Package, PackageMetadata, PackageRef, Pure, Scenario, TemplateChoice, Type, TypeConName, TypeSynName, TypeVarWithKind, Unit, Update, UpgradedPackageId, ValName, VarWithType
+from .daml_lf2_pb2 import Binding, Block, BuiltinCon, BuiltinFunction, BuiltinLit, BuiltinType, Case, CaseAlt, DefDataType, DefException, DefInterface, DefTemplate, DefTypeSyn, DefValue, Expr, FeatureFlags, FieldWithExpr, FieldWithType, InterfaceInstanceBody, InterfaceMethod, InternedDottedName, Kind, Location, Module, ModuleId, Package, PackageImports, PackageMetadata, Pure, SelfOrImportedPackageId, TemplateChoice, Type, TypeConId, TypeSynId, TypeVarWithKind, Unit, Update, UpgradedPackageId, ValueId, VarWithType
 from .daml_lf_pb2 import Archive, ArchivePayload, HashFunction
 
 __all__ = [
@@ -34,20 +34,20 @@ __all__ = [
     "Kind",
     "Location",
     "Module",
-    "ModuleRef",
+    "ModuleId",
     "Package",
+    "PackageImports",
     "PackageMetadata",
-    "PackageRef",
     "Pure",
-    "Scenario",
+    "SelfOrImportedPackageId",
     "TemplateChoice",
     "Type",
-    "TypeConName",
-    "TypeSynName",
+    "TypeConId",
+    "TypeSynId",
     "TypeVarWithKind",
     "Unit",
     "Update",
     "UpgradedPackageId",
-    "ValName",
+    "ValueId",
     "VarWithType",
 ]

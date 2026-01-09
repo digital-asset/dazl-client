@@ -28,22 +28,22 @@ class SequencerStatusResponse(_message.Message):
         uid: str
         def __init__(self, uid: _Optional[str] = ...) -> None: ...
     class SequencerStatusResponseStatus(_message.Message):
-        __slots__ = ("common_status", "connected_participants", "connected_mediators", "sequencer", "synchronizer_id", "admin", "protocol_version")
+        __slots__ = ("common_status", "connected_participants", "connected_mediators", "sequencer", "physical_synchronizer_id", "admin", "protocol_version")
         COMMON_STATUS_FIELD_NUMBER: _ClassVar[int]
         CONNECTED_PARTICIPANTS_FIELD_NUMBER: _ClassVar[int]
         CONNECTED_MEDIATORS_FIELD_NUMBER: _ClassVar[int]
         SEQUENCER_FIELD_NUMBER: _ClassVar[int]
-        SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+        PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         ADMIN_FIELD_NUMBER: _ClassVar[int]
         PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
         common_status: _status_service_pb2.Status
         connected_participants: _containers.RepeatedCompositeFieldContainer[SequencerStatusResponse.ConnectedParticipant]
         connected_mediators: _containers.RepeatedCompositeFieldContainer[SequencerStatusResponse.ConnectedMediator]
         sequencer: SequencerHealthStatus
-        synchronizer_id: str
+        physical_synchronizer_id: str
         admin: SequencerAdminStatus
         protocol_version: int
-        def __init__(self, common_status: _Optional[_Union[_status_service_pb2.Status, _Mapping]] = ..., connected_participants: _Optional[_Iterable[_Union[SequencerStatusResponse.ConnectedParticipant, _Mapping]]] = ..., connected_mediators: _Optional[_Iterable[_Union[SequencerStatusResponse.ConnectedMediator, _Mapping]]] = ..., sequencer: _Optional[_Union[SequencerHealthStatus, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., admin: _Optional[_Union[SequencerAdminStatus, _Mapping]] = ..., protocol_version: _Optional[int] = ...) -> None: ...
+        def __init__(self, common_status: _Optional[_Union[_status_service_pb2.Status, _Mapping]] = ..., connected_participants: _Optional[_Iterable[_Union[SequencerStatusResponse.ConnectedParticipant, _Mapping]]] = ..., connected_mediators: _Optional[_Iterable[_Union[SequencerStatusResponse.ConnectedMediator, _Mapping]]] = ..., sequencer: _Optional[_Union[SequencerHealthStatus, _Mapping]] = ..., physical_synchronizer_id: _Optional[str] = ..., admin: _Optional[_Union[SequencerAdminStatus, _Mapping]] = ..., protocol_version: _Optional[int] = ...) -> None: ...
     STATUS_FIELD_NUMBER: _ClassVar[int]
     NOT_INITIALIZED_FIELD_NUMBER: _ClassVar[int]
     status: SequencerStatusResponse.SequencerStatusResponseStatus

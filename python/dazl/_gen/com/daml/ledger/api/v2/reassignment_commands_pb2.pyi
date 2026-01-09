@@ -45,11 +45,11 @@ class UnassignCommand(_message.Message):
     def __init__(self, contract_id: _Optional[str] = ..., source: _Optional[str] = ..., target: _Optional[str] = ...) -> None: ...
 
 class AssignCommand(_message.Message):
-    __slots__ = ("unassign_id", "source", "target")
-    UNASSIGN_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("reassignment_id", "source", "target")
+    REASSIGNMENT_ID_FIELD_NUMBER: _ClassVar[int]
     SOURCE_FIELD_NUMBER: _ClassVar[int]
     TARGET_FIELD_NUMBER: _ClassVar[int]
-    unassign_id: str
+    reassignment_id: str
     source: str
     target: str
-    def __init__(self, unassign_id: _Optional[str] = ..., source: _Optional[str] = ..., target: _Optional[str] = ...) -> None: ...
+    def __init__(self, reassignment_id: _Optional[str] = ..., source: _Optional[str] = ..., target: _Optional[str] = ...) -> None: ...

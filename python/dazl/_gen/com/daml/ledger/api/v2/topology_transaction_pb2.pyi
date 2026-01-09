@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import state_service_pb2 as _state_service_pb2
 from . import trace_context_pb2 as _trace_context_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -27,7 +29,7 @@ class TopologyTransaction(_message.Message):
     record_time: _timestamp_pb2.Timestamp
     events: _containers.RepeatedCompositeFieldContainer[TopologyEvent]
     trace_context: _trace_context_pb2.TraceContext
-    def __init__(self, update_id: _Optional[str] = ..., offset: _Optional[int] = ..., synchronizer_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., events: _Optional[_Iterable[_Union[TopologyEvent, _Mapping]]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ...) -> None: ...
+    def __init__(self, update_id: _Optional[str] = ..., offset: _Optional[int] = ..., synchronizer_id: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., events: _Optional[_Iterable[_Union[TopologyEvent, _Mapping]]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ...) -> None: ...
 
 class TopologyEvent(_message.Message):
     __slots__ = ("participant_authorization_changed", "participant_authorization_revoked", "participant_authorization_added")

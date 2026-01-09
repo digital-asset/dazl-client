@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v0 import crypto_pb2 as _crypto_pb2
 from . import common_pb2 as _common_pb2
 from . import merkle_pb2 as _merkle_pb2
@@ -61,7 +63,7 @@ class DeduplicationPeriod(_message.Message):
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     duration: _duration_pb2.Duration
     offset: bytes
-    def __init__(self, duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., offset: _Optional[bytes] = ...) -> None: ...
+    def __init__(self, duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., offset: _Optional[bytes] = ...) -> None: ...
 
 class CommonMetadata(_message.Message):
     __slots__ = ("salt", "confirmation_policy", "domain_id", "uuid", "mediator_id")
@@ -87,7 +89,7 @@ class ParticipantMetadata(_message.Message):
     ledger_time: _timestamp_pb2.Timestamp
     submission_time: _timestamp_pb2.Timestamp
     workflow_id: str
-    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., ledger_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., submission_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., workflow_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., ledger_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., submission_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., workflow_id: _Optional[str] = ...) -> None: ...
 
 class ViewNode(_message.Message):
     __slots__ = ("view_common_data", "view_participant_data", "subviews")

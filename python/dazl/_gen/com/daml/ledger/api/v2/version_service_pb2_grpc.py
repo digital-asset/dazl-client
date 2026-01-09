@@ -9,7 +9,7 @@ import warnings
 
 from . import version_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_version__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 

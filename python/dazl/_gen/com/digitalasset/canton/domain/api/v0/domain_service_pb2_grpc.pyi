@@ -23,11 +23,11 @@ class DomainServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _DomainServiceAsyncStub: ...  # type: ignore
-    def GetServiceAgreement(self, __1: GetServiceAgreementRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[GetServiceAgreementResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, GetServiceAgreementResponse]]: ...
+    def GetServiceAgreement(self, __1: GetServiceAgreementRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> GetServiceAgreementResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, GetServiceAgreementResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _DomainServiceBlockingStub(DomainServiceStub):
-    def GetServiceAgreement(self, __1: GetServiceAgreementRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> GetServiceAgreementResponse: ...
+    def GetServiceAgreement(self, __1: GetServiceAgreementRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> GetServiceAgreementResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _DomainServiceAsyncStub(DomainServiceStub):

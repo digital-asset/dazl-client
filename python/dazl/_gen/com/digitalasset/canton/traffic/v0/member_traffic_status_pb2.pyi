@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
@@ -22,7 +24,7 @@ class MemberTrafficStatus(_message.Message):
         effective_at: _timestamp_pb2.Timestamp
         serial: int
         extra_traffic_limit: int
-        def __init__(self, effective_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., serial: _Optional[int] = ..., extra_traffic_limit: _Optional[int] = ...) -> None: ...
+        def __init__(self, effective_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., serial: _Optional[int] = ..., extra_traffic_limit: _Optional[int] = ...) -> None: ...
     MEMBER_FIELD_NUMBER: _ClassVar[int]
     TOTAL_EXTRA_TRAFFIC_LIMIT_FIELD_NUMBER: _ClassVar[int]
     TOTAL_EXTRA_TRAFFIC_CONSUMED_FIELD_NUMBER: _ClassVar[int]
@@ -33,4 +35,4 @@ class MemberTrafficStatus(_message.Message):
     total_extra_traffic_consumed: int
     top_up_events: _containers.RepeatedCompositeFieldContainer[MemberTrafficStatus.TopUpEvent]
     ts: _timestamp_pb2.Timestamp
-    def __init__(self, member: _Optional[str] = ..., total_extra_traffic_limit: _Optional[_Union[_wrappers_pb2.UInt64Value, _Mapping]] = ..., total_extra_traffic_consumed: _Optional[int] = ..., top_up_events: _Optional[_Iterable[_Union[MemberTrafficStatus.TopUpEvent, _Mapping]]] = ..., ts: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, member: _Optional[str] = ..., total_extra_traffic_limit: _Optional[_Union[_wrappers_pb2.UInt64Value, _Mapping]] = ..., total_extra_traffic_consumed: _Optional[int] = ..., top_up_events: _Optional[_Iterable[_Union[MemberTrafficStatus.TopUpEvent, _Mapping]]] = ..., ts: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

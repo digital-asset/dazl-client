@@ -9,7 +9,7 @@ import warnings
 
 from . import party_management_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -48,15 +48,25 @@ class PartyManagementServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusResponse.FromString,
                 _registered_method=True)
-        self.ExportAcs = channel.unary_stream(
-                '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportAcs',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsResponse.FromString,
+        self.ExportPartyAcs = channel.unary_stream(
+                '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportPartyAcs',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportPartyAcsRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportPartyAcsResponse.FromString,
                 _registered_method=True)
-        self.ExportAcsAtTimestamp = channel.unary_stream(
-                '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportAcsAtTimestamp',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsAtTimestampRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsAtTimestampResponse.FromString,
+        self.ImportPartyAcs = channel.stream_unary(
+                '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ImportPartyAcs',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ImportPartyAcsRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ImportPartyAcsResponse.FromString,
+                _registered_method=True)
+        self.GetHighestOffsetByTimestamp = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetHighestOffsetByTimestamp',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetHighestOffsetByTimestampRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetHighestOffsetByTimestampResponse.FromString,
+                _registered_method=True)
+        self.ClearPartyOnboardingFlag = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ClearPartyOnboardingFlag',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ClearPartyOnboardingFlagRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ClearPartyOnboardingFlagResponse.FromString,
                 _registered_method=True)
 
 
@@ -75,13 +85,25 @@ class PartyManagementServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ExportAcs(self, request, context):
+    def ExportPartyAcs(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ExportAcsAtTimestamp(self, request, context):
+    def ImportPartyAcs(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetHighestOffsetByTimestamp(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ClearPartyOnboardingFlag(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -100,15 +122,25 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusResponse.SerializeToString,
             ),
-            'ExportAcs': grpc.unary_stream_rpc_method_handler(
-                    servicer.ExportAcs,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsResponse.SerializeToString,
+            'ExportPartyAcs': grpc.unary_stream_rpc_method_handler(
+                    servicer.ExportPartyAcs,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportPartyAcsRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportPartyAcsResponse.SerializeToString,
             ),
-            'ExportAcsAtTimestamp': grpc.unary_stream_rpc_method_handler(
-                    servicer.ExportAcsAtTimestamp,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsAtTimestampRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsAtTimestampResponse.SerializeToString,
+            'ImportPartyAcs': grpc.stream_unary_rpc_method_handler(
+                    servicer.ImportPartyAcs,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ImportPartyAcsRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ImportPartyAcsResponse.SerializeToString,
+            ),
+            'GetHighestOffsetByTimestamp': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetHighestOffsetByTimestamp,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetHighestOffsetByTimestampRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetHighestOffsetByTimestampResponse.SerializeToString,
+            ),
+            'ClearPartyOnboardingFlag': grpc.unary_unary_rpc_method_handler(
+                    servicer.ClearPartyOnboardingFlag,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ClearPartyOnboardingFlagRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ClearPartyOnboardingFlagResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -176,7 +208,7 @@ class PartyManagementService(object):
             _registered_method=True)
 
     @staticmethod
-    def ExportAcs(request,
+    def ExportPartyAcs(request,
             target,
             options=(),
             channel_credentials=None,
@@ -189,9 +221,9 @@ class PartyManagementService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportAcs',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsResponse.FromString,
+            '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportPartyAcs',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportPartyAcsRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportPartyAcsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -203,7 +235,7 @@ class PartyManagementService(object):
             _registered_method=True)
 
     @staticmethod
-    def ExportAcsAtTimestamp(request,
+    def ImportPartyAcs(request_iterator,
             target,
             options=(),
             channel_credentials=None,
@@ -213,12 +245,66 @@ class PartyManagementService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(
+        return grpc.experimental.stream_unary(
+            request_iterator,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ImportPartyAcs',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ImportPartyAcsRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ImportPartyAcsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetHighestOffsetByTimestamp(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportAcsAtTimestamp',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsAtTimestampRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportAcsAtTimestampResponse.FromString,
+            '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetHighestOffsetByTimestamp',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetHighestOffsetByTimestampRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetHighestOffsetByTimestampResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ClearPartyOnboardingFlag(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ClearPartyOnboardingFlag',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ClearPartyOnboardingFlagRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ClearPartyOnboardingFlagResponse.FromString,
             options,
             channel_credentials,
             insecure,

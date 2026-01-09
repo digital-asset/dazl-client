@@ -35,7 +35,7 @@ class SendAsyncResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
-class SubscriptionRequestV2(_message.Message):
+class SubscriptionRequest(_message.Message):
     __slots__ = ("member", "timestamp")
     MEMBER_FIELD_NUMBER: _ClassVar[int]
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
@@ -85,6 +85,18 @@ class DownloadTopologyStateForInitResponse(_message.Message):
     topology_transactions: _common_pb2.TopologyTransactions
     def __init__(self, topology_transactions: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ...) -> None: ...
 
+class DownloadTopologyStateForInitHashRequest(_message.Message):
+    __slots__ = ("member",)
+    MEMBER_FIELD_NUMBER: _ClassVar[int]
+    member: str
+    def __init__(self, member: _Optional[str] = ...) -> None: ...
+
+class DownloadTopologyStateForInitHashResponse(_message.Message):
+    __slots__ = ("topology_state_hash",)
+    TOPOLOGY_STATE_HASH_FIELD_NUMBER: _ClassVar[int]
+    topology_state_hash: bytes
+    def __init__(self, topology_state_hash: _Optional[bytes] = ...) -> None: ...
+
 class GetTrafficStateForMemberRequest(_message.Message):
     __slots__ = ("member", "timestamp")
     MEMBER_FIELD_NUMBER: _ClassVar[int]
@@ -98,3 +110,13 @@ class GetTrafficStateForMemberResponse(_message.Message):
     TRAFFIC_STATE_FIELD_NUMBER: _ClassVar[int]
     traffic_state: _traffic_control_parameters_pb2.TrafficState
     def __init__(self, traffic_state: _Optional[_Union[_traffic_control_parameters_pb2.TrafficState, _Mapping]] = ...) -> None: ...
+
+class GetTimeRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class GetTimeResponse(_message.Message):
+    __slots__ = ("sequencing_timestamp",)
+    SEQUENCING_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    sequencing_timestamp: int
+    def __init__(self, sequencing_timestamp: _Optional[int] = ...) -> None: ...

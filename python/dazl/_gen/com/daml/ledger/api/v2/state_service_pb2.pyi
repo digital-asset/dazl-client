@@ -26,16 +26,12 @@ PARTICIPANT_PERMISSION_CONFIRMATION: ParticipantPermission
 PARTICIPANT_PERMISSION_OBSERVATION: ParticipantPermission
 
 class GetActiveContractsRequest(_message.Message):
-    __slots__ = ("filter", "verbose", "active_at_offset", "event_format")
-    FILTER_FIELD_NUMBER: _ClassVar[int]
-    VERBOSE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("active_at_offset", "event_format")
     ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
     EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
-    filter: _transaction_filter_pb2.TransactionFilter
-    verbose: bool
     active_at_offset: int
     event_format: _transaction_filter_pb2.EventFormat
-    def __init__(self, filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: bool = ..., active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ...) -> None: ...
+    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ...) -> None: ...
 
 class GetActiveContractsResponse(_message.Message):
     __slots__ = ("workflow_id", "active_contract", "incomplete_unassigned", "incomplete_assigned")
@@ -74,12 +70,14 @@ class IncompleteAssigned(_message.Message):
     def __init__(self, assigned_event: _Optional[_Union[_reassignment_pb2.AssignedEvent, _Mapping]] = ...) -> None: ...
 
 class GetConnectedSynchronizersRequest(_message.Message):
-    __slots__ = ("party", "participant_id")
+    __slots__ = ("party", "participant_id", "identity_provider_id")
     PARTY_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
+    IDENTITY_PROVIDER_ID_FIELD_NUMBER: _ClassVar[int]
     party: str
     participant_id: str
-    def __init__(self, party: _Optional[str] = ..., participant_id: _Optional[str] = ...) -> None: ...
+    identity_provider_id: str
+    def __init__(self, party: _Optional[str] = ..., participant_id: _Optional[str] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
 
 class GetConnectedSynchronizersResponse(_message.Message):
     __slots__ = ("connected_synchronizers",)

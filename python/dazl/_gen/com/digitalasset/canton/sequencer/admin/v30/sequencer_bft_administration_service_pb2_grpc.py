@@ -9,7 +9,7 @@ import warnings
 
 from . import sequencer_bft_administration_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -58,6 +58,11 @@ class SequencerBftAdministrationServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetOrderingTopologyRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetOrderingTopologyResponse.FromString,
                 _registered_method=True)
+        self.SetPerformanceMetricsEnabled = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/SetPerformanceMetricsEnabled',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.SetPerformanceMetricsEnabledRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.SetPerformanceMetricsEnabledResponse.FromString,
+                _registered_method=True)
 
 
 class SequencerBftAdministrationServiceServicer(object):
@@ -87,6 +92,12 @@ class SequencerBftAdministrationServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SetPerformanceMetricsEnabled(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SequencerBftAdministrationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -109,6 +120,11 @@ def add_SequencerBftAdministrationServiceServicer_to_server(servicer, server):
                     servicer.GetOrderingTopology,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetOrderingTopologyRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetOrderingTopologyResponse.SerializeToString,
+            ),
+            'SetPerformanceMetricsEnabled': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetPerformanceMetricsEnabled,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.SetPerformanceMetricsEnabledRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.SetPerformanceMetricsEnabledResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -219,6 +235,33 @@ class SequencerBftAdministrationService(object):
             '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetOrderingTopology',
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetOrderingTopologyRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetOrderingTopologyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetPerformanceMetricsEnabled(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/SetPerformanceMetricsEnabled',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.SetPerformanceMetricsEnabledRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.SetPerformanceMetricsEnabledResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -23,11 +23,11 @@ class PartyNameManagementServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _PartyNameManagementServiceAsyncStub: ...  # type: ignore
-    def setPartyDisplayName(self, __1: SetPartyDisplayNameRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[SetPartyDisplayNameResponse, _grpc_aio.UnaryUnaryCall[_typing.Any, SetPartyDisplayNameResponse]]: ...
+    def setPartyDisplayName(self, __1: SetPartyDisplayNameRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SetPartyDisplayNameResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, SetPartyDisplayNameResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _PartyNameManagementServiceBlockingStub(PartyNameManagementServiceStub):
-    def setPartyDisplayName(self, __1: SetPartyDisplayNameRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SetPartyDisplayNameResponse: ...
+    def setPartyDisplayName(self, __1: SetPartyDisplayNameRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SetPartyDisplayNameResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _PartyNameManagementServiceAsyncStub(PartyNameManagementServiceStub):

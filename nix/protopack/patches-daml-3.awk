@@ -5,14 +5,19 @@
     # we don't need them anyway
 
   } else if ($0 ~ /^package daml_lf_2_1;$/) {
-    # write a go package that is consistent with the location of the protobuf file
+    # (legacy 3.3.x) write a go package that is consistent with the location of the protobuf file
     print
     print ""
     print "option go_package = \"github.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\";"
-  
+
+  } else if ($0 ~ /^package daml_lf;$/) {
+    # (3.4.9+) daml_lf wrapper - rename to daml_lf_2_1 and keep original path
+    print "package daml_lf_2_1;"
+    print ""
+    print "option go_package = \"github.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\";"
+
   } else if ($0 ~ /^package daml_lf_2;$/) {
-    # move the Daml-LF 2.X Archive wrapper into the same package so that both files
-    # can safely be emitted into the same directory
+    # (3.4.9+) daml_lf_2 - rename to daml_lf_2_1 and merge into same package
     print "package daml_lf_2_1;"
     print ""
     print "option go_package = \"github.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1\";"
@@ -30,6 +35,11 @@
   } else if ($0 ~ /daml_lf_2\.Package daml_lf_2 = 4;/) {
     # because we moved the Daml-LF 2.X Archive wrapper, also drop the import reference
     sub(/daml_lf_2\./, "")
+    print
+
+  } else if ($0 ~ /import "com\/digitalasset\/daml\/lf\/archive\/daml_lf/) {
+    # fix import paths for moved daml_lf protos
+    sub(/com\/digitalasset\/daml\/lf\/archive\//, "com/daml/daml_lf_2_1/")
     print
 
   } else {

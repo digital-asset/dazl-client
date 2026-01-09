@@ -10,7 +10,7 @@ import warnings
 from ....admin.pruning.v30 import pruning_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2
 from . import sequencer_pruning_administration_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__pruning__administration__service__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.75.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -74,10 +74,10 @@ class SequencerPruningAdministrationServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.GetScheduleRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.GetScheduleResponse.FromString,
                 _registered_method=True)
-        self.LocatePruningTimestamp = channel.unary_unary(
-                '/com.digitalasset.canton.sequencer.admin.v30.SequencerPruningAdministrationService/LocatePruningTimestamp',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.LocatePruningTimestampRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.LocatePruningTimestampResponse.FromString,
+        self.FindPruningTimestamp = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerPruningAdministrationService/FindPruningTimestamp',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.FindPruningTimestampRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.FindPruningTimestampResponse.FromString,
                 _registered_method=True)
 
 
@@ -126,7 +126,7 @@ class SequencerPruningAdministrationServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def LocatePruningTimestamp(self, request, context):
+    def FindPruningTimestamp(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -170,10 +170,10 @@ def add_SequencerPruningAdministrationServiceServicer_to_server(servicer, server
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.GetScheduleRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.GetScheduleResponse.SerializeToString,
             ),
-            'LocatePruningTimestamp': grpc.unary_unary_rpc_method_handler(
-                    servicer.LocatePruningTimestamp,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.LocatePruningTimestampRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.LocatePruningTimestampResponse.SerializeToString,
+            'FindPruningTimestamp': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindPruningTimestamp,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.FindPruningTimestampRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.FindPruningTimestampResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -376,7 +376,7 @@ class SequencerPruningAdministrationService(object):
             _registered_method=True)
 
     @staticmethod
-    def LocatePruningTimestamp(request,
+    def FindPruningTimestamp(request,
             target,
             options=(),
             channel_credentials=None,
@@ -389,9 +389,9 @@ class SequencerPruningAdministrationService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.digitalasset.canton.sequencer.admin.v30.SequencerPruningAdministrationService/LocatePruningTimestamp',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.LocatePruningTimestampRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.LocatePruningTimestampResponse.FromString,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerPruningAdministrationService/FindPruningTimestamp',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.FindPruningTimestampRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2.FindPruningTimestampResponse.FromString,
             options,
             channel_credentials,
             insecure,

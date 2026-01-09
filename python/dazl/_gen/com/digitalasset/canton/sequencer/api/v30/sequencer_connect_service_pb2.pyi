@@ -42,12 +42,12 @@ class SequencerConnect(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
     class GetSynchronizerIdResponse(_message.Message):
-        __slots__ = ("synchronizer_id", "sequencer_uid")
-        SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+        __slots__ = ("physical_synchronizer_id", "sequencer_uid")
+        PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-        synchronizer_id: str
+        physical_synchronizer_id: str
         sequencer_uid: str
-        def __init__(self, synchronizer_id: _Optional[str] = ..., sequencer_uid: _Optional[str] = ...) -> None: ...
+        def __init__(self, physical_synchronizer_id: _Optional[str] = ..., sequencer_uid: _Optional[str] = ...) -> None: ...
     class GetSynchronizerParametersRequest(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...

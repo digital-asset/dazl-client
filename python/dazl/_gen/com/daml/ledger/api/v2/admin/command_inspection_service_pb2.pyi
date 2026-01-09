@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from .. import commands_pb2 as _commands_pb2
 from .. import completion_pb2 as _completion_pb2
 from .. import value_pb2 as _value_pb2
@@ -58,7 +60,7 @@ class CommandStatus(_message.Message):
     commands: _containers.RepeatedCompositeFieldContainer[_commands_pb2.Command]
     request_statistics: RequestStatistics
     updates: CommandUpdates
-    def __init__(self, started: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., completed: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., completion: _Optional[_Union[_completion_pb2.Completion, _Mapping]] = ..., state: _Optional[_Union[CommandState, str]] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., request_statistics: _Optional[_Union[RequestStatistics, _Mapping]] = ..., updates: _Optional[_Union[CommandUpdates, _Mapping]] = ...) -> None: ...
+    def __init__(self, started: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completion: _Optional[_Union[_completion_pb2.Completion, _Mapping]] = ..., state: _Optional[_Union[CommandState, str]] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., request_statistics: _Optional[_Union[RequestStatistics, _Mapping]] = ..., updates: _Optional[_Union[CommandUpdates, _Mapping]] = ...) -> None: ...
 
 class RequestStatistics(_message.Message):
     __slots__ = ("envelopes", "request_size", "recipients")

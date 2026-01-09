@@ -24,11 +24,11 @@ class SequencerAdministrationServiceStub:
     @classmethod  # type: ignore
     @_typing.overload
     def __new__(cls, channel: _grpc_aio.Channel) -> _SequencerAdministrationServiceAsyncStub: ...  # type: ignore
-    def PruningStatus(self, __1: Empty, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _typing.Union[SequencerPruningStatus, _grpc_aio.UnaryUnaryCall[_typing.Any, SequencerPruningStatus]]: ...
+    def PruningStatus(self, __1: Empty, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SequencerPruningStatus | _grpc_aio.UnaryUnaryCall[_typing.Any, SequencerPruningStatus]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _SequencerAdministrationServiceBlockingStub(SequencerAdministrationServiceStub):
-    def PruningStatus(self, __1: Empty, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, _typing.Union[str, bytes]], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SequencerPruningStatus: ...
+    def PruningStatus(self, __1: Empty, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> SequencerPruningStatus: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _SequencerAdministrationServiceAsyncStub(SequencerAdministrationServiceStub):

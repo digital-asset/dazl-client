@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import value_pb2 as _value_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -50,7 +52,7 @@ class CreatedEvent(_message.Message):
     observers: _containers.RepeatedScalarFieldContainer[str]
     agreement_text: _wrappers_pb2.StringValue
     created_at: _timestamp_pb2.Timestamp
-    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., package_name: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., contract_key: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., create_arguments: _Optional[_Union[_value_pb2.Record, _Mapping]] = ..., created_event_blob: _Optional[bytes] = ..., interface_views: _Optional[_Iterable[_Union[InterfaceView, _Mapping]]] = ..., witness_parties: _Optional[_Iterable[str]] = ..., signatories: _Optional[_Iterable[str]] = ..., observers: _Optional[_Iterable[str]] = ..., agreement_text: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, event_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., package_name: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., contract_key: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., create_arguments: _Optional[_Union[_value_pb2.Record, _Mapping]] = ..., created_event_blob: _Optional[bytes] = ..., interface_views: _Optional[_Iterable[_Union[InterfaceView, _Mapping]]] = ..., witness_parties: _Optional[_Iterable[str]] = ..., signatories: _Optional[_Iterable[str]] = ..., observers: _Optional[_Iterable[str]] = ..., agreement_text: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class InterfaceView(_message.Message):
     __slots__ = ("interface_id", "view_status", "view_value")

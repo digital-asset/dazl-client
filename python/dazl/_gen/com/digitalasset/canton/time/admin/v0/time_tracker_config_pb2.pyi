@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -18,7 +20,7 @@ class TimeProofRequestConfig(_message.Message):
     initialRetryDelay: _duration_pb2.Duration
     maxRetryDelay: _duration_pb2.Duration
     maxSequencingDelay: _duration_pb2.Duration
-    def __init__(self, initialRetryDelay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., maxRetryDelay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., maxSequencingDelay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, initialRetryDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., maxRetryDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., maxSequencingDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class DomainTimeTrackerConfig(_message.Message):
     __slots__ = ("observationLatency", "patienceDuration", "minObservationDuration", "timeProofRequest")
@@ -30,4 +32,4 @@ class DomainTimeTrackerConfig(_message.Message):
     patienceDuration: _duration_pb2.Duration
     minObservationDuration: _duration_pb2.Duration
     timeProofRequest: TimeProofRequestConfig
-    def __init__(self, observationLatency: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., patienceDuration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., minObservationDuration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., timeProofRequest: _Optional[_Union[TimeProofRequestConfig, _Mapping]] = ...) -> None: ...
+    def __init__(self, observationLatency: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., patienceDuration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., minObservationDuration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., timeProofRequest: _Optional[_Union[TimeProofRequestConfig, _Mapping]] = ...) -> None: ...

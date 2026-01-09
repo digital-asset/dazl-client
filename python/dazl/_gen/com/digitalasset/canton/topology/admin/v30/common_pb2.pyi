@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -25,21 +27,24 @@ class TopologyTransactions(_message.Message):
         valid_until: _timestamp_pb2.Timestamp
         transaction: bytes
         rejection_reason: str
-        def __init__(self, sequenced: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_from: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., transaction: _Optional[bytes] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
+        def __init__(self, sequenced: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., transaction: _Optional[bytes] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
     ITEMS_FIELD_NUMBER: _ClassVar[int]
     items: _containers.RepeatedCompositeFieldContainer[TopologyTransactions.Item]
     def __init__(self, items: _Optional[_Iterable[_Union[TopologyTransactions.Item, _Mapping]]] = ...) -> None: ...
+
+class Synchronizer(_message.Message):
+    __slots__ = ("id", "physical_id")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    physical_id: str
+    def __init__(self, id: _Optional[str] = ..., physical_id: _Optional[str] = ...) -> None: ...
 
 class StoreId(_message.Message):
     __slots__ = ("authorized", "synchronizer", "temporary")
     class Authorized(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
-    class Synchronizer(_message.Message):
-        __slots__ = ("id",)
-        ID_FIELD_NUMBER: _ClassVar[int]
-        id: str
-        def __init__(self, id: _Optional[str] = ...) -> None: ...
     class Temporary(_message.Message):
         __slots__ = ("name",)
         NAME_FIELD_NUMBER: _ClassVar[int]
@@ -49,6 +54,6 @@ class StoreId(_message.Message):
     SYNCHRONIZER_FIELD_NUMBER: _ClassVar[int]
     TEMPORARY_FIELD_NUMBER: _ClassVar[int]
     authorized: StoreId.Authorized
-    synchronizer: StoreId.Synchronizer
+    synchronizer: Synchronizer
     temporary: StoreId.Temporary
-    def __init__(self, authorized: _Optional[_Union[StoreId.Authorized, _Mapping]] = ..., synchronizer: _Optional[_Union[StoreId.Synchronizer, _Mapping]] = ..., temporary: _Optional[_Union[StoreId.Temporary, _Mapping]] = ...) -> None: ...
+    def __init__(self, authorized: _Optional[_Union[StoreId.Authorized, _Mapping]] = ..., synchronizer: _Optional[_Union[Synchronizer, _Mapping]] = ..., temporary: _Optional[_Union[StoreId.Temporary, _Mapping]] = ...) -> None: ...

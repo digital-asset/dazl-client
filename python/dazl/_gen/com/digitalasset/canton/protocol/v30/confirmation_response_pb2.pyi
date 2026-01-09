@@ -20,10 +20,12 @@ class LocalVerdict(_message.Message):
         VERDICT_CODE_LOCAL_APPROVE: _ClassVar[LocalVerdict.VerdictCode]
         VERDICT_CODE_LOCAL_REJECT: _ClassVar[LocalVerdict.VerdictCode]
         VERDICT_CODE_LOCAL_MALFORMED: _ClassVar[LocalVerdict.VerdictCode]
+        VERDICT_CODE_LOCAL_ABSTAIN: _ClassVar[LocalVerdict.VerdictCode]
     VERDICT_CODE_UNSPECIFIED: LocalVerdict.VerdictCode
     VERDICT_CODE_LOCAL_APPROVE: LocalVerdict.VerdictCode
     VERDICT_CODE_LOCAL_REJECT: LocalVerdict.VerdictCode
     VERDICT_CODE_LOCAL_MALFORMED: LocalVerdict.VerdictCode
+    VERDICT_CODE_LOCAL_ABSTAIN: LocalVerdict.VerdictCode
     CODE_FIELD_NUMBER: _ClassVar[int]
     REASON_FIELD_NUMBER: _ClassVar[int]
     code: LocalVerdict.VerdictCode
@@ -41,18 +43,18 @@ class ConfirmationResponse(_message.Message):
     def __init__(self, local_verdict: _Optional[_Union[LocalVerdict, _Mapping]] = ..., confirming_parties: _Optional[_Iterable[str]] = ..., view_position: _Optional[_Union[ViewPosition, _Mapping]] = ...) -> None: ...
 
 class ConfirmationResponses(_message.Message):
-    __slots__ = ("request_id", "root_hash", "synchronizer_id", "sender", "responses")
+    __slots__ = ("request_id", "root_hash", "physical_synchronizer_id", "sender", "responses")
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     ROOT_HASH_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     SENDER_FIELD_NUMBER: _ClassVar[int]
     RESPONSES_FIELD_NUMBER: _ClassVar[int]
     request_id: int
     root_hash: bytes
-    synchronizer_id: str
+    physical_synchronizer_id: str
     sender: str
     responses: _containers.RepeatedCompositeFieldContainer[ConfirmationResponse]
-    def __init__(self, request_id: _Optional[int] = ..., root_hash: _Optional[bytes] = ..., synchronizer_id: _Optional[str] = ..., sender: _Optional[str] = ..., responses: _Optional[_Iterable[_Union[ConfirmationResponse, _Mapping]]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[int] = ..., root_hash: _Optional[bytes] = ..., physical_synchronizer_id: _Optional[str] = ..., sender: _Optional[str] = ..., responses: _Optional[_Iterable[_Union[ConfirmationResponse, _Mapping]]] = ...) -> None: ...
 
 class ViewPosition(_message.Message):
     __slots__ = ("position",)

@@ -4,9 +4,9 @@
 # isort: skip_file
 
 from .participant_transaction_pb2 import ActionDescription, ViewParticipantData
+from .synchronization_pb2 import EnvelopeContent
 from .mediator_pb2 import TransactionResultMessage, TransferResult, Verdict
 from .topology_pb2 import TopologyTransaction
-from .synchronization_pb2 import EnvelopeContent
 
 __all__ = [
     "ActionDescription",
