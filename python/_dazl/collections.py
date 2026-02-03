@@ -15,7 +15,7 @@ class SupportsLessThan(Protocol):
 
 
 K = TypeVar("K")
-V = TypeVar("V", bound=SupportsLessThan)  # noqa: Y001
+V = TypeVar("V", bound=SupportsLessThan)
 
 
 def merge(*m: Optional[Mapping[K, Collection[V]]]) -> Mapping[K, Collection[V]]:

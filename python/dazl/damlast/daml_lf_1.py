@@ -23,8 +23,8 @@ from dataclasses import dataclass
 from enum import IntEnum as _IntEnum
 from io import StringIO
 import threading
-from typing import Any, Callable, NewType, Optional, Sequence
 import typing as _typing
+from typing import Any, Callable, NewType, Optional, Sequence
 
 from ._base import MISSING, T, _Missing
 
@@ -168,7 +168,7 @@ class ModuleRef:
             return self._package_id
 
     def __repr__(self):
-        return f"ModuleRef(package_id={self._package_id!r}, " f"module_name={self._module_name})"
+        return f"ModuleRef(package_id={self._package_id!r}, module_name={self._module_name})"
 
 
 class _Name:

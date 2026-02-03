@@ -110,7 +110,7 @@ class Context:
         except ValueError as ex:
             # re-raise ValueErrors with a more descriptive string that includes the current context
             # path
-            raise ValueError(f'value at {".".join(self.path)} has an invalid value: {obj}') from ex
+            raise ValueError(f"value at {'.'.join(self.path)} has an invalid value: {obj}") from ex
 
     def convert_list(
         self,
@@ -219,9 +219,9 @@ class Context:
             If not ``None``, an alternate mapper to use when descending down the object.
         """
         return {
-            self.append_path("[i]", mapper=mapper)
-            .convert(key_type, key): self.append_path(key, mapper=mapper)
-            .convert(value_type, value)
+            self.append_path("[i]", mapper=mapper).convert(key_type, key): self.append_path(
+                key, mapper=mapper
+            ).convert(value_type, value)
             for i, (key, value) in enumerate(elements.items())
         }
 
@@ -335,7 +335,7 @@ class Context:
         Raise a :class:`ValueWarning`, enriched with information in the current context.
         """
         warnings.warn(
-            f'value at {".".join(self.path)} has a possibly invalid value: {value} ({message})',
+            f"value at {'.'.join(self.path)} has a possibly invalid value: {value} ({message})",
             ValueWarning,
             stacklevel=2,
         )
@@ -345,7 +345,7 @@ class Context:
         Raise a :class:`ValueError`, enriched with information in the current context.
         """
         raise ValueError(
-            f'value at {".".join(self.path)} has an invalid value: {value} ({message})'
+            f"value at {'.'.join(self.path)} has an invalid value: {value} ({message})"
         )
 
     @property

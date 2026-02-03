@@ -34,11 +34,11 @@ commands:
           paths:
             - /home/circleci/.dpm
       - restore_cache:
-          key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>
+          key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>-v2
       - run:
-          command: poetry config virtualenvs.in-project true && make python-deps
+          command: poetry config virtualenvs.in-project true && poetry env use python<<parameters.python_version>> && make python-deps
       - save_cache:
-          key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>
+          key: python-deps-{{ checksum "poetry.lock" }}-<<parameters.python_version>>-v2
           paths:
             - .venv
 jobs:
@@ -81,9 +81,6 @@ jobs:
       - restore_dazl_cache:
           python_version: <<parameters.python_version>>
       - run:
-          name: Set up venv
-          command: poetry env use python<<parameters.python_version>>
-      - run:
           name: Python format checks
           command: make python-format-test
       - run:
@@ -115,11 +112,11 @@ jobs:
           path: target/test-results
   blackduck:
     docker:
-      - image: cimg/python:3.8.19-browsers
+      - image: cimg/python:3.13.11-browsers
     steps:
       - checkout
       - restore_dazl_cache:
-          python_version: "3.8.19"
+          python_version: "3.13"
       - run:
           name: Python packaging
           command: make build

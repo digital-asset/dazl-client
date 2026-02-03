@@ -107,7 +107,7 @@ class Codec:
     async def encode_command(
         self, cmd: Command, /, *, token: Optional[TokenOrTokenProvider] = None
     ) -> lapipb.Command:
-        match (cmd):
+        match cmd:
             case CreateCommand(template_id, payload):
                 return lapipb.Command(
                     create=await self.encode_create_command(template_id, payload, token=token)

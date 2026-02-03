@@ -452,7 +452,7 @@ class CommandMeta:
         if self.workflow_id is not None:
             s.append(f"workflow_id={_repr.str(self.workflow_id)}")
         if self.command_id is not None:
-            s.append(f"command_id={_repr.str(self.command_id )}")
+            s.append(f"command_id={_repr.str(self.command_id)}")
         if self.read_as is not None:
             s.append(f"read_as={_repr.list(self.read_as)}")
         if self.act_as is not None:

@@ -634,8 +634,7 @@ class PackageExceptionTracker:
                 # we already looked for this type and couldn't find it; this will
                 # never succeed
                 LOG.verbose(
-                    "Failed to find name %s in all known packages, "
-                    "even after fetching the latest.",
+                    "Failed to find name %s in all known packages, even after fetching the latest.",
                     exc_val.ref,
                 )
                 raise
@@ -647,7 +646,7 @@ class PackageExceptionTracker:
                 # we don't know what package contains this type, so we have no
                 # choice but to look in all known packages
                 LOG.verbose(
-                    "Failed to find name %s in all known packages, " "so loading ALL packages...",
+                    "Failed to find name %s in all known packages, so loading ALL packages...",
                     name,
                 )
                 self._seen_types.add(exc_val.ref)

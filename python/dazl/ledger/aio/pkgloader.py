@@ -10,7 +10,6 @@ from typing import Any, Awaitable, Callable, Optional, TypeVar
 
 from dazl.damlast.lookup import validate_template
 
-from . import PackageService
 from ... import LOG
 from ...damlast.daml_lf_1 import Package, PackageRef
 from ...damlast.errors import PackageNotFoundError
@@ -19,6 +18,7 @@ from ...damlast.parse import parse_archive
 from ...damlast.pkgfile import Dar, DarFile
 from ...prim import DazlError
 from ..auth import TokenOrTokenProvider
+from . import PackageService
 
 __all__ = ["PackageLoader", "DEFAULT_TIMEOUT"]
 
