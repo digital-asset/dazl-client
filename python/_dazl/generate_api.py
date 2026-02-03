@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 from __future__ import annotations
@@ -278,7 +278,7 @@ def generate_api_clients(openapi_specs_dir: Path, output_dir: Path) -> None:
 
     init_file = output_dir / "__init__.py"
     init_file.write_text(
-        "# Copyright (c) 2017-2025 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.\n"
+        "# Copyright (c) 2017-2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.\n"
         "# SPDX-License-Identifier: Apache-2.0\n"
         "\n"
         "from __future__ import annotations\n"
