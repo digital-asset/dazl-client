@@ -28,7 +28,6 @@ import warnings
 from grpc import ChannelConnectivity
 from grpc.aio import Channel, UnaryStreamCall, UsageError
 
-from .. import aio
 from ... import LOG
 from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
@@ -46,6 +45,7 @@ from ...prim import (
     to_timedelta,
 )
 from ...query import Filter, Queries, Query, parse_query
+from .. import aio
 from .._call import (
     AnyCallParameters,
     CachedParameters,

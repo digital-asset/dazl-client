@@ -12,6 +12,7 @@ from dazl.ledger.aio import Connection
 from dazl.prim import ContractData, Party
 from dazl.testing import SandboxLauncher
 import pytest
+
 from tests.unit import dars
 
 TEMPLATE = "Simple:OperatorNotification"

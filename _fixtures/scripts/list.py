@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 import json
 from typing import NamedTuple, Optional
 from urllib.request import urlopen
 
 from _util import SdkVersion
-
 
 MINIMUM_SDK_VERSION = SdkVersion(0, 13, 0)
 
@@ -12,11 +13,11 @@ MINIMUM_SDK_VERSION = SdkVersion(0, 13, 0)
 def main():
     sdk_versions = []
 
-    with urlopen('https://api.github.com/repos/digital-asset/daml/releases?per_page=100') as f:
+    with urlopen("https://api.github.com/repos/digital-asset/daml/releases?per_page=100") as f:
         releases = json.load(f)
         for release in releases:
-            if not release['prerelease']:
-                version = SdkVersion.parse(release['tag_name'])
+            if not release["prerelease"]:
+                version = SdkVersion.parse(release["tag_name"])
                 if version is not None and version >= MINIMUM_SDK_VERSION:
                     sdk_versions.append(version)
 

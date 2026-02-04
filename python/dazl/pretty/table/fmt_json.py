@@ -45,8 +45,9 @@ class JsonFormatter(Formatter):
             yield f'  {{ "contract_id": "{cid.value}",'
             yield f'    "template": {json.dumps(str(cid.value_type))},'
             yield f'    "parties": {json.dumps(party_list)},'
-            yield f'    "arguments": {json.dumps(context.convert(con(cid.value_type), entry.cdata))} }}' + (
-                "" if is_last else ","
+            yield (
+                f'    "arguments": {json.dumps(context.convert(con(cid.value_type), entry.cdata))} }}'
+                + ("" if is_last else ",")
             )
 
         yield "  ] }"

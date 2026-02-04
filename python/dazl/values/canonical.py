@@ -50,11 +50,11 @@ class CanonicalMapper(ValueMapper):
                 # compatibility, we'll emit a warning, though this may become an exception
                 # eventually.
                 context.value_warn(
-                    obj, f'extra fields: {", ".join(sorted(actual_keys - expected_keys))}'
+                    obj, f"extra fields: {', '.join(sorted(actual_keys - expected_keys))}"
                 )
         else:
             context.value_error(
-                obj, f'missing fields: {", ".join(sorted(expected_keys - actual_keys))}'
+                obj, f"missing fields: {', '.join(sorted(expected_keys - actual_keys))}"
             )
 
         new_mapping = {

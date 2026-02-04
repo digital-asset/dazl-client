@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from typing import Optional
 
-from . import daml_lf_1 as lf
 from ..util.version import SdkVersion
+from . import daml_lf_1 as lf
 from .parse_factory.pb_parse_base import ProtobufParserBase
 from .parse_factory.pb_v1 import ProtobufParser117
 from .parse_factory.pb_v2 import ProtobufParser21

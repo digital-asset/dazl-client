@@ -8,10 +8,10 @@ from typing import Callable, Collection, Optional, TypedDict, TypeVar
 
 from grpc import aio
 
-from .. import ActAs, CommandMeta, ReadAs
 from ... import Party
 from ..._gen.com.daml.ledger.api import v1 as lapipb
 from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
+from .. import ActAs, CommandMeta, ReadAs
 from .._call import CallContext as CallContextBase
 from ..auth import parse_token
 from .codec_aio import Codec

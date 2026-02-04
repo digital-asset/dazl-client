@@ -4,6 +4,7 @@
 """
 This module contains the Python API for interacting with the Ledger API.
 """
+
 from __future__ import annotations
 
 __all__ = [

@@ -7,6 +7,7 @@ DAML Types
 
 Constants and constructor functions for the various primitive DAML types.
 """
+
 from __future__ import annotations
 
 from typing import Mapping

@@ -3,6 +3,7 @@
 """
 Support for exposing dazl's configuration parameters through :mod:`argparse`.
 """
+
 from __future__ import annotations
 
 import argparse

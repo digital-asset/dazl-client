@@ -1,12 +1,5 @@
 { pkgs, ci }:
 let
-  # damllf-1_17-protos = pkgs.callPackage (import ./daml-lf-1.17-protos.nix) {};
-  # damllf-2_1-protos = pkgs.callPackage (import ./daml-lf-2.1-protos.nix) {};
-  # canton2 = pkgs.callPackage (import ./canton/2.nix) {};
-  # canton3 = pkgs.callPackage (import ./canton3.nix) {};
-
-  # protopack = pkgs.callPackage (import ./protopack.nix) { };
-
   requiredPackages = with pkgs; ([
     # these packages are required both in CI and for local development
     dpm
@@ -22,6 +15,8 @@ let
     python311
     python312
     python313
+    #(python313.withPackages (pkgs: [ pkgs.pip ]))
+    ruff
     yamlfmt
 
   ] ++ (if ci then [

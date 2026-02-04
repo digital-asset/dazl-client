@@ -81,15 +81,15 @@ python-deps: .venv/poetry.lock
 
 # python: reformat all of our files
 .PHONY: python-format
-python-format: .venv/poetry.lock
-	poetry run isort python $(protos)
-	poetry run black python $(protos)
+python-format:
+	ruff check --select I --fix _fixtures python $(protos)
+	ruff format _fixtures python $(protos)
 
 # python: check if files are formatted properly
 .PHONY: python-format-test
 python-format-test: .venv/poetry.lock
-	poetry run isort python $(protos) --check-only
-	poetry run black python $(protos) --check
+	ruff check --select I _fixtures python $(protos)
+	ruff format --check _fixtures python $(protos)
 
 # python: run mypy
 .PHONY: python-typecheck
@@ -102,7 +102,6 @@ $(py_sdist) $(py_bdist) &: $(py_src)
 
 # python: witness that makes sure the current venv is up to date with our lock file
 .venv/poetry.lock: poetry.lock
-	poetry run pip install --no-color --disable-pip-version-check -U pip
 	poetry install --no-ansi -E pygments -E tls-testing
 	cp $< $@
 
