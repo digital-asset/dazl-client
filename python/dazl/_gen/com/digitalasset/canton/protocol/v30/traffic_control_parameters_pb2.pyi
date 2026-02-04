@@ -81,13 +81,13 @@ class TrafficState(_message.Message):
     def __init__(self, extra_traffic_purchased: _Optional[int] = ..., extra_traffic_consumed: _Optional[int] = ..., base_traffic_remainder: _Optional[int] = ..., last_consumed_cost: _Optional[int] = ..., timestamp: _Optional[int] = ..., serial: _Optional[int] = ...) -> None: ...
 
 class SetTrafficPurchasedMessage(_message.Message):
-    __slots__ = ("member", "serial", "total_traffic_purchased", "synchronizer_id")
+    __slots__ = ("member", "serial", "total_traffic_purchased", "physical_synchronizer_id")
     MEMBER_FIELD_NUMBER: _ClassVar[int]
     SERIAL_FIELD_NUMBER: _ClassVar[int]
     TOTAL_TRAFFIC_PURCHASED_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     member: str
     serial: int
     total_traffic_purchased: int
-    synchronizer_id: str
-    def __init__(self, member: _Optional[str] = ..., serial: _Optional[int] = ..., total_traffic_purchased: _Optional[int] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+    physical_synchronizer_id: str
+    def __init__(self, member: _Optional[str] = ..., serial: _Optional[int] = ..., total_traffic_purchased: _Optional[int] = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...

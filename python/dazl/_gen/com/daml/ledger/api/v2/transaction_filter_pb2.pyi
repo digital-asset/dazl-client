@@ -61,21 +61,6 @@ class TemplateFilter(_message.Message):
     include_created_event_blob: bool
     def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_created_event_blob: bool = ...) -> None: ...
 
-class TransactionFilter(_message.Message):
-    __slots__ = ("filters_by_party", "filters_for_any_party")
-    class FiltersByPartyEntry(_message.Message):
-        __slots__ = ("key", "value")
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: Filters
-        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[Filters, _Mapping]] = ...) -> None: ...
-    FILTERS_BY_PARTY_FIELD_NUMBER: _ClassVar[int]
-    FILTERS_FOR_ANY_PARTY_FIELD_NUMBER: _ClassVar[int]
-    filters_by_party: _containers.MessageMap[str, Filters]
-    filters_for_any_party: Filters
-    def __init__(self, filters_by_party: _Optional[_Mapping[str, Filters]] = ..., filters_for_any_party: _Optional[_Union[Filters, _Mapping]] = ...) -> None: ...
-
 class EventFormat(_message.Message):
     __slots__ = ("filters_by_party", "filters_for_any_party", "verbose")
     class FiltersByPartyEntry(_message.Message):

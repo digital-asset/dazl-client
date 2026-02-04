@@ -5,11 +5,11 @@ stdenv.mkDerivation rec {
 
   # note that the URL is not derived off this version string because the
   # version format is different
-  version = "3.3.0-snapshot.20250603.0";
+  version = "3.4.10";
 
   src = builtins.fetchurl {
-    url = "https://github.com/digital-asset/daml/releases/download/v3.3.0-snapshot.20250603.0/canton-open-source-3.3.0-snapshot.20250530.15919.0.v3e7a341c.tar.gz";
-    sha256 = "1nhykjizlamj5bihwgxyralcdikjslb4r05n5332sq81cw4xd23w";
+    url = "https://github.com/digital-asset/daml/releases/download/v${version}/canton-open-source-${version}.tar.gz";
+    sha256 = "02rm44kv31dhanv2hj56y8hw5r2hwp4n82n0bjj7izi6hbhg2xcs";
   };
   installPhase = ''
     mkdir -p "$out"

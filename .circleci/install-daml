@@ -5,7 +5,7 @@ set -xeuo pipefail
 
 function install {
     if ! link ; then
-        curl -sSL https://get.daml.com/ | sh
+        curl -sSL https://get.daml.com/ | sh -s -- 2.10.1
         link
     fi
 

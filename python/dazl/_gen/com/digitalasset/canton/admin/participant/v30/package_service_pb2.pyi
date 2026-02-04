@@ -11,7 +11,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Iterable as _Iterable, Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
-from builtins import bytes as _bytes
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -94,12 +93,14 @@ class RemovePackageResponse(_message.Message):
     def __init__(self, success: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ...) -> None: ...
 
 class ValidateDarRequest(_message.Message):
-    __slots__ = ("data", "filename")
+    __slots__ = ("data", "filename", "synchronizer_id")
     DATA_FIELD_NUMBER: _ClassVar[int]
     FILENAME_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     data: bytes
     filename: str
-    def __init__(self, data: _Optional[bytes] = ..., filename: _Optional[str] = ...) -> None: ...
+    synchronizer_id: str
+    def __init__(self, data: _Optional[bytes] = ..., filename: _Optional[str] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class ValidateDarResponse(_message.Message):
     __slots__ = ("main_package_id",)
@@ -108,7 +109,7 @@ class ValidateDarResponse(_message.Message):
     def __init__(self, main_package_id: _Optional[str] = ...) -> None: ...
 
 class UploadDarRequest(_message.Message):
-    __slots__ = ("dars", "vet_all_packages", "synchronize_vetting")
+    __slots__ = ("dars", "vet_all_packages", "synchronize_vetting", "synchronizer_id")
     class UploadDarData(_message.Message):
         __slots__ = ("bytes", "description", "expected_main_package_id")
         BYTES_FIELD_NUMBER: _ClassVar[int]
@@ -117,14 +118,16 @@ class UploadDarRequest(_message.Message):
         bytes: bytes
         description: str
         expected_main_package_id: str
-        def __init__(self, bytes: _Optional[_bytes] = ..., description: _Optional[str] = ..., expected_main_package_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, bytes: _Optional[bytes] = ..., description: _Optional[str] = ..., expected_main_package_id: _Optional[str] = ...) -> None: ...
     DARS_FIELD_NUMBER: _ClassVar[int]
     VET_ALL_PACKAGES_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZE_VETTING_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     dars: _containers.RepeatedCompositeFieldContainer[UploadDarRequest.UploadDarData]
     vet_all_packages: bool
     synchronize_vetting: bool
-    def __init__(self, dars: _Optional[_Iterable[_Union[UploadDarRequest.UploadDarData, _Mapping]]] = ..., vet_all_packages: bool = ..., synchronize_vetting: bool = ...) -> None: ...
+    synchronizer_id: str
+    def __init__(self, dars: _Optional[_Iterable[_Union[UploadDarRequest.UploadDarData, _Mapping]]] = ..., vet_all_packages: bool = ..., synchronize_vetting: bool = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class UploadDarResponse(_message.Message):
     __slots__ = ("dar_ids",)
@@ -197,22 +200,26 @@ class GetDarContentsResponse(_message.Message):
     def __init__(self, description: _Optional[_Union[DarDescription, _Mapping]] = ..., packages: _Optional[_Iterable[_Union[PackageDescription, _Mapping]]] = ...) -> None: ...
 
 class VetDarRequest(_message.Message):
-    __slots__ = ("main_package_id", "synchronize")
+    __slots__ = ("main_package_id", "synchronize", "synchronizer_id")
     MAIN_PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZE_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     main_package_id: str
     synchronize: bool
-    def __init__(self, main_package_id: _Optional[str] = ..., synchronize: bool = ...) -> None: ...
+    synchronizer_id: str
+    def __init__(self, main_package_id: _Optional[str] = ..., synchronize: bool = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class VetDarResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
 class UnvetDarRequest(_message.Message):
-    __slots__ = ("main_package_id",)
+    __slots__ = ("main_package_id", "synchronizer_id")
     MAIN_PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     main_package_id: str
-    def __init__(self, main_package_id: _Optional[str] = ...) -> None: ...
+    synchronizer_id: str
+    def __init__(self, main_package_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class UnvetDarResponse(_message.Message):
     __slots__ = ()

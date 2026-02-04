@@ -36,12 +36,14 @@ class ListPartiesResponse(_message.Message):
         class ParticipantSynchronizers(_message.Message):
             __slots__ = ("participant_uid", "synchronizers")
             class SynchronizerPermissions(_message.Message):
-                __slots__ = ("synchronizer_id", "permission")
+                __slots__ = ("synchronizer_id", "permission", "physical_synchronizer_id")
                 SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
                 PERMISSION_FIELD_NUMBER: _ClassVar[int]
+                PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
                 synchronizer_id: str
                 permission: _topology_pb2.Enums.ParticipantPermission
-                def __init__(self, synchronizer_id: _Optional[str] = ..., permission: _Optional[_Union[_topology_pb2.Enums.ParticipantPermission, str]] = ...) -> None: ...
+                physical_synchronizer_id: str
+                def __init__(self, synchronizer_id: _Optional[str] = ..., permission: _Optional[_Union[_topology_pb2.Enums.ParticipantPermission, str]] = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...
             PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
             SYNCHRONIZERS_FIELD_NUMBER: _ClassVar[int]
             participant_uid: str
@@ -73,16 +75,18 @@ class ListKeyOwnersRequest(_message.Message):
 class ListKeyOwnersResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ("synchronizer_id", "key_owner", "signing_keys", "encryption_keys")
+        __slots__ = ("synchronizer_id", "key_owner", "signing_keys", "encryption_keys", "physical_synchronizer_id")
         SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         KEY_OWNER_FIELD_NUMBER: _ClassVar[int]
         SIGNING_KEYS_FIELD_NUMBER: _ClassVar[int]
         ENCRYPTION_KEYS_FIELD_NUMBER: _ClassVar[int]
+        PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         synchronizer_id: str
         key_owner: str
         signing_keys: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.SigningPublicKey]
         encryption_keys: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.EncryptionPublicKey]
-        def __init__(self, synchronizer_id: _Optional[str] = ..., key_owner: _Optional[str] = ..., signing_keys: _Optional[_Iterable[_Union[_crypto_pb2.SigningPublicKey, _Mapping]]] = ..., encryption_keys: _Optional[_Iterable[_Union[_crypto_pb2.EncryptionPublicKey, _Mapping]]] = ...) -> None: ...
+        physical_synchronizer_id: str
+        def __init__(self, synchronizer_id: _Optional[str] = ..., key_owner: _Optional[str] = ..., signing_keys: _Optional[_Iterable[_Union[_crypto_pb2.SigningPublicKey, _Mapping]]] = ..., encryption_keys: _Optional[_Iterable[_Union[_crypto_pb2.EncryptionPublicKey, _Mapping]]] = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListKeyOwnersResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListKeyOwnersResponse.Result, _Mapping]]] = ...) -> None: ...
