@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import Optional, Sequence
 
-from ..._gen.com.daml.daml_lf_2_1 import daml_lf2_pb2 as pblf
+from ..._gen.com.digitalasset.daml.lf.archive import daml_lf2_pb2 as pblf
 from .. import daml_lf_1 as lf
 from .pb_parse_base import ProtobufParserBase
 
@@ -25,25 +25,27 @@ class ProtobufParser21(ProtobufParserBase):
     def parse_Unit(self, pb: pblf.Unit) -> lf.Unit:
         return lf.UNIT
 
-    def parse_ModuleRef(self, pb: pblf.ModuleRef) -> Optional[lf.ModuleRef]:
-        sum_name = pb.package_ref.WhichOneof("Sum")
+    def parse_ModuleId(self, pb: pblf.ModuleId) -> Optional[lf.ModuleRef]:
+        sum_name = pb.package_id.WhichOneof("Sum")
         if sum_name is None:
             return None
 
         module_name = lf.DottedName(self.interned_dotted_names[pb.module_name_interned_dname])
         match sum_name:
-            case "self":
+            case "self_package_id":
                 return lf.ModuleRef(self.current_package, module_name)
-            case "package_id_interned_str":
+            case "imported_package_id_interned_str":
                 return lf.ModuleRef(
-                    lf.PackageRef(self.interned_strings[pb.package_ref.package_id_interned_str]),
+                    lf.PackageRef(
+                        self.interned_strings[pb.package_id.imported_package_id_interned_str]
+                    ),
                     module_name,
                 )
             case _:
                 raise ValueError(f"unknown sum type value: {sum_name!r}")
 
-    def parse_TypeConName(self, pb: pblf.TypeConName) -> lf.TypeConName:
-        module_ref = self.parse_ModuleRef(pb.module)
+    def parse_TypeConName(self, pb: pblf.TypeConId) -> lf.TypeConName:
+        module_ref = self.parse_ModuleId(pb.module)
         if module_ref is None:
             raise ValueError("missing a valid ModuleRef in a TypeConName definition")
         return lf.TypeConName(
@@ -51,8 +53,8 @@ class ProtobufParser21(ProtobufParserBase):
             self.interned_dotted_names[pb.name_interned_dname],
         )
 
-    def parse_TypeSynName(self, pb: pblf.TypeSynName) -> lf.TypeSynName:
-        module_ref = self.parse_ModuleRef(pb.module)
+    def parse_TypeSynName(self, pb: pblf.TypeSynId) -> lf.TypeSynName:
+        module_ref = self.parse_ModuleId(pb.module)
         if module_ref is None:
             raise ValueError("missing a valid ModuleRef in a TypeSynName definition")
         return lf.TypeSynName(
@@ -60,8 +62,8 @@ class ProtobufParser21(ProtobufParserBase):
             self.interned_dotted_names[pb.name_interned_dname],
         )
 
-    def parse_ValName(self, pb: pblf.ValName) -> lf.ValName:
-        module_ref = self.parse_ModuleRef(pb.module)
+    def parse_ValName(self, pb: pblf.ValueId) -> lf.ValName:
+        module_ref = self.parse_ModuleId(pb.module)
         if module_ref is None:
             raise ValueError("missing a valid ModuleRef in a ValName definition")
         return lf.ValName(
@@ -129,8 +131,8 @@ class ProtobufParser21(ProtobufParserBase):
                 return lf.Type(nat=pb.nat)
             case "syn":
                 return lf.Type(syn=self.parse_Type_Syn(pb.syn))
-            case "interned":
-                return self.interned_types[pb.interned]
+            case "interned_type":
+                return self.interned_types[pb.interned_type]
             case _:
                 raise ValueError(f"unknown sum type value: {sum_name!r}")
 
@@ -266,8 +268,6 @@ class ProtobufParser21(ProtobufParserBase):
                 return lf.Expr(cons=self.parse_Expr_Cons(pb.cons), location=location)
             case "update":
                 return lf.Expr(update=self.parse_Update(pb.update), location=location)
-            case "scenario":
-                return lf.Expr(scenario=self.parse_Scenario(pb.scenario), location=location)
             case "optional_none":
                 return lf.Expr(
                     optional_none=self.parse_Expr_OptionalNone(pb.optional_none), location=location
@@ -694,14 +694,8 @@ class ProtobufParser21(ProtobufParserBase):
                 return lf.Update(
                     fetch_interface=self.parse_Update_FetchInterface(pb.fetch_interface)
                 )
-            case "dynamic_exercise":
-                return lf.Update(
-                    dynamic_exercise=self.parse_Update_DynamicExercise(pb.dynamic_exercise)
-                )
-            case "soft_fetch":
-                return lf.Update(soft_fetch=self.parse_Update_SoftFetch(pb.soft_fetch))
-            case "soft_exercise":
-                return lf.Update(soft_exercise=self.parse_Update_SoftExercise(pb.soft_exercise))
+            case "ledger_time_lt":
+                return lf.Update(ledger_time_lt=self.parse_Expr(pb.ledger_time_lt))
             case _:
                 raise ValueError(f"unknown Sum value: {sum_name!r}")
 
@@ -736,7 +730,7 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_Update_RetrieveByKey(self, pb: pblf.Update.RetrieveByKey) -> lf.Update.RetrieveByKey:
         return lf.Update.RetrieveByKey(
-            template=self.parse_TypeConName(pb.template), key=self.parse_Expr(pb.key)
+            template=self.parse_TypeConName(pb.template),
         )
 
     def parse_Update_TryCatch(self, pb: pblf.Update.TryCatch) -> lf.Update.TryCatch:
@@ -773,63 +767,8 @@ class ProtobufParser21(ProtobufParserBase):
             cid=self.parse_Expr(pb.cid),
         )
 
-    def parse_Update_DynamicExercise(
-        self, pb: pblf.Update.DynamicExercise
-    ) -> lf.Update.DynamicExercise:
-        return lf.Update.DynamicExercise(
-            template=self.parse_TypeConName(pb.template),
-            choice=self.interned_strings[pb.choice_interned_str],
-            cid=self.parse_Expr(pb.cid),
-            arg=self.parse_Expr(pb.arg),
-        )
-
-    def parse_Update_SoftFetch(self, pb: pblf.Update.SoftFetch) -> lf.Update.SoftFetch:
-        return lf.Update.SoftFetch(
-            template=self.parse_TypeConName(pb.template), cid=self.parse_Expr(pb.cid)
-        )
-
-    def parse_Update_SoftExercise(self, pb: pblf.Update.SoftExercise) -> lf.Update.SoftExercise:
-        return lf.Update.SoftExercise(
-            template=self.parse_TypeConName(pb.template),
-            choice=self.interned_strings[pb.choice_interned_str],
-            cid=self.parse_Expr(pb.cid),
-            arg=self.parse_Expr(pb.arg),
-        )
-
-    def parse_Scenario(self, pb: pblf.Scenario) -> lf.Scenario:
-        sum_name = pb.WhichOneof("Sum")
-        match sum_name:
-            case "pure":
-                return lf.Scenario(pure=self.parse_Pure(pb.pure))
-            case "block":
-                return lf.Scenario(block=self.parse_Block(pb.block))
-            case "commit":
-                return lf.Scenario(commit=self.parse_Scenario_Commit(pb.commit))
-            case "mustFailAt":
-                return lf.Scenario(must_fail_at=self.parse_Scenario_Commit(pb.mustFailAt))
-            case "pass":
-                return lf.Scenario(pass_=self.parse_Expr(getattr(pb, "pass")))
-            case "get_time":
-                return lf.Scenario(get_time=self.parse_Unit(pb.get_time))
-            case "get_party":
-                return lf.Scenario(get_party=self.parse_Expr(pb.get_party))
-            case "embed_expr":
-                return lf.Scenario(embed_expr=self.parse_Scenario_EmbedExpr(pb.embed_expr))
-            case _:
-                raise ValueError("unknown Sum value")
-
-    def parse_Scenario_Commit(self, pb: pblf.Scenario.Commit) -> lf.Scenario.Commit:
-        return lf.Scenario.Commit(
-            party=self.parse_Expr(pb.party),
-            expr=self.parse_Expr(pb.expr),
-            ret_type=self.parse_Type(pb.ret_type),
-        )
-
-    def parse_Scenario_EmbedExpr(self, pb: pblf.Scenario.EmbedExpr) -> lf.Scenario.EmbedExpr:
-        return lf.Scenario.EmbedExpr(type=self.parse_Type(pb.type), body=self.parse_Expr(pb.body))
-
     def parse_Location(self, pb: pblf.Location) -> lf.Location:
-        module_ref = self.parse_ModuleRef(pb.module)
+        module_ref = self.parse_ModuleId(pb.module)
         if module_ref is None:
             module_ref = self.current_module
         if module_ref is None:
@@ -864,7 +803,7 @@ class ProtobufParser21(ProtobufParserBase):
             param=self.interned_strings[pb.param_interned_str],
             precond=self.parse_Expr(pb.precond) if pb.HasField("precond") else None,
             signatories=self.parse_Expr(pb.signatories) if pb.HasField("signatories") else None,
-            agreement=self.parse_Expr(pb.agreement) if pb.HasField("agreement") else None,
+            agreement=None,
             choices=tuple(self.parse_TemplateChoice(choice) for choice in pb.choices),
             observers=self.parse_Expr(pb.observers) if pb.HasField("observers") else None,
             location=self.parse_Location(pb.location),
@@ -945,7 +884,8 @@ class ProtobufParser21(ProtobufParserBase):
             name_with_type=self.parse_DefValue_NameWithType(pb.name_with_type),
             expr=lambda: self.parse_Expr(pb.expr),
             no_party_literals=False,
-            is_test=pb.is_test,
+            # TODO: more clearly separate Daml LF 1 and Daml LF 2 types
+            is_test=False,
             location=self.parse_Location(pb.location),
         )
 

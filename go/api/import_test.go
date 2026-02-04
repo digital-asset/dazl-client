@@ -3,8 +3,6 @@ package api_test
 import (
 	"testing"
 
-	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_1_17"
-	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_2_1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v1/admin"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v1/testing"
@@ -59,6 +57,9 @@ import (
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/version"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/version/v1"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/archive"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/archive/daml_lf_1"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/archive/daml_lf_2"
 )
 
 func Test(_ *testing.T) {}

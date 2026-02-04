@@ -11,7 +11,7 @@ from types import TracebackType
 from typing import AbstractSet, BinaryIO, Collection, Generator, Mapping, Optional
 from zipfile import ZipFile
 
-from .._gen.com.daml.daml_lf_1_17 import daml_lf_pb2 as pb
+from .._gen.com.digitalasset.daml.lf import archive as pbarchive
 from ..ledger.auth import TokenOrTokenProvider
 from ..prim import TimeDeltaLike
 from .daml_lf_1 import Archive, Package, PackageRef
@@ -40,7 +40,7 @@ class DarFile:
 
     filename: Optional[str]
 
-    def __init__(self, dar: Dar):
+    def __init__(self, dar: Dar) -> None:
         """
         Initialize a new DarFile.
 
@@ -170,7 +170,7 @@ class DarFile:
         """
         return (PackageRef(name) for name in self._zip.namelist() if name.endswith(".dalf"))
 
-    def _pb_archives(self) -> Generator[pb.Archive, None, None]:
+    def _pb_archives(self) -> Generator[pbarchive.Archive, None, None]:
         """
         Return a generator over :class:`pb.Archive` instances. Crucially, the Protobuf messages
         contain DAML-LF as a ``bytes`` field that has not yet been parsed.
@@ -178,7 +178,7 @@ class DarFile:
         for name in self._dalf_names():
             contents = self._zip.read(name)
 
-            a = pb.Archive()
+            a = pbarchive.Archive()
             a.ParseFromString(contents)
             yield a
 

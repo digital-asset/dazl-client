@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import Optional, Sequence
 
-from ..._gen.com.daml.daml_lf_1_17 import daml_lf_1_pb2 as pblf
+from ..._gen.com.digitalasset.daml.lf.archive import daml_lf1_pb2 as pblf
 from .. import daml_lf_1 as lf
 from .pb_parse_base import ProtobufParserBase
 

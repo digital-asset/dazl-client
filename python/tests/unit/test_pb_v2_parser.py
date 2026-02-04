@@ -10,9 +10,7 @@ from dazl import LOG
 from dazl.damlast import DarFile
 from dazl.damlast.daml_lf_1 import PackageRef
 from dazl.damlast.lookup import MultiPackageLookup
-from dazl.damlast.parse_factory.pb_parse_base import ProtobufParserBase
 from dazl.damlast.parse_factory.pb_v2 import ProtobufParser21
-from dazl.damlast.pb_parse import ProtobufParserFactory
 import pytest
 
 ARCHIVES = Path(__file__).absolute().parent.parent.parent.parent / "_fixtures" / "archives"
@@ -20,18 +18,6 @@ ALL_KINDS_OF_V3_DAR = ARCHIVES / "3.3.0/all-kinds-of-1.0.0_lf.dar"
 
 
 class TestProtobufParser21Factory:
-    def test_factory_creates_v2_parser_for_version_3(self):
-        parser = ProtobufParserFactory.create_parser(PackageRef("test-pkg"), "3.3.0")
-        assert isinstance(parser, ProtobufParserBase)
-        assert isinstance(parser, ProtobufParser21)
-        assert "21" in parser.__class__.__name__
-
-    def test_factory_creates_v2_parser_for_version_3_with_snapshot(self):
-        parser = ProtobufParserFactory.create_parser(
-            PackageRef("test-pkg"), "3.3.0-snapshot.20250417.0"
-        )
-        assert isinstance(parser, ProtobufParser21)
-
     def test_v2_parser_initialization(self):
         parser = ProtobufParser21(PackageRef("test-package-id"))
         assert parser.current_package == "test-package-id"
@@ -85,15 +71,6 @@ class TestAllKindsOfV3DAR:
         sdk_version = dar_file.sdk_version()
         assert sdk_version is not None
         assert sdk_version.startswith("3."), f"Expected version 3.x but got {sdk_version}"
-
-    def test_v3_uses_v2_parser(self, dar_file):
-        sdk_version = dar_file.sdk_version()
-        from dazl.util.version import SdkVersion
-
-        parsed_version = SdkVersion.parse(sdk_version)
-        assert parsed_version.major == 3
-        parser = ProtobufParserFactory.create_parser(PackageRef("test"), sdk_version)
-        assert isinstance(parser, ProtobufParser21)
 
     def test_archives_have_modules(self, archives):
         main_archive = archives[0]

@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
 # Copyright (c) 2017-2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-set -xeuo pipefail
+# fmt: off
+# isort: skip_file
 
-dpm install 3.4.10
+
+__all__ = []  # type: ignore

@@ -16,10 +16,11 @@ stdenv.mkDerivation rec {
     unzip $src
   '';
 
-  # the only protobufs from the Daml 2.x package that we care about are the latest Daml-LF
+  # the only protobufs from the Daml 2.x package that we care about are Ledger API v1
+  # Daml-LF 1 is still present in the Daml 3.x line, and in a way that integrates better
+  # with Daml-LF 2
   installPhase = ''
     mkdir -p "$out/com/daml/ledger/api"
-    cp -R "protos-2.10.3/com/daml/daml_lf_1_17" "$out/com/daml/"
-    cp -R "protos-2.10.3/com/daml/ledger/api/v1" "$out/com/daml/ledger/api"
+    cp -R "protos-${version}/com/daml/ledger/api/v1" "$out/com/daml/ledger/api"
   '';
 }

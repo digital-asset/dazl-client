@@ -18,10 +18,10 @@ import sys
 import time
 from typing import Optional
 
-from .._gen.com.daml.daml_lf_1_17.daml_lf_pb2 import ArchivePayload
-from .._gen.com.daml.daml_lf_2_1 import daml_lf2_pb2
+from .._gen.com.digitalasset.daml.lf.archive import ArchivePayload, daml_lf1_pb2, daml_lf2_pb2
 from .daml_lf_1 import Archive, PackageRef
-from .pb_parse import ProtobufParserFactory
+from .parse_factory.pb_v1 import ProtobufParser117
+from .parse_factory.pb_v2 import ProtobufParser21
 
 __all__ = ["parse_archive", "parse_archive_payload"]
 
@@ -33,16 +33,19 @@ def parse_archive(
     Convert ``bytes`` into an :class:`Archive`.
     """
 
-    parser = ProtobufParserFactory.create_parser(package_id, sdk_version=sdk_version)
-
     archive_pb = parse_archive_payload(package_id, archive_bytes)
-
     if archive_pb.HasField("daml_lf_1"):
-        package = parser.parse_Package(archive_pb.daml_lf_1)
+        parser_1 = ProtobufParser117(package_id)
+        pkg_lf_1_pb = daml_lf1_pb2.Package()
+        pkg_lf_1_pb.ParseFromString(archive_pb.daml_lf_1)
+        package = parser_1.parse_Package(pkg_lf_1_pb)
+
     elif archive_pb.HasField("daml_lf_2"):
-        package_pb = daml_lf2_pb2.Package()
-        package_pb.ParseFromString(archive_pb.daml_lf_2)
-        package = parser.parse_Package(package_pb)
+        parser_2 = ProtobufParser21(package_id)
+        pkg_lf_2_pb = daml_lf2_pb2.Package()
+        pkg_lf_2_pb.ParseFromString(archive_pb.daml_lf_2)
+        package = parser_2.parse_Package(pkg_lf_2_pb)
+
     else:
         raise ValueError("Archive payload does not contain daml_lf_1 or daml_lf_2")
 
