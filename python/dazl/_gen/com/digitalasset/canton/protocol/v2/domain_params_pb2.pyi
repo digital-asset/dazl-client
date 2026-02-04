@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -40,4 +42,4 @@ class DynamicDomainParameters(_message.Message):
     max_rate_per_participant: int
     max_request_size: int
     catch_up_parameters: CatchUpConfig
-    def __init__(self, participant_response_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., mediator_reaction_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., transfer_exclusivity_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., topology_change_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., ledger_time_record_time_tolerance: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., reconciliation_interval: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., mediator_deduplication_timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., max_rate_per_participant: _Optional[int] = ..., max_request_size: _Optional[int] = ..., catch_up_parameters: _Optional[_Union[CatchUpConfig, _Mapping]] = ...) -> None: ...
+    def __init__(self, participant_response_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., mediator_reaction_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., transfer_exclusivity_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., topology_change_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ledger_time_record_time_tolerance: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., reconciliation_interval: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., mediator_deduplication_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_rate_per_participant: _Optional[int] = ..., max_request_size: _Optional[int] = ..., catch_up_parameters: _Optional[_Union[CatchUpConfig, _Mapping]] = ...) -> None: ...

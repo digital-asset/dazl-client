@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....protocol.v30 import sequencing_pb2 as _sequencing_pb2
 from ....protocol.v30 import traffic_control_parameters_pb2 as _traffic_control_parameters_pb2
 from . import sequencer_initialization_snapshot_pb2 as _sequencer_initialization_snapshot_pb2
@@ -65,7 +67,7 @@ class SnapshotRequest(_message.Message):
     __slots__ = ("timestamp",)
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SnapshotResponse(_message.Message):
     __slots__ = ("success", "failure", "versioned_success")
@@ -98,7 +100,7 @@ class OnboardingStateRequest(_message.Message):
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     sequencer_uid: str
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class OnboardingStateResponse(_message.Message):
     __slots__ = ("onboarding_state_for_sequencer",)

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -60,7 +62,7 @@ class PruningSchedule(_message.Message):
     cron: str
     max_duration: _duration_pb2.Duration
     retention: _duration_pb2.Duration
-    def __init__(self, cron: _Optional[str] = ..., max_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., retention: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, cron: _Optional[str] = ..., max_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., retention: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class ParticipantPruningSchedule(_message.Message):
     __slots__ = ("schedule", "prune_internally_only")
@@ -92,7 +94,7 @@ class SetMaxDurationRequest(_message.Message):
     __slots__ = ("max_duration",)
     MAX_DURATION_FIELD_NUMBER: _ClassVar[int]
     max_duration: _duration_pb2.Duration
-    def __init__(self, max_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, max_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class SetMaxDurationResponse(_message.Message):
     __slots__ = ()
@@ -102,7 +104,7 @@ class SetRetentionRequest(_message.Message):
     __slots__ = ("retention",)
     RETENTION_FIELD_NUMBER: _ClassVar[int]
     retention: _duration_pb2.Duration
-    def __init__(self, retention: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, retention: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class SetRetentionResponse(_message.Message):
     __slots__ = ()
@@ -118,7 +120,7 @@ class LocatePruningTimestampResponse(_message.Message):
     __slots__ = ("timestamp",)
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SetNoWaitCommitmentsFromRequest(_message.Message):
     __slots__ = ("counter_participant_uids", "synchronizer_ids")

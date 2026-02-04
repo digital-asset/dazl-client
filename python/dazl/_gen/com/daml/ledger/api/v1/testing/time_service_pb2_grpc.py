@@ -10,7 +10,7 @@ import warnings
 from . import time_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_testing_dot_time__service__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
-GRPC_GENERATED_VERSION = '1.72.1'
+GRPC_GENERATED_VERSION = '1.76.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -23,7 +23,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in com/daml/ledger/api/v1/testing/time_service_pb2_grpc.py depends on'
+        + ' but the generated code in com/daml/ledger/api/v1/testing/time_service_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'

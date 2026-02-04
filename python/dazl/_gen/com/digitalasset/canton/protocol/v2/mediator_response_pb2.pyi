@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ..v1 import mediator_response_pb2 as _mediator_response_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -28,7 +30,7 @@ class MediatorResponse(_message.Message):
     confirming_parties: _containers.RepeatedScalarFieldContainer[str]
     domain_id: str
     view_position: ViewPosition
-    def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., sender: _Optional[str] = ..., local_verdict: _Optional[_Union[_mediator_response_pb2.LocalVerdict, _Mapping]] = ..., root_hash: _Optional[bytes] = ..., confirming_parties: _Optional[_Iterable[str]] = ..., domain_id: _Optional[str] = ..., view_position: _Optional[_Union[ViewPosition, _Mapping]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., sender: _Optional[str] = ..., local_verdict: _Optional[_Union[_mediator_response_pb2.LocalVerdict, _Mapping]] = ..., root_hash: _Optional[bytes] = ..., confirming_parties: _Optional[_Iterable[str]] = ..., domain_id: _Optional[str] = ..., view_position: _Optional[_Union[ViewPosition, _Mapping]] = ...) -> None: ...
 
 class ViewPosition(_message.Message):
     __slots__ = ("position",)

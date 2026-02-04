@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import completion_pb2 as _completion_pb2
 from . import ledger_offset_pb2 as _ledger_offset_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -39,7 +41,7 @@ class Checkpoint(_message.Message):
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     record_time: _timestamp_pb2.Timestamp
     offset: _ledger_offset_pb2.LedgerOffset
-    def __init__(self, record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., offset: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ...) -> None: ...
+    def __init__(self, record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., offset: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ...) -> None: ...
 
 class CompletionEndRequest(_message.Message):
     __slots__ = ("ledger_id",)

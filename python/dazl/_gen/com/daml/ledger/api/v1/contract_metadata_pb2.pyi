@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -18,4 +20,4 @@ class ContractMetadata(_message.Message):
     created_at: _timestamp_pb2.Timestamp
     contract_key_hash: bytes
     driver_metadata: bytes
-    def __init__(self, created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contract_key_hash: _Optional[bytes] = ..., driver_metadata: _Optional[bytes] = ...) -> None: ...
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contract_key_hash: _Optional[bytes] = ..., driver_metadata: _Optional[bytes] = ...) -> None: ...

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import descriptor as _descriptor
@@ -17,13 +19,13 @@ class FetchTimeRequest(_message.Message):
     FRESHNESS_BOUND_FIELD_NUMBER: _ClassVar[int]
     synchronizer_id: str
     freshness_bound: _duration_pb2.Duration
-    def __init__(self, synchronizer_id: _Optional[str] = ..., freshness_bound: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, synchronizer_id: _Optional[str] = ..., freshness_bound: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class FetchTimeResponse(_message.Message):
     __slots__ = ("timestamp",)
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class AwaitTimeRequest(_message.Message):
     __slots__ = ("synchronizer_id", "timestamp")
@@ -31,7 +33,7 @@ class AwaitTimeRequest(_message.Message):
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     synchronizer_id: str
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class AwaitTimeResponse(_message.Message):
     __slots__ = ()

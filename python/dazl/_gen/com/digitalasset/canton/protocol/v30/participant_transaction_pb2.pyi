@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v30 import crypto_pb2 as _crypto_pb2
 from . import common_pb2 as _common_pb2
 from . import common_stable_pb2 as _common_stable_pb2
@@ -23,7 +25,7 @@ class DeduplicationPeriod(_message.Message):
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     duration: _duration_pb2.Duration
     offset: int
-    def __init__(self, duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., offset: _Optional[int] = ...) -> None: ...
+    def __init__(self, duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., offset: _Optional[int] = ...) -> None: ...
 
 class ParticipantMetadata(_message.Message):
     __slots__ = ("salt", "ledger_time", "preparation_time", "workflow_id")

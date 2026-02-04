@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -22,7 +24,7 @@ class SequencerMemberStatus(_message.Message):
     registered_at: _timestamp_pb2.Timestamp
     last_acknowledged: _timestamp_pb2.Timestamp
     enabled: bool
-    def __init__(self, member: _Optional[str] = ..., registered_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., last_acknowledged: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., enabled: bool = ...) -> None: ...
+    def __init__(self, member: _Optional[str] = ..., registered_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_acknowledged: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., enabled: bool = ...) -> None: ...
 
 class SequencerPruningStatus(_message.Message):
     __slots__ = ("now", "earliest_event_timestamp", "members")
@@ -32,4 +34,4 @@ class SequencerPruningStatus(_message.Message):
     now: _timestamp_pb2.Timestamp
     earliest_event_timestamp: _timestamp_pb2.Timestamp
     members: _containers.RepeatedCompositeFieldContainer[SequencerMemberStatus]
-    def __init__(self, now: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., earliest_event_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., members: _Optional[_Iterable[_Union[SequencerMemberStatus, _Mapping]]] = ...) -> None: ...
+    def __init__(self, now: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., earliest_event_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., members: _Optional[_Iterable[_Union[SequencerMemberStatus, _Mapping]]] = ...) -> None: ...

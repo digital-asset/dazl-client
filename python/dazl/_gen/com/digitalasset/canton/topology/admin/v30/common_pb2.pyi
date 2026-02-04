@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -25,7 +27,7 @@ class TopologyTransactions(_message.Message):
         valid_until: _timestamp_pb2.Timestamp
         transaction: bytes
         rejection_reason: str
-        def __init__(self, sequenced: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_from: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., transaction: _Optional[bytes] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
+        def __init__(self, sequenced: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., transaction: _Optional[bytes] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
     ITEMS_FIELD_NUMBER: _ClassVar[int]
     items: _containers.RepeatedCompositeFieldContainer[TopologyTransactions.Item]
     def __init__(self, items: _Optional[_Iterable[_Union[TopologyTransactions.Item, _Mapping]]] = ...) -> None: ...

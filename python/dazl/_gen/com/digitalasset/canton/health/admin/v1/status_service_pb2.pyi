@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ..v0 import status_service_pb2 as _status_service_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf.internal import containers as _containers
@@ -41,4 +43,4 @@ class Status(_message.Message):
     topology_queues: _status_service_pb2.TopologyQueueStatus
     components: _containers.RepeatedCompositeFieldContainer[_status_service_pb2.NodeStatus.ComponentStatus]
     version: str
-    def __init__(self, uid: _Optional[str] = ..., uptime: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., ports: _Optional[_Mapping[str, int]] = ..., active: bool = ..., topology_queues: _Optional[_Union[_status_service_pb2.TopologyQueueStatus, _Mapping]] = ..., components: _Optional[_Iterable[_Union[_status_service_pb2.NodeStatus.ComponentStatus, _Mapping]]] = ..., version: _Optional[str] = ...) -> None: ...
+    def __init__(self, uid: _Optional[str] = ..., uptime: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ports: _Optional[_Mapping[str, int]] = ..., active: bool = ..., topology_queues: _Optional[_Union[_status_service_pb2.TopologyQueueStatus, _Mapping]] = ..., components: _Optional[_Iterable[_Union[_status_service_pb2.NodeStatus.ComponentStatus, _Mapping]]] = ..., version: _Optional[str] = ...) -> None: ...

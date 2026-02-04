@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -27,7 +29,7 @@ class PingRequest(_message.Message):
     synchronizer_id: str
     workflow_id: str
     id: str
-    def __init__(self, target_parties: _Optional[_Iterable[str]] = ..., validators: _Optional[_Iterable[str]] = ..., timeout: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., levels: _Optional[int] = ..., synchronizer_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., id: _Optional[str] = ...) -> None: ...
+    def __init__(self, target_parties: _Optional[_Iterable[str]] = ..., validators: _Optional[_Iterable[str]] = ..., timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., levels: _Optional[int] = ..., synchronizer_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., id: _Optional[str] = ...) -> None: ...
 
 class PingSuccess(_message.Message):
     __slots__ = ("ping_time", "responder")

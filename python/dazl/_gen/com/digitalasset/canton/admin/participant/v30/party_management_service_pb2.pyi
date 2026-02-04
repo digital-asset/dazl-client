@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -59,7 +61,7 @@ class GetAddPartyStatusResponse(_message.Message):
             sequencer_uid: str
             topology_serial: int
             timestamp: _timestamp_pb2.Timestamp
-            def __init__(self, sequencer_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+            def __init__(self, sequencer_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
         class ConnectionEstablished(_message.Message):
             __slots__ = ("sequencer_uid", "topology_serial", "timestamp")
             SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
@@ -68,7 +70,7 @@ class GetAddPartyStatusResponse(_message.Message):
             sequencer_uid: str
             topology_serial: int
             timestamp: _timestamp_pb2.Timestamp
-            def __init__(self, sequencer_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+            def __init__(self, sequencer_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
         class ReplicatingAcs(_message.Message):
             __slots__ = ("sequencer_uid", "topology_serial", "timestamp", "contracts_replicated")
             SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
@@ -79,7 +81,7 @@ class GetAddPartyStatusResponse(_message.Message):
             topology_serial: int
             timestamp: _timestamp_pb2.Timestamp
             contracts_replicated: int
-            def __init__(self, sequencer_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contracts_replicated: _Optional[int] = ...) -> None: ...
+            def __init__(self, sequencer_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contracts_replicated: _Optional[int] = ...) -> None: ...
         class Completed(_message.Message):
             __slots__ = ("sequencer_uid", "topology_serial", "timestamp", "contracts_replicated")
             SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
@@ -90,7 +92,7 @@ class GetAddPartyStatusResponse(_message.Message):
             topology_serial: int
             timestamp: _timestamp_pb2.Timestamp
             contracts_replicated: int
-            def __init__(self, sequencer_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contracts_replicated: _Optional[int] = ...) -> None: ...
+            def __init__(self, sequencer_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contracts_replicated: _Optional[int] = ...) -> None: ...
         class Error(_message.Message):
             __slots__ = ("error_message", "status_prior_to_error")
             ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
@@ -164,7 +166,7 @@ class ExportAcsAtTimestampRequest(_message.Message):
     party_ids: _containers.RepeatedScalarFieldContainer[str]
     synchronizer_id: str
     topology_transaction_effective_time: _timestamp_pb2.Timestamp
-    def __init__(self, party_ids: _Optional[_Iterable[str]] = ..., synchronizer_id: _Optional[str] = ..., topology_transaction_effective_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, party_ids: _Optional[_Iterable[str]] = ..., synchronizer_id: _Optional[str] = ..., topology_transaction_effective_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class ExportAcsAtTimestampResponse(_message.Message):
     __slots__ = ("chunk",)

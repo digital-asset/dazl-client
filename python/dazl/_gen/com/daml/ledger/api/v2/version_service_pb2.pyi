@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import experimental_features_pb2 as _experimental_features_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import descriptor as _descriptor
@@ -55,4 +57,4 @@ class OffsetCheckpointFeature(_message.Message):
     __slots__ = ("max_offset_checkpoint_emission_delay",)
     MAX_OFFSET_CHECKPOINT_EMISSION_DELAY_FIELD_NUMBER: _ClassVar[int]
     max_offset_checkpoint_emission_delay: _duration_pb2.Duration
-    def __init__(self, max_offset_checkpoint_emission_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, max_offset_checkpoint_emission_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...

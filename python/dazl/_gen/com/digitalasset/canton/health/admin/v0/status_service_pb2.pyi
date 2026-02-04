@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
@@ -48,7 +50,7 @@ class NodeStatus(_message.Message):
         active: bool
         topology_queues: TopologyQueueStatus
         components: _containers.RepeatedCompositeFieldContainer[NodeStatus.ComponentStatus]
-        def __init__(self, id: _Optional[str] = ..., uptime: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., ports: _Optional[_Mapping[str, int]] = ..., extra: _Optional[bytes] = ..., active: bool = ..., topology_queues: _Optional[_Union[TopologyQueueStatus, _Mapping]] = ..., components: _Optional[_Iterable[_Union[NodeStatus.ComponentStatus, _Mapping]]] = ...) -> None: ...
+        def __init__(self, id: _Optional[str] = ..., uptime: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ports: _Optional[_Mapping[str, int]] = ..., extra: _Optional[bytes] = ..., active: bool = ..., topology_queues: _Optional[_Union[TopologyQueueStatus, _Mapping]] = ..., components: _Optional[_Iterable[_Union[NodeStatus.ComponentStatus, _Mapping]]] = ...) -> None: ...
     class ComponentStatus(_message.Message):
         __slots__ = ("name", "ok", "degraded", "failed", "fatal")
         class StatusData(_message.Message):
