@@ -15,15 +15,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class PingRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
-
-class PingResponse(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
-
-class BftOrderingServiceReceiveRequest(_message.Message):
+class BftOrderingMessage(_message.Message):
     __slots__ = ("trace_context", "body", "sent_by", "sent_at")
     TRACE_CONTEXT_FIELD_NUMBER: _ClassVar[int]
     BODY_FIELD_NUMBER: _ClassVar[int]
@@ -35,22 +27,19 @@ class BftOrderingServiceReceiveRequest(_message.Message):
     sent_at: _timestamp_pb2.Timestamp
     def __init__(self, trace_context: _Optional[str] = ..., body: _Optional[_Union[BftOrderingMessageBody, _Mapping]] = ..., sent_by: _Optional[str] = ..., sent_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
-class BftOrderingServiceReceiveResponse(_message.Message):
-    __slots__ = ()
-    FROM_FIELD_NUMBER: _ClassVar[int]
-    def __init__(self, **kwargs) -> None: ...
-
 class BftOrderingMessageBody(_message.Message):
-    __slots__ = ("availability_message", "consensus_message", "state_transfer_message", "retransmission_message")
+    __slots__ = ("availability_message", "consensus_message", "state_transfer_message", "retransmission_message", "connection_opened")
     AVAILABILITY_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     CONSENSUS_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     STATE_TRANSFER_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     RETRANSMISSION_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    CONNECTION_OPENED_FIELD_NUMBER: _ClassVar[int]
     availability_message: SignedMessage
     consensus_message: SignedMessage
     state_transfer_message: SignedMessage
-    retransmission_message: SignedMessage
-    def __init__(self, availability_message: _Optional[_Union[SignedMessage, _Mapping]] = ..., consensus_message: _Optional[_Union[SignedMessage, _Mapping]] = ..., state_transfer_message: _Optional[_Union[SignedMessage, _Mapping]] = ..., retransmission_message: _Optional[_Union[SignedMessage, _Mapping]] = ...) -> None: ...
+    retransmission_message: RetransmissionMessage
+    connection_opened: ConnectionOpened
+    def __init__(self, availability_message: _Optional[_Union[SignedMessage, _Mapping]] = ..., consensus_message: _Optional[_Union[SignedMessage, _Mapping]] = ..., state_transfer_message: _Optional[_Union[SignedMessage, _Mapping]] = ..., retransmission_message: _Optional[_Union[RetransmissionMessage, _Mapping]] = ..., connection_opened: _Optional[_Union[ConnectionOpened, _Mapping]] = ...) -> None: ...
 
 class SignedMessage(_message.Message):
     __slots__ = ("message", "signature")
@@ -60,6 +49,10 @@ class SignedMessage(_message.Message):
     message: bytes
     signature: _crypto_pb2.Signature
     def __init__(self, message: _Optional[bytes] = ..., signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., **kwargs) -> None: ...
+
+class ConnectionOpened(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
 
 class AvailabilityMessage(_message.Message):
     __slots__ = ("ping", "store_request", "store_response", "batch_request", "batch_response")
@@ -245,9 +238,9 @@ class RetransmissionMessage(_message.Message):
     __slots__ = ("retransmission_request", "retransmission_response")
     RETRANSMISSION_REQUEST_FIELD_NUMBER: _ClassVar[int]
     RETRANSMISSION_RESPONSE_FIELD_NUMBER: _ClassVar[int]
-    retransmission_request: EpochStatus
+    retransmission_request: SignedMessage
     retransmission_response: RetransmissionResponse
-    def __init__(self, retransmission_request: _Optional[_Union[EpochStatus, _Mapping]] = ..., retransmission_response: _Optional[_Union[RetransmissionResponse, _Mapping]] = ...) -> None: ...
+    def __init__(self, retransmission_request: _Optional[_Union[SignedMessage, _Mapping]] = ..., retransmission_response: _Optional[_Union[RetransmissionResponse, _Mapping]] = ...) -> None: ...
 
 class RetransmissionResponse(_message.Message):
     __slots__ = ("commit_certificates",)

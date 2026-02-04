@@ -32,16 +32,19 @@ class TopologyTransactions(_message.Message):
     items: _containers.RepeatedCompositeFieldContainer[TopologyTransactions.Item]
     def __init__(self, items: _Optional[_Iterable[_Union[TopologyTransactions.Item, _Mapping]]] = ...) -> None: ...
 
+class Synchronizer(_message.Message):
+    __slots__ = ("id", "physical_id")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    physical_id: str
+    def __init__(self, id: _Optional[str] = ..., physical_id: _Optional[str] = ...) -> None: ...
+
 class StoreId(_message.Message):
     __slots__ = ("authorized", "synchronizer", "temporary")
     class Authorized(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
-    class Synchronizer(_message.Message):
-        __slots__ = ("id",)
-        ID_FIELD_NUMBER: _ClassVar[int]
-        id: str
-        def __init__(self, id: _Optional[str] = ...) -> None: ...
     class Temporary(_message.Message):
         __slots__ = ("name",)
         NAME_FIELD_NUMBER: _ClassVar[int]
@@ -51,6 +54,6 @@ class StoreId(_message.Message):
     SYNCHRONIZER_FIELD_NUMBER: _ClassVar[int]
     TEMPORARY_FIELD_NUMBER: _ClassVar[int]
     authorized: StoreId.Authorized
-    synchronizer: StoreId.Synchronizer
+    synchronizer: Synchronizer
     temporary: StoreId.Temporary
-    def __init__(self, authorized: _Optional[_Union[StoreId.Authorized, _Mapping]] = ..., synchronizer: _Optional[_Union[StoreId.Synchronizer, _Mapping]] = ..., temporary: _Optional[_Union[StoreId.Temporary, _Mapping]] = ...) -> None: ...
+    def __init__(self, authorized: _Optional[_Union[StoreId.Authorized, _Mapping]] = ..., synchronizer: _Optional[_Union[Synchronizer, _Mapping]] = ..., temporary: _Optional[_Union[StoreId.Temporary, _Mapping]] = ...) -> None: ...

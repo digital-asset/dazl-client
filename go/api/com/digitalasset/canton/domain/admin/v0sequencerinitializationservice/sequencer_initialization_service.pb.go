@@ -244,7 +244,7 @@ var file_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_servic
 	(*TopologyBootstrapRequest)(nil),  // 2: com.digitalasset.canton.domain.admin.v0.TopologyBootstrapRequest
 	(*v0.TopologyTransactions)(nil),   // 3: com.digitalasset.canton.protocol.v0.TopologyTransactions
 	(*v0.StaticDomainParameters)(nil), // 4: com.digitalasset.canton.protocol.v0.StaticDomainParameters
-	(*v0snapshot.SequencerSnapshot)(nil),         // 5: com.digitalasset.canton.domain.admin.v0.SequencerSnapshot
+	(*v0snapshot.SequencerSnapshot)(nil), // 5: com.digitalasset.canton.domain.admin.v0.SequencerSnapshot
 	(*v01.SigningPublicKey)(nil),      // 6: com.digitalasset.canton.crypto.v0.SigningPublicKey
 	(*v1.InitRequest)(nil),            // 7: com.digitalasset.canton.domain.admin.v1.InitRequest
 	(*emptypb.Empty)(nil),             // 8: google.protobuf.Empty

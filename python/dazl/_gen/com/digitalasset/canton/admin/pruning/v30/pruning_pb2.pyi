@@ -110,37 +110,37 @@ class SetRetentionResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
-class LocatePruningTimestampRequest(_message.Message):
+class FindPruningTimestampRequest(_message.Message):
     __slots__ = ("index",)
     INDEX_FIELD_NUMBER: _ClassVar[int]
     index: int
     def __init__(self, index: _Optional[int] = ...) -> None: ...
 
-class LocatePruningTimestampResponse(_message.Message):
+class FindPruningTimestampResponse(_message.Message):
     __slots__ = ("timestamp",)
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     timestamp: _timestamp_pb2.Timestamp
     def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SetNoWaitCommitmentsFromRequest(_message.Message):
-    __slots__ = ("counter_participant_uids", "synchronizer_ids")
-    COUNTER_PARTICIPANT_UIDS_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("counter_participant_ids", "synchronizer_ids")
+    COUNTER_PARTICIPANT_IDS_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_IDS_FIELD_NUMBER: _ClassVar[int]
-    counter_participant_uids: _containers.RepeatedScalarFieldContainer[str]
+    counter_participant_ids: _containers.RepeatedScalarFieldContainer[str]
     synchronizer_ids: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, counter_participant_uids: _Optional[_Iterable[str]] = ..., synchronizer_ids: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, counter_participant_ids: _Optional[_Iterable[str]] = ..., synchronizer_ids: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class SetNoWaitCommitmentsFromResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
 class ResetNoWaitCommitmentsFromRequest(_message.Message):
-    __slots__ = ("counter_participant_uids", "synchronizer_ids")
-    COUNTER_PARTICIPANT_UIDS_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("counter_participant_ids", "synchronizer_ids")
+    COUNTER_PARTICIPANT_IDS_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_IDS_FIELD_NUMBER: _ClassVar[int]
-    counter_participant_uids: _containers.RepeatedScalarFieldContainer[str]
+    counter_participant_ids: _containers.RepeatedScalarFieldContainer[str]
     synchronizer_ids: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, counter_participant_uids: _Optional[_Iterable[str]] = ..., synchronizer_ids: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, counter_participant_ids: _Optional[_Iterable[str]] = ..., synchronizer_ids: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class ResetNoWaitCommitmentsFromResponse(_message.Message):
     __slots__ = ()

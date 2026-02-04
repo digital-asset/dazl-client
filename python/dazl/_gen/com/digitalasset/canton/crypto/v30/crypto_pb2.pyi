@@ -75,7 +75,6 @@ class SigningKeyScheme(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
 class EncryptionAlgorithmSpec(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     ENCRYPTION_ALGORITHM_SPEC_UNSPECIFIED: _ClassVar[EncryptionAlgorithmSpec]
-    ENCRYPTION_ALGORITHM_SPEC_ECIES_HKDF_HMAC_SHA256_AES128GCM: _ClassVar[EncryptionAlgorithmSpec]
     ENCRYPTION_ALGORITHM_SPEC_ECIES_HKDF_HMAC_SHA256_AES128CBC: _ClassVar[EncryptionAlgorithmSpec]
     ENCRYPTION_ALGORITHM_SPEC_RSA_OAEP_SHA256: _ClassVar[EncryptionAlgorithmSpec]
 
@@ -139,7 +138,6 @@ SIGNING_KEY_SCHEME_ED25519: SigningKeyScheme
 SIGNING_KEY_SCHEME_EC_DSA_P256: SigningKeyScheme
 SIGNING_KEY_SCHEME_EC_DSA_P384: SigningKeyScheme
 ENCRYPTION_ALGORITHM_SPEC_UNSPECIFIED: EncryptionAlgorithmSpec
-ENCRYPTION_ALGORITHM_SPEC_ECIES_HKDF_HMAC_SHA256_AES128GCM: EncryptionAlgorithmSpec
 ENCRYPTION_ALGORITHM_SPEC_ECIES_HKDF_HMAC_SHA256_AES128CBC: EncryptionAlgorithmSpec
 ENCRYPTION_ALGORITHM_SPEC_RSA_OAEP_SHA256: EncryptionAlgorithmSpec
 ENCRYPTION_KEY_SCHEME_UNSPECIFIED: EncryptionKeyScheme
@@ -260,12 +258,10 @@ class SigningPrivateKey(_message.Message):
     def __init__(self, id: _Optional[str] = ..., format: _Optional[_Union[CryptoKeyFormat, str]] = ..., private_key: _Optional[bytes] = ..., scheme: _Optional[_Union[SigningKeyScheme, str]] = ..., usage: _Optional[_Iterable[_Union[SigningKeyUsage, str]]] = ..., key_spec: _Optional[_Union[SigningKeySpec, str]] = ...) -> None: ...
 
 class SigningKeyPair(_message.Message):
-    __slots__ = ("public_key", "private_key")
-    PUBLIC_KEY_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("private_key",)
     PRIVATE_KEY_FIELD_NUMBER: _ClassVar[int]
-    public_key: SigningPublicKey
     private_key: SigningPrivateKey
-    def __init__(self, public_key: _Optional[_Union[SigningPublicKey, _Mapping]] = ..., private_key: _Optional[_Union[SigningPrivateKey, _Mapping]] = ...) -> None: ...
+    def __init__(self, private_key: _Optional[_Union[SigningPrivateKey, _Mapping]] = ...) -> None: ...
 
 class RequiredSigningSpecs(_message.Message):
     __slots__ = ("algorithms", "keys")
@@ -302,12 +298,10 @@ class EncryptionPrivateKey(_message.Message):
     def __init__(self, id: _Optional[str] = ..., format: _Optional[_Union[CryptoKeyFormat, str]] = ..., private_key: _Optional[bytes] = ..., scheme: _Optional[_Union[EncryptionKeyScheme, str]] = ..., key_spec: _Optional[_Union[EncryptionKeySpec, str]] = ...) -> None: ...
 
 class EncryptionKeyPair(_message.Message):
-    __slots__ = ("public_key", "private_key")
-    PUBLIC_KEY_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("private_key",)
     PRIVATE_KEY_FIELD_NUMBER: _ClassVar[int]
-    public_key: EncryptionPublicKey
     private_key: EncryptionPrivateKey
-    def __init__(self, public_key: _Optional[_Union[EncryptionPublicKey, _Mapping]] = ..., private_key: _Optional[_Union[EncryptionPrivateKey, _Mapping]] = ...) -> None: ...
+    def __init__(self, private_key: _Optional[_Union[EncryptionPrivateKey, _Mapping]] = ...) -> None: ...
 
 class RequiredEncryptionSpecs(_message.Message):
     __slots__ = ("algorithms", "keys")
@@ -356,3 +350,11 @@ class AsymmetricEncrypted(_message.Message):
     encryption_algorithm_spec: EncryptionAlgorithmSpec
     fingerprint: str
     def __init__(self, ciphertext: _Optional[bytes] = ..., encryption_algorithm_spec: _Optional[_Union[EncryptionAlgorithmSpec, str]] = ..., fingerprint: _Optional[str] = ...) -> None: ...
+
+class SigningKeysWithThreshold(_message.Message):
+    __slots__ = ("keys", "threshold")
+    KEYS_FIELD_NUMBER: _ClassVar[int]
+    THRESHOLD_FIELD_NUMBER: _ClassVar[int]
+    keys: _containers.RepeatedCompositeFieldContainer[SigningPublicKey]
+    threshold: int
+    def __init__(self, keys: _Optional[_Iterable[_Union[SigningPublicKey, _Mapping]]] = ..., threshold: _Optional[int] = ...) -> None: ...

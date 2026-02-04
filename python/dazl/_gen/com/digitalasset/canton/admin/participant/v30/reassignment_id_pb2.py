@@ -26,10 +26,9 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nCcom/digitalasset/canton/admin/participant/v30/reassignment_id.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\x80\x01\n\x0eReassignmentId\x12\x34\n\x16source_synchronizer_id\x18\x01 \x01(\tR\x14sourceSynchronizerId\x12\x38\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestampB^Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nCcom/digitalasset/canton/admin/participant/v30/reassignment_id.proto\x12-com.digitalasset.canton.admin.participant.v30\" \n\x0eReassignmentId\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02idB^Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,6 +36,6 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.adm
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30'
-  _globals['_REASSIGNMENTID']._serialized_start=152
-  _globals['_REASSIGNMENTID']._serialized_end=280
+  _globals['_REASSIGNMENTID']._serialized_start=118
+  _globals['_REASSIGNMENTID']._serialized_end=150
 # @@protoc_insertion_point(module_scope)

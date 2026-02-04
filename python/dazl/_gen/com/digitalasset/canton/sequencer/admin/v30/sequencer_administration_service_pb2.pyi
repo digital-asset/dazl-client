@@ -118,6 +118,30 @@ class OnboardingStateForSequencer(_message.Message):
     sequencer_snapshot: _sequencer_initialization_snapshot_pb2.SequencerSnapshot
     def __init__(self, topology_snapshot: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ..., static_synchronizer_parameters: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ..., sequencer_snapshot: _Optional[_Union[_sequencer_initialization_snapshot_pb2.SequencerSnapshot, _Mapping]] = ...) -> None: ...
 
+class OnboardingStateV2Request(_message.Message):
+    __slots__ = ("sequencer_uid", "timestamp")
+    SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    sequencer_uid: str
+    timestamp: _timestamp_pb2.Timestamp
+    def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class OnboardingStateV2Response(_message.Message):
+    __slots__ = ("onboarding_state_for_sequencer",)
+    ONBOARDING_STATE_FOR_SEQUENCER_FIELD_NUMBER: _ClassVar[int]
+    onboarding_state_for_sequencer: bytes
+    def __init__(self, onboarding_state_for_sequencer: _Optional[bytes] = ...) -> None: ...
+
+class OnboardingStateForSequencerV2(_message.Message):
+    __slots__ = ("topology_transaction", "static_synchronizer_parameters", "sequencer_snapshot")
+    TOPOLOGY_TRANSACTION_FIELD_NUMBER: _ClassVar[int]
+    STATIC_SYNCHRONIZER_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCER_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
+    topology_transaction: bytes
+    static_synchronizer_parameters: bytes
+    sequencer_snapshot: _sequencer_initialization_snapshot_pb2.SequencerSnapshot
+    def __init__(self, topology_transaction: _Optional[bytes] = ..., static_synchronizer_parameters: _Optional[bytes] = ..., sequencer_snapshot: _Optional[_Union[_sequencer_initialization_snapshot_pb2.SequencerSnapshot, _Mapping]] = ...) -> None: ...
+
 class PruningStatusRequest(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...

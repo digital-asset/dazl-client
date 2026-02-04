@@ -4,23 +4,20 @@
 # isort: skip_file
 from . import event_pb2 as _event_pb2
 from . import transaction_filter_pb2 as _transaction_filter_pb2
-from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from collections.abc import Iterable as _Iterable, Mapping as _Mapping
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GetEventsByContractIdRequest(_message.Message):
-    __slots__ = ("contract_id", "requesting_parties", "event_format")
+    __slots__ = ("contract_id", "event_format")
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
-    REQUESTING_PARTIES_FIELD_NUMBER: _ClassVar[int]
     EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
     contract_id: str
-    requesting_parties: _containers.RepeatedScalarFieldContainer[str]
     event_format: _transaction_filter_pb2.EventFormat
-    def __init__(self, contract_id: _Optional[str] = ..., requesting_parties: _Optional[_Iterable[str]] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ...) -> None: ...
+    def __init__(self, contract_id: _Optional[str] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ...) -> None: ...
 
 class GetEventsByContractIdResponse(_message.Message):
     __slots__ = ("created", "archived")

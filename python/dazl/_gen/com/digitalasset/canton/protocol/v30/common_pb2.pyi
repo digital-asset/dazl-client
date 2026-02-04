@@ -22,7 +22,7 @@ VIEW_TYPE_TRANSACTION: ViewType
 VIEW_TYPE_UNASSIGNMENT: ViewType
 VIEW_TYPE_ASSIGNMENT: ViewType
 
-class DriverContractMetadata(_message.Message):
+class ContractAuthenticationData(_message.Message):
     __slots__ = ("contract_salt",)
     CONTRACT_SALT_FIELD_NUMBER: _ClassVar[int]
     contract_salt: _crypto_pb2.Salt

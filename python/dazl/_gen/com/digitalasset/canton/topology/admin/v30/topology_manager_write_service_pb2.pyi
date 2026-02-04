@@ -21,27 +21,29 @@ class ForceFlag(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     FORCE_FLAG_UNSPECIFIED: _ClassVar[ForceFlag]
     FORCE_FLAG_ALIEN_MEMBER: _ClassVar[ForceFlag]
     FORCE_FLAG_LEDGER_TIME_RECORD_TIME_TOLERANCE_INCREASE: _ClassVar[ForceFlag]
-    FORCE_FLAG_ALLOW_UNVET_PACKAGE: _ClassVar[ForceFlag]
     FORCE_FLAG_ALLOW_UNKNOWN_PACKAGE: _ClassVar[ForceFlag]
     FORCE_FLAG_ALLOW_UNVETTED_DEPENDENCIES: _ClassVar[ForceFlag]
     FORCE_FLAG_DISABLE_PARTY_WITH_ACTIVE_CONTRACTS: _ClassVar[ForceFlag]
     FORCE_FLAG_ALLOW_UNVALIDATED_SIGNING_KEYS: _ClassVar[ForceFlag]
-    FORCE_FLAG_ALLOW_UNVET_PACKAGE_WITH_ACTIVE_CONTRACTS: _ClassVar[ForceFlag]
     FORCE_FLAG_PREPARATION_TIME_RECORD_TIME_TOLERANCE_INCREASE: _ClassVar[ForceFlag]
     FORCE_FLAG_ALLOW_INSUFFICIENT_PARTICIPANT_PERMISSION_FOR_SIGNATORY_PARTY: _ClassVar[ForceFlag]
     FORCE_FLAG_ALLOW_INSUFFICIENT_SIGNATORY_ASSIGNING_PARTICIPANTS_FOR_PARTY: _ClassVar[ForceFlag]
+    FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES: _ClassVar[ForceFlag]
+    FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE: _ClassVar[ForceFlag]
+    FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET: _ClassVar[ForceFlag]
 FORCE_FLAG_UNSPECIFIED: ForceFlag
 FORCE_FLAG_ALIEN_MEMBER: ForceFlag
 FORCE_FLAG_LEDGER_TIME_RECORD_TIME_TOLERANCE_INCREASE: ForceFlag
-FORCE_FLAG_ALLOW_UNVET_PACKAGE: ForceFlag
 FORCE_FLAG_ALLOW_UNKNOWN_PACKAGE: ForceFlag
 FORCE_FLAG_ALLOW_UNVETTED_DEPENDENCIES: ForceFlag
 FORCE_FLAG_DISABLE_PARTY_WITH_ACTIVE_CONTRACTS: ForceFlag
 FORCE_FLAG_ALLOW_UNVALIDATED_SIGNING_KEYS: ForceFlag
-FORCE_FLAG_ALLOW_UNVET_PACKAGE_WITH_ACTIVE_CONTRACTS: ForceFlag
 FORCE_FLAG_PREPARATION_TIME_RECORD_TIME_TOLERANCE_INCREASE: ForceFlag
 FORCE_FLAG_ALLOW_INSUFFICIENT_PARTICIPANT_PERMISSION_FOR_SIGNATORY_PARTY: ForceFlag
 FORCE_FLAG_ALLOW_INSUFFICIENT_SIGNATORY_ASSIGNING_PARTICIPANTS_FOR_PARTY: ForceFlag
+FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES: ForceFlag
+FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE: ForceFlag
+FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET: ForceFlag
 
 class GenerateTransactionsRequest(_message.Message):
     __slots__ = ("proposals",)
@@ -133,6 +135,20 @@ class ImportTopologySnapshotRequest(_message.Message):
     def __init__(self, topology_snapshot: _Optional[bytes] = ..., store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., wait_to_become_effective: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class ImportTopologySnapshotResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class ImportTopologySnapshotV2Request(_message.Message):
+    __slots__ = ("topology_snapshot", "store", "wait_to_become_effective")
+    TOPOLOGY_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
+    STORE_FIELD_NUMBER: _ClassVar[int]
+    WAIT_TO_BECOME_EFFECTIVE_FIELD_NUMBER: _ClassVar[int]
+    topology_snapshot: bytes
+    store: _common_pb2.StoreId
+    wait_to_become_effective: _duration_pb2.Duration
+    def __init__(self, topology_snapshot: _Optional[bytes] = ..., store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., wait_to_become_effective: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+
+class ImportTopologySnapshotV2Response(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
