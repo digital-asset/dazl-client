@@ -11,6 +11,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Iterable as _Iterable, Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
+from builtins import bytes as _bytes
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -118,7 +119,7 @@ class UploadDarRequest(_message.Message):
         bytes: bytes
         description: str
         expected_main_package_id: str
-        def __init__(self, bytes: _Optional[bytes] = ..., description: _Optional[str] = ..., expected_main_package_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, bytes: _Optional[_bytes] = ..., description: _Optional[str] = ..., expected_main_package_id: _Optional[str] = ...) -> None: ...
     DARS_FIELD_NUMBER: _ClassVar[int]
     VET_ALL_PACKAGES_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZE_VETTING_FIELD_NUMBER: _ClassVar[int]
