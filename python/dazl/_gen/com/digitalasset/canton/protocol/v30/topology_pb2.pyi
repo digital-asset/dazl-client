@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...crypto.v30 import crypto_pb2 as _crypto_pb2
 from . import sequencing_parameters_pb2 as _sequencing_parameters_pb2
 from . import synchronizer_parameters_pb2 as _synchronizer_parameters_pb2
@@ -164,7 +166,7 @@ class VettedPackages(_message.Message):
         package_id: str
         valid_from: _timestamp_pb2.Timestamp
         valid_until: _timestamp_pb2.Timestamp
-        def __init__(self, package_id: _Optional[str] = ..., valid_from: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+        def __init__(self, package_id: _Optional[str] = ..., valid_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
     PACKAGE_IDS_FIELD_NUMBER: _ClassVar[int]
     PACKAGES_FIELD_NUMBER: _ClassVar[int]

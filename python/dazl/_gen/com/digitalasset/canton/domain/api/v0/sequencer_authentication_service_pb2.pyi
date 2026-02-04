@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....crypto.v0 import crypto_pb2 as _crypto_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -70,7 +72,7 @@ class Authentication(_message.Message):
         EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
         token: bytes
         expires_at: _timestamp_pb2.Timestamp
-        def __init__(self, token: _Optional[bytes] = ..., expires_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+        def __init__(self, token: _Optional[bytes] = ..., expires_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     class Failure(_message.Message):
         __slots__ = ("code", "reason")
         CODE_FIELD_NUMBER: _ClassVar[int]

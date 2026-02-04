@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ...sequencer.v30 import sequencer_connection_pb2 as _sequencer_connection_pb2
 from ...time.v30 import time_tracker_config_pb2 as _time_tracker_config_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
@@ -34,7 +36,7 @@ class SynchronizerConnectionConfig(_message.Message):
     max_retry_delay: _duration_pb2.Duration
     time_tracker: _time_tracker_config_pb2.SynchronizerTimeTrackerConfig
     initialize_from_trusted_synchronizer: bool
-    def __init__(self, synchronizer_alias: _Optional[str] = ..., sequencer_connections: _Optional[_Union[_sequencer_connection_pb2.SequencerConnections, _Mapping]] = ..., manual_connect: bool = ..., synchronizer_id: _Optional[str] = ..., priority: _Optional[int] = ..., initial_retry_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., max_retry_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., time_tracker: _Optional[_Union[_time_tracker_config_pb2.SynchronizerTimeTrackerConfig, _Mapping]] = ..., initialize_from_trusted_synchronizer: bool = ...) -> None: ...
+    def __init__(self, synchronizer_alias: _Optional[str] = ..., sequencer_connections: _Optional[_Union[_sequencer_connection_pb2.SequencerConnections, _Mapping]] = ..., manual_connect: bool = ..., synchronizer_id: _Optional[str] = ..., priority: _Optional[int] = ..., initial_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., time_tracker: _Optional[_Union[_time_tracker_config_pb2.SynchronizerTimeTrackerConfig, _Mapping]] = ..., initialize_from_trusted_synchronizer: bool = ...) -> None: ...
 
 class ReconnectSynchronizersRequest(_message.Message):
     __slots__ = ("ignore_failures",)

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import descriptor as _descriptor
@@ -21,7 +23,7 @@ class GetTimeResponse(_message.Message):
     __slots__ = ("current_time",)
     CURRENT_TIME_FIELD_NUMBER: _ClassVar[int]
     current_time: _timestamp_pb2.Timestamp
-    def __init__(self, current_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, current_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SetTimeRequest(_message.Message):
     __slots__ = ("ledger_id", "current_time", "new_time")
@@ -31,4 +33,4 @@ class SetTimeRequest(_message.Message):
     ledger_id: str
     current_time: _timestamp_pb2.Timestamp
     new_time: _timestamp_pb2.Timestamp
-    def __init__(self, ledger_id: _Optional[str] = ..., current_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., new_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, ledger_id: _Optional[str] = ..., current_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., new_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

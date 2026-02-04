@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from .. import commands_pb2 as _commands_pb2
 from . import interactive_submission_common_data_pb2 as _interactive_submission_common_data_pb2
 from .transaction.v1 import interactive_submission_data_pb2 as _interactive_submission_data_pb2
@@ -131,7 +133,7 @@ class ExecuteSubmissionRequest(_message.Message):
     user_id: str
     hashing_scheme_version: HashingSchemeVersion
     min_ledger_time: MinLedgerTime
-    def __init__(self, prepared_transaction: _Optional[_Union[PreparedTransaction, _Mapping]] = ..., party_signatures: _Optional[_Union[PartySignatures, _Mapping]] = ..., deduplication_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., deduplication_offset: _Optional[int] = ..., submission_id: _Optional[str] = ..., user_id: _Optional[str] = ..., hashing_scheme_version: _Optional[_Union[HashingSchemeVersion, str]] = ..., min_ledger_time: _Optional[_Union[MinLedgerTime, _Mapping]] = ...) -> None: ...
+    def __init__(self, prepared_transaction: _Optional[_Union[PreparedTransaction, _Mapping]] = ..., party_signatures: _Optional[_Union[PartySignatures, _Mapping]] = ..., deduplication_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., deduplication_offset: _Optional[int] = ..., submission_id: _Optional[str] = ..., user_id: _Optional[str] = ..., hashing_scheme_version: _Optional[_Union[HashingSchemeVersion, str]] = ..., min_ledger_time: _Optional[_Union[MinLedgerTime, _Mapping]] = ...) -> None: ...
 
 class ExecuteSubmissionResponse(_message.Message):
     __slots__ = ()
@@ -143,7 +145,7 @@ class MinLedgerTime(_message.Message):
     MIN_LEDGER_TIME_REL_FIELD_NUMBER: _ClassVar[int]
     min_ledger_time_abs: _timestamp_pb2.Timestamp
     min_ledger_time_rel: _duration_pb2.Duration
-    def __init__(self, min_ledger_time_abs: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., min_ledger_time_rel: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, min_ledger_time_abs: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., min_ledger_time_rel: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class PreparedTransaction(_message.Message):
     __slots__ = ("transaction", "metadata")
@@ -234,7 +236,7 @@ class GetPreferredPackageVersionRequest(_message.Message):
     package_name: str
     synchronizer_id: str
     vetting_valid_at: _timestamp_pb2.Timestamp
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., package_name: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., vetting_valid_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, parties: _Optional[_Iterable[str]] = ..., package_name: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., vetting_valid_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class GetPreferredPackageVersionResponse(_message.Message):
     __slots__ = ("package_preference",)

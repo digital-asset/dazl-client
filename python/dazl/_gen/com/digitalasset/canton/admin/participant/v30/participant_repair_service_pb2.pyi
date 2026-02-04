@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import synchronizer_connectivity_pb2 as _synchronizer_connectivity_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -103,7 +105,7 @@ class ExportAcsOldRequest(_message.Message):
     contract_synchronizer_renames: _containers.MessageMap[str, ExportAcsOldRequest.TargetSynchronizer]
     force: bool
     parties_offboarding: bool
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contract_synchronizer_renames: _Optional[_Mapping[str, ExportAcsOldRequest.TargetSynchronizer]] = ..., force: bool = ..., parties_offboarding: bool = ...) -> None: ...
+    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contract_synchronizer_renames: _Optional[_Mapping[str, ExportAcsOldRequest.TargetSynchronizer]] = ..., force: bool = ..., parties_offboarding: bool = ...) -> None: ...
 
 class ExportAcsOldResponse(_message.Message):
     __slots__ = ("chunk",)

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ....protocol.v0 import participant_transaction_pb2 as _participant_transaction_pb2
 from ....protocol.v0 import participant_transfer_pb2 as _participant_transfer_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
@@ -63,7 +65,7 @@ class ConfigurationChanged(_message.Message):
     configuration: Configuration
     participant_id: str
     record_time: _timestamp_pb2.Timestamp
-    def __init__(self, submission_id: _Optional[str] = ..., configuration: _Optional[_Union[Configuration, _Mapping]] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, submission_id: _Optional[str] = ..., configuration: _Optional[_Union[Configuration, _Mapping]] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class Configuration(_message.Message):
     __slots__ = ("generation", "time_model", "max_deduplication_duration")
@@ -73,7 +75,7 @@ class Configuration(_message.Message):
     generation: int
     time_model: TimeModel
     max_deduplication_duration: _duration_pb2.Duration
-    def __init__(self, generation: _Optional[int] = ..., time_model: _Optional[_Union[TimeModel, _Mapping]] = ..., max_deduplication_duration: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, generation: _Optional[int] = ..., time_model: _Optional[_Union[TimeModel, _Mapping]] = ..., max_deduplication_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class TimeModel(_message.Message):
     __slots__ = ("avg_transaction_latency", "min_skew", "max_skew")
@@ -83,7 +85,7 @@ class TimeModel(_message.Message):
     avg_transaction_latency: _duration_pb2.Duration
     min_skew: _duration_pb2.Duration
     max_skew: _duration_pb2.Duration
-    def __init__(self, avg_transaction_latency: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., min_skew: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., max_skew: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, avg_transaction_latency: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., min_skew: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_skew: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class ConfigurationChangeRejected(_message.Message):
     __slots__ = ("submission_id", "reason", "participant_id", "recordTime", "proposed_configuration")
@@ -97,7 +99,7 @@ class ConfigurationChangeRejected(_message.Message):
     participant_id: str
     recordTime: _timestamp_pb2.Timestamp
     proposed_configuration: Configuration
-    def __init__(self, submission_id: _Optional[str] = ..., reason: _Optional[str] = ..., participant_id: _Optional[str] = ..., recordTime: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., proposed_configuration: _Optional[_Union[Configuration, _Mapping]] = ...) -> None: ...
+    def __init__(self, submission_id: _Optional[str] = ..., reason: _Optional[str] = ..., participant_id: _Optional[str] = ..., recordTime: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., proposed_configuration: _Optional[_Union[Configuration, _Mapping]] = ...) -> None: ...
 
 class PartyAddedToParticipant(_message.Message):
     __slots__ = ("party", "display_name", "participant_id", "record_time", "submission_id")
@@ -111,7 +113,7 @@ class PartyAddedToParticipant(_message.Message):
     participant_id: str
     record_time: _timestamp_pb2.Timestamp
     submission_id: str
-    def __init__(self, party: _Optional[str] = ..., display_name: _Optional[str] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., submission_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, party: _Optional[str] = ..., display_name: _Optional[str] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., submission_id: _Optional[str] = ...) -> None: ...
 
 class PartyAllocationRejected(_message.Message):
     __slots__ = ("submission_id", "participant_id", "record_time", "rejection_reason")
@@ -123,7 +125,7 @@ class PartyAllocationRejected(_message.Message):
     participant_id: str
     record_time: _timestamp_pb2.Timestamp
     rejection_reason: str
-    def __init__(self, submission_id: _Optional[str] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
+    def __init__(self, submission_id: _Optional[str] = ..., participant_id: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
 
 class PublicPackageUpload(_message.Message):
     __slots__ = ("archives", "source_description", "record_time", "submission_id")
@@ -135,7 +137,7 @@ class PublicPackageUpload(_message.Message):
     source_description: _wrappers_pb2.StringValue
     record_time: _timestamp_pb2.Timestamp
     submission_id: str
-    def __init__(self, archives: _Optional[_Iterable[bytes]] = ..., source_description: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., submission_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, archives: _Optional[_Iterable[bytes]] = ..., source_description: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., submission_id: _Optional[str] = ...) -> None: ...
 
 class PublicPackageUploadRejected(_message.Message):
     __slots__ = ("submission_id", "record_time", "rejection_reason")
@@ -145,7 +147,7 @@ class PublicPackageUploadRejected(_message.Message):
     submission_id: str
     record_time: _timestamp_pb2.Timestamp
     rejection_reason: str
-    def __init__(self, submission_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
+    def __init__(self, submission_id: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[str] = ...) -> None: ...
 
 class TransactionAccepted(_message.Message):
     __slots__ = ("completion_info", "transaction_meta", "transaction", "transaction_id", "record_time", "divulged_contracts", "blinding_info", "contract_metadata", "hosted_witnesses")
@@ -174,7 +176,7 @@ class TransactionAccepted(_message.Message):
     blinding_info: BlindingInfo
     contract_metadata: _containers.ScalarMap[str, bytes]
     hosted_witnesses: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., transaction_meta: _Optional[_Union[TransactionMeta, _Mapping]] = ..., transaction: _Optional[bytes] = ..., transaction_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., divulged_contracts: _Optional[_Iterable[_Union[DivulgedContract, _Mapping]]] = ..., blinding_info: _Optional[_Union[BlindingInfo, _Mapping]] = ..., contract_metadata: _Optional[_Mapping[str, bytes]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., transaction_meta: _Optional[_Union[TransactionMeta, _Mapping]] = ..., transaction: _Optional[bytes] = ..., transaction_id: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., divulged_contracts: _Optional[_Iterable[_Union[DivulgedContract, _Mapping]]] = ..., blinding_info: _Optional[_Union[BlindingInfo, _Mapping]] = ..., contract_metadata: _Optional[_Mapping[str, bytes]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class CompletionInfo(_message.Message):
     __slots__ = ("act_as", "application_id", "command_id", "optDeduplicationPeriod", "submission_id")
@@ -213,7 +215,7 @@ class TransactionMeta(_message.Message):
     node_seeds: _containers.RepeatedCompositeFieldContainer[NodeSeed]
     by_key_nodes: TransactionMeta.ByKeyNodes
     domain_id: _wrappers_pb2.StringValue
-    def __init__(self, ledger_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., workflow_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., submission_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., submission_seed: _Optional[bytes] = ..., used_packages: _Optional[_Iterable[str]] = ..., node_seeds: _Optional[_Iterable[_Union[NodeSeed, _Mapping]]] = ..., by_key_nodes: _Optional[_Union[TransactionMeta.ByKeyNodes, _Mapping]] = ..., domain_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
+    def __init__(self, ledger_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., workflow_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ..., submission_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., submission_seed: _Optional[bytes] = ..., used_packages: _Optional[_Iterable[str]] = ..., node_seeds: _Optional[_Iterable[_Union[NodeSeed, _Mapping]]] = ..., by_key_nodes: _Optional[_Union[TransactionMeta.ByKeyNodes, _Mapping]] = ..., domain_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class NodeSeed(_message.Message):
     __slots__ = ("node_index", "node_seed")
@@ -276,7 +278,7 @@ class CommandRejected(_message.Message):
     rejection_reason: CommandRejected.GrpcRejectionReasonTemplate
     command_kind: CommandKind
     domain_id: _wrappers_pb2.StringValue
-    def __init__(self, completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[_Union[CommandRejected.GrpcRejectionReasonTemplate, _Mapping]] = ..., command_kind: _Optional[_Union[CommandKind, str]] = ..., domain_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
+    def __init__(self, completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., rejection_reason: _Optional[_Union[CommandRejected.GrpcRejectionReasonTemplate, _Mapping]] = ..., command_kind: _Optional[_Union[CommandKind, str]] = ..., domain_id: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class TransferredOut(_message.Message):
     __slots__ = ("update_id", "completion_info", "submitter", "record_time", "contract_id", "contract_stakeholders", "source_domain", "target_domain", "transfer_in_exclusivity", "workflow_id", "template_id", "is_transferring_participant", "hosted_stakeholders", "transfer_counter")
@@ -308,7 +310,7 @@ class TransferredOut(_message.Message):
     is_transferring_participant: bool
     hosted_stakeholders: _containers.RepeatedScalarFieldContainer[str]
     transfer_counter: int
-    def __init__(self, update_id: _Optional[str] = ..., completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., submitter: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contract_id: _Optional[str] = ..., contract_stakeholders: _Optional[_Iterable[str]] = ..., source_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., transfer_in_exclusivity: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., workflow_id: _Optional[str] = ..., template_id: _Optional[str] = ..., is_transferring_participant: bool = ..., hosted_stakeholders: _Optional[_Iterable[str]] = ..., transfer_counter: _Optional[int] = ...) -> None: ...
+    def __init__(self, update_id: _Optional[str] = ..., completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., submitter: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contract_id: _Optional[str] = ..., contract_stakeholders: _Optional[_Iterable[str]] = ..., source_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., transfer_in_exclusivity: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., workflow_id: _Optional[str] = ..., template_id: _Optional[str] = ..., is_transferring_participant: bool = ..., hosted_stakeholders: _Optional[_Iterable[str]] = ..., transfer_counter: _Optional[int] = ...) -> None: ...
 
 class TransferredIn(_message.Message):
     __slots__ = ("update_id", "completion_info", "submitter", "record_time", "ledger_create_time", "create_node", "creating_transaction_id", "contract_metadata", "transfer_out_id", "target_domain", "create_transaction_accepted", "workflow_id", "is_transferring_participant", "hosted_stakeholders", "transfer_counter")
@@ -342,7 +344,7 @@ class TransferredIn(_message.Message):
     is_transferring_participant: bool
     hosted_stakeholders: _containers.RepeatedScalarFieldContainer[str]
     transfer_counter: int
-    def __init__(self, update_id: _Optional[str] = ..., completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., submitter: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., ledger_create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., create_node: _Optional[bytes] = ..., creating_transaction_id: _Optional[str] = ..., contract_metadata: _Optional[bytes] = ..., transfer_out_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ..., target_domain: _Optional[str] = ..., create_transaction_accepted: bool = ..., workflow_id: _Optional[str] = ..., is_transferring_participant: bool = ..., hosted_stakeholders: _Optional[_Iterable[str]] = ..., transfer_counter: _Optional[int] = ...) -> None: ...
+    def __init__(self, update_id: _Optional[str] = ..., completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., submitter: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., ledger_create_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., create_node: _Optional[bytes] = ..., creating_transaction_id: _Optional[str] = ..., contract_metadata: _Optional[bytes] = ..., transfer_out_id: _Optional[_Union[_participant_transfer_pb2.TransferId, _Mapping]] = ..., target_domain: _Optional[str] = ..., create_transaction_accepted: bool = ..., workflow_id: _Optional[str] = ..., is_transferring_participant: bool = ..., hosted_stakeholders: _Optional[_Iterable[str]] = ..., transfer_counter: _Optional[int] = ...) -> None: ...
 
 class ContractsAdded(_message.Message):
     __slots__ = ("transaction_id", "contracts", "domain_id", "ledger_time", "record_time", "hosted_witnesses", "contract_metadata", "workflow_id")
@@ -369,7 +371,7 @@ class ContractsAdded(_message.Message):
     hosted_witnesses: _containers.RepeatedScalarFieldContainer[str]
     contract_metadata: _containers.ScalarMap[str, bytes]
     workflow_id: str
-    def __init__(self, transaction_id: _Optional[str] = ..., contracts: _Optional[_Iterable[bytes]] = ..., domain_id: _Optional[str] = ..., ledger_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ..., contract_metadata: _Optional[_Mapping[str, bytes]] = ..., workflow_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, transaction_id: _Optional[str] = ..., contracts: _Optional[_Iterable[bytes]] = ..., domain_id: _Optional[str] = ..., ledger_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ..., contract_metadata: _Optional[_Mapping[str, bytes]] = ..., workflow_id: _Optional[str] = ...) -> None: ...
 
 class ContractsPurged(_message.Message):
     __slots__ = ("transaction_id", "contracts", "domain_id", "record_time", "hosted_witnesses")
@@ -383,4 +385,4 @@ class ContractsPurged(_message.Message):
     domain_id: str
     record_time: _timestamp_pb2.Timestamp
     hosted_witnesses: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, transaction_id: _Optional[str] = ..., contracts: _Optional[_Iterable[bytes]] = ..., domain_id: _Optional[str] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, transaction_id: _Optional[str] = ..., contracts: _Optional[_Iterable[bytes]] = ..., domain_id: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., hosted_witnesses: _Optional[_Iterable[str]] = ...) -> None: ...

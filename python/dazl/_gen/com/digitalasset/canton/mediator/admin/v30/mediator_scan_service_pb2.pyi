@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
@@ -25,7 +27,7 @@ class VerdictsRequest(_message.Message):
     __slots__ = ("most_recently_received_record_time",)
     MOST_RECENTLY_RECEIVED_RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
     most_recently_received_record_time: _timestamp_pb2.Timestamp
-    def __init__(self, most_recently_received_record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, most_recently_received_record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class VerdictsResponse(_message.Message):
     __slots__ = ("verdict",)
@@ -51,7 +53,7 @@ class Verdict(_message.Message):
     mediator_group: int
     transaction_views: TransactionViews
     update_id: str
-    def __init__(self, submitting_parties: _Optional[_Iterable[str]] = ..., submitting_participant_uid: _Optional[str] = ..., verdict: _Optional[_Union[VerdictResult, str]] = ..., finalization_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., mediator_group: _Optional[int] = ..., transaction_views: _Optional[_Union[TransactionViews, _Mapping]] = ..., update_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, submitting_parties: _Optional[_Iterable[str]] = ..., submitting_participant_uid: _Optional[str] = ..., verdict: _Optional[_Union[VerdictResult, str]] = ..., finalization_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., mediator_group: _Optional[int] = ..., transaction_views: _Optional[_Union[TransactionViews, _Mapping]] = ..., update_id: _Optional[str] = ...) -> None: ...
 
 class TransactionViews(_message.Message):
     __slots__ = ("views", "root_views")

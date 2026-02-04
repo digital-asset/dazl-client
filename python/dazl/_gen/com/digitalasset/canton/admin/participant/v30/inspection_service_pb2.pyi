@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import active_contract_pb2 as _active_contract_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -42,7 +44,7 @@ class LookupOffsetByTimeRequest(_message.Message):
     __slots__ = ("timestamp",)
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class LookupOffsetByTimeResponse(_message.Message):
     __slots__ = ("offset",)
@@ -60,7 +62,7 @@ class OpenCommitmentRequest(_message.Message):
     synchronizer_id: str
     computed_for_counter_participant_uid: str
     period_end_tick: _timestamp_pb2.Timestamp
-    def __init__(self, commitment: _Optional[bytes] = ..., synchronizer_id: _Optional[str] = ..., computed_for_counter_participant_uid: _Optional[str] = ..., period_end_tick: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, commitment: _Optional[bytes] = ..., synchronizer_id: _Optional[str] = ..., computed_for_counter_participant_uid: _Optional[str] = ..., period_end_tick: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class OpenCommitmentResponse(_message.Message):
     __slots__ = ("chunk",)
@@ -86,7 +88,7 @@ class InspectCommitmentContractsRequest(_message.Message):
     expected_synchronizer_id: str
     timestamp: _timestamp_pb2.Timestamp
     download_payload: bool
-    def __init__(self, cids: _Optional[_Iterable[bytes]] = ..., expected_synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., download_payload: bool = ...) -> None: ...
+    def __init__(self, cids: _Optional[_Iterable[bytes]] = ..., expected_synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., download_payload: bool = ...) -> None: ...
 
 class InspectCommitmentContractsResponse(_message.Message):
     __slots__ = ("chunk",)
@@ -154,7 +156,7 @@ class ContractState(_message.Message):
         UNASSIGN_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
         source_synchronizer_id: str
         unassign_timestamp: _timestamp_pb2.Timestamp
-        def __init__(self, source_synchronizer_id: _Optional[str] = ..., unassign_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+        def __init__(self, source_synchronizer_id: _Optional[str] = ..., unassign_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
     def __init__(self) -> None: ...
 
 class LookupReceivedAcsCommitmentsRequest(_message.Message):
@@ -181,7 +183,7 @@ class TimeRange(_message.Message):
     TO_INCLUSIVE_FIELD_NUMBER: _ClassVar[int]
     from_exclusive: _timestamp_pb2.Timestamp
     to_inclusive: _timestamp_pb2.Timestamp
-    def __init__(self, from_exclusive: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., to_inclusive: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, from_exclusive: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., to_inclusive: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SynchronizerTimeRange(_message.Message):
     __slots__ = ("synchronizer_id", "interval")
@@ -197,7 +199,7 @@ class Interval(_message.Message):
     END_TICK_INCLUSIVE_FIELD_NUMBER: _ClassVar[int]
     start_tick_exclusive: _timestamp_pb2.Timestamp
     end_tick_inclusive: _timestamp_pb2.Timestamp
-    def __init__(self, start_tick_exclusive: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., end_tick_inclusive: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, start_tick_exclusive: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., end_tick_inclusive: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class ReceivedAcsCommitment(_message.Message):
     __slots__ = ("interval", "origin_counter_participant_uid", "received_commitment", "own_commitment", "state")
@@ -309,7 +311,7 @@ class CounterParticipantInfo(_message.Message):
     intervals_behind: int
     behind_since: _duration_pb2.Duration
     as_of_sequencing_timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, counter_participant_uid: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., intervals_behind: _Optional[int] = ..., behind_since: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ..., as_of_sequencing_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, counter_participant_uid: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., intervals_behind: _Optional[int] = ..., behind_since: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., as_of_sequencing_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class GetIntervalsBehindForCounterParticipantsRequest(_message.Message):
     __slots__ = ("counter_participant_uids", "synchronizer_ids", "threshold")

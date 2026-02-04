@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ......crypto.v30 import crypto_pb2 as _crypto_pb2
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -31,7 +33,7 @@ class BftOrderingServiceReceiveRequest(_message.Message):
     body: BftOrderingMessageBody
     sent_by: str
     sent_at: _timestamp_pb2.Timestamp
-    def __init__(self, trace_context: _Optional[str] = ..., body: _Optional[_Union[BftOrderingMessageBody, _Mapping]] = ..., sent_by: _Optional[str] = ..., sent_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, trace_context: _Optional[str] = ..., body: _Optional[_Union[BftOrderingMessageBody, _Mapping]] = ..., sent_by: _Optional[str] = ..., sent_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class BftOrderingServiceReceiveResponse(_message.Message):
     __slots__ = ()
@@ -99,7 +101,7 @@ class OrderingRequest(_message.Message):
     tag: str
     payload: bytes
     ordering_start_instant: _timestamp_pb2.Timestamp
-    def __init__(self, trace_context: _Optional[str] = ..., tag: _Optional[str] = ..., payload: _Optional[bytes] = ..., ordering_start_instant: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, trace_context: _Optional[str] = ..., tag: _Optional[str] = ..., payload: _Optional[bytes] = ..., ordering_start_instant: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class StoreResponse(_message.Message):
     __slots__ = ("batch_id", "signature")

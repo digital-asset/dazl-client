@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
@@ -58,4 +60,4 @@ class SubmissionRequestAmplification(_message.Message):
     PATIENCE_FIELD_NUMBER: _ClassVar[int]
     factor: int
     patience: _duration_pb2.Duration
-    def __init__(self, factor: _Optional[int] = ..., patience: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, factor: _Optional[int] = ..., patience: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...

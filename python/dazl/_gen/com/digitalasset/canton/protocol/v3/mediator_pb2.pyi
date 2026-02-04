@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from ..v2 import mediator_pb2 as _mediator_pb2
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -33,7 +35,7 @@ class TransactionResultMessage(_message.Message):
     verdict: Verdict
     root_hash: bytes
     domain_id: str
-    def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ..., root_hash: _Optional[bytes] = ..., domain_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ..., root_hash: _Optional[bytes] = ..., domain_id: _Optional[str] = ...) -> None: ...
 
 class TransferResult(_message.Message):
     __slots__ = ("request_id", "source_domain", "target_domain", "informees", "verdict")
@@ -47,4 +49,4 @@ class TransferResult(_message.Message):
     target_domain: str
     informees: _containers.RepeatedScalarFieldContainer[str]
     verdict: Verdict
-    def __init__(self, request_id: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., source_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., informees: _Optional[_Iterable[str]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., source_domain: _Optional[str] = ..., target_domain: _Optional[str] = ..., informees: _Optional[_Iterable[str]] = ..., verdict: _Optional[_Union[Verdict, _Mapping]] = ...) -> None: ...

@@ -2,14 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Iterable as _Iterable, Mapping as _Mapping
-import builtins
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
+from builtins import bytes as _bytes
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -33,7 +35,7 @@ class PackageDescription(_message.Message):
     version: str
     uploaded_at: _timestamp_pb2.Timestamp
     size: int
-    def __init__(self, package_id: _Optional[str] = ..., name: _Optional[str] = ..., version: _Optional[str] = ..., uploaded_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., size: _Optional[int] = ...) -> None: ...
+    def __init__(self, package_id: _Optional[str] = ..., name: _Optional[str] = ..., version: _Optional[str] = ..., uploaded_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., size: _Optional[int] = ...) -> None: ...
 
 class ListPackagesResponse(_message.Message):
     __slots__ = ("package_descriptions",)
@@ -112,10 +114,10 @@ class UploadDarRequest(_message.Message):
         BYTES_FIELD_NUMBER: _ClassVar[int]
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
         EXPECTED_MAIN_PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
-        bytes: builtins.bytes
+        bytes: bytes
         description: str
         expected_main_package_id: str
-        def __init__(self, bytes: _Optional[builtins.bytes] = ..., description: _Optional[str] = ..., expected_main_package_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, bytes: _Optional[_bytes] = ..., description: _Optional[str] = ..., expected_main_package_id: _Optional[str] = ...) -> None: ...
     DARS_FIELD_NUMBER: _ClassVar[int]
     VET_ALL_PACKAGES_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZE_VETTING_FIELD_NUMBER: _ClassVar[int]

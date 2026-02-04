@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -33,7 +35,7 @@ class PackageDetails(_message.Message):
     known_since: _timestamp_pb2.Timestamp
     name: str
     version: str
-    def __init__(self, package_id: _Optional[str] = ..., package_size: _Optional[int] = ..., known_since: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., name: _Optional[str] = ..., version: _Optional[str] = ...) -> None: ...
+    def __init__(self, package_id: _Optional[str] = ..., package_size: _Optional[int] = ..., known_since: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., name: _Optional[str] = ..., version: _Optional[str] = ...) -> None: ...
 
 class UploadDarFileRequest(_message.Message):
     __slots__ = ("dar_file", "submission_id")

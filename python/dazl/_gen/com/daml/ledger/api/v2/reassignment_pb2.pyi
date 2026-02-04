@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import event_pb2 as _event_pb2
 from . import trace_context_pb2 as _trace_context_pb2
 from . import value_pb2 as _value_pb2
@@ -30,7 +32,7 @@ class Reassignment(_message.Message):
     events: _containers.RepeatedCompositeFieldContainer[ReassignmentEvent]
     trace_context: _trace_context_pb2.TraceContext
     record_time: _timestamp_pb2.Timestamp
-    def __init__(self, update_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., offset: _Optional[int] = ..., events: _Optional[_Iterable[_Union[ReassignmentEvent, _Mapping]]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., record_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, update_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., offset: _Optional[int] = ..., events: _Optional[_Iterable[_Union[ReassignmentEvent, _Mapping]]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class ReassignmentEvent(_message.Message):
     __slots__ = ("unassigned", "assigned")
@@ -66,7 +68,7 @@ class UnassignedEvent(_message.Message):
     package_name: str
     offset: int
     node_id: int
-    def __init__(self, unassign_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., source: _Optional[str] = ..., target: _Optional[str] = ..., submitter: _Optional[str] = ..., reassignment_counter: _Optional[int] = ..., assignment_exclusivity: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., witness_parties: _Optional[_Iterable[str]] = ..., package_name: _Optional[str] = ..., offset: _Optional[int] = ..., node_id: _Optional[int] = ...) -> None: ...
+    def __init__(self, unassign_id: _Optional[str] = ..., contract_id: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., source: _Optional[str] = ..., target: _Optional[str] = ..., submitter: _Optional[str] = ..., reassignment_counter: _Optional[int] = ..., assignment_exclusivity: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., witness_parties: _Optional[_Iterable[str]] = ..., package_name: _Optional[str] = ..., offset: _Optional[int] = ..., node_id: _Optional[int] = ...) -> None: ...
 
 class AssignedEvent(_message.Message):
     __slots__ = ("source", "target", "unassign_id", "submitter", "reassignment_counter", "created_event")

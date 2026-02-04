@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import domain_connectivity_pb2 as _domain_connectivity_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
@@ -38,7 +40,7 @@ class DownloadRequest(_message.Message):
     gzip_format: bool
     contract_domain_renames: _containers.ScalarMap[str, str]
     parties_offboarding: bool
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_domain_id: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., protocol_version: _Optional[str] = ..., chunkSize: _Optional[_Union[_wrappers_pb2.UInt32Value, _Mapping]] = ..., gzip_format: bool = ..., contract_domain_renames: _Optional[_Mapping[str, str]] = ..., parties_offboarding: bool = ...) -> None: ...
+    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_domain_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., protocol_version: _Optional[str] = ..., chunkSize: _Optional[_Union[_wrappers_pb2.UInt32Value, _Mapping]] = ..., gzip_format: bool = ..., contract_domain_renames: _Optional[_Mapping[str, str]] = ..., parties_offboarding: bool = ...) -> None: ...
 
 class PurgeContractsRequest(_message.Message):
     __slots__ = ("domain", "contract_ids", "ignore_already_purged", "offboarded_parties")
@@ -124,7 +126,7 @@ class ExportAcsRequest(_message.Message):
     timestamp: _timestamp_pb2.Timestamp
     contract_domain_renames: _containers.MessageMap[str, ExportAcsRequest.TargetDomain]
     parties_offboarding: bool
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_domain_id: _Optional[str] = ..., timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., contract_domain_renames: _Optional[_Mapping[str, ExportAcsRequest.TargetDomain]] = ..., parties_offboarding: bool = ...) -> None: ...
+    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_domain_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contract_domain_renames: _Optional[_Mapping[str, ExportAcsRequest.TargetDomain]] = ..., parties_offboarding: bool = ...) -> None: ...
 
 class ExportAcsResponse(_message.Message):
     __slots__ = ("chunk",)
