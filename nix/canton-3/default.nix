@@ -3,8 +3,6 @@
 stdenv.mkDerivation rec {
   pname = "canton-open-source";
 
-  # note that the URL is not derived off this version string because the
-  # version format is different
   version = "3.4.10";
 
   src = builtins.fetchurl {

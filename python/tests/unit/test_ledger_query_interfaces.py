@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from asyncio import gather
-from pathlib import Path
 
 import dazl
 from dazl.damlast.lookup import MultiPackageLookup

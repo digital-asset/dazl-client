@@ -1811,9 +1811,9 @@ class Update:
 
     class RetrieveByKey:
         template: TypeConName
-        key: Expr
+        key: Optional[Expr]
 
-        def __init__(self, template: TypeConName, key: Expr):
+        def __init__(self, template: TypeConName, key: Optional[Expr] = None) -> None:
             self.template = template
             self.key = key
 
@@ -1904,6 +1904,7 @@ class Update:
         dynamic_exercise: Update.DynamicExercise | _Missing = MISSING,
         soft_fetch: Update.SoftFetch | _Missing = MISSING,
         soft_exercise: Update.SoftExercise | _Missing = MISSING,
+        ledger_time_lt: Expr | _Missing = MISSING,
     ):
         if pure is not MISSING:
             object.__setattr__(self, "_Sum_name", "pure")
@@ -1956,6 +1957,9 @@ class Update:
         elif soft_exercise is not MISSING:
             object.__setattr__(self, "_Sum_name", "soft_exercise")
             object.__setattr__(self, "_Sum_value", soft_exercise)
+        elif ledger_time_lt is not MISSING:
+            object.__setattr__(self, "_Sum_name", "ledger_time_lt")
+            object.__setattr__(self, "_Sum_value", ledger_time_lt)
 
     @property
     def pure(self) -> Optional[Pure]:
@@ -2020,6 +2024,10 @@ class Update:
     def soft_exercise(self) -> Optional[SoftExercise]:
         return self._Sum_value if self._Sum_name == "soft_exercise" else None  # type: ignore
 
+    @property
+    def ledger_time_lt(self) -> Optional[Expr]:
+        return self._Sum_value if self._Sum_name == "ledger_time_lt" else None  # type: ignore
+
     def Sum_match(
         self,
         pure: Callable[[Pure], T],
@@ -2037,6 +2045,7 @@ class Update:
         dynamic_exercise: Callable[[DynamicExercise], T],
         soft_fetch: Callable[[SoftFetch], T],
         soft_exercise: Callable[[SoftExercise], T],
+        ledger_time_lt: Callable[[Expr], T],
     ) -> T:
         if self._Sum_name == "pure":
             return pure(self._Sum_value)  # type: ignore
@@ -2068,6 +2077,8 @@ class Update:
             return soft_fetch(self._Sum_value)  # type: ignore
         elif self._Sum_name == "soft_exercise":
             return soft_exercise(self._Sum_value)  # type: ignore
+        elif self._Sum_name == "ledger_time_lt":
+            return ledger_time_lt(self._Sum_value)  # type: ignore
         else:
             raise ValueError(f"Unknown Update.Sum case: {self._Sum_name}")
 

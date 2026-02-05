@@ -4,9 +4,9 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v6.31.1
-// source: com/daml/daml_lf_1_17/daml_lf_1.proto
+// source: com/digitalasset/daml/lf/archive/daml_lf1.proto
 
-package daml_lf_1_17
+package daml_lf_1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -113,11 +113,11 @@ func (x PrimType) String() string {
 }
 
 func (PrimType) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes[0].Descriptor()
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes[0].Descriptor()
 }
 
 func (PrimType) Type() protoreflect.EnumType {
-	return &file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes[0]
+	return &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes[0]
 }
 
 func (x PrimType) Number() protoreflect.EnumNumber {
@@ -126,7 +126,7 @@ func (x PrimType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PrimType.Descriptor instead.
 func (PrimType) EnumDescriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{0}
 }
 
 type PrimCon int32
@@ -162,11 +162,11 @@ func (x PrimCon) String() string {
 }
 
 func (PrimCon) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes[1].Descriptor()
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes[1].Descriptor()
 }
 
 func (PrimCon) Type() protoreflect.EnumType {
-	return &file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes[1]
+	return &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes[1]
 }
 
 func (x PrimCon) Number() protoreflect.EnumNumber {
@@ -175,7 +175,7 @@ func (x PrimCon) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PrimCon.Descriptor instead.
 func (PrimCon) EnumDescriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{1}
 }
 
 type BuiltinFunction int32
@@ -580,11 +580,11 @@ func (x BuiltinFunction) String() string {
 }
 
 func (BuiltinFunction) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes[2].Descriptor()
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes[2].Descriptor()
 }
 
 func (BuiltinFunction) Type() protoreflect.EnumType {
-	return &file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes[2]
+	return &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes[2]
 }
 
 func (x BuiltinFunction) Number() protoreflect.EnumNumber {
@@ -593,7 +593,7 @@ func (x BuiltinFunction) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use BuiltinFunction.Descriptor instead.
 func (BuiltinFunction) EnumDescriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{2}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{2}
 }
 
 type PrimLit_RoundingMode int32
@@ -644,11 +644,11 @@ func (x PrimLit_RoundingMode) String() string {
 }
 
 func (PrimLit_RoundingMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes[3].Descriptor()
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes[3].Descriptor()
 }
 
 func (PrimLit_RoundingMode) Type() protoreflect.EnumType {
-	return &file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes[3]
+	return &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes[3]
 }
 
 func (x PrimLit_RoundingMode) Number() protoreflect.EnumNumber {
@@ -657,7 +657,7 @@ func (x PrimLit_RoundingMode) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PrimLit_RoundingMode.Descriptor instead.
 func (PrimLit_RoundingMode) EnumDescriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{14, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{14, 0}
 }
 
 type Unit struct {
@@ -668,7 +668,7 @@ type Unit struct {
 
 func (x *Unit) Reset() {
 	*x = Unit{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[0]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -680,7 +680,7 @@ func (x *Unit) String() string {
 func (*Unit) ProtoMessage() {}
 
 func (x *Unit) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[0]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -693,7 +693,7 @@ func (x *Unit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Unit.ProtoReflect.Descriptor instead.
 func (*Unit) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{0}
 }
 
 type PackageRef struct {
@@ -710,7 +710,7 @@ type PackageRef struct {
 
 func (x *PackageRef) Reset() {
 	*x = PackageRef{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[1]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -722,7 +722,7 @@ func (x *PackageRef) String() string {
 func (*PackageRef) ProtoMessage() {}
 
 func (x *PackageRef) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[1]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -735,7 +735,7 @@ func (x *PackageRef) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PackageRef.ProtoReflect.Descriptor instead.
 func (*PackageRef) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *PackageRef) GetSum() isPackageRef_Sum {
@@ -803,7 +803,7 @@ type DottedName struct {
 
 func (x *DottedName) Reset() {
 	*x = DottedName{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[2]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -815,7 +815,7 @@ func (x *DottedName) String() string {
 func (*DottedName) ProtoMessage() {}
 
 func (x *DottedName) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[2]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -828,7 +828,7 @@ func (x *DottedName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DottedName.ProtoReflect.Descriptor instead.
 func (*DottedName) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{2}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *DottedName) GetSegments() []string {
@@ -852,7 +852,7 @@ type ModuleRef struct {
 
 func (x *ModuleRef) Reset() {
 	*x = ModuleRef{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[3]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -864,7 +864,7 @@ func (x *ModuleRef) String() string {
 func (*ModuleRef) ProtoMessage() {}
 
 func (x *ModuleRef) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[3]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -877,7 +877,7 @@ func (x *ModuleRef) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ModuleRef.ProtoReflect.Descriptor instead.
 func (*ModuleRef) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{3}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ModuleRef) GetPackageRef() *PackageRef {
@@ -942,7 +942,7 @@ type TypeConName struct {
 
 func (x *TypeConName) Reset() {
 	*x = TypeConName{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[4]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -954,7 +954,7 @@ func (x *TypeConName) String() string {
 func (*TypeConName) ProtoMessage() {}
 
 func (x *TypeConName) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[4]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -967,7 +967,7 @@ func (x *TypeConName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypeConName.ProtoReflect.Descriptor instead.
 func (*TypeConName) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{4}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TypeConName) GetModule() *ModuleRef {
@@ -1032,7 +1032,7 @@ type TypeSynName struct {
 
 func (x *TypeSynName) Reset() {
 	*x = TypeSynName{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[5]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1044,7 +1044,7 @@ func (x *TypeSynName) String() string {
 func (*TypeSynName) ProtoMessage() {}
 
 func (x *TypeSynName) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[5]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1057,7 +1057,7 @@ func (x *TypeSynName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypeSynName.ProtoReflect.Descriptor instead.
 func (*TypeSynName) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{5}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *TypeSynName) GetModule() *ModuleRef {
@@ -1119,7 +1119,7 @@ type ValName struct {
 
 func (x *ValName) Reset() {
 	*x = ValName{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[6]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1131,7 +1131,7 @@ func (x *ValName) String() string {
 func (*ValName) ProtoMessage() {}
 
 func (x *ValName) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[6]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1144,7 +1144,7 @@ func (x *ValName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValName.ProtoReflect.Descriptor instead.
 func (*ValName) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{6}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ValName) GetModule() *ModuleRef {
@@ -1182,7 +1182,7 @@ type FieldWithType struct {
 
 func (x *FieldWithType) Reset() {
 	*x = FieldWithType{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[7]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1194,7 +1194,7 @@ func (x *FieldWithType) String() string {
 func (*FieldWithType) ProtoMessage() {}
 
 func (x *FieldWithType) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[7]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1207,7 +1207,7 @@ func (x *FieldWithType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FieldWithType.ProtoReflect.Descriptor instead.
 func (*FieldWithType) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{7}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *FieldWithType) GetField() isFieldWithType_Field {
@@ -1272,7 +1272,7 @@ type VarWithType struct {
 
 func (x *VarWithType) Reset() {
 	*x = VarWithType{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[8]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1284,7 +1284,7 @@ func (x *VarWithType) String() string {
 func (*VarWithType) ProtoMessage() {}
 
 func (x *VarWithType) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[8]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1297,7 +1297,7 @@ func (x *VarWithType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VarWithType.ProtoReflect.Descriptor instead.
 func (*VarWithType) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{8}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *VarWithType) GetVar() isVarWithType_Var {
@@ -1362,7 +1362,7 @@ type TypeVarWithKind struct {
 
 func (x *TypeVarWithKind) Reset() {
 	*x = TypeVarWithKind{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[9]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1374,7 +1374,7 @@ func (x *TypeVarWithKind) String() string {
 func (*TypeVarWithKind) ProtoMessage() {}
 
 func (x *TypeVarWithKind) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[9]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1387,7 +1387,7 @@ func (x *TypeVarWithKind) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypeVarWithKind.ProtoReflect.Descriptor instead.
 func (*TypeVarWithKind) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{9}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *TypeVarWithKind) GetVar() isTypeVarWithKind_Var {
@@ -1452,7 +1452,7 @@ type FieldWithExpr struct {
 
 func (x *FieldWithExpr) Reset() {
 	*x = FieldWithExpr{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[10]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1464,7 +1464,7 @@ func (x *FieldWithExpr) String() string {
 func (*FieldWithExpr) ProtoMessage() {}
 
 func (x *FieldWithExpr) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[10]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1477,7 +1477,7 @@ func (x *FieldWithExpr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FieldWithExpr.ProtoReflect.Descriptor instead.
 func (*FieldWithExpr) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{10}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *FieldWithExpr) GetField() isFieldWithExpr_Field {
@@ -1538,7 +1538,7 @@ type Binding struct {
 
 func (x *Binding) Reset() {
 	*x = Binding{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[11]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1550,7 +1550,7 @@ func (x *Binding) String() string {
 func (*Binding) ProtoMessage() {}
 
 func (x *Binding) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[11]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1563,7 +1563,7 @@ func (x *Binding) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Binding.ProtoReflect.Descriptor instead.
 func (*Binding) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{11}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Binding) GetBinder() *VarWithType {
@@ -1594,7 +1594,7 @@ type Kind struct {
 
 func (x *Kind) Reset() {
 	*x = Kind{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[12]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1606,7 +1606,7 @@ func (x *Kind) String() string {
 func (*Kind) ProtoMessage() {}
 
 func (x *Kind) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[12]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1619,7 +1619,7 @@ func (x *Kind) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Kind.ProtoReflect.Descriptor instead.
 func (*Kind) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{12}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Kind) GetSum() isKind_Sum {
@@ -1697,7 +1697,7 @@ type Type struct {
 
 func (x *Type) Reset() {
 	*x = Type{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[13]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1709,7 +1709,7 @@ func (x *Type) String() string {
 func (*Type) ProtoMessage() {}
 
 func (x *Type) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[13]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1722,7 +1722,7 @@ func (x *Type) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type.ProtoReflect.Descriptor instead.
 func (*Type) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{13}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *Type) GetSum() isType_Sum {
@@ -1877,7 +1877,7 @@ type PrimLit struct {
 
 func (x *PrimLit) Reset() {
 	*x = PrimLit{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[14]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1889,7 +1889,7 @@ func (x *PrimLit) String() string {
 func (*PrimLit) ProtoMessage() {}
 
 func (x *PrimLit) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[14]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1902,7 +1902,7 @@ func (x *PrimLit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrimLit.ProtoReflect.Descriptor instead.
 func (*PrimLit) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{14}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *PrimLit) GetSum() isPrimLit_Sum {
@@ -2043,7 +2043,7 @@ type PrimLit_Date struct {
 }
 
 type PrimLit_RoundingMode_ struct {
-	RoundingMode PrimLit_RoundingMode `protobuf:"varint,13,opt,name=rounding_mode,json=roundingMode,proto3,enum=daml_lf_1_17.PrimLit_RoundingMode,oneof"`
+	RoundingMode PrimLit_RoundingMode `protobuf:"varint,13,opt,name=rounding_mode,json=roundingMode,proto3,enum=daml_lf_1.PrimLit_RoundingMode,oneof"`
 }
 
 func (*PrimLit_Int64) isPrimLit_Sum() {}
@@ -2076,7 +2076,7 @@ type Location struct {
 
 func (x *Location) Reset() {
 	*x = Location{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[15]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2088,7 +2088,7 @@ func (x *Location) String() string {
 func (*Location) ProtoMessage() {}
 
 func (x *Location) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[15]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2101,7 +2101,7 @@ func (x *Location) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Location.ProtoReflect.Descriptor instead.
 func (*Location) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{15}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Location) GetModule() *ModuleRef {
@@ -2176,7 +2176,7 @@ type Expr struct {
 
 func (x *Expr) Reset() {
 	*x = Expr{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[16]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2188,7 +2188,7 @@ func (x *Expr) String() string {
 func (*Expr) ProtoMessage() {}
 
 func (x *Expr) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[16]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2201,7 +2201,7 @@ func (x *Expr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr.ProtoReflect.Descriptor instead.
 func (*Expr) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Expr) GetLocation() *Location {
@@ -2649,11 +2649,11 @@ type Expr_Val struct {
 }
 
 type Expr_Builtin struct {
-	Builtin BuiltinFunction `protobuf:"varint,3,opt,name=builtin,proto3,enum=daml_lf_1_17.BuiltinFunction,oneof"`
+	Builtin BuiltinFunction `protobuf:"varint,3,opt,name=builtin,proto3,enum=daml_lf_1.BuiltinFunction,oneof"`
 }
 
 type Expr_PrimCon struct {
-	PrimCon PrimCon `protobuf:"varint,4,opt,name=prim_con,json=primCon,proto3,enum=daml_lf_1_17.PrimCon,oneof"`
+	PrimCon PrimCon `protobuf:"varint,4,opt,name=prim_con,json=primCon,proto3,enum=daml_lf_1.PrimCon,oneof"`
 }
 
 type Expr_PrimLit struct {
@@ -2932,7 +2932,7 @@ type CaseAlt struct {
 
 func (x *CaseAlt) Reset() {
 	*x = CaseAlt{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[17]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2944,7 +2944,7 @@ func (x *CaseAlt) String() string {
 func (*CaseAlt) ProtoMessage() {}
 
 func (x *CaseAlt) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[17]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2957,7 +2957,7 @@ func (x *CaseAlt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt.ProtoReflect.Descriptor instead.
 func (*CaseAlt) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{17}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *CaseAlt) GetSum() isCaseAlt_Sum {
@@ -3059,7 +3059,7 @@ type CaseAlt_Variant_ struct {
 }
 
 type CaseAlt_PrimCon struct {
-	PrimCon PrimCon `protobuf:"varint,3,opt,name=prim_con,json=primCon,proto3,enum=daml_lf_1_17.PrimCon,oneof"`
+	PrimCon PrimCon `protobuf:"varint,3,opt,name=prim_con,json=primCon,proto3,enum=daml_lf_1.PrimCon,oneof"`
 }
 
 type CaseAlt_Nil struct {
@@ -3108,7 +3108,7 @@ type Case struct {
 
 func (x *Case) Reset() {
 	*x = Case{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[18]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3120,7 +3120,7 @@ func (x *Case) String() string {
 func (*Case) ProtoMessage() {}
 
 func (x *Case) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[18]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3133,7 +3133,7 @@ func (x *Case) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Case.ProtoReflect.Descriptor instead.
 func (*Case) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{18}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *Case) GetScrut() *Expr {
@@ -3160,7 +3160,7 @@ type Block struct {
 
 func (x *Block) Reset() {
 	*x = Block{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[19]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3172,7 +3172,7 @@ func (x *Block) String() string {
 func (*Block) ProtoMessage() {}
 
 func (x *Block) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[19]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3185,7 +3185,7 @@ func (x *Block) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Block.ProtoReflect.Descriptor instead.
 func (*Block) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{19}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *Block) GetBindings() []*Binding {
@@ -3212,7 +3212,7 @@ type Pure struct {
 
 func (x *Pure) Reset() {
 	*x = Pure{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[20]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3224,7 +3224,7 @@ func (x *Pure) String() string {
 func (*Pure) ProtoMessage() {}
 
 func (x *Pure) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[20]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3237,7 +3237,7 @@ func (x *Pure) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pure.ProtoReflect.Descriptor instead.
 func (*Pure) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{20}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *Pure) GetType() *Type {
@@ -3282,7 +3282,7 @@ type Update struct {
 
 func (x *Update) Reset() {
 	*x = Update{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[21]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3294,7 +3294,7 @@ func (x *Update) String() string {
 func (*Update) ProtoMessage() {}
 
 func (x *Update) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[21]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3307,7 +3307,7 @@ func (x *Update) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update.ProtoReflect.Descriptor instead.
 func (*Update) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *Update) GetSum() isUpdate_Sum {
@@ -3595,7 +3595,7 @@ type Scenario struct {
 
 func (x *Scenario) Reset() {
 	*x = Scenario{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[22]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3607,7 +3607,7 @@ func (x *Scenario) String() string {
 func (*Scenario) ProtoMessage() {}
 
 func (x *Scenario) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[22]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3620,7 +3620,7 @@ func (x *Scenario) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Scenario.ProtoReflect.Descriptor instead.
 func (*Scenario) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{22}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *Scenario) GetSum() isScenario_Sum {
@@ -3780,7 +3780,7 @@ type TemplateChoice struct {
 
 func (x *TemplateChoice) Reset() {
 	*x = TemplateChoice{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[23]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3792,7 +3792,7 @@ func (x *TemplateChoice) String() string {
 func (*TemplateChoice) ProtoMessage() {}
 
 func (x *TemplateChoice) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[23]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3805,7 +3805,7 @@ func (x *TemplateChoice) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TemplateChoice.ProtoReflect.Descriptor instead.
 func (*TemplateChoice) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{23}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *TemplateChoice) GetName() isTemplateChoice_Name {
@@ -3959,7 +3959,7 @@ type KeyExpr struct {
 
 func (x *KeyExpr) Reset() {
 	*x = KeyExpr{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[24]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3971,7 +3971,7 @@ func (x *KeyExpr) String() string {
 func (*KeyExpr) ProtoMessage() {}
 
 func (x *KeyExpr) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[24]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3984,7 +3984,7 @@ func (x *KeyExpr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KeyExpr.ProtoReflect.Descriptor instead.
 func (*KeyExpr) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{24}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *KeyExpr) GetSum() isKeyExpr_Sum {
@@ -4038,7 +4038,7 @@ type InterfaceInstanceBody struct {
 
 func (x *InterfaceInstanceBody) Reset() {
 	*x = InterfaceInstanceBody{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[25]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4050,7 +4050,7 @@ func (x *InterfaceInstanceBody) String() string {
 func (*InterfaceInstanceBody) ProtoMessage() {}
 
 func (x *InterfaceInstanceBody) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[25]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4063,7 +4063,7 @@ func (x *InterfaceInstanceBody) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InterfaceInstanceBody.ProtoReflect.Descriptor instead.
 func (*InterfaceInstanceBody) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{25}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *InterfaceInstanceBody) GetMethods() []*InterfaceInstanceBody_InterfaceInstanceMethod {
@@ -4106,7 +4106,7 @@ type DefTemplate struct {
 
 func (x *DefTemplate) Reset() {
 	*x = DefTemplate{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[26]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4118,7 +4118,7 @@ func (x *DefTemplate) String() string {
 func (*DefTemplate) ProtoMessage() {}
 
 func (x *DefTemplate) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[26]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4131,7 +4131,7 @@ func (x *DefTemplate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefTemplate.ProtoReflect.Descriptor instead.
 func (*DefTemplate) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{26}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *DefTemplate) GetTycon() isDefTemplate_Tycon {
@@ -4283,7 +4283,7 @@ type InterfaceMethod struct {
 
 func (x *InterfaceMethod) Reset() {
 	*x = InterfaceMethod{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[27]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4295,7 +4295,7 @@ func (x *InterfaceMethod) String() string {
 func (*InterfaceMethod) ProtoMessage() {}
 
 func (x *InterfaceMethod) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[27]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4308,7 +4308,7 @@ func (x *InterfaceMethod) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InterfaceMethod.ProtoReflect.Descriptor instead.
 func (*InterfaceMethod) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{27}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *InterfaceMethod) GetLocation() *Location {
@@ -4348,7 +4348,7 @@ type DefInterface struct {
 
 func (x *DefInterface) Reset() {
 	*x = DefInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[28]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4360,7 +4360,7 @@ func (x *DefInterface) String() string {
 func (*DefInterface) ProtoMessage() {}
 
 func (x *DefInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[28]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4373,7 +4373,7 @@ func (x *DefInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefInterface.ProtoReflect.Descriptor instead.
 func (*DefInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{28}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *DefInterface) GetLocation() *Location {
@@ -4443,7 +4443,7 @@ type DefException struct {
 
 func (x *DefException) Reset() {
 	*x = DefException{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[29]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4455,7 +4455,7 @@ func (x *DefException) String() string {
 func (*DefException) ProtoMessage() {}
 
 func (x *DefException) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[29]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4468,7 +4468,7 @@ func (x *DefException) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefException.ProtoReflect.Descriptor instead.
 func (*DefException) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{29}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *DefException) GetNameInternedDname() int32 {
@@ -4515,7 +4515,7 @@ type DefDataType struct {
 
 func (x *DefDataType) Reset() {
 	*x = DefDataType{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[30]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4527,7 +4527,7 @@ func (x *DefDataType) String() string {
 func (*DefDataType) ProtoMessage() {}
 
 func (x *DefDataType) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[30]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4540,7 +4540,7 @@ func (x *DefDataType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefDataType.ProtoReflect.Descriptor instead.
 func (*DefDataType) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{30}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *DefDataType) GetName() isDefDataType_Name {
@@ -4692,7 +4692,7 @@ type DefTypeSyn struct {
 
 func (x *DefTypeSyn) Reset() {
 	*x = DefTypeSyn{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[31]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4704,7 +4704,7 @@ func (x *DefTypeSyn) String() string {
 func (*DefTypeSyn) ProtoMessage() {}
 
 func (x *DefTypeSyn) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[31]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4717,7 +4717,7 @@ func (x *DefTypeSyn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefTypeSyn.ProtoReflect.Descriptor instead.
 func (*DefTypeSyn) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{31}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *DefTypeSyn) GetName() isDefTypeSyn_Name {
@@ -4795,7 +4795,7 @@ type DefValue struct {
 
 func (x *DefValue) Reset() {
 	*x = DefValue{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[32]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4807,7 +4807,7 @@ func (x *DefValue) String() string {
 func (*DefValue) ProtoMessage() {}
 
 func (x *DefValue) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[32]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4820,7 +4820,7 @@ func (x *DefValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefValue.ProtoReflect.Descriptor instead.
 func (*DefValue) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{32}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *DefValue) GetNameWithType() *DefValue_NameWithType {
@@ -4869,7 +4869,7 @@ type FeatureFlags struct {
 
 func (x *FeatureFlags) Reset() {
 	*x = FeatureFlags{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[33]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4881,7 +4881,7 @@ func (x *FeatureFlags) String() string {
 func (*FeatureFlags) ProtoMessage() {}
 
 func (x *FeatureFlags) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[33]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4894,7 +4894,7 @@ func (x *FeatureFlags) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FeatureFlags.ProtoReflect.Descriptor instead.
 func (*FeatureFlags) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{33}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *FeatureFlags) GetForbidPartyLiterals() bool {
@@ -4938,7 +4938,7 @@ type Module struct {
 
 func (x *Module) Reset() {
 	*x = Module{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[34]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4950,7 +4950,7 @@ func (x *Module) String() string {
 func (*Module) ProtoMessage() {}
 
 func (x *Module) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[34]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4963,7 +4963,7 @@ func (x *Module) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Module.ProtoReflect.Descriptor instead.
 func (*Module) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{34}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *Module) GetName() isModule_Name {
@@ -5065,7 +5065,7 @@ type InternedDottedName struct {
 
 func (x *InternedDottedName) Reset() {
 	*x = InternedDottedName{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[35]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5077,7 +5077,7 @@ func (x *InternedDottedName) String() string {
 func (*InternedDottedName) ProtoMessage() {}
 
 func (x *InternedDottedName) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[35]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5090,7 +5090,7 @@ func (x *InternedDottedName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InternedDottedName.ProtoReflect.Descriptor instead.
 func (*InternedDottedName) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{35}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *InternedDottedName) GetSegmentsInternedStr() []int32 {
@@ -5109,7 +5109,7 @@ type UpgradedPackageId struct {
 
 func (x *UpgradedPackageId) Reset() {
 	*x = UpgradedPackageId{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[36]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5121,7 +5121,7 @@ func (x *UpgradedPackageId) String() string {
 func (*UpgradedPackageId) ProtoMessage() {}
 
 func (x *UpgradedPackageId) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[36]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5134,7 +5134,7 @@ func (x *UpgradedPackageId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpgradedPackageId.ProtoReflect.Descriptor instead.
 func (*UpgradedPackageId) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{36}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *UpgradedPackageId) GetUpgradedPackageIdInternedStr() int32 {
@@ -5155,7 +5155,7 @@ type PackageMetadata struct {
 
 func (x *PackageMetadata) Reset() {
 	*x = PackageMetadata{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[37]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5167,7 +5167,7 @@ func (x *PackageMetadata) String() string {
 func (*PackageMetadata) ProtoMessage() {}
 
 func (x *PackageMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[37]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5180,7 +5180,7 @@ func (x *PackageMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PackageMetadata.ProtoReflect.Descriptor instead.
 func (*PackageMetadata) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{37}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *PackageMetadata) GetNameInternedStr() int32 {
@@ -5217,7 +5217,7 @@ type Package struct {
 
 func (x *Package) Reset() {
 	*x = Package{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[38]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5229,7 +5229,7 @@ func (x *Package) String() string {
 func (*Package) ProtoMessage() {}
 
 func (x *Package) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[38]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5242,7 +5242,7 @@ func (x *Package) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Package.ProtoReflect.Descriptor instead.
 func (*Package) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{38}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *Package) GetModules() []*Module {
@@ -5290,7 +5290,7 @@ type Kind_Arrow struct {
 
 func (x *Kind_Arrow) Reset() {
 	*x = Kind_Arrow{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[39]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5302,7 +5302,7 @@ func (x *Kind_Arrow) String() string {
 func (*Kind_Arrow) ProtoMessage() {}
 
 func (x *Kind_Arrow) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[39]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5315,7 +5315,7 @@ func (x *Kind_Arrow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Kind_Arrow.ProtoReflect.Descriptor instead.
 func (*Kind_Arrow) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{12, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{12, 0}
 }
 
 func (x *Kind_Arrow) GetParams() []*Kind {
@@ -5346,7 +5346,7 @@ type Type_Var struct {
 
 func (x *Type_Var) Reset() {
 	*x = Type_Var{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[40]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5358,7 +5358,7 @@ func (x *Type_Var) String() string {
 func (*Type_Var) ProtoMessage() {}
 
 func (x *Type_Var) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[40]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5371,7 +5371,7 @@ func (x *Type_Var) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Var.ProtoReflect.Descriptor instead.
 func (*Type_Var) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{13, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{13, 0}
 }
 
 func (x *Type_Var) GetVar() isType_Var_Var {
@@ -5432,7 +5432,7 @@ type Type_Con struct {
 
 func (x *Type_Con) Reset() {
 	*x = Type_Con{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[41]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5444,7 +5444,7 @@ func (x *Type_Con) String() string {
 func (*Type_Con) ProtoMessage() {}
 
 func (x *Type_Con) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[41]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5457,7 +5457,7 @@ func (x *Type_Con) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Con.ProtoReflect.Descriptor instead.
 func (*Type_Con) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{13, 1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{13, 1}
 }
 
 func (x *Type_Con) GetTycon() *TypeConName {
@@ -5484,7 +5484,7 @@ type Type_Syn struct {
 
 func (x *Type_Syn) Reset() {
 	*x = Type_Syn{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[42]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5496,7 +5496,7 @@ func (x *Type_Syn) String() string {
 func (*Type_Syn) ProtoMessage() {}
 
 func (x *Type_Syn) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[42]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5509,7 +5509,7 @@ func (x *Type_Syn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Syn.ProtoReflect.Descriptor instead.
 func (*Type_Syn) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{13, 2}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{13, 2}
 }
 
 func (x *Type_Syn) GetTysyn() *TypeSynName {
@@ -5528,7 +5528,7 @@ func (x *Type_Syn) GetArgs() []*Type {
 
 type Type_Prim struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Prim          PrimType               `protobuf:"varint,1,opt,name=prim,proto3,enum=daml_lf_1_17.PrimType" json:"prim,omitempty"`
+	Prim          PrimType               `protobuf:"varint,1,opt,name=prim,proto3,enum=daml_lf_1.PrimType" json:"prim,omitempty"`
 	Args          []*Type                `protobuf:"bytes,2,rep,name=args,proto3" json:"args,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -5536,7 +5536,7 @@ type Type_Prim struct {
 
 func (x *Type_Prim) Reset() {
 	*x = Type_Prim{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[43]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5548,7 +5548,7 @@ func (x *Type_Prim) String() string {
 func (*Type_Prim) ProtoMessage() {}
 
 func (x *Type_Prim) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[43]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5561,7 +5561,7 @@ func (x *Type_Prim) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Prim.ProtoReflect.Descriptor instead.
 func (*Type_Prim) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{13, 3}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{13, 3}
 }
 
 func (x *Type_Prim) GetPrim() PrimType {
@@ -5588,7 +5588,7 @@ type Type_Forall struct {
 
 func (x *Type_Forall) Reset() {
 	*x = Type_Forall{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[44]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5600,7 +5600,7 @@ func (x *Type_Forall) String() string {
 func (*Type_Forall) ProtoMessage() {}
 
 func (x *Type_Forall) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[44]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5613,7 +5613,7 @@ func (x *Type_Forall) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Forall.ProtoReflect.Descriptor instead.
 func (*Type_Forall) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{13, 4}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{13, 4}
 }
 
 func (x *Type_Forall) GetVars() []*TypeVarWithKind {
@@ -5639,7 +5639,7 @@ type Type_Struct struct {
 
 func (x *Type_Struct) Reset() {
 	*x = Type_Struct{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[45]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5651,7 +5651,7 @@ func (x *Type_Struct) String() string {
 func (*Type_Struct) ProtoMessage() {}
 
 func (x *Type_Struct) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[45]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5664,7 +5664,7 @@ func (x *Type_Struct) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Type_Struct.ProtoReflect.Descriptor instead.
 func (*Type_Struct) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{13, 5}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{13, 5}
 }
 
 func (x *Type_Struct) GetFields() []*FieldWithType {
@@ -5686,7 +5686,7 @@ type Location_Range struct {
 
 func (x *Location_Range) Reset() {
 	*x = Location_Range{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[46]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5698,7 +5698,7 @@ func (x *Location_Range) String() string {
 func (*Location_Range) ProtoMessage() {}
 
 func (x *Location_Range) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[46]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5711,7 +5711,7 @@ func (x *Location_Range) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Location_Range.ProtoReflect.Descriptor instead.
 func (*Location_Range) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{15, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{15, 0}
 }
 
 func (x *Location_Range) GetStartLine() int32 {
@@ -5752,7 +5752,7 @@ type Expr_RecCon struct {
 
 func (x *Expr_RecCon) Reset() {
 	*x = Expr_RecCon{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[47]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5764,7 +5764,7 @@ func (x *Expr_RecCon) String() string {
 func (*Expr_RecCon) ProtoMessage() {}
 
 func (x *Expr_RecCon) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[47]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5777,7 +5777,7 @@ func (x *Expr_RecCon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_RecCon.ProtoReflect.Descriptor instead.
 func (*Expr_RecCon) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 0}
 }
 
 func (x *Expr_RecCon) GetTycon() *Type_Con {
@@ -5809,7 +5809,7 @@ type Expr_RecProj struct {
 
 func (x *Expr_RecProj) Reset() {
 	*x = Expr_RecProj{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[48]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5821,7 +5821,7 @@ func (x *Expr_RecProj) String() string {
 func (*Expr_RecProj) ProtoMessage() {}
 
 func (x *Expr_RecProj) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[48]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5834,7 +5834,7 @@ func (x *Expr_RecProj) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_RecProj.ProtoReflect.Descriptor instead.
 func (*Expr_RecProj) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 1}
 }
 
 func (x *Expr_RecProj) GetTycon() *Type_Con {
@@ -5908,7 +5908,7 @@ type Expr_RecUpd struct {
 
 func (x *Expr_RecUpd) Reset() {
 	*x = Expr_RecUpd{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[49]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5920,7 +5920,7 @@ func (x *Expr_RecUpd) String() string {
 func (*Expr_RecUpd) ProtoMessage() {}
 
 func (x *Expr_RecUpd) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[49]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5933,7 +5933,7 @@ func (x *Expr_RecUpd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_RecUpd.ProtoReflect.Descriptor instead.
 func (*Expr_RecUpd) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 2}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 2}
 }
 
 func (x *Expr_RecUpd) GetTycon() *Type_Con {
@@ -6013,7 +6013,7 @@ type Expr_VariantCon struct {
 
 func (x *Expr_VariantCon) Reset() {
 	*x = Expr_VariantCon{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[50]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6025,7 +6025,7 @@ func (x *Expr_VariantCon) String() string {
 func (*Expr_VariantCon) ProtoMessage() {}
 
 func (x *Expr_VariantCon) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[50]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6038,7 +6038,7 @@ func (x *Expr_VariantCon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_VariantCon.ProtoReflect.Descriptor instead.
 func (*Expr_VariantCon) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 3}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 3}
 }
 
 func (x *Expr_VariantCon) GetTycon() *Type_Con {
@@ -6110,7 +6110,7 @@ type Expr_EnumCon struct {
 
 func (x *Expr_EnumCon) Reset() {
 	*x = Expr_EnumCon{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[51]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6122,7 +6122,7 @@ func (x *Expr_EnumCon) String() string {
 func (*Expr_EnumCon) ProtoMessage() {}
 
 func (x *Expr_EnumCon) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[51]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6135,7 +6135,7 @@ func (x *Expr_EnumCon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_EnumCon.ProtoReflect.Descriptor instead.
 func (*Expr_EnumCon) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 4}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 4}
 }
 
 func (x *Expr_EnumCon) GetTycon() *TypeConName {
@@ -6195,7 +6195,7 @@ type Expr_StructCon struct {
 
 func (x *Expr_StructCon) Reset() {
 	*x = Expr_StructCon{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[52]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6207,7 +6207,7 @@ func (x *Expr_StructCon) String() string {
 func (*Expr_StructCon) ProtoMessage() {}
 
 func (x *Expr_StructCon) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[52]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6220,7 +6220,7 @@ func (x *Expr_StructCon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_StructCon.ProtoReflect.Descriptor instead.
 func (*Expr_StructCon) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 5}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 5}
 }
 
 func (x *Expr_StructCon) GetFields() []*FieldWithExpr {
@@ -6244,7 +6244,7 @@ type Expr_StructProj struct {
 
 func (x *Expr_StructProj) Reset() {
 	*x = Expr_StructProj{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[53]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6256,7 +6256,7 @@ func (x *Expr_StructProj) String() string {
 func (*Expr_StructProj) ProtoMessage() {}
 
 func (x *Expr_StructProj) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[53]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6269,7 +6269,7 @@ func (x *Expr_StructProj) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_StructProj.ProtoReflect.Descriptor instead.
 func (*Expr_StructProj) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 6}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 6}
 }
 
 func (x *Expr_StructProj) GetField() isExpr_StructProj_Field {
@@ -6335,7 +6335,7 @@ type Expr_StructUpd struct {
 
 func (x *Expr_StructUpd) Reset() {
 	*x = Expr_StructUpd{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[54]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6347,7 +6347,7 @@ func (x *Expr_StructUpd) String() string {
 func (*Expr_StructUpd) ProtoMessage() {}
 
 func (x *Expr_StructUpd) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[54]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6360,7 +6360,7 @@ func (x *Expr_StructUpd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_StructUpd.ProtoReflect.Descriptor instead.
 func (*Expr_StructUpd) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 7}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 7}
 }
 
 func (x *Expr_StructUpd) GetField() isExpr_StructUpd_Field {
@@ -6428,7 +6428,7 @@ type Expr_App struct {
 
 func (x *Expr_App) Reset() {
 	*x = Expr_App{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[55]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6440,7 +6440,7 @@ func (x *Expr_App) String() string {
 func (*Expr_App) ProtoMessage() {}
 
 func (x *Expr_App) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[55]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6453,7 +6453,7 @@ func (x *Expr_App) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_App.ProtoReflect.Descriptor instead.
 func (*Expr_App) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 8}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 8}
 }
 
 func (x *Expr_App) GetFun() *Expr {
@@ -6480,7 +6480,7 @@ type Expr_TyApp struct {
 
 func (x *Expr_TyApp) Reset() {
 	*x = Expr_TyApp{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[56]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6492,7 +6492,7 @@ func (x *Expr_TyApp) String() string {
 func (*Expr_TyApp) ProtoMessage() {}
 
 func (x *Expr_TyApp) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[56]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6505,7 +6505,7 @@ func (x *Expr_TyApp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_TyApp.ProtoReflect.Descriptor instead.
 func (*Expr_TyApp) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 9}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 9}
 }
 
 func (x *Expr_TyApp) GetExpr() *Expr {
@@ -6532,7 +6532,7 @@ type Expr_Abs struct {
 
 func (x *Expr_Abs) Reset() {
 	*x = Expr_Abs{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[57]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6544,7 +6544,7 @@ func (x *Expr_Abs) String() string {
 func (*Expr_Abs) ProtoMessage() {}
 
 func (x *Expr_Abs) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[57]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6557,7 +6557,7 @@ func (x *Expr_Abs) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Abs.ProtoReflect.Descriptor instead.
 func (*Expr_Abs) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 10}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 10}
 }
 
 func (x *Expr_Abs) GetParam() []*VarWithType {
@@ -6584,7 +6584,7 @@ type Expr_TyAbs struct {
 
 func (x *Expr_TyAbs) Reset() {
 	*x = Expr_TyAbs{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[58]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6596,7 +6596,7 @@ func (x *Expr_TyAbs) String() string {
 func (*Expr_TyAbs) ProtoMessage() {}
 
 func (x *Expr_TyAbs) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[58]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6609,7 +6609,7 @@ func (x *Expr_TyAbs) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_TyAbs.ProtoReflect.Descriptor instead.
 func (*Expr_TyAbs) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 11}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 11}
 }
 
 func (x *Expr_TyAbs) GetParam() []*TypeVarWithKind {
@@ -6635,7 +6635,7 @@ type Expr_Nil struct {
 
 func (x *Expr_Nil) Reset() {
 	*x = Expr_Nil{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[59]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6647,7 +6647,7 @@ func (x *Expr_Nil) String() string {
 func (*Expr_Nil) ProtoMessage() {}
 
 func (x *Expr_Nil) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[59]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6660,7 +6660,7 @@ func (x *Expr_Nil) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Nil.ProtoReflect.Descriptor instead.
 func (*Expr_Nil) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 12}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 12}
 }
 
 func (x *Expr_Nil) GetType() *Type {
@@ -6681,7 +6681,7 @@ type Expr_Cons struct {
 
 func (x *Expr_Cons) Reset() {
 	*x = Expr_Cons{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[60]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6693,7 +6693,7 @@ func (x *Expr_Cons) String() string {
 func (*Expr_Cons) ProtoMessage() {}
 
 func (x *Expr_Cons) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[60]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6706,7 +6706,7 @@ func (x *Expr_Cons) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Cons.ProtoReflect.Descriptor instead.
 func (*Expr_Cons) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 13}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 13}
 }
 
 func (x *Expr_Cons) GetType() *Type {
@@ -6739,7 +6739,7 @@ type Expr_OptionalNone struct {
 
 func (x *Expr_OptionalNone) Reset() {
 	*x = Expr_OptionalNone{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[61]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6751,7 +6751,7 @@ func (x *Expr_OptionalNone) String() string {
 func (*Expr_OptionalNone) ProtoMessage() {}
 
 func (x *Expr_OptionalNone) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[61]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6764,7 +6764,7 @@ func (x *Expr_OptionalNone) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_OptionalNone.ProtoReflect.Descriptor instead.
 func (*Expr_OptionalNone) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 14}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 14}
 }
 
 func (x *Expr_OptionalNone) GetType() *Type {
@@ -6784,7 +6784,7 @@ type Expr_OptionalSome struct {
 
 func (x *Expr_OptionalSome) Reset() {
 	*x = Expr_OptionalSome{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[62]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6796,7 +6796,7 @@ func (x *Expr_OptionalSome) String() string {
 func (*Expr_OptionalSome) ProtoMessage() {}
 
 func (x *Expr_OptionalSome) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[62]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6809,7 +6809,7 @@ func (x *Expr_OptionalSome) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_OptionalSome.ProtoReflect.Descriptor instead.
 func (*Expr_OptionalSome) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 15}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 15}
 }
 
 func (x *Expr_OptionalSome) GetType() *Type {
@@ -6836,7 +6836,7 @@ type Expr_ToAny struct {
 
 func (x *Expr_ToAny) Reset() {
 	*x = Expr_ToAny{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[63]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6848,7 +6848,7 @@ func (x *Expr_ToAny) String() string {
 func (*Expr_ToAny) ProtoMessage() {}
 
 func (x *Expr_ToAny) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[63]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6861,7 +6861,7 @@ func (x *Expr_ToAny) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ToAny.ProtoReflect.Descriptor instead.
 func (*Expr_ToAny) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 16}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 16}
 }
 
 func (x *Expr_ToAny) GetType() *Type {
@@ -6888,7 +6888,7 @@ type Expr_FromAny struct {
 
 func (x *Expr_FromAny) Reset() {
 	*x = Expr_FromAny{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[64]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6900,7 +6900,7 @@ func (x *Expr_FromAny) String() string {
 func (*Expr_FromAny) ProtoMessage() {}
 
 func (x *Expr_FromAny) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[64]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6913,7 +6913,7 @@ func (x *Expr_FromAny) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_FromAny.ProtoReflect.Descriptor instead.
 func (*Expr_FromAny) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 17}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 17}
 }
 
 func (x *Expr_FromAny) GetType() *Type {
@@ -6940,7 +6940,7 @@ type Expr_ToAnyException struct {
 
 func (x *Expr_ToAnyException) Reset() {
 	*x = Expr_ToAnyException{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[65]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6952,7 +6952,7 @@ func (x *Expr_ToAnyException) String() string {
 func (*Expr_ToAnyException) ProtoMessage() {}
 
 func (x *Expr_ToAnyException) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[65]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6965,7 +6965,7 @@ func (x *Expr_ToAnyException) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ToAnyException.ProtoReflect.Descriptor instead.
 func (*Expr_ToAnyException) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 18}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 18}
 }
 
 func (x *Expr_ToAnyException) GetType() *Type {
@@ -6992,7 +6992,7 @@ type Expr_FromAnyException struct {
 
 func (x *Expr_FromAnyException) Reset() {
 	*x = Expr_FromAnyException{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[66]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7004,7 +7004,7 @@ func (x *Expr_FromAnyException) String() string {
 func (*Expr_FromAnyException) ProtoMessage() {}
 
 func (x *Expr_FromAnyException) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[66]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7017,7 +7017,7 @@ func (x *Expr_FromAnyException) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_FromAnyException.ProtoReflect.Descriptor instead.
 func (*Expr_FromAnyException) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 19}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 19}
 }
 
 func (x *Expr_FromAnyException) GetType() *Type {
@@ -7045,7 +7045,7 @@ type Expr_Throw struct {
 
 func (x *Expr_Throw) Reset() {
 	*x = Expr_Throw{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[67]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7057,7 +7057,7 @@ func (x *Expr_Throw) String() string {
 func (*Expr_Throw) ProtoMessage() {}
 
 func (x *Expr_Throw) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[67]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7070,7 +7070,7 @@ func (x *Expr_Throw) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Throw.ProtoReflect.Descriptor instead.
 func (*Expr_Throw) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 20}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 20}
 }
 
 func (x *Expr_Throw) GetReturnType() *Type {
@@ -7105,7 +7105,7 @@ type Expr_ToInterface struct {
 
 func (x *Expr_ToInterface) Reset() {
 	*x = Expr_ToInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[68]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7117,7 +7117,7 @@ func (x *Expr_ToInterface) String() string {
 func (*Expr_ToInterface) ProtoMessage() {}
 
 func (x *Expr_ToInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[68]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7130,7 +7130,7 @@ func (x *Expr_ToInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ToInterface.ProtoReflect.Descriptor instead.
 func (*Expr_ToInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 21}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 21}
 }
 
 func (x *Expr_ToInterface) GetInterfaceType() *TypeConName {
@@ -7165,7 +7165,7 @@ type Expr_FromInterface struct {
 
 func (x *Expr_FromInterface) Reset() {
 	*x = Expr_FromInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[69]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7177,7 +7177,7 @@ func (x *Expr_FromInterface) String() string {
 func (*Expr_FromInterface) ProtoMessage() {}
 
 func (x *Expr_FromInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[69]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7190,7 +7190,7 @@ func (x *Expr_FromInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_FromInterface.ProtoReflect.Descriptor instead.
 func (*Expr_FromInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 22}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 22}
 }
 
 func (x *Expr_FromInterface) GetInterfaceType() *TypeConName {
@@ -7225,7 +7225,7 @@ type Expr_CallInterface struct {
 
 func (x *Expr_CallInterface) Reset() {
 	*x = Expr_CallInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[70]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7237,7 +7237,7 @@ func (x *Expr_CallInterface) String() string {
 func (*Expr_CallInterface) ProtoMessage() {}
 
 func (x *Expr_CallInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[70]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7250,7 +7250,7 @@ func (x *Expr_CallInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_CallInterface.ProtoReflect.Descriptor instead.
 func (*Expr_CallInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 23}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 23}
 }
 
 func (x *Expr_CallInterface) GetInterfaceType() *TypeConName {
@@ -7284,7 +7284,7 @@ type Expr_ViewInterface struct {
 
 func (x *Expr_ViewInterface) Reset() {
 	*x = Expr_ViewInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[71]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7296,7 +7296,7 @@ func (x *Expr_ViewInterface) String() string {
 func (*Expr_ViewInterface) ProtoMessage() {}
 
 func (x *Expr_ViewInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[71]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7309,7 +7309,7 @@ func (x *Expr_ViewInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ViewInterface.ProtoReflect.Descriptor instead.
 func (*Expr_ViewInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 24}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 24}
 }
 
 func (x *Expr_ViewInterface) GetInterface() *TypeConName {
@@ -7336,7 +7336,7 @@ type Expr_SignatoryInterface struct {
 
 func (x *Expr_SignatoryInterface) Reset() {
 	*x = Expr_SignatoryInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[72]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7348,7 +7348,7 @@ func (x *Expr_SignatoryInterface) String() string {
 func (*Expr_SignatoryInterface) ProtoMessage() {}
 
 func (x *Expr_SignatoryInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[72]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7361,7 +7361,7 @@ func (x *Expr_SignatoryInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_SignatoryInterface.ProtoReflect.Descriptor instead.
 func (*Expr_SignatoryInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 25}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 25}
 }
 
 func (x *Expr_SignatoryInterface) GetInterface() *TypeConName {
@@ -7388,7 +7388,7 @@ type Expr_ObserverInterface struct {
 
 func (x *Expr_ObserverInterface) Reset() {
 	*x = Expr_ObserverInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[73]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7400,7 +7400,7 @@ func (x *Expr_ObserverInterface) String() string {
 func (*Expr_ObserverInterface) ProtoMessage() {}
 
 func (x *Expr_ObserverInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[73]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7413,7 +7413,7 @@ func (x *Expr_ObserverInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ObserverInterface.ProtoReflect.Descriptor instead.
 func (*Expr_ObserverInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 26}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 26}
 }
 
 func (x *Expr_ObserverInterface) GetInterface() *TypeConName {
@@ -7442,7 +7442,7 @@ type Expr_UnsafeFromInterface struct {
 
 func (x *Expr_UnsafeFromInterface) Reset() {
 	*x = Expr_UnsafeFromInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[74]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7454,7 +7454,7 @@ func (x *Expr_UnsafeFromInterface) String() string {
 func (*Expr_UnsafeFromInterface) ProtoMessage() {}
 
 func (x *Expr_UnsafeFromInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[74]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7467,7 +7467,7 @@ func (x *Expr_UnsafeFromInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_UnsafeFromInterface.ProtoReflect.Descriptor instead.
 func (*Expr_UnsafeFromInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 27}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 27}
 }
 
 func (x *Expr_UnsafeFromInterface) GetInterfaceType() *TypeConName {
@@ -7509,7 +7509,7 @@ type Expr_ToRequiredInterface struct {
 
 func (x *Expr_ToRequiredInterface) Reset() {
 	*x = Expr_ToRequiredInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[75]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7521,7 +7521,7 @@ func (x *Expr_ToRequiredInterface) String() string {
 func (*Expr_ToRequiredInterface) ProtoMessage() {}
 
 func (x *Expr_ToRequiredInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[75]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7534,7 +7534,7 @@ func (x *Expr_ToRequiredInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ToRequiredInterface.ProtoReflect.Descriptor instead.
 func (*Expr_ToRequiredInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 28}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 28}
 }
 
 func (x *Expr_ToRequiredInterface) GetRequiredInterface() *TypeConName {
@@ -7569,7 +7569,7 @@ type Expr_FromRequiredInterface struct {
 
 func (x *Expr_FromRequiredInterface) Reset() {
 	*x = Expr_FromRequiredInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[76]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7581,7 +7581,7 @@ func (x *Expr_FromRequiredInterface) String() string {
 func (*Expr_FromRequiredInterface) ProtoMessage() {}
 
 func (x *Expr_FromRequiredInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[76]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7594,7 +7594,7 @@ func (x *Expr_FromRequiredInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_FromRequiredInterface.ProtoReflect.Descriptor instead.
 func (*Expr_FromRequiredInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 29}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 29}
 }
 
 func (x *Expr_FromRequiredInterface) GetRequiredInterface() *TypeConName {
@@ -7630,7 +7630,7 @@ type Expr_UnsafeFromRequiredInterface struct {
 
 func (x *Expr_UnsafeFromRequiredInterface) Reset() {
 	*x = Expr_UnsafeFromRequiredInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[77]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7642,7 +7642,7 @@ func (x *Expr_UnsafeFromRequiredInterface) String() string {
 func (*Expr_UnsafeFromRequiredInterface) ProtoMessage() {}
 
 func (x *Expr_UnsafeFromRequiredInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[77]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7655,7 +7655,7 @@ func (x *Expr_UnsafeFromRequiredInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_UnsafeFromRequiredInterface.ProtoReflect.Descriptor instead.
 func (*Expr_UnsafeFromRequiredInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 30}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 30}
 }
 
 func (x *Expr_UnsafeFromRequiredInterface) GetRequiredInterface() *TypeConName {
@@ -7696,7 +7696,7 @@ type Expr_InterfaceTemplateTypeRep struct {
 
 func (x *Expr_InterfaceTemplateTypeRep) Reset() {
 	*x = Expr_InterfaceTemplateTypeRep{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[78]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7708,7 +7708,7 @@ func (x *Expr_InterfaceTemplateTypeRep) String() string {
 func (*Expr_InterfaceTemplateTypeRep) ProtoMessage() {}
 
 func (x *Expr_InterfaceTemplateTypeRep) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[78]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7721,7 +7721,7 @@ func (x *Expr_InterfaceTemplateTypeRep) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_InterfaceTemplateTypeRep.ProtoReflect.Descriptor instead.
 func (*Expr_InterfaceTemplateTypeRep) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 31}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 31}
 }
 
 func (x *Expr_InterfaceTemplateTypeRep) GetInterface() *TypeConName {
@@ -7750,7 +7750,7 @@ type Expr_ChoiceController struct {
 
 func (x *Expr_ChoiceController) Reset() {
 	*x = Expr_ChoiceController{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[79]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7762,7 +7762,7 @@ func (x *Expr_ChoiceController) String() string {
 func (*Expr_ChoiceController) ProtoMessage() {}
 
 func (x *Expr_ChoiceController) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[79]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7775,7 +7775,7 @@ func (x *Expr_ChoiceController) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ChoiceController.ProtoReflect.Descriptor instead.
 func (*Expr_ChoiceController) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 32}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 32}
 }
 
 func (x *Expr_ChoiceController) GetTemplate() *TypeConName {
@@ -7818,7 +7818,7 @@ type Expr_ChoiceObserver struct {
 
 func (x *Expr_ChoiceObserver) Reset() {
 	*x = Expr_ChoiceObserver{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[80]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7830,7 +7830,7 @@ func (x *Expr_ChoiceObserver) String() string {
 func (*Expr_ChoiceObserver) ProtoMessage() {}
 
 func (x *Expr_ChoiceObserver) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[80]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7843,7 +7843,7 @@ func (x *Expr_ChoiceObserver) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_ChoiceObserver.ProtoReflect.Descriptor instead.
 func (*Expr_ChoiceObserver) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 33}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 33}
 }
 
 func (x *Expr_ChoiceObserver) GetTemplate() *TypeConName {
@@ -7884,7 +7884,7 @@ type Expr_Experimental struct {
 
 func (x *Expr_Experimental) Reset() {
 	*x = Expr_Experimental{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[81]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7896,7 +7896,7 @@ func (x *Expr_Experimental) String() string {
 func (*Expr_Experimental) ProtoMessage() {}
 
 func (x *Expr_Experimental) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[81]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7909,7 +7909,7 @@ func (x *Expr_Experimental) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Expr_Experimental.ProtoReflect.Descriptor instead.
 func (*Expr_Experimental) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{16, 34}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{16, 34}
 }
 
 func (x *Expr_Experimental) GetName() string {
@@ -7945,7 +7945,7 @@ type CaseAlt_Variant struct {
 
 func (x *CaseAlt_Variant) Reset() {
 	*x = CaseAlt_Variant{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[82]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7957,7 +7957,7 @@ func (x *CaseAlt_Variant) String() string {
 func (*CaseAlt_Variant) ProtoMessage() {}
 
 func (x *CaseAlt_Variant) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[82]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7970,7 +7970,7 @@ func (x *CaseAlt_Variant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt_Variant.ProtoReflect.Descriptor instead.
 func (*CaseAlt_Variant) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{17, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{17, 0}
 }
 
 func (x *CaseAlt_Variant) GetCon() *TypeConName {
@@ -8076,7 +8076,7 @@ type CaseAlt_Enum struct {
 
 func (x *CaseAlt_Enum) Reset() {
 	*x = CaseAlt_Enum{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[83]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8088,7 +8088,7 @@ func (x *CaseAlt_Enum) String() string {
 func (*CaseAlt_Enum) ProtoMessage() {}
 
 func (x *CaseAlt_Enum) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[83]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8101,7 +8101,7 @@ func (x *CaseAlt_Enum) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt_Enum.ProtoReflect.Descriptor instead.
 func (*CaseAlt_Enum) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{17, 1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{17, 1}
 }
 
 func (x *CaseAlt_Enum) GetCon() *TypeConName {
@@ -8170,7 +8170,7 @@ type CaseAlt_Cons struct {
 
 func (x *CaseAlt_Cons) Reset() {
 	*x = CaseAlt_Cons{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[84]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8182,7 +8182,7 @@ func (x *CaseAlt_Cons) String() string {
 func (*CaseAlt_Cons) ProtoMessage() {}
 
 func (x *CaseAlt_Cons) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[84]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8195,7 +8195,7 @@ func (x *CaseAlt_Cons) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt_Cons.ProtoReflect.Descriptor instead.
 func (*CaseAlt_Cons) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{17, 2}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{17, 2}
 }
 
 func (x *CaseAlt_Cons) GetVarHead() isCaseAlt_Cons_VarHead {
@@ -8293,7 +8293,7 @@ type CaseAlt_OptionalSome struct {
 
 func (x *CaseAlt_OptionalSome) Reset() {
 	*x = CaseAlt_OptionalSome{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[85]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8305,7 +8305,7 @@ func (x *CaseAlt_OptionalSome) String() string {
 func (*CaseAlt_OptionalSome) ProtoMessage() {}
 
 func (x *CaseAlt_OptionalSome) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[85]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8318,7 +8318,7 @@ func (x *CaseAlt_OptionalSome) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseAlt_OptionalSome.ProtoReflect.Descriptor instead.
 func (*CaseAlt_OptionalSome) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{17, 3}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{17, 3}
 }
 
 func (x *CaseAlt_OptionalSome) GetVarBody() isCaseAlt_OptionalSome_VarBody {
@@ -8372,7 +8372,7 @@ type Update_Create struct {
 
 func (x *Update_Create) Reset() {
 	*x = Update_Create{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[86]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8384,7 +8384,7 @@ func (x *Update_Create) String() string {
 func (*Update_Create) ProtoMessage() {}
 
 func (x *Update_Create) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[86]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8397,7 +8397,7 @@ func (x *Update_Create) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_Create.ProtoReflect.Descriptor instead.
 func (*Update_Create) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 0}
 }
 
 func (x *Update_Create) GetTemplate() *TypeConName {
@@ -8424,7 +8424,7 @@ type Update_CreateInterface struct {
 
 func (x *Update_CreateInterface) Reset() {
 	*x = Update_CreateInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[87]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8436,7 +8436,7 @@ func (x *Update_CreateInterface) String() string {
 func (*Update_CreateInterface) ProtoMessage() {}
 
 func (x *Update_CreateInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[87]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8449,7 +8449,7 @@ func (x *Update_CreateInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_CreateInterface.ProtoReflect.Descriptor instead.
 func (*Update_CreateInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 1}
 }
 
 func (x *Update_CreateInterface) GetInterface() *TypeConName {
@@ -8482,7 +8482,7 @@ type Update_Exercise struct {
 
 func (x *Update_Exercise) Reset() {
 	*x = Update_Exercise{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[88]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8494,7 +8494,7 @@ func (x *Update_Exercise) String() string {
 func (*Update_Exercise) ProtoMessage() {}
 
 func (x *Update_Exercise) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[88]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8507,7 +8507,7 @@ func (x *Update_Exercise) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_Exercise.ProtoReflect.Descriptor instead.
 func (*Update_Exercise) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 2}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 2}
 }
 
 func (x *Update_Exercise) GetTemplate() *TypeConName {
@@ -8588,7 +8588,7 @@ type Update_SoftExercise struct {
 
 func (x *Update_SoftExercise) Reset() {
 	*x = Update_SoftExercise{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[89]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8600,7 +8600,7 @@ func (x *Update_SoftExercise) String() string {
 func (*Update_SoftExercise) ProtoMessage() {}
 
 func (x *Update_SoftExercise) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[89]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8613,7 +8613,7 @@ func (x *Update_SoftExercise) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_SoftExercise.ProtoReflect.Descriptor instead.
 func (*Update_SoftExercise) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 3}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 3}
 }
 
 func (x *Update_SoftExercise) GetTemplate() *TypeConName {
@@ -8690,7 +8690,7 @@ type Update_DynamicExercise struct {
 
 func (x *Update_DynamicExercise) Reset() {
 	*x = Update_DynamicExercise{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[90]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8702,7 +8702,7 @@ func (x *Update_DynamicExercise) String() string {
 func (*Update_DynamicExercise) ProtoMessage() {}
 
 func (x *Update_DynamicExercise) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[90]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8715,7 +8715,7 @@ func (x *Update_DynamicExercise) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_DynamicExercise.ProtoReflect.Descriptor instead.
 func (*Update_DynamicExercise) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 4}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 4}
 }
 
 func (x *Update_DynamicExercise) GetTemplate() *TypeConName {
@@ -8759,7 +8759,7 @@ type Update_ExerciseInterface struct {
 
 func (x *Update_ExerciseInterface) Reset() {
 	*x = Update_ExerciseInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[91]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8771,7 +8771,7 @@ func (x *Update_ExerciseInterface) String() string {
 func (*Update_ExerciseInterface) ProtoMessage() {}
 
 func (x *Update_ExerciseInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[91]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8784,7 +8784,7 @@ func (x *Update_ExerciseInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_ExerciseInterface.ProtoReflect.Descriptor instead.
 func (*Update_ExerciseInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 5}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 5}
 }
 
 func (x *Update_ExerciseInterface) GetInterface() *TypeConName {
@@ -8834,7 +8834,7 @@ type Update_ExerciseByKey struct {
 
 func (x *Update_ExerciseByKey) Reset() {
 	*x = Update_ExerciseByKey{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[92]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8846,7 +8846,7 @@ func (x *Update_ExerciseByKey) String() string {
 func (*Update_ExerciseByKey) ProtoMessage() {}
 
 func (x *Update_ExerciseByKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[92]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8859,7 +8859,7 @@ func (x *Update_ExerciseByKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_ExerciseByKey.ProtoReflect.Descriptor instead.
 func (*Update_ExerciseByKey) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 6}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 6}
 }
 
 func (x *Update_ExerciseByKey) GetTemplate() *TypeConName {
@@ -8900,7 +8900,7 @@ type Update_Fetch struct {
 
 func (x *Update_Fetch) Reset() {
 	*x = Update_Fetch{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[93]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8912,7 +8912,7 @@ func (x *Update_Fetch) String() string {
 func (*Update_Fetch) ProtoMessage() {}
 
 func (x *Update_Fetch) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[93]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8925,7 +8925,7 @@ func (x *Update_Fetch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_Fetch.ProtoReflect.Descriptor instead.
 func (*Update_Fetch) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 7}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 7}
 }
 
 func (x *Update_Fetch) GetTemplate() *TypeConName {
@@ -8952,7 +8952,7 @@ type Update_SoftFetch struct {
 
 func (x *Update_SoftFetch) Reset() {
 	*x = Update_SoftFetch{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[94]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8964,7 +8964,7 @@ func (x *Update_SoftFetch) String() string {
 func (*Update_SoftFetch) ProtoMessage() {}
 
 func (x *Update_SoftFetch) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[94]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8977,7 +8977,7 @@ func (x *Update_SoftFetch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_SoftFetch.ProtoReflect.Descriptor instead.
 func (*Update_SoftFetch) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 8}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 8}
 }
 
 func (x *Update_SoftFetch) GetTemplate() *TypeConName {
@@ -9004,7 +9004,7 @@ type Update_FetchInterface struct {
 
 func (x *Update_FetchInterface) Reset() {
 	*x = Update_FetchInterface{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[95]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9016,7 +9016,7 @@ func (x *Update_FetchInterface) String() string {
 func (*Update_FetchInterface) ProtoMessage() {}
 
 func (x *Update_FetchInterface) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[95]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9029,7 +9029,7 @@ func (x *Update_FetchInterface) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_FetchInterface.ProtoReflect.Descriptor instead.
 func (*Update_FetchInterface) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 9}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 9}
 }
 
 func (x *Update_FetchInterface) GetInterface() *TypeConName {
@@ -9056,7 +9056,7 @@ type Update_EmbedExpr struct {
 
 func (x *Update_EmbedExpr) Reset() {
 	*x = Update_EmbedExpr{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[96]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9068,7 +9068,7 @@ func (x *Update_EmbedExpr) String() string {
 func (*Update_EmbedExpr) ProtoMessage() {}
 
 func (x *Update_EmbedExpr) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[96]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9081,7 +9081,7 @@ func (x *Update_EmbedExpr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_EmbedExpr.ProtoReflect.Descriptor instead.
 func (*Update_EmbedExpr) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 10}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 10}
 }
 
 func (x *Update_EmbedExpr) GetType() *Type {
@@ -9108,7 +9108,7 @@ type Update_RetrieveByKey struct {
 
 func (x *Update_RetrieveByKey) Reset() {
 	*x = Update_RetrieveByKey{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[97]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9120,7 +9120,7 @@ func (x *Update_RetrieveByKey) String() string {
 func (*Update_RetrieveByKey) ProtoMessage() {}
 
 func (x *Update_RetrieveByKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[97]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9133,7 +9133,7 @@ func (x *Update_RetrieveByKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_RetrieveByKey.ProtoReflect.Descriptor instead.
 func (*Update_RetrieveByKey) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 11}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 11}
 }
 
 func (x *Update_RetrieveByKey) GetTemplate() *TypeConName {
@@ -9162,7 +9162,7 @@ type Update_TryCatch struct {
 
 func (x *Update_TryCatch) Reset() {
 	*x = Update_TryCatch{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[98]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9174,7 +9174,7 @@ func (x *Update_TryCatch) String() string {
 func (*Update_TryCatch) ProtoMessage() {}
 
 func (x *Update_TryCatch) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[98]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9187,7 +9187,7 @@ func (x *Update_TryCatch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Update_TryCatch.ProtoReflect.Descriptor instead.
 func (*Update_TryCatch) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{21, 12}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{21, 12}
 }
 
 func (x *Update_TryCatch) GetReturnType() *Type {
@@ -9229,7 +9229,7 @@ type Scenario_Commit struct {
 
 func (x *Scenario_Commit) Reset() {
 	*x = Scenario_Commit{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[99]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9241,7 +9241,7 @@ func (x *Scenario_Commit) String() string {
 func (*Scenario_Commit) ProtoMessage() {}
 
 func (x *Scenario_Commit) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[99]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9254,7 +9254,7 @@ func (x *Scenario_Commit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Scenario_Commit.ProtoReflect.Descriptor instead.
 func (*Scenario_Commit) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{22, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{22, 0}
 }
 
 func (x *Scenario_Commit) GetParty() *Expr {
@@ -9288,7 +9288,7 @@ type Scenario_EmbedExpr struct {
 
 func (x *Scenario_EmbedExpr) Reset() {
 	*x = Scenario_EmbedExpr{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[100]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9300,7 +9300,7 @@ func (x *Scenario_EmbedExpr) String() string {
 func (*Scenario_EmbedExpr) ProtoMessage() {}
 
 func (x *Scenario_EmbedExpr) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[100]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9313,7 +9313,7 @@ func (x *Scenario_EmbedExpr) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Scenario_EmbedExpr.ProtoReflect.Descriptor instead.
 func (*Scenario_EmbedExpr) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{22, 1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{22, 1}
 }
 
 func (x *Scenario_EmbedExpr) GetType() *Type {
@@ -9344,7 +9344,7 @@ type KeyExpr_Projection struct {
 
 func (x *KeyExpr_Projection) Reset() {
 	*x = KeyExpr_Projection{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[101]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9356,7 +9356,7 @@ func (x *KeyExpr_Projection) String() string {
 func (*KeyExpr_Projection) ProtoMessage() {}
 
 func (x *KeyExpr_Projection) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[101]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9369,7 +9369,7 @@ func (x *KeyExpr_Projection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KeyExpr_Projection.ProtoReflect.Descriptor instead.
 func (*KeyExpr_Projection) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{24, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{24, 0}
 }
 
 func (x *KeyExpr_Projection) GetTycon() *Type_Con {
@@ -9429,7 +9429,7 @@ type KeyExpr_Projections struct {
 
 func (x *KeyExpr_Projections) Reset() {
 	*x = KeyExpr_Projections{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[102]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9441,7 +9441,7 @@ func (x *KeyExpr_Projections) String() string {
 func (*KeyExpr_Projections) ProtoMessage() {}
 
 func (x *KeyExpr_Projections) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[102]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9454,7 +9454,7 @@ func (x *KeyExpr_Projections) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KeyExpr_Projections.ProtoReflect.Descriptor instead.
 func (*KeyExpr_Projections) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{24, 1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{24, 1}
 }
 
 func (x *KeyExpr_Projections) GetProjections() []*KeyExpr_Projection {
@@ -9478,7 +9478,7 @@ type KeyExpr_RecordField struct {
 
 func (x *KeyExpr_RecordField) Reset() {
 	*x = KeyExpr_RecordField{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[103]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[103]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9490,7 +9490,7 @@ func (x *KeyExpr_RecordField) String() string {
 func (*KeyExpr_RecordField) ProtoMessage() {}
 
 func (x *KeyExpr_RecordField) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[103]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[103]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9503,7 +9503,7 @@ func (x *KeyExpr_RecordField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KeyExpr_RecordField.ProtoReflect.Descriptor instead.
 func (*KeyExpr_RecordField) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{24, 2}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{24, 2}
 }
 
 func (x *KeyExpr_RecordField) GetField() isKeyExpr_RecordField_Field {
@@ -9564,7 +9564,7 @@ type KeyExpr_Record struct {
 
 func (x *KeyExpr_Record) Reset() {
 	*x = KeyExpr_Record{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[104]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[104]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9576,7 +9576,7 @@ func (x *KeyExpr_Record) String() string {
 func (*KeyExpr_Record) ProtoMessage() {}
 
 func (x *KeyExpr_Record) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[104]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[104]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9589,7 +9589,7 @@ func (x *KeyExpr_Record) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KeyExpr_Record.ProtoReflect.Descriptor instead.
 func (*KeyExpr_Record) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{24, 3}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{24, 3}
 }
 
 func (x *KeyExpr_Record) GetTycon() *Type_Con {
@@ -9616,7 +9616,7 @@ type InterfaceInstanceBody_InterfaceInstanceMethod struct {
 
 func (x *InterfaceInstanceBody_InterfaceInstanceMethod) Reset() {
 	*x = InterfaceInstanceBody_InterfaceInstanceMethod{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[105]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[105]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9628,7 +9628,7 @@ func (x *InterfaceInstanceBody_InterfaceInstanceMethod) String() string {
 func (*InterfaceInstanceBody_InterfaceInstanceMethod) ProtoMessage() {}
 
 func (x *InterfaceInstanceBody_InterfaceInstanceMethod) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[105]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[105]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9641,7 +9641,7 @@ func (x *InterfaceInstanceBody_InterfaceInstanceMethod) ProtoReflect() protorefl
 
 // Deprecated: Use InterfaceInstanceBody_InterfaceInstanceMethod.ProtoReflect.Descriptor instead.
 func (*InterfaceInstanceBody_InterfaceInstanceMethod) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{25, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{25, 0}
 }
 
 func (x *InterfaceInstanceBody_InterfaceInstanceMethod) GetMethodInternedName() int32 {
@@ -9673,7 +9673,7 @@ type DefTemplate_DefKey struct {
 
 func (x *DefTemplate_DefKey) Reset() {
 	*x = DefTemplate_DefKey{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[106]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[106]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9685,7 +9685,7 @@ func (x *DefTemplate_DefKey) String() string {
 func (*DefTemplate_DefKey) ProtoMessage() {}
 
 func (x *DefTemplate_DefKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[106]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[106]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9698,7 +9698,7 @@ func (x *DefTemplate_DefKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefTemplate_DefKey.ProtoReflect.Descriptor instead.
 func (*DefTemplate_DefKey) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{26, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{26, 0}
 }
 
 func (x *DefTemplate_DefKey) GetType() *Type {
@@ -9767,7 +9767,7 @@ type DefTemplate_Implements struct {
 
 func (x *DefTemplate_Implements) Reset() {
 	*x = DefTemplate_Implements{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[107]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[107]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9779,7 +9779,7 @@ func (x *DefTemplate_Implements) String() string {
 func (*DefTemplate_Implements) ProtoMessage() {}
 
 func (x *DefTemplate_Implements) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[107]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[107]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9792,7 +9792,7 @@ func (x *DefTemplate_Implements) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefTemplate_Implements.ProtoReflect.Descriptor instead.
 func (*DefTemplate_Implements) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{26, 1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{26, 1}
 }
 
 func (x *DefTemplate_Implements) GetInterface() *TypeConName {
@@ -9827,7 +9827,7 @@ type DefInterface_CoImplements struct {
 
 func (x *DefInterface_CoImplements) Reset() {
 	*x = DefInterface_CoImplements{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[108]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[108]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9839,7 +9839,7 @@ func (x *DefInterface_CoImplements) String() string {
 func (*DefInterface_CoImplements) ProtoMessage() {}
 
 func (x *DefInterface_CoImplements) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[108]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[108]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9852,7 +9852,7 @@ func (x *DefInterface_CoImplements) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefInterface_CoImplements.ProtoReflect.Descriptor instead.
 func (*DefInterface_CoImplements) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{28, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{28, 0}
 }
 
 func (x *DefInterface_CoImplements) GetTemplate() *TypeConName {
@@ -9885,7 +9885,7 @@ type DefDataType_Fields struct {
 
 func (x *DefDataType_Fields) Reset() {
 	*x = DefDataType_Fields{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[109]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[109]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9897,7 +9897,7 @@ func (x *DefDataType_Fields) String() string {
 func (*DefDataType_Fields) ProtoMessage() {}
 
 func (x *DefDataType_Fields) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[109]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[109]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9910,7 +9910,7 @@ func (x *DefDataType_Fields) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefDataType_Fields.ProtoReflect.Descriptor instead.
 func (*DefDataType_Fields) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{30, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{30, 0}
 }
 
 func (x *DefDataType_Fields) GetFields() []*FieldWithType {
@@ -9930,7 +9930,7 @@ type DefDataType_EnumConstructors struct {
 
 func (x *DefDataType_EnumConstructors) Reset() {
 	*x = DefDataType_EnumConstructors{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[110]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[110]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9942,7 +9942,7 @@ func (x *DefDataType_EnumConstructors) String() string {
 func (*DefDataType_EnumConstructors) ProtoMessage() {}
 
 func (x *DefDataType_EnumConstructors) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[110]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[110]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9955,7 +9955,7 @@ func (x *DefDataType_EnumConstructors) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefDataType_EnumConstructors.ProtoReflect.Descriptor instead.
 func (*DefDataType_EnumConstructors) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{30, 1}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{30, 1}
 }
 
 func (x *DefDataType_EnumConstructors) GetConstructorsStr() []string {
@@ -9983,7 +9983,7 @@ type DefValue_NameWithType struct {
 
 func (x *DefValue_NameWithType) Reset() {
 	*x = DefValue_NameWithType{}
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[111]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[111]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9995,7 +9995,7 @@ func (x *DefValue_NameWithType) String() string {
 func (*DefValue_NameWithType) ProtoMessage() {}
 
 func (x *DefValue_NameWithType) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[111]
+	mi := &file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[111]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10008,7 +10008,7 @@ func (x *DefValue_NameWithType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefValue_NameWithType.ProtoReflect.Descriptor instead.
 func (*DefValue_NameWithType) Descriptor() ([]byte, []int) {
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP(), []int{32, 0}
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP(), []int{32, 0}
 }
 
 func (x *DefValue_NameWithType) GetNameDname() []string {
@@ -10032,106 +10032,106 @@ func (x *DefValue_NameWithType) GetType() *Type {
 	return nil
 }
 
-var File_com_daml_daml_lf_1_17_daml_lf_1_proto protoreflect.FileDescriptor
+var File_com_digitalasset_daml_lf_archive_daml_lf1_proto protoreflect.FileDescriptor
 
-const file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc = "" +
+const file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDesc = "" +
 	"\n" +
-	"%com/daml/daml_lf_1_17/daml_lf_1.proto\x12\fdaml_lf_1_17\"\x06\n" +
-	"\x04Unit\"\x9e\x01\n" +
+	"/com/digitalasset/daml/lf/archive/daml_lf1.proto\x12\tdaml_lf_1\"\x06\n" +
+	"\x04Unit\"\x9b\x01\n" +
 	"\n" +
-	"PackageRef\x12(\n" +
-	"\x04self\x18\x01 \x01(\v2\x12.daml_lf_1_17.UnitH\x00R\x04self\x12&\n" +
+	"PackageRef\x12%\n" +
+	"\x04self\x18\x01 \x01(\v2\x0f.daml_lf_1.UnitH\x00R\x04self\x12&\n" +
 	"\x0epackage_id_str\x18\x02 \x01(\tH\x00R\fpackageIdStr\x127\n" +
 	"\x17package_id_interned_str\x18\x03 \x01(\x05H\x00R\x14packageIdInternedStrB\x05\n" +
 	"\x03Sum\"(\n" +
 	"\n" +
 	"DottedName\x12\x1a\n" +
-	"\bsegments\x18\x01 \x03(\tR\bsegments\"\xdc\x01\n" +
-	"\tModuleRef\x129\n" +
-	"\vpackage_ref\x18\x01 \x01(\v2\x18.daml_lf_1_17.PackageRefR\n" +
-	"packageRef\x12F\n" +
-	"\x11module_name_dname\x18\x02 \x01(\v2\x18.daml_lf_1_17.DottedNameH\x00R\x0fmoduleNameDname\x12=\n" +
+	"\bsegments\x18\x01 \x03(\tR\bsegments\"\xd6\x01\n" +
+	"\tModuleRef\x126\n" +
+	"\vpackage_ref\x18\x01 \x01(\v2\x15.daml_lf_1.PackageRefR\n" +
+	"packageRef\x12C\n" +
+	"\x11module_name_dname\x18\x02 \x01(\v2\x15.daml_lf_1.DottedNameH\x00R\x0fmoduleNameDname\x12=\n" +
 	"\x1amodule_name_interned_dname\x18\x03 \x01(\x05H\x00R\x17moduleNameInternedDnameB\r\n" +
-	"\vmodule_name\"\xb3\x01\n" +
-	"\vTypeConName\x12/\n" +
-	"\x06module\x18\x01 \x01(\v2\x17.daml_lf_1_17.ModuleRefR\x06module\x129\n" +
+	"\vmodule_name\"\xad\x01\n" +
+	"\vTypeConName\x12,\n" +
+	"\x06module\x18\x01 \x01(\v2\x14.daml_lf_1.ModuleRefR\x06module\x126\n" +
 	"\n" +
-	"name_dname\x18\x02 \x01(\v2\x18.daml_lf_1_17.DottedNameH\x00R\tnameDname\x120\n" +
+	"name_dname\x18\x02 \x01(\v2\x15.daml_lf_1.DottedNameH\x00R\tnameDname\x120\n" +
 	"\x13name_interned_dname\x18\x03 \x01(\x05H\x00R\x11nameInternedDnameB\x06\n" +
-	"\x04name\"\xb3\x01\n" +
-	"\vTypeSynName\x12/\n" +
-	"\x06module\x18\x01 \x01(\v2\x17.daml_lf_1_17.ModuleRefR\x06module\x129\n" +
+	"\x04name\"\xad\x01\n" +
+	"\vTypeSynName\x12,\n" +
+	"\x06module\x18\x01 \x01(\v2\x14.daml_lf_1.ModuleRefR\x06module\x126\n" +
 	"\n" +
-	"name_dname\x18\x02 \x01(\v2\x18.daml_lf_1_17.DottedNameH\x00R\tnameDname\x120\n" +
+	"name_dname\x18\x02 \x01(\v2\x15.daml_lf_1.DottedNameH\x00R\tnameDname\x120\n" +
 	"\x13name_interned_dname\x18\x03 \x01(\x05H\x00R\x11nameInternedDnameB\x06\n" +
-	"\x04name\"\x89\x01\n" +
-	"\aValName\x12/\n" +
-	"\x06module\x18\x01 \x01(\v2\x17.daml_lf_1_17.ModuleRefR\x06module\x12\x1d\n" +
+	"\x04name\"\x86\x01\n" +
+	"\aValName\x12,\n" +
+	"\x06module\x18\x01 \x01(\v2\x14.daml_lf_1.ModuleRefR\x06module\x12\x1d\n" +
 	"\n" +
 	"name_dname\x18\x02 \x03(\tR\tnameDname\x12.\n" +
-	"\x13name_interned_dname\x18\x03 \x01(\x05R\x11nameInternedDname\"\x8f\x01\n" +
+	"\x13name_interned_dname\x18\x03 \x01(\x05R\x11nameInternedDname\"\x8c\x01\n" +
 	"\rFieldWithType\x12\x1d\n" +
 	"\tfield_str\x18\x01 \x01(\tH\x00R\bfieldStr\x12.\n" +
-	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStr\x12&\n" +
-	"\x04type\x18\x02 \x01(\v2\x12.daml_lf_1_17.TypeR\x04typeB\a\n" +
-	"\x05field\"\x83\x01\n" +
+	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStr\x12#\n" +
+	"\x04type\x18\x02 \x01(\v2\x0f.daml_lf_1.TypeR\x04typeB\a\n" +
+	"\x05field\"\x80\x01\n" +
 	"\vVarWithType\x12\x19\n" +
 	"\avar_str\x18\x01 \x01(\tH\x00R\x06varStr\x12*\n" +
-	"\x10var_interned_str\x18\x03 \x01(\x05H\x00R\x0evarInternedStr\x12&\n" +
-	"\x04type\x18\x02 \x01(\v2\x12.daml_lf_1_17.TypeR\x04typeB\x05\n" +
-	"\x03var\"\x87\x01\n" +
+	"\x10var_interned_str\x18\x03 \x01(\x05H\x00R\x0evarInternedStr\x12#\n" +
+	"\x04type\x18\x02 \x01(\v2\x0f.daml_lf_1.TypeR\x04typeB\x05\n" +
+	"\x03var\"\x84\x01\n" +
 	"\x0fTypeVarWithKind\x12\x19\n" +
 	"\avar_str\x18\x01 \x01(\tH\x00R\x06varStr\x12*\n" +
-	"\x10var_interned_str\x18\x03 \x01(\x05H\x00R\x0evarInternedStr\x12&\n" +
-	"\x04kind\x18\x02 \x01(\v2\x12.daml_lf_1_17.KindR\x04kindB\x05\n" +
-	"\x03var\"\x8f\x01\n" +
+	"\x10var_interned_str\x18\x03 \x01(\x05H\x00R\x0evarInternedStr\x12#\n" +
+	"\x04kind\x18\x02 \x01(\v2\x0f.daml_lf_1.KindR\x04kindB\x05\n" +
+	"\x03var\"\x8c\x01\n" +
 	"\rFieldWithExpr\x12\x1d\n" +
 	"\tfield_str\x18\x01 \x01(\tH\x00R\bfieldStr\x12.\n" +
-	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStr\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04exprB\a\n" +
-	"\x05field\"f\n" +
-	"\aBinding\x121\n" +
-	"\x06binder\x18\x01 \x01(\v2\x19.daml_lf_1_17.VarWithTypeR\x06binder\x12(\n" +
-	"\x05bound\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x05bound\"\xf2\x01\n" +
-	"\x04Kind\x12(\n" +
-	"\x04star\x18\x01 \x01(\v2\x12.daml_lf_1_17.UnitH\x00R\x04star\x120\n" +
-	"\x05arrow\x18\x02 \x01(\v2\x18.daml_lf_1_17.Kind.ArrowH\x00R\x05arrow\x12&\n" +
-	"\x03nat\x18\x03 \x01(\v2\x12.daml_lf_1_17.UnitH\x00R\x03nat\x1a_\n" +
-	"\x05Arrow\x12*\n" +
-	"\x06params\x18\x01 \x03(\v2\x12.daml_lf_1_17.KindR\x06params\x12*\n" +
-	"\x06result\x18\x02 \x01(\v2\x12.daml_lf_1_17.KindR\x06resultB\x05\n" +
-	"\x03Sum\"\xb7\a\n" +
-	"\x04Type\x12*\n" +
-	"\x03var\x18\x01 \x01(\v2\x16.daml_lf_1_17.Type.VarH\x00R\x03var\x12*\n" +
-	"\x03con\x18\x02 \x01(\v2\x16.daml_lf_1_17.Type.ConH\x00R\x03con\x12-\n" +
-	"\x04prim\x18\x03 \x01(\v2\x17.daml_lf_1_17.Type.PrimH\x00R\x04prim\x123\n" +
-	"\x06forall\x18\x05 \x01(\v2\x19.daml_lf_1_17.Type.ForallH\x00R\x06forall\x123\n" +
-	"\x06struct\x18\a \x01(\v2\x19.daml_lf_1_17.Type.StructH\x00R\x06struct\x12\x12\n" +
-	"\x03nat\x18\v \x01(\x12H\x00R\x03nat\x12*\n" +
-	"\x03syn\x18\f \x01(\v2\x16.daml_lf_1_17.Type.SynH\x00R\x03syn\x12\x1c\n" +
-	"\binterned\x18\r \x01(\x05H\x00R\binterned\x1a{\n" +
+	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStr\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04exprB\a\n" +
+	"\x05field\"`\n" +
+	"\aBinding\x12.\n" +
+	"\x06binder\x18\x01 \x01(\v2\x16.daml_lf_1.VarWithTypeR\x06binder\x12%\n" +
+	"\x05bound\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x05bound\"\xe3\x01\n" +
+	"\x04Kind\x12%\n" +
+	"\x04star\x18\x01 \x01(\v2\x0f.daml_lf_1.UnitH\x00R\x04star\x12-\n" +
+	"\x05arrow\x18\x02 \x01(\v2\x15.daml_lf_1.Kind.ArrowH\x00R\x05arrow\x12#\n" +
+	"\x03nat\x18\x03 \x01(\v2\x0f.daml_lf_1.UnitH\x00R\x03nat\x1aY\n" +
+	"\x05Arrow\x12'\n" +
+	"\x06params\x18\x01 \x03(\v2\x0f.daml_lf_1.KindR\x06params\x12'\n" +
+	"\x06result\x18\x02 \x01(\v2\x0f.daml_lf_1.KindR\x06resultB\x05\n" +
+	"\x03Sum\"\x87\a\n" +
+	"\x04Type\x12'\n" +
+	"\x03var\x18\x01 \x01(\v2\x13.daml_lf_1.Type.VarH\x00R\x03var\x12'\n" +
+	"\x03con\x18\x02 \x01(\v2\x13.daml_lf_1.Type.ConH\x00R\x03con\x12*\n" +
+	"\x04prim\x18\x03 \x01(\v2\x14.daml_lf_1.Type.PrimH\x00R\x04prim\x120\n" +
+	"\x06forall\x18\x05 \x01(\v2\x16.daml_lf_1.Type.ForallH\x00R\x06forall\x120\n" +
+	"\x06struct\x18\a \x01(\v2\x16.daml_lf_1.Type.StructH\x00R\x06struct\x12\x12\n" +
+	"\x03nat\x18\v \x01(\x12H\x00R\x03nat\x12'\n" +
+	"\x03syn\x18\f \x01(\v2\x13.daml_lf_1.Type.SynH\x00R\x03syn\x12\x1c\n" +
+	"\binterned\x18\r \x01(\x05H\x00R\binterned\x1ax\n" +
 	"\x03Var\x12\x19\n" +
 	"\avar_str\x18\x01 \x01(\tH\x00R\x06varStr\x12*\n" +
-	"\x10var_interned_str\x18\x03 \x01(\x05H\x00R\x0evarInternedStr\x12&\n" +
-	"\x04args\x18\x02 \x03(\v2\x12.daml_lf_1_17.TypeR\x04argsB\x05\n" +
-	"\x03var\x1a^\n" +
-	"\x03Con\x12/\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x05tycon\x12&\n" +
-	"\x04args\x18\x02 \x03(\v2\x12.daml_lf_1_17.TypeR\x04args\x1a^\n" +
-	"\x03Syn\x12/\n" +
-	"\x05tysyn\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeSynNameR\x05tysyn\x12&\n" +
-	"\x04args\x18\x02 \x03(\v2\x12.daml_lf_1_17.TypeR\x04args\x1aZ\n" +
-	"\x04Prim\x12*\n" +
-	"\x04prim\x18\x01 \x01(\x0e2\x16.daml_lf_1_17.PrimTypeR\x04prim\x12&\n" +
-	"\x04args\x18\x02 \x03(\v2\x12.daml_lf_1_17.TypeR\x04args\x1ac\n" +
-	"\x06Forall\x121\n" +
-	"\x04vars\x18\x01 \x03(\v2\x1d.daml_lf_1_17.TypeVarWithKindR\x04vars\x12&\n" +
-	"\x04body\x18\x02 \x01(\v2\x12.daml_lf_1_17.TypeR\x04body\x1a=\n" +
-	"\x06Struct\x123\n" +
-	"\x06fields\x18\x01 \x03(\v2\x1b.daml_lf_1_17.FieldWithTypeR\x06fieldsB\x05\n" +
+	"\x10var_interned_str\x18\x03 \x01(\x05H\x00R\x0evarInternedStr\x12#\n" +
+	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_1.TypeR\x04argsB\x05\n" +
+	"\x03var\x1aX\n" +
+	"\x03Con\x12,\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\x05tycon\x12#\n" +
+	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_1.TypeR\x04args\x1aX\n" +
+	"\x03Syn\x12,\n" +
+	"\x05tysyn\x18\x01 \x01(\v2\x16.daml_lf_1.TypeSynNameR\x05tysyn\x12#\n" +
+	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_1.TypeR\x04args\x1aT\n" +
+	"\x04Prim\x12'\n" +
+	"\x04prim\x18\x01 \x01(\x0e2\x13.daml_lf_1.PrimTypeR\x04prim\x12#\n" +
+	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_1.TypeR\x04args\x1a]\n" +
+	"\x06Forall\x12.\n" +
+	"\x04vars\x18\x01 \x03(\v2\x1a.daml_lf_1.TypeVarWithKindR\x04vars\x12#\n" +
+	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_1.TypeR\x04body\x1a:\n" +
+	"\x06Struct\x120\n" +
+	"\x06fields\x18\x01 \x03(\v2\x18.daml_lf_1.FieldWithTypeR\x06fieldsB\x05\n" +
 	"\x03SumJ\x04\b\x04\x10\x05J\x04\b\x06\x10\aJ\x04\b\b\x10\tJ\x04\b\t\x10\n" +
 	"J\x04\b\n" +
-	"\x10\v\"\x9c\x04\n" +
+	"\x10\v\"\x99\x04\n" +
 	"\aPrimLit\x12\x16\n" +
 	"\x05int64\x18\x01 \x01(\x12H\x00R\x05int64\x12!\n" +
 	"\vdecimal_str\x18\x02 \x01(\tH\x00R\n" +
@@ -10143,8 +10143,8 @@ const file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc = "" +
 	"\ttimestamp\x18\x05 \x01(\x10H\x00R\ttimestamp\x12\x1d\n" +
 	"\tparty_str\x18\a \x01(\tH\x00R\bpartyStr\x12.\n" +
 	"\x12party_interned_str\x18\f \x01(\x05H\x00R\x10partyInternedStr\x12\x14\n" +
-	"\x04date\x18\b \x01(\x05H\x00R\x04date\x12I\n" +
-	"\rrounding_mode\x18\r \x01(\x0e2\".daml_lf_1_17.PrimLit.RoundingModeH\x00R\froundingMode\"t\n" +
+	"\x04date\x18\b \x01(\x05H\x00R\x04date\x12F\n" +
+	"\rrounding_mode\x18\r \x01(\x0e2\x1f.daml_lf_1.PrimLit.RoundingModeH\x00R\froundingMode\"t\n" +
 	"\fRoundingMode\x12\x06\n" +
 	"\x02UP\x10\x00\x12\b\n" +
 	"\x04DOWN\x10\x01\x12\v\n" +
@@ -10154,222 +10154,222 @@ const file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc = "" +
 	"\tHALF_DOWN\x10\x05\x12\r\n" +
 	"\tHALF_EVEN\x10\x06\x12\x0f\n" +
 	"\vUNNECESSARY\x10\aB\x05\n" +
-	"\x03SumJ\x04\b\x03\x10\x04J\x04\b\x06\x10\a\"\xe8\x01\n" +
-	"\bLocation\x12/\n" +
-	"\x06module\x18\x01 \x01(\v2\x17.daml_lf_1_17.ModuleRefR\x06module\x122\n" +
-	"\x05range\x18\x02 \x01(\v2\x1c.daml_lf_1_17.Location.RangeR\x05range\x1aw\n" +
+	"\x03SumJ\x04\b\x03\x10\x04J\x04\b\x06\x10\a\"\xe2\x01\n" +
+	"\bLocation\x12,\n" +
+	"\x06module\x18\x01 \x01(\v2\x14.daml_lf_1.ModuleRefR\x06module\x12/\n" +
+	"\x05range\x18\x02 \x01(\v2\x19.daml_lf_1.Location.RangeR\x05range\x1aw\n" +
 	"\x05Range\x12\x1d\n" +
 	"\n" +
 	"start_line\x18\x01 \x01(\x05R\tstartLine\x12\x1b\n" +
 	"\tstart_col\x18\x02 \x01(\x05R\bstartCol\x12\x19\n" +
 	"\bend_line\x18\x03 \x01(\x05R\aendLine\x12\x17\n" +
-	"\aend_col\x18\x04 \x01(\x05R\x06endCol\"\xce@\n" +
-	"\x04Expr\x122\n" +
-	"\blocation\x18\x19 \x01(\v2\x16.daml_lf_1_17.LocationR\blocation\x12\x19\n" +
+	"\aend_col\x18\x04 \x01(\x05R\x06endCol\"\xdf=\n" +
+	"\x04Expr\x12/\n" +
+	"\blocation\x18\x19 \x01(\v2\x13.daml_lf_1.LocationR\blocation\x12\x19\n" +
 	"\avar_str\x18\x01 \x01(\tH\x00R\x06varStr\x12*\n" +
-	"\x10var_interned_str\x18\x1d \x01(\x05H\x00R\x0evarInternedStr\x12)\n" +
-	"\x03val\x18\x02 \x01(\v2\x15.daml_lf_1_17.ValNameH\x00R\x03val\x129\n" +
-	"\abuiltin\x18\x03 \x01(\x0e2\x1d.daml_lf_1_17.BuiltinFunctionH\x00R\abuiltin\x122\n" +
-	"\bprim_con\x18\x04 \x01(\x0e2\x15.daml_lf_1_17.PrimConH\x00R\aprimCon\x122\n" +
-	"\bprim_lit\x18\x05 \x01(\v2\x15.daml_lf_1_17.PrimLitH\x00R\aprimLit\x124\n" +
-	"\arec_con\x18\x06 \x01(\v2\x19.daml_lf_1_17.Expr.RecConH\x00R\x06recCon\x127\n" +
-	"\brec_proj\x18\a \x01(\v2\x1a.daml_lf_1_17.Expr.RecProjH\x00R\arecProj\x124\n" +
-	"\arec_upd\x18\x16 \x01(\v2\x19.daml_lf_1_17.Expr.RecUpdH\x00R\x06recUpd\x12@\n" +
-	"\vvariant_con\x18\b \x01(\v2\x1d.daml_lf_1_17.Expr.VariantConH\x00R\n" +
-	"variantCon\x127\n" +
-	"\benum_con\x18\x1c \x01(\v2\x1a.daml_lf_1_17.Expr.EnumConH\x00R\aenumCon\x12=\n" +
+	"\x10var_interned_str\x18\x1d \x01(\x05H\x00R\x0evarInternedStr\x12&\n" +
+	"\x03val\x18\x02 \x01(\v2\x12.daml_lf_1.ValNameH\x00R\x03val\x126\n" +
+	"\abuiltin\x18\x03 \x01(\x0e2\x1a.daml_lf_1.BuiltinFunctionH\x00R\abuiltin\x12/\n" +
+	"\bprim_con\x18\x04 \x01(\x0e2\x12.daml_lf_1.PrimConH\x00R\aprimCon\x12/\n" +
+	"\bprim_lit\x18\x05 \x01(\v2\x12.daml_lf_1.PrimLitH\x00R\aprimLit\x121\n" +
+	"\arec_con\x18\x06 \x01(\v2\x16.daml_lf_1.Expr.RecConH\x00R\x06recCon\x124\n" +
+	"\brec_proj\x18\a \x01(\v2\x17.daml_lf_1.Expr.RecProjH\x00R\arecProj\x121\n" +
+	"\arec_upd\x18\x16 \x01(\v2\x16.daml_lf_1.Expr.RecUpdH\x00R\x06recUpd\x12=\n" +
+	"\vvariant_con\x18\b \x01(\v2\x1a.daml_lf_1.Expr.VariantConH\x00R\n" +
+	"variantCon\x124\n" +
+	"\benum_con\x18\x1c \x01(\v2\x17.daml_lf_1.Expr.EnumConH\x00R\aenumCon\x12:\n" +
 	"\n" +
-	"struct_con\x18\t \x01(\v2\x1c.daml_lf_1_17.Expr.StructConH\x00R\tstructCon\x12@\n" +
+	"struct_con\x18\t \x01(\v2\x19.daml_lf_1.Expr.StructConH\x00R\tstructCon\x12=\n" +
 	"\vstruct_proj\x18\n" +
-	" \x01(\v2\x1d.daml_lf_1_17.Expr.StructProjH\x00R\n" +
-	"structProj\x12=\n" +
+	" \x01(\v2\x1a.daml_lf_1.Expr.StructProjH\x00R\n" +
+	"structProj\x12:\n" +
 	"\n" +
-	"struct_upd\x18\x17 \x01(\v2\x1c.daml_lf_1_17.Expr.StructUpdH\x00R\tstructUpd\x12*\n" +
-	"\x03app\x18\v \x01(\v2\x16.daml_lf_1_17.Expr.AppH\x00R\x03app\x121\n" +
-	"\x06ty_app\x18\f \x01(\v2\x18.daml_lf_1_17.Expr.TyAppH\x00R\x05tyApp\x12*\n" +
-	"\x03abs\x18\r \x01(\v2\x16.daml_lf_1_17.Expr.AbsH\x00R\x03abs\x121\n" +
-	"\x06ty_abs\x18\x0e \x01(\v2\x18.daml_lf_1_17.Expr.TyAbsH\x00R\x05tyAbs\x12(\n" +
-	"\x04case\x18\x0f \x01(\v2\x12.daml_lf_1_17.CaseH\x00R\x04case\x12'\n" +
-	"\x03let\x18\x10 \x01(\v2\x13.daml_lf_1_17.BlockH\x00R\x03let\x12*\n" +
-	"\x03nil\x18\x11 \x01(\v2\x16.daml_lf_1_17.Expr.NilH\x00R\x03nil\x12-\n" +
-	"\x04cons\x18\x12 \x01(\v2\x17.daml_lf_1_17.Expr.ConsH\x00R\x04cons\x12.\n" +
-	"\x06update\x18\x14 \x01(\v2\x14.daml_lf_1_17.UpdateH\x00R\x06update\x124\n" +
-	"\bscenario\x18\x15 \x01(\v2\x16.daml_lf_1_17.ScenarioH\x00R\bscenario\x12F\n" +
-	"\roptional_none\x18\x1a \x01(\v2\x1f.daml_lf_1_17.Expr.OptionalNoneH\x00R\foptionalNone\x12F\n" +
-	"\roptional_some\x18\x1b \x01(\v2\x1f.daml_lf_1_17.Expr.OptionalSomeH\x00R\foptionalSome\x121\n" +
-	"\x06to_any\x18\x1e \x01(\v2\x18.daml_lf_1_17.Expr.ToAnyH\x00R\x05toAny\x127\n" +
-	"\bfrom_any\x18\x1f \x01(\v2\x1a.daml_lf_1_17.Expr.FromAnyH\x00R\afromAny\x12/\n" +
-	"\btype_rep\x18  \x01(\v2\x12.daml_lf_1_17.TypeH\x00R\atypeRep\x12M\n" +
-	"\x10to_any_exception\x18! \x01(\v2!.daml_lf_1_17.Expr.ToAnyExceptionH\x00R\x0etoAnyException\x12S\n" +
-	"\x12from_any_exception\x18\" \x01(\v2#.daml_lf_1_17.Expr.FromAnyExceptionH\x00R\x10fromAnyException\x120\n" +
-	"\x05throw\x18# \x01(\v2\x18.daml_lf_1_17.Expr.ThrowH\x00R\x05throw\x12C\n" +
-	"\fto_interface\x18$ \x01(\v2\x1e.daml_lf_1_17.Expr.ToInterfaceH\x00R\vtoInterface\x12I\n" +
-	"\x0efrom_interface\x18% \x01(\v2 .daml_lf_1_17.Expr.FromInterfaceH\x00R\rfromInterface\x12I\n" +
-	"\x0ecall_interface\x18& \x01(\v2 .daml_lf_1_17.Expr.CallInterfaceH\x00R\rcallInterface\x12X\n" +
-	"\x13signatory_interface\x18' \x01(\v2%.daml_lf_1_17.Expr.SignatoryInterfaceH\x00R\x12signatoryInterface\x12U\n" +
-	"\x12observer_interface\x18( \x01(\v2$.daml_lf_1_17.Expr.ObserverInterfaceH\x00R\x11observerInterface\x12I\n" +
-	"\x0eview_interface\x18) \x01(\v2 .daml_lf_1_17.Expr.ViewInterfaceH\x00R\rviewInterface\x12\\\n" +
-	"\x15unsafe_from_interface\x18* \x01(\v2&.daml_lf_1_17.Expr.UnsafeFromInterfaceH\x00R\x13unsafeFromInterface\x12l\n" +
-	"\x1binterface_template_type_rep\x18+ \x01(\v2+.daml_lf_1_17.Expr.InterfaceTemplateTypeRepH\x00R\x18interfaceTemplateTypeRep\x12\\\n" +
-	"\x15to_required_interface\x18, \x01(\v2&.daml_lf_1_17.Expr.ToRequiredInterfaceH\x00R\x13toRequiredInterface\x12b\n" +
-	"\x17from_required_interface\x18- \x01(\v2(.daml_lf_1_17.Expr.FromRequiredInterfaceH\x00R\x15fromRequiredInterface\x12u\n" +
-	"\x1eunsafe_from_required_interface\x18. \x01(\v2..daml_lf_1_17.Expr.UnsafeFromRequiredInterfaceH\x00R\x1bunsafeFromRequiredInterface\x12R\n" +
-	"\x11choice_controller\x18/ \x01(\v2#.daml_lf_1_17.Expr.ChoiceControllerH\x00R\x10choiceController\x12L\n" +
-	"\x0fchoice_observer\x180 \x01(\v2!.daml_lf_1_17.Expr.ChoiceObserverH\x00R\x0echoiceObserver\x12F\n" +
-	"\fexperimental\x18\x8fN \x01(\v2\x1f.daml_lf_1_17.Expr.ExperimentalH\x00R\fexperimental\x1ak\n" +
-	"\x06RecCon\x12,\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_1_17.Type.ConR\x05tycon\x123\n" +
-	"\x06fields\x18\x02 \x03(\v2\x1b.daml_lf_1_17.FieldWithExprR\x06fields\x1a\xbb\x01\n" +
-	"\aRecProj\x12,\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_1_17.Type.ConR\x05tycon\x12\x1d\n" +
+	"struct_upd\x18\x17 \x01(\v2\x19.daml_lf_1.Expr.StructUpdH\x00R\tstructUpd\x12'\n" +
+	"\x03app\x18\v \x01(\v2\x13.daml_lf_1.Expr.AppH\x00R\x03app\x12.\n" +
+	"\x06ty_app\x18\f \x01(\v2\x15.daml_lf_1.Expr.TyAppH\x00R\x05tyApp\x12'\n" +
+	"\x03abs\x18\r \x01(\v2\x13.daml_lf_1.Expr.AbsH\x00R\x03abs\x12.\n" +
+	"\x06ty_abs\x18\x0e \x01(\v2\x15.daml_lf_1.Expr.TyAbsH\x00R\x05tyAbs\x12%\n" +
+	"\x04case\x18\x0f \x01(\v2\x0f.daml_lf_1.CaseH\x00R\x04case\x12$\n" +
+	"\x03let\x18\x10 \x01(\v2\x10.daml_lf_1.BlockH\x00R\x03let\x12'\n" +
+	"\x03nil\x18\x11 \x01(\v2\x13.daml_lf_1.Expr.NilH\x00R\x03nil\x12*\n" +
+	"\x04cons\x18\x12 \x01(\v2\x14.daml_lf_1.Expr.ConsH\x00R\x04cons\x12+\n" +
+	"\x06update\x18\x14 \x01(\v2\x11.daml_lf_1.UpdateH\x00R\x06update\x121\n" +
+	"\bscenario\x18\x15 \x01(\v2\x13.daml_lf_1.ScenarioH\x00R\bscenario\x12C\n" +
+	"\roptional_none\x18\x1a \x01(\v2\x1c.daml_lf_1.Expr.OptionalNoneH\x00R\foptionalNone\x12C\n" +
+	"\roptional_some\x18\x1b \x01(\v2\x1c.daml_lf_1.Expr.OptionalSomeH\x00R\foptionalSome\x12.\n" +
+	"\x06to_any\x18\x1e \x01(\v2\x15.daml_lf_1.Expr.ToAnyH\x00R\x05toAny\x124\n" +
+	"\bfrom_any\x18\x1f \x01(\v2\x17.daml_lf_1.Expr.FromAnyH\x00R\afromAny\x12,\n" +
+	"\btype_rep\x18  \x01(\v2\x0f.daml_lf_1.TypeH\x00R\atypeRep\x12J\n" +
+	"\x10to_any_exception\x18! \x01(\v2\x1e.daml_lf_1.Expr.ToAnyExceptionH\x00R\x0etoAnyException\x12P\n" +
+	"\x12from_any_exception\x18\" \x01(\v2 .daml_lf_1.Expr.FromAnyExceptionH\x00R\x10fromAnyException\x12-\n" +
+	"\x05throw\x18# \x01(\v2\x15.daml_lf_1.Expr.ThrowH\x00R\x05throw\x12@\n" +
+	"\fto_interface\x18$ \x01(\v2\x1b.daml_lf_1.Expr.ToInterfaceH\x00R\vtoInterface\x12F\n" +
+	"\x0efrom_interface\x18% \x01(\v2\x1d.daml_lf_1.Expr.FromInterfaceH\x00R\rfromInterface\x12F\n" +
+	"\x0ecall_interface\x18& \x01(\v2\x1d.daml_lf_1.Expr.CallInterfaceH\x00R\rcallInterface\x12U\n" +
+	"\x13signatory_interface\x18' \x01(\v2\".daml_lf_1.Expr.SignatoryInterfaceH\x00R\x12signatoryInterface\x12R\n" +
+	"\x12observer_interface\x18( \x01(\v2!.daml_lf_1.Expr.ObserverInterfaceH\x00R\x11observerInterface\x12F\n" +
+	"\x0eview_interface\x18) \x01(\v2\x1d.daml_lf_1.Expr.ViewInterfaceH\x00R\rviewInterface\x12Y\n" +
+	"\x15unsafe_from_interface\x18* \x01(\v2#.daml_lf_1.Expr.UnsafeFromInterfaceH\x00R\x13unsafeFromInterface\x12i\n" +
+	"\x1binterface_template_type_rep\x18+ \x01(\v2(.daml_lf_1.Expr.InterfaceTemplateTypeRepH\x00R\x18interfaceTemplateTypeRep\x12Y\n" +
+	"\x15to_required_interface\x18, \x01(\v2#.daml_lf_1.Expr.ToRequiredInterfaceH\x00R\x13toRequiredInterface\x12_\n" +
+	"\x17from_required_interface\x18- \x01(\v2%.daml_lf_1.Expr.FromRequiredInterfaceH\x00R\x15fromRequiredInterface\x12r\n" +
+	"\x1eunsafe_from_required_interface\x18. \x01(\v2+.daml_lf_1.Expr.UnsafeFromRequiredInterfaceH\x00R\x1bunsafeFromRequiredInterface\x12O\n" +
+	"\x11choice_controller\x18/ \x01(\v2 .daml_lf_1.Expr.ChoiceControllerH\x00R\x10choiceController\x12I\n" +
+	"\x0fchoice_observer\x180 \x01(\v2\x1e.daml_lf_1.Expr.ChoiceObserverH\x00R\x0echoiceObserver\x12C\n" +
+	"\fexperimental\x18\x8fN \x01(\v2\x1c.daml_lf_1.Expr.ExperimentalH\x00R\fexperimental\x1ae\n" +
+	"\x06RecCon\x12)\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_1.Type.ConR\x05tycon\x120\n" +
+	"\x06fields\x18\x02 \x03(\v2\x18.daml_lf_1.FieldWithExprR\x06fields\x1a\xb5\x01\n" +
+	"\aRecProj\x12)\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_1.Type.ConR\x05tycon\x12\x1d\n" +
 	"\tfield_str\x18\x02 \x01(\tH\x00R\bfieldStr\x12.\n" +
-	"\x12field_interned_str\x18\x04 \x01(\x05H\x00R\x10fieldInternedStr\x12*\n" +
-	"\x06record\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x06recordB\a\n" +
-	"\x05field\x1a\xe6\x01\n" +
-	"\x06RecUpd\x12,\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_1_17.Type.ConR\x05tycon\x12\x1d\n" +
+	"\x12field_interned_str\x18\x04 \x01(\x05H\x00R\x10fieldInternedStr\x12'\n" +
+	"\x06record\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x06recordB\a\n" +
+	"\x05field\x1a\xdd\x01\n" +
+	"\x06RecUpd\x12)\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_1.Type.ConR\x05tycon\x12\x1d\n" +
 	"\tfield_str\x18\x02 \x01(\tH\x00R\bfieldStr\x12.\n" +
-	"\x12field_interned_str\x18\x05 \x01(\x05H\x00R\x10fieldInternedStr\x12*\n" +
-	"\x06record\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x06record\x12*\n" +
-	"\x06update\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\x06updateB\a\n" +
-	"\x05field\x1a\xe3\x01\n" +
+	"\x12field_interned_str\x18\x05 \x01(\x05H\x00R\x10fieldInternedStr\x12'\n" +
+	"\x06record\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x06record\x12'\n" +
+	"\x06update\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\x06updateB\a\n" +
+	"\x05field\x1a\xdd\x01\n" +
 	"\n" +
-	"VariantCon\x12,\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_1_17.Type.ConR\x05tycon\x12(\n" +
+	"VariantCon\x12)\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_1.Type.ConR\x05tycon\x12(\n" +
 	"\x0fvariant_con_str\x18\x02 \x01(\tH\x00R\rvariantConStr\x129\n" +
-	"\x18variant_con_interned_str\x18\x04 \x01(\x05H\x00R\x15variantConInternedStr\x123\n" +
-	"\vvariant_arg\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\n" +
+	"\x18variant_con_interned_str\x18\x04 \x01(\x05H\x00R\x15variantConInternedStr\x120\n" +
+	"\vvariant_arg\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\n" +
 	"variantArgB\r\n" +
-	"\vvariant_con\x1a\x9f\x01\n" +
-	"\aEnumCon\x12/\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x05tycon\x12\"\n" +
+	"\vvariant_con\x1a\x9c\x01\n" +
+	"\aEnumCon\x12,\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\x05tycon\x12\"\n" +
 	"\fenum_con_str\x18\x02 \x01(\tH\x00R\n" +
 	"enumConStr\x123\n" +
 	"\x15enum_con_interned_str\x18\x03 \x01(\x05H\x00R\x12enumConInternedStrB\n" +
 	"\n" +
-	"\benum_con\x1a@\n" +
-	"\tStructCon\x123\n" +
-	"\x06fields\x18\x01 \x03(\v2\x1b.daml_lf_1_17.FieldWithExprR\x06fields\x1a\x90\x01\n" +
+	"\benum_con\x1a=\n" +
+	"\tStructCon\x120\n" +
+	"\x06fields\x18\x01 \x03(\v2\x18.daml_lf_1.FieldWithExprR\x06fields\x1a\x8d\x01\n" +
 	"\n" +
 	"StructProj\x12\x1d\n" +
 	"\tfield_str\x18\x01 \x01(\tH\x00R\bfieldStr\x12.\n" +
-	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStr\x12*\n" +
-	"\x06struct\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x06structB\a\n" +
-	"\x05field\x1a\xbb\x01\n" +
+	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStr\x12'\n" +
+	"\x06struct\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x06structB\a\n" +
+	"\x05field\x1a\xb5\x01\n" +
 	"\tStructUpd\x12\x1d\n" +
 	"\tfield_str\x18\x01 \x01(\tH\x00R\bfieldStr\x12.\n" +
-	"\x12field_interned_str\x18\x04 \x01(\x05H\x00R\x10fieldInternedStr\x12*\n" +
-	"\x06struct\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x06struct\x12*\n" +
-	"\x06update\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x06updateB\a\n" +
-	"\x05field\x1aS\n" +
-	"\x03App\x12$\n" +
-	"\x03fun\x18\x01 \x01(\v2\x12.daml_lf_1_17.ExprR\x03fun\x12&\n" +
-	"\x04args\x18\x02 \x03(\v2\x12.daml_lf_1_17.ExprR\x04args\x1aY\n" +
-	"\x05TyApp\x12&\n" +
-	"\x04expr\x18\x01 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x12(\n" +
-	"\x05types\x18\x02 \x03(\v2\x12.daml_lf_1_17.TypeR\x05types\x1a^\n" +
-	"\x03Abs\x12/\n" +
-	"\x05param\x18\x01 \x03(\v2\x19.daml_lf_1_17.VarWithTypeR\x05param\x12&\n" +
-	"\x04body\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04body\x1ad\n" +
-	"\x05TyAbs\x123\n" +
-	"\x05param\x18\x01 \x03(\v2\x1d.daml_lf_1_17.TypeVarWithKindR\x05param\x12&\n" +
-	"\x04body\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04body\x1a-\n" +
-	"\x03Nil\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x1a\x80\x01\n" +
-	"\x04Cons\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12(\n" +
-	"\x05front\x18\x02 \x03(\v2\x12.daml_lf_1_17.ExprR\x05front\x12&\n" +
-	"\x04tail\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x04tail\x1a6\n" +
-	"\fOptionalNone\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x1a^\n" +
-	"\fOptionalSome\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12&\n" +
-	"\x04body\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04body\x1aW\n" +
-	"\x05ToAny\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1aY\n" +
-	"\aFromAny\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1a`\n" +
-	"\x0eToAnyException\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1ab\n" +
-	"\x10FromAnyException\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1a\xb2\x01\n" +
-	"\x05Throw\x123\n" +
-	"\vreturn_type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\n" +
-	"returnType\x129\n" +
-	"\x0eexception_type\x18\x02 \x01(\v2\x12.daml_lf_1_17.TypeR\rexceptionType\x129\n" +
-	"\x0eexception_expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\rexceptionExpr\x1a\xc8\x01\n" +
-	"\vToInterface\x12@\n" +
-	"\x0einterface_type\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\rinterfaceType\x12>\n" +
-	"\rtemplate_type\x18\x02 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\ftemplateType\x127\n" +
-	"\rtemplate_expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\ftemplateExpr\x1a\xcc\x01\n" +
-	"\rFromInterface\x12@\n" +
-	"\x0einterface_type\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\rinterfaceType\x12>\n" +
-	"\rtemplate_type\x18\x02 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\ftemplateType\x129\n" +
-	"\x0einterface_expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\rinterfaceExpr\x1a\xbe\x01\n" +
-	"\rCallInterface\x12@\n" +
-	"\x0einterface_type\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\rinterfaceType\x120\n" +
-	"\x14method_interned_name\x18\x02 \x01(\x05R\x12methodInternedName\x129\n" +
-	"\x0einterface_expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\rinterfaceExpr\x1ap\n" +
-	"\rViewInterface\x127\n" +
-	"\tinterface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\tinterface\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1au\n" +
-	"\x12SignatoryInterface\x127\n" +
-	"\tinterface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\tinterface\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1at\n" +
-	"\x11ObserverInterface\x127\n" +
-	"\tinterface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\tinterface\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1a\x90\x02\n" +
-	"\x13UnsafeFromInterface\x12@\n" +
-	"\x0einterface_type\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\rinterfaceType\x12>\n" +
-	"\rtemplate_type\x18\x02 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\ftemplateType\x12<\n" +
-	"\x10contract_id_expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x0econtractIdExpr\x129\n" +
-	"\x0einterface_expr\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\rinterfaceExpr\x1a\xd3\x01\n" +
-	"\x13ToRequiredInterface\x12H\n" +
-	"\x12required_interface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x11requiredInterface\x12J\n" +
-	"\x13requiring_interface\x18\x02 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x12requiringInterface\x12&\n" +
-	"\x04expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1a\xd5\x01\n" +
-	"\x15FromRequiredInterface\x12H\n" +
-	"\x12required_interface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x11requiredInterface\x12J\n" +
-	"\x13requiring_interface\x18\x02 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x12requiringInterface\x12&\n" +
-	"\x04expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1a\xac\x02\n" +
-	"\x1bUnsafeFromRequiredInterface\x12H\n" +
-	"\x12required_interface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x11requiredInterface\x12J\n" +
-	"\x13requiring_interface\x18\x02 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x12requiringInterface\x12<\n" +
-	"\x10contract_id_expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x0econtractIdExpr\x129\n" +
-	"\x0einterface_expr\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\rinterfaceExpr\x1a{\n" +
-	"\x18InterfaceTemplateTypeRep\x127\n" +
-	"\tinterface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\tinterface\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1a\xee\x01\n" +
-	"\x10ChoiceController\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x127\n" +
-	"\rcontract_expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\fcontractExpr\x12:\n" +
-	"\x0fchoice_arg_expr\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\rchoiceArgExpr\x1a\xec\x01\n" +
-	"\x0eChoiceObserver\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x127\n" +
-	"\rcontract_expr\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\fcontractExpr\x12:\n" +
-	"\x0fchoice_arg_expr\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\rchoiceArgExpr\x1aJ\n" +
+	"\x12field_interned_str\x18\x04 \x01(\x05H\x00R\x10fieldInternedStr\x12'\n" +
+	"\x06struct\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x06struct\x12'\n" +
+	"\x06update\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x06updateB\a\n" +
+	"\x05field\x1aM\n" +
+	"\x03App\x12!\n" +
+	"\x03fun\x18\x01 \x01(\v2\x0f.daml_lf_1.ExprR\x03fun\x12#\n" +
+	"\x04args\x18\x02 \x03(\v2\x0f.daml_lf_1.ExprR\x04args\x1aS\n" +
+	"\x05TyApp\x12#\n" +
+	"\x04expr\x18\x01 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x12%\n" +
+	"\x05types\x18\x02 \x03(\v2\x0f.daml_lf_1.TypeR\x05types\x1aX\n" +
+	"\x03Abs\x12,\n" +
+	"\x05param\x18\x01 \x03(\v2\x16.daml_lf_1.VarWithTypeR\x05param\x12#\n" +
+	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04body\x1a^\n" +
+	"\x05TyAbs\x120\n" +
+	"\x05param\x18\x01 \x03(\v2\x1a.daml_lf_1.TypeVarWithKindR\x05param\x12#\n" +
+	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04body\x1a*\n" +
+	"\x03Nil\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x1aw\n" +
+	"\x04Cons\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12%\n" +
+	"\x05front\x18\x02 \x03(\v2\x0f.daml_lf_1.ExprR\x05front\x12#\n" +
+	"\x04tail\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x04tail\x1a3\n" +
+	"\fOptionalNone\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x1aX\n" +
+	"\fOptionalSome\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12#\n" +
+	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04body\x1aQ\n" +
+	"\x05ToAny\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1aS\n" +
+	"\aFromAny\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1aZ\n" +
+	"\x0eToAnyException\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1a\\\n" +
+	"\x10FromAnyException\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1a\xa9\x01\n" +
+	"\x05Throw\x120\n" +
+	"\vreturn_type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\n" +
+	"returnType\x126\n" +
+	"\x0eexception_type\x18\x02 \x01(\v2\x0f.daml_lf_1.TypeR\rexceptionType\x126\n" +
+	"\x0eexception_expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\rexceptionExpr\x1a\xbf\x01\n" +
+	"\vToInterface\x12=\n" +
+	"\x0einterface_type\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\rinterfaceType\x12;\n" +
+	"\rtemplate_type\x18\x02 \x01(\v2\x16.daml_lf_1.TypeConNameR\ftemplateType\x124\n" +
+	"\rtemplate_expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\ftemplateExpr\x1a\xc3\x01\n" +
+	"\rFromInterface\x12=\n" +
+	"\x0einterface_type\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\rinterfaceType\x12;\n" +
+	"\rtemplate_type\x18\x02 \x01(\v2\x16.daml_lf_1.TypeConNameR\ftemplateType\x126\n" +
+	"\x0einterface_expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\rinterfaceExpr\x1a\xb8\x01\n" +
+	"\rCallInterface\x12=\n" +
+	"\x0einterface_type\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\rinterfaceType\x120\n" +
+	"\x14method_interned_name\x18\x02 \x01(\x05R\x12methodInternedName\x126\n" +
+	"\x0einterface_expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\rinterfaceExpr\x1aj\n" +
+	"\rViewInterface\x124\n" +
+	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\tinterface\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1ao\n" +
+	"\x12SignatoryInterface\x124\n" +
+	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\tinterface\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1an\n" +
+	"\x11ObserverInterface\x124\n" +
+	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\tinterface\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1a\x84\x02\n" +
+	"\x13UnsafeFromInterface\x12=\n" +
+	"\x0einterface_type\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\rinterfaceType\x12;\n" +
+	"\rtemplate_type\x18\x02 \x01(\v2\x16.daml_lf_1.TypeConNameR\ftemplateType\x129\n" +
+	"\x10contract_id_expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x0econtractIdExpr\x126\n" +
+	"\x0einterface_expr\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\rinterfaceExpr\x1a\xca\x01\n" +
+	"\x13ToRequiredInterface\x12E\n" +
+	"\x12required_interface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\x11requiredInterface\x12G\n" +
+	"\x13requiring_interface\x18\x02 \x01(\v2\x16.daml_lf_1.TypeConNameR\x12requiringInterface\x12#\n" +
+	"\x04expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1a\xcc\x01\n" +
+	"\x15FromRequiredInterface\x12E\n" +
+	"\x12required_interface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\x11requiredInterface\x12G\n" +
+	"\x13requiring_interface\x18\x02 \x01(\v2\x16.daml_lf_1.TypeConNameR\x12requiringInterface\x12#\n" +
+	"\x04expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1a\xa0\x02\n" +
+	"\x1bUnsafeFromRequiredInterface\x12E\n" +
+	"\x12required_interface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\x11requiredInterface\x12G\n" +
+	"\x13requiring_interface\x18\x02 \x01(\v2\x16.daml_lf_1.TypeConNameR\x12requiringInterface\x129\n" +
+	"\x10contract_id_expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x0econtractIdExpr\x126\n" +
+	"\x0einterface_expr\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\rinterfaceExpr\x1au\n" +
+	"\x18InterfaceTemplateTypeRep\x124\n" +
+	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\tinterface\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1a\xe5\x01\n" +
+	"\x10ChoiceController\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x124\n" +
+	"\rcontract_expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\fcontractExpr\x127\n" +
+	"\x0fchoice_arg_expr\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\rchoiceArgExpr\x1a\xe3\x01\n" +
+	"\x0eChoiceObserver\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x124\n" +
+	"\rcontract_expr\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\fcontractExpr\x127\n" +
+	"\x0fchoice_arg_expr\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\rchoiceArgExpr\x1aG\n" +
 	"\fExperimental\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12&\n" +
-	"\x04type\x18\x02 \x01(\v2\x12.daml_lf_1_17.TypeR\x04typeB\x05\n" +
-	"\x03SumJ\x04\b\x13\x10\x14J\x04\b\x18\x10\x19\"\xd5\t\n" +
-	"\aCaseAlt\x12.\n" +
-	"\adefault\x18\x01 \x01(\v2\x12.daml_lf_1_17.UnitH\x00R\adefault\x129\n" +
-	"\avariant\x18\x02 \x01(\v2\x1d.daml_lf_1_17.CaseAlt.VariantH\x00R\avariant\x122\n" +
-	"\bprim_con\x18\x03 \x01(\x0e2\x15.daml_lf_1_17.PrimConH\x00R\aprimCon\x12&\n" +
-	"\x03nil\x18\x04 \x01(\v2\x12.daml_lf_1_17.UnitH\x00R\x03nil\x120\n" +
-	"\x04cons\x18\x05 \x01(\v2\x1a.daml_lf_1_17.CaseAlt.ConsH\x00R\x04cons\x129\n" +
-	"\roptional_none\x18\a \x01(\v2\x12.daml_lf_1_17.UnitH\x00R\foptionalNone\x12I\n" +
-	"\roptional_some\x18\b \x01(\v2\".daml_lf_1_17.CaseAlt.OptionalSomeH\x00R\foptionalSome\x120\n" +
-	"\x04enum\x18\t \x01(\v2\x1a.daml_lf_1_17.CaseAlt.EnumH\x00R\x04enum\x12&\n" +
-	"\x04body\x18\x06 \x01(\v2\x12.daml_lf_1_17.ExprR\x04body\x1a\xf5\x01\n" +
-	"\aVariant\x12+\n" +
-	"\x03con\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x03con\x12!\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12#\n" +
+	"\x04type\x18\x02 \x01(\v2\x0f.daml_lf_1.TypeR\x04typeB\x05\n" +
+	"\x03SumJ\x04\b\x13\x10\x14J\x04\b\x18\x10\x19\"\xb4\t\n" +
+	"\aCaseAlt\x12+\n" +
+	"\adefault\x18\x01 \x01(\v2\x0f.daml_lf_1.UnitH\x00R\adefault\x126\n" +
+	"\avariant\x18\x02 \x01(\v2\x1a.daml_lf_1.CaseAlt.VariantH\x00R\avariant\x12/\n" +
+	"\bprim_con\x18\x03 \x01(\x0e2\x12.daml_lf_1.PrimConH\x00R\aprimCon\x12#\n" +
+	"\x03nil\x18\x04 \x01(\v2\x0f.daml_lf_1.UnitH\x00R\x03nil\x12-\n" +
+	"\x04cons\x18\x05 \x01(\v2\x17.daml_lf_1.CaseAlt.ConsH\x00R\x04cons\x126\n" +
+	"\roptional_none\x18\a \x01(\v2\x0f.daml_lf_1.UnitH\x00R\foptionalNone\x12F\n" +
+	"\roptional_some\x18\b \x01(\v2\x1f.daml_lf_1.CaseAlt.OptionalSomeH\x00R\foptionalSome\x12-\n" +
+	"\x04enum\x18\t \x01(\v2\x17.daml_lf_1.CaseAlt.EnumH\x00R\x04enum\x12#\n" +
+	"\x04body\x18\x06 \x01(\v2\x0f.daml_lf_1.ExprR\x04body\x1a\xf2\x01\n" +
+	"\aVariant\x12(\n" +
+	"\x03con\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\x03con\x12!\n" +
 	"\vvariant_str\x18\x02 \x01(\tH\x00R\n" +
 	"variantStr\x122\n" +
 	"\x14variant_interned_str\x18\x04 \x01(\x05H\x00R\x12variantInternedStr\x12\x1f\n" +
@@ -10377,9 +10377,9 @@ const file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc = "" +
 	"binder_str\x18\x03 \x01(\tH\x01R\tbinderStr\x120\n" +
 	"\x13binder_interned_str\x18\x05 \x01(\x05H\x01R\x11binderInternedStrB\t\n" +
 	"\avariantB\b\n" +
-	"\x06binder\x1a\xa9\x01\n" +
-	"\x04Enum\x12+\n" +
-	"\x03con\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\x03con\x12)\n" +
+	"\x06binder\x1a\xa6\x01\n" +
+	"\x04Enum\x12(\n" +
+	"\x03con\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\x03con\x12)\n" +
 	"\x0fconstructor_str\x18\x02 \x01(\tH\x00R\x0econstructorStr\x12:\n" +
 	"\x18constructor_interned_str\x18\x03 \x01(\x05H\x00R\x16constructorInternedStrB\r\n" +
 	"\vconstructor\x1a\xd0\x01\n" +
@@ -10400,290 +10400,290 @@ const file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc = "" +
 	"\x15var_body_interned_str\x18\x02 \x01(\x05H\x00R\x12varBodyInternedStrB\n" +
 	"\n" +
 	"\bvar_bodyB\x05\n" +
-	"\x03Sum\"[\n" +
-	"\x04Case\x12(\n" +
-	"\x05scrut\x18\x01 \x01(\v2\x12.daml_lf_1_17.ExprR\x05scrut\x12)\n" +
-	"\x04alts\x18\x02 \x03(\v2\x15.daml_lf_1_17.CaseAltR\x04alts\"b\n" +
-	"\x05Block\x121\n" +
-	"\bbindings\x18\x01 \x03(\v2\x15.daml_lf_1_17.BindingR\bbindings\x12&\n" +
-	"\x04body\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04body\"V\n" +
-	"\x04Pure\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\"\x9a\x19\n" +
-	"\x06Update\x12(\n" +
-	"\x04pure\x18\x01 \x01(\v2\x12.daml_lf_1_17.PureH\x00R\x04pure\x12+\n" +
-	"\x05block\x18\x02 \x01(\v2\x13.daml_lf_1_17.BlockH\x00R\x05block\x125\n" +
-	"\x06create\x18\x03 \x01(\v2\x1b.daml_lf_1_17.Update.CreateH\x00R\x06create\x12;\n" +
-	"\bexercise\x18\x04 \x01(\v2\x1d.daml_lf_1_17.Update.ExerciseH\x00R\bexercise\x12L\n" +
+	"\x03Sum\"U\n" +
+	"\x04Case\x12%\n" +
+	"\x05scrut\x18\x01 \x01(\v2\x0f.daml_lf_1.ExprR\x05scrut\x12&\n" +
+	"\x04alts\x18\x02 \x03(\v2\x12.daml_lf_1.CaseAltR\x04alts\"\\\n" +
+	"\x05Block\x12.\n" +
+	"\bbindings\x18\x01 \x03(\v2\x12.daml_lf_1.BindingR\bbindings\x12#\n" +
+	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04body\"P\n" +
+	"\x04Pure\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\"\x84\x18\n" +
+	"\x06Update\x12%\n" +
+	"\x04pure\x18\x01 \x01(\v2\x0f.daml_lf_1.PureH\x00R\x04pure\x12(\n" +
+	"\x05block\x18\x02 \x01(\v2\x10.daml_lf_1.BlockH\x00R\x05block\x122\n" +
+	"\x06create\x18\x03 \x01(\v2\x18.daml_lf_1.Update.CreateH\x00R\x06create\x128\n" +
+	"\bexercise\x18\x04 \x01(\v2\x1a.daml_lf_1.Update.ExerciseH\x00R\bexercise\x12I\n" +
 	"\x0fexercise_by_key\x18\n" +
-	" \x01(\v2\".daml_lf_1_17.Update.ExerciseByKeyH\x00R\rexerciseByKey\x122\n" +
-	"\x05fetch\x18\x05 \x01(\v2\x1a.daml_lf_1_17.Update.FetchH\x00R\x05fetch\x12/\n" +
-	"\bget_time\x18\x06 \x01(\v2\x12.daml_lf_1_17.UnitH\x00R\agetTime\x12H\n" +
-	"\rlookup_by_key\x18\b \x01(\v2\".daml_lf_1_17.Update.RetrieveByKeyH\x00R\vlookupByKey\x12F\n" +
-	"\ffetch_by_key\x18\t \x01(\v2\".daml_lf_1_17.Update.RetrieveByKeyH\x00R\n" +
-	"fetchByKey\x12?\n" +
+	" \x01(\v2\x1f.daml_lf_1.Update.ExerciseByKeyH\x00R\rexerciseByKey\x12/\n" +
+	"\x05fetch\x18\x05 \x01(\v2\x17.daml_lf_1.Update.FetchH\x00R\x05fetch\x12,\n" +
+	"\bget_time\x18\x06 \x01(\v2\x0f.daml_lf_1.UnitH\x00R\agetTime\x12E\n" +
+	"\rlookup_by_key\x18\b \x01(\v2\x1f.daml_lf_1.Update.RetrieveByKeyH\x00R\vlookupByKey\x12C\n" +
+	"\ffetch_by_key\x18\t \x01(\v2\x1f.daml_lf_1.Update.RetrieveByKeyH\x00R\n" +
+	"fetchByKey\x12<\n" +
 	"\n" +
-	"embed_expr\x18\a \x01(\v2\x1e.daml_lf_1_17.Update.EmbedExprH\x00R\tembedExpr\x12<\n" +
-	"\ttry_catch\x18\v \x01(\v2\x1d.daml_lf_1_17.Update.TryCatchH\x00R\btryCatch\x12Q\n" +
-	"\x10create_interface\x18\f \x01(\v2$.daml_lf_1_17.Update.CreateInterfaceH\x00R\x0fcreateInterface\x12W\n" +
-	"\x12exercise_interface\x18\r \x01(\v2&.daml_lf_1_17.Update.ExerciseInterfaceH\x00R\x11exerciseInterface\x12N\n" +
-	"\x0ffetch_interface\x18\x0e \x01(\v2#.daml_lf_1_17.Update.FetchInterfaceH\x00R\x0efetchInterface\x12Q\n" +
-	"\x10dynamic_exercise\x18\x0f \x01(\v2$.daml_lf_1_17.Update.DynamicExerciseH\x00R\x0fdynamicExercise\x12?\n" +
+	"embed_expr\x18\a \x01(\v2\x1b.daml_lf_1.Update.EmbedExprH\x00R\tembedExpr\x129\n" +
+	"\ttry_catch\x18\v \x01(\v2\x1a.daml_lf_1.Update.TryCatchH\x00R\btryCatch\x12N\n" +
+	"\x10create_interface\x18\f \x01(\v2!.daml_lf_1.Update.CreateInterfaceH\x00R\x0fcreateInterface\x12T\n" +
+	"\x12exercise_interface\x18\r \x01(\v2#.daml_lf_1.Update.ExerciseInterfaceH\x00R\x11exerciseInterface\x12K\n" +
+	"\x0ffetch_interface\x18\x0e \x01(\v2 .daml_lf_1.Update.FetchInterfaceH\x00R\x0efetchInterface\x12N\n" +
+	"\x10dynamic_exercise\x18\x0f \x01(\v2!.daml_lf_1.Update.DynamicExerciseH\x00R\x0fdynamicExercise\x12<\n" +
 	"\n" +
-	"soft_fetch\x18\x10 \x01(\v2\x1e.daml_lf_1_17.Update.SoftFetchH\x00R\tsoftFetch\x12H\n" +
-	"\rsoft_exercise\x18\x11 \x01(\v2!.daml_lf_1_17.Update.SoftExerciseH\x00R\fsoftExercise\x1ag\n" +
-	"\x06Create\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1ar\n" +
-	"\x0fCreateInterface\x127\n" +
-	"\tinterface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\tinterface\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x1a\xf0\x01\n" +
-	"\bExercise\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12\x1f\n" +
-	"\n" +
-	"choice_str\x18\x02 \x01(\tH\x00R\tchoiceStr\x120\n" +
-	"\x13choice_interned_str\x18\x06 \x01(\x05H\x00R\x11choiceInternedStr\x12$\n" +
-	"\x03cid\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x03cid\x12$\n" +
-	"\x03arg\x18\x05 \x01(\v2\x12.daml_lf_1_17.ExprR\x03argB\b\n" +
-	"\x06choiceJ\x04\b\x04\x10\x05\x1a\xee\x01\n" +
-	"\fSoftExercise\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12\x1f\n" +
+	"soft_fetch\x18\x10 \x01(\v2\x1b.daml_lf_1.Update.SoftFetchH\x00R\tsoftFetch\x12E\n" +
+	"\rsoft_exercise\x18\x11 \x01(\v2\x1e.daml_lf_1.Update.SoftExerciseH\x00R\fsoftExercise\x1aa\n" +
+	"\x06Create\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1al\n" +
+	"\x0fCreateInterface\x124\n" +
+	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\tinterface\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x1a\xe7\x01\n" +
+	"\bExercise\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12\x1f\n" +
 	"\n" +
 	"choice_str\x18\x02 \x01(\tH\x00R\tchoiceStr\x120\n" +
-	"\x13choice_interned_str\x18\x06 \x01(\x05H\x00R\x11choiceInternedStr\x12$\n" +
-	"\x03cid\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x03cid\x12$\n" +
-	"\x03arg\x18\x05 \x01(\v2\x12.daml_lf_1_17.ExprR\x03argB\b\n" +
-	"\x06choice\x1a\xc4\x01\n" +
-	"\x0fDynamicExercise\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12$\n" +
-	"\x03cid\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x03cid\x12$\n" +
-	"\x03arg\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\x03arg\x1a\xf2\x01\n" +
-	"\x11ExerciseInterface\x127\n" +
-	"\tinterface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\tinterface\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12$\n" +
-	"\x03cid\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x03cid\x12$\n" +
-	"\x03arg\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\x03arg\x12(\n" +
-	"\x05guard\x18\x05 \x01(\v2\x12.daml_lf_1_17.ExprR\x05guard\x1a\xc2\x01\n" +
-	"\rExerciseByKey\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12.\n" +
-	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12$\n" +
-	"\x03key\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\x03key\x12$\n" +
-	"\x03arg\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\x03arg\x1aj\n" +
-	"\x05Fetch\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12$\n" +
-	"\x03cid\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x03cidJ\x04\b\x03\x10\x04\x1ah\n" +
-	"\tSoftFetch\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12$\n" +
-	"\x03cid\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x03cid\x1ao\n" +
-	"\x0eFetchInterface\x127\n" +
-	"\tinterface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\tinterface\x12$\n" +
-	"\x03cid\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x03cid\x1a[\n" +
-	"\tEmbedExpr\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12&\n" +
-	"\x04body\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04body\x1al\n" +
-	"\rRetrieveByKey\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x12$\n" +
-	"\x03key\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x03key\x1a\xcb\x01\n" +
-	"\bTryCatch\x123\n" +
-	"\vreturn_type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\n" +
-	"returnType\x12-\n" +
-	"\btry_expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\atryExpr\x12(\n" +
-	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x121\n" +
+	"\x13choice_interned_str\x18\x06 \x01(\x05H\x00R\x11choiceInternedStr\x12!\n" +
+	"\x03cid\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x03cid\x12!\n" +
+	"\x03arg\x18\x05 \x01(\v2\x0f.daml_lf_1.ExprR\x03argB\b\n" +
+	"\x06choiceJ\x04\b\x04\x10\x05\x1a\xe5\x01\n" +
+	"\fSoftExercise\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12\x1f\n" +
 	"\n" +
-	"catch_expr\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\tcatchExprB\x05\n" +
-	"\x03Sum\"\x9c\x05\n" +
-	"\bScenario\x12(\n" +
-	"\x04pure\x18\x01 \x01(\v2\x12.daml_lf_1_17.PureH\x00R\x04pure\x12+\n" +
-	"\x05block\x18\x02 \x01(\v2\x13.daml_lf_1_17.BlockH\x00R\x05block\x127\n" +
-	"\x06commit\x18\x03 \x01(\v2\x1d.daml_lf_1_17.Scenario.CommitH\x00R\x06commit\x12?\n" +
+	"choice_str\x18\x02 \x01(\tH\x00R\tchoiceStr\x120\n" +
+	"\x13choice_interned_str\x18\x06 \x01(\x05H\x00R\x11choiceInternedStr\x12!\n" +
+	"\x03cid\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x03cid\x12!\n" +
+	"\x03arg\x18\x05 \x01(\v2\x0f.daml_lf_1.ExprR\x03argB\b\n" +
+	"\x06choice\x1a\xbb\x01\n" +
+	"\x0fDynamicExercise\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12!\n" +
+	"\x03cid\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x03cid\x12!\n" +
+	"\x03arg\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\x03arg\x1a\xe6\x01\n" +
+	"\x11ExerciseInterface\x124\n" +
+	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\tinterface\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12!\n" +
+	"\x03cid\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x03cid\x12!\n" +
+	"\x03arg\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\x03arg\x12%\n" +
+	"\x05guard\x18\x05 \x01(\v2\x0f.daml_lf_1.ExprR\x05guard\x1a\xb9\x01\n" +
+	"\rExerciseByKey\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12.\n" +
+	"\x13choice_interned_str\x18\x02 \x01(\x05R\x11choiceInternedStr\x12!\n" +
+	"\x03key\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\x03key\x12!\n" +
+	"\x03arg\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\x03arg\x1ad\n" +
+	"\x05Fetch\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12!\n" +
+	"\x03cid\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x03cidJ\x04\b\x03\x10\x04\x1ab\n" +
+	"\tSoftFetch\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12!\n" +
+	"\x03cid\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x03cid\x1ai\n" +
+	"\x0eFetchInterface\x124\n" +
+	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\tinterface\x12!\n" +
+	"\x03cid\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x03cid\x1aU\n" +
+	"\tEmbedExpr\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12#\n" +
+	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04body\x1af\n" +
+	"\rRetrieveByKey\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x12!\n" +
+	"\x03key\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x03key\x1a\xc2\x01\n" +
+	"\bTryCatch\x120\n" +
+	"\vreturn_type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\n" +
+	"returnType\x12*\n" +
+	"\btry_expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\atryExpr\x12(\n" +
+	"\x10var_interned_str\x18\x03 \x01(\x05R\x0evarInternedStr\x12.\n" +
 	"\n" +
-	"mustFailAt\x18\x04 \x01(\v2\x1d.daml_lf_1_17.Scenario.CommitH\x00R\n" +
-	"mustFailAt\x12(\n" +
-	"\x04pass\x18\x05 \x01(\v2\x12.daml_lf_1_17.ExprH\x00R\x04pass\x12/\n" +
-	"\bget_time\x18\x06 \x01(\v2\x12.daml_lf_1_17.UnitH\x00R\agetTime\x121\n" +
-	"\tget_party\x18\a \x01(\v2\x12.daml_lf_1_17.ExprH\x00R\bgetParty\x12A\n" +
+	"catch_expr\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\tcatchExprB\x05\n" +
+	"\x03Sum\"\xf5\x04\n" +
+	"\bScenario\x12%\n" +
+	"\x04pure\x18\x01 \x01(\v2\x0f.daml_lf_1.PureH\x00R\x04pure\x12(\n" +
+	"\x05block\x18\x02 \x01(\v2\x10.daml_lf_1.BlockH\x00R\x05block\x124\n" +
+	"\x06commit\x18\x03 \x01(\v2\x1a.daml_lf_1.Scenario.CommitH\x00R\x06commit\x12<\n" +
 	"\n" +
-	"embed_expr\x18\b \x01(\v2 .daml_lf_1_17.Scenario.EmbedExprH\x00R\tembedExpr\x1a\x89\x01\n" +
-	"\x06Commit\x12(\n" +
-	"\x05party\x18\x01 \x01(\v2\x12.daml_lf_1_17.ExprR\x05party\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x12-\n" +
-	"\bret_type\x18\x03 \x01(\v2\x12.daml_lf_1_17.TypeR\aretType\x1a[\n" +
-	"\tEmbedExpr\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12&\n" +
-	"\x04body\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04bodyB\x05\n" +
-	"\x03Sum\"\xdc\x04\n" +
+	"mustFailAt\x18\x04 \x01(\v2\x1a.daml_lf_1.Scenario.CommitH\x00R\n" +
+	"mustFailAt\x12%\n" +
+	"\x04pass\x18\x05 \x01(\v2\x0f.daml_lf_1.ExprH\x00R\x04pass\x12,\n" +
+	"\bget_time\x18\x06 \x01(\v2\x0f.daml_lf_1.UnitH\x00R\agetTime\x12.\n" +
+	"\tget_party\x18\a \x01(\v2\x0f.daml_lf_1.ExprH\x00R\bgetParty\x12>\n" +
+	"\n" +
+	"embed_expr\x18\b \x01(\v2\x1d.daml_lf_1.Scenario.EmbedExprH\x00R\tembedExpr\x1a\x80\x01\n" +
+	"\x06Commit\x12%\n" +
+	"\x05party\x18\x01 \x01(\v2\x0f.daml_lf_1.ExprR\x05party\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x12*\n" +
+	"\bret_type\x18\x03 \x01(\v2\x0f.daml_lf_1.TypeR\aretType\x1aU\n" +
+	"\tEmbedExpr\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12#\n" +
+	"\x04body\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04bodyB\x05\n" +
+	"\x03Sum\"\xc7\x04\n" +
 	"\x0eTemplateChoice\x12\x1b\n" +
 	"\bname_str\x18\x01 \x01(\tH\x00R\anameStr\x12,\n" +
 	"\x11name_interned_str\x18\t \x01(\x05H\x00R\x0fnameInternedStr\x12\x1c\n" +
-	"\tconsuming\x18\x02 \x01(\bR\tconsuming\x124\n" +
-	"\vcontrollers\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\vcontrollers\x120\n" +
-	"\tobservers\x18\v \x01(\v2\x12.daml_lf_1_17.ExprR\tobservers\x124\n" +
-	"\vauthorizers\x18\f \x01(\v2\x12.daml_lf_1_17.ExprR\vauthorizers\x128\n" +
+	"\tconsuming\x18\x02 \x01(\bR\tconsuming\x121\n" +
+	"\vcontrollers\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\vcontrollers\x12-\n" +
+	"\tobservers\x18\v \x01(\v2\x0f.daml_lf_1.ExprR\tobservers\x121\n" +
+	"\vauthorizers\x18\f \x01(\v2\x0f.daml_lf_1.ExprR\vauthorizers\x125\n" +
 	"\n" +
-	"arg_binder\x18\x04 \x01(\v2\x19.daml_lf_1_17.VarWithTypeR\targBinder\x12-\n" +
-	"\bret_type\x18\x05 \x01(\v2\x12.daml_lf_1_17.TypeR\aretType\x12*\n" +
-	"\x06update\x18\x06 \x01(\v2\x12.daml_lf_1_17.ExprR\x06update\x12(\n" +
+	"arg_binder\x18\x04 \x01(\v2\x16.daml_lf_1.VarWithTypeR\targBinder\x12*\n" +
+	"\bret_type\x18\x05 \x01(\v2\x0f.daml_lf_1.TypeR\aretType\x12'\n" +
+	"\x06update\x18\x06 \x01(\v2\x0f.daml_lf_1.ExprR\x06update\x12(\n" +
 	"\x0fself_binder_str\x18\a \x01(\tH\x01R\rselfBinderStr\x129\n" +
 	"\x18self_binder_interned_str\x18\n" +
-	" \x01(\x05H\x01R\x15selfBinderInternedStr\x122\n" +
-	"\blocation\x18\b \x01(\v2\x16.daml_lf_1_17.LocationR\blocationB\x06\n" +
+	" \x01(\x05H\x01R\x15selfBinderInternedStr\x12/\n" +
+	"\blocation\x18\b \x01(\v2\x13.daml_lf_1.LocationR\blocationB\x06\n" +
 	"\x04nameB\r\n" +
-	"\vself_binder\"\xfd\x04\n" +
-	"\aKeyExpr\x12E\n" +
-	"\vprojections\x18\x01 \x01(\v2!.daml_lf_1_17.KeyExpr.ProjectionsH\x00R\vprojections\x126\n" +
-	"\x06record\x18\x02 \x01(\v2\x1c.daml_lf_1_17.KeyExpr.RecordH\x00R\x06record\x1a\x92\x01\n" +
+	"\vself_binder\"\xe8\x04\n" +
+	"\aKeyExpr\x12B\n" +
+	"\vprojections\x18\x01 \x01(\v2\x1e.daml_lf_1.KeyExpr.ProjectionsH\x00R\vprojections\x123\n" +
+	"\x06record\x18\x02 \x01(\v2\x19.daml_lf_1.KeyExpr.RecordH\x00R\x06record\x1a\x8f\x01\n" +
 	"\n" +
-	"Projection\x12,\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_1_17.Type.ConR\x05tycon\x12\x1d\n" +
+	"Projection\x12)\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_1.Type.ConR\x05tycon\x12\x1d\n" +
 	"\tfield_str\x18\x02 \x01(\tH\x00R\bfieldStr\x12.\n" +
 	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStrB\a\n" +
-	"\x05field\x1aQ\n" +
-	"\vProjections\x12B\n" +
-	"\vprojections\x18\x02 \x03(\v2 .daml_lf_1_17.KeyExpr.ProjectionR\vprojections\x1a\x90\x01\n" +
+	"\x05field\x1aN\n" +
+	"\vProjections\x12?\n" +
+	"\vprojections\x18\x02 \x03(\v2\x1d.daml_lf_1.KeyExpr.ProjectionR\vprojections\x1a\x8d\x01\n" +
 	"\vRecordField\x12\x1d\n" +
 	"\tfield_str\x18\x01 \x01(\tH\x00R\bfieldStr\x12.\n" +
-	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStr\x12)\n" +
-	"\x04expr\x18\x02 \x01(\v2\x15.daml_lf_1_17.KeyExprR\x04exprB\a\n" +
-	"\x05field\x1aq\n" +
-	"\x06Record\x12,\n" +
-	"\x05tycon\x18\x01 \x01(\v2\x16.daml_lf_1_17.Type.ConR\x05tycon\x129\n" +
-	"\x06fields\x18\x02 \x03(\v2!.daml_lf_1_17.KeyExpr.RecordFieldR\x06fieldsB\x05\n" +
-	"\x03Sum\"\x8d\x02\n" +
-	"\x15InterfaceInstanceBody\x12U\n" +
-	"\amethods\x18\x01 \x03(\v2;.daml_lf_1_17.InterfaceInstanceBody.InterfaceInstanceMethodR\amethods\x12&\n" +
-	"\x04view\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04view\x1au\n" +
+	"\x12field_interned_str\x18\x03 \x01(\x05H\x00R\x10fieldInternedStr\x12&\n" +
+	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1.KeyExprR\x04exprB\a\n" +
+	"\x05field\x1ak\n" +
+	"\x06Record\x12)\n" +
+	"\x05tycon\x18\x01 \x01(\v2\x13.daml_lf_1.Type.ConR\x05tycon\x126\n" +
+	"\x06fields\x18\x02 \x03(\v2\x1e.daml_lf_1.KeyExpr.RecordFieldR\x06fieldsB\x05\n" +
+	"\x03Sum\"\x84\x02\n" +
+	"\x15InterfaceInstanceBody\x12R\n" +
+	"\amethods\x18\x01 \x03(\v28.daml_lf_1.InterfaceInstanceBody.InterfaceInstanceMethodR\amethods\x12#\n" +
+	"\x04view\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04view\x1ar\n" +
 	"\x17InterfaceInstanceMethod\x120\n" +
-	"\x14method_interned_name\x18\x01 \x01(\x05R\x12methodInternedName\x12(\n" +
-	"\x05value\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x05value\"\x9f\b\n" +
-	"\vDefTemplate\x12;\n" +
-	"\vtycon_dname\x18\x01 \x01(\v2\x18.daml_lf_1_17.DottedNameH\x00R\n" +
+	"\x14method_interned_name\x18\x01 \x01(\x05R\x12methodInternedName\x12%\n" +
+	"\x05value\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x05value\"\xef\a\n" +
+	"\vDefTemplate\x128\n" +
+	"\vtycon_dname\x18\x01 \x01(\v2\x15.daml_lf_1.DottedNameH\x00R\n" +
 	"tyconDname\x122\n" +
 	"\x14tycon_interned_dname\x18\f \x01(\x05H\x00R\x12tyconInternedDname\x12\x1d\n" +
 	"\tparam_str\x18\x02 \x01(\tH\x01R\bparamStr\x12.\n" +
-	"\x12param_interned_str\x18\v \x01(\x05H\x01R\x10paramInternedStr\x12,\n" +
-	"\aprecond\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprR\aprecond\x124\n" +
-	"\vsignatories\x18\x05 \x01(\v2\x12.daml_lf_1_17.ExprR\vsignatories\x120\n" +
-	"\tagreement\x18\x06 \x01(\v2\x12.daml_lf_1_17.ExprR\tagreement\x126\n" +
-	"\achoices\x18\a \x03(\v2\x1c.daml_lf_1_17.TemplateChoiceR\achoices\x120\n" +
-	"\tobservers\x18\b \x01(\v2\x12.daml_lf_1_17.ExprR\tobservers\x122\n" +
-	"\blocation\x18\t \x01(\v2\x16.daml_lf_1_17.LocationR\blocation\x122\n" +
+	"\x12param_interned_str\x18\v \x01(\x05H\x01R\x10paramInternedStr\x12)\n" +
+	"\aprecond\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprR\aprecond\x121\n" +
+	"\vsignatories\x18\x05 \x01(\v2\x0f.daml_lf_1.ExprR\vsignatories\x12-\n" +
+	"\tagreement\x18\x06 \x01(\v2\x0f.daml_lf_1.ExprR\tagreement\x123\n" +
+	"\achoices\x18\a \x03(\v2\x19.daml_lf_1.TemplateChoiceR\achoices\x12-\n" +
+	"\tobservers\x18\b \x01(\v2\x0f.daml_lf_1.ExprR\tobservers\x12/\n" +
+	"\blocation\x18\t \x01(\v2\x13.daml_lf_1.LocationR\blocation\x12/\n" +
 	"\x03key\x18\n" +
-	" \x01(\v2 .daml_lf_1_17.DefTemplate.DefKeyR\x03key\x12D\n" +
+	" \x01(\v2\x1d.daml_lf_1.DefTemplate.DefKeyR\x03key\x12A\n" +
 	"\n" +
-	"implements\x18\r \x03(\v2$.daml_lf_1_17.DefTemplate.ImplementsR\n" +
-	"implements\x1a\xd4\x01\n" +
-	"\x06DefKey\x12&\n" +
-	"\x04type\x18\x01 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x12)\n" +
-	"\x03key\x18\x02 \x01(\v2\x15.daml_lf_1_17.KeyExprH\x00R\x03key\x125\n" +
-	"\vcomplex_key\x18\x04 \x01(\v2\x12.daml_lf_1_17.ExprH\x00R\n" +
-	"complexKey\x124\n" +
-	"\vmaintainers\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\vmaintainersB\n" +
+	"implements\x18\r \x03(\v2!.daml_lf_1.DefTemplate.ImplementsR\n" +
+	"implements\x1a\xc8\x01\n" +
+	"\x06DefKey\x12#\n" +
+	"\x04type\x18\x01 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12&\n" +
+	"\x03key\x18\x02 \x01(\v2\x12.daml_lf_1.KeyExprH\x00R\x03key\x122\n" +
+	"\vcomplex_key\x18\x04 \x01(\v2\x0f.daml_lf_1.ExprH\x00R\n" +
+	"complexKey\x121\n" +
+	"\vmaintainers\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\vmaintainersB\n" +
 	"\n" +
-	"\bkey_expr\x1a\xb2\x01\n" +
+	"\bkey_expr\x1a\xa9\x01\n" +
 	"\n" +
-	"Implements\x127\n" +
-	"\tinterface\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\tinterface\x127\n" +
-	"\x04body\x18\x02 \x01(\v2#.daml_lf_1_17.InterfaceInstanceBodyR\x04body\x122\n" +
-	"\blocation\x18\x03 \x01(\v2\x16.daml_lf_1_17.LocationR\blocationB\a\n" +
+	"Implements\x124\n" +
+	"\tinterface\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\tinterface\x124\n" +
+	"\x04body\x18\x02 \x01(\v2 .daml_lf_1.InterfaceInstanceBodyR\x04body\x12/\n" +
+	"\blocation\x18\x03 \x01(\v2\x13.daml_lf_1.LocationR\blocationB\a\n" +
 	"\x05tyconB\a\n" +
-	"\x05paramJ\x04\b\x03\x10\x04\"\x9f\x01\n" +
-	"\x0fInterfaceMethod\x122\n" +
-	"\blocation\x18\x01 \x01(\v2\x16.daml_lf_1_17.LocationR\blocation\x120\n" +
-	"\x14method_interned_name\x18\x02 \x01(\x05R\x12methodInternedName\x12&\n" +
-	"\x04type\x18\x03 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\"\xf4\x04\n" +
-	"\fDefInterface\x122\n" +
-	"\blocation\x18\x01 \x01(\v2\x16.daml_lf_1_17.LocationR\blocation\x120\n" +
-	"\x14tycon_interned_dname\x18\x02 \x01(\x05R\x12tyconInternedDname\x127\n" +
-	"\amethods\x18\x03 \x03(\v2\x1d.daml_lf_1_17.InterfaceMethodR\amethods\x12,\n" +
-	"\x12param_interned_str\x18\x04 \x01(\x05R\x10paramInternedStr\x126\n" +
-	"\achoices\x18\x05 \x03(\v2\x1c.daml_lf_1_17.TemplateChoiceR\achoices\x12K\n" +
-	"\fcoImplements\x18\x06 \x03(\v2'.daml_lf_1_17.DefInterface.CoImplementsR\fcoImplements\x12&\n" +
-	"\x04view\x18\b \x01(\v2\x12.daml_lf_1_17.TypeR\x04view\x125\n" +
-	"\brequires\x18\t \x03(\v2\x19.daml_lf_1_17.TypeConNameR\brequires\x1a\xb2\x01\n" +
-	"\fCoImplements\x125\n" +
-	"\btemplate\x18\x01 \x01(\v2\x19.daml_lf_1_17.TypeConNameR\btemplate\x127\n" +
-	"\x04body\x18\x02 \x01(\v2#.daml_lf_1_17.InterfaceInstanceBodyR\x04body\x122\n" +
-	"\blocation\x18\x03 \x01(\v2\x16.daml_lf_1_17.LocationR\blocation\"\xa0\x01\n" +
+	"\x05paramJ\x04\b\x03\x10\x04\"\x99\x01\n" +
+	"\x0fInterfaceMethod\x12/\n" +
+	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_1.LocationR\blocation\x120\n" +
+	"\x14method_interned_name\x18\x02 \x01(\x05R\x12methodInternedName\x12#\n" +
+	"\x04type\x18\x03 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\"\xd9\x04\n" +
+	"\fDefInterface\x12/\n" +
+	"\blocation\x18\x01 \x01(\v2\x13.daml_lf_1.LocationR\blocation\x120\n" +
+	"\x14tycon_interned_dname\x18\x02 \x01(\x05R\x12tyconInternedDname\x124\n" +
+	"\amethods\x18\x03 \x03(\v2\x1a.daml_lf_1.InterfaceMethodR\amethods\x12,\n" +
+	"\x12param_interned_str\x18\x04 \x01(\x05R\x10paramInternedStr\x123\n" +
+	"\achoices\x18\x05 \x03(\v2\x19.daml_lf_1.TemplateChoiceR\achoices\x12H\n" +
+	"\fcoImplements\x18\x06 \x03(\v2$.daml_lf_1.DefInterface.CoImplementsR\fcoImplements\x12#\n" +
+	"\x04view\x18\b \x01(\v2\x0f.daml_lf_1.TypeR\x04view\x122\n" +
+	"\brequires\x18\t \x03(\v2\x16.daml_lf_1.TypeConNameR\brequires\x1a\xa9\x01\n" +
+	"\fCoImplements\x122\n" +
+	"\btemplate\x18\x01 \x01(\v2\x16.daml_lf_1.TypeConNameR\btemplate\x124\n" +
+	"\x04body\x18\x02 \x01(\v2 .daml_lf_1.InterfaceInstanceBodyR\x04body\x12/\n" +
+	"\blocation\x18\x03 \x01(\v2\x13.daml_lf_1.LocationR\blocation\"\x9a\x01\n" +
 	"\fDefException\x12.\n" +
-	"\x13name_interned_dname\x18\x01 \x01(\x05R\x11nameInternedDname\x122\n" +
-	"\blocation\x18\x02 \x01(\v2\x16.daml_lf_1_17.LocationR\blocation\x12,\n" +
-	"\amessage\x18\x03 \x01(\v2\x12.daml_lf_1_17.ExprR\amessage\"\xc7\x05\n" +
-	"\vDefDataType\x129\n" +
+	"\x13name_interned_dname\x18\x01 \x01(\x05R\x11nameInternedDname\x12/\n" +
+	"\blocation\x18\x02 \x01(\v2\x13.daml_lf_1.LocationR\blocation\x12)\n" +
+	"\amessage\x18\x03 \x01(\v2\x0f.daml_lf_1.ExprR\amessage\"\xaf\x05\n" +
+	"\vDefDataType\x126\n" +
 	"\n" +
-	"name_dname\x18\x01 \x01(\v2\x18.daml_lf_1_17.DottedNameH\x00R\tnameDname\x120\n" +
-	"\x13name_interned_dname\x18\b \x01(\x05H\x00R\x11nameInternedDname\x125\n" +
-	"\x06params\x18\x02 \x03(\v2\x1d.daml_lf_1_17.TypeVarWithKindR\x06params\x12:\n" +
-	"\x06record\x18\x03 \x01(\v2 .daml_lf_1_17.DefDataType.FieldsH\x01R\x06record\x12<\n" +
-	"\avariant\x18\x04 \x01(\v2 .daml_lf_1_17.DefDataType.FieldsH\x01R\avariant\x12@\n" +
-	"\x04enum\x18\a \x01(\v2*.daml_lf_1_17.DefDataType.EnumConstructorsH\x01R\x04enum\x122\n" +
-	"\tinterface\x18\t \x01(\v2\x12.daml_lf_1_17.UnitH\x01R\tinterface\x12\"\n" +
-	"\fserializable\x18\x05 \x01(\bR\fserializable\x122\n" +
-	"\blocation\x18\x06 \x01(\v2\x16.daml_lf_1_17.LocationR\blocation\x1a=\n" +
-	"\x06Fields\x123\n" +
-	"\x06fields\x18\x01 \x03(\v2\x1b.daml_lf_1_17.FieldWithTypeR\x06fields\x1ay\n" +
+	"name_dname\x18\x01 \x01(\v2\x15.daml_lf_1.DottedNameH\x00R\tnameDname\x120\n" +
+	"\x13name_interned_dname\x18\b \x01(\x05H\x00R\x11nameInternedDname\x122\n" +
+	"\x06params\x18\x02 \x03(\v2\x1a.daml_lf_1.TypeVarWithKindR\x06params\x127\n" +
+	"\x06record\x18\x03 \x01(\v2\x1d.daml_lf_1.DefDataType.FieldsH\x01R\x06record\x129\n" +
+	"\avariant\x18\x04 \x01(\v2\x1d.daml_lf_1.DefDataType.FieldsH\x01R\avariant\x12=\n" +
+	"\x04enum\x18\a \x01(\v2'.daml_lf_1.DefDataType.EnumConstructorsH\x01R\x04enum\x12/\n" +
+	"\tinterface\x18\t \x01(\v2\x0f.daml_lf_1.UnitH\x01R\tinterface\x12\"\n" +
+	"\fserializable\x18\x05 \x01(\bR\fserializable\x12/\n" +
+	"\blocation\x18\x06 \x01(\v2\x13.daml_lf_1.LocationR\blocation\x1a:\n" +
+	"\x06Fields\x120\n" +
+	"\x06fields\x18\x01 \x03(\v2\x18.daml_lf_1.FieldWithTypeR\x06fields\x1ay\n" +
 	"\x10EnumConstructors\x12)\n" +
 	"\x10constructors_str\x18\x01 \x03(\tR\x0fconstructorsStr\x12:\n" +
 	"\x19constructors_interned_str\x18\x02 \x03(\x05R\x17constructorsInternedStrB\x06\n" +
 	"\x04nameB\n" +
 	"\n" +
-	"\bDataCons\"\x94\x02\n" +
+	"\bDataCons\"\x88\x02\n" +
 	"\n" +
-	"DefTypeSyn\x129\n" +
+	"DefTypeSyn\x126\n" +
 	"\n" +
-	"name_dname\x18\x01 \x01(\v2\x18.daml_lf_1_17.DottedNameH\x00R\tnameDname\x120\n" +
-	"\x13name_interned_dname\x18\b \x01(\x05H\x00R\x11nameInternedDname\x125\n" +
-	"\x06params\x18\x02 \x03(\v2\x1d.daml_lf_1_17.TypeVarWithKindR\x06params\x12&\n" +
-	"\x04type\x18\x03 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\x122\n" +
-	"\blocation\x18\x04 \x01(\v2\x16.daml_lf_1_17.LocationR\blocationB\x06\n" +
-	"\x04name\"\xfe\x02\n" +
-	"\bDefValue\x12I\n" +
-	"\x0ename_with_type\x18\x01 \x01(\v2#.daml_lf_1_17.DefValue.NameWithTypeR\fnameWithType\x12&\n" +
-	"\x04expr\x18\x02 \x01(\v2\x12.daml_lf_1_17.ExprR\x04expr\x12*\n" +
+	"name_dname\x18\x01 \x01(\v2\x15.daml_lf_1.DottedNameH\x00R\tnameDname\x120\n" +
+	"\x13name_interned_dname\x18\b \x01(\x05H\x00R\x11nameInternedDname\x122\n" +
+	"\x06params\x18\x02 \x03(\v2\x1a.daml_lf_1.TypeVarWithKindR\x06params\x12#\n" +
+	"\x04type\x18\x03 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\x12/\n" +
+	"\blocation\x18\x04 \x01(\v2\x13.daml_lf_1.LocationR\blocationB\x06\n" +
+	"\x04name\"\xf2\x02\n" +
+	"\bDefValue\x12F\n" +
+	"\x0ename_with_type\x18\x01 \x01(\v2 .daml_lf_1.DefValue.NameWithTypeR\fnameWithType\x12#\n" +
+	"\x04expr\x18\x02 \x01(\v2\x0f.daml_lf_1.ExprR\x04expr\x12*\n" +
 	"\x11no_party_literals\x18\x03 \x01(\bR\x0fnoPartyLiterals\x12\x17\n" +
-	"\ais_test\x18\x04 \x01(\bR\x06isTest\x122\n" +
-	"\blocation\x18\x05 \x01(\v2\x16.daml_lf_1_17.LocationR\blocation\x1a\x85\x01\n" +
+	"\ais_test\x18\x04 \x01(\bR\x06isTest\x12/\n" +
+	"\blocation\x18\x05 \x01(\v2\x13.daml_lf_1.LocationR\blocation\x1a\x82\x01\n" +
 	"\fNameWithType\x12\x1d\n" +
 	"\n" +
 	"name_dname\x18\x01 \x03(\tR\tnameDname\x12.\n" +
-	"\x13name_interned_dname\x18\x03 \x01(\x05R\x11nameInternedDname\x12&\n" +
-	"\x04type\x18\x02 \x01(\v2\x12.daml_lf_1_17.TypeR\x04type\"\xfa\x01\n" +
+	"\x13name_interned_dname\x18\x03 \x01(\x05R\x11nameInternedDname\x12#\n" +
+	"\x04type\x18\x02 \x01(\v2\x0f.daml_lf_1.TypeR\x04type\"\xfa\x01\n" +
 	"\fFeatureFlags\x120\n" +
 	"\x13forbidPartyLiterals\x18\x01 \x01(\bR\x13forbidPartyLiterals\x12X\n" +
 	"'dontDivulgeContractIdsInCreateArguments\x18\x02 \x01(\bR'dontDivulgeContractIdsInCreateArguments\x12^\n" +
-	"*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\bR*dontDiscloseNonConsumingChoicesToObservers\"\x8c\x04\n" +
-	"\x06Module\x129\n" +
+	"*dontDiscloseNonConsumingChoicesToObservers\x18\x03 \x01(\bR*dontDiscloseNonConsumingChoicesToObservers\"\xf4\x03\n" +
+	"\x06Module\x126\n" +
 	"\n" +
-	"name_dname\x18\x01 \x01(\v2\x18.daml_lf_1_17.DottedNameH\x00R\tnameDname\x120\n" +
-	"\x13name_interned_dname\x18\b \x01(\x05H\x00R\x11nameInternedDname\x120\n" +
-	"\x05flags\x18\x04 \x01(\v2\x1a.daml_lf_1_17.FeatureFlagsR\x05flags\x124\n" +
-	"\bsynonyms\x18\t \x03(\v2\x18.daml_lf_1_17.DefTypeSynR\bsynonyms\x128\n" +
+	"name_dname\x18\x01 \x01(\v2\x15.daml_lf_1.DottedNameH\x00R\tnameDname\x120\n" +
+	"\x13name_interned_dname\x18\b \x01(\x05H\x00R\x11nameInternedDname\x12-\n" +
+	"\x05flags\x18\x04 \x01(\v2\x17.daml_lf_1.FeatureFlagsR\x05flags\x121\n" +
+	"\bsynonyms\x18\t \x03(\v2\x15.daml_lf_1.DefTypeSynR\bsynonyms\x125\n" +
 	"\n" +
-	"data_types\x18\x05 \x03(\v2\x19.daml_lf_1_17.DefDataTypeR\tdataTypes\x12.\n" +
-	"\x06values\x18\x06 \x03(\v2\x16.daml_lf_1_17.DefValueR\x06values\x127\n" +
-	"\ttemplates\x18\a \x03(\v2\x19.daml_lf_1_17.DefTemplateR\ttemplates\x12:\n" +
+	"data_types\x18\x05 \x03(\v2\x16.daml_lf_1.DefDataTypeR\tdataTypes\x12+\n" +
+	"\x06values\x18\x06 \x03(\v2\x13.daml_lf_1.DefValueR\x06values\x124\n" +
+	"\ttemplates\x18\a \x03(\v2\x16.daml_lf_1.DefTemplateR\ttemplates\x127\n" +
 	"\n" +
 	"exceptions\x18\n" +
-	" \x03(\v2\x1a.daml_lf_1_17.DefExceptionR\n" +
-	"exceptions\x12:\n" +
+	" \x03(\v2\x17.daml_lf_1.DefExceptionR\n" +
+	"exceptions\x127\n" +
 	"\n" +
-	"interfaces\x18\v \x03(\v2\x1a.daml_lf_1_17.DefInterfaceR\n" +
+	"interfaces\x18\v \x03(\v2\x17.daml_lf_1.DefInterfaceR\n" +
 	"interfacesB\x06\n" +
 	"\x04nameJ\x04\b\x02\x10\x03J\x04\b\x03\x10\x04\"H\n" +
 	"\x12InternedDottedName\x122\n" +
 	"\x15segments_interned_str\x18\x01 \x03(\x05R\x13segmentsInternedStr\"[\n" +
 	"\x11UpgradedPackageId\x12F\n" +
-	" upgraded_package_id_interned_str\x18\x01 \x01(\x05R\x1cupgradedPackageIdInternedStr\"\xc0\x01\n" +
+	" upgraded_package_id_interned_str\x18\x01 \x01(\x05R\x1cupgradedPackageIdInternedStr\"\xbd\x01\n" +
 	"\x0fPackageMetadata\x12*\n" +
 	"\x11name_interned_str\x18\x01 \x01(\x05R\x0fnameInternedStr\x120\n" +
-	"\x14version_interned_str\x18\x02 \x01(\x05R\x12versionInternedStr\x12O\n" +
-	"\x13upgraded_package_id\x18\x03 \x01(\v2\x1f.daml_lf_1_17.UpgradedPackageIdR\x11upgradedPackageId\"\xb0\x02\n" +
-	"\aPackage\x12.\n" +
-	"\amodules\x18\x01 \x03(\v2\x14.daml_lf_1_17.ModuleR\amodules\x12)\n" +
-	"\x10interned_strings\x18\x02 \x03(\tR\x0finternedStrings\x12T\n" +
-	"\x15interned_dotted_names\x18\x03 \x03(\v2 .daml_lf_1_17.InternedDottedNameR\x13internedDottedNames\x129\n" +
-	"\bmetadata\x18\x04 \x01(\v2\x1d.daml_lf_1_17.PackageMetadataR\bmetadata\x129\n" +
-	"\x0einterned_types\x18\x05 \x03(\v2\x12.daml_lf_1_17.TypeR\rinternedTypes*\xa5\x02\n" +
+	"\x14version_interned_str\x18\x02 \x01(\x05R\x12versionInternedStr\x12L\n" +
+	"\x13upgraded_package_id\x18\x03 \x01(\v2\x1c.daml_lf_1.UpgradedPackageIdR\x11upgradedPackageId\"\xa4\x02\n" +
+	"\aPackage\x12+\n" +
+	"\amodules\x18\x01 \x03(\v2\x11.daml_lf_1.ModuleR\amodules\x12)\n" +
+	"\x10interned_strings\x18\x02 \x03(\tR\x0finternedStrings\x12Q\n" +
+	"\x15interned_dotted_names\x18\x03 \x03(\v2\x1d.daml_lf_1.InternedDottedNameR\x13internedDottedNames\x126\n" +
+	"\bmetadata\x18\x04 \x01(\v2\x1a.daml_lf_1.PackageMetadataR\bmetadata\x126\n" +
+	"\x0einterned_types\x18\x05 \x03(\v2\x0f.daml_lf_1.TypeR\rinternedTypes*\xa5\x02\n" +
 	"\bPrimType\x12\b\n" +
 	"\x04UNIT\x10\x00\x12\b\n" +
 	"\x04BOOL\x10\x01\x12\t\n" +
@@ -10850,457 +10850,457 @@ const file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc = "" +
 	"\x15BIGNUMERIC_TO_NUMERIC\x10\x9b\x01\x12\x1a\n" +
 	"\x15NUMERIC_TO_BIGNUMERIC\x10\x91\x01\x12\x17\n" +
 	"\x12BIGNUMERIC_TO_TEXT\x10\x92\x01\x12\x18\n" +
-	"\x13TYPE_REP_TYCON_NAME\x10\x94\x01By\n" +
-	"\x13com.daml.daml_lf_16ZDgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/daml_lf_1_17\xaa\x02\x1bCom.Daml.Daml_Lf_16.DamlLf1b\x06proto3"
+	"\x13TYPE_REP_TYCON_NAME\x10\x94\x01B\x87\x01\n" +
+	" com.digitalasset.daml.lf.archiveZ8github.com/digital-asset/dazl-client/v8/go/api/daml_lf_1\xaa\x02(Com.Digitalasset.Daml.Lf.Archive.DamlLf1b\x06proto3"
 
 var (
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescOnce sync.Once
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescData []byte
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescOnce sync.Once
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescData []byte
 )
 
-func file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescGZIP() []byte {
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescOnce.Do(func() {
-		file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc), len(file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc)))
+func file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescGZIP() []byte {
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescOnce.Do(func() {
+		file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDesc), len(file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDesc)))
 	})
-	return file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDescData
+	return file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDescData
 }
 
-var file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes = make([]protoimpl.MessageInfo, 112)
-var file_com_daml_daml_lf_1_17_daml_lf_1_proto_goTypes = []any{
-	(PrimType)(0),                            // 0: daml_lf_1_17.PrimType
-	(PrimCon)(0),                             // 1: daml_lf_1_17.PrimCon
-	(BuiltinFunction)(0),                     // 2: daml_lf_1_17.BuiltinFunction
-	(PrimLit_RoundingMode)(0),                // 3: daml_lf_1_17.PrimLit.RoundingMode
-	(*Unit)(nil),                             // 4: daml_lf_1_17.Unit
-	(*PackageRef)(nil),                       // 5: daml_lf_1_17.PackageRef
-	(*DottedName)(nil),                       // 6: daml_lf_1_17.DottedName
-	(*ModuleRef)(nil),                        // 7: daml_lf_1_17.ModuleRef
-	(*TypeConName)(nil),                      // 8: daml_lf_1_17.TypeConName
-	(*TypeSynName)(nil),                      // 9: daml_lf_1_17.TypeSynName
-	(*ValName)(nil),                          // 10: daml_lf_1_17.ValName
-	(*FieldWithType)(nil),                    // 11: daml_lf_1_17.FieldWithType
-	(*VarWithType)(nil),                      // 12: daml_lf_1_17.VarWithType
-	(*TypeVarWithKind)(nil),                  // 13: daml_lf_1_17.TypeVarWithKind
-	(*FieldWithExpr)(nil),                    // 14: daml_lf_1_17.FieldWithExpr
-	(*Binding)(nil),                          // 15: daml_lf_1_17.Binding
-	(*Kind)(nil),                             // 16: daml_lf_1_17.Kind
-	(*Type)(nil),                             // 17: daml_lf_1_17.Type
-	(*PrimLit)(nil),                          // 18: daml_lf_1_17.PrimLit
-	(*Location)(nil),                         // 19: daml_lf_1_17.Location
-	(*Expr)(nil),                             // 20: daml_lf_1_17.Expr
-	(*CaseAlt)(nil),                          // 21: daml_lf_1_17.CaseAlt
-	(*Case)(nil),                             // 22: daml_lf_1_17.Case
-	(*Block)(nil),                            // 23: daml_lf_1_17.Block
-	(*Pure)(nil),                             // 24: daml_lf_1_17.Pure
-	(*Update)(nil),                           // 25: daml_lf_1_17.Update
-	(*Scenario)(nil),                         // 26: daml_lf_1_17.Scenario
-	(*TemplateChoice)(nil),                   // 27: daml_lf_1_17.TemplateChoice
-	(*KeyExpr)(nil),                          // 28: daml_lf_1_17.KeyExpr
-	(*InterfaceInstanceBody)(nil),            // 29: daml_lf_1_17.InterfaceInstanceBody
-	(*DefTemplate)(nil),                      // 30: daml_lf_1_17.DefTemplate
-	(*InterfaceMethod)(nil),                  // 31: daml_lf_1_17.InterfaceMethod
-	(*DefInterface)(nil),                     // 32: daml_lf_1_17.DefInterface
-	(*DefException)(nil),                     // 33: daml_lf_1_17.DefException
-	(*DefDataType)(nil),                      // 34: daml_lf_1_17.DefDataType
-	(*DefTypeSyn)(nil),                       // 35: daml_lf_1_17.DefTypeSyn
-	(*DefValue)(nil),                         // 36: daml_lf_1_17.DefValue
-	(*FeatureFlags)(nil),                     // 37: daml_lf_1_17.FeatureFlags
-	(*Module)(nil),                           // 38: daml_lf_1_17.Module
-	(*InternedDottedName)(nil),               // 39: daml_lf_1_17.InternedDottedName
-	(*UpgradedPackageId)(nil),                // 40: daml_lf_1_17.UpgradedPackageId
-	(*PackageMetadata)(nil),                  // 41: daml_lf_1_17.PackageMetadata
-	(*Package)(nil),                          // 42: daml_lf_1_17.Package
-	(*Kind_Arrow)(nil),                       // 43: daml_lf_1_17.Kind.Arrow
-	(*Type_Var)(nil),                         // 44: daml_lf_1_17.Type.Var
-	(*Type_Con)(nil),                         // 45: daml_lf_1_17.Type.Con
-	(*Type_Syn)(nil),                         // 46: daml_lf_1_17.Type.Syn
-	(*Type_Prim)(nil),                        // 47: daml_lf_1_17.Type.Prim
-	(*Type_Forall)(nil),                      // 48: daml_lf_1_17.Type.Forall
-	(*Type_Struct)(nil),                      // 49: daml_lf_1_17.Type.Struct
-	(*Location_Range)(nil),                   // 50: daml_lf_1_17.Location.Range
-	(*Expr_RecCon)(nil),                      // 51: daml_lf_1_17.Expr.RecCon
-	(*Expr_RecProj)(nil),                     // 52: daml_lf_1_17.Expr.RecProj
-	(*Expr_RecUpd)(nil),                      // 53: daml_lf_1_17.Expr.RecUpd
-	(*Expr_VariantCon)(nil),                  // 54: daml_lf_1_17.Expr.VariantCon
-	(*Expr_EnumCon)(nil),                     // 55: daml_lf_1_17.Expr.EnumCon
-	(*Expr_StructCon)(nil),                   // 56: daml_lf_1_17.Expr.StructCon
-	(*Expr_StructProj)(nil),                  // 57: daml_lf_1_17.Expr.StructProj
-	(*Expr_StructUpd)(nil),                   // 58: daml_lf_1_17.Expr.StructUpd
-	(*Expr_App)(nil),                         // 59: daml_lf_1_17.Expr.App
-	(*Expr_TyApp)(nil),                       // 60: daml_lf_1_17.Expr.TyApp
-	(*Expr_Abs)(nil),                         // 61: daml_lf_1_17.Expr.Abs
-	(*Expr_TyAbs)(nil),                       // 62: daml_lf_1_17.Expr.TyAbs
-	(*Expr_Nil)(nil),                         // 63: daml_lf_1_17.Expr.Nil
-	(*Expr_Cons)(nil),                        // 64: daml_lf_1_17.Expr.Cons
-	(*Expr_OptionalNone)(nil),                // 65: daml_lf_1_17.Expr.OptionalNone
-	(*Expr_OptionalSome)(nil),                // 66: daml_lf_1_17.Expr.OptionalSome
-	(*Expr_ToAny)(nil),                       // 67: daml_lf_1_17.Expr.ToAny
-	(*Expr_FromAny)(nil),                     // 68: daml_lf_1_17.Expr.FromAny
-	(*Expr_ToAnyException)(nil),              // 69: daml_lf_1_17.Expr.ToAnyException
-	(*Expr_FromAnyException)(nil),            // 70: daml_lf_1_17.Expr.FromAnyException
-	(*Expr_Throw)(nil),                       // 71: daml_lf_1_17.Expr.Throw
-	(*Expr_ToInterface)(nil),                 // 72: daml_lf_1_17.Expr.ToInterface
-	(*Expr_FromInterface)(nil),               // 73: daml_lf_1_17.Expr.FromInterface
-	(*Expr_CallInterface)(nil),               // 74: daml_lf_1_17.Expr.CallInterface
-	(*Expr_ViewInterface)(nil),               // 75: daml_lf_1_17.Expr.ViewInterface
-	(*Expr_SignatoryInterface)(nil),          // 76: daml_lf_1_17.Expr.SignatoryInterface
-	(*Expr_ObserverInterface)(nil),           // 77: daml_lf_1_17.Expr.ObserverInterface
-	(*Expr_UnsafeFromInterface)(nil),         // 78: daml_lf_1_17.Expr.UnsafeFromInterface
-	(*Expr_ToRequiredInterface)(nil),         // 79: daml_lf_1_17.Expr.ToRequiredInterface
-	(*Expr_FromRequiredInterface)(nil),       // 80: daml_lf_1_17.Expr.FromRequiredInterface
-	(*Expr_UnsafeFromRequiredInterface)(nil), // 81: daml_lf_1_17.Expr.UnsafeFromRequiredInterface
-	(*Expr_InterfaceTemplateTypeRep)(nil),    // 82: daml_lf_1_17.Expr.InterfaceTemplateTypeRep
-	(*Expr_ChoiceController)(nil),            // 83: daml_lf_1_17.Expr.ChoiceController
-	(*Expr_ChoiceObserver)(nil),              // 84: daml_lf_1_17.Expr.ChoiceObserver
-	(*Expr_Experimental)(nil),                // 85: daml_lf_1_17.Expr.Experimental
-	(*CaseAlt_Variant)(nil),                  // 86: daml_lf_1_17.CaseAlt.Variant
-	(*CaseAlt_Enum)(nil),                     // 87: daml_lf_1_17.CaseAlt.Enum
-	(*CaseAlt_Cons)(nil),                     // 88: daml_lf_1_17.CaseAlt.Cons
-	(*CaseAlt_OptionalSome)(nil),             // 89: daml_lf_1_17.CaseAlt.OptionalSome
-	(*Update_Create)(nil),                    // 90: daml_lf_1_17.Update.Create
-	(*Update_CreateInterface)(nil),           // 91: daml_lf_1_17.Update.CreateInterface
-	(*Update_Exercise)(nil),                  // 92: daml_lf_1_17.Update.Exercise
-	(*Update_SoftExercise)(nil),              // 93: daml_lf_1_17.Update.SoftExercise
-	(*Update_DynamicExercise)(nil),           // 94: daml_lf_1_17.Update.DynamicExercise
-	(*Update_ExerciseInterface)(nil),         // 95: daml_lf_1_17.Update.ExerciseInterface
-	(*Update_ExerciseByKey)(nil),             // 96: daml_lf_1_17.Update.ExerciseByKey
-	(*Update_Fetch)(nil),                     // 97: daml_lf_1_17.Update.Fetch
-	(*Update_SoftFetch)(nil),                 // 98: daml_lf_1_17.Update.SoftFetch
-	(*Update_FetchInterface)(nil),            // 99: daml_lf_1_17.Update.FetchInterface
-	(*Update_EmbedExpr)(nil),                 // 100: daml_lf_1_17.Update.EmbedExpr
-	(*Update_RetrieveByKey)(nil),             // 101: daml_lf_1_17.Update.RetrieveByKey
-	(*Update_TryCatch)(nil),                  // 102: daml_lf_1_17.Update.TryCatch
-	(*Scenario_Commit)(nil),                  // 103: daml_lf_1_17.Scenario.Commit
-	(*Scenario_EmbedExpr)(nil),               // 104: daml_lf_1_17.Scenario.EmbedExpr
-	(*KeyExpr_Projection)(nil),               // 105: daml_lf_1_17.KeyExpr.Projection
-	(*KeyExpr_Projections)(nil),              // 106: daml_lf_1_17.KeyExpr.Projections
-	(*KeyExpr_RecordField)(nil),              // 107: daml_lf_1_17.KeyExpr.RecordField
-	(*KeyExpr_Record)(nil),                   // 108: daml_lf_1_17.KeyExpr.Record
-	(*InterfaceInstanceBody_InterfaceInstanceMethod)(nil), // 109: daml_lf_1_17.InterfaceInstanceBody.InterfaceInstanceMethod
-	(*DefTemplate_DefKey)(nil),                            // 110: daml_lf_1_17.DefTemplate.DefKey
-	(*DefTemplate_Implements)(nil),                        // 111: daml_lf_1_17.DefTemplate.Implements
-	(*DefInterface_CoImplements)(nil),                     // 112: daml_lf_1_17.DefInterface.CoImplements
-	(*DefDataType_Fields)(nil),                            // 113: daml_lf_1_17.DefDataType.Fields
-	(*DefDataType_EnumConstructors)(nil),                  // 114: daml_lf_1_17.DefDataType.EnumConstructors
-	(*DefValue_NameWithType)(nil),                         // 115: daml_lf_1_17.DefValue.NameWithType
+var file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes = make([]protoimpl.MessageInfo, 112)
+var file_com_digitalasset_daml_lf_archive_daml_lf1_proto_goTypes = []any{
+	(PrimType)(0),                            // 0: daml_lf_1.PrimType
+	(PrimCon)(0),                             // 1: daml_lf_1.PrimCon
+	(BuiltinFunction)(0),                     // 2: daml_lf_1.BuiltinFunction
+	(PrimLit_RoundingMode)(0),                // 3: daml_lf_1.PrimLit.RoundingMode
+	(*Unit)(nil),                             // 4: daml_lf_1.Unit
+	(*PackageRef)(nil),                       // 5: daml_lf_1.PackageRef
+	(*DottedName)(nil),                       // 6: daml_lf_1.DottedName
+	(*ModuleRef)(nil),                        // 7: daml_lf_1.ModuleRef
+	(*TypeConName)(nil),                      // 8: daml_lf_1.TypeConName
+	(*TypeSynName)(nil),                      // 9: daml_lf_1.TypeSynName
+	(*ValName)(nil),                          // 10: daml_lf_1.ValName
+	(*FieldWithType)(nil),                    // 11: daml_lf_1.FieldWithType
+	(*VarWithType)(nil),                      // 12: daml_lf_1.VarWithType
+	(*TypeVarWithKind)(nil),                  // 13: daml_lf_1.TypeVarWithKind
+	(*FieldWithExpr)(nil),                    // 14: daml_lf_1.FieldWithExpr
+	(*Binding)(nil),                          // 15: daml_lf_1.Binding
+	(*Kind)(nil),                             // 16: daml_lf_1.Kind
+	(*Type)(nil),                             // 17: daml_lf_1.Type
+	(*PrimLit)(nil),                          // 18: daml_lf_1.PrimLit
+	(*Location)(nil),                         // 19: daml_lf_1.Location
+	(*Expr)(nil),                             // 20: daml_lf_1.Expr
+	(*CaseAlt)(nil),                          // 21: daml_lf_1.CaseAlt
+	(*Case)(nil),                             // 22: daml_lf_1.Case
+	(*Block)(nil),                            // 23: daml_lf_1.Block
+	(*Pure)(nil),                             // 24: daml_lf_1.Pure
+	(*Update)(nil),                           // 25: daml_lf_1.Update
+	(*Scenario)(nil),                         // 26: daml_lf_1.Scenario
+	(*TemplateChoice)(nil),                   // 27: daml_lf_1.TemplateChoice
+	(*KeyExpr)(nil),                          // 28: daml_lf_1.KeyExpr
+	(*InterfaceInstanceBody)(nil),            // 29: daml_lf_1.InterfaceInstanceBody
+	(*DefTemplate)(nil),                      // 30: daml_lf_1.DefTemplate
+	(*InterfaceMethod)(nil),                  // 31: daml_lf_1.InterfaceMethod
+	(*DefInterface)(nil),                     // 32: daml_lf_1.DefInterface
+	(*DefException)(nil),                     // 33: daml_lf_1.DefException
+	(*DefDataType)(nil),                      // 34: daml_lf_1.DefDataType
+	(*DefTypeSyn)(nil),                       // 35: daml_lf_1.DefTypeSyn
+	(*DefValue)(nil),                         // 36: daml_lf_1.DefValue
+	(*FeatureFlags)(nil),                     // 37: daml_lf_1.FeatureFlags
+	(*Module)(nil),                           // 38: daml_lf_1.Module
+	(*InternedDottedName)(nil),               // 39: daml_lf_1.InternedDottedName
+	(*UpgradedPackageId)(nil),                // 40: daml_lf_1.UpgradedPackageId
+	(*PackageMetadata)(nil),                  // 41: daml_lf_1.PackageMetadata
+	(*Package)(nil),                          // 42: daml_lf_1.Package
+	(*Kind_Arrow)(nil),                       // 43: daml_lf_1.Kind.Arrow
+	(*Type_Var)(nil),                         // 44: daml_lf_1.Type.Var
+	(*Type_Con)(nil),                         // 45: daml_lf_1.Type.Con
+	(*Type_Syn)(nil),                         // 46: daml_lf_1.Type.Syn
+	(*Type_Prim)(nil),                        // 47: daml_lf_1.Type.Prim
+	(*Type_Forall)(nil),                      // 48: daml_lf_1.Type.Forall
+	(*Type_Struct)(nil),                      // 49: daml_lf_1.Type.Struct
+	(*Location_Range)(nil),                   // 50: daml_lf_1.Location.Range
+	(*Expr_RecCon)(nil),                      // 51: daml_lf_1.Expr.RecCon
+	(*Expr_RecProj)(nil),                     // 52: daml_lf_1.Expr.RecProj
+	(*Expr_RecUpd)(nil),                      // 53: daml_lf_1.Expr.RecUpd
+	(*Expr_VariantCon)(nil),                  // 54: daml_lf_1.Expr.VariantCon
+	(*Expr_EnumCon)(nil),                     // 55: daml_lf_1.Expr.EnumCon
+	(*Expr_StructCon)(nil),                   // 56: daml_lf_1.Expr.StructCon
+	(*Expr_StructProj)(nil),                  // 57: daml_lf_1.Expr.StructProj
+	(*Expr_StructUpd)(nil),                   // 58: daml_lf_1.Expr.StructUpd
+	(*Expr_App)(nil),                         // 59: daml_lf_1.Expr.App
+	(*Expr_TyApp)(nil),                       // 60: daml_lf_1.Expr.TyApp
+	(*Expr_Abs)(nil),                         // 61: daml_lf_1.Expr.Abs
+	(*Expr_TyAbs)(nil),                       // 62: daml_lf_1.Expr.TyAbs
+	(*Expr_Nil)(nil),                         // 63: daml_lf_1.Expr.Nil
+	(*Expr_Cons)(nil),                        // 64: daml_lf_1.Expr.Cons
+	(*Expr_OptionalNone)(nil),                // 65: daml_lf_1.Expr.OptionalNone
+	(*Expr_OptionalSome)(nil),                // 66: daml_lf_1.Expr.OptionalSome
+	(*Expr_ToAny)(nil),                       // 67: daml_lf_1.Expr.ToAny
+	(*Expr_FromAny)(nil),                     // 68: daml_lf_1.Expr.FromAny
+	(*Expr_ToAnyException)(nil),              // 69: daml_lf_1.Expr.ToAnyException
+	(*Expr_FromAnyException)(nil),            // 70: daml_lf_1.Expr.FromAnyException
+	(*Expr_Throw)(nil),                       // 71: daml_lf_1.Expr.Throw
+	(*Expr_ToInterface)(nil),                 // 72: daml_lf_1.Expr.ToInterface
+	(*Expr_FromInterface)(nil),               // 73: daml_lf_1.Expr.FromInterface
+	(*Expr_CallInterface)(nil),               // 74: daml_lf_1.Expr.CallInterface
+	(*Expr_ViewInterface)(nil),               // 75: daml_lf_1.Expr.ViewInterface
+	(*Expr_SignatoryInterface)(nil),          // 76: daml_lf_1.Expr.SignatoryInterface
+	(*Expr_ObserverInterface)(nil),           // 77: daml_lf_1.Expr.ObserverInterface
+	(*Expr_UnsafeFromInterface)(nil),         // 78: daml_lf_1.Expr.UnsafeFromInterface
+	(*Expr_ToRequiredInterface)(nil),         // 79: daml_lf_1.Expr.ToRequiredInterface
+	(*Expr_FromRequiredInterface)(nil),       // 80: daml_lf_1.Expr.FromRequiredInterface
+	(*Expr_UnsafeFromRequiredInterface)(nil), // 81: daml_lf_1.Expr.UnsafeFromRequiredInterface
+	(*Expr_InterfaceTemplateTypeRep)(nil),    // 82: daml_lf_1.Expr.InterfaceTemplateTypeRep
+	(*Expr_ChoiceController)(nil),            // 83: daml_lf_1.Expr.ChoiceController
+	(*Expr_ChoiceObserver)(nil),              // 84: daml_lf_1.Expr.ChoiceObserver
+	(*Expr_Experimental)(nil),                // 85: daml_lf_1.Expr.Experimental
+	(*CaseAlt_Variant)(nil),                  // 86: daml_lf_1.CaseAlt.Variant
+	(*CaseAlt_Enum)(nil),                     // 87: daml_lf_1.CaseAlt.Enum
+	(*CaseAlt_Cons)(nil),                     // 88: daml_lf_1.CaseAlt.Cons
+	(*CaseAlt_OptionalSome)(nil),             // 89: daml_lf_1.CaseAlt.OptionalSome
+	(*Update_Create)(nil),                    // 90: daml_lf_1.Update.Create
+	(*Update_CreateInterface)(nil),           // 91: daml_lf_1.Update.CreateInterface
+	(*Update_Exercise)(nil),                  // 92: daml_lf_1.Update.Exercise
+	(*Update_SoftExercise)(nil),              // 93: daml_lf_1.Update.SoftExercise
+	(*Update_DynamicExercise)(nil),           // 94: daml_lf_1.Update.DynamicExercise
+	(*Update_ExerciseInterface)(nil),         // 95: daml_lf_1.Update.ExerciseInterface
+	(*Update_ExerciseByKey)(nil),             // 96: daml_lf_1.Update.ExerciseByKey
+	(*Update_Fetch)(nil),                     // 97: daml_lf_1.Update.Fetch
+	(*Update_SoftFetch)(nil),                 // 98: daml_lf_1.Update.SoftFetch
+	(*Update_FetchInterface)(nil),            // 99: daml_lf_1.Update.FetchInterface
+	(*Update_EmbedExpr)(nil),                 // 100: daml_lf_1.Update.EmbedExpr
+	(*Update_RetrieveByKey)(nil),             // 101: daml_lf_1.Update.RetrieveByKey
+	(*Update_TryCatch)(nil),                  // 102: daml_lf_1.Update.TryCatch
+	(*Scenario_Commit)(nil),                  // 103: daml_lf_1.Scenario.Commit
+	(*Scenario_EmbedExpr)(nil),               // 104: daml_lf_1.Scenario.EmbedExpr
+	(*KeyExpr_Projection)(nil),               // 105: daml_lf_1.KeyExpr.Projection
+	(*KeyExpr_Projections)(nil),              // 106: daml_lf_1.KeyExpr.Projections
+	(*KeyExpr_RecordField)(nil),              // 107: daml_lf_1.KeyExpr.RecordField
+	(*KeyExpr_Record)(nil),                   // 108: daml_lf_1.KeyExpr.Record
+	(*InterfaceInstanceBody_InterfaceInstanceMethod)(nil), // 109: daml_lf_1.InterfaceInstanceBody.InterfaceInstanceMethod
+	(*DefTemplate_DefKey)(nil),                            // 110: daml_lf_1.DefTemplate.DefKey
+	(*DefTemplate_Implements)(nil),                        // 111: daml_lf_1.DefTemplate.Implements
+	(*DefInterface_CoImplements)(nil),                     // 112: daml_lf_1.DefInterface.CoImplements
+	(*DefDataType_Fields)(nil),                            // 113: daml_lf_1.DefDataType.Fields
+	(*DefDataType_EnumConstructors)(nil),                  // 114: daml_lf_1.DefDataType.EnumConstructors
+	(*DefValue_NameWithType)(nil),                         // 115: daml_lf_1.DefValue.NameWithType
 }
-var file_com_daml_daml_lf_1_17_daml_lf_1_proto_depIdxs = []int32{
-	4,   // 0: daml_lf_1_17.PackageRef.self:type_name -> daml_lf_1_17.Unit
-	5,   // 1: daml_lf_1_17.ModuleRef.package_ref:type_name -> daml_lf_1_17.PackageRef
-	6,   // 2: daml_lf_1_17.ModuleRef.module_name_dname:type_name -> daml_lf_1_17.DottedName
-	7,   // 3: daml_lf_1_17.TypeConName.module:type_name -> daml_lf_1_17.ModuleRef
-	6,   // 4: daml_lf_1_17.TypeConName.name_dname:type_name -> daml_lf_1_17.DottedName
-	7,   // 5: daml_lf_1_17.TypeSynName.module:type_name -> daml_lf_1_17.ModuleRef
-	6,   // 6: daml_lf_1_17.TypeSynName.name_dname:type_name -> daml_lf_1_17.DottedName
-	7,   // 7: daml_lf_1_17.ValName.module:type_name -> daml_lf_1_17.ModuleRef
-	17,  // 8: daml_lf_1_17.FieldWithType.type:type_name -> daml_lf_1_17.Type
-	17,  // 9: daml_lf_1_17.VarWithType.type:type_name -> daml_lf_1_17.Type
-	16,  // 10: daml_lf_1_17.TypeVarWithKind.kind:type_name -> daml_lf_1_17.Kind
-	20,  // 11: daml_lf_1_17.FieldWithExpr.expr:type_name -> daml_lf_1_17.Expr
-	12,  // 12: daml_lf_1_17.Binding.binder:type_name -> daml_lf_1_17.VarWithType
-	20,  // 13: daml_lf_1_17.Binding.bound:type_name -> daml_lf_1_17.Expr
-	4,   // 14: daml_lf_1_17.Kind.star:type_name -> daml_lf_1_17.Unit
-	43,  // 15: daml_lf_1_17.Kind.arrow:type_name -> daml_lf_1_17.Kind.Arrow
-	4,   // 16: daml_lf_1_17.Kind.nat:type_name -> daml_lf_1_17.Unit
-	44,  // 17: daml_lf_1_17.Type.var:type_name -> daml_lf_1_17.Type.Var
-	45,  // 18: daml_lf_1_17.Type.con:type_name -> daml_lf_1_17.Type.Con
-	47,  // 19: daml_lf_1_17.Type.prim:type_name -> daml_lf_1_17.Type.Prim
-	48,  // 20: daml_lf_1_17.Type.forall:type_name -> daml_lf_1_17.Type.Forall
-	49,  // 21: daml_lf_1_17.Type.struct:type_name -> daml_lf_1_17.Type.Struct
-	46,  // 22: daml_lf_1_17.Type.syn:type_name -> daml_lf_1_17.Type.Syn
-	3,   // 23: daml_lf_1_17.PrimLit.rounding_mode:type_name -> daml_lf_1_17.PrimLit.RoundingMode
-	7,   // 24: daml_lf_1_17.Location.module:type_name -> daml_lf_1_17.ModuleRef
-	50,  // 25: daml_lf_1_17.Location.range:type_name -> daml_lf_1_17.Location.Range
-	19,  // 26: daml_lf_1_17.Expr.location:type_name -> daml_lf_1_17.Location
-	10,  // 27: daml_lf_1_17.Expr.val:type_name -> daml_lf_1_17.ValName
-	2,   // 28: daml_lf_1_17.Expr.builtin:type_name -> daml_lf_1_17.BuiltinFunction
-	1,   // 29: daml_lf_1_17.Expr.prim_con:type_name -> daml_lf_1_17.PrimCon
-	18,  // 30: daml_lf_1_17.Expr.prim_lit:type_name -> daml_lf_1_17.PrimLit
-	51,  // 31: daml_lf_1_17.Expr.rec_con:type_name -> daml_lf_1_17.Expr.RecCon
-	52,  // 32: daml_lf_1_17.Expr.rec_proj:type_name -> daml_lf_1_17.Expr.RecProj
-	53,  // 33: daml_lf_1_17.Expr.rec_upd:type_name -> daml_lf_1_17.Expr.RecUpd
-	54,  // 34: daml_lf_1_17.Expr.variant_con:type_name -> daml_lf_1_17.Expr.VariantCon
-	55,  // 35: daml_lf_1_17.Expr.enum_con:type_name -> daml_lf_1_17.Expr.EnumCon
-	56,  // 36: daml_lf_1_17.Expr.struct_con:type_name -> daml_lf_1_17.Expr.StructCon
-	57,  // 37: daml_lf_1_17.Expr.struct_proj:type_name -> daml_lf_1_17.Expr.StructProj
-	58,  // 38: daml_lf_1_17.Expr.struct_upd:type_name -> daml_lf_1_17.Expr.StructUpd
-	59,  // 39: daml_lf_1_17.Expr.app:type_name -> daml_lf_1_17.Expr.App
-	60,  // 40: daml_lf_1_17.Expr.ty_app:type_name -> daml_lf_1_17.Expr.TyApp
-	61,  // 41: daml_lf_1_17.Expr.abs:type_name -> daml_lf_1_17.Expr.Abs
-	62,  // 42: daml_lf_1_17.Expr.ty_abs:type_name -> daml_lf_1_17.Expr.TyAbs
-	22,  // 43: daml_lf_1_17.Expr.case:type_name -> daml_lf_1_17.Case
-	23,  // 44: daml_lf_1_17.Expr.let:type_name -> daml_lf_1_17.Block
-	63,  // 45: daml_lf_1_17.Expr.nil:type_name -> daml_lf_1_17.Expr.Nil
-	64,  // 46: daml_lf_1_17.Expr.cons:type_name -> daml_lf_1_17.Expr.Cons
-	25,  // 47: daml_lf_1_17.Expr.update:type_name -> daml_lf_1_17.Update
-	26,  // 48: daml_lf_1_17.Expr.scenario:type_name -> daml_lf_1_17.Scenario
-	65,  // 49: daml_lf_1_17.Expr.optional_none:type_name -> daml_lf_1_17.Expr.OptionalNone
-	66,  // 50: daml_lf_1_17.Expr.optional_some:type_name -> daml_lf_1_17.Expr.OptionalSome
-	67,  // 51: daml_lf_1_17.Expr.to_any:type_name -> daml_lf_1_17.Expr.ToAny
-	68,  // 52: daml_lf_1_17.Expr.from_any:type_name -> daml_lf_1_17.Expr.FromAny
-	17,  // 53: daml_lf_1_17.Expr.type_rep:type_name -> daml_lf_1_17.Type
-	69,  // 54: daml_lf_1_17.Expr.to_any_exception:type_name -> daml_lf_1_17.Expr.ToAnyException
-	70,  // 55: daml_lf_1_17.Expr.from_any_exception:type_name -> daml_lf_1_17.Expr.FromAnyException
-	71,  // 56: daml_lf_1_17.Expr.throw:type_name -> daml_lf_1_17.Expr.Throw
-	72,  // 57: daml_lf_1_17.Expr.to_interface:type_name -> daml_lf_1_17.Expr.ToInterface
-	73,  // 58: daml_lf_1_17.Expr.from_interface:type_name -> daml_lf_1_17.Expr.FromInterface
-	74,  // 59: daml_lf_1_17.Expr.call_interface:type_name -> daml_lf_1_17.Expr.CallInterface
-	76,  // 60: daml_lf_1_17.Expr.signatory_interface:type_name -> daml_lf_1_17.Expr.SignatoryInterface
-	77,  // 61: daml_lf_1_17.Expr.observer_interface:type_name -> daml_lf_1_17.Expr.ObserverInterface
-	75,  // 62: daml_lf_1_17.Expr.view_interface:type_name -> daml_lf_1_17.Expr.ViewInterface
-	78,  // 63: daml_lf_1_17.Expr.unsafe_from_interface:type_name -> daml_lf_1_17.Expr.UnsafeFromInterface
-	82,  // 64: daml_lf_1_17.Expr.interface_template_type_rep:type_name -> daml_lf_1_17.Expr.InterfaceTemplateTypeRep
-	79,  // 65: daml_lf_1_17.Expr.to_required_interface:type_name -> daml_lf_1_17.Expr.ToRequiredInterface
-	80,  // 66: daml_lf_1_17.Expr.from_required_interface:type_name -> daml_lf_1_17.Expr.FromRequiredInterface
-	81,  // 67: daml_lf_1_17.Expr.unsafe_from_required_interface:type_name -> daml_lf_1_17.Expr.UnsafeFromRequiredInterface
-	83,  // 68: daml_lf_1_17.Expr.choice_controller:type_name -> daml_lf_1_17.Expr.ChoiceController
-	84,  // 69: daml_lf_1_17.Expr.choice_observer:type_name -> daml_lf_1_17.Expr.ChoiceObserver
-	85,  // 70: daml_lf_1_17.Expr.experimental:type_name -> daml_lf_1_17.Expr.Experimental
-	4,   // 71: daml_lf_1_17.CaseAlt.default:type_name -> daml_lf_1_17.Unit
-	86,  // 72: daml_lf_1_17.CaseAlt.variant:type_name -> daml_lf_1_17.CaseAlt.Variant
-	1,   // 73: daml_lf_1_17.CaseAlt.prim_con:type_name -> daml_lf_1_17.PrimCon
-	4,   // 74: daml_lf_1_17.CaseAlt.nil:type_name -> daml_lf_1_17.Unit
-	88,  // 75: daml_lf_1_17.CaseAlt.cons:type_name -> daml_lf_1_17.CaseAlt.Cons
-	4,   // 76: daml_lf_1_17.CaseAlt.optional_none:type_name -> daml_lf_1_17.Unit
-	89,  // 77: daml_lf_1_17.CaseAlt.optional_some:type_name -> daml_lf_1_17.CaseAlt.OptionalSome
-	87,  // 78: daml_lf_1_17.CaseAlt.enum:type_name -> daml_lf_1_17.CaseAlt.Enum
-	20,  // 79: daml_lf_1_17.CaseAlt.body:type_name -> daml_lf_1_17.Expr
-	20,  // 80: daml_lf_1_17.Case.scrut:type_name -> daml_lf_1_17.Expr
-	21,  // 81: daml_lf_1_17.Case.alts:type_name -> daml_lf_1_17.CaseAlt
-	15,  // 82: daml_lf_1_17.Block.bindings:type_name -> daml_lf_1_17.Binding
-	20,  // 83: daml_lf_1_17.Block.body:type_name -> daml_lf_1_17.Expr
-	17,  // 84: daml_lf_1_17.Pure.type:type_name -> daml_lf_1_17.Type
-	20,  // 85: daml_lf_1_17.Pure.expr:type_name -> daml_lf_1_17.Expr
-	24,  // 86: daml_lf_1_17.Update.pure:type_name -> daml_lf_1_17.Pure
-	23,  // 87: daml_lf_1_17.Update.block:type_name -> daml_lf_1_17.Block
-	90,  // 88: daml_lf_1_17.Update.create:type_name -> daml_lf_1_17.Update.Create
-	92,  // 89: daml_lf_1_17.Update.exercise:type_name -> daml_lf_1_17.Update.Exercise
-	96,  // 90: daml_lf_1_17.Update.exercise_by_key:type_name -> daml_lf_1_17.Update.ExerciseByKey
-	97,  // 91: daml_lf_1_17.Update.fetch:type_name -> daml_lf_1_17.Update.Fetch
-	4,   // 92: daml_lf_1_17.Update.get_time:type_name -> daml_lf_1_17.Unit
-	101, // 93: daml_lf_1_17.Update.lookup_by_key:type_name -> daml_lf_1_17.Update.RetrieveByKey
-	101, // 94: daml_lf_1_17.Update.fetch_by_key:type_name -> daml_lf_1_17.Update.RetrieveByKey
-	100, // 95: daml_lf_1_17.Update.embed_expr:type_name -> daml_lf_1_17.Update.EmbedExpr
-	102, // 96: daml_lf_1_17.Update.try_catch:type_name -> daml_lf_1_17.Update.TryCatch
-	91,  // 97: daml_lf_1_17.Update.create_interface:type_name -> daml_lf_1_17.Update.CreateInterface
-	95,  // 98: daml_lf_1_17.Update.exercise_interface:type_name -> daml_lf_1_17.Update.ExerciseInterface
-	99,  // 99: daml_lf_1_17.Update.fetch_interface:type_name -> daml_lf_1_17.Update.FetchInterface
-	94,  // 100: daml_lf_1_17.Update.dynamic_exercise:type_name -> daml_lf_1_17.Update.DynamicExercise
-	98,  // 101: daml_lf_1_17.Update.soft_fetch:type_name -> daml_lf_1_17.Update.SoftFetch
-	93,  // 102: daml_lf_1_17.Update.soft_exercise:type_name -> daml_lf_1_17.Update.SoftExercise
-	24,  // 103: daml_lf_1_17.Scenario.pure:type_name -> daml_lf_1_17.Pure
-	23,  // 104: daml_lf_1_17.Scenario.block:type_name -> daml_lf_1_17.Block
-	103, // 105: daml_lf_1_17.Scenario.commit:type_name -> daml_lf_1_17.Scenario.Commit
-	103, // 106: daml_lf_1_17.Scenario.mustFailAt:type_name -> daml_lf_1_17.Scenario.Commit
-	20,  // 107: daml_lf_1_17.Scenario.pass:type_name -> daml_lf_1_17.Expr
-	4,   // 108: daml_lf_1_17.Scenario.get_time:type_name -> daml_lf_1_17.Unit
-	20,  // 109: daml_lf_1_17.Scenario.get_party:type_name -> daml_lf_1_17.Expr
-	104, // 110: daml_lf_1_17.Scenario.embed_expr:type_name -> daml_lf_1_17.Scenario.EmbedExpr
-	20,  // 111: daml_lf_1_17.TemplateChoice.controllers:type_name -> daml_lf_1_17.Expr
-	20,  // 112: daml_lf_1_17.TemplateChoice.observers:type_name -> daml_lf_1_17.Expr
-	20,  // 113: daml_lf_1_17.TemplateChoice.authorizers:type_name -> daml_lf_1_17.Expr
-	12,  // 114: daml_lf_1_17.TemplateChoice.arg_binder:type_name -> daml_lf_1_17.VarWithType
-	17,  // 115: daml_lf_1_17.TemplateChoice.ret_type:type_name -> daml_lf_1_17.Type
-	20,  // 116: daml_lf_1_17.TemplateChoice.update:type_name -> daml_lf_1_17.Expr
-	19,  // 117: daml_lf_1_17.TemplateChoice.location:type_name -> daml_lf_1_17.Location
-	106, // 118: daml_lf_1_17.KeyExpr.projections:type_name -> daml_lf_1_17.KeyExpr.Projections
-	108, // 119: daml_lf_1_17.KeyExpr.record:type_name -> daml_lf_1_17.KeyExpr.Record
-	109, // 120: daml_lf_1_17.InterfaceInstanceBody.methods:type_name -> daml_lf_1_17.InterfaceInstanceBody.InterfaceInstanceMethod
-	20,  // 121: daml_lf_1_17.InterfaceInstanceBody.view:type_name -> daml_lf_1_17.Expr
-	6,   // 122: daml_lf_1_17.DefTemplate.tycon_dname:type_name -> daml_lf_1_17.DottedName
-	20,  // 123: daml_lf_1_17.DefTemplate.precond:type_name -> daml_lf_1_17.Expr
-	20,  // 124: daml_lf_1_17.DefTemplate.signatories:type_name -> daml_lf_1_17.Expr
-	20,  // 125: daml_lf_1_17.DefTemplate.agreement:type_name -> daml_lf_1_17.Expr
-	27,  // 126: daml_lf_1_17.DefTemplate.choices:type_name -> daml_lf_1_17.TemplateChoice
-	20,  // 127: daml_lf_1_17.DefTemplate.observers:type_name -> daml_lf_1_17.Expr
-	19,  // 128: daml_lf_1_17.DefTemplate.location:type_name -> daml_lf_1_17.Location
-	110, // 129: daml_lf_1_17.DefTemplate.key:type_name -> daml_lf_1_17.DefTemplate.DefKey
-	111, // 130: daml_lf_1_17.DefTemplate.implements:type_name -> daml_lf_1_17.DefTemplate.Implements
-	19,  // 131: daml_lf_1_17.InterfaceMethod.location:type_name -> daml_lf_1_17.Location
-	17,  // 132: daml_lf_1_17.InterfaceMethod.type:type_name -> daml_lf_1_17.Type
-	19,  // 133: daml_lf_1_17.DefInterface.location:type_name -> daml_lf_1_17.Location
-	31,  // 134: daml_lf_1_17.DefInterface.methods:type_name -> daml_lf_1_17.InterfaceMethod
-	27,  // 135: daml_lf_1_17.DefInterface.choices:type_name -> daml_lf_1_17.TemplateChoice
-	112, // 136: daml_lf_1_17.DefInterface.coImplements:type_name -> daml_lf_1_17.DefInterface.CoImplements
-	17,  // 137: daml_lf_1_17.DefInterface.view:type_name -> daml_lf_1_17.Type
-	8,   // 138: daml_lf_1_17.DefInterface.requires:type_name -> daml_lf_1_17.TypeConName
-	19,  // 139: daml_lf_1_17.DefException.location:type_name -> daml_lf_1_17.Location
-	20,  // 140: daml_lf_1_17.DefException.message:type_name -> daml_lf_1_17.Expr
-	6,   // 141: daml_lf_1_17.DefDataType.name_dname:type_name -> daml_lf_1_17.DottedName
-	13,  // 142: daml_lf_1_17.DefDataType.params:type_name -> daml_lf_1_17.TypeVarWithKind
-	113, // 143: daml_lf_1_17.DefDataType.record:type_name -> daml_lf_1_17.DefDataType.Fields
-	113, // 144: daml_lf_1_17.DefDataType.variant:type_name -> daml_lf_1_17.DefDataType.Fields
-	114, // 145: daml_lf_1_17.DefDataType.enum:type_name -> daml_lf_1_17.DefDataType.EnumConstructors
-	4,   // 146: daml_lf_1_17.DefDataType.interface:type_name -> daml_lf_1_17.Unit
-	19,  // 147: daml_lf_1_17.DefDataType.location:type_name -> daml_lf_1_17.Location
-	6,   // 148: daml_lf_1_17.DefTypeSyn.name_dname:type_name -> daml_lf_1_17.DottedName
-	13,  // 149: daml_lf_1_17.DefTypeSyn.params:type_name -> daml_lf_1_17.TypeVarWithKind
-	17,  // 150: daml_lf_1_17.DefTypeSyn.type:type_name -> daml_lf_1_17.Type
-	19,  // 151: daml_lf_1_17.DefTypeSyn.location:type_name -> daml_lf_1_17.Location
-	115, // 152: daml_lf_1_17.DefValue.name_with_type:type_name -> daml_lf_1_17.DefValue.NameWithType
-	20,  // 153: daml_lf_1_17.DefValue.expr:type_name -> daml_lf_1_17.Expr
-	19,  // 154: daml_lf_1_17.DefValue.location:type_name -> daml_lf_1_17.Location
-	6,   // 155: daml_lf_1_17.Module.name_dname:type_name -> daml_lf_1_17.DottedName
-	37,  // 156: daml_lf_1_17.Module.flags:type_name -> daml_lf_1_17.FeatureFlags
-	35,  // 157: daml_lf_1_17.Module.synonyms:type_name -> daml_lf_1_17.DefTypeSyn
-	34,  // 158: daml_lf_1_17.Module.data_types:type_name -> daml_lf_1_17.DefDataType
-	36,  // 159: daml_lf_1_17.Module.values:type_name -> daml_lf_1_17.DefValue
-	30,  // 160: daml_lf_1_17.Module.templates:type_name -> daml_lf_1_17.DefTemplate
-	33,  // 161: daml_lf_1_17.Module.exceptions:type_name -> daml_lf_1_17.DefException
-	32,  // 162: daml_lf_1_17.Module.interfaces:type_name -> daml_lf_1_17.DefInterface
-	40,  // 163: daml_lf_1_17.PackageMetadata.upgraded_package_id:type_name -> daml_lf_1_17.UpgradedPackageId
-	38,  // 164: daml_lf_1_17.Package.modules:type_name -> daml_lf_1_17.Module
-	39,  // 165: daml_lf_1_17.Package.interned_dotted_names:type_name -> daml_lf_1_17.InternedDottedName
-	41,  // 166: daml_lf_1_17.Package.metadata:type_name -> daml_lf_1_17.PackageMetadata
-	17,  // 167: daml_lf_1_17.Package.interned_types:type_name -> daml_lf_1_17.Type
-	16,  // 168: daml_lf_1_17.Kind.Arrow.params:type_name -> daml_lf_1_17.Kind
-	16,  // 169: daml_lf_1_17.Kind.Arrow.result:type_name -> daml_lf_1_17.Kind
-	17,  // 170: daml_lf_1_17.Type.Var.args:type_name -> daml_lf_1_17.Type
-	8,   // 171: daml_lf_1_17.Type.Con.tycon:type_name -> daml_lf_1_17.TypeConName
-	17,  // 172: daml_lf_1_17.Type.Con.args:type_name -> daml_lf_1_17.Type
-	9,   // 173: daml_lf_1_17.Type.Syn.tysyn:type_name -> daml_lf_1_17.TypeSynName
-	17,  // 174: daml_lf_1_17.Type.Syn.args:type_name -> daml_lf_1_17.Type
-	0,   // 175: daml_lf_1_17.Type.Prim.prim:type_name -> daml_lf_1_17.PrimType
-	17,  // 176: daml_lf_1_17.Type.Prim.args:type_name -> daml_lf_1_17.Type
-	13,  // 177: daml_lf_1_17.Type.Forall.vars:type_name -> daml_lf_1_17.TypeVarWithKind
-	17,  // 178: daml_lf_1_17.Type.Forall.body:type_name -> daml_lf_1_17.Type
-	11,  // 179: daml_lf_1_17.Type.Struct.fields:type_name -> daml_lf_1_17.FieldWithType
-	45,  // 180: daml_lf_1_17.Expr.RecCon.tycon:type_name -> daml_lf_1_17.Type.Con
-	14,  // 181: daml_lf_1_17.Expr.RecCon.fields:type_name -> daml_lf_1_17.FieldWithExpr
-	45,  // 182: daml_lf_1_17.Expr.RecProj.tycon:type_name -> daml_lf_1_17.Type.Con
-	20,  // 183: daml_lf_1_17.Expr.RecProj.record:type_name -> daml_lf_1_17.Expr
-	45,  // 184: daml_lf_1_17.Expr.RecUpd.tycon:type_name -> daml_lf_1_17.Type.Con
-	20,  // 185: daml_lf_1_17.Expr.RecUpd.record:type_name -> daml_lf_1_17.Expr
-	20,  // 186: daml_lf_1_17.Expr.RecUpd.update:type_name -> daml_lf_1_17.Expr
-	45,  // 187: daml_lf_1_17.Expr.VariantCon.tycon:type_name -> daml_lf_1_17.Type.Con
-	20,  // 188: daml_lf_1_17.Expr.VariantCon.variant_arg:type_name -> daml_lf_1_17.Expr
-	8,   // 189: daml_lf_1_17.Expr.EnumCon.tycon:type_name -> daml_lf_1_17.TypeConName
-	14,  // 190: daml_lf_1_17.Expr.StructCon.fields:type_name -> daml_lf_1_17.FieldWithExpr
-	20,  // 191: daml_lf_1_17.Expr.StructProj.struct:type_name -> daml_lf_1_17.Expr
-	20,  // 192: daml_lf_1_17.Expr.StructUpd.struct:type_name -> daml_lf_1_17.Expr
-	20,  // 193: daml_lf_1_17.Expr.StructUpd.update:type_name -> daml_lf_1_17.Expr
-	20,  // 194: daml_lf_1_17.Expr.App.fun:type_name -> daml_lf_1_17.Expr
-	20,  // 195: daml_lf_1_17.Expr.App.args:type_name -> daml_lf_1_17.Expr
-	20,  // 196: daml_lf_1_17.Expr.TyApp.expr:type_name -> daml_lf_1_17.Expr
-	17,  // 197: daml_lf_1_17.Expr.TyApp.types:type_name -> daml_lf_1_17.Type
-	12,  // 198: daml_lf_1_17.Expr.Abs.param:type_name -> daml_lf_1_17.VarWithType
-	20,  // 199: daml_lf_1_17.Expr.Abs.body:type_name -> daml_lf_1_17.Expr
-	13,  // 200: daml_lf_1_17.Expr.TyAbs.param:type_name -> daml_lf_1_17.TypeVarWithKind
-	20,  // 201: daml_lf_1_17.Expr.TyAbs.body:type_name -> daml_lf_1_17.Expr
-	17,  // 202: daml_lf_1_17.Expr.Nil.type:type_name -> daml_lf_1_17.Type
-	17,  // 203: daml_lf_1_17.Expr.Cons.type:type_name -> daml_lf_1_17.Type
-	20,  // 204: daml_lf_1_17.Expr.Cons.front:type_name -> daml_lf_1_17.Expr
-	20,  // 205: daml_lf_1_17.Expr.Cons.tail:type_name -> daml_lf_1_17.Expr
-	17,  // 206: daml_lf_1_17.Expr.OptionalNone.type:type_name -> daml_lf_1_17.Type
-	17,  // 207: daml_lf_1_17.Expr.OptionalSome.type:type_name -> daml_lf_1_17.Type
-	20,  // 208: daml_lf_1_17.Expr.OptionalSome.body:type_name -> daml_lf_1_17.Expr
-	17,  // 209: daml_lf_1_17.Expr.ToAny.type:type_name -> daml_lf_1_17.Type
-	20,  // 210: daml_lf_1_17.Expr.ToAny.expr:type_name -> daml_lf_1_17.Expr
-	17,  // 211: daml_lf_1_17.Expr.FromAny.type:type_name -> daml_lf_1_17.Type
-	20,  // 212: daml_lf_1_17.Expr.FromAny.expr:type_name -> daml_lf_1_17.Expr
-	17,  // 213: daml_lf_1_17.Expr.ToAnyException.type:type_name -> daml_lf_1_17.Type
-	20,  // 214: daml_lf_1_17.Expr.ToAnyException.expr:type_name -> daml_lf_1_17.Expr
-	17,  // 215: daml_lf_1_17.Expr.FromAnyException.type:type_name -> daml_lf_1_17.Type
-	20,  // 216: daml_lf_1_17.Expr.FromAnyException.expr:type_name -> daml_lf_1_17.Expr
-	17,  // 217: daml_lf_1_17.Expr.Throw.return_type:type_name -> daml_lf_1_17.Type
-	17,  // 218: daml_lf_1_17.Expr.Throw.exception_type:type_name -> daml_lf_1_17.Type
-	20,  // 219: daml_lf_1_17.Expr.Throw.exception_expr:type_name -> daml_lf_1_17.Expr
-	8,   // 220: daml_lf_1_17.Expr.ToInterface.interface_type:type_name -> daml_lf_1_17.TypeConName
-	8,   // 221: daml_lf_1_17.Expr.ToInterface.template_type:type_name -> daml_lf_1_17.TypeConName
-	20,  // 222: daml_lf_1_17.Expr.ToInterface.template_expr:type_name -> daml_lf_1_17.Expr
-	8,   // 223: daml_lf_1_17.Expr.FromInterface.interface_type:type_name -> daml_lf_1_17.TypeConName
-	8,   // 224: daml_lf_1_17.Expr.FromInterface.template_type:type_name -> daml_lf_1_17.TypeConName
-	20,  // 225: daml_lf_1_17.Expr.FromInterface.interface_expr:type_name -> daml_lf_1_17.Expr
-	8,   // 226: daml_lf_1_17.Expr.CallInterface.interface_type:type_name -> daml_lf_1_17.TypeConName
-	20,  // 227: daml_lf_1_17.Expr.CallInterface.interface_expr:type_name -> daml_lf_1_17.Expr
-	8,   // 228: daml_lf_1_17.Expr.ViewInterface.interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 229: daml_lf_1_17.Expr.ViewInterface.expr:type_name -> daml_lf_1_17.Expr
-	8,   // 230: daml_lf_1_17.Expr.SignatoryInterface.interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 231: daml_lf_1_17.Expr.SignatoryInterface.expr:type_name -> daml_lf_1_17.Expr
-	8,   // 232: daml_lf_1_17.Expr.ObserverInterface.interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 233: daml_lf_1_17.Expr.ObserverInterface.expr:type_name -> daml_lf_1_17.Expr
-	8,   // 234: daml_lf_1_17.Expr.UnsafeFromInterface.interface_type:type_name -> daml_lf_1_17.TypeConName
-	8,   // 235: daml_lf_1_17.Expr.UnsafeFromInterface.template_type:type_name -> daml_lf_1_17.TypeConName
-	20,  // 236: daml_lf_1_17.Expr.UnsafeFromInterface.contract_id_expr:type_name -> daml_lf_1_17.Expr
-	20,  // 237: daml_lf_1_17.Expr.UnsafeFromInterface.interface_expr:type_name -> daml_lf_1_17.Expr
-	8,   // 238: daml_lf_1_17.Expr.ToRequiredInterface.required_interface:type_name -> daml_lf_1_17.TypeConName
-	8,   // 239: daml_lf_1_17.Expr.ToRequiredInterface.requiring_interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 240: daml_lf_1_17.Expr.ToRequiredInterface.expr:type_name -> daml_lf_1_17.Expr
-	8,   // 241: daml_lf_1_17.Expr.FromRequiredInterface.required_interface:type_name -> daml_lf_1_17.TypeConName
-	8,   // 242: daml_lf_1_17.Expr.FromRequiredInterface.requiring_interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 243: daml_lf_1_17.Expr.FromRequiredInterface.expr:type_name -> daml_lf_1_17.Expr
-	8,   // 244: daml_lf_1_17.Expr.UnsafeFromRequiredInterface.required_interface:type_name -> daml_lf_1_17.TypeConName
-	8,   // 245: daml_lf_1_17.Expr.UnsafeFromRequiredInterface.requiring_interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 246: daml_lf_1_17.Expr.UnsafeFromRequiredInterface.contract_id_expr:type_name -> daml_lf_1_17.Expr
-	20,  // 247: daml_lf_1_17.Expr.UnsafeFromRequiredInterface.interface_expr:type_name -> daml_lf_1_17.Expr
-	8,   // 248: daml_lf_1_17.Expr.InterfaceTemplateTypeRep.interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 249: daml_lf_1_17.Expr.InterfaceTemplateTypeRep.expr:type_name -> daml_lf_1_17.Expr
-	8,   // 250: daml_lf_1_17.Expr.ChoiceController.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 251: daml_lf_1_17.Expr.ChoiceController.contract_expr:type_name -> daml_lf_1_17.Expr
-	20,  // 252: daml_lf_1_17.Expr.ChoiceController.choice_arg_expr:type_name -> daml_lf_1_17.Expr
-	8,   // 253: daml_lf_1_17.Expr.ChoiceObserver.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 254: daml_lf_1_17.Expr.ChoiceObserver.contract_expr:type_name -> daml_lf_1_17.Expr
-	20,  // 255: daml_lf_1_17.Expr.ChoiceObserver.choice_arg_expr:type_name -> daml_lf_1_17.Expr
-	17,  // 256: daml_lf_1_17.Expr.Experimental.type:type_name -> daml_lf_1_17.Type
-	8,   // 257: daml_lf_1_17.CaseAlt.Variant.con:type_name -> daml_lf_1_17.TypeConName
-	8,   // 258: daml_lf_1_17.CaseAlt.Enum.con:type_name -> daml_lf_1_17.TypeConName
-	8,   // 259: daml_lf_1_17.Update.Create.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 260: daml_lf_1_17.Update.Create.expr:type_name -> daml_lf_1_17.Expr
-	8,   // 261: daml_lf_1_17.Update.CreateInterface.interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 262: daml_lf_1_17.Update.CreateInterface.expr:type_name -> daml_lf_1_17.Expr
-	8,   // 263: daml_lf_1_17.Update.Exercise.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 264: daml_lf_1_17.Update.Exercise.cid:type_name -> daml_lf_1_17.Expr
-	20,  // 265: daml_lf_1_17.Update.Exercise.arg:type_name -> daml_lf_1_17.Expr
-	8,   // 266: daml_lf_1_17.Update.SoftExercise.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 267: daml_lf_1_17.Update.SoftExercise.cid:type_name -> daml_lf_1_17.Expr
-	20,  // 268: daml_lf_1_17.Update.SoftExercise.arg:type_name -> daml_lf_1_17.Expr
-	8,   // 269: daml_lf_1_17.Update.DynamicExercise.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 270: daml_lf_1_17.Update.DynamicExercise.cid:type_name -> daml_lf_1_17.Expr
-	20,  // 271: daml_lf_1_17.Update.DynamicExercise.arg:type_name -> daml_lf_1_17.Expr
-	8,   // 272: daml_lf_1_17.Update.ExerciseInterface.interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 273: daml_lf_1_17.Update.ExerciseInterface.cid:type_name -> daml_lf_1_17.Expr
-	20,  // 274: daml_lf_1_17.Update.ExerciseInterface.arg:type_name -> daml_lf_1_17.Expr
-	20,  // 275: daml_lf_1_17.Update.ExerciseInterface.guard:type_name -> daml_lf_1_17.Expr
-	8,   // 276: daml_lf_1_17.Update.ExerciseByKey.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 277: daml_lf_1_17.Update.ExerciseByKey.key:type_name -> daml_lf_1_17.Expr
-	20,  // 278: daml_lf_1_17.Update.ExerciseByKey.arg:type_name -> daml_lf_1_17.Expr
-	8,   // 279: daml_lf_1_17.Update.Fetch.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 280: daml_lf_1_17.Update.Fetch.cid:type_name -> daml_lf_1_17.Expr
-	8,   // 281: daml_lf_1_17.Update.SoftFetch.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 282: daml_lf_1_17.Update.SoftFetch.cid:type_name -> daml_lf_1_17.Expr
-	8,   // 283: daml_lf_1_17.Update.FetchInterface.interface:type_name -> daml_lf_1_17.TypeConName
-	20,  // 284: daml_lf_1_17.Update.FetchInterface.cid:type_name -> daml_lf_1_17.Expr
-	17,  // 285: daml_lf_1_17.Update.EmbedExpr.type:type_name -> daml_lf_1_17.Type
-	20,  // 286: daml_lf_1_17.Update.EmbedExpr.body:type_name -> daml_lf_1_17.Expr
-	8,   // 287: daml_lf_1_17.Update.RetrieveByKey.template:type_name -> daml_lf_1_17.TypeConName
-	20,  // 288: daml_lf_1_17.Update.RetrieveByKey.key:type_name -> daml_lf_1_17.Expr
-	17,  // 289: daml_lf_1_17.Update.TryCatch.return_type:type_name -> daml_lf_1_17.Type
-	20,  // 290: daml_lf_1_17.Update.TryCatch.try_expr:type_name -> daml_lf_1_17.Expr
-	20,  // 291: daml_lf_1_17.Update.TryCatch.catch_expr:type_name -> daml_lf_1_17.Expr
-	20,  // 292: daml_lf_1_17.Scenario.Commit.party:type_name -> daml_lf_1_17.Expr
-	20,  // 293: daml_lf_1_17.Scenario.Commit.expr:type_name -> daml_lf_1_17.Expr
-	17,  // 294: daml_lf_1_17.Scenario.Commit.ret_type:type_name -> daml_lf_1_17.Type
-	17,  // 295: daml_lf_1_17.Scenario.EmbedExpr.type:type_name -> daml_lf_1_17.Type
-	20,  // 296: daml_lf_1_17.Scenario.EmbedExpr.body:type_name -> daml_lf_1_17.Expr
-	45,  // 297: daml_lf_1_17.KeyExpr.Projection.tycon:type_name -> daml_lf_1_17.Type.Con
-	105, // 298: daml_lf_1_17.KeyExpr.Projections.projections:type_name -> daml_lf_1_17.KeyExpr.Projection
-	28,  // 299: daml_lf_1_17.KeyExpr.RecordField.expr:type_name -> daml_lf_1_17.KeyExpr
-	45,  // 300: daml_lf_1_17.KeyExpr.Record.tycon:type_name -> daml_lf_1_17.Type.Con
-	107, // 301: daml_lf_1_17.KeyExpr.Record.fields:type_name -> daml_lf_1_17.KeyExpr.RecordField
-	20,  // 302: daml_lf_1_17.InterfaceInstanceBody.InterfaceInstanceMethod.value:type_name -> daml_lf_1_17.Expr
-	17,  // 303: daml_lf_1_17.DefTemplate.DefKey.type:type_name -> daml_lf_1_17.Type
-	28,  // 304: daml_lf_1_17.DefTemplate.DefKey.key:type_name -> daml_lf_1_17.KeyExpr
-	20,  // 305: daml_lf_1_17.DefTemplate.DefKey.complex_key:type_name -> daml_lf_1_17.Expr
-	20,  // 306: daml_lf_1_17.DefTemplate.DefKey.maintainers:type_name -> daml_lf_1_17.Expr
-	8,   // 307: daml_lf_1_17.DefTemplate.Implements.interface:type_name -> daml_lf_1_17.TypeConName
-	29,  // 308: daml_lf_1_17.DefTemplate.Implements.body:type_name -> daml_lf_1_17.InterfaceInstanceBody
-	19,  // 309: daml_lf_1_17.DefTemplate.Implements.location:type_name -> daml_lf_1_17.Location
-	8,   // 310: daml_lf_1_17.DefInterface.CoImplements.template:type_name -> daml_lf_1_17.TypeConName
-	29,  // 311: daml_lf_1_17.DefInterface.CoImplements.body:type_name -> daml_lf_1_17.InterfaceInstanceBody
-	19,  // 312: daml_lf_1_17.DefInterface.CoImplements.location:type_name -> daml_lf_1_17.Location
-	11,  // 313: daml_lf_1_17.DefDataType.Fields.fields:type_name -> daml_lf_1_17.FieldWithType
-	17,  // 314: daml_lf_1_17.DefValue.NameWithType.type:type_name -> daml_lf_1_17.Type
+var file_com_digitalasset_daml_lf_archive_daml_lf1_proto_depIdxs = []int32{
+	4,   // 0: daml_lf_1.PackageRef.self:type_name -> daml_lf_1.Unit
+	5,   // 1: daml_lf_1.ModuleRef.package_ref:type_name -> daml_lf_1.PackageRef
+	6,   // 2: daml_lf_1.ModuleRef.module_name_dname:type_name -> daml_lf_1.DottedName
+	7,   // 3: daml_lf_1.TypeConName.module:type_name -> daml_lf_1.ModuleRef
+	6,   // 4: daml_lf_1.TypeConName.name_dname:type_name -> daml_lf_1.DottedName
+	7,   // 5: daml_lf_1.TypeSynName.module:type_name -> daml_lf_1.ModuleRef
+	6,   // 6: daml_lf_1.TypeSynName.name_dname:type_name -> daml_lf_1.DottedName
+	7,   // 7: daml_lf_1.ValName.module:type_name -> daml_lf_1.ModuleRef
+	17,  // 8: daml_lf_1.FieldWithType.type:type_name -> daml_lf_1.Type
+	17,  // 9: daml_lf_1.VarWithType.type:type_name -> daml_lf_1.Type
+	16,  // 10: daml_lf_1.TypeVarWithKind.kind:type_name -> daml_lf_1.Kind
+	20,  // 11: daml_lf_1.FieldWithExpr.expr:type_name -> daml_lf_1.Expr
+	12,  // 12: daml_lf_1.Binding.binder:type_name -> daml_lf_1.VarWithType
+	20,  // 13: daml_lf_1.Binding.bound:type_name -> daml_lf_1.Expr
+	4,   // 14: daml_lf_1.Kind.star:type_name -> daml_lf_1.Unit
+	43,  // 15: daml_lf_1.Kind.arrow:type_name -> daml_lf_1.Kind.Arrow
+	4,   // 16: daml_lf_1.Kind.nat:type_name -> daml_lf_1.Unit
+	44,  // 17: daml_lf_1.Type.var:type_name -> daml_lf_1.Type.Var
+	45,  // 18: daml_lf_1.Type.con:type_name -> daml_lf_1.Type.Con
+	47,  // 19: daml_lf_1.Type.prim:type_name -> daml_lf_1.Type.Prim
+	48,  // 20: daml_lf_1.Type.forall:type_name -> daml_lf_1.Type.Forall
+	49,  // 21: daml_lf_1.Type.struct:type_name -> daml_lf_1.Type.Struct
+	46,  // 22: daml_lf_1.Type.syn:type_name -> daml_lf_1.Type.Syn
+	3,   // 23: daml_lf_1.PrimLit.rounding_mode:type_name -> daml_lf_1.PrimLit.RoundingMode
+	7,   // 24: daml_lf_1.Location.module:type_name -> daml_lf_1.ModuleRef
+	50,  // 25: daml_lf_1.Location.range:type_name -> daml_lf_1.Location.Range
+	19,  // 26: daml_lf_1.Expr.location:type_name -> daml_lf_1.Location
+	10,  // 27: daml_lf_1.Expr.val:type_name -> daml_lf_1.ValName
+	2,   // 28: daml_lf_1.Expr.builtin:type_name -> daml_lf_1.BuiltinFunction
+	1,   // 29: daml_lf_1.Expr.prim_con:type_name -> daml_lf_1.PrimCon
+	18,  // 30: daml_lf_1.Expr.prim_lit:type_name -> daml_lf_1.PrimLit
+	51,  // 31: daml_lf_1.Expr.rec_con:type_name -> daml_lf_1.Expr.RecCon
+	52,  // 32: daml_lf_1.Expr.rec_proj:type_name -> daml_lf_1.Expr.RecProj
+	53,  // 33: daml_lf_1.Expr.rec_upd:type_name -> daml_lf_1.Expr.RecUpd
+	54,  // 34: daml_lf_1.Expr.variant_con:type_name -> daml_lf_1.Expr.VariantCon
+	55,  // 35: daml_lf_1.Expr.enum_con:type_name -> daml_lf_1.Expr.EnumCon
+	56,  // 36: daml_lf_1.Expr.struct_con:type_name -> daml_lf_1.Expr.StructCon
+	57,  // 37: daml_lf_1.Expr.struct_proj:type_name -> daml_lf_1.Expr.StructProj
+	58,  // 38: daml_lf_1.Expr.struct_upd:type_name -> daml_lf_1.Expr.StructUpd
+	59,  // 39: daml_lf_1.Expr.app:type_name -> daml_lf_1.Expr.App
+	60,  // 40: daml_lf_1.Expr.ty_app:type_name -> daml_lf_1.Expr.TyApp
+	61,  // 41: daml_lf_1.Expr.abs:type_name -> daml_lf_1.Expr.Abs
+	62,  // 42: daml_lf_1.Expr.ty_abs:type_name -> daml_lf_1.Expr.TyAbs
+	22,  // 43: daml_lf_1.Expr.case:type_name -> daml_lf_1.Case
+	23,  // 44: daml_lf_1.Expr.let:type_name -> daml_lf_1.Block
+	63,  // 45: daml_lf_1.Expr.nil:type_name -> daml_lf_1.Expr.Nil
+	64,  // 46: daml_lf_1.Expr.cons:type_name -> daml_lf_1.Expr.Cons
+	25,  // 47: daml_lf_1.Expr.update:type_name -> daml_lf_1.Update
+	26,  // 48: daml_lf_1.Expr.scenario:type_name -> daml_lf_1.Scenario
+	65,  // 49: daml_lf_1.Expr.optional_none:type_name -> daml_lf_1.Expr.OptionalNone
+	66,  // 50: daml_lf_1.Expr.optional_some:type_name -> daml_lf_1.Expr.OptionalSome
+	67,  // 51: daml_lf_1.Expr.to_any:type_name -> daml_lf_1.Expr.ToAny
+	68,  // 52: daml_lf_1.Expr.from_any:type_name -> daml_lf_1.Expr.FromAny
+	17,  // 53: daml_lf_1.Expr.type_rep:type_name -> daml_lf_1.Type
+	69,  // 54: daml_lf_1.Expr.to_any_exception:type_name -> daml_lf_1.Expr.ToAnyException
+	70,  // 55: daml_lf_1.Expr.from_any_exception:type_name -> daml_lf_1.Expr.FromAnyException
+	71,  // 56: daml_lf_1.Expr.throw:type_name -> daml_lf_1.Expr.Throw
+	72,  // 57: daml_lf_1.Expr.to_interface:type_name -> daml_lf_1.Expr.ToInterface
+	73,  // 58: daml_lf_1.Expr.from_interface:type_name -> daml_lf_1.Expr.FromInterface
+	74,  // 59: daml_lf_1.Expr.call_interface:type_name -> daml_lf_1.Expr.CallInterface
+	76,  // 60: daml_lf_1.Expr.signatory_interface:type_name -> daml_lf_1.Expr.SignatoryInterface
+	77,  // 61: daml_lf_1.Expr.observer_interface:type_name -> daml_lf_1.Expr.ObserverInterface
+	75,  // 62: daml_lf_1.Expr.view_interface:type_name -> daml_lf_1.Expr.ViewInterface
+	78,  // 63: daml_lf_1.Expr.unsafe_from_interface:type_name -> daml_lf_1.Expr.UnsafeFromInterface
+	82,  // 64: daml_lf_1.Expr.interface_template_type_rep:type_name -> daml_lf_1.Expr.InterfaceTemplateTypeRep
+	79,  // 65: daml_lf_1.Expr.to_required_interface:type_name -> daml_lf_1.Expr.ToRequiredInterface
+	80,  // 66: daml_lf_1.Expr.from_required_interface:type_name -> daml_lf_1.Expr.FromRequiredInterface
+	81,  // 67: daml_lf_1.Expr.unsafe_from_required_interface:type_name -> daml_lf_1.Expr.UnsafeFromRequiredInterface
+	83,  // 68: daml_lf_1.Expr.choice_controller:type_name -> daml_lf_1.Expr.ChoiceController
+	84,  // 69: daml_lf_1.Expr.choice_observer:type_name -> daml_lf_1.Expr.ChoiceObserver
+	85,  // 70: daml_lf_1.Expr.experimental:type_name -> daml_lf_1.Expr.Experimental
+	4,   // 71: daml_lf_1.CaseAlt.default:type_name -> daml_lf_1.Unit
+	86,  // 72: daml_lf_1.CaseAlt.variant:type_name -> daml_lf_1.CaseAlt.Variant
+	1,   // 73: daml_lf_1.CaseAlt.prim_con:type_name -> daml_lf_1.PrimCon
+	4,   // 74: daml_lf_1.CaseAlt.nil:type_name -> daml_lf_1.Unit
+	88,  // 75: daml_lf_1.CaseAlt.cons:type_name -> daml_lf_1.CaseAlt.Cons
+	4,   // 76: daml_lf_1.CaseAlt.optional_none:type_name -> daml_lf_1.Unit
+	89,  // 77: daml_lf_1.CaseAlt.optional_some:type_name -> daml_lf_1.CaseAlt.OptionalSome
+	87,  // 78: daml_lf_1.CaseAlt.enum:type_name -> daml_lf_1.CaseAlt.Enum
+	20,  // 79: daml_lf_1.CaseAlt.body:type_name -> daml_lf_1.Expr
+	20,  // 80: daml_lf_1.Case.scrut:type_name -> daml_lf_1.Expr
+	21,  // 81: daml_lf_1.Case.alts:type_name -> daml_lf_1.CaseAlt
+	15,  // 82: daml_lf_1.Block.bindings:type_name -> daml_lf_1.Binding
+	20,  // 83: daml_lf_1.Block.body:type_name -> daml_lf_1.Expr
+	17,  // 84: daml_lf_1.Pure.type:type_name -> daml_lf_1.Type
+	20,  // 85: daml_lf_1.Pure.expr:type_name -> daml_lf_1.Expr
+	24,  // 86: daml_lf_1.Update.pure:type_name -> daml_lf_1.Pure
+	23,  // 87: daml_lf_1.Update.block:type_name -> daml_lf_1.Block
+	90,  // 88: daml_lf_1.Update.create:type_name -> daml_lf_1.Update.Create
+	92,  // 89: daml_lf_1.Update.exercise:type_name -> daml_lf_1.Update.Exercise
+	96,  // 90: daml_lf_1.Update.exercise_by_key:type_name -> daml_lf_1.Update.ExerciseByKey
+	97,  // 91: daml_lf_1.Update.fetch:type_name -> daml_lf_1.Update.Fetch
+	4,   // 92: daml_lf_1.Update.get_time:type_name -> daml_lf_1.Unit
+	101, // 93: daml_lf_1.Update.lookup_by_key:type_name -> daml_lf_1.Update.RetrieveByKey
+	101, // 94: daml_lf_1.Update.fetch_by_key:type_name -> daml_lf_1.Update.RetrieveByKey
+	100, // 95: daml_lf_1.Update.embed_expr:type_name -> daml_lf_1.Update.EmbedExpr
+	102, // 96: daml_lf_1.Update.try_catch:type_name -> daml_lf_1.Update.TryCatch
+	91,  // 97: daml_lf_1.Update.create_interface:type_name -> daml_lf_1.Update.CreateInterface
+	95,  // 98: daml_lf_1.Update.exercise_interface:type_name -> daml_lf_1.Update.ExerciseInterface
+	99,  // 99: daml_lf_1.Update.fetch_interface:type_name -> daml_lf_1.Update.FetchInterface
+	94,  // 100: daml_lf_1.Update.dynamic_exercise:type_name -> daml_lf_1.Update.DynamicExercise
+	98,  // 101: daml_lf_1.Update.soft_fetch:type_name -> daml_lf_1.Update.SoftFetch
+	93,  // 102: daml_lf_1.Update.soft_exercise:type_name -> daml_lf_1.Update.SoftExercise
+	24,  // 103: daml_lf_1.Scenario.pure:type_name -> daml_lf_1.Pure
+	23,  // 104: daml_lf_1.Scenario.block:type_name -> daml_lf_1.Block
+	103, // 105: daml_lf_1.Scenario.commit:type_name -> daml_lf_1.Scenario.Commit
+	103, // 106: daml_lf_1.Scenario.mustFailAt:type_name -> daml_lf_1.Scenario.Commit
+	20,  // 107: daml_lf_1.Scenario.pass:type_name -> daml_lf_1.Expr
+	4,   // 108: daml_lf_1.Scenario.get_time:type_name -> daml_lf_1.Unit
+	20,  // 109: daml_lf_1.Scenario.get_party:type_name -> daml_lf_1.Expr
+	104, // 110: daml_lf_1.Scenario.embed_expr:type_name -> daml_lf_1.Scenario.EmbedExpr
+	20,  // 111: daml_lf_1.TemplateChoice.controllers:type_name -> daml_lf_1.Expr
+	20,  // 112: daml_lf_1.TemplateChoice.observers:type_name -> daml_lf_1.Expr
+	20,  // 113: daml_lf_1.TemplateChoice.authorizers:type_name -> daml_lf_1.Expr
+	12,  // 114: daml_lf_1.TemplateChoice.arg_binder:type_name -> daml_lf_1.VarWithType
+	17,  // 115: daml_lf_1.TemplateChoice.ret_type:type_name -> daml_lf_1.Type
+	20,  // 116: daml_lf_1.TemplateChoice.update:type_name -> daml_lf_1.Expr
+	19,  // 117: daml_lf_1.TemplateChoice.location:type_name -> daml_lf_1.Location
+	106, // 118: daml_lf_1.KeyExpr.projections:type_name -> daml_lf_1.KeyExpr.Projections
+	108, // 119: daml_lf_1.KeyExpr.record:type_name -> daml_lf_1.KeyExpr.Record
+	109, // 120: daml_lf_1.InterfaceInstanceBody.methods:type_name -> daml_lf_1.InterfaceInstanceBody.InterfaceInstanceMethod
+	20,  // 121: daml_lf_1.InterfaceInstanceBody.view:type_name -> daml_lf_1.Expr
+	6,   // 122: daml_lf_1.DefTemplate.tycon_dname:type_name -> daml_lf_1.DottedName
+	20,  // 123: daml_lf_1.DefTemplate.precond:type_name -> daml_lf_1.Expr
+	20,  // 124: daml_lf_1.DefTemplate.signatories:type_name -> daml_lf_1.Expr
+	20,  // 125: daml_lf_1.DefTemplate.agreement:type_name -> daml_lf_1.Expr
+	27,  // 126: daml_lf_1.DefTemplate.choices:type_name -> daml_lf_1.TemplateChoice
+	20,  // 127: daml_lf_1.DefTemplate.observers:type_name -> daml_lf_1.Expr
+	19,  // 128: daml_lf_1.DefTemplate.location:type_name -> daml_lf_1.Location
+	110, // 129: daml_lf_1.DefTemplate.key:type_name -> daml_lf_1.DefTemplate.DefKey
+	111, // 130: daml_lf_1.DefTemplate.implements:type_name -> daml_lf_1.DefTemplate.Implements
+	19,  // 131: daml_lf_1.InterfaceMethod.location:type_name -> daml_lf_1.Location
+	17,  // 132: daml_lf_1.InterfaceMethod.type:type_name -> daml_lf_1.Type
+	19,  // 133: daml_lf_1.DefInterface.location:type_name -> daml_lf_1.Location
+	31,  // 134: daml_lf_1.DefInterface.methods:type_name -> daml_lf_1.InterfaceMethod
+	27,  // 135: daml_lf_1.DefInterface.choices:type_name -> daml_lf_1.TemplateChoice
+	112, // 136: daml_lf_1.DefInterface.coImplements:type_name -> daml_lf_1.DefInterface.CoImplements
+	17,  // 137: daml_lf_1.DefInterface.view:type_name -> daml_lf_1.Type
+	8,   // 138: daml_lf_1.DefInterface.requires:type_name -> daml_lf_1.TypeConName
+	19,  // 139: daml_lf_1.DefException.location:type_name -> daml_lf_1.Location
+	20,  // 140: daml_lf_1.DefException.message:type_name -> daml_lf_1.Expr
+	6,   // 141: daml_lf_1.DefDataType.name_dname:type_name -> daml_lf_1.DottedName
+	13,  // 142: daml_lf_1.DefDataType.params:type_name -> daml_lf_1.TypeVarWithKind
+	113, // 143: daml_lf_1.DefDataType.record:type_name -> daml_lf_1.DefDataType.Fields
+	113, // 144: daml_lf_1.DefDataType.variant:type_name -> daml_lf_1.DefDataType.Fields
+	114, // 145: daml_lf_1.DefDataType.enum:type_name -> daml_lf_1.DefDataType.EnumConstructors
+	4,   // 146: daml_lf_1.DefDataType.interface:type_name -> daml_lf_1.Unit
+	19,  // 147: daml_lf_1.DefDataType.location:type_name -> daml_lf_1.Location
+	6,   // 148: daml_lf_1.DefTypeSyn.name_dname:type_name -> daml_lf_1.DottedName
+	13,  // 149: daml_lf_1.DefTypeSyn.params:type_name -> daml_lf_1.TypeVarWithKind
+	17,  // 150: daml_lf_1.DefTypeSyn.type:type_name -> daml_lf_1.Type
+	19,  // 151: daml_lf_1.DefTypeSyn.location:type_name -> daml_lf_1.Location
+	115, // 152: daml_lf_1.DefValue.name_with_type:type_name -> daml_lf_1.DefValue.NameWithType
+	20,  // 153: daml_lf_1.DefValue.expr:type_name -> daml_lf_1.Expr
+	19,  // 154: daml_lf_1.DefValue.location:type_name -> daml_lf_1.Location
+	6,   // 155: daml_lf_1.Module.name_dname:type_name -> daml_lf_1.DottedName
+	37,  // 156: daml_lf_1.Module.flags:type_name -> daml_lf_1.FeatureFlags
+	35,  // 157: daml_lf_1.Module.synonyms:type_name -> daml_lf_1.DefTypeSyn
+	34,  // 158: daml_lf_1.Module.data_types:type_name -> daml_lf_1.DefDataType
+	36,  // 159: daml_lf_1.Module.values:type_name -> daml_lf_1.DefValue
+	30,  // 160: daml_lf_1.Module.templates:type_name -> daml_lf_1.DefTemplate
+	33,  // 161: daml_lf_1.Module.exceptions:type_name -> daml_lf_1.DefException
+	32,  // 162: daml_lf_1.Module.interfaces:type_name -> daml_lf_1.DefInterface
+	40,  // 163: daml_lf_1.PackageMetadata.upgraded_package_id:type_name -> daml_lf_1.UpgradedPackageId
+	38,  // 164: daml_lf_1.Package.modules:type_name -> daml_lf_1.Module
+	39,  // 165: daml_lf_1.Package.interned_dotted_names:type_name -> daml_lf_1.InternedDottedName
+	41,  // 166: daml_lf_1.Package.metadata:type_name -> daml_lf_1.PackageMetadata
+	17,  // 167: daml_lf_1.Package.interned_types:type_name -> daml_lf_1.Type
+	16,  // 168: daml_lf_1.Kind.Arrow.params:type_name -> daml_lf_1.Kind
+	16,  // 169: daml_lf_1.Kind.Arrow.result:type_name -> daml_lf_1.Kind
+	17,  // 170: daml_lf_1.Type.Var.args:type_name -> daml_lf_1.Type
+	8,   // 171: daml_lf_1.Type.Con.tycon:type_name -> daml_lf_1.TypeConName
+	17,  // 172: daml_lf_1.Type.Con.args:type_name -> daml_lf_1.Type
+	9,   // 173: daml_lf_1.Type.Syn.tysyn:type_name -> daml_lf_1.TypeSynName
+	17,  // 174: daml_lf_1.Type.Syn.args:type_name -> daml_lf_1.Type
+	0,   // 175: daml_lf_1.Type.Prim.prim:type_name -> daml_lf_1.PrimType
+	17,  // 176: daml_lf_1.Type.Prim.args:type_name -> daml_lf_1.Type
+	13,  // 177: daml_lf_1.Type.Forall.vars:type_name -> daml_lf_1.TypeVarWithKind
+	17,  // 178: daml_lf_1.Type.Forall.body:type_name -> daml_lf_1.Type
+	11,  // 179: daml_lf_1.Type.Struct.fields:type_name -> daml_lf_1.FieldWithType
+	45,  // 180: daml_lf_1.Expr.RecCon.tycon:type_name -> daml_lf_1.Type.Con
+	14,  // 181: daml_lf_1.Expr.RecCon.fields:type_name -> daml_lf_1.FieldWithExpr
+	45,  // 182: daml_lf_1.Expr.RecProj.tycon:type_name -> daml_lf_1.Type.Con
+	20,  // 183: daml_lf_1.Expr.RecProj.record:type_name -> daml_lf_1.Expr
+	45,  // 184: daml_lf_1.Expr.RecUpd.tycon:type_name -> daml_lf_1.Type.Con
+	20,  // 185: daml_lf_1.Expr.RecUpd.record:type_name -> daml_lf_1.Expr
+	20,  // 186: daml_lf_1.Expr.RecUpd.update:type_name -> daml_lf_1.Expr
+	45,  // 187: daml_lf_1.Expr.VariantCon.tycon:type_name -> daml_lf_1.Type.Con
+	20,  // 188: daml_lf_1.Expr.VariantCon.variant_arg:type_name -> daml_lf_1.Expr
+	8,   // 189: daml_lf_1.Expr.EnumCon.tycon:type_name -> daml_lf_1.TypeConName
+	14,  // 190: daml_lf_1.Expr.StructCon.fields:type_name -> daml_lf_1.FieldWithExpr
+	20,  // 191: daml_lf_1.Expr.StructProj.struct:type_name -> daml_lf_1.Expr
+	20,  // 192: daml_lf_1.Expr.StructUpd.struct:type_name -> daml_lf_1.Expr
+	20,  // 193: daml_lf_1.Expr.StructUpd.update:type_name -> daml_lf_1.Expr
+	20,  // 194: daml_lf_1.Expr.App.fun:type_name -> daml_lf_1.Expr
+	20,  // 195: daml_lf_1.Expr.App.args:type_name -> daml_lf_1.Expr
+	20,  // 196: daml_lf_1.Expr.TyApp.expr:type_name -> daml_lf_1.Expr
+	17,  // 197: daml_lf_1.Expr.TyApp.types:type_name -> daml_lf_1.Type
+	12,  // 198: daml_lf_1.Expr.Abs.param:type_name -> daml_lf_1.VarWithType
+	20,  // 199: daml_lf_1.Expr.Abs.body:type_name -> daml_lf_1.Expr
+	13,  // 200: daml_lf_1.Expr.TyAbs.param:type_name -> daml_lf_1.TypeVarWithKind
+	20,  // 201: daml_lf_1.Expr.TyAbs.body:type_name -> daml_lf_1.Expr
+	17,  // 202: daml_lf_1.Expr.Nil.type:type_name -> daml_lf_1.Type
+	17,  // 203: daml_lf_1.Expr.Cons.type:type_name -> daml_lf_1.Type
+	20,  // 204: daml_lf_1.Expr.Cons.front:type_name -> daml_lf_1.Expr
+	20,  // 205: daml_lf_1.Expr.Cons.tail:type_name -> daml_lf_1.Expr
+	17,  // 206: daml_lf_1.Expr.OptionalNone.type:type_name -> daml_lf_1.Type
+	17,  // 207: daml_lf_1.Expr.OptionalSome.type:type_name -> daml_lf_1.Type
+	20,  // 208: daml_lf_1.Expr.OptionalSome.body:type_name -> daml_lf_1.Expr
+	17,  // 209: daml_lf_1.Expr.ToAny.type:type_name -> daml_lf_1.Type
+	20,  // 210: daml_lf_1.Expr.ToAny.expr:type_name -> daml_lf_1.Expr
+	17,  // 211: daml_lf_1.Expr.FromAny.type:type_name -> daml_lf_1.Type
+	20,  // 212: daml_lf_1.Expr.FromAny.expr:type_name -> daml_lf_1.Expr
+	17,  // 213: daml_lf_1.Expr.ToAnyException.type:type_name -> daml_lf_1.Type
+	20,  // 214: daml_lf_1.Expr.ToAnyException.expr:type_name -> daml_lf_1.Expr
+	17,  // 215: daml_lf_1.Expr.FromAnyException.type:type_name -> daml_lf_1.Type
+	20,  // 216: daml_lf_1.Expr.FromAnyException.expr:type_name -> daml_lf_1.Expr
+	17,  // 217: daml_lf_1.Expr.Throw.return_type:type_name -> daml_lf_1.Type
+	17,  // 218: daml_lf_1.Expr.Throw.exception_type:type_name -> daml_lf_1.Type
+	20,  // 219: daml_lf_1.Expr.Throw.exception_expr:type_name -> daml_lf_1.Expr
+	8,   // 220: daml_lf_1.Expr.ToInterface.interface_type:type_name -> daml_lf_1.TypeConName
+	8,   // 221: daml_lf_1.Expr.ToInterface.template_type:type_name -> daml_lf_1.TypeConName
+	20,  // 222: daml_lf_1.Expr.ToInterface.template_expr:type_name -> daml_lf_1.Expr
+	8,   // 223: daml_lf_1.Expr.FromInterface.interface_type:type_name -> daml_lf_1.TypeConName
+	8,   // 224: daml_lf_1.Expr.FromInterface.template_type:type_name -> daml_lf_1.TypeConName
+	20,  // 225: daml_lf_1.Expr.FromInterface.interface_expr:type_name -> daml_lf_1.Expr
+	8,   // 226: daml_lf_1.Expr.CallInterface.interface_type:type_name -> daml_lf_1.TypeConName
+	20,  // 227: daml_lf_1.Expr.CallInterface.interface_expr:type_name -> daml_lf_1.Expr
+	8,   // 228: daml_lf_1.Expr.ViewInterface.interface:type_name -> daml_lf_1.TypeConName
+	20,  // 229: daml_lf_1.Expr.ViewInterface.expr:type_name -> daml_lf_1.Expr
+	8,   // 230: daml_lf_1.Expr.SignatoryInterface.interface:type_name -> daml_lf_1.TypeConName
+	20,  // 231: daml_lf_1.Expr.SignatoryInterface.expr:type_name -> daml_lf_1.Expr
+	8,   // 232: daml_lf_1.Expr.ObserverInterface.interface:type_name -> daml_lf_1.TypeConName
+	20,  // 233: daml_lf_1.Expr.ObserverInterface.expr:type_name -> daml_lf_1.Expr
+	8,   // 234: daml_lf_1.Expr.UnsafeFromInterface.interface_type:type_name -> daml_lf_1.TypeConName
+	8,   // 235: daml_lf_1.Expr.UnsafeFromInterface.template_type:type_name -> daml_lf_1.TypeConName
+	20,  // 236: daml_lf_1.Expr.UnsafeFromInterface.contract_id_expr:type_name -> daml_lf_1.Expr
+	20,  // 237: daml_lf_1.Expr.UnsafeFromInterface.interface_expr:type_name -> daml_lf_1.Expr
+	8,   // 238: daml_lf_1.Expr.ToRequiredInterface.required_interface:type_name -> daml_lf_1.TypeConName
+	8,   // 239: daml_lf_1.Expr.ToRequiredInterface.requiring_interface:type_name -> daml_lf_1.TypeConName
+	20,  // 240: daml_lf_1.Expr.ToRequiredInterface.expr:type_name -> daml_lf_1.Expr
+	8,   // 241: daml_lf_1.Expr.FromRequiredInterface.required_interface:type_name -> daml_lf_1.TypeConName
+	8,   // 242: daml_lf_1.Expr.FromRequiredInterface.requiring_interface:type_name -> daml_lf_1.TypeConName
+	20,  // 243: daml_lf_1.Expr.FromRequiredInterface.expr:type_name -> daml_lf_1.Expr
+	8,   // 244: daml_lf_1.Expr.UnsafeFromRequiredInterface.required_interface:type_name -> daml_lf_1.TypeConName
+	8,   // 245: daml_lf_1.Expr.UnsafeFromRequiredInterface.requiring_interface:type_name -> daml_lf_1.TypeConName
+	20,  // 246: daml_lf_1.Expr.UnsafeFromRequiredInterface.contract_id_expr:type_name -> daml_lf_1.Expr
+	20,  // 247: daml_lf_1.Expr.UnsafeFromRequiredInterface.interface_expr:type_name -> daml_lf_1.Expr
+	8,   // 248: daml_lf_1.Expr.InterfaceTemplateTypeRep.interface:type_name -> daml_lf_1.TypeConName
+	20,  // 249: daml_lf_1.Expr.InterfaceTemplateTypeRep.expr:type_name -> daml_lf_1.Expr
+	8,   // 250: daml_lf_1.Expr.ChoiceController.template:type_name -> daml_lf_1.TypeConName
+	20,  // 251: daml_lf_1.Expr.ChoiceController.contract_expr:type_name -> daml_lf_1.Expr
+	20,  // 252: daml_lf_1.Expr.ChoiceController.choice_arg_expr:type_name -> daml_lf_1.Expr
+	8,   // 253: daml_lf_1.Expr.ChoiceObserver.template:type_name -> daml_lf_1.TypeConName
+	20,  // 254: daml_lf_1.Expr.ChoiceObserver.contract_expr:type_name -> daml_lf_1.Expr
+	20,  // 255: daml_lf_1.Expr.ChoiceObserver.choice_arg_expr:type_name -> daml_lf_1.Expr
+	17,  // 256: daml_lf_1.Expr.Experimental.type:type_name -> daml_lf_1.Type
+	8,   // 257: daml_lf_1.CaseAlt.Variant.con:type_name -> daml_lf_1.TypeConName
+	8,   // 258: daml_lf_1.CaseAlt.Enum.con:type_name -> daml_lf_1.TypeConName
+	8,   // 259: daml_lf_1.Update.Create.template:type_name -> daml_lf_1.TypeConName
+	20,  // 260: daml_lf_1.Update.Create.expr:type_name -> daml_lf_1.Expr
+	8,   // 261: daml_lf_1.Update.CreateInterface.interface:type_name -> daml_lf_1.TypeConName
+	20,  // 262: daml_lf_1.Update.CreateInterface.expr:type_name -> daml_lf_1.Expr
+	8,   // 263: daml_lf_1.Update.Exercise.template:type_name -> daml_lf_1.TypeConName
+	20,  // 264: daml_lf_1.Update.Exercise.cid:type_name -> daml_lf_1.Expr
+	20,  // 265: daml_lf_1.Update.Exercise.arg:type_name -> daml_lf_1.Expr
+	8,   // 266: daml_lf_1.Update.SoftExercise.template:type_name -> daml_lf_1.TypeConName
+	20,  // 267: daml_lf_1.Update.SoftExercise.cid:type_name -> daml_lf_1.Expr
+	20,  // 268: daml_lf_1.Update.SoftExercise.arg:type_name -> daml_lf_1.Expr
+	8,   // 269: daml_lf_1.Update.DynamicExercise.template:type_name -> daml_lf_1.TypeConName
+	20,  // 270: daml_lf_1.Update.DynamicExercise.cid:type_name -> daml_lf_1.Expr
+	20,  // 271: daml_lf_1.Update.DynamicExercise.arg:type_name -> daml_lf_1.Expr
+	8,   // 272: daml_lf_1.Update.ExerciseInterface.interface:type_name -> daml_lf_1.TypeConName
+	20,  // 273: daml_lf_1.Update.ExerciseInterface.cid:type_name -> daml_lf_1.Expr
+	20,  // 274: daml_lf_1.Update.ExerciseInterface.arg:type_name -> daml_lf_1.Expr
+	20,  // 275: daml_lf_1.Update.ExerciseInterface.guard:type_name -> daml_lf_1.Expr
+	8,   // 276: daml_lf_1.Update.ExerciseByKey.template:type_name -> daml_lf_1.TypeConName
+	20,  // 277: daml_lf_1.Update.ExerciseByKey.key:type_name -> daml_lf_1.Expr
+	20,  // 278: daml_lf_1.Update.ExerciseByKey.arg:type_name -> daml_lf_1.Expr
+	8,   // 279: daml_lf_1.Update.Fetch.template:type_name -> daml_lf_1.TypeConName
+	20,  // 280: daml_lf_1.Update.Fetch.cid:type_name -> daml_lf_1.Expr
+	8,   // 281: daml_lf_1.Update.SoftFetch.template:type_name -> daml_lf_1.TypeConName
+	20,  // 282: daml_lf_1.Update.SoftFetch.cid:type_name -> daml_lf_1.Expr
+	8,   // 283: daml_lf_1.Update.FetchInterface.interface:type_name -> daml_lf_1.TypeConName
+	20,  // 284: daml_lf_1.Update.FetchInterface.cid:type_name -> daml_lf_1.Expr
+	17,  // 285: daml_lf_1.Update.EmbedExpr.type:type_name -> daml_lf_1.Type
+	20,  // 286: daml_lf_1.Update.EmbedExpr.body:type_name -> daml_lf_1.Expr
+	8,   // 287: daml_lf_1.Update.RetrieveByKey.template:type_name -> daml_lf_1.TypeConName
+	20,  // 288: daml_lf_1.Update.RetrieveByKey.key:type_name -> daml_lf_1.Expr
+	17,  // 289: daml_lf_1.Update.TryCatch.return_type:type_name -> daml_lf_1.Type
+	20,  // 290: daml_lf_1.Update.TryCatch.try_expr:type_name -> daml_lf_1.Expr
+	20,  // 291: daml_lf_1.Update.TryCatch.catch_expr:type_name -> daml_lf_1.Expr
+	20,  // 292: daml_lf_1.Scenario.Commit.party:type_name -> daml_lf_1.Expr
+	20,  // 293: daml_lf_1.Scenario.Commit.expr:type_name -> daml_lf_1.Expr
+	17,  // 294: daml_lf_1.Scenario.Commit.ret_type:type_name -> daml_lf_1.Type
+	17,  // 295: daml_lf_1.Scenario.EmbedExpr.type:type_name -> daml_lf_1.Type
+	20,  // 296: daml_lf_1.Scenario.EmbedExpr.body:type_name -> daml_lf_1.Expr
+	45,  // 297: daml_lf_1.KeyExpr.Projection.tycon:type_name -> daml_lf_1.Type.Con
+	105, // 298: daml_lf_1.KeyExpr.Projections.projections:type_name -> daml_lf_1.KeyExpr.Projection
+	28,  // 299: daml_lf_1.KeyExpr.RecordField.expr:type_name -> daml_lf_1.KeyExpr
+	45,  // 300: daml_lf_1.KeyExpr.Record.tycon:type_name -> daml_lf_1.Type.Con
+	107, // 301: daml_lf_1.KeyExpr.Record.fields:type_name -> daml_lf_1.KeyExpr.RecordField
+	20,  // 302: daml_lf_1.InterfaceInstanceBody.InterfaceInstanceMethod.value:type_name -> daml_lf_1.Expr
+	17,  // 303: daml_lf_1.DefTemplate.DefKey.type:type_name -> daml_lf_1.Type
+	28,  // 304: daml_lf_1.DefTemplate.DefKey.key:type_name -> daml_lf_1.KeyExpr
+	20,  // 305: daml_lf_1.DefTemplate.DefKey.complex_key:type_name -> daml_lf_1.Expr
+	20,  // 306: daml_lf_1.DefTemplate.DefKey.maintainers:type_name -> daml_lf_1.Expr
+	8,   // 307: daml_lf_1.DefTemplate.Implements.interface:type_name -> daml_lf_1.TypeConName
+	29,  // 308: daml_lf_1.DefTemplate.Implements.body:type_name -> daml_lf_1.InterfaceInstanceBody
+	19,  // 309: daml_lf_1.DefTemplate.Implements.location:type_name -> daml_lf_1.Location
+	8,   // 310: daml_lf_1.DefInterface.CoImplements.template:type_name -> daml_lf_1.TypeConName
+	29,  // 311: daml_lf_1.DefInterface.CoImplements.body:type_name -> daml_lf_1.InterfaceInstanceBody
+	19,  // 312: daml_lf_1.DefInterface.CoImplements.location:type_name -> daml_lf_1.Location
+	11,  // 313: daml_lf_1.DefDataType.Fields.fields:type_name -> daml_lf_1.FieldWithType
+	17,  // 314: daml_lf_1.DefValue.NameWithType.type:type_name -> daml_lf_1.Type
 	315, // [315:315] is the sub-list for method output_type
 	315, // [315:315] is the sub-list for method input_type
 	315, // [315:315] is the sub-list for extension type_name
@@ -11308,50 +11308,50 @@ var file_com_daml_daml_lf_1_17_daml_lf_1_proto_depIdxs = []int32{
 	0,   // [0:315] is the sub-list for field type_name
 }
 
-func init() { file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() }
-func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
-	if File_com_daml_daml_lf_1_17_daml_lf_1_proto != nil {
+func init() { file_com_digitalasset_daml_lf_archive_daml_lf1_proto_init() }
+func file_com_digitalasset_daml_lf_archive_daml_lf1_proto_init() {
+	if File_com_digitalasset_daml_lf_archive_daml_lf1_proto != nil {
 		return
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[1].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[1].OneofWrappers = []any{
 		(*PackageRef_Self)(nil),
 		(*PackageRef_PackageIdStr)(nil),
 		(*PackageRef_PackageIdInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[3].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[3].OneofWrappers = []any{
 		(*ModuleRef_ModuleNameDname)(nil),
 		(*ModuleRef_ModuleNameInternedDname)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[4].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[4].OneofWrappers = []any{
 		(*TypeConName_NameDname)(nil),
 		(*TypeConName_NameInternedDname)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[5].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[5].OneofWrappers = []any{
 		(*TypeSynName_NameDname)(nil),
 		(*TypeSynName_NameInternedDname)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[7].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[7].OneofWrappers = []any{
 		(*FieldWithType_FieldStr)(nil),
 		(*FieldWithType_FieldInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[8].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[8].OneofWrappers = []any{
 		(*VarWithType_VarStr)(nil),
 		(*VarWithType_VarInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[9].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[9].OneofWrappers = []any{
 		(*TypeVarWithKind_VarStr)(nil),
 		(*TypeVarWithKind_VarInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[10].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[10].OneofWrappers = []any{
 		(*FieldWithExpr_FieldStr)(nil),
 		(*FieldWithExpr_FieldInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[12].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[12].OneofWrappers = []any{
 		(*Kind_Star)(nil),
 		(*Kind_Arrow_)(nil),
 		(*Kind_Nat)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[13].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[13].OneofWrappers = []any{
 		(*Type_Var_)(nil),
 		(*Type_Con_)(nil),
 		(*Type_Prim_)(nil),
@@ -11361,7 +11361,7 @@ func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
 		(*Type_Syn_)(nil),
 		(*Type_Interned)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[14].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[14].OneofWrappers = []any{
 		(*PrimLit_Int64)(nil),
 		(*PrimLit_DecimalStr)(nil),
 		(*PrimLit_NumericInternedStr)(nil),
@@ -11373,7 +11373,7 @@ func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
 		(*PrimLit_Date)(nil),
 		(*PrimLit_RoundingMode_)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[16].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[16].OneofWrappers = []any{
 		(*Expr_VarStr)(nil),
 		(*Expr_VarInternedStr)(nil),
 		(*Expr_Val)(nil),
@@ -11421,7 +11421,7 @@ func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
 		(*Expr_ChoiceObserver_)(nil),
 		(*Expr_Experimental_)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[17].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[17].OneofWrappers = []any{
 		(*CaseAlt_Default)(nil),
 		(*CaseAlt_Variant_)(nil),
 		(*CaseAlt_PrimCon)(nil),
@@ -11431,7 +11431,7 @@ func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
 		(*CaseAlt_OptionalSome_)(nil),
 		(*CaseAlt_Enum_)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[21].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[21].OneofWrappers = []any{
 		(*Update_Pure)(nil),
 		(*Update_Block)(nil),
 		(*Update_Create_)(nil),
@@ -11450,7 +11450,7 @@ func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
 		(*Update_SoftFetch_)(nil),
 		(*Update_SoftExercise_)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[22].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[22].OneofWrappers = []any{
 		(*Scenario_Pure)(nil),
 		(*Scenario_Block)(nil),
 		(*Scenario_Commit_)(nil),
@@ -11460,23 +11460,23 @@ func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
 		(*Scenario_GetParty)(nil),
 		(*Scenario_EmbedExpr_)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[23].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[23].OneofWrappers = []any{
 		(*TemplateChoice_NameStr)(nil),
 		(*TemplateChoice_NameInternedStr)(nil),
 		(*TemplateChoice_SelfBinderStr)(nil),
 		(*TemplateChoice_SelfBinderInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[24].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[24].OneofWrappers = []any{
 		(*KeyExpr_Projections_)(nil),
 		(*KeyExpr_Record_)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[26].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[26].OneofWrappers = []any{
 		(*DefTemplate_TyconDname)(nil),
 		(*DefTemplate_TyconInternedDname)(nil),
 		(*DefTemplate_ParamStr)(nil),
 		(*DefTemplate_ParamInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[30].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[30].OneofWrappers = []any{
 		(*DefDataType_NameDname)(nil),
 		(*DefDataType_NameInternedDname)(nil),
 		(*DefDataType_Record)(nil),
@@ -11484,79 +11484,79 @@ func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
 		(*DefDataType_Enum)(nil),
 		(*DefDataType_Interface)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[31].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[31].OneofWrappers = []any{
 		(*DefTypeSyn_NameDname)(nil),
 		(*DefTypeSyn_NameInternedDname)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[34].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[34].OneofWrappers = []any{
 		(*Module_NameDname)(nil),
 		(*Module_NameInternedDname)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[40].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[40].OneofWrappers = []any{
 		(*Type_Var_VarStr)(nil),
 		(*Type_Var_VarInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[48].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[48].OneofWrappers = []any{
 		(*Expr_RecProj_FieldStr)(nil),
 		(*Expr_RecProj_FieldInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[49].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[49].OneofWrappers = []any{
 		(*Expr_RecUpd_FieldStr)(nil),
 		(*Expr_RecUpd_FieldInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[50].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[50].OneofWrappers = []any{
 		(*Expr_VariantCon_VariantConStr)(nil),
 		(*Expr_VariantCon_VariantConInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[51].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[51].OneofWrappers = []any{
 		(*Expr_EnumCon_EnumConStr)(nil),
 		(*Expr_EnumCon_EnumConInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[53].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[53].OneofWrappers = []any{
 		(*Expr_StructProj_FieldStr)(nil),
 		(*Expr_StructProj_FieldInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[54].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[54].OneofWrappers = []any{
 		(*Expr_StructUpd_FieldStr)(nil),
 		(*Expr_StructUpd_FieldInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[82].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[82].OneofWrappers = []any{
 		(*CaseAlt_Variant_VariantStr)(nil),
 		(*CaseAlt_Variant_VariantInternedStr)(nil),
 		(*CaseAlt_Variant_BinderStr)(nil),
 		(*CaseAlt_Variant_BinderInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[83].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[83].OneofWrappers = []any{
 		(*CaseAlt_Enum_ConstructorStr)(nil),
 		(*CaseAlt_Enum_ConstructorInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[84].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[84].OneofWrappers = []any{
 		(*CaseAlt_Cons_VarHeadStr)(nil),
 		(*CaseAlt_Cons_VarHeadInternedStr)(nil),
 		(*CaseAlt_Cons_VarTailStr)(nil),
 		(*CaseAlt_Cons_VarTailInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[85].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[85].OneofWrappers = []any{
 		(*CaseAlt_OptionalSome_VarBodyStr)(nil),
 		(*CaseAlt_OptionalSome_VarBodyInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[88].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[88].OneofWrappers = []any{
 		(*Update_Exercise_ChoiceStr)(nil),
 		(*Update_Exercise_ChoiceInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[89].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[89].OneofWrappers = []any{
 		(*Update_SoftExercise_ChoiceStr)(nil),
 		(*Update_SoftExercise_ChoiceInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[101].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[101].OneofWrappers = []any{
 		(*KeyExpr_Projection_FieldStr)(nil),
 		(*KeyExpr_Projection_FieldInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[103].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[103].OneofWrappers = []any{
 		(*KeyExpr_RecordField_FieldStr)(nil),
 		(*KeyExpr_RecordField_FieldInternedStr)(nil),
 	}
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes[106].OneofWrappers = []any{
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes[106].OneofWrappers = []any{
 		(*DefTemplate_DefKey_Key)(nil),
 		(*DefTemplate_DefKey_ComplexKey)(nil),
 	}
@@ -11564,18 +11564,18 @@ func file_com_daml_daml_lf_1_17_daml_lf_1_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc), len(file_com_daml_daml_lf_1_17_daml_lf_1_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDesc), len(file_com_digitalasset_daml_lf_archive_daml_lf1_proto_rawDesc)),
 			NumEnums:      4,
 			NumMessages:   112,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_com_daml_daml_lf_1_17_daml_lf_1_proto_goTypes,
-		DependencyIndexes: file_com_daml_daml_lf_1_17_daml_lf_1_proto_depIdxs,
-		EnumInfos:         file_com_daml_daml_lf_1_17_daml_lf_1_proto_enumTypes,
-		MessageInfos:      file_com_daml_daml_lf_1_17_daml_lf_1_proto_msgTypes,
+		GoTypes:           file_com_digitalasset_daml_lf_archive_daml_lf1_proto_goTypes,
+		DependencyIndexes: file_com_digitalasset_daml_lf_archive_daml_lf1_proto_depIdxs,
+		EnumInfos:         file_com_digitalasset_daml_lf_archive_daml_lf1_proto_enumTypes,
+		MessageInfos:      file_com_digitalasset_daml_lf_archive_daml_lf1_proto_msgTypes,
 	}.Build()
-	File_com_daml_daml_lf_1_17_daml_lf_1_proto = out.File
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_goTypes = nil
-	file_com_daml_daml_lf_1_17_daml_lf_1_proto_depIdxs = nil
+	File_com_digitalasset_daml_lf_archive_daml_lf1_proto = out.File
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_goTypes = nil
+	file_com_digitalasset_daml_lf_archive_daml_lf1_proto_depIdxs = nil
 }

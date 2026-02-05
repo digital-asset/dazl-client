@@ -26,90 +26,9 @@ class ProtobufParserBase(ABC):
         self.interned_dotted_names: list[Sequence[str]] = []
         self.interned_types: list[lf.Type] = []
 
-    # Core parsing methods
     @abstractmethod
     def parse_Package(self, pb: Any) -> lf.Package:
         """Parse a Package protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Module(self, pb: Any) -> lf.Module:
-        """Parse a Module protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_DefDataType(self, pb: Any) -> lf.DefDataType:
-        """Parse a DefDataType protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_DefTemplate(self, pb: Any) -> lf.DefTemplate:
-        """Parse a DefTemplate protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_DefInterface(self, pb: Any) -> lf.DefInterface:
-        """Parse a DefInterface protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_DefTypeSyn(self, pb: Any) -> lf.DefTypeSyn:
-        """Parse a DefTypeSyn protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_DefValue(self, pb: Any) -> lf.DefValue:
-        """Parse a DefValue protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Expr(self, pb: Any) -> lf.Expr:
-        """Parse an Expr protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Type(self, pb: Any) -> lf.Type:
-        """Parse a Type protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Kind(self, pb: Any) -> lf.Kind:
-        """Parse a Kind protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Update(self, pb: Any) -> lf.Update:
-        """Parse an Update protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Scenario(self, pb: Any) -> lf.Scenario:
-        """Parse a Scenario protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Case(self, pb: Any) -> lf.Case:
-        """Parse a Case protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Block(self, pb: Any) -> lf.Block:
-        """Parse a Block protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Pure(self, pb: Any) -> lf.Pure:
-        """Parse a Pure protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_Location(self, pb: Any) -> lf.Location:
-        """Parse a Location protobuf message."""
-        ...
-
-    @abstractmethod
-    def parse_TemplateChoice(self, pb: Any) -> lf.TemplateChoice:
-        """Parse a TemplateChoice protobuf message."""
         ...
 
     # Helper methods that may be common across versions
