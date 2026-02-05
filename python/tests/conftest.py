@@ -115,11 +115,13 @@ def sandbox() -> Generator[testing.SandboxLauncher, None, None]:
 
 @pytest.fixture(scope="session")
 def sandbox_v2_10() -> Generator[testing.SandboxLauncher, None, None]:
-    if "2.10.2" not in INSTALLED_VERSIONS and "2.10.1" not in INSTALLED_VERSIONS:
-        pytest.skip("Daml 2.10.x not installed")
-    version = "2.10.2" if "2.10.2" in INSTALLED_VERSIONS else "2.10.1"
-    with testing.sandbox(version=version) as sb:
-        yield sb
+    for patch_version in reversed(range(4)):
+        version = f"2.10.{patch_version}"
+        if version in INSTALLED_VERSIONS:
+            with testing.sandbox(version=version) as sb:
+                yield sb
+
+    pytest.skip("Daml 2.10.x not installed")
 
 
 @pytest.fixture(scope="session")

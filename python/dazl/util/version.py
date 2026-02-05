@@ -16,9 +16,9 @@ class SdkVersion(NamedTuple):
     patch: int
 
     @classmethod
-    def parse(cls, s: Optional[str]) -> Optional["SdkVersion"]:
+    def parse(cls, s: Optional[str]) -> Optional[SdkVersion]:
         """
-        Parse version string like '2.10.1' or 'v3.4.0'.
+        Parse version string like '2.10.3' or 'v3.4.0'.
 
         Args:
             s: Version string to parse (can be None)

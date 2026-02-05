@@ -23,7 +23,7 @@ class TestProtobufParserFactory:
 
     def test_create_parser_version_2_x(self):
         """Factory creates Parser117 for version 2.x."""
-        parser = ProtobufParserFactory.create_parser(PackageRef("test-pkg"), "2.10.1")
+        parser = ProtobufParserFactory.create_parser(PackageRef("test-pkg"), "2.10.3")
         assert isinstance(parser, ProtobufParserBase)
         assert "117" in parser.__class__.__name__
 
