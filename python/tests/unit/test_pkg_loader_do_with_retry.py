@@ -16,7 +16,7 @@ import pytest
 from .dars import AllKindsOf
 
 ALL_KINDS_OF_PKG_REF = PackageRef(
-    "ec9e7c7d5c62810380de80a8297cd8a4b6fd028ae09aa9eba01de694703d0b24"
+    "5f50ac0b6a98ea6de7c8c7b30cb37fc19af70ceaacaf83f0728a098bbb0d0227"
 )
 
 

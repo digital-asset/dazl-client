@@ -63,8 +63,8 @@ class TestSdkVersion:
 
     def test_parse_version_with_whitespace(self):
         """Handles whitespace in version string."""
-        version = SdkVersion.parse("  2.10.1  ")
+        version = SdkVersion.parse("  2.10.3  ")
         assert version is not None
         assert version.major == 2
         assert version.minor == 10
-        assert version.patch == 1
+        assert version.patch == 3

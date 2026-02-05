@@ -22,7 +22,7 @@ async def test_ledger_exercise_interface(sandbox) -> None:
     async with dazl.connect(url=sandbox.url, act_as=party_info.party) as conn:
         location = "Somewhere Cool, Awesometown"
         ev = await conn.create(
-            "491fc00ca86a9119719c8501b88afe93759f803b9551e48840703413e83dadcd:KitchenSink.Warehouse:Warehouse",
+            "d569ba2714c454798962a9d0f587ffaacb09c3678a35976ba0c6795e2de5849a:KitchenSink.Warehouse:Warehouse",
             {
                 "warehouse": party_info.party,
                 "suppliers": party_info.party,
@@ -34,6 +34,6 @@ async def test_ledger_exercise_interface(sandbox) -> None:
             ev.contract_id,
             "GetLocation",
             {"party": party_info.party},
-            choice_interface_id="e7f1cd1bb268c47214b4c62ec70f11b7bbcbd601af4ca0bc03a3eb2a94cbb69c:KitchenSink.Interfaces.HasLocation:HasLocation",
+            choice_interface_id="fd14df1934c157b3f9a2cc0c1f70a3f12019538314d08cb7bd7c60e73079db04:KitchenSink.Interfaces.HasLocation:HasLocation",
         )
         assert location == response.result
