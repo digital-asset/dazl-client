@@ -31,7 +31,10 @@ if [ -z "${git_sha}" ]; then
     exit 1
 fi
 
-gh_flags="$(python3 -c "from pkg_resources import parse_version; print('--prerelease' if parse_version('${root_version}').is_prerelease else '')")"
+# version strings like "1.0.0" are treated as normal releases;
+# any version string that contains extra letters (such as "1.0.0b1")
+# is treated as a prerelease version
+gh_flags="$(python3 -c "import re; print('' if re.match("^\d+\.\d+\.\d+$") else '--prerelease')")"
 
 
 echo "Version: ${root_version}"
