@@ -151,8 +151,7 @@ version: 2.1
 workflows:
   workflow:
     jobs:
-      - nix-setup:
-          context: artifactory
+      - nix-setup
       - blackduck:
           context: blackduck
       - check-py:
