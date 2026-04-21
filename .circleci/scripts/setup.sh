@@ -51,16 +51,6 @@ netrc-file = "${nix_config}/netrc
 extra-experimental-features = nix-command flakes
 EOF
 
-# netrc file
-if [[ -n "${ARTIFACTORY_USER:-}" && -n "${ARTIFACTORY_PASSWORD:-}" ]]; then
-  echo "Writing netrc file.."
-  cat <<EOF >"${nix_config}/netrc"
-machine digitalasset.jfrog.io
-login ${ARTIFACTORY_USER}
-password ${ARTIFACTORY_PASSWORD}
-EOF
-fi
-
 # install nix
 echo "Checking if nix needs to be installed/upgraded..."
 if ! load_nix_profile || [ "$(nix --version)" != "nix (Nix) ${nix_version}" ]; then
