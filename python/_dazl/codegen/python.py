@@ -6,6 +6,7 @@ from __future__ import annotations
 from os.path import splitext
 from pathlib import Path
 import shutil
+from typing import Sequence, TextIO
 
 from google.protobuf.descriptor_pb2 import FileDescriptorSet
 
@@ -50,4 +51,37 @@ def write_standard_files(from_: Path, fds: FileDescriptorSet, to: Path) -> None:
         p.parent.mkdir(parents=True, exist_ok=True)
 
         # add a copyright to each of the files from the plugin
-        p.write_text(HEADER + rewrite_file_content(f.name, f.content))
+        write_corrected_content(p, rewrite_file_content(f.name, f.content))
+
+
+def write_corrected_content(path: Path, content: str) -> None:
+    lines = content.splitlines()
+    with path.open("w") as buf:
+        buf.write(HEADER)
+
+        if str(path).endswith("v30/package_service_pb2.pyi"):
+            write_corrected_content_package_service_pyi(buf, lines)
+        else:
+            write_content_unchanged(buf, lines)
+
+
+def write_corrected_content_package_service_pyi(buf: TextIO, lines: Sequence[str]) -> None:
+    for line in lines:
+        # the field 'bytes' causes mypy to get confused when typechecking this file
+        if (
+            line
+            == "from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union"
+        ):
+            buf.write(line + "\n")
+            buf.write("from builtins import bytes as _bytes\n")
+
+        elif "def __init__(self, bytes: _Optional[bytes] = ..." in line:
+            buf.write(line.replace("_Optional[bytes]", "_Optional[_bytes]") + "\n")
+
+        else:
+            buf.write(line + "\n")
+
+
+def write_content_unchanged(buf: TextIO, lines: Sequence[str]) -> None:
+    for line in lines:
+        buf.write(line + "\n")

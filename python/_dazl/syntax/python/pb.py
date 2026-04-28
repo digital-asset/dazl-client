@@ -64,7 +64,7 @@ def py_message_package(file_name: str, /) -> str:
     return os.path.splitext(file_name)[0].replace("/", ".") + _PROTO_MODULE_SUFFIX
 
 
-def py_service_package(__file_name: str) -> str:
+def py_service_package(file_name: str, /) -> str:
     """
     Return the Python package name for a ``.proto`` file with the specified name that contains
     gRPC services.
@@ -74,4 +74,4 @@ def py_service_package(__file_name: str) -> str:
     >>> py_service_package("foo/bar/service.proto")
     'foo.bar.service_pb2_grpc'
     """
-    return os.path.splitext(__file_name)[0].replace("/", ".") + _SERVICE_MODULE_SUFFIX
+    return os.path.splitext(file_name)[0].replace("/", ".") + _SERVICE_MODULE_SUFFIX

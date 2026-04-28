@@ -37,6 +37,29 @@ def write_init_files(fds: FileDescriptorSet, to: Path) -> None:
             _ = plan["/".join(components[:i])]
 
     for directory, files in plan.items():
+        if directory == "com/digitalasset/daml/lf/archive":
+            # TODO: make this more generic
+            d = to / directory
+            d.mkdir(parents=True, exist_ok=True)
+            p = d / "__init__.py"
+            with p.open("w") as buf:
+                buf.write(HEADER)
+                buf.write("\n")
+                buf.write("from .daml_lf_pb2 import Archive, ArchivePayload, HashFunction\n")
+                buf.write("from . import daml_lf1_pb2, daml_lf2_pb2\n\n")
+                buf.write(
+                    all_decl(
+                        [
+                            "Archive",
+                            "ArchivePayload",
+                            "HashFunction",
+                            "daml_lf1_pb2",
+                            "daml_lf2_pb2",
+                        ]
+                    )
+                )
+            continue
+
         import_map = defaultdict[str, set[str]](set)
         for file in files:
             current_module_base = basename(get_root_name(file.name)[0])

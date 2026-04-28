@@ -51,6 +51,15 @@ def typing_file(fd: FileDescriptorProto, ictx: ImportContext) -> str:
 
     imports = ictx.py_import_block(py_service_package(fd.name))
 
+    # TODO: Remove the need for this hack
+    imports = imports.replace(
+        "from .sequencer_initialization_service_pb2 import InitRequest",
+        "from .sequencer_initialization_service_pb2 import InitRequest as V0InitRequest",
+    ).replace(
+        "from ..v1.sequencer_initialization_service_pb2 import InitRequest",
+        "from ..v1.sequencer_initialization_service_pb2 import InitRequest as V1InitRequest",
+    )
+
     all_str = all_decl(md.name + "Stub" for md in fd.service)
 
     return f"{HEADER}\n{imports}\n{all_str}\n{body}"
@@ -104,12 +113,23 @@ def write_service(buf: TextIO, sd: ServiceDescriptorProto, ictx: ImportContext) 
                 method.output_type, Usage.RET_STREAM if method.server_streaming else Usage.RET
             )
 
+            arg_py_str = arg.py_str
+            # TODO: Remove the need for this hack
+            # SequencerInitializationService imports the same symbol from two different packages,
+            # so we have to do something a little unusual to avoid clashes
+            if sd.name == "SequencerInitializationService":
+                match method.name:
+                    case "Init":
+                        arg_py_str = "V0InitRequest"
+                    case "InitV1":
+                        arg_py_str = "V1InitRequest"
+
             timeout_param = "timeout: _typing.Optional[float] = ..."
             credentials_param = "credentials: _typing.Optional[_grpc.CallCredentials] = ..."
             wait_for_ready_param = "wait_for_ready: _typing.Optional[bool] = ..."
             compression_param = "compression: _typing.Optional[_grpc.Compression] = ..."
 
-            stub_buf.write(f"    def {method.name}(self, __1: {arg.py_str}, *, ")
+            stub_buf.write(f"    def {method.name}(self, __1: {arg_py_str}, *, ")
             stub_buf.write(timeout_param)
             stub_buf.write(
                 ", metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ...,"
@@ -121,7 +141,7 @@ def write_service(buf: TextIO, sd: ServiceDescriptorProto, ictx: ImportContext) 
 
             # when using AsyncIO-flavored channels, the optional parameters are explicitly
             # keyword-only
-            abuf.write(f"    def {method.name}(self, __1: {arg.py_str}, *, ")
+            abuf.write(f"    def {method.name}(self, __1: {arg_py_str}, *, ")
             abuf.write(timeout_param)
             abuf.write(", metadata: _typing.Optional[_grpc_aio.Metadata] = ...,")
             abuf.write(f" {credentials_param}, {wait_for_ready_param}, {compression_param}) -> ")
@@ -129,7 +149,7 @@ def write_service(buf: TextIO, sd: ServiceDescriptorProto, ictx: ImportContext) 
             abuf.write(": ...  # type: ignore\n")
 
             bbuf.write(
-                f"    def {method.name}(self, __1: {arg.py_str}, {timeout_param}, "
+                f"    def {method.name}(self, __1: {arg_py_str}, {timeout_param}, "
                 + "metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..."
                 + f", {credentials_param}, {wait_for_ready_param}, {compression_param}) -> "
                 + b_ret.py_str
