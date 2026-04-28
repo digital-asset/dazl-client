@@ -24,15 +24,17 @@ class InitializeSequencerFromGenesisStateResponse(_message.Message):
     replicated: bool
     def __init__(self, replicated: bool = ...) -> None: ...
 
-class InitializeSequencerFromPredecessorRequest(_message.Message):
-    __slots__ = ("topology_snapshot", "synchronizer_parameters")
+class InitializeSequencerFromLsuPredecessorRequest(_message.Message):
+    __slots__ = ("topology_snapshot", "synchronizer_parameters", "ignore_psid_check")
     TOPOLOGY_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
+    IGNORE_PSID_CHECK_FIELD_NUMBER: _ClassVar[int]
     topology_snapshot: bytes
     synchronizer_parameters: _sequencing_pb2.StaticSynchronizerParameters
-    def __init__(self, topology_snapshot: _Optional[bytes] = ..., synchronizer_parameters: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ...) -> None: ...
+    ignore_psid_check: bool
+    def __init__(self, topology_snapshot: _Optional[bytes] = ..., synchronizer_parameters: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ..., ignore_psid_check: bool = ...) -> None: ...
 
-class InitializeSequencerFromPredecessorResponse(_message.Message):
+class InitializeSequencerFromLsuPredecessorResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 

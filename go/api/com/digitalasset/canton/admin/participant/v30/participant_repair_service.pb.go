@@ -9,6 +9,7 @@
 package v30
 
 import (
+	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/sequencer/v30"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -321,232 +322,6 @@ func (*MigrateSynchronizerResponse) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{5}
 }
 
-// Deprecated: Marked as deprecated in com/digitalasset/canton/admin/participant/v30/participant_repair_service.proto.
-type ExportAcsOldRequest struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	Parties              []string               `protobuf:"bytes,1,rep,name=parties,proto3" json:"parties,omitempty"`
-	FilterSynchronizerId string                 `protobuf:"bytes,2,opt,name=filter_synchronizer_id,json=filterSynchronizerId,proto3" json:"filter_synchronizer_id,omitempty"`
-	Timestamp            *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	Force                bool                   `protobuf:"varint,5,opt,name=force,proto3" json:"force,omitempty"`
-	PartiesOffboarding   bool                   `protobuf:"varint,6,opt,name=parties_offboarding,json=partiesOffboarding,proto3" json:"parties_offboarding,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
-}
-
-func (x *ExportAcsOldRequest) Reset() {
-	*x = ExportAcsOldRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ExportAcsOldRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ExportAcsOldRequest) ProtoMessage() {}
-
-func (x *ExportAcsOldRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ExportAcsOldRequest.ProtoReflect.Descriptor instead.
-func (*ExportAcsOldRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *ExportAcsOldRequest) GetParties() []string {
-	if x != nil {
-		return x.Parties
-	}
-	return nil
-}
-
-func (x *ExportAcsOldRequest) GetFilterSynchronizerId() string {
-	if x != nil {
-		return x.FilterSynchronizerId
-	}
-	return ""
-}
-
-func (x *ExportAcsOldRequest) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Timestamp
-	}
-	return nil
-}
-
-func (x *ExportAcsOldRequest) GetForce() bool {
-	if x != nil {
-		return x.Force
-	}
-	return false
-}
-
-func (x *ExportAcsOldRequest) GetPartiesOffboarding() bool {
-	if x != nil {
-		return x.PartiesOffboarding
-	}
-	return false
-}
-
-// Deprecated: Marked as deprecated in com/digitalasset/canton/admin/participant/v30/participant_repair_service.proto.
-type ExportAcsOldResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Chunk         []byte                 `protobuf:"bytes,1,opt,name=chunk,proto3" json:"chunk,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ExportAcsOldResponse) Reset() {
-	*x = ExportAcsOldResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ExportAcsOldResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ExportAcsOldResponse) ProtoMessage() {}
-
-func (x *ExportAcsOldResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ExportAcsOldResponse.ProtoReflect.Descriptor instead.
-func (*ExportAcsOldResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *ExportAcsOldResponse) GetChunk() []byte {
-	if x != nil {
-		return x.Chunk
-	}
-	return nil
-}
-
-type ImportAcsOldRequest struct {
-	state                              protoimpl.MessageState `protogen:"open.v1"`
-	AcsSnapshot                        []byte                 `protobuf:"bytes,1,opt,name=acs_snapshot,json=acsSnapshot,proto3" json:"acs_snapshot,omitempty"`
-	WorkflowIdPrefix                   string                 `protobuf:"bytes,2,opt,name=workflow_id_prefix,json=workflowIdPrefix,proto3" json:"workflow_id_prefix,omitempty"`
-	AllowContractIdSuffixRecomputation bool                   `protobuf:"varint,3,opt,name=allow_contract_id_suffix_recomputation,json=allowContractIdSuffixRecomputation,proto3" json:"allow_contract_id_suffix_recomputation,omitempty"`
-	unknownFields                      protoimpl.UnknownFields
-	sizeCache                          protoimpl.SizeCache
-}
-
-func (x *ImportAcsOldRequest) Reset() {
-	*x = ImportAcsOldRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ImportAcsOldRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ImportAcsOldRequest) ProtoMessage() {}
-
-func (x *ImportAcsOldRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ImportAcsOldRequest.ProtoReflect.Descriptor instead.
-func (*ImportAcsOldRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *ImportAcsOldRequest) GetAcsSnapshot() []byte {
-	if x != nil {
-		return x.AcsSnapshot
-	}
-	return nil
-}
-
-func (x *ImportAcsOldRequest) GetWorkflowIdPrefix() string {
-	if x != nil {
-		return x.WorkflowIdPrefix
-	}
-	return ""
-}
-
-func (x *ImportAcsOldRequest) GetAllowContractIdSuffixRecomputation() bool {
-	if x != nil {
-		return x.AllowContractIdSuffixRecomputation
-	}
-	return false
-}
-
-type ImportAcsOldResponse struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	ContractIdMapping map[string]string      `protobuf:"bytes,1,rep,name=contract_id_mapping,json=contractIdMapping,proto3" json:"contract_id_mapping,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *ImportAcsOldResponse) Reset() {
-	*x = ImportAcsOldResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ImportAcsOldResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ImportAcsOldResponse) ProtoMessage() {}
-
-func (x *ImportAcsOldResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ImportAcsOldResponse.ProtoReflect.Descriptor instead.
-func (*ImportAcsOldResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *ImportAcsOldResponse) GetContractIdMapping() map[string]string {
-	if x != nil {
-		return x.ContractIdMapping
-	}
-	return nil
-}
-
 type ExportAcsTargetSynchronizer struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	TargetSynchronizerId string                 `protobuf:"bytes,1,opt,name=target_synchronizer_id,json=targetSynchronizerId,proto3" json:"target_synchronizer_id,omitempty"`
@@ -556,7 +331,7 @@ type ExportAcsTargetSynchronizer struct {
 
 func (x *ExportAcsTargetSynchronizer) Reset() {
 	*x = ExportAcsTargetSynchronizer{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -568,7 +343,7 @@ func (x *ExportAcsTargetSynchronizer) String() string {
 func (*ExportAcsTargetSynchronizer) ProtoMessage() {}
 
 func (x *ExportAcsTargetSynchronizer) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -581,7 +356,7 @@ func (x *ExportAcsTargetSynchronizer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportAcsTargetSynchronizer.ProtoReflect.Descriptor instead.
 func (*ExportAcsTargetSynchronizer) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{10}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ExportAcsTargetSynchronizer) GetTargetSynchronizerId() string {
@@ -604,7 +379,7 @@ type ExportAcsRequest struct {
 
 func (x *ExportAcsRequest) Reset() {
 	*x = ExportAcsRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -616,7 +391,7 @@ func (x *ExportAcsRequest) String() string {
 func (*ExportAcsRequest) ProtoMessage() {}
 
 func (x *ExportAcsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -629,7 +404,7 @@ func (x *ExportAcsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportAcsRequest.ProtoReflect.Descriptor instead.
 func (*ExportAcsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{11}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ExportAcsRequest) GetPartyIds() []string {
@@ -676,7 +451,7 @@ type ExportAcsResponse struct {
 
 func (x *ExportAcsResponse) Reset() {
 	*x = ExportAcsResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -688,7 +463,7 @@ func (x *ExportAcsResponse) String() string {
 func (*ExportAcsResponse) ProtoMessage() {}
 
 func (x *ExportAcsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -701,7 +476,7 @@ func (x *ExportAcsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportAcsResponse.ProtoReflect.Descriptor instead.
 func (*ExportAcsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{12}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ExportAcsResponse) GetChunk() []byte {
@@ -714,17 +489,18 @@ func (x *ExportAcsResponse) GetChunk() []byte {
 type ImportAcsRequest struct {
 	state                           protoimpl.MessageState           `protogen:"open.v1"`
 	AcsSnapshot                     []byte                           `protobuf:"bytes,1,opt,name=acs_snapshot,json=acsSnapshot,proto3" json:"acs_snapshot,omitempty"`
-	WorkflowIdPrefix                string                           `protobuf:"bytes,2,opt,name=workflow_id_prefix,json=workflowIdPrefix,proto3" json:"workflow_id_prefix,omitempty"`
-	ContractImportMode              ContractImportMode               `protobuf:"varint,3,opt,name=contract_import_mode,json=contractImportMode,proto3,enum=com.digitalasset.canton.admin.participant.v30.ContractImportMode" json:"contract_import_mode,omitempty"`
+	WorkflowIdPrefix                *string                          `protobuf:"bytes,2,opt,name=workflow_id_prefix,json=workflowIdPrefix,proto3,oneof" json:"workflow_id_prefix,omitempty"`
+	ContractImportMode              *ContractImportMode              `protobuf:"varint,3,opt,name=contract_import_mode,json=contractImportMode,proto3,enum=com.digitalasset.canton.admin.participant.v30.ContractImportMode,oneof" json:"contract_import_mode,omitempty"`
 	ExcludedStakeholderIds          []string                         `protobuf:"bytes,4,rep,name=excluded_stakeholder_ids,json=excludedStakeholderIds,proto3" json:"excluded_stakeholder_ids,omitempty"`
-	RepresentativePackageIdOverride *RepresentativePackageIdOverride `protobuf:"bytes,5,opt,name=representative_package_id_override,json=representativePackageIdOverride,proto3" json:"representative_package_id_override,omitempty"`
+	RepresentativePackageIdOverride *RepresentativePackageIdOverride `protobuf:"bytes,5,opt,name=representative_package_id_override,json=representativePackageIdOverride,proto3,oneof" json:"representative_package_id_override,omitempty"`
+	SynchronizerId                  *string                          `protobuf:"bytes,6,opt,name=synchronizer_id,json=synchronizerId,proto3,oneof" json:"synchronizer_id,omitempty"`
 	unknownFields                   protoimpl.UnknownFields
 	sizeCache                       protoimpl.SizeCache
 }
 
 func (x *ImportAcsRequest) Reset() {
 	*x = ImportAcsRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -736,7 +512,7 @@ func (x *ImportAcsRequest) String() string {
 func (*ImportAcsRequest) ProtoMessage() {}
 
 func (x *ImportAcsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -749,7 +525,7 @@ func (x *ImportAcsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportAcsRequest.ProtoReflect.Descriptor instead.
 func (*ImportAcsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{13}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ImportAcsRequest) GetAcsSnapshot() []byte {
@@ -760,15 +536,15 @@ func (x *ImportAcsRequest) GetAcsSnapshot() []byte {
 }
 
 func (x *ImportAcsRequest) GetWorkflowIdPrefix() string {
-	if x != nil {
-		return x.WorkflowIdPrefix
+	if x != nil && x.WorkflowIdPrefix != nil {
+		return *x.WorkflowIdPrefix
 	}
 	return ""
 }
 
 func (x *ImportAcsRequest) GetContractImportMode() ContractImportMode {
-	if x != nil {
-		return x.ContractImportMode
+	if x != nil && x.ContractImportMode != nil {
+		return *x.ContractImportMode
 	}
 	return ContractImportMode_CONTRACT_IMPORT_MODE_UNSPECIFIED
 }
@@ -787,16 +563,22 @@ func (x *ImportAcsRequest) GetRepresentativePackageIdOverride() *RepresentativeP
 	return nil
 }
 
+func (x *ImportAcsRequest) GetSynchronizerId() string {
+	if x != nil && x.SynchronizerId != nil {
+		return *x.SynchronizerId
+	}
+	return ""
+}
+
 type ImportAcsResponse struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	ContractIdMappings map[string]string      `protobuf:"bytes,1,rep,name=contract_id_mappings,json=contractIdMappings,proto3" json:"contract_id_mappings,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ImportAcsResponse) Reset() {
 	*x = ImportAcsResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -808,7 +590,7 @@ func (x *ImportAcsResponse) String() string {
 func (*ImportAcsResponse) ProtoMessage() {}
 
 func (x *ImportAcsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -821,14 +603,7 @@ func (x *ImportAcsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportAcsResponse.ProtoReflect.Descriptor instead.
 func (*ImportAcsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *ImportAcsResponse) GetContractIdMappings() map[string]string {
-	if x != nil {
-		return x.ContractIdMappings
-	}
-	return nil
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{10}
 }
 
 type PurgeDeactivatedSynchronizerRequest struct {
@@ -840,7 +615,7 @@ type PurgeDeactivatedSynchronizerRequest struct {
 
 func (x *PurgeDeactivatedSynchronizerRequest) Reset() {
 	*x = PurgeDeactivatedSynchronizerRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -852,7 +627,7 @@ func (x *PurgeDeactivatedSynchronizerRequest) String() string {
 func (*PurgeDeactivatedSynchronizerRequest) ProtoMessage() {}
 
 func (x *PurgeDeactivatedSynchronizerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -865,7 +640,7 @@ func (x *PurgeDeactivatedSynchronizerRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use PurgeDeactivatedSynchronizerRequest.ProtoReflect.Descriptor instead.
 func (*PurgeDeactivatedSynchronizerRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{15}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *PurgeDeactivatedSynchronizerRequest) GetSynchronizerAlias() string {
@@ -883,7 +658,7 @@ type PurgeDeactivatedSynchronizerResponse struct {
 
 func (x *PurgeDeactivatedSynchronizerResponse) Reset() {
 	*x = PurgeDeactivatedSynchronizerResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -895,7 +670,7 @@ func (x *PurgeDeactivatedSynchronizerResponse) String() string {
 func (*PurgeDeactivatedSynchronizerResponse) ProtoMessage() {}
 
 func (x *PurgeDeactivatedSynchronizerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -908,7 +683,7 @@ func (x *PurgeDeactivatedSynchronizerResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use PurgeDeactivatedSynchronizerResponse.ProtoReflect.Descriptor instead.
 func (*PurgeDeactivatedSynchronizerResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{16}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{12}
 }
 
 type IgnoreEventsRequest struct {
@@ -923,7 +698,7 @@ type IgnoreEventsRequest struct {
 
 func (x *IgnoreEventsRequest) Reset() {
 	*x = IgnoreEventsRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[17]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -935,7 +710,7 @@ func (x *IgnoreEventsRequest) String() string {
 func (*IgnoreEventsRequest) ProtoMessage() {}
 
 func (x *IgnoreEventsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[17]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -948,7 +723,7 @@ func (x *IgnoreEventsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IgnoreEventsRequest.ProtoReflect.Descriptor instead.
 func (*IgnoreEventsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{17}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *IgnoreEventsRequest) GetPhysicalSynchronizerId() string {
@@ -987,7 +762,7 @@ type IgnoreEventsResponse struct {
 
 func (x *IgnoreEventsResponse) Reset() {
 	*x = IgnoreEventsResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -999,7 +774,7 @@ func (x *IgnoreEventsResponse) String() string {
 func (*IgnoreEventsResponse) ProtoMessage() {}
 
 func (x *IgnoreEventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1012,7 +787,7 @@ func (x *IgnoreEventsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IgnoreEventsResponse.ProtoReflect.Descriptor instead.
 func (*IgnoreEventsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{18}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{14}
 }
 
 type UnignoreEventsRequest struct {
@@ -1027,7 +802,7 @@ type UnignoreEventsRequest struct {
 
 func (x *UnignoreEventsRequest) Reset() {
 	*x = UnignoreEventsRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[19]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1039,7 +814,7 @@ func (x *UnignoreEventsRequest) String() string {
 func (*UnignoreEventsRequest) ProtoMessage() {}
 
 func (x *UnignoreEventsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[19]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1052,7 +827,7 @@ func (x *UnignoreEventsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnignoreEventsRequest.ProtoReflect.Descriptor instead.
 func (*UnignoreEventsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{19}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *UnignoreEventsRequest) GetPhysicalSynchronizerId() string {
@@ -1091,7 +866,7 @@ type UnignoreEventsResponse struct {
 
 func (x *UnignoreEventsResponse) Reset() {
 	*x = UnignoreEventsResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[20]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1103,7 +878,7 @@ func (x *UnignoreEventsResponse) String() string {
 func (*UnignoreEventsResponse) ProtoMessage() {}
 
 func (x *UnignoreEventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[20]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1116,7 +891,7 @@ func (x *UnignoreEventsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnignoreEventsResponse.ProtoReflect.Descriptor instead.
 func (*UnignoreEventsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{20}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{16}
 }
 
 type RollbackUnassignmentRequest struct {
@@ -1130,7 +905,7 @@ type RollbackUnassignmentRequest struct {
 
 func (x *RollbackUnassignmentRequest) Reset() {
 	*x = RollbackUnassignmentRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1142,7 +917,7 @@ func (x *RollbackUnassignmentRequest) String() string {
 func (*RollbackUnassignmentRequest) ProtoMessage() {}
 
 func (x *RollbackUnassignmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1155,7 +930,7 @@ func (x *RollbackUnassignmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RollbackUnassignmentRequest.ProtoReflect.Descriptor instead.
 func (*RollbackUnassignmentRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{21}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *RollbackUnassignmentRequest) GetReassignmentId() string {
@@ -1187,7 +962,7 @@ type RollbackUnassignmentResponse struct {
 
 func (x *RollbackUnassignmentResponse) Reset() {
 	*x = RollbackUnassignmentResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[22]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1199,7 +974,7 @@ func (x *RollbackUnassignmentResponse) String() string {
 func (*RollbackUnassignmentResponse) ProtoMessage() {}
 
 func (x *RollbackUnassignmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[22]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1212,7 +987,7 @@ func (x *RollbackUnassignmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RollbackUnassignmentResponse.ProtoReflect.Descriptor instead.
 func (*RollbackUnassignmentResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{22}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{18}
 }
 
 type RepairCommitmentsUsingAcsRequest struct {
@@ -1227,7 +1002,7 @@ type RepairCommitmentsUsingAcsRequest struct {
 
 func (x *RepairCommitmentsUsingAcsRequest) Reset() {
 	*x = RepairCommitmentsUsingAcsRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[23]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1239,7 +1014,7 @@ func (x *RepairCommitmentsUsingAcsRequest) String() string {
 func (*RepairCommitmentsUsingAcsRequest) ProtoMessage() {}
 
 func (x *RepairCommitmentsUsingAcsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[23]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1252,7 +1027,7 @@ func (x *RepairCommitmentsUsingAcsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RepairCommitmentsUsingAcsRequest.ProtoReflect.Descriptor instead.
 func (*RepairCommitmentsUsingAcsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{23}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *RepairCommitmentsUsingAcsRequest) GetSynchronizerIds() []string {
@@ -1292,7 +1067,7 @@ type RepairCommitmentsUsingAcsResponse struct {
 
 func (x *RepairCommitmentsUsingAcsResponse) Reset() {
 	*x = RepairCommitmentsUsingAcsResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[24]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1304,7 +1079,7 @@ func (x *RepairCommitmentsUsingAcsResponse) String() string {
 func (*RepairCommitmentsUsingAcsResponse) ProtoMessage() {}
 
 func (x *RepairCommitmentsUsingAcsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[24]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1317,7 +1092,7 @@ func (x *RepairCommitmentsUsingAcsResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use RepairCommitmentsUsingAcsResponse.ProtoReflect.Descriptor instead.
 func (*RepairCommitmentsUsingAcsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{24}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *RepairCommitmentsUsingAcsResponse) GetStatuses() []*RepairCommitmentsStatus {
@@ -1341,7 +1116,7 @@ type RepairCommitmentsStatus struct {
 
 func (x *RepairCommitmentsStatus) Reset() {
 	*x = RepairCommitmentsStatus{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[25]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1353,7 +1128,7 @@ func (x *RepairCommitmentsStatus) String() string {
 func (*RepairCommitmentsStatus) ProtoMessage() {}
 
 func (x *RepairCommitmentsStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[25]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1366,7 +1141,7 @@ func (x *RepairCommitmentsStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RepairCommitmentsStatus.ProtoReflect.Descriptor instead.
 func (*RepairCommitmentsStatus) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{25}
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *RepairCommitmentsStatus) GetSynchronizerId() string {
@@ -1417,6 +1192,94 @@ func (*RepairCommitmentsStatus_ErrorMessage) isRepairCommitmentsStatus_Status() 
 
 func (*RepairCommitmentsStatus_CompletedRepairTimestamp) isRepairCommitmentsStatus_Status() {}
 
+type PerformLateLsuRequest struct {
+	state                  protoimpl.MessageState           `protogen:"open.v1"`
+	PhysicalSynchronizerId string                           `protobuf:"bytes,1,opt,name=physical_synchronizer_id,json=physicalSynchronizerId,proto3" json:"physical_synchronizer_id,omitempty"`
+	Successor              *PerformLateLsuRequest_Successor `protobuf:"bytes,2,opt,name=successor,proto3" json:"successor,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *PerformLateLsuRequest) Reset() {
+	*x = PerformLateLsuRequest{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PerformLateLsuRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PerformLateLsuRequest) ProtoMessage() {}
+
+func (x *PerformLateLsuRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PerformLateLsuRequest.ProtoReflect.Descriptor instead.
+func (*PerformLateLsuRequest) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *PerformLateLsuRequest) GetPhysicalSynchronizerId() string {
+	if x != nil {
+		return x.PhysicalSynchronizerId
+	}
+	return ""
+}
+
+func (x *PerformLateLsuRequest) GetSuccessor() *PerformLateLsuRequest_Successor {
+	if x != nil {
+		return x.Successor
+	}
+	return nil
+}
+
+type PerformLateLsuResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PerformLateLsuResponse) Reset() {
+	*x = PerformLateLsuResponse{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PerformLateLsuResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PerformLateLsuResponse) ProtoMessage() {}
+
+func (x *PerformLateLsuResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PerformLateLsuResponse.ProtoReflect.Descriptor instead.
+func (*PerformLateLsuResponse) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{23}
+}
+
 type ChangeAssignationRequest_Contract struct {
 	state                       protoimpl.MessageState `protogen:"open.v1"`
 	Id                          string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1427,7 +1290,7 @@ type ChangeAssignationRequest_Contract struct {
 
 func (x *ChangeAssignationRequest_Contract) Reset() {
 	*x = ChangeAssignationRequest_Contract{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[26]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1439,7 +1302,7 @@ func (x *ChangeAssignationRequest_Contract) String() string {
 func (*ChangeAssignationRequest_Contract) ProtoMessage() {}
 
 func (x *ChangeAssignationRequest_Contract) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[26]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1469,11 +1332,79 @@ func (x *ChangeAssignationRequest_Contract) GetReassignmentCounterOverride() int
 	return 0
 }
 
+type PerformLateLsuRequest_Successor struct {
+	state                         protoimpl.MessageState            `protogen:"open.v1"`
+	PhysicalSynchronizerId        string                            `protobuf:"bytes,1,opt,name=physical_synchronizer_id,json=physicalSynchronizerId,proto3" json:"physical_synchronizer_id,omitempty"`
+	AnnouncedUpgradeTime          *timestamppb.Timestamp            `protobuf:"bytes,2,opt,name=announced_upgrade_time,json=announcedUpgradeTime,proto3" json:"announced_upgrade_time,omitempty"`
+	Config                        *SynchronizerConnectionConfig     `protobuf:"bytes,3,opt,name=config,proto3" json:"config,omitempty"`
+	SequencerConnectionValidation v30.SequencerConnectionValidation `protobuf:"varint,4,opt,name=sequencer_connection_validation,json=sequencerConnectionValidation,proto3,enum=com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidation" json:"sequencer_connection_validation,omitempty"`
+	unknownFields                 protoimpl.UnknownFields
+	sizeCache                     protoimpl.SizeCache
+}
+
+func (x *PerformLateLsuRequest_Successor) Reset() {
+	*x = PerformLateLsuRequest_Successor{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PerformLateLsuRequest_Successor) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PerformLateLsuRequest_Successor) ProtoMessage() {}
+
+func (x *PerformLateLsuRequest_Successor) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PerformLateLsuRequest_Successor.ProtoReflect.Descriptor instead.
+func (*PerformLateLsuRequest_Successor) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescGZIP(), []int{22, 0}
+}
+
+func (x *PerformLateLsuRequest_Successor) GetPhysicalSynchronizerId() string {
+	if x != nil {
+		return x.PhysicalSynchronizerId
+	}
+	return ""
+}
+
+func (x *PerformLateLsuRequest_Successor) GetAnnouncedUpgradeTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AnnouncedUpgradeTime
+	}
+	return nil
+}
+
+func (x *PerformLateLsuRequest_Successor) GetConfig() *SynchronizerConnectionConfig {
+	if x != nil {
+		return x.Config
+	}
+	return nil
+}
+
+func (x *PerformLateLsuRequest_Successor) GetSequencerConnectionValidation() v30.SequencerConnectionValidation {
+	if x != nil {
+		return x.SequencerConnectionValidation
+	}
+	return v30.SequencerConnectionValidation(0)
+}
+
 var File_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDesc = "" +
 	"\n" +
-	"Ncom/digitalasset/canton/admin/participant/v30/participant_repair_service.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a>com/digitalasset/canton/admin/participant/v30/acs_import.proto\x1aMcom/digitalasset/canton/admin/participant/v30/synchronizer_connectivity.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x01\n" +
+	"Ncom/digitalasset/canton/admin/participant/v30/participant_repair_service.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a>com/digitalasset/canton/admin/participant/v30/acs_import.proto\x1aUcom/digitalasset/canton/admin/participant/v30/synchronizer_connectivity_service.proto\x1aFcom/digitalasset/canton/admin/sequencer/v30/sequencer_connection.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x01\n" +
 	"\x15PurgeContractsRequest\x12-\n" +
 	"\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\x12!\n" +
 	"\fcontract_ids\x18\x02 \x03(\tR\vcontractIds\x122\n" +
@@ -1493,24 +1424,7 @@ const file_com_digitalasset_canton_admin_participant_v30_participant_repair_serv
 	"\x19source_synchronizer_alias\x18\x01 \x01(\tR\x17sourceSynchronizerAlias\x12\x9e\x01\n" +
 	"%target_synchronizer_connection_config\x18\x02 \x01(\v2K.com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfigR\"targetSynchronizerConnectionConfig\x12\x14\n" +
 	"\x05force\x18\x03 \x01(\bR\x05force\"\x1d\n" +
-	"\x1bMigrateSynchronizerResponse\"\xf0\x01\n" +
-	"\x13ExportAcsOldRequest\x12\x18\n" +
-	"\aparties\x18\x01 \x03(\tR\aparties\x124\n" +
-	"\x16filter_synchronizer_id\x18\x02 \x01(\tR\x14filterSynchronizerId\x128\n" +
-	"\ttimestamp\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x14\n" +
-	"\x05force\x18\x05 \x01(\bR\x05force\x12/\n" +
-	"\x13parties_offboarding\x18\x06 \x01(\bR\x12partiesOffboarding:\x02\x18\x01J\x04\b\x04\x10\x05\"0\n" +
-	"\x14ExportAcsOldResponse\x12\x14\n" +
-	"\x05chunk\x18\x01 \x01(\fR\x05chunk:\x02\x18\x01\"\xba\x01\n" +
-	"\x13ImportAcsOldRequest\x12!\n" +
-	"\facs_snapshot\x18\x01 \x01(\fR\vacsSnapshot\x12,\n" +
-	"\x12workflow_id_prefix\x18\x02 \x01(\tR\x10workflowIdPrefix\x12R\n" +
-	"&allow_contract_id_suffix_recomputation\x18\x03 \x01(\bR\"allowContractIdSuffixRecomputation\"\xe9\x01\n" +
-	"\x14ImportAcsOldResponse\x12\x8a\x01\n" +
-	"\x13contract_id_mapping\x18\x01 \x03(\v2Z.com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse.ContractIdMappingEntryR\x11contractIdMapping\x1aD\n" +
-	"\x16ContractIdMappingEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"S\n" +
+	"\x1bMigrateSynchronizerResponse\"S\n" +
 	"\x1bExportAcsTargetSynchronizer\x124\n" +
 	"\x16target_synchronizer_id\x18\x01 \x01(\tR\x14targetSynchronizerId\"\xfb\x03\n" +
 	"\x10ExportAcsRequest\x12\x1b\n" +
@@ -1523,18 +1437,19 @@ const file_com_digitalasset_canton_admin_participant_v30_participant_repair_serv
 	"\x03key\x18\x01 \x01(\tR\x03key\x12`\n" +
 	"\x05value\x18\x02 \x01(\v2J.com.digitalasset.canton.admin.participant.v30.ExportAcsTargetSynchronizerR\x05value:\x028\x01\")\n" +
 	"\x11ExportAcsResponse\x12\x14\n" +
-	"\x05chunk\x18\x01 \x01(\fR\x05chunk\"\xb0\x03\n" +
+	"\x05chunk\x18\x01 \x01(\fR\x05chunk\"\xd8\x04\n" +
 	"\x10ImportAcsRequest\x12!\n" +
-	"\facs_snapshot\x18\x01 \x01(\fR\vacsSnapshot\x12,\n" +
-	"\x12workflow_id_prefix\x18\x02 \x01(\tR\x10workflowIdPrefix\x12s\n" +
-	"\x14contract_import_mode\x18\x03 \x01(\x0e2A.com.digitalasset.canton.admin.participant.v30.ContractImportModeR\x12contractImportMode\x128\n" +
-	"\x18excluded_stakeholder_ids\x18\x04 \x03(\tR\x16excludedStakeholderIds\x12\x9b\x01\n" +
-	"\"representative_package_id_override\x18\x05 \x01(\v2N.com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverrideR\x1frepresentativePackageIdOverride\"\xe7\x01\n" +
-	"\x11ImportAcsResponse\x12\x8a\x01\n" +
-	"\x14contract_id_mappings\x18\x01 \x03(\v2X.com.digitalasset.canton.admin.participant.v30.ImportAcsResponse.ContractIdMappingsEntryR\x12contractIdMappings\x1aE\n" +
-	"\x17ContractIdMappingsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"T\n" +
+	"\facs_snapshot\x18\x01 \x01(\fR\vacsSnapshot\x121\n" +
+	"\x12workflow_id_prefix\x18\x02 \x01(\tH\x00R\x10workflowIdPrefix\x88\x01\x01\x12x\n" +
+	"\x14contract_import_mode\x18\x03 \x01(\x0e2A.com.digitalasset.canton.admin.participant.v30.ContractImportModeH\x01R\x12contractImportMode\x88\x01\x01\x128\n" +
+	"\x18excluded_stakeholder_ids\x18\x04 \x03(\tR\x16excludedStakeholderIds\x12\xa0\x01\n" +
+	"\"representative_package_id_override\x18\x05 \x01(\v2N.com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverrideH\x02R\x1frepresentativePackageIdOverride\x88\x01\x01\x12,\n" +
+	"\x0fsynchronizer_id\x18\x06 \x01(\tH\x03R\x0esynchronizerId\x88\x01\x01B\x15\n" +
+	"\x13_workflow_id_prefixB\x17\n" +
+	"\x15_contract_import_modeB%\n" +
+	"#_representative_package_id_overrideB\x12\n" +
+	"\x10_synchronizer_id\"\x13\n" +
+	"\x11ImportAcsResponse\"T\n" +
 	"#PurgeDeactivatedSynchronizerRequest\x12-\n" +
 	"\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\"&\n" +
 	"$PurgeDeactivatedSynchronizerResponse\"\xaf\x01\n" +
@@ -1566,10 +1481,17 @@ const file_com_digitalasset_canton_admin_participant_v30_participant_repair_serv
 	"\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12%\n" +
 	"\rerror_message\x18\x02 \x01(\tH\x00R\ferrorMessage\x12Z\n" +
 	"\x1acompleted_repair_timestamp\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\x18completedRepairTimestampB\b\n" +
-	"\x06status2\xec\x0f\n" +
-	"\x18ParticipantRepairService\x12\x9e\x01\n" +
-	"\fExportAcsOld\x12B.com.digitalasset.canton.admin.participant.v30.ExportAcsOldRequest\x1aC.com.digitalasset.canton.admin.participant.v30.ExportAcsOldResponse\"\x03\x88\x02\x010\x01\x12\x99\x01\n" +
-	"\fImportAcsOld\x12B.com.digitalasset.canton.admin.participant.v30.ImportAcsOldRequest\x1aC.com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse(\x01\x12\x90\x01\n" +
+	"\x06status\"\xd3\x04\n" +
+	"\x15PerformLateLsuRequest\x128\n" +
+	"\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12l\n" +
+	"\tsuccessor\x18\x02 \x01(\v2N.com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest.SuccessorR\tsuccessor\x1a\x91\x03\n" +
+	"\tSuccessor\x128\n" +
+	"\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12P\n" +
+	"\x16announced_upgrade_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x14announcedUpgradeTime\x12c\n" +
+	"\x06config\x18\x03 \x01(\v2K.com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfigR\x06config\x12\x92\x01\n" +
+	"\x1fsequencer_connection_validation\x18\x04 \x01(\x0e2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidationR\x1dsequencerConnectionValidation\"\x18\n" +
+	"\x16PerformLateLsuResponse2\xcf\x0e\n" +
+	"\x18ParticipantRepairService\x12\x90\x01\n" +
 	"\tExportAcs\x12?.com.digitalasset.canton.admin.participant.v30.ExportAcsRequest\x1a@.com.digitalasset.canton.admin.participant.v30.ExportAcsResponse0\x01\x12\x90\x01\n" +
 	"\tImportAcs\x12?.com.digitalasset.canton.admin.participant.v30.ImportAcsRequest\x1a@.com.digitalasset.canton.admin.participant.v30.ImportAcsResponse(\x01\x12\x9d\x01\n" +
 	"\x0ePurgeContracts\x12D.com.digitalasset.canton.admin.participant.v30.PurgeContractsRequest\x1aE.com.digitalasset.canton.admin.participant.v30.PurgeContractsResponse\x12\xac\x01\n" +
@@ -1579,7 +1501,8 @@ const file_com_digitalasset_canton_admin_participant_v30_participant_repair_serv
 	"\fIgnoreEvents\x12B.com.digitalasset.canton.admin.participant.v30.IgnoreEventsRequest\x1aC.com.digitalasset.canton.admin.participant.v30.IgnoreEventsResponse\x12\x9d\x01\n" +
 	"\x0eUnignoreEvents\x12D.com.digitalasset.canton.admin.participant.v30.UnignoreEventsRequest\x1aE.com.digitalasset.canton.admin.participant.v30.UnignoreEventsResponse\x12\xaf\x01\n" +
 	"\x14RollbackUnassignment\x12J.com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentRequest\x1aK.com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentResponse\x12\xbe\x01\n" +
-	"\x19RepairCommitmentsUsingAcs\x12O.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest\x1aP.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponseB^Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30b\x06proto3"
+	"\x19RepairCommitmentsUsingAcs\x12O.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest\x1aP.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponse\x12\x9d\x01\n" +
+	"\x0ePerformLateLsu\x12D.com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest\x1aE.com.digitalasset.canton.admin.participant.v30.PerformLateLsuResponseB^Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescOnce sync.Once
@@ -1593,7 +1516,7 @@ func file_com_digitalasset_canton_admin_participant_v30_participant_repair_servi
 	return file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_goTypes = []any{
 	(*PurgeContractsRequest)(nil),                // 0: com.digitalasset.canton.admin.participant.v30.PurgeContractsRequest
 	(*PurgeContractsResponse)(nil),               // 1: com.digitalasset.canton.admin.participant.v30.PurgeContractsResponse
@@ -1601,78 +1524,75 @@ var file_com_digitalasset_canton_admin_participant_v30_participant_repair_servic
 	(*ChangeAssignationResponse)(nil),            // 3: com.digitalasset.canton.admin.participant.v30.ChangeAssignationResponse
 	(*MigrateSynchronizerRequest)(nil),           // 4: com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerRequest
 	(*MigrateSynchronizerResponse)(nil),          // 5: com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerResponse
-	(*ExportAcsOldRequest)(nil),                  // 6: com.digitalasset.canton.admin.participant.v30.ExportAcsOldRequest
-	(*ExportAcsOldResponse)(nil),                 // 7: com.digitalasset.canton.admin.participant.v30.ExportAcsOldResponse
-	(*ImportAcsOldRequest)(nil),                  // 8: com.digitalasset.canton.admin.participant.v30.ImportAcsOldRequest
-	(*ImportAcsOldResponse)(nil),                 // 9: com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse
-	(*ExportAcsTargetSynchronizer)(nil),          // 10: com.digitalasset.canton.admin.participant.v30.ExportAcsTargetSynchronizer
-	(*ExportAcsRequest)(nil),                     // 11: com.digitalasset.canton.admin.participant.v30.ExportAcsRequest
-	(*ExportAcsResponse)(nil),                    // 12: com.digitalasset.canton.admin.participant.v30.ExportAcsResponse
-	(*ImportAcsRequest)(nil),                     // 13: com.digitalasset.canton.admin.participant.v30.ImportAcsRequest
-	(*ImportAcsResponse)(nil),                    // 14: com.digitalasset.canton.admin.participant.v30.ImportAcsResponse
-	(*PurgeDeactivatedSynchronizerRequest)(nil),  // 15: com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerRequest
-	(*PurgeDeactivatedSynchronizerResponse)(nil), // 16: com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerResponse
-	(*IgnoreEventsRequest)(nil),                  // 17: com.digitalasset.canton.admin.participant.v30.IgnoreEventsRequest
-	(*IgnoreEventsResponse)(nil),                 // 18: com.digitalasset.canton.admin.participant.v30.IgnoreEventsResponse
-	(*UnignoreEventsRequest)(nil),                // 19: com.digitalasset.canton.admin.participant.v30.UnignoreEventsRequest
-	(*UnignoreEventsResponse)(nil),               // 20: com.digitalasset.canton.admin.participant.v30.UnignoreEventsResponse
-	(*RollbackUnassignmentRequest)(nil),          // 21: com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentRequest
-	(*RollbackUnassignmentResponse)(nil),         // 22: com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentResponse
-	(*RepairCommitmentsUsingAcsRequest)(nil),     // 23: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest
-	(*RepairCommitmentsUsingAcsResponse)(nil),    // 24: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponse
-	(*RepairCommitmentsStatus)(nil),              // 25: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsStatus
-	(*ChangeAssignationRequest_Contract)(nil),    // 26: com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest.Contract
-	nil,                                     // 27: com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse.ContractIdMappingEntry
-	nil,                                     // 28: com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.ContractSynchronizerRenamesEntry
-	nil,                                     // 29: com.digitalasset.canton.admin.participant.v30.ImportAcsResponse.ContractIdMappingsEntry
-	(*SynchronizerConnectionConfig)(nil),    // 30: com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfig
+	(*ExportAcsTargetSynchronizer)(nil),          // 6: com.digitalasset.canton.admin.participant.v30.ExportAcsTargetSynchronizer
+	(*ExportAcsRequest)(nil),                     // 7: com.digitalasset.canton.admin.participant.v30.ExportAcsRequest
+	(*ExportAcsResponse)(nil),                    // 8: com.digitalasset.canton.admin.participant.v30.ExportAcsResponse
+	(*ImportAcsRequest)(nil),                     // 9: com.digitalasset.canton.admin.participant.v30.ImportAcsRequest
+	(*ImportAcsResponse)(nil),                    // 10: com.digitalasset.canton.admin.participant.v30.ImportAcsResponse
+	(*PurgeDeactivatedSynchronizerRequest)(nil),  // 11: com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerRequest
+	(*PurgeDeactivatedSynchronizerResponse)(nil), // 12: com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerResponse
+	(*IgnoreEventsRequest)(nil),                  // 13: com.digitalasset.canton.admin.participant.v30.IgnoreEventsRequest
+	(*IgnoreEventsResponse)(nil),                 // 14: com.digitalasset.canton.admin.participant.v30.IgnoreEventsResponse
+	(*UnignoreEventsRequest)(nil),                // 15: com.digitalasset.canton.admin.participant.v30.UnignoreEventsRequest
+	(*UnignoreEventsResponse)(nil),               // 16: com.digitalasset.canton.admin.participant.v30.UnignoreEventsResponse
+	(*RollbackUnassignmentRequest)(nil),          // 17: com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentRequest
+	(*RollbackUnassignmentResponse)(nil),         // 18: com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentResponse
+	(*RepairCommitmentsUsingAcsRequest)(nil),     // 19: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest
+	(*RepairCommitmentsUsingAcsResponse)(nil),    // 20: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponse
+	(*RepairCommitmentsStatus)(nil),              // 21: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsStatus
+	(*PerformLateLsuRequest)(nil),                // 22: com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest
+	(*PerformLateLsuResponse)(nil),               // 23: com.digitalasset.canton.admin.participant.v30.PerformLateLsuResponse
+	(*ChangeAssignationRequest_Contract)(nil),    // 24: com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest.Contract
+	nil,                                     // 25: com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.ContractSynchronizerRenamesEntry
+	(*PerformLateLsuRequest_Successor)(nil), // 26: com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest.Successor
+	(*SynchronizerConnectionConfig)(nil),    // 27: com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfig
+	(ContractImportMode)(0),                 // 28: com.digitalasset.canton.admin.participant.v30.ContractImportMode
+	(*RepresentativePackageIdOverride)(nil), // 29: com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverride
+	(*durationpb.Duration)(nil),             // 30: google.protobuf.Duration
 	(*timestamppb.Timestamp)(nil),           // 31: google.protobuf.Timestamp
-	(ContractImportMode)(0),                 // 32: com.digitalasset.canton.admin.participant.v30.ContractImportMode
-	(*RepresentativePackageIdOverride)(nil), // 33: com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverride
-	(*durationpb.Duration)(nil),             // 34: google.protobuf.Duration
+	(v30.SequencerConnectionValidation)(0),  // 32: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidation
 }
 var file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_depIdxs = []int32{
-	26, // 0: com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest.contracts:type_name -> com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest.Contract
-	30, // 1: com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerRequest.target_synchronizer_connection_config:type_name -> com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfig
-	31, // 2: com.digitalasset.canton.admin.participant.v30.ExportAcsOldRequest.timestamp:type_name -> google.protobuf.Timestamp
-	27, // 3: com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse.contract_id_mapping:type_name -> com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse.ContractIdMappingEntry
-	28, // 4: com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.contract_synchronizer_renames:type_name -> com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.ContractSynchronizerRenamesEntry
-	32, // 5: com.digitalasset.canton.admin.participant.v30.ImportAcsRequest.contract_import_mode:type_name -> com.digitalasset.canton.admin.participant.v30.ContractImportMode
-	33, // 6: com.digitalasset.canton.admin.participant.v30.ImportAcsRequest.representative_package_id_override:type_name -> com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverride
-	29, // 7: com.digitalasset.canton.admin.participant.v30.ImportAcsResponse.contract_id_mappings:type_name -> com.digitalasset.canton.admin.participant.v30.ImportAcsResponse.ContractIdMappingsEntry
-	34, // 8: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest.timeout_seconds:type_name -> google.protobuf.Duration
-	25, // 9: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponse.statuses:type_name -> com.digitalasset.canton.admin.participant.v30.RepairCommitmentsStatus
-	31, // 10: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsStatus.completed_repair_timestamp:type_name -> google.protobuf.Timestamp
-	10, // 11: com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.ContractSynchronizerRenamesEntry.value:type_name -> com.digitalasset.canton.admin.participant.v30.ExportAcsTargetSynchronizer
-	6,  // 12: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ExportAcsOld:input_type -> com.digitalasset.canton.admin.participant.v30.ExportAcsOldRequest
-	8,  // 13: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ImportAcsOld:input_type -> com.digitalasset.canton.admin.participant.v30.ImportAcsOldRequest
-	11, // 14: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ExportAcs:input_type -> com.digitalasset.canton.admin.participant.v30.ExportAcsRequest
-	13, // 15: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ImportAcs:input_type -> com.digitalasset.canton.admin.participant.v30.ImportAcsRequest
-	0,  // 16: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PurgeContracts:input_type -> com.digitalasset.canton.admin.participant.v30.PurgeContractsRequest
-	4,  // 17: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.MigrateSynchronizer:input_type -> com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerRequest
-	2,  // 18: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ChangeAssignation:input_type -> com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest
-	15, // 19: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PurgeDeactivatedSynchronizer:input_type -> com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerRequest
-	17, // 20: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.IgnoreEvents:input_type -> com.digitalasset.canton.admin.participant.v30.IgnoreEventsRequest
-	19, // 21: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.UnignoreEvents:input_type -> com.digitalasset.canton.admin.participant.v30.UnignoreEventsRequest
-	21, // 22: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.RollbackUnassignment:input_type -> com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentRequest
-	23, // 23: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.RepairCommitmentsUsingAcs:input_type -> com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest
-	7,  // 24: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ExportAcsOld:output_type -> com.digitalasset.canton.admin.participant.v30.ExportAcsOldResponse
-	9,  // 25: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ImportAcsOld:output_type -> com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse
-	12, // 26: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ExportAcs:output_type -> com.digitalasset.canton.admin.participant.v30.ExportAcsResponse
-	14, // 27: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ImportAcs:output_type -> com.digitalasset.canton.admin.participant.v30.ImportAcsResponse
-	1,  // 28: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PurgeContracts:output_type -> com.digitalasset.canton.admin.participant.v30.PurgeContractsResponse
-	5,  // 29: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.MigrateSynchronizer:output_type -> com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerResponse
-	3,  // 30: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ChangeAssignation:output_type -> com.digitalasset.canton.admin.participant.v30.ChangeAssignationResponse
-	16, // 31: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PurgeDeactivatedSynchronizer:output_type -> com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerResponse
-	18, // 32: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.IgnoreEvents:output_type -> com.digitalasset.canton.admin.participant.v30.IgnoreEventsResponse
-	20, // 33: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.UnignoreEvents:output_type -> com.digitalasset.canton.admin.participant.v30.UnignoreEventsResponse
-	22, // 34: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.RollbackUnassignment:output_type -> com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentResponse
-	24, // 35: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.RepairCommitmentsUsingAcs:output_type -> com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponse
-	24, // [24:36] is the sub-list for method output_type
-	12, // [12:24] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	24, // 0: com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest.contracts:type_name -> com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest.Contract
+	27, // 1: com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerRequest.target_synchronizer_connection_config:type_name -> com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfig
+	25, // 2: com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.contract_synchronizer_renames:type_name -> com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.ContractSynchronizerRenamesEntry
+	28, // 3: com.digitalasset.canton.admin.participant.v30.ImportAcsRequest.contract_import_mode:type_name -> com.digitalasset.canton.admin.participant.v30.ContractImportMode
+	29, // 4: com.digitalasset.canton.admin.participant.v30.ImportAcsRequest.representative_package_id_override:type_name -> com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverride
+	30, // 5: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest.timeout_seconds:type_name -> google.protobuf.Duration
+	21, // 6: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponse.statuses:type_name -> com.digitalasset.canton.admin.participant.v30.RepairCommitmentsStatus
+	31, // 7: com.digitalasset.canton.admin.participant.v30.RepairCommitmentsStatus.completed_repair_timestamp:type_name -> google.protobuf.Timestamp
+	26, // 8: com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest.successor:type_name -> com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest.Successor
+	6,  // 9: com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.ContractSynchronizerRenamesEntry.value:type_name -> com.digitalasset.canton.admin.participant.v30.ExportAcsTargetSynchronizer
+	31, // 10: com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest.Successor.announced_upgrade_time:type_name -> google.protobuf.Timestamp
+	27, // 11: com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest.Successor.config:type_name -> com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfig
+	32, // 12: com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest.Successor.sequencer_connection_validation:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidation
+	7,  // 13: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ExportAcs:input_type -> com.digitalasset.canton.admin.participant.v30.ExportAcsRequest
+	9,  // 14: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ImportAcs:input_type -> com.digitalasset.canton.admin.participant.v30.ImportAcsRequest
+	0,  // 15: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PurgeContracts:input_type -> com.digitalasset.canton.admin.participant.v30.PurgeContractsRequest
+	4,  // 16: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.MigrateSynchronizer:input_type -> com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerRequest
+	2,  // 17: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ChangeAssignation:input_type -> com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest
+	11, // 18: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PurgeDeactivatedSynchronizer:input_type -> com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerRequest
+	13, // 19: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.IgnoreEvents:input_type -> com.digitalasset.canton.admin.participant.v30.IgnoreEventsRequest
+	15, // 20: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.UnignoreEvents:input_type -> com.digitalasset.canton.admin.participant.v30.UnignoreEventsRequest
+	17, // 21: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.RollbackUnassignment:input_type -> com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentRequest
+	19, // 22: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.RepairCommitmentsUsingAcs:input_type -> com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest
+	22, // 23: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PerformLateLsu:input_type -> com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest
+	8,  // 24: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ExportAcs:output_type -> com.digitalasset.canton.admin.participant.v30.ExportAcsResponse
+	10, // 25: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ImportAcs:output_type -> com.digitalasset.canton.admin.participant.v30.ImportAcsResponse
+	1,  // 26: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PurgeContracts:output_type -> com.digitalasset.canton.admin.participant.v30.PurgeContractsResponse
+	5,  // 27: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.MigrateSynchronizer:output_type -> com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerResponse
+	3,  // 28: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.ChangeAssignation:output_type -> com.digitalasset.canton.admin.participant.v30.ChangeAssignationResponse
+	12, // 29: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PurgeDeactivatedSynchronizer:output_type -> com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerResponse
+	14, // 30: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.IgnoreEvents:output_type -> com.digitalasset.canton.admin.participant.v30.IgnoreEventsResponse
+	16, // 31: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.UnignoreEvents:output_type -> com.digitalasset.canton.admin.participant.v30.UnignoreEventsResponse
+	18, // 32: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.RollbackUnassignment:output_type -> com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentResponse
+	20, // 33: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.RepairCommitmentsUsingAcs:output_type -> com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponse
+	23, // 34: com.digitalasset.canton.admin.participant.v30.ParticipantRepairService.PerformLateLsu:output_type -> com.digitalasset.canton.admin.participant.v30.PerformLateLsuResponse
+	24, // [24:35] is the sub-list for method output_type
+	13, // [13:24] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() {
@@ -1683,19 +1603,20 @@ func file_com_digitalasset_canton_admin_participant_v30_participant_repair_servi
 		return
 	}
 	file_com_digitalasset_canton_admin_participant_v30_acs_import_proto_init()
-	file_com_digitalasset_canton_admin_participant_v30_synchronizer_connectivity_proto_init()
-	file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[25].OneofWrappers = []any{
+	file_com_digitalasset_canton_admin_participant_v30_synchronizer_connectivity_service_proto_init()
+	file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[9].OneofWrappers = []any{}
+	file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[21].OneofWrappers = []any{
 		(*RepairCommitmentsStatus_ErrorMessage)(nil),
 		(*RepairCommitmentsStatus_CompletedRepairTimestamp)(nil),
 	}
-	file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[26].OneofWrappers = []any{}
+	file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_msgTypes[24].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDesc), len(file_com_digitalasset_canton_admin_participant_v30_participant_repair_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   30,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

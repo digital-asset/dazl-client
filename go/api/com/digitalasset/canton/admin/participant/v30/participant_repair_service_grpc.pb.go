@@ -21,8 +21,6 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ParticipantRepairService_ExportAcsOld_FullMethodName                 = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcsOld"
-	ParticipantRepairService_ImportAcsOld_FullMethodName                 = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcsOld"
 	ParticipantRepairService_ExportAcs_FullMethodName                    = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcs"
 	ParticipantRepairService_ImportAcs_FullMethodName                    = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcs"
 	ParticipantRepairService_PurgeContracts_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PurgeContracts"
@@ -33,15 +31,13 @@ const (
 	ParticipantRepairService_UnignoreEvents_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/UnignoreEvents"
 	ParticipantRepairService_RollbackUnassignment_FullMethodName         = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RollbackUnassignment"
 	ParticipantRepairService_RepairCommitmentsUsingAcs_FullMethodName    = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RepairCommitmentsUsingAcs"
+	ParticipantRepairService_PerformLateLsu_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PerformLateLsu"
 )
 
 // ParticipantRepairServiceClient is the client API for ParticipantRepairService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ParticipantRepairServiceClient interface {
-	// Deprecated: Do not use.
-	ExportAcsOld(ctx context.Context, in *ExportAcsOldRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportAcsOldResponse], error)
-	ImportAcsOld(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportAcsOldRequest, ImportAcsOldResponse], error)
 	ExportAcs(ctx context.Context, in *ExportAcsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportAcsResponse], error)
 	ImportAcs(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportAcsRequest, ImportAcsResponse], error)
 	PurgeContracts(ctx context.Context, in *PurgeContractsRequest, opts ...grpc.CallOption) (*PurgeContractsResponse, error)
@@ -52,6 +48,7 @@ type ParticipantRepairServiceClient interface {
 	UnignoreEvents(ctx context.Context, in *UnignoreEventsRequest, opts ...grpc.CallOption) (*UnignoreEventsResponse, error)
 	RollbackUnassignment(ctx context.Context, in *RollbackUnassignmentRequest, opts ...grpc.CallOption) (*RollbackUnassignmentResponse, error)
 	RepairCommitmentsUsingAcs(ctx context.Context, in *RepairCommitmentsUsingAcsRequest, opts ...grpc.CallOption) (*RepairCommitmentsUsingAcsResponse, error)
+	PerformLateLsu(ctx context.Context, in *PerformLateLsuRequest, opts ...grpc.CallOption) (*PerformLateLsuResponse, error)
 }
 
 type participantRepairServiceClient struct {
@@ -62,42 +59,9 @@ func NewParticipantRepairServiceClient(cc grpc.ClientConnInterface) ParticipantR
 	return &participantRepairServiceClient{cc}
 }
 
-// Deprecated: Do not use.
-func (c *participantRepairServiceClient) ExportAcsOld(ctx context.Context, in *ExportAcsOldRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportAcsOldResponse], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ParticipantRepairService_ServiceDesc.Streams[0], ParticipantRepairService_ExportAcsOld_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[ExportAcsOldRequest, ExportAcsOldResponse]{ClientStream: stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ParticipantRepairService_ExportAcsOldClient = grpc.ServerStreamingClient[ExportAcsOldResponse]
-
-func (c *participantRepairServiceClient) ImportAcsOld(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportAcsOldRequest, ImportAcsOldResponse], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ParticipantRepairService_ServiceDesc.Streams[1], ParticipantRepairService_ImportAcsOld_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[ImportAcsOldRequest, ImportAcsOldResponse]{ClientStream: stream}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ParticipantRepairService_ImportAcsOldClient = grpc.ClientStreamingClient[ImportAcsOldRequest, ImportAcsOldResponse]
-
 func (c *participantRepairServiceClient) ExportAcs(ctx context.Context, in *ExportAcsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportAcsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ParticipantRepairService_ServiceDesc.Streams[2], ParticipantRepairService_ExportAcs_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &ParticipantRepairService_ServiceDesc.Streams[0], ParticipantRepairService_ExportAcs_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +80,7 @@ type ParticipantRepairService_ExportAcsClient = grpc.ServerStreamingClient[Expor
 
 func (c *participantRepairServiceClient) ImportAcs(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportAcsRequest, ImportAcsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ParticipantRepairService_ServiceDesc.Streams[3], ParticipantRepairService_ImportAcs_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &ParticipantRepairService_ServiceDesc.Streams[1], ParticipantRepairService_ImportAcs_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -207,13 +171,20 @@ func (c *participantRepairServiceClient) RepairCommitmentsUsingAcs(ctx context.C
 	return out, nil
 }
 
+func (c *participantRepairServiceClient) PerformLateLsu(ctx context.Context, in *PerformLateLsuRequest, opts ...grpc.CallOption) (*PerformLateLsuResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PerformLateLsuResponse)
+	err := c.cc.Invoke(ctx, ParticipantRepairService_PerformLateLsu_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ParticipantRepairServiceServer is the server API for ParticipantRepairService service.
 // All implementations must embed UnimplementedParticipantRepairServiceServer
 // for forward compatibility.
 type ParticipantRepairServiceServer interface {
-	// Deprecated: Do not use.
-	ExportAcsOld(*ExportAcsOldRequest, grpc.ServerStreamingServer[ExportAcsOldResponse]) error
-	ImportAcsOld(grpc.ClientStreamingServer[ImportAcsOldRequest, ImportAcsOldResponse]) error
 	ExportAcs(*ExportAcsRequest, grpc.ServerStreamingServer[ExportAcsResponse]) error
 	ImportAcs(grpc.ClientStreamingServer[ImportAcsRequest, ImportAcsResponse]) error
 	PurgeContracts(context.Context, *PurgeContractsRequest) (*PurgeContractsResponse, error)
@@ -224,6 +195,7 @@ type ParticipantRepairServiceServer interface {
 	UnignoreEvents(context.Context, *UnignoreEventsRequest) (*UnignoreEventsResponse, error)
 	RollbackUnassignment(context.Context, *RollbackUnassignmentRequest) (*RollbackUnassignmentResponse, error)
 	RepairCommitmentsUsingAcs(context.Context, *RepairCommitmentsUsingAcsRequest) (*RepairCommitmentsUsingAcsResponse, error)
+	PerformLateLsu(context.Context, *PerformLateLsuRequest) (*PerformLateLsuResponse, error)
 	mustEmbedUnimplementedParticipantRepairServiceServer()
 }
 
@@ -234,12 +206,6 @@ type ParticipantRepairServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedParticipantRepairServiceServer struct{}
 
-func (UnimplementedParticipantRepairServiceServer) ExportAcsOld(*ExportAcsOldRequest, grpc.ServerStreamingServer[ExportAcsOldResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method ExportAcsOld not implemented")
-}
-func (UnimplementedParticipantRepairServiceServer) ImportAcsOld(grpc.ClientStreamingServer[ImportAcsOldRequest, ImportAcsOldResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method ImportAcsOld not implemented")
-}
 func (UnimplementedParticipantRepairServiceServer) ExportAcs(*ExportAcsRequest, grpc.ServerStreamingServer[ExportAcsResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method ExportAcs not implemented")
 }
@@ -270,6 +236,9 @@ func (UnimplementedParticipantRepairServiceServer) RollbackUnassignment(context.
 func (UnimplementedParticipantRepairServiceServer) RepairCommitmentsUsingAcs(context.Context, *RepairCommitmentsUsingAcsRequest) (*RepairCommitmentsUsingAcsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RepairCommitmentsUsingAcs not implemented")
 }
+func (UnimplementedParticipantRepairServiceServer) PerformLateLsu(context.Context, *PerformLateLsuRequest) (*PerformLateLsuResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PerformLateLsu not implemented")
+}
 func (UnimplementedParticipantRepairServiceServer) mustEmbedUnimplementedParticipantRepairServiceServer() {
 }
 func (UnimplementedParticipantRepairServiceServer) testEmbeddedByValue() {}
@@ -291,24 +260,6 @@ func RegisterParticipantRepairServiceServer(s grpc.ServiceRegistrar, srv Partici
 	}
 	s.RegisterService(&ParticipantRepairService_ServiceDesc, srv)
 }
-
-func _ParticipantRepairService_ExportAcsOld_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ExportAcsOldRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(ParticipantRepairServiceServer).ExportAcsOld(m, &grpc.GenericServerStream[ExportAcsOldRequest, ExportAcsOldResponse]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ParticipantRepairService_ExportAcsOldServer = grpc.ServerStreamingServer[ExportAcsOldResponse]
-
-func _ParticipantRepairService_ImportAcsOld_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ParticipantRepairServiceServer).ImportAcsOld(&grpc.GenericServerStream[ImportAcsOldRequest, ImportAcsOldResponse]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ParticipantRepairService_ImportAcsOldServer = grpc.ClientStreamingServer[ImportAcsOldRequest, ImportAcsOldResponse]
 
 func _ParticipantRepairService_ExportAcs_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ExportAcsRequest)
@@ -472,6 +423,24 @@ func _ParticipantRepairService_RepairCommitmentsUsingAcs_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ParticipantRepairService_PerformLateLsu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PerformLateLsuRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParticipantRepairServiceServer).PerformLateLsu(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ParticipantRepairService_PerformLateLsu_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParticipantRepairServiceServer).PerformLateLsu(ctx, req.(*PerformLateLsuRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ParticipantRepairService_ServiceDesc is the grpc.ServiceDesc for ParticipantRepairService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -511,18 +480,12 @@ var ParticipantRepairService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "RepairCommitmentsUsingAcs",
 			Handler:    _ParticipantRepairService_RepairCommitmentsUsingAcs_Handler,
 		},
+		{
+			MethodName: "PerformLateLsu",
+			Handler:    _ParticipantRepairService_PerformLateLsu_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "ExportAcsOld",
-			Handler:       _ParticipantRepairService_ExportAcsOld_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "ImportAcsOld",
-			Handler:       _ParticipantRepairService_ImportAcsOld_Handler,
-			ClientStreams: true,
-		},
 		{
 			StreamName:    "ExportAcs",
 			Handler:       _ParticipantRepairService_ExportAcs_Handler,

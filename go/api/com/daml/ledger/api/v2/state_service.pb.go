@@ -76,11 +76,12 @@ func (ParticipantPermission) EnumDescriptor() ([]byte, []int) {
 }
 
 type GetActiveContractsRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	ActiveAtOffset int64                  `protobuf:"varint,3,opt,name=active_at_offset,json=activeAtOffset,proto3" json:"active_at_offset,omitempty"`
-	EventFormat    *EventFormat           `protobuf:"bytes,4,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	ActiveAtOffset          int64                  `protobuf:"varint,3,opt,name=active_at_offset,json=activeAtOffset,proto3" json:"active_at_offset,omitempty"`
+	EventFormat             *EventFormat           `protobuf:"bytes,4,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
+	StreamContinuationToken []byte                 `protobuf:"bytes,5,opt,name=stream_continuation_token,json=streamContinuationToken,proto3,oneof" json:"stream_continuation_token,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *GetActiveContractsRequest) Reset() {
@@ -127,6 +128,81 @@ func (x *GetActiveContractsRequest) GetEventFormat() *EventFormat {
 	return nil
 }
 
+func (x *GetActiveContractsRequest) GetStreamContinuationToken() []byte {
+	if x != nil {
+		return x.StreamContinuationToken
+	}
+	return nil
+}
+
+type GetActiveContractsPageRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ActiveAtOffset *int64                 `protobuf:"varint,1,opt,name=active_at_offset,json=activeAtOffset,proto3,oneof" json:"active_at_offset,omitempty"`
+	EventFormat    *EventFormat           `protobuf:"bytes,2,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
+	MaxPageSize    *int32                 `protobuf:"varint,3,opt,name=max_page_size,json=maxPageSize,proto3,oneof" json:"max_page_size,omitempty"`
+	PageToken      []byte                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *GetActiveContractsPageRequest) Reset() {
+	*x = GetActiveContractsPageRequest{}
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetActiveContractsPageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetActiveContractsPageRequest) ProtoMessage() {}
+
+func (x *GetActiveContractsPageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetActiveContractsPageRequest.ProtoReflect.Descriptor instead.
+func (*GetActiveContractsPageRequest) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GetActiveContractsPageRequest) GetActiveAtOffset() int64 {
+	if x != nil && x.ActiveAtOffset != nil {
+		return *x.ActiveAtOffset
+	}
+	return 0
+}
+
+func (x *GetActiveContractsPageRequest) GetEventFormat() *EventFormat {
+	if x != nil {
+		return x.EventFormat
+	}
+	return nil
+}
+
+func (x *GetActiveContractsPageRequest) GetMaxPageSize() int32 {
+	if x != nil && x.MaxPageSize != nil {
+		return *x.MaxPageSize
+	}
+	return 0
+}
+
+func (x *GetActiveContractsPageRequest) GetPageToken() []byte {
+	if x != nil {
+		return x.PageToken
+	}
+	return nil
+}
+
 type GetActiveContractsResponse struct {
 	state      protoimpl.MessageState `protogen:"open.v1"`
 	WorkflowId string                 `protobuf:"bytes,1,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
@@ -135,14 +211,15 @@ type GetActiveContractsResponse struct {
 	//	*GetActiveContractsResponse_ActiveContract
 	//	*GetActiveContractsResponse_IncompleteUnassigned
 	//	*GetActiveContractsResponse_IncompleteAssigned
-	ContractEntry isGetActiveContractsResponse_ContractEntry `protobuf_oneof:"contract_entry"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	ContractEntry           isGetActiveContractsResponse_ContractEntry `protobuf_oneof:"contract_entry"`
+	StreamContinuationToken []byte                                     `protobuf:"bytes,5,opt,name=stream_continuation_token,json=streamContinuationToken,proto3" json:"stream_continuation_token,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *GetActiveContractsResponse) Reset() {
 	*x = GetActiveContractsResponse{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[1]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -154,7 +231,7 @@ func (x *GetActiveContractsResponse) String() string {
 func (*GetActiveContractsResponse) ProtoMessage() {}
 
 func (x *GetActiveContractsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[1]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -167,7 +244,7 @@ func (x *GetActiveContractsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetActiveContractsResponse.ProtoReflect.Descriptor instead.
 func (*GetActiveContractsResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{1}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetActiveContractsResponse) GetWorkflowId() string {
@@ -211,6 +288,13 @@ func (x *GetActiveContractsResponse) GetIncompleteAssigned() *IncompleteAssigned
 	return nil
 }
 
+func (x *GetActiveContractsResponse) GetStreamContinuationToken() []byte {
+	if x != nil {
+		return x.StreamContinuationToken
+	}
+	return nil
+}
+
 type isGetActiveContractsResponse_ContractEntry interface {
 	isGetActiveContractsResponse_ContractEntry()
 }
@@ -234,6 +318,66 @@ func (*GetActiveContractsResponse_IncompleteUnassigned) isGetActiveContractsResp
 
 func (*GetActiveContractsResponse_IncompleteAssigned) isGetActiveContractsResponse_ContractEntry() {}
 
+type GetActiveContractsPageResponse struct {
+	state           protoimpl.MessageState        `protogen:"open.v1"`
+	ActiveContracts []*GetActiveContractsResponse `protobuf:"bytes,1,rep,name=active_contracts,json=activeContracts,proto3" json:"active_contracts,omitempty"`
+	ActiveAtOffset  int64                         `protobuf:"varint,2,opt,name=active_at_offset,json=activeAtOffset,proto3" json:"active_at_offset,omitempty"`
+	NextPageToken   []byte                        `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3,oneof" json:"next_page_token,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *GetActiveContractsPageResponse) Reset() {
+	*x = GetActiveContractsPageResponse{}
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetActiveContractsPageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetActiveContractsPageResponse) ProtoMessage() {}
+
+func (x *GetActiveContractsPageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetActiveContractsPageResponse.ProtoReflect.Descriptor instead.
+func (*GetActiveContractsPageResponse) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetActiveContractsPageResponse) GetActiveContracts() []*GetActiveContractsResponse {
+	if x != nil {
+		return x.ActiveContracts
+	}
+	return nil
+}
+
+func (x *GetActiveContractsPageResponse) GetActiveAtOffset() int64 {
+	if x != nil {
+		return x.ActiveAtOffset
+	}
+	return 0
+}
+
+func (x *GetActiveContractsPageResponse) GetNextPageToken() []byte {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return nil
+}
+
 type ActiveContract struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	CreatedEvent        *CreatedEvent          `protobuf:"bytes,1,opt,name=created_event,json=createdEvent,proto3" json:"created_event,omitempty"`
@@ -245,7 +389,7 @@ type ActiveContract struct {
 
 func (x *ActiveContract) Reset() {
 	*x = ActiveContract{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -257,7 +401,7 @@ func (x *ActiveContract) String() string {
 func (*ActiveContract) ProtoMessage() {}
 
 func (x *ActiveContract) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -270,7 +414,7 @@ func (x *ActiveContract) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActiveContract.ProtoReflect.Descriptor instead.
 func (*ActiveContract) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{2}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ActiveContract) GetCreatedEvent() *CreatedEvent {
@@ -304,7 +448,7 @@ type IncompleteUnassigned struct {
 
 func (x *IncompleteUnassigned) Reset() {
 	*x = IncompleteUnassigned{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[3]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -316,7 +460,7 @@ func (x *IncompleteUnassigned) String() string {
 func (*IncompleteUnassigned) ProtoMessage() {}
 
 func (x *IncompleteUnassigned) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[3]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +473,7 @@ func (x *IncompleteUnassigned) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IncompleteUnassigned.ProtoReflect.Descriptor instead.
 func (*IncompleteUnassigned) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{3}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *IncompleteUnassigned) GetCreatedEvent() *CreatedEvent {
@@ -355,7 +499,7 @@ type IncompleteAssigned struct {
 
 func (x *IncompleteAssigned) Reset() {
 	*x = IncompleteAssigned{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[4]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -367,7 +511,7 @@ func (x *IncompleteAssigned) String() string {
 func (*IncompleteAssigned) ProtoMessage() {}
 
 func (x *IncompleteAssigned) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[4]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -380,7 +524,7 @@ func (x *IncompleteAssigned) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IncompleteAssigned.ProtoReflect.Descriptor instead.
 func (*IncompleteAssigned) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{4}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *IncompleteAssigned) GetAssignedEvent() *AssignedEvent {
@@ -401,7 +545,7 @@ type GetConnectedSynchronizersRequest struct {
 
 func (x *GetConnectedSynchronizersRequest) Reset() {
 	*x = GetConnectedSynchronizersRequest{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[5]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -413,7 +557,7 @@ func (x *GetConnectedSynchronizersRequest) String() string {
 func (*GetConnectedSynchronizersRequest) ProtoMessage() {}
 
 func (x *GetConnectedSynchronizersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[5]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -426,7 +570,7 @@ func (x *GetConnectedSynchronizersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetConnectedSynchronizersRequest.ProtoReflect.Descriptor instead.
 func (*GetConnectedSynchronizersRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{5}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetConnectedSynchronizersRequest) GetParty() string {
@@ -459,7 +603,7 @@ type GetConnectedSynchronizersResponse struct {
 
 func (x *GetConnectedSynchronizersResponse) Reset() {
 	*x = GetConnectedSynchronizersResponse{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[6]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -471,7 +615,7 @@ func (x *GetConnectedSynchronizersResponse) String() string {
 func (*GetConnectedSynchronizersResponse) ProtoMessage() {}
 
 func (x *GetConnectedSynchronizersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[6]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -484,7 +628,7 @@ func (x *GetConnectedSynchronizersResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use GetConnectedSynchronizersResponse.ProtoReflect.Descriptor instead.
 func (*GetConnectedSynchronizersResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{6}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetConnectedSynchronizersResponse) GetConnectedSynchronizers() []*GetConnectedSynchronizersResponse_ConnectedSynchronizer {
@@ -502,7 +646,7 @@ type GetLedgerEndRequest struct {
 
 func (x *GetLedgerEndRequest) Reset() {
 	*x = GetLedgerEndRequest{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[7]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -514,7 +658,7 @@ func (x *GetLedgerEndRequest) String() string {
 func (*GetLedgerEndRequest) ProtoMessage() {}
 
 func (x *GetLedgerEndRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[7]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -527,7 +671,7 @@ func (x *GetLedgerEndRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLedgerEndRequest.ProtoReflect.Descriptor instead.
 func (*GetLedgerEndRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{7}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{9}
 }
 
 type GetLedgerEndResponse struct {
@@ -539,7 +683,7 @@ type GetLedgerEndResponse struct {
 
 func (x *GetLedgerEndResponse) Reset() {
 	*x = GetLedgerEndResponse{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[8]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -551,7 +695,7 @@ func (x *GetLedgerEndResponse) String() string {
 func (*GetLedgerEndResponse) ProtoMessage() {}
 
 func (x *GetLedgerEndResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[8]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -564,7 +708,7 @@ func (x *GetLedgerEndResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLedgerEndResponse.ProtoReflect.Descriptor instead.
 func (*GetLedgerEndResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{8}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetLedgerEndResponse) GetOffset() int64 {
@@ -582,7 +726,7 @@ type GetLatestPrunedOffsetsRequest struct {
 
 func (x *GetLatestPrunedOffsetsRequest) Reset() {
 	*x = GetLatestPrunedOffsetsRequest{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[9]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -594,7 +738,7 @@ func (x *GetLatestPrunedOffsetsRequest) String() string {
 func (*GetLatestPrunedOffsetsRequest) ProtoMessage() {}
 
 func (x *GetLatestPrunedOffsetsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[9]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -607,7 +751,7 @@ func (x *GetLatestPrunedOffsetsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLatestPrunedOffsetsRequest.ProtoReflect.Descriptor instead.
 func (*GetLatestPrunedOffsetsRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{9}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{11}
 }
 
 type GetLatestPrunedOffsetsResponse struct {
@@ -620,7 +764,7 @@ type GetLatestPrunedOffsetsResponse struct {
 
 func (x *GetLatestPrunedOffsetsResponse) Reset() {
 	*x = GetLatestPrunedOffsetsResponse{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[10]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -632,7 +776,7 @@ func (x *GetLatestPrunedOffsetsResponse) String() string {
 func (*GetLatestPrunedOffsetsResponse) ProtoMessage() {}
 
 func (x *GetLatestPrunedOffsetsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[10]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -645,7 +789,7 @@ func (x *GetLatestPrunedOffsetsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLatestPrunedOffsetsResponse.ProtoReflect.Descriptor instead.
 func (*GetLatestPrunedOffsetsResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{10}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetLatestPrunedOffsetsResponse) GetParticipantPrunedUpToInclusive() int64 {
@@ -673,7 +817,7 @@ type GetConnectedSynchronizersResponse_ConnectedSynchronizer struct {
 
 func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) Reset() {
 	*x = GetConnectedSynchronizersResponse_ConnectedSynchronizer{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[11]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -685,7 +829,7 @@ func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) String() strin
 func (*GetConnectedSynchronizersResponse_ConnectedSynchronizer) ProtoMessage() {}
 
 func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[11]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -698,7 +842,7 @@ func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) ProtoReflect()
 
 // Deprecated: Use GetConnectedSynchronizersResponse_ConnectedSynchronizer.ProtoReflect.Descriptor instead.
 func (*GetConnectedSynchronizersResponse_ConnectedSynchronizer) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{6, 0}
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{8, 0}
 }
 
 func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) GetSynchronizerAlias() string {
@@ -726,17 +870,34 @@ var File_com_daml_ledger_api_v2_state_service_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_state_service_proto_rawDesc = "" +
 	"\n" +
-	"*com/daml/ledger/api/v2/state_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\xaa\x01\n" +
+	"*com/daml/ledger/api/v2/state_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\x89\x02\n" +
 	"\x19GetActiveContractsRequest\x12(\n" +
 	"\x10active_at_offset\x18\x03 \x01(\x03R\x0eactiveAtOffset\x12F\n" +
-	"\fevent_format\x18\x04 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormatJ\x04\b\x01\x10\x02J\x04\b\x02\x10\x03R\x06filterR\averbose\"\xe6\x02\n" +
+	"\fevent_format\x18\x04 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\x12?\n" +
+	"\x19stream_continuation_token\x18\x05 \x01(\fH\x00R\x17streamContinuationToken\x88\x01\x01B\x1c\n" +
+	"\x1a_stream_continuation_tokenJ\x04\b\x01\x10\x02J\x04\b\x02\x10\x03R\x06filterR\averbose\"\x99\x02\n" +
+	"\x1dGetActiveContractsPageRequest\x12-\n" +
+	"\x10active_at_offset\x18\x01 \x01(\x03H\x00R\x0eactiveAtOffset\x88\x01\x01\x12F\n" +
+	"\fevent_format\x18\x02 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\x12'\n" +
+	"\rmax_page_size\x18\x03 \x01(\x05H\x01R\vmaxPageSize\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"page_token\x18\x04 \x01(\fH\x02R\tpageToken\x88\x01\x01B\x13\n" +
+	"\x11_active_at_offsetB\x10\n" +
+	"\x0e_max_page_sizeB\r\n" +
+	"\v_page_token\"\xa2\x03\n" +
 	"\x1aGetActiveContractsResponse\x12\x1f\n" +
 	"\vworkflow_id\x18\x01 \x01(\tR\n" +
 	"workflowId\x12Q\n" +
 	"\x0factive_contract\x18\x02 \x01(\v2&.com.daml.ledger.api.v2.ActiveContractH\x00R\x0eactiveContract\x12c\n" +
 	"\x15incomplete_unassigned\x18\x03 \x01(\v2,.com.daml.ledger.api.v2.IncompleteUnassignedH\x00R\x14incompleteUnassigned\x12]\n" +
-	"\x13incomplete_assigned\x18\x04 \x01(\v2*.com.daml.ledger.api.v2.IncompleteAssignedH\x00R\x12incompleteAssignedB\x10\n" +
-	"\x0econtract_entry\"\xb7\x01\n" +
+	"\x13incomplete_assigned\x18\x04 \x01(\v2*.com.daml.ledger.api.v2.IncompleteAssignedH\x00R\x12incompleteAssigned\x12:\n" +
+	"\x19stream_continuation_token\x18\x05 \x01(\fR\x17streamContinuationTokenB\x10\n" +
+	"\x0econtract_entry\"\xea\x01\n" +
+	"\x1eGetActiveContractsPageResponse\x12]\n" +
+	"\x10active_contracts\x18\x01 \x03(\v22.com.daml.ledger.api.v2.GetActiveContractsResponseR\x0factiveContracts\x12(\n" +
+	"\x10active_at_offset\x18\x02 \x01(\x03R\x0eactiveAtOffset\x12+\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\fH\x00R\rnextPageToken\x88\x01\x01B\x12\n" +
+	"\x10_next_page_token\"\xb7\x01\n" +
 	"\x0eActiveContract\x12I\n" +
 	"\rcreated_event\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventR\fcreatedEvent\x12'\n" +
 	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x121\n" +
@@ -769,9 +930,10 @@ const file_com_daml_ledger_api_v2_state_service_proto_rawDesc = "" +
 	"\"PARTICIPANT_PERMISSION_UNSPECIFIED\x10\x00\x12%\n" +
 	"!PARTICIPANT_PERMISSION_SUBMISSION\x10\x01\x12'\n" +
 	"#PARTICIPANT_PERMISSION_CONFIRMATION\x10\x02\x12&\n" +
-	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x032\x95\x04\n" +
+	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x032\x9f\x05\n" +
 	"\fStateService\x12}\n" +
-	"\x12GetActiveContracts\x121.com.daml.ledger.api.v2.GetActiveContractsRequest\x1a2.com.daml.ledger.api.v2.GetActiveContractsResponse0\x01\x12\x90\x01\n" +
+	"\x12GetActiveContracts\x121.com.daml.ledger.api.v2.GetActiveContractsRequest\x1a2.com.daml.ledger.api.v2.GetActiveContractsResponse0\x01\x12\x87\x01\n" +
+	"\x16GetActiveContractsPage\x125.com.daml.ledger.api.v2.GetActiveContractsPageRequest\x1a6.com.daml.ledger.api.v2.GetActiveContractsPageResponse\x12\x90\x01\n" +
 	"\x19GetConnectedSynchronizers\x128.com.daml.ledger.api.v2.GetConnectedSynchronizersRequest\x1a9.com.daml.ledger.api.v2.GetConnectedSynchronizersResponse\x12i\n" +
 	"\fGetLedgerEnd\x12+.com.daml.ledger.api.v2.GetLedgerEndRequest\x1a,.com.daml.ledger.api.v2.GetLedgerEndResponse\x12\x87\x01\n" +
 	"\x16GetLatestPrunedOffsets\x125.com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest\x1a6.com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponseB\x90\x01\n" +
@@ -790,50 +952,56 @@ func file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP() []byte {
 }
 
 var file_com_daml_ledger_api_v2_state_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_daml_ledger_api_v2_state_service_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_com_daml_ledger_api_v2_state_service_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_com_daml_ledger_api_v2_state_service_proto_goTypes = []any{
 	(ParticipantPermission)(0),                                      // 0: com.daml.ledger.api.v2.ParticipantPermission
 	(*GetActiveContractsRequest)(nil),                               // 1: com.daml.ledger.api.v2.GetActiveContractsRequest
-	(*GetActiveContractsResponse)(nil),                              // 2: com.daml.ledger.api.v2.GetActiveContractsResponse
-	(*ActiveContract)(nil),                                          // 3: com.daml.ledger.api.v2.ActiveContract
-	(*IncompleteUnassigned)(nil),                                    // 4: com.daml.ledger.api.v2.IncompleteUnassigned
-	(*IncompleteAssigned)(nil),                                      // 5: com.daml.ledger.api.v2.IncompleteAssigned
-	(*GetConnectedSynchronizersRequest)(nil),                        // 6: com.daml.ledger.api.v2.GetConnectedSynchronizersRequest
-	(*GetConnectedSynchronizersResponse)(nil),                       // 7: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse
-	(*GetLedgerEndRequest)(nil),                                     // 8: com.daml.ledger.api.v2.GetLedgerEndRequest
-	(*GetLedgerEndResponse)(nil),                                    // 9: com.daml.ledger.api.v2.GetLedgerEndResponse
-	(*GetLatestPrunedOffsetsRequest)(nil),                           // 10: com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
-	(*GetLatestPrunedOffsetsResponse)(nil),                          // 11: com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
-	(*GetConnectedSynchronizersResponse_ConnectedSynchronizer)(nil), // 12: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
-	(*EventFormat)(nil),                                             // 13: com.daml.ledger.api.v2.EventFormat
-	(*CreatedEvent)(nil),                                            // 14: com.daml.ledger.api.v2.CreatedEvent
-	(*UnassignedEvent)(nil),                                         // 15: com.daml.ledger.api.v2.UnassignedEvent
-	(*AssignedEvent)(nil),                                           // 16: com.daml.ledger.api.v2.AssignedEvent
+	(*GetActiveContractsPageRequest)(nil),                           // 2: com.daml.ledger.api.v2.GetActiveContractsPageRequest
+	(*GetActiveContractsResponse)(nil),                              // 3: com.daml.ledger.api.v2.GetActiveContractsResponse
+	(*GetActiveContractsPageResponse)(nil),                          // 4: com.daml.ledger.api.v2.GetActiveContractsPageResponse
+	(*ActiveContract)(nil),                                          // 5: com.daml.ledger.api.v2.ActiveContract
+	(*IncompleteUnassigned)(nil),                                    // 6: com.daml.ledger.api.v2.IncompleteUnassigned
+	(*IncompleteAssigned)(nil),                                      // 7: com.daml.ledger.api.v2.IncompleteAssigned
+	(*GetConnectedSynchronizersRequest)(nil),                        // 8: com.daml.ledger.api.v2.GetConnectedSynchronizersRequest
+	(*GetConnectedSynchronizersResponse)(nil),                       // 9: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse
+	(*GetLedgerEndRequest)(nil),                                     // 10: com.daml.ledger.api.v2.GetLedgerEndRequest
+	(*GetLedgerEndResponse)(nil),                                    // 11: com.daml.ledger.api.v2.GetLedgerEndResponse
+	(*GetLatestPrunedOffsetsRequest)(nil),                           // 12: com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
+	(*GetLatestPrunedOffsetsResponse)(nil),                          // 13: com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
+	(*GetConnectedSynchronizersResponse_ConnectedSynchronizer)(nil), // 14: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
+	(*EventFormat)(nil),                                             // 15: com.daml.ledger.api.v2.EventFormat
+	(*CreatedEvent)(nil),                                            // 16: com.daml.ledger.api.v2.CreatedEvent
+	(*UnassignedEvent)(nil),                                         // 17: com.daml.ledger.api.v2.UnassignedEvent
+	(*AssignedEvent)(nil),                                           // 18: com.daml.ledger.api.v2.AssignedEvent
 }
 var file_com_daml_ledger_api_v2_state_service_proto_depIdxs = []int32{
-	13, // 0: com.daml.ledger.api.v2.GetActiveContractsRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
-	3,  // 1: com.daml.ledger.api.v2.GetActiveContractsResponse.active_contract:type_name -> com.daml.ledger.api.v2.ActiveContract
-	4,  // 2: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_unassigned:type_name -> com.daml.ledger.api.v2.IncompleteUnassigned
-	5,  // 3: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_assigned:type_name -> com.daml.ledger.api.v2.IncompleteAssigned
-	14, // 4: com.daml.ledger.api.v2.ActiveContract.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
-	14, // 5: com.daml.ledger.api.v2.IncompleteUnassigned.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
-	15, // 6: com.daml.ledger.api.v2.IncompleteUnassigned.unassigned_event:type_name -> com.daml.ledger.api.v2.UnassignedEvent
-	16, // 7: com.daml.ledger.api.v2.IncompleteAssigned.assigned_event:type_name -> com.daml.ledger.api.v2.AssignedEvent
-	12, // 8: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.connected_synchronizers:type_name -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
-	0,  // 9: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer.permission:type_name -> com.daml.ledger.api.v2.ParticipantPermission
-	1,  // 10: com.daml.ledger.api.v2.StateService.GetActiveContracts:input_type -> com.daml.ledger.api.v2.GetActiveContractsRequest
-	6,  // 11: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:input_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersRequest
-	8,  // 12: com.daml.ledger.api.v2.StateService.GetLedgerEnd:input_type -> com.daml.ledger.api.v2.GetLedgerEndRequest
-	10, // 13: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:input_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
-	2,  // 14: com.daml.ledger.api.v2.StateService.GetActiveContracts:output_type -> com.daml.ledger.api.v2.GetActiveContractsResponse
-	7,  // 15: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:output_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse
-	9,  // 16: com.daml.ledger.api.v2.StateService.GetLedgerEnd:output_type -> com.daml.ledger.api.v2.GetLedgerEndResponse
-	11, // 17: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:output_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
-	14, // [14:18] is the sub-list for method output_type
-	10, // [10:14] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	15, // 0: com.daml.ledger.api.v2.GetActiveContractsRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
+	15, // 1: com.daml.ledger.api.v2.GetActiveContractsPageRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
+	5,  // 2: com.daml.ledger.api.v2.GetActiveContractsResponse.active_contract:type_name -> com.daml.ledger.api.v2.ActiveContract
+	6,  // 3: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_unassigned:type_name -> com.daml.ledger.api.v2.IncompleteUnassigned
+	7,  // 4: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_assigned:type_name -> com.daml.ledger.api.v2.IncompleteAssigned
+	3,  // 5: com.daml.ledger.api.v2.GetActiveContractsPageResponse.active_contracts:type_name -> com.daml.ledger.api.v2.GetActiveContractsResponse
+	16, // 6: com.daml.ledger.api.v2.ActiveContract.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
+	16, // 7: com.daml.ledger.api.v2.IncompleteUnassigned.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
+	17, // 8: com.daml.ledger.api.v2.IncompleteUnassigned.unassigned_event:type_name -> com.daml.ledger.api.v2.UnassignedEvent
+	18, // 9: com.daml.ledger.api.v2.IncompleteAssigned.assigned_event:type_name -> com.daml.ledger.api.v2.AssignedEvent
+	14, // 10: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.connected_synchronizers:type_name -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
+	0,  // 11: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer.permission:type_name -> com.daml.ledger.api.v2.ParticipantPermission
+	1,  // 12: com.daml.ledger.api.v2.StateService.GetActiveContracts:input_type -> com.daml.ledger.api.v2.GetActiveContractsRequest
+	2,  // 13: com.daml.ledger.api.v2.StateService.GetActiveContractsPage:input_type -> com.daml.ledger.api.v2.GetActiveContractsPageRequest
+	8,  // 14: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:input_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersRequest
+	10, // 15: com.daml.ledger.api.v2.StateService.GetLedgerEnd:input_type -> com.daml.ledger.api.v2.GetLedgerEndRequest
+	12, // 16: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:input_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
+	3,  // 17: com.daml.ledger.api.v2.StateService.GetActiveContracts:output_type -> com.daml.ledger.api.v2.GetActiveContractsResponse
+	4,  // 18: com.daml.ledger.api.v2.StateService.GetActiveContractsPage:output_type -> com.daml.ledger.api.v2.GetActiveContractsPageResponse
+	9,  // 19: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:output_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse
+	11, // 20: com.daml.ledger.api.v2.StateService.GetLedgerEnd:output_type -> com.daml.ledger.api.v2.GetLedgerEndResponse
+	13, // 21: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:output_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
+	17, // [17:22] is the sub-list for method output_type
+	12, // [12:17] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_state_service_proto_init() }
@@ -844,18 +1012,21 @@ func file_com_daml_ledger_api_v2_state_service_proto_init() {
 	file_com_daml_ledger_api_v2_event_proto_init()
 	file_com_daml_ledger_api_v2_reassignment_proto_init()
 	file_com_daml_ledger_api_v2_transaction_filter_proto_init()
-	file_com_daml_ledger_api_v2_state_service_proto_msgTypes[1].OneofWrappers = []any{
+	file_com_daml_ledger_api_v2_state_service_proto_msgTypes[0].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_state_service_proto_msgTypes[1].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_state_service_proto_msgTypes[2].OneofWrappers = []any{
 		(*GetActiveContractsResponse_ActiveContract)(nil),
 		(*GetActiveContractsResponse_IncompleteUnassigned)(nil),
 		(*GetActiveContractsResponse_IncompleteAssigned)(nil),
 	}
+	file_com_daml_ledger_api_v2_state_service_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_state_service_proto_rawDesc), len(file_com_daml_ledger_api_v2_state_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

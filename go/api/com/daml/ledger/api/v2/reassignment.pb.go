@@ -25,17 +25,18 @@ const (
 )
 
 type Reassignment struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	UpdateId       string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
-	CommandId      string                 `protobuf:"bytes,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
-	WorkflowId     string                 `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
-	Offset         int64                  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
-	Events         []*ReassignmentEvent   `protobuf:"bytes,5,rep,name=events,proto3" json:"events,omitempty"`
-	TraceContext   *TraceContext          `protobuf:"bytes,6,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
-	RecordTime     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
-	SynchronizerId string                 `protobuf:"bytes,8,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	UpdateId        string                 `protobuf:"bytes,1,opt,name=update_id,json=updateId,proto3" json:"update_id,omitempty"`
+	CommandId       string                 `protobuf:"bytes,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
+	WorkflowId      string                 `protobuf:"bytes,3,opt,name=workflow_id,json=workflowId,proto3" json:"workflow_id,omitempty"`
+	Offset          int64                  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
+	Events          []*ReassignmentEvent   `protobuf:"bytes,5,rep,name=events,proto3" json:"events,omitempty"`
+	TraceContext    *TraceContext          `protobuf:"bytes,6,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
+	RecordTime      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
+	SynchronizerId  string                 `protobuf:"bytes,8,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	PaidTrafficCost *int64                 `protobuf:"varint,9,opt,name=paid_traffic_cost,json=paidTrafficCost,proto3,oneof" json:"paid_traffic_cost,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Reassignment) Reset() {
@@ -122,6 +123,13 @@ func (x *Reassignment) GetSynchronizerId() string {
 		return x.SynchronizerId
 	}
 	return ""
+}
+
+func (x *Reassignment) GetPaidTrafficCost() int64 {
+	if x != nil && x.PaidTrafficCost != nil {
+		return *x.PaidTrafficCost
+	}
+	return 0
 }
 
 type ReassignmentEvent struct {
@@ -426,7 +434,7 @@ var File_com_daml_ledger_api_v2_reassignment_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_reassignment_proto_rawDesc = "" +
 	"\n" +
-	")com/daml/ledger/api/v2/reassignment.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\"com/daml/ledger/api/v2/value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf7\x02\n" +
+	")com/daml/ledger/api/v2/reassignment.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\"com/daml/ledger/api/v2/value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbe\x03\n" +
 	"\fReassignment\x12\x1b\n" +
 	"\tupdate_id\x18\x01 \x01(\tR\bupdateId\x12\x1d\n" +
 	"\n" +
@@ -438,7 +446,9 @@ const file_com_daml_ledger_api_v2_reassignment_proto_rawDesc = "" +
 	"\rtrace_context\x18\x06 \x01(\v2$.com.daml.ledger.api.v2.TraceContextR\ftraceContext\x12;\n" +
 	"\vrecord_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"recordTime\x12'\n" +
-	"\x0fsynchronizer_id\x18\b \x01(\tR\x0esynchronizerId\"\xac\x01\n" +
+	"\x0fsynchronizer_id\x18\b \x01(\tR\x0esynchronizerId\x12/\n" +
+	"\x11paid_traffic_cost\x18\t \x01(\x03H\x00R\x0fpaidTrafficCost\x88\x01\x01B\x14\n" +
+	"\x12_paid_traffic_cost\"\xac\x01\n" +
 	"\x11ReassignmentEvent\x12I\n" +
 	"\n" +
 	"unassigned\x18\x01 \x01(\v2'.com.daml.ledger.api.v2.UnassignedEventH\x00R\n" +
@@ -517,6 +527,7 @@ func file_com_daml_ledger_api_v2_reassignment_proto_init() {
 	file_com_daml_ledger_api_v2_event_proto_init()
 	file_com_daml_ledger_api_v2_trace_context_proto_init()
 	file_com_daml_ledger_api_v2_value_proto_init()
+	file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[0].OneofWrappers = []any{}
 	file_com_daml_ledger_api_v2_reassignment_proto_msgTypes[1].OneofWrappers = []any{
 		(*ReassignmentEvent_Unassigned)(nil),
 		(*ReassignmentEvent_Assigned)(nil),

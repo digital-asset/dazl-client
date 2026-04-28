@@ -238,11 +238,13 @@ func (x *SequencerConnections) GetSequencerConnectionPoolDelays() *SequencerConn
 }
 
 type SubmissionRequestAmplification struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Factor        uint32                 `protobuf:"varint,1,opt,name=factor,proto3" json:"factor,omitempty"`
-	Patience      *durationpb.Duration   `protobuf:"bytes,2,opt,name=patience,proto3" json:"patience,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                        protoimpl.MessageState `protogen:"open.v1"`
+	Factor                       uint32                 `protobuf:"varint,1,opt,name=factor,proto3" json:"factor,omitempty"`
+	Patience                     *durationpb.Duration   `protobuf:"bytes,2,opt,name=patience,proto3" json:"patience,omitempty"`
+	ConfirmationResponseFactor   *uint32                `protobuf:"varint,3,opt,name=confirmation_response_factor,json=confirmationResponseFactor,proto3,oneof" json:"confirmation_response_factor,omitempty"`
+	ConfirmationResponsePatience *durationpb.Duration   `protobuf:"bytes,4,opt,name=confirmation_response_patience,json=confirmationResponsePatience,proto3,oneof" json:"confirmation_response_patience,omitempty"`
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *SubmissionRequestAmplification) Reset() {
@@ -285,6 +287,20 @@ func (x *SubmissionRequestAmplification) GetFactor() uint32 {
 func (x *SubmissionRequestAmplification) GetPatience() *durationpb.Duration {
 	if x != nil {
 		return x.Patience
+	}
+	return nil
+}
+
+func (x *SubmissionRequestAmplification) GetConfirmationResponseFactor() uint32 {
+	if x != nil && x.ConfirmationResponseFactor != nil {
+		return *x.ConfirmationResponseFactor
+	}
+	return 0
+}
+
+func (x *SubmissionRequestAmplification) GetConfirmationResponsePatience() *durationpb.Duration {
+	if x != nil {
+		return x.ConfirmationResponsePatience
 	}
 	return nil
 }
@@ -438,10 +454,14 @@ const file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_prot
 	"\x19sequencer_trust_threshold\x18\x02 \x01(\rR\x17sequencerTrustThreshold\x12\x95\x01\n" +
 	" submission_request_amplification\x18\x03 \x01(\v2K.com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplificationR\x1esubmissionRequestAmplification\x12:\n" +
 	"\x19sequencer_liveness_margin\x18\x04 \x01(\rR\x17sequencerLivenessMargin\x12\x93\x01\n" +
-	" sequencer_connection_pool_delays\x18\x05 \x01(\v2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelaysR\x1dsequencerConnectionPoolDelays\"o\n" +
+	" sequencer_connection_pool_delays\x18\x05 \x01(\v2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelaysR\x1dsequencerConnectionPoolDelays\"\xe0\x02\n" +
 	"\x1eSubmissionRequestAmplification\x12\x16\n" +
 	"\x06factor\x18\x01 \x01(\rR\x06factor\x125\n" +
-	"\bpatience\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\bpatience\"\xd5\x02\n" +
+	"\bpatience\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\bpatience\x12E\n" +
+	"\x1cconfirmation_response_factor\x18\x03 \x01(\rH\x00R\x1aconfirmationResponseFactor\x88\x01\x01\x12d\n" +
+	"\x1econfirmation_response_patience\x18\x04 \x01(\v2\x19.google.protobuf.DurationH\x01R\x1cconfirmationResponsePatience\x88\x01\x01B\x1f\n" +
+	"\x1d_confirmation_response_factorB!\n" +
+	"\x1f_confirmation_response_patience\"\xd5\x02\n" +
 	"\x1dSequencerConnectionPoolDelays\x12E\n" +
 	"\x11min_restart_delay\x18\x01 \x01(\v2\x19.google.protobuf.DurationR\x0fminRestartDelay\x12E\n" +
 	"\x11max_restart_delay\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\x0fmaxRestartDelay\x12W\n" +
@@ -478,20 +498,21 @@ var file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_
 	(*durationpb.Duration)(nil),            // 6: google.protobuf.Duration
 }
 var file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_depIdxs = []int32{
-	5, // 0: com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.grpc:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.Grpc
-	1, // 1: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.sequencer_connections:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnection
-	3, // 2: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.submission_request_amplification:type_name -> com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification
-	4, // 3: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.sequencer_connection_pool_delays:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays
-	6, // 4: com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification.patience:type_name -> google.protobuf.Duration
-	6, // 5: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.min_restart_delay:type_name -> google.protobuf.Duration
-	6, // 6: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.max_restart_delay:type_name -> google.protobuf.Duration
-	6, // 7: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.subscription_request_delay:type_name -> google.protobuf.Duration
-	6, // 8: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.warn_validation_delay:type_name -> google.protobuf.Duration
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	5,  // 0: com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.grpc:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.Grpc
+	1,  // 1: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.sequencer_connections:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnection
+	3,  // 2: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.submission_request_amplification:type_name -> com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification
+	4,  // 3: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.sequencer_connection_pool_delays:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays
+	6,  // 4: com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification.patience:type_name -> google.protobuf.Duration
+	6,  // 5: com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification.confirmation_response_patience:type_name -> google.protobuf.Duration
+	6,  // 6: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.min_restart_delay:type_name -> google.protobuf.Duration
+	6,  // 7: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.max_restart_delay:type_name -> google.protobuf.Duration
+	6,  // 8: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.subscription_request_delay:type_name -> google.protobuf.Duration
+	6,  // 9: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.warn_validation_delay:type_name -> google.protobuf.Duration
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_init() }
@@ -502,6 +523,7 @@ func file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto
 	file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[0].OneofWrappers = []any{
 		(*SequencerConnection_Grpc_)(nil),
 	}
+	file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[2].OneofWrappers = []any{}
 	file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

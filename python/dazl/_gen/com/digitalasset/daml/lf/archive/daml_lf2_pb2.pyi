@@ -109,6 +109,7 @@ class BuiltinFunction(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     TEXT_TO_HEX: _ClassVar[BuiltinFunction]
     SHA256_HEX: _ClassVar[BuiltinFunction]
     SECP256K1_WITH_ECDSA_BOOL: _ClassVar[BuiltinFunction]
+    SECP256K1_VALIDATE_KEY: _ClassVar[BuiltinFunction]
     SCALE_BIGNUMERIC: _ClassVar[BuiltinFunction]
     PRECISION_BIGNUMERIC: _ClassVar[BuiltinFunction]
     ADD_BIGNUMERIC: _ClassVar[BuiltinFunction]
@@ -120,8 +121,6 @@ class BuiltinFunction(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     NUMERIC_TO_BIGNUMERIC: _ClassVar[BuiltinFunction]
     BIGNUMERIC_TO_TEXT: _ClassVar[BuiltinFunction]
     TYPE_REP_TYCON_NAME: _ClassVar[BuiltinFunction]
-    TEXT_TO_CONTRACT_ID: _ClassVar[BuiltinFunction]
-    SECP256K1_VALIDATE_KEY: _ClassVar[BuiltinFunction]
 UNIT: BuiltinType
 BOOL: BuiltinType
 INT64: BuiltinType
@@ -212,6 +211,7 @@ HEX_TO_TEXT: BuiltinFunction
 TEXT_TO_HEX: BuiltinFunction
 SHA256_HEX: BuiltinFunction
 SECP256K1_WITH_ECDSA_BOOL: BuiltinFunction
+SECP256K1_VALIDATE_KEY: BuiltinFunction
 SCALE_BIGNUMERIC: BuiltinFunction
 PRECISION_BIGNUMERIC: BuiltinFunction
 ADD_BIGNUMERIC: BuiltinFunction
@@ -223,8 +223,6 @@ BIGNUMERIC_TO_NUMERIC: BuiltinFunction
 NUMERIC_TO_BIGNUMERIC: BuiltinFunction
 BIGNUMERIC_TO_TEXT: BuiltinFunction
 TYPE_REP_TYCON_NAME: BuiltinFunction
-TEXT_TO_CONTRACT_ID: BuiltinFunction
-SECP256K1_VALIDATE_KEY: BuiltinFunction
 
 class Unit(_message.Message):
     __slots__ = ()
@@ -911,7 +909,7 @@ class Pure(_message.Message):
     def __init__(self, type: _Optional[_Union[Type, _Mapping]] = ..., expr: _Optional[_Union[Expr, _Mapping]] = ...) -> None: ...
 
 class Update(_message.Message):
-    __slots__ = ("pure", "block", "create", "exercise", "exercise_by_key", "fetch", "get_time", "lookup_by_key", "fetch_by_key", "embed_expr", "try_catch", "create_interface", "exercise_interface", "fetch_interface", "ledger_time_lt")
+    __slots__ = ("pure", "block", "create", "exercise", "exercise_by_key", "fetch", "get_time", "lookup_by_key", "query_n_by_key", "fetch_by_key", "embed_expr", "try_catch", "create_interface", "exercise_interface", "fetch_interface", "ledger_time_lt")
     class Create(_message.Message):
         __slots__ = ("template", "expr")
         TEMPLATE_FIELD_NUMBER: _ClassVar[int]
@@ -987,6 +985,11 @@ class Update(_message.Message):
         TEMPLATE_FIELD_NUMBER: _ClassVar[int]
         template: TypeConId
         def __init__(self, template: _Optional[_Union[TypeConId, _Mapping]] = ...) -> None: ...
+    class QueryNByKey(_message.Message):
+        __slots__ = ("template",)
+        TEMPLATE_FIELD_NUMBER: _ClassVar[int]
+        template: TypeConId
+        def __init__(self, template: _Optional[_Union[TypeConId, _Mapping]] = ...) -> None: ...
     class TryCatch(_message.Message):
         __slots__ = ("return_type", "try_expr", "var_interned_str", "catch_expr")
         RETURN_TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -1006,6 +1009,7 @@ class Update(_message.Message):
     FETCH_FIELD_NUMBER: _ClassVar[int]
     GET_TIME_FIELD_NUMBER: _ClassVar[int]
     LOOKUP_BY_KEY_FIELD_NUMBER: _ClassVar[int]
+    QUERY_N_BY_KEY_FIELD_NUMBER: _ClassVar[int]
     FETCH_BY_KEY_FIELD_NUMBER: _ClassVar[int]
     EMBED_EXPR_FIELD_NUMBER: _ClassVar[int]
     TRY_CATCH_FIELD_NUMBER: _ClassVar[int]
@@ -1021,6 +1025,7 @@ class Update(_message.Message):
     fetch: Update.Fetch
     get_time: Unit
     lookup_by_key: Update.RetrieveByKey
+    query_n_by_key: Update.QueryNByKey
     fetch_by_key: Update.RetrieveByKey
     embed_expr: Update.EmbedExpr
     try_catch: Update.TryCatch
@@ -1028,7 +1033,7 @@ class Update(_message.Message):
     exercise_interface: Update.ExerciseInterface
     fetch_interface: Update.FetchInterface
     ledger_time_lt: Expr
-    def __init__(self, pure: _Optional[_Union[Pure, _Mapping]] = ..., block: _Optional[_Union[Block, _Mapping]] = ..., create: _Optional[_Union[Update.Create, _Mapping]] = ..., exercise: _Optional[_Union[Update.Exercise, _Mapping]] = ..., exercise_by_key: _Optional[_Union[Update.ExerciseByKey, _Mapping]] = ..., fetch: _Optional[_Union[Update.Fetch, _Mapping]] = ..., get_time: _Optional[_Union[Unit, _Mapping]] = ..., lookup_by_key: _Optional[_Union[Update.RetrieveByKey, _Mapping]] = ..., fetch_by_key: _Optional[_Union[Update.RetrieveByKey, _Mapping]] = ..., embed_expr: _Optional[_Union[Update.EmbedExpr, _Mapping]] = ..., try_catch: _Optional[_Union[Update.TryCatch, _Mapping]] = ..., create_interface: _Optional[_Union[Update.CreateInterface, _Mapping]] = ..., exercise_interface: _Optional[_Union[Update.ExerciseInterface, _Mapping]] = ..., fetch_interface: _Optional[_Union[Update.FetchInterface, _Mapping]] = ..., ledger_time_lt: _Optional[_Union[Expr, _Mapping]] = ...) -> None: ...
+    def __init__(self, pure: _Optional[_Union[Pure, _Mapping]] = ..., block: _Optional[_Union[Block, _Mapping]] = ..., create: _Optional[_Union[Update.Create, _Mapping]] = ..., exercise: _Optional[_Union[Update.Exercise, _Mapping]] = ..., exercise_by_key: _Optional[_Union[Update.ExerciseByKey, _Mapping]] = ..., fetch: _Optional[_Union[Update.Fetch, _Mapping]] = ..., get_time: _Optional[_Union[Unit, _Mapping]] = ..., lookup_by_key: _Optional[_Union[Update.RetrieveByKey, _Mapping]] = ..., query_n_by_key: _Optional[_Union[Update.QueryNByKey, _Mapping]] = ..., fetch_by_key: _Optional[_Union[Update.RetrieveByKey, _Mapping]] = ..., embed_expr: _Optional[_Union[Update.EmbedExpr, _Mapping]] = ..., try_catch: _Optional[_Union[Update.TryCatch, _Mapping]] = ..., create_interface: _Optional[_Union[Update.CreateInterface, _Mapping]] = ..., exercise_interface: _Optional[_Union[Update.ExerciseInterface, _Mapping]] = ..., fetch_interface: _Optional[_Union[Update.FetchInterface, _Mapping]] = ..., ledger_time_lt: _Optional[_Union[Expr, _Mapping]] = ...) -> None: ...
 
 class TemplateChoice(_message.Message):
     __slots__ = ("location", "name_interned_str", "consuming", "controllers", "observers", "arg_binder", "ret_type", "update", "self_binder_interned_str", "authorizers")

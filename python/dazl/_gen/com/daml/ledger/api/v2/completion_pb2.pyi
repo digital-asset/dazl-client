@@ -17,7 +17,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Completion(_message.Message):
-    __slots__ = ("command_id", "status", "update_id", "user_id", "act_as", "submission_id", "deduplication_offset", "deduplication_duration", "trace_context", "offset", "synchronizer_time")
+    __slots__ = ("command_id", "status", "update_id", "user_id", "act_as", "submission_id", "deduplication_offset", "deduplication_duration", "trace_context", "offset", "synchronizer_time", "paid_traffic_cost")
     COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     UPDATE_ID_FIELD_NUMBER: _ClassVar[int]
@@ -29,6 +29,7 @@ class Completion(_message.Message):
     TRACE_CONTEXT_FIELD_NUMBER: _ClassVar[int]
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_TIME_FIELD_NUMBER: _ClassVar[int]
+    PAID_TRAFFIC_COST_FIELD_NUMBER: _ClassVar[int]
     command_id: str
     status: _status_pb2.Status
     update_id: str
@@ -40,4 +41,5 @@ class Completion(_message.Message):
     trace_context: _trace_context_pb2.TraceContext
     offset: int
     synchronizer_time: _offset_checkpoint_pb2.SynchronizerTime
-    def __init__(self, command_id: _Optional[str] = ..., status: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., update_id: _Optional[str] = ..., user_id: _Optional[str] = ..., act_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., deduplication_offset: _Optional[int] = ..., deduplication_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., offset: _Optional[int] = ..., synchronizer_time: _Optional[_Union[_offset_checkpoint_pb2.SynchronizerTime, _Mapping]] = ...) -> None: ...
+    paid_traffic_cost: int
+    def __init__(self, command_id: _Optional[str] = ..., status: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., update_id: _Optional[str] = ..., user_id: _Optional[str] = ..., act_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., deduplication_offset: _Optional[int] = ..., deduplication_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., offset: _Optional[int] = ..., synchronizer_time: _Optional[_Union[_offset_checkpoint_pb2.SynchronizerTime, _Mapping]] = ..., paid_traffic_cost: _Optional[int] = ...) -> None: ...

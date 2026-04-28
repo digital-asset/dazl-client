@@ -143,7 +143,7 @@ const (
 	Enums_TOPOLOGY_MAPPING_CODE_SEQUENCER_SYNCHRONIZER_STATE        Enums_TopologyMappingCode = 13
 	Enums_TOPOLOGY_MAPPING_CODE_SEQUENCING_DYNAMIC_PARAMETERS_STATE Enums_TopologyMappingCode = 17
 	Enums_TOPOLOGY_MAPPING_CODE_PARTY_TO_KEY_MAPPING                Enums_TopologyMappingCode = 18
-	Enums_TOPOLOGY_MAPPING_CODE_SYNCHRONIZER_MIGRATION_ANNOUNCEMENT Enums_TopologyMappingCode = 19
+	Enums_TOPOLOGY_MAPPING_CODE_LSU_ANNOUNCEMENT                    Enums_TopologyMappingCode = 19
 	Enums_TOPOLOGY_MAPPING_CODE_SEQUENCER_CONNECTION_SUCCESSOR      Enums_TopologyMappingCode = 20
 )
 
@@ -164,7 +164,7 @@ var (
 		13: "TOPOLOGY_MAPPING_CODE_SEQUENCER_SYNCHRONIZER_STATE",
 		17: "TOPOLOGY_MAPPING_CODE_SEQUENCING_DYNAMIC_PARAMETERS_STATE",
 		18: "TOPOLOGY_MAPPING_CODE_PARTY_TO_KEY_MAPPING",
-		19: "TOPOLOGY_MAPPING_CODE_SYNCHRONIZER_MIGRATION_ANNOUNCEMENT",
+		19: "TOPOLOGY_MAPPING_CODE_LSU_ANNOUNCEMENT",
 		20: "TOPOLOGY_MAPPING_CODE_SEQUENCER_CONNECTION_SUCCESSOR",
 	}
 	Enums_TopologyMappingCode_value = map[string]int32{
@@ -182,7 +182,7 @@ var (
 		"TOPOLOGY_MAPPING_CODE_SEQUENCER_SYNCHRONIZER_STATE":        13,
 		"TOPOLOGY_MAPPING_CODE_SEQUENCING_DYNAMIC_PARAMETERS_STATE": 17,
 		"TOPOLOGY_MAPPING_CODE_PARTY_TO_KEY_MAPPING":                18,
-		"TOPOLOGY_MAPPING_CODE_SYNCHRONIZER_MIGRATION_ANNOUNCEMENT": 19,
+		"TOPOLOGY_MAPPING_CODE_LSU_ANNOUNCEMENT":                    19,
 		"TOPOLOGY_MAPPING_CODE_SEQUENCER_CONNECTION_SUCCESSOR":      20,
 	}
 )
@@ -219,6 +219,7 @@ type Enums_ParticipantFeatureFlag int32
 const (
 	Enums_PARTICIPANT_FEATURE_FLAG_UNSPECIFIED                                     Enums_ParticipantFeatureFlag = 0
 	Enums_PARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW Enums_ParticipantFeatureFlag = 1
+	Enums_PARTICIPANT_FEATURE_FLAG_ENABLE_UNSAFE_MULTI_SYNCHRONIZER                Enums_ParticipantFeatureFlag = 2
 )
 
 // Enum value maps for Enums_ParticipantFeatureFlag.
@@ -226,10 +227,12 @@ var (
 	Enums_ParticipantFeatureFlag_name = map[int32]string{
 		0: "PARTICIPANT_FEATURE_FLAG_UNSPECIFIED",
 		1: "PARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW",
+		2: "PARTICIPANT_FEATURE_FLAG_ENABLE_UNSAFE_MULTI_SYNCHRONIZER",
 	}
 	Enums_ParticipantFeatureFlag_value = map[string]int32{
 		"PARTICIPANT_FEATURE_FLAG_UNSPECIFIED":                                     0,
 		"PARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW": 1,
+		"PARTICIPANT_FEATURE_FLAG_ENABLE_UNSAFE_MULTI_SYNCHRONIZER":                2,
 	}
 )
 
@@ -532,6 +535,7 @@ func (x *OwnerToKeyMapping) GetPublicKeys() []*v30.PublicKey {
 	return nil
 }
 
+// Deprecated: Marked as deprecated in com/digitalasset/canton/protocol/v30/topology.proto.
 type PartyToKeyMapping struct {
 	state         protoimpl.MessageState  `protogen:"open.v1"`
 	Party         string                  `protobuf:"bytes,1,opt,name=party,proto3" json:"party,omitempty"`
@@ -1158,7 +1162,7 @@ func (x *SequencerSynchronizerState) GetObservers() []string {
 	return nil
 }
 
-type SynchronizerUpgradeAnnouncement struct {
+type LsuAnnouncement struct {
 	state                           protoimpl.MessageState `protogen:"open.v1"`
 	SuccessorPhysicalSynchronizerId string                 `protobuf:"bytes,1,opt,name=successor_physical_synchronizer_id,json=successorPhysicalSynchronizerId,proto3" json:"successor_physical_synchronizer_id,omitempty"`
 	UpgradeTime                     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=upgrade_time,json=upgradeTime,proto3" json:"upgrade_time,omitempty"`
@@ -1166,20 +1170,20 @@ type SynchronizerUpgradeAnnouncement struct {
 	sizeCache                       protoimpl.SizeCache
 }
 
-func (x *SynchronizerUpgradeAnnouncement) Reset() {
-	*x = SynchronizerUpgradeAnnouncement{}
+func (x *LsuAnnouncement) Reset() {
+	*x = LsuAnnouncement{}
 	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SynchronizerUpgradeAnnouncement) String() string {
+func (x *LsuAnnouncement) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SynchronizerUpgradeAnnouncement) ProtoMessage() {}
+func (*LsuAnnouncement) ProtoMessage() {}
 
-func (x *SynchronizerUpgradeAnnouncement) ProtoReflect() protoreflect.Message {
+func (x *LsuAnnouncement) ProtoReflect() protoreflect.Message {
 	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1191,48 +1195,48 @@ func (x *SynchronizerUpgradeAnnouncement) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SynchronizerUpgradeAnnouncement.ProtoReflect.Descriptor instead.
-func (*SynchronizerUpgradeAnnouncement) Descriptor() ([]byte, []int) {
+// Deprecated: Use LsuAnnouncement.ProtoReflect.Descriptor instead.
+func (*LsuAnnouncement) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_protocol_v30_topology_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *SynchronizerUpgradeAnnouncement) GetSuccessorPhysicalSynchronizerId() string {
+func (x *LsuAnnouncement) GetSuccessorPhysicalSynchronizerId() string {
 	if x != nil {
 		return x.SuccessorPhysicalSynchronizerId
 	}
 	return ""
 }
 
-func (x *SynchronizerUpgradeAnnouncement) GetUpgradeTime() *timestamppb.Timestamp {
+func (x *LsuAnnouncement) GetUpgradeTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpgradeTime
 	}
 	return nil
 }
 
-type SequencerConnectionSuccessor struct {
-	state          protoimpl.MessageState                            `protogen:"open.v1"`
-	SequencerId    string                                            `protobuf:"bytes,1,opt,name=sequencer_id,json=sequencerId,proto3" json:"sequencer_id,omitempty"`
-	SynchronizerId string                                            `protobuf:"bytes,2,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
-	Connection     *SequencerConnectionSuccessor_SequencerConnection `protobuf:"bytes,3,opt,name=connection,proto3" json:"connection,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+type LsuSequencerConnectionSuccessor struct {
+	state                           protoimpl.MessageState                               `protogen:"open.v1"`
+	SequencerId                     string                                               `protobuf:"bytes,1,opt,name=sequencer_id,json=sequencerId,proto3" json:"sequencer_id,omitempty"`
+	SuccessorPhysicalSynchronizerId string                                               `protobuf:"bytes,2,opt,name=successor_physical_synchronizer_id,json=successorPhysicalSynchronizerId,proto3" json:"successor_physical_synchronizer_id,omitempty"`
+	Connection                      *LsuSequencerConnectionSuccessor_SequencerConnection `protobuf:"bytes,3,opt,name=connection,proto3" json:"connection,omitempty"`
+	unknownFields                   protoimpl.UnknownFields
+	sizeCache                       protoimpl.SizeCache
 }
 
-func (x *SequencerConnectionSuccessor) Reset() {
-	*x = SequencerConnectionSuccessor{}
+func (x *LsuSequencerConnectionSuccessor) Reset() {
+	*x = LsuSequencerConnectionSuccessor{}
 	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SequencerConnectionSuccessor) String() string {
+func (x *LsuSequencerConnectionSuccessor) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SequencerConnectionSuccessor) ProtoMessage() {}
+func (*LsuSequencerConnectionSuccessor) ProtoMessage() {}
 
-func (x *SequencerConnectionSuccessor) ProtoReflect() protoreflect.Message {
+func (x *LsuSequencerConnectionSuccessor) ProtoReflect() protoreflect.Message {
 	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1244,26 +1248,26 @@ func (x *SequencerConnectionSuccessor) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SequencerConnectionSuccessor.ProtoReflect.Descriptor instead.
-func (*SequencerConnectionSuccessor) Descriptor() ([]byte, []int) {
+// Deprecated: Use LsuSequencerConnectionSuccessor.ProtoReflect.Descriptor instead.
+func (*LsuSequencerConnectionSuccessor) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_protocol_v30_topology_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *SequencerConnectionSuccessor) GetSequencerId() string {
+func (x *LsuSequencerConnectionSuccessor) GetSequencerId() string {
 	if x != nil {
 		return x.SequencerId
 	}
 	return ""
 }
 
-func (x *SequencerConnectionSuccessor) GetSynchronizerId() string {
+func (x *LsuSequencerConnectionSuccessor) GetSuccessorPhysicalSynchronizerId() string {
 	if x != nil {
-		return x.SynchronizerId
+		return x.SuccessorPhysicalSynchronizerId
 	}
 	return ""
 }
 
-func (x *SequencerConnectionSuccessor) GetConnection() *SequencerConnectionSuccessor_SequencerConnection {
+func (x *LsuSequencerConnectionSuccessor) GetConnection() *LsuSequencerConnectionSuccessor_SequencerConnection {
 	if x != nil {
 		return x.Connection
 	}
@@ -1439,6 +1443,7 @@ func (x *TopologyMapping) GetSequencingDynamicParametersState() *DynamicSequenci
 	return nil
 }
 
+// Deprecated: Marked as deprecated in com/digitalasset/canton/protocol/v30/topology.proto.
 func (x *TopologyMapping) GetPartyToKeyMapping() *PartyToKeyMapping {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_PartyToKeyMapping); ok {
@@ -1448,7 +1453,7 @@ func (x *TopologyMapping) GetPartyToKeyMapping() *PartyToKeyMapping {
 	return nil
 }
 
-func (x *TopologyMapping) GetSynchronizerUpgradeAnnouncement() *SynchronizerUpgradeAnnouncement {
+func (x *TopologyMapping) GetSynchronizerUpgradeAnnouncement() *LsuAnnouncement {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_SynchronizerUpgradeAnnouncement); ok {
 			return x.SynchronizerUpgradeAnnouncement
@@ -1457,7 +1462,7 @@ func (x *TopologyMapping) GetSynchronizerUpgradeAnnouncement() *SynchronizerUpgr
 	return nil
 }
 
-func (x *TopologyMapping) GetSequencerConnectionSuccessor() *SequencerConnectionSuccessor {
+func (x *TopologyMapping) GetSequencerConnectionSuccessor() *LsuSequencerConnectionSuccessor {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_SequencerConnectionSuccessor); ok {
 			return x.SequencerConnectionSuccessor
@@ -1519,15 +1524,16 @@ type TopologyMapping_SequencingDynamicParametersState struct {
 }
 
 type TopologyMapping_PartyToKeyMapping struct {
+	// Deprecated: Marked as deprecated in com/digitalasset/canton/protocol/v30/topology.proto.
 	PartyToKeyMapping *PartyToKeyMapping `protobuf:"bytes,16,opt,name=party_to_key_mapping,json=partyToKeyMapping,proto3,oneof"`
 }
 
 type TopologyMapping_SynchronizerUpgradeAnnouncement struct {
-	SynchronizerUpgradeAnnouncement *SynchronizerUpgradeAnnouncement `protobuf:"bytes,17,opt,name=synchronizer_upgrade_announcement,json=synchronizerUpgradeAnnouncement,proto3,oneof"`
+	SynchronizerUpgradeAnnouncement *LsuAnnouncement `protobuf:"bytes,17,opt,name=synchronizer_upgrade_announcement,json=synchronizerUpgradeAnnouncement,proto3,oneof"`
 }
 
 type TopologyMapping_SequencerConnectionSuccessor struct {
-	SequencerConnectionSuccessor *SequencerConnectionSuccessor `protobuf:"bytes,18,opt,name=sequencer_connection_successor,json=sequencerConnectionSuccessor,proto3,oneof"`
+	SequencerConnectionSuccessor *LsuSequencerConnectionSuccessor `protobuf:"bytes,18,opt,name=sequencer_connection_successor,json=sequencerConnectionSuccessor,proto3,oneof"`
 }
 
 func (*TopologyMapping_NamespaceDelegation) isTopologyMapping_Mapping() {}
@@ -2108,74 +2114,7 @@ func (*PartyToParticipant_HostingParticipant_Onboarding) Descriptor() ([]byte, [
 	return file_com_digitalasset_canton_protocol_v30_topology_proto_rawDescGZIP(), []int{9, 0, 0}
 }
 
-type SequencerConnectionSuccessor_SequencerConnection struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to ConnectionType:
-	//
-	//	*SequencerConnectionSuccessor_SequencerConnection_Grpc_
-	ConnectionType isSequencerConnectionSuccessor_SequencerConnection_ConnectionType `protobuf_oneof:"connection_type"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *SequencerConnectionSuccessor_SequencerConnection) Reset() {
-	*x = SequencerConnectionSuccessor_SequencerConnection{}
-	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[28]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SequencerConnectionSuccessor_SequencerConnection) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SequencerConnectionSuccessor_SequencerConnection) ProtoMessage() {}
-
-func (x *SequencerConnectionSuccessor_SequencerConnection) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[28]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SequencerConnectionSuccessor_SequencerConnection.ProtoReflect.Descriptor instead.
-func (*SequencerConnectionSuccessor_SequencerConnection) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_topology_proto_rawDescGZIP(), []int{15, 0}
-}
-
-func (x *SequencerConnectionSuccessor_SequencerConnection) GetConnectionType() isSequencerConnectionSuccessor_SequencerConnection_ConnectionType {
-	if x != nil {
-		return x.ConnectionType
-	}
-	return nil
-}
-
-func (x *SequencerConnectionSuccessor_SequencerConnection) GetGrpc() *SequencerConnectionSuccessor_SequencerConnection_Grpc {
-	if x != nil {
-		if x, ok := x.ConnectionType.(*SequencerConnectionSuccessor_SequencerConnection_Grpc_); ok {
-			return x.Grpc
-		}
-	}
-	return nil
-}
-
-type isSequencerConnectionSuccessor_SequencerConnection_ConnectionType interface {
-	isSequencerConnectionSuccessor_SequencerConnection_ConnectionType()
-}
-
-type SequencerConnectionSuccessor_SequencerConnection_Grpc_ struct {
-	Grpc *SequencerConnectionSuccessor_SequencerConnection_Grpc `protobuf:"bytes,1,opt,name=grpc,proto3,oneof"`
-}
-
-func (*SequencerConnectionSuccessor_SequencerConnection_Grpc_) isSequencerConnectionSuccessor_SequencerConnection_ConnectionType() {
-}
-
-type SequencerConnectionSuccessor_SequencerConnection_Grpc struct {
+type LsuSequencerConnectionSuccessor_SequencerConnection struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	Endpoints               []string               `protobuf:"bytes,1,rep,name=endpoints,proto3" json:"endpoints,omitempty"`
 	CustomTrustCertificates []byte                 `protobuf:"bytes,2,opt,name=custom_trust_certificates,json=customTrustCertificates,proto3,oneof" json:"custom_trust_certificates,omitempty"`
@@ -2183,21 +2122,21 @@ type SequencerConnectionSuccessor_SequencerConnection_Grpc struct {
 	sizeCache               protoimpl.SizeCache
 }
 
-func (x *SequencerConnectionSuccessor_SequencerConnection_Grpc) Reset() {
-	*x = SequencerConnectionSuccessor_SequencerConnection_Grpc{}
-	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[29]
+func (x *LsuSequencerConnectionSuccessor_SequencerConnection) Reset() {
+	*x = LsuSequencerConnectionSuccessor_SequencerConnection{}
+	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SequencerConnectionSuccessor_SequencerConnection_Grpc) String() string {
+func (x *LsuSequencerConnectionSuccessor_SequencerConnection) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SequencerConnectionSuccessor_SequencerConnection_Grpc) ProtoMessage() {}
+func (*LsuSequencerConnectionSuccessor_SequencerConnection) ProtoMessage() {}
 
-func (x *SequencerConnectionSuccessor_SequencerConnection_Grpc) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[29]
+func (x *LsuSequencerConnectionSuccessor_SequencerConnection) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2208,19 +2147,19 @@ func (x *SequencerConnectionSuccessor_SequencerConnection_Grpc) ProtoReflect() p
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SequencerConnectionSuccessor_SequencerConnection_Grpc.ProtoReflect.Descriptor instead.
-func (*SequencerConnectionSuccessor_SequencerConnection_Grpc) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_topology_proto_rawDescGZIP(), []int{15, 0, 0}
+// Deprecated: Use LsuSequencerConnectionSuccessor_SequencerConnection.ProtoReflect.Descriptor instead.
+func (*LsuSequencerConnectionSuccessor_SequencerConnection) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_protocol_v30_topology_proto_rawDescGZIP(), []int{15, 0}
 }
 
-func (x *SequencerConnectionSuccessor_SequencerConnection_Grpc) GetEndpoints() []string {
+func (x *LsuSequencerConnectionSuccessor_SequencerConnection) GetEndpoints() []string {
 	if x != nil {
 		return x.Endpoints
 	}
 	return nil
 }
 
-func (x *SequencerConnectionSuccessor_SequencerConnection_Grpc) GetCustomTrustCertificates() []byte {
+func (x *LsuSequencerConnectionSuccessor_SequencerConnection) GetCustomTrustCertificates() []byte {
 	if x != nil {
 		return x.CustomTrustCertificates
 	}
@@ -2231,7 +2170,7 @@ var File_com_digitalasset_canton_protocol_v30_topology_proto protoreflect.FileDe
 
 const file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc = "" +
 	"\n" +
-	"3com/digitalasset/canton/protocol/v30/topology.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a@com/digitalasset/canton/protocol/v30/sequencing_parameters.proto\x1aBcom/digitalasset/canton/protocol/v30/synchronizer_parameters.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd1\n" +
+	"3com/digitalasset/canton/protocol/v30/topology.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a@com/digitalasset/canton/protocol/v30/sequencing_parameters.proto\x1aBcom/digitalasset/canton/protocol/v30/synchronizer_parameters.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xfd\n" +
 	"\n" +
 	"\x05Enums\"y\n" +
 	"\x10TopologyChangeOp\x12\"\n" +
@@ -2242,7 +2181,7 @@ const file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc = "" +
 	"\"PARTICIPANT_PERMISSION_UNSPECIFIED\x10\x00\x12%\n" +
 	"!PARTICIPANT_PERMISSION_SUBMISSION\x10\x01\x12'\n" +
 	"#PARTICIPANT_PERMISSION_CONFIRMATION\x10\x02\x12&\n" +
-	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x03\"\xff\x06\n" +
+	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x03\"\xec\x06\n" +
 	"\x13TopologyMappingCode\x12%\n" +
 	"!TOPOLOGY_MAPPING_CODE_UNSPECIFIED\x10\x00\x12.\n" +
 	"*TOPOLOGY_MAPPING_CODE_NAMESPACE_DELEGATION\x10\x01\x12<\n" +
@@ -2257,14 +2196,15 @@ const file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc = "" +
 	"1TOPOLOGY_MAPPING_CODE_MEDIATOR_SYNCHRONIZER_STATE\x10\f\x126\n" +
 	"2TOPOLOGY_MAPPING_CODE_SEQUENCER_SYNCHRONIZER_STATE\x10\r\x12=\n" +
 	"9TOPOLOGY_MAPPING_CODE_SEQUENCING_DYNAMIC_PARAMETERS_STATE\x10\x11\x12.\n" +
-	"*TOPOLOGY_MAPPING_CODE_PARTY_TO_KEY_MAPPING\x10\x12\x12=\n" +
-	"9TOPOLOGY_MAPPING_CODE_SYNCHRONIZER_MIGRATION_ANNOUNCEMENT\x10\x13\x128\n" +
+	"*TOPOLOGY_MAPPING_CODE_PARTY_TO_KEY_MAPPING\x10\x12\x12*\n" +
+	"&TOPOLOGY_MAPPING_CODE_LSU_ANNOUNCEMENT\x10\x13\x128\n" +
 	"4TOPOLOGY_MAPPING_CODE_SEQUENCER_CONNECTION_SUCCESSOR\x10\x14\"\x04\b\x02\x10\x02\"\x04\b\n" +
 	"\x10\n" +
-	"\"\x04\b\x0e\x10\x0e\"\x04\b\x0f\x10\x0f\"\x04\b\x10\x10\x10\"\x90\x01\n" +
+	"\"\x04\b\x0e\x10\x0e\"\x04\b\x0f\x10\x0f\"\x04\b\x10\x10\x10\"\xcf\x01\n" +
 	"\x16ParticipantFeatureFlag\x12(\n" +
 	"$PARTICIPANT_FEATURE_FLAG_UNSPECIFIED\x10\x00\x12L\n" +
-	"HPARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW\x10\x01\"\xc4\x06\n" +
+	"HPARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW\x10\x01\x12=\n" +
+	"9PARTICIPANT_FEATURE_FLAG_ENABLE_UNSAFE_MULTI_SYNCHRONIZER\x10\x02\"\xc4\x06\n" +
 	"\x13NamespaceDelegation\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12S\n" +
 	"\n" +
@@ -2285,11 +2225,11 @@ const file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc = "" +
 	"\x11OwnerToKeyMapping\x12\x16\n" +
 	"\x06member\x18\x01 \x01(\tR\x06member\x12N\n" +
 	"\vpublic_keys\x18\x02 \x03(\v2-.com.digitalasset.canton.crypto.v30.PublicKeyR\n" +
-	"publicKeysJ\x04\b\x03\x10\x04\"\xa6\x01\n" +
+	"publicKeysJ\x04\b\x03\x10\x04\"\xaa\x01\n" +
 	"\x11PartyToKeyMapping\x12\x14\n" +
 	"\x05party\x18\x01 \x01(\tR\x05party\x12\x1c\n" +
 	"\tthreshold\x18\x03 \x01(\rR\tthreshold\x12W\n" +
-	"\fsigning_keys\x18\x04 \x03(\v24.com.digitalasset.canton.crypto.v30.SigningPublicKeyR\vsigningKeysJ\x04\b\x02\x10\x03\"\xe5\x01\n" +
+	"\fsigning_keys\x18\x04 \x03(\v24.com.digitalasset.canton.crypto.v30.SigningPublicKeyR\vsigningKeys:\x02\x18\x01J\x04\b\x02\x10\x03\"\xe5\x01\n" +
 	"\x1cSynchronizerTrustCertificate\x12'\n" +
 	"\x0fparticipant_uid\x18\x01 \x01(\tR\x0eparticipantUid\x12'\n" +
 	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x12g\n" +
@@ -2349,23 +2289,20 @@ const file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc = "" +
 	"\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12\x1c\n" +
 	"\tthreshold\x18\x02 \x01(\rR\tthreshold\x12\x16\n" +
 	"\x06active\x18\x03 \x03(\tR\x06active\x12\x1c\n" +
-	"\tobservers\x18\x04 \x03(\tR\tobservers\"\xad\x01\n" +
-	"\x1fSynchronizerUpgradeAnnouncement\x12K\n" +
+	"\tobservers\x18\x04 \x03(\tR\tobservers\"\x9d\x01\n" +
+	"\x0fLsuAnnouncement\x12K\n" +
 	"\"successor_physical_synchronizer_id\x18\x01 \x01(\tR\x1fsuccessorPhysicalSynchronizerId\x12=\n" +
-	"\fupgrade_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vupgradeTime\"\x86\x04\n" +
-	"\x1cSequencerConnectionSuccessor\x12!\n" +
-	"\fsequencer_id\x18\x01 \x01(\tR\vsequencerId\x12'\n" +
-	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x12v\n" +
+	"\fupgrade_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vupgradeTime\"\xa1\x03\n" +
+	"\x1fLsuSequencerConnectionSuccessor\x12!\n" +
+	"\fsequencer_id\x18\x01 \x01(\tR\vsequencerId\x12K\n" +
+	"\"successor_physical_synchronizer_id\x18\x02 \x01(\tR\x1fsuccessorPhysicalSynchronizerId\x12y\n" +
 	"\n" +
-	"connection\x18\x03 \x01(\v2V.com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor.SequencerConnectionR\n" +
-	"connection\x1a\xa1\x02\n" +
-	"\x13SequencerConnection\x12q\n" +
-	"\x04grpc\x18\x01 \x01(\v2[.com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor.SequencerConnection.GrpcH\x00R\x04grpc\x1a\x83\x01\n" +
-	"\x04Grpc\x12\x1c\n" +
+	"connection\x18\x03 \x01(\v2Y.com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor.SequencerConnectionR\n" +
+	"connection\x1a\x92\x01\n" +
+	"\x13SequencerConnection\x12\x1c\n" +
 	"\tendpoints\x18\x01 \x03(\tR\tendpoints\x12?\n" +
 	"\x19custom_trust_certificates\x18\x02 \x01(\fH\x00R\x17customTrustCertificates\x88\x01\x01B\x1c\n" +
-	"\x1a_custom_trust_certificatesB\x11\n" +
-	"\x0fconnection_type\"\xae\x0f\n" +
+	"\x1a_custom_trust_certificates\"\xa5\x0f\n" +
 	"\x0fTopologyMapping\x12n\n" +
 	"\x14namespace_delegation\x18\x01 \x01(\v29.com.digitalasset.canton.protocol.v30.NamespaceDelegationH\x00R\x13namespaceDelegation\x12\x96\x01\n" +
 	"\"decentralized_namespace_definition\x18\x03 \x01(\v2F.com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinitionH\x00R decentralizedNamespaceDefinition\x12j\n" +
@@ -2378,10 +2315,10 @@ const file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc = "" +
 	"\x1dsynchronizer_parameters_state\x18\v \x01(\v2A.com.digitalasset.canton.protocol.v30.SynchronizerParametersStateH\x00R\x1bsynchronizerParametersState\x12\x81\x01\n" +
 	"\x1bmediator_synchronizer_state\x18\f \x01(\v2?.com.digitalasset.canton.protocol.v30.MediatorSynchronizerStateH\x00R\x19mediatorSynchronizerState\x12\x84\x01\n" +
 	"\x1csequencer_synchronizer_state\x18\r \x01(\v2@.com.digitalasset.canton.protocol.v30.SequencerSynchronizerStateH\x00R\x1asequencerSynchronizerState\x12\x97\x01\n" +
-	"#sequencing_dynamic_parameters_state\x18\x0f \x01(\v2F.com.digitalasset.canton.protocol.v30.DynamicSequencingParametersStateH\x00R sequencingDynamicParametersState\x12j\n" +
-	"\x14party_to_key_mapping\x18\x10 \x01(\v27.com.digitalasset.canton.protocol.v30.PartyToKeyMappingH\x00R\x11partyToKeyMapping\x12\x93\x01\n" +
-	"!synchronizer_upgrade_announcement\x18\x11 \x01(\v2E.com.digitalasset.canton.protocol.v30.SynchronizerUpgradeAnnouncementH\x00R\x1fsynchronizerUpgradeAnnouncement\x12\x8a\x01\n" +
-	"\x1esequencer_connection_successor\x18\x12 \x01(\v2B.com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessorH\x00R\x1csequencerConnectionSuccessorB\t\n" +
+	"#sequencing_dynamic_parameters_state\x18\x0f \x01(\v2F.com.digitalasset.canton.protocol.v30.DynamicSequencingParametersStateH\x00R sequencingDynamicParametersState\x12n\n" +
+	"\x14party_to_key_mapping\x18\x10 \x01(\v27.com.digitalasset.canton.protocol.v30.PartyToKeyMappingB\x02\x18\x01H\x00R\x11partyToKeyMapping\x12\x83\x01\n" +
+	"!synchronizer_upgrade_announcement\x18\x11 \x01(\v25.com.digitalasset.canton.protocol.v30.LsuAnnouncementH\x00R\x1fsynchronizerUpgradeAnnouncement\x12\x8d\x01\n" +
+	"\x1esequencer_connection_successor\x18\x12 \x01(\v2E.com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessorH\x00R\x1csequencerConnectionSuccessorB\t\n" +
 	"\amappingJ\x04\b\x02\x10\x03J\x04\b\n" +
 	"\x10\vJ\x04\b\x0e\x10\x0f\"\xda\x01\n" +
 	"\x13TopologyTransaction\x12Z\n" +
@@ -2419,7 +2356,7 @@ func file_com_digitalasset_canton_protocol_v30_topology_proto_rawDescGZIP() []by
 }
 
 var file_com_digitalasset_canton_protocol_v30_topology_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_com_digitalasset_canton_protocol_v30_topology_proto_goTypes = []any{
 	(Enums_TopologyChangeOp)(0),                                   // 0: com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
 	(Enums_ParticipantPermission)(0),                              // 1: com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
@@ -2439,8 +2376,8 @@ var file_com_digitalasset_canton_protocol_v30_topology_proto_goTypes = []any{
 	(*DynamicSequencingParametersState)(nil),                      // 15: com.digitalasset.canton.protocol.v30.DynamicSequencingParametersState
 	(*MediatorSynchronizerState)(nil),                             // 16: com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
 	(*SequencerSynchronizerState)(nil),                            // 17: com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
-	(*SynchronizerUpgradeAnnouncement)(nil),                       // 18: com.digitalasset.canton.protocol.v30.SynchronizerUpgradeAnnouncement
-	(*SequencerConnectionSuccessor)(nil),                          // 19: com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor
+	(*LsuAnnouncement)(nil),                                       // 18: com.digitalasset.canton.protocol.v30.LsuAnnouncement
+	(*LsuSequencerConnectionSuccessor)(nil),                       // 19: com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
 	(*TopologyMapping)(nil),                                       // 20: com.digitalasset.canton.protocol.v30.TopologyMapping
 	(*TopologyTransaction)(nil),                                   // 21: com.digitalasset.canton.protocol.v30.TopologyTransaction
 	(*MultiTransactionSignatures)(nil),                            // 22: com.digitalasset.canton.protocol.v30.MultiTransactionSignatures
@@ -2453,34 +2390,33 @@ var file_com_digitalasset_canton_protocol_v30_topology_proto_goTypes = []any{
 	(*VettedPackages_VettedPackage)(nil),                          // 29: com.digitalasset.canton.protocol.v30.VettedPackages.VettedPackage
 	(*PartyToParticipant_HostingParticipant)(nil),                 // 30: com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipant
 	(*PartyToParticipant_HostingParticipant_Onboarding)(nil),      // 31: com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipant.Onboarding
-	(*SequencerConnectionSuccessor_SequencerConnection)(nil),      // 32: com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor.SequencerConnection
-	(*SequencerConnectionSuccessor_SequencerConnection_Grpc)(nil), // 33: com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor.SequencerConnection.Grpc
-	(*v30.SigningPublicKey)(nil),                                  // 34: com.digitalasset.canton.crypto.v30.SigningPublicKey
-	(*v30.PublicKey)(nil),                                         // 35: com.digitalasset.canton.crypto.v30.PublicKey
-	(*ParticipantSynchronizerLimits)(nil),                         // 36: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerLimits
-	(*v30.SigningKeysWithThreshold)(nil),                          // 37: com.digitalasset.canton.crypto.v30.SigningKeysWithThreshold
-	(*DynamicSynchronizerParameters)(nil),                         // 38: com.digitalasset.canton.protocol.v30.DynamicSynchronizerParameters
-	(*DynamicSequencingParameters)(nil),                           // 39: com.digitalasset.canton.protocol.v30.DynamicSequencingParameters
-	(*timestamppb.Timestamp)(nil),                                 // 40: google.protobuf.Timestamp
-	(*v30.Signature)(nil),                                         // 41: com.digitalasset.canton.crypto.v30.Signature
+	(*LsuSequencerConnectionSuccessor_SequencerConnection)(nil),   // 32: com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor.SequencerConnection
+	(*v30.SigningPublicKey)(nil),                                  // 33: com.digitalasset.canton.crypto.v30.SigningPublicKey
+	(*v30.PublicKey)(nil),                                         // 34: com.digitalasset.canton.crypto.v30.PublicKey
+	(*ParticipantSynchronizerLimits)(nil),                         // 35: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerLimits
+	(*v30.SigningKeysWithThreshold)(nil),                          // 36: com.digitalasset.canton.crypto.v30.SigningKeysWithThreshold
+	(*DynamicSynchronizerParameters)(nil),                         // 37: com.digitalasset.canton.protocol.v30.DynamicSynchronizerParameters
+	(*DynamicSequencingParameters)(nil),                           // 38: com.digitalasset.canton.protocol.v30.DynamicSequencingParameters
+	(*timestamppb.Timestamp)(nil),                                 // 39: google.protobuf.Timestamp
+	(*v30.Signature)(nil),                                         // 40: com.digitalasset.canton.crypto.v30.Signature
 }
 var file_com_digitalasset_canton_protocol_v30_topology_proto_depIdxs = []int32{
-	34, // 0: com.digitalasset.canton.protocol.v30.NamespaceDelegation.target_key:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
+	33, // 0: com.digitalasset.canton.protocol.v30.NamespaceDelegation.target_key:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
 	26, // 1: com.digitalasset.canton.protocol.v30.NamespaceDelegation.can_sign_all_mappings:type_name -> com.digitalasset.canton.protocol.v30.NamespaceDelegation.CanSignAllMappings
 	27, // 2: com.digitalasset.canton.protocol.v30.NamespaceDelegation.can_sign_all_but_namespace_delegations:type_name -> com.digitalasset.canton.protocol.v30.NamespaceDelegation.CanSignAllButNamespaceDelegations
 	28, // 3: com.digitalasset.canton.protocol.v30.NamespaceDelegation.can_sign_specific_mapings:type_name -> com.digitalasset.canton.protocol.v30.NamespaceDelegation.CanSignSpecificMappings
-	35, // 4: com.digitalasset.canton.protocol.v30.OwnerToKeyMapping.public_keys:type_name -> com.digitalasset.canton.crypto.v30.PublicKey
-	34, // 5: com.digitalasset.canton.protocol.v30.PartyToKeyMapping.signing_keys:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
+	34, // 4: com.digitalasset.canton.protocol.v30.OwnerToKeyMapping.public_keys:type_name -> com.digitalasset.canton.crypto.v30.PublicKey
+	33, // 5: com.digitalasset.canton.protocol.v30.PartyToKeyMapping.signing_keys:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
 	3,  // 6: com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate.feature_flags:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantFeatureFlag
 	1,  // 7: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission.permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
-	36, // 8: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission.limits:type_name -> com.digitalasset.canton.protocol.v30.ParticipantSynchronizerLimits
+	35, // 8: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission.limits:type_name -> com.digitalasset.canton.protocol.v30.ParticipantSynchronizerLimits
 	29, // 9: com.digitalasset.canton.protocol.v30.VettedPackages.packages:type_name -> com.digitalasset.canton.protocol.v30.VettedPackages.VettedPackage
 	30, // 10: com.digitalasset.canton.protocol.v30.PartyToParticipant.participants:type_name -> com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipant
-	37, // 11: com.digitalasset.canton.protocol.v30.PartyToParticipant.party_signing_keys:type_name -> com.digitalasset.canton.crypto.v30.SigningKeysWithThreshold
-	38, // 12: com.digitalasset.canton.protocol.v30.SynchronizerParametersState.synchronizer_parameters:type_name -> com.digitalasset.canton.protocol.v30.DynamicSynchronizerParameters
-	39, // 13: com.digitalasset.canton.protocol.v30.DynamicSequencingParametersState.sequencing_parameters:type_name -> com.digitalasset.canton.protocol.v30.DynamicSequencingParameters
-	40, // 14: com.digitalasset.canton.protocol.v30.SynchronizerUpgradeAnnouncement.upgrade_time:type_name -> google.protobuf.Timestamp
-	32, // 15: com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor.connection:type_name -> com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor.SequencerConnection
+	36, // 11: com.digitalasset.canton.protocol.v30.PartyToParticipant.party_signing_keys:type_name -> com.digitalasset.canton.crypto.v30.SigningKeysWithThreshold
+	37, // 12: com.digitalasset.canton.protocol.v30.SynchronizerParametersState.synchronizer_parameters:type_name -> com.digitalasset.canton.protocol.v30.DynamicSynchronizerParameters
+	38, // 13: com.digitalasset.canton.protocol.v30.DynamicSequencingParametersState.sequencing_parameters:type_name -> com.digitalasset.canton.protocol.v30.DynamicSequencingParameters
+	39, // 14: com.digitalasset.canton.protocol.v30.LsuAnnouncement.upgrade_time:type_name -> google.protobuf.Timestamp
+	32, // 15: com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor.connection:type_name -> com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor.SequencerConnection
 	5,  // 16: com.digitalasset.canton.protocol.v30.TopologyMapping.namespace_delegation:type_name -> com.digitalasset.canton.protocol.v30.NamespaceDelegation
 	6,  // 17: com.digitalasset.canton.protocol.v30.TopologyMapping.decentralized_namespace_definition:type_name -> com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
 	7,  // 18: com.digitalasset.canton.protocol.v30.TopologyMapping.owner_to_key_mapping:type_name -> com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
@@ -2494,25 +2430,24 @@ var file_com_digitalasset_canton_protocol_v30_topology_proto_depIdxs = []int32{
 	17, // 26: com.digitalasset.canton.protocol.v30.TopologyMapping.sequencer_synchronizer_state:type_name -> com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
 	15, // 27: com.digitalasset.canton.protocol.v30.TopologyMapping.sequencing_dynamic_parameters_state:type_name -> com.digitalasset.canton.protocol.v30.DynamicSequencingParametersState
 	8,  // 28: com.digitalasset.canton.protocol.v30.TopologyMapping.party_to_key_mapping:type_name -> com.digitalasset.canton.protocol.v30.PartyToKeyMapping
-	18, // 29: com.digitalasset.canton.protocol.v30.TopologyMapping.synchronizer_upgrade_announcement:type_name -> com.digitalasset.canton.protocol.v30.SynchronizerUpgradeAnnouncement
-	19, // 30: com.digitalasset.canton.protocol.v30.TopologyMapping.sequencer_connection_successor:type_name -> com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor
+	18, // 29: com.digitalasset.canton.protocol.v30.TopologyMapping.synchronizer_upgrade_announcement:type_name -> com.digitalasset.canton.protocol.v30.LsuAnnouncement
+	19, // 30: com.digitalasset.canton.protocol.v30.TopologyMapping.sequencer_connection_successor:type_name -> com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
 	0,  // 31: com.digitalasset.canton.protocol.v30.TopologyTransaction.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
 	20, // 32: com.digitalasset.canton.protocol.v30.TopologyTransaction.mapping:type_name -> com.digitalasset.canton.protocol.v30.TopologyMapping
-	41, // 33: com.digitalasset.canton.protocol.v30.MultiTransactionSignatures.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	41, // 34: com.digitalasset.canton.protocol.v30.SignedTopologyTransaction.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	40, // 33: com.digitalasset.canton.protocol.v30.MultiTransactionSignatures.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	40, // 34: com.digitalasset.canton.protocol.v30.SignedTopologyTransaction.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
 	22, // 35: com.digitalasset.canton.protocol.v30.SignedTopologyTransaction.multi_transaction_signatures:type_name -> com.digitalasset.canton.protocol.v30.MultiTransactionSignatures
 	24, // 36: com.digitalasset.canton.protocol.v30.TopologyTransactionsBroadcast.signed_transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransactions
 	2,  // 37: com.digitalasset.canton.protocol.v30.NamespaceDelegation.CanSignSpecificMappings.mappings:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyMappingCode
-	40, // 38: com.digitalasset.canton.protocol.v30.VettedPackages.VettedPackage.valid_from_inclusive:type_name -> google.protobuf.Timestamp
-	40, // 39: com.digitalasset.canton.protocol.v30.VettedPackages.VettedPackage.valid_until_exclusive:type_name -> google.protobuf.Timestamp
+	39, // 38: com.digitalasset.canton.protocol.v30.VettedPackages.VettedPackage.valid_from_inclusive:type_name -> google.protobuf.Timestamp
+	39, // 39: com.digitalasset.canton.protocol.v30.VettedPackages.VettedPackage.valid_until_exclusive:type_name -> google.protobuf.Timestamp
 	1,  // 40: com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipant.permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
 	31, // 41: com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipant.onboarding:type_name -> com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipant.Onboarding
-	33, // 42: com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor.SequencerConnection.grpc:type_name -> com.digitalasset.canton.protocol.v30.SequencerConnectionSuccessor.SequencerConnection.Grpc
-	43, // [43:43] is the sub-list for method output_type
-	43, // [43:43] is the sub-list for method input_type
-	43, // [43:43] is the sub-list for extension type_name
-	43, // [43:43] is the sub-list for extension extendee
-	0,  // [0:43] is the sub-list for field type_name
+	42, // [42:42] is the sub-list for method output_type
+	42, // [42:42] is the sub-list for method input_type
+	42, // [42:42] is the sub-list for extension type_name
+	42, // [42:42] is the sub-list for extension extendee
+	0,  // [0:42] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_protocol_v30_topology_proto_init() }
@@ -2546,17 +2481,14 @@ func file_com_digitalasset_canton_protocol_v30_topology_proto_init() {
 		(*TopologyMapping_SynchronizerUpgradeAnnouncement)(nil),
 		(*TopologyMapping_SequencerConnectionSuccessor)(nil),
 	}
-	file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[28].OneofWrappers = []any{
-		(*SequencerConnectionSuccessor_SequencerConnection_Grpc_)(nil),
-	}
-	file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[29].OneofWrappers = []any{}
+	file_com_digitalasset_canton_protocol_v30_topology_proto_msgTypes[28].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc), len(file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   30,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

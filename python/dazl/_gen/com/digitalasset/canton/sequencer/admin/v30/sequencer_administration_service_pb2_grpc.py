@@ -53,6 +53,26 @@ class SequencerAdministrationServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetTrafficPurchasedRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetTrafficPurchasedResponse.FromString,
                 _registered_method=True)
+        self.GetLsuTrafficControlState = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GetLsuTrafficControlState',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetLsuTrafficControlStateRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetLsuTrafficControlStateResponse.FromString,
+                _registered_method=True)
+        self.SetLsuTrafficControlState = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetLsuTrafficControlState',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetLsuTrafficControlStateRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetLsuTrafficControlStateResponse.FromString,
+                _registered_method=True)
+        self.SetThroughputCap = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetThroughputCap',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetThroughputCapRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetThroughputCapResponse.FromString,
+                _registered_method=True)
+        self.GetThroughputCap = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GetThroughputCap',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetThroughputCapRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetThroughputCapResponse.FromString,
+                _registered_method=True)
         self.Snapshot = channel.unary_unary(
                 '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/Snapshot',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SnapshotRequest.SerializeToString,
@@ -73,6 +93,16 @@ class SequencerAdministrationServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.DisableMemberRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.DisableMemberResponse.FromString,
                 _registered_method=True)
+        self.GenerateAuthenticationToken = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GenerateAuthenticationToken',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GenerateAuthenticationTokenRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GenerateAuthenticationTokenResponse.FromString,
+                _registered_method=True)
+        self.PerformLsuSequencingTest = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/PerformLsuSequencingTest',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.PerformLsuSequencingTestRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.PerformLsuSequencingTestResponse.FromString,
+                _registered_method=True)
 
 
 class SequencerAdministrationServiceServicer(object):
@@ -91,6 +121,30 @@ class SequencerAdministrationServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def SetTrafficPurchased(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetLsuTrafficControlState(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetLsuTrafficControlState(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetThroughputCap(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetThroughputCap(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -120,6 +174,18 @@ class SequencerAdministrationServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GenerateAuthenticationToken(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PerformLsuSequencingTest(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SequencerAdministrationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -137,6 +203,26 @@ def add_SequencerAdministrationServiceServicer_to_server(servicer, server):
                     servicer.SetTrafficPurchased,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetTrafficPurchasedRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetTrafficPurchasedResponse.SerializeToString,
+            ),
+            'GetLsuTrafficControlState': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetLsuTrafficControlState,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetLsuTrafficControlStateRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetLsuTrafficControlStateResponse.SerializeToString,
+            ),
+            'SetLsuTrafficControlState': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetLsuTrafficControlState,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetLsuTrafficControlStateRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetLsuTrafficControlStateResponse.SerializeToString,
+            ),
+            'SetThroughputCap': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetThroughputCap,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetThroughputCapRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetThroughputCapResponse.SerializeToString,
+            ),
+            'GetThroughputCap': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetThroughputCap,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetThroughputCapRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetThroughputCapResponse.SerializeToString,
             ),
             'Snapshot': grpc.unary_unary_rpc_method_handler(
                     servicer.Snapshot,
@@ -157,6 +243,16 @@ def add_SequencerAdministrationServiceServicer_to_server(servicer, server):
                     servicer.DisableMember,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.DisableMemberRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.DisableMemberResponse.SerializeToString,
+            ),
+            'GenerateAuthenticationToken': grpc.unary_unary_rpc_method_handler(
+                    servicer.GenerateAuthenticationToken,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GenerateAuthenticationTokenRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GenerateAuthenticationTokenResponse.SerializeToString,
+            ),
+            'PerformLsuSequencingTest': grpc.unary_unary_rpc_method_handler(
+                    servicer.PerformLsuSequencingTest,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.PerformLsuSequencingTestRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.PerformLsuSequencingTestResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -240,6 +336,114 @@ class SequencerAdministrationService(object):
             '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetTrafficPurchased',
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetTrafficPurchasedRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetTrafficPurchasedResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetLsuTrafficControlState(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GetLsuTrafficControlState',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetLsuTrafficControlStateRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetLsuTrafficControlStateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetLsuTrafficControlState(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetLsuTrafficControlState',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetLsuTrafficControlStateRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetLsuTrafficControlStateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetThroughputCap(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetThroughputCap',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetThroughputCapRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.SetThroughputCapResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetThroughputCap(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GetThroughputCap',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetThroughputCapRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GetThroughputCapResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -348,6 +552,60 @@ class SequencerAdministrationService(object):
             '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/DisableMember',
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.DisableMemberRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.DisableMemberResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GenerateAuthenticationToken(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GenerateAuthenticationToken',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GenerateAuthenticationTokenRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.GenerateAuthenticationTokenResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PerformLsuSequencingTest(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/PerformLsuSequencingTest',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.PerformLsuSequencingTestRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__administration__service__pb2.PerformLsuSequencingTestResponse.FromString,
             options,
             channel_credentials,
             insecure,

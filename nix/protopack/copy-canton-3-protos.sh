@@ -17,7 +17,7 @@ done
 
 # for the canton protos, some light modifications to add go package
 # declarations and remove references to scalapb
-for api in admin-api community ledger-api participant synchronizer
+for api in admin-api archive community ledger-api ledger-api-value participant synchronizer transaction
 do
   protos_api="${protos}/${api}"
   for proto in $(find "${protos_api}" -type f -name '*.proto' ! -name 'package.proto')

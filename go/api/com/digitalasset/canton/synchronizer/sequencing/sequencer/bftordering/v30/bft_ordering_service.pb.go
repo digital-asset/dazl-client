@@ -558,8 +558,9 @@ type OrderingRequest struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	TraceContext         string                 `protobuf:"bytes,1,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
 	Tag                  string                 `protobuf:"bytes,2,opt,name=tag,proto3" json:"tag,omitempty"`
-	Payload              []byte                 `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
-	OrderingStartInstant *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=ordering_start_instant,json=orderingStartInstant,proto3" json:"ordering_start_instant,omitempty"`
+	MessageId            string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
+	Payload              []byte                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
+	OrderingStartInstant *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=ordering_start_instant,json=orderingStartInstant,proto3" json:"ordering_start_instant,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -604,6 +605,13 @@ func (x *OrderingRequest) GetTraceContext() string {
 func (x *OrderingRequest) GetTag() string {
 	if x != nil {
 		return x.Tag
+	}
+	return ""
+}
+
+func (x *OrderingRequest) GetMessageId() string {
+	if x != nil {
+		return x.MessageId
 	}
 	return ""
 }
@@ -2340,12 +2348,14 @@ const file_com_digitalasset_canton_synchronizer_sequencing_sequencer_bftordering
 	"\x05batch\x18\x02 \x01(\v2P.com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.BatchR\x05batch\"\xb4\x01\n" +
 	"\x05Batch\x12\x87\x01\n" +
 	"\x11ordering_requests\x18\x01 \x03(\v2Z.com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.OrderingRequestR\x10orderingRequests\x12!\n" +
-	"\fepoch_number\x18\x02 \x01(\x03R\vepochNumber\"\xb4\x01\n" +
+	"\fepoch_number\x18\x02 \x01(\x03R\vepochNumber\"\xd3\x01\n" +
 	"\x0fOrderingRequest\x12#\n" +
 	"\rtrace_context\x18\x01 \x01(\tR\ftraceContext\x12\x10\n" +
-	"\x03tag\x18\x02 \x01(\tR\x03tag\x12\x18\n" +
-	"\apayload\x18\x03 \x01(\fR\apayload\x12P\n" +
-	"\x16ordering_start_instant\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x14orderingStartInstant\"w\n" +
+	"\x03tag\x18\x02 \x01(\tR\x03tag\x12\x1d\n" +
+	"\n" +
+	"message_id\x18\x03 \x01(\tR\tmessageId\x12\x18\n" +
+	"\apayload\x18\x04 \x01(\fR\apayload\x12P\n" +
+	"\x16ordering_start_instant\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x14orderingStartInstant\"w\n" +
 	"\rStoreResponse\x12\x19\n" +
 	"\bbatch_id\x18\x01 \x01(\fR\abatchId\x12K\n" +
 	"\tsignature\x18\x02 \x01(\v2-.com.digitalasset.canton.crypto.v30.SignatureR\tsignature\")\n" +

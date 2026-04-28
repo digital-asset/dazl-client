@@ -27,8 +27,10 @@ class HashingSchemeVersion(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     HASHING_SCHEME_VERSION_UNSPECIFIED: _ClassVar[HashingSchemeVersion]
     HASHING_SCHEME_VERSION_V2: _ClassVar[HashingSchemeVersion]
+    HASHING_SCHEME_VERSION_V3: _ClassVar[HashingSchemeVersion]
 HASHING_SCHEME_VERSION_UNSPECIFIED: HashingSchemeVersion
 HASHING_SCHEME_VERSION_V2: HashingSchemeVersion
+HASHING_SCHEME_VERSION_V3: HashingSchemeVersion
 
 class CostEstimationHints(_message.Message):
     __slots__ = ("disabled", "expected_signatures")
@@ -51,7 +53,7 @@ class CostEstimation(_message.Message):
     def __init__(self, estimation_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., confirmation_request_traffic_cost_estimation: _Optional[int] = ..., confirmation_response_traffic_cost_estimation: _Optional[int] = ..., total_traffic_cost_estimation: _Optional[int] = ...) -> None: ...
 
 class PrepareSubmissionRequest(_message.Message):
-    __slots__ = ("user_id", "command_id", "commands", "min_ledger_time", "max_record_time", "act_as", "read_as", "disclosed_contracts", "synchronizer_id", "package_id_selection_preference", "verbose_hashing", "prefetch_contract_keys", "estimate_traffic_cost")
+    __slots__ = ("user_id", "command_id", "commands", "min_ledger_time", "max_record_time", "act_as", "read_as", "disclosed_contracts", "synchronizer_id", "package_id_selection_preference", "verbose_hashing", "prefetch_contract_keys", "estimate_traffic_cost", "hashing_scheme_version", "taps_max_passes")
     USER_ID_FIELD_NUMBER: _ClassVar[int]
     COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
     COMMANDS_FIELD_NUMBER: _ClassVar[int]
@@ -65,6 +67,8 @@ class PrepareSubmissionRequest(_message.Message):
     VERBOSE_HASHING_FIELD_NUMBER: _ClassVar[int]
     PREFETCH_CONTRACT_KEYS_FIELD_NUMBER: _ClassVar[int]
     ESTIMATE_TRAFFIC_COST_FIELD_NUMBER: _ClassVar[int]
+    HASHING_SCHEME_VERSION_FIELD_NUMBER: _ClassVar[int]
+    TAPS_MAX_PASSES_FIELD_NUMBER: _ClassVar[int]
     user_id: str
     command_id: str
     commands: _containers.RepeatedCompositeFieldContainer[_commands_pb2.Command]
@@ -78,7 +82,9 @@ class PrepareSubmissionRequest(_message.Message):
     verbose_hashing: bool
     prefetch_contract_keys: _containers.RepeatedCompositeFieldContainer[_commands_pb2.PrefetchContractKey]
     estimate_traffic_cost: CostEstimationHints
-    def __init__(self, user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., min_ledger_time: _Optional[_Union[MinLedgerTime, _Mapping]] = ..., max_record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., disclosed_contracts: _Optional[_Iterable[_Union[_commands_pb2.DisclosedContract, _Mapping]]] = ..., synchronizer_id: _Optional[str] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ..., verbose_hashing: bool = ..., prefetch_contract_keys: _Optional[_Iterable[_Union[_commands_pb2.PrefetchContractKey, _Mapping]]] = ..., estimate_traffic_cost: _Optional[_Union[CostEstimationHints, _Mapping]] = ...) -> None: ...
+    hashing_scheme_version: HashingSchemeVersion
+    taps_max_passes: int
+    def __init__(self, user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., min_ledger_time: _Optional[_Union[MinLedgerTime, _Mapping]] = ..., max_record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., disclosed_contracts: _Optional[_Iterable[_Union[_commands_pb2.DisclosedContract, _Mapping]]] = ..., synchronizer_id: _Optional[str] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ..., verbose_hashing: bool = ..., prefetch_contract_keys: _Optional[_Iterable[_Union[_commands_pb2.PrefetchContractKey, _Mapping]]] = ..., estimate_traffic_cost: _Optional[_Union[CostEstimationHints, _Mapping]] = ..., hashing_scheme_version: _Optional[_Union[HashingSchemeVersion, str]] = ..., taps_max_passes: _Optional[int] = ...) -> None: ...
 
 class PrepareSubmissionResponse(_message.Message):
     __slots__ = ("prepared_transaction", "prepared_transaction_hash", "hashing_scheme_version", "hashing_details", "cost_estimation")

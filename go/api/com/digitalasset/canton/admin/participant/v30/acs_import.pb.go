@@ -26,10 +26,9 @@ const (
 type ContractImportMode int32
 
 const (
-	ContractImportMode_CONTRACT_IMPORT_MODE_UNSPECIFIED   ContractImportMode = 0
-	ContractImportMode_CONTRACT_IMPORT_MODE_ACCEPT        ContractImportMode = 1
-	ContractImportMode_CONTRACT_IMPORT_MODE_VALIDATION    ContractImportMode = 2
-	ContractImportMode_CONTRACT_IMPORT_MODE_RECOMPUTATION ContractImportMode = 3
+	ContractImportMode_CONTRACT_IMPORT_MODE_UNSPECIFIED ContractImportMode = 0
+	ContractImportMode_CONTRACT_IMPORT_MODE_ACCEPT      ContractImportMode = 1
+	ContractImportMode_CONTRACT_IMPORT_MODE_VALIDATION  ContractImportMode = 2
 )
 
 // Enum value maps for ContractImportMode.
@@ -38,13 +37,11 @@ var (
 		0: "CONTRACT_IMPORT_MODE_UNSPECIFIED",
 		1: "CONTRACT_IMPORT_MODE_ACCEPT",
 		2: "CONTRACT_IMPORT_MODE_VALIDATION",
-		3: "CONTRACT_IMPORT_MODE_RECOMPUTATION",
 	}
 	ContractImportMode_value = map[string]int32{
-		"CONTRACT_IMPORT_MODE_UNSPECIFIED":   0,
-		"CONTRACT_IMPORT_MODE_ACCEPT":        1,
-		"CONTRACT_IMPORT_MODE_VALIDATION":    2,
-		"CONTRACT_IMPORT_MODE_RECOMPUTATION": 3,
+		"CONTRACT_IMPORT_MODE_UNSPECIFIED": 0,
+		"CONTRACT_IMPORT_MODE_ACCEPT":      1,
+		"CONTRACT_IMPORT_MODE_VALIDATION":  2,
 	}
 )
 
@@ -152,12 +149,11 @@ const file_com_digitalasset_canton_admin_participant_v30_acs_import_proto_rawDes
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1aF\n" +
 	"\x18PackageNameOverrideEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\xa8\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\x80\x01\n" +
 	"\x12ContractImportMode\x12$\n" +
 	" CONTRACT_IMPORT_MODE_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bCONTRACT_IMPORT_MODE_ACCEPT\x10\x01\x12#\n" +
-	"\x1fCONTRACT_IMPORT_MODE_VALIDATION\x10\x02\x12&\n" +
-	"\"CONTRACT_IMPORT_MODE_RECOMPUTATION\x10\x03B^Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30b\x06proto3"
+	"\x1fCONTRACT_IMPORT_MODE_VALIDATION\x10\x02B^Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_admin_participant_v30_acs_import_proto_rawDescOnce sync.Once

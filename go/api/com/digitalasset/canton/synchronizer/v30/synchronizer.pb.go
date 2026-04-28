@@ -28,6 +28,7 @@ type SynchronizerPredecessor struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
 	PredecessorPhysicalId string                 `protobuf:"bytes,1,opt,name=predecessor_physical_id,json=predecessorPhysicalId,proto3" json:"predecessor_physical_id,omitempty"`
 	UpgradeTime           *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=upgrade_time,json=upgradeTime,proto3" json:"upgrade_time,omitempty"`
+	IsLateUpgrade         bool                   `protobuf:"varint,3,opt,name=is_late_upgrade,json=isLateUpgrade,proto3" json:"is_late_upgrade,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -76,14 +77,22 @@ func (x *SynchronizerPredecessor) GetUpgradeTime() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *SynchronizerPredecessor) GetIsLateUpgrade() bool {
+	if x != nil {
+		return x.IsLateUpgrade
+	}
+	return false
+}
+
 var File_com_digitalasset_canton_synchronizer_v30_synchronizer_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_synchronizer_v30_synchronizer_proto_rawDesc = "" +
 	"\n" +
-	";com/digitalasset/canton/synchronizer/v30/synchronizer.proto\x12(com.digitalasset.canton.synchronizer.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\x01\n" +
+	";com/digitalasset/canton/synchronizer/v30/synchronizer.proto\x12(com.digitalasset.canton.synchronizer.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb8\x01\n" +
 	"\x17SynchronizerPredecessor\x126\n" +
 	"\x17predecessor_physical_id\x18\x01 \x01(\tR\x15predecessorPhysicalId\x12=\n" +
-	"\fupgrade_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vupgradeTimeBYZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/v30b\x06proto3"
+	"\fupgrade_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vupgradeTime\x12&\n" +
+	"\x0fis_late_upgrade\x18\x03 \x01(\bR\risLateUpgradeBYZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_synchronizer_v30_synchronizer_proto_rawDescOnce sync.Once

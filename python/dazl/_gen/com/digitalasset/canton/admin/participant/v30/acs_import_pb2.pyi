@@ -16,11 +16,9 @@ class ContractImportMode(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     CONTRACT_IMPORT_MODE_UNSPECIFIED: _ClassVar[ContractImportMode]
     CONTRACT_IMPORT_MODE_ACCEPT: _ClassVar[ContractImportMode]
     CONTRACT_IMPORT_MODE_VALIDATION: _ClassVar[ContractImportMode]
-    CONTRACT_IMPORT_MODE_RECOMPUTATION: _ClassVar[ContractImportMode]
 CONTRACT_IMPORT_MODE_UNSPECIFIED: ContractImportMode
 CONTRACT_IMPORT_MODE_ACCEPT: ContractImportMode
 CONTRACT_IMPORT_MODE_VALIDATION: ContractImportMode
-CONTRACT_IMPORT_MODE_RECOMPUTATION: ContractImportMode
 
 class RepresentativePackageIdOverride(_message.Message):
     __slots__ = ("contract_override", "package_id_override", "package_name_override")

@@ -181,6 +181,58 @@ func (x *GetCommandStatusResponse) GetCommandStatus() []*CommandStatus {
 	return nil
 }
 
+type Timing struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Description   string                 `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
+	DurationMs    uint32                 `protobuf:"varint,2,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Timing) Reset() {
+	*x = Timing{}
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Timing) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Timing) ProtoMessage() {}
+
+func (x *Timing) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Timing.ProtoReflect.Descriptor instead.
+func (*Timing) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Timing) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Timing) GetDurationMs() uint32 {
+	if x != nil {
+		return x.DurationMs
+	}
+	return 0
+}
+
 type CommandStatus struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Started           *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=started,proto3" json:"started,omitempty"`
@@ -190,13 +242,15 @@ type CommandStatus struct {
 	Commands          []*v2.Command          `protobuf:"bytes,5,rep,name=commands,proto3" json:"commands,omitempty"`
 	RequestStatistics *RequestStatistics     `protobuf:"bytes,6,opt,name=request_statistics,json=requestStatistics,proto3" json:"request_statistics,omitempty"`
 	Updates           *CommandUpdates        `protobuf:"bytes,7,opt,name=updates,proto3" json:"updates,omitempty"`
+	SynchronizerId    string                 `protobuf:"bytes,8,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	Timings           []*Timing              `protobuf:"bytes,9,rep,name=timings,proto3" json:"timings,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
 
 func (x *CommandStatus) Reset() {
 	*x = CommandStatus{}
-	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -208,7 +262,7 @@ func (x *CommandStatus) String() string {
 func (*CommandStatus) ProtoMessage() {}
 
 func (x *CommandStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -221,7 +275,7 @@ func (x *CommandStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommandStatus.ProtoReflect.Descriptor instead.
 func (*CommandStatus) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{2}
+	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CommandStatus) GetStarted() *timestamppb.Timestamp {
@@ -273,6 +327,20 @@ func (x *CommandStatus) GetUpdates() *CommandUpdates {
 	return nil
 }
 
+func (x *CommandStatus) GetSynchronizerId() string {
+	if x != nil {
+		return x.SynchronizerId
+	}
+	return ""
+}
+
+func (x *CommandStatus) GetTimings() []*Timing {
+	if x != nil {
+		return x.Timings
+	}
+	return nil
+}
+
 type RequestStatistics struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Envelopes     uint32                 `protobuf:"varint,1,opt,name=envelopes,proto3" json:"envelopes,omitempty"`
@@ -284,7 +352,7 @@ type RequestStatistics struct {
 
 func (x *RequestStatistics) Reset() {
 	*x = RequestStatistics{}
-	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[3]
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -296,7 +364,7 @@ func (x *RequestStatistics) String() string {
 func (*RequestStatistics) ProtoMessage() {}
 
 func (x *RequestStatistics) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[3]
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -309,7 +377,7 @@ func (x *RequestStatistics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RequestStatistics.ProtoReflect.Descriptor instead.
 func (*RequestStatistics) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{3}
+	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *RequestStatistics) GetEnvelopes() uint32 {
@@ -346,7 +414,7 @@ type CommandUpdates struct {
 
 func (x *CommandUpdates) Reset() {
 	*x = CommandUpdates{}
-	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[4]
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -358,7 +426,7 @@ func (x *CommandUpdates) String() string {
 func (*CommandUpdates) ProtoMessage() {}
 
 func (x *CommandUpdates) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[4]
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -371,7 +439,7 @@ func (x *CommandUpdates) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommandUpdates.ProtoReflect.Descriptor instead.
 func (*CommandUpdates) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{4}
+	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CommandUpdates) GetCreated() []*Contract {
@@ -420,7 +488,7 @@ type Contract struct {
 
 func (x *Contract) Reset() {
 	*x = Contract{}
-	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[5]
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -432,7 +500,7 @@ func (x *Contract) String() string {
 func (*Contract) ProtoMessage() {}
 
 func (x *Contract) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[5]
+	mi := &file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -445,7 +513,7 @@ func (x *Contract) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Contract.ProtoReflect.Descriptor instead.
 func (*Contract) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{5}
+	return file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Contract) GetTemplateId() *v2.Identifier {
@@ -479,7 +547,11 @@ const file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDesc
 	"\x05state\x18\x02 \x01(\x0e2*.com.daml.ledger.api.v2.admin.CommandStateR\x05state\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\rR\x05limit\"n\n" +
 	"\x18GetCommandStatusResponse\x12R\n" +
-	"\x0ecommand_status\x18\x01 \x03(\v2+.com.daml.ledger.api.v2.admin.CommandStatusR\rcommandStatus\"\xea\x03\n" +
+	"\x0ecommand_status\x18\x01 \x03(\v2+.com.daml.ledger.api.v2.admin.CommandStatusR\rcommandStatus\"K\n" +
+	"\x06Timing\x12 \n" +
+	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x1f\n" +
+	"\vduration_ms\x18\x02 \x01(\rR\n" +
+	"durationMs\"\xd3\x04\n" +
 	"\rCommandStatus\x124\n" +
 	"\astarted\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\astarted\x128\n" +
 	"\tcompleted\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcompleted\x12B\n" +
@@ -489,7 +561,9 @@ const file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDesc
 	"\x05state\x18\x04 \x01(\x0e2*.com.daml.ledger.api.v2.admin.CommandStateR\x05state\x12;\n" +
 	"\bcommands\x18\x05 \x03(\v2\x1f.com.daml.ledger.api.v2.CommandR\bcommands\x12^\n" +
 	"\x12request_statistics\x18\x06 \x01(\v2/.com.daml.ledger.api.v2.admin.RequestStatisticsR\x11requestStatistics\x12F\n" +
-	"\aupdates\x18\a \x01(\v2,.com.daml.ledger.api.v2.admin.CommandUpdatesR\aupdates\"t\n" +
+	"\aupdates\x18\a \x01(\v2,.com.daml.ledger.api.v2.admin.CommandUpdatesR\aupdates\x12'\n" +
+	"\x0fsynchronizer_id\x18\b \x01(\tR\x0esynchronizerId\x12>\n" +
+	"\atimings\x18\t \x03(\v2$.com.daml.ledger.api.v2.admin.TimingR\atimings\"t\n" +
 	"\x11RequestStatistics\x12\x1c\n" +
 	"\tenvelopes\x18\x01 \x01(\rR\tenvelopes\x12!\n" +
 	"\frequest_size\x18\x02 \x01(\rR\vrequestSize\x12\x1e\n" +
@@ -530,42 +604,44 @@ func file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDescG
 }
 
 var file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_goTypes = []any{
 	(CommandState)(0),                // 0: com.daml.ledger.api.v2.admin.CommandState
 	(*GetCommandStatusRequest)(nil),  // 1: com.daml.ledger.api.v2.admin.GetCommandStatusRequest
 	(*GetCommandStatusResponse)(nil), // 2: com.daml.ledger.api.v2.admin.GetCommandStatusResponse
-	(*CommandStatus)(nil),            // 3: com.daml.ledger.api.v2.admin.CommandStatus
-	(*RequestStatistics)(nil),        // 4: com.daml.ledger.api.v2.admin.RequestStatistics
-	(*CommandUpdates)(nil),           // 5: com.daml.ledger.api.v2.admin.CommandUpdates
-	(*Contract)(nil),                 // 6: com.daml.ledger.api.v2.admin.Contract
-	(*timestamppb.Timestamp)(nil),    // 7: google.protobuf.Timestamp
-	(*v2.Completion)(nil),            // 8: com.daml.ledger.api.v2.Completion
-	(*v2.Command)(nil),               // 9: com.daml.ledger.api.v2.Command
-	(*v2.Identifier)(nil),            // 10: com.daml.ledger.api.v2.Identifier
-	(*v2.Value)(nil),                 // 11: com.daml.ledger.api.v2.Value
+	(*Timing)(nil),                   // 3: com.daml.ledger.api.v2.admin.Timing
+	(*CommandStatus)(nil),            // 4: com.daml.ledger.api.v2.admin.CommandStatus
+	(*RequestStatistics)(nil),        // 5: com.daml.ledger.api.v2.admin.RequestStatistics
+	(*CommandUpdates)(nil),           // 6: com.daml.ledger.api.v2.admin.CommandUpdates
+	(*Contract)(nil),                 // 7: com.daml.ledger.api.v2.admin.Contract
+	(*timestamppb.Timestamp)(nil),    // 8: google.protobuf.Timestamp
+	(*v2.Completion)(nil),            // 9: com.daml.ledger.api.v2.Completion
+	(*v2.Command)(nil),               // 10: com.daml.ledger.api.v2.Command
+	(*v2.Identifier)(nil),            // 11: com.daml.ledger.api.v2.Identifier
+	(*v2.Value)(nil),                 // 12: com.daml.ledger.api.v2.Value
 }
 var file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_depIdxs = []int32{
 	0,  // 0: com.daml.ledger.api.v2.admin.GetCommandStatusRequest.state:type_name -> com.daml.ledger.api.v2.admin.CommandState
-	3,  // 1: com.daml.ledger.api.v2.admin.GetCommandStatusResponse.command_status:type_name -> com.daml.ledger.api.v2.admin.CommandStatus
-	7,  // 2: com.daml.ledger.api.v2.admin.CommandStatus.started:type_name -> google.protobuf.Timestamp
-	7,  // 3: com.daml.ledger.api.v2.admin.CommandStatus.completed:type_name -> google.protobuf.Timestamp
-	8,  // 4: com.daml.ledger.api.v2.admin.CommandStatus.completion:type_name -> com.daml.ledger.api.v2.Completion
+	4,  // 1: com.daml.ledger.api.v2.admin.GetCommandStatusResponse.command_status:type_name -> com.daml.ledger.api.v2.admin.CommandStatus
+	8,  // 2: com.daml.ledger.api.v2.admin.CommandStatus.started:type_name -> google.protobuf.Timestamp
+	8,  // 3: com.daml.ledger.api.v2.admin.CommandStatus.completed:type_name -> google.protobuf.Timestamp
+	9,  // 4: com.daml.ledger.api.v2.admin.CommandStatus.completion:type_name -> com.daml.ledger.api.v2.Completion
 	0,  // 5: com.daml.ledger.api.v2.admin.CommandStatus.state:type_name -> com.daml.ledger.api.v2.admin.CommandState
-	9,  // 6: com.daml.ledger.api.v2.admin.CommandStatus.commands:type_name -> com.daml.ledger.api.v2.Command
-	4,  // 7: com.daml.ledger.api.v2.admin.CommandStatus.request_statistics:type_name -> com.daml.ledger.api.v2.admin.RequestStatistics
-	5,  // 8: com.daml.ledger.api.v2.admin.CommandStatus.updates:type_name -> com.daml.ledger.api.v2.admin.CommandUpdates
-	6,  // 9: com.daml.ledger.api.v2.admin.CommandUpdates.created:type_name -> com.daml.ledger.api.v2.admin.Contract
-	6,  // 10: com.daml.ledger.api.v2.admin.CommandUpdates.archived:type_name -> com.daml.ledger.api.v2.admin.Contract
-	10, // 11: com.daml.ledger.api.v2.admin.Contract.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	11, // 12: com.daml.ledger.api.v2.admin.Contract.contract_key:type_name -> com.daml.ledger.api.v2.Value
-	1,  // 13: com.daml.ledger.api.v2.admin.CommandInspectionService.GetCommandStatus:input_type -> com.daml.ledger.api.v2.admin.GetCommandStatusRequest
-	2,  // 14: com.daml.ledger.api.v2.admin.CommandInspectionService.GetCommandStatus:output_type -> com.daml.ledger.api.v2.admin.GetCommandStatusResponse
-	14, // [14:15] is the sub-list for method output_type
-	13, // [13:14] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	10, // 6: com.daml.ledger.api.v2.admin.CommandStatus.commands:type_name -> com.daml.ledger.api.v2.Command
+	5,  // 7: com.daml.ledger.api.v2.admin.CommandStatus.request_statistics:type_name -> com.daml.ledger.api.v2.admin.RequestStatistics
+	6,  // 8: com.daml.ledger.api.v2.admin.CommandStatus.updates:type_name -> com.daml.ledger.api.v2.admin.CommandUpdates
+	3,  // 9: com.daml.ledger.api.v2.admin.CommandStatus.timings:type_name -> com.daml.ledger.api.v2.admin.Timing
+	7,  // 10: com.daml.ledger.api.v2.admin.CommandUpdates.created:type_name -> com.daml.ledger.api.v2.admin.Contract
+	7,  // 11: com.daml.ledger.api.v2.admin.CommandUpdates.archived:type_name -> com.daml.ledger.api.v2.admin.Contract
+	11, // 12: com.daml.ledger.api.v2.admin.Contract.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	12, // 13: com.daml.ledger.api.v2.admin.Contract.contract_key:type_name -> com.daml.ledger.api.v2.Value
+	1,  // 14: com.daml.ledger.api.v2.admin.CommandInspectionService.GetCommandStatus:input_type -> com.daml.ledger.api.v2.admin.GetCommandStatusRequest
+	2,  // 15: com.daml.ledger.api.v2.admin.CommandInspectionService.GetCommandStatus:output_type -> com.daml.ledger.api.v2.admin.GetCommandStatusResponse
+	15, // [15:16] is the sub-list for method output_type
+	14, // [14:15] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_init() }
@@ -579,7 +655,7 @@ func file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDesc), len(file_com_daml_ledger_api_v2_admin_command_inspection_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

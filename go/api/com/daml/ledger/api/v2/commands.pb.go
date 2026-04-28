@@ -483,6 +483,7 @@ type Commands struct {
 	SynchronizerId               string                         `protobuf:"bytes,13,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
 	PackageIdSelectionPreference []string                       `protobuf:"bytes,14,rep,name=package_id_selection_preference,json=packageIdSelectionPreference,proto3" json:"package_id_selection_preference,omitempty"`
 	PrefetchContractKeys         []*PrefetchContractKey         `protobuf:"bytes,15,rep,name=prefetch_contract_keys,json=prefetchContractKeys,proto3" json:"prefetch_contract_keys,omitempty"`
+	TapsMaxPasses                *uint32                        `protobuf:"varint,16,opt,name=taps_max_passes,json=tapsMaxPasses,proto3,oneof" json:"taps_max_passes,omitempty"`
 	unknownFields                protoimpl.UnknownFields
 	sizeCache                    protoimpl.SizeCache
 }
@@ -633,6 +634,13 @@ func (x *Commands) GetPrefetchContractKeys() []*PrefetchContractKey {
 	return nil
 }
 
+func (x *Commands) GetTapsMaxPasses() uint32 {
+	if x != nil && x.TapsMaxPasses != nil {
+		return *x.TapsMaxPasses
+	}
+	return 0
+}
+
 type isCommands_DeduplicationPeriod interface {
 	isCommands_DeduplicationPeriod()
 }
@@ -741,7 +749,7 @@ const file_com_daml_ledger_api_v2_commands_proto_rawDesc = "" +
 	"\vcontract_id\x18\x02 \x01(\tR\n" +
 	"contractId\x12,\n" +
 	"\x12created_event_blob\x18\x03 \x01(\fR\x10createdEventBlob\x12'\n" +
-	"\x0fsynchronizer_id\x18\x04 \x01(\tR\x0esynchronizerId\"\xda\x06\n" +
+	"\x0fsynchronizer_id\x18\x04 \x01(\tR\x0esynchronizerId\"\x9b\a\n" +
 	"\bCommands\x12\x1f\n" +
 	"\vworkflow_id\x18\x01 \x01(\tR\n" +
 	"workflowId\x12\x17\n" +
@@ -760,8 +768,10 @@ const file_com_daml_ledger_api_v2_commands_proto_rawDesc = "" +
 	"\x13disclosed_contracts\x18\f \x03(\v2).com.daml.ledger.api.v2.DisclosedContractR\x12disclosedContracts\x12'\n" +
 	"\x0fsynchronizer_id\x18\r \x01(\tR\x0esynchronizerId\x12E\n" +
 	"\x1fpackage_id_selection_preference\x18\x0e \x03(\tR\x1cpackageIdSelectionPreference\x12a\n" +
-	"\x16prefetch_contract_keys\x18\x0f \x03(\v2+.com.daml.ledger.api.v2.PrefetchContractKeyR\x14prefetchContractKeysB\x16\n" +
-	"\x14deduplication_period\"\x9c\x01\n" +
+	"\x16prefetch_contract_keys\x18\x0f \x03(\v2+.com.daml.ledger.api.v2.PrefetchContractKeyR\x14prefetchContractKeys\x12+\n" +
+	"\x0ftaps_max_passes\x18\x10 \x01(\rH\x01R\rtapsMaxPasses\x88\x01\x01B\x16\n" +
+	"\x14deduplication_periodB\x12\n" +
+	"\x10_taps_max_passes\"\x9c\x01\n" +
 	"\x13PrefetchContractKey\x12C\n" +
 	"\vtemplate_id\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
 	"templateId\x12@\n" +

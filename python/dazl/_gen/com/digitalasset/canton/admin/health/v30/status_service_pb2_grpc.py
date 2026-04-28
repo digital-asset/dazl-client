@@ -48,16 +48,6 @@ class StatusServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.SetLogLevelRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.SetLogLevelResponse.FromString,
                 _registered_method=True)
-        self.GetLastErrors = channel.unary_unary(
-                '/com.digitalasset.canton.admin.health.v30.StatusService/GetLastErrors',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorsRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorsResponse.FromString,
-                _registered_method=True)
-        self.GetLastErrorTrace = channel.unary_unary(
-                '/com.digitalasset.canton.admin.health.v30.StatusService/GetLastErrorTrace',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorTraceRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorTraceResponse.FromString,
-                _registered_method=True)
 
 
 class StatusServiceServicer(object):
@@ -75,18 +65,6 @@ class StatusServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetLastErrors(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetLastErrorTrace(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_StatusServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -99,16 +77,6 @@ def add_StatusServiceServicer_to_server(servicer, server):
                     servicer.SetLogLevel,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.SetLogLevelRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.SetLogLevelResponse.SerializeToString,
-            ),
-            'GetLastErrors': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetLastErrors,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorsRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorsResponse.SerializeToString,
-            ),
-            'GetLastErrorTrace': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetLastErrorTrace,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorTraceRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorTraceResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -165,60 +133,6 @@ class StatusService(object):
             '/com.digitalasset.canton.admin.health.v30.StatusService/SetLogLevel',
             com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.SetLogLevelRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.SetLogLevelResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def GetLastErrors(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/com.digitalasset.canton.admin.health.v30.StatusService/GetLastErrors',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorsRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorsResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def GetLastErrorTrace(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/com.digitalasset.canton.admin.health.v30.StatusService/GetLastErrorTrace',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorTraceRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_health_dot_v30_dot_status__service__pb2.GetLastErrorTraceResponse.FromString,
             options,
             channel_credentials,
             insecure,

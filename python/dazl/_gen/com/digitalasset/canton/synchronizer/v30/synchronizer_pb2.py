@@ -29,7 +29,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n;com/digitalasset/canton/synchronizer/v30/synchronizer.proto\x12(com.digitalasset.canton.synchronizer.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\x01\n\x17SynchronizerPredecessor\x12\x36\n\x17predecessor_physical_id\x18\x01 \x01(\tR\x15predecessorPhysicalId\x12=\n\x0cupgrade_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0bupgradeTimeBYZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n;com/digitalasset/canton/synchronizer/v30/synchronizer.proto\x12(com.digitalasset.canton.synchronizer.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb8\x01\n\x17SynchronizerPredecessor\x12\x36\n\x17predecessor_physical_id\x18\x01 \x01(\tR\x15predecessorPhysicalId\x12=\n\x0cupgrade_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0bupgradeTime\x12&\n\x0fis_late_upgrade\x18\x03 \x01(\x08R\risLateUpgradeBYZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,5 +38,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'ZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/v30'
   _globals['_SYNCHRONIZERPREDECESSOR']._serialized_start=139
-  _globals['_SYNCHRONIZERPREDECESSOR']._serialized_end=283
+  _globals['_SYNCHRONIZERPREDECESSOR']._serialized_end=323
 # @@protoc_insertion_point(module_scope)

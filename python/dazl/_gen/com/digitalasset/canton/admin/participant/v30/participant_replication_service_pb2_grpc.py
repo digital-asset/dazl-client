@@ -7,7 +7,7 @@
 import grpc
 import warnings
 
-from . import enterprise_participant_replication_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_enterprise__participant__replication__service__pb2
+from . import participant_replication_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__replication__service__pb2
 
 GRPC_GENERATED_VERSION = '1.80.0'
 GRPC_VERSION = grpc.__version__
@@ -22,14 +22,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in com/digitalasset/canton/admin/participant/v30/enterprise_participant_replication_service_pb2_grpc.py depends on'
+        + ' but the generated code in com/digitalasset/canton/admin/participant/v30/participant_replication_service_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class EnterpriseParticipantReplicationServiceStub(object):
+class ParticipantReplicationServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -39,13 +39,13 @@ class EnterpriseParticipantReplicationServiceStub(object):
             channel: A grpc.Channel.
         """
         self.SetPassive = channel.unary_unary(
-                '/com.digitalasset.canton.admin.participant.v30.EnterpriseParticipantReplicationService/SetPassive',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_enterprise__participant__replication__service__pb2.SetPassiveRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_enterprise__participant__replication__service__pb2.SetPassiveResponse.FromString,
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantReplicationService/SetPassive',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__replication__service__pb2.SetPassiveRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__replication__service__pb2.SetPassiveResponse.FromString,
                 _registered_method=True)
 
 
-class EnterpriseParticipantReplicationServiceServicer(object):
+class ParticipantReplicationServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def SetPassive(self, request, context):
@@ -55,22 +55,22 @@ class EnterpriseParticipantReplicationServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_EnterpriseParticipantReplicationServiceServicer_to_server(servicer, server):
+def add_ParticipantReplicationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SetPassive': grpc.unary_unary_rpc_method_handler(
                     servicer.SetPassive,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_enterprise__participant__replication__service__pb2.SetPassiveRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_enterprise__participant__replication__service__pb2.SetPassiveResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__replication__service__pb2.SetPassiveRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__replication__service__pb2.SetPassiveResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'com.digitalasset.canton.admin.participant.v30.EnterpriseParticipantReplicationService', rpc_method_handlers)
+            'com.digitalasset.canton.admin.participant.v30.ParticipantReplicationService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('com.digitalasset.canton.admin.participant.v30.EnterpriseParticipantReplicationService', rpc_method_handlers)
+    server.add_registered_method_handlers('com.digitalasset.canton.admin.participant.v30.ParticipantReplicationService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class EnterpriseParticipantReplicationService(object):
+class ParticipantReplicationService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -87,9 +87,9 @@ class EnterpriseParticipantReplicationService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.digitalasset.canton.admin.participant.v30.EnterpriseParticipantReplicationService/SetPassive',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_enterprise__participant__replication__service__pb2.SetPassiveRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_enterprise__participant__replication__service__pb2.SetPassiveResponse.FromString,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantReplicationService/SetPassive',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__replication__service__pb2.SetPassiveRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__replication__service__pb2.SetPassiveResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -118,7 +118,6 @@ type SequencerConnect_HandshakeResponse struct {
 	// Types that are valid to be assigned to Value:
 	//
 	//	*SequencerConnect_HandshakeResponse_Success_
-	//	*SequencerConnect_HandshakeResponse_Failure_
 	Value         isSequencerConnect_HandshakeResponse_Value `protobuf_oneof:"value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -177,15 +176,6 @@ func (x *SequencerConnect_HandshakeResponse) GetSuccess() *SequencerConnect_Hand
 	return nil
 }
 
-func (x *SequencerConnect_HandshakeResponse) GetFailure() *SequencerConnect_HandshakeResponse_Failure {
-	if x != nil {
-		if x, ok := x.Value.(*SequencerConnect_HandshakeResponse_Failure_); ok {
-			return x.Failure
-		}
-	}
-	return nil
-}
-
 type isSequencerConnect_HandshakeResponse_Value interface {
 	isSequencerConnect_HandshakeResponse_Value()
 }
@@ -194,13 +184,7 @@ type SequencerConnect_HandshakeResponse_Success_ struct {
 	Success *SequencerConnect_HandshakeResponse_Success `protobuf:"bytes,2,opt,name=success,proto3,oneof"`
 }
 
-type SequencerConnect_HandshakeResponse_Failure_ struct {
-	Failure *SequencerConnect_HandshakeResponse_Failure `protobuf:"bytes,3,opt,name=failure,proto3,oneof"`
-}
-
 func (*SequencerConnect_HandshakeResponse_Success_) isSequencerConnect_HandshakeResponse_Value() {}
-
-func (*SequencerConnect_HandshakeResponse_Failure_) isSequencerConnect_HandshakeResponse_Value() {}
 
 type SequencerConnect_GetSynchronizerIdRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -434,7 +418,6 @@ type SequencerConnect_VerifyActiveResponse struct {
 	// Types that are valid to be assigned to Value:
 	//
 	//	*SequencerConnect_VerifyActiveResponse_Success_
-	//	*SequencerConnect_VerifyActiveResponse_Failure_
 	Value         isSequencerConnect_VerifyActiveResponse_Value `protobuf_oneof:"value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -486,15 +469,6 @@ func (x *SequencerConnect_VerifyActiveResponse) GetSuccess() *SequencerConnect_V
 	return nil
 }
 
-func (x *SequencerConnect_VerifyActiveResponse) GetFailure() *SequencerConnect_VerifyActiveResponse_Failure {
-	if x != nil {
-		if x, ok := x.Value.(*SequencerConnect_VerifyActiveResponse_Failure_); ok {
-			return x.Failure
-		}
-	}
-	return nil
-}
-
 type isSequencerConnect_VerifyActiveResponse_Value interface {
 	isSequencerConnect_VerifyActiveResponse_Value()
 }
@@ -503,14 +477,7 @@ type SequencerConnect_VerifyActiveResponse_Success_ struct {
 	Success *SequencerConnect_VerifyActiveResponse_Success `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
 }
 
-type SequencerConnect_VerifyActiveResponse_Failure_ struct {
-	Failure *SequencerConnect_VerifyActiveResponse_Failure `protobuf:"bytes,2,opt,name=failure,proto3,oneof"`
-}
-
 func (*SequencerConnect_VerifyActiveResponse_Success_) isSequencerConnect_VerifyActiveResponse_Value() {
-}
-
-func (*SequencerConnect_VerifyActiveResponse_Failure_) isSequencerConnect_VerifyActiveResponse_Value() {
 }
 
 type SequencerConnect_RegisterOnboardingTopologyTransactionsRequest struct {
@@ -629,50 +596,6 @@ func (*SequencerConnect_HandshakeResponse_Success) Descriptor() ([]byte, []int) 
 	return file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_rawDescGZIP(), []int{0, 1, 0}
 }
 
-type SequencerConnect_HandshakeResponse_Failure struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Reason        string                 `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SequencerConnect_HandshakeResponse_Failure) Reset() {
-	*x = SequencerConnect_HandshakeResponse_Failure{}
-	mi := &file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SequencerConnect_HandshakeResponse_Failure) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SequencerConnect_HandshakeResponse_Failure) ProtoMessage() {}
-
-func (x *SequencerConnect_HandshakeResponse_Failure) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SequencerConnect_HandshakeResponse_Failure.ProtoReflect.Descriptor instead.
-func (*SequencerConnect_HandshakeResponse_Failure) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_rawDescGZIP(), []int{0, 1, 1}
-}
-
-func (x *SequencerConnect_HandshakeResponse_Failure) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
 type SequencerConnect_VerifyActiveResponse_Success struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	IsActive      bool                   `protobuf:"varint,1,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
@@ -682,7 +605,7 @@ type SequencerConnect_VerifyActiveResponse_Success struct {
 
 func (x *SequencerConnect_VerifyActiveResponse_Success) Reset() {
 	*x = SequencerConnect_VerifyActiveResponse_Success{}
-	mi := &file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -694,7 +617,7 @@ func (x *SequencerConnect_VerifyActiveResponse_Success) String() string {
 func (*SequencerConnect_VerifyActiveResponse_Success) ProtoMessage() {}
 
 func (x *SequencerConnect_VerifyActiveResponse_Success) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -717,68 +640,21 @@ func (x *SequencerConnect_VerifyActiveResponse_Success) GetIsActive() bool {
 	return false
 }
 
-type SequencerConnect_VerifyActiveResponse_Failure struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Reason        string                 `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SequencerConnect_VerifyActiveResponse_Failure) Reset() {
-	*x = SequencerConnect_VerifyActiveResponse_Failure{}
-	mi := &file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SequencerConnect_VerifyActiveResponse_Failure) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SequencerConnect_VerifyActiveResponse_Failure) ProtoMessage() {}
-
-func (x *SequencerConnect_VerifyActiveResponse_Failure) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SequencerConnect_VerifyActiveResponse_Failure.ProtoReflect.Descriptor instead.
-func (*SequencerConnect_VerifyActiveResponse_Failure) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_rawDescGZIP(), []int{0, 7, 1}
-}
-
-func (x *SequencerConnect_VerifyActiveResponse_Failure) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
 var File_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_rawDesc = "" +
 	"\n" +
-	"Icom/digitalasset/canton/sequencer/api/v30/sequencer_connect_service.proto\x12)com.digitalasset.canton.sequencer.api.v30\x1a5com/digitalasset/canton/protocol/v30/sequencing.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\xcd\v\n" +
+	"Icom/digitalasset/canton/sequencer/api/v30/sequencer_connect_service.proto\x12)com.digitalasset.canton.sequencer.api.v30\x1a5com/digitalasset/canton/protocol/v30/sequencing.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\xbc\t\n" +
 	"\x10SequencerConnect\x1a\xa8\x01\n" +
 	"\x10HandshakeRequest\x128\n" +
 	"\x18client_protocol_versions\x18\x01 \x03(\x05R\x16clientProtocolVersions\x12=\n" +
 	"\x18minimum_protocol_version\x18\x02 \x01(\x05H\x00R\x16minimumProtocolVersion\x88\x01\x01B\x1b\n" +
-	"\x19_minimum_protocol_version\x1a\xe8\x02\n" +
+	"\x19_minimum_protocol_version\x1a\xe1\x01\n" +
 	"\x11HandshakeResponse\x126\n" +
 	"\x17server_protocol_version\x18\x01 \x01(\x05R\x15serverProtocolVersion\x12q\n" +
-	"\asuccess\x18\x02 \x01(\v2U.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.SuccessH\x00R\asuccess\x12q\n" +
-	"\afailure\x18\x03 \x01(\v2U.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.FailureH\x00R\afailure\x1a\t\n" +
-	"\aSuccess\x1a!\n" +
-	"\aFailure\x12\x16\n" +
-	"\x06reason\x18\x01 \x01(\tR\x06reasonB\a\n" +
-	"\x05value\x1a\x1a\n" +
+	"\asuccess\x18\x02 \x01(\v2U.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.SuccessH\x00R\asuccess\x1a\t\n" +
+	"\aSuccessB\a\n" +
+	"\x05valueJ\x04\b\x03\x10\x04R\afailure\x1a\x1a\n" +
 	"\x18GetSynchronizerIdRequest\x1az\n" +
 	"\x19GetSynchronizerIdResponse\x128\n" +
 	"\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12#\n" +
@@ -788,15 +664,12 @@ const file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_p
 	"\rparameters_v1\x18\x02 \x01(\v2B.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersH\x00R\fparametersV1B\f\n" +
 	"\n" +
 	"parameters\x1a\x15\n" +
-	"\x13VerifyActiveRequest\x1a\xd6\x02\n" +
+	"\x13VerifyActiveRequest\x1a\xcc\x01\n" +
 	"\x14VerifyActiveResponse\x12t\n" +
-	"\asuccess\x18\x01 \x01(\v2X.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.SuccessH\x00R\asuccess\x12t\n" +
-	"\afailure\x18\x02 \x01(\v2X.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.FailureH\x00R\afailure\x1a&\n" +
+	"\asuccess\x18\x01 \x01(\v2X.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.SuccessH\x00R\asuccess\x1a&\n" +
 	"\aSuccess\x12\x1b\n" +
-	"\tis_active\x18\x01 \x01(\bR\bisActive\x1a!\n" +
-	"\aFailure\x12\x16\n" +
-	"\x06reason\x18\x01 \x01(\tR\x06reasonB\a\n" +
-	"\x05value\x1a\xa5\x01\n" +
+	"\tis_active\x18\x01 \x01(\bR\bisActiveB\a\n" +
+	"\x05valueJ\x04\b\x02\x10\x03R\afailure\x1a\xa5\x01\n" +
 	"-RegisterOnboardingTopologyTransactionsRequest\x12t\n" +
 	"\x15topology_transactions\x18\x01 \x03(\v2?.com.digitalasset.canton.protocol.v30.SignedTopologyTransactionR\x14topologyTransactions\x1a0\n" +
 	".RegisterOnboardingTopologyTransactionsResponse2\x98\b\n" +
@@ -819,7 +692,7 @@ func file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_pr
 	return file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_goTypes = []any{
 	(*SequencerConnect)(nil),                                                // 0: com.digitalasset.canton.sequencer.api.v30.SequencerConnect
 	(*SequencerConnect_HandshakeRequest)(nil),                               // 1: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeRequest
@@ -833,34 +706,30 @@ var file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_pro
 	(*SequencerConnect_RegisterOnboardingTopologyTransactionsRequest)(nil),  // 9: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsRequest
 	(*SequencerConnect_RegisterOnboardingTopologyTransactionsResponse)(nil), // 10: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsResponse
 	(*SequencerConnect_HandshakeResponse_Success)(nil),                      // 11: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.Success
-	(*SequencerConnect_HandshakeResponse_Failure)(nil),                      // 12: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.Failure
-	(*SequencerConnect_VerifyActiveResponse_Success)(nil),                   // 13: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.Success
-	(*SequencerConnect_VerifyActiveResponse_Failure)(nil),                   // 14: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.Failure
-	(*v30.StaticSynchronizerParameters)(nil),                                // 15: com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
-	(*v30.SignedTopologyTransaction)(nil),                                   // 16: com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
+	(*SequencerConnect_VerifyActiveResponse_Success)(nil),                   // 12: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.Success
+	(*v30.StaticSynchronizerParameters)(nil),                                // 13: com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
+	(*v30.SignedTopologyTransaction)(nil),                                   // 14: com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
 }
 var file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_depIdxs = []int32{
 	11, // 0: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.success:type_name -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.Success
-	12, // 1: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.failure:type_name -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.Failure
-	15, // 2: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersResponse.parameters_v1:type_name -> com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
-	13, // 3: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.success:type_name -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.Success
-	14, // 4: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.failure:type_name -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.Failure
-	16, // 5: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsRequest.topology_transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
-	1,  // 6: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.Handshake:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeRequest
-	3,  // 7: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.GetSynchronizerId:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerIdRequest
-	5,  // 8: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.GetSynchronizerParameters:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersRequest
-	7,  // 9: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.VerifyActive:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveRequest
-	9,  // 10: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.RegisterOnboardingTopologyTransactions:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsRequest
-	2,  // 11: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.Handshake:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse
-	4,  // 12: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.GetSynchronizerId:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerIdResponse
-	6,  // 13: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.GetSynchronizerParameters:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersResponse
-	8,  // 14: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.VerifyActive:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse
-	10, // 15: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.RegisterOnboardingTopologyTransactions:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsResponse
-	11, // [11:16] is the sub-list for method output_type
-	6,  // [6:11] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	13, // 1: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersResponse.parameters_v1:type_name -> com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
+	12, // 2: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.success:type_name -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.Success
+	14, // 3: com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsRequest.topology_transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
+	1,  // 4: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.Handshake:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeRequest
+	3,  // 5: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.GetSynchronizerId:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerIdRequest
+	5,  // 6: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.GetSynchronizerParameters:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersRequest
+	7,  // 7: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.VerifyActive:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveRequest
+	9,  // 8: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.RegisterOnboardingTopologyTransactions:input_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsRequest
+	2,  // 9: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.Handshake:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse
+	4,  // 10: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.GetSynchronizerId:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerIdResponse
+	6,  // 11: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.GetSynchronizerParameters:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersResponse
+	8,  // 12: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.VerifyActive:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse
+	10, // 13: com.digitalasset.canton.sequencer.api.v30.SequencerConnectService.RegisterOnboardingTopologyTransactions:output_type -> com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsResponse
+	9,  // [9:14] is the sub-list for method output_type
+	4,  // [4:9] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_init() }
@@ -871,14 +740,12 @@ func file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_pr
 	file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[1].OneofWrappers = []any{}
 	file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[2].OneofWrappers = []any{
 		(*SequencerConnect_HandshakeResponse_Success_)(nil),
-		(*SequencerConnect_HandshakeResponse_Failure_)(nil),
 	}
 	file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[6].OneofWrappers = []any{
 		(*SequencerConnect_GetSynchronizerParametersResponse_ParametersV1)(nil),
 	}
 	file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_msgTypes[8].OneofWrappers = []any{
 		(*SequencerConnect_VerifyActiveResponse_Success_)(nil),
-		(*SequencerConnect_VerifyActiveResponse_Failure_)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -886,7 +753,7 @@ func file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_pr
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_rawDesc), len(file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

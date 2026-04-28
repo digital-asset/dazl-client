@@ -3,11 +3,11 @@
 stdenv.mkDerivation rec {
   pname = "canton-open-source";
 
-  version = "3.4.10";
+  version = "3.5.1-rc3";
 
   src = builtins.fetchurl {
-    url = "https://github.com/digital-asset/daml/releases/download/v${version}/canton-open-source-${version}.tar.gz";
-    sha256 = "02rm44kv31dhanv2hj56y8hw5r2hwp4n82n0bjj7izi6hbhg2xcs";
+    url = "https://github.com/digital-asset/canton/releases/download/v${version}/canton-open-source-${version}.tar.gz";
+    sha256 = "0bcmmxrh3fs63hqp543s42l8lb1wwiidsp2a5gbvq4dyg7imzibr";
   };
   installPhase = ''
     mkdir -p "$out"

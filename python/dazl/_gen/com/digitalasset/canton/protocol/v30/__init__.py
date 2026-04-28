@@ -6,25 +6,26 @@
 from .sequencing_parameters_pb2 import DynamicSequencingParameters
 from .traffic_control_parameters_pb2 import SetTrafficPurchasedMessage, TrafficConsumed, TrafficControlParameters, TrafficPurchased, TrafficReceipt, TrafficState
 from .synchronizer_parameters_pb2 import AcsCommitmentsCatchUpConfig, DynamicSynchronizerParameters, OnboardingRestriction, ParticipantSynchronizerLimits
-from .topology_pb2 import DecentralizedNamespaceDefinition, DynamicSequencingParametersState, Enums, MediatorSynchronizerState, MultiTransactionSignatures, NamespaceDelegation, OwnerToKeyMapping, ParticipantSynchronizerPermission, PartyHostingLimits, PartyToKeyMapping, PartyToParticipant, SequencerConnectionSuccessor, SequencerSynchronizerState, SignedTopologyTransaction, SignedTopologyTransactions, SynchronizerParametersState, SynchronizerTrustCertificate, SynchronizerUpgradeAnnouncement, TopologyMapping, TopologyTransaction, TopologyTransactionsBroadcast, VettedPackages
+from .topology_pb2 import DecentralizedNamespaceDefinition, DynamicSequencingParametersState, Enums, LsuAnnouncement, LsuSequencerConnectionSuccessor, MediatorSynchronizerState, MultiTransactionSignatures, NamespaceDelegation, OwnerToKeyMapping, ParticipantSynchronizerPermission, PartyHostingLimits, PartyToKeyMapping, PartyToParticipant, SequencerSynchronizerState, SignedTopologyTransaction, SignedTopologyTransactions, SynchronizerParametersState, SynchronizerTrustCertificate, TopologyMapping, TopologyTransaction, TopologyTransactionsBroadcast, VettedPackages
 from .common_pb2 import ContractAuthenticationData, ViewType
 from .common_stable_pb2 import AggregationRule, GlobalKey, SerializableContract, Stakeholders
 from .merkle_pb2 import BlindableNode, GenTransactionTree, MerkleSeq, MerkleSeqElement
 from .quorum_pb2 import PartyIndexAndWeight, Quorum
 from .participant_transaction_pb2 import ActionDescription, CommonMetadata, CreatedContract, DeduplicationPeriod, EncryptedViewMessage, ExternalAuthorization, ExternalPartyAuthorization, FullInformeeTree, Informee, InformeeMessage, InputContract, LightTransactionViewTree, ParticipantMetadata, RootHashMessage, SubmitterMetadata, ViewCommonData, ViewHashAndKey, ViewNode, ViewParticipantData, ViewParticipantMessage
+from .sequencing_pb2 import Batch, CompressedBatch, Envelope, PossiblyIgnoredSequencedEvent, Recipients, RecipientsTree, SequencedEvent, SequencingSubmissionCost, ServiceAgreement, StaticSynchronizerParameters, SubmissionRequest
+from .acs_commitments_pb2 import AcsCommitment, AcsCommitmentProtocolMessage
 from .participant_reassignment_pb2 import ActiveContract, AssignmentCommonData, AssignmentMediatorMessage, AssignmentView, ReassignmentId, ReassignmentSubmitterMetadata, ReassignmentViewTree, UnassignmentCommonData, UnassignmentData, UnassignmentMediatorMessage, UnassignmentView
+from .synchronization_pb2 import EnvelopeContent, LsuSequencingTestMessage, LsuSequencingTestMessageContent, SignedProtocolMessage, TypedSignedProtocolMessageContent
 from .confirmation_response_pb2 import ConfirmationResponse, ConfirmationResponses, LocalVerdict, MerkleSeqIndex, ViewPosition
 from .mediator_pb2 import ConfirmationResultMessage, InformeeTree, MediatorReject, ParticipantReject, RejectionReason, Verdict
 from .versioned_google_rpc_status_pb2 import VersionedStatus
-from .sequencing_pb2 import Batch, CompressedBatch, Envelope, PossiblyIgnoredSequencedEvent, Recipients, RecipientsTree, SequencedEvent, SequencingSubmissionCost, ServiceAgreement, StaticSynchronizerParameters, SubmissionRequest
 from .storage_pb2 import StoredParties
-from .synchronization_pb2 import EnvelopeContent, SignedProtocolMessage, TypedSignedProtocolMessageContent
 from .ordering_request_pb2 import OrderingRequest
 from .signed_content_pb2 import SignedContent
-from .acs_commitments_pb2 import AcsCommitment
 
 __all__ = [
     "AcsCommitment",
+    "AcsCommitmentProtocolMessage",
     "AcsCommitmentsCatchUpConfig",
     "ActionDescription",
     "ActiveContract",
@@ -61,6 +62,10 @@ __all__ = [
     "InputContract",
     "LightTransactionViewTree",
     "LocalVerdict",
+    "LsuAnnouncement",
+    "LsuSequencerConnectionSuccessor",
+    "LsuSequencingTestMessage",
+    "LsuSequencingTestMessageContent",
     "MediatorReject",
     "MediatorSynchronizerState",
     "MerkleSeq",
@@ -89,7 +94,6 @@ __all__ = [
     "RejectionReason",
     "RootHashMessage",
     "SequencedEvent",
-    "SequencerConnectionSuccessor",
     "SequencerSynchronizerState",
     "SequencingSubmissionCost",
     "SerializableContract",
@@ -106,7 +110,6 @@ __all__ = [
     "SubmitterMetadata",
     "SynchronizerParametersState",
     "SynchronizerTrustCertificate",
-    "SynchronizerUpgradeAnnouncement",
     "TopologyMapping",
     "TopologyTransaction",
     "TopologyTransactionsBroadcast",

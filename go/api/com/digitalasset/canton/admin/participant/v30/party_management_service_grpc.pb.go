@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	PartyManagementService_AddPartyAsync_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/AddPartyAsync"
+	PartyManagementService_AddPartyWithAcsAsync_FullMethodName        = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/AddPartyWithAcsAsync"
 	PartyManagementService_GetAddPartyStatus_FullMethodName           = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetAddPartyStatus"
 	PartyManagementService_ExportPartyAcs_FullMethodName              = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportPartyAcs"
 	PartyManagementService_ImportPartyAcs_FullMethodName              = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ImportPartyAcs"
@@ -34,6 +35,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PartyManagementServiceClient interface {
 	AddPartyAsync(ctx context.Context, in *AddPartyAsyncRequest, opts ...grpc.CallOption) (*AddPartyAsyncResponse, error)
+	AddPartyWithAcsAsync(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse], error)
 	GetAddPartyStatus(ctx context.Context, in *GetAddPartyStatusRequest, opts ...grpc.CallOption) (*GetAddPartyStatusResponse, error)
 	ExportPartyAcs(ctx context.Context, in *ExportPartyAcsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportPartyAcsResponse], error)
 	ImportPartyAcs(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportPartyAcsRequest, ImportPartyAcsResponse], error)
@@ -59,6 +61,19 @@ func (c *partyManagementServiceClient) AddPartyAsync(ctx context.Context, in *Ad
 	return out, nil
 }
 
+func (c *partyManagementServiceClient) AddPartyWithAcsAsync(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &PartyManagementService_ServiceDesc.Streams[0], PartyManagementService_AddPartyWithAcsAsync_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type PartyManagementService_AddPartyWithAcsAsyncClient = grpc.ClientStreamingClient[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse]
+
 func (c *partyManagementServiceClient) GetAddPartyStatus(ctx context.Context, in *GetAddPartyStatusRequest, opts ...grpc.CallOption) (*GetAddPartyStatusResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAddPartyStatusResponse)
@@ -71,7 +86,7 @@ func (c *partyManagementServiceClient) GetAddPartyStatus(ctx context.Context, in
 
 func (c *partyManagementServiceClient) ExportPartyAcs(ctx context.Context, in *ExportPartyAcsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportPartyAcsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &PartyManagementService_ServiceDesc.Streams[0], PartyManagementService_ExportPartyAcs_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &PartyManagementService_ServiceDesc.Streams[1], PartyManagementService_ExportPartyAcs_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +105,7 @@ type PartyManagementService_ExportPartyAcsClient = grpc.ServerStreamingClient[Ex
 
 func (c *partyManagementServiceClient) ImportPartyAcs(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportPartyAcsRequest, ImportPartyAcsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &PartyManagementService_ServiceDesc.Streams[1], PartyManagementService_ImportPartyAcs_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &PartyManagementService_ServiceDesc.Streams[2], PartyManagementService_ImportPartyAcs_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,6 +141,7 @@ func (c *partyManagementServiceClient) ClearPartyOnboardingFlag(ctx context.Cont
 // for forward compatibility.
 type PartyManagementServiceServer interface {
 	AddPartyAsync(context.Context, *AddPartyAsyncRequest) (*AddPartyAsyncResponse, error)
+	AddPartyWithAcsAsync(grpc.ClientStreamingServer[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse]) error
 	GetAddPartyStatus(context.Context, *GetAddPartyStatusRequest) (*GetAddPartyStatusResponse, error)
 	ExportPartyAcs(*ExportPartyAcsRequest, grpc.ServerStreamingServer[ExportPartyAcsResponse]) error
 	ImportPartyAcs(grpc.ClientStreamingServer[ImportPartyAcsRequest, ImportPartyAcsResponse]) error
@@ -143,6 +159,9 @@ type UnimplementedPartyManagementServiceServer struct{}
 
 func (UnimplementedPartyManagementServiceServer) AddPartyAsync(context.Context, *AddPartyAsyncRequest) (*AddPartyAsyncResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddPartyAsync not implemented")
+}
+func (UnimplementedPartyManagementServiceServer) AddPartyWithAcsAsync(grpc.ClientStreamingServer[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method AddPartyWithAcsAsync not implemented")
 }
 func (UnimplementedPartyManagementServiceServer) GetAddPartyStatus(context.Context, *GetAddPartyStatusRequest) (*GetAddPartyStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAddPartyStatus not implemented")
@@ -198,6 +217,13 @@ func _PartyManagementService_AddPartyAsync_Handler(srv interface{}, ctx context.
 	}
 	return interceptor(ctx, in, info, handler)
 }
+
+func _PartyManagementService_AddPartyWithAcsAsync_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(PartyManagementServiceServer).AddPartyWithAcsAsync(&grpc.GenericServerStream[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type PartyManagementService_AddPartyWithAcsAsyncServer = grpc.ClientStreamingServer[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse]
 
 func _PartyManagementService_GetAddPartyStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAddPartyStatusRequest)
@@ -296,6 +322,11 @@ var PartyManagementService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "AddPartyWithAcsAsync",
+			Handler:       _PartyManagementService_AddPartyWithAcsAsync_Handler,
+			ClientStreams: true,
+		},
 		{
 			StreamName:    "ExportPartyAcs",
 			Handler:       _PartyManagementService_ExportPartyAcs_Handler,

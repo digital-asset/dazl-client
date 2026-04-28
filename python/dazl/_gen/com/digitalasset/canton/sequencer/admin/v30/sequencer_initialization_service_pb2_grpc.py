@@ -48,10 +48,10 @@ class SequencerInitializationServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromOnboardingStateRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromOnboardingStateResponse.FromString,
                 _registered_method=True)
-        self.InitializeSequencerFromPredecessor = channel.stream_unary(
-                '/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromPredecessor',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromPredecessorRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromPredecessorResponse.FromString,
+        self.InitializeSequencerFromLsuPredecessor = channel.stream_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromLsuPredecessor',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromLsuPredecessorRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromLsuPredecessorResponse.FromString,
                 _registered_method=True)
         self.InitializeSequencerFromGenesisStateV2 = channel.stream_unary(
                 '/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromGenesisStateV2',
@@ -80,7 +80,7 @@ class SequencerInitializationServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def InitializeSequencerFromPredecessor(self, request_iterator, context):
+    def InitializeSequencerFromLsuPredecessor(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -111,10 +111,10 @@ def add_SequencerInitializationServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromOnboardingStateRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromOnboardingStateResponse.SerializeToString,
             ),
-            'InitializeSequencerFromPredecessor': grpc.stream_unary_rpc_method_handler(
-                    servicer.InitializeSequencerFromPredecessor,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromPredecessorRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromPredecessorResponse.SerializeToString,
+            'InitializeSequencerFromLsuPredecessor': grpc.stream_unary_rpc_method_handler(
+                    servicer.InitializeSequencerFromLsuPredecessor,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromLsuPredecessorRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromLsuPredecessorResponse.SerializeToString,
             ),
             'InitializeSequencerFromGenesisStateV2': grpc.stream_unary_rpc_method_handler(
                     servicer.InitializeSequencerFromGenesisStateV2,
@@ -192,7 +192,7 @@ class SequencerInitializationService(object):
             _registered_method=True)
 
     @staticmethod
-    def InitializeSequencerFromPredecessor(request_iterator,
+    def InitializeSequencerFromLsuPredecessor(request_iterator,
             target,
             options=(),
             channel_credentials=None,
@@ -205,9 +205,9 @@ class SequencerInitializationService(object):
         return grpc.experimental.stream_unary(
             request_iterator,
             target,
-            '/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromPredecessor',
-            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromPredecessorRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromPredecessorResponse.FromString,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromLsuPredecessor',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromLsuPredecessorRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__service__pb2.InitializeSequencerFromLsuPredecessorResponse.FromString,
             options,
             channel_credentials,
             insecure,

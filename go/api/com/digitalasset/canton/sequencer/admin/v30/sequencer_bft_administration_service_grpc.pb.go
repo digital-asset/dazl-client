@@ -24,6 +24,7 @@ const (
 	SequencerBftAdministrationService_AddPeerEndpoint_FullMethodName              = "/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/AddPeerEndpoint"
 	SequencerBftAdministrationService_RemovePeerEndpoint_FullMethodName           = "/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/RemovePeerEndpoint"
 	SequencerBftAdministrationService_GetPeerNetworkStatus_FullMethodName         = "/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetPeerNetworkStatus"
+	SequencerBftAdministrationService_GetWriteReadiness_FullMethodName            = "/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetWriteReadiness"
 	SequencerBftAdministrationService_GetOrderingTopology_FullMethodName          = "/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetOrderingTopology"
 	SequencerBftAdministrationService_SetPerformanceMetricsEnabled_FullMethodName = "/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/SetPerformanceMetricsEnabled"
 )
@@ -35,6 +36,7 @@ type SequencerBftAdministrationServiceClient interface {
 	AddPeerEndpoint(ctx context.Context, in *AddPeerEndpointRequest, opts ...grpc.CallOption) (*AddPeerEndpointResponse, error)
 	RemovePeerEndpoint(ctx context.Context, in *RemovePeerEndpointRequest, opts ...grpc.CallOption) (*RemovePeerEndpointResponse, error)
 	GetPeerNetworkStatus(ctx context.Context, in *GetPeerNetworkStatusRequest, opts ...grpc.CallOption) (*GetPeerNetworkStatusResponse, error)
+	GetWriteReadiness(ctx context.Context, in *GetWriteReadinessRequest, opts ...grpc.CallOption) (*GetWriteReadinessResponse, error)
 	GetOrderingTopology(ctx context.Context, in *GetOrderingTopologyRequest, opts ...grpc.CallOption) (*GetOrderingTopologyResponse, error)
 	SetPerformanceMetricsEnabled(ctx context.Context, in *SetPerformanceMetricsEnabledRequest, opts ...grpc.CallOption) (*SetPerformanceMetricsEnabledResponse, error)
 }
@@ -77,6 +79,16 @@ func (c *sequencerBftAdministrationServiceClient) GetPeerNetworkStatus(ctx conte
 	return out, nil
 }
 
+func (c *sequencerBftAdministrationServiceClient) GetWriteReadiness(ctx context.Context, in *GetWriteReadinessRequest, opts ...grpc.CallOption) (*GetWriteReadinessResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWriteReadinessResponse)
+	err := c.cc.Invoke(ctx, SequencerBftAdministrationService_GetWriteReadiness_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sequencerBftAdministrationServiceClient) GetOrderingTopology(ctx context.Context, in *GetOrderingTopologyRequest, opts ...grpc.CallOption) (*GetOrderingTopologyResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetOrderingTopologyResponse)
@@ -104,6 +116,7 @@ type SequencerBftAdministrationServiceServer interface {
 	AddPeerEndpoint(context.Context, *AddPeerEndpointRequest) (*AddPeerEndpointResponse, error)
 	RemovePeerEndpoint(context.Context, *RemovePeerEndpointRequest) (*RemovePeerEndpointResponse, error)
 	GetPeerNetworkStatus(context.Context, *GetPeerNetworkStatusRequest) (*GetPeerNetworkStatusResponse, error)
+	GetWriteReadiness(context.Context, *GetWriteReadinessRequest) (*GetWriteReadinessResponse, error)
 	GetOrderingTopology(context.Context, *GetOrderingTopologyRequest) (*GetOrderingTopologyResponse, error)
 	SetPerformanceMetricsEnabled(context.Context, *SetPerformanceMetricsEnabledRequest) (*SetPerformanceMetricsEnabledResponse, error)
 	mustEmbedUnimplementedSequencerBftAdministrationServiceServer()
@@ -124,6 +137,9 @@ func (UnimplementedSequencerBftAdministrationServiceServer) RemovePeerEndpoint(c
 }
 func (UnimplementedSequencerBftAdministrationServiceServer) GetPeerNetworkStatus(context.Context, *GetPeerNetworkStatusRequest) (*GetPeerNetworkStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPeerNetworkStatus not implemented")
+}
+func (UnimplementedSequencerBftAdministrationServiceServer) GetWriteReadiness(context.Context, *GetWriteReadinessRequest) (*GetWriteReadinessResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWriteReadiness not implemented")
 }
 func (UnimplementedSequencerBftAdministrationServiceServer) GetOrderingTopology(context.Context, *GetOrderingTopologyRequest) (*GetOrderingTopologyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrderingTopology not implemented")
@@ -207,6 +223,24 @@ func _SequencerBftAdministrationService_GetPeerNetworkStatus_Handler(srv interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SequencerBftAdministrationService_GetWriteReadiness_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWriteReadinessRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SequencerBftAdministrationServiceServer).GetWriteReadiness(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SequencerBftAdministrationService_GetWriteReadiness_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SequencerBftAdministrationServiceServer).GetWriteReadiness(ctx, req.(*GetWriteReadinessRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SequencerBftAdministrationService_GetOrderingTopology_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetOrderingTopologyRequest)
 	if err := dec(in); err != nil {
@@ -261,6 +295,10 @@ var SequencerBftAdministrationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPeerNetworkStatus",
 			Handler:    _SequencerBftAdministrationService_GetPeerNetworkStatus_Handler,
+		},
+		{
+			MethodName: "GetWriteReadiness",
+			Handler:    _SequencerBftAdministrationService_GetWriteReadiness_Handler,
 		},
 		{
 			MethodName: "GetOrderingTopology",

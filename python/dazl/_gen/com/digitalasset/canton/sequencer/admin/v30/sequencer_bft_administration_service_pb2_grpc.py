@@ -53,6 +53,11 @@ class SequencerBftAdministrationServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetPeerNetworkStatusRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetPeerNetworkStatusResponse.FromString,
                 _registered_method=True)
+        self.GetWriteReadiness = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetWriteReadiness',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetWriteReadinessRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetWriteReadinessResponse.FromString,
+                _registered_method=True)
         self.GetOrderingTopology = channel.unary_unary(
                 '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetOrderingTopology',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetOrderingTopologyRequest.SerializeToString,
@@ -81,6 +86,12 @@ class SequencerBftAdministrationServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetPeerNetworkStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetWriteReadiness(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -115,6 +126,11 @@ def add_SequencerBftAdministrationServiceServicer_to_server(servicer, server):
                     servicer.GetPeerNetworkStatus,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetPeerNetworkStatusRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetPeerNetworkStatusResponse.SerializeToString,
+            ),
+            'GetWriteReadiness': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetWriteReadiness,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetWriteReadinessRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetWriteReadinessResponse.SerializeToString,
             ),
             'GetOrderingTopology': grpc.unary_unary_rpc_method_handler(
                     servicer.GetOrderingTopology,
@@ -208,6 +224,33 @@ class SequencerBftAdministrationService(object):
             '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetPeerNetworkStatus',
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetPeerNetworkStatusRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetPeerNetworkStatusResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetWriteReadiness(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetWriteReadiness',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetWriteReadinessRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetWriteReadinessResponse.FromString,
             options,
             channel_credentials,
             insecure,

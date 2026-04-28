@@ -321,7 +321,7 @@ class ListSequencerSynchronizerStateResponse(_message.Message):
     results: _containers.RepeatedCompositeFieldContainer[ListSequencerSynchronizerStateResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListSequencerSynchronizerStateResponse.Result, _Mapping]]] = ...) -> None: ...
 
-class ListSynchronizerUpgradeAnnouncementRequest(_message.Message):
+class ListLsuAnnouncementRequest(_message.Message):
     __slots__ = ("base_query", "filter_synchronizer_id")
     BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
     FILTER_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -329,39 +329,41 @@ class ListSynchronizerUpgradeAnnouncementRequest(_message.Message):
     filter_synchronizer_id: str
     def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., filter_synchronizer_id: _Optional[str] = ...) -> None: ...
 
-class ListSynchronizerUpgradeAnnouncementResponse(_message.Message):
+class ListLsuAnnouncementResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
         __slots__ = ("context", "item")
         CONTEXT_FIELD_NUMBER: _ClassVar[int]
         ITEM_FIELD_NUMBER: _ClassVar[int]
         context: BaseResult
-        item: _topology_pb2.SynchronizerUpgradeAnnouncement
-        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.SynchronizerUpgradeAnnouncement, _Mapping]] = ...) -> None: ...
+        item: _topology_pb2.LsuAnnouncement
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.LsuAnnouncement, _Mapping]] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
-    results: _containers.RepeatedCompositeFieldContainer[ListSynchronizerUpgradeAnnouncementResponse.Result]
-    def __init__(self, results: _Optional[_Iterable[_Union[ListSynchronizerUpgradeAnnouncementResponse.Result, _Mapping]]] = ...) -> None: ...
+    results: _containers.RepeatedCompositeFieldContainer[ListLsuAnnouncementResponse.Result]
+    def __init__(self, results: _Optional[_Iterable[_Union[ListLsuAnnouncementResponse.Result, _Mapping]]] = ...) -> None: ...
 
-class ListSequencerConnectionSuccessorRequest(_message.Message):
-    __slots__ = ("base_query", "filter_sequencer_id")
+class ListLsuSequencerConnectionSuccessorRequest(_message.Message):
+    __slots__ = ("base_query", "filter_sequencer_id", "filter_successor_physical_synchronizer_id")
     BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
     FILTER_SEQUENCER_ID_FIELD_NUMBER: _ClassVar[int]
+    FILTER_SUCCESSOR_PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     base_query: BaseQuery
     filter_sequencer_id: str
-    def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., filter_sequencer_id: _Optional[str] = ...) -> None: ...
+    filter_successor_physical_synchronizer_id: str
+    def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., filter_sequencer_id: _Optional[str] = ..., filter_successor_physical_synchronizer_id: _Optional[str] = ...) -> None: ...
 
-class ListSequencerConnectionSuccessorResponse(_message.Message):
+class ListLsuSequencerConnectionSuccessorResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
         __slots__ = ("context", "item")
         CONTEXT_FIELD_NUMBER: _ClassVar[int]
         ITEM_FIELD_NUMBER: _ClassVar[int]
         context: BaseResult
-        item: _topology_pb2.SequencerConnectionSuccessor
-        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.SequencerConnectionSuccessor, _Mapping]] = ...) -> None: ...
+        item: _topology_pb2.LsuSequencerConnectionSuccessor
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.LsuSequencerConnectionSuccessor, _Mapping]] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
-    results: _containers.RepeatedCompositeFieldContainer[ListSequencerConnectionSuccessorResponse.Result]
-    def __init__(self, results: _Optional[_Iterable[_Union[ListSequencerConnectionSuccessorResponse.Result, _Mapping]]] = ...) -> None: ...
+    results: _containers.RepeatedCompositeFieldContainer[ListLsuSequencerConnectionSuccessorResponse.Result]
+    def __init__(self, results: _Optional[_Iterable[_Union[ListLsuSequencerConnectionSuccessorResponse.Result, _Mapping]]] = ...) -> None: ...
 
 class ListAvailableStoresRequest(_message.Message):
     __slots__ = ()
@@ -449,11 +451,15 @@ class GenesisStateV2Response(_message.Message):
     chunk: bytes
     def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
 
-class LogicalUpgradeStateRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
+class SequencerLsuStateRequest(_message.Message):
+    __slots__ = ("synchronizer_store", "timestamp")
+    SYNCHRONIZER_STORE_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_store: _common_pb2.StoreId
+    timestamp: _timestamp_pb2.Timestamp
+    def __init__(self, synchronizer_store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
-class LogicalUpgradeStateResponse(_message.Message):
+class SequencerLsuStateResponse(_message.Message):
     __slots__ = ("chunk",)
     CHUNK_FIELD_NUMBER: _ClassVar[int]
     chunk: bytes

@@ -85,16 +85,18 @@ class Batch(_message.Message):
     def __init__(self, ordering_requests: _Optional[_Iterable[_Union[OrderingRequest, _Mapping]]] = ..., epoch_number: _Optional[int] = ...) -> None: ...
 
 class OrderingRequest(_message.Message):
-    __slots__ = ("trace_context", "tag", "payload", "ordering_start_instant")
+    __slots__ = ("trace_context", "tag", "message_id", "payload", "ordering_start_instant")
     TRACE_CONTEXT_FIELD_NUMBER: _ClassVar[int]
     TAG_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_ID_FIELD_NUMBER: _ClassVar[int]
     PAYLOAD_FIELD_NUMBER: _ClassVar[int]
     ORDERING_START_INSTANT_FIELD_NUMBER: _ClassVar[int]
     trace_context: str
     tag: str
+    message_id: str
     payload: bytes
     ordering_start_instant: _timestamp_pb2.Timestamp
-    def __init__(self, trace_context: _Optional[str] = ..., tag: _Optional[str] = ..., payload: _Optional[bytes] = ..., ordering_start_instant: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, trace_context: _Optional[str] = ..., tag: _Optional[str] = ..., message_id: _Optional[str] = ..., payload: _Optional[bytes] = ..., ordering_start_instant: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class StoreResponse(_message.Message):
     __slots__ = ("batch_id", "signature")

@@ -5,7 +5,8 @@
 import datetime
 
 from . import acs_import_pb2 as _acs_import_pb2
-from . import synchronizer_connectivity_pb2 as _synchronizer_connectivity_pb2
+from . import synchronizer_connectivity_service_pb2 as _synchronizer_connectivity_service_pb2
+from ...sequencer.v30 import sequencer_connection_pb2 as _sequencer_connection_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -59,56 +60,13 @@ class MigrateSynchronizerRequest(_message.Message):
     TARGET_SYNCHRONIZER_CONNECTION_CONFIG_FIELD_NUMBER: _ClassVar[int]
     FORCE_FIELD_NUMBER: _ClassVar[int]
     source_synchronizer_alias: str
-    target_synchronizer_connection_config: _synchronizer_connectivity_pb2.SynchronizerConnectionConfig
+    target_synchronizer_connection_config: _synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig
     force: bool
-    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_connection_config: _Optional[_Union[_synchronizer_connectivity_pb2.SynchronizerConnectionConfig, _Mapping]] = ..., force: bool = ...) -> None: ...
+    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_connection_config: _Optional[_Union[_synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig, _Mapping]] = ..., force: bool = ...) -> None: ...
 
 class MigrateSynchronizerResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
-
-class ExportAcsOldRequest(_message.Message):
-    __slots__ = ("parties", "filter_synchronizer_id", "timestamp", "force", "parties_offboarding")
-    PARTIES_FIELD_NUMBER: _ClassVar[int]
-    FILTER_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
-    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-    FORCE_FIELD_NUMBER: _ClassVar[int]
-    PARTIES_OFFBOARDING_FIELD_NUMBER: _ClassVar[int]
-    parties: _containers.RepeatedScalarFieldContainer[str]
-    filter_synchronizer_id: str
-    timestamp: _timestamp_pb2.Timestamp
-    force: bool
-    parties_offboarding: bool
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., force: bool = ..., parties_offboarding: bool = ...) -> None: ...
-
-class ExportAcsOldResponse(_message.Message):
-    __slots__ = ("chunk",)
-    CHUNK_FIELD_NUMBER: _ClassVar[int]
-    chunk: bytes
-    def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
-
-class ImportAcsOldRequest(_message.Message):
-    __slots__ = ("acs_snapshot", "workflow_id_prefix", "allow_contract_id_suffix_recomputation")
-    ACS_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
-    WORKFLOW_ID_PREFIX_FIELD_NUMBER: _ClassVar[int]
-    ALLOW_CONTRACT_ID_SUFFIX_RECOMPUTATION_FIELD_NUMBER: _ClassVar[int]
-    acs_snapshot: bytes
-    workflow_id_prefix: str
-    allow_contract_id_suffix_recomputation: bool
-    def __init__(self, acs_snapshot: _Optional[bytes] = ..., workflow_id_prefix: _Optional[str] = ..., allow_contract_id_suffix_recomputation: bool = ...) -> None: ...
-
-class ImportAcsOldResponse(_message.Message):
-    __slots__ = ("contract_id_mapping",)
-    class ContractIdMappingEntry(_message.Message):
-        __slots__ = ("key", "value")
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: str
-        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
-    CONTRACT_ID_MAPPING_FIELD_NUMBER: _ClassVar[int]
-    contract_id_mapping: _containers.ScalarMap[str, str]
-    def __init__(self, contract_id_mapping: _Optional[_Mapping[str, str]] = ...) -> None: ...
 
 class ExportAcsTargetSynchronizer(_message.Message):
     __slots__ = ("target_synchronizer_id",)
@@ -144,31 +102,24 @@ class ExportAcsResponse(_message.Message):
     def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
 
 class ImportAcsRequest(_message.Message):
-    __slots__ = ("acs_snapshot", "workflow_id_prefix", "contract_import_mode", "excluded_stakeholder_ids", "representative_package_id_override")
+    __slots__ = ("acs_snapshot", "workflow_id_prefix", "contract_import_mode", "excluded_stakeholder_ids", "representative_package_id_override", "synchronizer_id")
     ACS_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
     WORKFLOW_ID_PREFIX_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_IMPORT_MODE_FIELD_NUMBER: _ClassVar[int]
     EXCLUDED_STAKEHOLDER_IDS_FIELD_NUMBER: _ClassVar[int]
     REPRESENTATIVE_PACKAGE_ID_OVERRIDE_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     acs_snapshot: bytes
     workflow_id_prefix: str
     contract_import_mode: _acs_import_pb2.ContractImportMode
     excluded_stakeholder_ids: _containers.RepeatedScalarFieldContainer[str]
     representative_package_id_override: _acs_import_pb2.RepresentativePackageIdOverride
-    def __init__(self, acs_snapshot: _Optional[bytes] = ..., workflow_id_prefix: _Optional[str] = ..., contract_import_mode: _Optional[_Union[_acs_import_pb2.ContractImportMode, str]] = ..., excluded_stakeholder_ids: _Optional[_Iterable[str]] = ..., representative_package_id_override: _Optional[_Union[_acs_import_pb2.RepresentativePackageIdOverride, _Mapping]] = ...) -> None: ...
+    synchronizer_id: str
+    def __init__(self, acs_snapshot: _Optional[bytes] = ..., workflow_id_prefix: _Optional[str] = ..., contract_import_mode: _Optional[_Union[_acs_import_pb2.ContractImportMode, str]] = ..., excluded_stakeholder_ids: _Optional[_Iterable[str]] = ..., representative_package_id_override: _Optional[_Union[_acs_import_pb2.RepresentativePackageIdOverride, _Mapping]] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class ImportAcsResponse(_message.Message):
-    __slots__ = ("contract_id_mappings",)
-    class ContractIdMappingsEntry(_message.Message):
-        __slots__ = ("key", "value")
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: str
-        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
-    CONTRACT_ID_MAPPINGS_FIELD_NUMBER: _ClassVar[int]
-    contract_id_mappings: _containers.ScalarMap[str, str]
-    def __init__(self, contract_id_mappings: _Optional[_Mapping[str, str]] = ...) -> None: ...
+    __slots__ = ()
+    def __init__(self) -> None: ...
 
 class PurgeDeactivatedSynchronizerRequest(_message.Message):
     __slots__ = ("synchronizer_alias",)
@@ -253,3 +204,26 @@ class RepairCommitmentsStatus(_message.Message):
     error_message: str
     completed_repair_timestamp: _timestamp_pb2.Timestamp
     def __init__(self, synchronizer_id: _Optional[str] = ..., error_message: _Optional[str] = ..., completed_repair_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class PerformLateLsuRequest(_message.Message):
+    __slots__ = ("physical_synchronizer_id", "successor")
+    class Successor(_message.Message):
+        __slots__ = ("physical_synchronizer_id", "announced_upgrade_time", "config", "sequencer_connection_validation")
+        PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+        ANNOUNCED_UPGRADE_TIME_FIELD_NUMBER: _ClassVar[int]
+        CONFIG_FIELD_NUMBER: _ClassVar[int]
+        SEQUENCER_CONNECTION_VALIDATION_FIELD_NUMBER: _ClassVar[int]
+        physical_synchronizer_id: str
+        announced_upgrade_time: _timestamp_pb2.Timestamp
+        config: _synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig
+        sequencer_connection_validation: _sequencer_connection_pb2.SequencerConnectionValidation
+        def __init__(self, physical_synchronizer_id: _Optional[str] = ..., announced_upgrade_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., config: _Optional[_Union[_synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig, _Mapping]] = ..., sequencer_connection_validation: _Optional[_Union[_sequencer_connection_pb2.SequencerConnectionValidation, str]] = ...) -> None: ...
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    SUCCESSOR_FIELD_NUMBER: _ClassVar[int]
+    physical_synchronizer_id: str
+    successor: PerformLateLsuRequest.Successor
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., successor: _Optional[_Union[PerformLateLsuRequest.Successor, _Mapping]] = ...) -> None: ...
+
+class PerformLateLsuResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...

@@ -32,14 +32,16 @@ class TopologyTransaction(_message.Message):
     def __init__(self, update_id: _Optional[str] = ..., offset: _Optional[int] = ..., synchronizer_id: _Optional[str] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., events: _Optional[_Iterable[_Union[TopologyEvent, _Mapping]]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ...) -> None: ...
 
 class TopologyEvent(_message.Message):
-    __slots__ = ("participant_authorization_changed", "participant_authorization_revoked", "participant_authorization_added")
+    __slots__ = ("participant_authorization_changed", "participant_authorization_revoked", "participant_authorization_added", "participant_authorization_onboarding")
     PARTICIPANT_AUTHORIZATION_CHANGED_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_AUTHORIZATION_REVOKED_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANT_AUTHORIZATION_ADDED_FIELD_NUMBER: _ClassVar[int]
+    PARTICIPANT_AUTHORIZATION_ONBOARDING_FIELD_NUMBER: _ClassVar[int]
     participant_authorization_changed: ParticipantAuthorizationChanged
     participant_authorization_revoked: ParticipantAuthorizationRevoked
     participant_authorization_added: ParticipantAuthorizationAdded
-    def __init__(self, participant_authorization_changed: _Optional[_Union[ParticipantAuthorizationChanged, _Mapping]] = ..., participant_authorization_revoked: _Optional[_Union[ParticipantAuthorizationRevoked, _Mapping]] = ..., participant_authorization_added: _Optional[_Union[ParticipantAuthorizationAdded, _Mapping]] = ...) -> None: ...
+    participant_authorization_onboarding: ParticipantAuthorizationOnboarding
+    def __init__(self, participant_authorization_changed: _Optional[_Union[ParticipantAuthorizationChanged, _Mapping]] = ..., participant_authorization_revoked: _Optional[_Union[ParticipantAuthorizationRevoked, _Mapping]] = ..., participant_authorization_added: _Optional[_Union[ParticipantAuthorizationAdded, _Mapping]] = ..., participant_authorization_onboarding: _Optional[_Union[ParticipantAuthorizationOnboarding, _Mapping]] = ...) -> None: ...
 
 class ParticipantAuthorizationAdded(_message.Message):
     __slots__ = ("party_id", "participant_id", "participant_permission")
@@ -68,3 +70,13 @@ class ParticipantAuthorizationRevoked(_message.Message):
     party_id: str
     participant_id: str
     def __init__(self, party_id: _Optional[str] = ..., participant_id: _Optional[str] = ...) -> None: ...
+
+class ParticipantAuthorizationOnboarding(_message.Message):
+    __slots__ = ("party_id", "participant_id", "participant_permission")
+    PARTY_ID_FIELD_NUMBER: _ClassVar[int]
+    PARTICIPANT_ID_FIELD_NUMBER: _ClassVar[int]
+    PARTICIPANT_PERMISSION_FIELD_NUMBER: _ClassVar[int]
+    party_id: str
+    participant_id: str
+    participant_permission: _state_service_pb2.ParticipantPermission
+    def __init__(self, party_id: _Optional[str] = ..., participant_id: _Optional[str] = ..., participant_permission: _Optional[_Union[_state_service_pb2.ParticipantPermission, str]] = ...) -> None: ...

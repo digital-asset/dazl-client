@@ -107,32 +107,3 @@ class SetLogLevelRequest(_message.Message):
 class SetLogLevelResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
-
-class GetLastErrorsRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
-
-class GetLastErrorsResponse(_message.Message):
-    __slots__ = ("errors",)
-    class Error(_message.Message):
-        __slots__ = ("trace_id", "message")
-        TRACE_ID_FIELD_NUMBER: _ClassVar[int]
-        MESSAGE_FIELD_NUMBER: _ClassVar[int]
-        trace_id: str
-        message: str
-        def __init__(self, trace_id: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...
-    ERRORS_FIELD_NUMBER: _ClassVar[int]
-    errors: _containers.RepeatedCompositeFieldContainer[GetLastErrorsResponse.Error]
-    def __init__(self, errors: _Optional[_Iterable[_Union[GetLastErrorsResponse.Error, _Mapping]]] = ...) -> None: ...
-
-class GetLastErrorTraceRequest(_message.Message):
-    __slots__ = ("trace_id",)
-    TRACE_ID_FIELD_NUMBER: _ClassVar[int]
-    trace_id: str
-    def __init__(self, trace_id: _Optional[str] = ...) -> None: ...
-
-class GetLastErrorTraceResponse(_message.Message):
-    __slots__ = ("messages",)
-    MESSAGES_FIELD_NUMBER: _ClassVar[int]
-    messages: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, messages: _Optional[_Iterable[str]] = ...) -> None: ...

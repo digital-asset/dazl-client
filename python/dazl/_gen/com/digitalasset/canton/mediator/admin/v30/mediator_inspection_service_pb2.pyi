@@ -30,10 +30,24 @@ class VerdictsRequest(_message.Message):
     def __init__(self, most_recently_received_record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class VerdictsResponse(_message.Message):
-    __slots__ = ("verdict",)
+    __slots__ = ("verdict", "complete")
+    class Complete(_message.Message):
+        __slots__ = ("passed_lsu_time",)
+        class PassedLsuTime(_message.Message):
+            __slots__ = ("upgrade_time", "successor_physical_synchronizer_id")
+            UPGRADE_TIME_FIELD_NUMBER: _ClassVar[int]
+            SUCCESSOR_PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+            upgrade_time: _timestamp_pb2.Timestamp
+            successor_physical_synchronizer_id: str
+            def __init__(self, upgrade_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., successor_physical_synchronizer_id: _Optional[str] = ...) -> None: ...
+        PASSED_LSU_TIME_FIELD_NUMBER: _ClassVar[int]
+        passed_lsu_time: VerdictsResponse.Complete.PassedLsuTime
+        def __init__(self, passed_lsu_time: _Optional[_Union[VerdictsResponse.Complete.PassedLsuTime, _Mapping]] = ...) -> None: ...
     VERDICT_FIELD_NUMBER: _ClassVar[int]
+    COMPLETE_FIELD_NUMBER: _ClassVar[int]
     verdict: Verdict
-    def __init__(self, verdict: _Optional[_Union[Verdict, _Mapping]] = ...) -> None: ...
+    complete: VerdictsResponse.Complete
+    def __init__(self, verdict: _Optional[_Union[Verdict, _Mapping]] = ..., complete: _Optional[_Union[VerdictsResponse.Complete, _Mapping]] = ...) -> None: ...
 
 class Verdict(_message.Message):
     __slots__ = ("submitting_parties", "submitting_participant_uid", "verdict", "finalization_time", "record_time", "mediator_group", "transaction_views", "update_id")
@@ -71,14 +85,16 @@ class TransactionViews(_message.Message):
     def __init__(self, views: _Optional[_Mapping[int, TransactionView]] = ..., root_views: _Optional[_Iterable[int]] = ...) -> None: ...
 
 class TransactionView(_message.Message):
-    __slots__ = ("informees", "confirming_parties", "sub_views")
+    __slots__ = ("informees", "confirming_parties", "sub_views", "view_hash")
     INFORMEES_FIELD_NUMBER: _ClassVar[int]
     CONFIRMING_PARTIES_FIELD_NUMBER: _ClassVar[int]
     SUB_VIEWS_FIELD_NUMBER: _ClassVar[int]
+    VIEW_HASH_FIELD_NUMBER: _ClassVar[int]
     informees: _containers.RepeatedScalarFieldContainer[str]
     confirming_parties: _containers.RepeatedCompositeFieldContainer[Quorum]
     sub_views: _containers.RepeatedScalarFieldContainer[int]
-    def __init__(self, informees: _Optional[_Iterable[str]] = ..., confirming_parties: _Optional[_Iterable[_Union[Quorum, _Mapping]]] = ..., sub_views: _Optional[_Iterable[int]] = ...) -> None: ...
+    view_hash: bytes
+    def __init__(self, informees: _Optional[_Iterable[str]] = ..., confirming_parties: _Optional[_Iterable[_Union[Quorum, _Mapping]]] = ..., sub_views: _Optional[_Iterable[int]] = ..., view_hash: _Optional[bytes] = ...) -> None: ...
 
 class Quorum(_message.Message):
     __slots__ = ("parties", "threshold")

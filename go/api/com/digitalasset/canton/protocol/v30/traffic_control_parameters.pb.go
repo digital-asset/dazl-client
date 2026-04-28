@@ -32,6 +32,7 @@ type TrafficControlParameters struct {
 	SetBalanceRequestSubmissionWindowSize *durationpb.Duration   `protobuf:"bytes,5,opt,name=set_balance_request_submission_window_size,json=setBalanceRequestSubmissionWindowSize,proto3" json:"set_balance_request_submission_window_size,omitempty"`
 	EnforceRateLimiting                   bool                   `protobuf:"varint,6,opt,name=enforce_rate_limiting,json=enforceRateLimiting,proto3" json:"enforce_rate_limiting,omitempty"`
 	BaseEventCost                         *uint64                `protobuf:"varint,7,opt,name=base_event_cost,json=baseEventCost,proto3,oneof" json:"base_event_cost,omitempty"`
+	FreeConfirmationResponses             bool                   `protobuf:"varint,8,opt,name=free_confirmation_responses,json=freeConfirmationResponses,proto3" json:"free_confirmation_responses,omitempty"`
 	unknownFields                         protoimpl.UnknownFields
 	sizeCache                             protoimpl.SizeCache
 }
@@ -106,6 +107,13 @@ func (x *TrafficControlParameters) GetBaseEventCost() uint64 {
 		return *x.BaseEventCost
 	}
 	return 0
+}
+
+func (x *TrafficControlParameters) GetFreeConfirmationResponses() bool {
+	if x != nil {
+		return x.FreeConfirmationResponses
+	}
+	return false
 }
 
 type TrafficReceipt struct {
@@ -468,14 +476,15 @@ var File_com_digitalasset_canton_protocol_v30_traffic_control_parameters_proto p
 
 const file_com_digitalasset_canton_protocol_v30_traffic_control_parameters_proto_rawDesc = "" +
 	"\n" +
-	"Ecom/digitalasset/canton/protocol/v30/traffic_control_parameters.proto\x12$com.digitalasset.canton.protocol.v30\x1a\x1egoogle/protobuf/duration.proto\"\xeb\x03\n" +
+	"Ecom/digitalasset/canton/protocol/v30/traffic_control_parameters.proto\x12$com.digitalasset.canton.protocol.v30\x1a\x1egoogle/protobuf/duration.proto\"\xab\x04\n" +
 	"\x18TrafficControlParameters\x125\n" +
 	"\x17max_base_traffic_amount\x18\x01 \x01(\x04R\x14maxBaseTrafficAmount\x12m\n" +
 	"&max_base_traffic_accumulation_duration\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\"maxBaseTrafficAccumulationDuration\x12>\n" +
 	"\x1cread_vs_write_scaling_factor\x18\x04 \x01(\rR\x18readVsWriteScalingFactor\x12t\n" +
 	"*set_balance_request_submission_window_size\x18\x05 \x01(\v2\x19.google.protobuf.DurationR%setBalanceRequestSubmissionWindowSize\x122\n" +
 	"\x15enforce_rate_limiting\x18\x06 \x01(\bR\x13enforceRateLimiting\x12+\n" +
-	"\x0fbase_event_cost\x18\a \x01(\x04H\x00R\rbaseEventCost\x88\x01\x01B\x12\n" +
+	"\x0fbase_event_cost\x18\a \x01(\x04H\x00R\rbaseEventCost\x88\x01\x01\x12>\n" +
+	"\x1bfree_confirmation_responses\x18\b \x01(\bR\x19freeConfirmationResponsesB\x12\n" +
 	"\x10_base_event_cost\"\xa1\x01\n" +
 	"\x0eTrafficReceipt\x12#\n" +
 	"\rconsumed_cost\x18\x01 \x01(\x04R\fconsumedCost\x124\n" +

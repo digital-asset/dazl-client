@@ -24,66 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type ActiveContractOld struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	SynchronizerId      string                 `protobuf:"bytes,1,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
-	Contract            *Contract              `protobuf:"bytes,2,opt,name=contract,proto3" json:"contract,omitempty"`
-	ReassignmentCounter int64                  `protobuf:"varint,3,opt,name=reassignment_counter,json=reassignmentCounter,proto3" json:"reassignment_counter,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *ActiveContractOld) Reset() {
-	*x = ActiveContractOld{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ActiveContractOld) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ActiveContractOld) ProtoMessage() {}
-
-func (x *ActiveContractOld) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ActiveContractOld.ProtoReflect.Descriptor instead.
-func (*ActiveContractOld) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *ActiveContractOld) GetSynchronizerId() string {
-	if x != nil {
-		return x.SynchronizerId
-	}
-	return ""
-}
-
-func (x *ActiveContractOld) GetContract() *Contract {
-	if x != nil {
-		return x.Contract
-	}
-	return nil
-}
-
-func (x *ActiveContractOld) GetReassignmentCounter() int64 {
-	if x != nil {
-		return x.ReassignmentCounter
-	}
-	return 0
-}
-
 type Contract struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	ContractId          string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
@@ -97,7 +37,7 @@ type Contract struct {
 
 func (x *Contract) Reset() {
 	*x = Contract{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -109,7 +49,7 @@ func (x *Contract) String() string {
 func (*Contract) ProtoMessage() {}
 
 func (x *Contract) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -122,7 +62,7 @@ func (x *Contract) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Contract.ProtoReflect.Descriptor instead.
 func (*Contract) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{1}
+	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Contract) GetContractId() string {
@@ -169,7 +109,7 @@ type ActiveContract struct {
 
 func (x *ActiveContract) Reset() {
 	*x = ActiveContract{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -181,7 +121,7 @@ func (x *ActiveContract) String() string {
 func (*ActiveContract) ProtoMessage() {}
 
 func (x *ActiveContract) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -194,7 +134,7 @@ func (x *ActiveContract) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActiveContract.ProtoReflect.Descriptor instead.
 func (*ActiveContract) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{2}
+	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ActiveContract) GetActiveContract() []byte {
@@ -216,7 +156,7 @@ type Contract_Metadata struct {
 
 func (x *Contract_Metadata) Reset() {
 	*x = Contract_Metadata{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -228,7 +168,7 @@ func (x *Contract_Metadata) String() string {
 func (*Contract_Metadata) ProtoMessage() {}
 
 func (x *Contract_Metadata) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -241,7 +181,7 @@ func (x *Contract_Metadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Contract_Metadata.ProtoReflect.Descriptor instead.
 func (*Contract_Metadata) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{1, 0}
+	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{0, 0}
 }
 
 func (x *Contract_Metadata) GetNonMaintainerSignatories() []string {
@@ -283,7 +223,7 @@ type Contract_GlobalKey struct {
 
 func (x *Contract_GlobalKey) Reset() {
 	*x = Contract_GlobalKey{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -295,7 +235,7 @@ func (x *Contract_GlobalKey) String() string {
 func (*Contract_GlobalKey) ProtoMessage() {}
 
 func (x *Contract_GlobalKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -308,7 +248,7 @@ func (x *Contract_GlobalKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Contract_GlobalKey.ProtoReflect.Descriptor instead.
 func (*Contract_GlobalKey) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{1, 1}
+	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescGZIP(), []int{0, 1}
 }
 
 func (x *Contract_GlobalKey) GetTemplateId() []byte {
@@ -336,11 +276,7 @@ var File_com_digitalasset_canton_admin_participant_v30_active_contract_proto pro
 
 const file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDesc = "" +
 	"\n" +
-	"Ccom/digitalasset/canton/admin/participant/v30/active_contract.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc4\x01\n" +
-	"\x11ActiveContractOld\x12'\n" +
-	"\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12S\n" +
-	"\bcontract\x18\x02 \x01(\v27.com.digitalasset.canton.admin.participant.v30.ContractR\bcontract\x121\n" +
-	"\x14reassignment_counter\x18\x03 \x01(\x03R\x13reassignmentCounter\"\x9b\x05\n" +
+	"Ccom/digitalasset/canton/admin/participant/v30/active_contract.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9b\x05\n" +
 	"\bContract\x12\x1f\n" +
 	"\vcontract_id\x18\x01 \x01(\tR\n" +
 	"contractId\x122\n" +
@@ -373,25 +309,23 @@ func file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_ra
 	return file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_goTypes = []any{
-	(*ActiveContractOld)(nil),     // 0: com.digitalasset.canton.admin.participant.v30.ActiveContractOld
-	(*Contract)(nil),              // 1: com.digitalasset.canton.admin.participant.v30.Contract
-	(*ActiveContract)(nil),        // 2: com.digitalasset.canton.admin.participant.v30.ActiveContract
-	(*Contract_Metadata)(nil),     // 3: com.digitalasset.canton.admin.participant.v30.Contract.Metadata
-	(*Contract_GlobalKey)(nil),    // 4: com.digitalasset.canton.admin.participant.v30.Contract.GlobalKey
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*Contract)(nil),              // 0: com.digitalasset.canton.admin.participant.v30.Contract
+	(*ActiveContract)(nil),        // 1: com.digitalasset.canton.admin.participant.v30.ActiveContract
+	(*Contract_Metadata)(nil),     // 2: com.digitalasset.canton.admin.participant.v30.Contract.Metadata
+	(*Contract_GlobalKey)(nil),    // 3: com.digitalasset.canton.admin.participant.v30.Contract.GlobalKey
+	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
 }
 var file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_depIdxs = []int32{
-	1, // 0: com.digitalasset.canton.admin.participant.v30.ActiveContractOld.contract:type_name -> com.digitalasset.canton.admin.participant.v30.Contract
-	3, // 1: com.digitalasset.canton.admin.participant.v30.Contract.metadata:type_name -> com.digitalasset.canton.admin.participant.v30.Contract.Metadata
-	5, // 2: com.digitalasset.canton.admin.participant.v30.Contract.ledger_create_time:type_name -> google.protobuf.Timestamp
-	4, // 3: com.digitalasset.canton.admin.participant.v30.Contract.Metadata.key:type_name -> com.digitalasset.canton.admin.participant.v30.Contract.GlobalKey
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	2, // 0: com.digitalasset.canton.admin.participant.v30.Contract.metadata:type_name -> com.digitalasset.canton.admin.participant.v30.Contract.Metadata
+	4, // 1: com.digitalasset.canton.admin.participant.v30.Contract.ledger_create_time:type_name -> google.protobuf.Timestamp
+	3, // 2: com.digitalasset.canton.admin.participant.v30.Contract.Metadata.key:type_name -> com.digitalasset.canton.admin.participant.v30.Contract.GlobalKey
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_init() }
@@ -405,7 +339,7 @@ func file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_in
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDesc), len(file_com_digitalasset_canton_admin_participant_v30_active_contract_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

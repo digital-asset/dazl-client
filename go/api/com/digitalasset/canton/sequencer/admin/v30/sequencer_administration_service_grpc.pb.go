@@ -21,13 +21,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SequencerAdministrationService_PruningStatus_FullMethodName       = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/PruningStatus"
-	SequencerAdministrationService_TrafficControlState_FullMethodName = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/TrafficControlState"
-	SequencerAdministrationService_SetTrafficPurchased_FullMethodName = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetTrafficPurchased"
-	SequencerAdministrationService_Snapshot_FullMethodName            = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/Snapshot"
-	SequencerAdministrationService_OnboardingState_FullMethodName     = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingState"
-	SequencerAdministrationService_OnboardingStateV2_FullMethodName   = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingStateV2"
-	SequencerAdministrationService_DisableMember_FullMethodName       = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/DisableMember"
+	SequencerAdministrationService_PruningStatus_FullMethodName               = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/PruningStatus"
+	SequencerAdministrationService_TrafficControlState_FullMethodName         = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/TrafficControlState"
+	SequencerAdministrationService_SetTrafficPurchased_FullMethodName         = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetTrafficPurchased"
+	SequencerAdministrationService_GetLsuTrafficControlState_FullMethodName   = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GetLsuTrafficControlState"
+	SequencerAdministrationService_SetLsuTrafficControlState_FullMethodName   = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetLsuTrafficControlState"
+	SequencerAdministrationService_SetThroughputCap_FullMethodName            = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetThroughputCap"
+	SequencerAdministrationService_GetThroughputCap_FullMethodName            = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GetThroughputCap"
+	SequencerAdministrationService_Snapshot_FullMethodName                    = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/Snapshot"
+	SequencerAdministrationService_OnboardingState_FullMethodName             = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingState"
+	SequencerAdministrationService_OnboardingStateV2_FullMethodName           = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingStateV2"
+	SequencerAdministrationService_DisableMember_FullMethodName               = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/DisableMember"
+	SequencerAdministrationService_GenerateAuthenticationToken_FullMethodName = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GenerateAuthenticationToken"
+	SequencerAdministrationService_PerformLsuSequencingTest_FullMethodName    = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/PerformLsuSequencingTest"
 )
 
 // SequencerAdministrationServiceClient is the client API for SequencerAdministrationService service.
@@ -37,10 +43,16 @@ type SequencerAdministrationServiceClient interface {
 	PruningStatus(ctx context.Context, in *PruningStatusRequest, opts ...grpc.CallOption) (*PruningStatusResponse, error)
 	TrafficControlState(ctx context.Context, in *TrafficControlStateRequest, opts ...grpc.CallOption) (*TrafficControlStateResponse, error)
 	SetTrafficPurchased(ctx context.Context, in *SetTrafficPurchasedRequest, opts ...grpc.CallOption) (*SetTrafficPurchasedResponse, error)
+	GetLsuTrafficControlState(ctx context.Context, in *GetLsuTrafficControlStateRequest, opts ...grpc.CallOption) (*GetLsuTrafficControlStateResponse, error)
+	SetLsuTrafficControlState(ctx context.Context, in *SetLsuTrafficControlStateRequest, opts ...grpc.CallOption) (*SetLsuTrafficControlStateResponse, error)
+	SetThroughputCap(ctx context.Context, in *SetThroughputCapRequest, opts ...grpc.CallOption) (*SetThroughputCapResponse, error)
+	GetThroughputCap(ctx context.Context, in *GetThroughputCapRequest, opts ...grpc.CallOption) (*GetThroughputCapResponse, error)
 	Snapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error)
 	OnboardingState(ctx context.Context, in *OnboardingStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateResponse], error)
 	OnboardingStateV2(ctx context.Context, in *OnboardingStateV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateV2Response], error)
 	DisableMember(ctx context.Context, in *DisableMemberRequest, opts ...grpc.CallOption) (*DisableMemberResponse, error)
+	GenerateAuthenticationToken(ctx context.Context, in *GenerateAuthenticationTokenRequest, opts ...grpc.CallOption) (*GenerateAuthenticationTokenResponse, error)
+	PerformLsuSequencingTest(ctx context.Context, in *PerformLsuSequencingTestRequest, opts ...grpc.CallOption) (*PerformLsuSequencingTestResponse, error)
 }
 
 type sequencerAdministrationServiceClient struct {
@@ -75,6 +87,46 @@ func (c *sequencerAdministrationServiceClient) SetTrafficPurchased(ctx context.C
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SetTrafficPurchasedResponse)
 	err := c.cc.Invoke(ctx, SequencerAdministrationService_SetTrafficPurchased_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sequencerAdministrationServiceClient) GetLsuTrafficControlState(ctx context.Context, in *GetLsuTrafficControlStateRequest, opts ...grpc.CallOption) (*GetLsuTrafficControlStateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetLsuTrafficControlStateResponse)
+	err := c.cc.Invoke(ctx, SequencerAdministrationService_GetLsuTrafficControlState_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sequencerAdministrationServiceClient) SetLsuTrafficControlState(ctx context.Context, in *SetLsuTrafficControlStateRequest, opts ...grpc.CallOption) (*SetLsuTrafficControlStateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetLsuTrafficControlStateResponse)
+	err := c.cc.Invoke(ctx, SequencerAdministrationService_SetLsuTrafficControlState_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sequencerAdministrationServiceClient) SetThroughputCap(ctx context.Context, in *SetThroughputCapRequest, opts ...grpc.CallOption) (*SetThroughputCapResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetThroughputCapResponse)
+	err := c.cc.Invoke(ctx, SequencerAdministrationService_SetThroughputCap_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sequencerAdministrationServiceClient) GetThroughputCap(ctx context.Context, in *GetThroughputCapRequest, opts ...grpc.CallOption) (*GetThroughputCapResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetThroughputCapResponse)
+	err := c.cc.Invoke(ctx, SequencerAdministrationService_GetThroughputCap_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -139,6 +191,26 @@ func (c *sequencerAdministrationServiceClient) DisableMember(ctx context.Context
 	return out, nil
 }
 
+func (c *sequencerAdministrationServiceClient) GenerateAuthenticationToken(ctx context.Context, in *GenerateAuthenticationTokenRequest, opts ...grpc.CallOption) (*GenerateAuthenticationTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GenerateAuthenticationTokenResponse)
+	err := c.cc.Invoke(ctx, SequencerAdministrationService_GenerateAuthenticationToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sequencerAdministrationServiceClient) PerformLsuSequencingTest(ctx context.Context, in *PerformLsuSequencingTestRequest, opts ...grpc.CallOption) (*PerformLsuSequencingTestResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PerformLsuSequencingTestResponse)
+	err := c.cc.Invoke(ctx, SequencerAdministrationService_PerformLsuSequencingTest_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SequencerAdministrationServiceServer is the server API for SequencerAdministrationService service.
 // All implementations must embed UnimplementedSequencerAdministrationServiceServer
 // for forward compatibility.
@@ -146,10 +218,16 @@ type SequencerAdministrationServiceServer interface {
 	PruningStatus(context.Context, *PruningStatusRequest) (*PruningStatusResponse, error)
 	TrafficControlState(context.Context, *TrafficControlStateRequest) (*TrafficControlStateResponse, error)
 	SetTrafficPurchased(context.Context, *SetTrafficPurchasedRequest) (*SetTrafficPurchasedResponse, error)
+	GetLsuTrafficControlState(context.Context, *GetLsuTrafficControlStateRequest) (*GetLsuTrafficControlStateResponse, error)
+	SetLsuTrafficControlState(context.Context, *SetLsuTrafficControlStateRequest) (*SetLsuTrafficControlStateResponse, error)
+	SetThroughputCap(context.Context, *SetThroughputCapRequest) (*SetThroughputCapResponse, error)
+	GetThroughputCap(context.Context, *GetThroughputCapRequest) (*GetThroughputCapResponse, error)
 	Snapshot(context.Context, *SnapshotRequest) (*SnapshotResponse, error)
 	OnboardingState(*OnboardingStateRequest, grpc.ServerStreamingServer[OnboardingStateResponse]) error
 	OnboardingStateV2(*OnboardingStateV2Request, grpc.ServerStreamingServer[OnboardingStateV2Response]) error
 	DisableMember(context.Context, *DisableMemberRequest) (*DisableMemberResponse, error)
+	GenerateAuthenticationToken(context.Context, *GenerateAuthenticationTokenRequest) (*GenerateAuthenticationTokenResponse, error)
+	PerformLsuSequencingTest(context.Context, *PerformLsuSequencingTestRequest) (*PerformLsuSequencingTestResponse, error)
 	mustEmbedUnimplementedSequencerAdministrationServiceServer()
 }
 
@@ -169,6 +247,18 @@ func (UnimplementedSequencerAdministrationServiceServer) TrafficControlState(con
 func (UnimplementedSequencerAdministrationServiceServer) SetTrafficPurchased(context.Context, *SetTrafficPurchasedRequest) (*SetTrafficPurchasedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetTrafficPurchased not implemented")
 }
+func (UnimplementedSequencerAdministrationServiceServer) GetLsuTrafficControlState(context.Context, *GetLsuTrafficControlStateRequest) (*GetLsuTrafficControlStateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLsuTrafficControlState not implemented")
+}
+func (UnimplementedSequencerAdministrationServiceServer) SetLsuTrafficControlState(context.Context, *SetLsuTrafficControlStateRequest) (*SetLsuTrafficControlStateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetLsuTrafficControlState not implemented")
+}
+func (UnimplementedSequencerAdministrationServiceServer) SetThroughputCap(context.Context, *SetThroughputCapRequest) (*SetThroughputCapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetThroughputCap not implemented")
+}
+func (UnimplementedSequencerAdministrationServiceServer) GetThroughputCap(context.Context, *GetThroughputCapRequest) (*GetThroughputCapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetThroughputCap not implemented")
+}
 func (UnimplementedSequencerAdministrationServiceServer) Snapshot(context.Context, *SnapshotRequest) (*SnapshotResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Snapshot not implemented")
 }
@@ -180,6 +270,12 @@ func (UnimplementedSequencerAdministrationServiceServer) OnboardingStateV2(*Onbo
 }
 func (UnimplementedSequencerAdministrationServiceServer) DisableMember(context.Context, *DisableMemberRequest) (*DisableMemberResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DisableMember not implemented")
+}
+func (UnimplementedSequencerAdministrationServiceServer) GenerateAuthenticationToken(context.Context, *GenerateAuthenticationTokenRequest) (*GenerateAuthenticationTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateAuthenticationToken not implemented")
+}
+func (UnimplementedSequencerAdministrationServiceServer) PerformLsuSequencingTest(context.Context, *PerformLsuSequencingTestRequest) (*PerformLsuSequencingTestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PerformLsuSequencingTest not implemented")
 }
 func (UnimplementedSequencerAdministrationServiceServer) mustEmbedUnimplementedSequencerAdministrationServiceServer() {
 }
@@ -257,6 +353,78 @@ func _SequencerAdministrationService_SetTrafficPurchased_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SequencerAdministrationService_GetLsuTrafficControlState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLsuTrafficControlStateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SequencerAdministrationServiceServer).GetLsuTrafficControlState(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SequencerAdministrationService_GetLsuTrafficControlState_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SequencerAdministrationServiceServer).GetLsuTrafficControlState(ctx, req.(*GetLsuTrafficControlStateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SequencerAdministrationService_SetLsuTrafficControlState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetLsuTrafficControlStateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SequencerAdministrationServiceServer).SetLsuTrafficControlState(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SequencerAdministrationService_SetLsuTrafficControlState_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SequencerAdministrationServiceServer).SetLsuTrafficControlState(ctx, req.(*SetLsuTrafficControlStateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SequencerAdministrationService_SetThroughputCap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetThroughputCapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SequencerAdministrationServiceServer).SetThroughputCap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SequencerAdministrationService_SetThroughputCap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SequencerAdministrationServiceServer).SetThroughputCap(ctx, req.(*SetThroughputCapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SequencerAdministrationService_GetThroughputCap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetThroughputCapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SequencerAdministrationServiceServer).GetThroughputCap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SequencerAdministrationService_GetThroughputCap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SequencerAdministrationServiceServer).GetThroughputCap(ctx, req.(*GetThroughputCapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SequencerAdministrationService_Snapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SnapshotRequest)
 	if err := dec(in); err != nil {
@@ -315,6 +483,42 @@ func _SequencerAdministrationService_DisableMember_Handler(srv interface{}, ctx 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SequencerAdministrationService_GenerateAuthenticationToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateAuthenticationTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SequencerAdministrationServiceServer).GenerateAuthenticationToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SequencerAdministrationService_GenerateAuthenticationToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SequencerAdministrationServiceServer).GenerateAuthenticationToken(ctx, req.(*GenerateAuthenticationTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SequencerAdministrationService_PerformLsuSequencingTest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PerformLsuSequencingTestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SequencerAdministrationServiceServer).PerformLsuSequencingTest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SequencerAdministrationService_PerformLsuSequencingTest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SequencerAdministrationServiceServer).PerformLsuSequencingTest(ctx, req.(*PerformLsuSequencingTestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SequencerAdministrationService_ServiceDesc is the grpc.ServiceDesc for SequencerAdministrationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -335,12 +539,36 @@ var SequencerAdministrationService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SequencerAdministrationService_SetTrafficPurchased_Handler,
 		},
 		{
+			MethodName: "GetLsuTrafficControlState",
+			Handler:    _SequencerAdministrationService_GetLsuTrafficControlState_Handler,
+		},
+		{
+			MethodName: "SetLsuTrafficControlState",
+			Handler:    _SequencerAdministrationService_SetLsuTrafficControlState_Handler,
+		},
+		{
+			MethodName: "SetThroughputCap",
+			Handler:    _SequencerAdministrationService_SetThroughputCap_Handler,
+		},
+		{
+			MethodName: "GetThroughputCap",
+			Handler:    _SequencerAdministrationService_GetThroughputCap_Handler,
+		},
+		{
 			MethodName: "Snapshot",
 			Handler:    _SequencerAdministrationService_Snapshot_Handler,
 		},
 		{
 			MethodName: "DisableMember",
 			Handler:    _SequencerAdministrationService_DisableMember_Handler,
+		},
+		{
+			MethodName: "GenerateAuthenticationToken",
+			Handler:    _SequencerAdministrationService_GenerateAuthenticationToken_Handler,
+		},
+		{
+			MethodName: "PerformLsuSequencingTest",
+			Handler:    _SequencerAdministrationService_PerformLsuSequencingTest_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

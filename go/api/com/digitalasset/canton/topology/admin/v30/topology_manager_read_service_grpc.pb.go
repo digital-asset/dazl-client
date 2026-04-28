@@ -33,15 +33,15 @@ const (
 	TopologyManagerReadService_ListSynchronizerParametersState_FullMethodName       = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerParametersState"
 	TopologyManagerReadService_ListMediatorSynchronizerState_FullMethodName         = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListMediatorSynchronizerState"
 	TopologyManagerReadService_ListSequencerSynchronizerState_FullMethodName        = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerSynchronizerState"
-	TopologyManagerReadService_ListSynchronizerUpgradeAnnouncement_FullMethodName   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerUpgradeAnnouncement"
-	TopologyManagerReadService_ListSequencerConnectionSuccessor_FullMethodName      = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerConnectionSuccessor"
+	TopologyManagerReadService_ListLsuAnnouncement_FullMethodName                   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuAnnouncement"
+	TopologyManagerReadService_ListLsuSequencerConnectionSuccessor_FullMethodName   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuSequencerConnectionSuccessor"
 	TopologyManagerReadService_ListAvailableStores_FullMethodName                   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAvailableStores"
 	TopologyManagerReadService_ListAll_FullMethodName                               = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAll"
 	TopologyManagerReadService_ExportTopologySnapshot_FullMethodName                = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshot"
 	TopologyManagerReadService_ExportTopologySnapshotV2_FullMethodName              = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshotV2"
 	TopologyManagerReadService_GenesisState_FullMethodName                          = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisState"
 	TopologyManagerReadService_GenesisStateV2_FullMethodName                        = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisStateV2"
-	TopologyManagerReadService_LogicalUpgradeState_FullMethodName                   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/LogicalUpgradeState"
+	TopologyManagerReadService_SequencerLsuState_FullMethodName                     = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/SequencerLsuState"
 )
 
 // TopologyManagerReadServiceClient is the client API for TopologyManagerReadService service.
@@ -60,15 +60,15 @@ type TopologyManagerReadServiceClient interface {
 	ListSynchronizerParametersState(ctx context.Context, in *ListSynchronizerParametersStateRequest, opts ...grpc.CallOption) (*ListSynchronizerParametersStateResponse, error)
 	ListMediatorSynchronizerState(ctx context.Context, in *ListMediatorSynchronizerStateRequest, opts ...grpc.CallOption) (*ListMediatorSynchronizerStateResponse, error)
 	ListSequencerSynchronizerState(ctx context.Context, in *ListSequencerSynchronizerStateRequest, opts ...grpc.CallOption) (*ListSequencerSynchronizerStateResponse, error)
-	ListSynchronizerUpgradeAnnouncement(ctx context.Context, in *ListSynchronizerUpgradeAnnouncementRequest, opts ...grpc.CallOption) (*ListSynchronizerUpgradeAnnouncementResponse, error)
-	ListSequencerConnectionSuccessor(ctx context.Context, in *ListSequencerConnectionSuccessorRequest, opts ...grpc.CallOption) (*ListSequencerConnectionSuccessorResponse, error)
+	ListLsuAnnouncement(ctx context.Context, in *ListLsuAnnouncementRequest, opts ...grpc.CallOption) (*ListLsuAnnouncementResponse, error)
+	ListLsuSequencerConnectionSuccessor(ctx context.Context, in *ListLsuSequencerConnectionSuccessorRequest, opts ...grpc.CallOption) (*ListLsuSequencerConnectionSuccessorResponse, error)
 	ListAvailableStores(ctx context.Context, in *ListAvailableStoresRequest, opts ...grpc.CallOption) (*ListAvailableStoresResponse, error)
 	ListAll(ctx context.Context, in *ListAllRequest, opts ...grpc.CallOption) (*ListAllResponse, error)
 	ExportTopologySnapshot(ctx context.Context, in *ExportTopologySnapshotRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportTopologySnapshotResponse], error)
 	ExportTopologySnapshotV2(ctx context.Context, in *ExportTopologySnapshotV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportTopologySnapshotV2Response], error)
 	GenesisState(ctx context.Context, in *GenesisStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GenesisStateResponse], error)
 	GenesisStateV2(ctx context.Context, in *GenesisStateV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GenesisStateV2Response], error)
-	LogicalUpgradeState(ctx context.Context, in *LogicalUpgradeStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[LogicalUpgradeStateResponse], error)
+	SequencerLsuState(ctx context.Context, in *SequencerLsuStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[SequencerLsuStateResponse], error)
 }
 
 type topologyManagerReadServiceClient struct {
@@ -199,20 +199,20 @@ func (c *topologyManagerReadServiceClient) ListSequencerSynchronizerState(ctx co
 	return out, nil
 }
 
-func (c *topologyManagerReadServiceClient) ListSynchronizerUpgradeAnnouncement(ctx context.Context, in *ListSynchronizerUpgradeAnnouncementRequest, opts ...grpc.CallOption) (*ListSynchronizerUpgradeAnnouncementResponse, error) {
+func (c *topologyManagerReadServiceClient) ListLsuAnnouncement(ctx context.Context, in *ListLsuAnnouncementRequest, opts ...grpc.CallOption) (*ListLsuAnnouncementResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListSynchronizerUpgradeAnnouncementResponse)
-	err := c.cc.Invoke(ctx, TopologyManagerReadService_ListSynchronizerUpgradeAnnouncement_FullMethodName, in, out, cOpts...)
+	out := new(ListLsuAnnouncementResponse)
+	err := c.cc.Invoke(ctx, TopologyManagerReadService_ListLsuAnnouncement_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *topologyManagerReadServiceClient) ListSequencerConnectionSuccessor(ctx context.Context, in *ListSequencerConnectionSuccessorRequest, opts ...grpc.CallOption) (*ListSequencerConnectionSuccessorResponse, error) {
+func (c *topologyManagerReadServiceClient) ListLsuSequencerConnectionSuccessor(ctx context.Context, in *ListLsuSequencerConnectionSuccessorRequest, opts ...grpc.CallOption) (*ListLsuSequencerConnectionSuccessorResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListSequencerConnectionSuccessorResponse)
-	err := c.cc.Invoke(ctx, TopologyManagerReadService_ListSequencerConnectionSuccessor_FullMethodName, in, out, cOpts...)
+	out := new(ListLsuSequencerConnectionSuccessorResponse)
+	err := c.cc.Invoke(ctx, TopologyManagerReadService_ListLsuSequencerConnectionSuccessor_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -315,13 +315,13 @@ func (c *topologyManagerReadServiceClient) GenesisStateV2(ctx context.Context, i
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type TopologyManagerReadService_GenesisStateV2Client = grpc.ServerStreamingClient[GenesisStateV2Response]
 
-func (c *topologyManagerReadServiceClient) LogicalUpgradeState(ctx context.Context, in *LogicalUpgradeStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[LogicalUpgradeStateResponse], error) {
+func (c *topologyManagerReadServiceClient) SequencerLsuState(ctx context.Context, in *SequencerLsuStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[SequencerLsuStateResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &TopologyManagerReadService_ServiceDesc.Streams[4], TopologyManagerReadService_LogicalUpgradeState_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &TopologyManagerReadService_ServiceDesc.Streams[4], TopologyManagerReadService_SequencerLsuState_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[LogicalUpgradeStateRequest, LogicalUpgradeStateResponse]{ClientStream: stream}
+	x := &grpc.GenericClientStream[SequencerLsuStateRequest, SequencerLsuStateResponse]{ClientStream: stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -332,7 +332,7 @@ func (c *topologyManagerReadServiceClient) LogicalUpgradeState(ctx context.Conte
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type TopologyManagerReadService_LogicalUpgradeStateClient = grpc.ServerStreamingClient[LogicalUpgradeStateResponse]
+type TopologyManagerReadService_SequencerLsuStateClient = grpc.ServerStreamingClient[SequencerLsuStateResponse]
 
 // TopologyManagerReadServiceServer is the server API for TopologyManagerReadService service.
 // All implementations must embed UnimplementedTopologyManagerReadServiceServer
@@ -350,15 +350,15 @@ type TopologyManagerReadServiceServer interface {
 	ListSynchronizerParametersState(context.Context, *ListSynchronizerParametersStateRequest) (*ListSynchronizerParametersStateResponse, error)
 	ListMediatorSynchronizerState(context.Context, *ListMediatorSynchronizerStateRequest) (*ListMediatorSynchronizerStateResponse, error)
 	ListSequencerSynchronizerState(context.Context, *ListSequencerSynchronizerStateRequest) (*ListSequencerSynchronizerStateResponse, error)
-	ListSynchronizerUpgradeAnnouncement(context.Context, *ListSynchronizerUpgradeAnnouncementRequest) (*ListSynchronizerUpgradeAnnouncementResponse, error)
-	ListSequencerConnectionSuccessor(context.Context, *ListSequencerConnectionSuccessorRequest) (*ListSequencerConnectionSuccessorResponse, error)
+	ListLsuAnnouncement(context.Context, *ListLsuAnnouncementRequest) (*ListLsuAnnouncementResponse, error)
+	ListLsuSequencerConnectionSuccessor(context.Context, *ListLsuSequencerConnectionSuccessorRequest) (*ListLsuSequencerConnectionSuccessorResponse, error)
 	ListAvailableStores(context.Context, *ListAvailableStoresRequest) (*ListAvailableStoresResponse, error)
 	ListAll(context.Context, *ListAllRequest) (*ListAllResponse, error)
 	ExportTopologySnapshot(*ExportTopologySnapshotRequest, grpc.ServerStreamingServer[ExportTopologySnapshotResponse]) error
 	ExportTopologySnapshotV2(*ExportTopologySnapshotV2Request, grpc.ServerStreamingServer[ExportTopologySnapshotV2Response]) error
 	GenesisState(*GenesisStateRequest, grpc.ServerStreamingServer[GenesisStateResponse]) error
 	GenesisStateV2(*GenesisStateV2Request, grpc.ServerStreamingServer[GenesisStateV2Response]) error
-	LogicalUpgradeState(*LogicalUpgradeStateRequest, grpc.ServerStreamingServer[LogicalUpgradeStateResponse]) error
+	SequencerLsuState(*SequencerLsuStateRequest, grpc.ServerStreamingServer[SequencerLsuStateResponse]) error
 	mustEmbedUnimplementedTopologyManagerReadServiceServer()
 }
 
@@ -405,11 +405,11 @@ func (UnimplementedTopologyManagerReadServiceServer) ListMediatorSynchronizerSta
 func (UnimplementedTopologyManagerReadServiceServer) ListSequencerSynchronizerState(context.Context, *ListSequencerSynchronizerStateRequest) (*ListSequencerSynchronizerStateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSequencerSynchronizerState not implemented")
 }
-func (UnimplementedTopologyManagerReadServiceServer) ListSynchronizerUpgradeAnnouncement(context.Context, *ListSynchronizerUpgradeAnnouncementRequest) (*ListSynchronizerUpgradeAnnouncementResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListSynchronizerUpgradeAnnouncement not implemented")
+func (UnimplementedTopologyManagerReadServiceServer) ListLsuAnnouncement(context.Context, *ListLsuAnnouncementRequest) (*ListLsuAnnouncementResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListLsuAnnouncement not implemented")
 }
-func (UnimplementedTopologyManagerReadServiceServer) ListSequencerConnectionSuccessor(context.Context, *ListSequencerConnectionSuccessorRequest) (*ListSequencerConnectionSuccessorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListSequencerConnectionSuccessor not implemented")
+func (UnimplementedTopologyManagerReadServiceServer) ListLsuSequencerConnectionSuccessor(context.Context, *ListLsuSequencerConnectionSuccessorRequest) (*ListLsuSequencerConnectionSuccessorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListLsuSequencerConnectionSuccessor not implemented")
 }
 func (UnimplementedTopologyManagerReadServiceServer) ListAvailableStores(context.Context, *ListAvailableStoresRequest) (*ListAvailableStoresResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAvailableStores not implemented")
@@ -429,8 +429,8 @@ func (UnimplementedTopologyManagerReadServiceServer) GenesisState(*GenesisStateR
 func (UnimplementedTopologyManagerReadServiceServer) GenesisStateV2(*GenesisStateV2Request, grpc.ServerStreamingServer[GenesisStateV2Response]) error {
 	return status.Errorf(codes.Unimplemented, "method GenesisStateV2 not implemented")
 }
-func (UnimplementedTopologyManagerReadServiceServer) LogicalUpgradeState(*LogicalUpgradeStateRequest, grpc.ServerStreamingServer[LogicalUpgradeStateResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method LogicalUpgradeState not implemented")
+func (UnimplementedTopologyManagerReadServiceServer) SequencerLsuState(*SequencerLsuStateRequest, grpc.ServerStreamingServer[SequencerLsuStateResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method SequencerLsuState not implemented")
 }
 func (UnimplementedTopologyManagerReadServiceServer) mustEmbedUnimplementedTopologyManagerReadServiceServer() {
 }
@@ -670,38 +670,38 @@ func _TopologyManagerReadService_ListSequencerSynchronizerState_Handler(srv inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TopologyManagerReadService_ListSynchronizerUpgradeAnnouncement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListSynchronizerUpgradeAnnouncementRequest)
+func _TopologyManagerReadService_ListLsuAnnouncement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListLsuAnnouncementRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TopologyManagerReadServiceServer).ListSynchronizerUpgradeAnnouncement(ctx, in)
+		return srv.(TopologyManagerReadServiceServer).ListLsuAnnouncement(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: TopologyManagerReadService_ListSynchronizerUpgradeAnnouncement_FullMethodName,
+		FullMethod: TopologyManagerReadService_ListLsuAnnouncement_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TopologyManagerReadServiceServer).ListSynchronizerUpgradeAnnouncement(ctx, req.(*ListSynchronizerUpgradeAnnouncementRequest))
+		return srv.(TopologyManagerReadServiceServer).ListLsuAnnouncement(ctx, req.(*ListLsuAnnouncementRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TopologyManagerReadService_ListSequencerConnectionSuccessor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListSequencerConnectionSuccessorRequest)
+func _TopologyManagerReadService_ListLsuSequencerConnectionSuccessor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListLsuSequencerConnectionSuccessorRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TopologyManagerReadServiceServer).ListSequencerConnectionSuccessor(ctx, in)
+		return srv.(TopologyManagerReadServiceServer).ListLsuSequencerConnectionSuccessor(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: TopologyManagerReadService_ListSequencerConnectionSuccessor_FullMethodName,
+		FullMethod: TopologyManagerReadService_ListLsuSequencerConnectionSuccessor_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TopologyManagerReadServiceServer).ListSequencerConnectionSuccessor(ctx, req.(*ListSequencerConnectionSuccessorRequest))
+		return srv.(TopologyManagerReadServiceServer).ListLsuSequencerConnectionSuccessor(ctx, req.(*ListLsuSequencerConnectionSuccessorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -786,16 +786,16 @@ func _TopologyManagerReadService_GenesisStateV2_Handler(srv interface{}, stream 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type TopologyManagerReadService_GenesisStateV2Server = grpc.ServerStreamingServer[GenesisStateV2Response]
 
-func _TopologyManagerReadService_LogicalUpgradeState_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(LogicalUpgradeStateRequest)
+func _TopologyManagerReadService_SequencerLsuState_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(SequencerLsuStateRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(TopologyManagerReadServiceServer).LogicalUpgradeState(m, &grpc.GenericServerStream[LogicalUpgradeStateRequest, LogicalUpgradeStateResponse]{ServerStream: stream})
+	return srv.(TopologyManagerReadServiceServer).SequencerLsuState(m, &grpc.GenericServerStream[SequencerLsuStateRequest, SequencerLsuStateResponse]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type TopologyManagerReadService_LogicalUpgradeStateServer = grpc.ServerStreamingServer[LogicalUpgradeStateResponse]
+type TopologyManagerReadService_SequencerLsuStateServer = grpc.ServerStreamingServer[SequencerLsuStateResponse]
 
 // TopologyManagerReadService_ServiceDesc is the grpc.ServiceDesc for TopologyManagerReadService service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -853,12 +853,12 @@ var TopologyManagerReadService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TopologyManagerReadService_ListSequencerSynchronizerState_Handler,
 		},
 		{
-			MethodName: "ListSynchronizerUpgradeAnnouncement",
-			Handler:    _TopologyManagerReadService_ListSynchronizerUpgradeAnnouncement_Handler,
+			MethodName: "ListLsuAnnouncement",
+			Handler:    _TopologyManagerReadService_ListLsuAnnouncement_Handler,
 		},
 		{
-			MethodName: "ListSequencerConnectionSuccessor",
-			Handler:    _TopologyManagerReadService_ListSequencerConnectionSuccessor_Handler,
+			MethodName: "ListLsuSequencerConnectionSuccessor",
+			Handler:    _TopologyManagerReadService_ListLsuSequencerConnectionSuccessor_Handler,
 		},
 		{
 			MethodName: "ListAvailableStores",
@@ -891,8 +891,8 @@ var TopologyManagerReadService_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 		{
-			StreamName:    "LogicalUpgradeState",
-			Handler:       _TopologyManagerReadService_LogicalUpgradeState_Handler,
+			StreamName:    "SequencerLsuState",
+			Handler:       _TopologyManagerReadService_SequencerLsuState_Handler,
 			ServerStreams: true,
 		},
 	},

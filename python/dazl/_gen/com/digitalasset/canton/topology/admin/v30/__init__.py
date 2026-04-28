@@ -8,7 +8,7 @@ from .initialization_service_pb2 import CurrentTimeRequest, CurrentTimeResponse,
 from .initialization_service_pb2_grpc import IdentityInitializationServiceStub
 from .topology_manager_write_service_pb2 import AddTransactionsRequest, AddTransactionsResponse, AuthorizeRequest, AuthorizeResponse, CreateTemporaryTopologyStoreRequest, CreateTemporaryTopologyStoreResponse, DropTemporaryTopologyStoreRequest, DropTemporaryTopologyStoreResponse, ForceFlag, GenerateTransactionsRequest, GenerateTransactionsResponse, ImportTopologySnapshotRequest, ImportTopologySnapshotResponse, ImportTopologySnapshotV2Request, ImportTopologySnapshotV2Response, SignTransactionsRequest, SignTransactionsResponse
 from .topology_manager_write_service_pb2_grpc import TopologyManagerWriteServiceStub
-from .topology_manager_read_service_pb2 import BaseQuery, BaseResult, ExportTopologySnapshotRequest, ExportTopologySnapshotResponse, ExportTopologySnapshotV2Request, ExportTopologySnapshotV2Response, GenesisStateRequest, GenesisStateResponse, GenesisStateV2Request, GenesisStateV2Response, ListAllRequest, ListAllResponse, ListAvailableStoresRequest, ListAvailableStoresResponse, ListDecentralizedNamespaceDefinitionRequest, ListDecentralizedNamespaceDefinitionResponse, ListMediatorSynchronizerStateRequest, ListMediatorSynchronizerStateResponse, ListNamespaceDelegationRequest, ListNamespaceDelegationResponse, ListOwnerToKeyMappingRequest, ListOwnerToKeyMappingResponse, ListParticipantSynchronizerPermissionRequest, ListParticipantSynchronizerPermissionResponse, ListPartyHostingLimitsRequest, ListPartyHostingLimitsResponse, ListPartyToKeyMappingRequest, ListPartyToKeyMappingResponse, ListPartyToParticipantRequest, ListPartyToParticipantResponse, ListSequencerConnectionSuccessorRequest, ListSequencerConnectionSuccessorResponse, ListSequencerSynchronizerStateRequest, ListSequencerSynchronizerStateResponse, ListSynchronizerParametersStateRequest, ListSynchronizerParametersStateResponse, ListSynchronizerTrustCertificateRequest, ListSynchronizerTrustCertificateResponse, ListSynchronizerUpgradeAnnouncementRequest, ListSynchronizerUpgradeAnnouncementResponse, ListVettedPackagesRequest, ListVettedPackagesResponse, LogicalUpgradeStateRequest, LogicalUpgradeStateResponse
+from .topology_manager_read_service_pb2 import BaseQuery, BaseResult, ExportTopologySnapshotRequest, ExportTopologySnapshotResponse, ExportTopologySnapshotV2Request, ExportTopologySnapshotV2Response, GenesisStateRequest, GenesisStateResponse, GenesisStateV2Request, GenesisStateV2Response, ListAllRequest, ListAllResponse, ListAvailableStoresRequest, ListAvailableStoresResponse, ListDecentralizedNamespaceDefinitionRequest, ListDecentralizedNamespaceDefinitionResponse, ListLsuAnnouncementRequest, ListLsuAnnouncementResponse, ListLsuSequencerConnectionSuccessorRequest, ListLsuSequencerConnectionSuccessorResponse, ListMediatorSynchronizerStateRequest, ListMediatorSynchronizerStateResponse, ListNamespaceDelegationRequest, ListNamespaceDelegationResponse, ListOwnerToKeyMappingRequest, ListOwnerToKeyMappingResponse, ListParticipantSynchronizerPermissionRequest, ListParticipantSynchronizerPermissionResponse, ListPartyHostingLimitsRequest, ListPartyHostingLimitsResponse, ListPartyToKeyMappingRequest, ListPartyToKeyMappingResponse, ListPartyToParticipantRequest, ListPartyToParticipantResponse, ListSequencerSynchronizerStateRequest, ListSequencerSynchronizerStateResponse, ListSynchronizerParametersStateRequest, ListSynchronizerParametersStateResponse, ListSynchronizerTrustCertificateRequest, ListSynchronizerTrustCertificateResponse, ListVettedPackagesRequest, ListVettedPackagesResponse, SequencerLsuStateRequest, SequencerLsuStateResponse
 from .topology_manager_read_service_pb2_grpc import TopologyManagerReadServiceStub
 from .topology_aggregation_service_pb2 import ListKeyOwnersRequest, ListKeyOwnersResponse, ListPartiesRequest, ListPartiesResponse
 from .topology_aggregation_service_pb2_grpc import TopologyAggregationServiceStub
@@ -56,6 +56,10 @@ __all__ = [
     "ListDecentralizedNamespaceDefinitionResponse",
     "ListKeyOwnersRequest",
     "ListKeyOwnersResponse",
+    "ListLsuAnnouncementRequest",
+    "ListLsuAnnouncementResponse",
+    "ListLsuSequencerConnectionSuccessorRequest",
+    "ListLsuSequencerConnectionSuccessorResponse",
     "ListMediatorSynchronizerStateRequest",
     "ListMediatorSynchronizerStateResponse",
     "ListNamespaceDelegationRequest",
@@ -72,20 +76,16 @@ __all__ = [
     "ListPartyToKeyMappingResponse",
     "ListPartyToParticipantRequest",
     "ListPartyToParticipantResponse",
-    "ListSequencerConnectionSuccessorRequest",
-    "ListSequencerConnectionSuccessorResponse",
     "ListSequencerSynchronizerStateRequest",
     "ListSequencerSynchronizerStateResponse",
     "ListSynchronizerParametersStateRequest",
     "ListSynchronizerParametersStateResponse",
     "ListSynchronizerTrustCertificateRequest",
     "ListSynchronizerTrustCertificateResponse",
-    "ListSynchronizerUpgradeAnnouncementRequest",
-    "ListSynchronizerUpgradeAnnouncementResponse",
     "ListVettedPackagesRequest",
     "ListVettedPackagesResponse",
-    "LogicalUpgradeStateRequest",
-    "LogicalUpgradeStateResponse",
+    "SequencerLsuStateRequest",
+    "SequencerLsuStateResponse",
     "SignTransactionsRequest",
     "SignTransactionsResponse",
     "StoreId",

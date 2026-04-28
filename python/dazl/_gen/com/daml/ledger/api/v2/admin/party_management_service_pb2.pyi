@@ -78,7 +78,7 @@ class AllocatePartyResponse(_message.Message):
     def __init__(self, party_details: _Optional[_Union[PartyDetails, _Mapping]] = ...) -> None: ...
 
 class AllocateExternalPartyRequest(_message.Message):
-    __slots__ = ("synchronizer", "onboarding_transactions", "multi_hash_signatures", "identity_provider_id")
+    __slots__ = ("synchronizer", "onboarding_transactions", "multi_hash_signatures", "identity_provider_id", "wait_for_allocation", "user_id")
     class SignedTransaction(_message.Message):
         __slots__ = ("transaction", "signatures")
         TRANSACTION_FIELD_NUMBER: _ClassVar[int]
@@ -90,11 +90,15 @@ class AllocateExternalPartyRequest(_message.Message):
     ONBOARDING_TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
     MULTI_HASH_SIGNATURES_FIELD_NUMBER: _ClassVar[int]
     IDENTITY_PROVIDER_ID_FIELD_NUMBER: _ClassVar[int]
+    WAIT_FOR_ALLOCATION_FIELD_NUMBER: _ClassVar[int]
+    USER_ID_FIELD_NUMBER: _ClassVar[int]
     synchronizer: str
     onboarding_transactions: _containers.RepeatedCompositeFieldContainer[AllocateExternalPartyRequest.SignedTransaction]
     multi_hash_signatures: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.Signature]
     identity_provider_id: str
-    def __init__(self, synchronizer: _Optional[str] = ..., onboarding_transactions: _Optional[_Iterable[_Union[AllocateExternalPartyRequest.SignedTransaction, _Mapping]]] = ..., multi_hash_signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
+    wait_for_allocation: bool
+    user_id: str
+    def __init__(self, synchronizer: _Optional[str] = ..., onboarding_transactions: _Optional[_Iterable[_Union[AllocateExternalPartyRequest.SignedTransaction, _Mapping]]] = ..., multi_hash_signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ..., identity_provider_id: _Optional[str] = ..., wait_for_allocation: bool = ..., user_id: _Optional[str] = ...) -> None: ...
 
 class AllocateExternalPartyResponse(_message.Message):
     __slots__ = ("party_id",)

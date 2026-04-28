@@ -27,6 +27,12 @@ PARTICIPANT_PERMISSION_CONFIRMATION: ParticipantPermission
 PARTICIPANT_PERMISSION_OBSERVATION: ParticipantPermission
 
 class AddPartyAsyncRequest(_message.Message):
+    __slots__ = ("arguments",)
+    ARGUMENTS_FIELD_NUMBER: _ClassVar[int]
+    arguments: AddPartyArguments
+    def __init__(self, arguments: _Optional[_Union[AddPartyArguments, _Mapping]] = ...) -> None: ...
+
+class AddPartyArguments(_message.Message):
     __slots__ = ("party_id", "synchronizer_id", "source_participant_uid", "topology_serial", "participant_permission")
     PARTY_ID_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -46,6 +52,20 @@ class AddPartyAsyncResponse(_message.Message):
     add_party_request_id: str
     def __init__(self, add_party_request_id: _Optional[str] = ...) -> None: ...
 
+class AddPartyWithAcsAsyncRequest(_message.Message):
+    __slots__ = ("acs_snapshot", "arguments")
+    ACS_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
+    ARGUMENTS_FIELD_NUMBER: _ClassVar[int]
+    acs_snapshot: bytes
+    arguments: AddPartyArguments
+    def __init__(self, acs_snapshot: _Optional[bytes] = ..., arguments: _Optional[_Union[AddPartyArguments, _Mapping]] = ...) -> None: ...
+
+class AddPartyWithAcsAsyncResponse(_message.Message):
+    __slots__ = ("add_party_request_id",)
+    ADD_PARTY_REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
+    add_party_request_id: str
+    def __init__(self, add_party_request_id: _Optional[str] = ...) -> None: ...
+
 class GetAddPartyStatusRequest(_message.Message):
     __slots__ = ("add_party_request_id",)
     ADD_PARTY_REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
@@ -53,106 +73,70 @@ class GetAddPartyStatusRequest(_message.Message):
     def __init__(self, add_party_request_id: _Optional[str] = ...) -> None: ...
 
 class GetAddPartyStatusResponse(_message.Message):
-    __slots__ = ("party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "topology_serial", "participant_permission", "status")
-    class Status(_message.Message):
-        __slots__ = ("proposal_processed", "agreement_accepted", "topology_authorized", "connection_established", "replicating_acs", "fully_replicated_acs", "completed", "error", "disconnected")
-        class ProposalProcessed(_message.Message):
-            __slots__ = ()
-            def __init__(self) -> None: ...
-        class AgreementAccepted(_message.Message):
-            __slots__ = ("sequencer_uid",)
-            SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-            sequencer_uid: str
-            def __init__(self, sequencer_uid: _Optional[str] = ...) -> None: ...
-        class TopologyAuthorized(_message.Message):
-            __slots__ = ("sequencer_uid", "timestamp")
-            SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-            TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-            sequencer_uid: str
-            timestamp: _timestamp_pb2.Timestamp
-            def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
-        class ConnectionEstablished(_message.Message):
-            __slots__ = ("sequencer_uid", "timestamp")
-            SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-            TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-            sequencer_uid: str
-            timestamp: _timestamp_pb2.Timestamp
-            def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
-        class ReplicatingAcs(_message.Message):
-            __slots__ = ("sequencer_uid", "timestamp", "contracts_replicated")
-            SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-            TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-            CONTRACTS_REPLICATED_FIELD_NUMBER: _ClassVar[int]
-            sequencer_uid: str
-            timestamp: _timestamp_pb2.Timestamp
-            contracts_replicated: int
-            def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contracts_replicated: _Optional[int] = ...) -> None: ...
-        class FullyReplicatedAcs(_message.Message):
-            __slots__ = ("sequencer_uid", "timestamp", "contracts_replicated")
-            SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-            TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-            CONTRACTS_REPLICATED_FIELD_NUMBER: _ClassVar[int]
-            sequencer_uid: str
-            timestamp: _timestamp_pb2.Timestamp
-            contracts_replicated: int
-            def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contracts_replicated: _Optional[int] = ...) -> None: ...
-        class Completed(_message.Message):
-            __slots__ = ("sequencer_uid", "timestamp", "contracts_replicated")
-            SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-            TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-            CONTRACTS_REPLICATED_FIELD_NUMBER: _ClassVar[int]
-            sequencer_uid: str
-            timestamp: _timestamp_pb2.Timestamp
-            contracts_replicated: int
-            def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contracts_replicated: _Optional[int] = ...) -> None: ...
-        class Error(_message.Message):
-            __slots__ = ("error_message", "status_prior_to_error")
-            ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
-            STATUS_PRIOR_TO_ERROR_FIELD_NUMBER: _ClassVar[int]
-            error_message: str
-            status_prior_to_error: GetAddPartyStatusResponse.Status
-            def __init__(self, error_message: _Optional[str] = ..., status_prior_to_error: _Optional[_Union[GetAddPartyStatusResponse.Status, _Mapping]] = ...) -> None: ...
-        class Disconnected(_message.Message):
-            __slots__ = ("disconnect_message", "status_prior_to_disconnect")
-            DISCONNECT_MESSAGE_FIELD_NUMBER: _ClassVar[int]
-            STATUS_PRIOR_TO_DISCONNECT_FIELD_NUMBER: _ClassVar[int]
-            disconnect_message: str
-            status_prior_to_disconnect: GetAddPartyStatusResponse.Status
-            def __init__(self, disconnect_message: _Optional[str] = ..., status_prior_to_disconnect: _Optional[_Union[GetAddPartyStatusResponse.Status, _Mapping]] = ...) -> None: ...
-        PROPOSAL_PROCESSED_FIELD_NUMBER: _ClassVar[int]
-        AGREEMENT_ACCEPTED_FIELD_NUMBER: _ClassVar[int]
-        TOPOLOGY_AUTHORIZED_FIELD_NUMBER: _ClassVar[int]
-        CONNECTION_ESTABLISHED_FIELD_NUMBER: _ClassVar[int]
-        REPLICATING_ACS_FIELD_NUMBER: _ClassVar[int]
-        FULLY_REPLICATED_ACS_FIELD_NUMBER: _ClassVar[int]
-        COMPLETED_FIELD_NUMBER: _ClassVar[int]
-        ERROR_FIELD_NUMBER: _ClassVar[int]
-        DISCONNECTED_FIELD_NUMBER: _ClassVar[int]
-        proposal_processed: GetAddPartyStatusResponse.Status.ProposalProcessed
-        agreement_accepted: GetAddPartyStatusResponse.Status.AgreementAccepted
-        topology_authorized: GetAddPartyStatusResponse.Status.TopologyAuthorized
-        connection_established: GetAddPartyStatusResponse.Status.ConnectionEstablished
-        replicating_acs: GetAddPartyStatusResponse.Status.ReplicatingAcs
-        fully_replicated_acs: GetAddPartyStatusResponse.Status.FullyReplicatedAcs
-        completed: GetAddPartyStatusResponse.Status.Completed
-        error: GetAddPartyStatusResponse.Status.Error
-        disconnected: GetAddPartyStatusResponse.Status.Disconnected
-        def __init__(self, proposal_processed: _Optional[_Union[GetAddPartyStatusResponse.Status.ProposalProcessed, _Mapping]] = ..., agreement_accepted: _Optional[_Union[GetAddPartyStatusResponse.Status.AgreementAccepted, _Mapping]] = ..., topology_authorized: _Optional[_Union[GetAddPartyStatusResponse.Status.TopologyAuthorized, _Mapping]] = ..., connection_established: _Optional[_Union[GetAddPartyStatusResponse.Status.ConnectionEstablished, _Mapping]] = ..., replicating_acs: _Optional[_Union[GetAddPartyStatusResponse.Status.ReplicatingAcs, _Mapping]] = ..., fully_replicated_acs: _Optional[_Union[GetAddPartyStatusResponse.Status.FullyReplicatedAcs, _Mapping]] = ..., completed: _Optional[_Union[GetAddPartyStatusResponse.Status.Completed, _Mapping]] = ..., error: _Optional[_Union[GetAddPartyStatusResponse.Status.Error, _Mapping]] = ..., disconnected: _Optional[_Union[GetAddPartyStatusResponse.Status.Disconnected, _Mapping]] = ...) -> None: ...
-    PARTY_ID_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
-    SOURCE_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
-    TARGET_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
-    TOPOLOGY_SERIAL_FIELD_NUMBER: _ClassVar[int]
-    PARTICIPANT_PERMISSION_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("status",)
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    party_id: str
-    synchronizer_id: str
-    source_participant_uid: str
-    target_participant_uid: str
-    topology_serial: int
-    participant_permission: ParticipantPermission
-    status: GetAddPartyStatusResponse.Status
-    def __init__(self, party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ..., participant_permission: _Optional[_Union[ParticipantPermission, str]] = ..., status: _Optional[_Union[GetAddPartyStatusResponse.Status, _Mapping]] = ...) -> None: ...
+    status: PartyReplicationStatus
+    def __init__(self, status: _Optional[_Union[PartyReplicationStatus, _Mapping]] = ...) -> None: ...
+
+class PartyReplicationStatus(_message.Message):
+    __slots__ = ("parameters", "agreement", "authorization", "replication", "indexing", "has_completed", "error_message")
+    class ReplicationParameters(_message.Message):
+        __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "topology_serial")
+        REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
+        PARTY_ID_FIELD_NUMBER: _ClassVar[int]
+        SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+        SOURCE_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
+        TARGET_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
+        TOPOLOGY_SERIAL_FIELD_NUMBER: _ClassVar[int]
+        request_id: str
+        party_id: str
+        synchronizer_id: str
+        source_participant_uid: str
+        target_participant_uid: str
+        topology_serial: int
+        def __init__(self, request_id: _Optional[str] = ..., party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ...) -> None: ...
+    class SequencerChannelAgreement(_message.Message):
+        __slots__ = ("sequencer_uid",)
+        SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
+        sequencer_uid: str
+        def __init__(self, sequencer_uid: _Optional[str] = ...) -> None: ...
+    class PartyReplicationAuthorization(_message.Message):
+        __slots__ = ("onboarding_at", "is_onboarding_flag_cleared")
+        ONBOARDING_AT_FIELD_NUMBER: _ClassVar[int]
+        IS_ONBOARDING_FLAG_CLEARED_FIELD_NUMBER: _ClassVar[int]
+        onboarding_at: _timestamp_pb2.Timestamp
+        is_onboarding_flag_cleared: bool
+        def __init__(self, onboarding_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., is_onboarding_flag_cleared: bool = ...) -> None: ...
+    class AcsReplicationProgress(_message.Message):
+        __slots__ = ("processed_contract_count", "fully_processed_acs")
+        PROCESSED_CONTRACT_COUNT_FIELD_NUMBER: _ClassVar[int]
+        FULLY_PROCESSED_ACS_FIELD_NUMBER: _ClassVar[int]
+        processed_contract_count: int
+        fully_processed_acs: bool
+        def __init__(self, processed_contract_count: _Optional[int] = ..., fully_processed_acs: bool = ...) -> None: ...
+    class AcsIndexingProgress(_message.Message):
+        __slots__ = ()
+        def __init__(self) -> None: ...
+    class PartyReplicationError(_message.Message):
+        __slots__ = ("error_message",)
+        ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+        error_message: str
+        def __init__(self, error_message: _Optional[str] = ...) -> None: ...
+    PARAMETERS_FIELD_NUMBER: _ClassVar[int]
+    AGREEMENT_FIELD_NUMBER: _ClassVar[int]
+    AUTHORIZATION_FIELD_NUMBER: _ClassVar[int]
+    REPLICATION_FIELD_NUMBER: _ClassVar[int]
+    INDEXING_FIELD_NUMBER: _ClassVar[int]
+    HAS_COMPLETED_FIELD_NUMBER: _ClassVar[int]
+    ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    parameters: PartyReplicationStatus.ReplicationParameters
+    agreement: PartyReplicationStatus.SequencerChannelAgreement
+    authorization: PartyReplicationStatus.PartyReplicationAuthorization
+    replication: PartyReplicationStatus.AcsReplicationProgress
+    indexing: PartyReplicationStatus.AcsIndexingProgress
+    has_completed: bool
+    error_message: PartyReplicationStatus.PartyReplicationError
+    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., agreement: _Optional[_Union[PartyReplicationStatus.SequencerChannelAgreement, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: bool = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ...) -> None: ...
 
 class ExportPartyAcsRequest(_message.Message):
     __slots__ = ("party_id", "synchronizer_id", "target_participant_uid", "begin_offset_exclusive", "wait_for_activation_timeout")
@@ -175,16 +159,20 @@ class ExportPartyAcsResponse(_message.Message):
     def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
 
 class ImportPartyAcsRequest(_message.Message):
-    __slots__ = ("acs_snapshot", "workflow_id_prefix", "contract_import_mode", "representative_package_id_override")
+    __slots__ = ("acs_snapshot", "synchronizer_id", "workflow_id_prefix", "contract_import_mode", "representative_package_id_override", "party_id")
     ACS_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     WORKFLOW_ID_PREFIX_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_IMPORT_MODE_FIELD_NUMBER: _ClassVar[int]
     REPRESENTATIVE_PACKAGE_ID_OVERRIDE_FIELD_NUMBER: _ClassVar[int]
+    PARTY_ID_FIELD_NUMBER: _ClassVar[int]
     acs_snapshot: bytes
+    synchronizer_id: str
     workflow_id_prefix: str
     contract_import_mode: _acs_import_pb2.ContractImportMode
     representative_package_id_override: _acs_import_pb2.RepresentativePackageIdOverride
-    def __init__(self, acs_snapshot: _Optional[bytes] = ..., workflow_id_prefix: _Optional[str] = ..., contract_import_mode: _Optional[_Union[_acs_import_pb2.ContractImportMode, str]] = ..., representative_package_id_override: _Optional[_Union[_acs_import_pb2.RepresentativePackageIdOverride, _Mapping]] = ...) -> None: ...
+    party_id: str
+    def __init__(self, acs_snapshot: _Optional[bytes] = ..., synchronizer_id: _Optional[str] = ..., workflow_id_prefix: _Optional[str] = ..., contract_import_mode: _Optional[_Union[_acs_import_pb2.ContractImportMode, str]] = ..., representative_package_id_override: _Optional[_Union[_acs_import_pb2.RepresentativePackageIdOverride, _Mapping]] = ..., party_id: _Optional[str] = ...) -> None: ...
 
 class ImportPartyAcsResponse(_message.Message):
     __slots__ = ()
