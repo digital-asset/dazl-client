@@ -9,7 +9,7 @@ import warnings
 
 from . import topology_manager_write_service_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2
 
-GRPC_GENERATED_VERSION = '1.76.0'
+GRPC_GENERATED_VERSION = '1.80.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 

@@ -3,9 +3,9 @@
 # fmt: off
 # isort: skip_file
 
-
 from .daml_lf_pb2 import Archive, ArchivePayload, HashFunction
 from . import daml_lf1_pb2, daml_lf2_pb2
+
 __all__ = [
     "Archive",
     "ArchivePayload",
