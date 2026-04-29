@@ -13,18 +13,20 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class CompletionInfo(_message.Message):
-    __slots__ = ("act_as", "user_id", "command_id", "opt_deduplication_period", "submission_id")
+    __slots__ = ("act_as", "user_id", "command_id", "opt_deduplication_period", "submission_id", "paid_traffic_cost")
     ACT_AS_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
     COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
     OPT_DEDUPLICATION_PERIOD_FIELD_NUMBER: _ClassVar[int]
     SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
+    PAID_TRAFFIC_COST_FIELD_NUMBER: _ClassVar[int]
     act_as: _containers.RepeatedScalarFieldContainer[str]
     user_id: str
     command_id: str
     opt_deduplication_period: _participant_transaction_pb2.DeduplicationPeriod
     submission_id: str
-    def __init__(self, act_as: _Optional[_Iterable[str]] = ..., user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., opt_deduplication_period: _Optional[_Union[_participant_transaction_pb2.DeduplicationPeriod, _Mapping]] = ..., submission_id: _Optional[str] = ...) -> None: ...
+    paid_traffic_cost: int
+    def __init__(self, act_as: _Optional[_Iterable[str]] = ..., user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., opt_deduplication_period: _Optional[_Union[_participant_transaction_pb2.DeduplicationPeriod, _Mapping]] = ..., submission_id: _Optional[str] = ..., paid_traffic_cost: _Optional[int] = ...) -> None: ...
 
 class CommandRejected(_message.Message):
     __slots__ = ()

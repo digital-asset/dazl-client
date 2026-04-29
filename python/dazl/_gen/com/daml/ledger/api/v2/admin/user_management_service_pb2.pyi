@@ -13,18 +13,20 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class User(_message.Message):
-    __slots__ = ("id", "primary_party", "is_deactivated", "metadata", "identity_provider_id")
+    __slots__ = ("id", "primary_party", "is_deactivated", "metadata", "identity_provider_id", "primary_party_authentication")
     ID_FIELD_NUMBER: _ClassVar[int]
     PRIMARY_PARTY_FIELD_NUMBER: _ClassVar[int]
     IS_DEACTIVATED_FIELD_NUMBER: _ClassVar[int]
     METADATA_FIELD_NUMBER: _ClassVar[int]
     IDENTITY_PROVIDER_ID_FIELD_NUMBER: _ClassVar[int]
+    PRIMARY_PARTY_AUTHENTICATION_FIELD_NUMBER: _ClassVar[int]
     id: str
     primary_party: str
     is_deactivated: bool
     metadata: _object_meta_pb2.ObjectMeta
     identity_provider_id: str
-    def __init__(self, id: _Optional[str] = ..., primary_party: _Optional[str] = ..., is_deactivated: bool = ..., metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
+    primary_party_authentication: bool
+    def __init__(self, id: _Optional[str] = ..., primary_party: _Optional[str] = ..., is_deactivated: bool = ..., metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ..., primary_party_authentication: bool = ...) -> None: ...
 
 class Right(_message.Message):
     __slots__ = ("participant_admin", "can_act_as", "can_read_as", "identity_provider_admin", "can_read_as_any_party", "can_execute_as", "can_execute_as_any_party")

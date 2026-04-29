@@ -25,14 +25,15 @@ const (
 )
 
 type User struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	PrimaryParty       string                 `protobuf:"bytes,2,opt,name=primary_party,json=primaryParty,proto3" json:"primary_party,omitempty"`
-	IsDeactivated      bool                   `protobuf:"varint,3,opt,name=is_deactivated,json=isDeactivated,proto3" json:"is_deactivated,omitempty"`
-	Metadata           *ObjectMeta            `protobuf:"bytes,4,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	IdentityProviderId string                 `protobuf:"bytes,5,opt,name=identity_provider_id,json=identityProviderId,proto3" json:"identity_provider_id,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	Id                         string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	PrimaryParty               string                 `protobuf:"bytes,2,opt,name=primary_party,json=primaryParty,proto3" json:"primary_party,omitempty"`
+	IsDeactivated              bool                   `protobuf:"varint,3,opt,name=is_deactivated,json=isDeactivated,proto3" json:"is_deactivated,omitempty"`
+	Metadata                   *ObjectMeta            `protobuf:"bytes,4,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	IdentityProviderId         string                 `protobuf:"bytes,5,opt,name=identity_provider_id,json=identityProviderId,proto3" json:"identity_provider_id,omitempty"`
+	PrimaryPartyAuthentication bool                   `protobuf:"varint,6,opt,name=primary_party_authentication,json=primaryPartyAuthentication,proto3" json:"primary_party_authentication,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
@@ -98,6 +99,13 @@ func (x *User) GetIdentityProviderId() string {
 		return x.IdentityProviderId
 	}
 	return ""
+}
+
+func (x *User) GetPrimaryPartyAuthentication() bool {
+	if x != nil {
+		return x.PrimaryPartyAuthentication
+	}
+	return false
 }
 
 type Right struct {
@@ -1430,13 +1438,14 @@ var File_com_daml_ledger_api_v2_admin_user_management_service_proto protoreflect
 
 const file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDesc = "" +
 	"\n" +
-	":com/daml/ledger/api/v2/admin/user_management_service.proto\x12\x1ccom.daml.ledger.api.v2.admin\x1a.com/daml/ledger/api/v2/admin/object_meta.proto\x1a google/protobuf/field_mask.proto\"\xda\x01\n" +
+	":com/daml/ledger/api/v2/admin/user_management_service.proto\x12\x1ccom.daml.ledger.api.v2.admin\x1a.com/daml/ledger/api/v2/admin/object_meta.proto\x1a google/protobuf/field_mask.proto\"\x9c\x02\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12#\n" +
 	"\rprimary_party\x18\x02 \x01(\tR\fprimaryParty\x12%\n" +
 	"\x0eis_deactivated\x18\x03 \x01(\bR\risDeactivated\x12D\n" +
 	"\bmetadata\x18\x04 \x01(\v2(.com.daml.ledger.api.v2.admin.ObjectMetaR\bmetadata\x120\n" +
-	"\x14identity_provider_id\x18\x05 \x01(\tR\x12identityProviderId\"\x86\a\n" +
+	"\x14identity_provider_id\x18\x05 \x01(\tR\x12identityProviderId\x12@\n" +
+	"\x1cprimary_party_authentication\x18\x06 \x01(\bR\x1aprimaryPartyAuthentication\"\x86\a\n" +
 	"\x05Right\x12c\n" +
 	"\x11participant_admin\x18\x01 \x01(\v24.com.daml.ledger.api.v2.admin.Right.ParticipantAdminH\x00R\x10participantAdmin\x12L\n" +
 	"\n" +

@@ -53,7 +53,7 @@ class Enums(_message.Message):
         TOPOLOGY_MAPPING_CODE_SEQUENCER_SYNCHRONIZER_STATE: _ClassVar[Enums.TopologyMappingCode]
         TOPOLOGY_MAPPING_CODE_SEQUENCING_DYNAMIC_PARAMETERS_STATE: _ClassVar[Enums.TopologyMappingCode]
         TOPOLOGY_MAPPING_CODE_PARTY_TO_KEY_MAPPING: _ClassVar[Enums.TopologyMappingCode]
-        TOPOLOGY_MAPPING_CODE_SYNCHRONIZER_MIGRATION_ANNOUNCEMENT: _ClassVar[Enums.TopologyMappingCode]
+        TOPOLOGY_MAPPING_CODE_LSU_ANNOUNCEMENT: _ClassVar[Enums.TopologyMappingCode]
         TOPOLOGY_MAPPING_CODE_SEQUENCER_CONNECTION_SUCCESSOR: _ClassVar[Enums.TopologyMappingCode]
     TOPOLOGY_MAPPING_CODE_UNSPECIFIED: Enums.TopologyMappingCode
     TOPOLOGY_MAPPING_CODE_NAMESPACE_DELEGATION: Enums.TopologyMappingCode
@@ -69,14 +69,16 @@ class Enums(_message.Message):
     TOPOLOGY_MAPPING_CODE_SEQUENCER_SYNCHRONIZER_STATE: Enums.TopologyMappingCode
     TOPOLOGY_MAPPING_CODE_SEQUENCING_DYNAMIC_PARAMETERS_STATE: Enums.TopologyMappingCode
     TOPOLOGY_MAPPING_CODE_PARTY_TO_KEY_MAPPING: Enums.TopologyMappingCode
-    TOPOLOGY_MAPPING_CODE_SYNCHRONIZER_MIGRATION_ANNOUNCEMENT: Enums.TopologyMappingCode
+    TOPOLOGY_MAPPING_CODE_LSU_ANNOUNCEMENT: Enums.TopologyMappingCode
     TOPOLOGY_MAPPING_CODE_SEQUENCER_CONNECTION_SUCCESSOR: Enums.TopologyMappingCode
     class ParticipantFeatureFlag(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         PARTICIPANT_FEATURE_FLAG_UNSPECIFIED: _ClassVar[Enums.ParticipantFeatureFlag]
         PARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW: _ClassVar[Enums.ParticipantFeatureFlag]
+        PARTICIPANT_FEATURE_FLAG_ENABLE_UNSAFE_MULTI_SYNCHRONIZER: _ClassVar[Enums.ParticipantFeatureFlag]
     PARTICIPANT_FEATURE_FLAG_UNSPECIFIED: Enums.ParticipantFeatureFlag
     PARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW: Enums.ParticipantFeatureFlag
+    PARTICIPANT_FEATURE_FLAG_ENABLE_UNSAFE_MULTI_SYNCHRONIZER: Enums.ParticipantFeatureFlag
     def __init__(self) -> None: ...
 
 class NamespaceDelegation(_message.Message):
@@ -251,7 +253,7 @@ class SequencerSynchronizerState(_message.Message):
     observers: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, synchronizer_id: _Optional[str] = ..., threshold: _Optional[int] = ..., active: _Optional[_Iterable[str]] = ..., observers: _Optional[_Iterable[str]] = ...) -> None: ...
 
-class SynchronizerUpgradeAnnouncement(_message.Message):
+class LsuAnnouncement(_message.Message):
     __slots__ = ("successor_physical_synchronizer_id", "upgrade_time")
     SUCCESSOR_PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     UPGRADE_TIME_FIELD_NUMBER: _ClassVar[int]
@@ -259,27 +261,22 @@ class SynchronizerUpgradeAnnouncement(_message.Message):
     upgrade_time: _timestamp_pb2.Timestamp
     def __init__(self, successor_physical_synchronizer_id: _Optional[str] = ..., upgrade_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
-class SequencerConnectionSuccessor(_message.Message):
-    __slots__ = ("sequencer_id", "synchronizer_id", "connection")
+class LsuSequencerConnectionSuccessor(_message.Message):
+    __slots__ = ("sequencer_id", "successor_physical_synchronizer_id", "connection")
     class SequencerConnection(_message.Message):
-        __slots__ = ("grpc",)
-        class Grpc(_message.Message):
-            __slots__ = ("endpoints", "custom_trust_certificates")
-            ENDPOINTS_FIELD_NUMBER: _ClassVar[int]
-            CUSTOM_TRUST_CERTIFICATES_FIELD_NUMBER: _ClassVar[int]
-            endpoints: _containers.RepeatedScalarFieldContainer[str]
-            custom_trust_certificates: bytes
-            def __init__(self, endpoints: _Optional[_Iterable[str]] = ..., custom_trust_certificates: _Optional[bytes] = ...) -> None: ...
-        GRPC_FIELD_NUMBER: _ClassVar[int]
-        grpc: SequencerConnectionSuccessor.SequencerConnection.Grpc
-        def __init__(self, grpc: _Optional[_Union[SequencerConnectionSuccessor.SequencerConnection.Grpc, _Mapping]] = ...) -> None: ...
+        __slots__ = ("endpoints", "custom_trust_certificates")
+        ENDPOINTS_FIELD_NUMBER: _ClassVar[int]
+        CUSTOM_TRUST_CERTIFICATES_FIELD_NUMBER: _ClassVar[int]
+        endpoints: _containers.RepeatedScalarFieldContainer[str]
+        custom_trust_certificates: bytes
+        def __init__(self, endpoints: _Optional[_Iterable[str]] = ..., custom_trust_certificates: _Optional[bytes] = ...) -> None: ...
     SEQUENCER_ID_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    SUCCESSOR_PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     CONNECTION_FIELD_NUMBER: _ClassVar[int]
     sequencer_id: str
-    synchronizer_id: str
-    connection: SequencerConnectionSuccessor.SequencerConnection
-    def __init__(self, sequencer_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., connection: _Optional[_Union[SequencerConnectionSuccessor.SequencerConnection, _Mapping]] = ...) -> None: ...
+    successor_physical_synchronizer_id: str
+    connection: LsuSequencerConnectionSuccessor.SequencerConnection
+    def __init__(self, sequencer_id: _Optional[str] = ..., successor_physical_synchronizer_id: _Optional[str] = ..., connection: _Optional[_Union[LsuSequencerConnectionSuccessor.SequencerConnection, _Mapping]] = ...) -> None: ...
 
 class TopologyMapping(_message.Message):
     __slots__ = ("namespace_delegation", "decentralized_namespace_definition", "owner_to_key_mapping", "synchronizer_trust_certificate", "participant_permission", "party_hosting_limits", "vetted_packages", "party_to_participant", "synchronizer_parameters_state", "mediator_synchronizer_state", "sequencer_synchronizer_state", "sequencing_dynamic_parameters_state", "party_to_key_mapping", "synchronizer_upgrade_announcement", "sequencer_connection_successor")
@@ -311,9 +308,9 @@ class TopologyMapping(_message.Message):
     sequencer_synchronizer_state: SequencerSynchronizerState
     sequencing_dynamic_parameters_state: DynamicSequencingParametersState
     party_to_key_mapping: PartyToKeyMapping
-    synchronizer_upgrade_announcement: SynchronizerUpgradeAnnouncement
-    sequencer_connection_successor: SequencerConnectionSuccessor
-    def __init__(self, namespace_delegation: _Optional[_Union[NamespaceDelegation, _Mapping]] = ..., decentralized_namespace_definition: _Optional[_Union[DecentralizedNamespaceDefinition, _Mapping]] = ..., owner_to_key_mapping: _Optional[_Union[OwnerToKeyMapping, _Mapping]] = ..., synchronizer_trust_certificate: _Optional[_Union[SynchronizerTrustCertificate, _Mapping]] = ..., participant_permission: _Optional[_Union[ParticipantSynchronizerPermission, _Mapping]] = ..., party_hosting_limits: _Optional[_Union[PartyHostingLimits, _Mapping]] = ..., vetted_packages: _Optional[_Union[VettedPackages, _Mapping]] = ..., party_to_participant: _Optional[_Union[PartyToParticipant, _Mapping]] = ..., synchronizer_parameters_state: _Optional[_Union[SynchronizerParametersState, _Mapping]] = ..., mediator_synchronizer_state: _Optional[_Union[MediatorSynchronizerState, _Mapping]] = ..., sequencer_synchronizer_state: _Optional[_Union[SequencerSynchronizerState, _Mapping]] = ..., sequencing_dynamic_parameters_state: _Optional[_Union[DynamicSequencingParametersState, _Mapping]] = ..., party_to_key_mapping: _Optional[_Union[PartyToKeyMapping, _Mapping]] = ..., synchronizer_upgrade_announcement: _Optional[_Union[SynchronizerUpgradeAnnouncement, _Mapping]] = ..., sequencer_connection_successor: _Optional[_Union[SequencerConnectionSuccessor, _Mapping]] = ...) -> None: ...
+    synchronizer_upgrade_announcement: LsuAnnouncement
+    sequencer_connection_successor: LsuSequencerConnectionSuccessor
+    def __init__(self, namespace_delegation: _Optional[_Union[NamespaceDelegation, _Mapping]] = ..., decentralized_namespace_definition: _Optional[_Union[DecentralizedNamespaceDefinition, _Mapping]] = ..., owner_to_key_mapping: _Optional[_Union[OwnerToKeyMapping, _Mapping]] = ..., synchronizer_trust_certificate: _Optional[_Union[SynchronizerTrustCertificate, _Mapping]] = ..., participant_permission: _Optional[_Union[ParticipantSynchronizerPermission, _Mapping]] = ..., party_hosting_limits: _Optional[_Union[PartyHostingLimits, _Mapping]] = ..., vetted_packages: _Optional[_Union[VettedPackages, _Mapping]] = ..., party_to_participant: _Optional[_Union[PartyToParticipant, _Mapping]] = ..., synchronizer_parameters_state: _Optional[_Union[SynchronizerParametersState, _Mapping]] = ..., mediator_synchronizer_state: _Optional[_Union[MediatorSynchronizerState, _Mapping]] = ..., sequencer_synchronizer_state: _Optional[_Union[SequencerSynchronizerState, _Mapping]] = ..., sequencing_dynamic_parameters_state: _Optional[_Union[DynamicSequencingParametersState, _Mapping]] = ..., party_to_key_mapping: _Optional[_Union[PartyToKeyMapping, _Mapping]] = ..., synchronizer_upgrade_announcement: _Optional[_Union[LsuAnnouncement, _Mapping]] = ..., sequencer_connection_successor: _Optional[_Union[LsuSequencerConnectionSuccessor, _Mapping]] = ...) -> None: ...
 
 class TopologyTransaction(_message.Message):
     __slots__ = ("operation", "serial", "mapping")

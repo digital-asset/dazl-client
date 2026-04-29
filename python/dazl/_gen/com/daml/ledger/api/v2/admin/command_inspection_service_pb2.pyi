@@ -44,8 +44,16 @@ class GetCommandStatusResponse(_message.Message):
     command_status: _containers.RepeatedCompositeFieldContainer[CommandStatus]
     def __init__(self, command_status: _Optional[_Iterable[_Union[CommandStatus, _Mapping]]] = ...) -> None: ...
 
+class Timing(_message.Message):
+    __slots__ = ("description", "duration_ms")
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    DURATION_MS_FIELD_NUMBER: _ClassVar[int]
+    description: str
+    duration_ms: int
+    def __init__(self, description: _Optional[str] = ..., duration_ms: _Optional[int] = ...) -> None: ...
+
 class CommandStatus(_message.Message):
-    __slots__ = ("started", "completed", "completion", "state", "commands", "request_statistics", "updates")
+    __slots__ = ("started", "completed", "completion", "state", "commands", "request_statistics", "updates", "synchronizer_id", "timings")
     STARTED_FIELD_NUMBER: _ClassVar[int]
     COMPLETED_FIELD_NUMBER: _ClassVar[int]
     COMPLETION_FIELD_NUMBER: _ClassVar[int]
@@ -53,6 +61,8 @@ class CommandStatus(_message.Message):
     COMMANDS_FIELD_NUMBER: _ClassVar[int]
     REQUEST_STATISTICS_FIELD_NUMBER: _ClassVar[int]
     UPDATES_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    TIMINGS_FIELD_NUMBER: _ClassVar[int]
     started: _timestamp_pb2.Timestamp
     completed: _timestamp_pb2.Timestamp
     completion: _completion_pb2.Completion
@@ -60,7 +70,9 @@ class CommandStatus(_message.Message):
     commands: _containers.RepeatedCompositeFieldContainer[_commands_pb2.Command]
     request_statistics: RequestStatistics
     updates: CommandUpdates
-    def __init__(self, started: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completion: _Optional[_Union[_completion_pb2.Completion, _Mapping]] = ..., state: _Optional[_Union[CommandState, str]] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., request_statistics: _Optional[_Union[RequestStatistics, _Mapping]] = ..., updates: _Optional[_Union[CommandUpdates, _Mapping]] = ...) -> None: ...
+    synchronizer_id: str
+    timings: _containers.RepeatedCompositeFieldContainer[Timing]
+    def __init__(self, started: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completion: _Optional[_Union[_completion_pb2.Completion, _Mapping]] = ..., state: _Optional[_Union[CommandState, str]] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., request_statistics: _Optional[_Union[RequestStatistics, _Mapping]] = ..., updates: _Optional[_Union[CommandUpdates, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., timings: _Optional[_Iterable[_Union[Timing, _Mapping]]] = ...) -> None: ...
 
 class RequestStatistics(_message.Message):
     __slots__ = ("envelopes", "request_size", "recipients")

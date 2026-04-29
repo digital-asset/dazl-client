@@ -8,6 +8,7 @@ from ....protocol.v30 import sequencing_pb2 as _sequencing_pb2
 from ....protocol.v30 import traffic_control_parameters_pb2 as _traffic_control_parameters_pb2
 from . import sequencer_initialization_snapshot_pb2 as _sequencer_initialization_snapshot_pb2
 from ....topology.admin.v30 import common_pb2 as _common_pb2
+from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
@@ -17,6 +18,22 @@ from collections.abc import Iterable as _Iterable, Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
+
+class GenerateAuthenticationTokenRequest(_message.Message):
+    __slots__ = ("member", "expires_in")
+    MEMBER_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_IN_FIELD_NUMBER: _ClassVar[int]
+    member: str
+    expires_in: _duration_pb2.Duration
+    def __init__(self, member: _Optional[str] = ..., expires_in: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+
+class GenerateAuthenticationTokenResponse(_message.Message):
+    __slots__ = ("token", "expires_at")
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    token: bytes
+    expires_at: _timestamp_pb2.Timestamp
+    def __init__(self, token: _Optional[bytes] = ..., expires_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class TrafficControlStateRequest(_message.Message):
     __slots__ = ("members", "exact_timestamp", "relative_timestamp")
@@ -62,6 +79,77 @@ class SetTrafficPurchasedRequest(_message.Message):
 class SetTrafficPurchasedResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
+
+class GetLsuTrafficControlStateRequest(_message.Message):
+    __slots__ = ("timestamp",)
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    timestamp: _timestamp_pb2.Timestamp
+    def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class LsuTrafficState(_message.Message):
+    __slots__ = ("lsu_traffic_states",)
+    class LsuTrafficStatesEntry(_message.Message):
+        __slots__ = ("key", "value")
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: _traffic_control_parameters_pb2.TrafficState
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[_traffic_control_parameters_pb2.TrafficState, _Mapping]] = ...) -> None: ...
+    LSU_TRAFFIC_STATES_FIELD_NUMBER: _ClassVar[int]
+    lsu_traffic_states: _containers.MessageMap[str, _traffic_control_parameters_pb2.TrafficState]
+    def __init__(self, lsu_traffic_states: _Optional[_Mapping[str, _traffic_control_parameters_pb2.TrafficState]] = ...) -> None: ...
+
+class GetLsuTrafficControlStateResponse(_message.Message):
+    __slots__ = ("lsu_traffic_state",)
+    LSU_TRAFFIC_STATE_FIELD_NUMBER: _ClassVar[int]
+    lsu_traffic_state: bytes
+    def __init__(self, lsu_traffic_state: _Optional[bytes] = ...) -> None: ...
+
+class SetLsuTrafficControlStateRequest(_message.Message):
+    __slots__ = ("lsu_traffic_state",)
+    LSU_TRAFFIC_STATE_FIELD_NUMBER: _ClassVar[int]
+    lsu_traffic_state: bytes
+    def __init__(self, lsu_traffic_state: _Optional[bytes] = ...) -> None: ...
+
+class SetLsuTrafficControlStateResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class IndividualThroughputCapConfig(_message.Message):
+    __slots__ = ("global_tps_cap", "global_kbps_cap", "per_client_tps_cap", "per_client_kbps_cap")
+    GLOBAL_TPS_CAP_FIELD_NUMBER: _ClassVar[int]
+    GLOBAL_KBPS_CAP_FIELD_NUMBER: _ClassVar[int]
+    PER_CLIENT_TPS_CAP_FIELD_NUMBER: _ClassVar[int]
+    PER_CLIENT_KBPS_CAP_FIELD_NUMBER: _ClassVar[int]
+    global_tps_cap: float
+    global_kbps_cap: float
+    per_client_tps_cap: float
+    per_client_kbps_cap: float
+    def __init__(self, global_tps_cap: _Optional[float] = ..., global_kbps_cap: _Optional[float] = ..., per_client_tps_cap: _Optional[float] = ..., per_client_kbps_cap: _Optional[float] = ...) -> None: ...
+
+class SetThroughputCapRequest(_message.Message):
+    __slots__ = ("type", "config")
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    CONFIG_FIELD_NUMBER: _ClassVar[int]
+    type: str
+    config: IndividualThroughputCapConfig
+    def __init__(self, type: _Optional[str] = ..., config: _Optional[_Union[IndividualThroughputCapConfig, _Mapping]] = ...) -> None: ...
+
+class SetThroughputCapResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class GetThroughputCapRequest(_message.Message):
+    __slots__ = ("type",)
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    type: str
+    def __init__(self, type: _Optional[str] = ...) -> None: ...
+
+class GetThroughputCapResponse(_message.Message):
+    __slots__ = ("config",)
+    CONFIG_FIELD_NUMBER: _ClassVar[int]
+    config: IndividualThroughputCapConfig
+    def __init__(self, config: _Optional[_Union[IndividualThroughputCapConfig, _Mapping]] = ...) -> None: ...
 
 class SnapshotRequest(_message.Message):
     __slots__ = ("timestamp",)
@@ -159,5 +247,15 @@ class DisableMemberRequest(_message.Message):
     def __init__(self, member: _Optional[str] = ...) -> None: ...
 
 class DisableMemberResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class PerformLsuSequencingTestRequest(_message.Message):
+    __slots__ = ("recipient_mediator_group",)
+    RECIPIENT_MEDIATOR_GROUP_FIELD_NUMBER: _ClassVar[int]
+    recipient_mediator_group: int
+    def __init__(self, recipient_mediator_group: _Optional[int] = ...) -> None: ...
+
+class PerformLsuSequencingTestResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...

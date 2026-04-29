@@ -570,174 +570,6 @@ func (*SetLogLevelResponse) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescGZIP(), []int{7}
 }
 
-type GetLastErrorsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetLastErrorsRequest) Reset() {
-	*x = GetLastErrorsRequest{}
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetLastErrorsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetLastErrorsRequest) ProtoMessage() {}
-
-func (x *GetLastErrorsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetLastErrorsRequest.ProtoReflect.Descriptor instead.
-func (*GetLastErrorsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescGZIP(), []int{8}
-}
-
-type GetLastErrorsResponse struct {
-	state         protoimpl.MessageState         `protogen:"open.v1"`
-	Errors        []*GetLastErrorsResponse_Error `protobuf:"bytes,1,rep,name=errors,proto3" json:"errors,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetLastErrorsResponse) Reset() {
-	*x = GetLastErrorsResponse{}
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetLastErrorsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetLastErrorsResponse) ProtoMessage() {}
-
-func (x *GetLastErrorsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetLastErrorsResponse.ProtoReflect.Descriptor instead.
-func (*GetLastErrorsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *GetLastErrorsResponse) GetErrors() []*GetLastErrorsResponse_Error {
-	if x != nil {
-		return x.Errors
-	}
-	return nil
-}
-
-type GetLastErrorTraceRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TraceId       string                 `protobuf:"bytes,1,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetLastErrorTraceRequest) Reset() {
-	*x = GetLastErrorTraceRequest{}
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetLastErrorTraceRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetLastErrorTraceRequest) ProtoMessage() {}
-
-func (x *GetLastErrorTraceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetLastErrorTraceRequest.ProtoReflect.Descriptor instead.
-func (*GetLastErrorTraceRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *GetLastErrorTraceRequest) GetTraceId() string {
-	if x != nil {
-		return x.TraceId
-	}
-	return ""
-}
-
-type GetLastErrorTraceResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Messages      []string               `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetLastErrorTraceResponse) Reset() {
-	*x = GetLastErrorTraceResponse{}
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetLastErrorTraceResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetLastErrorTraceResponse) ProtoMessage() {}
-
-func (x *GetLastErrorTraceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetLastErrorTraceResponse.ProtoReflect.Descriptor instead.
-func (*GetLastErrorTraceResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *GetLastErrorTraceResponse) GetMessages() []string {
-	if x != nil {
-		return x.Messages
-	}
-	return nil
-}
-
 type ComponentStatus_StatusData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Description   *string                `protobuf:"bytes,1,opt,name=description,proto3,oneof" json:"description,omitempty"`
@@ -747,7 +579,7 @@ type ComponentStatus_StatusData struct {
 
 func (x *ComponentStatus_StatusData) Reset() {
 	*x = ComponentStatus_StatusData{}
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -759,7 +591,7 @@ func (x *ComponentStatus_StatusData) String() string {
 func (*ComponentStatus_StatusData) ProtoMessage() {}
 
 func (x *ComponentStatus_StatusData) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -778,58 +610,6 @@ func (*ComponentStatus_StatusData) Descriptor() ([]byte, []int) {
 func (x *ComponentStatus_StatusData) GetDescription() string {
 	if x != nil && x.Description != nil {
 		return *x.Description
-	}
-	return ""
-}
-
-type GetLastErrorsResponse_Error struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TraceId       string                 `protobuf:"bytes,1,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetLastErrorsResponse_Error) Reset() {
-	*x = GetLastErrorsResponse_Error{}
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetLastErrorsResponse_Error) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetLastErrorsResponse_Error) ProtoMessage() {}
-
-func (x *GetLastErrorsResponse_Error) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetLastErrorsResponse_Error.ProtoReflect.Descriptor instead.
-func (*GetLastErrorsResponse_Error) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescGZIP(), []int{9, 0}
-}
-
-func (x *GetLastErrorsResponse_Error) GetTraceId() string {
-	if x != nil {
-		return x.TraceId
-	}
-	return ""
-}
-
-func (x *GetLastErrorsResponse_Error) GetMessage() string {
-	if x != nil {
-		return x.Message
 	}
 	return ""
 }
@@ -886,23 +666,11 @@ const file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDesc
 	"\x05chunk\x18\x01 \x01(\fR\x05chunk\"*\n" +
 	"\x12SetLogLevelRequest\x12\x14\n" +
 	"\x05level\x18\x01 \x01(\tR\x05level\"\x15\n" +
-	"\x13SetLogLevelResponse\"\x16\n" +
-	"\x14GetLastErrorsRequest\"\xb4\x01\n" +
-	"\x15GetLastErrorsResponse\x12]\n" +
-	"\x06errors\x18\x01 \x03(\v2E.com.digitalasset.canton.admin.health.v30.GetLastErrorsResponse.ErrorR\x06errors\x1a<\n" +
-	"\x05Error\x12\x19\n" +
-	"\btrace_id\x18\x01 \x01(\tR\atraceId\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"5\n" +
-	"\x18GetLastErrorTraceRequest\x12\x19\n" +
-	"\btrace_id\x18\x01 \x01(\tR\atraceId\"7\n" +
-	"\x19GetLastErrorTraceResponse\x12\x1a\n" +
-	"\bmessages\x18\x01 \x03(\tR\bmessages2\xda\x04\n" +
+	"\x13SetLogLevelResponse2\xa8\x02\n" +
 	"\rStatusService\x12\x89\x01\n" +
 	"\n" +
 	"HealthDump\x12;.com.digitalasset.canton.admin.health.v30.HealthDumpRequest\x1a<.com.digitalasset.canton.admin.health.v30.HealthDumpResponse0\x01\x12\x8a\x01\n" +
-	"\vSetLogLevel\x12<.com.digitalasset.canton.admin.health.v30.SetLogLevelRequest\x1a=.com.digitalasset.canton.admin.health.v30.SetLogLevelResponse\x12\x90\x01\n" +
-	"\rGetLastErrors\x12>.com.digitalasset.canton.admin.health.v30.GetLastErrorsRequest\x1a?.com.digitalasset.canton.admin.health.v30.GetLastErrorsResponse\x12\x9c\x01\n" +
-	"\x11GetLastErrorTrace\x12B.com.digitalasset.canton.admin.health.v30.GetLastErrorTraceRequest\x1aC.com.digitalasset.canton.admin.health.v30.GetLastErrorTraceResponseBYZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/health/v30b\x06proto3"
+	"\vSetLogLevel\x12<.com.digitalasset.canton.admin.health.v30.SetLogLevelRequest\x1a=.com.digitalasset.canton.admin.health.v30.SetLogLevelResponseBYZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/health/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescOnce sync.Once
@@ -917,7 +685,7 @@ func file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescG
 }
 
 var file_com_digitalasset_canton_admin_health_v30_status_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_com_digitalasset_canton_admin_health_v30_status_service_proto_goTypes = []any{
 	(NotInitialized_WaitingForExternalInput)(0), // 0: com.digitalasset.canton.admin.health.v30.NotInitialized.WaitingForExternalInput
 	(*TopologyQueueStatus)(nil),                 // 1: com.digitalasset.canton.admin.health.v30.TopologyQueueStatus
@@ -928,39 +696,29 @@ var file_com_digitalasset_canton_admin_health_v30_status_service_proto_goTypes =
 	(*HealthDumpResponse)(nil),                  // 6: com.digitalasset.canton.admin.health.v30.HealthDumpResponse
 	(*SetLogLevelRequest)(nil),                  // 7: com.digitalasset.canton.admin.health.v30.SetLogLevelRequest
 	(*SetLogLevelResponse)(nil),                 // 8: com.digitalasset.canton.admin.health.v30.SetLogLevelResponse
-	(*GetLastErrorsRequest)(nil),                // 9: com.digitalasset.canton.admin.health.v30.GetLastErrorsRequest
-	(*GetLastErrorsResponse)(nil),               // 10: com.digitalasset.canton.admin.health.v30.GetLastErrorsResponse
-	(*GetLastErrorTraceRequest)(nil),            // 11: com.digitalasset.canton.admin.health.v30.GetLastErrorTraceRequest
-	(*GetLastErrorTraceResponse)(nil),           // 12: com.digitalasset.canton.admin.health.v30.GetLastErrorTraceResponse
-	(*ComponentStatus_StatusData)(nil),          // 13: com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
-	nil,                                         // 14: com.digitalasset.canton.admin.health.v30.Status.PortsEntry
-	(*GetLastErrorsResponse_Error)(nil),         // 15: com.digitalasset.canton.admin.health.v30.GetLastErrorsResponse.Error
-	(*durationpb.Duration)(nil),                 // 16: google.protobuf.Duration
+	(*ComponentStatus_StatusData)(nil),          // 9: com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
+	nil,                                         // 10: com.digitalasset.canton.admin.health.v30.Status.PortsEntry
+	(*durationpb.Duration)(nil),                 // 11: google.protobuf.Duration
 }
 var file_com_digitalasset_canton_admin_health_v30_status_service_proto_depIdxs = []int32{
-	13, // 0: com.digitalasset.canton.admin.health.v30.ComponentStatus.ok:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
-	13, // 1: com.digitalasset.canton.admin.health.v30.ComponentStatus.degraded:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
-	13, // 2: com.digitalasset.canton.admin.health.v30.ComponentStatus.failed:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
-	13, // 3: com.digitalasset.canton.admin.health.v30.ComponentStatus.fatal:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
+	9,  // 0: com.digitalasset.canton.admin.health.v30.ComponentStatus.ok:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
+	9,  // 1: com.digitalasset.canton.admin.health.v30.ComponentStatus.degraded:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
+	9,  // 2: com.digitalasset.canton.admin.health.v30.ComponentStatus.failed:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
+	9,  // 3: com.digitalasset.canton.admin.health.v30.ComponentStatus.fatal:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
 	0,  // 4: com.digitalasset.canton.admin.health.v30.NotInitialized.waiting_for_external_input:type_name -> com.digitalasset.canton.admin.health.v30.NotInitialized.WaitingForExternalInput
-	16, // 5: com.digitalasset.canton.admin.health.v30.Status.uptime:type_name -> google.protobuf.Duration
-	14, // 6: com.digitalasset.canton.admin.health.v30.Status.ports:type_name -> com.digitalasset.canton.admin.health.v30.Status.PortsEntry
+	11, // 5: com.digitalasset.canton.admin.health.v30.Status.uptime:type_name -> google.protobuf.Duration
+	10, // 6: com.digitalasset.canton.admin.health.v30.Status.ports:type_name -> com.digitalasset.canton.admin.health.v30.Status.PortsEntry
 	1,  // 7: com.digitalasset.canton.admin.health.v30.Status.topology_queues:type_name -> com.digitalasset.canton.admin.health.v30.TopologyQueueStatus
 	2,  // 8: com.digitalasset.canton.admin.health.v30.Status.components:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus
-	15, // 9: com.digitalasset.canton.admin.health.v30.GetLastErrorsResponse.errors:type_name -> com.digitalasset.canton.admin.health.v30.GetLastErrorsResponse.Error
-	5,  // 10: com.digitalasset.canton.admin.health.v30.StatusService.HealthDump:input_type -> com.digitalasset.canton.admin.health.v30.HealthDumpRequest
-	7,  // 11: com.digitalasset.canton.admin.health.v30.StatusService.SetLogLevel:input_type -> com.digitalasset.canton.admin.health.v30.SetLogLevelRequest
-	9,  // 12: com.digitalasset.canton.admin.health.v30.StatusService.GetLastErrors:input_type -> com.digitalasset.canton.admin.health.v30.GetLastErrorsRequest
-	11, // 13: com.digitalasset.canton.admin.health.v30.StatusService.GetLastErrorTrace:input_type -> com.digitalasset.canton.admin.health.v30.GetLastErrorTraceRequest
-	6,  // 14: com.digitalasset.canton.admin.health.v30.StatusService.HealthDump:output_type -> com.digitalasset.canton.admin.health.v30.HealthDumpResponse
-	8,  // 15: com.digitalasset.canton.admin.health.v30.StatusService.SetLogLevel:output_type -> com.digitalasset.canton.admin.health.v30.SetLogLevelResponse
-	10, // 16: com.digitalasset.canton.admin.health.v30.StatusService.GetLastErrors:output_type -> com.digitalasset.canton.admin.health.v30.GetLastErrorsResponse
-	12, // 17: com.digitalasset.canton.admin.health.v30.StatusService.GetLastErrorTrace:output_type -> com.digitalasset.canton.admin.health.v30.GetLastErrorTraceResponse
-	14, // [14:18] is the sub-list for method output_type
-	10, // [10:14] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	5,  // 9: com.digitalasset.canton.admin.health.v30.StatusService.HealthDump:input_type -> com.digitalasset.canton.admin.health.v30.HealthDumpRequest
+	7,  // 10: com.digitalasset.canton.admin.health.v30.StatusService.SetLogLevel:input_type -> com.digitalasset.canton.admin.health.v30.SetLogLevelRequest
+	6,  // 11: com.digitalasset.canton.admin.health.v30.StatusService.HealthDump:output_type -> com.digitalasset.canton.admin.health.v30.HealthDumpResponse
+	8,  // 12: com.digitalasset.canton.admin.health.v30.StatusService.SetLogLevel:output_type -> com.digitalasset.canton.admin.health.v30.SetLogLevelResponse
+	11, // [11:13] is the sub-list for method output_type
+	9,  // [9:11] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_admin_health_v30_status_service_proto_init() }
@@ -975,14 +733,14 @@ func file_com_digitalasset_canton_admin_health_v30_status_service_proto_init() {
 		(*ComponentStatus_Fatal)(nil),
 	}
 	file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[4].OneofWrappers = []any{}
-	file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[12].OneofWrappers = []any{}
+	file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDesc), len(file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   15,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

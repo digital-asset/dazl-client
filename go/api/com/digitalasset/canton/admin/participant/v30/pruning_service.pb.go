@@ -25,11 +25,64 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type SafeToPruneCommitmentState int32
+
+const (
+	SafeToPruneCommitmentState_SAFE_TO_PRUNE_COMMITMENT_STATE_UNSPECIFIED    SafeToPruneCommitmentState = 0
+	SafeToPruneCommitmentState_SAFE_TO_PRUNE_COMMITMENT_STATE_MATCH          SafeToPruneCommitmentState = 1
+	SafeToPruneCommitmentState_SAFE_TO_PRUNE_COMMITMENT_STATE_MATCH_MISMATCH SafeToPruneCommitmentState = 2
+	SafeToPruneCommitmentState_SAFE_TO_PRUNE_COMMITMENT_STATE_ALL            SafeToPruneCommitmentState = 3
+)
+
+// Enum value maps for SafeToPruneCommitmentState.
+var (
+	SafeToPruneCommitmentState_name = map[int32]string{
+		0: "SAFE_TO_PRUNE_COMMITMENT_STATE_UNSPECIFIED",
+		1: "SAFE_TO_PRUNE_COMMITMENT_STATE_MATCH",
+		2: "SAFE_TO_PRUNE_COMMITMENT_STATE_MATCH_MISMATCH",
+		3: "SAFE_TO_PRUNE_COMMITMENT_STATE_ALL",
+	}
+	SafeToPruneCommitmentState_value = map[string]int32{
+		"SAFE_TO_PRUNE_COMMITMENT_STATE_UNSPECIFIED":    0,
+		"SAFE_TO_PRUNE_COMMITMENT_STATE_MATCH":          1,
+		"SAFE_TO_PRUNE_COMMITMENT_STATE_MATCH_MISMATCH": 2,
+		"SAFE_TO_PRUNE_COMMITMENT_STATE_ALL":            3,
+	}
+)
+
+func (x SafeToPruneCommitmentState) Enum() *SafeToPruneCommitmentState {
+	p := new(SafeToPruneCommitmentState)
+	*p = x
+	return p
+}
+
+func (x SafeToPruneCommitmentState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SafeToPruneCommitmentState) Descriptor() protoreflect.EnumDescriptor {
+	return file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_enumTypes[0].Descriptor()
+}
+
+func (SafeToPruneCommitmentState) Type() protoreflect.EnumType {
+	return &file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_enumTypes[0]
+}
+
+func (x SafeToPruneCommitmentState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SafeToPruneCommitmentState.Descriptor instead.
+func (SafeToPruneCommitmentState) EnumDescriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_rawDescGZIP(), []int{0}
+}
+
 type PruneRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PruneUpTo     int64                  `protobuf:"varint,1,opt,name=prune_up_to,json=pruneUpTo,proto3" json:"prune_up_to,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                               protoimpl.MessageState      `protogen:"open.v1"`
+	PruneUpTo                           int64                       `protobuf:"varint,1,opt,name=prune_up_to,json=pruneUpTo,proto3" json:"prune_up_to,omitempty"`
+	CounterParticipantsCommitmentsState *SafeToPruneCommitmentState `protobuf:"varint,2,opt,name=counter_participants_commitments_state,json=counterParticipantsCommitmentsState,proto3,enum=com.digitalasset.canton.admin.participant.v30.SafeToPruneCommitmentState,oneof" json:"counter_participants_commitments_state,omitempty"`
+	unknownFields                       protoimpl.UnknownFields
+	sizeCache                           protoimpl.SizeCache
 }
 
 func (x *PruneRequest) Reset() {
@@ -69,6 +122,13 @@ func (x *PruneRequest) GetPruneUpTo() int64 {
 	return 0
 }
 
+func (x *PruneRequest) GetCounterParticipantsCommitmentsState() SafeToPruneCommitmentState {
+	if x != nil && x.CounterParticipantsCommitmentsState != nil {
+		return *x.CounterParticipantsCommitmentsState
+	}
+	return SafeToPruneCommitmentState_SAFE_TO_PRUNE_COMMITMENT_STATE_UNSPECIFIED
+}
+
 type PruneResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -106,11 +166,12 @@ func (*PruneResponse) Descriptor() ([]byte, []int) {
 }
 
 type GetSafePruningOffsetRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	BeforeOrAt    *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=before_or_at,json=beforeOrAt,proto3" json:"before_or_at,omitempty"`
-	LedgerEnd     int64                  `protobuf:"varint,2,opt,name=ledger_end,json=ledgerEnd,proto3" json:"ledger_end,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                               protoimpl.MessageState      `protogen:"open.v1"`
+	BeforeOrAt                          *timestamppb.Timestamp      `protobuf:"bytes,1,opt,name=before_or_at,json=beforeOrAt,proto3" json:"before_or_at,omitempty"`
+	LedgerEnd                           int64                       `protobuf:"varint,2,opt,name=ledger_end,json=ledgerEnd,proto3" json:"ledger_end,omitempty"`
+	CounterParticipantsCommitmentsState *SafeToPruneCommitmentState `protobuf:"varint,3,opt,name=counter_participants_commitments_state,json=counterParticipantsCommitmentsState,proto3,enum=com.digitalasset.canton.admin.participant.v30.SafeToPruneCommitmentState,oneof" json:"counter_participants_commitments_state,omitempty"`
+	unknownFields                       protoimpl.UnknownFields
+	sizeCache                           protoimpl.SizeCache
 }
 
 func (x *GetSafePruningOffsetRequest) Reset() {
@@ -155,6 +216,13 @@ func (x *GetSafePruningOffsetRequest) GetLedgerEnd() int64 {
 		return x.LedgerEnd
 	}
 	return 0
+}
+
+func (x *GetSafePruningOffsetRequest) GetCounterParticipantsCommitmentsState() SafeToPruneCommitmentState {
+	if x != nil && x.CounterParticipantsCommitmentsState != nil {
+		return *x.CounterParticipantsCommitmentsState
+	}
+	return SafeToPruneCommitmentState_SAFE_TO_PRUNE_COMMITMENT_STATE_UNSPECIFIED
 }
 
 type GetSafePruningOffsetResponse struct {
@@ -279,21 +347,30 @@ var File_com_digitalasset_canton_admin_participant_v30_pruning_service_proto pro
 
 const file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_rawDesc = "" +
 	"\n" +
-	"Ccom/digitalasset/canton/admin/participant/v30/pruning_service.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a7com/digitalasset/canton/admin/pruning/v30/pruning.proto\x1a\x1fgoogle/protobuf/timestamp.proto\".\n" +
+	"Ccom/digitalasset/canton/admin/participant/v30/pruning_service.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a7com/digitalasset/canton/admin/pruning/v30/pruning.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xff\x01\n" +
 	"\fPruneRequest\x12\x1e\n" +
-	"\vprune_up_to\x18\x01 \x01(\x03R\tpruneUpTo\"\x0f\n" +
-	"\rPruneResponse\"z\n" +
+	"\vprune_up_to\x18\x01 \x01(\x03R\tpruneUpTo\x12\xa3\x01\n" +
+	"&counter_participants_commitments_state\x18\x02 \x01(\x0e2I.com.digitalasset.canton.admin.participant.v30.SafeToPruneCommitmentStateH\x00R#counterParticipantsCommitmentsState\x88\x01\x01B)\n" +
+	"'_counter_participants_commitments_state\"\x0f\n" +
+	"\rPruneResponse\"\xcb\x02\n" +
 	"\x1bGetSafePruningOffsetRequest\x12<\n" +
 	"\fbefore_or_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"beforeOrAt\x12\x1d\n" +
 	"\n" +
-	"ledger_end\x18\x02 \x01(\x03R\tledgerEnd\"\x8c\x02\n" +
+	"ledger_end\x18\x02 \x01(\x03R\tledgerEnd\x12\xa3\x01\n" +
+	"&counter_participants_commitments_state\x18\x03 \x01(\x0e2I.com.digitalasset.canton.admin.participant.v30.SafeToPruneCommitmentStateH\x00R#counterParticipantsCommitmentsState\x88\x01\x01B)\n" +
+	"'_counter_participants_commitments_state\"\x8c\x02\n" +
 	"\x1cGetSafePruningOffsetResponse\x120\n" +
 	"\x13safe_pruning_offset\x18\x01 \x01(\x03H\x00R\x11safePruningOffset\x12\x96\x01\n" +
 	"\x16no_safe_pruning_offset\x18\x02 \x01(\v2_.com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse.NoSafePruningOffsetH\x00R\x13noSafePruningOffset\x1a\x15\n" +
 	"\x13NoSafePruningOffsetB\n" +
 	"\n" +
-	"\bresponse2\xaf\x10\n" +
+	"\bresponse*\xd1\x01\n" +
+	"\x1aSafeToPruneCommitmentState\x12.\n" +
+	"*SAFE_TO_PRUNE_COMMITMENT_STATE_UNSPECIFIED\x10\x00\x12(\n" +
+	"$SAFE_TO_PRUNE_COMMITMENT_STATE_MATCH\x10\x01\x121\n" +
+	"-SAFE_TO_PRUNE_COMMITMENT_STATE_MATCH_MISMATCH\x10\x02\x12&\n" +
+	"\"SAFE_TO_PRUNE_COMMITMENT_STATE_ALL\x10\x032\xaf\x10\n" +
 	"\x0ePruningService\x12\x82\x01\n" +
 	"\x05Prune\x12;.com.digitalasset.canton.admin.participant.v30.PruneRequest\x1a<.com.digitalasset.canton.admin.participant.v30.PruneResponse\x12\xaf\x01\n" +
 	"\x14GetSafePruningOffset\x12J.com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetRequest\x1aK.com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse\x12\x8c\x01\n" +
@@ -321,71 +398,75 @@ func file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_ra
 	return file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_rawDescData
 }
 
+var file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_goTypes = []any{
-	(*PruneRequest)(nil),                                     // 0: com.digitalasset.canton.admin.participant.v30.PruneRequest
-	(*PruneResponse)(nil),                                    // 1: com.digitalasset.canton.admin.participant.v30.PruneResponse
-	(*GetSafePruningOffsetRequest)(nil),                      // 2: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetRequest
-	(*GetSafePruningOffsetResponse)(nil),                     // 3: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse
-	(*GetSafePruningOffsetResponse_NoSafePruningOffset)(nil), // 4: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse.NoSafePruningOffset
-	(*timestamppb.Timestamp)(nil),                            // 5: google.protobuf.Timestamp
-	(*v30.SetScheduleRequest)(nil),                           // 6: com.digitalasset.canton.admin.pruning.v30.SetScheduleRequest
-	(*v30.SetParticipantScheduleRequest)(nil),                // 7: com.digitalasset.canton.admin.pruning.v30.SetParticipantScheduleRequest
-	(*v30.SetCronRequest)(nil),                               // 8: com.digitalasset.canton.admin.pruning.v30.SetCronRequest
-	(*v30.SetMaxDurationRequest)(nil),                        // 9: com.digitalasset.canton.admin.pruning.v30.SetMaxDurationRequest
-	(*v30.SetRetentionRequest)(nil),                          // 10: com.digitalasset.canton.admin.pruning.v30.SetRetentionRequest
-	(*v30.ClearScheduleRequest)(nil),                         // 11: com.digitalasset.canton.admin.pruning.v30.ClearScheduleRequest
-	(*v30.GetScheduleRequest)(nil),                           // 12: com.digitalasset.canton.admin.pruning.v30.GetScheduleRequest
-	(*v30.GetParticipantScheduleRequest)(nil),                // 13: com.digitalasset.canton.admin.pruning.v30.GetParticipantScheduleRequest
-	(*v30.SetNoWaitCommitmentsFromRequest)(nil),              // 14: com.digitalasset.canton.admin.pruning.v30.SetNoWaitCommitmentsFromRequest
-	(*v30.ResetNoWaitCommitmentsFromRequest)(nil),            // 15: com.digitalasset.canton.admin.pruning.v30.ResetNoWaitCommitmentsFromRequest
-	(*v30.GetNoWaitCommitmentsFromRequest)(nil),              // 16: com.digitalasset.canton.admin.pruning.v30.GetNoWaitCommitmentsFromRequest
-	(*v30.SetScheduleResponse)(nil),                          // 17: com.digitalasset.canton.admin.pruning.v30.SetScheduleResponse
-	(*v30.SetParticipantScheduleResponse)(nil),               // 18: com.digitalasset.canton.admin.pruning.v30.SetParticipantScheduleResponse
-	(*v30.SetCronResponse)(nil),                              // 19: com.digitalasset.canton.admin.pruning.v30.SetCronResponse
-	(*v30.SetMaxDurationResponse)(nil),                       // 20: com.digitalasset.canton.admin.pruning.v30.SetMaxDurationResponse
-	(*v30.SetRetentionResponse)(nil),                         // 21: com.digitalasset.canton.admin.pruning.v30.SetRetentionResponse
-	(*v30.ClearScheduleResponse)(nil),                        // 22: com.digitalasset.canton.admin.pruning.v30.ClearScheduleResponse
-	(*v30.GetScheduleResponse)(nil),                          // 23: com.digitalasset.canton.admin.pruning.v30.GetScheduleResponse
-	(*v30.GetParticipantScheduleResponse)(nil),               // 24: com.digitalasset.canton.admin.pruning.v30.GetParticipantScheduleResponse
-	(*v30.SetNoWaitCommitmentsFromResponse)(nil),             // 25: com.digitalasset.canton.admin.pruning.v30.SetNoWaitCommitmentsFromResponse
-	(*v30.ResetNoWaitCommitmentsFromResponse)(nil),           // 26: com.digitalasset.canton.admin.pruning.v30.ResetNoWaitCommitmentsFromResponse
-	(*v30.GetNoWaitCommitmentsFromResponse)(nil),             // 27: com.digitalasset.canton.admin.pruning.v30.GetNoWaitCommitmentsFromResponse
+	(SafeToPruneCommitmentState)(0),                          // 0: com.digitalasset.canton.admin.participant.v30.SafeToPruneCommitmentState
+	(*PruneRequest)(nil),                                     // 1: com.digitalasset.canton.admin.participant.v30.PruneRequest
+	(*PruneResponse)(nil),                                    // 2: com.digitalasset.canton.admin.participant.v30.PruneResponse
+	(*GetSafePruningOffsetRequest)(nil),                      // 3: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetRequest
+	(*GetSafePruningOffsetResponse)(nil),                     // 4: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse
+	(*GetSafePruningOffsetResponse_NoSafePruningOffset)(nil), // 5: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse.NoSafePruningOffset
+	(*timestamppb.Timestamp)(nil),                            // 6: google.protobuf.Timestamp
+	(*v30.SetScheduleRequest)(nil),                           // 7: com.digitalasset.canton.admin.pruning.v30.SetScheduleRequest
+	(*v30.SetParticipantScheduleRequest)(nil),                // 8: com.digitalasset.canton.admin.pruning.v30.SetParticipantScheduleRequest
+	(*v30.SetCronRequest)(nil),                               // 9: com.digitalasset.canton.admin.pruning.v30.SetCronRequest
+	(*v30.SetMaxDurationRequest)(nil),                        // 10: com.digitalasset.canton.admin.pruning.v30.SetMaxDurationRequest
+	(*v30.SetRetentionRequest)(nil),                          // 11: com.digitalasset.canton.admin.pruning.v30.SetRetentionRequest
+	(*v30.ClearScheduleRequest)(nil),                         // 12: com.digitalasset.canton.admin.pruning.v30.ClearScheduleRequest
+	(*v30.GetScheduleRequest)(nil),                           // 13: com.digitalasset.canton.admin.pruning.v30.GetScheduleRequest
+	(*v30.GetParticipantScheduleRequest)(nil),                // 14: com.digitalasset.canton.admin.pruning.v30.GetParticipantScheduleRequest
+	(*v30.SetNoWaitCommitmentsFromRequest)(nil),              // 15: com.digitalasset.canton.admin.pruning.v30.SetNoWaitCommitmentsFromRequest
+	(*v30.ResetNoWaitCommitmentsFromRequest)(nil),            // 16: com.digitalasset.canton.admin.pruning.v30.ResetNoWaitCommitmentsFromRequest
+	(*v30.GetNoWaitCommitmentsFromRequest)(nil),              // 17: com.digitalasset.canton.admin.pruning.v30.GetNoWaitCommitmentsFromRequest
+	(*v30.SetScheduleResponse)(nil),                          // 18: com.digitalasset.canton.admin.pruning.v30.SetScheduleResponse
+	(*v30.SetParticipantScheduleResponse)(nil),               // 19: com.digitalasset.canton.admin.pruning.v30.SetParticipantScheduleResponse
+	(*v30.SetCronResponse)(nil),                              // 20: com.digitalasset.canton.admin.pruning.v30.SetCronResponse
+	(*v30.SetMaxDurationResponse)(nil),                       // 21: com.digitalasset.canton.admin.pruning.v30.SetMaxDurationResponse
+	(*v30.SetRetentionResponse)(nil),                         // 22: com.digitalasset.canton.admin.pruning.v30.SetRetentionResponse
+	(*v30.ClearScheduleResponse)(nil),                        // 23: com.digitalasset.canton.admin.pruning.v30.ClearScheduleResponse
+	(*v30.GetScheduleResponse)(nil),                          // 24: com.digitalasset.canton.admin.pruning.v30.GetScheduleResponse
+	(*v30.GetParticipantScheduleResponse)(nil),               // 25: com.digitalasset.canton.admin.pruning.v30.GetParticipantScheduleResponse
+	(*v30.SetNoWaitCommitmentsFromResponse)(nil),             // 26: com.digitalasset.canton.admin.pruning.v30.SetNoWaitCommitmentsFromResponse
+	(*v30.ResetNoWaitCommitmentsFromResponse)(nil),           // 27: com.digitalasset.canton.admin.pruning.v30.ResetNoWaitCommitmentsFromResponse
+	(*v30.GetNoWaitCommitmentsFromResponse)(nil),             // 28: com.digitalasset.canton.admin.pruning.v30.GetNoWaitCommitmentsFromResponse
 }
 var file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_depIdxs = []int32{
-	5,  // 0: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetRequest.before_or_at:type_name -> google.protobuf.Timestamp
-	4,  // 1: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse.no_safe_pruning_offset:type_name -> com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse.NoSafePruningOffset
-	0,  // 2: com.digitalasset.canton.admin.participant.v30.PruningService.Prune:input_type -> com.digitalasset.canton.admin.participant.v30.PruneRequest
-	2,  // 3: com.digitalasset.canton.admin.participant.v30.PruningService.GetSafePruningOffset:input_type -> com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetRequest
-	6,  // 4: com.digitalasset.canton.admin.participant.v30.PruningService.SetSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.SetScheduleRequest
-	7,  // 5: com.digitalasset.canton.admin.participant.v30.PruningService.SetParticipantSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.SetParticipantScheduleRequest
-	8,  // 6: com.digitalasset.canton.admin.participant.v30.PruningService.SetCron:input_type -> com.digitalasset.canton.admin.pruning.v30.SetCronRequest
-	9,  // 7: com.digitalasset.canton.admin.participant.v30.PruningService.SetMaxDuration:input_type -> com.digitalasset.canton.admin.pruning.v30.SetMaxDurationRequest
-	10, // 8: com.digitalasset.canton.admin.participant.v30.PruningService.SetRetention:input_type -> com.digitalasset.canton.admin.pruning.v30.SetRetentionRequest
-	11, // 9: com.digitalasset.canton.admin.participant.v30.PruningService.ClearSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.ClearScheduleRequest
-	12, // 10: com.digitalasset.canton.admin.participant.v30.PruningService.GetSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.GetScheduleRequest
-	13, // 11: com.digitalasset.canton.admin.participant.v30.PruningService.GetParticipantSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.GetParticipantScheduleRequest
-	14, // 12: com.digitalasset.canton.admin.participant.v30.PruningService.SetNoWaitCommitmentsFrom:input_type -> com.digitalasset.canton.admin.pruning.v30.SetNoWaitCommitmentsFromRequest
-	15, // 13: com.digitalasset.canton.admin.participant.v30.PruningService.ResetNoWaitCommitmentsFrom:input_type -> com.digitalasset.canton.admin.pruning.v30.ResetNoWaitCommitmentsFromRequest
-	16, // 14: com.digitalasset.canton.admin.participant.v30.PruningService.GetNoWaitCommitmentsFrom:input_type -> com.digitalasset.canton.admin.pruning.v30.GetNoWaitCommitmentsFromRequest
-	1,  // 15: com.digitalasset.canton.admin.participant.v30.PruningService.Prune:output_type -> com.digitalasset.canton.admin.participant.v30.PruneResponse
-	3,  // 16: com.digitalasset.canton.admin.participant.v30.PruningService.GetSafePruningOffset:output_type -> com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse
-	17, // 17: com.digitalasset.canton.admin.participant.v30.PruningService.SetSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.SetScheduleResponse
-	18, // 18: com.digitalasset.canton.admin.participant.v30.PruningService.SetParticipantSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.SetParticipantScheduleResponse
-	19, // 19: com.digitalasset.canton.admin.participant.v30.PruningService.SetCron:output_type -> com.digitalasset.canton.admin.pruning.v30.SetCronResponse
-	20, // 20: com.digitalasset.canton.admin.participant.v30.PruningService.SetMaxDuration:output_type -> com.digitalasset.canton.admin.pruning.v30.SetMaxDurationResponse
-	21, // 21: com.digitalasset.canton.admin.participant.v30.PruningService.SetRetention:output_type -> com.digitalasset.canton.admin.pruning.v30.SetRetentionResponse
-	22, // 22: com.digitalasset.canton.admin.participant.v30.PruningService.ClearSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.ClearScheduleResponse
-	23, // 23: com.digitalasset.canton.admin.participant.v30.PruningService.GetSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.GetScheduleResponse
-	24, // 24: com.digitalasset.canton.admin.participant.v30.PruningService.GetParticipantSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.GetParticipantScheduleResponse
-	25, // 25: com.digitalasset.canton.admin.participant.v30.PruningService.SetNoWaitCommitmentsFrom:output_type -> com.digitalasset.canton.admin.pruning.v30.SetNoWaitCommitmentsFromResponse
-	26, // 26: com.digitalasset.canton.admin.participant.v30.PruningService.ResetNoWaitCommitmentsFrom:output_type -> com.digitalasset.canton.admin.pruning.v30.ResetNoWaitCommitmentsFromResponse
-	27, // 27: com.digitalasset.canton.admin.participant.v30.PruningService.GetNoWaitCommitmentsFrom:output_type -> com.digitalasset.canton.admin.pruning.v30.GetNoWaitCommitmentsFromResponse
-	15, // [15:28] is the sub-list for method output_type
-	2,  // [2:15] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	0,  // 0: com.digitalasset.canton.admin.participant.v30.PruneRequest.counter_participants_commitments_state:type_name -> com.digitalasset.canton.admin.participant.v30.SafeToPruneCommitmentState
+	6,  // 1: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetRequest.before_or_at:type_name -> google.protobuf.Timestamp
+	0,  // 2: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetRequest.counter_participants_commitments_state:type_name -> com.digitalasset.canton.admin.participant.v30.SafeToPruneCommitmentState
+	5,  // 3: com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse.no_safe_pruning_offset:type_name -> com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse.NoSafePruningOffset
+	1,  // 4: com.digitalasset.canton.admin.participant.v30.PruningService.Prune:input_type -> com.digitalasset.canton.admin.participant.v30.PruneRequest
+	3,  // 5: com.digitalasset.canton.admin.participant.v30.PruningService.GetSafePruningOffset:input_type -> com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetRequest
+	7,  // 6: com.digitalasset.canton.admin.participant.v30.PruningService.SetSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.SetScheduleRequest
+	8,  // 7: com.digitalasset.canton.admin.participant.v30.PruningService.SetParticipantSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.SetParticipantScheduleRequest
+	9,  // 8: com.digitalasset.canton.admin.participant.v30.PruningService.SetCron:input_type -> com.digitalasset.canton.admin.pruning.v30.SetCronRequest
+	10, // 9: com.digitalasset.canton.admin.participant.v30.PruningService.SetMaxDuration:input_type -> com.digitalasset.canton.admin.pruning.v30.SetMaxDurationRequest
+	11, // 10: com.digitalasset.canton.admin.participant.v30.PruningService.SetRetention:input_type -> com.digitalasset.canton.admin.pruning.v30.SetRetentionRequest
+	12, // 11: com.digitalasset.canton.admin.participant.v30.PruningService.ClearSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.ClearScheduleRequest
+	13, // 12: com.digitalasset.canton.admin.participant.v30.PruningService.GetSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.GetScheduleRequest
+	14, // 13: com.digitalasset.canton.admin.participant.v30.PruningService.GetParticipantSchedule:input_type -> com.digitalasset.canton.admin.pruning.v30.GetParticipantScheduleRequest
+	15, // 14: com.digitalasset.canton.admin.participant.v30.PruningService.SetNoWaitCommitmentsFrom:input_type -> com.digitalasset.canton.admin.pruning.v30.SetNoWaitCommitmentsFromRequest
+	16, // 15: com.digitalasset.canton.admin.participant.v30.PruningService.ResetNoWaitCommitmentsFrom:input_type -> com.digitalasset.canton.admin.pruning.v30.ResetNoWaitCommitmentsFromRequest
+	17, // 16: com.digitalasset.canton.admin.participant.v30.PruningService.GetNoWaitCommitmentsFrom:input_type -> com.digitalasset.canton.admin.pruning.v30.GetNoWaitCommitmentsFromRequest
+	2,  // 17: com.digitalasset.canton.admin.participant.v30.PruningService.Prune:output_type -> com.digitalasset.canton.admin.participant.v30.PruneResponse
+	4,  // 18: com.digitalasset.canton.admin.participant.v30.PruningService.GetSafePruningOffset:output_type -> com.digitalasset.canton.admin.participant.v30.GetSafePruningOffsetResponse
+	18, // 19: com.digitalasset.canton.admin.participant.v30.PruningService.SetSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.SetScheduleResponse
+	19, // 20: com.digitalasset.canton.admin.participant.v30.PruningService.SetParticipantSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.SetParticipantScheduleResponse
+	20, // 21: com.digitalasset.canton.admin.participant.v30.PruningService.SetCron:output_type -> com.digitalasset.canton.admin.pruning.v30.SetCronResponse
+	21, // 22: com.digitalasset.canton.admin.participant.v30.PruningService.SetMaxDuration:output_type -> com.digitalasset.canton.admin.pruning.v30.SetMaxDurationResponse
+	22, // 23: com.digitalasset.canton.admin.participant.v30.PruningService.SetRetention:output_type -> com.digitalasset.canton.admin.pruning.v30.SetRetentionResponse
+	23, // 24: com.digitalasset.canton.admin.participant.v30.PruningService.ClearSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.ClearScheduleResponse
+	24, // 25: com.digitalasset.canton.admin.participant.v30.PruningService.GetSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.GetScheduleResponse
+	25, // 26: com.digitalasset.canton.admin.participant.v30.PruningService.GetParticipantSchedule:output_type -> com.digitalasset.canton.admin.pruning.v30.GetParticipantScheduleResponse
+	26, // 27: com.digitalasset.canton.admin.participant.v30.PruningService.SetNoWaitCommitmentsFrom:output_type -> com.digitalasset.canton.admin.pruning.v30.SetNoWaitCommitmentsFromResponse
+	27, // 28: com.digitalasset.canton.admin.participant.v30.PruningService.ResetNoWaitCommitmentsFrom:output_type -> com.digitalasset.canton.admin.pruning.v30.ResetNoWaitCommitmentsFromResponse
+	28, // 29: com.digitalasset.canton.admin.participant.v30.PruningService.GetNoWaitCommitmentsFrom:output_type -> com.digitalasset.canton.admin.pruning.v30.GetNoWaitCommitmentsFromResponse
+	17, // [17:30] is the sub-list for method output_type
+	4,  // [4:17] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_init() }
@@ -393,6 +474,8 @@ func file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_in
 	if File_com_digitalasset_canton_admin_participant_v30_pruning_service_proto != nil {
 		return
 	}
+	file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_msgTypes[0].OneofWrappers = []any{}
+	file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_msgTypes[2].OneofWrappers = []any{}
 	file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_msgTypes[3].OneofWrappers = []any{
 		(*GetSafePruningOffsetResponse_SafePruningOffset)(nil),
 		(*GetSafePruningOffsetResponse_NoSafePruningOffset_)(nil),
@@ -402,13 +485,14 @@ func file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_in
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_rawDesc), len(file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_goTypes,
 		DependencyIndexes: file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_depIdxs,
+		EnumInfos:         file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_enumTypes,
 		MessageInfos:      file_com_digitalasset_canton_admin_participant_v30_pruning_service_proto_msgTypes,
 	}.Build()
 	File_com_digitalasset_canton_admin_participant_v30_pruning_service_proto = out.File

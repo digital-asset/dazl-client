@@ -38,16 +38,6 @@ class ParticipantRepairServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.ExportAcsOld = channel.unary_stream(
-                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcsOld',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsOldRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsOldResponse.FromString,
-                _registered_method=True)
-        self.ImportAcsOld = channel.stream_unary(
-                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcsOld',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldResponse.FromString,
-                _registered_method=True)
         self.ExportAcs = channel.unary_stream(
                 '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcs',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsRequest.SerializeToString,
@@ -98,22 +88,15 @@ class ParticipantRepairServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsResponse.FromString,
                 _registered_method=True)
+        self.PerformLateLsu = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PerformLateLsu',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuResponse.FromString,
+                _registered_method=True)
 
 
 class ParticipantRepairServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
-
-    def ExportAcsOld(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ImportAcsOld(self, request_iterator, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
     def ExportAcs(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -175,19 +158,15 @@ class ParticipantRepairServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def PerformLateLsu(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ParticipantRepairServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ExportAcsOld': grpc.unary_stream_rpc_method_handler(
-                    servicer.ExportAcsOld,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsOldRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsOldResponse.SerializeToString,
-            ),
-            'ImportAcsOld': grpc.stream_unary_rpc_method_handler(
-                    servicer.ImportAcsOld,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldResponse.SerializeToString,
-            ),
             'ExportAcs': grpc.unary_stream_rpc_method_handler(
                     servicer.ExportAcs,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsRequest.FromString,
@@ -238,6 +217,11 @@ def add_ParticipantRepairServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsResponse.SerializeToString,
             ),
+            'PerformLateLsu': grpc.unary_unary_rpc_method_handler(
+                    servicer.PerformLateLsu,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'com.digitalasset.canton.admin.participant.v30.ParticipantRepairService', rpc_method_handlers)
@@ -248,60 +232,6 @@ def add_ParticipantRepairServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class ParticipantRepairService(object):
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def ExportAcsOld(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_stream(
-            request,
-            target,
-            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcsOld',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsOldRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ExportAcsOldResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ImportAcsOld(request_iterator,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.stream_unary(
-            request_iterator,
-            target,
-            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcsOld',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ImportAcsOldResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
 
     @staticmethod
     def ExportAcs(request,
@@ -563,6 +493,33 @@ class ParticipantRepairService(object):
             '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RepairCommitmentsUsingAcs',
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RepairCommitmentsUsingAcsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PerformLateLsu(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PerformLateLsu',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuResponse.FromString,
             options,
             channel_credentials,
             insecure,

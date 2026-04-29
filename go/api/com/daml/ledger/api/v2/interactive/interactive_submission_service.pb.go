@@ -32,6 +32,7 @@ type HashingSchemeVersion int32
 const (
 	HashingSchemeVersion_HASHING_SCHEME_VERSION_UNSPECIFIED HashingSchemeVersion = 0
 	HashingSchemeVersion_HASHING_SCHEME_VERSION_V2          HashingSchemeVersion = 2
+	HashingSchemeVersion_HASHING_SCHEME_VERSION_V3          HashingSchemeVersion = 3
 )
 
 // Enum value maps for HashingSchemeVersion.
@@ -39,10 +40,12 @@ var (
 	HashingSchemeVersion_name = map[int32]string{
 		0: "HASHING_SCHEME_VERSION_UNSPECIFIED",
 		2: "HASHING_SCHEME_VERSION_V2",
+		3: "HASHING_SCHEME_VERSION_V3",
 	}
 	HashingSchemeVersion_value = map[string]int32{
 		"HASHING_SCHEME_VERSION_UNSPECIFIED": 0,
 		"HASHING_SCHEME_VERSION_V2":          2,
+		"HASHING_SCHEME_VERSION_V3":          3,
 	}
 )
 
@@ -208,6 +211,8 @@ type PrepareSubmissionRequest struct {
 	VerboseHashing               bool                      `protobuf:"varint,10,opt,name=verbose_hashing,json=verboseHashing,proto3" json:"verbose_hashing,omitempty"`
 	PrefetchContractKeys         []*v2.PrefetchContractKey `protobuf:"bytes,15,rep,name=prefetch_contract_keys,json=prefetchContractKeys,proto3" json:"prefetch_contract_keys,omitempty"`
 	EstimateTrafficCost          *CostEstimationHints      `protobuf:"bytes,16,opt,name=estimate_traffic_cost,json=estimateTrafficCost,proto3,oneof" json:"estimate_traffic_cost,omitempty"`
+	HashingSchemeVersion         *HashingSchemeVersion     `protobuf:"varint,17,opt,name=hashing_scheme_version,json=hashingSchemeVersion,proto3,enum=com.daml.ledger.api.v2.interactive.HashingSchemeVersion,oneof" json:"hashing_scheme_version,omitempty"`
+	TapsMaxPasses                *uint32                   `protobuf:"varint,18,opt,name=taps_max_passes,json=tapsMaxPasses,proto3,oneof" json:"taps_max_passes,omitempty"`
 	unknownFields                protoimpl.UnknownFields
 	sizeCache                    protoimpl.SizeCache
 }
@@ -331,6 +336,20 @@ func (x *PrepareSubmissionRequest) GetEstimateTrafficCost() *CostEstimationHints
 		return x.EstimateTrafficCost
 	}
 	return nil
+}
+
+func (x *PrepareSubmissionRequest) GetHashingSchemeVersion() HashingSchemeVersion {
+	if x != nil && x.HashingSchemeVersion != nil {
+		return *x.HashingSchemeVersion
+	}
+	return HashingSchemeVersion_HASHING_SCHEME_VERSION_UNSPECIFIED
+}
+
+func (x *PrepareSubmissionRequest) GetTapsMaxPasses() uint32 {
+	if x != nil && x.TapsMaxPasses != nil {
+		return *x.TapsMaxPasses
+	}
+	return 0
 }
 
 type PrepareSubmissionResponse struct {
@@ -2011,7 +2030,7 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_service_pro
 	"\x14estimation_timestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x13estimationTimestamp\x12^\n" +
 	",confirmation_request_traffic_cost_estimation\x18\x02 \x01(\x04R(confirmationRequestTrafficCostEstimation\x12`\n" +
 	"-confirmation_response_traffic_cost_estimation\x18\x03 \x01(\x04R)confirmationResponseTrafficCostEstimation\x12A\n" +
-	"\x1dtotal_traffic_cost_estimation\x18\x04 \x01(\x04R\x1atotalTrafficCostEstimation\"\xdb\x06\n" +
+	"\x1dtotal_traffic_cost_estimation\x18\x04 \x01(\x04R\x1atotalTrafficCostEstimation\"\xac\b\n" +
 	"\x18PrepareSubmissionRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1d\n" +
 	"\n" +
@@ -2027,9 +2046,13 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_service_pro
 	"\x0fverbose_hashing\x18\n" +
 	" \x01(\bR\x0everboseHashing\x12a\n" +
 	"\x16prefetch_contract_keys\x18\x0f \x03(\v2+.com.daml.ledger.api.v2.PrefetchContractKeyR\x14prefetchContractKeys\x12p\n" +
-	"\x15estimate_traffic_cost\x18\x10 \x01(\v27.com.daml.ledger.api.v2.interactive.CostEstimationHintsH\x01R\x13estimateTrafficCost\x88\x01\x01B\x12\n" +
+	"\x15estimate_traffic_cost\x18\x10 \x01(\v27.com.daml.ledger.api.v2.interactive.CostEstimationHintsH\x01R\x13estimateTrafficCost\x88\x01\x01\x12s\n" +
+	"\x16hashing_scheme_version\x18\x11 \x01(\x0e28.com.daml.ledger.api.v2.interactive.HashingSchemeVersionH\x02R\x14hashingSchemeVersion\x88\x01\x01\x12+\n" +
+	"\x0ftaps_max_passes\x18\x12 \x01(\rH\x03R\rtapsMaxPasses\x88\x01\x01B\x12\n" +
 	"\x10_max_record_timeB\x18\n" +
-	"\x16_estimate_traffic_cost\"\xeb\x03\n" +
+	"\x16_estimate_traffic_costB\x19\n" +
+	"\x17_hashing_scheme_versionB\x12\n" +
+	"\x10_taps_max_passes\"\xeb\x03\n" +
 	"\x19PrepareSubmissionResponse\x12j\n" +
 	"\x14prepared_transaction\x18\x01 \x01(\v27.com.daml.ledger.api.v2.interactive.PreparedTransactionR\x13preparedTransaction\x12:\n" +
 	"\x19prepared_transaction_hash\x18\x02 \x01(\fR\x17preparedTransactionHash\x12n\n" +
@@ -2154,10 +2177,11 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_service_pro
 	"\x10vetting_valid_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0evettingValidAt\"\xa0\x01\n" +
 	"\x1cGetPreferredPackagesResponse\x12W\n" +
 	"\x12package_references\x18\x01 \x03(\v2(.com.daml.ledger.api.v2.PackageReferenceR\x11packageReferences\x12'\n" +
-	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId*c\n" +
+	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId*\x82\x01\n" +
 	"\x14HashingSchemeVersion\x12&\n" +
 	"\"HASHING_SCHEME_VERSION_UNSPECIFIED\x10\x00\x12\x1d\n" +
-	"\x19HASHING_SCHEME_VERSION_V2\x10\x02\"\x04\b\x01\x10\x012\x88\b\n" +
+	"\x19HASHING_SCHEME_VERSION_V2\x10\x02\x12\x1d\n" +
+	"\x19HASHING_SCHEME_VERSION_V3\x10\x03\"\x04\b\x01\x10\x012\x88\b\n" +
 	"\x1cInteractiveSubmissionService\x12\x90\x01\n" +
 	"\x11PrepareSubmission\x12<.com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest\x1a=.com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse\x12\x90\x01\n" +
 	"\x11ExecuteSubmission\x12<.com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest\x1a=.com.daml.ledger.api.v2.interactive.ExecuteSubmissionResponse\x12\xa5\x01\n" +
@@ -2234,64 +2258,65 @@ var file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto
 	31, // 5: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.disclosed_contracts:type_name -> com.daml.ledger.api.v2.DisclosedContract
 	32, // 6: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.prefetch_contract_keys:type_name -> com.daml.ledger.api.v2.PrefetchContractKey
 	1,  // 7: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.estimate_traffic_cost:type_name -> com.daml.ledger.api.v2.interactive.CostEstimationHints
-	14, // 8: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
-	0,  // 9: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	2,  // 10: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.cost_estimation:type_name -> com.daml.ledger.api.v2.interactive.CostEstimation
-	33, // 11: com.daml.ledger.api.v2.interactive.SinglePartySignatures.signatures:type_name -> com.daml.ledger.api.v2.Signature
-	5,  // 12: com.daml.ledger.api.v2.interactive.PartySignatures.signatures:type_name -> com.daml.ledger.api.v2.interactive.SinglePartySignatures
-	14, // 13: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
-	6,  // 14: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
-	34, // 15: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.deduplication_duration:type_name -> google.protobuf.Duration
-	0,  // 16: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	13, // 17: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
-	14, // 18: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
-	6,  // 19: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
-	34, // 20: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.deduplication_duration:type_name -> google.protobuf.Duration
-	0,  // 21: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	13, // 22: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
-	14, // 23: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
-	6,  // 24: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
-	34, // 25: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.deduplication_duration:type_name -> google.protobuf.Duration
-	0,  // 26: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	13, // 27: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
-	35, // 28: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.transaction_format:type_name -> com.daml.ledger.api.v2.TransactionFormat
-	36, // 29: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
-	29, // 30: com.daml.ledger.api.v2.interactive.MinLedgerTime.min_ledger_time_abs:type_name -> google.protobuf.Timestamp
-	34, // 31: com.daml.ledger.api.v2.interactive.MinLedgerTime.min_ledger_time_rel:type_name -> google.protobuf.Duration
-	16, // 32: com.daml.ledger.api.v2.interactive.PreparedTransaction.transaction:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction
-	15, // 33: com.daml.ledger.api.v2.interactive.PreparedTransaction.metadata:type_name -> com.daml.ledger.api.v2.interactive.Metadata
-	23, // 34: com.daml.ledger.api.v2.interactive.Metadata.submitter_info:type_name -> com.daml.ledger.api.v2.interactive.Metadata.SubmitterInfo
-	25, // 35: com.daml.ledger.api.v2.interactive.Metadata.input_contracts:type_name -> com.daml.ledger.api.v2.interactive.Metadata.InputContract
-	24, // 36: com.daml.ledger.api.v2.interactive.Metadata.global_key_mapping:type_name -> com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry
-	27, // 37: com.daml.ledger.api.v2.interactive.DamlTransaction.nodes:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction.Node
-	26, // 38: com.daml.ledger.api.v2.interactive.DamlTransaction.node_seeds:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction.NodeSeed
-	29, // 39: com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionRequest.vetting_valid_at:type_name -> google.protobuf.Timestamp
-	19, // 40: com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionResponse.package_preference:type_name -> com.daml.ledger.api.v2.interactive.PackagePreference
-	37, // 41: com.daml.ledger.api.v2.interactive.PackagePreference.package_reference:type_name -> com.daml.ledger.api.v2.PackageReference
-	20, // 42: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest.package_vetting_requirements:type_name -> com.daml.ledger.api.v2.interactive.PackageVettingRequirement
-	29, // 43: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest.vetting_valid_at:type_name -> google.protobuf.Timestamp
-	37, // 44: com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse.package_references:type_name -> com.daml.ledger.api.v2.PackageReference
-	38, // 45: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry.key:type_name -> com.daml.ledger.api.v2.interactive.GlobalKey
-	39, // 46: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry.value:type_name -> com.daml.ledger.api.v2.Value
-	40, // 47: com.daml.ledger.api.v2.interactive.Metadata.InputContract.v1:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Create
-	41, // 48: com.daml.ledger.api.v2.interactive.DamlTransaction.Node.v1:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Node
-	3,  // 49: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.PrepareSubmission:input_type -> com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest
-	7,  // 50: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmission:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest
-	9,  // 51: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWait:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest
-	11, // 52: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWaitForTransaction:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest
-	17, // 53: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackageVersion:input_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionRequest
-	21, // 54: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackages:input_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest
-	4,  // 55: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.PrepareSubmission:output_type -> com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse
-	8,  // 56: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmission:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionResponse
-	10, // 57: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWait:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitResponse
-	12, // 58: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWaitForTransaction:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse
-	18, // 59: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackageVersion:output_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionResponse
-	22, // 60: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackages:output_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse
-	55, // [55:61] is the sub-list for method output_type
-	49, // [49:55] is the sub-list for method input_type
-	49, // [49:49] is the sub-list for extension type_name
-	49, // [49:49] is the sub-list for extension extendee
-	0,  // [0:49] is the sub-list for field type_name
+	0,  // 8: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	14, // 9: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
+	0,  // 10: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	2,  // 11: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.cost_estimation:type_name -> com.daml.ledger.api.v2.interactive.CostEstimation
+	33, // 12: com.daml.ledger.api.v2.interactive.SinglePartySignatures.signatures:type_name -> com.daml.ledger.api.v2.Signature
+	5,  // 13: com.daml.ledger.api.v2.interactive.PartySignatures.signatures:type_name -> com.daml.ledger.api.v2.interactive.SinglePartySignatures
+	14, // 14: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
+	6,  // 15: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
+	34, // 16: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.deduplication_duration:type_name -> google.protobuf.Duration
+	0,  // 17: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	13, // 18: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
+	14, // 19: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
+	6,  // 20: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
+	34, // 21: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.deduplication_duration:type_name -> google.protobuf.Duration
+	0,  // 22: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	13, // 23: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
+	14, // 24: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
+	6,  // 25: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
+	34, // 26: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.deduplication_duration:type_name -> google.protobuf.Duration
+	0,  // 27: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	13, // 28: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
+	35, // 29: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.transaction_format:type_name -> com.daml.ledger.api.v2.TransactionFormat
+	36, // 30: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
+	29, // 31: com.daml.ledger.api.v2.interactive.MinLedgerTime.min_ledger_time_abs:type_name -> google.protobuf.Timestamp
+	34, // 32: com.daml.ledger.api.v2.interactive.MinLedgerTime.min_ledger_time_rel:type_name -> google.protobuf.Duration
+	16, // 33: com.daml.ledger.api.v2.interactive.PreparedTransaction.transaction:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction
+	15, // 34: com.daml.ledger.api.v2.interactive.PreparedTransaction.metadata:type_name -> com.daml.ledger.api.v2.interactive.Metadata
+	23, // 35: com.daml.ledger.api.v2.interactive.Metadata.submitter_info:type_name -> com.daml.ledger.api.v2.interactive.Metadata.SubmitterInfo
+	25, // 36: com.daml.ledger.api.v2.interactive.Metadata.input_contracts:type_name -> com.daml.ledger.api.v2.interactive.Metadata.InputContract
+	24, // 37: com.daml.ledger.api.v2.interactive.Metadata.global_key_mapping:type_name -> com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry
+	27, // 38: com.daml.ledger.api.v2.interactive.DamlTransaction.nodes:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction.Node
+	26, // 39: com.daml.ledger.api.v2.interactive.DamlTransaction.node_seeds:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction.NodeSeed
+	29, // 40: com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionRequest.vetting_valid_at:type_name -> google.protobuf.Timestamp
+	19, // 41: com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionResponse.package_preference:type_name -> com.daml.ledger.api.v2.interactive.PackagePreference
+	37, // 42: com.daml.ledger.api.v2.interactive.PackagePreference.package_reference:type_name -> com.daml.ledger.api.v2.PackageReference
+	20, // 43: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest.package_vetting_requirements:type_name -> com.daml.ledger.api.v2.interactive.PackageVettingRequirement
+	29, // 44: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest.vetting_valid_at:type_name -> google.protobuf.Timestamp
+	37, // 45: com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse.package_references:type_name -> com.daml.ledger.api.v2.PackageReference
+	38, // 46: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry.key:type_name -> com.daml.ledger.api.v2.interactive.GlobalKey
+	39, // 47: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry.value:type_name -> com.daml.ledger.api.v2.Value
+	40, // 48: com.daml.ledger.api.v2.interactive.Metadata.InputContract.v1:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Create
+	41, // 49: com.daml.ledger.api.v2.interactive.DamlTransaction.Node.v1:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Node
+	3,  // 50: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.PrepareSubmission:input_type -> com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest
+	7,  // 51: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmission:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest
+	9,  // 52: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWait:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest
+	11, // 53: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWaitForTransaction:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest
+	17, // 54: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackageVersion:input_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionRequest
+	21, // 55: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackages:input_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest
+	4,  // 56: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.PrepareSubmission:output_type -> com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse
+	8,  // 57: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmission:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionResponse
+	10, // 58: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWait:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitResponse
+	12, // 59: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWaitForTransaction:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse
+	18, // 60: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackageVersion:output_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionResponse
+	22, // 61: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackages:output_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse
+	56, // [56:62] is the sub-list for method output_type
+	50, // [50:56] is the sub-list for method input_type
+	50, // [50:50] is the sub-list for extension type_name
+	50, // [50:50] is the sub-list for extension extendee
+	0,  // [0:50] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_init() }

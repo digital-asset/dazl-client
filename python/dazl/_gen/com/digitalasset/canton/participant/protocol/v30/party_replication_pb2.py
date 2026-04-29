@@ -27,9 +27,11 @@ _sym_db = _symbol_database.Default()
 
 
 from ....admin.participant.v30 import active_contract_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_active__contract__pb2
+from ....protocol.v30 import topology_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v30_dot_topology__pb2
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nHcom/digitalasset/canton/participant/protocol/v30/party_replication.proto\x12\x30\x63om.digitalasset.canton.participant.protocol.v30\x1a\x43\x63om/digitalasset/canton/admin/participant/v30/active_contract.proto\"\x82\x04\n(PartyReplicationTargetParticipantMessage\x12\x87\x01\n\ninitialize\x18\x01 \x01(\x0b\x32\x65.com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.InitializeH\x00R\ninitialize\x12\x8d\x01\n\x0esend_acs_up_to\x18\x02 \x01(\x0b\x32\x66.com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.SendAcsUpToH\x00R\x0bsendAcsUpTo\x1aY\n\nInitialize\x12K\n\"initial_contract_ordinal_inclusive\x18\x01 \x01(\rR\x1finitialContractOrdinalInclusive\x1aR\n\x0bSendAcsUpTo\x12\x43\n\x1emax_contract_ordinal_inclusive\x18\x01 \x01(\rR\x1bmaxContractOrdinalInclusiveB\r\n\x0binstruction\"\xbf\x03\n(PartyReplicationSourceParticipantMessage\x12\x82\x01\n\tacs_batch\x18\x01 \x01(\x0b\x32\x63.com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatchH\x00R\x08\x61\x63sBatch\x12\x83\x01\n\nend_of_acs\x18\x02 \x01(\x0b\x32\x63.com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.EndOfACSH\x00R\x08\x65ndOfAcs\x1aj\n\x08\x41\x63sBatch\x12^\n\tcontracts\x18\x01 \x03(\x0b\x32@.com.digitalasset.canton.admin.participant.v30.ActiveContractOldR\tcontracts\x1a\n\n\x08\x45ndOfACSB\x10\n\x0e\x64\x61ta_or_statusBaZ_github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/protocol/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nHcom/digitalasset/canton/participant/protocol/v30/party_replication.proto\x12\x30\x63om.digitalasset.canton.participant.protocol.v30\x1a\x43\x63om/digitalasset/canton/admin/participant/v30/active_contract.proto\x1a\x33\x63om/digitalasset/canton/protocol/v30/topology.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x82\x04\n(PartyReplicationTargetParticipantMessage\x12\x87\x01\n\ninitialize\x18\x01 \x01(\x0b\x32\x65.com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.InitializeH\x00R\ninitialize\x12\x8d\x01\n\x0esend_acs_up_to\x18\x02 \x01(\x0b\x32\x66.com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.SendAcsUpToH\x00R\x0bsendAcsUpTo\x1aY\n\nInitialize\x12K\n\"initial_contract_ordinal_inclusive\x18\x01 \x01(\x04R\x1finitialContractOrdinalInclusive\x1aR\n\x0bSendAcsUpTo\x12\x43\n\x1emax_contract_ordinal_inclusive\x18\x01 \x01(\x04R\x1bmaxContractOrdinalInclusiveB\r\n\x0binstruction\"\xbc\x03\n(PartyReplicationSourceParticipantMessage\x12\x82\x01\n\tacs_batch\x18\x01 \x01(\x0b\x32\x63.com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatchH\x00R\x08\x61\x63sBatch\x12\x83\x01\n\nend_of_acs\x18\x02 \x01(\x0b\x32\x63.com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.EndOfAcsH\x00R\x08\x65ndOfAcs\x1ag\n\x08\x41\x63sBatch\x12[\n\tcontracts\x18\x01 \x03(\x0b\x32=.com.digitalasset.canton.admin.participant.v30.ActiveContractR\tcontracts\x1a\n\n\x08\x45ndOfAcsB\x10\n\x0e\x64\x61ta_or_status\"\xd8\x11\n\x16PartyReplicationStatus\x12~\n\nparameters\x18\x01 \x01(\x0b\x32^.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.ReplicationParametersR\nparameters\x12\x80\x01\n\tagreement\x18\x02 \x01(\x0b\x32\x62.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.SequencerChannelAgreementR\tagreement\x12\x8c\x01\n\rauthorization\x18\x03 \x01(\x0b\x32\x66.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationAuthorizationR\rauthorization\x12\x81\x01\n\x0breplication\x18\x04 \x01(\x0b\x32_.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.AcsReplicationProgressR\x0breplication\x12x\n\x08indexing\x18\x05 \x01(\x0b\x32\\.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.AcsIndexingProgressR\x08indexing\x12#\n\rhas_completed\x18\x06 \x01(\x08R\x0chasCompleted\x12\x83\x01\n\rerror_message\x18\x07 \x01(\x0b\x32^.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationErrorR\x0c\x65rrorMessage\x1a\x89\x03\n\x15ReplicationParameters\x12\x1d\n\nrequest_id\x18\x01 \x01(\tR\trequestId\x12\x19\n\x08party_id\x18\x02 \x01(\tR\x07partyId\x12\'\n\x0fsynchronizer_id\x18\x03 \x01(\tR\x0esynchronizerId\x12\x34\n\x16source_participant_uid\x18\x04 \x01(\tR\x14sourceParticipantUid\x12\x34\n\x16target_participant_uid\x18\x05 \x01(\tR\x14targetParticipantUid\x12\'\n\x0ftopology_serial\x18\x06 \x01(\rR\x0etopologySerial\x12x\n\x16participant_permission\x18\x07 \x01(\x0e\x32\x41.com.digitalasset.canton.protocol.v30.Enums.ParticipantPermissionR\x15participantPermission\x1a\x61\n\x19SequencerChannelAgreement\x12\x1f\n\x0b\x63ontract_id\x18\x01 \x01(\tR\ncontractId\x12#\n\rsequencer_uid\x18\x02 \x01(\tR\x0csequencerUid\x1a\x9d\x01\n\x1dPartyReplicationAuthorization\x12?\n\ronboarding_at\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0conboardingAt\x12;\n\x1ais_onboarding_flag_cleared\x18\x02 \x01(\x08R\x17isOnboardingFlagCleared\x1a\xbc\x01\n\x16\x41\x63sReplicationProgress\x12\x38\n\x18processed_contract_count\x18\x01 \x01(\x04R\x16processedContractCount\x12\x38\n\x18next_persistence_counter\x18\x02 \x01(\x04R\x16nextPersistenceCounter\x12.\n\x13\x66ully_processed_acs\x18\x03 \x01(\x08R\x11\x66ullyProcessedAcs\x1a\x8e\x02\n\x13\x41\x63sIndexingProgress\x12V\n(indexed_contract_activation_change_count\x18\x01 \x01(\x04R$indexedContractActivationChangeCount\x12\x32\n\x15next_indexing_counter\x18\x02 \x01(\x04R\x13nextIndexingCounter\x12H\n\x1eindexing_almost_done_watermark\x18\x03 \x01(\x04H\x00R\x1bindexingAlmostDoneWatermark\x88\x01\x01\x42!\n\x1f_indexing_almost_done_watermark\x1a\xa3\x02\n\x15PartyReplicationError\x12\x87\x01\n\nerror_type\x18\x01 \x01(\x0e\x32h.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationError.ErrorTypeR\terrorType\x12#\n\rerror_message\x18\x02 \x01(\tR\x0c\x65rrorMessage\"[\n\tErrorType\x12\x1a\n\x16\x45RROR_TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11\x45RROR_TYPE_FAILED\x10\x02\x12\x1b\n\x17\x45RROR_TYPE_DISCONNECTED\x10\x03\x42\x61Z_github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/protocol/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,16 +39,32 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.par
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z_github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/protocol/v30'
-  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE']._serialized_start=196
-  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE']._serialized_end=710
-  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE_INITIALIZE']._serialized_start=522
-  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE_INITIALIZE']._serialized_end=611
-  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE_SENDACSUPTO']._serialized_start=613
-  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE_SENDACSUPTO']._serialized_end=695
-  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE']._serialized_start=713
-  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE']._serialized_end=1160
-  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE_ACSBATCH']._serialized_start=1024
-  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE_ACSBATCH']._serialized_end=1130
-  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE_ENDOFACS']._serialized_start=1132
-  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE_ENDOFACS']._serialized_end=1142
+  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE']._serialized_start=282
+  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE']._serialized_end=796
+  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE_INITIALIZE']._serialized_start=608
+  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE_INITIALIZE']._serialized_end=697
+  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE_SENDACSUPTO']._serialized_start=699
+  _globals['_PARTYREPLICATIONTARGETPARTICIPANTMESSAGE_SENDACSUPTO']._serialized_end=781
+  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE']._serialized_start=799
+  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE']._serialized_end=1243
+  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE_ACSBATCH']._serialized_start=1110
+  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE_ACSBATCH']._serialized_end=1213
+  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE_ENDOFACS']._serialized_start=1215
+  _globals['_PARTYREPLICATIONSOURCEPARTICIPANTMESSAGE_ENDOFACS']._serialized_end=1225
+  _globals['_PARTYREPLICATIONSTATUS']._serialized_start=1246
+  _globals['_PARTYREPLICATIONSTATUS']._serialized_end=3510
+  _globals['_PARTYREPLICATIONSTATUS_REPLICATIONPARAMETERS']._serialized_start=2100
+  _globals['_PARTYREPLICATIONSTATUS_REPLICATIONPARAMETERS']._serialized_end=2493
+  _globals['_PARTYREPLICATIONSTATUS_SEQUENCERCHANNELAGREEMENT']._serialized_start=2495
+  _globals['_PARTYREPLICATIONSTATUS_SEQUENCERCHANNELAGREEMENT']._serialized_end=2592
+  _globals['_PARTYREPLICATIONSTATUS_PARTYREPLICATIONAUTHORIZATION']._serialized_start=2595
+  _globals['_PARTYREPLICATIONSTATUS_PARTYREPLICATIONAUTHORIZATION']._serialized_end=2752
+  _globals['_PARTYREPLICATIONSTATUS_ACSREPLICATIONPROGRESS']._serialized_start=2755
+  _globals['_PARTYREPLICATIONSTATUS_ACSREPLICATIONPROGRESS']._serialized_end=2943
+  _globals['_PARTYREPLICATIONSTATUS_ACSINDEXINGPROGRESS']._serialized_start=2946
+  _globals['_PARTYREPLICATIONSTATUS_ACSINDEXINGPROGRESS']._serialized_end=3216
+  _globals['_PARTYREPLICATIONSTATUS_PARTYREPLICATIONERROR']._serialized_start=3219
+  _globals['_PARTYREPLICATIONSTATUS_PARTYREPLICATIONERROR']._serialized_end=3510
+  _globals['_PARTYREPLICATIONSTATUS_PARTYREPLICATIONERROR_ERRORTYPE']._serialized_start=3419
+  _globals['_PARTYREPLICATIONSTATUS_PARTYREPLICATIONERROR_ERRORTYPE']._serialized_end=3510
 # @@protoc_insertion_point(module_scope)

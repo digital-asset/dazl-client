@@ -43,6 +43,11 @@ class PartyManagementServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyAsyncRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyAsyncResponse.FromString,
                 _registered_method=True)
+        self.AddPartyWithAcsAsync = channel.stream_unary(
+                '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/AddPartyWithAcsAsync',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyWithAcsAsyncRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyWithAcsAsyncResponse.FromString,
+                _registered_method=True)
         self.GetAddPartyStatus = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetAddPartyStatus',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusRequest.SerializeToString,
@@ -74,6 +79,12 @@ class PartyManagementServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def AddPartyAsync(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AddPartyWithAcsAsync(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -116,6 +127,11 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
                     servicer.AddPartyAsync,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyAsyncRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyAsyncResponse.SerializeToString,
+            ),
+            'AddPartyWithAcsAsync': grpc.stream_unary_rpc_method_handler(
+                    servicer.AddPartyWithAcsAsync,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyWithAcsAsyncRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyWithAcsAsyncResponse.SerializeToString,
             ),
             'GetAddPartyStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.GetAddPartyStatus,
@@ -170,6 +186,33 @@ class PartyManagementService(object):
             '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/AddPartyAsync',
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyAsyncRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyAsyncResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AddPartyWithAcsAsync(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_unary(
+            request_iterator,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/AddPartyWithAcsAsync',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyWithAcsAsyncRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.AddPartyWithAcsAsyncResponse.FromString,
             options,
             channel_credentials,
             insecure,

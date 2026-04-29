@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	StateService_GetActiveContracts_FullMethodName        = "/com.daml.ledger.api.v2.StateService/GetActiveContracts"
+	StateService_GetActiveContractsPage_FullMethodName    = "/com.daml.ledger.api.v2.StateService/GetActiveContractsPage"
 	StateService_GetConnectedSynchronizers_FullMethodName = "/com.daml.ledger.api.v2.StateService/GetConnectedSynchronizers"
 	StateService_GetLedgerEnd_FullMethodName              = "/com.daml.ledger.api.v2.StateService/GetLedgerEnd"
 	StateService_GetLatestPrunedOffsets_FullMethodName    = "/com.daml.ledger.api.v2.StateService/GetLatestPrunedOffsets"
@@ -32,6 +33,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StateServiceClient interface {
 	GetActiveContracts(ctx context.Context, in *GetActiveContractsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetActiveContractsResponse], error)
+	GetActiveContractsPage(ctx context.Context, in *GetActiveContractsPageRequest, opts ...grpc.CallOption) (*GetActiveContractsPageResponse, error)
 	GetConnectedSynchronizers(ctx context.Context, in *GetConnectedSynchronizersRequest, opts ...grpc.CallOption) (*GetConnectedSynchronizersResponse, error)
 	GetLedgerEnd(ctx context.Context, in *GetLedgerEndRequest, opts ...grpc.CallOption) (*GetLedgerEndResponse, error)
 	GetLatestPrunedOffsets(ctx context.Context, in *GetLatestPrunedOffsetsRequest, opts ...grpc.CallOption) (*GetLatestPrunedOffsetsResponse, error)
@@ -63,6 +65,16 @@ func (c *stateServiceClient) GetActiveContracts(ctx context.Context, in *GetActi
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type StateService_GetActiveContractsClient = grpc.ServerStreamingClient[GetActiveContractsResponse]
+
+func (c *stateServiceClient) GetActiveContractsPage(ctx context.Context, in *GetActiveContractsPageRequest, opts ...grpc.CallOption) (*GetActiveContractsPageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetActiveContractsPageResponse)
+	err := c.cc.Invoke(ctx, StateService_GetActiveContractsPage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
 func (c *stateServiceClient) GetConnectedSynchronizers(ctx context.Context, in *GetConnectedSynchronizersRequest, opts ...grpc.CallOption) (*GetConnectedSynchronizersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -99,6 +111,7 @@ func (c *stateServiceClient) GetLatestPrunedOffsets(ctx context.Context, in *Get
 // for forward compatibility.
 type StateServiceServer interface {
 	GetActiveContracts(*GetActiveContractsRequest, grpc.ServerStreamingServer[GetActiveContractsResponse]) error
+	GetActiveContractsPage(context.Context, *GetActiveContractsPageRequest) (*GetActiveContractsPageResponse, error)
 	GetConnectedSynchronizers(context.Context, *GetConnectedSynchronizersRequest) (*GetConnectedSynchronizersResponse, error)
 	GetLedgerEnd(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error)
 	GetLatestPrunedOffsets(context.Context, *GetLatestPrunedOffsetsRequest) (*GetLatestPrunedOffsetsResponse, error)
@@ -114,6 +127,9 @@ type UnimplementedStateServiceServer struct{}
 
 func (UnimplementedStateServiceServer) GetActiveContracts(*GetActiveContractsRequest, grpc.ServerStreamingServer[GetActiveContractsResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method GetActiveContracts not implemented")
+}
+func (UnimplementedStateServiceServer) GetActiveContractsPage(context.Context, *GetActiveContractsPageRequest) (*GetActiveContractsPageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActiveContractsPage not implemented")
 }
 func (UnimplementedStateServiceServer) GetConnectedSynchronizers(context.Context, *GetConnectedSynchronizersRequest) (*GetConnectedSynchronizersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetConnectedSynchronizers not implemented")
@@ -155,6 +171,24 @@ func _StateService_GetActiveContracts_Handler(srv interface{}, stream grpc.Serve
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type StateService_GetActiveContractsServer = grpc.ServerStreamingServer[GetActiveContractsResponse]
+
+func _StateService_GetActiveContractsPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetActiveContractsPageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StateServiceServer).GetActiveContractsPage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StateService_GetActiveContractsPage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StateServiceServer).GetActiveContractsPage(ctx, req.(*GetActiveContractsPageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
 
 func _StateService_GetConnectedSynchronizers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetConnectedSynchronizersRequest)
@@ -217,6 +251,10 @@ var StateService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "com.daml.ledger.api.v2.StateService",
 	HandlerType: (*StateServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetActiveContractsPage",
+			Handler:    _StateService_GetActiveContractsPage_Handler,
+		},
 		{
 			MethodName: "GetConnectedSynchronizers",
 			Handler:    _StateService_GetConnectedSynchronizers_Handler,

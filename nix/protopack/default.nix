@@ -6,7 +6,6 @@
   canton-2,
   canton-3,
   daml-protos-2,
-  daml-protos-3,
   gawk,
   protobuf,
   rsync,
@@ -15,11 +14,10 @@
 
 stdenv.mkDerivation rec {
   name = "protopack";
-  buildInputs = [ daml-protos-2 daml-protos-3 canton-2 canton-3 gawk protobuf ];
+  buildInputs = [ daml-protos-2 canton-2 canton-3 gawk protobuf ];
   src = ./.;
   installPhase = ''
     ./copy-daml-protos.sh "${daml-protos-2.out}"
-    ./copy-daml-protos.sh "${daml-protos-3.out}"
     ./copy-canton-2-protos.sh "${canton-2.out}"
     ./copy-canton-3-protos.sh "${canton-3.out}"
     ./build.sh

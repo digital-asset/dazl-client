@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from ....synchronizer.sequencing.sequencer.bftordering.v30 import dynamic_sequencing_parameters_pb2 as _dynamic_sequencing_parameters_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -141,17 +142,48 @@ class GetPeerNetworkStatusResponse(_message.Message):
     statuses: _containers.RepeatedCompositeFieldContainer[PeerConnectionStatus]
     def __init__(self, statuses: _Optional[_Iterable[_Union[PeerConnectionStatus, _Mapping]]] = ...) -> None: ...
 
+class GetWriteReadinessRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class GetWriteReadinessResponse(_message.Message):
+    __slots__ = ("ready", "p2p_not_ready")
+    class P2P(_message.Message):
+        __slots__ = ("authenticated_peers_count", "required_quorum")
+        AUTHENTICATED_PEERS_COUNT_FIELD_NUMBER: _ClassVar[int]
+        REQUIRED_QUORUM_FIELD_NUMBER: _ClassVar[int]
+        authenticated_peers_count: int
+        required_quorum: int
+        def __init__(self, authenticated_peers_count: _Optional[int] = ..., required_quorum: _Optional[int] = ...) -> None: ...
+    class Ready(_message.Message):
+        __slots__ = ("p2p",)
+        P2P_FIELD_NUMBER: _ClassVar[int]
+        p2p: GetWriteReadinessResponse.P2P
+        def __init__(self, p2p: _Optional[_Union[GetWriteReadinessResponse.P2P, _Mapping]] = ...) -> None: ...
+    class P2PNotReady(_message.Message):
+        __slots__ = ("p2p",)
+        P2P_FIELD_NUMBER: _ClassVar[int]
+        p2p: GetWriteReadinessResponse.P2P
+        def __init__(self, p2p: _Optional[_Union[GetWriteReadinessResponse.P2P, _Mapping]] = ...) -> None: ...
+    READY_FIELD_NUMBER: _ClassVar[int]
+    P2P_NOT_READY_FIELD_NUMBER: _ClassVar[int]
+    ready: GetWriteReadinessResponse.Ready
+    p2p_not_ready: GetWriteReadinessResponse.P2PNotReady
+    def __init__(self, ready: _Optional[_Union[GetWriteReadinessResponse.Ready, _Mapping]] = ..., p2p_not_ready: _Optional[_Union[GetWriteReadinessResponse.P2PNotReady, _Mapping]] = ...) -> None: ...
+
 class GetOrderingTopologyRequest(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
 class GetOrderingTopologyResponse(_message.Message):
-    __slots__ = ("current_epoch", "sequencer_ids")
+    __slots__ = ("current_epoch", "sequencer_ids", "dynamic_sequencing_parameters_payload")
     CURRENT_EPOCH_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_IDS_FIELD_NUMBER: _ClassVar[int]
+    DYNAMIC_SEQUENCING_PARAMETERS_PAYLOAD_FIELD_NUMBER: _ClassVar[int]
     current_epoch: int
     sequencer_ids: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, current_epoch: _Optional[int] = ..., sequencer_ids: _Optional[_Iterable[str]] = ...) -> None: ...
+    dynamic_sequencing_parameters_payload: _dynamic_sequencing_parameters_pb2.DynamicSequencingParametersPayload
+    def __init__(self, current_epoch: _Optional[int] = ..., sequencer_ids: _Optional[_Iterable[str]] = ..., dynamic_sequencing_parameters_payload: _Optional[_Union[_dynamic_sequencing_parameters_pb2.DynamicSequencingParametersPayload, _Mapping]] = ...) -> None: ...
 
 class SetPerformanceMetricsEnabledRequest(_message.Message):
     __slots__ = ("enabled",)

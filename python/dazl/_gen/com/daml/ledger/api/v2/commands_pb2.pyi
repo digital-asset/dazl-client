@@ -84,7 +84,7 @@ class DisclosedContract(_message.Message):
     def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., contract_id: _Optional[str] = ..., created_event_blob: _Optional[bytes] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class Commands(_message.Message):
-    __slots__ = ("workflow_id", "user_id", "command_id", "commands", "deduplication_duration", "deduplication_offset", "min_ledger_time_abs", "min_ledger_time_rel", "act_as", "read_as", "submission_id", "disclosed_contracts", "synchronizer_id", "package_id_selection_preference", "prefetch_contract_keys")
+    __slots__ = ("workflow_id", "user_id", "command_id", "commands", "deduplication_duration", "deduplication_offset", "min_ledger_time_abs", "min_ledger_time_rel", "act_as", "read_as", "submission_id", "disclosed_contracts", "synchronizer_id", "package_id_selection_preference", "prefetch_contract_keys", "taps_max_passes")
     WORKFLOW_ID_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
     COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
@@ -100,6 +100,7 @@ class Commands(_message.Message):
     SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     PACKAGE_ID_SELECTION_PREFERENCE_FIELD_NUMBER: _ClassVar[int]
     PREFETCH_CONTRACT_KEYS_FIELD_NUMBER: _ClassVar[int]
+    TAPS_MAX_PASSES_FIELD_NUMBER: _ClassVar[int]
     workflow_id: str
     user_id: str
     command_id: str
@@ -115,7 +116,8 @@ class Commands(_message.Message):
     synchronizer_id: str
     package_id_selection_preference: _containers.RepeatedScalarFieldContainer[str]
     prefetch_contract_keys: _containers.RepeatedCompositeFieldContainer[PrefetchContractKey]
-    def __init__(self, workflow_id: _Optional[str] = ..., user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[Command, _Mapping]]] = ..., deduplication_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., deduplication_offset: _Optional[int] = ..., min_ledger_time_abs: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., min_ledger_time_rel: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., disclosed_contracts: _Optional[_Iterable[_Union[DisclosedContract, _Mapping]]] = ..., synchronizer_id: _Optional[str] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ..., prefetch_contract_keys: _Optional[_Iterable[_Union[PrefetchContractKey, _Mapping]]] = ...) -> None: ...
+    taps_max_passes: int
+    def __init__(self, workflow_id: _Optional[str] = ..., user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[Command, _Mapping]]] = ..., deduplication_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., deduplication_offset: _Optional[int] = ..., min_ledger_time_abs: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., min_ledger_time_rel: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., disclosed_contracts: _Optional[_Iterable[_Union[DisclosedContract, _Mapping]]] = ..., synchronizer_id: _Optional[str] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ..., prefetch_contract_keys: _Optional[_Iterable[_Union[PrefetchContractKey, _Mapping]]] = ..., taps_max_passes: _Optional[int] = ...) -> None: ...
 
 class PrefetchContractKey(_message.Message):
     __slots__ = ("template_id", "contract_key")

@@ -4,7 +4,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.31.1
-// source: com/digitalasset/canton/admin/participant/v30/synchronizer_connectivity.proto
+// source: com/digitalasset/canton/admin/participant/v30/synchronizer_connectivity_service.proto
 
 package v30
 
@@ -32,6 +32,7 @@ const (
 	SynchronizerConnectivityService_ListConnectedSynchronizers_FullMethodName  = "/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ListConnectedSynchronizers"
 	SynchronizerConnectivityService_ListRegisteredSynchronizers_FullMethodName = "/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ListRegisteredSynchronizers"
 	SynchronizerConnectivityService_GetSynchronizerId_FullMethodName           = "/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/GetSynchronizerId"
+	SynchronizerConnectivityService_PerformManualLsu_FullMethodName            = "/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/PerformManualLsu"
 )
 
 // SynchronizerConnectivityServiceClient is the client API for SynchronizerConnectivityService service.
@@ -49,6 +50,7 @@ type SynchronizerConnectivityServiceClient interface {
 	ListConnectedSynchronizers(ctx context.Context, in *ListConnectedSynchronizersRequest, opts ...grpc.CallOption) (*ListConnectedSynchronizersResponse, error)
 	ListRegisteredSynchronizers(ctx context.Context, in *ListRegisteredSynchronizersRequest, opts ...grpc.CallOption) (*ListRegisteredSynchronizersResponse, error)
 	GetSynchronizerId(ctx context.Context, in *GetSynchronizerIdRequest, opts ...grpc.CallOption) (*GetSynchronizerIdResponse, error)
+	PerformManualLsu(ctx context.Context, in *PerformManualLsuRequest, opts ...grpc.CallOption) (*PerformManualLsuResponse, error)
 }
 
 type synchronizerConnectivityServiceClient struct {
@@ -169,6 +171,16 @@ func (c *synchronizerConnectivityServiceClient) GetSynchronizerId(ctx context.Co
 	return out, nil
 }
 
+func (c *synchronizerConnectivityServiceClient) PerformManualLsu(ctx context.Context, in *PerformManualLsuRequest, opts ...grpc.CallOption) (*PerformManualLsuResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PerformManualLsuResponse)
+	err := c.cc.Invoke(ctx, SynchronizerConnectivityService_PerformManualLsu_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SynchronizerConnectivityServiceServer is the server API for SynchronizerConnectivityService service.
 // All implementations must embed UnimplementedSynchronizerConnectivityServiceServer
 // for forward compatibility.
@@ -184,6 +196,7 @@ type SynchronizerConnectivityServiceServer interface {
 	ListConnectedSynchronizers(context.Context, *ListConnectedSynchronizersRequest) (*ListConnectedSynchronizersResponse, error)
 	ListRegisteredSynchronizers(context.Context, *ListRegisteredSynchronizersRequest) (*ListRegisteredSynchronizersResponse, error)
 	GetSynchronizerId(context.Context, *GetSynchronizerIdRequest) (*GetSynchronizerIdResponse, error)
+	PerformManualLsu(context.Context, *PerformManualLsuRequest) (*PerformManualLsuResponse, error)
 	mustEmbedUnimplementedSynchronizerConnectivityServiceServer()
 }
 
@@ -226,6 +239,9 @@ func (UnimplementedSynchronizerConnectivityServiceServer) ListRegisteredSynchron
 }
 func (UnimplementedSynchronizerConnectivityServiceServer) GetSynchronizerId(context.Context, *GetSynchronizerIdRequest) (*GetSynchronizerIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSynchronizerId not implemented")
+}
+func (UnimplementedSynchronizerConnectivityServiceServer) PerformManualLsu(context.Context, *PerformManualLsuRequest) (*PerformManualLsuResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PerformManualLsu not implemented")
 }
 func (UnimplementedSynchronizerConnectivityServiceServer) mustEmbedUnimplementedSynchronizerConnectivityServiceServer() {
 }
@@ -447,6 +463,24 @@ func _SynchronizerConnectivityService_GetSynchronizerId_Handler(srv interface{},
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SynchronizerConnectivityService_PerformManualLsu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PerformManualLsuRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SynchronizerConnectivityServiceServer).PerformManualLsu(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SynchronizerConnectivityService_PerformManualLsu_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SynchronizerConnectivityServiceServer).PerformManualLsu(ctx, req.(*PerformManualLsuRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SynchronizerConnectivityService_ServiceDesc is the grpc.ServiceDesc for SynchronizerConnectivityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -498,7 +532,11 @@ var SynchronizerConnectivityService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetSynchronizerId",
 			Handler:    _SynchronizerConnectivityService_GetSynchronizerId_Handler,
 		},
+		{
+			MethodName: "PerformManualLsu",
+			Handler:    _SynchronizerConnectivityService_PerformManualLsu_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "com/digitalasset/canton/admin/participant/v30/synchronizer_connectivity.proto",
+	Metadata: "com/digitalasset/canton/admin/participant/v30/synchronizer_connectivity_service.proto",
 }

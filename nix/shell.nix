@@ -2,6 +2,7 @@
 let
   requiredPackages = with pkgs; ([
     # these packages are required both in CI and for local development
+    canton-3
     dpm
     glibcLocales
     jq

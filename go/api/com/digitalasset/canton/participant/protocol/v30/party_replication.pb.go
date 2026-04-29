@@ -10,8 +10,10 @@ package v30
 
 import (
 	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30"
+	v301 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -23,6 +25,55 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+type PartyReplicationStatus_PartyReplicationError_ErrorType int32
+
+const (
+	PartyReplicationStatus_PartyReplicationError_ERROR_TYPE_UNSPECIFIED  PartyReplicationStatus_PartyReplicationError_ErrorType = 0
+	PartyReplicationStatus_PartyReplicationError_ERROR_TYPE_FAILED       PartyReplicationStatus_PartyReplicationError_ErrorType = 2
+	PartyReplicationStatus_PartyReplicationError_ERROR_TYPE_DISCONNECTED PartyReplicationStatus_PartyReplicationError_ErrorType = 3
+)
+
+// Enum value maps for PartyReplicationStatus_PartyReplicationError_ErrorType.
+var (
+	PartyReplicationStatus_PartyReplicationError_ErrorType_name = map[int32]string{
+		0: "ERROR_TYPE_UNSPECIFIED",
+		2: "ERROR_TYPE_FAILED",
+		3: "ERROR_TYPE_DISCONNECTED",
+	}
+	PartyReplicationStatus_PartyReplicationError_ErrorType_value = map[string]int32{
+		"ERROR_TYPE_UNSPECIFIED":  0,
+		"ERROR_TYPE_FAILED":       2,
+		"ERROR_TYPE_DISCONNECTED": 3,
+	}
+)
+
+func (x PartyReplicationStatus_PartyReplicationError_ErrorType) Enum() *PartyReplicationStatus_PartyReplicationError_ErrorType {
+	p := new(PartyReplicationStatus_PartyReplicationError_ErrorType)
+	*p = x
+	return p
+}
+
+func (x PartyReplicationStatus_PartyReplicationError_ErrorType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PartyReplicationStatus_PartyReplicationError_ErrorType) Descriptor() protoreflect.EnumDescriptor {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_enumTypes[0].Descriptor()
+}
+
+func (PartyReplicationStatus_PartyReplicationError_ErrorType) Type() protoreflect.EnumType {
+	return &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_enumTypes[0]
+}
+
+func (x PartyReplicationStatus_PartyReplicationError_ErrorType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PartyReplicationStatus_PartyReplicationError_ErrorType.Descriptor instead.
+func (PartyReplicationStatus_PartyReplicationError_ErrorType) EnumDescriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{2, 5, 0}
+}
 
 type PartyReplicationTargetParticipantMessage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -113,7 +164,7 @@ type PartyReplicationSourceParticipantMessage struct {
 	// Types that are valid to be assigned to DataOrStatus:
 	//
 	//	*PartyReplicationSourceParticipantMessage_AcsBatch_
-	//	*PartyReplicationSourceParticipantMessage_EndOfAcs
+	//	*PartyReplicationSourceParticipantMessage_EndOfAcs_
 	DataOrStatus  isPartyReplicationSourceParticipantMessage_DataOrStatus `protobuf_oneof:"data_or_status"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -165,9 +216,9 @@ func (x *PartyReplicationSourceParticipantMessage) GetAcsBatch() *PartyReplicati
 	return nil
 }
 
-func (x *PartyReplicationSourceParticipantMessage) GetEndOfAcs() *PartyReplicationSourceParticipantMessage_EndOfACS {
+func (x *PartyReplicationSourceParticipantMessage) GetEndOfAcs() *PartyReplicationSourceParticipantMessage_EndOfAcs {
 	if x != nil {
-		if x, ok := x.DataOrStatus.(*PartyReplicationSourceParticipantMessage_EndOfAcs); ok {
+		if x, ok := x.DataOrStatus.(*PartyReplicationSourceParticipantMessage_EndOfAcs_); ok {
 			return x.EndOfAcs
 		}
 	}
@@ -182,26 +233,118 @@ type PartyReplicationSourceParticipantMessage_AcsBatch_ struct {
 	AcsBatch *PartyReplicationSourceParticipantMessage_AcsBatch `protobuf:"bytes,1,opt,name=acs_batch,json=acsBatch,proto3,oneof"`
 }
 
-type PartyReplicationSourceParticipantMessage_EndOfAcs struct {
-	EndOfAcs *PartyReplicationSourceParticipantMessage_EndOfACS `protobuf:"bytes,2,opt,name=end_of_acs,json=endOfAcs,proto3,oneof"`
+type PartyReplicationSourceParticipantMessage_EndOfAcs_ struct {
+	EndOfAcs *PartyReplicationSourceParticipantMessage_EndOfAcs `protobuf:"bytes,2,opt,name=end_of_acs,json=endOfAcs,proto3,oneof"`
 }
 
 func (*PartyReplicationSourceParticipantMessage_AcsBatch_) isPartyReplicationSourceParticipantMessage_DataOrStatus() {
 }
 
-func (*PartyReplicationSourceParticipantMessage_EndOfAcs) isPartyReplicationSourceParticipantMessage_DataOrStatus() {
+func (*PartyReplicationSourceParticipantMessage_EndOfAcs_) isPartyReplicationSourceParticipantMessage_DataOrStatus() {
+}
+
+type PartyReplicationStatus struct {
+	state         protoimpl.MessageState                                `protogen:"open.v1"`
+	Parameters    *PartyReplicationStatus_ReplicationParameters         `protobuf:"bytes,1,opt,name=parameters,proto3" json:"parameters,omitempty"`
+	Agreement     *PartyReplicationStatus_SequencerChannelAgreement     `protobuf:"bytes,2,opt,name=agreement,proto3" json:"agreement,omitempty"`
+	Authorization *PartyReplicationStatus_PartyReplicationAuthorization `protobuf:"bytes,3,opt,name=authorization,proto3" json:"authorization,omitempty"`
+	Replication   *PartyReplicationStatus_AcsReplicationProgress        `protobuf:"bytes,4,opt,name=replication,proto3" json:"replication,omitempty"`
+	Indexing      *PartyReplicationStatus_AcsIndexingProgress           `protobuf:"bytes,5,opt,name=indexing,proto3" json:"indexing,omitempty"`
+	HasCompleted  bool                                                  `protobuf:"varint,6,opt,name=has_completed,json=hasCompleted,proto3" json:"has_completed,omitempty"`
+	ErrorMessage  *PartyReplicationStatus_PartyReplicationError         `protobuf:"bytes,7,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PartyReplicationStatus) Reset() {
+	*x = PartyReplicationStatus{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartyReplicationStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyReplicationStatus) ProtoMessage() {}
+
+func (x *PartyReplicationStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyReplicationStatus.ProtoReflect.Descriptor instead.
+func (*PartyReplicationStatus) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *PartyReplicationStatus) GetParameters() *PartyReplicationStatus_ReplicationParameters {
+	if x != nil {
+		return x.Parameters
+	}
+	return nil
+}
+
+func (x *PartyReplicationStatus) GetAgreement() *PartyReplicationStatus_SequencerChannelAgreement {
+	if x != nil {
+		return x.Agreement
+	}
+	return nil
+}
+
+func (x *PartyReplicationStatus) GetAuthorization() *PartyReplicationStatus_PartyReplicationAuthorization {
+	if x != nil {
+		return x.Authorization
+	}
+	return nil
+}
+
+func (x *PartyReplicationStatus) GetReplication() *PartyReplicationStatus_AcsReplicationProgress {
+	if x != nil {
+		return x.Replication
+	}
+	return nil
+}
+
+func (x *PartyReplicationStatus) GetIndexing() *PartyReplicationStatus_AcsIndexingProgress {
+	if x != nil {
+		return x.Indexing
+	}
+	return nil
+}
+
+func (x *PartyReplicationStatus) GetHasCompleted() bool {
+	if x != nil {
+		return x.HasCompleted
+	}
+	return false
+}
+
+func (x *PartyReplicationStatus) GetErrorMessage() *PartyReplicationStatus_PartyReplicationError {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return nil
 }
 
 type PartyReplicationTargetParticipantMessage_Initialize struct {
 	state                           protoimpl.MessageState `protogen:"open.v1"`
-	InitialContractOrdinalInclusive uint32                 `protobuf:"varint,1,opt,name=initial_contract_ordinal_inclusive,json=initialContractOrdinalInclusive,proto3" json:"initial_contract_ordinal_inclusive,omitempty"`
+	InitialContractOrdinalInclusive uint64                 `protobuf:"varint,1,opt,name=initial_contract_ordinal_inclusive,json=initialContractOrdinalInclusive,proto3" json:"initial_contract_ordinal_inclusive,omitempty"`
 	unknownFields                   protoimpl.UnknownFields
 	sizeCache                       protoimpl.SizeCache
 }
 
 func (x *PartyReplicationTargetParticipantMessage_Initialize) Reset() {
 	*x = PartyReplicationTargetParticipantMessage_Initialize{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -213,7 +356,7 @@ func (x *PartyReplicationTargetParticipantMessage_Initialize) String() string {
 func (*PartyReplicationTargetParticipantMessage_Initialize) ProtoMessage() {}
 
 func (x *PartyReplicationTargetParticipantMessage_Initialize) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -229,7 +372,7 @@ func (*PartyReplicationTargetParticipantMessage_Initialize) Descriptor() ([]byte
 	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{0, 0}
 }
 
-func (x *PartyReplicationTargetParticipantMessage_Initialize) GetInitialContractOrdinalInclusive() uint32 {
+func (x *PartyReplicationTargetParticipantMessage_Initialize) GetInitialContractOrdinalInclusive() uint64 {
 	if x != nil {
 		return x.InitialContractOrdinalInclusive
 	}
@@ -238,14 +381,14 @@ func (x *PartyReplicationTargetParticipantMessage_Initialize) GetInitialContract
 
 type PartyReplicationTargetParticipantMessage_SendAcsUpTo struct {
 	state                       protoimpl.MessageState `protogen:"open.v1"`
-	MaxContractOrdinalInclusive uint32                 `protobuf:"varint,1,opt,name=max_contract_ordinal_inclusive,json=maxContractOrdinalInclusive,proto3" json:"max_contract_ordinal_inclusive,omitempty"`
+	MaxContractOrdinalInclusive uint64                 `protobuf:"varint,1,opt,name=max_contract_ordinal_inclusive,json=maxContractOrdinalInclusive,proto3" json:"max_contract_ordinal_inclusive,omitempty"`
 	unknownFields               protoimpl.UnknownFields
 	sizeCache                   protoimpl.SizeCache
 }
 
 func (x *PartyReplicationTargetParticipantMessage_SendAcsUpTo) Reset() {
 	*x = PartyReplicationTargetParticipantMessage_SendAcsUpTo{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -257,7 +400,7 @@ func (x *PartyReplicationTargetParticipantMessage_SendAcsUpTo) String() string {
 func (*PartyReplicationTargetParticipantMessage_SendAcsUpTo) ProtoMessage() {}
 
 func (x *PartyReplicationTargetParticipantMessage_SendAcsUpTo) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -273,7 +416,7 @@ func (*PartyReplicationTargetParticipantMessage_SendAcsUpTo) Descriptor() ([]byt
 	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{0, 1}
 }
 
-func (x *PartyReplicationTargetParticipantMessage_SendAcsUpTo) GetMaxContractOrdinalInclusive() uint32 {
+func (x *PartyReplicationTargetParticipantMessage_SendAcsUpTo) GetMaxContractOrdinalInclusive() uint64 {
 	if x != nil {
 		return x.MaxContractOrdinalInclusive
 	}
@@ -281,15 +424,15 @@ func (x *PartyReplicationTargetParticipantMessage_SendAcsUpTo) GetMaxContractOrd
 }
 
 type PartyReplicationSourceParticipantMessage_AcsBatch struct {
-	state         protoimpl.MessageState   `protogen:"open.v1"`
-	Contracts     []*v30.ActiveContractOld `protobuf:"bytes,1,rep,name=contracts,proto3" json:"contracts,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Contracts     []*v30.ActiveContract  `protobuf:"bytes,1,rep,name=contracts,proto3" json:"contracts,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PartyReplicationSourceParticipantMessage_AcsBatch) Reset() {
 	*x = PartyReplicationSourceParticipantMessage_AcsBatch{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -301,7 +444,7 @@ func (x *PartyReplicationSourceParticipantMessage_AcsBatch) String() string {
 func (*PartyReplicationSourceParticipantMessage_AcsBatch) ProtoMessage() {}
 
 func (x *PartyReplicationSourceParticipantMessage_AcsBatch) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -317,34 +460,34 @@ func (*PartyReplicationSourceParticipantMessage_AcsBatch) Descriptor() ([]byte, 
 	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{1, 0}
 }
 
-func (x *PartyReplicationSourceParticipantMessage_AcsBatch) GetContracts() []*v30.ActiveContractOld {
+func (x *PartyReplicationSourceParticipantMessage_AcsBatch) GetContracts() []*v30.ActiveContract {
 	if x != nil {
 		return x.Contracts
 	}
 	return nil
 }
 
-type PartyReplicationSourceParticipantMessage_EndOfACS struct {
+type PartyReplicationSourceParticipantMessage_EndOfAcs struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PartyReplicationSourceParticipantMessage_EndOfACS) Reset() {
-	*x = PartyReplicationSourceParticipantMessage_EndOfACS{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[5]
+func (x *PartyReplicationSourceParticipantMessage_EndOfAcs) Reset() {
+	*x = PartyReplicationSourceParticipantMessage_EndOfAcs{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PartyReplicationSourceParticipantMessage_EndOfACS) String() string {
+func (x *PartyReplicationSourceParticipantMessage_EndOfAcs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PartyReplicationSourceParticipantMessage_EndOfACS) ProtoMessage() {}
+func (*PartyReplicationSourceParticipantMessage_EndOfAcs) ProtoMessage() {}
 
-func (x *PartyReplicationSourceParticipantMessage_EndOfACS) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[5]
+func (x *PartyReplicationSourceParticipantMessage_EndOfAcs) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -355,16 +498,384 @@ func (x *PartyReplicationSourceParticipantMessage_EndOfACS) ProtoReflect() proto
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PartyReplicationSourceParticipantMessage_EndOfACS.ProtoReflect.Descriptor instead.
-func (*PartyReplicationSourceParticipantMessage_EndOfACS) Descriptor() ([]byte, []int) {
+// Deprecated: Use PartyReplicationSourceParticipantMessage_EndOfAcs.ProtoReflect.Descriptor instead.
+func (*PartyReplicationSourceParticipantMessage_EndOfAcs) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{1, 1}
+}
+
+type PartyReplicationStatus_ReplicationParameters struct {
+	state                 protoimpl.MessageState           `protogen:"open.v1"`
+	RequestId             string                           `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	PartyId               string                           `protobuf:"bytes,2,opt,name=party_id,json=partyId,proto3" json:"party_id,omitempty"`
+	SynchronizerId        string                           `protobuf:"bytes,3,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	SourceParticipantUid  string                           `protobuf:"bytes,4,opt,name=source_participant_uid,json=sourceParticipantUid,proto3" json:"source_participant_uid,omitempty"`
+	TargetParticipantUid  string                           `protobuf:"bytes,5,opt,name=target_participant_uid,json=targetParticipantUid,proto3" json:"target_participant_uid,omitempty"`
+	TopologySerial        uint32                           `protobuf:"varint,6,opt,name=topology_serial,json=topologySerial,proto3" json:"topology_serial,omitempty"`
+	ParticipantPermission v301.Enums_ParticipantPermission `protobuf:"varint,7,opt,name=participant_permission,json=participantPermission,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_ParticipantPermission" json:"participant_permission,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) Reset() {
+	*x = PartyReplicationStatus_ReplicationParameters{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyReplicationStatus_ReplicationParameters) ProtoMessage() {}
+
+func (x *PartyReplicationStatus_ReplicationParameters) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyReplicationStatus_ReplicationParameters.ProtoReflect.Descriptor instead.
+func (*PartyReplicationStatus_ReplicationParameters) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) GetPartyId() string {
+	if x != nil {
+		return x.PartyId
+	}
+	return ""
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) GetSynchronizerId() string {
+	if x != nil {
+		return x.SynchronizerId
+	}
+	return ""
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) GetSourceParticipantUid() string {
+	if x != nil {
+		return x.SourceParticipantUid
+	}
+	return ""
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) GetTargetParticipantUid() string {
+	if x != nil {
+		return x.TargetParticipantUid
+	}
+	return ""
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) GetTopologySerial() uint32 {
+	if x != nil {
+		return x.TopologySerial
+	}
+	return 0
+}
+
+func (x *PartyReplicationStatus_ReplicationParameters) GetParticipantPermission() v301.Enums_ParticipantPermission {
+	if x != nil {
+		return x.ParticipantPermission
+	}
+	return v301.Enums_ParticipantPermission(0)
+}
+
+type PartyReplicationStatus_SequencerChannelAgreement struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ContractId    string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	SequencerUid  string                 `protobuf:"bytes,2,opt,name=sequencer_uid,json=sequencerUid,proto3" json:"sequencer_uid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PartyReplicationStatus_SequencerChannelAgreement) Reset() {
+	*x = PartyReplicationStatus_SequencerChannelAgreement{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartyReplicationStatus_SequencerChannelAgreement) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyReplicationStatus_SequencerChannelAgreement) ProtoMessage() {}
+
+func (x *PartyReplicationStatus_SequencerChannelAgreement) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyReplicationStatus_SequencerChannelAgreement.ProtoReflect.Descriptor instead.
+func (*PartyReplicationStatus_SequencerChannelAgreement) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{2, 1}
+}
+
+func (x *PartyReplicationStatus_SequencerChannelAgreement) GetContractId() string {
+	if x != nil {
+		return x.ContractId
+	}
+	return ""
+}
+
+func (x *PartyReplicationStatus_SequencerChannelAgreement) GetSequencerUid() string {
+	if x != nil {
+		return x.SequencerUid
+	}
+	return ""
+}
+
+type PartyReplicationStatus_PartyReplicationAuthorization struct {
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	OnboardingAt            *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=onboarding_at,json=onboardingAt,proto3" json:"onboarding_at,omitempty"`
+	IsOnboardingFlagCleared bool                   `protobuf:"varint,2,opt,name=is_onboarding_flag_cleared,json=isOnboardingFlagCleared,proto3" json:"is_onboarding_flag_cleared,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *PartyReplicationStatus_PartyReplicationAuthorization) Reset() {
+	*x = PartyReplicationStatus_PartyReplicationAuthorization{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartyReplicationStatus_PartyReplicationAuthorization) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyReplicationStatus_PartyReplicationAuthorization) ProtoMessage() {}
+
+func (x *PartyReplicationStatus_PartyReplicationAuthorization) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyReplicationStatus_PartyReplicationAuthorization.ProtoReflect.Descriptor instead.
+func (*PartyReplicationStatus_PartyReplicationAuthorization) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{2, 2}
+}
+
+func (x *PartyReplicationStatus_PartyReplicationAuthorization) GetOnboardingAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.OnboardingAt
+	}
+	return nil
+}
+
+func (x *PartyReplicationStatus_PartyReplicationAuthorization) GetIsOnboardingFlagCleared() bool {
+	if x != nil {
+		return x.IsOnboardingFlagCleared
+	}
+	return false
+}
+
+type PartyReplicationStatus_AcsReplicationProgress struct {
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	ProcessedContractCount uint64                 `protobuf:"varint,1,opt,name=processed_contract_count,json=processedContractCount,proto3" json:"processed_contract_count,omitempty"`
+	NextPersistenceCounter uint64                 `protobuf:"varint,2,opt,name=next_persistence_counter,json=nextPersistenceCounter,proto3" json:"next_persistence_counter,omitempty"`
+	FullyProcessedAcs      bool                   `protobuf:"varint,3,opt,name=fully_processed_acs,json=fullyProcessedAcs,proto3" json:"fully_processed_acs,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *PartyReplicationStatus_AcsReplicationProgress) Reset() {
+	*x = PartyReplicationStatus_AcsReplicationProgress{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartyReplicationStatus_AcsReplicationProgress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyReplicationStatus_AcsReplicationProgress) ProtoMessage() {}
+
+func (x *PartyReplicationStatus_AcsReplicationProgress) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyReplicationStatus_AcsReplicationProgress.ProtoReflect.Descriptor instead.
+func (*PartyReplicationStatus_AcsReplicationProgress) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{2, 3}
+}
+
+func (x *PartyReplicationStatus_AcsReplicationProgress) GetProcessedContractCount() uint64 {
+	if x != nil {
+		return x.ProcessedContractCount
+	}
+	return 0
+}
+
+func (x *PartyReplicationStatus_AcsReplicationProgress) GetNextPersistenceCounter() uint64 {
+	if x != nil {
+		return x.NextPersistenceCounter
+	}
+	return 0
+}
+
+func (x *PartyReplicationStatus_AcsReplicationProgress) GetFullyProcessedAcs() bool {
+	if x != nil {
+		return x.FullyProcessedAcs
+	}
+	return false
+}
+
+type PartyReplicationStatus_AcsIndexingProgress struct {
+	state                                protoimpl.MessageState `protogen:"open.v1"`
+	IndexedContractActivationChangeCount uint64                 `protobuf:"varint,1,opt,name=indexed_contract_activation_change_count,json=indexedContractActivationChangeCount,proto3" json:"indexed_contract_activation_change_count,omitempty"`
+	NextIndexingCounter                  uint64                 `protobuf:"varint,2,opt,name=next_indexing_counter,json=nextIndexingCounter,proto3" json:"next_indexing_counter,omitempty"`
+	IndexingAlmostDoneWatermark          *uint64                `protobuf:"varint,3,opt,name=indexing_almost_done_watermark,json=indexingAlmostDoneWatermark,proto3,oneof" json:"indexing_almost_done_watermark,omitempty"`
+	unknownFields                        protoimpl.UnknownFields
+	sizeCache                            protoimpl.SizeCache
+}
+
+func (x *PartyReplicationStatus_AcsIndexingProgress) Reset() {
+	*x = PartyReplicationStatus_AcsIndexingProgress{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartyReplicationStatus_AcsIndexingProgress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyReplicationStatus_AcsIndexingProgress) ProtoMessage() {}
+
+func (x *PartyReplicationStatus_AcsIndexingProgress) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyReplicationStatus_AcsIndexingProgress.ProtoReflect.Descriptor instead.
+func (*PartyReplicationStatus_AcsIndexingProgress) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{2, 4}
+}
+
+func (x *PartyReplicationStatus_AcsIndexingProgress) GetIndexedContractActivationChangeCount() uint64 {
+	if x != nil {
+		return x.IndexedContractActivationChangeCount
+	}
+	return 0
+}
+
+func (x *PartyReplicationStatus_AcsIndexingProgress) GetNextIndexingCounter() uint64 {
+	if x != nil {
+		return x.NextIndexingCounter
+	}
+	return 0
+}
+
+func (x *PartyReplicationStatus_AcsIndexingProgress) GetIndexingAlmostDoneWatermark() uint64 {
+	if x != nil && x.IndexingAlmostDoneWatermark != nil {
+		return *x.IndexingAlmostDoneWatermark
+	}
+	return 0
+}
+
+type PartyReplicationStatus_PartyReplicationError struct {
+	state         protoimpl.MessageState                                 `protogen:"open.v1"`
+	ErrorType     PartyReplicationStatus_PartyReplicationError_ErrorType `protobuf:"varint,1,opt,name=error_type,json=errorType,proto3,enum=com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus_PartyReplicationError_ErrorType" json:"error_type,omitempty"`
+	ErrorMessage  string                                                 `protobuf:"bytes,2,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PartyReplicationStatus_PartyReplicationError) Reset() {
+	*x = PartyReplicationStatus_PartyReplicationError{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartyReplicationStatus_PartyReplicationError) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyReplicationStatus_PartyReplicationError) ProtoMessage() {}
+
+func (x *PartyReplicationStatus_PartyReplicationError) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyReplicationStatus_PartyReplicationError.ProtoReflect.Descriptor instead.
+func (*PartyReplicationStatus_PartyReplicationError) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescGZIP(), []int{2, 5}
+}
+
+func (x *PartyReplicationStatus_PartyReplicationError) GetErrorType() PartyReplicationStatus_PartyReplicationError_ErrorType {
+	if x != nil {
+		return x.ErrorType
+	}
+	return PartyReplicationStatus_PartyReplicationError_ERROR_TYPE_UNSPECIFIED
+}
+
+func (x *PartyReplicationStatus_PartyReplicationError) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
 }
 
 var File_com_digitalasset_canton_participant_protocol_v30_party_replication_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDesc = "" +
 	"\n" +
-	"Hcom/digitalasset/canton/participant/protocol/v30/party_replication.proto\x120com.digitalasset.canton.participant.protocol.v30\x1aCcom/digitalasset/canton/admin/participant/v30/active_contract.proto\"\x82\x04\n" +
+	"Hcom/digitalasset/canton/participant/protocol/v30/party_replication.proto\x120com.digitalasset.canton.participant.protocol.v30\x1aCcom/digitalasset/canton/admin/participant/v30/active_contract.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x82\x04\n" +
 	"(PartyReplicationTargetParticipantMessage\x12\x87\x01\n" +
 	"\n" +
 	"initialize\x18\x01 \x01(\v2e.com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.InitializeH\x00R\n" +
@@ -372,19 +883,62 @@ const file_com_digitalasset_canton_participant_protocol_v30_party_replication_pr
 	"\x0esend_acs_up_to\x18\x02 \x01(\v2f.com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.SendAcsUpToH\x00R\vsendAcsUpTo\x1aY\n" +
 	"\n" +
 	"Initialize\x12K\n" +
-	"\"initial_contract_ordinal_inclusive\x18\x01 \x01(\rR\x1finitialContractOrdinalInclusive\x1aR\n" +
+	"\"initial_contract_ordinal_inclusive\x18\x01 \x01(\x04R\x1finitialContractOrdinalInclusive\x1aR\n" +
 	"\vSendAcsUpTo\x12C\n" +
-	"\x1emax_contract_ordinal_inclusive\x18\x01 \x01(\rR\x1bmaxContractOrdinalInclusiveB\r\n" +
-	"\vinstruction\"\xbf\x03\n" +
+	"\x1emax_contract_ordinal_inclusive\x18\x01 \x01(\x04R\x1bmaxContractOrdinalInclusiveB\r\n" +
+	"\vinstruction\"\xbc\x03\n" +
 	"(PartyReplicationSourceParticipantMessage\x12\x82\x01\n" +
 	"\tacs_batch\x18\x01 \x01(\v2c.com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatchH\x00R\bacsBatch\x12\x83\x01\n" +
 	"\n" +
-	"end_of_acs\x18\x02 \x01(\v2c.com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.EndOfACSH\x00R\bendOfAcs\x1aj\n" +
-	"\bAcsBatch\x12^\n" +
-	"\tcontracts\x18\x01 \x03(\v2@.com.digitalasset.canton.admin.participant.v30.ActiveContractOldR\tcontracts\x1a\n" +
+	"end_of_acs\x18\x02 \x01(\v2c.com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.EndOfAcsH\x00R\bendOfAcs\x1ag\n" +
+	"\bAcsBatch\x12[\n" +
+	"\tcontracts\x18\x01 \x03(\v2=.com.digitalasset.canton.admin.participant.v30.ActiveContractR\tcontracts\x1a\n" +
 	"\n" +
-	"\bEndOfACSB\x10\n" +
-	"\x0edata_or_statusBaZ_github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/protocol/v30b\x06proto3"
+	"\bEndOfAcsB\x10\n" +
+	"\x0edata_or_status\"\xd8\x11\n" +
+	"\x16PartyReplicationStatus\x12~\n" +
+	"\n" +
+	"parameters\x18\x01 \x01(\v2^.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.ReplicationParametersR\n" +
+	"parameters\x12\x80\x01\n" +
+	"\tagreement\x18\x02 \x01(\v2b.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.SequencerChannelAgreementR\tagreement\x12\x8c\x01\n" +
+	"\rauthorization\x18\x03 \x01(\v2f.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationAuthorizationR\rauthorization\x12\x81\x01\n" +
+	"\vreplication\x18\x04 \x01(\v2_.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.AcsReplicationProgressR\vreplication\x12x\n" +
+	"\bindexing\x18\x05 \x01(\v2\\.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.AcsIndexingProgressR\bindexing\x12#\n" +
+	"\rhas_completed\x18\x06 \x01(\bR\fhasCompleted\x12\x83\x01\n" +
+	"\rerror_message\x18\a \x01(\v2^.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationErrorR\ferrorMessage\x1a\x89\x03\n" +
+	"\x15ReplicationParameters\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x19\n" +
+	"\bparty_id\x18\x02 \x01(\tR\apartyId\x12'\n" +
+	"\x0fsynchronizer_id\x18\x03 \x01(\tR\x0esynchronizerId\x124\n" +
+	"\x16source_participant_uid\x18\x04 \x01(\tR\x14sourceParticipantUid\x124\n" +
+	"\x16target_participant_uid\x18\x05 \x01(\tR\x14targetParticipantUid\x12'\n" +
+	"\x0ftopology_serial\x18\x06 \x01(\rR\x0etopologySerial\x12x\n" +
+	"\x16participant_permission\x18\a \x01(\x0e2A.com.digitalasset.canton.protocol.v30.Enums.ParticipantPermissionR\x15participantPermission\x1aa\n" +
+	"\x19SequencerChannelAgreement\x12\x1f\n" +
+	"\vcontract_id\x18\x01 \x01(\tR\n" +
+	"contractId\x12#\n" +
+	"\rsequencer_uid\x18\x02 \x01(\tR\fsequencerUid\x1a\x9d\x01\n" +
+	"\x1dPartyReplicationAuthorization\x12?\n" +
+	"\ronboarding_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\fonboardingAt\x12;\n" +
+	"\x1ais_onboarding_flag_cleared\x18\x02 \x01(\bR\x17isOnboardingFlagCleared\x1a\xbc\x01\n" +
+	"\x16AcsReplicationProgress\x128\n" +
+	"\x18processed_contract_count\x18\x01 \x01(\x04R\x16processedContractCount\x128\n" +
+	"\x18next_persistence_counter\x18\x02 \x01(\x04R\x16nextPersistenceCounter\x12.\n" +
+	"\x13fully_processed_acs\x18\x03 \x01(\bR\x11fullyProcessedAcs\x1a\x8e\x02\n" +
+	"\x13AcsIndexingProgress\x12V\n" +
+	"(indexed_contract_activation_change_count\x18\x01 \x01(\x04R$indexedContractActivationChangeCount\x122\n" +
+	"\x15next_indexing_counter\x18\x02 \x01(\x04R\x13nextIndexingCounter\x12H\n" +
+	"\x1eindexing_almost_done_watermark\x18\x03 \x01(\x04H\x00R\x1bindexingAlmostDoneWatermark\x88\x01\x01B!\n" +
+	"\x1f_indexing_almost_done_watermark\x1a\xa3\x02\n" +
+	"\x15PartyReplicationError\x12\x87\x01\n" +
+	"\n" +
+	"error_type\x18\x01 \x01(\x0e2h.com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationError.ErrorTypeR\terrorType\x12#\n" +
+	"\rerror_message\x18\x02 \x01(\tR\ferrorMessage\"[\n" +
+	"\tErrorType\x12\x1a\n" +
+	"\x16ERROR_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11ERROR_TYPE_FAILED\x10\x02\x12\x1b\n" +
+	"\x17ERROR_TYPE_DISCONNECTED\x10\x03BaZ_github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/protocol/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescOnce sync.Once
@@ -398,27 +952,47 @@ func file_com_digitalasset_canton_participant_protocol_v30_party_replication_pro
 	return file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_goTypes = []any{
-	(*PartyReplicationTargetParticipantMessage)(nil),             // 0: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage
-	(*PartyReplicationSourceParticipantMessage)(nil),             // 1: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage
-	(*PartyReplicationTargetParticipantMessage_Initialize)(nil),  // 2: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.Initialize
-	(*PartyReplicationTargetParticipantMessage_SendAcsUpTo)(nil), // 3: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.SendAcsUpTo
-	(*PartyReplicationSourceParticipantMessage_AcsBatch)(nil),    // 4: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatch
-	(*PartyReplicationSourceParticipantMessage_EndOfACS)(nil),    // 5: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.EndOfACS
-	(*v30.ActiveContractOld)(nil),                                // 6: com.digitalasset.canton.admin.participant.v30.ActiveContractOld
+	(PartyReplicationStatus_PartyReplicationError_ErrorType)(0),  // 0: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationError.ErrorType
+	(*PartyReplicationTargetParticipantMessage)(nil),             // 1: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage
+	(*PartyReplicationSourceParticipantMessage)(nil),             // 2: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage
+	(*PartyReplicationStatus)(nil),                               // 3: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus
+	(*PartyReplicationTargetParticipantMessage_Initialize)(nil),  // 4: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.Initialize
+	(*PartyReplicationTargetParticipantMessage_SendAcsUpTo)(nil), // 5: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.SendAcsUpTo
+	(*PartyReplicationSourceParticipantMessage_AcsBatch)(nil),    // 6: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatch
+	(*PartyReplicationSourceParticipantMessage_EndOfAcs)(nil),    // 7: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.EndOfAcs
+	(*PartyReplicationStatus_ReplicationParameters)(nil),         // 8: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.ReplicationParameters
+	(*PartyReplicationStatus_SequencerChannelAgreement)(nil),     // 9: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.SequencerChannelAgreement
+	(*PartyReplicationStatus_PartyReplicationAuthorization)(nil), // 10: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationAuthorization
+	(*PartyReplicationStatus_AcsReplicationProgress)(nil),        // 11: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.AcsReplicationProgress
+	(*PartyReplicationStatus_AcsIndexingProgress)(nil),           // 12: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.AcsIndexingProgress
+	(*PartyReplicationStatus_PartyReplicationError)(nil),         // 13: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationError
+	(*v30.ActiveContract)(nil),                                   // 14: com.digitalasset.canton.admin.participant.v30.ActiveContract
+	(v301.Enums_ParticipantPermission)(0),                        // 15: com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
+	(*timestamppb.Timestamp)(nil),                                // 16: google.protobuf.Timestamp
 }
 var file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_depIdxs = []int32{
-	2, // 0: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.initialize:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.Initialize
-	3, // 1: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.send_acs_up_to:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.SendAcsUpTo
-	4, // 2: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.acs_batch:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatch
-	5, // 3: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.end_of_acs:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.EndOfACS
-	6, // 4: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatch.contracts:type_name -> com.digitalasset.canton.admin.participant.v30.ActiveContractOld
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	4,  // 0: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.initialize:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.Initialize
+	5,  // 1: com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.send_acs_up_to:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationTargetParticipantMessage.SendAcsUpTo
+	6,  // 2: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.acs_batch:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatch
+	7,  // 3: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.end_of_acs:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.EndOfAcs
+	8,  // 4: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.parameters:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.ReplicationParameters
+	9,  // 5: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.agreement:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.SequencerChannelAgreement
+	10, // 6: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.authorization:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationAuthorization
+	11, // 7: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.replication:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.AcsReplicationProgress
+	12, // 8: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.indexing:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.AcsIndexingProgress
+	13, // 9: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.error_message:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationError
+	14, // 10: com.digitalasset.canton.participant.protocol.v30.PartyReplicationSourceParticipantMessage.AcsBatch.contracts:type_name -> com.digitalasset.canton.admin.participant.v30.ActiveContract
+	15, // 11: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.ReplicationParameters.participant_permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
+	16, // 12: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationAuthorization.onboarding_at:type_name -> google.protobuf.Timestamp
+	0,  // 13: com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationError.error_type:type_name -> com.digitalasset.canton.participant.protocol.v30.PartyReplicationStatus.PartyReplicationError.ErrorType
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_init() }
@@ -432,20 +1006,22 @@ func file_com_digitalasset_canton_participant_protocol_v30_party_replication_pro
 	}
 	file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[1].OneofWrappers = []any{
 		(*PartyReplicationSourceParticipantMessage_AcsBatch_)(nil),
-		(*PartyReplicationSourceParticipantMessage_EndOfAcs)(nil),
+		(*PartyReplicationSourceParticipantMessage_EndOfAcs_)(nil),
 	}
+	file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes[11].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDesc), len(file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   6,
+			NumEnums:      1,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_goTypes,
 		DependencyIndexes: file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_depIdxs,
+		EnumInfos:         file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_enumTypes,
 		MessageInfos:      file_com_digitalasset_canton_participant_protocol_v30_party_replication_proto_msgTypes,
 	}.Build()
 	File_com_digitalasset_canton_participant_protocol_v30_party_replication_proto = out.File

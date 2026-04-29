@@ -13,16 +13,6 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class ActiveContractOld(_message.Message):
-    __slots__ = ("synchronizer_id", "contract", "reassignment_counter")
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
-    CONTRACT_FIELD_NUMBER: _ClassVar[int]
-    REASSIGNMENT_COUNTER_FIELD_NUMBER: _ClassVar[int]
-    synchronizer_id: str
-    contract: Contract
-    reassignment_counter: int
-    def __init__(self, synchronizer_id: _Optional[str] = ..., contract: _Optional[_Union[Contract, _Mapping]] = ..., reassignment_counter: _Optional[int] = ...) -> None: ...
-
 class Contract(_message.Message):
     __slots__ = ("contract_id", "raw_contract_instance", "metadata", "ledger_create_time", "authentication_data")
     class Metadata(_message.Message):

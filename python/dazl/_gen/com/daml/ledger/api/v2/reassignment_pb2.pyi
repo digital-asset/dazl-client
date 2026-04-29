@@ -17,7 +17,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Reassignment(_message.Message):
-    __slots__ = ("update_id", "command_id", "workflow_id", "offset", "events", "trace_context", "record_time", "synchronizer_id")
+    __slots__ = ("update_id", "command_id", "workflow_id", "offset", "events", "trace_context", "record_time", "synchronizer_id", "paid_traffic_cost")
     UPDATE_ID_FIELD_NUMBER: _ClassVar[int]
     COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
     WORKFLOW_ID_FIELD_NUMBER: _ClassVar[int]
@@ -26,6 +26,7 @@ class Reassignment(_message.Message):
     TRACE_CONTEXT_FIELD_NUMBER: _ClassVar[int]
     RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    PAID_TRAFFIC_COST_FIELD_NUMBER: _ClassVar[int]
     update_id: str
     command_id: str
     workflow_id: str
@@ -34,7 +35,8 @@ class Reassignment(_message.Message):
     trace_context: _trace_context_pb2.TraceContext
     record_time: _timestamp_pb2.Timestamp
     synchronizer_id: str
-    def __init__(self, update_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., offset: _Optional[int] = ..., events: _Optional[_Iterable[_Union[ReassignmentEvent, _Mapping]]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+    paid_traffic_cost: int
+    def __init__(self, update_id: _Optional[str] = ..., command_id: _Optional[str] = ..., workflow_id: _Optional[str] = ..., offset: _Optional[int] = ..., events: _Optional[_Iterable[_Union[ReassignmentEvent, _Mapping]]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., paid_traffic_cost: _Optional[int] = ...) -> None: ...
 
 class ReassignmentEvent(_message.Message):
     __slots__ = ("unassigned", "assigned")

@@ -9,6 +9,7 @@
 package v30
 
 import (
+	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/crypto/v30"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -107,11 +108,63 @@ func (x *AcsCommitment) GetCommitment() []byte {
 	return nil
 }
 
+type AcsCommitmentProtocolMessage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AcsCommitment []byte                 `protobuf:"bytes,1,opt,name=acs_commitment,json=acsCommitment,proto3" json:"acs_commitment,omitempty"`
+	Signatures    []*v30.Signature       `protobuf:"bytes,2,rep,name=signatures,proto3" json:"signatures,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcsCommitmentProtocolMessage) Reset() {
+	*x = AcsCommitmentProtocolMessage{}
+	mi := &file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcsCommitmentProtocolMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcsCommitmentProtocolMessage) ProtoMessage() {}
+
+func (x *AcsCommitmentProtocolMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcsCommitmentProtocolMessage.ProtoReflect.Descriptor instead.
+func (*AcsCommitmentProtocolMessage) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *AcsCommitmentProtocolMessage) GetAcsCommitment() []byte {
+	if x != nil {
+		return x.AcsCommitment
+	}
+	return nil
+}
+
+func (x *AcsCommitmentProtocolMessage) GetSignatures() []*v30.Signature {
+	if x != nil {
+		return x.Signatures
+	}
+	return nil
+}
+
 var File_com_digitalasset_canton_protocol_v30_acs_commitments_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_rawDesc = "" +
 	"\n" +
-	":com/digitalasset/canton/protocol/v30/acs_commitments.proto\x12$com.digitalasset.canton.protocol.v30\"\xa3\x02\n" +
+	":com/digitalasset/canton/protocol/v30/acs_commitments.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\"\xa3\x02\n" +
 	"\rAcsCommitment\x128\n" +
 	"\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x126\n" +
 	"\x17sending_participant_uid\x18\x02 \x01(\tR\x15sendingParticipantUid\x126\n" +
@@ -120,7 +173,12 @@ const file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_rawDesc = 
 	"\fto_inclusive\x18\x05 \x01(\x03R\vtoInclusive\x12\x1e\n" +
 	"\n" +
 	"commitment\x18\x06 \x01(\fR\n" +
-	"commitmentBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30b\x06proto3"
+	"commitment\"\x94\x01\n" +
+	"\x1cAcsCommitmentProtocolMessage\x12%\n" +
+	"\x0eacs_commitment\x18\x01 \x01(\fR\racsCommitment\x12M\n" +
+	"\n" +
+	"signatures\x18\x02 \x03(\v2-.com.digitalasset.canton.crypto.v30.SignatureR\n" +
+	"signaturesBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_rawDescOnce sync.Once
@@ -134,16 +192,19 @@ func file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_rawDescGZIP
 	return file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_goTypes = []any{
-	(*AcsCommitment)(nil), // 0: com.digitalasset.canton.protocol.v30.AcsCommitment
+	(*AcsCommitment)(nil),                // 0: com.digitalasset.canton.protocol.v30.AcsCommitment
+	(*AcsCommitmentProtocolMessage)(nil), // 1: com.digitalasset.canton.protocol.v30.AcsCommitmentProtocolMessage
+	(*v30.Signature)(nil),                // 2: com.digitalasset.canton.crypto.v30.Signature
 }
 var file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: com.digitalasset.canton.protocol.v30.AcsCommitmentProtocolMessage.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_init() }
@@ -157,7 +218,7 @@ func file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_rawDesc), len(file_com_digitalasset_canton_protocol_v30_acs_commitments_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

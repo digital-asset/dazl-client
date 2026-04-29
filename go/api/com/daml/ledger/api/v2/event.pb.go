@@ -130,6 +130,7 @@ type CreatedEvent struct {
 	ContractId              string                 `protobuf:"bytes,3,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
 	TemplateId              *Identifier            `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
 	ContractKey             *Value                 `protobuf:"bytes,5,opt,name=contract_key,json=contractKey,proto3" json:"contract_key,omitempty"`
+	ContractKeyHash         []byte                 `protobuf:"bytes,16,opt,name=contract_key_hash,json=contractKeyHash,proto3" json:"contract_key_hash,omitempty"`
 	CreateArguments         *Record                `protobuf:"bytes,6,opt,name=create_arguments,json=createArguments,proto3" json:"create_arguments,omitempty"`
 	CreatedEventBlob        []byte                 `protobuf:"bytes,7,opt,name=created_event_blob,json=createdEventBlob,proto3" json:"created_event_blob,omitempty"`
 	InterfaceViews          []*InterfaceView       `protobuf:"bytes,8,rep,name=interface_views,json=interfaceViews,proto3" json:"interface_views,omitempty"`
@@ -209,6 +210,13 @@ func (x *CreatedEvent) GetContractKey() *Value {
 	return nil
 }
 
+func (x *CreatedEvent) GetContractKeyHash() []byte {
+	if x != nil {
+		return x.ContractKeyHash
+	}
+	return nil
+}
+
 func (x *CreatedEvent) GetCreateArguments() *Record {
 	if x != nil {
 		return x.CreateArguments
@@ -280,12 +288,13 @@ func (x *CreatedEvent) GetRepresentativePackageId() string {
 }
 
 type InterfaceView struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	InterfaceId   *Identifier            `protobuf:"bytes,1,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
-	ViewStatus    *status.Status         `protobuf:"bytes,2,opt,name=view_status,json=viewStatus,proto3" json:"view_status,omitempty"`
-	ViewValue     *Record                `protobuf:"bytes,3,opt,name=view_value,json=viewValue,proto3" json:"view_value,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	InterfaceId             *Identifier            `protobuf:"bytes,1,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	ViewStatus              *status.Status         `protobuf:"bytes,2,opt,name=view_status,json=viewStatus,proto3" json:"view_status,omitempty"`
+	ViewValue               *Record                `protobuf:"bytes,3,opt,name=view_value,json=viewValue,proto3" json:"view_value,omitempty"`
+	ImplementationPackageId string                 `protobuf:"bytes,4,opt,name=implementation_package_id,json=implementationPackageId,proto3" json:"implementation_package_id,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *InterfaceView) Reset() {
@@ -337,6 +346,13 @@ func (x *InterfaceView) GetViewValue() *Record {
 		return x.ViewValue
 	}
 	return nil
+}
+
+func (x *InterfaceView) GetImplementationPackageId() string {
+	if x != nil {
+		return x.ImplementationPackageId
+	}
+	return ""
 }
 
 type ArchivedEvent struct {
@@ -596,7 +612,7 @@ const file_com_daml_ledger_api_v2_event_proto_rawDesc = "" +
 	"\acreated\x18\x01 \x01(\v2$.com.daml.ledger.api.v2.CreatedEventH\x00R\acreated\x12C\n" +
 	"\barchived\x18\x02 \x01(\v2%.com.daml.ledger.api.v2.ArchivedEventH\x00R\barchived\x12F\n" +
 	"\texercised\x18\x03 \x01(\v2&.com.daml.ledger.api.v2.ExercisedEventH\x00R\texercisedB\a\n" +
-	"\x05event\"\xd0\x05\n" +
+	"\x05event\"\xfc\x05\n" +
 	"\fCreatedEvent\x12\x16\n" +
 	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12\x17\n" +
 	"\anode_id\x18\x02 \x01(\x05R\x06nodeId\x12\x1f\n" +
@@ -604,7 +620,8 @@ const file_com_daml_ledger_api_v2_event_proto_rawDesc = "" +
 	"contractId\x12C\n" +
 	"\vtemplate_id\x18\x04 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
 	"templateId\x12@\n" +
-	"\fcontract_key\x18\x05 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\vcontractKey\x12I\n" +
+	"\fcontract_key\x18\x05 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\vcontractKey\x12*\n" +
+	"\x11contract_key_hash\x18\x10 \x01(\fR\x0fcontractKeyHash\x12I\n" +
 	"\x10create_arguments\x18\x06 \x01(\v2\x1e.com.daml.ledger.api.v2.RecordR\x0fcreateArguments\x12,\n" +
 	"\x12created_event_blob\x18\a \x01(\fR\x10createdEventBlob\x12N\n" +
 	"\x0finterface_views\x18\b \x03(\v2%.com.daml.ledger.api.v2.InterfaceViewR\x0einterfaceViews\x12'\n" +
@@ -616,13 +633,14 @@ const file_com_daml_ledger_api_v2_event_proto_rawDesc = "" +
 	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12!\n" +
 	"\fpackage_name\x18\r \x01(\tR\vpackageName\x12\x1b\n" +
 	"\tacs_delta\x18\x0e \x01(\bR\bacsDelta\x12:\n" +
-	"\x19representative_package_id\x18\x0f \x01(\tR\x17representativePackageId\"\xca\x01\n" +
+	"\x19representative_package_id\x18\x0f \x01(\tR\x17representativePackageId\"\x86\x02\n" +
 	"\rInterfaceView\x12E\n" +
 	"\finterface_id\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\vinterfaceId\x123\n" +
 	"\vview_status\x18\x02 \x01(\v2\x12.google.rpc.StatusR\n" +
 	"viewStatus\x12=\n" +
 	"\n" +
-	"view_value\x18\x03 \x01(\v2\x1e.com.daml.ledger.api.v2.RecordR\tviewValue\"\xcd\x02\n" +
+	"view_value\x18\x03 \x01(\v2\x1e.com.daml.ledger.api.v2.RecordR\tviewValue\x12:\n" +
+	"\x19implementation_package_id\x18\x04 \x01(\tR\x17implementationPackageId\"\xcd\x02\n" +
 	"\rArchivedEvent\x12\x16\n" +
 	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12\x17\n" +
 	"\anode_id\x18\x02 \x01(\x05R\x06nodeId\x12\x1f\n" +

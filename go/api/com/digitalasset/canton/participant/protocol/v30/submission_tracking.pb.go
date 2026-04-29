@@ -32,6 +32,7 @@ type CompletionInfo struct {
 	CommandId              string                   `protobuf:"bytes,3,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
 	OptDeduplicationPeriod *v30.DeduplicationPeriod `protobuf:"bytes,4,opt,name=opt_deduplication_period,json=optDeduplicationPeriod,proto3" json:"opt_deduplication_period,omitempty"`
 	SubmissionId           string                   `protobuf:"bytes,5,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
+	PaidTrafficCost        int64                    `protobuf:"varint,6,opt,name=paid_traffic_cost,json=paidTrafficCost,proto3" json:"paid_traffic_cost,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -99,6 +100,13 @@ func (x *CompletionInfo) GetSubmissionId() string {
 		return x.SubmissionId
 	}
 	return ""
+}
+
+func (x *CompletionInfo) GetPaidTrafficCost() int64 {
+	if x != nil {
+		return x.PaidTrafficCost
+	}
+	return 0
 }
 
 type CommandRejected struct {
@@ -395,14 +403,15 @@ var File_com_digitalasset_canton_participant_protocol_v30_submission_tracking_pr
 
 const file_com_digitalasset_canton_participant_protocol_v30_submission_tracking_proto_rawDesc = "" +
 	"\n" +
-	"Jcom/digitalasset/canton/participant/protocol/v30/submission_tracking.proto\x120com.digitalasset.canton.participant.protocol.v30\x1aBcom/digitalasset/canton/protocol/v30/participant_transaction.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xf9\x01\n" +
+	"Jcom/digitalasset/canton/participant/protocol/v30/submission_tracking.proto\x120com.digitalasset.canton.participant.protocol.v30\x1aBcom/digitalasset/canton/protocol/v30/participant_transaction.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xa5\x02\n" +
 	"\x0eCompletionInfo\x12\x15\n" +
 	"\x06act_as\x18\x01 \x03(\tR\x05actAs\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1d\n" +
 	"\n" +
 	"command_id\x18\x03 \x01(\tR\tcommandId\x12s\n" +
 	"\x18opt_deduplication_period\x18\x04 \x01(\v29.com.digitalasset.canton.protocol.v30.DeduplicationPeriodR\x16optDeduplicationPeriod\x12#\n" +
-	"\rsubmission_id\x18\x05 \x01(\tR\fsubmissionId\"H\n" +
+	"\rsubmission_id\x18\x05 \x01(\tR\fsubmissionId\x12*\n" +
+	"\x11paid_traffic_cost\x18\x06 \x01(\x03R\x0fpaidTrafficCost\"H\n" +
 	"\x0fCommandRejected\x1a5\n" +
 	"\x1bGrpcRejectionReasonTemplate\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\fR\x06status\"\x9d\x01\n" +

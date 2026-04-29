@@ -61,12 +61,16 @@ class SequencerConnections(_message.Message):
     def __init__(self, sequencer_connections: _Optional[_Iterable[_Union[SequencerConnection, _Mapping]]] = ..., sequencer_trust_threshold: _Optional[int] = ..., submission_request_amplification: _Optional[_Union[SubmissionRequestAmplification, _Mapping]] = ..., sequencer_liveness_margin: _Optional[int] = ..., sequencer_connection_pool_delays: _Optional[_Union[SequencerConnectionPoolDelays, _Mapping]] = ...) -> None: ...
 
 class SubmissionRequestAmplification(_message.Message):
-    __slots__ = ("factor", "patience")
+    __slots__ = ("factor", "patience", "confirmation_response_factor", "confirmation_response_patience")
     FACTOR_FIELD_NUMBER: _ClassVar[int]
     PATIENCE_FIELD_NUMBER: _ClassVar[int]
+    CONFIRMATION_RESPONSE_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    CONFIRMATION_RESPONSE_PATIENCE_FIELD_NUMBER: _ClassVar[int]
     factor: int
     patience: _duration_pb2.Duration
-    def __init__(self, factor: _Optional[int] = ..., patience: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    confirmation_response_factor: int
+    confirmation_response_patience: _duration_pb2.Duration
+    def __init__(self, factor: _Optional[int] = ..., patience: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., confirmation_response_factor: _Optional[int] = ..., confirmation_response_patience: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class SequencerConnectionPoolDelays(_message.Message):
     __slots__ = ("min_restart_delay", "max_restart_delay", "subscription_request_delay", "warn_validation_delay")

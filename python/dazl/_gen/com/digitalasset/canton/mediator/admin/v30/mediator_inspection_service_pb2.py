@@ -29,7 +29,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nLcom/digitalasset/canton/mediator/admin/v30/mediator_inspection_service.proto\x12*com.digitalasset.canton.mediator.admin.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa5\x01\n\x0fVerdictsRequest\x12k\n\"most_recently_received_record_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\x1emostRecentlyReceivedRecordTime\x88\x01\x01\x42%\n#_most_recently_received_record_time\"a\n\x10VerdictsResponse\x12M\n\x07verdict\x18\x01 \x01(\x0b\x32\x33.com.digitalasset.canton.mediator.admin.v30.VerdictR\x07verdict\"\x8b\x04\n\x07Verdict\x12-\n\x12submitting_parties\x18\x01 \x03(\tR\x11submittingParties\x12<\n\x1asubmitting_participant_uid\x18\x02 \x01(\tR\x18submittingParticipantUid\x12S\n\x07verdict\x18\x03 \x01(\x0e\x32\x39.com.digitalasset.canton.mediator.admin.v30.VerdictResultR\x07verdict\x12G\n\x11\x66inalization_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x10\x66inalizationTime\x12;\n\x0brecord_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\nrecordTime\x12%\n\x0emediator_group\x18\x06 \x01(\rR\rmediatorGroup\x12k\n\x11transaction_views\x18\x07 \x01(\x0b\x32<.com.digitalasset.canton.mediator.admin.v30.TransactionViewsH\x00R\x10transactionViews\x12\x1b\n\tupdate_id\x18\x08 \x01(\tR\x08updateIdB\x07\n\x05views\"\x87\x02\n\x10TransactionViews\x12]\n\x05views\x18\x01 \x03(\x0b\x32G.com.digitalasset.canton.mediator.admin.v30.TransactionViews.ViewsEntryR\x05views\x12\x1d\n\nroot_views\x18\x02 \x03(\x05R\trootViews\x1au\n\nViewsEntry\x12\x10\n\x03key\x18\x01 \x01(\x05R\x03key\x12Q\n\x05value\x18\x02 \x01(\x0b\x32;.com.digitalasset.canton.mediator.admin.v30.TransactionViewR\x05value:\x02\x38\x01\"\xaf\x01\n\x0fTransactionView\x12\x1c\n\tinformees\x18\x01 \x03(\tR\tinformees\x12\x61\n\x12\x63onfirming_parties\x18\x02 \x03(\x0b\x32\x32.com.digitalasset.canton.mediator.admin.v30.QuorumR\x11\x63onfirmingParties\x12\x1b\n\tsub_views\x18\x03 \x03(\x05R\x08subViews\"@\n\x06Quorum\x12\x18\n\x07parties\x18\x01 \x03(\tR\x07parties\x12\x1c\n\tthreshold\x18\x02 \x01(\x05R\tthreshold*i\n\rVerdictResult\x12\x1e\n\x1aVERDICT_RESULT_UNSPECIFIED\x10\x00\x12\x1b\n\x17VERDICT_RESULT_ACCEPTED\x10\x01\x12\x1b\n\x17VERDICT_RESULT_REJECTED\x10\x02\x32\xa5\x01\n\x19MediatorInspectionService\x12\x87\x01\n\x08Verdicts\x12;.com.digitalasset.canton.mediator.admin.v30.VerdictsRequest\x1a<.com.digitalasset.canton.mediator.admin.v30.VerdictsResponse0\x01\x42[ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/mediator/admin/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nLcom/digitalasset/canton/mediator/admin/v30/mediator_inspection_service.proto\x12*com.digitalasset.canton.mediator.admin.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa5\x01\n\x0fVerdictsRequest\x12k\n\"most_recently_received_record_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\x1emostRecentlyReceivedRecordTime\x88\x01\x01\x42%\n#_most_recently_received_record_time\"\x87\x04\n\x10VerdictsResponse\x12O\n\x07verdict\x18\x01 \x01(\x0b\x32\x33.com.digitalasset.canton.mediator.admin.v30.VerdictH\x00R\x07verdict\x12\x63\n\x08\x63omplete\x18\x02 \x01(\x0b\x32\x45.com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.CompleteH\x00R\x08\x63omplete\x1a\xb1\x02\n\x08\x43omplete\x12}\n\x0fpassed_lsu_time\x18\x01 \x01(\x0b\x32S.com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.Complete.PassedLsuTimeH\x00R\rpassedLsuTime\x1a\x9b\x01\n\rPassedLsuTime\x12=\n\x0cupgrade_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0bupgradeTime\x12K\n\"successor_physical_synchronizer_id\x18\x02 \x01(\tR\x1fsuccessorPhysicalSynchronizerIdB\x08\n\x06reasonB\t\n\x07payload\"\x8b\x04\n\x07Verdict\x12-\n\x12submitting_parties\x18\x01 \x03(\tR\x11submittingParties\x12<\n\x1asubmitting_participant_uid\x18\x02 \x01(\tR\x18submittingParticipantUid\x12S\n\x07verdict\x18\x03 \x01(\x0e\x32\x39.com.digitalasset.canton.mediator.admin.v30.VerdictResultR\x07verdict\x12G\n\x11\x66inalization_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x10\x66inalizationTime\x12;\n\x0brecord_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\nrecordTime\x12%\n\x0emediator_group\x18\x06 \x01(\rR\rmediatorGroup\x12k\n\x11transaction_views\x18\x07 \x01(\x0b\x32<.com.digitalasset.canton.mediator.admin.v30.TransactionViewsH\x00R\x10transactionViews\x12\x1b\n\tupdate_id\x18\x08 \x01(\tR\x08updateIdB\x07\n\x05views\"\x87\x02\n\x10TransactionViews\x12]\n\x05views\x18\x01 \x03(\x0b\x32G.com.digitalasset.canton.mediator.admin.v30.TransactionViews.ViewsEntryR\x05views\x12\x1d\n\nroot_views\x18\x02 \x03(\x05R\trootViews\x1au\n\nViewsEntry\x12\x10\n\x03key\x18\x01 \x01(\x05R\x03key\x12Q\n\x05value\x18\x02 \x01(\x0b\x32;.com.digitalasset.canton.mediator.admin.v30.TransactionViewR\x05value:\x02\x38\x01\"\xcc\x01\n\x0fTransactionView\x12\x1c\n\tinformees\x18\x01 \x03(\tR\tinformees\x12\x61\n\x12\x63onfirming_parties\x18\x02 \x03(\x0b\x32\x32.com.digitalasset.canton.mediator.admin.v30.QuorumR\x11\x63onfirmingParties\x12\x1b\n\tsub_views\x18\x03 \x03(\x05R\x08subViews\x12\x1b\n\tview_hash\x18\x04 \x01(\x0cR\x08viewHash\"@\n\x06Quorum\x12\x18\n\x07parties\x18\x01 \x03(\tR\x07parties\x12\x1c\n\tthreshold\x18\x02 \x01(\x05R\tthreshold*i\n\rVerdictResult\x12\x1e\n\x1aVERDICT_RESULT_UNSPECIFIED\x10\x00\x12\x1b\n\x17VERDICT_RESULT_ACCEPTED\x10\x01\x12\x1b\n\x17VERDICT_RESULT_REJECTED\x10\x02\x32\xa5\x01\n\x19MediatorInspectionService\x12\x87\x01\n\x08Verdicts\x12;.com.digitalasset.canton.mediator.admin.v30.VerdictsRequest\x1a<.com.digitalasset.canton.mediator.admin.v30.VerdictsResponse0\x01\x42[ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/mediator/admin/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,22 +39,26 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._serialized_options = b'ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/mediator/admin/v30'
   _globals['_TRANSACTIONVIEWS_VIEWSENTRY']._loaded_options = None
   _globals['_TRANSACTIONVIEWS_VIEWSENTRY']._serialized_options = b'8\001'
-  _globals['_VERDICTRESULT']._serialized_start=1460
-  _globals['_VERDICTRESULT']._serialized_end=1565
+  _globals['_VERDICTRESULT']._serialized_start=1912
+  _globals['_VERDICTRESULT']._serialized_end=2017
   _globals['_VERDICTSREQUEST']._serialized_start=158
   _globals['_VERDICTSREQUEST']._serialized_end=323
-  _globals['_VERDICTSRESPONSE']._serialized_start=325
-  _globals['_VERDICTSRESPONSE']._serialized_end=422
-  _globals['_VERDICT']._serialized_start=425
-  _globals['_VERDICT']._serialized_end=948
-  _globals['_TRANSACTIONVIEWS']._serialized_start=951
-  _globals['_TRANSACTIONVIEWS']._serialized_end=1214
-  _globals['_TRANSACTIONVIEWS_VIEWSENTRY']._serialized_start=1097
-  _globals['_TRANSACTIONVIEWS_VIEWSENTRY']._serialized_end=1214
-  _globals['_TRANSACTIONVIEW']._serialized_start=1217
-  _globals['_TRANSACTIONVIEW']._serialized_end=1392
-  _globals['_QUORUM']._serialized_start=1394
-  _globals['_QUORUM']._serialized_end=1458
-  _globals['_MEDIATORINSPECTIONSERVICE']._serialized_start=1568
-  _globals['_MEDIATORINSPECTIONSERVICE']._serialized_end=1733
+  _globals['_VERDICTSRESPONSE']._serialized_start=326
+  _globals['_VERDICTSRESPONSE']._serialized_end=845
+  _globals['_VERDICTSRESPONSE_COMPLETE']._serialized_start=529
+  _globals['_VERDICTSRESPONSE_COMPLETE']._serialized_end=834
+  _globals['_VERDICTSRESPONSE_COMPLETE_PASSEDLSUTIME']._serialized_start=669
+  _globals['_VERDICTSRESPONSE_COMPLETE_PASSEDLSUTIME']._serialized_end=824
+  _globals['_VERDICT']._serialized_start=848
+  _globals['_VERDICT']._serialized_end=1371
+  _globals['_TRANSACTIONVIEWS']._serialized_start=1374
+  _globals['_TRANSACTIONVIEWS']._serialized_end=1637
+  _globals['_TRANSACTIONVIEWS_VIEWSENTRY']._serialized_start=1520
+  _globals['_TRANSACTIONVIEWS_VIEWSENTRY']._serialized_end=1637
+  _globals['_TRANSACTIONVIEW']._serialized_start=1640
+  _globals['_TRANSACTIONVIEW']._serialized_end=1844
+  _globals['_QUORUM']._serialized_start=1846
+  _globals['_QUORUM']._serialized_end=1910
+  _globals['_MEDIATORINSPECTIONSERVICE']._serialized_start=2020
+  _globals['_MEDIATORINSPECTIONSERVICE']._serialized_end=2185
 # @@protoc_insertion_point(module_scope)

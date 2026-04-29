@@ -228,7 +228,7 @@ var File_com_digitalasset_daml_lf_archive_daml_lf_proto protoreflect.FileDescrip
 
 const file_com_digitalasset_daml_lf_archive_daml_lf_proto_rawDesc = "" +
 	"\n" +
-	".com/digitalasset/daml/lf/archive/daml_lf.proto\x12\adaml_lf\x1a/com/digitalasset/daml/lf/archive/daml_lf2.proto\"\x8d\x01\n" +
+	".com/digitalasset/daml/lf/archive/daml_lf.proto\x12\adaml_lf\"\x8d\x01\n" +
 	"\x0eArchivePayload\x12\x14\n" +
 	"\x05minor\x18\x03 \x01(\tR\x05minor\x12\x14\n" +
 	"\x05patch\x18\x05 \x01(\x05R\x05patch\x12\x1c\n" +

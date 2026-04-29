@@ -21,10 +21,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	StatusService_HealthDump_FullMethodName        = "/com.digitalasset.canton.admin.health.v30.StatusService/HealthDump"
-	StatusService_SetLogLevel_FullMethodName       = "/com.digitalasset.canton.admin.health.v30.StatusService/SetLogLevel"
-	StatusService_GetLastErrors_FullMethodName     = "/com.digitalasset.canton.admin.health.v30.StatusService/GetLastErrors"
-	StatusService_GetLastErrorTrace_FullMethodName = "/com.digitalasset.canton.admin.health.v30.StatusService/GetLastErrorTrace"
+	StatusService_HealthDump_FullMethodName  = "/com.digitalasset.canton.admin.health.v30.StatusService/HealthDump"
+	StatusService_SetLogLevel_FullMethodName = "/com.digitalasset.canton.admin.health.v30.StatusService/SetLogLevel"
 )
 
 // StatusServiceClient is the client API for StatusService service.
@@ -33,8 +31,6 @@ const (
 type StatusServiceClient interface {
 	HealthDump(ctx context.Context, in *HealthDumpRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[HealthDumpResponse], error)
 	SetLogLevel(ctx context.Context, in *SetLogLevelRequest, opts ...grpc.CallOption) (*SetLogLevelResponse, error)
-	GetLastErrors(ctx context.Context, in *GetLastErrorsRequest, opts ...grpc.CallOption) (*GetLastErrorsResponse, error)
-	GetLastErrorTrace(ctx context.Context, in *GetLastErrorTraceRequest, opts ...grpc.CallOption) (*GetLastErrorTraceResponse, error)
 }
 
 type statusServiceClient struct {
@@ -74,34 +70,12 @@ func (c *statusServiceClient) SetLogLevel(ctx context.Context, in *SetLogLevelRe
 	return out, nil
 }
 
-func (c *statusServiceClient) GetLastErrors(ctx context.Context, in *GetLastErrorsRequest, opts ...grpc.CallOption) (*GetLastErrorsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetLastErrorsResponse)
-	err := c.cc.Invoke(ctx, StatusService_GetLastErrors_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *statusServiceClient) GetLastErrorTrace(ctx context.Context, in *GetLastErrorTraceRequest, opts ...grpc.CallOption) (*GetLastErrorTraceResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetLastErrorTraceResponse)
-	err := c.cc.Invoke(ctx, StatusService_GetLastErrorTrace_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // StatusServiceServer is the server API for StatusService service.
 // All implementations must embed UnimplementedStatusServiceServer
 // for forward compatibility.
 type StatusServiceServer interface {
 	HealthDump(*HealthDumpRequest, grpc.ServerStreamingServer[HealthDumpResponse]) error
 	SetLogLevel(context.Context, *SetLogLevelRequest) (*SetLogLevelResponse, error)
-	GetLastErrors(context.Context, *GetLastErrorsRequest) (*GetLastErrorsResponse, error)
-	GetLastErrorTrace(context.Context, *GetLastErrorTraceRequest) (*GetLastErrorTraceResponse, error)
 	mustEmbedUnimplementedStatusServiceServer()
 }
 
@@ -117,12 +91,6 @@ func (UnimplementedStatusServiceServer) HealthDump(*HealthDumpRequest, grpc.Serv
 }
 func (UnimplementedStatusServiceServer) SetLogLevel(context.Context, *SetLogLevelRequest) (*SetLogLevelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetLogLevel not implemented")
-}
-func (UnimplementedStatusServiceServer) GetLastErrors(context.Context, *GetLastErrorsRequest) (*GetLastErrorsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLastErrors not implemented")
-}
-func (UnimplementedStatusServiceServer) GetLastErrorTrace(context.Context, *GetLastErrorTraceRequest) (*GetLastErrorTraceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLastErrorTrace not implemented")
 }
 func (UnimplementedStatusServiceServer) mustEmbedUnimplementedStatusServiceServer() {}
 func (UnimplementedStatusServiceServer) testEmbeddedByValue()                       {}
@@ -174,42 +142,6 @@ func _StatusService_SetLogLevel_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StatusService_GetLastErrors_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLastErrorsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StatusServiceServer).GetLastErrors(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: StatusService_GetLastErrors_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StatusServiceServer).GetLastErrors(ctx, req.(*GetLastErrorsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _StatusService_GetLastErrorTrace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLastErrorTraceRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StatusServiceServer).GetLastErrorTrace(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: StatusService_GetLastErrorTrace_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StatusServiceServer).GetLastErrorTrace(ctx, req.(*GetLastErrorTraceRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // StatusService_ServiceDesc is the grpc.ServiceDesc for StatusService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -220,14 +152,6 @@ var StatusService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetLogLevel",
 			Handler:    _StatusService_SetLogLevel_Handler,
-		},
-		{
-			MethodName: "GetLastErrors",
-			Handler:    _StatusService_GetLastErrors_Handler,
-		},
-		{
-			MethodName: "GetLastErrorTrace",
-			Handler:    _StatusService_GetLastErrorTrace_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

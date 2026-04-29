@@ -7,7 +7,7 @@
 import grpc
 import warnings
 
-from . import synchronizer_connectivity_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2
+from . import synchronizer_connectivity_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2
 
 GRPC_GENERATED_VERSION = '1.80.0'
 GRPC_VERSION = grpc.__version__
@@ -22,7 +22,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in com/digitalasset/canton/admin/participant/v30/synchronizer_connectivity_pb2_grpc.py depends on'
+        + ' but the generated code in com/digitalasset/canton/admin/participant/v30/synchronizer_connectivity_service_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -40,58 +40,63 @@ class SynchronizerConnectivityServiceStub(object):
         """
         self.ConnectSynchronizer = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ConnectSynchronizer',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ConnectSynchronizerRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ConnectSynchronizerResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ConnectSynchronizerRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ConnectSynchronizerResponse.FromString,
                 _registered_method=True)
         self.RegisterSynchronizer = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/RegisterSynchronizer',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.RegisterSynchronizerRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.RegisterSynchronizerResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.RegisterSynchronizerRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.RegisterSynchronizerResponse.FromString,
                 _registered_method=True)
         self.ReconnectSynchronizers = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ReconnectSynchronizers',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizersRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizersResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizersRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizersResponse.FromString,
                 _registered_method=True)
         self.ReconnectSynchronizer = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ReconnectSynchronizer',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizerRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizerResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizerRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizerResponse.FromString,
                 _registered_method=True)
         self.ModifySynchronizer = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ModifySynchronizer',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ModifySynchronizerRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ModifySynchronizerResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ModifySynchronizerRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ModifySynchronizerResponse.FromString,
                 _registered_method=True)
         self.DisconnectSynchronizer = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/DisconnectSynchronizer',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectSynchronizerRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectSynchronizerResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectSynchronizerRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectSynchronizerResponse.FromString,
                 _registered_method=True)
         self.DisconnectAllSynchronizers = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/DisconnectAllSynchronizers',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectAllSynchronizersRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectAllSynchronizersResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectAllSynchronizersRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectAllSynchronizersResponse.FromString,
                 _registered_method=True)
         self.Logout = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/Logout',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.LogoutRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.LogoutResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.LogoutRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.LogoutResponse.FromString,
                 _registered_method=True)
         self.ListConnectedSynchronizers = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ListConnectedSynchronizers',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListConnectedSynchronizersRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListConnectedSynchronizersResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListConnectedSynchronizersRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListConnectedSynchronizersResponse.FromString,
                 _registered_method=True)
         self.ListRegisteredSynchronizers = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ListRegisteredSynchronizers',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListRegisteredSynchronizersRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListRegisteredSynchronizersResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListRegisteredSynchronizersRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListRegisteredSynchronizersResponse.FromString,
                 _registered_method=True)
         self.GetSynchronizerId = channel.unary_unary(
                 '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/GetSynchronizerId',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.GetSynchronizerIdRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.GetSynchronizerIdResponse.FromString,
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.GetSynchronizerIdRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.GetSynchronizerIdResponse.FromString,
+                _registered_method=True)
+        self.PerformManualLsu = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/PerformManualLsu',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.PerformManualLsuRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.PerformManualLsuResponse.FromString,
                 _registered_method=True)
 
 
@@ -164,63 +169,74 @@ class SynchronizerConnectivityServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def PerformManualLsu(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SynchronizerConnectivityServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'ConnectSynchronizer': grpc.unary_unary_rpc_method_handler(
                     servicer.ConnectSynchronizer,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ConnectSynchronizerRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ConnectSynchronizerResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ConnectSynchronizerRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ConnectSynchronizerResponse.SerializeToString,
             ),
             'RegisterSynchronizer': grpc.unary_unary_rpc_method_handler(
                     servicer.RegisterSynchronizer,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.RegisterSynchronizerRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.RegisterSynchronizerResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.RegisterSynchronizerRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.RegisterSynchronizerResponse.SerializeToString,
             ),
             'ReconnectSynchronizers': grpc.unary_unary_rpc_method_handler(
                     servicer.ReconnectSynchronizers,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizersRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizersResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizersRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizersResponse.SerializeToString,
             ),
             'ReconnectSynchronizer': grpc.unary_unary_rpc_method_handler(
                     servicer.ReconnectSynchronizer,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizerRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizerResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizerRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizerResponse.SerializeToString,
             ),
             'ModifySynchronizer': grpc.unary_unary_rpc_method_handler(
                     servicer.ModifySynchronizer,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ModifySynchronizerRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ModifySynchronizerResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ModifySynchronizerRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ModifySynchronizerResponse.SerializeToString,
             ),
             'DisconnectSynchronizer': grpc.unary_unary_rpc_method_handler(
                     servicer.DisconnectSynchronizer,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectSynchronizerRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectSynchronizerResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectSynchronizerRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectSynchronizerResponse.SerializeToString,
             ),
             'DisconnectAllSynchronizers': grpc.unary_unary_rpc_method_handler(
                     servicer.DisconnectAllSynchronizers,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectAllSynchronizersRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectAllSynchronizersResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectAllSynchronizersRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectAllSynchronizersResponse.SerializeToString,
             ),
             'Logout': grpc.unary_unary_rpc_method_handler(
                     servicer.Logout,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.LogoutRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.LogoutResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.LogoutRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.LogoutResponse.SerializeToString,
             ),
             'ListConnectedSynchronizers': grpc.unary_unary_rpc_method_handler(
                     servicer.ListConnectedSynchronizers,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListConnectedSynchronizersRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListConnectedSynchronizersResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListConnectedSynchronizersRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListConnectedSynchronizersResponse.SerializeToString,
             ),
             'ListRegisteredSynchronizers': grpc.unary_unary_rpc_method_handler(
                     servicer.ListRegisteredSynchronizers,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListRegisteredSynchronizersRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListRegisteredSynchronizersResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListRegisteredSynchronizersRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListRegisteredSynchronizersResponse.SerializeToString,
             ),
             'GetSynchronizerId': grpc.unary_unary_rpc_method_handler(
                     servicer.GetSynchronizerId,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.GetSynchronizerIdRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.GetSynchronizerIdResponse.SerializeToString,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.GetSynchronizerIdRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.GetSynchronizerIdResponse.SerializeToString,
+            ),
+            'PerformManualLsu': grpc.unary_unary_rpc_method_handler(
+                    servicer.PerformManualLsu,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.PerformManualLsuRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.PerformManualLsuResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -248,8 +264,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ConnectSynchronizer',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ConnectSynchronizerRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ConnectSynchronizerResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ConnectSynchronizerRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ConnectSynchronizerResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -275,8 +291,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/RegisterSynchronizer',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.RegisterSynchronizerRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.RegisterSynchronizerResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.RegisterSynchronizerRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.RegisterSynchronizerResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -302,8 +318,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ReconnectSynchronizers',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizersRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizersResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizersRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizersResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -329,8 +345,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ReconnectSynchronizer',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizerRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ReconnectSynchronizerResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizerRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ReconnectSynchronizerResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -356,8 +372,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ModifySynchronizer',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ModifySynchronizerRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ModifySynchronizerResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ModifySynchronizerRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ModifySynchronizerResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -383,8 +399,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/DisconnectSynchronizer',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectSynchronizerRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectSynchronizerResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectSynchronizerRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectSynchronizerResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -410,8 +426,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/DisconnectAllSynchronizers',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectAllSynchronizersRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.DisconnectAllSynchronizersResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectAllSynchronizersRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.DisconnectAllSynchronizersResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -437,8 +453,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/Logout',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.LogoutRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.LogoutResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.LogoutRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.LogoutResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -464,8 +480,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ListConnectedSynchronizers',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListConnectedSynchronizersRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListConnectedSynchronizersResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListConnectedSynchronizersRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListConnectedSynchronizersResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -491,8 +507,8 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/ListRegisteredSynchronizers',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListRegisteredSynchronizersRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.ListRegisteredSynchronizersResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListRegisteredSynchronizersRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.ListRegisteredSynchronizersResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -518,8 +534,35 @@ class SynchronizerConnectivityService(object):
             request,
             target,
             '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/GetSynchronizerId',
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.GetSynchronizerIdRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2.GetSynchronizerIdResponse.FromString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.GetSynchronizerIdRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.GetSynchronizerIdResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PerformManualLsu(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.SynchronizerConnectivityService/PerformManualLsu',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.PerformManualLsuRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2.PerformManualLsuResponse.FromString,
             options,
             channel_credentials,
             insecure,

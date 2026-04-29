@@ -35,17 +35,35 @@ class SignedProtocolMessage(_message.Message):
     def __init__(self, signature: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ..., typed_signed_protocol_message_content: _Optional[bytes] = ...) -> None: ...
 
 class EnvelopeContent(_message.Message):
-    __slots__ = ("informee_message", "encrypted_view_message", "unassignment_mediator_message", "assignment_mediator_message", "root_hash_message", "topology_transactions_broadcast")
+    __slots__ = ("informee_message", "encrypted_view_message", "unassignment_mediator_message", "assignment_mediator_message", "root_hash_message", "topology_transactions_broadcast", "lsu_sequencing_test_message")
     INFORMEE_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     ENCRYPTED_VIEW_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     UNASSIGNMENT_MEDIATOR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     ASSIGNMENT_MEDIATOR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     ROOT_HASH_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     TOPOLOGY_TRANSACTIONS_BROADCAST_FIELD_NUMBER: _ClassVar[int]
+    LSU_SEQUENCING_TEST_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     informee_message: _participant_transaction_pb2.InformeeMessage
     encrypted_view_message: _participant_transaction_pb2.EncryptedViewMessage
     unassignment_mediator_message: _participant_reassignment_pb2.UnassignmentMediatorMessage
     assignment_mediator_message: _participant_reassignment_pb2.AssignmentMediatorMessage
     root_hash_message: _participant_transaction_pb2.RootHashMessage
     topology_transactions_broadcast: _topology_pb2.TopologyTransactionsBroadcast
-    def __init__(self, informee_message: _Optional[_Union[_participant_transaction_pb2.InformeeMessage, _Mapping]] = ..., encrypted_view_message: _Optional[_Union[_participant_transaction_pb2.EncryptedViewMessage, _Mapping]] = ..., unassignment_mediator_message: _Optional[_Union[_participant_reassignment_pb2.UnassignmentMediatorMessage, _Mapping]] = ..., assignment_mediator_message: _Optional[_Union[_participant_reassignment_pb2.AssignmentMediatorMessage, _Mapping]] = ..., root_hash_message: _Optional[_Union[_participant_transaction_pb2.RootHashMessage, _Mapping]] = ..., topology_transactions_broadcast: _Optional[_Union[_topology_pb2.TopologyTransactionsBroadcast, _Mapping]] = ...) -> None: ...
+    lsu_sequencing_test_message: LsuSequencingTestMessage
+    def __init__(self, informee_message: _Optional[_Union[_participant_transaction_pb2.InformeeMessage, _Mapping]] = ..., encrypted_view_message: _Optional[_Union[_participant_transaction_pb2.EncryptedViewMessage, _Mapping]] = ..., unassignment_mediator_message: _Optional[_Union[_participant_reassignment_pb2.UnassignmentMediatorMessage, _Mapping]] = ..., assignment_mediator_message: _Optional[_Union[_participant_reassignment_pb2.AssignmentMediatorMessage, _Mapping]] = ..., root_hash_message: _Optional[_Union[_participant_transaction_pb2.RootHashMessage, _Mapping]] = ..., topology_transactions_broadcast: _Optional[_Union[_topology_pb2.TopologyTransactionsBroadcast, _Mapping]] = ..., lsu_sequencing_test_message: _Optional[_Union[LsuSequencingTestMessage, _Mapping]] = ...) -> None: ...
+
+class LsuSequencingTestMessage(_message.Message):
+    __slots__ = ("content", "signatures")
+    CONTENT_FIELD_NUMBER: _ClassVar[int]
+    SIGNATURES_FIELD_NUMBER: _ClassVar[int]
+    content: bytes
+    signatures: _crypto_pb2.Signature
+    def __init__(self, content: _Optional[bytes] = ..., signatures: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ...) -> None: ...
+
+class LsuSequencingTestMessageContent(_message.Message):
+    __slots__ = ("physical_synchronizer_id", "sender")
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    SENDER_FIELD_NUMBER: _ClassVar[int]
+    physical_synchronizer_id: str
+    sender: str
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., sender: _Optional[str] = ...) -> None: ...

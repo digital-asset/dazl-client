@@ -118,8 +118,12 @@ func (x *VerdictsRequest) GetMostRecentlyReceivedRecordTime() *timestamppb.Times
 }
 
 type VerdictsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Verdict       *Verdict               `protobuf:"bytes,1,opt,name=verdict,proto3" json:"verdict,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Payload:
+	//
+	//	*VerdictsResponse_Verdict
+	//	*VerdictsResponse_Complete_
+	Payload       isVerdictsResponse_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -154,12 +158,46 @@ func (*VerdictsResponse) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *VerdictsResponse) GetVerdict() *Verdict {
+func (x *VerdictsResponse) GetPayload() isVerdictsResponse_Payload {
 	if x != nil {
-		return x.Verdict
+		return x.Payload
 	}
 	return nil
 }
+
+func (x *VerdictsResponse) GetVerdict() *Verdict {
+	if x != nil {
+		if x, ok := x.Payload.(*VerdictsResponse_Verdict); ok {
+			return x.Verdict
+		}
+	}
+	return nil
+}
+
+func (x *VerdictsResponse) GetComplete() *VerdictsResponse_Complete {
+	if x != nil {
+		if x, ok := x.Payload.(*VerdictsResponse_Complete_); ok {
+			return x.Complete
+		}
+	}
+	return nil
+}
+
+type isVerdictsResponse_Payload interface {
+	isVerdictsResponse_Payload()
+}
+
+type VerdictsResponse_Verdict struct {
+	Verdict *Verdict `protobuf:"bytes,1,opt,name=verdict,proto3,oneof"`
+}
+
+type VerdictsResponse_Complete_ struct {
+	Complete *VerdictsResponse_Complete `protobuf:"bytes,2,opt,name=complete,proto3,oneof"`
+}
+
+func (*VerdictsResponse_Verdict) isVerdictsResponse_Payload() {}
+
+func (*VerdictsResponse_Complete_) isVerdictsResponse_Payload() {}
 
 type Verdict struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
@@ -340,6 +378,7 @@ type TransactionView struct {
 	Informees         []string               `protobuf:"bytes,1,rep,name=informees,proto3" json:"informees,omitempty"`
 	ConfirmingParties []*Quorum              `protobuf:"bytes,2,rep,name=confirming_parties,json=confirmingParties,proto3" json:"confirming_parties,omitempty"`
 	SubViews          []int32                `protobuf:"varint,3,rep,packed,name=sub_views,json=subViews,proto3" json:"sub_views,omitempty"`
+	ViewHash          []byte                 `protobuf:"bytes,4,opt,name=view_hash,json=viewHash,proto3" json:"view_hash,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -391,6 +430,13 @@ func (x *TransactionView) GetConfirmingParties() []*Quorum {
 func (x *TransactionView) GetSubViews() []int32 {
 	if x != nil {
 		return x.SubViews
+	}
+	return nil
+}
+
+func (x *TransactionView) GetViewHash() []byte {
+	if x != nil {
+		return x.ViewHash
 	}
 	return nil
 }
@@ -447,6 +493,124 @@ func (x *Quorum) GetThreshold() int32 {
 	return 0
 }
 
+type VerdictsResponse_Complete struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Reason:
+	//
+	//	*VerdictsResponse_Complete_PassedLsuTime_
+	Reason        isVerdictsResponse_Complete_Reason `protobuf_oneof:"reason"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerdictsResponse_Complete) Reset() {
+	*x = VerdictsResponse_Complete{}
+	mi := &file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerdictsResponse_Complete) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerdictsResponse_Complete) ProtoMessage() {}
+
+func (x *VerdictsResponse_Complete) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerdictsResponse_Complete.ProtoReflect.Descriptor instead.
+func (*VerdictsResponse_Complete) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_rawDescGZIP(), []int{1, 0}
+}
+
+func (x *VerdictsResponse_Complete) GetReason() isVerdictsResponse_Complete_Reason {
+	if x != nil {
+		return x.Reason
+	}
+	return nil
+}
+
+func (x *VerdictsResponse_Complete) GetPassedLsuTime() *VerdictsResponse_Complete_PassedLsuTime {
+	if x != nil {
+		if x, ok := x.Reason.(*VerdictsResponse_Complete_PassedLsuTime_); ok {
+			return x.PassedLsuTime
+		}
+	}
+	return nil
+}
+
+type isVerdictsResponse_Complete_Reason interface {
+	isVerdictsResponse_Complete_Reason()
+}
+
+type VerdictsResponse_Complete_PassedLsuTime_ struct {
+	PassedLsuTime *VerdictsResponse_Complete_PassedLsuTime `protobuf:"bytes,1,opt,name=passed_lsu_time,json=passedLsuTime,proto3,oneof"`
+}
+
+func (*VerdictsResponse_Complete_PassedLsuTime_) isVerdictsResponse_Complete_Reason() {}
+
+type VerdictsResponse_Complete_PassedLsuTime struct {
+	state                           protoimpl.MessageState `protogen:"open.v1"`
+	UpgradeTime                     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=upgrade_time,json=upgradeTime,proto3" json:"upgrade_time,omitempty"`
+	SuccessorPhysicalSynchronizerId string                 `protobuf:"bytes,2,opt,name=successor_physical_synchronizer_id,json=successorPhysicalSynchronizerId,proto3" json:"successor_physical_synchronizer_id,omitempty"`
+	unknownFields                   protoimpl.UnknownFields
+	sizeCache                       protoimpl.SizeCache
+}
+
+func (x *VerdictsResponse_Complete_PassedLsuTime) Reset() {
+	*x = VerdictsResponse_Complete_PassedLsuTime{}
+	mi := &file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerdictsResponse_Complete_PassedLsuTime) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerdictsResponse_Complete_PassedLsuTime) ProtoMessage() {}
+
+func (x *VerdictsResponse_Complete_PassedLsuTime) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerdictsResponse_Complete_PassedLsuTime.ProtoReflect.Descriptor instead.
+func (*VerdictsResponse_Complete_PassedLsuTime) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_rawDescGZIP(), []int{1, 0, 0}
+}
+
+func (x *VerdictsResponse_Complete_PassedLsuTime) GetUpgradeTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpgradeTime
+	}
+	return nil
+}
+
+func (x *VerdictsResponse_Complete_PassedLsuTime) GetSuccessorPhysicalSynchronizerId() string {
+	if x != nil {
+		return x.SuccessorPhysicalSynchronizerId
+	}
+	return ""
+}
+
 var File_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_rawDesc = "" +
@@ -454,9 +618,17 @@ const file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_servic
 	"Lcom/digitalasset/canton/mediator/admin/v30/mediator_inspection_service.proto\x12*com.digitalasset.canton.mediator.admin.v30\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa5\x01\n" +
 	"\x0fVerdictsRequest\x12k\n" +
 	"\"most_recently_received_record_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\x1emostRecentlyReceivedRecordTime\x88\x01\x01B%\n" +
-	"#_most_recently_received_record_time\"a\n" +
-	"\x10VerdictsResponse\x12M\n" +
-	"\averdict\x18\x01 \x01(\v23.com.digitalasset.canton.mediator.admin.v30.VerdictR\averdict\"\x8b\x04\n" +
+	"#_most_recently_received_record_time\"\x87\x04\n" +
+	"\x10VerdictsResponse\x12O\n" +
+	"\averdict\x18\x01 \x01(\v23.com.digitalasset.canton.mediator.admin.v30.VerdictH\x00R\averdict\x12c\n" +
+	"\bcomplete\x18\x02 \x01(\v2E.com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.CompleteH\x00R\bcomplete\x1a\xb1\x02\n" +
+	"\bComplete\x12}\n" +
+	"\x0fpassed_lsu_time\x18\x01 \x01(\v2S.com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.Complete.PassedLsuTimeH\x00R\rpassedLsuTime\x1a\x9b\x01\n" +
+	"\rPassedLsuTime\x12=\n" +
+	"\fupgrade_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\vupgradeTime\x12K\n" +
+	"\"successor_physical_synchronizer_id\x18\x02 \x01(\tR\x1fsuccessorPhysicalSynchronizerIdB\b\n" +
+	"\x06reasonB\t\n" +
+	"\apayload\"\x8b\x04\n" +
 	"\aVerdict\x12-\n" +
 	"\x12submitting_parties\x18\x01 \x03(\tR\x11submittingParties\x12<\n" +
 	"\x1asubmitting_participant_uid\x18\x02 \x01(\tR\x18submittingParticipantUid\x12S\n" +
@@ -475,11 +647,12 @@ const file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_servic
 	"\n" +
 	"ViewsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\x05R\x03key\x12Q\n" +
-	"\x05value\x18\x02 \x01(\v2;.com.digitalasset.canton.mediator.admin.v30.TransactionViewR\x05value:\x028\x01\"\xaf\x01\n" +
+	"\x05value\x18\x02 \x01(\v2;.com.digitalasset.canton.mediator.admin.v30.TransactionViewR\x05value:\x028\x01\"\xcc\x01\n" +
 	"\x0fTransactionView\x12\x1c\n" +
 	"\tinformees\x18\x01 \x03(\tR\tinformees\x12a\n" +
 	"\x12confirming_parties\x18\x02 \x03(\v22.com.digitalasset.canton.mediator.admin.v30.QuorumR\x11confirmingParties\x12\x1b\n" +
-	"\tsub_views\x18\x03 \x03(\x05R\bsubViews\"@\n" +
+	"\tsub_views\x18\x03 \x03(\x05R\bsubViews\x12\x1b\n" +
+	"\tview_hash\x18\x04 \x01(\fR\bviewHash\"@\n" +
 	"\x06Quorum\x12\x18\n" +
 	"\aparties\x18\x01 \x03(\tR\aparties\x12\x1c\n" +
 	"\tthreshold\x18\x02 \x01(\x05R\tthreshold*i\n" +
@@ -503,35 +676,40 @@ func file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service
 }
 
 var file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_goTypes = []any{
-	(VerdictResult)(0),            // 0: com.digitalasset.canton.mediator.admin.v30.VerdictResult
-	(*VerdictsRequest)(nil),       // 1: com.digitalasset.canton.mediator.admin.v30.VerdictsRequest
-	(*VerdictsResponse)(nil),      // 2: com.digitalasset.canton.mediator.admin.v30.VerdictsResponse
-	(*Verdict)(nil),               // 3: com.digitalasset.canton.mediator.admin.v30.Verdict
-	(*TransactionViews)(nil),      // 4: com.digitalasset.canton.mediator.admin.v30.TransactionViews
-	(*TransactionView)(nil),       // 5: com.digitalasset.canton.mediator.admin.v30.TransactionView
-	(*Quorum)(nil),                // 6: com.digitalasset.canton.mediator.admin.v30.Quorum
-	nil,                           // 7: com.digitalasset.canton.mediator.admin.v30.TransactionViews.ViewsEntry
-	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
+	(VerdictResult)(0),                              // 0: com.digitalasset.canton.mediator.admin.v30.VerdictResult
+	(*VerdictsRequest)(nil),                         // 1: com.digitalasset.canton.mediator.admin.v30.VerdictsRequest
+	(*VerdictsResponse)(nil),                        // 2: com.digitalasset.canton.mediator.admin.v30.VerdictsResponse
+	(*Verdict)(nil),                                 // 3: com.digitalasset.canton.mediator.admin.v30.Verdict
+	(*TransactionViews)(nil),                        // 4: com.digitalasset.canton.mediator.admin.v30.TransactionViews
+	(*TransactionView)(nil),                         // 5: com.digitalasset.canton.mediator.admin.v30.TransactionView
+	(*Quorum)(nil),                                  // 6: com.digitalasset.canton.mediator.admin.v30.Quorum
+	(*VerdictsResponse_Complete)(nil),               // 7: com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.Complete
+	(*VerdictsResponse_Complete_PassedLsuTime)(nil), // 8: com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.Complete.PassedLsuTime
+	nil,                           // 9: com.digitalasset.canton.mediator.admin.v30.TransactionViews.ViewsEntry
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 }
 var file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_depIdxs = []int32{
-	8,  // 0: com.digitalasset.canton.mediator.admin.v30.VerdictsRequest.most_recently_received_record_time:type_name -> google.protobuf.Timestamp
+	10, // 0: com.digitalasset.canton.mediator.admin.v30.VerdictsRequest.most_recently_received_record_time:type_name -> google.protobuf.Timestamp
 	3,  // 1: com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.verdict:type_name -> com.digitalasset.canton.mediator.admin.v30.Verdict
-	0,  // 2: com.digitalasset.canton.mediator.admin.v30.Verdict.verdict:type_name -> com.digitalasset.canton.mediator.admin.v30.VerdictResult
-	8,  // 3: com.digitalasset.canton.mediator.admin.v30.Verdict.finalization_time:type_name -> google.protobuf.Timestamp
-	8,  // 4: com.digitalasset.canton.mediator.admin.v30.Verdict.record_time:type_name -> google.protobuf.Timestamp
-	4,  // 5: com.digitalasset.canton.mediator.admin.v30.Verdict.transaction_views:type_name -> com.digitalasset.canton.mediator.admin.v30.TransactionViews
-	7,  // 6: com.digitalasset.canton.mediator.admin.v30.TransactionViews.views:type_name -> com.digitalasset.canton.mediator.admin.v30.TransactionViews.ViewsEntry
-	6,  // 7: com.digitalasset.canton.mediator.admin.v30.TransactionView.confirming_parties:type_name -> com.digitalasset.canton.mediator.admin.v30.Quorum
-	5,  // 8: com.digitalasset.canton.mediator.admin.v30.TransactionViews.ViewsEntry.value:type_name -> com.digitalasset.canton.mediator.admin.v30.TransactionView
-	1,  // 9: com.digitalasset.canton.mediator.admin.v30.MediatorInspectionService.Verdicts:input_type -> com.digitalasset.canton.mediator.admin.v30.VerdictsRequest
-	2,  // 10: com.digitalasset.canton.mediator.admin.v30.MediatorInspectionService.Verdicts:output_type -> com.digitalasset.canton.mediator.admin.v30.VerdictsResponse
-	10, // [10:11] is the sub-list for method output_type
-	9,  // [9:10] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	7,  // 2: com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.complete:type_name -> com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.Complete
+	0,  // 3: com.digitalasset.canton.mediator.admin.v30.Verdict.verdict:type_name -> com.digitalasset.canton.mediator.admin.v30.VerdictResult
+	10, // 4: com.digitalasset.canton.mediator.admin.v30.Verdict.finalization_time:type_name -> google.protobuf.Timestamp
+	10, // 5: com.digitalasset.canton.mediator.admin.v30.Verdict.record_time:type_name -> google.protobuf.Timestamp
+	4,  // 6: com.digitalasset.canton.mediator.admin.v30.Verdict.transaction_views:type_name -> com.digitalasset.canton.mediator.admin.v30.TransactionViews
+	9,  // 7: com.digitalasset.canton.mediator.admin.v30.TransactionViews.views:type_name -> com.digitalasset.canton.mediator.admin.v30.TransactionViews.ViewsEntry
+	6,  // 8: com.digitalasset.canton.mediator.admin.v30.TransactionView.confirming_parties:type_name -> com.digitalasset.canton.mediator.admin.v30.Quorum
+	8,  // 9: com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.Complete.passed_lsu_time:type_name -> com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.Complete.PassedLsuTime
+	10, // 10: com.digitalasset.canton.mediator.admin.v30.VerdictsResponse.Complete.PassedLsuTime.upgrade_time:type_name -> google.protobuf.Timestamp
+	5,  // 11: com.digitalasset.canton.mediator.admin.v30.TransactionViews.ViewsEntry.value:type_name -> com.digitalasset.canton.mediator.admin.v30.TransactionView
+	1,  // 12: com.digitalasset.canton.mediator.admin.v30.MediatorInspectionService.Verdicts:input_type -> com.digitalasset.canton.mediator.admin.v30.VerdictsRequest
+	2,  // 13: com.digitalasset.canton.mediator.admin.v30.MediatorInspectionService.Verdicts:output_type -> com.digitalasset.canton.mediator.admin.v30.VerdictsResponse
+	13, // [13:14] is the sub-list for method output_type
+	12, // [12:13] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_init() }
@@ -540,8 +718,15 @@ func file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service
 		return
 	}
 	file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes[0].OneofWrappers = []any{}
+	file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes[1].OneofWrappers = []any{
+		(*VerdictsResponse_Verdict)(nil),
+		(*VerdictsResponse_Complete_)(nil),
+	}
 	file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes[2].OneofWrappers = []any{
 		(*Verdict_TransactionViews)(nil),
+	}
+	file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_msgTypes[6].OneofWrappers = []any{
+		(*VerdictsResponse_Complete_PassedLsuTime_)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -549,7 +734,7 @@ func file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_rawDesc), len(file_com_digitalasset_canton_mediator_admin_v30_mediator_inspection_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

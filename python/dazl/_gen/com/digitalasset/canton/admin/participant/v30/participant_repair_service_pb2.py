@@ -27,12 +27,13 @@ _sym_db = _symbol_database.Default()
 
 
 from . import acs_import_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_acs__import__pb2
-from . import synchronizer_connectivity_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__pb2
+from . import synchronizer_connectivity_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_synchronizer__connectivity__service__pb2
+from ...sequencer.v30 import sequencer_connection_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_sequencer_dot_v30_dot_sequencer__connection__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nNcom/digitalasset/canton/admin/participant/v30/participant_repair_service.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a>com/digitalasset/canton/admin/participant/v30/acs_import.proto\x1aMcom/digitalasset/canton/admin/participant/v30/synchronizer_connectivity.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x01\n\x15PurgeContractsRequest\x12-\n\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\x12!\n\x0c\x63ontract_ids\x18\x02 \x03(\tR\x0b\x63ontractIds\x12\x32\n\x15ignore_already_purged\x18\x03 \x01(\x08R\x13ignoreAlreadyPurged\"\x18\n\x16PurgeContractsResponse\"\xaf\x03\n\x18\x43hangeAssignationRequest\x12:\n\x19source_synchronizer_alias\x18\x01 \x01(\tR\x17sourceSynchronizerAlias\x12:\n\x19target_synchronizer_alias\x18\x02 \x01(\tR\x17targetSynchronizerAlias\x12#\n\rskip_inactive\x18\x03 \x01(\x08R\x0cskipInactive\x12n\n\tcontracts\x18\x04 \x03(\x0b\x32P.com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest.ContractR\tcontracts\x1a\x85\x01\n\x08\x43ontract\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12G\n\x1dreassignment_counter_override\x18\x02 \x01(\x03H\x00R\x1breassignmentCounterOverride\x88\x01\x01\x42 \n\x1e_reassignment_counter_override\"\x1b\n\x19\x43hangeAssignationResponse\"\x8f\x02\n\x1aMigrateSynchronizerRequest\x12:\n\x19source_synchronizer_alias\x18\x01 \x01(\tR\x17sourceSynchronizerAlias\x12\x9e\x01\n%target_synchronizer_connection_config\x18\x02 \x01(\x0b\x32K.com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfigR\"targetSynchronizerConnectionConfig\x12\x14\n\x05\x66orce\x18\x03 \x01(\x08R\x05\x66orce\"\x1d\n\x1bMigrateSynchronizerResponse\"\xf0\x01\n\x13\x45xportAcsOldRequest\x12\x18\n\x07parties\x18\x01 \x03(\tR\x07parties\x12\x34\n\x16\x66ilter_synchronizer_id\x18\x02 \x01(\tR\x14\x66ilterSynchronizerId\x12\x38\n\ttimestamp\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\x12\x14\n\x05\x66orce\x18\x05 \x01(\x08R\x05\x66orce\x12/\n\x13parties_offboarding\x18\x06 \x01(\x08R\x12partiesOffboarding:\x02\x18\x01J\x04\x08\x04\x10\x05\"0\n\x14\x45xportAcsOldResponse\x12\x14\n\x05\x63hunk\x18\x01 \x01(\x0cR\x05\x63hunk:\x02\x18\x01\"\xba\x01\n\x13ImportAcsOldRequest\x12!\n\x0c\x61\x63s_snapshot\x18\x01 \x01(\x0cR\x0b\x61\x63sSnapshot\x12,\n\x12workflow_id_prefix\x18\x02 \x01(\tR\x10workflowIdPrefix\x12R\n&allow_contract_id_suffix_recomputation\x18\x03 \x01(\x08R\"allowContractIdSuffixRecomputation\"\xe9\x01\n\x14ImportAcsOldResponse\x12\x8a\x01\n\x13\x63ontract_id_mapping\x18\x01 \x03(\x0b\x32Z.com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse.ContractIdMappingEntryR\x11\x63ontractIdMapping\x1a\x44\n\x16\x43ontractIdMappingEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n\x05value\x18\x02 \x01(\tR\x05value:\x02\x38\x01\"S\n\x1b\x45xportAcsTargetSynchronizer\x12\x34\n\x16target_synchronizer_id\x18\x01 \x01(\tR\x14targetSynchronizerId\"\xfb\x03\n\x10\x45xportAcsRequest\x12\x1b\n\tparty_ids\x18\x01 \x03(\tR\x08partyIds\x12\'\n\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x12#\n\rledger_offset\x18\x03 \x01(\x03R\x0cledgerOffset\x12\xa4\x01\n\x1d\x63ontract_synchronizer_renames\x18\x04 \x03(\x0b\x32`.com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.ContractSynchronizerRenamesEntryR\x1b\x63ontractSynchronizerRenames\x12\x38\n\x18\x65xcluded_stakeholder_ids\x18\x05 \x03(\tR\x16\x65xcludedStakeholderIds\x1a\x9a\x01\n ContractSynchronizerRenamesEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12`\n\x05value\x18\x02 \x01(\x0b\x32J.com.digitalasset.canton.admin.participant.v30.ExportAcsTargetSynchronizerR\x05value:\x02\x38\x01\")\n\x11\x45xportAcsResponse\x12\x14\n\x05\x63hunk\x18\x01 \x01(\x0cR\x05\x63hunk\"\xb0\x03\n\x10ImportAcsRequest\x12!\n\x0c\x61\x63s_snapshot\x18\x01 \x01(\x0cR\x0b\x61\x63sSnapshot\x12,\n\x12workflow_id_prefix\x18\x02 \x01(\tR\x10workflowIdPrefix\x12s\n\x14\x63ontract_import_mode\x18\x03 \x01(\x0e\x32\x41.com.digitalasset.canton.admin.participant.v30.ContractImportModeR\x12\x63ontractImportMode\x12\x38\n\x18\x65xcluded_stakeholder_ids\x18\x04 \x03(\tR\x16\x65xcludedStakeholderIds\x12\x9b\x01\n\"representative_package_id_override\x18\x05 \x01(\x0b\x32N.com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverrideR\x1frepresentativePackageIdOverride\"\xe7\x01\n\x11ImportAcsResponse\x12\x8a\x01\n\x14\x63ontract_id_mappings\x18\x01 \x03(\x0b\x32X.com.digitalasset.canton.admin.participant.v30.ImportAcsResponse.ContractIdMappingsEntryR\x12\x63ontractIdMappings\x1a\x45\n\x17\x43ontractIdMappingsEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n\x05value\x18\x02 \x01(\tR\x05value:\x02\x38\x01\"T\n#PurgeDeactivatedSynchronizerRequest\x12-\n\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\"&\n$PurgeDeactivatedSynchronizerResponse\"\xaf\x01\n\x13IgnoreEventsRequest\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12%\n\x0e\x66rom_inclusive\x18\x02 \x01(\x03R\rfromInclusive\x12!\n\x0cto_inclusive\x18\x03 \x01(\x03R\x0btoInclusive\x12\x14\n\x05\x66orce\x18\x04 \x01(\x08R\x05\x66orce\"\x16\n\x14IgnoreEventsResponse\"\xb1\x01\n\x15UnignoreEventsRequest\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12%\n\x0e\x66rom_inclusive\x18\x02 \x01(\x03R\rfromInclusive\x12!\n\x0cto_inclusive\x18\x03 \x01(\x03R\x0btoInclusive\x12\x14\n\x05\x66orce\x18\x04 \x01(\x08R\x05\x66orce\"\x18\n\x16UnignoreEventsResponse\"\xb2\x01\n\x1bRollbackUnassignmentRequest\x12\'\n\x0freassignment_id\x18\x01 \x01(\tR\x0ereassignmentId\x12\x34\n\x16source_synchronizer_id\x18\x02 \x01(\tR\x14sourceSynchronizerId\x12\x34\n\x16target_synchronizer_id\x18\x03 \x01(\tR\x14targetSynchronizerId\"\x1e\n\x1cRollbackUnassignmentResponse\"\xe6\x01\n RepairCommitmentsUsingAcsRequest\x12)\n\x10synchronizer_ids\x18\x01 \x03(\tR\x0fsynchronizerIds\x12\x36\n\x17\x63ounter_participant_ids\x18\x02 \x03(\tR\x15\x63ounterParticipantIds\x12\x1b\n\tparty_ids\x18\x03 \x03(\tR\x08partyIds\x12\x42\n\x0ftimeout_seconds\x18\x04 \x01(\x0b\x32\x19.google.protobuf.DurationR\x0etimeoutSeconds\"\x87\x01\n!RepairCommitmentsUsingAcsResponse\x12\x62\n\x08statuses\x18\x01 \x03(\x0b\x32\x46.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsStatusR\x08statuses\"\xcf\x01\n\x17RepairCommitmentsStatus\x12\'\n\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12%\n\rerror_message\x18\x02 \x01(\tH\x00R\x0c\x65rrorMessage\x12Z\n\x1a\x63ompleted_repair_timestamp\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\x18\x63ompletedRepairTimestampB\x08\n\x06status2\xec\x0f\n\x18ParticipantRepairService\x12\x9e\x01\n\x0c\x45xportAcsOld\x12\x42.com.digitalasset.canton.admin.participant.v30.ExportAcsOldRequest\x1a\x43.com.digitalasset.canton.admin.participant.v30.ExportAcsOldResponse\"\x03\x88\x02\x01\x30\x01\x12\x99\x01\n\x0cImportAcsOld\x12\x42.com.digitalasset.canton.admin.participant.v30.ImportAcsOldRequest\x1a\x43.com.digitalasset.canton.admin.participant.v30.ImportAcsOldResponse(\x01\x12\x90\x01\n\tExportAcs\x12?.com.digitalasset.canton.admin.participant.v30.ExportAcsRequest\x1a@.com.digitalasset.canton.admin.participant.v30.ExportAcsResponse0\x01\x12\x90\x01\n\tImportAcs\x12?.com.digitalasset.canton.admin.participant.v30.ImportAcsRequest\x1a@.com.digitalasset.canton.admin.participant.v30.ImportAcsResponse(\x01\x12\x9d\x01\n\x0ePurgeContracts\x12\x44.com.digitalasset.canton.admin.participant.v30.PurgeContractsRequest\x1a\x45.com.digitalasset.canton.admin.participant.v30.PurgeContractsResponse\x12\xac\x01\n\x13MigrateSynchronizer\x12I.com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerRequest\x1aJ.com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerResponse\x12\xa6\x01\n\x11\x43hangeAssignation\x12G.com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest\x1aH.com.digitalasset.canton.admin.participant.v30.ChangeAssignationResponse\x12\xc7\x01\n\x1cPurgeDeactivatedSynchronizer\x12R.com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerRequest\x1aS.com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerResponse\x12\x97\x01\n\x0cIgnoreEvents\x12\x42.com.digitalasset.canton.admin.participant.v30.IgnoreEventsRequest\x1a\x43.com.digitalasset.canton.admin.participant.v30.IgnoreEventsResponse\x12\x9d\x01\n\x0eUnignoreEvents\x12\x44.com.digitalasset.canton.admin.participant.v30.UnignoreEventsRequest\x1a\x45.com.digitalasset.canton.admin.participant.v30.UnignoreEventsResponse\x12\xaf\x01\n\x14RollbackUnassignment\x12J.com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentRequest\x1aK.com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentResponse\x12\xbe\x01\n\x19RepairCommitmentsUsingAcs\x12O.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest\x1aP.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponseB^Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nNcom/digitalasset/canton/admin/participant/v30/participant_repair_service.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a>com/digitalasset/canton/admin/participant/v30/acs_import.proto\x1aUcom/digitalasset/canton/admin/participant/v30/synchronizer_connectivity_service.proto\x1a\x46\x63om/digitalasset/canton/admin/sequencer/v30/sequencer_connection.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x01\n\x15PurgeContractsRequest\x12-\n\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\x12!\n\x0c\x63ontract_ids\x18\x02 \x03(\tR\x0b\x63ontractIds\x12\x32\n\x15ignore_already_purged\x18\x03 \x01(\x08R\x13ignoreAlreadyPurged\"\x18\n\x16PurgeContractsResponse\"\xaf\x03\n\x18\x43hangeAssignationRequest\x12:\n\x19source_synchronizer_alias\x18\x01 \x01(\tR\x17sourceSynchronizerAlias\x12:\n\x19target_synchronizer_alias\x18\x02 \x01(\tR\x17targetSynchronizerAlias\x12#\n\rskip_inactive\x18\x03 \x01(\x08R\x0cskipInactive\x12n\n\tcontracts\x18\x04 \x03(\x0b\x32P.com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest.ContractR\tcontracts\x1a\x85\x01\n\x08\x43ontract\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12G\n\x1dreassignment_counter_override\x18\x02 \x01(\x03H\x00R\x1breassignmentCounterOverride\x88\x01\x01\x42 \n\x1e_reassignment_counter_override\"\x1b\n\x19\x43hangeAssignationResponse\"\x8f\x02\n\x1aMigrateSynchronizerRequest\x12:\n\x19source_synchronizer_alias\x18\x01 \x01(\tR\x17sourceSynchronizerAlias\x12\x9e\x01\n%target_synchronizer_connection_config\x18\x02 \x01(\x0b\x32K.com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfigR\"targetSynchronizerConnectionConfig\x12\x14\n\x05\x66orce\x18\x03 \x01(\x08R\x05\x66orce\"\x1d\n\x1bMigrateSynchronizerResponse\"S\n\x1b\x45xportAcsTargetSynchronizer\x12\x34\n\x16target_synchronizer_id\x18\x01 \x01(\tR\x14targetSynchronizerId\"\xfb\x03\n\x10\x45xportAcsRequest\x12\x1b\n\tparty_ids\x18\x01 \x03(\tR\x08partyIds\x12\'\n\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x12#\n\rledger_offset\x18\x03 \x01(\x03R\x0cledgerOffset\x12\xa4\x01\n\x1d\x63ontract_synchronizer_renames\x18\x04 \x03(\x0b\x32`.com.digitalasset.canton.admin.participant.v30.ExportAcsRequest.ContractSynchronizerRenamesEntryR\x1b\x63ontractSynchronizerRenames\x12\x38\n\x18\x65xcluded_stakeholder_ids\x18\x05 \x03(\tR\x16\x65xcludedStakeholderIds\x1a\x9a\x01\n ContractSynchronizerRenamesEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12`\n\x05value\x18\x02 \x01(\x0b\x32J.com.digitalasset.canton.admin.participant.v30.ExportAcsTargetSynchronizerR\x05value:\x02\x38\x01\")\n\x11\x45xportAcsResponse\x12\x14\n\x05\x63hunk\x18\x01 \x01(\x0cR\x05\x63hunk\"\xd8\x04\n\x10ImportAcsRequest\x12!\n\x0c\x61\x63s_snapshot\x18\x01 \x01(\x0cR\x0b\x61\x63sSnapshot\x12\x31\n\x12workflow_id_prefix\x18\x02 \x01(\tH\x00R\x10workflowIdPrefix\x88\x01\x01\x12x\n\x14\x63ontract_import_mode\x18\x03 \x01(\x0e\x32\x41.com.digitalasset.canton.admin.participant.v30.ContractImportModeH\x01R\x12\x63ontractImportMode\x88\x01\x01\x12\x38\n\x18\x65xcluded_stakeholder_ids\x18\x04 \x03(\tR\x16\x65xcludedStakeholderIds\x12\xa0\x01\n\"representative_package_id_override\x18\x05 \x01(\x0b\x32N.com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverrideH\x02R\x1frepresentativePackageIdOverride\x88\x01\x01\x12,\n\x0fsynchronizer_id\x18\x06 \x01(\tH\x03R\x0esynchronizerId\x88\x01\x01\x42\x15\n\x13_workflow_id_prefixB\x17\n\x15_contract_import_modeB%\n#_representative_package_id_overrideB\x12\n\x10_synchronizer_id\"\x13\n\x11ImportAcsResponse\"T\n#PurgeDeactivatedSynchronizerRequest\x12-\n\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\"&\n$PurgeDeactivatedSynchronizerResponse\"\xaf\x01\n\x13IgnoreEventsRequest\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12%\n\x0e\x66rom_inclusive\x18\x02 \x01(\x03R\rfromInclusive\x12!\n\x0cto_inclusive\x18\x03 \x01(\x03R\x0btoInclusive\x12\x14\n\x05\x66orce\x18\x04 \x01(\x08R\x05\x66orce\"\x16\n\x14IgnoreEventsResponse\"\xb1\x01\n\x15UnignoreEventsRequest\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12%\n\x0e\x66rom_inclusive\x18\x02 \x01(\x03R\rfromInclusive\x12!\n\x0cto_inclusive\x18\x03 \x01(\x03R\x0btoInclusive\x12\x14\n\x05\x66orce\x18\x04 \x01(\x08R\x05\x66orce\"\x18\n\x16UnignoreEventsResponse\"\xb2\x01\n\x1bRollbackUnassignmentRequest\x12\'\n\x0freassignment_id\x18\x01 \x01(\tR\x0ereassignmentId\x12\x34\n\x16source_synchronizer_id\x18\x02 \x01(\tR\x14sourceSynchronizerId\x12\x34\n\x16target_synchronizer_id\x18\x03 \x01(\tR\x14targetSynchronizerId\"\x1e\n\x1cRollbackUnassignmentResponse\"\xe6\x01\n RepairCommitmentsUsingAcsRequest\x12)\n\x10synchronizer_ids\x18\x01 \x03(\tR\x0fsynchronizerIds\x12\x36\n\x17\x63ounter_participant_ids\x18\x02 \x03(\tR\x15\x63ounterParticipantIds\x12\x1b\n\tparty_ids\x18\x03 \x03(\tR\x08partyIds\x12\x42\n\x0ftimeout_seconds\x18\x04 \x01(\x0b\x32\x19.google.protobuf.DurationR\x0etimeoutSeconds\"\x87\x01\n!RepairCommitmentsUsingAcsResponse\x12\x62\n\x08statuses\x18\x01 \x03(\x0b\x32\x46.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsStatusR\x08statuses\"\xcf\x01\n\x17RepairCommitmentsStatus\x12\'\n\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12%\n\rerror_message\x18\x02 \x01(\tH\x00R\x0c\x65rrorMessage\x12Z\n\x1a\x63ompleted_repair_timestamp\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\x18\x63ompletedRepairTimestampB\x08\n\x06status\"\xd3\x04\n\x15PerformLateLsuRequest\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12l\n\tsuccessor\x18\x02 \x01(\x0b\x32N.com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest.SuccessorR\tsuccessor\x1a\x91\x03\n\tSuccessor\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12P\n\x16\x61nnounced_upgrade_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x14\x61nnouncedUpgradeTime\x12\x63\n\x06\x63onfig\x18\x03 \x01(\x0b\x32K.com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfigR\x06\x63onfig\x12\x92\x01\n\x1fsequencer_connection_validation\x18\x04 \x01(\x0e\x32J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidationR\x1dsequencerConnectionValidation\"\x18\n\x16PerformLateLsuResponse2\xcf\x0e\n\x18ParticipantRepairService\x12\x90\x01\n\tExportAcs\x12?.com.digitalasset.canton.admin.participant.v30.ExportAcsRequest\x1a@.com.digitalasset.canton.admin.participant.v30.ExportAcsResponse0\x01\x12\x90\x01\n\tImportAcs\x12?.com.digitalasset.canton.admin.participant.v30.ImportAcsRequest\x1a@.com.digitalasset.canton.admin.participant.v30.ImportAcsResponse(\x01\x12\x9d\x01\n\x0ePurgeContracts\x12\x44.com.digitalasset.canton.admin.participant.v30.PurgeContractsRequest\x1a\x45.com.digitalasset.canton.admin.participant.v30.PurgeContractsResponse\x12\xac\x01\n\x13MigrateSynchronizer\x12I.com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerRequest\x1aJ.com.digitalasset.canton.admin.participant.v30.MigrateSynchronizerResponse\x12\xa6\x01\n\x11\x43hangeAssignation\x12G.com.digitalasset.canton.admin.participant.v30.ChangeAssignationRequest\x1aH.com.digitalasset.canton.admin.participant.v30.ChangeAssignationResponse\x12\xc7\x01\n\x1cPurgeDeactivatedSynchronizer\x12R.com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerRequest\x1aS.com.digitalasset.canton.admin.participant.v30.PurgeDeactivatedSynchronizerResponse\x12\x97\x01\n\x0cIgnoreEvents\x12\x42.com.digitalasset.canton.admin.participant.v30.IgnoreEventsRequest\x1a\x43.com.digitalasset.canton.admin.participant.v30.IgnoreEventsResponse\x12\x9d\x01\n\x0eUnignoreEvents\x12\x44.com.digitalasset.canton.admin.participant.v30.UnignoreEventsRequest\x1a\x45.com.digitalasset.canton.admin.participant.v30.UnignoreEventsResponse\x12\xaf\x01\n\x14RollbackUnassignment\x12J.com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentRequest\x1aK.com.digitalasset.canton.admin.participant.v30.RollbackUnassignmentResponse\x12\xbe\x01\n\x19RepairCommitmentsUsingAcs\x12O.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsRequest\x1aP.com.digitalasset.canton.admin.participant.v30.RepairCommitmentsUsingAcsResponse\x12\x9d\x01\n\x0ePerformLateLsu\x12\x44.com.digitalasset.canton.admin.participant.v30.PerformLateLsuRequest\x1a\x45.com.digitalasset.canton.admin.participant.v30.PerformLateLsuResponseB^Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -40,78 +41,62 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.adm
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z\\github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30'
-  _globals['_EXPORTACSOLDREQUEST']._loaded_options = None
-  _globals['_EXPORTACSOLDREQUEST']._serialized_options = b'\030\001'
-  _globals['_EXPORTACSOLDRESPONSE']._loaded_options = None
-  _globals['_EXPORTACSOLDRESPONSE']._serialized_options = b'\030\001'
-  _globals['_IMPORTACSOLDRESPONSE_CONTRACTIDMAPPINGENTRY']._loaded_options = None
-  _globals['_IMPORTACSOLDRESPONSE_CONTRACTIDMAPPINGENTRY']._serialized_options = b'8\001'
   _globals['_EXPORTACSREQUEST_CONTRACTSYNCHRONIZERRENAMESENTRY']._loaded_options = None
   _globals['_EXPORTACSREQUEST_CONTRACTSYNCHRONIZERRENAMESENTRY']._serialized_options = b'8\001'
-  _globals['_IMPORTACSRESPONSE_CONTRACTIDMAPPINGSENTRY']._loaded_options = None
-  _globals['_IMPORTACSRESPONSE_CONTRACTIDMAPPINGSENTRY']._serialized_options = b'8\001'
-  _globals['_PARTICIPANTREPAIRSERVICE'].methods_by_name['ExportAcsOld']._loaded_options = None
-  _globals['_PARTICIPANTREPAIRSERVICE'].methods_by_name['ExportAcsOld']._serialized_options = b'\210\002\001'
-  _globals['_PURGECONTRACTSREQUEST']._serialized_start=338
-  _globals['_PURGECONTRACTSREQUEST']._serialized_end=495
-  _globals['_PURGECONTRACTSRESPONSE']._serialized_start=497
-  _globals['_PURGECONTRACTSRESPONSE']._serialized_end=521
-  _globals['_CHANGEASSIGNATIONREQUEST']._serialized_start=524
-  _globals['_CHANGEASSIGNATIONREQUEST']._serialized_end=955
-  _globals['_CHANGEASSIGNATIONREQUEST_CONTRACT']._serialized_start=822
-  _globals['_CHANGEASSIGNATIONREQUEST_CONTRACT']._serialized_end=955
-  _globals['_CHANGEASSIGNATIONRESPONSE']._serialized_start=957
-  _globals['_CHANGEASSIGNATIONRESPONSE']._serialized_end=984
-  _globals['_MIGRATESYNCHRONIZERREQUEST']._serialized_start=987
-  _globals['_MIGRATESYNCHRONIZERREQUEST']._serialized_end=1258
-  _globals['_MIGRATESYNCHRONIZERRESPONSE']._serialized_start=1260
-  _globals['_MIGRATESYNCHRONIZERRESPONSE']._serialized_end=1289
-  _globals['_EXPORTACSOLDREQUEST']._serialized_start=1292
-  _globals['_EXPORTACSOLDREQUEST']._serialized_end=1532
-  _globals['_EXPORTACSOLDRESPONSE']._serialized_start=1534
-  _globals['_EXPORTACSOLDRESPONSE']._serialized_end=1582
-  _globals['_IMPORTACSOLDREQUEST']._serialized_start=1585
-  _globals['_IMPORTACSOLDREQUEST']._serialized_end=1771
-  _globals['_IMPORTACSOLDRESPONSE']._serialized_start=1774
-  _globals['_IMPORTACSOLDRESPONSE']._serialized_end=2007
-  _globals['_IMPORTACSOLDRESPONSE_CONTRACTIDMAPPINGENTRY']._serialized_start=1939
-  _globals['_IMPORTACSOLDRESPONSE_CONTRACTIDMAPPINGENTRY']._serialized_end=2007
-  _globals['_EXPORTACSTARGETSYNCHRONIZER']._serialized_start=2009
-  _globals['_EXPORTACSTARGETSYNCHRONIZER']._serialized_end=2092
-  _globals['_EXPORTACSREQUEST']._serialized_start=2095
-  _globals['_EXPORTACSREQUEST']._serialized_end=2602
-  _globals['_EXPORTACSREQUEST_CONTRACTSYNCHRONIZERRENAMESENTRY']._serialized_start=2448
-  _globals['_EXPORTACSREQUEST_CONTRACTSYNCHRONIZERRENAMESENTRY']._serialized_end=2602
-  _globals['_EXPORTACSRESPONSE']._serialized_start=2604
-  _globals['_EXPORTACSRESPONSE']._serialized_end=2645
-  _globals['_IMPORTACSREQUEST']._serialized_start=2648
-  _globals['_IMPORTACSREQUEST']._serialized_end=3080
-  _globals['_IMPORTACSRESPONSE']._serialized_start=3083
-  _globals['_IMPORTACSRESPONSE']._serialized_end=3314
-  _globals['_IMPORTACSRESPONSE_CONTRACTIDMAPPINGSENTRY']._serialized_start=3245
-  _globals['_IMPORTACSRESPONSE_CONTRACTIDMAPPINGSENTRY']._serialized_end=3314
-  _globals['_PURGEDEACTIVATEDSYNCHRONIZERREQUEST']._serialized_start=3316
-  _globals['_PURGEDEACTIVATEDSYNCHRONIZERREQUEST']._serialized_end=3400
-  _globals['_PURGEDEACTIVATEDSYNCHRONIZERRESPONSE']._serialized_start=3402
-  _globals['_PURGEDEACTIVATEDSYNCHRONIZERRESPONSE']._serialized_end=3440
-  _globals['_IGNOREEVENTSREQUEST']._serialized_start=3443
-  _globals['_IGNOREEVENTSREQUEST']._serialized_end=3618
-  _globals['_IGNOREEVENTSRESPONSE']._serialized_start=3620
-  _globals['_IGNOREEVENTSRESPONSE']._serialized_end=3642
-  _globals['_UNIGNOREEVENTSREQUEST']._serialized_start=3645
-  _globals['_UNIGNOREEVENTSREQUEST']._serialized_end=3822
-  _globals['_UNIGNOREEVENTSRESPONSE']._serialized_start=3824
-  _globals['_UNIGNOREEVENTSRESPONSE']._serialized_end=3848
-  _globals['_ROLLBACKUNASSIGNMENTREQUEST']._serialized_start=3851
-  _globals['_ROLLBACKUNASSIGNMENTREQUEST']._serialized_end=4029
-  _globals['_ROLLBACKUNASSIGNMENTRESPONSE']._serialized_start=4031
-  _globals['_ROLLBACKUNASSIGNMENTRESPONSE']._serialized_end=4061
-  _globals['_REPAIRCOMMITMENTSUSINGACSREQUEST']._serialized_start=4064
-  _globals['_REPAIRCOMMITMENTSUSINGACSREQUEST']._serialized_end=4294
-  _globals['_REPAIRCOMMITMENTSUSINGACSRESPONSE']._serialized_start=4297
-  _globals['_REPAIRCOMMITMENTSUSINGACSRESPONSE']._serialized_end=4432
-  _globals['_REPAIRCOMMITMENTSSTATUS']._serialized_start=4435
-  _globals['_REPAIRCOMMITMENTSSTATUS']._serialized_end=4642
-  _globals['_PARTICIPANTREPAIRSERVICE']._serialized_start=4645
-  _globals['_PARTICIPANTREPAIRSERVICE']._serialized_end=6673
+  _globals['_PURGECONTRACTSREQUEST']._serialized_start=418
+  _globals['_PURGECONTRACTSREQUEST']._serialized_end=575
+  _globals['_PURGECONTRACTSRESPONSE']._serialized_start=577
+  _globals['_PURGECONTRACTSRESPONSE']._serialized_end=601
+  _globals['_CHANGEASSIGNATIONREQUEST']._serialized_start=604
+  _globals['_CHANGEASSIGNATIONREQUEST']._serialized_end=1035
+  _globals['_CHANGEASSIGNATIONREQUEST_CONTRACT']._serialized_start=902
+  _globals['_CHANGEASSIGNATIONREQUEST_CONTRACT']._serialized_end=1035
+  _globals['_CHANGEASSIGNATIONRESPONSE']._serialized_start=1037
+  _globals['_CHANGEASSIGNATIONRESPONSE']._serialized_end=1064
+  _globals['_MIGRATESYNCHRONIZERREQUEST']._serialized_start=1067
+  _globals['_MIGRATESYNCHRONIZERREQUEST']._serialized_end=1338
+  _globals['_MIGRATESYNCHRONIZERRESPONSE']._serialized_start=1340
+  _globals['_MIGRATESYNCHRONIZERRESPONSE']._serialized_end=1369
+  _globals['_EXPORTACSTARGETSYNCHRONIZER']._serialized_start=1371
+  _globals['_EXPORTACSTARGETSYNCHRONIZER']._serialized_end=1454
+  _globals['_EXPORTACSREQUEST']._serialized_start=1457
+  _globals['_EXPORTACSREQUEST']._serialized_end=1964
+  _globals['_EXPORTACSREQUEST_CONTRACTSYNCHRONIZERRENAMESENTRY']._serialized_start=1810
+  _globals['_EXPORTACSREQUEST_CONTRACTSYNCHRONIZERRENAMESENTRY']._serialized_end=1964
+  _globals['_EXPORTACSRESPONSE']._serialized_start=1966
+  _globals['_EXPORTACSRESPONSE']._serialized_end=2007
+  _globals['_IMPORTACSREQUEST']._serialized_start=2010
+  _globals['_IMPORTACSREQUEST']._serialized_end=2610
+  _globals['_IMPORTACSRESPONSE']._serialized_start=2612
+  _globals['_IMPORTACSRESPONSE']._serialized_end=2631
+  _globals['_PURGEDEACTIVATEDSYNCHRONIZERREQUEST']._serialized_start=2633
+  _globals['_PURGEDEACTIVATEDSYNCHRONIZERREQUEST']._serialized_end=2717
+  _globals['_PURGEDEACTIVATEDSYNCHRONIZERRESPONSE']._serialized_start=2719
+  _globals['_PURGEDEACTIVATEDSYNCHRONIZERRESPONSE']._serialized_end=2757
+  _globals['_IGNOREEVENTSREQUEST']._serialized_start=2760
+  _globals['_IGNOREEVENTSREQUEST']._serialized_end=2935
+  _globals['_IGNOREEVENTSRESPONSE']._serialized_start=2937
+  _globals['_IGNOREEVENTSRESPONSE']._serialized_end=2959
+  _globals['_UNIGNOREEVENTSREQUEST']._serialized_start=2962
+  _globals['_UNIGNOREEVENTSREQUEST']._serialized_end=3139
+  _globals['_UNIGNOREEVENTSRESPONSE']._serialized_start=3141
+  _globals['_UNIGNOREEVENTSRESPONSE']._serialized_end=3165
+  _globals['_ROLLBACKUNASSIGNMENTREQUEST']._serialized_start=3168
+  _globals['_ROLLBACKUNASSIGNMENTREQUEST']._serialized_end=3346
+  _globals['_ROLLBACKUNASSIGNMENTRESPONSE']._serialized_start=3348
+  _globals['_ROLLBACKUNASSIGNMENTRESPONSE']._serialized_end=3378
+  _globals['_REPAIRCOMMITMENTSUSINGACSREQUEST']._serialized_start=3381
+  _globals['_REPAIRCOMMITMENTSUSINGACSREQUEST']._serialized_end=3611
+  _globals['_REPAIRCOMMITMENTSUSINGACSRESPONSE']._serialized_start=3614
+  _globals['_REPAIRCOMMITMENTSUSINGACSRESPONSE']._serialized_end=3749
+  _globals['_REPAIRCOMMITMENTSSTATUS']._serialized_start=3752
+  _globals['_REPAIRCOMMITMENTSSTATUS']._serialized_end=3959
+  _globals['_PERFORMLATELSUREQUEST']._serialized_start=3962
+  _globals['_PERFORMLATELSUREQUEST']._serialized_end=4557
+  _globals['_PERFORMLATELSUREQUEST_SUCCESSOR']._serialized_start=4156
+  _globals['_PERFORMLATELSUREQUEST_SUCCESSOR']._serialized_end=4557
+  _globals['_PERFORMLATELSURESPONSE']._serialized_start=4559
+  _globals['_PERFORMLATELSURESPONSE']._serialized_end=4583
+  _globals['_PARTICIPANTREPAIRSERVICE']._serialized_start=4586
+  _globals['_PARTICIPANTREPAIRSERVICE']._serialized_end=6457
 # @@protoc_insertion_point(module_scope)

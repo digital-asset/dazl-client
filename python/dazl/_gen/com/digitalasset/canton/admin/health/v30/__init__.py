@@ -3,15 +3,11 @@
 # fmt: off
 # isort: skip_file
 
-from .status_service_pb2 import ComponentStatus, GetLastErrorTraceRequest, GetLastErrorTraceResponse, GetLastErrorsRequest, GetLastErrorsResponse, HealthDumpRequest, HealthDumpResponse, NotInitialized, SetLogLevelRequest, SetLogLevelResponse, Status, TopologyQueueStatus
+from .status_service_pb2 import ComponentStatus, HealthDumpRequest, HealthDumpResponse, NotInitialized, SetLogLevelRequest, SetLogLevelResponse, Status, TopologyQueueStatus
 from .status_service_pb2_grpc import StatusServiceStub
 
 __all__ = [
     "ComponentStatus",
-    "GetLastErrorTraceRequest",
-    "GetLastErrorTraceResponse",
-    "GetLastErrorsRequest",
-    "GetLastErrorsResponse",
     "HealthDumpRequest",
     "HealthDumpResponse",
     "NotInitialized",

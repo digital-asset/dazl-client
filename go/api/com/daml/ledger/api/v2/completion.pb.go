@@ -41,6 +41,7 @@ type Completion struct {
 	TraceContext        *TraceContext                    `protobuf:"bytes,9,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
 	Offset              int64                            `protobuf:"varint,10,opt,name=offset,proto3" json:"offset,omitempty"`
 	SynchronizerTime    *SynchronizerTime                `protobuf:"bytes,11,opt,name=synchronizer_time,json=synchronizerTime,proto3" json:"synchronizer_time,omitempty"`
+	PaidTrafficCost     int64                            `protobuf:"varint,12,opt,name=paid_traffic_cost,json=paidTrafficCost,proto3" json:"paid_traffic_cost,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -163,6 +164,13 @@ func (x *Completion) GetSynchronizerTime() *SynchronizerTime {
 	return nil
 }
 
+func (x *Completion) GetPaidTrafficCost() int64 {
+	if x != nil {
+		return x.PaidTrafficCost
+	}
+	return 0
+}
+
 type isCompletion_DeduplicationPeriod interface {
 	isCompletion_DeduplicationPeriod()
 }
@@ -183,7 +191,7 @@ var File_com_daml_ledger_api_v2_completion_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_completion_proto_rawDesc = "" +
 	"\n" +
-	"'com/daml/ledger/api/v2/completion.proto\x12\x16com.daml.ledger.api.v2\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x17google/rpc/status.proto\"\xa4\x04\n" +
+	"'com/daml/ledger/api/v2/completion.proto\x12\x16com.daml.ledger.api.v2\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x17google/rpc/status.proto\"\xd0\x04\n" +
 	"\n" +
 	"Completion\x12\x1d\n" +
 	"\n" +
@@ -198,7 +206,8 @@ const file_com_daml_ledger_api_v2_completion_proto_rawDesc = "" +
 	"\rtrace_context\x18\t \x01(\v2$.com.daml.ledger.api.v2.TraceContextR\ftraceContext\x12\x16\n" +
 	"\x06offset\x18\n" +
 	" \x01(\x03R\x06offset\x12U\n" +
-	"\x11synchronizer_time\x18\v \x01(\v2(.com.daml.ledger.api.v2.SynchronizerTimeR\x10synchronizerTimeB\x16\n" +
+	"\x11synchronizer_time\x18\v \x01(\v2(.com.daml.ledger.api.v2.SynchronizerTimeR\x10synchronizerTime\x12*\n" +
+	"\x11paid_traffic_cost\x18\f \x01(\x03R\x0fpaidTrafficCostB\x16\n" +
 	"\x14deduplication_periodB\x8e\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x14CompletionOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 

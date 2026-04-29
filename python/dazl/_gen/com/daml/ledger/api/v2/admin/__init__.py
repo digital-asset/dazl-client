@@ -14,7 +14,7 @@ from .party_management_service_pb2 import AllocateExternalPartyRequest, Allocate
 from .party_management_service_pb2_grpc import PartyManagementServiceStub
 from .identity_provider_config_service_pb2 import CreateIdentityProviderConfigRequest, CreateIdentityProviderConfigResponse, DeleteIdentityProviderConfigRequest, DeleteIdentityProviderConfigResponse, GetIdentityProviderConfigRequest, GetIdentityProviderConfigResponse, IdentityProviderConfig, ListIdentityProviderConfigsRequest, ListIdentityProviderConfigsResponse, UpdateIdentityProviderConfigRequest, UpdateIdentityProviderConfigResponse
 from .identity_provider_config_service_pb2_grpc import IdentityProviderConfigServiceStub
-from .command_inspection_service_pb2 import CommandState, CommandStatus, CommandUpdates, Contract, GetCommandStatusRequest, GetCommandStatusResponse, RequestStatistics
+from .command_inspection_service_pb2 import CommandState, CommandStatus, CommandUpdates, Contract, GetCommandStatusRequest, GetCommandStatusResponse, RequestStatistics, Timing
 from .command_inspection_service_pb2_grpc import CommandInspectionServiceStub
 
 __all__ = [
@@ -73,6 +73,7 @@ __all__ = [
     "RevokeUserRightsRequest",
     "RevokeUserRightsResponse",
     "Right",
+    "Timing",
     "UpdateIdentityProviderConfigRequest",
     "UpdateIdentityProviderConfigResponse",
     "UpdatePartyDetailsRequest",

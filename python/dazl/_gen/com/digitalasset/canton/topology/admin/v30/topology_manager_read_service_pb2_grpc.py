@@ -98,15 +98,15 @@ class TopologyManagerReadServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerSynchronizerStateRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerSynchronizerStateResponse.FromString,
                 _registered_method=True)
-        self.ListSynchronizerUpgradeAnnouncement = channel.unary_unary(
-                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerUpgradeAnnouncement',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementResponse.FromString,
+        self.ListLsuAnnouncement = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuAnnouncement',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuAnnouncementRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuAnnouncementResponse.FromString,
                 _registered_method=True)
-        self.ListSequencerConnectionSuccessor = channel.unary_unary(
-                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerConnectionSuccessor',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorResponse.FromString,
+        self.ListLsuSequencerConnectionSuccessor = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuSequencerConnectionSuccessor',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuSequencerConnectionSuccessorRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuSequencerConnectionSuccessorResponse.FromString,
                 _registered_method=True)
         self.ListAvailableStores = channel.unary_unary(
                 '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAvailableStores',
@@ -138,10 +138,10 @@ class TopologyManagerReadServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Request.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Response.FromString,
                 _registered_method=True)
-        self.LogicalUpgradeState = channel.unary_stream(
-                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/LogicalUpgradeState',
-                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateRequest.SerializeToString,
-                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateResponse.FromString,
+        self.SequencerLsuState = channel.unary_stream(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/SequencerLsuState',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateResponse.FromString,
                 _registered_method=True)
 
 
@@ -220,13 +220,13 @@ class TopologyManagerReadServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListSynchronizerUpgradeAnnouncement(self, request, context):
+    def ListLsuAnnouncement(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListSequencerConnectionSuccessor(self, request, context):
+    def ListLsuSequencerConnectionSuccessor(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -268,7 +268,7 @@ class TopologyManagerReadServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def LogicalUpgradeState(self, request, context):
+    def SequencerLsuState(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -337,15 +337,15 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerSynchronizerStateRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerSynchronizerStateResponse.SerializeToString,
             ),
-            'ListSynchronizerUpgradeAnnouncement': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListSynchronizerUpgradeAnnouncement,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementResponse.SerializeToString,
+            'ListLsuAnnouncement': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListLsuAnnouncement,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuAnnouncementRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuAnnouncementResponse.SerializeToString,
             ),
-            'ListSequencerConnectionSuccessor': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListSequencerConnectionSuccessor,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorResponse.SerializeToString,
+            'ListLsuSequencerConnectionSuccessor': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListLsuSequencerConnectionSuccessor,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuSequencerConnectionSuccessorRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuSequencerConnectionSuccessorResponse.SerializeToString,
             ),
             'ListAvailableStores': grpc.unary_unary_rpc_method_handler(
                     servicer.ListAvailableStores,
@@ -377,10 +377,10 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Request.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenesisStateV2Response.SerializeToString,
             ),
-            'LogicalUpgradeState': grpc.unary_stream_rpc_method_handler(
-                    servicer.LogicalUpgradeState,
-                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateRequest.FromString,
-                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateResponse.SerializeToString,
+            'SequencerLsuState': grpc.unary_stream_rpc_method_handler(
+                    servicer.SequencerLsuState,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -718,7 +718,7 @@ class TopologyManagerReadService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListSynchronizerUpgradeAnnouncement(request,
+    def ListLsuAnnouncement(request,
             target,
             options=(),
             channel_credentials=None,
@@ -731,9 +731,9 @@ class TopologyManagerReadService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerUpgradeAnnouncement',
-            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerUpgradeAnnouncementResponse.FromString,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuAnnouncement',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuAnnouncementRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuAnnouncementResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -745,7 +745,7 @@ class TopologyManagerReadService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListSequencerConnectionSuccessor(request,
+    def ListLsuSequencerConnectionSuccessor(request,
             target,
             options=(),
             channel_credentials=None,
@@ -758,9 +758,9 @@ class TopologyManagerReadService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerConnectionSuccessor',
-            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencerConnectionSuccessorResponse.FromString,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuSequencerConnectionSuccessor',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuSequencerConnectionSuccessorRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListLsuSequencerConnectionSuccessorResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -934,7 +934,7 @@ class TopologyManagerReadService(object):
             _registered_method=True)
 
     @staticmethod
-    def LogicalUpgradeState(request,
+    def SequencerLsuState(request,
             target,
             options=(),
             channel_credentials=None,
@@ -947,9 +947,9 @@ class TopologyManagerReadService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/LogicalUpgradeState',
-            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateRequest.SerializeToString,
-            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.LogicalUpgradeStateResponse.FromString,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/SequencerLsuState',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateResponse.FromString,
             options,
             channel_credentials,
             insecure,

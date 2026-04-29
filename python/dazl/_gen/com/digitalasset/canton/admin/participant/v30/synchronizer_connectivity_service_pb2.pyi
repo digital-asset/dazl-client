@@ -7,6 +7,7 @@ import datetime
 from ...sequencer.v30 import sequencer_connection_pb2 as _sequencer_connection_pb2
 from ...time.v30 import time_tracker_config_pb2 as _time_tracker_config_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -191,5 +192,35 @@ class LogoutRequest(_message.Message):
     def __init__(self, synchronizer_alias: _Optional[str] = ...) -> None: ...
 
 class LogoutResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class PerformManualLsuRequest(_message.Message):
+    __slots__ = ("physical_synchronizer_id", "successor_physical_synchronizer_id", "upgrade_time", "sequencer_successors")
+    class SequencerConnection(_message.Message):
+        __slots__ = ("endpoints", "custom_trust_certificates")
+        ENDPOINTS_FIELD_NUMBER: _ClassVar[int]
+        CUSTOM_TRUST_CERTIFICATES_FIELD_NUMBER: _ClassVar[int]
+        endpoints: _containers.RepeatedScalarFieldContainer[str]
+        custom_trust_certificates: bytes
+        def __init__(self, endpoints: _Optional[_Iterable[str]] = ..., custom_trust_certificates: _Optional[bytes] = ...) -> None: ...
+    class SequencerSuccessorsEntry(_message.Message):
+        __slots__ = ("key", "value")
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: PerformManualLsuRequest.SequencerConnection
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[PerformManualLsuRequest.SequencerConnection, _Mapping]] = ...) -> None: ...
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    SUCCESSOR_PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    UPGRADE_TIME_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCER_SUCCESSORS_FIELD_NUMBER: _ClassVar[int]
+    physical_synchronizer_id: str
+    successor_physical_synchronizer_id: str
+    upgrade_time: _timestamp_pb2.Timestamp
+    sequencer_successors: _containers.MessageMap[str, PerformManualLsuRequest.SequencerConnection]
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., successor_physical_synchronizer_id: _Optional[str] = ..., upgrade_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., sequencer_successors: _Optional[_Mapping[str, PerformManualLsuRequest.SequencerConnection]] = ...) -> None: ...
+
+class PerformManualLsuResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...

@@ -26,24 +26,50 @@ PARTICIPANT_PERMISSION_CONFIRMATION: ParticipantPermission
 PARTICIPANT_PERMISSION_OBSERVATION: ParticipantPermission
 
 class GetActiveContractsRequest(_message.Message):
-    __slots__ = ("active_at_offset", "event_format")
+    __slots__ = ("active_at_offset", "event_format", "stream_continuation_token")
     ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
     EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    STREAM_CONTINUATION_TOKEN_FIELD_NUMBER: _ClassVar[int]
     active_at_offset: int
     event_format: _transaction_filter_pb2.EventFormat
-    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ...) -> None: ...
+    stream_continuation_token: bytes
+    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., stream_continuation_token: _Optional[bytes] = ...) -> None: ...
+
+class GetActiveContractsPageRequest(_message.Message):
+    __slots__ = ("active_at_offset", "event_format", "max_page_size", "page_token")
+    ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    MAX_PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
+    PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    active_at_offset: int
+    event_format: _transaction_filter_pb2.EventFormat
+    max_page_size: int
+    page_token: bytes
+    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., max_page_size: _Optional[int] = ..., page_token: _Optional[bytes] = ...) -> None: ...
 
 class GetActiveContractsResponse(_message.Message):
-    __slots__ = ("workflow_id", "active_contract", "incomplete_unassigned", "incomplete_assigned")
+    __slots__ = ("workflow_id", "active_contract", "incomplete_unassigned", "incomplete_assigned", "stream_continuation_token")
     WORKFLOW_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_CONTRACT_FIELD_NUMBER: _ClassVar[int]
     INCOMPLETE_UNASSIGNED_FIELD_NUMBER: _ClassVar[int]
     INCOMPLETE_ASSIGNED_FIELD_NUMBER: _ClassVar[int]
+    STREAM_CONTINUATION_TOKEN_FIELD_NUMBER: _ClassVar[int]
     workflow_id: str
     active_contract: ActiveContract
     incomplete_unassigned: IncompleteUnassigned
     incomplete_assigned: IncompleteAssigned
-    def __init__(self, workflow_id: _Optional[str] = ..., active_contract: _Optional[_Union[ActiveContract, _Mapping]] = ..., incomplete_unassigned: _Optional[_Union[IncompleteUnassigned, _Mapping]] = ..., incomplete_assigned: _Optional[_Union[IncompleteAssigned, _Mapping]] = ...) -> None: ...
+    stream_continuation_token: bytes
+    def __init__(self, workflow_id: _Optional[str] = ..., active_contract: _Optional[_Union[ActiveContract, _Mapping]] = ..., incomplete_unassigned: _Optional[_Union[IncompleteUnassigned, _Mapping]] = ..., incomplete_assigned: _Optional[_Union[IncompleteAssigned, _Mapping]] = ..., stream_continuation_token: _Optional[bytes] = ...) -> None: ...
+
+class GetActiveContractsPageResponse(_message.Message):
+    __slots__ = ("active_contracts", "active_at_offset", "next_page_token")
+    ACTIVE_CONTRACTS_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    NEXT_PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    active_contracts: _containers.RepeatedCompositeFieldContainer[GetActiveContractsResponse]
+    active_at_offset: int
+    next_page_token: bytes
+    def __init__(self, active_contracts: _Optional[_Iterable[_Union[GetActiveContractsResponse, _Mapping]]] = ..., active_at_offset: _Optional[int] = ..., next_page_token: _Optional[bytes] = ...) -> None: ...
 
 class ActiveContract(_message.Message):
     __slots__ = ("created_event", "synchronizer_id", "reassignment_counter")

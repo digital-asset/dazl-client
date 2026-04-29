@@ -53,6 +53,11 @@ class UpdateServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByIdRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.FromString,
                 _registered_method=True)
+        self.GetUpdatesPage = channel.unary_unary(
+                '/com.daml.ledger.api.v2.UpdateService/GetUpdatesPage',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdatesPageRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdatesPageResponse.FromString,
+                _registered_method=True)
 
 
 class UpdateServiceServicer(object):
@@ -76,6 +81,12 @@ class UpdateServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetUpdatesPage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UpdateServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -93,6 +104,11 @@ def add_UpdateServiceServicer_to_server(servicer, server):
                     servicer.GetUpdateById,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByIdRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.SerializeToString,
+            ),
+            'GetUpdatesPage': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUpdatesPage,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdatesPageRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdatesPageResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -176,6 +192,33 @@ class UpdateService(object):
             '/com.daml.ledger.api.v2.UpdateService/GetUpdateById',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateByIdRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetUpdatesPage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.UpdateService/GetUpdatesPage',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdatesPageRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2.GetUpdatesPageResponse.FromString,
             options,
             channel_credentials,
             insecure,

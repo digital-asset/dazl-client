@@ -447,6 +447,8 @@ type AllocateExternalPartyRequest struct {
 	OnboardingTransactions []*AllocateExternalPartyRequest_SignedTransaction `protobuf:"bytes,2,rep,name=onboarding_transactions,json=onboardingTransactions,proto3" json:"onboarding_transactions,omitempty"`
 	MultiHashSignatures    []*v2.Signature                                   `protobuf:"bytes,3,rep,name=multi_hash_signatures,json=multiHashSignatures,proto3" json:"multi_hash_signatures,omitempty"`
 	IdentityProviderId     string                                            `protobuf:"bytes,4,opt,name=identity_provider_id,json=identityProviderId,proto3" json:"identity_provider_id,omitempty"`
+	WaitForAllocation      *bool                                             `protobuf:"varint,5,opt,name=wait_for_allocation,json=waitForAllocation,proto3,oneof" json:"wait_for_allocation,omitempty"`
+	UserId                 string                                            `protobuf:"bytes,6,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -505,6 +507,20 @@ func (x *AllocateExternalPartyRequest) GetMultiHashSignatures() []*v2.Signature 
 func (x *AllocateExternalPartyRequest) GetIdentityProviderId() string {
 	if x != nil {
 		return x.IdentityProviderId
+	}
+	return ""
+}
+
+func (x *AllocateExternalPartyRequest) GetWaitForAllocation() bool {
+	if x != nil && x.WaitForAllocation != nil {
+		return *x.WaitForAllocation
+	}
+	return false
+}
+
+func (x *AllocateExternalPartyRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
 	}
 	return ""
 }
@@ -1054,17 +1070,20 @@ const file_com_daml_ledger_api_v2_admin_party_management_service_proto_rawDesc =
 	"\x0fsynchronizer_id\x18\x05 \x01(\tR\x0esynchronizerId\x12\x17\n" +
 	"\auser_id\x18\x06 \x01(\tR\x06userIdJ\x04\b\x02\x10\x03\"h\n" +
 	"\x15AllocatePartyResponse\x12O\n" +
-	"\rparty_details\x18\x01 \x01(\v2*.com.daml.ledger.api.v2.admin.PartyDetailsR\fpartyDetails\"\xcd\x03\n" +
+	"\rparty_details\x18\x01 \x01(\v2*.com.daml.ledger.api.v2.admin.PartyDetailsR\fpartyDetails\"\xb3\x04\n" +
 	"\x1cAllocateExternalPartyRequest\x12\"\n" +
 	"\fsynchronizer\x18\x01 \x01(\tR\fsynchronizer\x12\x85\x01\n" +
 	"\x17onboarding_transactions\x18\x02 \x03(\v2L.com.daml.ledger.api.v2.admin.AllocateExternalPartyRequest.SignedTransactionR\x16onboardingTransactions\x12U\n" +
 	"\x15multi_hash_signatures\x18\x03 \x03(\v2!.com.daml.ledger.api.v2.SignatureR\x13multiHashSignatures\x120\n" +
-	"\x14identity_provider_id\x18\x04 \x01(\tR\x12identityProviderId\x1ax\n" +
+	"\x14identity_provider_id\x18\x04 \x01(\tR\x12identityProviderId\x123\n" +
+	"\x13wait_for_allocation\x18\x05 \x01(\bH\x00R\x11waitForAllocation\x88\x01\x01\x12\x17\n" +
+	"\auser_id\x18\x06 \x01(\tR\x06userId\x1ax\n" +
 	"\x11SignedTransaction\x12 \n" +
 	"\vtransaction\x18\x01 \x01(\fR\vtransaction\x12A\n" +
 	"\n" +
 	"signatures\x18\x02 \x03(\v2!.com.daml.ledger.api.v2.SignatureR\n" +
-	"signatures\":\n" +
+	"signaturesB\x16\n" +
+	"\x14_wait_for_allocation\":\n" +
 	"\x1dAllocateExternalPartyResponse\x12\x19\n" +
 	"\bparty_id\x18\x01 \x01(\tR\apartyId\"\xa9\x01\n" +
 	"\x19UpdatePartyDetailsRequest\x12O\n" +
@@ -1190,6 +1209,7 @@ func file_com_daml_ledger_api_v2_admin_party_management_service_proto_init() {
 		return
 	}
 	file_com_daml_ledger_api_v2_admin_object_meta_proto_init()
+	file_com_daml_ledger_api_v2_admin_party_management_service_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

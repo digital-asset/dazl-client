@@ -22,22 +22,15 @@ class SequencerConnect(_message.Message):
         minimum_protocol_version: int
         def __init__(self, client_protocol_versions: _Optional[_Iterable[int]] = ..., minimum_protocol_version: _Optional[int] = ...) -> None: ...
     class HandshakeResponse(_message.Message):
-        __slots__ = ("server_protocol_version", "success", "failure")
+        __slots__ = ("server_protocol_version", "success")
         class Success(_message.Message):
             __slots__ = ()
             def __init__(self) -> None: ...
-        class Failure(_message.Message):
-            __slots__ = ("reason",)
-            REASON_FIELD_NUMBER: _ClassVar[int]
-            reason: str
-            def __init__(self, reason: _Optional[str] = ...) -> None: ...
         SERVER_PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
         SUCCESS_FIELD_NUMBER: _ClassVar[int]
-        FAILURE_FIELD_NUMBER: _ClassVar[int]
         server_protocol_version: int
         success: SequencerConnect.HandshakeResponse.Success
-        failure: SequencerConnect.HandshakeResponse.Failure
-        def __init__(self, server_protocol_version: _Optional[int] = ..., success: _Optional[_Union[SequencerConnect.HandshakeResponse.Success, _Mapping]] = ..., failure: _Optional[_Union[SequencerConnect.HandshakeResponse.Failure, _Mapping]] = ...) -> None: ...
+        def __init__(self, server_protocol_version: _Optional[int] = ..., success: _Optional[_Union[SequencerConnect.HandshakeResponse.Success, _Mapping]] = ...) -> None: ...
     class GetSynchronizerIdRequest(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
@@ -60,22 +53,15 @@ class SequencerConnect(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
     class VerifyActiveResponse(_message.Message):
-        __slots__ = ("success", "failure")
+        __slots__ = ("success",)
         class Success(_message.Message):
             __slots__ = ("is_active",)
             IS_ACTIVE_FIELD_NUMBER: _ClassVar[int]
             is_active: bool
             def __init__(self, is_active: bool = ...) -> None: ...
-        class Failure(_message.Message):
-            __slots__ = ("reason",)
-            REASON_FIELD_NUMBER: _ClassVar[int]
-            reason: str
-            def __init__(self, reason: _Optional[str] = ...) -> None: ...
         SUCCESS_FIELD_NUMBER: _ClassVar[int]
-        FAILURE_FIELD_NUMBER: _ClassVar[int]
         success: SequencerConnect.VerifyActiveResponse.Success
-        failure: SequencerConnect.VerifyActiveResponse.Failure
-        def __init__(self, success: _Optional[_Union[SequencerConnect.VerifyActiveResponse.Success, _Mapping]] = ..., failure: _Optional[_Union[SequencerConnect.VerifyActiveResponse.Failure, _Mapping]] = ...) -> None: ...
+        def __init__(self, success: _Optional[_Union[SequencerConnect.VerifyActiveResponse.Success, _Mapping]] = ...) -> None: ...
     class RegisterOnboardingTopologyTransactionsRequest(_message.Message):
         __slots__ = ("topology_transactions",)
         TOPOLOGY_TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]

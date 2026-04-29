@@ -30,10 +30,11 @@ from ....protocol.v30 import sequencing_pb2 as com_dot_digitalasset_dot_canton_d
 from ....protocol.v30 import traffic_control_parameters_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v30_dot_traffic__control__parameters__pb2
 from . import sequencer_initialization_snapshot_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__initialization__snapshot__pb2
 from ....topology.admin.v30 import common_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_common__pb2
+from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nRcom/digitalasset/canton/sequencer/admin/v30/sequencer_administration_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1a\x35\x63om/digitalasset/canton/protocol/v30/sequencing.proto\x1a\x45\x63om/digitalasset/canton/protocol/v30/traffic_control_parameters.proto\x1aScom/digitalasset/canton/sequencer/admin/v30/sequencer_initialization_snapshot.proto\x1a\x37\x63om/digitalasset/canton/topology/admin/v30/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa4\x03\n\x1aTrafficControlStateRequest\x12\x18\n\x07members\x18\x01 \x03(\tR\x07members\x12)\n\x0f\x65xact_timestamp\x18\x02 \x01(\x04H\x00R\x0e\x65xactTimestamp\x12\x8a\x01\n\x12relative_timestamp\x18\x03 \x01(\x0e\x32Y.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest.RelativeTimestampH\x00R\x11relativeTimestamp\"\x9d\x01\n\x11RelativeTimestamp\x12.\n*RELATIVE_TIMESTAMP_LATEST_SAFE_UNSPECIFIED\x10\x00\x12-\n)RELATIVE_TIMESTAMP_LAST_UPDATE_PER_MEMBER\x10\x01\x12)\n%RELATIVE_TIMESTAMP_LATEST_APPROXIMATE\x10\x02\x42\x14\n\x12timestamp_selector\"\x98\x02\n\x1bTrafficControlStateResponse\x12\x82\x01\n\x0etraffic_states\x18\x01 \x03(\x0b\x32[.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.TrafficStatesEntryR\rtrafficStates\x1at\n\x12TrafficStatesEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12H\n\x05value\x18\x02 \x01(\x0b\x32\x32.com.digitalasset.canton.protocol.v30.TrafficStateR\x05value:\x02\x38\x01\"\x84\x01\n\x1aSetTrafficPurchasedRequest\x12\x16\n\x06member\x18\x01 \x01(\tR\x06member\x12\x16\n\x06serial\x18\x02 \x01(\rR\x06serial\x12\x36\n\x17total_traffic_purchased\x18\x03 \x01(\x03R\x15totalTrafficPurchased\"\x1d\n\x1bSetTrafficPurchasedResponse\"K\n\x0fSnapshotRequest\x12\x38\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\"\x94\x04\n\x10SnapshotResponse\x12\x61\n\x07success\x18\x01 \x01(\x0b\x32\x45.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.SuccessH\x00R\x07success\x12\x61\n\x07\x66\x61ilure\x18\x02 \x01(\x0b\x32\x45.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.FailureH\x00R\x07\x66\x61ilure\x12}\n\x11versioned_success\x18\x03 \x01(\x0b\x32N.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.VersionedSuccessH\x00R\x10versionedSuccess\x1a_\n\x07Success\x12T\n\x05state\x18\x01 \x01(\x0b\x32>.com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshotR\x05state\x1a!\n\x07\x46\x61ilure\x12\x16\n\x06reason\x18\x01 \x01(\tR\x06reason\x1a.\n\x10VersionedSuccess\x12\x1a\n\x08snapshot\x18\x01 \x01(\x0cR\x08snapshotB\x07\n\x05value\"\x86\x01\n\x16OnboardingStateRequest\x12%\n\rsequencer_uid\x18\x01 \x01(\tH\x00R\x0csequencerUid\x12:\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\ttimestampB\t\n\x07request\"^\n\x17OnboardingStateResponse\x12\x43\n\x1eonboarding_state_for_sequencer\x18\x01 \x01(\x0cR\x1bonboardingStateForSequencer\"\x86\x03\n\x1bOnboardingStateForSequencer\x12m\n\x11topology_snapshot\x18\x01 \x01(\x0b\x32@.com.digitalasset.canton.topology.admin.v30.TopologyTransactionsR\x10topologySnapshot\x12\x88\x01\n\x1estatic_synchronizer_parameters\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersR\x1cstaticSynchronizerParameters\x12m\n\x12sequencer_snapshot\x18\x03 \x01(\x0b\x32>.com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshotR\x11sequencerSnapshot\"\x88\x01\n\x18OnboardingStateV2Request\x12%\n\rsequencer_uid\x18\x01 \x01(\tH\x00R\x0csequencerUid\x12:\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\ttimestampB\t\n\x07request\"`\n\x19OnboardingStateV2Response\x12\x43\n\x1eonboarding_state_for_sequencer\x18\x01 \x01(\x0cR\x1bonboardingStateForSequencer\"\xcd\x02\n\x1dOnboardingStateForSequencerV2\x12\x36\n\x14topology_transaction\x18\x01 \x01(\x0cH\x00R\x13topologyTransaction\x88\x01\x01\x12I\n\x1estatic_synchronizer_parameters\x18\x02 \x01(\x0cH\x01R\x1cstaticSynchronizerParameters\x88\x01\x01\x12m\n\x12sequencer_snapshot\x18\x03 \x01(\x0b\x32>.com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshotR\x11sequencerSnapshotB\x17\n\x15_topology_transactionB!\n\x1f_static_synchronizer_parameters\"\x16\n\x14PruningStatusRequest\"\x83\x01\n\x15PruningStatusResponse\x12j\n\x0epruning_status\x18\x01 \x01(\x0b\x32\x43.com.digitalasset.canton.sequencer.admin.v30.SequencerPruningStatusR\rpruningStatus\".\n\x14\x44isableMemberRequest\x12\x16\n\x06member\x18\x01 \x01(\tR\x06member\"\x17\n\x15\x44isableMemberResponse2\xfa\x08\n\x1eSequencerAdministrationService\x12\x96\x01\n\rPruningStatus\x12\x41.com.digitalasset.canton.sequencer.admin.v30.PruningStatusRequest\x1a\x42.com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse\x12\xa8\x01\n\x13TrafficControlState\x12G.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest\x1aH.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse\x12\xa8\x01\n\x13SetTrafficPurchased\x12G.com.digitalasset.canton.sequencer.admin.v30.SetTrafficPurchasedRequest\x1aH.com.digitalasset.canton.sequencer.admin.v30.SetTrafficPurchasedResponse\x12\x87\x01\n\x08Snapshot\x12<.com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest\x1a=.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse\x12\x9e\x01\n\x0fOnboardingState\x12\x43.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateRequest\x1a\x44.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateResponse0\x01\x12\xa4\x01\n\x11OnboardingStateV2\x12\x45.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request\x1a\x46.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Response0\x01\x12\x96\x01\n\rDisableMember\x12\x41.com.digitalasset.canton.sequencer.admin.v30.DisableMemberRequest\x1a\x42.com.digitalasset.canton.sequencer.admin.v30.DisableMemberResponseB\\ZZgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/admin/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nRcom/digitalasset/canton/sequencer/admin/v30/sequencer_administration_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1a\x35\x63om/digitalasset/canton/protocol/v30/sequencing.proto\x1a\x45\x63om/digitalasset/canton/protocol/v30/traffic_control_parameters.proto\x1aScom/digitalasset/canton/sequencer/admin/v30/sequencer_initialization_snapshot.proto\x1a\x37\x63om/digitalasset/canton/topology/admin/v30/common.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"v\n\"GenerateAuthenticationTokenRequest\x12\x16\n\x06member\x18\x01 \x01(\tR\x06member\x12\x38\n\nexpires_in\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationR\texpiresIn\"v\n#GenerateAuthenticationTokenResponse\x12\x14\n\x05token\x18\x01 \x01(\x0cR\x05token\x12\x39\n\nexpires_at\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\texpiresAt\"\xa4\x03\n\x1aTrafficControlStateRequest\x12\x18\n\x07members\x18\x01 \x03(\tR\x07members\x12)\n\x0f\x65xact_timestamp\x18\x02 \x01(\x04H\x00R\x0e\x65xactTimestamp\x12\x8a\x01\n\x12relative_timestamp\x18\x03 \x01(\x0e\x32Y.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest.RelativeTimestampH\x00R\x11relativeTimestamp\"\x9d\x01\n\x11RelativeTimestamp\x12.\n*RELATIVE_TIMESTAMP_LATEST_SAFE_UNSPECIFIED\x10\x00\x12-\n)RELATIVE_TIMESTAMP_LAST_UPDATE_PER_MEMBER\x10\x01\x12)\n%RELATIVE_TIMESTAMP_LATEST_APPROXIMATE\x10\x02\x42\x14\n\x12timestamp_selector\"\x98\x02\n\x1bTrafficControlStateResponse\x12\x82\x01\n\x0etraffic_states\x18\x01 \x03(\x0b\x32[.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.TrafficStatesEntryR\rtrafficStates\x1at\n\x12TrafficStatesEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12H\n\x05value\x18\x02 \x01(\x0b\x32\x32.com.digitalasset.canton.protocol.v30.TrafficStateR\x05value:\x02\x38\x01\"\x84\x01\n\x1aSetTrafficPurchasedRequest\x12\x16\n\x06member\x18\x01 \x01(\tR\x06member\x12\x16\n\x06serial\x18\x02 \x01(\rR\x06serial\x12\x36\n\x17total_traffic_purchased\x18\x03 \x01(\x03R\x15totalTrafficPurchased\"\x1d\n\x1bSetTrafficPurchasedResponse\"o\n GetLsuTrafficControlStateRequest\x12=\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\ttimestamp\x88\x01\x01\x42\x0c\n\n_timestamp\"\x8d\x02\n\x0fLsuTrafficState\x12\x80\x01\n\x12lsu_traffic_states\x18\x01 \x03(\x0b\x32R.com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.LsuTrafficStatesEntryR\x10lsuTrafficStates\x1aw\n\x15LsuTrafficStatesEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12H\n\x05value\x18\x02 \x01(\x0b\x32\x32.com.digitalasset.canton.protocol.v30.TrafficStateR\x05value:\x02\x38\x01\"O\n!GetLsuTrafficControlStateResponse\x12*\n\x11lsu_traffic_state\x18\x01 \x01(\x0cR\x0flsuTrafficState\"N\n SetLsuTrafficControlStateRequest\x12*\n\x11lsu_traffic_state\x18\x01 \x01(\x0cR\x0flsuTrafficState\"#\n!SetLsuTrafficControlStateResponse\"\xc9\x01\n\x1dIndividualThroughputCapConfig\x12$\n\x0eglobal_tps_cap\x18\x01 \x01(\x01R\x0cglobalTpsCap\x12&\n\x0fglobal_kbps_cap\x18\x02 \x01(\x01R\rglobalKbpsCap\x12+\n\x12per_client_tps_cap\x18\x03 \x01(\x01R\x0fperClientTpsCap\x12-\n\x13per_client_kbps_cap\x18\x04 \x01(\x01R\x10perClientKbpsCap\"\x91\x01\n\x17SetThroughputCapRequest\x12\x12\n\x04type\x18\x01 \x01(\tR\x04type\x12\x62\n\x06\x63onfig\x18\x02 \x01(\x0b\x32J.com.digitalasset.canton.sequencer.admin.v30.IndividualThroughputCapConfigR\x06\x63onfig\"\x1a\n\x18SetThroughputCapResponse\"-\n\x17GetThroughputCapRequest\x12\x12\n\x04type\x18\x01 \x01(\tR\x04type\"~\n\x18GetThroughputCapResponse\x12\x62\n\x06\x63onfig\x18\x01 \x01(\x0b\x32J.com.digitalasset.canton.sequencer.admin.v30.IndividualThroughputCapConfigR\x06\x63onfig\"K\n\x0fSnapshotRequest\x12\x38\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\"\x94\x04\n\x10SnapshotResponse\x12\x61\n\x07success\x18\x01 \x01(\x0b\x32\x45.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.SuccessH\x00R\x07success\x12\x61\n\x07\x66\x61ilure\x18\x02 \x01(\x0b\x32\x45.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.FailureH\x00R\x07\x66\x61ilure\x12}\n\x11versioned_success\x18\x03 \x01(\x0b\x32N.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.VersionedSuccessH\x00R\x10versionedSuccess\x1a_\n\x07Success\x12T\n\x05state\x18\x01 \x01(\x0b\x32>.com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshotR\x05state\x1a!\n\x07\x46\x61ilure\x12\x16\n\x06reason\x18\x01 \x01(\tR\x06reason\x1a.\n\x10VersionedSuccess\x12\x1a\n\x08snapshot\x18\x01 \x01(\x0cR\x08snapshotB\x07\n\x05value\"\x86\x01\n\x16OnboardingStateRequest\x12%\n\rsequencer_uid\x18\x01 \x01(\tH\x00R\x0csequencerUid\x12:\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\ttimestampB\t\n\x07request\"^\n\x17OnboardingStateResponse\x12\x43\n\x1eonboarding_state_for_sequencer\x18\x01 \x01(\x0cR\x1bonboardingStateForSequencer\"\x86\x03\n\x1bOnboardingStateForSequencer\x12m\n\x11topology_snapshot\x18\x01 \x01(\x0b\x32@.com.digitalasset.canton.topology.admin.v30.TopologyTransactionsR\x10topologySnapshot\x12\x88\x01\n\x1estatic_synchronizer_parameters\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersR\x1cstaticSynchronizerParameters\x12m\n\x12sequencer_snapshot\x18\x03 \x01(\x0b\x32>.com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshotR\x11sequencerSnapshot\"\x88\x01\n\x18OnboardingStateV2Request\x12%\n\rsequencer_uid\x18\x01 \x01(\tH\x00R\x0csequencerUid\x12:\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00R\ttimestampB\t\n\x07request\"`\n\x19OnboardingStateV2Response\x12\x43\n\x1eonboarding_state_for_sequencer\x18\x01 \x01(\x0cR\x1bonboardingStateForSequencer\"\xcd\x02\n\x1dOnboardingStateForSequencerV2\x12\x36\n\x14topology_transaction\x18\x01 \x01(\x0cH\x00R\x13topologyTransaction\x88\x01\x01\x12I\n\x1estatic_synchronizer_parameters\x18\x02 \x01(\x0cH\x01R\x1cstaticSynchronizerParameters\x88\x01\x01\x12m\n\x12sequencer_snapshot\x18\x03 \x01(\x0b\x32>.com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshotR\x11sequencerSnapshotB\x17\n\x15_topology_transactionB!\n\x1f_static_synchronizer_parameters\"\x16\n\x14PruningStatusRequest\"\x83\x01\n\x15PruningStatusResponse\x12j\n\x0epruning_status\x18\x01 \x01(\x0b\x32\x43.com.digitalasset.canton.sequencer.admin.v30.SequencerPruningStatusR\rpruningStatus\".\n\x14\x44isableMemberRequest\x12\x16\n\x06member\x18\x01 \x01(\tR\x06member\"\x17\n\x15\x44isableMemberResponse\"[\n\x1fPerformLsuSequencingTestRequest\x12\x38\n\x18recipient_mediator_group\x18\x01 \x01(\x05R\x16recipientMediatorGroup\"\"\n PerformLsuSequencingTestResponse2\xb5\x11\n\x1eSequencerAdministrationService\x12\x96\x01\n\rPruningStatus\x12\x41.com.digitalasset.canton.sequencer.admin.v30.PruningStatusRequest\x1a\x42.com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse\x12\xa8\x01\n\x13TrafficControlState\x12G.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest\x1aH.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse\x12\xa8\x01\n\x13SetTrafficPurchased\x12G.com.digitalasset.canton.sequencer.admin.v30.SetTrafficPurchasedRequest\x1aH.com.digitalasset.canton.sequencer.admin.v30.SetTrafficPurchasedResponse\x12\xba\x01\n\x19GetLsuTrafficControlState\x12M.com.digitalasset.canton.sequencer.admin.v30.GetLsuTrafficControlStateRequest\x1aN.com.digitalasset.canton.sequencer.admin.v30.GetLsuTrafficControlStateResponse\x12\xba\x01\n\x19SetLsuTrafficControlState\x12M.com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateRequest\x1aN.com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateResponse\x12\x9f\x01\n\x10SetThroughputCap\x12\x44.com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapRequest\x1a\x45.com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapResponse\x12\x9f\x01\n\x10GetThroughputCap\x12\x44.com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapRequest\x1a\x45.com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapResponse\x12\x87\x01\n\x08Snapshot\x12<.com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest\x1a=.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse\x12\x9e\x01\n\x0fOnboardingState\x12\x43.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateRequest\x1a\x44.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateResponse0\x01\x12\xa4\x01\n\x11OnboardingStateV2\x12\x45.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request\x1a\x46.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Response0\x01\x12\x96\x01\n\rDisableMember\x12\x41.com.digitalasset.canton.sequencer.admin.v30.DisableMemberRequest\x1a\x42.com.digitalasset.canton.sequencer.admin.v30.DisableMemberResponse\x12\xc0\x01\n\x1bGenerateAuthenticationToken\x12O.com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenRequest\x1aP.com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenResponse\x12\xb7\x01\n\x18PerformLsuSequencingTest\x12L.com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestRequest\x1aM.com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestResponseB\\ZZgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/admin/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -43,48 +44,80 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._serialized_options = b'ZZgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/admin/v30'
   _globals['_TRAFFICCONTROLSTATERESPONSE_TRAFFICSTATESENTRY']._loaded_options = None
   _globals['_TRAFFICCONTROLSTATERESPONSE_TRAFFICSTATESENTRY']._serialized_options = b'8\001'
-  _globals['_TRAFFICCONTROLSTATEREQUEST']._serialized_start=433
-  _globals['_TRAFFICCONTROLSTATEREQUEST']._serialized_end=853
-  _globals['_TRAFFICCONTROLSTATEREQUEST_RELATIVETIMESTAMP']._serialized_start=674
-  _globals['_TRAFFICCONTROLSTATEREQUEST_RELATIVETIMESTAMP']._serialized_end=831
-  _globals['_TRAFFICCONTROLSTATERESPONSE']._serialized_start=856
-  _globals['_TRAFFICCONTROLSTATERESPONSE']._serialized_end=1136
-  _globals['_TRAFFICCONTROLSTATERESPONSE_TRAFFICSTATESENTRY']._serialized_start=1020
-  _globals['_TRAFFICCONTROLSTATERESPONSE_TRAFFICSTATESENTRY']._serialized_end=1136
-  _globals['_SETTRAFFICPURCHASEDREQUEST']._serialized_start=1139
-  _globals['_SETTRAFFICPURCHASEDREQUEST']._serialized_end=1271
-  _globals['_SETTRAFFICPURCHASEDRESPONSE']._serialized_start=1273
-  _globals['_SETTRAFFICPURCHASEDRESPONSE']._serialized_end=1302
-  _globals['_SNAPSHOTREQUEST']._serialized_start=1304
-  _globals['_SNAPSHOTREQUEST']._serialized_end=1379
-  _globals['_SNAPSHOTRESPONSE']._serialized_start=1382
-  _globals['_SNAPSHOTRESPONSE']._serialized_end=1914
-  _globals['_SNAPSHOTRESPONSE_SUCCESS']._serialized_start=1727
-  _globals['_SNAPSHOTRESPONSE_SUCCESS']._serialized_end=1822
-  _globals['_SNAPSHOTRESPONSE_FAILURE']._serialized_start=1824
-  _globals['_SNAPSHOTRESPONSE_FAILURE']._serialized_end=1857
-  _globals['_SNAPSHOTRESPONSE_VERSIONEDSUCCESS']._serialized_start=1859
-  _globals['_SNAPSHOTRESPONSE_VERSIONEDSUCCESS']._serialized_end=1905
-  _globals['_ONBOARDINGSTATEREQUEST']._serialized_start=1917
-  _globals['_ONBOARDINGSTATEREQUEST']._serialized_end=2051
-  _globals['_ONBOARDINGSTATERESPONSE']._serialized_start=2053
-  _globals['_ONBOARDINGSTATERESPONSE']._serialized_end=2147
-  _globals['_ONBOARDINGSTATEFORSEQUENCER']._serialized_start=2150
-  _globals['_ONBOARDINGSTATEFORSEQUENCER']._serialized_end=2540
-  _globals['_ONBOARDINGSTATEV2REQUEST']._serialized_start=2543
-  _globals['_ONBOARDINGSTATEV2REQUEST']._serialized_end=2679
-  _globals['_ONBOARDINGSTATEV2RESPONSE']._serialized_start=2681
-  _globals['_ONBOARDINGSTATEV2RESPONSE']._serialized_end=2777
-  _globals['_ONBOARDINGSTATEFORSEQUENCERV2']._serialized_start=2780
-  _globals['_ONBOARDINGSTATEFORSEQUENCERV2']._serialized_end=3113
-  _globals['_PRUNINGSTATUSREQUEST']._serialized_start=3115
-  _globals['_PRUNINGSTATUSREQUEST']._serialized_end=3137
-  _globals['_PRUNINGSTATUSRESPONSE']._serialized_start=3140
-  _globals['_PRUNINGSTATUSRESPONSE']._serialized_end=3271
-  _globals['_DISABLEMEMBERREQUEST']._serialized_start=3273
-  _globals['_DISABLEMEMBERREQUEST']._serialized_end=3319
-  _globals['_DISABLEMEMBERRESPONSE']._serialized_start=3321
-  _globals['_DISABLEMEMBERRESPONSE']._serialized_end=3344
-  _globals['_SEQUENCERADMINISTRATIONSERVICE']._serialized_start=3347
-  _globals['_SEQUENCERADMINISTRATIONSERVICE']._serialized_end=4493
+  _globals['_LSUTRAFFICSTATE_LSUTRAFFICSTATESENTRY']._loaded_options = None
+  _globals['_LSUTRAFFICSTATE_LSUTRAFFICSTATESENTRY']._serialized_options = b'8\001'
+  _globals['_GENERATEAUTHENTICATIONTOKENREQUEST']._serialized_start=464
+  _globals['_GENERATEAUTHENTICATIONTOKENREQUEST']._serialized_end=582
+  _globals['_GENERATEAUTHENTICATIONTOKENRESPONSE']._serialized_start=584
+  _globals['_GENERATEAUTHENTICATIONTOKENRESPONSE']._serialized_end=702
+  _globals['_TRAFFICCONTROLSTATEREQUEST']._serialized_start=705
+  _globals['_TRAFFICCONTROLSTATEREQUEST']._serialized_end=1125
+  _globals['_TRAFFICCONTROLSTATEREQUEST_RELATIVETIMESTAMP']._serialized_start=946
+  _globals['_TRAFFICCONTROLSTATEREQUEST_RELATIVETIMESTAMP']._serialized_end=1103
+  _globals['_TRAFFICCONTROLSTATERESPONSE']._serialized_start=1128
+  _globals['_TRAFFICCONTROLSTATERESPONSE']._serialized_end=1408
+  _globals['_TRAFFICCONTROLSTATERESPONSE_TRAFFICSTATESENTRY']._serialized_start=1292
+  _globals['_TRAFFICCONTROLSTATERESPONSE_TRAFFICSTATESENTRY']._serialized_end=1408
+  _globals['_SETTRAFFICPURCHASEDREQUEST']._serialized_start=1411
+  _globals['_SETTRAFFICPURCHASEDREQUEST']._serialized_end=1543
+  _globals['_SETTRAFFICPURCHASEDRESPONSE']._serialized_start=1545
+  _globals['_SETTRAFFICPURCHASEDRESPONSE']._serialized_end=1574
+  _globals['_GETLSUTRAFFICCONTROLSTATEREQUEST']._serialized_start=1576
+  _globals['_GETLSUTRAFFICCONTROLSTATEREQUEST']._serialized_end=1687
+  _globals['_LSUTRAFFICSTATE']._serialized_start=1690
+  _globals['_LSUTRAFFICSTATE']._serialized_end=1959
+  _globals['_LSUTRAFFICSTATE_LSUTRAFFICSTATESENTRY']._serialized_start=1840
+  _globals['_LSUTRAFFICSTATE_LSUTRAFFICSTATESENTRY']._serialized_end=1959
+  _globals['_GETLSUTRAFFICCONTROLSTATERESPONSE']._serialized_start=1961
+  _globals['_GETLSUTRAFFICCONTROLSTATERESPONSE']._serialized_end=2040
+  _globals['_SETLSUTRAFFICCONTROLSTATEREQUEST']._serialized_start=2042
+  _globals['_SETLSUTRAFFICCONTROLSTATEREQUEST']._serialized_end=2120
+  _globals['_SETLSUTRAFFICCONTROLSTATERESPONSE']._serialized_start=2122
+  _globals['_SETLSUTRAFFICCONTROLSTATERESPONSE']._serialized_end=2157
+  _globals['_INDIVIDUALTHROUGHPUTCAPCONFIG']._serialized_start=2160
+  _globals['_INDIVIDUALTHROUGHPUTCAPCONFIG']._serialized_end=2361
+  _globals['_SETTHROUGHPUTCAPREQUEST']._serialized_start=2364
+  _globals['_SETTHROUGHPUTCAPREQUEST']._serialized_end=2509
+  _globals['_SETTHROUGHPUTCAPRESPONSE']._serialized_start=2511
+  _globals['_SETTHROUGHPUTCAPRESPONSE']._serialized_end=2537
+  _globals['_GETTHROUGHPUTCAPREQUEST']._serialized_start=2539
+  _globals['_GETTHROUGHPUTCAPREQUEST']._serialized_end=2584
+  _globals['_GETTHROUGHPUTCAPRESPONSE']._serialized_start=2586
+  _globals['_GETTHROUGHPUTCAPRESPONSE']._serialized_end=2712
+  _globals['_SNAPSHOTREQUEST']._serialized_start=2714
+  _globals['_SNAPSHOTREQUEST']._serialized_end=2789
+  _globals['_SNAPSHOTRESPONSE']._serialized_start=2792
+  _globals['_SNAPSHOTRESPONSE']._serialized_end=3324
+  _globals['_SNAPSHOTRESPONSE_SUCCESS']._serialized_start=3137
+  _globals['_SNAPSHOTRESPONSE_SUCCESS']._serialized_end=3232
+  _globals['_SNAPSHOTRESPONSE_FAILURE']._serialized_start=3234
+  _globals['_SNAPSHOTRESPONSE_FAILURE']._serialized_end=3267
+  _globals['_SNAPSHOTRESPONSE_VERSIONEDSUCCESS']._serialized_start=3269
+  _globals['_SNAPSHOTRESPONSE_VERSIONEDSUCCESS']._serialized_end=3315
+  _globals['_ONBOARDINGSTATEREQUEST']._serialized_start=3327
+  _globals['_ONBOARDINGSTATEREQUEST']._serialized_end=3461
+  _globals['_ONBOARDINGSTATERESPONSE']._serialized_start=3463
+  _globals['_ONBOARDINGSTATERESPONSE']._serialized_end=3557
+  _globals['_ONBOARDINGSTATEFORSEQUENCER']._serialized_start=3560
+  _globals['_ONBOARDINGSTATEFORSEQUENCER']._serialized_end=3950
+  _globals['_ONBOARDINGSTATEV2REQUEST']._serialized_start=3953
+  _globals['_ONBOARDINGSTATEV2REQUEST']._serialized_end=4089
+  _globals['_ONBOARDINGSTATEV2RESPONSE']._serialized_start=4091
+  _globals['_ONBOARDINGSTATEV2RESPONSE']._serialized_end=4187
+  _globals['_ONBOARDINGSTATEFORSEQUENCERV2']._serialized_start=4190
+  _globals['_ONBOARDINGSTATEFORSEQUENCERV2']._serialized_end=4523
+  _globals['_PRUNINGSTATUSREQUEST']._serialized_start=4525
+  _globals['_PRUNINGSTATUSREQUEST']._serialized_end=4547
+  _globals['_PRUNINGSTATUSRESPONSE']._serialized_start=4550
+  _globals['_PRUNINGSTATUSRESPONSE']._serialized_end=4681
+  _globals['_DISABLEMEMBERREQUEST']._serialized_start=4683
+  _globals['_DISABLEMEMBERREQUEST']._serialized_end=4729
+  _globals['_DISABLEMEMBERRESPONSE']._serialized_start=4731
+  _globals['_DISABLEMEMBERRESPONSE']._serialized_end=4754
+  _globals['_PERFORMLSUSEQUENCINGTESTREQUEST']._serialized_start=4756
+  _globals['_PERFORMLSUSEQUENCINGTESTREQUEST']._serialized_end=4847
+  _globals['_PERFORMLSUSEQUENCINGTESTRESPONSE']._serialized_start=4849
+  _globals['_PERFORMLSUSEQUENCINGTESTRESPONSE']._serialized_end=4883
+  _globals['_SEQUENCERADMINISTRATIONSERVICE']._serialized_start=4886
+  _globals['_SEQUENCERADMINISTRATIONSERVICE']._serialized_end=7115
 # @@protoc_insertion_point(module_scope)
