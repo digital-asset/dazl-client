@@ -60,6 +60,14 @@ def corrected_name(name: str) -> str:
         return "com/digitalasset/canton/protocol/v0/time_proof.pb.go"
     elif name == "com/digitalasset/canton/time/v30/time_proof.pb.go":
         return "com/digitalasset/canton/protocol/v30/time_proof.pb.go"
+
+    elif name == "com/digitalasset/daml/lf/archive/daml_lf1.pb.go":
+        # the two Daml-LF files cause different package names to be generated,
+        # so they need to moved around in order to generate valid Go code
+        return "com/digitalasset/daml/lf/archive/daml_lf_1/daml_lf1.pb.go"
+    elif name == "com/digitalasset/daml/lf/archive/daml_lf2.pb.go":
+        return "com/digitalasset/daml/lf/archive/daml_lf_2/daml_lf2.pb.go"
+
     else:
         return name
 
@@ -83,6 +91,12 @@ def write_corrected_content(path: Path, content: str) -> None:
 
         elif path.name == "time_proof.pb.go":
             write_corrected_content_for_timeproof(buf, lines)
+
+        elif path.name == "sequencer_initialization_service.pb.go":
+            write_corrected_content_for_sequencer_initialization_service(buf, lines)
+
+        elif path.name == "daml_lf.pb.go":
+            write_corrected_content_for_daml_lf(buf, lines)
 
         else:
             write_content_unchanged(buf, lines)
@@ -119,6 +133,35 @@ def write_corrected_content_for_timeproof(buf: TextIO, lines: Sequence[str]) -> 
         elif "*v0." in line:
             # replace references to the v0 package to local package refs
             buf.write(line.replace("*v0.", "*") + "\n")
+        else:
+            buf.write(line + "\n")
+
+
+def write_corrected_content_for_sequencer_initialization_service(
+    buf: TextIO, lines: Sequence[str]
+) -> None:
+    for line in lines:
+        if line == f'\tv01 "{dazl_go_module}/go/api/com/digitalasset/canton/crypto/v0"':
+            buf.write(line + "\n")
+            buf.write(
+                f'\tv0snapshot "{dazl_go_module}/go/api/com/digitalasset/canton/domain/admin/v0"\n'
+            )
+        elif (
+            line
+            == "\tfile_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_snapshot_proto_init()"
+        ):
+            buf.write(
+                "\t//file_com_digitalasset_canton_domain_admin_v0_sequencer_initialization_snapshot_proto_init()\n"
+            )
+        else:
+            buf.write(line.replace("*SequencerSnapshot", "*v0snapshot.SequencerSnapshot") + "\n")
+
+
+def write_corrected_content_for_daml_lf(buf: TextIO, lines: Sequence[str]) -> None:
+    for line in lines:
+        # Go is incorrectly generating a circular dependency here, so remove it
+        if line == f'\t_ "{dazl_go_module}/go/api/daml_lf_2"':
+            pass
         else:
             buf.write(line + "\n")
 
