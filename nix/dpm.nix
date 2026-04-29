@@ -2,14 +2,14 @@
 
 let
   dpmPath = "europe-docker.pkg.dev/da-images/public/components/dpm";
-  dpmVersion = "1.0.12";
+  dpmVersion = "1.0.13";
   dpmRef = "${dpmPath}:${dpmVersion}";
 
   dpmHashes = {
-    "x86_64-linux" = "sha256-iR/kQy0u/aoLd/8AZCg6Dpf2YAaxlzepffoyzu5bqnQ=";
-    "aarch64-linux" = "sha256-iSekabTFHp2ulP1soJbnP036pZOV4OJ3Za+UGfZDmLI=";
-    "x86_64-darwin" = "sha256-jAFLS4Qr+ewkEgqgrtYm8+D+ur0htMzSso/jPIAFWpE=";
-    "aarch64-darwin" = "sha256-m9I67SSjvuBMYXixY5HNpSD0bAACg7xpHbVJglVZfxw=";
+    "x86_64-linux" = "sha256-8w3bGxFXoAy6d2YykgBtsMX4ZhuO/HlGf7jWc9pTJ6I=";
+    "aarch64-linux" = "sha256-djrUlN693+uV7PeeLxrtkNI2bxAsvLYmtJEkGRlwd5I=";
+    "x86_64-darwin" = "sha256-lNfLYRZnIWBu1V164PADety6ERD4g9U3fG1uT9lqNyo=";
+    "aarch64-darwin" = "sha256-ELr+LGE8i1Z7QRylqtFc7W/b8qj7jFBATneIyqlxvhs=";
   };
   dpmHash = dpmHashes.${pkgs.system} or (throw "Unsupported system: ${pkgs.system}");
 
