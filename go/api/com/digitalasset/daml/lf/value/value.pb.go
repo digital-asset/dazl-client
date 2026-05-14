@@ -9,13 +9,12 @@
 package value
 
 import (
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
-
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -489,8 +488,8 @@ func (x *Value_Record) GetFields() []*Value_Record_Field {
 
 type Value_Variant struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Constructor   string `protobuf:"bytes,1,opt,name=constructor,proto3" json:"constructor,omitempty"`
-	Value         *Value `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	Constructor   string                 `protobuf:"bytes,1,opt,name=constructor,proto3" json:"constructor,omitempty"`
+	Value         *Value                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -805,8 +804,8 @@ func (x *Value_Record_Field) GetValue() *Value {
 
 type Value_TextMap_Entry struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Key           string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	Value         *Value `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value         *Value                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

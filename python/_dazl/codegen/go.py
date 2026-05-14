@@ -67,7 +67,10 @@ def corrected_name(name: str) -> str:
         return "com/digitalasset/daml/lf/archive/daml_lf_1/daml_lf1.pb.go"
     elif name == "com/digitalasset/daml/lf/archive/daml_lf2.pb.go":
         return "com/digitalasset/daml/lf/archive/daml_lf_2/daml_lf2.pb.go"
-
+    elif name == "com/digitalasset/daml/lf/value.pb.go":
+        return "com/digitalasset/daml/lf/value/value.pb.go"
+    elif name == "com/digitalasset/daml/lf/transaction.pb.go":
+        return "com/digitalasset/daml/lf/transaction/transaction.pb.go"
     else:
         return name
 
