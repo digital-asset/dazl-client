@@ -58,10 +58,11 @@ import (
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/version"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/version/v1"
-	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/archive"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/archive/daml_lf_1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/archive/daml_lf_2"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/transaction"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/value"
 )
 
 func Test(_ *testing.T) {}

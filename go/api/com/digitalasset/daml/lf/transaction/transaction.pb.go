@@ -9,12 +9,13 @@
 package transaction
 
 import (
-	value "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/value"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	value "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/value"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -27,8 +28,8 @@ const (
 type Transaction struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Version       string                 `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
-	Roots         []string               `protobuf:"bytes,2,rep,name=roots,proto3" json:"roots,omitempty"`
-	Nodes         []*Node                `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	Roots         []string `protobuf:"bytes,2,rep,name=roots,proto3" json:"roots,omitempty"`
+	Nodes         []*Node  `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -360,8 +361,8 @@ type FatContractInstance struct {
 	NonMaintainerSignatories   []string               `protobuf:"bytes,5,rep,name=non_maintainer_signatories,json=nonMaintainerSignatories,proto3" json:"non_maintainer_signatories,omitempty"`
 	NonSignatoryStakeholders   []string               `protobuf:"bytes,6,rep,name=non_signatory_stakeholders,json=nonSignatoryStakeholders,proto3" json:"non_signatory_stakeholders,omitempty"`
 	CreatedAt                  int64                  `protobuf:"fixed64,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	AuthenticationData         []byte                 `protobuf:"bytes,8,opt,name=authentication_data,json=authenticationData,proto3" json:"authentication_data,omitempty"`
-	ContractKeyWithMaintainers *KeyWithMaintainers    `protobuf:"bytes,1001,opt,name=contract_key_with_maintainers,json=contractKeyWithMaintainers,proto3" json:"contract_key_with_maintainers,omitempty"`
+	AuthenticationData         []byte              `protobuf:"bytes,8,opt,name=authentication_data,json=authenticationData,proto3" json:"authentication_data,omitempty"`
+	ContractKeyWithMaintainers *KeyWithMaintainers `protobuf:"bytes,1001,opt,name=contract_key_with_maintainers,json=contractKeyWithMaintainers,proto3" json:"contract_key_with_maintainers,omitempty"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -534,9 +535,9 @@ type Node_Fetch struct {
 	InterfaceId              *value.Identifier      `protobuf:"bytes,7,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
 	NonMaintainerSignatories []string               `protobuf:"bytes,4,rep,name=non_maintainer_signatories,json=nonMaintainerSignatories,proto3" json:"non_maintainer_signatories,omitempty"`
 	NonSignatoryStakeholders []string               `protobuf:"bytes,5,rep,name=non_signatory_stakeholders,json=nonSignatoryStakeholders,proto3" json:"non_signatory_stakeholders,omitempty"`
-	Actors                   []string               `protobuf:"bytes,6,rep,name=actors,proto3" json:"actors,omitempty"`
-	KeyWithMaintainers       *KeyWithMaintainers    `protobuf:"bytes,8,opt,name=key_with_maintainers,json=keyWithMaintainers,proto3" json:"key_with_maintainers,omitempty"`
-	ByKey                    bool                   `protobuf:"varint,9,opt,name=by_key,json=byKey,proto3" json:"by_key,omitempty"`
+	Actors                   []string            `protobuf:"bytes,6,rep,name=actors,proto3" json:"actors,omitempty"`
+	KeyWithMaintainers       *KeyWithMaintainers `protobuf:"bytes,8,opt,name=key_with_maintainers,json=keyWithMaintainers,proto3" json:"key_with_maintainers,omitempty"`
+	ByKey                    bool                `protobuf:"varint,9,opt,name=by_key,json=byKey,proto3" json:"by_key,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -789,9 +790,9 @@ func (x *Node_Rollback) GetChildren() []string {
 type Node_QueryByKey struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	PackageName        string                 `protobuf:"bytes,1,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	TemplateId         *value.Identifier      `protobuf:"bytes,2,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	KeyWithMaintainers *KeyWithMaintainers    `protobuf:"bytes,3,opt,name=key_with_maintainers,json=keyWithMaintainers,proto3" json:"key_with_maintainers,omitempty"`
-	ContractId         [][]byte               `protobuf:"bytes,4,rep,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	TemplateId         *value.Identifier   `protobuf:"bytes,2,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	KeyWithMaintainers *KeyWithMaintainers `protobuf:"bytes,3,opt,name=key_with_maintainers,json=keyWithMaintainers,proto3" json:"key_with_maintainers,omitempty"`
+	ContractId         [][]byte            `protobuf:"bytes,4,rep,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
 	Exaustive          bool                   `protobuf:"varint,5,opt,name=exaustive,proto3" json:"exaustive,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
